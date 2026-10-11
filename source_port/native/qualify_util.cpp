@@ -147,7 +147,22 @@ static PyObject* frame_metadata(PyObject*, PyObject* object) {
     return Py_BuildValue("(Ossii)", code.get(), filename.c_str(), name.c_str(),
         PyFrame_GetLineNumber(frame), PyFrame_GetLasti(frame));
 }
+static PyObject* make_frame(PyObject*, PyObject* args) {
+    const char* name;
+    PyObject* value;
+    int function;
+    if (!PyArg_ParseTuple(args, "sOp", &name, &value, &function)) return nullptr;
+    try {
+        auto& helper = SPELLpythonHelper::instance();
+        if (!function && !PyCode_Check(value)) { PyErr_SetString(PyExc_TypeError, "expected code"); return nullptr; }
+        return reinterpret_cast<PyObject*>(function ? helper.createFrameFromFunction(name, value)
+            : helper.createFrame(name, reinterpret_cast<PyCodeObject*>(value)));
+    } catch (const SPELLcoreException& error) {
+        PyErr_SetString(PyExc_RuntimeError, error.what().c_str()); return nullptr;
+    }
+}
 static PyMethodDef methods[] = {
+    {"make_frame", make_frame, METH_VARARGS, nullptr},
     {"frame_metadata", frame_metadata, METH_O, nullptr},
     {"compile", compile_source, METH_O, nullptr},
     {"compile_file", compile_file, METH_O, nullptr},

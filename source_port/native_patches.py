@@ -3,6 +3,8 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_WS/SPELLwsWarmStartImpl.H': '70692486c7a89222fa682ee0aee82a19e7d43a97381aedfd5623e1370a12b7cf',
+    'lib/SPELL_WS/src/SPELLwsWarmStartImpl.C': 'b0bb02ac4636ae398ed57fcfed3d4ef2cb35b5f19f03c1b8300c2fe5b1e163f6',
     'lib/SPELL_EXC/src/SPELLexecutionModel.C': '45545e623c76fcf2d0817ed761f262a835479e08adeaf0658bb3f956b94c5038',
     'lib/SPELL_EXC/src/SPELLexecutorImpl.C': '3a891afdf5e0dbcd75f97db263e3c30311c597872e434fc91b6c993683b2b0df',
     'lib/SPELL_EXC/src/SPELLserviceImpl.C': '9e56ddfa666429777f37ab7bedb76de9a539145050123096554339bb1ea40382',
@@ -43,7 +45,11 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):
+    if name.endswith('SPELLwsWarmStartImpl.H'):
+        text = text.replace('#include "SPELL_WS/SPELLwsFrame.H"', 'class SPELLwsFrame; // Private implementation dependency, not required by callers.')
+    elif name.endswith('SPELLwsWarmStartImpl.C'):
+        text = text.replace('#include "SPELL_WS/SPELLwsWarmStartImpl.H"', '#include "SPELL_WS/SPELLwsWarmStartImpl.H"\n#include "SPELL_WS/SPELLwsFrame.H"')
+    elif name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):
         text = text.replace('// GLOBALS ', '#include "SPELL_UTIL/SPELLpython313.H"\n\n// GLOBALS ', 1)
         text = text.replace('PYSTR(frame->f_code->co_filename)', 'SPELLpython313::filename(frame)')
         text = text.replace('PYSTR(frame->f_code->co_name)', 'SPELLpython313::codename(frame)')
@@ -143,6 +149,8 @@ def apply(name, original):
     if (error) throw *error;
 }
 \n//=============================================================================\n''')
+        text = section(text, 'PyFrameObject* SPELLpythonHelper::createFrame(',
+                       'void SPELLpythonHelper::checkError()', body('helper_frames.cpp'))
         text = text.replace('PyEval_CallObjectWithKeywords(', 'PyObject_Call(')
         text = text.replace('    Py_XINCREF(result);\n    DEBUG("[PYH] New instance end', '    DEBUG("[PYH] New instance end')
         text = text.replace('    Py_INCREF(moduleObj);\n    DEBUG("[PYH] Get module done', '    DEBUG("[PYH] Get module done')

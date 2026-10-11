@@ -15,6 +15,49 @@ spec.loader.exec_module(native)
 
 
 class NativeUtil(unittest.TestCase):
+    def test_created_procedure_frames_release_code_after_repeated_loads(self):
+        main = vars(sys.modules['__main__'])
+        filename = main.get('__file__')
+        try:
+            refs=[]
+            for index in range(2000):
+                code=compile('value=1', 'procedure.py', 'exec')
+                refs.append(weakref.ref(code))
+                frame=native.make_frame(f'procedure-{index}.py', code, False)
+                self.assertIs(frame.f_code, code)
+                self.assertIs(frame.f_globals, main)
+                self.assertEqual(main['__file__'], f'procedure-{index}.py')
+                del frame,code
+            gc.collect()
+            self.assertTrue(all(ref() is None for ref in refs))
+        finally:
+            if filename is None: main.pop('__file__',None)
+            else: main['__file__']=filename
+
+    def test_created_function_frames_keep_original_namespace_and_balance_ownership(self):
+        refs=[]
+        for _ in range(1000):
+            env={}
+            exec(compile('def run():\n return 42\n','function.py','exec'),env)
+            function=env.pop('run')
+            refs.append(weakref.ref(function.__code__))
+            count=sys.getrefcount(env)
+            frame=native.make_frame('function.py',function,True)
+            self.assertIs(frame.f_code,function.__code__)
+            self.assertIs(frame.f_globals,env)
+            del frame
+            self.assertEqual(sys.getrefcount(env),count)
+            del function,env
+        gc.collect()
+        self.assertTrue(all(ref() is None for ref in refs))
+
+    def test_frame_factory_rejects_invalid_function_inputs(self):
+        for value in (None, 42, len, object()):
+            with self.assertRaisesRegex(RuntimeError,'Expected a Python function'):
+                native.make_frame('invalid.py',value,True)
+        with self.assertRaises(TypeError):
+            native.make_frame('invalid.py',None,False)
+
     def test_frame_metadata_live_nested_frames_and_released_code(self):
         source = 'import sys\ndef nested():\n    return sys._getframe()\nframe = nested()\n'
         env = {}

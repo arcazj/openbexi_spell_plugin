@@ -14,7 +14,10 @@ def main():
     parser.add_argument('--watch', action='store_true', help='Require live variable-monitor checks and all preceding checks')
     parser.add_argument('--bytecode', action='store_true', help='Require source-bound bytecode checks and all preceding checks')
     parser.add_argument('--frames', action='store_true', help='Require public frame accessor checks and original v3 library inventory')
+    parser.add_argument('--factory', action='store_true', help='Require original frame-factory ownership and WS header isolation checks')
     args = parser.parse_args()
+    if args.factory:
+        args.frames = True
     if args.frames:
         args.bytecode = True
     if args.bytecode:
@@ -103,7 +106,15 @@ def main():
         report['qualification_scope'] += '; public frame getters tested, executor/model/service units syntax-checked; all 143 original v3 library units inventoried'
         report['library_syntax'] = {'total':len(checked), 'pass':sum(v==0 for v in checked.values()),
             'fail':sum(v!=0 for v in checked.values())}
-    name = 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.factory:
+        required = {'lib/SPELL_EXC/src/SPELLinterpreter.C','lib/SPELL_EXC/src/SPELLserviceInterpreter.C',
+                    'lib/SPELL_WS/src/SPELLwsDictDataHandler.C'}
+        checked = {u['unit']:u['exit_code'] for u in build['downstream_syntax']}
+        if runtime['tests'] < 21 or any(checked.get(name) != 0 for name in required):
+            raise ValueError('Frame factory/header isolation qualification failed')
+        report['milestone'] = 'CPython 3.13 original frame-factory ownership and warm-start header isolation'
+        report['qualification_scope'] += '; original procedure/function frame creation and release, current __file__ on load'
+    name = 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

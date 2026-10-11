@@ -63,6 +63,11 @@ for logical nested continuation, arguments, closures and exception propagation.
 It rejects native C-call boundaries and does not reconstruct physical caller
 frames. Original executor/WS integration and DSS effect recovery remain open.
 
+The original [frame factories](FRAME_FACTORY.md) now release their references
+correctly across repeated loads. UTIL has 21 passing checks; the library inventory
+is 138/143 after isolating private WS headers. The remaining five source failures
+are the frame manager and four WS implementation units.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only
