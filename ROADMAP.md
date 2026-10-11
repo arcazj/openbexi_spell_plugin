@@ -50,6 +50,10 @@ native executable, reaped previous child, worker result and normal context
 shutdown. All 15 lifecycle runs pass; this is cold restart, not service checkpoint
 resumption or live-service reconnection.
 
+The [CIF milestone](docs/CIF_RUNTIME.md) adds real blocking parent/child execution,
+shared-data type/key/deletion checks and timed WaitFor. It fixes a child-launch
+lock cycle and passes all 18 lifecycle runs with the preceding native gates.
+
 ## v0.3 â€” real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with

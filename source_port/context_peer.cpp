@@ -64,7 +64,7 @@ int main(int argc,char** argv) {
         std::cout << "CONTEXT_STARTED" << std::endl;
         if (argc==3) {
             const std::string mode=argv[2];
-            const std::set<std::string> controls={"native_controls","native_pause","native_abort","native_prompt","native_failure"};
+            const std::set<std::string> controls={"native_controls","native_pause","native_abort","native_prompt","native_failure","native_shared","native_child_parent","native_wait"};
             std::string command;
             if (mode=="--service" || mode=="--server")
                 command="/out/server_peer "+std::to_string(contextPort)+(mode=="--service" ? " native_service --service" : " native_server");

@@ -160,6 +160,8 @@ int main(int argc,char** argv) {
                     {MessageField::FIELD_VARIABLE_GLOBAL,"True"}});
                 command(ExecutorMessages::MSG_CMD_RUN); waitStatus("FINISHED");
             }
+        } else if (procedure=="native_shared" || procedure=="native_child_parent" || procedure=="native_wait") {
+            command(ExecutorMessages::MSG_CMD_RUN); waitStatus("FINISHED");
         } else if (procedure=="native_prompt") {
             command(ExecutorMessages::MSG_CMD_RUN); waitStatus("PROMPT");
             auto prompt=request(ExecutorMessages::REQ_EXEC_STATUS);

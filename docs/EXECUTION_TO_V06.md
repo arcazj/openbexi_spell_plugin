@@ -73,10 +73,14 @@ native executable, reaped previous child, worker result and normal context
 shutdown. All 15 lifecycle runs pass; this is cold restart, not service checkpoint
 resumption or live-service reconnection.
 
+The [CIF milestone](CIF_RUNTIME.md) adds real blocking parent/child execution,
+shared-data type/key/deletion checks and timed WaitFor. It fixes a child-launch
+lock cycle and passes all 18 lifecycle runs with the preceding native gates.
+
 ## Immediate work
 
-Qualify child/scheduler/shared-data CIF behavior, service reconnect/checkpoint semantics,
-and the remaining ownership/error paths. Then
+Review service reconnect/checkpoint semantics and complete the remaining native
+ownership/error-path checks. Then
 complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.

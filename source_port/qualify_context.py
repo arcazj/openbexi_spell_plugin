@@ -11,6 +11,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from controller_fixtures import write_procedures
 from service_recovery_fixtures import write_service
+from cif_fixtures import write_procedures as write_cif_procedures
 
 output=Path('/out')
 config=output/'executor-config/server/server.xml'
@@ -48,6 +49,7 @@ with open('/out/server-result.txt','w') as result:
 """)
 
 controller_scenarios=write_procedures(output/'executor-data/Procedures')
+cif_scenarios=write_cif_procedures(output/'executor-data/Procedures')
 
 services=output/'executor-data/NativeServices'
 services.mkdir(exist_ok=True)
@@ -119,6 +121,10 @@ class ContextTests(unittest.TestCase):
                 self.assertIn('CONTEXT_CLOSED',result.stdout)
                 if controller:
                     self.assertIn('CONTROLLER_SCENARIO_COMPLETE '+controller,result.stdout)
+                    for name,value in [('native_shared','roundtrip'),('native_child_parent','42'),('native_wait','waited')]:
+                        if controller==name: self.assertEqual((output/(name+'-result.txt')).read_text(),value)
+                    if controller=='native_child_parent':
+                        self.assertEqual((output/'native_child-result.txt').read_text(),'42')
                     if controller=='native_controls': self.assertEqual((output/(controller+'-result.txt')).read_text(),'42')
                     if controller=='native_prompt': self.assertEqual((output/(controller+'-result.txt')).read_text(),'answered')
                     if controller=='native_failure': self.assertEqual((output/(controller+'-closed.txt')).read_text(),'unwound')
@@ -178,6 +184,10 @@ class ContextTests(unittest.TestCase):
             self.assertIn('Executor process finished: native_server#1',native_logs)
 
 
+    def test_child_shared_data_and_scheduler_cif(self):
+        for scenario in cif_scenarios:
+            with self.subTest(scenario=scenario): self.run_context(controller=scenario)
+
     def test_service_watchdog_restarts_failed_native_process(self):
         for scenario in ('failure','crash'):
             with self.subTest(scenario=scenario): self.run_context(service_recovery=scenario)
@@ -202,6 +212,6 @@ class ContextTests(unittest.TestCase):
 
 
 result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests))
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':15,'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':18,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

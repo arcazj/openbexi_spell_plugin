@@ -4,6 +4,8 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLchildManager.C': 'd026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169',
+    'include/SPELL_EXC/SPELLchildManager.H': 'c98c691cb249a9c609eeefd897b60ea38921148c96a80ead9313c2a50dd1b97d',
     'include/SPELL_EXC/SPELLcontroller.H': '13ef9f674eba595c54f28de89aef816f758c8049be67f1257c6f5457a2acbb37',
     'lib/SPELL_CTX/src/SPELLexecutorManager.C': '0ed8194465b987c76b2113fb64512190430b6dd64cc02893966bd5817b818312',
     'lib/SPELL_CTX/src/SPELLexecutor.C': '63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32',
@@ -355,6 +357,32 @@ void setupSignals()
 }
 //=============================================================================
 ''')
+    elif name.endswith('SPELLchildManager.H'):
+        text=text.replace('void openChildProcedure(', 'void prepareChild(const std::string& instanceId);\n        void openChildProcedure(')
+    elif name.endswith('SPELLchildManager.C'):
+        start=text.index('void SPELLchildManager::openChildProcedure(')
+        end=text.index('void SPELLchildManager::closeChildProcedure()',start)
+        part=text[start:end]
+        part=part.replace('    SPELLmonitor m(m_lock);\n\n    m_childStart.clear();',
+            '    { SPELLmonitor lock(m_lock); m_childStart.clear(); }')
+        part=part.replace('    std::string subProcInstance = cif.openSubprocedure( suitableProc, callingLine, args, automatic, blocking, visible );', '''    std::string subProcInstance;
+    try { subProcInstance=cif.openSubprocedure(suitableProc,callingLine,args,automatic,blocking,visible); }
+    catch (...) { m_childStart.set(); throw; }''')
+        part=part.replace('        m_childProc = subProcInstance;\n        m_childAlive = true;\n        m_childStatus = STATUS_LOADED;',
+            '        // Identity is installed before launch; preserve newer child notifications.')
+        text=text[:start]+part+text[end:]
+        text+='''
+void SPELLchildManager::prepareChild(const std::string& instanceId)
+{
+    SPELLmonitor lock(m_lock);
+    m_childProc=instanceId;
+    m_childAlive=true;
+    m_childStatus=STATUS_UNINIT;
+    m_childError.clear();
+    m_childErrorReason.clear();
+    m_childStart.set();
+}
+'''
     elif name.endswith('SPELLcontroller.H'):
         text = text.replace('#define __SPELL_CONTROLLER_H__', '#define __SPELL_CONTROLLER_H__\n#include <mutex>\n#include <memory>')
         text = text.replace('SPELLevent           m_execLock;', '''SPELLevent           m_execLock;
@@ -399,6 +427,8 @@ void setupSignals()
         text=text.replace('#define __SPELL_SERVER_CIF_H__','#define __SPELL_SERVER_CIF_H__\n#include <atomic>')
         text=text.replace('bool m_ready;','std::atomic_bool m_ready;')
     elif name.endswith('SPELLserverCif.C'):
+        text=text.replace('    subprocId = response.get(MessageField::FIELD_INSTANCE_ID);',
+            '    subprocId = response.get(MessageField::FIELD_INSTANCE_ID);\n    if (response.isVoid() || response.getType()==MSG_TYPE_ERROR || subprocId.empty())\n        THROW_EXCEPTION("Unable to start subprocedure", "Context did not allocate a child identifier", SPELL_ERROR_EXECUTION);\n    SPELLexecutor::instance().getChildManager().prepareChild(subprocId);')
         # Close admission on the receiving worker, without transferring mutex
         # ownership to the interpreter thread. Existing requests drain first.
         text=text.replace('    \tm_ipcLock.lock();\n    \tsetClosing();', '        { SPELLmonitor guard(m_ipcLock); setClosing(); }')

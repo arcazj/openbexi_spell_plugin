@@ -28,7 +28,10 @@ def main():
     parser.add_argument('--service', action='store_true', help='Require actual context-launched service and controlled shutdown')
     parser.add_argument('--controller', action='store_true', help='Require original server controller and CIF scenarios')
     parser.add_argument('--service-restart', action='store_true', help='Require native watchdog restart after Python failure and process loss')
+    parser.add_argument('--cif', action='store_true', help='Require child, shared-data and scheduler CIF behavior')
     args = parser.parse_args()
+    if args.cif:
+        args.service_restart=True
     if args.service_restart:
         args.controller=True
     if args.controller:
@@ -376,7 +379,7 @@ def main():
         scenarios={'failure','crash'}
         if context.get('service_recovery_peer_build_exit_code')!=0 or set(behavior.get('service_restart_scenarios',[]))!=scenarios:
             raise ValueError('Native service restart scenarios incomplete')
-        if behavior['tests']<6 or behavior.get('lifecycle_runs')!=15:
+        if behavior['tests']<6 or behavior.get('lifecycle_runs',0)<15:
             raise ValueError('Service restart lifecycle evidence incomplete')
         for scenario in scenarios:
             prefix='service-'+scenario
@@ -398,7 +401,25 @@ def main():
         report['milestone']='Original service watchdog recovery from Python failure and process loss'
         report['qualification_scope'] += '; two native service failure/process-loss cases require a new verified executable, reaped old child, worker result and normal shutdown'
         report['gaps'][0]='Child/scheduler/shared-data CIF scenarios, service reconnect/checkpoint semantics and remaining native ownership/error-path checks'
-    name = 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.cif:
+        scenarios={'native_shared','native_child_parent','native_wait'}
+        if set(behavior.get('cif_scenarios',[]))!=scenarios or behavior['tests']<7 or behavior.get('lifecycle_runs')!=18:
+            raise ValueError('Child/shared-data/scheduler lifecycle evidence incomplete')
+        for scenario in scenarios:
+            log=(evidence/(scenario+'-0-peer.log')).read_text()
+            if 'CONTROLLER_SCENARIO_COMPLETE '+scenario not in log or 'CONTEXT_CLOSED' not in log:
+                raise ValueError('CIF scenario did not complete: '+scenario)
+        for name,value in [('native_shared','roundtrip'),('native_child_parent','42'),('native_child','42'),('native_wait','waited')]:
+            if (evidence/(name+'-result.txt')).read_text()!=value:
+                raise ValueError('CIF procedure output differs: '+name)
+        report['cif_runtime']={'scenarios':sorted(scenarios),'tests':3,
+            'child_native_arguments':True,'blocking_child_completion':True,
+            'context_shared_data_roundtrip':True,'shared_data_keys_and_delete':True,
+            'timed_wait':True,'full_cif_qualified':False}
+        report['milestone']='Original child procedure, shared-data and scheduler CIF behavior'
+        report['qualification_scope'] += '; native parent/child execution, shared context data types/keys/deletion and timed scheduler wait over original IPC'
+        report['gaps'][0]='Service reconnect/checkpoint semantics and remaining native ownership/error-path checks'
+    name = 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
