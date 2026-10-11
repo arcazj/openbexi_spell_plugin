@@ -151,16 +151,31 @@ if all(entry.get('link_exit_code')==0 for entry in report['programs'].values()):
         capture_output=True,text=True,timeout=60)
     (output/'service-recovery-peer-build.log').write_text(result.stdout+result.stderr)
     report['service_recovery_peer_build_exit_code']=result.returncode
+    result=subprocess.run(flags+['/context/live_reconnect_peer.cpp','-L/out','-lspell_executor313',
+        '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/live_reconnect_peer'],
+        capture_output=True,text=True,timeout=60)
+    (output/'live-reconnect-peer-build.log').write_text(result.stdout+result.stderr)
+    report['live_reconnect_peer_build_exit_code']=result.returncode
     result=subprocess.run(flags+['/context/context_peer.cpp','-L/out','-lspell_executor313',
         '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/context_peer'],
         capture_output=True,text=True,timeout=60)
     (output/'context-peer-build.log').write_text(result.stdout+result.stderr)
     report['peer_build_exit_code']=result.returncode
-    if result.returncode==0 and report['server_peer_build_exit_code']==0 and report['controller_peer_build_exit_code']==0 and report['service_recovery_peer_build_exit_code']==0:
-        result=subprocess.run([sys.executable,'-I','/context/qualify_context.py'],
-            capture_output=True,text=True,timeout=360)
-        (output/'context-qualification.log').write_text(result.stdout+result.stderr)
-        report['qualification_exit_code']=result.returncode
+    if result.returncode==0 and report['server_peer_build_exit_code']==0 and report['controller_peer_build_exit_code']==0 and report['service_recovery_peer_build_exit_code']==0 and report['live_reconnect_peer_build_exit_code']==0:
+        import threading
+        with (output/'context-qualification.log').open('w') as diagnostics:
+            process=subprocess.Popen([sys.executable,'-I','/context/qualify_context.py'],
+                stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+            def stream():
+                for line in process.stdout:
+                    diagnostics.write(line);diagnostics.flush()
+                    print(line.rstrip(),flush=True)
+            reader=threading.Thread(target=stream);reader.start()
+            try: report['qualification_exit_code']=process.wait(timeout=420)
+            except subprocess.TimeoutExpired:
+                process.kill();process.wait();report['qualification_exit_code']=124
+                print('CONTEXT_QUALIFICATION_TIMEOUT',flush=True)
+            reader.join(timeout=5)
 (output/'context-build.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({name:{'compile_failures':sum(row['exit_code']!=0 for row in entry['units']),
     'link_exit_code':entry.get('link_exit_code')} for name,entry in report['programs'].items()}))

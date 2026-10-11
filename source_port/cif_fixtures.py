@@ -33,7 +33,7 @@ with open('/out/native_child-result.txt','w') as result: result.write('42')
 from spell.lang.functions import WaitFor
 before=time.monotonic()
 assert WaitFor(1) is True
-assert time.monotonic()-before>=0.8
+assert time.monotonic()-before>=1.0
 with open('/out/native_wait-result.txt','w') as result: result.write('waited')
 """,
     }

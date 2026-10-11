@@ -2,12 +2,14 @@
 // Exercise the original context-side model and login worker independently.
 #include "SPELL_CTX/SPELLexecutor.H"
 #include "SPELL_UTIL/SPELLerror.H"
+#include "SPELL_UTIL/SPELLtime.H"
 #include "SPELL_IPC/SPELLipc_Executor.H"
 #include <atomic>
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
 #include <thread>
+#include <limits>
 
 void require(bool value,const char* message) { if (!value) throw std::runtime_error(message); }
 class ModelProbe final:public SPELLexecutor {
@@ -30,6 +32,25 @@ public:
 
 int main() {
     try {
+        SPELLtime fractional(10,532,750,false),one(1,true);
+        require(fractional+one==SPELLtime(11,532,750,false),"Addition lost fractional seconds");
+        SPELLtime almost(5,999,999,true),micro(0,0,1,true);
+        require(almost+micro==SPELLtime(6,true),"Addition failed fractional carry");
+        SPELLtime newer(11,100,100,false),older(10,900,200,false);
+        auto difference=newer-older;
+        require(difference==SPELLtime(0,199,900,true) && difference.isDelta(),"Subtraction failed fractional borrow");
+        auto assigned=fractional;assigned+=one;
+        require(assigned==fractional+one,"Compound time addition differs");
+        assigned=newer;assigned-=older;
+        require(assigned==difference,"Compound time subtraction differs");
+        require(older-newer==SPELLtime(0,true),"Negative difference did not saturate at zero");
+        SPELLtime fullMicroseconds(10,532,532750,false);
+        require(fullMicroseconds+one==fractional+one,"Python TIME fractional representation differs");
+        bool overflow=false;
+        try { auto invalid=SPELLtime(std::numeric_limits<unsigned long>::max(),true)+one;(void)invalid; }
+        catch(const std::overflow_error&) { overflow=true; }
+        require(overflow,"Native time overflow silently wrapped");
+        std::cout<<"NATIVE_TIME_ARITHMETIC_CASES 8"<<std::endl;
         ModelProbe model;
         model.publish(STATUS_PAUSED);
         require(!model.waitStatus(STATUS_PAUSED,0),"Already reached status should not time out");

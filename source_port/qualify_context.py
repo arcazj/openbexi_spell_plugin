@@ -1,4 +1,6 @@
 """Original listener/context startup and IPC shutdown. SPDX-License-Identifier: GPL-3.0-or-later."""
+import ctypes
+import threading
 import json
 import os
 from pathlib import Path
@@ -12,6 +14,12 @@ sys.path.insert(0, str(Path(__file__).parent))
 from controller_fixtures import write_procedures
 from service_recovery_fixtures import write_service
 from cif_fixtures import write_procedures as write_cif_procedures
+
+from live_reconnect_fixtures import write_fixture
+
+# Adopt only this private test's orphaned children, so an attached context can
+# observe process disappearance even in a Docker build without a reaping init.
+assert ctypes.CDLL(None).prctl(36,1,0,0,0)==0
 
 output=Path('/out')
 config=output/'executor-config/server/server.xml'
@@ -81,9 +89,10 @@ class NativeService:
 """)
 
 class ContextTests(unittest.TestCase):
-    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None,pending_service_pid=None):
+    completed_lifecycles=[]
+    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None,pending_service_pid=None,live_reconnect=None):
         log_before=set(logs.glob('*.log'))
-        label=('pending-service' if pending_service_pid else 'service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
+        label=('live-'+live_reconnect if live_reconnect else 'pending-service' if pending_service_pid else 'service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
         # Each scenario owns a fresh registry. Preserve failed-case evidence,
         # but do not reconnect a killed child from another isolated test.
         runtime=output/'executor-data/Runtime'
@@ -121,6 +130,32 @@ class PendingService:
             ctx=ET.fromstring(context_original)
             ET.SubElement(ctx,'servicepath').text=str(service_path)
             context_config.write_bytes(ET.tostring(ctx))
+        reaped={}
+        reap_stop=threading.Event()
+        def reap_orphan():
+            starts=output/('native_live_'+live_reconnect+'-starts.txt')
+            while not reap_stop.is_set():
+                if starts.exists():
+                    for row in starts.read_text().splitlines():
+                        fields=row.split()
+                        if len(fields)!=2: continue
+                        pid=int(fields[0])
+                        if pid in reaped: continue
+                        try:
+                            child,status=os.waitpid(pid,os.WNOHANG)
+                            if child: reaped[child]=status
+                        except ChildProcessError: pass # not orphaned/adopted yet
+                reap_stop.wait(.02)
+        if live_reconnect:
+            fixture=output/'executor-data/Procedures'
+            if live_reconnect=='service':
+                fixture=output/'LiveServices';fixture.mkdir(exist_ok=True)
+                ctx=ET.fromstring(context_original)
+                ET.SubElement(ctx,'servicepath').text=str(fixture)
+                context_config.write_bytes(ET.tostring(ctx))
+            write_fixture(fixture,live_reconnect=='service')
+            reaper=threading.Thread(target=reap_orphan,name='owned-orphan-reaper')
+            reaper.start()
         with (output/(label+'-listener.log')).open('wb') as log:
             process=subprocess.Popen([str(output/'SPELL-Listener'),'-c',str(config)],
                 env=environment,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
@@ -128,7 +163,7 @@ class PendingService:
                 # The listener opens both sockets before starting its context.
                 time.sleep(.5)
                 try:
-                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--pending-service'] if pending_service_pid else ['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=environment,
+                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--live-'+live_reconnect] if live_reconnect else ['--pending-service'] if pending_service_pid else ['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=dict(environment,OPENBEXI_QUALIFICATION_PGID=str(process.pid)),
                         capture_output=True,text=True,timeout=50)
                 except subprocess.TimeoutExpired as error:
                     (output/(label+'-peer.log')).write_bytes((error.stdout or b'')+(error.stderr or b''))
@@ -137,6 +172,19 @@ class PendingService:
                 self.assertEqual(result.returncode,0,result.stdout+result.stderr)
                 self.assertIn('CONTEXT_STARTED',result.stdout)
                 self.assertIn('CONTEXT_CLOSED',result.stdout)
+                if live_reconnect:
+                    self.assertIn('LIVE_CONTEXT_RECONNECT_VERIFIED '+live_reconnect,result.stdout)
+                    prefix='native_live_'+live_reconnect
+                    started=(output/(prefix+'-starts.txt')).read_text().splitlines()
+                    self.assertEqual(len(started),1,'Reconnection restarted the Python body')
+                    pid=int(started[0].split()[0])
+                    self.assertEqual((output/(prefix+'-closed.txt')).read_text(),str(pid))
+                    deadline=time.monotonic()+3
+                    while pid not in reaped and time.monotonic()<deadline: time.sleep(.02)
+                    self.assertIn(pid,reaped,'Adopted child was not reaped')
+                    self.assertTrue(os.WIFEXITED(reaped[pid]))
+                    self.assertEqual(os.WEXITSTATUS(reaped[pid]),0)
+                    self.assertIn('RECONNECTED_CHILD_RESUMED '+live_reconnect,result.stdout)
                 if controller:
                     self.assertIn('CONTROLLER_SCENARIO_COMPLETE '+controller,result.stdout)
                     for name,value in [('native_shared','roundtrip'),('native_child_parent','42'),('native_wait','waited')]:
@@ -177,6 +225,10 @@ class PendingService:
                 except ProcessLookupError: pass
                 process.wait(timeout=5)
                 context_config.write_bytes(context_original)
+                if live_reconnect:
+                    time.sleep(.1) # allow the private reaper to drain killed children
+                    reap_stop.set();reaper.join(timeout=2)
+                    self.assertFalse(reaper.is_alive())
         text=(output/(label+'-listener.log')).read_text(errors='replace')
         self.assertNotIn('AddressSanitizer:',text)
         self.assertNotIn('runtime error:',text)
@@ -204,7 +256,12 @@ class PendingService:
         if server:
             self.assertIn('[***] End main loop',native_logs)
             self.assertIn('Executor process finished: native_server#1',native_logs)
+        self.completed_lifecycles.append(label)
 
+
+    def test_live_native_processes_reconnect_after_context_crash(self):
+        for kind in ('executor','service'):
+            with self.subTest(kind=kind): self.run_context(live_reconnect=kind)
 
     def test_child_shared_data_and_scheduler_cif(self):
         for scenario in cif_scenarios:
@@ -242,7 +299,11 @@ class PendingService:
             with self.subTest(iteration=iteration): self.run_context(server=True,iteration=iteration)
 
 
-result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests))
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':19,'pending_service_cancelled':True,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
+selection=os.environ.get('OPENBEXI_CONTEXT_TEST_FILTER','all')
+if selection=='all': suite=unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests)
+elif selection=='live-reconnect': suite=unittest.TestSuite([ContextTests('test_live_native_processes_reconnect_after_context_crash')])
+else: raise ValueError('Unknown context qualification selection: '+selection)
+result=unittest.TextTestRunner(verbosity=2).run(suite)
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':len(ContextTests.completed_lifecycles),'completed_lifecycles':ContextTests.completed_lifecycles,'selection':selection,'live_reconnect_scenarios':['executor','service'],'pending_service_cancelled':True,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

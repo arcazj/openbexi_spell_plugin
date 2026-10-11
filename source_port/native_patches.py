@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_UTIL/src/SPELLtime.C': '00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585',
     'lib/SPELL_CTX/src/SPELLservice.C': '8edac0867351e1c6354c1ee39bbd329b891a690dd371616ffe3cc69a37912a01',
     'include/SPELL_CTX/SPELLserviceManager.H': '64cf81cd4c38302faf5fb9313602b8d4c77ded11bf5bca9f5d6b62618a443f98',
     'include/SPELL_CTX/SPELLservice.H': '0a4163783dd1cf876fb6d044c53de499e6d3aa93cc4d0bd0957b1248d933c258',
@@ -1521,6 +1522,103 @@ public:
             'auto* result=new SPELLsocket(socketFd,"spell",{}); ownership.release(); return result;')
         text=text.replace('return new SPELLsocket( socketFd , "spell",{});',
             'auto* result=new SPELLsocket(socketFd,"spell",{}); ownership.release(); return result;')
+    if name.endswith('SPELLipcClientInterface.H'):
+        text=text.replace('std::mutex m_lifecycleMutex;', 'std::mutex m_lifecycleMutex;\n        std::atomic_bool m_closed{false};')
+    if name.endswith('SPELLipcClientInterface.C'):
+        text='#include <chrono>\n'+text
+        text=section(text,'void SPELLipcClientInterface::connect(', 'SPELLipcChannel* SPELLipcClientInterface::createChannel(', body('client_connection.cpp'))
+        text=text.replace('void SPELLipcClientInterface::disconnect()\n{', 'void SPELLipcClientInterface::disconnect()\n{\n    m_closed=true;\n    m_readyEvent.set();')
+        text=section(text,'int SPELLipcClientInterface::readMyKey()', 'void SPELLipcClientInterface::writeMyKey(', r'''int SPELLipcClientInterface::readMyKey()
+{
+    unsigned char bytes[2];
+    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+    for (auto& byte:bytes) {
+        while (true) {
+            if (m_closed) throw SPELLipcError("Key handshake cancelled");
+            if (std::chrono::steady_clock::now()>=deadline) throw SPELLipcError("Key handshake timed out");
+            if (m_socket->waitData(100)) break;
+        }
+        if (m_socket->receive(&byte,1)!=1) throw SPELLipcError("Cannot read client key");
+    }
+    return (bytes[0]<<8)|bytes[1];
+}
+
+''')
+        text=section(text,'void SPELLipcClientInterface::setReady()', 'void SPELLipcClientInterface::cancelOutgoingRequests()', r'''void SPELLipcClientInterface::setReady()
+{
+    m_readyEvent.set();
+}
+
+void SPELLipcClientInterface::waitReady()
+{
+    const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+    while (m_readyEvent.isClear()) {
+        if (m_closed || !m_connected) throw SPELLipcError("Connection readiness cancelled");
+        if (std::chrono::steady_clock::now()>=deadline) throw SPELLipcError("Connection readiness timed out");
+        m_readyEvent.wait(100);
+    }
+    if (m_closed || !m_connected) throw SPELLipcError("Connection readiness cancelled");
+}
+
+''')
+        text=text.replace('    // Socket is closed at this moment\n    m_connected = false;', '    // Socket is closed at this moment\n    m_connected = false;\n    cancelOutgoingRequests();')
+    if name.endswith('SPELLsocket.H'):
+        text=text.replace('const int& port );','const int& port, const std::atomic_bool* cancelled = nullptr );')
+    if name.endswith('SPELLsocket.C'):
+        text='#include <chrono>\n#include <arpa/inet.h>\n'+text
+        text=section(text,'SPELLsocket* SPELLsocket::connect(', 'SPELLsocket* SPELLsocket::listen(', body('socket_connect.cpp'))
+        text=text.replace('socket(AF_INET, SOCK_STREAM, 0)', 'socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0)')
+        text=text.replace('accept(socketFd, (struct sockaddr *)&client_addr, &addrlen)', 'accept4(socketFd, (struct sockaddr *)&client_addr, &addrlen, SOCK_CLOEXEC)')
+    if name.endswith('SPELLserverCif.H'):
+        text='#include <atomic>\n#include <mutex>\n#include <condition_variable>\n#include <thread>\n'+text
+        text=text.replace('std::atomic_bool m_ready;', r'''std::atomic_bool m_ready;
+        std::mutex m_reconnectMutex;
+        std::condition_variable m_reconnectWake;
+        std::thread m_reconnectThread;
+        bool m_reconnectPending=false;
+        bool m_reconnectStop=false;
+        unsigned long m_reconnectGeneration=0;
+        void reconnectLoop();
+        void stopReconnect();''')
+    if name.endswith('SPELLserverCif.C'):
+        text='#include <chrono>\n'+text
+        text=text.replace('SPELLserverCif::~SPELLserverCif()\n{', 'SPELLserverCif::~SPELLserverCif()\n{\n    stopReconnect();')
+        text=text.replace('    m_ifc->initialize( this );', '    m_ifc->initialize( this );\n    m_reconnectThread=std::thread(&SPELLserverCif::reconnectLoop,this);')
+        text=text.replace('void SPELLserverCif::specificCleanup( bool force )\n{', 'void SPELLserverCif::specificCleanup( bool force )\n{\n    stopReconnect();')
+        text=section(text,'void SPELLserverCif::processConnectionError(', 'void SPELLserverCif::processConnectionClosed(', body('cif_reconnect.cpp'))
+    if name == 'lib/SPELL_UTIL/src/SPELLtime.C':
+        text='#include <limits>\n#include <stdexcept>\n'+text
+        text=section(text,'SPELLtime SPELLtime::operator+(', 'bool SPELLtime::operator<(', body('time_arithmetic.cpp'))
+    if name == 'lib/SPELL_CTX/src/SPELLexecutorManager.C':
+        # executorLogin owns attachment; the completion callback only publishes
+        # the already-attached model in the active registry.
+        duplicate='\t\tSPELLprocessManager::instance().attachProcess( exec->getModel().getInstanceId(),  exec->getModel().getPID() );\n'
+        assert text.count(duplicate)==1
+        text=text.replace(duplicate,'')
+    if name == 'lib/SPELL_CTX/src/SPELLexecutor.C':
+        # A replacement context has no surviving GUI client pointer. Marking it
+        # CONNECTED drops acknowledged notifications in forwardMessageToClient
+        # and leaves the original child stuck even after a new GUI sends Run.
+        connected='\t\tm_clientConnection = CLI_CONNECTED;\n'
+        assert text.count(connected)==1
+        text=text.replace(connected,
+            '\t\tm_clientConnection = controllingClient ? CLI_CONNECTED : CLI_NO_CLIENT;\n')
+        attach='\t\tSPELLprocessManager::instance().attachProcess( m_model.getInstanceId(), m_model.getPID() );'
+        assert text.count(attach)==1
+        text=text.replace(attach,r'''        if (!processOk()) {
+            m_processStartedEvent.clear();
+            SPELLprocessManager::instance().attachProcess(m_model.getInstanceId(),m_model.getPID());
+            if (m_processStartedEvent.wait(3000) || !processOk())
+                THROW_EXCEPTION("Cannot reconnect executor", "Process attachment did not become ready", SPELL_ERROR_PROCESS);
+        }''')
+    if name.endswith('SPELLserverCif.H'):
+        text=text.replace('bool waitAcknowledge( const SPELLipcMessage& msg );',
+            'bool waitAcknowledge(const SPELLipcMessage& msg,unsigned long generation);\n        void sendAcknowledged(const SPELLipcMessage& msg);')
+    if name.endswith('SPELLserverCif.C'):
+        text,count=re.subn(r'do\s*\{\s*sendGUIMessage\(msg\);\s*\}\s*while\s*\(!isClosing\(\) && !waitAcknowledge\(msg\)\);',
+            'sendAcknowledged(msg);',text)
+        assert count==4,(name,'acknowledged notifications',count)
+        text=section(text,'bool SPELLserverCif::waitAcknowledge(', 'void SPELLserverCif::specificNotifyError(', body('cif_acknowledge.cpp'))
     return text.encode('utf-8')
 
 

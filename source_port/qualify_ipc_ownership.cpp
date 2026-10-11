@@ -90,6 +90,38 @@ void concurrentDisconnect() {
     require(admitted,"Did not admit every concurrent IPC request");
     require(returned==8 && failures==0,"Disconnect lost or raised from pending requests");
 }
+void cancelledHandshake(bool partialKey) {
+    // A real TCP endpoint deliberately stalls at each protocol handshake stage.
+    const int listener=::socket(AF_INET,SOCK_STREAM|SOCK_CLOEXEC,0);
+    require(listener>=0,"Cannot create handshake endpoint");
+    sockaddr_in address{};address.sin_family=AF_INET;address.sin_addr.s_addr=htonl(INADDR_LOOPBACK);
+    require(::bind(listener,reinterpret_cast<sockaddr*>(&address),sizeof(address))==0,"Cannot bind handshake endpoint");
+    socklen_t length=sizeof(address);
+    require(::getsockname(listener,reinterpret_cast<sockaddr*>(&address),&length)==0,"Cannot identify handshake endpoint");
+    require(::listen(listener,1)==0,"Cannot listen for handshake");
+    Listener peer;
+    SPELLipcClientInterface client("CANCEL-HANDSHAKE","127.0.0.1",ntohs(address.sin_port));
+    client.initialize(&peer);
+    std::atomic_bool cancelled{false};
+    std::thread connecting([&] {
+        try { client.connect(); } catch (const SPELLipcError&) { cancelled=true; }
+    });
+    const int incoming=::accept4(listener,nullptr,nullptr,SOCK_CLOEXEC);
+    unsigned char key[2];
+    const bool offered=incoming>=0 && ::recv(incoming,key,2,MSG_WAITALL)==2;
+    if (offered && partialKey) { key[0]=0;key[1]=1;::send(incoming,key,1,MSG_NOSIGNAL); }
+    std::this_thread::sleep_for(std::chrono::milliseconds(80));
+    const auto start=std::chrono::steady_clock::now();
+    client.disconnect();connecting.join();
+    const auto duration=std::chrono::steady_clock::now()-start;
+    ::close(incoming);::close(listener);
+    require(offered && cancelled,"Stalled handshake was not cancelled");
+    require(duration<std::chrono::seconds(1),"Handshake cancellation exceeded one second");
+    bool rejected=false;
+    try { client.connect(true); } catch (const SPELLipcError&) { rejected=true; }
+    require(rejected,"Closed client accepted reconnect");
+    std::cout<<"HANDSHAKE_CANCELLED "<<(partialKey ? "second-key-byte" : "first-key-byte")<<std::endl;
+}
 int main() {
     try {
         int port=0;
@@ -134,6 +166,8 @@ int main() {
         require(!late->isStarted(),"Rejected worker started after collector shutdown");
         late.reset();require(destroyed==2,"Rejected worker lost caller ownership");
         concurrentDisconnect();
+        cancelledHandshake(false);
+        cancelledHandshake(true);
         std::cout<<"{\"failed_bind_attempts\":40,\"failed_connect_attempts\":100,\"descriptor_leaks\":0,\"shutdown_joins_admitted_worker\":true,\"closed_admission_rejected\":true,\"concurrent_cancelled_requests\":8,\"concurrent_disconnect_calls\":2}"<<std::endl;
         return 0;
     } catch (const SPELLipcError& error) { std::cerr<<error.what()<<std::endl; }

@@ -33,7 +33,8 @@ This phase remains in progress. The qualified native foundation now includes:
   Python failure or process loss.
 - Socket/worker/process-listener ownership, concurrent disconnect, pending-service
   login cancellation, watchdog duplicate prevention and monotonic status waits.
-  The current context suite passes 19 lifecycle runs.
+  Live procedure/service reconnection also preserves and resumes the original
+  child after context failure. The current context suite passes 21 lifecycle runs.
 - The separate Linux x86_64 / CPython 3.13.15 diagnostic package 0.2.0a2, with five
   fresh-image installation checks and clean removal. Two package builds from one
   qualified native build are identical; independent native rebuild reproducibility
@@ -45,8 +46,9 @@ See [execution status](docs/EXECUTION_TO_V06.md),
 [context ownership](docs/CONTEXT_OWNERSHIP.md) for exact evidence and scope.
 Historical milestone reports retain their own source snapshots.
 
-Live context reconnection, service checkpoint semantics and final native acceptance
-still gate v0.2. The example driver remains a local template fixture; operational
+Service checkpoint semantics, an updated installable artifact and final native
+acceptance still gate v0.2. See [live reconnection](docs/LIVE_RECONNECT.md) for the
+latest runtime evidence. The example driver remains a local template fixture; operational
 DSS driver qualification follows in v0.4 and full inventory conformance in v0.5.
 
 ## v0.3 — real IDE host plugins

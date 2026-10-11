@@ -94,10 +94,18 @@ login completion, pending-service ownership/watchdog fencing, monotonic status
 waits and post-disconnect send checks. All preceding native gates and 19 lifecycle
 runs pass. Live context reconnection and service checkpoint semantics remain open.
 
+The [live reconnection milestone](LIVE_RECONNECT.md) now passes all nine context
+tests and 21 lifecycle runs, plus every preceding native gate. Both a native
+procedure and service survive context SIGKILL, pause without duplicate execution,
+regain explicit GUI control, resume in the same process and close normally with
+Python cleanup and child reaping. Key exchange is cancellable, reconnect channels
+have an owned worker, and fractional native time arithmetic has eight checks.
+The installed 0.2.0a2 wheel remains its earlier source snapshot.
+
 ## Immediate work
 
-Qualify live context reconnection, resolve service checkpoint semantics and
-complete the v0.2 acceptance review before installing the new runtime into IDE
+Resolve [service checkpoint semantics](SERVICE_RECOVERY_SEMANTICS.md), rebuild the
+installable artifact and complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 

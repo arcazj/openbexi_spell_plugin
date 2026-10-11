@@ -31,7 +31,10 @@ def main():
     parser.add_argument('--cif', action='store_true', help='Require child, shared-data and scheduler CIF behavior')
     parser.add_argument('--ipc-ownership', action='store_true', help='Require socket failure and concurrent IPC shutdown ownership checks')
     parser.add_argument("--context-ownership", action="store_true", help="Require pending service ownership and login/status lifecycle checks")
+    parser.add_argument("--live-reconnect", action="store_true", help="Require live native procedure/service reconnection after owned context loss")
     args = parser.parse_args()
+    if args.live_reconnect:
+        args.context_ownership=True
     if args.context_ownership:
         args.ipc_ownership=True
     if args.ipc_ownership:
@@ -459,7 +462,44 @@ def main():
         report['milestone']='Context status/login lifecycle and pending service reconnect ownership'
         report['qualification_scope'] += '; monotonic status deadlines, virtual login completion/timeout/cancellation and context close with one owned pending service'
         report['gaps'][0]='Live context reconnection and service checkpoint semantics; final native foundation acceptance review'
-    name = 'CONTEXT_OWNERSHIP' if args.context_ownership else 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.live_reconnect:
+        if behavior.get('selection')!='all':
+            raise ValueError('Release evidence requires the complete context suite')
+        if behavior['tests']<9 or behavior.get('lifecycle_runs',0)<21 or set(behavior.get('live_reconnect_scenarios',[]))!={'executor','service'}:
+            raise ValueError('Live native reconnect lifecycle incomplete')
+        if context.get('live_reconnect_peer_build_exit_code')!=0:
+            raise ValueError('Live native reconnect peer did not build')
+        for kind in ('executor','service'):
+            text=(evidence/('live-'+kind+'-0-peer.log')).read_text()
+            for marker in ('OWNED_CONTEXT_KILLED','CHILD_SURVIVES','LIVE_CONTEXT_RECONNECT_VERIFIED '+kind,'CONTEXT_CLOSED'):
+                if marker not in text: raise ValueError('Live reconnect evidence missing: '+marker)
+            if 'RECONNECTED_CHILD_RESUMED '+kind not in text:
+                raise ValueError('Reconnected native child did not resume: '+kind)
+            if kind=='executor' and 'RECONNECTED_PROCEDURE_CLOSED' not in text:
+                raise ValueError('Reconnected procedure did not complete its Close command')
+            prefix='native_live_'+kind
+            starts=(evidence/(prefix+'-starts.txt')).read_text().splitlines()
+            if len(starts)!=1 or len(starts[0].split())!=2:
+                raise ValueError('Live reconnect restarted the child body')
+            if (evidence/(prefix+'-closed.txt')).read_text()!=starts[0].split()[0]:
+                raise ValueError('Reconnected native child did not run Python finally')
+        text=(evidence/'ipc-ownership-runtime.log').read_text()
+        for stage in ('first-key-byte','second-key-byte'):
+            if 'HANDSHAKE_CANCELLED '+stage not in text:
+                raise ValueError('Connection handshake cancellation unqualified: '+stage)
+        if 'NATIVE_TIME_ARITHMETIC_CASES 8' not in (evidence/'context-ownership-runtime.log').read_text():
+            raise ValueError('Fractional native time arithmetic not qualified')
+        report['live_reconnect_runtime']={'native_time_arithmetic_cases':8,'scenarios':['executor','service'],
+            'original_child_survives':True,'no_duplicate_body_execution':True,
+            'original_listener_restarts_context':True,'pause_stops_progress':True,
+            'explicit_executor_control_and_resume':True,'explicit_service_control_and_resume':True,
+            'procedure_explicit_close':True,'service_close_on_context_shutdown':True,
+            'normal_close_finally_and_reap':True,'key_handshake_cancellation_cases':2,
+            'tcp_connect_deadline_seconds':5,'hostname_resolution_cancellation_qualified':False}
+        report['milestone']='Live native procedure/service ownership across context crash and reconnection'
+        report['qualification_scope'] += '; two owned context SIGKILL cases preserve the same native child, pause progress, reattach through original IPC and close normally; both procedure and service explicitly regain control and resume; both key handshake stages cancel within one second'
+        report['gaps'][0]='Service checkpoint semantics and final native foundation acceptance review'
+    name = 'LIVE_RECONNECT' if args.live_reconnect else 'CONTEXT_OWNERSHIP' if args.context_ownership else 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

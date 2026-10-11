@@ -70,6 +70,8 @@ int main(int argc,char** argv) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(2500));
                 std::cout<<"PENDING_SERVICE_WATCHDOG_OBSERVED"<<std::endl;
             }
+            else if (mode=="--live-service" || mode=="--live-executor")
+                command="/out/live_reconnect_peer "+std::to_string(contextPort)+" "+argv[1]+" "+mode.substr(7);
             else if (mode=="--service" || mode=="--server")
                 command="/out/server_peer "+std::to_string(contextPort)+(mode=="--service" ? " native_service --service" : " native_server");
             else if (mode=="--service-failure" || mode=="--service-crash")
