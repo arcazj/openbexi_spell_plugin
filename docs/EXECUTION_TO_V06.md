@@ -2,13 +2,14 @@
 
 Authorized target: finish and commit each release in order through plugin v0.6,
 including prerequisite changes and qualification in the sibling openbexi_ide.
-The working IDE v0.2 / bounded plugin v0.1 remains the testing baseline while the
-original-source runtime is developed in isolated environments.
+The working IDE v0.2 / bounded plugin v0.1 remains the desktop testing baseline.
+The original-source native foundation v0.2 is now qualified in its separate Linux
+environment; actual host integration is the next phase.
 
 | Release | State | Required evidence |
 | --- | --- | --- |
-| v0.2 | In progress; native package alpha 0.2.0a2 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
-| v0.3 | Pending v0.2 | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
+| v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
+| v0.3 | Next | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Pending v0.3 and IDE service prerequisites | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
 | v0.5 | Pending v0.4 | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending v0.5 | Reproducible distribution, supported platform matrix, clean installation/removal and upgrades, actual host and DSS-container workflows |
@@ -111,8 +112,11 @@ kind. All preceding native gates, ten context tests and 25 lifecycle runs pass.
 
 ## Immediate work
 
-Rebuild the installable artifact and complete the v0.2 acceptance review before installing the new runtime into IDE
-hosts. The isolated original example driver is a template fixture; operational
+The [installed 0.2.0 artifact](NATIVE_PACKAGE.md) now passes seven fresh-image
+checks, removal, byte-identical packaging from one qualified build and the full
+native gate. The v0.2 foundation is accepted on Linux x86_64 / CPython 3.13.15.
+Implement and qualify the v0.3 OpenBEXI and JetBrains host extensions next.
+The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 
 Preserve explicit SPELL imports and the three operating modes: Execution,

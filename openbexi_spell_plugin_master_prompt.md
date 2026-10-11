@@ -1,9 +1,14 @@
 # openbexi_spell_plugin engineering master prompt
 
-Current state: the Apache bounded SDK/DSS is qualified at v0.1.0. The separate
-original-source 0.2.0a1 alpha preserves 94 modules, generated RPC and the original
-driver lifecycle; see docs/SOURCE_PORT.md. Full v0.2 remains open while the native
-DTA/UTIL/EXC/WS and executor semantics are ported and independently qualified.
+Current state: the Apache bounded SDK/DSS remains the v0.1.0 desktop testing
+baseline. The separate original-source native foundation is qualified at v0.2.0
+on Linux x86_64 / GIL-enabled CPython 3.13.15, including DTA/UTIL/EXC/WS,
+ordinary procedure checkpoint recovery and context/service lifecycle. See
+docs/NATIVE_PACKAGE.md and its exact acceptance manifest. Native service
+checkpoint resumption is explicitly unsupported and rejected before startup;
+service cold restart and live reconnection are qualified. Continue with real
+OpenBEXI, IntelliJ IDEA and PyCharm integration in v0.3, then the remaining phases
+through v0.6. Foundation acceptance is not full language or host compatibility.
 
 Build SPELL as an independently installable plugin/library for openbexi_ide,
 PyCharm and IntelliJ IDEA, with DSS testing. Do not mix satellite dependencies or

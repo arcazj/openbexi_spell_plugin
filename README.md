@@ -1,16 +1,17 @@
-# openbexi_spell_plugin v0.1
+# openbexi_spell_plugin v0.2
 
-An independently installable development plugin for
-[openbexi_ide](../openbexi_ide/README.md), with the retained bounded SPELL SDK and
-a deterministic Dynamic Satellite Simulator (DSS) fixture. Procedures import
-SPELL symbols explicitly. The complete source-derived SPELL runtime and actual
-JetBrains host plugins remain roadmap gates.
+The v0.2 release qualifies the original-source SPELL native foundation. The
+existing bounded v0.1 development adapter for
+[openbexi_ide](../openbexi_ide/README.md) and deterministic Dynamic Satellite
+Simulator (DSS) remain the desktop testing baseline. Procedures import SPELL
+symbols explicitly. Actual host integration is the next v0.3 phase.
 
 The separate [original-source native runtime](docs/NATIVE_PACKAGE.md) is now
-available as diagnostic developer alpha 0.2.0a2 for Linux x86_64 / CPython 3.13.15.
-Its GPL/LGPL wheel passes fresh-environment installation, native execution,
-imports and removal. Install it in a separate environment from this bounded
-adapter. The v0.2 release remains open for native reconnect/recovery review.
+available as qualified foundation 0.2.0 for Linux x86_64 / CPython 3.13.15.
+Its GPL/LGPL diagnostic wheel passes fresh-environment installation, native
+execution, listener/context operation, imports and removal. Install it in a
+separate environment from the bounded adapter. Full language conformance and
+v0.6 distribution remain roadmap gates.
 
 The [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
 controls the original server executor over IPC, verifies its result and checks
@@ -25,6 +26,8 @@ python -m venv .venv
 .venv/Scripts/openbexi-dss.exe --port 8085 --database var/dss.sqlite
 ```
 
+The installation commands above install the retained bounded 0.1.0 adapter.
+Use the native package documentation for the separate 0.2.0 source runtime.
 The existing Docker image passes the [internal DSS command workflow](docs/DSS_CONTAINER_RUNTIME.md).
 Host port publication remains a release gate; the command above starts the
 qualified host-accessible fixture.
@@ -88,5 +91,5 @@ See the execution status for current acceptance gates and the roadmap through v0
 The [live reconnect milestone](docs/LIVE_RECONNECT.md) now passes 25 context lifecycle
 runs. Native procedures and services survive context failure, pause, regain GUI
 control and resume in the same process. Unsupported native service checkpoint
-requests fail explicitly before startup. The updated installable artifact and
-final acceptance review still gate v0.2.
+requests fail explicitly before startup. The installed artifact is qualified;
+host integration is next, followed by original drivers, conformance and distribution.

@@ -6,9 +6,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import signal
 import subprocess
 import sys
+import time
 import unittest
+import xml.etree.ElementTree as ET
 
 OUTPUT = Path('/qualification')
 OUTPUT.mkdir(exist_ok=True)
@@ -34,7 +37,7 @@ class InstalledRuntime(unittest.TestCase):
         run([ENV / 'bin/python', '-m', 'pip', 'install', '--no-index', '--find-links=/wheelhouse', WHEEL])
         cls.doctor = json.loads(run([ENV / 'bin/spell-native', 'doctor']))
         assert cls.doctor['environment'] == str(ENV)
-        assert cls.doctor['version'] == '0.2.0a2'
+        assert cls.doctor['version'] == '0.2.0'
         cls.example = json.loads(run([ENV / 'bin/spell-native', 'init-example', OUTPUT / 'example']))
 
     def test_installed_native_executor_uses_selected_environment(self):
@@ -75,6 +78,66 @@ print(json.dumps({'native':dta.__file__,'prefix':sys.prefix}))
         data = json.loads(run([ENV / 'bin/spell-native-python', '-I', '-c', code]))
         self.assertEqual(data['prefix'], str(ENV))
 
+    def test_installed_listener_context_and_server_executor(self):
+        example=self.example
+        server=ET.parse(example['config'])
+        server.find("./listener/property[@name='ListenerPort']").text='22980'
+        server.find("./listener/property[@name='ContextListenerPort']").text='22981'
+        server.write(example['config'],encoding='utf-8')
+        data=Path(example['environment']['SPELL_DATA'])
+        result_file=OUTPUT/'installed-context-result.txt'
+        (data/'Procedures/installed_native.py').write_text('''##########
+# NAME: Installed original context procedure
+# SPACECRAFT: Y
+# PYTHON VERSION: 3
+##########
+import sys
+from pathlib import Path
+from spell.runtime import ARGS,IVARS
+from spell.lang.functions import Display
+assert sys.prefix == '/opt/spell-test-env', sys.prefix
+IVARS['answer']=ARGS['value']*2
+Display('INSTALLED_CONTEXT_RESULT_42')
+Path('/qualification/installed-context-result.txt').write_text(str(IVARS['answer']))
+''')
+        env=dict(os.environ,**example['environment'])
+        with (OUTPUT/'installed-listener.log').open('w') as log:
+            listener=subprocess.Popen([ENV/'bin/spell-native','listener','-c',example['config']],
+                env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+            try:
+                time.sleep(.5)
+                peer_env=dict(env,LD_LIBRARY_PATH=str(Path(self.doctor['native_root'])/'bin'),
+                    ASAN_OPTIONS='detect_leaks=0:abort_on_error=1',
+                    UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1')
+                text=run(['/qualification-input/installed_peer','22980'],env=peer_env)
+                (OUTPUT/'installed-peer.log').write_text(text)
+                self.assertIn('INSTALLED_LISTENER_CONTEXT_EXECUTOR_CLOSED',text)
+                self.assertEqual(result_file.read_text(),'42')
+                listener.terminate()
+                self.assertEqual(listener.wait(timeout=10),0)
+            finally:
+                try: os.killpg(listener.pid,signal.SIGKILL)
+                except ProcessLookupError: pass
+                listener.wait(timeout=5)
+        logs=(OUTPUT/'installed-listener.log').read_text()
+        self.assertNotIn('AddressSanitizer:',logs)
+        self.assertNotIn('runtime error:',logs)
+        native='\n'.join(p.read_text() for p in Path(example['environment']['SPELL_LOG']).glob('*.log'))
+        self.assertIn('Executor process finished: installed_native#1',native)
+        self.assertNotIn('try kill',native)
+        self.assertNotIn('killing instead',native)
+
+    def test_installed_service_checkpoint_request_fails_explicitly(self):
+        checkpoint=OUTPUT/'service-checkpoint.dat'
+        checkpoint.write_bytes(b'preserve checkpoint')
+        result=subprocess.run([ENV/'bin/spell-native','service','-p','unstarted-service',
+            '-c',self.example['config'],'-n','example','-r',checkpoint],
+            capture_output=True,text=True,timeout=10,
+            env=dict(os.environ,**self.example['environment']))
+        self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+        self.assertIn('Checkpoint recovery is unavailable for native services',result.stderr)
+        self.assertEqual(checkpoint.read_bytes(),b'preserve checkpoint')
+
     def test_plain_python_requires_diagnostic_launcher(self):
         result = subprocess.run([ENV / 'bin/python', '-I', '-c', 'import libSPELL_DTA_v3'],
                                 capture_output=True, text=True, timeout=10)
@@ -109,6 +172,7 @@ if __name__ == '__main__':
     report = {'tests': result.testsRun, 'failures': len(result.failures), 'errors': len(result.errors),
               'skips': len(result.skipped), 'wheel': WHEEL.name,
               'wheel_sha256': hashlib.sha256(WHEEL.read_bytes()).hexdigest(),
+              'installed_peer_sha256':hashlib.sha256(Path('/qualification-input/installed_peer').read_bytes()).hexdigest(),
               'no_build_tree': not Path('/source').exists() and not Path('/out').exists()}
     if result.wasSuccessful():
         run([ENV / 'bin/python', '-m', 'pip', 'uninstall', '-y', 'openbexi-spell-source'])
@@ -116,5 +180,14 @@ if __name__ == '__main__':
             assert not path.exists(), path
         run([ENV / 'bin/python', '-I', '-c', "import importlib.util; assert importlib.util.find_spec('spell') is None; assert 6*7==42"])
         report['uninstall_preserves_plain_python'] = True
+    # The example and its links belong only to this disposable test. Preserve
+    # link targets as evidence after testing/removal, so the local Docker
+    # exporter works on Windows without symlink-creation privileges.
+    report['installed_example_links']={}
+    for name in ('SPELL-Executor','SPELL-Executor_v3'):
+        path=OUTPUT/'example/bin'/name
+        if path.is_symlink():
+            report['installed_example_links'][name]=os.readlink(path)
+            path.unlink()
     (OUTPUT / 'installed-runtime.json').write_text(json.dumps(report, indent=2) + '\n')
     # Always export failures; promotion is an explicit recorder gate.

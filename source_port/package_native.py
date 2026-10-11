@@ -1,7 +1,8 @@
 """Package the qualified original native build for an isolated Linux environment.
 
 SPDX-License-Identifier: GPL-3.0-or-later
-This developer alpha includes the ASan/UBSan runtime, not a production release.
+This diagnostic foundation includes the ASan/UBSan runtime. Operational release
+qualification remains separate.
 """
 import argparse
 import hashlib
@@ -13,7 +14,7 @@ import subprocess
 import sys
 import sysconfig
 
-VERSION = '0.2.0a2'
+VERSION = '0.2.0'
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
@@ -21,8 +22,8 @@ def build(output, evidence, source, recipe):
     output.mkdir(parents=True, exist_ok=False)
     # Reuse the independent recorder's complete gate, including current inputs.
     subprocess.run([sys.executable, str(recipe / 'record_native.py'),
-                    '--evidence', str(evidence), '--ipc-ownership'], check=True)
-    accepted = recipe.parent / 'docs/NATIVE_IPC_OWNERSHIP_QUALIFICATION.json'
+                    '--evidence', str(evidence), '--service-recovery-policy'], check=True)
+    accepted = recipe.parent / 'docs/NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json'
     report = json.loads(accepted.read_text())
     package = output / 'src'
     package.mkdir()
@@ -61,10 +62,10 @@ def build(output, evidence, source, recipe):
     shutil.copyfile(recipe.parent / 'docs/reference/SPELL2.6.10-src.zip', provenance / 'SPELL2.6.10-src.zip')
     shutil.copytree(recipe, provenance / 'source_port',
                     ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
-    shutil.copyfile(accepted, provenance / 'NATIVE_IPC_OWNERSHIP_QUALIFICATION.json')
+    shutil.copyfile(accepted, provenance / 'NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json')
     for name, original in [('GPL-3.0.txt', source / 'LICENSE'), ('LGPL-3.0.txt', recipe / 'LGPL-3.0.txt')]:
         shutil.copyfile(original, output / name)
-    manifest = {'version': VERSION, 'profile': 'ASan/UBSan diagnostic developer alpha',
+    manifest = {'version': VERSION, 'profile': 'ASan/UBSan diagnostic native foundation',
                 'platform': 'Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15',
                 'archive_sha256': report['build']['archive_sha256'],
                 'compiler': report['build']['compiler'], 'packages': report['build']['packages'],
@@ -72,14 +73,14 @@ def build(output, evidence, source, recipe):
                 'python_sources': {p.relative_to(package).as_posix(): sha(p) for p in sorted((package / 'spell').rglob('*.py'))},
                 'inputs': {p.relative_to(recipe).as_posix(): sha(p) for p in sorted(recipe.rglob('*'))
                            if p.is_file() and '__pycache__' not in p.parts},
-                'release_v02_complete': False}
+                'release_scope': 'Original native foundation; full language conformance remains separate'}
     (runtime / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     (output / 'pyproject.toml').write_text('''[build-system]
 requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "openbexi-spell-source"
-version = "0.2.0a2"
+version = "0.2.0"
 description = "Original-source SPELL native diagnostic runtime for isolated CPython 3.13.15"
 requires-python = "==3.13.15"
 license = "GPL-3.0-or-later AND LGPL-3.0-or-later"

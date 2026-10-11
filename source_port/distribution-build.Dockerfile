@@ -16,12 +16,18 @@ COPY source_port/executor_build.py source_port/qualify_executor.py source_port/p
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
 RUN python /executor/executor_build.py
 
-COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp /context/
+# Used only to capture read-only stacks from an explicitly test-owned process
+# after a failed lifecycle assertion. It is not part of the runtime wheel.
+RUN apt-get update && apt-get install -y --no-install-recommends gdb
+
+COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
 COPY source_port/context-build.Dockerfile source_port/context-build.Dockerfile.dockerignore /context/
-RUN python /context/context_build.py
+ARG CONTEXT_QUALIFICATION=all
+RUN OPENBEXI_CONTEXT_TEST_FILTER=${CONTEXT_QUALIFICATION} python /context/context_build.py
 
 COPY source_port /recipe/source_port
 COPY docs/reference/SPELL2.6.10-src.zip /recipe/docs/reference/SPELL2.6.10-src.zip
+RUN c++ -std=c++17 -g -pthread -fsanitize=address,undefined -I/source/include -I/usr/local/include/python3.13 /recipe/source_port/installed_peer.cpp -L/out -lspell_executor313 -Wl,-rpath,'$ORIGIN' -L/usr/local/lib -lpython3.13 -o /out/installed_peer
 RUN python /recipe/source_port/package_native.py --output /package-a
 RUN python /recipe/source_port/package_native.py --output /package-b
 RUN python -m pip download --require-hashes --only-binary=:all: --dest /wheelhouse -r /recipe/source_port/distribution/runtime.lock
@@ -31,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libasan8 libubs
 COPY --from=native /package-a/wheels /distribution
 COPY --from=native /wheelhouse /wheelhouse
 COPY source_port/qualify_package.py /qualification-input/qualify_package.py
+COPY --from=native /out/installed_peer /qualification-input/installed_peer
 RUN python -I /qualification-input/qualify_package.py
 
 FROM scratch AS evidence

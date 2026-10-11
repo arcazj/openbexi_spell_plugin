@@ -1,6 +1,6 @@
 # Installed original-source native runtime
 
-The diagnostic developer alpha `openbexi-spell-source 0.2.0a2` packages the original
+The qualified v0.2 foundation `openbexi-spell-source 0.2.0` packages the original
 Python/RPC framework, the shared native executor/DTA library and five native
 programs. It is qualified on Linux x86_64, Debian 13, GIL-enabled CPython 3.13.15.
 It is an ASan/UBSan build and is separate from the bounded v0.1 plugin alias.
@@ -17,9 +17,9 @@ explicit imports such as `from spell.runtime import ARGS, IVARS` and
 [NATIVE_PACKAGE_QUALIFICATION.json](NATIVE_PACKAGE_QUALIFICATION.json) binds the
 wheel to every recipe/source input, native binary and preceding qualification.
 The original 143 library units, standalone/recovery gates, ownership probes and
-18 context/server/service lifecycle runs all pass with the environment-selection
+25 context/server/service lifecycle runs all pass with the environment-selection
 change. A fresh Docker build stage containing no source or native build tree then
-installs the wheel and dependencies into a new virtual environment. Five checks
+installs the wheel and dependencies into a new virtual environment. Seven checks
 verify:
 
 - The installed executor uses that environment and original framework, reads
@@ -29,12 +29,23 @@ verify:
   sanitizer-dependent native code.
 - Example initialization preserves an existing directory and its contents.
 - Installed native files and the corresponding source archive match their hashes.
+- The installed listener starts its context, runs a visible Python 3 procedure
+  through the original IPC controller, obtains its native result and closes both
+  procedure and context normally.
+- The installed service command rejects unsupported checkpoint recovery explicitly
+  and preserves the requested checkpoint file.
 
 The package is then removed; both console commands and the `spell` namespace are
 absent, while plain Python still runs. Two package builds in different output
-directories produced identical 50,286,791-byte wheels:
+directories produced identical 50,499,428-byte wheels:
 
-`bc81d12e8a15c005287832982d8e0c6d2e9d3b335521e9a35a5c8e3a9b446f3a`.
+`2998b1a105b8e7c7b8a8bdd05e3a63a5725e8ae13922a1abd2f0103a960acf23`.
+
+Acceptance evidence is `.qualification/v0.2/native-package-05`; its native build
+reuses the complete Build 52 gate. The initializer supplies both original
+executor names so Python 3 procedure metadata cannot append `_v3` twice. The
+disposable installed test records link targets after uninstall and removes those
+test links before exporting evidence, avoiding Windows symlink privileges.
 
 This proves reproducible packaging of one qualified native build. Independent
 native rebuild reproducibility and production platform/toolchain qualification
@@ -76,8 +87,15 @@ These are foundation commands; host UI integration follows in v0.3.
 
 ## Release boundary
 
-This alpha does not close v0.2. Service reconnect/checkpoint semantics and the
-remaining native acceptance review stay open. The operational DSS driver,
-JetBrains/OpenBEXI host plugins, full inventory conformance, production packaging
-and supported-platform matrix remain later release gates. Leak sanitizer is
-still disabled; no Windows or macOS native compatibility is claimed here.
+The acceptance recorder marks `v02_foundation_qualified: true` for this artifact.
+This closes the original-source native foundation on the platform above. Native
+service checkpoint resumption is explicitly unsupported; cold restart, live
+reconnection and ordinary procedure ON_LINE/ON_STEP recovery are qualified.
+
+The operational DSS driver, JetBrains/OpenBEXI host plugins, full inventory
+conformance, production packaging and broader supported-platform matrix remain
+later release gates. The report's full-release and independent-native-rebuild
+flags remain false for those later requirements. Leak sanitizer is disabled;
+no Windows or macOS native compatibility is claimed here. The bounded
+`openbexi-spell-plugin 0.1.0` adapter remains a separate testing baseline until
+host integration replaces it; it must not share an environment with this wheel.

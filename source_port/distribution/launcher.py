@@ -45,16 +45,20 @@ def init_example(destination):
     target = Path(destination).absolute()
     # Fail before writing if anything already exists at the chosen destination.
     target.mkdir(parents=True, exist_ok=False)
-    for directory in ('config/spell', 'config/server', 'config/contexts',
+    for directory in ('bin', 'config/spell', 'config/server', 'config/contexts',
                       'data/Procedures', 'data/UserLib', 'data/Runtime',
                       'data/SpacecraftDB', 'data/GroundDB', 'data/OutputFiles/AsRun',
                       'data/OutputFiles/Warmstart', 'logs'):
         (target / directory).mkdir(parents=True, exist_ok=True)
     example = ROOT / 'example'
+    # The original context appends _v3 for Python 3 procedure metadata. Both
+    # local names intentionally select this package's sole CPython 3 runtime.
+    for name in ('SPELL-Executor', 'SPELL-Executor_v3'):
+        (target / 'bin' / name).symlink_to(ROOT / 'bin/SPELL-Executor_v3')
     shutil.copytree(example / 'drivers', target / 'drivers')
     shutil.copyfile(example / 'language.xml', target / 'config/spell/language.xml')
     server = ET.parse(example / 'server.xml')
-    server.find("./context/property[@name='ExecutorProgram']").text = str(ROOT / 'bin/SPELL-Executor_v3')
+    server.find("./context/property[@name='ExecutorProgram']").text = str(target / 'bin/SPELL-Executor')
     ET.SubElement(server.getroot().find('context'), 'property', name='ServiceProgram').text = str(ROOT / 'bin/SPELL-Service_v3')
     server.write(target / 'config/server/server.xml', encoding='utf-8')
     context = ET.parse(example / 'context.xml')

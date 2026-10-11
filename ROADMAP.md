@@ -24,7 +24,8 @@ or invented substitute counts as supported native containers. Qualify imports,
 context/EXEC/CIF injection, service setup/cleanup, memory/error paths and original
 behaviour against independent tests. Keep the v0.1 bounded alias separate.
 
-This phase remains in progress. The qualified native foundation now includes:
+This phase is complete on Linux x86_64 / Debian 13 / GIL-enabled CPython 3.13.15.
+The qualified native foundation includes:
 
 - All 143 original native library units; the 120-unit standalone executor and
   23 command checks, including fresh-process crash recovery with native data.
@@ -36,9 +37,10 @@ This phase remains in progress. The qualified native foundation now includes:
   Live procedure/service reconnection also preserves and resumes the original
   child after context failure. The current context suite passes 25 lifecycle runs,
   including three live reconnect repetitions for each process kind.
-- The separate Linux x86_64 / CPython 3.13.15 diagnostic package 0.2.0a2, with five
-  fresh-image installation checks and clean removal. Two package builds from one
-  qualified native build are identical; independent native rebuild reproducibility
+- The separate diagnostic package 0.2.0, with seven fresh-image installation
+  checks, actual installed listener/context/executor operation and clean removal.
+  Two package builds from one qualified native build are identical;
+  independent native rebuild reproducibility
   remains a distribution requirement.
 
 See [execution status](docs/EXECUTION_TO_V06.md),
@@ -47,12 +49,13 @@ See [execution status](docs/EXECUTION_TO_V06.md),
 [context ownership](docs/CONTEXT_OWNERSHIP.md) for exact evidence and scope.
 Historical milestone reports retain their own source snapshots.
 
-An updated installable artifact and final native acceptance still gate v0.2.
+The installed artifact and native foundation acceptance are recorded in
+[native package qualification](docs/NATIVE_PACKAGE_QUALIFICATION.json).
 [Native service checkpoint requests](docs/SERVICE_RECOVERY_SEMANTICS.md) are now
 explicitly rejected before startup; original cold restart, live reconnection and
 ordinary procedure checkpoint recovery are independently qualified.
-See [live reconnection](docs/LIVE_RECONNECT.md) for the
-latest runtime evidence. The example driver remains a local template fixture; operational
+See [live reconnection](docs/LIVE_RECONNECT.md) for the latest runtime evidence.
+The example driver remains a local template fixture; operational
 DSS driver qualification follows in v0.4 and full inventory conformance in v0.5.
 
 ## v0.3 — real IDE host plugins
@@ -96,6 +99,6 @@ Proposed v0.7 covers security/capacity and operational recovery/backup acceptanc
 v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.
 These later releases remain outside the current execution target of v0.6.
 
-The active sequence is v0.2, v0.3, v0.4, v0.5 and v0.6. Update documentation and
+The remaining sequence is v0.3, v0.4, v0.5 and v0.6. Update documentation and
 commit each tested phase in order. A partial milestone may be committed, but
 its parent release remains open until every release gate has passed.
