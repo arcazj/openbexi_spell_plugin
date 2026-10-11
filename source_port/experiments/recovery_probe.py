@@ -78,6 +78,19 @@ class Feasibility(unittest.TestCase):
         with self.assertRaises(TypeError):
             probe.from_state(None)
 
+    def test_function_positional_keyword_variadic_and_default_arguments(self):
+        source = 'def run(a, /, b=2, *rest, scale=3, **options):\n total=(a+b+sum(rest)+options["extra"])*scale\n return total\nresult=run(1,4,5,6,scale=2,extra=7)\n'
+        snapshot = self.snapshot(source, 2, function=True)
+        self.assertEqual(probe.resume(snapshot)[0], 46)
+
+    def test_shared_closure_cell_survives_resumption(self):
+        source = 'def outer():\n value=9\n def run():\n  nonlocal value\n  value+=1\n  return value\n return run()\nresult=outer()\n'
+        program = compile(source, 'closure.py', 'exec')
+        outer = next(c for c in program.co_consts if isinstance(c, types.CodeType))
+        inner = next(c for c in outer.co_consts if isinstance(c, types.CodeType))
+        snapshot = probe.capture(program, inner, {}, 5)
+        self.assertEqual(probe.resume(snapshot)[0], 10)
+
 
 result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Feasibility))
 Path('/out/recovery-probe.json').write_text(json.dumps({

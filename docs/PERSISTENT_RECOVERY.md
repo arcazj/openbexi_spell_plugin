@@ -1,5 +1,9 @@
 # Persistent single-frame recovery experiment
 
+The later [caller recovery experiment](CALLER_RECOVERY.md) adds eleven checks for
+logical caller continuation, arguments, shared closure cells and propagated
+exceptions. The report below remains the historical single-frame milestone.
+
 The original `SPELLwsStorage` now participates in a separate-process recovery
 experiment. A live frame is captured at a line trace, serialized through the
 actual patched native storage class, and committed with file fsync, atomic

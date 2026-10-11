@@ -1,0 +1,201 @@
+{
+  "status": "logical caller persistence experiment; v0.2 remains open",
+  "full_spell_warm_start_qualified": false,
+  "build": {
+    "python": "3.13.14 (main, Jun 24 2026, 02:06:49) [GCC 14.2.0]",
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-shared",
+      "-fPIC",
+      "-g",
+      "-O1",
+      "-fsanitize=address,undefined",
+      "-fno-sanitize-recover=all",
+      "-fno-omit-frame-pointer",
+      "-Wl,--no-undefined",
+      "-I/usr/local/include/python3.13",
+      "/experiment/recovery_probe.cpp",
+      "-L/usr/local/lib",
+      "-lpython3.13",
+      "-o",
+      "/out/_recovery_probe.cpython-313-x86_64-linux-gnu.so"
+    ],
+    "experiment_only": true,
+    "inputs": {
+      "persistent_worker.py": "938377c3b82b0f84e046439294976c360e63a679e6683fb3aaa8459c456b1e45",
+      "persistent-requirements.txt": "9bd25a4d46fade1310d8a1b38c2ed4fa1b0b04e126a1318d5b14d216551e495d",
+      "chain_probe.py": "2cdf37f288cb0f658a98c32bc22bf8ef89fef2a983a7e31b14eeccdf306d5686",
+      "persistent_probe.py": "4b712627738edd0b5cfe7e874640906c1acd9a8495f142c66bde6428dab9ebf0",
+      "persistent-probe.Dockerfile": "819219edeb4227f23533d005122c1ddcf4410b4f28b59ec57eafd103a2ea360f",
+      "record_probe.py": "64fda25f547100c6b7184eeb72694573e7f893d9cf26ed97b2e526aa1c128cba",
+      "recovery-probe.Dockerfile": "5264b3e59ceea3b893b3423895d693f5de2885678560de120b90acd99796cc72",
+      "persistent-probe.Dockerfile.dockerignore": "0e14bd49a8583254b7cc04522414caeb9a22463e88ea217f57b2791c382f77c0",
+      "recovery_probe.py": "1ee21b4ea85f8c5f06b1196f1a5f0058b7932c9cf879b013766dd7823c870984",
+      "record_persistent.py": "9e8336b8843fa545b84ff3babbd8de13a6ff761962e01c37383e5b117dd634bb",
+      "build_probe.py": "b026211ef2d3c6c8eaf437552871e147488f09c18a8cbe105bb7e0254b19cd0e",
+      "recovery-probe.Dockerfile.dockerignore": "cc8d85bbba9a7da5e311b1f4653c7b0cd6672535c18231e0b9252a209687a688",
+      "persistent_codec.py": "f1f04bed7914512d1ecaf788eaa08473dccf79e74eaea8ae46247cc963ef2929",
+      "recovery_probe.cpp": "af1c70fc82eb983f2302ffb42762984fc89a4f97c851a96a4938d05e94f56e62"
+    },
+    "build_exit_code": 0,
+    "runtime_exit_code": 0,
+    "persistent_runtime_exit_code": 0,
+    "chain_runtime_exit_code": 0
+  },
+  "native_build_input_hashes": {
+    "native/SPELLanalysis313.H": "d501c2c4ee9583b7b255c4c7045042692c575f694007ceff1ba5c83e5ab51450",
+    "native/SPELLpython313.H": "bd0013c11c2fa0dae8bd791f69016011dda8d0eaa7b988873bbf156324bd293d",
+    "native/analysis_support.py": "02c032b45e8958a3e884feabcd4d00db0b0c0e27bdf47a508954a29b82b73ddf",
+    "native/analyze_bytecode.cpp": "afdc94e2ace8da4097202da51d17389f667d71feeae5f12d7c67d61252d2f190",
+    "native/analyze_goto.cpp": "b07fb6eca3219abdef9225db7277474c5e1b03adadea293da62bdbcc26606f4d",
+    "native/analyze_lines.cpp": "77b94db448852d32987f79689fe3d68af0e0629fdb9c2b1956635d9b2fdebc14",
+    "native/analyze_source.cpp": "ac249f8d221c5344bf5052a81f45e8affd990afd6c40abaaa43c794cdf321313",
+    "native/dump_state.cpp": "beef3ed4b2c674942059a9a9f3483fb034dd1a4e342e2b624f985f78231d2a1a",
+    "native/error_conversion.cpp": "a38a8b9cc265ba0a53d0fc08d5a0b8cb5b16719fc643dfe1986b973a24e7f79f",
+    "native/helper_compile.cpp": "40cdb71f30e38a437f68ad0eabea10525df47cf8feeb41741962cf42fc8112e0",
+    "native/helper_lifecycle.cpp": "556130dd5bfbf538ca94ba399b040459c33b110b5ce5503661512494f0016f82",
+    "native/qualify_analysis.cpp": "8a68890853382d80c5bd86b5928cd4af82805f3784718cfbd2927d03b6ceeb08",
+    "native/qualify_analysis.py": "1b9ce8c7e5d314cd982bbc95c4dd108806ed54d1cd3ea2c4b222f81fce915791",
+    "native/qualify_embed.cpp": "5c33143fb0d688c9d9df613ffdb0e2de1cd091f288bf64076214fa77389b0901",
+    "native/qualify_storage.cpp": "8f4e9ae54e1011d91d3b9f4728ca28f31e6a61e67722316003724628dceba1e1",
+    "native/qualify_storage.py": "4019563a758d53c84313efb20a0e3e455d031d43fb15769e9809e8bc1d6a972e",
+    "native/qualify_util.cpp": "759a0ea9ede3ad713e8459bf1daa2e17e558053959033da592af703c5dc3327d",
+    "native/qualify_util.py": "4ef140eb71b89af49385e444553b127532da0b8dabe3f8715f3051e50cf95709",
+    "native/variable_monitor.cpp": "6fa133df389de0ce79eaecf2ab3a788e743756187535c9f5d8dc427486abb823",
+    "native/ws_storage.cpp": "be50f4f14389077891d467e01b09edafb861b4f7c0250a2a1a95e15e604f08ed",
+    "native-build.Dockerfile": "a4e3845deec168ea6539f36bffd12f1fe9bacecae5dde70d8e909ee6f68f7af1",
+    "native-build.Dockerfile.dockerignore": "0d689c512e852649e729d167ab0a2edfb92d814b68119af95e59633efd132dd5",
+    "native_build.py": "e33e4c64b4ada61087e9b654b84a0820fada3cf95ca8d977ba87df338711d2bb",
+    "native_manifest.py": "6babaae871e213a11b63660e18b3a5a2b7e9959b4b54c1ca6bc62cbf2ea11ab9",
+    "native_patches.py": "18b9b42fdf3d744e298ab3fd744fa3eff4f68889cf1d52d129f56006981d0103"
+  },
+  "runtime": {
+    "persistent": {
+      "experiment_only": true,
+      "full_spell_warm_start_qualified": false,
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "real_spell_ws_storage": true,
+      "sigkill_then_fresh_process": true,
+      "single_frame_only": true,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false
+    },
+    "memory": {
+      "experiment_only": true,
+      "full_spell_warm_start_qualified": false,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "persistent_serialization": false,
+      "nested_call_chain": false,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false
+    },
+    "callers": {
+      "experiment_only": true,
+      "full_spell_warm_start_qualified": false,
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "logical_caller_continuation": true,
+      "physical_python_caller_chain_restored": false,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false
+    },
+    "util": {
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false,
+      "reference_lifetime_tests": true,
+      "full_spell_executor_qualified": false
+    },
+    "analysis": {
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false,
+      "full_spell_executor_qualified": false
+    },
+    "storage": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "address_sanitizer": true,
+      "undefined_behavior_sanitizer": true,
+      "leak_sanitizer": false,
+      "full_spell_warm_start_qualified": false
+    }
+  },
+  "artifacts": {
+    "build.json": {
+      "bytes": 2024,
+      "sha256": "3f07389779a268f690002eded9b09de2a6f0b4ae9fbdc1e3a542bcface74ca89"
+    },
+    "persistent-runtime.log": {
+      "bytes": 2016,
+      "sha256": "cd11f0a6b5528344594ce1452eabcb3b7bf6d6e0337faa1d4acb92646851f977"
+    },
+    "persistent-probe.json": {
+      "bytes": 331,
+      "sha256": "046fd4204b533ff7e44bf8eacf2137cf39d4952d9101beb66f8d55472936cd0b"
+    },
+    "runtime.log": {
+      "bytes": 1289,
+      "sha256": "5451a88c14b54c7082af5a90d31bd246f772296e7b0a07c432860cd2d4dae48f"
+    },
+    "recovery-probe.json": {
+      "bytes": 298,
+      "sha256": "3b3dbe1e2dffbb826a1994a29097473c07319379a940f40ab9b8102bed8d3351"
+    },
+    "native-build.json": {
+      "bytes": 42501,
+      "sha256": "53a1c15afec2d48c92db30236df530c49fc396bea5ad923cf279753fc6880ed6"
+    },
+    "native-patches.json": {
+      "bytes": 4405,
+      "sha256": "ff23c4cf83498766ea1461186963367ecee72bf9eb2aa930691f5a7df4649a19"
+    },
+    "_recovery_probe.cpython-313-x86_64-linux-gnu.so": {
+      "bytes": 655488,
+      "sha256": "b260e78088fc25a4f6eafd83aeec55d437d58ae21de6fb2e535d63427d11d7d1"
+    },
+    "chain-runtime.log": {
+      "bytes": 1596,
+      "sha256": "7066d6069e4690a127497bfc258c2605fd7cfdadca08826e6fb2534fb66f6a0b"
+    },
+    "chain-probe.json": {
+      "bytes": 320,
+      "sha256": "a2275b34b5526ae3873bfef66a7ee9112602dbe07a2d936a4f63843ffc22be22"
+    }
+  },
+  "unqualified": [
+    "physical caller-frame chain reconstruction",
+    "C-call boundaries",
+    "generators/coroutines",
+    "arbitrary custom objects and external resource reconnection",
+    "original executor and WS lifecycle integration",
+    "DSS exactly-once effects",
+    "external module dependency identity",
+    "Windows",
+    "other CPython builds",
+    "historical tracebacks"
+  ],
+  "serialization": "application-owned short-lived checkpoints; exact interpreter/source/backend/codec identity; cloudpickle 3.1.2 hash-pinned"
+}

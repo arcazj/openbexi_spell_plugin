@@ -58,6 +58,11 @@ single-frame continuations after SIGKILL in a fresh process, including shared
 globals and exception context. Nested callers, original executor integration and
 DSS effect recovery remain open; this does not close the v0.2 gate.
 
+The [caller recovery experiment](CALLER_RECOVERY.md) adds eleven fresh-process checks
+for logical nested continuation, arguments, closures and exception propagation.
+It rejects native C-call boundaries and does not reconstruct physical caller
+frames. Original executor/WS integration and DSS effect recovery remain open.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

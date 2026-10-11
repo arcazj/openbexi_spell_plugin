@@ -35,5 +35,10 @@ if result.returncode == 0:
                                 capture_output=True,text=True,timeout=120)
         (out/'persistent-runtime.log').write_text(result.stdout+result.stderr)
         report['persistent_runtime_exit_code'] = result.returncode
+        if (inputs/'chain_probe.py').exists():
+            result = subprocess.run([sys.executable,'-I',str(inputs/'chain_probe.py')],env=env,
+                                    capture_output=True,text=True,timeout=120)
+            (out/'chain-runtime.log').write_text(result.stdout+result.stderr)
+            report['chain_runtime_exit_code'] = result.returncode
 (out/'build.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({k:v for k,v in report.items() if k.endswith('exit_code')}))
