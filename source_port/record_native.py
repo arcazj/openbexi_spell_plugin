@@ -9,6 +9,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence', required=True, type=Path)
     parser.add_argument('--analysis', action='store_true', help='Require the original EXC analyzer runtime checks too')
+    parser.add_argument('--goto', action='store_true', help='Also require static Step/Goto analysis and trace-jump checks')
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     evidence = args.evidence.resolve()
@@ -41,17 +42,21 @@ def main():
                 'reproducible production native packaging','Windows native qualification'],
         'source_alpha_evidence':'source-v0.2.0a1 remains the separate historical Python/RPC wheel milestone',
     }
-    if args.analysis:
+    if args.analysis or args.goto:
         analysis = json.loads((evidence/'analysis-runtime.json').read_text())
         if (build.get('analysis_link_exit_code') != 0 or build.get('analysis_runtime_exit_code') != 0
-                or len(build.get('analysis_units', [])) < 3
+                or len(build.get('analysis_units', [])) < (4 if args.goto else 3)
                 or any(u['exit_code'] for u in build['analysis_units'])
-                or analysis['tests'] < 15 or any(analysis[k] for k in ('failures','errors','skips'))):
+                or analysis['tests'] < (26 if args.goto else 15) or any(analysis[k] for k in ('failures','errors','skips'))):
             raise ValueError('Original EXC analyzer qualification failed')
         report['milestone'] = 'CPython 3.13 original EXC multiline and line-table analyzers'
         report['analysis_runtime'] = analysis
         report['qualification_scope'] += '; original SPELLastAnalyzer and SPELLlnotab linked and behavior-tested'
-    destination = root/('docs/NATIVE_ANALYSIS_QUALIFICATION.json' if args.analysis else 'docs/NATIVE_UTIL_QUALIFICATION.json')
+    if args.goto:
+        report['milestone'] = 'CPython 3.13 original EXC static Step/Goto analysis and C trace jumps'
+        report['qualification_scope'] += '; original SPELLgoto static literal analysis, not full native Step/Goto binding integration'
+    name = 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'tests':runtime['tests'], 'embedding_cycles':3,
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),

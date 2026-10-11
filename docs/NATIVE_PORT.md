@@ -15,7 +15,7 @@ The compiler uses Py_CompileStringExFlags. Frame reads use public accessors, and
 line jumps use CPython's f_lineno setter, including its restrictions on trace
 events and invalid exception-block jumps. The test exercises both a Python trace
 and an actual C trace callback. This does not yet qualify SPELL Step/Goto's
-label/bytecode analysis or recovery of suspended execution stacks.
+full executor integration or recovery of suspended execution stacks.
 
 Python exceptions are normalized, translated using the original error codes,
 and released with their tracebacks. Every monitor exit balances GIL ownership.
@@ -51,16 +51,27 @@ classification. Artificial line zero is not an executable source line, and an
 empty line table returns -1 instead of dereferencing an empty list. These fixes
 are deliberate corrections to the legacy analyzer, not additional SPELL syntax.
 
+The static Step/Goto analyzer now uses `dis.get_instructions`, resolving modern
+CALL instructions, LOAD_GLOBAL operands, inline caches and extended arguments.
+Eleven more tests cover literal labels in module/function scopes, INIT, multiline
+calls, Unicode, missing targets, duplicate-target compatibility and reference
+ownership. Forward/backward C trace jumps use the original analyzer's target map;
+CPython rejects entering an exception handler. The Step callable in these three
+trace fixtures only records calls: native Step/Goto bindings and full executor
+integration remain unqualified. Dynamic arguments and aliases are not invented
+as static labels. A missing static target returns -1 instead of dereferencing an
+invalid map iterator. Runtime resolution still belongs to the original executor.
+
 The remaining native syntax probe is:
 
 | Component | Compile | Fail | Qualification |
 | --- | ---: | ---: | --- |
 | UTIL | 8 | 0 | Linked; the behavior scope above is tested |
 | DTA | 5 | 0 | Syntax only; no container runtime acceptance yet |
-| EXC | 22 | 9 | Two analyzer classes linked/tested; other units syntax only |
+| EXC | 23 | 8 | Three analyzer classes linked/tested; other units syntax only |
 | WS | 12 | 7 | Syntax only |
 
-The total is 47 of 63 units compiling, versus 26 in the unchanged-source probe.
+The total is 48 of 63 units compiling, versus 26 in the unchanged-source probe.
 Failures still include old bytecode assumptions,
 opaque frame fields, Python 2 class/instance representations and PyTryBlock.
 The native build reports those failures rather than substituting fake structures.
@@ -68,15 +79,16 @@ The native build reports those failures rather than substituting fake structures
 Build and export into a new evidence directory:
 
 ```powershell
-docker build --progress=plain -f source_port/native-build.Dockerfile --output type=local,dest=.qualification/v0.2/native-analysis-01 .
-python source_port/record_native.py --evidence .qualification/v0.2/native-analysis-01 --analysis
+docker build --progress=plain -f source_port/native-build.Dockerfile --output type=local,dest=.qualification/v0.2/native-goto-01 .
+python source_port/record_native.py --evidence .qualification/v0.2/native-goto-01 --goto
 ```
 
 The Docker build exports diagnostics even after a native compile/test failure;
 its exit status alone is not acceptance. `record_native.py` requires successful
 UTIL compile/link/runtime/embedding results and binds every copied build input
-to the checked-in source. The `--analysis` gate also requires analyzer compile,
-link and behavior checks. See the [analyzer evidence](NATIVE_ANALYSIS_QUALIFICATION.json)
+to the checked-in source. The `--goto` gate also requires all 26 analyzer checks.
+See the [Step/Goto analysis evidence](NATIVE_GOTO_QUALIFICATION.json),
+the earlier [source/line analyzer evidence](NATIVE_ANALYSIS_QUALIFICATION.json)
 and the earlier [UTIL evidence](NATIVE_UTIL_QUALIFICATION.json).
 The base image is digest-pinned; Debian tool packages are recorded but are not
 yet a reproducible production toolchain. The normal DSS container startup issue
@@ -86,4 +98,4 @@ API references: [frame objects](https://docs.python.org/3.13/c-api/frame.html),
 [compilation](https://docs.python.org/3.13/c-api/veryhigh.html) and
 [interpreter ownership](https://docs.python.org/3.13/c-api/init.html),
 [tokenization](https://docs.python.org/3.13/library/tokenize.html) and
-[line tables](https://docs.python.org/3.13/library/dis.html#dis.findlinestarts).
+[disassembly and line tables](https://docs.python.org/3.13/library/dis.html).

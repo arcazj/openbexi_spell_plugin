@@ -23,7 +23,9 @@ and undefined-behavior sanitizers. Sixteen behavior tests and three owned
 interpreter cycles pass. DTA compiles, while its runtime and EXC/WS integration
 remain the next v0.2 gates; no later release has been promoted. The original
 multiline and line-table analyzers now pass 15 additional runtime checks, bringing
-the native syntax probe to 47 of 63 passing units. Bytecode control and warm-start
+the native syntax probe to 47 of 63 passing units. Static Step/Goto analysis adds
+11 passing checks (26 analyzer tests total), including C trace jumps, and brings
+the syntax probe to 48 of 63. Full native bindings, bytecode control and warm-start
 still require substantive compatibility work.
 
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.

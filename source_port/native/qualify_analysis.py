@@ -160,6 +160,82 @@ class NativeAnalysis(unittest.TestCase):
             native.process(analyzer, str(self.file))
             self.assertEqual(native.classify(analyzer, 2)[:3], (0, 0, 1))
 
+    def goto(self, source):
+        return native.goto_info(compile(source, 'goto.py', 'exec'), len(source.splitlines()))
+
+    def test_goto_static_labels_init_and_forward_target(self):
+        result = self.goto("Step('INIT', 'start')\nGoto('END')\nStep('END', 'done')\n")
+        self.assertEqual(result['labels'], {'INIT': 1, 'END': 3})
+        self.assertEqual(result['rows'], [(1, 1, 1, -1), (2, 0, 0, 3), (3, 1, 0, -1)])
+        self.assertEqual(result['missing'], '')
+        self.assertTrue(result['init'])
+
+    def test_goto_multiline_and_unicode(self):
+        result = self.goto("Step(\n '通信',\n 'description'\n)\nGoto(\n '通信'\n)\n")
+        self.assertEqual(result['labels'], {'通信': 1})
+        self.assertEqual(result['rows'][4][3], 1)
+        self.assertFalse(result['init'])
+
+    def test_goto_unknown_target_is_safe(self):
+        result = self.goto("Goto('MISSING')\nStep('FOUND', 'here')\n")
+        self.assertEqual(result['missing'], 'MISSING')
+        self.assertEqual(result['rows'][0][3], -1)
+
+    def test_goto_function_scope_load_global(self):
+        code = compile("def child():\n Step('INNER', 'inside')\n Goto('INNER')\nStep('OUTER', 'outside')\n", 'scopes.py', 'exec')
+        self.assertEqual(native.goto_info(code, 4)['labels'], {'OUTER': 4})
+        child = next(c for c in code.co_consts if isinstance(c, types.CodeType))
+        result = native.goto_info(child, 4)
+        self.assertEqual(result['labels'], {'INNER': 2})
+        self.assertEqual(result['rows'][2][3], 2)
+
+    def test_goto_extended_operands_and_inline_caches(self):
+        prefix = '\n'.join(f'name_{n} = {n}' for n in range(350)) + '\n'
+        result = self.goto(prefix + "Step('LATE', 'late')\nGoto('LATE')\n")
+        self.assertEqual(result['labels'], {'LATE': 351})
+        self.assertEqual(result['rows'][351][3], 351)
+
+    def test_goto_does_not_fabricate_dynamic_or_unrelated_labels(self):
+        result = self.goto("Step('VALID', 'ok')\nStep(value, 'not an id')\nStep('prefix' + value, 'not literal')\nStep(None, 'not an id')\nStep('one argument')\nStep\nother('STALE', 'not a label')\nGoto(target)\n")
+        self.assertEqual(result['labels'], {'VALID': 1})
+        self.assertEqual(result['missing'], '')
+
+    def test_goto_keeps_legacy_first_duplicate_target(self):
+        result = self.goto("Step('SAME', 'first')\nStep('SAME', 'second')\nGoto('SAME')\n")
+        self.assertEqual(result['labels'], {'SAME': 1})
+        self.assertEqual(result['rows'][2][3], 1)
+
+    def test_goto_reference_ownership(self):
+        code = compile("Step('A', 'a')\nGoto('A')\n", 'ownership.py', 'exec')
+        native.goto_info(code, 2)
+        before = sys.getrefcount(code)
+        for _ in range(2000): native.goto_info(code, 2)
+        gc.collect()
+        self.assertEqual(sys.getrefcount(code), before)
+
+    def test_goto_analysis_drives_actual_forward_c_trace_jump(self):
+        # Step is a recording fixture, not the unreleased native Step binding.
+        stages, events = [], []
+        namespace = {'Step': lambda *args: stages.append(args), 'events': events}
+        code = compile("Step('INIT','start')\nevents.append('before')\nGoto('END')\nevents.append('skipped')\nStep('END','done')\nevents.append('after')\n", 'forward.py', 'exec')
+        self.assertEqual(native.goto_trace(code, namespace), 1)
+        self.assertEqual(events, ['before', 'after'])
+        self.assertEqual(stages, [('INIT', 'start'), ('END', 'done')])
+
+    def test_goto_analysis_drives_actual_backward_c_trace_jump(self):
+        stages = []
+        namespace = {'Step': lambda *args: stages.append(args)}
+        code = compile("count = 0\nStep('AGAIN','loop')\ncount += 1\nif count < 3:\n Goto('AGAIN')\nresult = count\n", 'backward.py', 'exec')
+        self.assertEqual(native.goto_trace(code, namespace), 2)
+        self.assertEqual(namespace['result'], 3)
+        self.assertEqual(stages, [('AGAIN', 'loop')] * 3)
+
+    def test_goto_c_trace_rejects_illegal_handler_entry(self):
+        code = compile("Goto('HANDLER')\ntry:\n 1 / 0\nexcept ZeroDivisionError:\n Step('HANDLER','forbidden entry')\n", 'forbidden.py', 'exec')
+        with self.assertRaisesRegex(RuntimeError, 'except'):
+            native.goto_trace(code, {})
+        self.assertIsNone(sys.gettrace())
+
 
 result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(NativeAnalysis))
 report = {'tests':result.testsRun, 'failures':len(result.failures), 'errors':len(result.errors),

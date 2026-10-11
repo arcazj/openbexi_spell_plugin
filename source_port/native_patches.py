@@ -3,6 +3,7 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLgoto.C': '6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f',
     'lib/SPELL_EXC/src/SPELLastAnalyzer.C': '5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af',
     'include/SPELL_EXC/SPELLastAnalyzer.H': '7ad2a805f8b499b3438c8b2c848b5cc36129388bd0027bc7c9e749f417dba1f1',
     'lib/SPELL_EXC/src/SPELLlnotab.C': '5c7598a5444bde5cde810a8335081f8b683579e874e6958ab678999c8e17c5f3',
@@ -35,7 +36,13 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLastAnalyzer.H'):
+    if name.endswith('SPELLgoto.C'):
+        text = section(text, '#include "opcode.h"', '// CONSTRUCTOR    : SPELLgoto::SPELLgoto',
+                       '#include "SPELL_UTIL/SPELLpython313.H"\n#include "SPELL_UTIL/SPELLpythonHelper.H"\n\n//=============================================================================')
+        text = section(text, 'void SPELLgoto::analyze()', 'std::string SPELLgoto::validateGotos()',
+                       body('analyze_goto.cpp') + '\n//=============================================================================\n')
+        text = text.replace('return (*lit).second;', 'return lit == m_labels.end() ? -1 : static_cast<int>(lit->second);')
+    elif name.endswith('SPELLastAnalyzer.H'):
         text = text.replace('void findNodeLines( struct _node* node, unsigned int depth, unsigned int& parDepth, NodeInfo& info );',
                             '// Tokenization replaces the removed private parser node API.')
         text = text.replace('NodeInfo m_currentNode;', 'NodeInfo m_currentNode{};')
