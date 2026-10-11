@@ -44,6 +44,12 @@ rejected jumps, paused variable editing, prompts, abort cleanup and cancellation
 of a missing executor's reconnect worker. Remaining CIF/service/error-path gates
 stay open.
 
+The [service restart milestone](docs/SERVICE_RESTART.md) passes Python-failure and
+process-loss injection through the original watchdog. Both require a new verified
+native executable, reaped previous child, worker result and normal context
+shutdown. All 15 lifecycle runs pass; this is cold restart, not service checkpoint
+resumption or live-service reconnection.
+
 ## v0.3 â€” real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with

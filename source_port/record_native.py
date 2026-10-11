@@ -27,7 +27,10 @@ def main():
     parser.add_argument('--service-bindings', action='store_true', help='Require native service registration and owned worker lifecycle')
     parser.add_argument('--service', action='store_true', help='Require actual context-launched service and controlled shutdown')
     parser.add_argument('--controller', action='store_true', help='Require original server controller and CIF scenarios')
+    parser.add_argument('--service-restart', action='store_true', help='Require native watchdog restart after Python failure and process loss')
     args = parser.parse_args()
+    if args.service_restart:
+        args.controller=True
     if args.controller:
         args.service=True
     if args.service:
@@ -350,7 +353,7 @@ def main():
         scenarios={'native_controls','native_pause','native_abort','native_prompt','native_failure'}
         if context.get('controller_peer_build_exit_code')!=0 or set(behavior.get('controller_scenarios',[]))!=scenarios:
             raise ValueError('Original server controller scenarios incomplete')
-        if behavior['tests']<5 or behavior.get('lifecycle_runs')!=13 or not behavior.get('missing_reconnect_cancelled'):
+        if behavior['tests']<5 or behavior.get('lifecycle_runs',0)<13 or not behavior.get('missing_reconnect_cancelled'):
             raise ValueError('Controller lifecycle evidence incomplete')
         for scenario in scenarios:
             log=(evidence/(scenario+'-0-peer.log')).read_text()
@@ -369,7 +372,33 @@ def main():
         report['milestone']='Original server breakpoint, Step/Skip/Goto, variables, Pause/Resume, Abort, prompt and error lifecycle'
         report['qualification_scope'] += '; five actual server controller scenarios over original IPC with checked program output, paused progress and Python cleanup'
         report['gaps'][0]='Child/scheduler/shared-data CIF scenarios, service failure/restart/recovery and remaining native ownership/error-path checks'
-    name = 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.service_restart:
+        scenarios={'failure','crash'}
+        if context.get('service_recovery_peer_build_exit_code')!=0 or set(behavior.get('service_restart_scenarios',[]))!=scenarios:
+            raise ValueError('Native service restart scenarios incomplete')
+        if behavior['tests']<6 or behavior.get('lifecycle_runs')!=15:
+            raise ValueError('Service restart lifecycle evidence incomplete')
+        for scenario in scenarios:
+            prefix='service-'+scenario
+            log=(evidence/(prefix+'-0-peer.log')).read_text()
+            if 'SERVICE_RESTART_VERIFIED '+scenario not in log or 'CONTEXT_CLOSED' not in log:
+                raise ValueError('Service restart scenario did not complete: '+scenario)
+            started=[int(v) for v in (evidence/(prefix+'-starts.txt')).read_text().splitlines()]
+            closed=[int(v) for v in (evidence/(prefix+'-closed.txt')).read_text().splitlines()]
+            if len(started)!=2 or len(set(started))!=2 or min(started)<=1:
+                raise ValueError('Service did not run in two distinct native processes')
+            if closed!=(started if scenario=='failure' else started[1:]):
+                raise ValueError('Service cleanup evidence differs: '+scenario)
+        report['service_restart_runtime']={'scenarios':sorted(scenarios),'tests':2,
+            'original_context_watchdog':True,'actual_native_executable_verified':True,
+            'python_failure_finally':True,'process_loss_restart':True,'previous_child_reaped':True,
+            'restarted_worker_result':42,'normal_context_shutdown':True,
+            'restart_kind':'Original cold service restart; no checkpoint-resume claim',
+            'full_service_qualified':False}
+        report['milestone']='Original service watchdog recovery from Python failure and process loss'
+        report['qualification_scope'] += '; two native service failure/process-loss cases require a new verified executable, reaped old child, worker result and normal shutdown'
+        report['gaps'][0]='Child/scheduler/shared-data CIF scenarios, service reconnect/checkpoint semantics and remaining native ownership/error-path checks'
+    name = 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

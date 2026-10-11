@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from controller_fixtures import write_procedures
+from service_recovery_fixtures import write_service
 
 output=Path('/out')
 config=output/'executor-config/server/server.xml'
@@ -78,9 +79,9 @@ class NativeService:
 """)
 
 class ContextTests(unittest.TestCase):
-    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False):
+    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None):
         log_before=set(logs.glob('*.log'))
-        label=('missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
+        label=('service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
         # Each scenario owns a fresh registry. Preserve failed-case evidence,
         # but do not reconnect a killed child from another isolated test.
         runtime=output/'executor-data/Runtime'
@@ -91,9 +92,14 @@ class ContextTests(unittest.TestCase):
             # Port zero asks the original socket code for an unused port. The
             # nonexistent PID is never signalled by this reconnect-only path.
             (runtime/'ctx_example_executors.dat').write_text('native_server#999,2000-01-01_000000,none,0,99999999\n')
-        if service:
+        if service or service_recovery:
+            service_path=services
+            if service_recovery:
+                service_path=output/('NativeServices-'+service_recovery)
+                service_path.mkdir(exist_ok=True)
+                write_service(service_path,service_recovery)
             ctx=ET.fromstring(context_original)
-            ET.SubElement(ctx,'servicepath').text=str(services)
+            ET.SubElement(ctx,'servicepath').text=str(service_path)
             context_config.write_bytes(ET.tostring(ctx))
         with (output/(label+'-listener.log')).open('wb') as log:
             process=subprocess.Popen([str(output/'SPELL-Listener'),'-c',str(config)],
@@ -102,7 +108,7 @@ class ContextTests(unittest.TestCase):
                 # The listener opens both sockets before starting its context.
                 time.sleep(.5)
                 try:
-                    result=subprocess.run([str(output/'context_peer'),'19980']+([controller] if controller else ['--service'] if service else ['--server'] if server else []),env=environment,
+                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=environment,
                         capture_output=True,text=True,timeout=50)
                 except subprocess.TimeoutExpired as error:
                     (output/(label+'-peer.log')).write_bytes((error.stdout or b'')+(error.stderr or b''))
@@ -118,6 +124,16 @@ class ContextTests(unittest.TestCase):
                     if controller=='native_failure': self.assertEqual((output/(controller+'-closed.txt')).read_text(),'unwound')
                     if controller in ('native_pause','native_abort'):
                         self.assertGreaterEqual(int((output/(controller+'-closed.txt')).read_text()),0)
+                if service_recovery:
+                    self.assertIn('SERVICE_RESTART_VERIFIED '+service_recovery,result.stdout)
+                    prefix=output/('service-'+service_recovery)
+                    started=[int(v) for v in Path(str(prefix)+'-starts.txt').read_text().splitlines()]
+                    closed=[int(v) for v in Path(str(prefix)+'-closed.txt').read_text().splitlines()]
+                    self.assertEqual(len(started),2)
+                    self.assertEqual(len(set(started)),2)
+                    self.assertEqual(closed,started if service_recovery=='failure' else started[1:])
+                    for pid in started:
+                        with self.assertRaises(ProcessLookupError): os.kill(pid,0)
                 if service:
                     self.assertIn('NATIVE_SERVICE_RUNNING',result.stdout)
                     self.assertIn('SERVICE_EXECUTABLE_VERIFIED',result.stdout)
@@ -146,6 +162,10 @@ class ContextTests(unittest.TestCase):
         self.assertFalse('killing instead' in native_logs,'Context required a forced kill; see native logs')
         self.assertIn('Context process finished: CTX_example',native_logs)
         self.assertIn('Closed context',native_logs)
+        if service_recovery:
+            self.assertIn('[***] End main loop',native_logs)
+            if service_recovery=='failure':
+                self.assertIn('intentional service failure',native_logs)
         if missing_reconnect:
             self.assertIn('Reconnecting executor native_server#999',native_logs)
         if controller:
@@ -157,6 +177,10 @@ class ContextTests(unittest.TestCase):
             self.assertIn('[***] End main loop',native_logs)
             self.assertIn('Executor process finished: native_server#1',native_logs)
 
+
+    def test_service_watchdog_restarts_failed_native_process(self):
+        for scenario in ('failure','crash'):
+            with self.subTest(scenario=scenario): self.run_context(service_recovery=scenario)
 
     def test_context_close_cancels_missing_executor_reconnect(self):
         self.run_context(missing_reconnect=True)
@@ -178,6 +202,6 @@ class ContextTests(unittest.TestCase):
 
 
 result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests))
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':13,'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':15,'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

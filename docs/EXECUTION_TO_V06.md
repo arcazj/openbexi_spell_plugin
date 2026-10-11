@@ -67,9 +67,15 @@ scenarios and missing-executor reconnect cancellation. Its 13 lifecycle runs
 qualify breakpoints, variable inspection/editing, Step/Skip/Goto, rejected Goto,
 pause/resume, abort cleanup, prompt response and retained Python errors.
 
+The [service restart milestone](SERVICE_RESTART.md) passes Python-failure and
+process-loss injection through the original watchdog. Both require a new verified
+native executable, reaped previous child, worker result and normal context
+shutdown. All 15 lifecycle runs pass; this is cold restart, not service checkpoint
+resumption or live-service reconnection.
+
 ## Immediate work
 
-Qualify child/scheduler/shared-data CIF behavior, service failure/restart/recovery,
+Qualify child/scheduler/shared-data CIF behavior, service reconnect/checkpoint semantics,
 and the remaining ownership/error paths. Then
 complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational

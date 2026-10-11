@@ -85,9 +85,10 @@ the same checks pass on 3.13.15. The native build and exact-version continuation
 engine now pin 3.13.15. All preceding component, standalone and crash-recovery
 checks pass again. See [trace-unwind evidence](TRACE_UNWIND.md).
 
-Broader controller/CIF tests, service failure/restart/recovery and remaining
-native ownership/error-path checks still gate v0.2. This successful service
-lifecycle does not establish full service conformance.
+Later [controller](CONTROLLER_RUNTIME.md) and [service restart](SERVICE_RESTART.md)
+milestones add original IPC controls and watchdog recovery from Python failure
+and process loss. Child/scheduler/shared-data CIF, service reconnect/checkpoint
+semantics and remaining ownership/error-path checks still gate v0.2.
 
 ## Reproduce
 

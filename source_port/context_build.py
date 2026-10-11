@@ -113,12 +113,17 @@ if all(entry.get('link_exit_code')==0 for entry in report['programs'].values()):
         capture_output=True,text=True,timeout=60)
     (output/'controller-peer-build.log').write_text(result.stdout+result.stderr)
     report['controller_peer_build_exit_code']=result.returncode
+    result=subprocess.run(flags+['/context/service_recovery_peer.cpp','-L/out','-lspell_executor313',
+        '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/service_recovery_peer'],
+        capture_output=True,text=True,timeout=60)
+    (output/'service-recovery-peer-build.log').write_text(result.stdout+result.stderr)
+    report['service_recovery_peer_build_exit_code']=result.returncode
     result=subprocess.run(flags+['/context/context_peer.cpp','-L/out','-lspell_executor313',
         '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/context_peer'],
         capture_output=True,text=True,timeout=60)
     (output/'context-peer-build.log').write_text(result.stdout+result.stderr)
     report['peer_build_exit_code']=result.returncode
-    if result.returncode==0 and report['server_peer_build_exit_code']==0 and report['controller_peer_build_exit_code']==0:
+    if result.returncode==0 and report['server_peer_build_exit_code']==0 and report['controller_peer_build_exit_code']==0 and report['service_recovery_peer_build_exit_code']==0:
         result=subprocess.run([sys.executable,'-I','/context/qualify_context.py'],
             capture_output=True,text=True,timeout=360)
         (output/'context-qualification.log').write_text(result.stdout+result.stderr)

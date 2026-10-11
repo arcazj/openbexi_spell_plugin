@@ -68,6 +68,8 @@ int main(int argc,char** argv) {
             std::string command;
             if (mode=="--service" || mode=="--server")
                 command="/out/server_peer "+std::to_string(contextPort)+(mode=="--service" ? " native_service --service" : " native_server");
+            else if (mode=="--service-failure" || mode=="--service-crash")
+                command="/out/service_recovery_peer "+std::to_string(contextPort)+" "+mode.substr(10);
             else if (controls.count(mode)) command="/out/controller_peer "+std::to_string(contextPort)+" "+mode;
             else throw std::runtime_error("Unknown context qualification scenario");
             if (std::system(command.c_str())!=0) throw std::runtime_error("Server executor peer failed");
