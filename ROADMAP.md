@@ -1,6 +1,6 @@
 # openbexi_spell_plugin roadmap
 
-## v0.1 â€” independent plugin and DSS testing baseline
+## v0.1 — independent plugin and DSS testing baseline
 
 Retain the bounded SDK/TIME/common policy and existing DSS engine/packets/
 transactional command journal. Package independently; add a loopback deterministic
@@ -10,10 +10,11 @@ current docs replace the old monolith's release series, without inheriting its
 acceptance claims.
 
 This bounded v0.1 phase is complete on Windows x64 / CPython 3.13. Docker image
-building is verified; container startup remains unqualified on this host. See
+building and the later [in-container command workflow](docs/DSS_CONTAINER_RUNTIME.md)
+are verified; host-published container access remains unqualified. See
 [qualification](docs/QUALIFICATION.md) and its source/package manifest.
 
-## v0.2 â€” original-source library foundation
+## v0.2 — original-source library foundation
 
 Reproducibly build/install from the supplied 2.6.10 archive; record source hashes,
 original notices and small traceable patches. Generate original RPC stubs. Reuse
@@ -23,50 +24,32 @@ or invented substitute counts as supported native containers. Qualify imports,
 context/EXEC/CIF injection, service setup/cleanup, memory/error paths and original
 behaviour against independent tests. Keep the v0.1 bounded alias separate.
 
-The source/RPC alpha `0.2.0a1` preserves 94 source modules and generates the
-original schemas. All 143 native library units now pass compilation checks;
-the original standalone executor links its 120 units and passes 23 command
-checks, including fresh-process crash recovery with native data. See
-[source port status](docs/SOURCE_PORT.md), [executor recovery](docs/EXECUTOR_RECOVERY.md)
-and [native context/server qualification](docs/CONTEXT_SERVER.md). The listener,
-context and one real server procedure now start, run and exit normally through
-original IPC; process/socket regressions also pass. Broader native controller/CIF behavior,
-service failure/restart/recovery and ownership/error-path checks still gate v0.2.
-The [service milestone](docs/SERVICE_RUNTIME.md) now qualifies the actual service
-executable, native runtime data, worker result, Close, Python `finally` and normal
-child exit. Its nine binding checks and all preceding native/recovery checks pass
-on the newly pinned CPython 3.13.15; the earlier 3.13.14 build skipped trace-triggered
-cleanup in an independent CPython probe.
+This phase remains in progress. The qualified native foundation now includes:
 
-The [controller milestone](docs/CONTROLLER_RUNTIME.md) now passes five original
-server scenarios and 13 context lifecycle runs, including Step/Skip/Goto,
-rejected jumps, paused variable editing, prompts, abort cleanup and cancellation
-of a missing executor's reconnect worker. Remaining CIF/service/error-path gates
-stay open.
+- All 143 original native library units; the 120-unit standalone executor and
+  23 command checks, including fresh-process crash recovery with native data.
+- Original listener/context/server/service operation, controller commands,
+  child execution, shared data, scheduler waits and watchdog cold restart after
+  Python failure or process loss.
+- Socket/worker/process-listener ownership, concurrent disconnect, pending-service
+  login cancellation, watchdog duplicate prevention and monotonic status waits.
+  The current context suite passes 19 lifecycle runs.
+- The separate Linux x86_64 / CPython 3.13.15 diagnostic package 0.2.0a2, with five
+  fresh-image installation checks and clean removal. Two package builds from one
+  qualified native build are identical; independent native rebuild reproducibility
+  remains a distribution requirement.
 
-The [service restart milestone](docs/SERVICE_RESTART.md) passes Python-failure and
-process-loss injection through the original watchdog. Both require a new verified
-native executable, reaped previous child, worker result and normal context
-shutdown. All 15 lifecycle runs pass; this is cold restart, not service checkpoint
-resumption or live-service reconnection.
+See [execution status](docs/EXECUTION_TO_V06.md),
+[installed native package](docs/NATIVE_PACKAGE.md),
+[executor recovery](docs/EXECUTOR_RECOVERY.md) and
+[context ownership](docs/CONTEXT_OWNERSHIP.md) for exact evidence and scope.
+Historical milestone reports retain their own source snapshots.
 
-The [CIF milestone](docs/CIF_RUNTIME.md) adds real blocking parent/child execution,
-shared-data type/key/deletion checks and timed WaitFor. It fixes a child-launch
-lock cycle and passes all 18 lifecycle runs with the preceding native gates.
+Live context reconnection, service checkpoint semantics and final native acceptance
+still gate v0.2. The example driver remains a local template fixture; operational
+DSS driver qualification follows in v0.4 and full inventory conformance in v0.5.
 
-The [ownership milestone](docs/IPC_OWNERSHIP.md) qualifies failed-socket descriptor
-accounting, atomic worker admission/drain, eight concurrent requests cancelled by
-two disconnect callers and process listener unregistration. All preceding native
-gates and 18 lifecycle runs pass. Native installation, reconnect semantics and
-remaining ownership review still gate v0.2.
-
-The [installed native package](docs/NATIVE_PACKAGE.md), developer alpha 0.2.0a2,
-passes five fresh-image installation checks, removal and all preceding native
-gates. Two packages from the same native build are byte-identical. It includes
-the real native runtime and corresponding sources; service reconnect/recovery
-review and v0.2 acceptance remain open.
-
-## v0.3 â€” real IDE host plugins
+## v0.3 — real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with
 accurate module dependencies, settings/actions/tool window and the shared Python
@@ -74,7 +57,7 @@ library. Verify and exercise install/activate/explicit-import Run/Debug/uninstal
 in real private IntelliJ IDEA and PyCharm sandboxes. Plain Python IDE operation
 survives plugin removal. A Python wheel alone is not JetBrains compatibility.
 
-## v0.4 â€” drivers and operating modes
+## v0.4 — drivers and operating modes
 
 Reuse the original Driver Development Manual and framework lifecycle. Bridge the
 original RPC schema explicitly to the existing binary/Kafka DSS transport; test
@@ -83,7 +66,7 @@ exactly Execution, Monitoring and Development. Move reusable operational server
 components out of the legacy archive only when their dependencies and immutable
 release identities are consciously migrated.
 
-## v0.5 â€” full SPELL conformance
+## v0.5 — full SPELL conformance
 
 Allocate all 763 existing inventory rows; historical 195 ADAPTED / 79 PARTIAL /
 489 GAP classifications are not automatically promoted. Resolve every manual/
@@ -92,7 +75,7 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-## v0.6 â€” distribution and compatibility
+## v0.6 — distribution and compatibility
 
 Qualify reproducible installable artifacts, clean installation/removal, upgrades
 from supported earlier releases, and complete Python/SPELL workflows in
@@ -101,7 +84,7 @@ matrix backed by actual host tests, source/license provenance and user docs.
 Qualify the shipped DSS image at runtime as well as build time. Coordinate the
 neutral IDE's independent release numbers and required shared-service features.
 
-## Later â€” operational qualification and stable release
+## Later — operational qualification and stable release
 
 Proposed v0.7 covers security/capacity and operational recovery/backup acceptance;
 v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.

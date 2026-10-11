@@ -66,13 +66,17 @@ int main(int argc,char** argv) {
             const std::string mode=argv[2];
             const std::set<std::string> controls={"native_controls","native_pause","native_abort","native_prompt","native_failure","native_shared","native_child_parent","native_wait"};
             std::string command;
-            if (mode=="--service" || mode=="--server")
+            if (mode=="--pending-service") {
+                std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+                std::cout<<"PENDING_SERVICE_WATCHDOG_OBSERVED"<<std::endl;
+            }
+            else if (mode=="--service" || mode=="--server")
                 command="/out/server_peer "+std::to_string(contextPort)+(mode=="--service" ? " native_service --service" : " native_server");
             else if (mode=="--service-failure" || mode=="--service-crash")
                 command="/out/service_recovery_peer "+std::to_string(contextPort)+" "+mode.substr(10);
             else if (controls.count(mode)) command="/out/controller_peer "+std::to_string(contextPort)+" "+mode;
             else throw std::runtime_error("Unknown context qualification scenario");
-            if (std::system(command.c_str())!=0) throw std::runtime_error("Server executor peer failed");
+            if (!command.empty() && std::system(command.c_str())!=0) throw std::runtime_error("Server executor peer failed");
         }
         request(ContextMessages::REQ_CLOSE_CTX);
         std::cout << "CONTEXT_CLOSED" << std::endl;

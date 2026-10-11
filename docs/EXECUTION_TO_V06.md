@@ -89,10 +89,14 @@ gates. Two packages from the same native build are byte-identical. It includes
 the real native runtime and corresponding sources; service reconnect/recovery
 review and v0.2 acceptance remain open.
 
+The [context ownership milestone](CONTEXT_OWNERSHIP.md) adds service-specific
+login completion, pending-service ownership/watchdog fencing, monotonic status
+waits and post-disconnect send checks. All preceding native gates and 19 lifecycle
+runs pass. Live context reconnection and service checkpoint semantics remain open.
+
 ## Immediate work
 
-Review service reconnect/checkpoint semantics and complete the remaining native
-ownership/error-path checks. Then
+Qualify live context reconnection, resolve service checkpoint semantics and
 complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.

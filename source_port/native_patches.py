@@ -4,6 +4,9 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_CTX/src/SPELLservice.C': '8edac0867351e1c6354c1ee39bbd329b891a690dd371616ffe3cc69a37912a01',
+    'include/SPELL_CTX/SPELLserviceManager.H': '64cf81cd4c38302faf5fb9313602b8d4c77ded11bf5bca9f5d6b62618a443f98',
+    'include/SPELL_CTX/SPELLservice.H': '0a4163783dd1cf876fb6d044c53de499e6d3aa93cc4d0bd0957b1248d933c258',
     'lib/SPELL_IPC/src/SPELLipcChannel.C': '6129e3bf83729b19d8550d9d4dac761f8fb18f4a7c681e70c8e37005c5bba215',
     'include/SPELL_IPC/SPELLipcChannel.H': '0732dc2720f944d2dfff371e67598122f50f4615c4705866479c45358e8e925b',
     'lib/SPELL_IPC/src/SPELLipcServerInterfaceSingle.C': '79d7f62a6b70982cc8a5e64f1517d082464d1271b1e8851c13538435c42d0284',
@@ -510,10 +513,44 @@ void SPELLprocedureManager::registerScript(const std::string& file)
         text='#include <atomic>\n'+text
         text=text.replace('    void run();', '    void run();\n    void stop() { m_stopping.store(true); }')
         text=text.replace('    SPELLexecutor& m_exec;', '    std::atomic_bool m_stopping{false};\n    SPELLexecutor& m_exec;')
+        for type_,field in [('bool','m_reconnecting'),('bool','m_loggedIn'),('SPELLprocessStatus','m_processStatus')]:
+            text,count=re.subn(r'\b'+type_+r'\s+'+field+r';', 'std::atomic<'+type_+'> '+field+';',text)
+            assert count==1,(name,field)
+        text=text.replace('virtual bool isLoggedIn()', 'virtual void reconnectCompleted(bool success);\n        virtual bool isLoggedIn()')
+        text=text.replace('LoginMonitor( SPELLexecutor& exec )','LoginMonitor( SPELLexecutor& exec, unsigned int timeoutMsec=120000 )')
+        text=text.replace('m_exec( exec )','m_exec( exec ), m_timeoutMsec(timeoutMsec)')
+        text=text.replace('    SPELLexecutor& m_exec;','    SPELLexecutor& m_exec;\n    unsigned int m_timeoutMsec;')
+    elif name == 'include/SPELL_CTX/SPELLservice.H':
+        text=text.replace('void start();','void start();\n        void reconnectCompleted(bool success) override;')
+    elif name == 'lib/SPELL_CTX/src/SPELLservice.C':
+        text += "\nvoid SPELLservice::reconnectCompleted(bool success)\n{\n    if (success) SPELLserviceManager::instance().callback_serviceReconnected(m_model.getInstanceId());\n    else SPELLserviceManager::instance().callback_serviceNotReconnected(m_model.getInstanceId());\n}\n"
+    elif name == 'include/SPELL_CTX/SPELLserviceManager.H':
+        text=text.replace('friend class ServiceLoginMonitor;', 'friend class ServiceLoginMonitor;\n        friend class SPELLservice;')
+        text=text.replace('ServiceMap m_pendingLogin;', 'ServiceMap m_pendingLogin;\n        ServiceMap m_retiredLogin;')
+        text=text.replace('ServiceList getServiceList();', 'ServiceList getServiceList();\n        bool isActiveOrPending(const std::string& serviceId);')
+
     elif name == 'include/SPELL_CTX/SPELLexecutorManager.H':
+        text=text.replace('friend class LoginMonitor;', 'friend class LoginMonitor;\n        friend class SPELLexecutor;')
         text=text.replace('ExecutorMap m_pendingLogin;', 'ExecutorMap m_pendingLogin;\n        ExecutorMap m_retiredLogin;')
     elif name == 'lib/SPELL_CTX/src/SPELLexecutor.C':
-        text=text.replace('    for (;;)', '    while (!m_stopping.load())',1)
+        text='#include <chrono>\n'+text
+        text=section(text,'void LoginMonitor::run()', 'SPELLexecutor::SPELLexecutor( const', '''void LoginMonitor::run()
+{
+    const auto deadline=std::chrono::steady_clock::now()+std::chrono::milliseconds(m_timeoutMsec);
+    while (!m_stopping.load()) {
+        if (m_exec.isLoggedIn()) { m_exec.reconnectCompleted(true); return; }
+        if (std::chrono::steady_clock::now()>=deadline) { m_exec.reconnectCompleted(false); return; }
+        usleep(30000);
+    }
+}
+//=============================================================================
+''')
+        text += "\nvoid SPELLexecutor::reconnectCompleted(bool success)\n{\n    if (success) SPELLexecutorManager::instance().callback_executorReconnected(m_model.getInstanceId());\n    else SPELLexecutorManager::instance().callback_executorNotReconnected(m_model.getInstanceId());\n}\n"
+        text=text.replace('\tm_loggedIn = true;\n\tm_model.setStatus(STATUS_UNINIT);','\tm_model.setStatus(STATUS_UNINIT);')
+        text=text.replace('\tm_executorLoggedInEvent.set();','\tm_loggedIn = true; // publish only after metadata and process attachment\n\tm_executorLoggedInEvent.set();')
+        text=text.replace('void SPELLexecutor::waitFinish()\n{\n\tif', 'void SPELLexecutor::waitFinish()\n{\n    m_processStoppedEvent.clear();\n\tif')
+        text=text.replace('\t\tm_processStoppedEvent.clear();\n','')
+        text=section(text,'bool SPELLexecutor::waitStatus(', 'SPELLexecutorStatus SPELLexecutor::getStatus()', body('context_wait_status.cpp'))
         text=text.replace('\t\t\tm_loginMonitor->join();', '\t\t\tm_loginMonitor->stop();\n            m_loginMonitor->join();\n            delete m_loginMonitor;\n            m_loginMonitor=nullptr;')
     elif name == 'lib/SPELL_CTX/src/SPELLexecutorManager.C':
         text=section(text,'void SPELLexecutorManager::cleanup()', 'void SPELLexecutorManager::startExecutor(','''void SPELLexecutorManager::cleanup()
@@ -534,6 +571,9 @@ void SPELLprocedureManager::registerScript(const std::string& file)
         part=text[start:end].replace('\t\tdelete it->second;', '// The callback runs on this executor\'s own monitor. Retire it\n        // for owner-thread cleanup instead of destroying a running worker.\n        m_retiredLogin.emplace(instanceId,it->second);')
         text=text[:start]+part+text[end:]
     elif name == 'lib/SPELL_CTX/src/SPELLcontext.C':
+        start=text.index('        SPELLserviceManager::ServiceList runningServices =')
+        end=text.index('        SPELLcontext::instance().openService(serviceId);',start)
+        text=text[:start]+"        if (SPELLserviceManager::instance().isActiveOrPending(serviceId)) return;\n"+text[end:]
         text=text.replace('\tSPELLexecutorManager::instance().cleanup();\n\tm_clientIPC.cleanup();\n\tSPELLexecutorManager::instance().killAll();', '\tm_clientIPC.cleanup();\n    SPELLexecutorManager::instance().killAll();\n    SPELLexecutorManager::instance().cleanup();')
         text=text.replace('\tSPELLclientManager::instance().removeAllClients();', '''    { SPELLpython313::GIL gil; SPELLprocedureManager::instance().cleanupServices(); }
     for (const auto& id : SPELLserviceManager::instance().getServiceList())
@@ -719,7 +759,28 @@ bool SPELLprocessManager::isClosingProcess(const std::string& identifier)
         start=text.index('int main(')
         text=text[:start]+text[start:].replace('    return 0;','    return exitCode;')
     elif name == 'lib/SPELL_CTX/src/SPELLserviceManager.C':
-        text=text.replace('\tif (m_persisTable) delete m_persisTable;', '\tif (m_persisTable) delete m_persisTable;\n    m_persisTable=nullptr;')
+        text=section(text,'void SPELLserviceManager::cleanup()', 'void SPELLserviceManager::startService(', '''void SPELLserviceManager::cleanup()
+{
+    ServiceMap pending,retired;
+    { SPELLmonitor lock(m_lock);
+      pending.swap(m_pendingLogin); retired.swap(m_retiredLogin); }
+    for (auto& entry : pending) delete entry.second;
+    for (auto& entry : retired) delete entry.second;
+    delete m_persisTable; m_persisTable=nullptr;
+}
+//=============================================================================
+''')
+        # A pending model has one owner until successful login transfers it.
+        text=text.replace('\t\t\tm_services.insert( std::make_pair( exec->getModel().getInstanceId(), exec ));\n','')
+        start=text.index('void SPELLserviceManager::callback_serviceNotReconnected(')
+        end=text.index('//void SPELLserviceManager::recoverExecutor(',start)
+        part=text[start:end].replace('\t\tdelete it->second;', '        m_retiredLogin.emplace(instanceId,it->second);')
+        text=text[:start]+part+text[end:]
+        text=text.replace('if (m_services.count(id) > 0)', 'if (m_services.count(id) > 0 && m_services[id] != exec)')
+        text += "\nbool SPELLserviceManager::isActiveOrPending(const std::string& id)\n{\n    SPELLmonitor lock(m_lock);\n    if (m_pendingLogin.count(id)) { LOG_INFO(\"Service watchdog retained pending reconnect: \" + id); return true; }\n    auto found=m_services.find(id);\n    return found!=m_services.end() && found->second->isActive();\n}\n"
+        text=text.replace('\tconfig.setContextName(m_contextName);', '    const auto active=m_services.find(config.getInstanceId());\n    if (m_pendingLogin.count(config.getInstanceId()) || (active!=m_services.end() && active->second->isActive())) return;\n\tconfig.setContextName(m_contextName);',1)
+
+
     elif name.endswith('SPELLinterpreter.H'):
         text = text.replace('void mainLoop();','void mainLoop();\n        void shutdown();\n        int exitCode() const { return m_exitCode; }')
         text = text.replace('SPELLcontrollerIF*       m_controller;', 'bool m_controllerStarted=false;\n        SPELLcontrollerIF*       m_controller;')
@@ -1325,6 +1386,8 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
 }
 
 ''')
+        text=text.replace('\t\tmsg.setSequence(m_ipcSequence++);\n\t    m_channel->getWriter().send(msg);',
+            '\t\tif (!m_connected || !m_channel) return;\n\t\tmsg.setSequence(m_ipcSequence++);\n\t    m_channel->getWriter().send(msg);')
         text=section(text,'void SPELLipcClientInterface::cancelOutgoingRequests()',
                      'void SPELLipcClientInterface::cancelIncomingRequests()', '''void SPELLipcClientInterface::cancelOutgoingRequests()
 {

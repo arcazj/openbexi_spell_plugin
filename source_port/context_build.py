@@ -78,6 +78,24 @@ for folder,program in (('context','SPELL_Context'),('listener','SPELL_Listener')
         entry.update(executable=executable.name,sha256=sha(executable))
 
 if all(entry.get('link_exit_code')==0 for entry in report['programs'].values()):
+    # The context's executor model has a distinct native graph from EXC.
+    context_objects=[str(output/row['object']) for row in report['programs']['SPELL_Context']['units']
+                     if row['unit'].startswith('lib/')]
+    result=subprocess.run(flags+['/context/qualify_context_ownership.cpp',*context_objects,
+        '-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-llog4cplus','-lxerces-c','-lz','-lmenu','-lncurses',
+        '-o','/out/qualify_context_ownership'],capture_output=True,text=True,timeout=60)
+    (output/'context-ownership-build.log').write_text(result.stdout+result.stderr)
+    report['context_ownership_build_exit_code']=result.returncode
+    if result.returncode==0:
+        try:
+            result=subprocess.run(['/out/qualify_context_ownership'],capture_output=True,text=True,timeout=10,
+                env=dict(os.environ,ASAN_OPTIONS='detect_leaks=0:abort_on_error=1',
+                    UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1'))
+            (output/'context-ownership-runtime.log').write_text(result.stdout+result.stderr)
+            report['context_ownership_runtime_exit_code']=result.returncode
+        except subprocess.TimeoutExpired as error:
+            (output/'context-ownership-runtime.log').write_bytes((error.stdout or b'')+(error.stderr or b'')+b'\nCONTEXT_OWNERSHIP_TIMEOUT\n')
+            report['context_ownership_runtime_exit_code']=124
     result=subprocess.run(flags+['/context/qualify_service_bindings.cpp','-L/out','-lspell_executor313',
         '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/qualify_service_bindings'],
         capture_output=True,text=True,timeout=60)

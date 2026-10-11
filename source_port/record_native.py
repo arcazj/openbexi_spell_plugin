@@ -30,7 +30,10 @@ def main():
     parser.add_argument('--service-restart', action='store_true', help='Require native watchdog restart after Python failure and process loss')
     parser.add_argument('--cif', action='store_true', help='Require child, shared-data and scheduler CIF behavior')
     parser.add_argument('--ipc-ownership', action='store_true', help='Require socket failure and concurrent IPC shutdown ownership checks')
+    parser.add_argument("--context-ownership", action="store_true", help="Require pending service ownership and login/status lifecycle checks")
     args = parser.parse_args()
+    if args.context_ownership:
+        args.ipc_ownership=True
     if args.ipc_ownership:
         args.cif=True
     if args.cif:
@@ -407,7 +410,7 @@ def main():
         report['gaps'][0]='Child/scheduler/shared-data CIF scenarios, service reconnect/checkpoint semantics and remaining native ownership/error-path checks'
     if args.cif:
         scenarios={'native_shared','native_child_parent','native_wait'}
-        if set(behavior.get('cif_scenarios',[]))!=scenarios or behavior['tests']<7 or behavior.get('lifecycle_runs')!=18:
+        if set(behavior.get('cif_scenarios',[]))!=scenarios or behavior['tests']<7 or behavior.get('lifecycle_runs',0)<18:
             raise ValueError('Child/shared-data/scheduler lifecycle evidence incomplete')
         for scenario in scenarios:
             log=(evidence/(scenario+'-0-peer.log')).read_text()
@@ -439,7 +442,24 @@ def main():
         report['milestone']='Native socket error ownership and concurrent IPC shutdown'
         report['qualification_scope'] += '; failed bind/connect descriptor accounting, owned worker admission/drain and eight concurrent requests cancelled by two disconnect callers'
         report['gaps'][0]='Service reconnect/checkpoint semantics and remaining native ownership/error-path review'
-    name = 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.context_ownership:
+        if behavior['tests']<8 or behavior.get('lifecycle_runs',0)<19 or not behavior.get('pending_service_cancelled'):
+            raise ValueError('Pending service cancellation lifecycle incomplete')
+        if context.get('context_ownership_build_exit_code')!=0 or context.get('context_ownership_runtime_exit_code')!=0:
+            raise ValueError('Context ownership component probe failed')
+        text=(evidence/'context-ownership-runtime.log').read_text()
+        rows=[json.loads(line) for line in text.splitlines() if line.startswith('{')]
+        expected={'status_cases':3,'login_success':True,'login_timeout':True,'login_cancelled':True}
+        if rows!=[expected]: raise ValueError('Context status/login component evidence differs')
+        if 'CLOSED_CLIENT_SENDS_REJECTED' not in (evidence/'ipc-ownership-runtime.log').read_text():
+            raise ValueError('Closed IPC client send behavior unqualified')
+        if 'PENDING_SERVICE_WATCHDOG_OBSERVED' not in (evidence/'pending-service-0-peer.log').read_text():
+            raise ValueError('Pending service watchdog interval was not exercised')
+        report['context_ownership_runtime']=dict(expected,pending_service_cancelled=True,closed_client_sends_rejected=True,pending_service_not_restarted=True)
+        report['milestone']='Context status/login lifecycle and pending service reconnect ownership'
+        report['qualification_scope'] += '; monotonic status deadlines, virtual login completion/timeout/cancellation and context close with one owned pending service'
+        report['gaps'][0]='Live context reconnection and service checkpoint semantics; final native foundation acceptance review'
+    name = 'CONTEXT_OWNERSHIP' if args.context_ownership else 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

@@ -81,9 +81,9 @@ class NativeService:
 """)
 
 class ContextTests(unittest.TestCase):
-    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None):
+    def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None,pending_service_pid=None):
         log_before=set(logs.glob('*.log'))
-        label=('service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
+        label=('pending-service' if pending_service_pid else 'service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
         # Each scenario owns a fresh registry. Preserve failed-case evidence,
         # but do not reconnect a killed child from another isolated test.
         runtime=output/'executor-data/Runtime'
@@ -94,6 +94,24 @@ class ContextTests(unittest.TestCase):
             # Port zero asks the original socket code for an unused port. The
             # nonexistent PID is never signalled by this reconnect-only path.
             (runtime/'ctx_example_executors.dat').write_text('native_server#999,2000-01-01_000000,none,0,99999999\n')
+        if pending_service_pid:
+            # This test owns a live /bin/sleep process, which never logs in.
+            # Context cleanup must cancel the pending model without signalling
+            # that unattached process or deleting the model twice.
+            (runtime/'ctx_example_services.dat').write_text('pending_service,2000-01-01_000000,none,0,'+str(pending_service_pid)+'\n')
+            pending_path=output/'PendingServices'
+            pending_path.mkdir(exist_ok=True)
+            (pending_path/'pending_service.py').write_text("""from spell.utils.spell_service import SpellService
+@SpellService(name='pending_service')
+class PendingService:
+    def __init__(self,name): pass
+    def startService(self):
+        with open('/out/unexpected-pending-service-start.txt','w') as output: output.write('duplicate')
+    def isAlive(self): return False
+""")
+            ctx=ET.fromstring(context_original)
+            ET.SubElement(ctx,'servicepath').text=str(pending_path)
+            context_config.write_bytes(ET.tostring(ctx))
         if service or service_recovery:
             service_path=services
             if service_recovery:
@@ -110,7 +128,7 @@ class ContextTests(unittest.TestCase):
                 # The listener opens both sockets before starting its context.
                 time.sleep(.5)
                 try:
-                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=environment,
+                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--pending-service'] if pending_service_pid else ['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=environment,
                         capture_output=True,text=True,timeout=50)
                 except subprocess.TimeoutExpired as error:
                     (output/(label+'-peer.log')).write_bytes((error.stdout or b'')+(error.stderr or b''))
@@ -174,6 +192,10 @@ class ContextTests(unittest.TestCase):
                 self.assertIn('intentional service failure',native_logs)
         if missing_reconnect:
             self.assertIn('Reconnecting executor native_server#999',native_logs)
+        if pending_service_pid:
+            self.assertIn('Reconnecting service pending_service',native_logs)
+            self.assertIn('Service watchdog retained pending reconnect: pending_service',native_logs)
+            self.assertFalse((output/'unexpected-pending-service-start.txt').exists(),'Watchdog started a duplicate pending service')
         if controller:
             self.assertIn('[***] End main loop',native_logs)
         if service:
@@ -195,6 +217,15 @@ class ContextTests(unittest.TestCase):
     def test_context_close_cancels_missing_executor_reconnect(self):
         self.run_context(missing_reconnect=True)
 
+    def test_context_close_cancels_pending_service_once(self):
+        with subprocess.Popen(['/bin/sleep','60']) as owned:
+            try:
+                self.run_context(pending_service_pid=owned.pid)
+                self.assertIsNone(owned.poll(),'Context signalled an unattached pending service')
+            finally:
+                if owned.poll() is None: owned.terminate()
+                owned.wait(timeout=5)
+
     def test_original_server_controller_scenarios(self):
         for scenario in controller_scenarios:
             with self.subTest(scenario=scenario): self.run_context(controller=scenario)
@@ -212,6 +243,6 @@ class ContextTests(unittest.TestCase):
 
 
 result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests))
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':18,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':19,'pending_service_cancelled':True,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

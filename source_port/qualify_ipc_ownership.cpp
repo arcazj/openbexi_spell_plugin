@@ -81,6 +81,11 @@ void concurrentDisconnect() {
     first.join();second.join();
     for (auto& request:requests) request.join();
     std::cout<<"CLIENT_DISCONNECTED_WITH_PENDING_REQUESTS "<<returned<<std::endl;
+    SPELLipcMessage late("late-after-disconnect");late.setType(MSG_TYPE_ONEWAY);
+    client.sendMessage(late);
+    auto closedResponse=client.sendRequest(late,50);
+    require(closedResponse.isVoid() || closedResponse.getType()==MSG_TYPE_ERROR,"Closed client unexpectedly returned a response");
+    std::cout<<"CLOSED_CLIENT_SENDS_REJECTED"<<std::endl;
     serverListener.release.set();server.disconnect();
     require(admitted,"Did not admit every concurrent IPC request");
     require(returned==8 && failures==0,"Disconnect lost or raised from pending requests");

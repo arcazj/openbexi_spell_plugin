@@ -6,10 +6,11 @@ a deterministic Dynamic Satellite Simulator (DSS) fixture. Procedures import
 SPELL symbols explicitly. The complete source-derived SPELL runtime and actual
 JetBrains host plugins remain roadmap gates.
 
-The isolated original-source alpha foundation is available under
-[source_port](source_port/README.md), with its own GPL/LGPL wheel and
-[qualification](docs/SOURCE_PORT.md). It does not replace this working bounded
-adapter or complete the native SPELL executor port.
+The separate [original-source native runtime](docs/NATIVE_PACKAGE.md) is now
+available as diagnostic developer alpha 0.2.0a2 for Linux x86_64 / CPython 3.13.15.
+Its GPL/LGPL wheel passes fresh-environment installation, native execution,
+imports and removal. Install it in a separate environment from this bounded
+adapter. The v0.2 release remains open for native reconnect/recovery review.
 
 The [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
 controls the original server executor over IPC, verifies its result and checks
@@ -24,7 +25,9 @@ python -m venv .venv
 .venv/Scripts/openbexi-dss.exe --port 8085 --database var/dss.sqlite
 ```
 
-Or start the packaged test fixture with `docker compose up --build -d`.
+The existing Docker image passes the [internal DSS command workflow](docs/DSS_CONTAINER_RUNTIME.md).
+Host port publication remains a release gate; the command above starts the
+qualified host-accessible fixture.
 
 The local fixture uses the existing SQLite-backed engine, satellite catalogue,
 binary TC/TM packets, command journal, epoch/revision checks and staged TCP command
@@ -76,8 +79,8 @@ are never automatically replayed by this adapter. Operational work requires the
 full server's separate migration and acceptance gate. See
 [v0.1 qualification](docs/QUALIFICATION.md) for the tested scope.
 
-The latest [service qualification](docs/SERVICE_RUNTIME.md) runs the original
-service executable, verifies native runtime data and its worker result, then
-closes it with Python cleanup and normal child exit. Native and recovery checks
-pass on pinned CPython 3.13.15. Broader native controls and service failure/recovery
-remain v0.2 gates.
+Native [service startup/shutdown](docs/SERVICE_RUNTIME.md),
+[watchdog restart after failure and process loss](docs/SERVICE_RESTART.md),
+[child/shared-data/scheduler behavior](docs/CIF_RUNTIME.md) and
+[IPC ownership checks](docs/IPC_OWNERSHIP.md) now pass on pinned CPython 3.13.15.
+See the execution status for current acceptance gates and the roadmap through v0.6.
