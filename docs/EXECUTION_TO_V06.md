@@ -36,6 +36,11 @@ The original [WS storage layer](WS_STORAGE.md) now has 17 passing integrity,
 ownership and fresh-process checks. The complete frame graph, atomic checkpoints
 and original executor recovery have not yet passed their release gates.
 
+The [variable-monitor port](VARIABLE_MONITOR.md) adds 17 live-frame checks,
+bringing the analyzer/watch suite to 43 and the syntax probe to 49 of 63 units.
+Ordinary frame inspection and edits use supported CPython APIs. Remaining
+executor/WS work is not replaced by the isolated recovery feasibility experiment.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

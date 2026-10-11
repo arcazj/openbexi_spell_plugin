@@ -3,7 +3,10 @@
 #include "SPELL_EXC/SPELLastAnalyzer.H"
 #include "SPELL_EXC/SPELLlnotab.H"
 #include "SPELL_EXC/SPELLgoto.H"
+#include "SPELL_EXC/SPELLvariableMonitor.H"
 #include "SPELL_UTIL/SPELLpython313.H"
+#include <array>
+#include <memory>
 
 static PyObject* failure(const SPELLcoreException& error) {
     PyErr_SetString(PyExc_RuntimeError, (error.getError() + ": " + error.getReason()).c_str());
@@ -110,6 +113,129 @@ static PyObject* goto_trace(PyObject*, PyObject* args) {
         return PyLong_FromLong(state.count);
     } catch (const SPELLcoreException& error) { return failure(error); }
 }
+struct Watch: SPELLvariableChangeListener {
+    PyObject* frame;
+    std::set<std::string> ignored;
+    std::unique_ptr<SPELLvariableMonitor> monitor;
+    std::vector<std::array<std::vector<SPELLvarInfo>,3>> changes;
+    Watch(PyObject* input, const std::set<std::string>& excluded): frame(Py_NewRef(input)), ignored(excluded) {
+        monitor = std::make_unique<SPELLvariableMonitor>(this, reinterpret_cast<PyFrameObject*>(input), ignored);
+        SPELLvariableMonitor::s_enabled = true;
+    }
+    void close() { monitor.reset(); Py_CLEAR(frame); }
+    ~Watch() { close(); }
+    void variableChanged(const std::vector<SPELLvarInfo>& added, const std::vector<SPELLvarInfo>& changed,
+                         const std::vector<SPELLvarInfo>& deleted) override { changes.push_back({added,changed,deleted}); }
+};
+static Watch* watch(PyObject* capsule) {
+    auto* value = static_cast<Watch*>(PyCapsule_GetPointer(capsule, "SPELL.watch"));
+    if (value && !value->monitor) { PyErr_SetString(PyExc_RuntimeError, "watch is closed"); return nullptr; }
+    return value;
+}
+static void watch_destroy(PyObject* capsule) { delete static_cast<Watch*>(PyCapsule_GetPointer(capsule, "SPELL.watch")); }
+static PyObject* watch_create(PyObject*, PyObject* args) {
+    PyObject *frame, *ignored;
+    if (!PyArg_ParseTuple(args, "OO", &frame, &ignored)) return nullptr;
+    if (!PyFrame_Check(frame)) { PyErr_SetString(PyExc_TypeError, "expected live frame"); return nullptr; }
+    SPELLpython313::Owned sequence(PySequence_Fast(ignored, "expected ignored names"));
+    if (!sequence.get()) return nullptr;
+    std::set<std::string> names;
+    for (Py_ssize_t i = 0; i < PySequence_Fast_GET_SIZE(sequence.get()); ++i) {
+        const char* name = PyUnicode_AsUTF8(PySequence_Fast_GET_ITEM(sequence.get(), i));
+        if (!name) return nullptr;
+        names.insert(name);
+    }
+    std::unique_ptr<Watch> instance(new Watch(frame, names));
+    try { instance->monitor->initialize(); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+    PyObject* capsule = PyCapsule_New(instance.get(), "SPELL.watch", watch_destroy);
+    if (capsule) instance.release();
+    return capsule;
+}
+static PyObject* watch_close(PyObject*, PyObject* capsule) {
+    auto* instance = static_cast<Watch*>(PyCapsule_GetPointer(capsule, "SPELL.watch"));
+    if (!instance) return nullptr;
+    instance->close(); Py_RETURN_NONE;
+}
+static PyObject* info_object(const SPELLvarInfo& info) {
+    return Py_BuildValue("{s:s,s:s,s:s,s:O,s:O,s:O}", "name", info.varName.c_str(), "type", info.varType.c_str(),
+        "value", info.varValue.c_str(), "global", info.isGlobal ? Py_True : Py_False,
+        "added", info.isAdded ? Py_True : Py_False, "deleted", info.isDeleted ? Py_True : Py_False);
+}
+static PyObject* map_object(const SPELLvariableMonitor::VarMap& map) {
+    SPELLpython313::Owned result(PyDict_New());
+    if (!result.get()) return nullptr;
+    for (const auto& entry: map) {
+        SPELLpython313::Owned info(info_object(entry.second));
+        if (!info.get() || PyDict_SetItemString(result.get(), entry.first.c_str(), info.get()) < 0) return nullptr;
+    }
+    return Py_NewRef(result.get());
+}
+static PyObject* watch_state(PyObject*, PyObject* capsule) {
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    try {
+        SPELLpython313::Owned globals(map_object(instance->monitor->getGlobalVariables()));
+        SPELLpython313::Owned locals(map_object(instance->monitor->getLocalVariables()));
+        if (!globals.get() || !locals.get()) return nullptr;
+        return Py_BuildValue("{s:O,s:O}", "globals", globals.get(), "locals", locals.get());
+    } catch (const SPELLcoreException& e) { return failure(e); }
+}
+static PyObject* watch_analyze(PyObject*, PyObject* capsule) {
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    try { instance->monitor->analyze(); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+    Py_RETURN_NONE;
+}
+static PyObject* watch_events(PyObject*, PyObject* capsule) {
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    SPELLpython313::Owned result(PyList_New(0));
+    if (!result.get()) return nullptr;
+    for (const auto& event: instance->changes) {
+        SPELLpython313::Owned row(PyList_New(0));
+        if (!row.get()) return nullptr;
+        for (const auto& values: event) {
+            SPELLpython313::Owned group(PyList_New(0));
+            if (!group.get()) return nullptr;
+            for (const auto& value: values) {
+                SPELLpython313::Owned info(info_object(value));
+                if (!info.get() || PyList_Append(group.get(), info.get()) < 0) return nullptr;
+            }
+            if (PyList_Append(row.get(), group.get()) < 0) return nullptr;
+        }
+        if (PyList_Append(result.get(), row.get()) < 0) return nullptr;
+    }
+    instance->changes.clear();
+    return Py_NewRef(result.get());
+}
+static PyObject* watch_change(PyObject*, PyObject* args) {
+    PyObject* capsule;
+    const char *name, *expression;
+    int global;
+    if (!PyArg_ParseTuple(args, "Ossp", &capsule, &name, &expression, &global)) return nullptr;
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    SPELLvarInfo info(name, "", expression, global);
+    try { instance->monitor->changeVariable(info); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+    return info_object(info);
+}
+static PyObject* watch_get(PyObject*, PyObject* args) {
+    PyObject* capsule; const char* name;
+    if (!PyArg_ParseTuple(args, "Os", &capsule, &name)) return nullptr;
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    SPELLvarInfo info(name, "", "", false);
+    try { instance->monitor->getVariable(info); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+    return info_object(info);
+}
+static PyObject* watch_ref(PyObject*, PyObject* args) {
+    PyObject* capsule; const char* name;
+    if (!PyArg_ParseTuple(args, "Os", &capsule, &name)) return nullptr;
+    auto* instance = watch(capsule); if (!instance) return nullptr;
+    try {
+        PyObject* value = instance->monitor->getVariableRef(name);
+        return Py_NewRef(value ? value : Py_None);
+    } catch (const SPELLcoreException& e) { return failure(e); }
+}
 static PyMethodDef methods[] = {
     {"create", create, METH_NOARGS, nullptr},
     {"process", process, METH_VARARGS, nullptr},
@@ -117,6 +243,10 @@ static PyMethodDef methods[] = {
     {"lines", lines, METH_O, nullptr},
     {"goto_info", goto_info, METH_VARARGS, nullptr},
     {"goto_trace", goto_trace, METH_VARARGS, nullptr},
+    {"watch_create", watch_create, METH_VARARGS, nullptr}, {"watch_close", watch_close, METH_O, nullptr},
+    {"watch_state", watch_state, METH_O, nullptr}, {"watch_analyze", watch_analyze, METH_O, nullptr},
+    {"watch_events", watch_events, METH_O, nullptr}, {"watch_change", watch_change, METH_VARARGS, nullptr},
+    {"watch_get", watch_get, METH_VARARGS, nullptr}, {"watch_ref", watch_ref, METH_VARARGS, nullptr},
     {nullptr, nullptr, 0, nullptr}
 };
 static PyModuleDef module = {PyModuleDef_HEAD_INIT, "_spell_analysis_qualification", nullptr, -1, methods};

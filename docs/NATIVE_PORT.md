@@ -68,10 +68,10 @@ The remaining native syntax probe is:
 | --- | ---: | ---: | --- |
 | UTIL | 8 | 0 | Linked; the behavior scope above is tested |
 | DTA | 5 | 0 | Syntax only; no container runtime acceptance yet |
-| EXC | 23 | 8 | Three analyzer classes linked/tested; other units syntax only |
+| EXC | 24 | 7 | Three analyzers and variable monitor linked/tested; other units syntax only |
 | WS | 12 | 7 | Storage linked/tested; remaining passing units syntax only |
 
-The total is 48 of 63 units compiling, versus 26 in the unchanged-source probe.
+The total is 49 of 63 units compiling, versus 26 in the unchanged-source probe.
 Failures still include old bytecode assumptions,
 opaque frame fields, Python 2 class/instance representations and PyTryBlock.
 The native build reports those failures rather than substituting fake structures.
@@ -80,6 +80,11 @@ The [WS storage milestone](WS_STORAGE.md) additionally links the original
 SPELLwsStorage class and qualifies bounded versioned persistence with 17 checks.
 Its format deliberately rejects old/interpreter-incompatible frames. The seven
 remaining WS compile failures and full executor recovery are still open.
+
+The [live variable monitor](VARIABLE_MONITOR.md) adds 17 checks for public frame
+locals, closure-cell edits, shadowing, notifications and reference ownership.
+Together the native suites now have 16 UTIL, 43 analyzer/watch and 17 storage
+tests, plus three standalone interpreter lifecycle cycles.
 
 Build and export into a new evidence directory:
 

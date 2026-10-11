@@ -11,7 +11,10 @@ def main():
     parser.add_argument('--analysis', action='store_true', help='Require the original EXC analyzer runtime checks too')
     parser.add_argument('--goto', action='store_true', help='Also require static Step/Goto analysis and trace-jump checks')
     parser.add_argument('--storage', action='store_true', help='Require WS storage checks and all preceding native checks')
+    parser.add_argument('--watch', action='store_true', help='Require live variable-monitor checks and all preceding checks')
     args = parser.parse_args()
+    if args.watch:
+        args.storage = True
     if args.storage:
         args.goto = True
     root = Path(__file__).resolve().parent.parent
@@ -68,7 +71,13 @@ def main():
         report['milestone'] = 'CPython 3.13 original WS storage bounds, integrity and reference ownership'
         report['storage_runtime'] = storage
         report['qualification_scope'] += '; original SPELLwsStorage including a fresh-process load/execute check'
-    name = 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.watch:
+        if (report['analysis_runtime']['tests'] < 43
+                or 'lib/SPELL_EXC/src/SPELLvariableMonitor.C' not in {u['unit'] for u in build['analysis_units']}):
+            raise ValueError('Original variable monitor qualification failed')
+        report['milestone'] = 'CPython 3.13 original live variable monitor and previous native milestones'
+        report['qualification_scope'] += '; original SPELLvariableMonitor live locals/cells, edits and notifications'
+    name = 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
