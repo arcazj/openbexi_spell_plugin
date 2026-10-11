@@ -33,6 +33,7 @@ patches = apply_tree(source)
 (output / 'native-patches.json').write_text(json.dumps(patches, indent=2)+'\n')
 manifest = libraries(source)
 units = sorted(source/p for lib in ('SPELL_UTIL', 'SPELL_SYN') for p in manifest[lib]['units'])
+units.append(Path('/input/native/ws_filter.cpp'))
 units.append(Path('/input/native/qualify_util.cpp'))
 flags = ['c++', '-std=c++17', '-fPIC', '-g', '-O1', '-pthread', '-fmax-errors=8',
          '-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-fno-omit-frame-pointer',
@@ -93,7 +94,15 @@ if all(r['exit_code']==0 for r in results):
             if result.returncode == 0:
                 report['embedding'] = json.loads(result.stdout)
 
-        analysis_units = [source/'lib/SPELL_EXC/src'/name for name in ('SPELLastAnalyzer.C','SPELLlnotab.C','SPELLgoto.C','SPELLvariableMonitor.C','SPELLbytecode.C')]
+        analysis_units = [source/'lib/SPELL_EXC/src'/name for name in (
+            'SPELLastAnalyzer.C','SPELLlnotab.C','SPELLgoto.C','SPELLvariableMonitor.C','SPELLbytecode.C',
+            'SPELLframeManager.C','SPELLexecutionModel.C','SPELLresourceMonitor.C','SPELLexecutor.C',
+            'SPELLbreakpoint.C','SPELLbreakpointType.C','SPELLexecutionTrace.C','SPELLexecutorUtils.C',
+            'SPELLexecutorConfiguration.C')]
+        analysis_units.extend(source/'lib/SPELL_CIF/src'/name for name in ('SPELLcif.C','SPELLasRun.C','SPELLnotifications.C'))
+        analysis_units.extend(source/p for p in manifest['SPELL_CFG']['units'])
+        analysis_units.extend(source/p for p in manifest['SPELL_PRD']['units'])
+        analysis_units.extend(source/'lib/SPELL_WRP/src'/name for name in ('SPELLconfigDict.C','SPELLpyValue.C'))
         analysis_units.append(Path('/input/native/qualify_analysis.cpp'))
         with ThreadPoolExecutor(max_workers=4) as pool:
             report['analysis_units'] = list(pool.map(compile_unit, analysis_units))
@@ -102,7 +111,7 @@ if all(r['exit_code']==0 for r in results):
             objects = [r for r in results if r['unit'] != 'qualify_util.cpp'] + report['analysis_units']
             result = subprocess.run(['c++','-shared','-pthread','-fsanitize=address,undefined','-Wl,--no-undefined',
                 *[str(output/r['object']) for r in objects], '-L'+sysconfig.get_config_var('LIBDIR'),
-                '-lpython3.13','-llog4cplus','-lz','-o',str(extension)], capture_output=True,text=True,timeout=120)
+                '-lpython3.13','-llog4cplus','-lxerces-c','-lz','-o',str(extension)], capture_output=True,text=True,timeout=120)
             (output/'analysis-link.log').write_text(result.stdout+result.stderr)
             report['analysis_link_exit_code'] = result.returncode
             if result.returncode == 0:
@@ -110,6 +119,10 @@ if all(r['exit_code']==0 for r in results):
                     capture_output=True,text=True,timeout=120)
                 (output/'analysis-runtime.log').write_text(result.stdout+result.stderr)
                 report['analysis_runtime_exit_code'] = result.returncode
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_manager.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'manager-runtime.log').write_text(result.stdout+result.stderr)
+                report['manager_runtime_exit_code'] = result.returncode
 
         storage_units = [source/'lib/SPELL_WS/src/SPELLwsStorage.C',Path('/input/native/qualify_storage.cpp')]
         with ThreadPoolExecutor(max_workers=4) as pool:

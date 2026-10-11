@@ -15,7 +15,10 @@ def main():
     parser.add_argument('--bytecode', action='store_true', help='Require source-bound bytecode checks and all preceding checks')
     parser.add_argument('--frames', action='store_true', help='Require public frame accessor checks and original v3 library inventory')
     parser.add_argument('--factory', action='store_true', help='Require original frame-factory ownership and WS header isolation checks')
+    parser.add_argument('--manager', action='store_true', help='Require linked original frame-manager component behavior and filter lifecycle')
     args = parser.parse_args()
+    if args.manager:
+        args.factory = True
     if args.factory:
         args.frames = True
     if args.frames:
@@ -114,11 +117,23 @@ def main():
             raise ValueError('Frame factory/header isolation qualification failed')
         report['milestone'] = 'CPython 3.13 original frame-factory ownership and warm-start header isolation'
         report['qualification_scope'] += '; original procedure/function frame creation and release, current __file__ on load'
-    name = 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.manager:
+        manager = json.loads((evidence/'manager-runtime.json').read_text())
+        required = {'lib/SPELL_EXC/src/'+name for name in ('SPELLframeManager.C','SPELLexecutionModel.C','SPELLexecutor.C')}
+        if (build.get('manager_runtime_exit_code') != 0 or manager['tests'] < 12
+                or any(manager[k] for k in ('failures','errors','skips'))
+                or not required.issubset({u['unit'] for u in build['analysis_units']})
+                or 'ws_filter.cpp' not in {u['unit'] for u in build['units']}):
+            raise ValueError('Original frame manager qualification failed')
+        report['manager_runtime'] = manager
+        report['milestone'] = 'CPython 3.13 original frame-manager live edits, ownership and interpreter-local WS filter'
+        report['qualification_scope'] += '; original manager public methods with watch/resource notifications disabled; actual CIF/CFG/PRD dependencies linked; filter tested across interpreter cycles'
+    name = 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
         'storage_tests':report.get('storage_runtime',{}).get('tests',0), 'embedding_cycles':3,
+        'manager_tests':report.get('manager_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

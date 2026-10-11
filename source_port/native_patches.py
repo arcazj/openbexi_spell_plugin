@@ -1,8 +1,10 @@
 """Hash-checked CPython 3.13 native port. SPDX-License-Identifier: GPL-3.0-or-later."""
 import hashlib
+import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLframeManager.C': 'ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402',
     'include/SPELL_WS/SPELLwsWarmStartImpl.H': '70692486c7a89222fa682ee0aee82a19e7d43a97381aedfd5623e1370a12b7cf',
     'lib/SPELL_WS/src/SPELLwsWarmStartImpl.C': 'b0bb02ac4636ae398ed57fcfed3d4ef2cb35b5f19f03c1b8300c2fe5b1e163f6',
     'lib/SPELL_EXC/src/SPELLexecutionModel.C': '45545e623c76fcf2d0817ed761f262a835479e08adeaf0658bb3f956b94c5038',
@@ -45,16 +47,77 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLwsWarmStartImpl.H'):
+    if name.endswith('SPELLframeManager.C'):
+        text = text.replace('#include "SPELL_EXC/SPELLframeManager.H"', '#include "SPELL_EXC/SPELLframeManager.H"\n#include "SPELL_UTIL/SPELLpython313.H"\n#include <memory>\n#include <sys/time.h>')
+        text = section(text, 'SPELLframeManager::~SPELLframeManager()', 'void SPELLframeManager::initialize(', '''SPELLframeManager::~SPELLframeManager()
+{
+    // Destruction must not compile a new procedure. The interpreter owns WS;
+    // models and the initial-frame slot each own their own frame references.
+    for (const auto& item: m_modelMap) delete item.second;
+    m_modelMap.clear();
+    m_modelKeys.clear();
+    m_traceMap.clear();
+    m_model = nullptr;
+    m_currentFrame = nullptr; // borrowed from an initial frame or model
+    Py_XDECREF(m_definitions);
+    Py_XDECREF(m_code);
+    Py_XDECREF(m_initialFrame);
+}
+\n//=============================================================================\n''')
+        text = text.replace('        Py_XDECREF(m_currentFrame);\n', '')
+        text = text.replace('\t\tPy_INCREF(m_currentFrame);\n', '')
+        text = text.replace('SPELLwsWarmStartImpl::setGlobalsFilter( PyDict_Keys(mainDict) );', '''SPELLpython313::Owned filterKeys(PyDict_Keys(mainDict));
+    if (!filterKeys.get()) SPELLpythonHelper::instance().checkError();
+    SPELLwsWarmStartImpl::setGlobalsFilter(filterKeys.get());''')
+        text = section(text, 'void SPELLframeManager::runScript(', 'void SPELLframeManager::callbackEventCall(', body('frame_manager_script.cpp'))
+        text = section(text, 'void SPELLframeManager::copyDatabase(', 'void SPELLframeManager::updateDatabases(', body('frame_manager_database.cpp'))
+        text = section(text, 'void SPELLframeManager::updateDefinitions(', 'void SPELLframeManager::createFrameModel(', body('frame_manager_definitions.cpp'))
+        # Hold every back-frame reference throughout model reconstruction.
+        text = text.replace('PyFrameObject* currentFrame = m_initialFrame;', '''std::vector<std::unique_ptr<SPELLpython313::Owned>> frameOwners;
+        PyFrameObject* currentFrame = reinterpret_cast<PyFrameObject*>(Py_XNewRef(m_initialFrame));''')
+        text = text.replace('frames.push_back(currentFrame);', '''frameOwners.push_back(std::make_unique<SPELLpython313::Owned>(reinterpret_cast<PyObject*>(currentFrame)));
+            frames.push_back(currentFrame);''')
+        text = text.replace('currentFrame = currentFrame->f_back;', 'currentFrame = PyFrame_GetBack(currentFrame);')
+        text = text.replace('PyFrameObject* frame = m_initialFrame;', '''SPELLpython313::Owned frameOwner(Py_XNewRef(m_initialFrame));
+    PyFrameObject* frame = m_initialFrame;''')
+        text = text.replace('frame = frame->f_back;', '''frameOwner.reset(reinterpret_cast<PyObject*>(PyFrame_GetBack(frame)));
+        frame = reinterpret_cast<PyFrameObject*>(frameOwner.get());''')
+        text = text.replace('PyEval_EvalFrame( frame );', 'SPELLpython313::Owned result(PyEval_EvalFrame(frame));')
+        text = re.sub(r'^.*DEBUG\("Frame (?:stack top|value stack).*\n', '', text, flags=re.M)
+        text = text.replace('PYCREPR(frame->f_back)', 'SPELLpython313::text(SPELLpython313::Owned(reinterpret_cast<PyObject*>(PyFrame_GetBack(frame))).get())')
+        text = re.sub(r'PY(?:STR|REPR)\((\w+)->f_code->co_filename\)', r'SPELLpython313::filename(\1)', text)
+        text = re.sub(r'PYSTR\((\w+)->f_code->co_name\)', r'SPELLpython313::codename(\1)', text)
+        text = re.sub(r'\b(\w+)->f_code\b', r'SPELLpython313::FrameCode(\1).get()', text)
+        text = re.sub(r'\b(\w+)->f_lineno\b', r'PyFrame_GetLineNumber(\1)', text)
+        text = re.sub(r'\b(\w+)->f_lasti\b', r'PyFrame_GetLasti(\1)', text)
+        text = re.sub(r'\b(\w+)->f_globals\b', r'SPELLpython313::FrameGlobals(\1).get()', text)
+        text = re.sub(r'^\s*PyFrame_(?:FastToLocals|LocalsToFast)\([^;]+;\n', '\n', text, flags=re.M)
+        text = section(text, 'void SPELLframeManager::filterDictUpdated()', 'const bool SPELLframeManager::setNewLine(', '''void SPELLframeManager::filterDictUpdated()
+{
+    PyObject* definitions = PyDict_Keys(SPELLpythonHelper::instance().getMainDict());
+    if (!definitions) SPELLpythonHelper::instance().checkError();
+    Py_XDECREF(m_definitions);
+    m_definitions = definitions;
+}
+\n//=============================================================================\n''')
+    elif name.endswith('SPELLwsWarmStartImpl.H'):
         text = text.replace('#include "SPELL_WS/SPELLwsFrame.H"', 'class SPELLwsFrame; // Private implementation dependency, not required by callers.')
+        text = text.replace('\t\tstatic PyObject* s_filterKeys;', '// Filter ownership is per interpreter; see ws_filter.cpp.')
     elif name.endswith('SPELLwsWarmStartImpl.C'):
         text = text.replace('#include "SPELL_WS/SPELLwsWarmStartImpl.H"', '#include "SPELL_WS/SPELLwsWarmStartImpl.H"\n#include "SPELL_WS/SPELLwsFrame.H"')
+        text = text.replace('PyObject* SPELLwsWarmStartImpl::s_filterKeys = 0;', '')
+        marker = '//=============================================================================\n// STATIC : SPELLwsWarmStartImpl::setGlobalsFilter()'
+        assert text.count(marker) == 1
+        text = text[:text.index(marker)] + '// Filter methods are compiled from ws_filter.cpp.\n'
     elif name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):
         text = text.replace('// GLOBALS ', '#include "SPELL_UTIL/SPELLpython313.H"\n\n// GLOBALS ', 1)
         text = text.replace('PYSTR(frame->f_code->co_filename)', 'SPELLpython313::filename(frame)')
         text = text.replace('PYSTR(frame->f_code->co_name)', 'SPELLpython313::codename(frame)')
         text = text.replace('frame->f_lineno', 'PyFrame_GetLineNumber(frame)')
         text = text.replace('frame->f_code', 'SPELLpython313::FrameCode(frame).get()')
+        if name.endswith('SPELLexecutionModel.C'):
+            text = text.replace('\tm_modelId = modelId;', '\tPy_INCREF(m_frame);\n\tm_modelId = modelId;')
+            text = text.replace('SPELLexecutionModel::~SPELLexecutionModel()\n{\n}', 'SPELLexecutionModel::~SPELLexecutionModel()\n{\n    Py_XDECREF(m_frame);\n}')
     elif name.endswith('SPELLbytecode.H'):
         text = text.replace('unsigned int end_lineno;', '''unsigned int end_lineno;
             unsigned int body_lineno;

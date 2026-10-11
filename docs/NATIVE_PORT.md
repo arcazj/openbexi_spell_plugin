@@ -119,3 +119,8 @@ API references: [frame objects](https://docs.python.org/3.13/c-api/frame.html),
 [interpreter ownership](https://docs.python.org/3.13/c-api/init.html),
 [tokenization](https://docs.python.org/3.13/library/tokenize.html) and
 [disassembly and line tables](https://docs.python.org/3.13/library/dis.html).
+
+The latest [frame-manager component milestone](FRAME_MANAGER.md) links the
+original manager and dependencies, adds twelve component checks and qualifies
+interpreter-local WS filter ownership. The current full library inventory is
+139/143; the older counts above describe their historical evidence snapshots.

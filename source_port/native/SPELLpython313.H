@@ -18,6 +18,16 @@ public:
     Owned(const Owned&) = delete;
     Owned& operator=(const Owned&) = delete;
     PyObject* get() const { return object; }
+    void reset(PyObject* value) { PyObject* old = object; object = value; Py_XDECREF(old); }
+};
+
+class FrameGlobals: public Owned {
+public:
+    explicit FrameGlobals(PyFrameObject* frame): Owned(PyFrame_GetGlobals(frame)) {}
+};
+class FrameLocals: public Owned {
+public:
+    explicit FrameLocals(PyFrameObject* frame): Owned(PyFrame_GetLocals(frame)) {}
 };
 
 class GIL {

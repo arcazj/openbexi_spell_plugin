@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "SPELL_UTIL/SPELLpythonHelper.H"
 #include "SPELL_UTIL/SPELLpython313.H"
+#include "SPELL_WS/SPELLwsWarmStartImpl.H"
 #include <iostream>
 #include <thread>
 
@@ -18,6 +19,11 @@ int main() {
         if (!rejected || !Py_IsInitialized()) return 11;
         {
             SPELLpython313::GIL gil;
+            SPELLpython313::Owned filterKey(PyUnicode_FromString("previous_interpreter"));
+            if (SPELLwsWarmStartImpl::shouldFilter(filterKey.get(), Py_None)) return 16;
+            SPELLpython313::Owned filterKeys(PyTuple_Pack(1, filterKey.get()));
+            SPELLwsWarmStartImpl::setGlobalsFilter(filterKeys.get());
+            if (!SPELLwsWarmStartImpl::shouldFilter(filterKey.get(), Py_None)) return 17;
             SPELLpython313::Owned globals(PyDict_New());
             PyDict_SetItemString(globals.get(), "__builtins__", PyEval_GetBuiltins());
             SPELLpython313::Owned code(reinterpret_cast<PyObject*>(helper.compileScript("answer=6*7\n")));

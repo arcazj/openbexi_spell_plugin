@@ -266,7 +266,12 @@ static PyObject* bytecode_info(PyObject*, PyObject* args) {
                             "last_line", analyzer.getLastLine());
     } catch (const SPELLcoreException& e) { return failure(e); }
 }
+#include "qualify_manager.inc"
 static PyMethodDef methods[] = {
+    {"manager_create", manager_create, METH_O, nullptr}, {"manager_close", manager_close, METH_O, nullptr},
+    {"manager_script", manager_script, METH_VARARGS, nullptr}, {"manager_event", manager_event, METH_VARARGS, nullptr},
+    {"manager_copy", manager_copy, METH_VARARGS, nullptr}, {"manager_definitions", manager_definitions, METH_O, nullptr},
+    {"ws_filter_set", ws_filter_set, METH_O, nullptr}, {"ws_filter_test", ws_filter_test, METH_VARARGS, nullptr},
     {"create", create, METH_NOARGS, nullptr},
     {"process", process, METH_VARARGS, nullptr},
     {"classify", classify, METH_VARARGS, nullptr},

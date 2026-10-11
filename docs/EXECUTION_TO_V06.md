@@ -69,6 +69,11 @@ is 138/143 after isolating private WS headers. The remaining five source failure
 are the frame manager and four WS implementation units.
 
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
+The [frame-manager component port](FRAME_MANAGER.md) adds twelve runtime checks
+for live script edits, frame ownership, database sharing and WS filter lifecycle.
+The original library inventory is now 139/143; four WS implementations remain.
+Full evaluation/recovery, DTA and context integration still gate v0.2.
+
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only
 demonstrably obsolete project resources and preserves active test services.
