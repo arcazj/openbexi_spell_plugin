@@ -47,10 +47,30 @@ exactly Execution, Monitoring and Development. Move reusable operational server
 components out of the legacy archive only when their dependencies and immutable
 release identities are consciously migrated.
 
-## Later — full conformance and operational acceptance
+## v0.5 — full SPELL conformance
 
 Allocate all 763 existing inventory rows; historical 195 ADAPTED / 79 PARTIAL /
 489 GAP classifications are not automatically promoted. Resolve every manual/
 source version conflict, native Step/Goto/warm-start and full service family gate.
-Complete security, capacity, platform, backup/upgrade and actual host acceptance.
-Update documentation and commit every tested bounded phase.
+Require independent positive, boundary, failure and recovery evidence for every
+supported contract. Unsupported requirements stay open and prevent full release
+acceptance; import checks and generated stubs do not establish conformance.
+
+## v0.6 — distribution and compatibility
+
+Qualify reproducible installable artifacts, clean installation/removal, upgrades
+from supported earlier releases, and complete Python/SPELL workflows in
+openbexi_ide, IntelliJ IDEA and PyCharm. Publish an explicit supported platform
+matrix backed by actual host tests, source/license provenance and user docs.
+Qualify the shipped DSS image at runtime as well as build time. Coordinate the
+neutral IDE's independent release numbers and required shared-service features.
+
+## Later — operational qualification and stable release
+
+Proposed v0.7 covers security/capacity and operational recovery/backup acceptance;
+v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.
+These later releases remain outside the current execution target of v0.6.
+
+The active sequence is v0.2, v0.3, v0.4, v0.5 and v0.6. Update documentation and
+commit each tested phase in order. A partial milestone may be committed, but
+its parent release remains open until every release gate has passed.
