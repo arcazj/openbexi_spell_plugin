@@ -102,3 +102,9 @@ The [native DTA checkpoint milestone](DTA_CHECKPOINTS.md) adds twelve serializat
 cases and three integrated procedure crash recoveries with shared native data.
 The actual executor/CIF bindings, dispatch and context lifecycle are next;
 v0.2 remains in progress and v0.3–v0.6 remain pending.
+
+The [original standalone executor](EXECUTOR_COMMAND.md) now links its 120 source
+units and passes 17 command checks with its real dispatcher and automatic CIF.
+Explicit imports, native data, Step/Goto, prompt validation, error exit codes,
+live output and owned shutdown are covered. Actual executor warm recovery and
+context/service integration still gate v0.2; later releases remain pending.

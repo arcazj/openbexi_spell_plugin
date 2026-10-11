@@ -4,6 +4,22 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_SYN/SPELLtimer.H': '152943d761837f7312aa38064f7db9ddbc99ec6e5d392bc44ea58bcd84aff23d',
+    'lib/SPELL_CIF/src/SPELLcifHelper.C': '7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24',
+    'lib/SPELL_CIFC/src/SPELLautomaticCif.C': 'ea34aa30832faf2ae3f8c605abb281afa45eb4d241b19c7604a5c090a10b625e',
+    'lib/SPELL_SYN/src/SPELLtimer.C': '80dd7599733c64b5f2769a37c2c8ea1451afc23f12c195545031d67f87cfc0a8',
+    'lib/SPELL_EXC/src/SPELLscheduler.C': '2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a',
+    'include/SPELL_PRD/SPELLprocedureManager.H': '699e72c66c8e8242a0575f9c032b215314d7c88b744d6108cdcb4fa9f60ed997',
+    'lib/SPELL_PRD/src/SPELLprocedureManager.C': '69c8b97d451a40a99ea86d7248eb82c3a0c8608af60924a0f80e45523c1c72b5',
+    'lib/SPELL_EXC/src/SPELLexecutorConfiguration.C': '78bb96d7d61cdb5eb016a0416f45b878ecd9347ea5b23a89487dffd8fcbd6474',
+    'include/SPELL_EXC/SPELLinterpreter.H': '2eaf1ea5f53624fab196e62fc6668c26f8a00d5397b3b5051a4fa2b14a137006',
+    'lib/SPELL_EXC/src/SPELLinterpreter.C': '3dd0a455669237924726637ca4b25ae524acfaf10d577b18a7c36258ad3f1256',
+    'src/executorcmd/src/SPELLexecutorMain.C': 'cc29574b068d1135bf216914e85f690d6945c59b28b88d1b14988d4bb4b26d2d',
+    'lib/SPELL_WRP/src/SPELLregistry.C': '0823e4ff6607903845d6333cdb6f975bb36f1c8c78e31dd3400665686b599e2d',
+    'lib/SPELL_EXC/src/SPELLexecutorPython.C': '89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e',
+    'lib/SPELL_EXC/src/SPELLstepPython.C': 'e34081213079d413548ed25c614072318f5d899b353223d9f37517319069cb7c',
+    'lib/SPELL_EXC/src/SPELLgotoPython.C': 'af1d3dfa62eef6117ede5e1a51c13cd4a09d4f8b28f84fd6560d28630a1a9fe7',
+    'lib/SPELL_CIF/src/SPELLcifPython.C': 'c5ea8a8bccd44c9701f74117dbaa4baa4efaa068ef9618ff539fcac7a6333cb0',
     'include/SPELL_WS/SPELLwarmstart.H': 'c073afc45bc4feccb0a7501aea58c4deec51499c0517db0c689df5f4d653a280',
     'include/SPELL_WS/SPELLwsDynamicData.H': '0ead809531f5542c91e95131956305e27a39d02c2845af76ce0daa9d6507c2c5',
     'lib/SPELL_WS/src/SPELLwsDynamicData.C': '466ea5544f5e2cfeed11040defe72dc66c0db0606575a685912d130f0e1bc53f',
@@ -58,13 +74,195 @@ def body(name):
     return (ROOT / name).read_text(encoding='utf-8')
 
 
+def binding(text, prefix, registry=None, counts=None):
+    text = text.replace('#include "structmember.h"', '#include "structmember.h"\n#include "SPELL_UTIL/SPELLbinding313.H"')
+    spec = f'''static PyType_Slot {prefix}_Slots[] = {{
+    {{Py_tp_new, reinterpret_cast<void*>(PyType_GenericNew)}},
+    {{Py_tp_methods, reinterpret_cast<void*>({prefix}_Methods)}},
+    {{0,nullptr}}
+}};
+static PyType_Spec {prefix}_Spec = {{"spell.runtime.{prefix}",sizeof(Py{prefix}Object),0,
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_IMMUTABLETYPE,{prefix}_Slots}};'''
+    if not registry:
+        count = 2 if prefix == 'Step' else 1
+        spec = spec.replace('{0,nullptr}',f'{{Py_tp_call,reinterpret_cast<void*>(SPELLbinding313::keywords<{prefix}_Call,{count},{count}>)}},\n    {{0,nullptr}}')
+    text, changed = re.subn(r'static PyTypeObject '+prefix+r'_Type =\s*\{.*?\n\};',lambda _:spec,text,count=1,flags=re.S)
+    assert changed == 1
+    export = {'Executor':'_executor','ClientIF':'_cif'}.get(prefix,prefix)
+    register = (f'SPELLregistry::instance().set(object.get(),"{registry}");\n    SPELLpythonHelper::instance().install(object.get(),"{export}");' if registry
+                else f'SPELLpythonHelper::instance().install(object.get(),"{prefix}");')
+    install = f'''void {prefix}_Install()
+{{
+    SPELLpython313::Owned object(SPELLbinding313::instance(&{prefix}_Spec));
+    {register}
+}}'''
+    text, changed = re.subn(r'void '+prefix+r'_Install\(\)\s*\{.*?\n\}',lambda _:install,text,count=1,flags=re.S)
+    assert changed == 1
+    if counts is not None:
+        # The original method names and method bodies stay authoritative.
+        def entry(match):
+            name, method, flags, rest = match.groups()
+            minimum, maximum = counts[name] if name in counts else (0,0)
+            if name == 'startPrompt': flags = 'METH_VARARGS'
+            wrapper = 'keywords' if 'METH_KEYWORDS' in flags else 'call'
+            return f'{{"{name}",(PyCFunction)SPELLbinding313::{wrapper}<{method},{minimum},{maximum}>,{flags},{rest}'
+        text, count = re.subn(r'\{"(\w+)"\s*,\s*(?:\(PyCFunction\))?('+prefix+r'_\w+)\s*,\s*(METH_\w+(?:\s*\|\s*METH_\w+)?)\s*,([^\n]+)',entry,text)
+        assert count == (29 if prefix == 'Executor' else 14), count
+    marker=f'static PyMethodDef {prefix}_Methods[] =\n{{'
+    assert marker in text
+    reduction=f'''static PyObject* {prefix}_Reduce(PyObject*,PyObject*) {{ return PyUnicode_FromString("{export}"); }}
+'''
+    text=text.replace(marker,reduction+marker+f'\n    {{"__reduce__",{prefix}_Reduce,METH_NOARGS,"Reference the current runtime binding"}},')
+    return text
+
+
 def apply(name, original):
     if name not in PREIMAGES:
         return original
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLwarmstart.H'):
+    if name.endswith('SPELLtimer.H'):
+        text=text.replace('#define __SPELL_TIMER_H__','#define __SPELL_TIMER_H__\n#include <atomic>')
+        text=text.replace('bool           m_counting;','bool           m_counting;\n    std::atomic_bool m_shuttingDown{false};')
+    elif name.endswith('SPELLtimer.C'):
+        text=text.replace('    m_counting = false;\n    m_stopEvent.set();','    m_shuttingDown.store(true);\n    setCounting(false);\n    m_stopEvent.set();')
+        text=text.replace('while(isCounting())','while(!m_shuttingDown.load() && isCounting())')
+        text=text.replace('        if (callTimerCallback())','        if (m_shuttingDown.load()) return;\n        if (callTimerCallback())')
+        text = text.replace('    m_stopEvent.set();\n}', '    m_stopEvent.set();\n    join(); // the worker must leave before its mutexes/events are destroyed\n}',1)
+    elif name.endswith('SPELLscheduler.C'):
+        text = text.replace('#include "SPELL_EXC/SPELLscheduler.H"','#include "SPELL_EXC/SPELLscheduler.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text = text.replace('    m_pyTM = NULL;\n    delete m_timer;', '''    delete m_timer; // joins before Python references are released
+    SPELLpython313::GIL gil;
+    Py_CLEAR(m_pyTM);''')
+        text = text.replace('        Py_INCREF(m_pyTM);','')
+    elif name.endswith('SPELLcifHelper.C'):
+        text = text.replace('    \tpromptResult = def.expected[STRI(result)];', '''        int index=-1;
+        auto conversion=std::from_chars(result.data(),result.data()+result.size(),index);
+        if (conversion.ec!=std::errc() || conversion.ptr!=result.data()+result.size() ||
+            index<0 || static_cast<size_t>(index)>=def.expected.size())
+            THROW_EXCEPTION("Invalid prompt answer","Answer is not a valid option index",SPELL_ERROR_EXECUTION);
+        promptResult=def.expected[index];''')
+        text = '#include <charconv>\n'+text
+    elif name.endswith('SPELLautomaticCif.C'):
+        text = text.replace('rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );', '''rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );
+    if (rawAnswer.empty() && !def.options.empty())
+        THROW_EXCEPTION("Invalid prompt answer","Answer does not match an expected option",SPELL_ERROR_EXECUTION);''')
+    elif name.endswith('SPELLprocedureManager.H'):
+        text = text.replace('void setup(const std::string& ctxName);','void setup(const std::string& ctxName);\n    void registerScript(const std::string& file);')
+    elif name.endswith('SPELLprocedureManager.C'):
+        text += '''
+// Explicit -f execution admits an ordinary Python script without the indexed
+// procedure's spacecraft header. Keep the original model and source reader.
+void SPELLprocedureManager::registerScript(const std::string& file)
+{
+    SPELLmonitor lock(m_lock);
+    SPELLprocedure* model=new SPELLprocedure(SPELLutils::basePath(file),file);
+    auto previous=m_procModels.find(file);
+    if (previous!=m_procModels.end()) delete previous->second;
+    m_procModels[file]=model;
+    m_filenameToId[file]=file;
+    m_idToFilename[file]=file;
+    m_idToName[file]=model->getName().empty() ? file : model->getName();
+}
+'''
+    elif name.endswith('SPELLexecutorConfiguration.C'):
+        text = text.replace('m_parentProcId = -1;', 'm_parentProcId = ""; // no parent; never a non-UTF-8 sentinel byte')
+    elif name.endswith('SPELLinterpreter.H'):
+        text = text.replace('void mainLoop();','void mainLoop();\n        void shutdown();\n        int exitCode() const { return m_exitCode; }')
+        text = text.replace('SPELLcontrollerIF*       m_controller;', 'bool m_controllerStarted=false;\n        SPELLcontrollerIF*       m_controller;')
+        text = text.replace('SPELLinterpreterConfig   m_config;','int m_exitCode=1;\n        SPELLinterpreterConfig   m_config;')
+    elif name.endswith('SPELLinterpreter.C'):
+        text = text.replace('#include "SPELL_EXC/SPELLinterpreter.H"','#include "SPELL_EXC/SPELLinterpreter.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text = section(text,'SPELLinterpreter::~SPELLinterpreter()', 'SPELLinterpreter& SPELLinterpreter::instance()', '''SPELLinterpreter::~SPELLinterpreter()
+{
+    shutdown();
+    s_instance=nullptr;
+}
+'''+body('interpreter_shutdown.cpp'))
+        text = text.replace('m_controller->begin();','m_controller->begin();\n        m_controllerStarted=true;')
+        text = text.replace('        m_controller->stop();', '''        m_controller->stop();
+        { SPELLsafeThreadOperations release("Join command controller");
+          static_cast<SPELLcontroller*>(m_controller)->join(); }
+        m_controllerStarted=false;''')
+        text = text.replace('SPELLprocedureManager::instance().setup(m_config.ctxName);',
+            'SPELLprocedureManager::instance().setup(m_config.ctxName);\n        if (m_config.script) SPELLprocedureManager::instance().registerScript(m_procedure);')
+        text = text.replace('cifStartup.procName = SPELLprocedureManager::instance().getProcName(m_procedure);',
+            'cifStartup.procName = m_config.script ? m_procedure : SPELLprocedureManager::instance().getProcName(m_procedure);')
+        text = text.replace('    // After the execution cycle, wait for the user/server to autorize closure',
+            '    m_exitCode = m_executor->getStatus() == STATUS_FINISHED ? 0 : 1;\n\n    // After the execution cycle, wait for the user/server to autorize closure')
+        text = text.replace('        LOG_ERROR(msg);\n        // Notify error', '        LOG_ERROR(msg);\n        std::cerr << msg << std::endl;\n        // Notify error')
+    elif name == 'src/executorcmd/src/SPELLexecutorMain.C':
+        text = text.replace('    interp.mainLoop();\n\n    return 0;', '''    int exitCode=1;
+    try { interp.mainLoop(); exitCode=interp.exitCode(); }
+    catch (SPELLcoreException& error) {
+        std::cerr << error.what() << std::endl;
+    }
+    interp.shutdown();
+    delete &interp;
+    delete cif;
+    return exitCode;''')
+    elif name.endswith('SPELLregistry.C'):
+        text = text.replace('#include "SPELL_WRP/SPELLregistry.H"','#include "SPELL_WRP/SPELLregistry.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text = re.sub(r'PyObject\* SPELLregistry::getRegistryObject\(\)\s*\{.*?\n\}', '''PyObject* SPELLregistry::getRegistryObject()
+{
+    // The module owns the registry in the current interpreter. Never cache a
+    // Python object in a process-wide singleton across Py_FinalizeEx().
+    return SPELLpythonHelper::instance().getObject("spell.lib.registry","REGISTRY");
+}''',text,flags=re.S)
+        text = text.replace('    PyObject_SetItem( registry, SSTRPY(key), obj );','''    SPELLpython313::Owned pyKey(SSTRPY(key));
+    if (!pyKey.get() || PyObject_SetItem(registry,pyKey.get(),obj)<0)
+        SPELLpythonHelper::instance().checkError();''')
+    elif name.endswith('SPELLexecutorPython.C'):
+        text = binding(text,'Executor','EXEC',{
+            'startWait':(0,2),'startPrompt':(0,2),'openSubProcedure':(2,2),
+            'abort':(0,1),'finish':(0,1),'setUserAction':(3,3),'setStep':(2,2),
+            'setByStep':(1,1),'setExecutionDelay':(1,1),'notify':(3,3)})
+        text = text.replace('    Py_INCREF(statusStr);\n','').replace('    Py_INCREF(err);\n','')
+        text = text.replace('    PyObject* funcObj = PyTuple_GetItem(args,0);', '''    PyObject* funcObj = PyTuple_GetItem(args,0);
+    if (!PyFunction_Check(funcObj) || !PyDict_Check(PyTuple_GetItem(args,2))) {
+        PyErr_SetString(PyExc_TypeError,"User action requires a Python function, label and configuration dictionary");
+        return nullptr;
+    }''')
+        text = text.replace('    std::string procId    = PYSTR(PyTuple_GetItem(args, 0));', '''    PyObject* config = kwds ? PyDict_GetItemString(kwds,"config") : nullptr;
+    if (!config || !PyDict_Check(config) || !PyDict_Check(PyTuple_GetItem(args,1)) ||
+        !PyDict_GetItemString(config,Automatic.c_str()) || !PyDict_GetItemString(config,Blocking.c_str()) ||
+        !PyDict_GetItemString(config,Visible.c_str())) {
+        PyErr_SetString(PyExc_TypeError,"Child procedure requires argument and complete configuration dictionaries");
+        return nullptr;
+    }
+    std::string procId    = PYSTR(PyTuple_GetItem(args, 0));''')
+        text = text.replace('SPELLexecutor::instance().setByStep(PyObject_IsTrue(byStep));', '''int enabled=PyObject_IsTrue(byStep);
+    if (enabled<0) return nullptr;
+    SPELLexecutor::instance().setByStep(enabled);''')
+    elif name.endswith('SPELLcifPython.C'):
+        text = binding(text,'ClientIF','CIF',{
+            'setVerbosity':(0,1),'forcePromptConfirm':(0,1),'write':(1,2),
+            'notify':(4,6),'prompt':(3,3),'clearSharedData':(1,2),
+            'setSharedData':(4,4),'getSharedData':(2,2),'getSharedDataKeys':(1,1),
+            'addSharedDataScope':(1,1),'removeSharedDataScope':(1,1)})
+        text = text.replace('abort("Unable to receive prompt answer", true);',
+            'abort("Unable to receive prompt answer: " + ex.what(), true);')
+        text = text.replace('    PyObject* scopeObj = argumentsA[3];', '''    PyObject* scopeObj = argumentsA[3];
+    if (PyList_Check(nameObj) && (!PyList_Check(valueObj) || !PyList_Check(expectedObj) ||
+        PyList_Size(nameObj)!=PyList_Size(valueObj) || PyList_Size(nameObj)!=PyList_Size(expectedObj))) {
+        PyErr_SetString(PyExc_TypeError,"Shared variable names, values and expectations require equally sized lists");
+        return nullptr;
+    }''')
+        text = text.replace('    PyObject* o_name = PyTuple_GetItem( args, 1 );', '''    else {
+        PyErr_SetString(PyExc_ValueError,"Unknown SPELL notification type"); return nullptr;
+    }
+    PyObject* o_name = PyTuple_GetItem( args, 1 );''')
+    elif name.endswith(('SPELLstepPython.C','SPELLgotoPython.C')):
+        prefix='Step' if name.endswith('SPELLstepPython.C') else 'Goto'
+        text = binding(text,prefix)
+        marker=f'static PyObject* {prefix}_Call( PyObject* self, PyObject* args, PyObject* kargs )\n{{'
+        assert marker in text
+        text=text.replace(marker,marker+'''
+    if (kargs && PyDict_Size(kargs)) {
+        PyErr_SetString(PyExc_TypeError,"Step and Goto use positional arguments"); return nullptr;
+    }''')
+    elif name.endswith('SPELLwarmstart.H'):
         text = text.replace('virtual void saveState() = 0;', '''virtual void saveState() = 0;
         virtual std::vector<PyFrameObject*> getFrames() const = 0;
         virtual bool rebindPending(PyFrameObject* frame) = 0;
@@ -190,6 +388,20 @@ def apply(name, original):
 }
 \n//=============================================================================\n''')
         text = text.replace('        Py_XDECREF(m_currentFrame);\n', '')
+        text,count = re.subn(r'void SPELLframeManager::terminate\(\)\s*\{.*?\n\}', '''void SPELLframeManager::terminate()
+{
+    SPELLpython313::GIL gil;
+    m_terminated=true;
+    // The active evaluator unwinds with the original control exception. Never
+    // rewrite legacy byte offsets or swallow the pending trace exception.
+    if (SPELLerror::instance().isExecutionAborted())
+        PyErr_SetString(PyExc_RuntimeError,"EXECUTION ABORTED");
+    else if (SPELLerror::instance().isExecutionTerminated())
+        PyErr_SetString(PyExc_RuntimeError,"EXECUTION TERMINATED");
+    else
+        PyErr_SetString(PyExc_RuntimeError,"SPELL execution stopped");
+}''',text,flags=re.S)
+        assert count==1
         text = text.replace('\t\tPy_INCREF(m_currentFrame);\n', '')
         text = text.replace('    m_terminated = false;', '    m_terminated = false;\n    m_resumePending = false;')
         text = text.replace('    m_model = NULL;\n\n    DEBUG("[EF] Clearing breakpoints");', '    m_model = NULL;\n    m_currentFrame = nullptr;\n\n    DEBUG("[EF] Clearing breakpoints");')
@@ -277,6 +489,27 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         if name.endswith('SPELLexecutionModel.C'):
             text = text.replace('\tm_modelId = modelId;', '\tPy_INCREF(m_frame);\n\tm_modelId = modelId;')
             text = text.replace('SPELLexecutionModel::~SPELLexecutionModel()\n{\n}', 'SPELLexecutionModel::~SPELLexecutionModel()\n{\n    Py_XDECREF(m_frame);\n}')
+        elif name.endswith('SPELLexecutorImpl.C'):
+            text = text.replace('    return SPELLexecutor::instance().dispatch(obj, frame, what, args);','''    try { return SPELLexecutor::instance().dispatch(obj,frame,what,args); }
+    catch (SPELLcoreException& error) {
+        if (!PyErr_Occurred()) PyErr_SetString(PyExc_RuntimeError,error.what().c_str());
+    } catch (const std::exception& error) {
+        if (!PyErr_Occurred()) PyErr_SetString(PyExc_RuntimeError,error.what());
+    } catch (...) {
+        if (!PyErr_Occurred()) PyErr_SetString(PyExc_RuntimeError,"SPELL dispatch failed");
+    }
+    return -1;''')
+            text = section(text,'void SPELLexecutorImpl::installCallingArguments()',
+                'void SPELLexecutorImpl::execute()',body('executor_environment.cpp'))
+            text = section(text,'\t// Create proc dictionary object and install it',
+                '\t// Load SCDB and GDB',body('executor_proc.cpp'))
+            text = text.replace('PyObject* proc = getVariableManager().getVariableRef(DatabaseConstants::PROC);',
+                'PyObject* proc = PyDict_GetItemString(SPELLpythonHelper::instance().getMainDict(),DatabaseConstants::PROC.c_str());')
+            text = text.replace('PyObject* prev = PyDict_GetItemString(proc, DatabaseConstants::STEP.c_str());',
+                'SPELLpython313::Owned previous(Py_XNewRef(PyDict_GetItemString(proc,DatabaseConstants::STEP.c_str())));\n        PyObject* prev=previous.get();')
+            text = text.replace('\t\tPy_INCREF(pyId);\n\t\tPy_INCREF(pyDesc);','')
+            text = text.replace('PyDict_SetItemString( proc, DatabaseConstants::STEP.c_str(), list);',
+                'PyDict_SetItemString( proc, DatabaseConstants::STEP.c_str(), list);\n        Py_DECREF(list);')
     elif name.endswith('SPELLbytecode.H'):
         text = text.replace('unsigned int end_lineno;', '''unsigned int end_lineno;
             unsigned int body_lineno;
@@ -354,6 +587,8 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         text = text.replace('#define __SPELL_PYHELPER_H__', '#define __SPELL_PYHELPER_H__\n#include <thread>')
         text = text.replace('bool m_initialized;', '''bool m_initialized;
         bool m_ownsInterpreter = false;
+        bool m_frameworkLoaded = false;
+        bool m_frameworkRetired = false;
         std::thread::id m_ownerThread;
         PyThreadState* m_embeddedThread = nullptr;''')
     elif name.endswith('SPELLpythonHelper.C'):
@@ -380,16 +615,25 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         text = text.replace('    Py_INCREF(moduleObj);\n    DEBUG("[PYH] Get module done', '    DEBUG("[PYH] Get module done')
         text = text.replace('    PyObject* moduleObj = getModule(module);',
                             '    SPELLpython313::Owned moduleOwner(getModule(module));\n    PyObject* moduleObj = moduleOwner.get();')
+        # Replace the old builtin mutation functions, keeping unrelated APIs.
+        for function in ('getMainDict','install','importAllFrom','updateBuiltinsWith'):
+            text,count = re.subn(r'(?:PyObject\*|void) SPELLpythonHelper::'+function+r'\([^\n]*\)\s*\{.*?\n\}', '', text, flags=re.S)
+            assert count == (2 if function == 'install' else 1), (function,count)
+        text += '\n'+body('helper_namespace.cpp')
     elif name.endswith('SPELLutils.C'):
         text = text.replace('#include "SPELL_UTIL/SPELLbase.H"', '#include "SPELL_UTIL/SPELLbase.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text = section(text, 'void SPELLutils::dumpInterpreterInfo(',
                        '// FUNCTION:    SPELLutils::dumpString()',
                        body('dump_state.cpp') + '\n//============================================================================\n')
     elif name.endswith('SPELLlogPython.C'):
+        text = text.replace('#include "structmember.h"','#include "structmember.h"\n#include "SPELL_UTIL/SPELLpython313.H"\n#include <exception>')
         text = text.replace('static PyObject* KEY_SEVERITY = STRPY("severity");\nstatic PyObject* KEY_LEVEL    = STRPY("level");',
                             '// Keyword lookup must not allocate Python objects before Py_Initialize.')
         text = text.replace('PyDict_Contains( kargs, KEY_SEVERITY )', 'PyDict_GetItemString( kargs, "severity" ) != nullptr')
         text = text.replace('PyDict_Contains( kargs, KEY_LEVEL )', 'PyDict_GetItemString( kargs, "level" ) != nullptr')
+        text = re.sub(r'static PyTypeObject Log_Type =\s*\{.*?\n\};','// Logger type belongs to the active interpreter.',text,flags=re.S)
+        start = text.index('static PyObject* Log_Call(',text.index('static PyObject* Log_Call(')+1)
+        text = text[:start]+body('log_binding.cpp')
     elif name.endswith('SPELLerror.C'):
         text = text.replace('#include "SPELL_UTIL/SPELLerror.H"', '#include "SPELL_UTIL/SPELLerror.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         # These setters deliberately leave a Python exception for a C callback
@@ -425,6 +669,9 @@ def apply_tree(source):
     header.write_bytes((ROOT / header.name).read_bytes())
     changed[header.relative_to(source).as_posix()] = {
         'new': True, 'sha256': hashlib.sha256(header.read_bytes()).hexdigest()}
+    header = source/'include/SPELL_UTIL/SPELLbinding313.H'
+    header.write_bytes((ROOT/header.name).read_bytes())
+    changed[header.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(header.read_bytes()).hexdigest()}
     bridge = source/'include/SPELL_UTIL/SPELLanalysis313.H'
     bridge.write_bytes((ROOT/bridge.name).read_bytes())
     embedded = source/'include/SPELL_UTIL/SPELLanalysisSource.H'

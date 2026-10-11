@@ -52,9 +52,15 @@ SPELLcoreException* SPELLerror::errorToException(PyObject* err, PyObject* ptype,
         if (why.get()) reason = SPELLpython313::text(why.get());
     }
     if (ptraceback && PyTraceBack_Check(ptraceback)) {
-        for (auto* tb = reinterpret_cast<PyTracebackObject*>(ptraceback); tb; tb = tb->tb_next)
+        for (auto* tb = reinterpret_cast<PyTracebackObject*>(ptraceback); tb; tb = tb->tb_next) {
+            // Modern CPython computes this property lazily; the raw field can
+            // be -1 even when the traceback has a precise bytecode location.
+            SPELLpython313::Owned line(PyObject_GetAttrString(reinterpret_cast<PyObject*>(tb),"tb_lineno"));
+            long number=line.get() ? PyLong_AsLong(line.get()) : -1;
+            if (PyErr_Occurred()) PyErr_Clear();
             message += "\n - file '" + SPELLpython313::filename(tb->tb_frame)
-                + "', line " + std::to_string(tb->tb_lineno);
+                + "', line " + std::to_string(number);
+        }
     }
     return new SPELLcoreException(message, reason, code, false);
 }

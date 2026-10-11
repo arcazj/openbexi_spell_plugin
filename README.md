@@ -11,6 +11,10 @@ The isolated original-source alpha foundation is available under
 [qualification](docs/SOURCE_PORT.md). It does not replace this working bounded
 adapter or complete the native SPELL executor port.
 
+The latest [native executor milestone](docs/EXECUTOR_COMMAND.md) runs the original
+standalone command with explicit imports and 17 qualified behavior checks. See
+the [execution status](docs/EXECUTION_TO_V06.md) for the remaining release gates.
+
 ```powershell
 python -m venv .venv
 .venv/Scripts/python.exe -m pip install .

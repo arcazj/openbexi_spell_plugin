@@ -15,6 +15,15 @@ spec.loader.exec_module(native)
 
 
 class NativeUtil(unittest.TestCase):
+    def test_exception_location_uses_real_traceback_line(self):
+        namespace={}
+        exec(compile('def fail():\n    marker=42\n    raise ValueError(marker)\n',
+            'traceback-location.py','exec'),namespace)
+        result=native.scope(namespace['fail'])
+        self.assertEqual(result[0],7,result)
+        self.assertIn("file 'traceback-location.py', line 3",result[1])
+        self.assertNotIn('line -1',result[1])
+
     def test_created_procedure_frames_release_code_after_repeated_loads(self):
         main = vars(sys.modules['__main__'])
         filename = main.get('__file__')

@@ -146,9 +146,9 @@ handle = own(frame)
 
     def test_definitions_copy_does_not_overwrite_or_copy_args(self):
         key = '_qualification_definition'
-        # The legacy helper's getMainDict() means the builtin namespace,
-        # which supplies its filter keys. The test restores this temporary key.
-        main = builtins.__dict__
+        # SPELL exports now live in an interpreter-local module, not builtins.
+        import types
+        main = vars(sys.modules.setdefault('spell.runtime', types.ModuleType('spell.runtime')))
         main[key] = None
         try:
             value = object()

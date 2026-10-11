@@ -21,7 +21,10 @@ def main():
     parser.add_argument('--ws-frames', action='store_true', help='Require original WS frame/data integration and shared continuation probes')
     parser.add_argument('--warm', action='store_true', help='Require original WS controller and manager logical recovery')
     parser.add_argument('--dta-checkpoints', action='store_true', help='Require native DTA graphs through serialization and original WS recovery')
+    parser.add_argument('--executor-command', action='store_true', help='Require the original standalone executor, native bindings and command behavior')
     args = parser.parse_args()
+    if args.executor_command:
+        args.dta_checkpoints = True
     if args.dta_checkpoints:
         args.warm = True
     if args.warm:
@@ -215,7 +218,46 @@ def main():
         report['milestone'] = 'CPython 3.13 native DTA graph serialization and original WS recovery'
         report['qualification_scope'] += '; 12 isolated DTA serialization cases and 3 SIGKILL/fresh-process procedure recoveries with native data, aliases, constraints and subclass state'
         report['gaps'][2] = 'External dependency/resource recovery and actual executor/CIF checkpoint dispatch'
-    name = 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.executor_command:
+        command = json.loads((evidence/'executor-build.json').read_text())
+        behavior = json.loads((evidence/'executor-runtime.json').read_text())
+        required = ('library_link_exit_code','qualification_exit_code','bindings_build_exit_code',
+            'bindings_runtime_exit_code','bindings_framework_exit_code')
+        if (any(command.get(key) != 0 for key in required) or command['command']['link_exit_code'] != 0
+                or len(command['libraries']) != 13 or any(row['exit_code'] for row in command['units'])
+                or behavior['tests'] < 17 or any(behavior[key] for key in ('failures','errors','skips'))):
+            raise ValueError('Original executor command qualification failed')
+        expected_units = {name for library in command['libraries'] for name in build['library_manifest'][library]['units']}
+        if expected_units != {row['unit'] for row in command['units']}:
+            raise ValueError('Executor does not link its original library manifest')
+        if command['native_build_sha256'] != hashlib.sha256((evidence/'native-build.json').read_bytes()).hexdigest():
+            raise ValueError('Executor evidence differs from component evidence')
+        for name,digest in command['input_sources'].items():
+            if hashlib.sha256((root/'source_port'/name).read_bytes()).hexdigest() != digest:
+                raise ValueError('Executor evidence predates recipe: '+name)
+        for name,digest in (('SPELL-ExecutorCmd_v3',command['command']['sha256']),
+                ('libspell_executor313.so',command['runtime_sha256'])):
+            if hashlib.sha256((evidence/name).read_bytes()).hexdigest() != digest:
+                raise ValueError('Executor binary differs: '+name)
+        cycles={}
+        for name,expected in (('embed',{'cycles':3,'binding_type_lifetimes':2400,'builtins_unchanged':True}),
+                ('framework',{'cycles':1,'binding_type_lifetimes':800,'builtins_unchanged':True})):
+            lines=[line for line in (evidence/('bindings-'+name+'-runtime.log')).read_text().splitlines() if line.startswith('{')]
+            if len(lines)!=1 or json.loads(lines[0])!=expected:
+                raise ValueError('Binding lifecycle qualification failed: '+name)
+            cycles[name]=expected
+        report['executor_build']=command
+        report['executor_runtime']=behavior
+        report['binding_lifecycle']=cycles
+        report['example_driver_patches']=json.loads((evidence/'executor-example-driver-patches.json').read_text())
+        report['milestone']='Original standalone executor and native bindings with explicit SPELL namespace'
+        report['qualification_scope'] += '; original ExecutorCmd, automatic CIF, real dispatcher and original example driver (eight import corrections); command behavior including invalid prompt rejection; native binding cycles and one full-framework interpreter lifetime'
+        report['gaps']=['Actual executor warm-start checkpoints/recovery and service/context lifecycle',
+            'Complete executor/CIF shared-data, child-procedure, scheduler and controller command behavior',
+            'Operational driver/DSS integration and external effect/resource recovery',
+            'Production distribution and supported platform/host matrix',
+            'Full RPC framework reinitialization within one process is unsupported; use a fresh process']
+    name = 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
@@ -227,6 +269,7 @@ def main():
         'warm_tests':report.get('warm_runtime',{}).get('tests',0),
         'dta_checkpoint_tests':report.get('dta_checkpoint_runtime',{}).get('tests',0),
         'dta_warm_tests':report.get('dta_warm_runtime',{}).get('tests',0),
+        'executor_command_tests':report.get('executor_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

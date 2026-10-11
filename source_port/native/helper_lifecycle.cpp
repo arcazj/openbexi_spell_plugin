@@ -2,9 +2,12 @@
 void SPELLpythonHelper::initialize()
 {
     if (m_initialized) return;
+    if (m_frameworkRetired)
+        THROW_EXCEPTION("Cannot reinitialize the full SPELL framework", "Start a fresh executor process for the RPC framework", SPELL_ERROR_PYTHON_API);
     if (!Py_IsInitialized()) {
         PyConfig config;
         PyConfig_InitIsolatedConfig(&config);
+        config.buffered_stdio = 0;
         PyStatus status = Py_InitializeFromConfig(&config);
         std::string error = PyStatus_Exception(status)
             ? (status.err_msg ? status.err_msg : "Python initialization failed") : "";
@@ -23,12 +26,12 @@ void SPELLpythonHelper::loadFramework()
     // The selected interpreter supplies installed packages. Procedures import
     // their symbols explicitly; no SPELL names are inserted into builtins.
     SPELLpython313::GIL gil;
+    m_frameworkLoaded = true;
     const char* modules[] = {"spell.lang.functions", "spell.lang.constants",
         "spell.lang.modifiers", "spell.lang.user", "spell.lib.adapter.utctime",
-        "spell.lib.adapter.file"};
+        "spell.lib.adapter.file", "libSPELL_DTA_v3"};
     for (const char* name: modules) {
-        SPELLpython313::Owned module(PyImport_ImportModule(name));
-        if (!module.get()) checkError();
+        importAllFrom(name);
     }
 }
 
@@ -41,6 +44,8 @@ void SPELLpythonHelper::finalize()
         PyEval_RestoreThread(m_embeddedThread);
         m_embeddedThread = nullptr;
         Py_FinalizeEx();
+        m_frameworkRetired = m_frameworkLoaded;
+        m_frameworkLoaded = false;
         m_ownsInterpreter = false;
     }
     m_initialized = false;
