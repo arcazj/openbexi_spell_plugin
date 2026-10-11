@@ -39,6 +39,29 @@ class ServiceBindings(unittest.TestCase):
             def getName(self): return None
         with self.assertRaises(TypeError): runtime.RegisterSpellService(Bad())
 
+    def test_metadata_evaluated_once_and_errors_preserved(self):
+        class Metadata:
+            def __init__(self): self.calls={};self.stopped=False
+            def value(self,key,value):
+                self.calls[key]=self.calls.get(key,0)+1
+                if self.calls[key]!=1: raise AssertionError('Metadata evaluated again')
+                return value
+            def getName(self): return self.value('name','metadata-once')
+            def getBasePath(self): return self.value('base','/context')
+            def getMainFile(self): return self.value('main',__file__)
+            def _stop(self): self.stopped=True
+        metadata=Metadata()
+        self.assertIs(runtime._register_service(metadata),metadata)
+        self.assertEqual(metadata.calls,{'name':1,'base':1,'main':1})
+        class Failure(Metadata):
+            def getName(self): return 'metadata-failure'
+            def getBasePath(self): raise LookupError('metadata failure retained')
+        with self.assertRaisesRegex(LookupError,'metadata failure retained'):
+            runtime._register_service(Failure())
+        class Invalid(Metadata):
+            def getName(self): return 'bad' + chr(0) + 'name'
+        with self.assertRaises(ValueError): runtime._register_service(Invalid())
+
     def test_worker_result_and_exception(self):
         self.assertEqual(service.execute(lambda x,y:x+y,20,y=22).result(timeout=3),42)
         def fail(): raise ValueError('worker error')

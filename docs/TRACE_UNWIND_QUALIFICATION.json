@@ -1,0 +1,24 @@
+{
+  "scope": "Original CPython C and Python trace callback exceptions through a try/finally loop; no SPELL linked",
+  "sources": {
+    "source_port/trace_unwind_probe.cpp": "4270b43411bc70dd67a602800a3afa2cf10f464cd44ac616dde5038b0b09c9cc",
+    "source_port/trace-unwind.Dockerfile": "e1c96eb52127facbf9c205d7210207d6e973e9c2f675aeaf4f505135d7d51fa3",
+    "source_port/trace-unwind.Dockerfile.dockerignore": "75c9178c954dcdb2c0f4449c622859eaeee9b23c4996112b4664a18630e87e8e"
+  },
+  "python_base_digests": {
+    "31314": "sha256:eb43ff125d8d58d7449dcba7d336c23bcac412f526d861db493b9994d8010280",
+    "31315": "sha256:7c61056e61ac89e852de05f3dc6fa51a6dd2181797bceed46aa725dd7cb2cd3b"
+  },
+  "evidence": {
+    "31314": {
+      "exit_code": 1,
+      "result": "TRACE_UNWIND_CHECKS 0/2",
+      "log_sha256": "bff94c60cca73b584faccf42cffc70305cea0784d98792004a19121ab4ebe4f6"
+    },
+    "31315": {
+      "exit_code": 0,
+      "result": "TRACE_UNWIND_CHECKS 2/2",
+      "log_sha256": "745140ffcfbe355219b3a575c2693150c489a88942de0f84c6ff20677fdfc52e"
+    }
+  }
+}

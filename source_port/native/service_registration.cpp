@@ -8,14 +8,6 @@
 static PyObject* registerService(PyObject*, PyObject* target) noexcept
 {
     try {
-        for (const char* name : {"getName", "getBasePath", "getMainFile"}) {
-            SPELLpython313::Owned result(PyObject_CallMethod(target,name,nullptr));
-            if (!result.get()) return nullptr;
-            if (!PyUnicode_Check(result.get()) || PyUnicode_GetLength(result.get())==0) {
-                PyErr_SetString(PyExc_TypeError,"Service metadata must be nonempty strings");
-                return nullptr;
-            }
-        }
         SPELLprocedureManager::instance().registerServiceHandler(target);
         return Py_NewRef(target);
     } catch (SPELLcoreException& error) {

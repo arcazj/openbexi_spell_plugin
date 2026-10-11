@@ -1,4 +1,4 @@
-FROM python:3.13-slim@sha256:eb43ff125d8d58d7449dcba7d336c23bcac412f526d861db493b9994d8010280 AS native
+FROM python:3.13.15-slim@sha256:7c61056e61ac89e852de05f3dc6fa51a6dd2181797bceed46aa725dd7cb2cd3b AS native
 RUN apt-get update && apt-get install -y --no-install-recommends g++ libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev
 COPY source_port/native/continuation-requirements.txt /requirements.txt
 RUN python -m pip install --no-cache-dir --require-hashes --only-binary=:all: -r /requirements.txt

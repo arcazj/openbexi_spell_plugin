@@ -3,10 +3,12 @@
 The original 2.6.10 service design is retained: `SpellService` discovers and
 registers a Python service with the native procedure manager, the context owns a
 watchdog, and the service executable runs its implementation. This document
-separates binding/worker evidence from the full service-process gate.
+records the binding checks and the first real service-process lifecycle.
 
-The passing source snapshot is recorded in
-[NATIVE_SERVICE_BINDINGS_QUALIFICATION.json](NATIVE_SERVICE_BINDINGS_QUALIFICATION.json).
+The current passing source snapshot is recorded in
+[NATIVE_SERVICE_QUALIFICATION.json](NATIVE_SERVICE_QUALIFICATION.json). The earlier
+[binding-only report](NATIVE_SERVICE_BINDINGS_QUALIFICATION.json) remains historical
+evidence for its own commit.
 
 ## Registration and owned workers
 
@@ -16,7 +18,8 @@ callable with its public Python wrapper. No builtins are injected. A runtime
 without the native registration callable reports services unsupported; attempting
 registration raises an error instead of silently returning false.
 
-Native registration validates arity and metadata, preserves Python exceptions,
+Native registration evaluates each metadata method once, validates nonempty text
+and rejects embedded NULs, preserves Python exceptions,
 translates C++ failures, and rejects duplicate names. The original native service
 model owns the Python wrapper. The constructor filename works for both a class
 function and an instance method under Python 3.13. Registration happens after
@@ -28,8 +31,9 @@ workers, closes the standard-library thread pool, and rejects further submission
 Native manager cleanup releases service models before interpreter finalization.
 The complete RPC framework continues to require a fresh interpreter process.
 
-The eight binding checks exercise explicit registration, invalid arguments,
-invalid metadata, duplicate names, worker results and exceptions, repeating
+The nine binding checks exercise explicit registration, invalid arguments,
+invalid metadata, single metadata evaluation and error preservation, duplicate
+names, worker results and exceptions, repeating
 workers, watchdog argument/error boundaries, and watchdog replacement. Additional
 postconditions require unchanged builtins and no remaining owned Python threads.
 Tests use the real native manager and native watchdog callback with ASan/UBSan;
@@ -56,19 +60,45 @@ three times; each real server executor must exit normally without force-kill
 fallback. These checks cover observed shutdown failures, not a complete IPC
 concurrency audit.
 
-Full service executable launch, controller integration, child shutdown and service
-recovery are still open. Passing the binding checks does not close v0.2.
+## Real service process
+
+The original context watchdog discovers the service and launches
+`SPELL-Service_v3`. The peer checks the live process executable through `/proc`,
+then verifies native `ARGS`, `IVARS` and `PROC`, explicit imports, and a worker
+result of 42. Closing the context stops its watchdogs first, sends the original
+Close command, executes the service's Python `finally` block, joins owned workers,
+and reaps the child without force-kill fallback. Six existing context/server
+lifecycles also pass in the same build (seven lifecycle runs total).
+
+CIF startup now explicitly distinguishes service identities from procedure
+instances. It preserves the original service name instead of appending `#0`, so
+control and logout messages address the same identity as the context. Service
+ASRUN output records `# SERVICE: <name>` rather than looking up an ordinary
+procedure model that does not exist. Controller completion publishes FINISHED
+after Close so a normal child exit is not reported as a startup failure.
+Request admission uses scoped mutex ownership; Close no longer locks a mutex on
+one worker and unlocks it on another thread during cleanup.
+
+This lifecycle also exposed a CPython trace-unwind regression in the previously
+pinned 3.13.14 build. A standalone probe reproduces skipped cleanup without SPELL;
+the same checks pass on 3.13.15. The native build and exact-version continuation
+engine now pin 3.13.15. All preceding component, standalone and crash-recovery
+checks pass again. See [trace-unwind evidence](TRACE_UNWIND.md).
+
+Broader controller/CIF tests, service failure/restart/recovery and remaining
+native ownership/error-path checks still gate v0.2. This successful service
+lifecycle does not establish full service conformance.
 
 ## Reproduce
 
 ```powershell
 docker build --progress=plain -f source_port/context-build.Dockerfile --output type=local,dest=.qualification/v0.2/service-recheck .
-../openbexi_ide/.venv/Scripts/python.exe source_port/record_native.py --evidence .qualification/v0.2/service-recheck --service-bindings
+../openbexi_ide/.venv/Scripts/python.exe source_port/record_native.py --evidence .qualification/v0.2/service-recheck --service
 ```
 
 The recorder requires the existing component, standalone, warm-recovery and
 context/server gates, validates source and artifact hashes, and exports a separate
-`NATIVE_SERVICE_BINDINGS_QUALIFICATION.json` milestone. Build success alone is not
+`NATIVE_SERVICE_QUALIFICATION.json` milestone. Build success alone is not
 runtime acceptance.
 
 ## Project maintenance

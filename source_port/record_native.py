@@ -25,7 +25,10 @@ def main():
     parser.add_argument('--executor-warm', action='store_true', help='Require actual executor crash recovery with native runtime data')
     parser.add_argument('--context', action='store_true', help='Require original listener/context IPC lifecycle and process/socket regressions')
     parser.add_argument('--service-bindings', action='store_true', help='Require native service registration and owned worker lifecycle')
+    parser.add_argument('--service', action='store_true', help='Require actual context-launched service and controlled shutdown')
     args = parser.parse_args()
+    if args.service:
+        args.service_bindings=True
     if args.service_bindings:
         args.context = True
     if args.context:
@@ -309,20 +312,38 @@ def main():
         report['qualification_scope'] += '; listener launches the original context, queries its status and closes it through original IPC; 20 callback-driven process restarts with concurrent waits, fast child exit codes, duplicate rejection and four reused descriptor cleanup cases; context-launched original server executor, explicit imports/native arguments, visible Run, CIF notifications, file result and successful child exit without force-kill fallback'
         report['gaps'][0]='Actual native service lifecycle and complete server controller/CIF behavior'
     if args.service_bindings:
-        if behavior.get('lifecycle_runs')!=6:
+        if behavior.get('lifecycle_runs',0)<6:
             raise ValueError('Repeated listener/context lifecycle evidence incomplete')
         if any(context.get(key)!=0 for key in ('service_bindings_build_exit_code','service_bindings_runtime_exit_code')):
             raise ValueError('Native service binding qualification failed')
         log=(evidence/'service-bindings-runtime.log').read_text()
-        for marker in ('SERVICE_BINDING_TESTS 8','SERVICE_WORKERS_JOINED','SERVICE_BINDINGS_COMPLETE callbacks='):
+        for marker in ('SERVICE_BINDING_TESTS 9','SERVICE_WORKERS_JOINED','SERVICE_BINDINGS_COMPLETE callbacks='):
             if marker not in log: raise ValueError('Service binding evidence incomplete: '+marker)
         if any(marker in log for marker in ('ERROR: AddressSanitizer','runtime error:','Fatal Python error')):
             raise ValueError('Service sanitizer failure')
-        report['service_bindings']={'tests':8,'workers_joined':True,'builtins_unchanged':True,
+        report['service_bindings']={'tests':9,'workers_joined':True,'builtins_unchanged':True,
             'native_registration':True,'native_watchdog':True,'full_service_process_qualified':False}
         report['milestone']='Original native service registration, watchdog binding and owned worker shutdown'
-        report['qualification_scope'] += '; eight native service registration/worker/watchdog checks, all owned threads joined before interpreter finalization'
-    name = 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+        report['qualification_scope'] += '; nine native service registration/worker/watchdog checks, all owned threads joined before interpreter finalization'
+    if args.service:
+        if behavior.get('lifecycle_runs')!=7 or behavior.get('service_runs')!=1 or behavior['tests']<3:
+            raise ValueError('Actual service process evidence incomplete')
+        log=(evidence/'service-0-peer.log').read_text()
+        for marker in ('SERVICE_EXECUTABLE_VERIFIED','NATIVE_SERVICE_RUNNING','CONTEXT_CLOSED'):
+            if marker not in log: raise ValueError('Service IPC evidence missing: '+marker)
+        if (evidence/'service-result.txt').read_text()!='42':
+            raise ValueError('Native service worker/data result differs')
+        pid=(evidence/'service-pid.txt').read_text()
+        if not pid.isdecimal() or (evidence/'service-closed.txt').read_text()!=pid:
+            raise ValueError('Service Python finally did not run in the original child')
+        report['service_runtime']={'tests':1,'original_context_watchdog_launch':True,
+            'actual_service_executable_verified':True,'explicit_runtime_imports':True,
+            'native_data_and_worker_result':42,'ipc_close':True,'python_finally':True,
+            'child_reaped':True,'full_service_qualified':False}
+        report['milestone']='Original service launch, native runtime data and controlled shutdown'
+        report['qualification_scope'] += '; original context watchdog launches SPELL-Service_v3, live /proc executable identity, native ARGS/IVARS/PROC and worker result, original Close terminates the service and runs Python finally, owned workers are joined and the child exits normally'
+        report['gaps'][0]='Broader server controller/CIF behavior, service recovery/restart/failure scenarios and complete native memory audit'
+    name = 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

@@ -62,7 +62,8 @@ int main(int argc,char** argv) {
         if (!running) throw std::runtime_error("Context did not become RUNNING");
         std::cout << "CONTEXT_STARTED" << std::endl;
         if (argc==3) {
-            std::string command="/out/server_peer "+std::to_string(contextPort)+" native_server";
+            std::string command="/out/server_peer "+std::to_string(contextPort) +
+                (std::string(argv[2])=="--service" ? " native_service --service" : " native_server");
             if (std::system(command.c_str())!=0) throw std::runtime_error("Server executor peer failed");
         }
         request(ContextMessages::REQ_CLOSE_CTX);

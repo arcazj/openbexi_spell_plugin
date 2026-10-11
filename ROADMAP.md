@@ -30,11 +30,13 @@ checks, including fresh-process crash recovery with native data. See
 [source port status](docs/SOURCE_PORT.md), [executor recovery](docs/EXECUTOR_RECOVERY.md)
 and [native context/server qualification](docs/CONTEXT_SERVER.md). The listener,
 context and one real server procedure now start, run and exit normally through
-original IPC; process/socket regressions also pass. Native service lifecycle and
-broader controller/CIF behavior still gate v0.2 and installed IDE/plugin host
-qualification. The [service binding milestone](docs/SERVICE_RUNTIME.md) qualifies
-native registration, watchdog callbacks and owned worker shutdown; the full service
-executable remains pending.
+original IPC; process/socket regressions also pass. Broader native controller/CIF behavior,
+service failure/restart/recovery and ownership/error-path checks still gate v0.2.
+The [service milestone](docs/SERVICE_RUNTIME.md) now qualifies the actual service
+executable, native runtime data, worker result, Close, Python `finally` and normal
+child exit. Its nine binding checks and all preceding native/recovery checks pass
+on the newly pinned CPython 3.13.15; the earlier 3.13.14 build skipped trace-triggered
+cleanup in an independent CPython probe.
 
 ## v0.3 â€” real IDE host plugins
 

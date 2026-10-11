@@ -10,8 +10,8 @@
 #include <cstring>
 #include <memory>
 #include <unordered_map>
-#if PY_MAJOR_VERSION != 3 || PY_MINOR_VERSION != 13 || PY_MICRO_VERSION != 14 || defined(Py_GIL_DISABLED)
-#error "Recovery experiment requires GIL-enabled CPython 3.13.14"
+#if PY_MAJOR_VERSION != 3 || PY_MINOR_VERSION != 13 || PY_MICRO_VERSION != 15 || defined(Py_GIL_DISABLED)
+#error "Recovery experiment requires GIL-enabled CPython 3.13.15"
 #endif
 
 struct Ref {
@@ -411,7 +411,7 @@ static PyMethodDef methods[] = {
 #endif
 static PyModuleDef module = {PyModuleDef_HEAD_INIT, SPELL_CONTINUATION_NAME, nullptr, -1, methods};
 PyMODINIT_FUNC SPELL_CONTINUATION_INIT() {
-    if (std::strncmp(Py_GetVersion(), "3.13.14 ", 8) != 0) {
+    if (std::strncmp(Py_GetVersion(), "3.13.15 ", 8) != 0) {
         PyErr_SetString(PyExc_ImportError, "recovery experiment ABI mismatch"); return nullptr;
     }
     return PyModule_Create(&module);

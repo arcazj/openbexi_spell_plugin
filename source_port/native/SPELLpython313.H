@@ -5,8 +5,8 @@
 #include <Python.h>
 #include <frameobject.h>
 #include <string>
-#if PY_MAJOR_VERSION != 3 || PY_MINOR_VERSION != 13 || defined(Py_GIL_DISABLED)
-#error "This native port requires a GIL-enabled CPython 3.13 build"
+#if PY_MAJOR_VERSION != 3 || PY_MINOR_VERSION != 13 || PY_VERSION_HEX < 0x030d0ff0 || defined(Py_GIL_DISABLED)
+#error "This native port requires a GIL-enabled CPython 3.13.15 or later 3.13 build"
 #endif
 
 namespace SPELLpython313 {

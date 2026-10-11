@@ -17,7 +17,7 @@ original-source runtime is developed in isolated environments.
 
 The authoritative Python 3 Makefiles define 143 library source units in 16
 libraries. All 143 compile in the isolated Linux x86_64, GIL-enabled CPython
-3.13.14 qualification environment. The original standalone executor links its
+3.13.15 qualification environment. The original standalone executor links its
 120 source units through one shared native runtime, so imported DTA and the
 executor use the same singleton graph.
 
@@ -54,15 +54,17 @@ The [context/server milestone](CONTEXT_SERVER.md) adds two passing original IPC
 integration tests, normal server executor shutdown, twenty callback-driven
 process restarts, fast child exit checks and four descriptor reuse cases.
 
-The [service binding milestone](SERVICE_RUNTIME.md) adds eight checks of native
-registration, worker results/errors and watchdog lifecycle, with all owned threads
-joined before finalization. It also expands process/IPC shutdown regressions and
-repeats both context/server scenarios three times. The complete service process
-remains a separate gate.
+The [service milestone](SERVICE_RUNTIME.md) adds nine checks of native
+registration, metadata errors, worker results/errors and watchdog lifecycle, with
+all owned threads joined before finalization. The real service executable also
+runs native runtime data and a worker, receives Close, executes Python `finally`,
+and exits normally. Together with the repeated context/server tests this passes
+seven original IPC lifecycle runs. The CPython 3.13.15 upgrade is backed by
+[isolated trace-unwind evidence](TRACE_UNWIND.md) and reruns of every preceding gate.
 
 ## Immediate work
 
-Qualify the original service lifecycle and broader server controller/CIF behavior. Then
+Qualify broader server controller/CIF behavior and service failure/restart/recovery. Then
 complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.

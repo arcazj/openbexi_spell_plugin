@@ -4,6 +4,17 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLcontroller.C': 'e056206fb6d16a725bdc8d7b9a031cd4b6ba3ef3104e37f5c370ab581d521bb8',
+    'lib/SPELL_CIF/src/SPELLasRun.C': 'b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3',
+    'include/SPELL_CIF/SPELLasRun.H': 'bf636883d4a9b3a338e8b2d75eacb3abb74a126f3a39fc1c9367edcf526caaef',
+    'include/SPELL_PRD/SPELLpyService.H': '94e3dcf3ce42bd6b504f4ee69b8e518773a060a399042b3da93f03ad28fc5c23',
+    'include/SPELL_CIF/SPELLcifStartupInfo.H': '76362db765deeeae57f4940084535a1e5aa66d5a1b5669df16fe8dbcd3c803d4',
+    'include/SPELL_CIF/SPELLcif.H': 'a3243ecab708477e8451e9231a5a1b4c28f4eafb0b1507a8ce2a2128916596cf',
+    'lib/SPELL_CIF/src/SPELLcif.C': '203bf8e38160e92770791a90bdf2339cb774ecdaf6bbe77ec3037f5162e3560f',
+    'lib/SPELL_CTX/src/SPELLserviceManager.C': 'c84e2bd832b6d5fd2a1b212694876fbeabcfaa98a6536b81800fa68dd540af90',
+    'src/service/src/SPELLserviceMain.C': '5323a5d5ecdc6718a973dca8581bc46f9f251451c42c69207842022b4dbdb2f6',
+    'lib/SPELL_EXC/src/SPELLserviceInterpreter.C': '0d7291373b9afc3b55655b90d771f00c87b1db42889e1a4d9a62a161fcdfb7e5',
+    'include/SPELL_EXC/SPELLserviceInterpreter.H': 'e7f00e852f5c40bac74b4bc9efe82e177ce42018872ec5e505d865733600b3ef',
     'include/SPELL_IPC/SPELLipcServerInterface.H': '9f7eee06aaed4bde66623442391417dbe695823bc3c251ced02f3ba89c052af2',
     'lib/SPELL_IPC/src/SPELLipcServerInterface.C': '9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5',
     'lib/SPELL_IPC/src/SPELLipcIncoming.C': 'f8c18b685d1b952d4fb40bf5da81bbe30a4f1b343b3a54491842f011eff01b3c',
@@ -251,9 +262,28 @@ void setupSignals()
         text=text[:text.index('// FILES TO INCLUDE')]+body('service_registration.cpp')
     elif name.endswith('SPELLserviceWatchdogPython.C'):
         text=text[:text.index('// FILES TO INCLUDE')]+body('service_watchdog.cpp')
+    elif name.endswith('SPELLpyService.H'):
+        text=text.replace('SPELLpyService(PyObject* serviceImpl);', 'SPELLpyService(PyObject* serviceImpl, const std::string& name, const std::string& basePath, const std::string& mainFile);')
     elif name.endswith('SPELLpyService.C'):
+        text=text.replace('SPELLpyService::SPELLpyService(PyObject* serviceImpl)', 'SPELLpyService::SPELLpyService(PyObject* serviceImpl, const std::string& name, const std::string& basePath, const std::string& mainFile)')
+        start=text.index('    SPELLpyHandle pyServiceName =')
+        end=text.index('    m_service = serviceImpl;',start)
+        text=text[:start]+'    m_name=name;\n    m_basePath=basePath;\n    m_mainServiceFile=mainFile;\n'+text[end:]
+        # Source construction can throw; own the Python reference only after it.
+        text=text.replace('    Py_IncRef(serviceImpl);', '')
+        text=text.replace('    m_source = SPELLprocedureSourceCode(this->getMainServiceFile());', '    m_source = SPELLprocedureSourceCode(this->getMainServiceFile());\n    Py_INCREF(m_service);')
         text=text.replace('#include "SPELL_PRD/SPELLpyService.H"','#include "SPELL_PRD/SPELLpyService.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text=text.replace('    Py_DecRef(m_service);', '    SPELLsafePythonOperations ops("Release service");\n    SPELLpyHandle stopped=PyObject_CallMethod(m_service,"_stop",nullptr);\n    if (!stopped.get()) PyErr_WriteUnraisable(m_service);\n    Py_DECREF(m_service);')
+        old='    SPELLpyHandle newCommand = PyObject_CallMethod(m_service,(char*)"_start", (char*)"()",NULL);\n    SPELLpythonHelper::instance().checkError();'
+        new='''    SPELLpyHandle newCommand = PyObject_CallMethod(m_service,(char*)"_start", (char*)"()",NULL);
+    // The original controller stores termination separately from Python's
+    // exception indicator. Preserve it for serviceImpl's execution result.
+    auto& error=SPELLerror::instance();
+    if (!newCommand.get() && (error.isExecutionAborted() || error.isExecutionTerminated()))
+        PyErr_Clear();
+    else SPELLpythonHelper::instance().checkError();'''
+        assert old in text
+        text=text.replace(old,new)
         text=text.replace('PyObject* callbackObj = SpellServiceWatchdog_Create(callback);','SPELLpyHandle callbackObj = SpellServiceWatchdog_Create(callback);\n    SPELLpythonHelper::instance().checkError();')
         text=text.replace('"(O)", callbackObj,NULL','"(O)", callbackObj.get(),NULL')
     elif name.endswith('SPELLtimer.H'):
@@ -318,6 +348,8 @@ void setupSignals()
 }
 //=============================================================================
 ''')
+    elif name.endswith('SPELLcontroller.C'):
+        text=text.replace('if (!m_error && !m_finished)', 'if (!m_error)')
     elif name.endswith('SPELLscheduler.C'):
         text = text.replace('#include "SPELL_EXC/SPELLscheduler.H"','#include "SPELL_EXC/SPELLscheduler.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text = text.replace('    m_pyTM = NULL;\n    delete m_timer;', '''    delete m_timer; // joins before Python references are released
@@ -336,6 +368,15 @@ void setupSignals()
         text=text.replace('#define __SPELL_SERVER_CIF_H__','#define __SPELL_SERVER_CIF_H__\n#include <atomic>')
         text=text.replace('bool m_ready;','std::atomic_bool m_ready;')
     elif name.endswith('SPELLserverCif.C'):
+        # Close admission on the receiving worker, without transferring mutex
+        # ownership to the interpreter thread. Existing requests drain first.
+        text=text.replace('    \tm_ipcLock.lock();\n    \tsetClosing();', '        { SPELLmonitor guard(m_ipcLock); setClosing(); }')
+        text=text.replace('    m_ipcLock.unlock();', '')
+        for method, following in [('sendGUIRequest','sendGUIMessage'),('sendCTXRequest','sendCTXMessage')]:
+            start=text.index('SPELLipcMessage SPELLserverCif::'+method+'(')
+            end=text.index('void SPELLserverCif::'+following+'(',start)
+            part=text[start:end].replace('if (m_ready)', 'if (m_ready && !isClosing())')
+            text=text[:start]+part+text[end:]
         # A detached controlling client cannot acknowledge its final status.
         # Closing cancels notification retries; it does not forge an ACK.
         text,count=re.subn(r'while\s*\(!waitAcknowledge\(msg\)\);',
@@ -343,7 +384,7 @@ void setupSignals()
         assert count==4
         text=text.replace('if (!m_ready) return false;', 'if (!m_ready || isClosing()) return false;')
         text=text.replace('void SPELLserverCif::specificCleanup( bool force )\n{',
-            'void SPELLserverCif::specificCleanup( bool force )\n{\n    setClosing();')
+            'void SPELLserverCif::specificCleanup( bool force )\n{\n    { SPELLmonitor guard(m_ipcLock); setClosing(); m_ready=false; }')
     elif name.endswith('SPELLautomaticCif.C'):
         text = text.replace('rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );', '''rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );
     if (rawAnswer.empty() && !def.options.empty())
@@ -352,7 +393,30 @@ void setupSignals()
         text = text.replace('void setup(const std::string& ctxName);','void setup(const std::string& ctxName);\n    void registerScript(const std::string& file);\n    void cleanupServices();')
     elif name.endswith('SPELLprocedureManager.C'):
         text=text.replace('#include "SPELL_WRP/SPELLpyHandle.H"','#include "SPELL_WRP/SPELLpyHandle.H"\n#include <memory>')
-        text=text.replace('SPELLpyService* serviceModel = new SPELLpyService(serviceImpl);', 'SPELLpyHandle pyName=PyObject_CallMethod(serviceImpl,"getName",nullptr);\n    SPELLpythonHelper::instance().checkError();\n    std::string serviceName=PyUnicode_AsUTF8(pyName.get());\n    if (m_serviceModels.count(serviceName))\n        THROW_EXCEPTION("Cannot register service", "Duplicate name", SPELL_ERROR_PROCEDURES);\n    std::unique_ptr<SPELLpyService> serviceModel(new SPELLpyService(serviceImpl));')
+        text=text.replace('#include <memory>', '#include <memory>\n#include <stdexcept>\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text=text.replace('SPELLpyService* serviceModel = new SPELLpyService(serviceImpl);', '''auto metadata=[&](const char* key) {
+        SPELLpython313::Owned value(PyObject_CallMethod(serviceImpl,key,nullptr));
+        if (!value.get()) throw std::runtime_error("Cannot read service metadata");
+        if (!PyUnicode_Check(value.get()) || PyUnicode_GetLength(value.get())==0) {
+            PyErr_SetString(PyExc_TypeError,"Service metadata must be nonempty strings");
+            throw std::runtime_error("Invalid service metadata");
+        }
+        Py_ssize_t size=0;
+        const char* bytes=PyUnicode_AsUTF8AndSize(value.get(),&size);
+        if (!bytes) throw std::runtime_error("Cannot encode service metadata");
+        std::string result(bytes,size);
+        if (result.find('\\0')!=std::string::npos) {
+            PyErr_SetString(PyExc_ValueError,"Service metadata cannot contain NUL");
+            throw std::runtime_error("Invalid service metadata");
+        }
+        return result;
+    };
+    const std::string serviceName=metadata("getName");
+    if (m_serviceModels.count(serviceName))
+        THROW_EXCEPTION("Cannot register service", "Duplicate name", SPELL_ERROR_PROCEDURES);
+    const std::string basePath=metadata("getBasePath");
+    const std::string mainFile=metadata("getMainFile");
+    std::unique_ptr<SPELLpyService> serviceModel(new SPELLpyService(serviceImpl,serviceName,basePath,mainFile));''')
         text=text.replace('m_serviceModels[serviceModel->getName()] = serviceModel;', 'const std::string name=serviceModel->getName();\n    m_serviceModels.emplace(name,serviceModel.release());')
         text=text.replace('PyObject* result = SPELLpythonHelper::instance().callFunction("spell.utils.spell_service","SupportServices",NULL);\n    Py_IncRef(result);', 'SPELLpyHandle result = SPELLpythonHelper::instance().callFunction("spell.utils.spell_service","SupportServices",NULL);')
         text=text.replace('if (result == Py_False)', 'if (result.get() == Py_False)')
@@ -376,11 +440,16 @@ void SPELLprocedureManager::registerScript(const std::string& file)
     elif name.endswith('SPELLexecutorConfiguration.C'):
         text = text.replace('m_parentProcId = -1;', 'm_parentProcId = ""; // no parent; never a non-UTF-8 sentinel byte')
     elif name == 'lib/SPELL_CTX/src/SPELLcontext.C':
+        text=text.replace('\tSPELLclientManager::instance().removeAllClients();', '''    { SPELLpython313::GIL gil; SPELLprocedureManager::instance().cleanupServices(); }
+    for (const auto& id : SPELLserviceManager::instance().getServiceList())
+        SPELLserviceManager::instance().closeService(id);
+    SPELLserviceManager::instance().cleanup();
+    SPELLclientManager::instance().removeAllClients();''')
         text = text.replace('#include "SPELL_CTX/SPELLcontext.H"', '#include "SPELL_CTX/SPELLcontext.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text,count = re.subn(r'\tif \(SPELLconfiguration::instance\(\).getContextParameter\(USE_DRIVER_TIME\) == "true"\)\n\t\{\n\t\tSPELLdriverManager::instance\(\).cleanup\(true\);\n\t\}', '', text)
         assert count==1
         text = text.replace('SPELLpythonHelper::instance().acquireGIL();', '''{ SPELLpython313::GIL gil;
-      SPELLprocedureManager::instance().cleanupServices();\n      SPELLdriverManager::instance().cleanup(true); }
+      SPELLdriverManager::instance().cleanup(true); }
     // finalize restores the owner's saved thread state itself.''')
         text = text.replace('m_eventFinish.clear();\n\tm_eventFinish.wait();', 'm_eventFinish.wait();')
         text = text.replace('void SPELLcontext::start( const SPELLcontextConfiguration& config )\n{',
@@ -504,6 +573,58 @@ bool SPELLprocessManager::isClosingProcess(const std::string& identifier)
         text=text.replace('\n    usleep(10000000);', '\n    usleep(10000000);\n    if (SPELLprocessManager::instance().isClosingProcess(identifier)) return;')
         text=re.sub(r'(\s*)(SPELLprocessManager::instance\(\).killProcess\(\s*(.*?)\s*\);)',
             r'\1SPELLprocessManager::instance().aboutToCloseProcess(\3);\1\2',text)
+    elif name.endswith('SPELLasRun.H'):
+        text=text.replace('const std::string& procId );', 'const std::string& procId, bool service=false );',1)
+    elif name.endswith('SPELLasRun.C'):
+        text=text.replace('const std::string& procId )', 'const std::string& procId, bool service )',1)
+        text=text.replace('    // Dump procedure header to the AsRun file\n    try', '    // Service identity is authoritative; services are not procedure models.\n    if (service) m_file << "# SERVICE: " << procId << std::endl;\n    else\n    // Dump procedure header to the AsRun file\n    try',1)
+    elif name.endswith('SPELLcifStartupInfo.H'):
+        text=text.replace('procId = info.procId;', 'procId = info.procId;\n        service = info.service;')
+        text=text.replace('procId = info->procId;', 'procId = info->procId;\n        service = info->service;')
+        text=text.replace('std::string procId;', 'bool service=false;\n    std::string procId;')
+    elif name.endswith('SPELLcif.H'):
+        text=text.replace('std::string m_procId;', 'bool m_service=false;\n        std::string m_procId;')
+    elif name.endswith('SPELLcif.C'):
+        text=text.replace('new SPELLasRun( ctx, m_timeId, m_procId )','new SPELLasRun( ctx, m_timeId, m_procId, m_service )')
+        text=text.replace('m_procId = info.procId;', 'm_procId = info.procId;\n    m_service = info.service;')
+        text=text.replace('if (m_procId.find("#") == std::string::npos)', 'if (!m_service && m_procId.find("#") == std::string::npos)')
+    elif name.endswith('SPELLserviceInterpreter.H'):
+        text=text.replace('void mainLoop();','void mainLoop();\n        void shutdown();\n        int exitCode() const { return m_exitCode; }')
+        text=text.replace('SPELLcontrollerIF*       m_controller;', 'bool m_controllerStarted=false;\n        SPELLcontrollerIF*       m_controller;')
+        text=text.replace('SPELLinterpreterConfig   m_config;', 'int m_exitCode=1;\n        SPELLinterpreterConfig   m_config;')
+    elif name.endswith('SPELLserviceInterpreter.C'):
+        text=text.replace('cifStartup.procId = m_service;', 'cifStartup.procId = m_service;\n    cifStartup.service = true;')
+        text=text.replace('#include "SPELL_EXC/SPELLserviceInterpreter.H"', '#include "SPELL_EXC/SPELLserviceInterpreter.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        shutdown=body('interpreter_shutdown.cpp').replace('SPELLinterpreter::','SPELLserviceInterpreter::').replace('m_executor','m_serviceImpl')
+        shutdown=shutdown.replace('        PyEval_SetTrace(nullptr,nullptr);','        PyEval_SetTrace(nullptr,nullptr);\n        SPELLprocedureManager::instance().cleanupServices();')
+        text=section(text,'SPELLserviceInterpreter::~SPELLserviceInterpreter()', 'SPELLserviceInterpreter& SPELLserviceInterpreter::instance()', '''SPELLserviceInterpreter::~SPELLserviceInterpreter()
+{
+    shutdown();
+    s_instance=nullptr;
+}
+'''+shutdown)
+        text=text.replace('m_controller->begin();','m_controller->begin();\n        m_controllerStarted=true;')
+        text=text.replace('        m_cif->cleanup(false);', '        { SPELLsafeThreadOperations release("Join service CIF workers"); m_cif->cleanup(false); }')
+        text=text.replace('        m_controller->stop();', '''        m_controller->stop();
+        { SPELLsafeThreadOperations release("Join service controller");
+          static_cast<SPELLcontroller*>(m_controller)->join(); }
+        m_controllerStarted=false;''')
+        text=text.replace('        // After the execution cycle, wait for the user/server to autorize closure',
+            '        m_exitCode = m_serviceImpl->getStatus() == STATUS_FINISHED ? 0 : 1;\n\n        // After the execution cycle, wait for the user/server to autorize closure')
+        text=text.replace('        LOG_ERROR(msg);\n        // Notify error','        LOG_ERROR(msg);\n        std::cerr << msg << std::endl;\n        // Notify error')
+        text=text.replace('        \t::exit(EIO);', '            throw;')
+    elif name == 'src/service/src/SPELLserviceMain.C':
+        text=text.replace('    // Initialize the interpeter', '    int exitCode=1;\n    try {\n    // Initialize the interpeter')
+        text=text.replace('    interp.mainLoop();', '''    interp.mainLoop(); exitCode=interp.exitCode(); }
+    catch (SPELLcoreException& error) { std::cerr << error.what() << std::endl; }
+    catch (const std::exception& error) { std::cerr << error.what() << std::endl; }
+    interp.shutdown();
+    delete &interp;
+    delete cif;''')
+        start=text.index('int main(')
+        text=text[:start]+text[start:].replace('    return 0;','    return exitCode;')
+    elif name == 'lib/SPELL_CTX/src/SPELLserviceManager.C':
+        text=text.replace('\tif (m_persisTable) delete m_persisTable;', '\tif (m_persisTable) delete m_persisTable;\n    m_persisTable=nullptr;')
     elif name.endswith('SPELLinterpreter.H'):
         text = text.replace('void mainLoop();','void mainLoop();\n        void shutdown();\n        int exitCode() const { return m_exitCode; }')
         text = text.replace('SPELLcontrollerIF*       m_controller;', 'bool m_controllerStarted=false;\n        SPELLcontrollerIF*       m_controller;')
@@ -843,8 +964,18 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         if name.endswith('SPELLexecutionModel.C'):
             text = text.replace('\tm_modelId = modelId;', '\tPy_INCREF(m_frame);\n\tm_modelId = modelId;')
             text = text.replace('SPELLexecutionModel::~SPELLexecutionModel()\n{\n}', 'SPELLexecutionModel::~SPELLexecutionModel()\n{\n    Py_XDECREF(m_frame);\n}')
-        elif name.endswith('SPELLexecutorImpl.C'):
-            text = text.replace('    return SPELLexecutor::instance().dispatch(obj, frame, what, args);','''    try { return SPELLexecutor::instance().dispatch(obj,frame,what,args); }
+        elif name.endswith(('SPELLexecutorImpl.C','SPELLserviceImpl.C')):
+            text = text.replace('    return SPELLexecutor::instance().dispatch(obj, frame, what, args);','''    try {
+        int result=SPELLexecutor::instance().dispatch(obj,frame,what,args);
+        if (result<0) {
+            // Stop dispatch while CPython unwinds its exception tables. A
+            // second trace failure would interrupt finally/context managers.
+            PyObject* pending=PyErr_GetRaisedException();
+            PyEval_SetTrace(nullptr,nullptr);
+            PyErr_SetRaisedException(pending);
+        }
+        return result;
+    }
     catch (SPELLcoreException& error) {
         if (!PyErr_Occurred()) PyErr_SetString(PyExc_RuntimeError,error.what().c_str());
     } catch (const std::exception& error) {
@@ -852,11 +983,21 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
     } catch (...) {
         if (!PyErr_Occurred()) PyErr_SetString(PyExc_RuntimeError,"SPELL dispatch failed");
     }
+    PyObject* pending=PyErr_GetRaisedException();
+    PyEval_SetTrace(nullptr,nullptr);
+    PyErr_SetRaisedException(pending);
     return -1;''')
-            text = section(text,'void SPELLexecutorImpl::installCallingArguments()',
-                'void SPELLexecutorImpl::execute()',body('executor_environment.cpp'))
+            cls='SPELLserviceImpl' if name.endswith('SPELLserviceImpl.C') else 'SPELLexecutorImpl'
+            text = section(text,'void '+cls+'::installCallingArguments()',
+                'void '+cls+'::execute()',body('executor_environment.cpp').replace('SPELLexecutorImpl',cls))
             text = section(text,'\t// Create proc dictionary object and install it',
-                '\t// Load SCDB and GDB',body('executor_proc.cpp'))
+                '\tbool success = true;' if cls=='SPELLserviceImpl' else '\t// Load SCDB and GDB',body('executor_proc.cpp'))
+            if cls=='SPELLserviceImpl':
+                text=text.replace('\t\t\tservice.start();', '''            service.start();
+            auto& error=SPELLerror::instance();
+            result=error.isExecutionAborted() ? EXECUTION_ABORTED :
+                error.isExecutionTerminated() ? EXECUTION_TERMINATED : EXECUTION_SUCCESS;''')
+                text=text.replace('    DEBUG("[E] Starting service execution");','    DEBUG("[E] Starting service execution");\n    SPELLerror::instance().clearErrors();')
             text = text.replace('PyObject* proc = getVariableManager().getVariableRef(DatabaseConstants::PROC);',
                 'PyObject* proc = PyDict_GetItemString(SPELLpythonHelper::instance().getMainDict(),DatabaseConstants::PROC.c_str());')
             text = text.replace('PyObject* prev = PyDict_GetItemString(proc, DatabaseConstants::STEP.c_str());',

@@ -58,10 +58,10 @@ SPELL-ExecutorCmd_v3 -f procedure.py -c config/server/server.xml -n example
 The configuration is an original SPELL server/context/driver layout. The test
 configuration uses empty local databases and no external control system.
 
-This milestone does not complete v0.2. Actual executor warm checkpoints and
-recovery, service/context lifecycle, complete CIF/child/scheduler control, and
-external resource recovery remain open. Recovery component tests do not substitute
-for those tests. Finish/Abort tests assert termination and status; they do not
+This historical milestone did not complete v0.2. Later milestones qualify
+[actual executor recovery](EXECUTOR_RECOVERY.md) and the
+[context/service lifecycle](SERVICE_RUNTIME.md). Broader CIF/child/scheduler
+control and external resource recovery remain separate gates. Finish/Abort tests assert termination and status; they do not
 qualify all finally-block semantics. Compiled-away Step labels are not qualified
 Goto targets. Operational DSS integration and IDE distributions belong to later
 release gates.

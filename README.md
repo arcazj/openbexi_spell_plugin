@@ -11,7 +11,7 @@ The isolated original-source alpha foundation is available under
 [qualification](docs/SOURCE_PORT.md). It does not replace this working bounded
 adapter or complete the native SPELL executor port.
 
-The latest [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
+The [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
 controls the original server executor over IPC, verifies its result and checks
 normal shutdown. Its build also passes the 23 standalone command checks. See the
 [execution status](docs/EXECUTION_TO_V06.md) for the remaining release gates.
@@ -74,6 +74,8 @@ are never automatically replayed by this adapter. Operational work requires the
 full server's separate migration and acceptance gate. See
 [v0.1 qualification](docs/QUALIFICATION.md) for the tested scope.
 
-Native service registration and worker lifecycle progress is recorded in
-[service qualification](docs/SERVICE_RUNTIME.md). The original service process and
-broader native controls still gate the v0.2 release.
+The latest [service qualification](docs/SERVICE_RUNTIME.md) runs the original
+service executable, verifies native runtime data and its worker result, then
+closes it with Python cleanup and normal child exit. Native and recovery checks
+pass on pinned CPython 3.13.15. Broader native controls and service failure/recovery
+remain v0.2 gates.
