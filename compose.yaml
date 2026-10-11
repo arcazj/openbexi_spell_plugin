@@ -1,0 +1,23 @@
+name: openbexi-spell-plugin
+services:
+  dss:
+    image: openbexi-spell-plugin-dss:0.1.0
+    build: .
+    ports:
+      - "127.0.0.1:8085:8085"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 256m
+    volumes:
+      - dss-test-data:/var/lib/dss
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  dss-test-data:
