@@ -14,6 +14,7 @@ sha = lambda data: hashlib.sha256(data).hexdigest()
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence', required=True, type=Path)
+    parser.add_argument('--output', type=Path, help='Separate report for a subsequent native integration milestone')
     parser.add_argument('--accept-v02', action='store_true', help='Record reviewed v0.2 native-foundation acceptance, retaining later conformance/distribution gates')
     args = parser.parse_args()
     evidence = args.evidence.resolve()
@@ -82,7 +83,7 @@ def main():
                 policy.get('live_reconnect_repetitions_per_kind')!=3):
             raise ValueError('Native lifecycle and recovery policy acceptance incomplete')
     report = {'milestone': 'Installed original-source native diagnostic package',
-              'release': 'v0.2 native foundation qualified' if args.accept_v02 else 'v0.2 native foundation candidate; acceptance recorded separately',
+              'release': 'v0.2 native foundation qualified' if args.accept_v02 else 'Native integration candidate; release acceptance recorded separately',
               'version': result['manifest']['version'],'v02_foundation_qualified':args.accept_v02,
               'scope': 'Two identical packages from one qualified native build; fresh Debian image install/run/import/removal',
               'full_release_qualified': False, 'full_native_rebuild_reproducibility': False,
@@ -91,7 +92,7 @@ def main():
               'remaining': ([] if args.accept_v02 else ['Final native foundation acceptance review']) +
                            ['Production platform/toolchain locks and independent native rebuild reproducibility',
                             'IDE host plugins, original DSS drivers, full conformance and v0.6 distribution']}
-    path = root / 'docs/NATIVE_PACKAGE_QUALIFICATION.json'
+    path = args.output or root / 'docs/NATIVE_PACKAGE_QUALIFICATION.json'
     path.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(json.dumps({'wheel': result['wheel'], 'sha256': result['sha256'],
                       'installed_tests': installed['tests'], 'report': str(path)}))

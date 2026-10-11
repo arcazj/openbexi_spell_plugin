@@ -192,7 +192,10 @@ class PendingService:
                         if controller==name: self.assertEqual((output/(name+'-result.txt')).read_text(),value)
                     if controller=='native_child_parent':
                         self.assertEqual((output/'native_child-result.txt').read_text(),'42')
-                    if controller=='native_controls': self.assertEqual((output/(controller+'-result.txt')).read_text(),'42')
+                    if controller=='native_controls':
+                        self.assertEqual((output/(controller+'-result.txt')).read_text(),'42')
+                        self.assertEqual((output/'native_controls-quoted.txt').read_text(),'literal argument')
+                        self.assertIn('QUOTED_PROCEDURE_COMPLETE',result.stdout)
                     if controller=='native_prompt': self.assertEqual((output/(controller+'-result.txt')).read_text(),'answered')
                     if controller=='native_failure': self.assertEqual((output/(controller+'-closed.txt')).read_text(),'unwound')
                     if controller in ('native_pause','native_abort'):

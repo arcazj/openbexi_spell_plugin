@@ -9,7 +9,7 @@ environment; actual host integration is the next phase.
 | Release | State | Required evidence |
 | --- | --- | --- |
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
-| v0.3 | Next | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
+| v0.3 | In progress; native host foundation and neutral IDE extension qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Pending v0.3 and IDE service prerequisites | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
 | v0.5 | Pending v0.4 | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending v0.5 | Reproducible distribution, supported platform matrix, clean installation/removal and upgrades, actual host and DSS-container workflows |
@@ -115,7 +115,10 @@ kind. All preceding native gates, ten context tests and 25 lifecycle runs pass.
 The [installed 0.2.0 artifact](NATIVE_PACKAGE.md) now passes seven fresh-image
 checks, removal, byte-identical packaging from one qualified build and the full
 native gate. The v0.2 foundation is accepted on Linux x86_64 / CPython 3.13.15.
-Implement and qualify the v0.3 OpenBEXI and JetBrains host extensions next.
+The [host integration milestone](HOST_RUNTIME.md) adds the qualified native
+0.3.0a2 foundation and a committed neutral IDE extension. Original display-buffer
+completion ordering and full installed-host acceptance remain open. Continue
+through the v0.3 OpenBEXI and JetBrains host gates before promoting v0.4.
 The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 

@@ -14,7 +14,7 @@ import subprocess
 import sys
 import sysconfig
 
-VERSION = '0.2.0'
+VERSION = '0.3.0a2'
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
@@ -80,7 +80,7 @@ requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "openbexi-spell-source"
-version = "0.2.0"
+version = "@VERSION@"
 description = "Original-source SPELL native diagnostic runtime for isolated CPython 3.13.15"
 requires-python = "==3.13.15"
 license = "GPL-3.0-or-later AND LGPL-3.0-or-later"
@@ -97,7 +97,7 @@ where = ["src"]
 namespaces = false
 [tool.setuptools.package-data]
 spell_native = ["**/*"]
-''')
+'''.replace('@VERSION@', VERSION))
     (output / 'setup.py').write_text('''from setuptools import setup, Distribution
 class NativeDistribution(Distribution):
     def has_ext_modules(self): return True

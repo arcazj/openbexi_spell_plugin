@@ -407,6 +407,12 @@ void SPELLchildManager::prepareChild(const std::string& instanceId)
         bool m_traceContinue = false;''')
     elif name.endswith('SPELLcontroller.C'):
         text=text.replace('if (!m_error && !m_finished)', 'if (!m_error)')
+        # A GUI/DAP host must distinguish a pending step from a quiescent pause.
+        # Upstream doStep kept PAUSED throughout execution, so a fast next
+        # command could consume stale status before the tracing thread parked.
+        step='    setMode( MODE_STEP );\n\n    doContinue();'
+        assert text.count(step)==1
+        text=text.replace(step,'    setMode( MODE_STEP );\n    setStatus(STATUS_RUNNING);\n\n    doContinue();')
         text=text.replace('        executeCommand(cmd);', '''        bool deferred=false;
         if (cmd.id==CMD_SKIP || cmd.id==CMD_GOTO) {
             std::lock_guard<std::mutex> guard(m_traceMutex);
@@ -1660,6 +1666,26 @@ void SPELLipcClientInterface::waitReady()
             'const bool canRestore = false; // Service start() cannot consume a restored continuation.')
         text=text.replace('"Warm start mechanism disabled", true',
             '"Checkpoint recovery is unavailable for native services", true')
+    if name in ('lib/SPELL_CTX/src/SPELLexecutor.C', 'lib/SPELL_CTX/src/SPELLservice.C'):
+        text=body('shell_quote.inc')+'\n'+text
+        for field in ('getConfigFile','getContextName','getInstanceId','getWsFilename'):
+            original='+ m_model.'+field+'();'
+            assert text.count(original)==1,(name,field)
+            text=text.replace(original,'+ SPELLquoteArgument(m_model.'+field+'());')
+        marker='command += " -c "'
+        assert text.count(marker)==1
+        # The shipped ExecutorProgram begins with $SPELL_HOME. Preserve that
+        # original path expansion before making it one literal shell argument.
+        # Literal absolute paths must not pass through the upstream resolver,
+        # which reconstructs slash-separated tokens without the leading slash.
+        text=text.replace(marker,"if (!command.empty() && command.front()=='$') command = SPELLutils::resolvePath(command);\n        command = SPELLquoteArgument(command);\n        "+marker)
+    elif name=='lib/SPELL_LST/src/SPELLlistenerContext.C':
+        text=body('shell_quote.inc')+'\n'+text
+        start=text.index('    cmd = SPELLutils::getSPELL_HOME()')
+        end=text.index(';',start)+1
+        text=text[:start]+'''    cmd = SPELLquoteArgument(SPELLutils::getSPELL_HOME() + PATH_SEPARATOR + "bin" + PATH_SEPARATOR + "SPELL-Context")
+        + " -n " + SPELLquoteArgument(name) + " -s " + ISTR(m_port)
+        + " -c " + SPELLquoteArgument(m_configFile);'''+text[end:]
     return text.encode('utf-8')
 
 

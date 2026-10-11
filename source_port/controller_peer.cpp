@@ -127,7 +127,9 @@ int main(int argc,char** argv) {
                 {MessageField::FIELD_VARIABLE_GLOBAL,"True"}});
             require(variables().at("value")=="40","Variable update did not persist");
             request(ExecutorMessages::REQ_CLEAR_BREAKPOINT);
-            command(ExecutorMessages::MSG_CMD_STEP); waitStatus("PAUSED",lineOf("# SKIP"));
+            command(ExecutorMessages::MSG_CMD_STEP);
+            waitStatus("RUNNING"); // The pending step cannot masquerade as a pause.
+            waitStatus("PAUSED",lineOf("# SKIP"));
             require(variables().at("checkpoint")=="41","Step did not execute exactly one statement");
             command(ExecutorMessages::MSG_CMD_SKIP); waitStatus("PAUSED",lineOf("# GOTO_FROM"));
             command(ExecutorMessages::MSG_CMD_GOTO,{{MessageField::FIELD_GOTO_LINE,"-1"}});
@@ -175,6 +177,35 @@ int main(int argc,char** argv) {
                 "Original Python failure details lost: "+failure.dataStr());
         } else throw std::runtime_error("Unknown controller scenario");
         request(ContextMessages::REQ_CLOSE_EXEC,true);
+        if (procedure=="native_controls") {
+            const std::string quoted="native quoted ' space#1";
+            auto quotedRequest=[&](const std::string& id,Fields fields={}) {
+                auto msg=message(id,true,fields);msg.setType(MSG_TYPE_REQUEST);
+                msg.set(MessageField::FIELD_PROC_ID,quoted);
+                auto reply=client.sendRequest(msg,7000);
+                require(!reply.isVoid() && reply.getType()!=MSG_TYPE_ERROR,"Quoted procedure request failed: "+reply.dataStr());
+                return reply;
+            };
+            quotedRequest(ContextMessages::REQ_OPEN_EXEC,{
+                {MessageField::FIELD_GUI_MODE,"CONTROL"},{MessageField::FIELD_ARGS,"{}"},
+                {MessageField::FIELD_OPEN_MODE,"{Automatic:True,Visible:True,Blocking:False}"}});
+            bool ran=false,finished=false;
+            auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(10);
+            while (std::chrono::steady_clock::now()<deadline) {
+                const auto status=quotedRequest(ContextMessages::REQ_EXEC_INFO).get(MessageField::FIELD_EXEC_STATUS);
+                if (status=="PAUSED" && !ran) {
+                    auto msg=message(ExecutorMessages::MSG_CMD_RUN,false,{});
+                    msg.setType(MSG_TYPE_ONEWAY);msg.setReceiver(quoted);
+                    msg.set(MessageField::FIELD_PROC_ID,quoted);client.sendMessage(msg);ran=true;
+                }
+                if (status=="FINISHED") { finished=true;break; }
+                require(status!="ERROR" && status!="ABORTED","Quoted procedure failed");
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            }
+            require(ran && finished,"Quoted procedure did not finish");
+            quotedRequest(ContextMessages::REQ_CLOSE_EXEC);
+            std::cout<<"QUOTED_PROCEDURE_COMPLETE"<<std::endl;
+        }
         request(ContextMessages::REQ_GUI_LOGOUT,true);
         client.disconnect();
         std::cout << "CONTROLLER_SCENARIO_COMPLETE " << procedure << std::endl;

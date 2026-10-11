@@ -5,8 +5,9 @@ from pathlib import Path
 def write_procedures(directory: Path):
     header = "##########\n# NAME: Native controller qualification\n# SPACECRAFT: Y\n# PYTHON VERSION: 3\n##########\n"
     cases = {
-        'native_controls': """value = 21
-checkpoint = value + 1  # BREAK
+        'native_controls': """import time
+value = 21
+checkpoint = (time.sleep(0.4), value + 1)[1]  # BREAK
 skipped = 100  # SKIP
 if value: raise AssertionError('Goto did not skip the guarded statement')  # GOTO_FROM
 assert checkpoint == 41 and value == 40 and 'skipped' not in globals()  # GOTO_TO
@@ -44,4 +45,6 @@ finally:
 """
     for name, body in cases.items():
         (directory / (name + '.py')).write_text(header + body)
+    (directory / "native quoted ' space.py").write_text(header +
+        "from pathlib import Path\nPath('/out/native_controls-quoted.txt').write_text('literal argument')\n")
     return tuple(cases)

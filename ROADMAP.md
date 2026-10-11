@@ -66,6 +66,10 @@ library. Verify and exercise install/activate/explicit-import Run/Debug/uninstal
 in real private IntelliJ IDEA and PyCharm sandboxes. Plain Python IDE operation
 survives plugin removal. A Python wheel alone is not JetBrains compatibility.
 
+In progress: the native 0.3.0a2 foundation and neutral IDE extension are qualified.
+The installed host candidates and original display-buffer completion fix remain
+under test. See [host integration](docs/HOST_RUNTIME.md) for evidence and open gates.
+
 ## v0.4 — drivers and operating modes
 
 Reuse the original Driver Development Manual and framework lifecycle. Bridge the
