@@ -29,6 +29,16 @@ public:
     GIL& operator=(const GIL&) = delete;
 };
 
+// PyFrame_GetCode returns a new reference. Keep it alive for the whole
+// expression, including original analyzer base-class construction.
+class FrameCode {
+    Owned object;
+public:
+    explicit FrameCode(PyFrameObject* frame):
+        object(reinterpret_cast<PyObject*>(PyFrame_GetCode(frame))) {}
+    PyCodeObject* get() const { return reinterpret_cast<PyCodeObject*>(object.get()); }
+};
+
 inline std::string text(PyObject* object) {
     if (!object) return "<unavailable>";
     Owned rendered(PyObject_Str(object));
@@ -43,6 +53,13 @@ inline std::string filename(PyFrameObject* frame) {
     Owned code(reinterpret_cast<PyObject*>(PyFrame_GetCode(frame)));
     if (!code.get()) return "<unavailable>";
     Owned name(PyObject_GetAttrString(code.get(), "co_filename"));
+    return text(name.get());
+}
+
+inline std::string codename(PyFrameObject* frame) {
+    FrameCode code(frame);
+    if (!code.get()) return "<unavailable>";
+    Owned name(PyObject_GetAttrString(reinterpret_cast<PyObject*>(code.get()), "co_name"));
     return text(name.get());
 }
 }

@@ -3,6 +3,9 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLexecutionModel.C': '45545e623c76fcf2d0817ed761f262a835479e08adeaf0658bb3f956b94c5038',
+    'lib/SPELL_EXC/src/SPELLexecutorImpl.C': '3a891afdf5e0dbcd75f97db263e3c30311c597872e434fc91b6c993683b2b0df',
+    'lib/SPELL_EXC/src/SPELLserviceImpl.C': '9e56ddfa666429777f37ab7bedb76de9a539145050123096554339bb1ea40382',
     'lib/SPELL_EXC/src/SPELLbytecode.C': 'ab9e4c3accad70a664cfbfff43da74686777213f0ec98cd85250f73df04fcd60',
     'include/SPELL_EXC/SPELLbytecode.H': 'ade8253aa4387aa5f0fa633a31ec6e1689eb88fc960fb64ece274427141eeb18',
     'lib/SPELL_EXC/src/SPELLvariableMonitor.C': '7162c7a9abab73cb9b9e20bc34f8e32185d6a4ab728e12d80989bf64bcb27aa7',
@@ -40,7 +43,13 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLbytecode.H'):
+    if name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):
+        text = text.replace('// GLOBALS ', '#include "SPELL_UTIL/SPELLpython313.H"\n\n// GLOBALS ', 1)
+        text = text.replace('PYSTR(frame->f_code->co_filename)', 'SPELLpython313::filename(frame)')
+        text = text.replace('PYSTR(frame->f_code->co_name)', 'SPELLpython313::codename(frame)')
+        text = text.replace('frame->f_lineno', 'PyFrame_GetLineNumber(frame)')
+        text = text.replace('frame->f_code', 'SPELLpython313::FrameCode(frame).get()')
+    elif name.endswith('SPELLbytecode.H'):
         text = text.replace('unsigned int end_lineno;', '''unsigned int end_lineno;
             unsigned int body_lineno;
             unsigned int finally_lineno;

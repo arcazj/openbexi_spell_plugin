@@ -15,6 +15,42 @@ spec.loader.exec_module(native)
 
 
 class NativeUtil(unittest.TestCase):
+    def test_frame_metadata_live_nested_frames_and_released_code(self):
+        source = 'import sys\ndef nested():\n    return sys._getframe()\nframe = nested()\n'
+        env = {}
+        code = compile(source, '/out/通信.py', 'exec')
+        exec(code, env)
+        frame = env.pop('frame')
+        expected = (frame.f_code, frame.f_code.co_filename, 'nested', frame.f_lineno, frame.f_lasti)
+        initial_refs = sys.getrefcount(frame.f_code)
+        for _ in range(2000):
+            self.assertEqual(native.frame_metadata(frame), expected)
+        self.assertEqual(sys.getrefcount(frame.f_code), initial_refs)
+        ref = weakref.ref(frame.f_code)
+        env.clear()
+        del frame, expected, code
+        gc.collect()
+        self.assertIsNone(ref())
+        with self.assertRaises(TypeError):
+            native.frame_metadata(None)
+
+    def test_frame_metadata_on_each_real_trace_event(self):
+        code = compile('def f():\n    x=1\n    raise ValueError(x)\ntry:\n    f()\nexcept ValueError:\n    pass\n', '<metadata-trace>', 'exec')
+        observations = []
+        def trace(frame, event, arg):
+            if frame.f_code.co_filename == '<metadata-trace>':
+                observations.append(event)
+                self.assertEqual(native.frame_metadata(frame),
+                    (frame.f_code, frame.f_code.co_filename, frame.f_code.co_name, frame.f_lineno, frame.f_lasti))
+            return trace
+        previous = sys.gettrace()
+        try:
+            sys.settrace(trace)
+            exec(code, {})
+        finally:
+            sys.settrace(previous)
+        self.assertEqual(set(observations), {'call', 'line', 'return', 'exception'})
+
     def test_compiler_executes_unicode_nested_code(self):
         source = "label = '通信 🛰'\ndef function(x):\n    return [i*i for i in range(x)]\nresult = function(5)\n"
         code = native.compile(source)

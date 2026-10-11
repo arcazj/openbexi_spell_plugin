@@ -11,6 +11,7 @@ import sysconfig
 import zipfile
 
 from native_patches import apply_tree
+from native_manifest import libraries
 
 archive = Path('/input/SPELL2.6.10-src.zip')
 assert hashlib.sha256(archive.read_bytes()).hexdigest() == '2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed'
@@ -30,7 +31,8 @@ with zipfile.ZipFile(archive) as z:
             target.write_bytes(z.read(member))
 patches = apply_tree(source)
 (output / 'native-patches.json').write_text(json.dumps(patches, indent=2)+'\n')
-units = sorted(p for lib in ('SPELL_UTIL', 'SPELL_SYN') for p in (source/'lib'/lib).rglob('*.C'))
+manifest = libraries(source)
+units = sorted(source/p for lib in ('SPELL_UTIL', 'SPELL_SYN') for p in manifest[lib]['units'])
 units.append(Path('/input/native/qualify_util.cpp'))
 flags = ['c++', '-std=c++17', '-fPIC', '-g', '-O1', '-pthread', '-fmax-errors=8',
          '-fsanitize=address,undefined', '-fno-sanitize-recover=all', '-fno-omit-frame-pointer',
@@ -55,8 +57,8 @@ report = {'python':sys.version, 'platform':platform.platform(), 'flags':flags,
                            for p in sorted(Path('/input').rglob('*'))
                            if p.is_file() and '__pycache__' not in p.parts and p != archive},
           'compiler':subprocess.check_output(['c++','--version'], text=True).splitlines()[0],
-          'packages':subprocess.check_output(['dpkg-query','-W','g++','libxerces-c-dev','liblog4cplus-dev','zlib1g-dev'],text=True),
-          'units':results, 'full_native_qualified':False}
+          'packages':subprocess.check_output(['dpkg-query','-W','g++','libxerces-c-dev','liblog4cplus-dev','libncurses-dev','zlib1g-dev'],text=True),
+          'units':results, 'library_manifest':manifest, 'full_native_qualified':False}
 if all(r['exit_code']==0 for r in results):
     extension = output / ('_spell_util_qualification'+sysconfig.get_config_var('EXT_SUFFIX'))
     command = ['c++','-shared','-pthread','-fsanitize=address,undefined','-Wl,--no-undefined',
@@ -133,9 +135,12 @@ def syntax_unit(path):
     log.write_text(result.stdout+result.stderr)
     return {'unit':stem,'exit_code':result.returncode,'diagnostic':log.name}
 
-downstream = sorted(p for lib in ('SPELL_DTA','SPELL_EXC','SPELL_WS') for p in (source/'lib'/lib).rglob('*.C'))
+downstream = sorted(source/p for lib in ('SPELL_DTA','SPELL_EXC','SPELL_WS') for p in manifest[lib]['units'])
 with ThreadPoolExecutor(max_workers=4) as pool:
     report['downstream_syntax'] = list(pool.map(syntax_unit, downstream))
+remaining = sorted(source/p for lib in manifest for p in manifest[lib]['units'] if source/p not in units and source/p not in downstream)
+with ThreadPoolExecutor(max_workers=4) as pool:
+    report['remaining_library_syntax'] = list(pool.map(syntax_unit, remaining))
 (output/'native-build.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({'compiled':sum(r['exit_code']==0 for r in results), 'units':len(results),
                   'link':report.get('link_exit_code'), 'runtime':report.get('runtime_exit_code')}))

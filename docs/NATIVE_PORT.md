@@ -90,6 +90,12 @@ The [bytecode analyzer port](BYTECODE_ANALYSIS.md) adds 14 source/disassembly
 checks and raises the analyzer/watch total to 57. The compiler binds source to
 code identity with weak ownership; interpreter reinitialization still passes.
 
+The [executor frame port](EXECUTOR_FRAME_PORT.md) adds public frame getters and
+two utility checks (18 total). Its corrected inventory follows all 16 original
+Python 3 library Makefiles: 135 of 143 units pass compilation/syntax checks.
+Eight frame-manager/warm-start units remain open. The historical subset counts
+above are preserved as evidence of their original scope.
+
 Build and export into a new evidence directory:
 
 ```powershell

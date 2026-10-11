@@ -138,7 +138,17 @@ static PyObject* native_trace(PyObject*, PyObject* args) {
     if (!answer) { PyErr_SetString(PyExc_KeyError, "result"); return nullptr; }
     return Py_BuildValue("(Oi)", answer, state.count);
 }
+static PyObject* frame_metadata(PyObject*, PyObject* object) {
+    if (!PyFrame_Check(object)) { PyErr_SetString(PyExc_TypeError, "expected a frame"); return nullptr; }
+    auto* frame = reinterpret_cast<PyFrameObject*>(object);
+    SPELLpython313::FrameCode code(frame);
+    std::string filename = SPELLpython313::filename(frame);
+    std::string name = SPELLpython313::codename(frame);
+    return Py_BuildValue("(Ossii)", code.get(), filename.c_str(), name.c_str(),
+        PyFrame_GetLineNumber(frame), PyFrame_GetLasti(frame));
+}
 static PyMethodDef methods[] = {
+    {"frame_metadata", frame_metadata, METH_O, nullptr},
     {"compile", compile_source, METH_O, nullptr},
     {"compile_file", compile_file, METH_O, nullptr},
     {"jump", line_jump, METH_VARARGS, nullptr},

@@ -13,7 +13,10 @@ def main():
     parser.add_argument('--storage', action='store_true', help='Require WS storage checks and all preceding native checks')
     parser.add_argument('--watch', action='store_true', help='Require live variable-monitor checks and all preceding checks')
     parser.add_argument('--bytecode', action='store_true', help='Require source-bound bytecode checks and all preceding checks')
+    parser.add_argument('--frames', action='store_true', help='Require public frame accessor checks and original v3 library inventory')
     args = parser.parse_args()
+    if args.frames:
+        args.bytecode = True
     if args.bytecode:
         args.watch = True
     if args.watch:
@@ -86,7 +89,21 @@ def main():
             raise ValueError('Original bytecode analyzer qualification failed')
         report['milestone'] = 'CPython 3.13 original bytecode analyzer with identity-bound source metadata'
         report['qualification_scope'] += '; original SPELLbytecode public disassembly and source-scope analysis'
-    name = 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.frames:
+        manifest = build.get('library_manifest', {})
+        all_units = {u for lib in manifest.values() for u in lib['units']}
+        checked = {u['unit']:u['exit_code'] for u in build['downstream_syntax'] + build.get('remaining_library_syntax', [])}
+        checked.update({u['unit']:u['exit_code'] for u in build['units'] if u['unit'].startswith('lib/')})
+        frames = {'lib/SPELL_EXC/src/'+name for name in ('SPELLexecutionModel.C','SPELLexecutorImpl.C','SPELLserviceImpl.C')}
+        if (runtime['tests'] < 18 or len(manifest) != 16 or len(all_units) != 143
+                or set(checked) != all_units or any(checked.get(u) != 0 for u in frames)
+                or any(u['exit_code'] for u in build['remaining_library_syntax'])):
+            raise ValueError('Public frame accessor/library inventory qualification failed')
+        report['milestone'] = 'CPython 3.13 public executor frame access and original Python 3 library inventory'
+        report['qualification_scope'] += '; public frame getters tested, executor/model/service units syntax-checked; all 143 original v3 library units inventoried'
+        report['library_syntax'] = {'total':len(checked), 'pass':sum(v==0 for v in checked.values()),
+            'fail':sum(v!=0 for v in checked.values())}
+    name = 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

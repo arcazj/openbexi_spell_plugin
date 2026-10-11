@@ -46,6 +46,12 @@ instructions and source scopes. Analyzer/watch checks now total 57; UTIL has 16,
 storage has 17, and three embedded cycles pass. The syntax probe is 50 of 63.
 Full executor/service/context and WS recovery integration remain the v0.2 gates.
 
+The [executor frame-access milestone](EXECUTOR_FRAME_PORT.md) adds two passing
+utility checks (18 total) and ports the model and two dispatchers. Reading the
+original Python 3 Makefiles corrects the inventory: 143 library units across 16
+libraries, 135 passing compilation/syntax checks and eight remaining failures.
+Python 2-only handlers are excluded by the upstream build, not silently replaced.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only
