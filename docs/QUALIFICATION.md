@@ -41,3 +41,8 @@ blocked filesystem deletion commands; those caches were not silently discarded.
 Full original-source CPython porting, every legacy language family and actual
 IntelliJ/PyCharm host installation are explicit later gates. The current wheel
 contains the Apache-licensed bounded SDK/DSS, not the complete upstream GPL library.
+
+A later [DSS container runtime probe](DSS_CONTAINER_RUNTIME.md) successfully starts
+the existing image and exercises its internal HTTP/binary TCP command workflow.
+This supersedes the host startup blocker, while preserving the v0.1 release-time
+record above; published host access and v0.6 workflows remain unqualified.

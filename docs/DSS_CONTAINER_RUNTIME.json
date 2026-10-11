@@ -1,0 +1,40 @@
+{
+  "containers": [
+    {
+      "name": "spell-plugin-runtime-probe-20261011",
+      "id": "c4848220f2321ead79b3912a38d55d1ed72d9ae3023725168bd6762a476fcc65",
+      "image": "sha256:ff0c97f3eb5e861e00301302fd779713b055ccefcbde81b8412d2471799f158c",
+      "exit_code": 0,
+      "started": "2026-10-11T12:37:03.9372974Z",
+      "finished": "2026-10-11T12:37:04.0886526Z"
+    },
+    {
+      "name": "spell-plugin-dss-probe-20261011",
+      "id": "4530bdf57522942e31aebb994c471334c8f9bb794b71a20f2c17c27957a2bde9",
+      "image": "sha256:ff0c97f3eb5e861e00301302fd779713b055ccefcbde81b8412d2471799f158c",
+      "exit_code": 0,
+      "started": "2026-10-11T12:37:42.520789Z",
+      "finished": "2026-10-11T12:37:43.4105945Z"
+    }
+  ],
+  "probe_sha256": "626afc5297ec5049aff2596b543257bed02824c10f67466fc4e90a49be759f88",
+  "behavior": {
+    "uid": 10003,
+    "health": "ready",
+    "command_effect": true,
+    "commands_executed": 1,
+    "binary_stages": [
+      "ACKNOWLEDGEMENT",
+      "LOADING",
+      "ONBOARD_EXECUTION",
+      "RELEASE",
+      "TRANSPORT"
+    ],
+    "network": "none; in-container loopback",
+    "host_http_published": false,
+    "owned_workers_joined": true
+  },
+  "probe": "scripts/qualify_dss_container.py",
+  "scope": "Existing bounded v0.1 image; isolated in-container HTTP/binary TCP behavior. Not original driver or v0.6 acceptance.",
+  "probe_containers_removed": true
+}
