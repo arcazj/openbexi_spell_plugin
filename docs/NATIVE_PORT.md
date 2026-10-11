@@ -124,3 +124,8 @@ The latest [frame-manager component milestone](FRAME_MANAGER.md) links the
 original manager and dependencies, adds twelve component checks and qualifies
 interpreter-local WS filter ownership. The current full library inventory is
 139/143; the older counts above describe their historical evidence snapshots.
+
+The [DTA runtime milestone](DTA_RUNTIME.md) links all five original DTA units,
+qualifies 18 component cases and three additional interpreter cycles. It repairs
+ownership and conversion failures; real executor/CIF notifications and prompting
+are still required before the full v0.2 runtime can be released.

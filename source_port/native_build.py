@@ -141,6 +141,37 @@ if all(r['exit_code']==0 for r in results):
                 (output/'storage-runtime.log').write_text(result.stdout+result.stderr)
                 report['storage_runtime_exit_code'] = result.returncode
 
+        dta_units = [source/p for p in manifest['SPELL_DTA']['units']]
+        dta_units.append(Path('/input/native/qualify_dta.cpp'))
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            report['dta_units'] = list(pool.map(compile_unit, dta_units))
+        if all(r['exit_code'] == 0 for r in report['dta_units'] + report['analysis_units']):
+            extension = output/('libSPELL_DTA_v3'+sysconfig.get_config_var('EXT_SUFFIX'))
+            objects = [r for r in results + report['analysis_units'] + report['dta_units']
+                       if r['unit'] not in ('qualify_util.cpp', 'qualify_analysis.cpp')]
+            result = subprocess.run(['c++','-shared','-pthread','-fsanitize=address,undefined','-Wl,--no-undefined',
+                *[str(output/r['object']) for r in objects], '-L'+sysconfig.get_config_var('LIBDIR'),
+                '-lpython3.13','-llog4cplus','-lxerces-c','-lz','-o',str(extension)],capture_output=True,text=True,timeout=120)
+            (output/'dta-link.log').write_text(result.stdout+result.stderr)
+            report['dta_link_exit_code'] = result.returncode
+            if result.returncode == 0:
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_dta.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'dta-runtime.log').write_text(result.stdout+result.stderr)
+                report['dta_runtime_exit_code'] = result.returncode
+                program = output/'qualify_dta_embed'
+                result = subprocess.run(flags+['/input/native/qualify_dta_embed.cpp',
+                    *[str(output/r['object']) for r in objects if r['unit'] != 'qualify_dta.cpp'],
+                    '-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-llog4cplus','-lxerces-c','-lz',
+                    '-o',str(program)],capture_output=True,text=True,timeout=120)
+                (output/'dta-embed-build.log').write_text(result.stdout+result.stderr)
+                report['dta_embed_build_exit_code'] = result.returncode
+                if result.returncode == 0:
+                    result = subprocess.run([str(program)],env=env,capture_output=True,text=True,timeout=120)
+                    (output/'dta-embed-runtime.log').write_text(result.stdout+result.stderr)
+                    report['dta_embed_runtime_exit_code'] = result.returncode
+                    if result.returncode == 0: report['dta_embedding'] = json.loads(result.stdout)
+
 def syntax_unit(path):
     stem = path.relative_to(source).as_posix()
     log = output/(stem.replace('/','_')+'.syntax.log')

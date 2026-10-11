@@ -74,6 +74,11 @@ for live script edits, frame ownership, database sharing and WS filter lifecycle
 The original library inventory is now 139/143; four WS implementations remain.
 Full evaluation/recovery, DTA and context integration still gate v0.2.
 
+The [DTA native type milestone](DTA_RUNTIME.md) adds 18 isolated-process checks
+and 3,000 container lifetimes across three more interpreter cycles. Native data
+ownership, conversion and missing-executor errors now pass. DTA notifications
+and prompts through the real CIF remain part of the executor integration gate.
+
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only
 demonstrably obsolete project resources and preserves active test services.

@@ -16,7 +16,10 @@ def main():
     parser.add_argument('--frames', action='store_true', help='Require public frame accessor checks and original v3 library inventory')
     parser.add_argument('--factory', action='store_true', help='Require original frame-factory ownership and WS header isolation checks')
     parser.add_argument('--manager', action='store_true', help='Require linked original frame-manager component behavior and filter lifecycle')
+    parser.add_argument('--dta', action='store_true', help='Require original DTA types, value conversion and interpreter lifecycle checks')
     args = parser.parse_args()
+    if args.dta:
+        args.manager = True
     if args.manager:
         args.factory = True
     if args.factory:
@@ -128,12 +131,26 @@ def main():
         report['manager_runtime'] = manager
         report['milestone'] = 'CPython 3.13 original frame-manager live edits, ownership and interpreter-local WS filter'
         report['qualification_scope'] += '; original manager public methods with watch/resource notifications disabled; actual CIF/CFG/PRD dependencies linked; filter tested across interpreter cycles'
-    name = 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.dta:
+        dta = json.loads((evidence/'dta-runtime.json').read_text())
+        required = ('dta_link_exit_code','dta_runtime_exit_code','dta_embed_build_exit_code','dta_embed_runtime_exit_code')
+        if (any(build.get(key) != 0 for key in required) or dta['tests'] < 18 or dta['failures']
+                or any(row['exit_code'] for row in dta['cases'])
+                or {u['unit'] for u in build['dta_units'] if u['unit'].startswith('lib/')} != set(build['library_manifest']['SPELL_DTA']['units'])
+                or any(u['exit_code'] for u in build['dta_units'])
+                or build.get('dta_embedding') != {'owned_interpreter_cycles':3,'container_lifetimes':3000}):
+            raise ValueError('Original DTA runtime/lifecycle qualification failed')
+        report['dta_runtime'] = dta
+        report['milestone'] = 'CPython 3.13 original DTA native type ownership, conversion and interpreter lifecycle'
+        report['qualification_scope'] += '; all five original DTA units linked, 18 isolated-process cases, 3000 container lifetimes over three additional interpreter cycles'
+        report['gaps'][0] = 'DTA notifications and interactive prompts through the real executor/CIF'
+    name = 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
         'storage_tests':report.get('storage_runtime',{}).get('tests',0), 'embedding_cycles':3,
         'manager_tests':report.get('manager_runtime',{}).get('tests',0),
+        'dta_tests':report.get('dta_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

@@ -4,6 +4,15 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_EXC/SPELLexecutor.H': '6671885f2423ea99d080e0f06049a91b0fee3352e7e0469b19467f53ecb8cb01',
+    'include/SPELL_DTA/SPELLdtaContainer.H': 'bf2de9f9ef83507f86acde77e8c5d896009bca6b1c616c809dcab9e53f6e7a07',
+    'include/SPELL_DTA/SPELLdtaVariable.H': 'dfbc1e34ae04f9713bf80f4b2edef8fb5c09e678795046a1ce58f88789d915f0',
+    'lib/SPELL_DTA/src/SPELLdtaContainer.C': 'c0dbe9140ac7934f0e6af0688ec44ca49962e36204977b0d53ea78f656197050',
+    'lib/SPELL_DTA/src/SPELLdtaContainerObjectMethods.C': 'd8acdcadff6d1881cd61fd4447c8fa43b19292eb1c9b077c613856e55bbdb6b6',
+    'lib/SPELL_DTA/src/SPELLdtaModule.C': '41fc9488d7f4831eb1d60a94ddf068fbd96698003ee24e37e22a0376dd728e0f',
+    'lib/SPELL_DTA/src/SPELLdtaVariable.C': '1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e',
+    'lib/SPELL_DTA/src/SPELLdtaVariableObjectMethods.C': 'a1de382ba85e164f02f3b9a7ef9d59d9fd8c6aa447a56601056b94a3c2fe63ac',
+    'lib/SPELL_WRP/src/SPELLpyValue.C': 'd641a196503bb44286030f27fcc66b39b42159e71e60c9aa8f7a20ccd6407eba',
     'lib/SPELL_EXC/src/SPELLframeManager.C': 'ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402',
     'include/SPELL_WS/SPELLwsWarmStartImpl.H': '70692486c7a89222fa682ee0aee82a19e7d43a97381aedfd5623e1370a12b7cf',
     'lib/SPELL_WS/src/SPELLwsWarmStartImpl.C': 'b0bb02ac4636ae398ed57fcfed3d4ef2cb35b5f19f03c1b8300c2fe5b1e163f6',
@@ -47,7 +56,75 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLframeManager.C'):
+    if name.endswith('SPELLexecutor.H'):
+        text = text.replace('static inline SPELLexecutorIF& instance()', 'static bool isAvailable() { return s_instance != nullptr; }\n\n        static inline SPELLexecutorIF& instance()')
+    elif name.endswith('SPELLdtaContainer.H'):
+        text = text.replace('void incref();', 'void clear(bool releaseValues = true); // detach borrowed links, optionally clear values')
+        text = text.replace('std::vector<std::string> m_varOrder;', '// Python 3 dictionaries preserve insertion order and key identity.')
+    elif name.endswith('SPELLdtaVariable.H'):
+        text = text.replace('void setContainer( SPELLdtaContainer* container );', '''void setContainer( SPELLdtaContainer* container );
+        void detachContainer(SPELLdtaContainer* expected) { if (m_container == expected) m_container = nullptr; }''')
+    elif name.endswith(('SPELLdtaContainer.C', 'SPELLdtaContainerObjectMethods.C', 'SPELLdtaVariableObjectMethods.C')):
+        replacement = {'SPELLdtaContainer.C':'dta_container.cpp',
+            'SPELLdtaContainerObjectMethods.C':'dta_container_bindings.cpp',
+            'SPELLdtaVariableObjectMethods.C':'dta_variable_bindings.cpp'}[Path(name).name]
+        text = text[:text.index('// FILES TO INCLUDE')] + body(replacement)
+    elif name.endswith('SPELLdtaModule.C'):
+        # Retain the original public method tables; allocate types per interpreter.
+        marker = '//============================================================================\n// Python type specification'
+        assert marker in text
+        text = text[:text.index(marker)] + body('dta_module.cpp')
+    elif name.endswith('SPELLdtaVariable.C'):
+        text = text.replace('#include "SPELL_DTA/SPELLdtaVariable.H"', '#include "SPELL_DTA/SPELLdtaVariable.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text = section(text, '\t\t\tint longValue = 0;', '\n\t\t}\n\n\t\tm_value = value;', '''            double numeric = PyLong_AsDouble(pyValue);
+            if (PyErr_Occurred()) SPELLpythonHelper::instance().checkError();
+            SPELLpython313::Owned converted(PyFloat_FromDouble(numeric));
+            if (!converted.get()) SPELLpythonHelper::instance().checkError();
+            value = converted.get();''')
+        guard = '''
+    if (!SPELLexecutor::isAvailable())
+        THROW_EXCEPTION("SPELL executor unavailable", "Data notifications and prompts require an active executor", SPELL_ERROR_EXECUTION);
+'''
+        text = text.replace('\tm_name = "";', '\tif (kwds && SPELLdtaContainer::areGlobalnotificationsEnabled()) { ' + guard + ' }\n\tm_name = "";', 1)
+        text = text.replace('bool SPELLdtaVariable::shouldNotify()\n{', 'bool SPELLdtaVariable::shouldNotify()\n{\n    if (!SPELLdtaContainer::areGlobalnotificationsEnabled()) return false;' + guard)
+        text = text.replace('bool SPELLdtaVariable::promptForValue( std::string& message )\n{', 'bool SPELLdtaVariable::promptForValue( std::string& message )\n{' + guard)
+        text = text.replace('PyObject* SPELLdtaVariable::confirmValue()\n{', 'PyObject* SPELLdtaVariable::confirmValue()\n{' + guard)
+    elif name.endswith('SPELLpyValue.C'):
+        text = text.replace('#include "SPELL_WRP/SPELLpyValue.H"', '#include "SPELL_WRP/SPELLpyValue.H"\n#include "SPELL_UTIL/SPELLpython313.H"\n#include <algorithm>')
+        text = text.replace('m_stringValue = PYSTR(pyValue);', 'm_stringValue = SPELLpython313::text(pyValue);')
+        text = text.replace('PYSSTR(key), SPELLpyValue(value)', 'SPELLpython313::text(key), SPELLpyValue(value)')
+        text = text.replace('return SSTRPY(m_stringValue);', 'return PyUnicode_FromStringAndSize(m_stringValue.data(), m_stringValue.size());')
+        text = text.replace('void SPELLpyValue::set( PyObject* pyValue )\n{', '''void SPELLpyValue::set( PyObject* pyValue )
+{
+    static thread_local std::vector<PyObject*> active;
+    struct Recursion {
+        std::vector<PyObject*>& stack;
+        Recursion(std::vector<PyObject*>& values, PyObject* object): stack(values) {
+            if (stack.size() >= 128 || std::find(stack.begin(), stack.end(), object) != stack.end()) {
+                PyErr_SetString(PyExc_ValueError, "SPELL values cannot be cyclic or nested beyond 128 levels");
+                SPELLpythonHelper::instance().checkError();
+            }
+            if (Py_EnterRecursiveCall(" while converting a SPELL value")) SPELLpythonHelper::instance().checkError();
+            stack.push_back(object);
+        }
+        ~Recursion() { stack.pop_back(); Py_LeaveRecursiveCall(); }
+    } recursion(active, pyValue);
+    m_listValue.clear();
+    m_dictValue.clear();''')
+        text = text.replace('\t\t\tPy_INCREF(item);\n', '')
+        text = text.replace('\t\t\tPyDict_SetItemString(dict,key.c_str(),item);', '''            SPELLpython313::Owned pyKey(PyUnicode_FromStringAndSize(key.data(), key.size()));
+            if (!item || !pyKey.get() || PyDict_SetItem(dict,pyKey.get(),item)<0) {
+                Py_XDECREF(item); Py_DECREF(dict); return nullptr;
+            }
+            Py_DECREF(item);''')
+        text = text.replace('\t\t\tPyList_SetItem(list,idx,item);', '''            if (!item) { Py_DECREF(list); return nullptr; }
+            PyList_SET_ITEM(list,idx,item);''')
+        text = text.replace('PyObject* list = PyList_New(m_listValue.size());', 'PyObject* list = PyList_New(m_listValue.size());\n        if (!list) return nullptr;')
+        text = text.replace('PyObject* dict = PyDict_New();', 'PyObject* dict = PyDict_New();\n        if (!dict) return nullptr;')
+        start = 'SPELLpyValue& SPELLpyValue::operator=( const SPELLpyValue& other )'
+        assert text.count(start) == 1
+        text = text[:text.index(start)] + body('py_value_assignment.cpp')
+    elif name.endswith('SPELLframeManager.C'):
         text = text.replace('#include "SPELL_EXC/SPELLframeManager.H"', '#include "SPELL_EXC/SPELLframeManager.H"\n#include "SPELL_UTIL/SPELLpython313.H"\n#include <memory>\n#include <sys/time.h>')
         text = section(text, 'SPELLframeManager::~SPELLframeManager()', 'void SPELLframeManager::initialize(', '''SPELLframeManager::~SPELLframeManager()
 {
