@@ -23,6 +23,13 @@ or invented substitute counts as supported native containers. Qualify imports,
 context/EXEC/CIF injection, service setup/cleanup, memory/error paths and original
 behaviour against independent tests. Keep the v0.1 bounded alias separate.
 
+The source/RPC alpha milestone `0.2.0a1` is implemented and independently checked:
+94 source modules, generated original schemas and the original driver lifecycle
+with traceable patches. See [source port status](docs/SOURCE_PORT.md). The full
+v0.2 phase remains open: unchanged native compile diagnostics identify 37 failing
+units out of 63. Port and qualify DTA/UTIL first, then EXC control flow and WS
+serialization, and only then admit this runtime to IDE/plugin host qualification.
+
 ## v0.3 — real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with

@@ -1,0 +1,778 @@
+{
+  "project": "openbexi_spell_plugin",
+  "distribution": "openbexi-spell-source",
+  "version": "0.2.0a1",
+  "status": "completed isolated source/RPC alpha milestone; full v0.2 native runtime pending",
+  "generated_utc": "2026-10-11T05:29:56.913004+00:00",
+  "source_representation": "canonical Git index blobs, excluding this self-referential manifest",
+  "source_sha256": {
+    ".dockerignore": "8cc1f404a767e302ba299821d803168bebaba1d8c3d602e761fd626ed9a30838",
+    ".gitattributes": "790611bcffa71d186c2c5890ccac9d7b4ea0a062a595762dbac2438343320191",
+    ".gitignore": "dd2475bb645e5b6f83bf5aa7ef2280d2893bf5c8277e5d8e81424b290aa8bba9",
+    "Dockerfile": "63e1c8cf0f36b45c2141504785f386e106fe754578d9cc4dbc53f6559e1da6be",
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "NOTICE": "d7dbc72842061ccf4e3e5d4830e4b06347a1b9e04d0c1b39a1e33066c1056f38",
+    "README.md": "c71f955616778777498104f1931ffd16c2fe7d88125d8ae40b169baaabd81820",
+    "ROADMAP.md": "fb3d309f468f18202d888697c669d499161d1c3b07090c6741bf86265754dad3",
+    "build-requirements.lock": "d1ff29fc884cbcbf907784faf5366752f6f4046acdc9196c40aa5b3a96f45e96",
+    "compose.yaml": "b8220be8d7d35e9fe25a6c94cc1114d70515c8ddd023bcd8414392df9979ed4e",
+    "docs/MIGRATION.json": "d7cc18d34856a9198b3a01035f3c032575a0ac5a2135177de7f7ee566498cbaf",
+    "docs/MIGRATION.md": "0d9de33c7572e9d8a33c7acdd46b253e31622130ebc430d5414641eaf95f81de",
+    "docs/QUALIFICATION.json": "23449d6a4a8e82da3ff0c815929abbfaf800e1b732c7c43980e407d85d637977",
+    "docs/QUALIFICATION.md": "1f1fed8e07133c02124f5dce769b2a6cd66671ebaa41fea85cd7edf460e58d20",
+    "docs/SOURCE_PORT.md": "61ab080d1d44e6bf4650675834d075ce99ebef5cff3a8851f89a93ae8bd8dc22",
+    "docs/SOURCE_REVIEW.md": "64808dfbb7d4f64a9dfb6c0107aab701e7e13f37c6694dba5c5efa4a2eff6edb",
+    "docs/UPSTREAM-GPL-3.0.txt": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "docs/reference/SPELL - Development Environment Manual - 2.4.4.pdf": "cedf617a4d551701394f75a8ec1769a402059a4c7b659ed87079ce5148074a81",
+    "docs/reference/SPELL - Driver Development Manual - 2.4.4.pdf": "057794f11846588724ccfffb69a1e7150042011e7a45e7fa6e7958500e56bae5",
+    "docs/reference/SPELL - GUI User Manual - 2.4.4.pdf": "1a6b13190b0bb25d6f19a0549f3917beaac72a40d851eac5165a95c9d3b779c6",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "docs/reference/SPELL - Server Manual - 2.4.4.pdf": "ee123aaf6434ec781e9f2679729207d138f775ba99175ae7310558b98ca4dcb9",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "docs/reference/SPELL_DEV_Manual.pdf": "94c1443646e22f3692ac25d2ef570ff437d83c38b71082e7077b4a322e5fb94f",
+    "docs/reference/SPELL_Language_Manual.pdf": "f2f3e72e62692eeabb287b704878240012062f894b52a10570b8f42199c233fb",
+    "examples/desktop_dss_demo.py": "d768ac5f56c7de3853904530a258d1917d65304e516c67b9346b5c92cbc22776",
+    "examples/dss_demo.py": "957c8f51bd8f0e631a25fa4d7f4d287aa9d55887489e6e4a81a9e52fd94b2d13",
+    "examples/python_demo.py": "718c9bd33030ae124b281f5dc23b6252fa2725475ebbb6ff4bd00be9439344c8",
+    "openbexi_spell_plugin_master_prompt.md": "b369b4e933884a3dad74bcf4e09c4e87429cbd01221199e9d2c84fbedd52901a",
+    "pyproject.toml": "09503adecb25f1d0d34b43eea0eb17b8d8cd04d14b310506d1fe672abef948bf",
+    "requirements-kafka.lock": "7dd11f8a475b64ad9c4d09ebbcf8c363cb4389cc743569bb6955c7b6273ce71c",
+    "run_dss.py": "f42798f18090ed83cdac1b6b68b434152ca75e0a001208624f2710bed6217c02",
+    "scripts/build_zlib.sh": "d1fbf6122d7be1b8a3b35a4e0c92d01f3d52d37b8bfcfebcc605701495e12bb5",
+    "source_port/LGPL-3.0.txt": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+    "source_port/README.md": "02a5be2b9a3d0b29dad63775bf91079b6a64528238a741ac543175d4f6738ae2",
+    "source_port/build.lock": "8c103477731301f7c4ad2c88e74ade1d8ec6e341e0e8058c94f4c9727e533fa7",
+    "source_port/build.py": "2ef82935062b54d5072468b2e8fb13e7e442936241f854d65a73e9c52f7ce905",
+    "source_port/native-probe.Dockerfile": "1a661419e144ae44fb7557befa62f792ebf91b20e757b18886027673aeaaaa99",
+    "source_port/native-probe.Dockerfile.dockerignore": "72ec999a8c9192b427c2f143800cc6f1acc3e181f68e8e5362a17c3647f11edc",
+    "source_port/native_probe.py": "3aeac34e80cfb00a0033e87e05e9a4282c2781bc734f58b6f58d8bea2892adf6",
+    "source_port/patches.py": "1f9d463950ed836cac2d38f0b9271c98e817db885c51148f58df0763956b0a0d",
+    "source_port/qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
+    "source_port/runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
+    "src/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+    "src/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+    "src/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+    "src/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+    "src/dss/engine.py": "cdb4b0cc6643849cbdd9889c2e8db62113111fc2871dec7e8f33c8a064921233",
+    "src/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+    "src/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+    "src/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+    "src/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+    "src/dss/server.py": "71f711db2a212c61b1951a255b9ce133f413d2277d295f2cae85ddb0685b5970",
+    "src/openbexi_spell/__init__.py": "55712c6f299549a507c503312d6edc0f709cdb84ffaf0d25e5d88b4c982bd74f",
+    "src/openbexi_spell/api.py": "18e34091cceec323d1a78e24e9ff2a65cf601b452793f24dbfd86cd66bc9f730",
+    "src/openbexi_spell/common.py": "098282c74e2a2ecd769c06e75cbc283009709d17ab14c9a970292ecf78452cca",
+    "src/openbexi_spell/compatibility.py": "8d160eb6c36cc10cf57911e8bf2994f6e55c707fe298c0d7bd2708642cde90c1",
+    "src/openbexi_spell/time.py": "2337dfdc5419d3e922011df239f45b17b6abe00de57686c6d7f4f9f8178f2b79",
+    "src/openbexi_spell_plugin/__init__.py": "0039d4ef1f9214653ac126474dbc5bd98c90fdc3d174583d6cdbf430717d46fe",
+    "src/openbexi_spell_plugin/runner.py": "bc3a7476b2ba7c3bea49601247d9655e758e4e2fe923977a438312ed2dcbc095",
+    "src/openbexi_spell_plugin/runtime.py": "8aec53318072dda782bc3c4bfdcc2b64b718964a26936483f872aeed0330d847",
+    "src/spell/__init__.py": "521d4af4cea225957261c308af989164be78dc37464255802547bf7cbcc18ec9",
+    "src/spell/lang/__init__.py": "9e60addb5ec23d5bae7549aac8c61f10155b817afd008c12da421d67889db6ec",
+    "tests/conftest.py": "1b5c234298c4f409cb0242639c8ec6539548abf355d0b3a830abf63cb55b9861",
+    "tests/test_dss_engine.py": "19db8d7f4baecc929222b7d348b761b7c9756fdc67d443bd77a53403400e6074",
+    "tests/test_dss_transports.py": "a966c21057f65d05a1af0b22c2768674294da1f2f07755a0de1fe11f132140cc",
+    "tests/test_plugin.py": "e98474c6eb28be911a4a4810148fe88e1bc08148e8cc8a65d724ac44264a1129",
+    "tests/test_policy.py": "71db2572a09eb2122442d15c4032746996f72c94f356f82757c9a5895c321fe4",
+    "tests/test_time.py": "44926e43ddfe8b5f905c81ae6e25a0f775b60c9ef1084004880c4f563fe820c7"
+  },
+  "upstream_archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+  "wheel": {
+    "filename": "openbexi_spell_source-0.2.0a1-py3-none-any.whl",
+    "sha256": "da0a0ca5df0b61a5dd1283c1011411cdf9842669bb772eb0d1fc7ab4282d9bc8",
+    "size": 2211150,
+    "source_date_epoch": 1791676800,
+    "two_builds_identical": true,
+    "embedded_recipe_rebuild_identical": true,
+    "tools": {
+      "setuptools": "80.9.0",
+      "grpcio-tools": "1.84.0",
+      "grpcio": "1.84.0",
+      "protobuf": "7.36.2"
+    },
+    "license": "GPL-3.0-or-later AND LGPL-3.0-or-later"
+  },
+  "original_modules": 94,
+  "patched_modules": 5,
+  "patches": {
+    "spell/lang/constants.py": {
+      "original_sha256": "0a343ec475546ea1020d6558019f520f686c90304904bd4dcf67efb7ce57cbc9",
+      "patched_sha256": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63"
+    },
+    "spell/lib/adapter/data.py": {
+      "original_sha256": "a8bc31980e239dbf89a9b348eaa7e9bd58e501eaf555bf2aaa87bcf0e61e5a03",
+      "patched_sha256": "a95815dcc408901699d393bf3fb304875583618aa52e140f4207bef3b25a2a0b"
+    },
+    "spell/lib/adapter/databases/datasource.py": {
+      "original_sha256": "b56390eead7d8c3536aa4b06d24b8a0331a6717fecb9b1f56bfae94f4d894a96",
+      "patched_sha256": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1"
+    },
+    "spell/lib/drivermgr.py": {
+      "original_sha256": "6926dff1c3a51895263ea79845d9462f5f10e58f07f51fe866882209b2032594",
+      "patched_sha256": "720bbaa58c8fe325e1712c8b8beac034bdbcd437e8a9a37fd0cbdd2642d43cf3"
+    },
+    "spell/utils/grpc_utils.py": {
+      "original_sha256": "aa6c7f35a2159c4dbd8d98422be7a606b7061d3aba043c738900c1eab19e7049",
+      "patched_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+    }
+  },
+  "rpc_schemas": {
+    "SPELLDriver.proto": "f2534b012489a4b9f3cb61e7f4a50ada4aaea7fe0b2de6041b7748d25aa96588",
+    "SPELLExecutor.proto": "200f68472b8ff19529a078e20b8ff96050d0cad59eebffcdec8f5b3a1ae396b3",
+    "SPELLService.proto": "36556e0bed72809e21aafe46adc62bec282d7bd545bdcf6cf9a4fda0414b44f1"
+  },
+  "installed_qualification": {
+    "path": ".qualification/v0.2/source-installed.json",
+    "sha256": "70578d107393915e354f637650eeb089792efecb5040faf32ccc98f3f2c50082",
+    "checks": [
+      "CPython 3.13",
+      "installed source wheel",
+      "alpha foundation identity",
+      "bounded alias absent from isolated environment",
+      "exact corresponding archive",
+      "source hash: spell/__init__.py",
+      "source hash: spell/config/__init__.py",
+      "source hash: spell/config/base.py",
+      "source hash: spell/config/constants.py",
+      "source hash: spell/config/contexts.py",
+      "source hash: spell/config/drivers.py",
+      "source hash: spell/config/reader.py",
+      "source hash: spell/lang/__init__.py",
+      "source hash: spell/lang/constants.py",
+      "source hash: spell/lang/functions.py",
+      "source hash: spell/lang/helpers/__init__.py",
+      "source hash: spell/lang/helpers/basehelper.py",
+      "source hash: spell/lang/helpers/datahelper.py",
+      "source hash: spell/lang/helpers/evhelper.py",
+      "source hash: spell/lang/helpers/exechelper.py",
+      "source hash: spell/lang/helpers/filehelper.py",
+      "source hash: spell/lang/helpers/genhelper.py",
+      "source hash: spell/lang/helpers/limhelper.py",
+      "source hash: spell/lang/helpers/memhelper.py",
+      "source hash: spell/lang/helpers/pcshelper.py",
+      "source hash: spell/lang/helpers/rnghelper.py",
+      "source hash: spell/lang/helpers/rschelper.py",
+      "source hash: spell/lang/helpers/tchelper.py",
+      "source hash: spell/lang/helpers/tmhelper.py",
+      "source hash: spell/lang/helpers/tskhelper.py",
+      "source hash: spell/lang/helpers/usrhelper.py",
+      "source hash: spell/lang/modifiers.py",
+      "source hash: spell/lang/user.py",
+      "source hash: spell/lib/__init__.py",
+      "source hash: spell/lib/adapter/__init__.py",
+      "source hash: spell/lib/adapter/config.py",
+      "source hash: spell/lib/adapter/constants/__init__.py",
+      "source hash: spell/lib/adapter/constants/core.py",
+      "source hash: spell/lib/adapter/constants/notification.py",
+      "source hash: spell/lib/adapter/data.py",
+      "source hash: spell/lib/adapter/databases/__init__.py",
+      "source hash: spell/lib/adapter/databases/database.py",
+      "source hash: spell/lib/adapter/databases/datasource.py",
+      "source hash: spell/lib/adapter/databases/dbasrun.py",
+      "source hash: spell/lib/adapter/databases/dbfile.py",
+      "source hash: spell/lib/adapter/databases/dbfileeph.py",
+      "source hash: spell/lib/adapter/databases/dbfilespb.py",
+      "source hash: spell/lib/adapter/databases/dbraw.py",
+      "source hash: spell/lib/adapter/databases/dbsvn.py",
+      "source hash: spell/lib/adapter/databases/dbsvnspb.py",
+      "source hash: spell/lib/adapter/dbmgr.py",
+      "source hash: spell/lib/adapter/ev.py",
+      "source hash: spell/lib/adapter/expression.py",
+      "source hash: spell/lib/adapter/file.py",
+      "source hash: spell/lib/adapter/gcstime.py",
+      "source hash: spell/lib/adapter/interface.py",
+      "source hash: spell/lib/adapter/memory.py",
+      "source hash: spell/lib/adapter/pcs.py",
+      "source hash: spell/lib/adapter/pcs_item.py",
+      "source hash: spell/lib/adapter/ranging.py",
+      "source hash: spell/lib/adapter/resources.py",
+      "source hash: spell/lib/adapter/result.py",
+      "source hash: spell/lib/adapter/task.py",
+      "source hash: spell/lib/adapter/tc.py",
+      "source hash: spell/lib/adapter/tc_item.py",
+      "source hash: spell/lib/adapter/tm.py",
+      "source hash: spell/lib/adapter/tm_item.py",
+      "source hash: spell/lib/adapter/usr.py",
+      "source hash: spell/lib/adapter/utctime.py",
+      "source hash: spell/lib/adapter/value.py",
+      "source hash: spell/lib/adapter/verifier.py",
+      "source hash: spell/lib/drivermgr.py",
+      "source hash: spell/lib/empty/__init__.py",
+      "source hash: spell/lib/empty/config.py",
+      "source hash: spell/lib/empty/ev.py",
+      "source hash: spell/lib/empty/memory.py",
+      "source hash: spell/lib/empty/pcs.py",
+      "source hash: spell/lib/empty/ranging.py",
+      "source hash: spell/lib/empty/resources.py",
+      "source hash: spell/lib/empty/task.py",
+      "source hash: spell/lib/empty/tc.py",
+      "source hash: spell/lib/empty/tm.py",
+      "source hash: spell/lib/empty/usr.py",
+      "source hash: spell/lib/exception.py",
+      "source hash: spell/lib/factory.py",
+      "source hash: spell/lib/goto.py",
+      "source hash: spell/lib/registry.py",
+      "source hash: spell/utils/__init__.py",
+      "source hash: spell/utils/corba.py",
+      "source hash: spell/utils/customlog.py",
+      "source hash: spell/utils/getch.py",
+      "source hash: spell/utils/grpc_utils.py",
+      "source hash: spell/utils/log.py",
+      "source hash: spell/utils/memoize.py",
+      "source hash: spell/utils/resources_utils.py",
+      "source hash: spell/utils/rijndael.py",
+      "source hash: spell/utils/spell_service.py",
+      "source hash: spell/utils/timing.py",
+      "source hash: spell/utils/vimport.py",
+      "generated hash: spell/stubs/__init__.py",
+      "generated hash: spell/stubs/SPELLDriver_pb2.py",
+      "generated hash: spell/stubs/SPELLDriver_pb2_grpc.py",
+      "generated hash: spell/stubs/SPELLExecutor_pb2.py",
+      "generated hash: spell/stubs/SPELLExecutor_pb2_grpc.py",
+      "generated hash: spell/stubs/SPELLService_pb2.py",
+      "generated hash: spell/stubs/SPELLService_pb2_grpc.py",
+      "original helper/function imports",
+      "no builtins injection",
+      "native DataContainer fails clearly",
+      "native Var fails clearly",
+      "context-bound function requires CTX injection",
+      "original modifier precedence",
+      "original RPC value roundtrip 0",
+      "original RPC value roundtrip 1",
+      "original RPC value roundtrip 2",
+      "original RPC value roundtrip 3",
+      "original RPC value roundtrip 4",
+      "original RPC value roundtrip 5",
+      "original RPC value roundtrip 6",
+      "original RPC value roundtrip 7",
+      "original RPC value roundtrip 8",
+      "original RPC value roundtrip 9",
+      "public stdlib thread pool runs all work",
+      "thread pool propagates errors",
+      "original XML configuration loaded",
+      "factory creates configured driver",
+      "setup proceeds forward",
+      "original generic DBMGR appended",
+      "executor-bound function requires EXEC injection",
+      "command broadcast to driver",
+      "cleanup succeeds",
+      "cleanup proceeds reverse",
+      "driver cache removes its own path",
+      "driver cache retains unrelated sibling",
+      "driver modules removed",
+      "driver reload creates a fresh interface",
+      "reload setup still forward",
+      "registry retains object identity",
+      "missing registry member raises",
+      "factory rejects unknown interface family",
+      "actual generated gRPC roundtrip",
+      "actual driver Ping",
+      "unsupported service returns UNIMPLEMENTED",
+      "all original driver service families generated"
+    ],
+    "check_count": 144,
+    "source_generated_hash_checks": 101,
+    "runtime_isolation_checks": 43,
+    "passed": true,
+    "python": "3.13.15 (main, Aug 14 2026, 15:36:10) [MSC v.1944 64 bit (AMD64)]",
+    "origin": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.2\\source-runtime-env\\Lib\\site-packages\\spell\\__init__.py",
+    "procedure": "source_port/qualify.py"
+  },
+  "native_diagnostics": {
+    "path": ".qualification/v0.2/native-probe/native-probe.json",
+    "sha256": "661b540fdff4b8d230b38945a3af955fc6c0f6c9e191952eeb408d86d1f9b7d5",
+    "python": "3.13.14 (main, Jun 24 2026, 02:06:49) [GCC 14.2.0]",
+    "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+    "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
+    "units": [
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaContainer.C",
+        "source_sha256": "c0dbe9140ac7934f0e6af0688ec44ca49962e36204977b0d53ea78f656197050",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaContainer.C.log",
+        "sha256": "c305aa8eb3e3f822d89c61055012f0912f3896f2d17eb4e9be58ac12edf05515"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaContainerObjectMethods.C",
+        "source_sha256": "d8acdcadff6d1881cd61fd4447c8fa43b19292eb1c9b077c613856e55bbdb6b6",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaContainerObjectMethods.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaModule.C",
+        "source_sha256": "41fc9488d7f4831eb1d60a94ddf068fbd96698003ee24e37e22a0376dd728e0f",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaModule.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaVariable.C",
+        "source_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaVariable.C.log",
+        "sha256": "451036289ec4ecb3cb078481e6a2313fb949e60953defd3afa85feebebe4deee"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaVariableObjectMethods.C",
+        "source_sha256": "a1de382ba85e164f02f3b9a7ef9d59d9fd8c6aa447a56601056b94a3c2fe63ac",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaVariableObjectMethods.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLastAnalyzer.C",
+        "source_sha256": "5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLastAnalyzer.C.log",
+        "sha256": "2ef4188e128a74ac9ab70ce7fed2ddf2b6da51a53e71b15aa86bdd52106bc734"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbreakpoint.C",
+        "source_sha256": "5a8903aa059167b31ff7729826e540fa6c52326dfe3cd2de08e40d2f7ffec73a",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbreakpoint.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbreakpointType.C",
+        "source_sha256": "da9cc2339b2c94e074f49f960f624974ef75123927ee9374523f99b50fd14097",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbreakpointType.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbytecode.C",
+        "source_sha256": "ab9e4c3accad70a664cfbfff43da74686777213f0ec98cd85250f73df04fcd60",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbytecode.C.log",
+        "sha256": "d0c8755ffbaa1d81d7dc84a6f0fa7e3156c75267fb58a69c834a8c605a9eb382"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcallstack.C",
+        "source_sha256": "8ceb19ddd2af71c4780042d0fcc1dfcfd107c2cbcda5a8fbe76cfa038227a931",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcallstack.C.log",
+        "sha256": "d34d3f6d5e5dd50ab9f3d8419092185aaad8f056dc51c1d033aa3c53b6bcf90e"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLchildManager.C",
+        "source_sha256": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLchildManager.C.log",
+        "sha256": "b87939ed5302b466dfa7f80caaf7f208d94c6a89f72ea04e3fd8870966f65e41"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcodeTreeLine.C",
+        "source_sha256": "b5989d1f9b47232b52c95cbaed5a9070e9e3be09d15c4cd9d2cde61f201b30cc",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcodeTreeLine.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcodeTreeNode.C",
+        "source_sha256": "0fb5d93acb7aa84d002ad1fa9c97fedfeec31f90a15d67457c066a58163f1240",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcodeTreeNode.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcommandMailbox.C",
+        "source_sha256": "dc751808c274028b33b5224ab8a4bddb694b484e1073f14a4fa330ac891aa714",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcommandMailbox.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcontroller.C",
+        "source_sha256": "e056206fb6d16a725bdc8d7b9a031cd4b6ba3ef3104e37f5c370ab581d521bb8",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcontroller.C.log",
+        "sha256": "b3c168c6c7e397770962ef9f914facdda770f67eead7a288f938d56a31a21053"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutionModel.C",
+        "source_sha256": "45545e623c76fcf2d0817ed761f262a835479e08adeaf0658bb3f956b94c5038",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutionModel.C.log",
+        "sha256": "775788102d869947426b760a62e97e071f2a439cce0ad10a6d6aa6d59341706a"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutionTrace.C",
+        "source_sha256": "0247b47892d5e3fb2e450b0633f937910881b9004ba28f56769c60064b17db88",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutionTrace.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutor.C",
+        "source_sha256": "f0b41029d50780182d974ec69d025a0bedcaed68ceac8f5c89ac9ad8d8e32dd6",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutor.C.log",
+        "sha256": "cc71b2a088ac3ceece94d0305c96d1f8a2e40f78e3d1a8139d65cb0f5df73c63"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorConfiguration.C",
+        "source_sha256": "78bb96d7d61cdb5eb016a0416f45b878ecd9347ea5b23a89487dffd8fcbd6474",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorConfiguration.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorImpl.C",
+        "source_sha256": "3a891afdf5e0dbcd75f97db263e3c30311c597872e434fc91b6c993683b2b0df",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorImpl.C.log",
+        "sha256": "b391f56cac73238cd093403e5cc653352eaccd1122b7a3d3bd70838f990140fa"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorPython.C",
+        "source_sha256": "89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorPython.C.log",
+        "sha256": "75539597a6e8966d656499a1b8c3842df1043003fb74654d25a8a445c673d4df"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorUtils.C",
+        "source_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorUtils.C.log",
+        "sha256": "f954b4d35f5a5f6c5d22a41b64f0b832a76171e38554dd10c6aefced02dac982"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLframeManager.C",
+        "source_sha256": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLframeManager.C.log",
+        "sha256": "583b4229786332bf74e5530b00dee5d7671e438d7fdaaf72a22ccf19df612be8"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLgoto.C",
+        "source_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLgoto.C.log",
+        "sha256": "c3033308b8fbb63b7c5fe59ab7143aa8c70233b3337415e99df70f8e608b22fb"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLgotoPython.C",
+        "source_sha256": "af1d3dfa62eef6117ede5e1a51c13cd4a09d4f8b28f84fd6560d28630a1a9fe7",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLgotoPython.C.log",
+        "sha256": "e72c1800a633b46de5134ba240e0fd40102d4fae412f57a706c39fb67fc7e5f5"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLimportChecker.C",
+        "source_sha256": "f9589b5ddbd578638f7dc471548dab0f9a84f9ebe3495419e8eb4e58a768a5e6",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLimportChecker.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLinterpreter.C",
+        "source_sha256": "3dd0a455669237924726637ca4b25ae524acfaf10d577b18a7c36258ad3f1256",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLinterpreter.C.log",
+        "sha256": "20d647be10c51392437d6d5de4cbf09c67425d8f6048b14b1a5340c58cd71737"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLlnotab.C",
+        "source_sha256": "5c7598a5444bde5cde810a8335081f8b683579e874e6958ab678999c8e17c5f3",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLlnotab.C.log",
+        "sha256": "3fa516c6226986b7c0eceab07244d11f65aa2f5067c504e9f888ccbb02967bf6"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLresourceManager.C",
+        "source_sha256": "bd5c1819b2deaae86e0beadd9344d56adc4fdea29a920ad88f9004a121ed283c",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLresourceManager.C.log",
+        "sha256": "c5ca69b265c2c9570da8a1865d57c90626881d20cb763dbad1a0559987a825c5"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLresourceMonitor.C",
+        "source_sha256": "f964f706bd9c2b2630fdcc8dce8ccf732436c635c5a97f3f3e7e5695b7a7f757",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLresourceMonitor.C.log",
+        "sha256": "6e40563bcca9ad5670f61ce17710c6575ca0160d23f6b41119eb893e301ba0d6"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLscheduler.C",
+        "source_sha256": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLscheduler.C.log",
+        "sha256": "cd21c0354f8e408798704ea81328a645932f52d0e77f313a38b7c68c437db482"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLserviceImpl.C",
+        "source_sha256": "9e56ddfa666429777f37ab7bedb76de9a539145050123096554339bb1ea40382",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLserviceImpl.C.log",
+        "sha256": "23980671b52680a23ff2690cabafb459ade611bd7a77a2e94540f48b6a75db2e"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLserviceInterpreter.C",
+        "source_sha256": "0d7291373b9afc3b55655b90d771f00c87b1db42889e1a4d9a62a161fcdfb7e5",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLserviceInterpreter.C.log",
+        "sha256": "cdca28a6784f73cadcaa2467cab91087bf07fe64a1901eb31bd45de08cb2df71"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLstepPython.C",
+        "source_sha256": "e34081213079d413548ed25c614072318f5d899b353223d9f37517319069cb7c",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLstepPython.C.log",
+        "sha256": "eb64995504637c4ccac91983bd2e93ad1236358138a40aa815efdfb64d95dfbd"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLvariableManager.C",
+        "source_sha256": "29161553e78c161ff5c85d527b9dbd1e6767ba22860ce508f1ddd7ea26c17c8b",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLvariableManager.C.log",
+        "sha256": "158ca99ba6a86bbdad8d6dec41d7b9db621acd89722cb25f10e2cf841c34715a"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLvariableMonitor.C",
+        "source_sha256": "7162c7a9abab73cb9b9e20bc34f8e32185d6a4ab728e12d80989bf64bcb27aa7",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLvariableMonitor.C.log",
+        "sha256": "fda1f65df44b8b2358a841b669be86e7ce729c32d00b151e8e7ceb57bed36454"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLcompression.C",
+        "source_sha256": "ff1c62a3455fd4b70daa235a1492282073e703138fb929644e4ff9511f70074a",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLcompression.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLerror.C",
+        "source_sha256": "e95b2787936e7ee0b56d5e956e6ba07db138dbab13abfec2dc07ef6a859f3f93",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLerror.C.log",
+        "sha256": "cadd66a5781c366c38f6f0788d521b75a4a1a0dd7b4f13d0f67197d27e33fc0d"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLlog.C",
+        "source_sha256": "8609457404c26c670524c2c49cefd8c5ab5dc1c127dc55853bb32d0262e257b5",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLlog.C.log",
+        "sha256": "628da6b842e4ea762733bb709fec46006e8c231c0d3ae759aedcbbe3bbc92917"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLlogPython.C",
+        "source_sha256": "2d98e6606c3c9e7a8eada2bd56fe9784547209a9d48644eac24b055234883be4",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLlogPython.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLpyArgs.C",
+        "source_sha256": "f7ecf5c93b31a18a2b7edafeee1bba0ca7edc323e09dfe4decea4facc69b0785",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLpyArgs.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLpythonHelper.C",
+        "source_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLpythonHelper.C.log",
+        "sha256": "def4a801f920657fd5782df305494c547c74e0cdd98d4a72949aac5ae9259acb"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLtime.C",
+        "source_sha256": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLtime.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLutils.C",
+        "source_sha256": "ee16758649173ca2c838545f43d6d44dfbd5264bc25bb1fa2257b4ffdd509d70",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLutils.C.log",
+        "sha256": "c308bc987edf1fdcb6eb079bf135efd7a6053c310d4e8cbc69c5f52b8f58d6b7"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsClassDataHandler.C",
+        "source_sha256": "9d1a13c9407829e49ff24171fd081413dc9e0f38d6cc7ff3ff42f1f17349d267",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsClassDataHandler.C.log",
+        "sha256": "1aac74bc20954b07075aeb47ef649711e59a70c7ca12a52fc27753f29dc54c11"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsCustomTypeDataHandler.C",
+        "source_sha256": "8b270c5da7bd05698676d975c0f7b1fa52f9696257e62330190692eebf9d4476",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsCustomTypeDataHandler.C.log",
+        "sha256": "8a972200e9295c38cc3691a5f98f107b7ed6cc87e4704ac9dd125cf093a8e8d7"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataCodes.C",
+        "source_sha256": "d4d36972781aa5ed40f6cada25eaaf89e890da32b5e7006187b37a6fbe7f83b2",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataCodes.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataHandler.C",
+        "source_sha256": "73c0fa691bbe0a8ab7a681fd1bcee76354a89f7da20e7c9391881e41b902cbbc",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataHandlerFactory.C",
+        "source_sha256": "065eb01d6450a6d7268fb467ef866523a3d1b062faa32e27c068ad1e735217ab",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataHandlerFactory.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDbDataHandler.C",
+        "source_sha256": "4fd6d05dc824c244b8bf0112552df76bd9bc056be4c04e1358fef1e7bf9fcd81",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDbDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDictDataHandler.C",
+        "source_sha256": "732f95bab42f00185257dab4710ccd0d5d1c8828f9023c4392afc39ce413238b",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDictDataHandler.C.log",
+        "sha256": "3969e2ce770d121012315214418ea646fb993fcda7937613c5c3c95fb0390edd"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDynamicData.C",
+        "source_sha256": "466ea5544f5e2cfeed11040defe72dc66c0db0606575a685912d130f0e1bc53f",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDynamicData.C.log",
+        "sha256": "6cc4cc25c1fed8fe5b617843420ddc1c756483a1077efc0cb0ace001e73d1c05"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsFrame.C",
+        "source_sha256": "da9bc5ea2c6037ec2719cd0f3c4929eb975aa018b92a5dd4d4c7d5c63876d2e6",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsFrame.C.log",
+        "sha256": "8de90f62418442c4e295c92ba0703db4bb5a00cf81a8e819110f7bdf22a516f2"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsInstanceDataHandler.C",
+        "source_sha256": "53fa2702d860f651a7afb54d011acf0864afa8df1ec44a3f4068c948312a7540",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsInstanceDataHandler.C.log",
+        "sha256": "02485e4eabde74eba172549f1379e48708e591d857206708fd6e48690d81a2fe"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsListDataHandler.C",
+        "source_sha256": "b6445dc785ae83937c0da0478812661905fba470f54bb2895d6f44b9a9204025",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsListDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsObjectDataHandler.C",
+        "source_sha256": "d3115b253979721c844cfea69488cf177fbb85b5ef41b5ba2f6a864add226491",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsObjectDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsStaticData.C",
+        "source_sha256": "b5530d8a3dbdff7f3e3e5545a59272ec733f8b9aecb632e263aae19a07c8031a",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsStaticData.C.log",
+        "sha256": "79635c10ab2505c9929b2d9c6f663abc78592ac32ddd086ce46e573a0a8dffb8"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsStorage.C",
+        "source_sha256": "85fff1d7e917ce5913daaf99ecb385362a2f5323d49d7d41de8125b1e13ee34f",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsStorage.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTimeDataHandler.C",
+        "source_sha256": "6330164526623bd9d6b3da06a1624db67e1a56b9821fbb31d3af150cd0afeaa1",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTimeDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTmItemDataHandler.C",
+        "source_sha256": "8ad6af27cec9d1b7193c46149fb64faeb5f540855d23569208e5096259a7ebd8",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTmItemDataHandler.C.log",
+        "sha256": "6c073131641af99cb0edb8a3e6557089c69767d60850752fb60f2359d3373a5f"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTupleDataHandler.C",
+        "source_sha256": "616030b19ccd391494b45d72097099d541dcd1de9995cb11c0392e9c35e9023d",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTupleDataHandler.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsWarmStartImpl.C",
+        "source_sha256": "b0bb02ac4636ae398ed57fcfed3d4ef2cb35b5f19f03c1b8300c2fe5b1e163f6",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsWarmStartImpl.C.log",
+        "sha256": "2c313830273de1a332bb0fd357e1a321f2017d3e49e99be8c53dc0a204eb2a82"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsWorkingMode.C",
+        "source_sha256": "2b9a14df5907d2cc218feaa97f4e6b472709b28eab83fb5d31b583407a9ba445",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsWorkingMode.C.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "passed_units": 26,
+    "failed_units": 37,
+    "probe_build_exit_code": 0,
+    "syntax_only": true,
+    "native_qualified": false,
+    "toolchain_packages_locked": false,
+    "procedure": "source_port/native-probe.Dockerfile"
+  },
+  "working_bounded_release": {
+    "version": "0.1.0",
+    "tag": "v0.1.0",
+    "wheel": {
+      "filename": "openbexi_spell_plugin-0.1.0-py3-none-any.whl",
+      "sha256": "db9d099431381346403d927eefb28513a34be1ab0f4b06d182adf41bdc0f7367",
+      "size": 53403,
+      "source_date_epoch": 1791590400,
+      "two_builds_identical": true,
+      "build_command": "python -m pip wheel --no-build-isolation --no-deps --wheel-dir OUTPUT .",
+      "build_backend": "setuptools 80.9.0"
+    },
+    "source_evidence": "v0.1.0:docs/QUALIFICATION.json"
+  },
+  "cleanup": {
+    "unused_build_cache_reclaimed_this_phase": "431.1 MB",
+    "obsolete_project_image_tags_remaining": 0,
+    "working_dss_image_retained": "openbexi-spell-plugin-dss:0.1.0",
+    "filesystem": "Legacy content/history archived; automatic approval review blocked filesystem deletion and Windows locks retained some old qualification caches.",
+    "obsolete_local_build_deletion": {
+      "status": "automatic approval review rejected; retained",
+      "reason": "blocked by policy",
+      "directory": ".qualification/v0.2",
+      "retained": [
+        "source-a",
+        "source-build-a",
+        "source-build-1",
+        "source-build-2",
+        "source-build-3"
+      ]
+    }
+  },
+  "limitations": [
+    "full v0.2 is incomplete until DTA/UTIL/EXC/WS build and independent runtime qualification pass",
+    "no native Step/Goto/warm-start or real executor/context/CIF qualification",
+    "original source site-specific defaults need conscious migration before operational activation",
+    "source wheel owns spell namespace and requires a different interpreter from the bounded alias",
+    "complete RPC/DSS service integration and actual JetBrains host installation remain gates",
+    "Docker container startup remains unqualified on this host; native DSS and build probes work"
+  ]
+}

@@ -1,5 +1,10 @@
 # openbexi_spell_plugin engineering master prompt
 
+Current state: the Apache bounded SDK/DSS is qualified at v0.1.0. The separate
+original-source 0.2.0a1 alpha preserves 94 modules, generated RPC and the original
+driver lifecycle; see docs/SOURCE_PORT.md. Full v0.2 remains open while the native
+DTA/UTIL/EXC/WS and executor semantics are ported and independently qualified.
+
 Build SPELL as an independently installable plugin/library for openbexi_ide,
 PyCharm and IntelliJ IDEA, with DSS testing. Do not mix satellite dependencies or
 SPELL bootstrap into the neutral IDE core. Start the fresh project at 0.1.0 from

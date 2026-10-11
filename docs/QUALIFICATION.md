@@ -1,5 +1,9 @@
 # v0.1 qualification
 
+This report records the v0.1 bounded release; its complete source hashes belong
+to tag `v0.1.0`. The newer isolated original-source alpha milestone has its own
+[qualification and remaining native gates](SOURCE_PORT.md).
+
 The standalone plugin/DSS suite passed 176 tests on Windows x64 / CPython 3.13.15,
 with warnings treated as errors. It includes retained independent binary packet/
 engine/transport tests, UTC/TIME and common-policy oracles, the actual adapter

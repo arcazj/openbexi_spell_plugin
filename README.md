@@ -6,6 +6,11 @@ a deterministic Dynamic Satellite Simulator (DSS) fixture. Procedures import
 SPELL symbols explicitly. The complete source-derived SPELL runtime and actual
 JetBrains host plugins remain roadmap gates.
 
+The isolated original-source alpha foundation is available under
+[source_port](source_port/README.md), with its own GPL/LGPL wheel and
+[qualification](docs/SOURCE_PORT.md). It does not replace this working bounded
+adapter or complete the native SPELL executor port.
+
 ```powershell
 python -m venv .venv
 .venv/Scripts/python.exe -m pip install .

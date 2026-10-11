@@ -42,3 +42,9 @@ upstream module tree. The v0.1 DSS adapter is newly explicit and limited; it doe
 not claim the future port or original driver integration is complete. The full
 earlier review and raw source/manual analysis are retained in the migration
 archive for later implementation.
+
+The [0.2.0a1 source foundation](SOURCE_PORT.md) now generates the missing RPC
+modules, preserves the original Python implementation and tests the original
+driver lifecycle in an isolated environment. Its real compile diagnostics confirm
+the native compatibility gaps. This does not promote the bounded v0.1 alias to a
+complete source-derived SPELL runtime.
