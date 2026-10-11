@@ -32,6 +32,10 @@ The [recovery feasibility investigation](RECOVERY_DESIGN.md) passes six isolated
 checks using an exact-version private frame adapter. It is not shipped or counted
 as full WS recovery; persistence and the original executor integration remain open.
 
+The original [WS storage layer](WS_STORAGE.md) now has 17 passing integrity,
+ownership and fresh-process checks. The complete frame graph, atomic checkpoints
+and original executor recovery have not yet passed their release gates.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

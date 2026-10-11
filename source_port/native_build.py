@@ -109,6 +109,23 @@ if all(r['exit_code']==0 for r in results):
                 (output/'analysis-runtime.log').write_text(result.stdout+result.stderr)
                 report['analysis_runtime_exit_code'] = result.returncode
 
+        storage_units = [source/'lib/SPELL_WS/src/SPELLwsStorage.C',Path('/input/native/qualify_storage.cpp')]
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            report['storage_units'] = list(pool.map(compile_unit, storage_units))
+        if all(r['exit_code'] == 0 for r in report['storage_units']):
+            extension = output/('_spell_storage_qualification'+sysconfig.get_config_var('EXT_SUFFIX'))
+            objects = [r for r in results if r['unit'] != 'qualify_util.cpp'] + report['storage_units']
+            result = subprocess.run(['c++','-shared','-pthread','-fsanitize=address,undefined','-Wl,--no-undefined',
+                *[str(output/r['object']) for r in objects], '-L'+sysconfig.get_config_var('LIBDIR'),
+                '-lpython3.13','-llog4cplus','-lz','-o',str(extension)],capture_output=True,text=True,timeout=120)
+            (output/'storage-link.log').write_text(result.stdout+result.stderr)
+            report['storage_link_exit_code'] = result.returncode
+            if result.returncode == 0:
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_storage.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'storage-runtime.log').write_text(result.stdout+result.stderr)
+                report['storage_runtime_exit_code'] = result.returncode
+
 def syntax_unit(path):
     stem = path.relative_to(source).as_posix()
     log = output/(stem.replace('/','_')+'.syntax.log')

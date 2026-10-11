@@ -3,6 +3,7 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_WS/src/SPELLwsStorage.C': '85fff1d7e917ce5913daaf99ecb385362a2f5323d49d7d41de8125b1e13ee34f',
     'lib/SPELL_EXC/src/SPELLgoto.C': '6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f',
     'lib/SPELL_EXC/src/SPELLastAnalyzer.C': '5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af',
     'include/SPELL_EXC/SPELLastAnalyzer.H': '7ad2a805f8b499b3438c8b2c848b5cc36129388bd0027bc7c9e749f417dba1f1',
@@ -36,7 +37,15 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLgoto.C'):
+    if name.endswith('SPELLwsStorage.C'):
+        marker = '#define LATEST_MARSHAL_VERSION 2'
+        assert text.count(marker) == 1
+        text = text[:text.index(marker)] + '''#include "SPELL_UTIL/SPELLpython313.H"
+#include <charconv>
+#include <cstdint>
+#include <zlib.h>
+''' + body('ws_storage.cpp')
+    elif name.endswith('SPELLgoto.C'):
         text = section(text, '#include "opcode.h"', '// CONSTRUCTOR    : SPELLgoto::SPELLgoto',
                        '#include "SPELL_UTIL/SPELLpython313.H"\n#include "SPELL_UTIL/SPELLpythonHelper.H"\n\n//=============================================================================')
         text = section(text, 'void SPELLgoto::analyze()', 'std::string SPELLgoto::validateGotos()',

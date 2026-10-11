@@ -10,7 +10,10 @@ def main():
     parser.add_argument('--evidence', required=True, type=Path)
     parser.add_argument('--analysis', action='store_true', help='Require the original EXC analyzer runtime checks too')
     parser.add_argument('--goto', action='store_true', help='Also require static Step/Goto analysis and trace-jump checks')
+    parser.add_argument('--storage', action='store_true', help='Require WS storage checks and all preceding native checks')
     args = parser.parse_args()
+    if args.storage:
+        args.goto = True
     root = Path(__file__).resolve().parent.parent
     evidence = args.evidence.resolve()
     build = json.loads((evidence/'native-build.json').read_text())
@@ -55,10 +58,21 @@ def main():
     if args.goto:
         report['milestone'] = 'CPython 3.13 original EXC static Step/Goto analysis and C trace jumps'
         report['qualification_scope'] += '; original SPELLgoto static literal analysis, not full native Step/Goto binding integration'
-    name = 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.storage:
+        storage = json.loads((evidence/'storage-runtime.json').read_text())
+        if (build.get('storage_link_exit_code') != 0 or build.get('storage_runtime_exit_code') != 0
+                or {u['unit'] for u in build.get('storage_units', [])} != {'lib/SPELL_WS/src/SPELLwsStorage.C','qualify_storage.cpp'}
+                or any(u['exit_code'] for u in build['storage_units'])
+                or storage['tests'] < 17 or any(storage[k] for k in ('failures','errors','skips'))):
+            raise ValueError('Original WS storage qualification failed')
+        report['milestone'] = 'CPython 3.13 original WS storage bounds, integrity and reference ownership'
+        report['storage_runtime'] = storage
+        report['qualification_scope'] += '; original SPELLwsStorage including a fresh-process load/execute check'
+    name = 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    print(json.dumps({'tests':runtime['tests'], 'embedding_cycles':3,
+    print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
+        'storage_tests':report.get('storage_runtime',{}).get('tests',0), 'embedding_cycles':3,
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))
