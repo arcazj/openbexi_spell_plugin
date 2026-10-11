@@ -6,9 +6,12 @@ on Linux x86_64 / GIL-enabled CPython 3.13.15, including DTA/UTIL/EXC/WS,
 ordinary procedure checkpoint recovery and context/service lifecycle. See
 docs/NATIVE_PACKAGE.md and its exact acceptance manifest. Native service
 checkpoint resumption is explicitly unsupported and rejected before startup;
-service cold restart and live reconnection are qualified. Continue with real
-OpenBEXI, IntelliJ IDEA and PyCharm integration in v0.3, then the remaining phases
-through v0.6. Foundation acceptance is not full language or host compatibility.
+service cold restart and live reconnection are qualified. The local Development
+host integration v0.3.0 is accepted in OpenBEXI, IntelliJ IDEA and PyCharm, with
+exact artifacts and scope in docs/HOST_QUALIFICATION.json. Continue with durable
+shared services and original DSS drivers in v0.4, then full inventory conformance
+and distribution through v0.6. Local host acceptance does not establish
+operational-mode or full language compatibility.
 
 Build SPELL as an independently installable plugin/library for openbexi_ide,
 PyCharm and IntelliJ IDEA, with DSS testing. Do not mix satellite dependencies or

@@ -1,0 +1,431 @@
+{
+  "release": "0.3.0",
+  "passed": true,
+  "scope": "Local Development host integration",
+  "image": {
+    "id": "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d",
+    "os": "linux",
+    "architecture": "amd64"
+  },
+  "artifacts": {
+    "host_wheel": {
+      "name": "openbexi_spell_host-0.3.0-py3-none-any.whl",
+      "sha256": "17566c7d98862a08df365abc98a1b2505823f591465253be9658f92ad31c74a2"
+    },
+    "jetbrains_zip": {
+      "name": "openbexi-spell-0.3.0.zip",
+      "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+    }
+  },
+  "evidence": {
+    "openbexi": {
+      "path": ".qualification/v0.3/openbexi/2ec0de8e7cab42deb89ce5a31b91bca3/result.json",
+      "sha256": "89c76af0e722ab87ceca48a3523d982950671919d5c07ccceacb1d2061abeee3"
+    },
+    "lifecycle": {
+      "path": ".qualification/v0.3/lifecycle/1d5b9b0ca553435297575d469c7fac5c/result.json",
+      "sha256": "d4fac7a9e316a03924176b100f7cdd8d689dc10b6bf0ede2d3ed68c61ae8f839"
+    },
+    "pycharm": {
+      "path": ".qualification/v0.3/pycharm-release-02/result.json",
+      "sha256": "b90063bc96084b6c2c58e3545bc839727a334c4cddc76d3870227461632d324b"
+    },
+    "intellij": {
+      "path": ".qualification/v0.3/intellij-release-02/result.json",
+      "sha256": "270393daa9af95df86240d2538cc44aececc3c22711344b5cf464946db23ba82"
+    },
+    "pycharm_removal": {
+      "path": ".qualification/v0.3/pycharm-removal-release-02/result.json",
+      "sha256": "b71fc78fd9a3ee5ad1ebc551913ac2c415fd6f58e400faa79bfc883bf5629c70"
+    },
+    "intellij_removal": {
+      "path": ".qualification/v0.3/intellij-removal-release-02/result.json",
+      "sha256": "e5698ef29c01a0b34e5e4bec3a9ef2326bf6ffb5882c181a2a4b5e08a5cc0152"
+    },
+    "adapter": {
+      "path": ".qualification/v0.3/adapter/result.json",
+      "sha256": "b652c701b9eade8ff9b9240e323a87ad6852133cdc0daa3c50325a507888ce9e"
+    },
+    "jetbrains_build": {
+      "path": ".qualification/v0.3/jetbrains-release-01/build.json",
+      "sha256": "017c89d46afb0f9954a36cda0519188b2c7c705b081b325cc5c4b621b4cc39be"
+    },
+    "jetbrains_zip": {
+      "path": ".qualification/v0.3/jetbrains-release-01/openbexi-spell-0.3.0.zip",
+      "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+    },
+    "host_wheel": {
+      "path": ".qualification/v0.3/host-wheels/openbexi_spell_host-0.3.0-py3-none-any.whl",
+      "sha256": "17566c7d98862a08df365abc98a1b2505823f591465253be9658f92ad31c74a2"
+    },
+    "pycharm_verdict": {
+      "path": ".qualification/v0.3/jetbrains-verifier-release-02/PY-261.24374.152/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+      "sha256": "d14f012015a4039141e31ade5080c4f179c8e42acdfa5f5745b8db5ad398cf5b"
+    },
+    "intellij_verdict": {
+      "path": ".qualification/v0.3/jetbrains-verifier-release-01/IU-262.10968.63/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+      "sha256": "7da6cbb550d6bd6d7caabc5b772c8745e214aeb56e9ef8bb71ba97a0f30e0d4a"
+    },
+    "adapter_stress_log": {
+      "path": ".qualification/v03-adapter-stress-release-01.log",
+      "sha256": "826363de6f8f70c6695a7f867364faaae7aa95dd8142629a4f14140635ba1aae"
+    },
+    "docker_cleanup_log": {
+      "path": ".qualification/v03-obsolete-host-images-02.log",
+      "sha256": "1d493652adb5d0cba07e9fa49caa6c2d209f40df92c7b2727be16dc2715fb84a"
+    }
+  },
+  "sources": {
+    "host_plugin/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "host_plugin/pyproject.toml": "4cc85fce6b4ede2d15a0c17cb7098c8ac36cb7e025e91da9323b904a02d64ac1",
+    "host_plugin/README.md": "deec0803e38abbe07135c61e0b9e29fe44a2c831157b4916f11e8df1460d91fd",
+    "host_plugin/src/openbexi_spell_host/__init__.py": "a4811c852fe080bc07e2e3073feb73f5b1e66407aa2407287394c5cea01ba3a2",
+    "host_plugin/src/openbexi_spell_host/container.py": "2203d4536660ca0a104ab2404245fa2ee9227cba64033404667e1dbd2b633e39",
+    "host_plugin/src/openbexi_spell_host/dap.py": "28c8ae9ea8b9047514e9d0f1d6c6c5f199c58dd11d4d3e3d1bfd42fb791afef0",
+    "host_plugin/src/openbexi_spell_host/protocol.py": "c4ff6c86c2fe859397e117896ac227481a7d7f6c7aab08d74fc07733181eb8a2",
+    "host_plugin/src/openbexi_spell_host/runner.py": "9270fd5ad7b1c10e77720d20b1e149e44b5b490098e44b2b0d1862d768172495",
+    "host_plugin/tests/test_artifacts.py": "52e54a133fb28c8f577d27d7a3d43c0ef7c7d9f66620298c7d8d46b04f8b663f",
+    "host_runtime/build_bridge.py": "0a49fbc2a04d1ef0419326fd4d1121cdc2382fc1e3db267d487ae3c00abb1e1b",
+    "host_runtime/Dockerfile": "f1638ccbb0e685466669e554c5949d1ffd9c2ea1771cb752a1b5ee1de2e645c4",
+    "host_runtime/Dockerfile.dockerignore": "a40083efc1d22f9586a5ec88cf181306dbe4d2091a5dd203fc058bb54e3cd2bb",
+    "host_runtime/native_bridge.cpp": "f575bcfc080413e601b79b35d8c4ea5131724b43d22cd5de61650d3d858b5fb5",
+    "host_runtime/python/adapter.py": "ea83fe283e6474aceb1df0bfefa4f2acd1cb07db87d6ff2309f1a36b5c497c77",
+    "host_runtime/python/native.py": "cfde79dccd780d9e53643770abb7d85f7387a5a800463e1e79154c7913e7265e",
+    "host_runtime/tests/test_bridge.py": "453bead64cdd70b9530ab020a8546282c8ffaae9f47b2aa468f7368885e1767a",
+    "host_runtime/tests/test_status_order.py": "74c84e90571018ebec370017876b56c99ff00898a708afee6d7a0bac4eb31533",
+    "jetbrains/build.py": "df2fbc54dbcea55ea5bbdba08814f2aefa922a9b421f12d1b36ac601a7476c85",
+    "jetbrains/qualification/HostQualification.java": "b7ac1566cc93b2e268ba94bcb17f47f869ca24b350557efcdc2d6415aebabd18",
+    "jetbrains/qualification/RemovalQualification.java": "5406c1056f9a4744bbbf74444496c96551210a66d2bd5e8b02dabf2460609ac5",
+    "jetbrains/qualify.py": "b6ae5360646064b906588b35f2592027ba8f9e096742dd0128687a130c550c7a",
+    "jetbrains/resources/META-INF/plugin.xml": "32bcd223c28983c488fd88bff51922c0d8d06ceaf1abc071a9e87de75075665c",
+    "jetbrains/src/org/openbexi/spell/DapClient.java": "2c3a7def99a93b8d9dbc1fbd571b33e343877c139e6c20020ac61d030977ee15",
+    "jetbrains/src/org/openbexi/spell/SpellActions.java": "670e23a2f34cb20f73a9367f8ba38bb5601feae2543e07cd7b178f2fca9425b3",
+    "jetbrains/src/org/openbexi/spell/SpellBreakpointType.java": "bb070398237633694fddad80c6f3ba3b00df1338d6ffcdfe798bce38c9663034",
+    "jetbrains/src/org/openbexi/spell/SpellConfigurable.java": "3d03a73ad9bb56e0bc88bfea53b76dce0af9cc01b41bb9251cda37bf33296f52",
+    "jetbrains/src/org/openbexi/spell/SpellDebugAction.java": "96c627c2d39e960bec8b5fbe3188785288b2c0f772bbef0b17e7ca1fcd1e1565",
+    "jetbrains/src/org/openbexi/spell/SpellDebugProcess.java": "8ac09c7845bedfb3a11309e9a1f4095bf7fb8ee4371fada1a8c65fa39d15256f",
+    "jetbrains/src/org/openbexi/spell/SpellLaunch.java": "ce8ef8a7e07542e9c38577e7412fee0aa48119ee6d4199b2c4b780c21c508505",
+    "jetbrains/src/org/openbexi/spell/SpellRunAction.java": "c2d45dc7113224c56e07c79d81aec9baa61c6f2db2b38516014d572af02bb705",
+    "jetbrains/src/org/openbexi/spell/SpellSettings.java": "5416fd68456ebb5d6b1ee63eb4c1c0f7d12666c5d669931d5ea328b4f1aa6089",
+    "jetbrains/src/org/openbexi/spell/SpellSettingsAction.java": "6690f3bffb4430e51e4a5fabc0f9dfa6cb87e2a379ce45b1d76dda3620dfc52d",
+    "jetbrains/src/org/openbexi/spell/SpellToolWindow.java": "1d972c846890d909a2bfd3b5254221a8941bfc0ec83098a1d4cb45fa96fb4cca",
+    "scripts/qualify_host_adapter.py": "7bd1a52d65d4b705bacc46b111dacb00b10a9ae611f56a7bef43812354e4035e",
+    "scripts/qualify_host_lifecycle.py": "8a18a324653433a801a7c4985b55a19fbd98d4fd196d8e427b2aa562dd21d31c",
+    "scripts/qualify_openbexi_host.py": "1c8832e7915db7541ca3f709ded8a9a2eb04b1c671ccb893fe8fb1426aab5e20",
+    "scripts/record_host_qualification.py": "ff438bcd1efece4041d3bc3ce323f6399861bea920d7f417a2e79938dbcf6ad3"
+  },
+  "checks": {
+    "openbexi": {
+      "passed": true,
+      "checks": [
+        "Installed backend discovery, toolbar Run and isolated result export",
+        "Actual debugger widgets, breakpoint, stack, variable edit, Step and Continue",
+        "Native prompt answered through the desktop input widget",
+        "Desktop Stop closes its owned native runtime",
+        "Uninstall removes backend; ordinary Python Run still works"
+      ],
+      "wheel_sha256": "17566c7d98862a08df365abc98a1b2505823f591465253be9658f92ad31c74a2",
+      "ide_commit": "2f1f8455edf0078faaa40e1273f251435f2c2cda",
+      "image": "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+    },
+    "lifecycle": {
+      "passed": true,
+      "checks": [
+        "Installed neutral CLI discovers native SPELL backend, runs and exports",
+        "eof: native container removed without an orphan",
+        "process-tree-loss: native container removed without an orphan"
+      ],
+      "script_sha256": "8a18a324653433a801a7c4985b55a19fbd98d4fd196d8e427b2aa562dd21d31c",
+      "image": "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+    },
+    "pycharm": {
+      "checks": [
+        "Installed plugin settings and tool window in actual IDE",
+        "Native Run through IDE process handler and console",
+        "XDebugger breakpoint, stack/source position, variable edit, Step, Continue and output",
+        "Native prompt and answer through IDE console input",
+        "IDE Stop gracefully closes its owned native run"
+      ],
+      "passed": true,
+      "runtime_images": [
+        "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+      ],
+      "sdk": {
+        "name": "PyCharm",
+        "version": "2026.1.2",
+        "buildNumber": "261.24374.152"
+      },
+      "plugin_sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8",
+      "inputs": {
+        "qualify.py": "b6ae5360646064b906588b35f2592027ba8f9e096742dd0128687a130c550c7a",
+        "qualification/HostQualification.java": "b7ac1566cc93b2e268ba94bcb17f47f869ca24b350557efcdc2d6415aebabd18"
+      }
+    },
+    "intellij": {
+      "checks": [
+        "Installed plugin settings and tool window in actual IDE",
+        "Native Run through IDE process handler and console",
+        "XDebugger breakpoint, stack/source position, variable edit, Step, Continue and output",
+        "Native prompt and answer through IDE console input",
+        "IDE Stop gracefully closes its owned native run"
+      ],
+      "passed": true,
+      "runtime_images": [
+        "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+      ],
+      "sdk": {
+        "name": "IntelliJ IDEA",
+        "version": "2026.2.3",
+        "buildNumber": "262.10968.63"
+      },
+      "plugin_sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8",
+      "inputs": {
+        "qualify.py": "b6ae5360646064b906588b35f2592027ba8f9e096742dd0128687a130c550c7a",
+        "qualification/HostQualification.java": "b7ac1566cc93b2e268ba94bcb17f47f869ca24b350557efcdc2d6415aebabd18"
+      }
+    },
+    "pycharm_removal": {
+      "checks": [
+        "Restarted same project after removal: plugin, actions and tool window absent",
+        "Editor opens Python and standard IDE execution console runs CPython after removal"
+      ],
+      "passed": true,
+      "runtime_images": [
+        "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+      ],
+      "sdk": {
+        "name": "PyCharm",
+        "version": "2026.1.2",
+        "buildNumber": "261.24374.152"
+      },
+      "plugin_sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8",
+      "inputs": {
+        "qualify.py": "b6ae5360646064b906588b35f2592027ba8f9e096742dd0128687a130c550c7a",
+        "qualification/RemovalQualification.java": "5406c1056f9a4744bbbf74444496c96551210a66d2bd5e8b02dabf2460609ac5"
+      }
+    },
+    "intellij_removal": {
+      "checks": [
+        "Restarted same project after removal: plugin, actions and tool window absent",
+        "Editor opens Python and standard IDE execution console runs CPython after removal"
+      ],
+      "passed": true,
+      "runtime_images": [
+        "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d"
+      ],
+      "sdk": {
+        "name": "IntelliJ IDEA",
+        "version": "2026.2.3",
+        "buildNumber": "262.10968.63"
+      },
+      "plugin_sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8",
+      "inputs": {
+        "qualify.py": "b6ae5360646064b906588b35f2592027ba8f9e096742dd0128687a130c550c7a",
+        "qualification/RemovalQualification.java": "5406c1056f9a4744bbbf74444496c96551210a66d2bd5e8b02dabf2460609ac5"
+      }
+    },
+    "adapter": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "image": "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d",
+      "inputs": {
+        "host_runtime/build_bridge.py": "0a49fbc2a04d1ef0419326fd4d1121cdc2382fc1e3db267d487ae3c00abb1e1b",
+        "host_runtime/Dockerfile": "f1638ccbb0e685466669e554c5949d1ffd9c2ea1771cb752a1b5ee1de2e645c4",
+        "host_runtime/Dockerfile.dockerignore": "a40083efc1d22f9586a5ec88cf181306dbe4d2091a5dd203fc058bb54e3cd2bb",
+        "host_runtime/native_bridge.cpp": "f575bcfc080413e601b79b35d8c4ea5131724b43d22cd5de61650d3d858b5fb5",
+        "host_runtime/python/adapter.py": "ea83fe283e6474aceb1df0bfefa4f2acd1cb07db87d6ff2309f1a36b5c497c77",
+        "host_runtime/python/native.py": "cfde79dccd780d9e53643770abb7d85f7387a5a800463e1e79154c7913e7265e",
+        "host_runtime/tests/test_bridge.py": "453bead64cdd70b9530ab020a8546282c8ffaae9f47b2aa468f7368885e1767a",
+        "host_runtime/tests/test_status_order.py": "74c84e90571018ebec370017876b56c99ff00898a708afee6d7a0bac4eb31533"
+      }
+    },
+    "jetbrains_build": {
+      "artifact": "openbexi-spell-0.3.0.zip",
+      "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8",
+      "sdk": {
+        "name": "PyCharm",
+        "version": "2026.1.1",
+        "buildNumber": "261.23567.174"
+      },
+      "inputs": {
+        "src/org/openbexi/spell/DapClient.java": "2c3a7def99a93b8d9dbc1fbd571b33e343877c139e6c20020ac61d030977ee15",
+        "src/org/openbexi/spell/SpellActions.java": "670e23a2f34cb20f73a9367f8ba38bb5601feae2543e07cd7b178f2fca9425b3",
+        "src/org/openbexi/spell/SpellBreakpointType.java": "bb070398237633694fddad80c6f3ba3b00df1338d6ffcdfe798bce38c9663034",
+        "src/org/openbexi/spell/SpellConfigurable.java": "3d03a73ad9bb56e0bc88bfea53b76dce0af9cc01b41bb9251cda37bf33296f52",
+        "src/org/openbexi/spell/SpellDebugAction.java": "96c627c2d39e960bec8b5fbe3188785288b2c0f772bbef0b17e7ca1fcd1e1565",
+        "src/org/openbexi/spell/SpellDebugProcess.java": "8ac09c7845bedfb3a11309e9a1f4095bf7fb8ee4371fada1a8c65fa39d15256f",
+        "src/org/openbexi/spell/SpellLaunch.java": "ce8ef8a7e07542e9c38577e7412fee0aa48119ee6d4199b2c4b780c21c508505",
+        "src/org/openbexi/spell/SpellRunAction.java": "c2d45dc7113224c56e07c79d81aec9baa61c6f2db2b38516014d572af02bb705",
+        "src/org/openbexi/spell/SpellSettings.java": "5416fd68456ebb5d6b1ee63eb4c1c0f7d12666c5d669931d5ea328b4f1aa6089",
+        "src/org/openbexi/spell/SpellSettingsAction.java": "6690f3bffb4430e51e4a5fabc0f9dfa6cb87e2a379ce45b1d76dda3620dfc52d",
+        "src/org/openbexi/spell/SpellToolWindow.java": "1d972c846890d909a2bfd3b5254221a8941bfc0ec83098a1d4cb45fa96fb4cca",
+        "resources/META-INF/plugin.xml": "32bcd223c28983c488fd88bff51922c0d8d06ceaf1abc071a9e87de75075665c",
+        "build.py": "df2fbc54dbcea55ea5bbdba08814f2aefa922a9b421f12d1b36ac601a7476c85"
+      },
+      "status": "Compiled candidate; verifier and actual host acceptance are separate gates"
+    },
+    "pycharm_verdict": "Compatible. 7 usages of experimental API\n",
+    "intellij_verdict": "Compatible. 1 usage of experimental API\n",
+    "native_foundation_report_sha256": "b98c0e3d44835916be4c0a76fe1ced08823ec6bd90ace6238fb8dd87e690381c",
+    "native_bridge": {
+      "protocol": 1,
+      "native_version": "0.3.0",
+      "bridge_sha256": "a016537c2030fd2a6b1c9f116b331ab65d4b1c8e736f6f0c62950c93fa7fed4a",
+      "fields": [
+        "ActionEnabled",
+        "ActionLabel",
+        "ActionSeverity",
+        "Answer",
+        "Arguments",
+        "AsRunName",
+        "Bool",
+        "BreakpointLine",
+        "BreakpointProc",
+        "BreakpointType",
+        "BrowsableLib",
+        "ByStep",
+        "CltOp",
+        "CodeName",
+        "Condition",
+        "ContextDescription",
+        "ContextDriver",
+        "ContextFamily",
+        "ContextGCS",
+        "ContextList",
+        "ContextName",
+        "ContextPort",
+        "ContextSC",
+        "ContextStatus",
+        "Csp",
+        "CurrentChunk",
+        "CurrentLine",
+        "DResourcesEnabled",
+        "DataChunk",
+        "DataType",
+        "Default",
+        "DictContents",
+        "DictMergeNew",
+        "DictName",
+        "DirName",
+        "DriverTime",
+        "Enabled",
+        "ErrorMsg",
+        "ErrorReason",
+        "ExecDelay",
+        "ExecOp",
+        "ExecutorList",
+        "ExecutorMode",
+        "ExecutorStatus",
+        "ExpectedValues",
+        "FatalError",
+        "FileList",
+        "FileName",
+        "FilePath",
+        "FileSize",
+        "Force",
+        "ForcePromptConfirm",
+        "ForceTcConfirm",
+        "GotoLabel",
+        "GotoLine",
+        "GroupId",
+        "GuiControl",
+        "GuiControlHost",
+        "GuiHostList",
+        "GuiKey",
+        "GuiList",
+        "GuiMode",
+        "Host",
+        "Id",
+        "InstanceId",
+        "IpcKey",
+        "IpcSeq",
+        "ItemName",
+        "ItemReason",
+        "ItemStatus",
+        "ItemTime",
+        "ItemType",
+        "ItemValue",
+        "Level",
+        "LocalResourcesSupported",
+        "LogName",
+        "MaxProc",
+        "MaxVerbosity",
+        "MsgType",
+        "NumChunks",
+        "NumFiles",
+        "Offset",
+        "OpenMode",
+        "OptionValues",
+        "OriginId",
+        "Originator",
+        "ParentId",
+        "ParentLine",
+        "PeerName",
+        "ProcCode",
+        "ProcId",
+        "ProcList",
+        "ProcName",
+        "PromptWarningDelay",
+        "ReceiverId",
+        "Refresh",
+        "ResourceAdded",
+        "ResourceDelete",
+        "ResourceGCSName",
+        "ResourceGCSValueRange",
+        "ResourceGlobalValue",
+        "ResourceLocalValue",
+        "ResourceName",
+        "ResourceType",
+        "ResourceValueRange",
+        "ResourcesDisplay",
+        "ReturnValue",
+        "RunInto",
+        "SCount",
+        "SaveStateMode",
+        "Scope",
+        "Script",
+        "SenderId",
+        "Sequence",
+        "ServerFile",
+        "ServerFileId",
+        "ServerName",
+        "SharedExpected",
+        "SharedOperation",
+        "SharedScope",
+        "SharedSuccess",
+        "SharedValue",
+        "SharedVar",
+        "So",
+        "SprocId",
+        "StageId",
+        "StageTl",
+        "Started",
+        "Status",
+        "SubProcId",
+        "SubprocLine",
+        "Text",
+        "Time",
+        "TimeId",
+        "TotalChunks",
+        "TransferModeList",
+        "VarAdded",
+        "VarDelete",
+        "VarGlobal",
+        "VarName",
+        "VarScope",
+        "VarType",
+        "VarValue",
+        "WVarEnabled",
+        "WatchVariables",
+        "root"
+      ],
+      "packages": "g++\t4:14.2.0-1\nnlohmann-json3-dev\t3.11.3-2.1\n"
+    }
+  },
+  "remaining_releases": [
+    "0.4 original DSS drivers and three operating modes",
+    "0.5 complete inventory conformance",
+    "0.6 distribution and compatibility"
+  ]
+}

@@ -1,0 +1,24 @@
+<idea-plugin require-restart="true">
+  <id>org.openbexi.spell</id>
+  <name>OpenBEXI SPELL</name>
+  <version>0.3.0</version>
+  <vendor>OpenBEXI</vendor>
+  <description><![CDATA[Run and debug explicit-import SPELL procedures through the separately installed OpenBEXI SPELL host runtime. Requires CPython 3.13, the host wheel and the native Docker image.]]></description>
+  <idea-version since-build="261" until-build="262.*"/>
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.xdebugger</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <projectService serviceImplementation="org.openbexi.spell.SpellSettings"/>
+    <projectConfigurable id="org.openbexi.spell.settings" displayName="SPELL Runtime" instance="org.openbexi.spell.SpellConfigurable"/>
+    <toolWindow id="SPELL" anchor="right" factoryClass="org.openbexi.spell.SpellToolWindow"/>
+    <xdebugger.breakpointType implementation="org.openbexi.spell.SpellBreakpointType"/>
+  </extensions>
+  <actions>
+    <group id="OpenBEXI.Spell" text="SPELL" popup="true">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+      <action id="OpenBEXI.Spell.Run" class="org.openbexi.spell.SpellRunAction" text="Run File with SPELL"/>
+      <action id="OpenBEXI.Spell.Debug" class="org.openbexi.spell.SpellDebugAction" text="Debug File with SPELL"/>
+      <action id="OpenBEXI.Spell.Settings" class="org.openbexi.spell.SpellSettingsAction" text="SPELL Runtime Settings"/>
+    </group>
+  </actions>
+</idea-plugin>

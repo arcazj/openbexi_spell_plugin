@@ -66,9 +66,11 @@ library. Verify and exercise install/activate/explicit-import Run/Debug/uninstal
 in real private IntelliJ IDEA and PyCharm sandboxes. Plain Python IDE operation
 survives plugin removal. A Python wheel alone is not JetBrains compatibility.
 
-In progress: the native 0.3.0a2 foundation and neutral IDE extension are qualified.
-The installed host candidates and original display-buffer completion fix remain
-under test. See [host integration](docs/HOST_RUNTIME.md) for evidence and open gates.
+Complete for local Development on Windows x64 hosts with the Linux x86_64
+CPython 3.13.15 runtime in Docker. The installed OpenBEXI extension, actual
+PyCharm and IntelliJ plugins, debugger, prompts, cleanup and removal all pass
+on the same 0.3.0 artifacts. See [host integration](docs/HOST_RUNTIME.md) and
+[the exact acceptance manifest](docs/HOST_QUALIFICATION.json).
 
 ## v0.4 — drivers and operating modes
 
@@ -103,6 +105,6 @@ Proposed v0.7 covers security/capacity and operational recovery/backup acceptanc
 v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.
 These later releases remain outside the current execution target of v0.6.
 
-The remaining sequence is v0.3, v0.4, v0.5 and v0.6. Update documentation and
+The remaining sequence is v0.4, v0.5 and v0.6. Update documentation and
 commit each tested phase in order. A partial milestone may be committed, but
 its parent release remains open until every release gate has passed.

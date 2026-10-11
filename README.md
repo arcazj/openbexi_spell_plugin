@@ -1,24 +1,57 @@
-# openbexi_spell_plugin v0.2
+# openbexi_spell_plugin
 
-The v0.2 release qualifies the original-source SPELL native foundation. The
-existing bounded v0.1 development adapter for
-[openbexi_ide](../openbexi_ide/README.md) and deterministic Dynamic Satellite
-Simulator (DSS) remain the desktop testing baseline. Procedures import SPELL
-symbols explicitly. Actual host integration is the next v0.3 phase.
+SPELL is an optional runtime for [openbexi_ide](../openbexi_ide/README.md),
+PyCharm and IntelliJ IDEA. Procedures use explicit imports from the original
+SPELL library. The neutral IDE stays independent of SPELL.
 
-The separate [original-source native runtime](docs/NATIVE_PACKAGE.md) is now
-available as qualified foundation 0.2.0 for Linux x86_64 / CPython 3.13.15.
-Its GPL/LGPL diagnostic wheel passes fresh-environment installation, native
-execution, listener/context operation, imports and removal. Install it in a
-separate environment from the bounded adapter. Full language conformance and
-v0.6 distribution remain roadmap gates.
+The v0.3 host release is accepted for local Development workflows; see
+[the exact host qualification](docs/HOST_QUALIFICATION.json). It supplies a host wheel, an
+IntelliJ Platform plugin ZIP and a private native Docker runtime. The native
+foundation builds the supplied SPELL 2.6.10 code for CPython 3.13.15, preserving
+source provenance and applicable GPL/LGPL notices. See the exact
+[execution status](docs/EXECUTION_TO_V06.md).
 
-The [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
-controls the original server executor over IPC, verifies its result and checks
-normal shutdown. The [controller milestone](docs/CONTROLLER_RUNTIME.md) adds
-breakpoints, Step/Skip/Goto, live variable editing, pause/resume, abort and prompts.
-Its build also passes the 23 standalone command checks. See the
-[execution status](docs/EXECUTION_TO_V06.md) for the remaining release gates.
+## Native desktop and CLI
+
+Install `openbexi_spell_host-0.3.0-py3-none-any.whl` in the CPython 3.13 environment
+selected by your IDE. The runtime image is `openbexi-spell-host:0.3.0` and needs
+Docker Desktop's Linux engine. No host-folder sharing or published IPC port is
+required. The host wheel supplies the OpenBEXI extension and shared DAP bridge;
+the original SPELL library runs inside the image.
+
+```python
+from spell.lang.functions import Display
+from pathlib import Path
+answer = 6 * 7
+Display('Answer: ' + str(answer))
+Path('answer.txt').write_text(str(answer))
+```
+
+In OpenBEXI, choose **Run ? Reload Runtime Plugins**, select **SPELL**, and use
+Run or Debug. Native line breakpoints, stack inspection, current-frame variable
+edits, Step, pause, prompts and Stop are supported. The ordinary Python backend
+continues to use its own runtime/debugger.
+
+```powershell
+openbexi run procedure.py --project C:/path/to/project --language spell
+```
+
+For JetBrains, install `openbexi-spell-0.3.0.zip` through **Plugins ? Install
+Plugin from Disk**, restart, configure **SPELL Runtime**, and use **Tools ? SPELL**.
+See [JetBrains installation and compatibility](docs/JETBRAINS_HOST.md).
+
+Each run uses a bounded project snapshot. Changed/new files are saved under
+`.openbexi/runs/RUN_ID/artifacts` with a hash manifest; source files in the editor
+are not overwritten. The host supports local Development. Step Out, arbitrary
+expression evaluation, conditional breakpoints and operational DSS integration
+are later capabilities. See [host runtime and qualification](docs/HOST_RUNTIME.md).
+
+## DSS testing baseline
+
+The repository's root Python package remains the separate bounded v0.1 DSS/SDK
+baseline. Installing it does not install the native host wheel or JetBrains ZIP.
+Its `spell` alias must stay in a different environment from the native source
+runtime. The native Docker image already provides that separation.
 
 ```powershell
 python -m venv .venv
@@ -26,70 +59,31 @@ python -m venv .venv
 .venv/Scripts/openbexi-dss.exe --port 8085 --database var/dss.sqlite
 ```
 
-The installation commands above install the retained bounded 0.1.0 adapter.
-Use the native package documentation for the separate 0.2.0 source runtime.
-The existing Docker image passes the [internal DSS command workflow](docs/DSS_CONTAINER_RUNTIME.md).
-Host port publication remains a release gate; the command above starts the
-qualified host-accessible fixture.
+The deterministic Dynamic Satellite Simulator exposes health at
+`http://127.0.0.1:8085/healthz`, state at `/api/v1/state`, and telemetry at
+`/api/v1/telemetry`. It uses the existing binary TC/TM packets and transactional
+command journal. Its manual clock supports PAUSE/STEP; automatic RESUME is
+explicitly unavailable in this profile. Kafka transport is a separate optional
+profile. [DSS container evidence](docs/DSS_CONTAINER_RUNTIME.md) covers the
+internal container workflow; published container access is a later gate.
 
-The local fixture uses the existing SQLite-backed engine, satellite catalogue,
-binary TC/TM packets, command journal, epoch/revision checks and staged TCP command
-server. HTTP is at `http://127.0.0.1:8085`; state is `/api/v1/state`, telemetry is
-`/api/v1/telemetry`, and health is `/healthz`. The manual clock keeps tests
-repeatable; PAUSE and STEP work, while automatic RESUME is rejected in this profile.
-It does not pretend that a Kafka publisher is running. The original
-Kafka-capable server remains available as an optional `kafka` extra/profile.
+`examples/dss_demo.py` and `examples/desktop_dss_demo.py` belong to the bounded
+DSS adapter. Full original driver integration belongs to v0.4, followed by all
+763 conformance requirements in v0.5 and distribution/compatibility in v0.6.
+Preserve exactly Development, read-only Monitoring and approved Execution.
 
-Install this plugin into the IDE's selected interpreter and run:
+## Source and development
 
-```powershell
-../openbexi_ide/.venv/Scripts/python.exe -m pip install .
-../openbexi_ide/.venv/Scripts/openbexi.exe run dss_demo.py --project examples --language spell --dss-url http://127.0.0.1:8085
-```
+The seven original manuals and exact source archive remain in `docs/reference`.
+See the [source review](docs/SOURCE_REVIEW.md), [roadmap](ROADMAP.md),
+[master prompt](openbexi_spell_plugin_master_prompt.md), and
+[migration](docs/MIGRATION.md). Historical milestone reports retain their original
+source/artifact identities and do not automatically qualify later releases.
 
-Shared sessions can set `serve --dss-url http://127.0.0.1:8085` and then
-`submit dss_demo.py --language spell` from a connected controller. Python and
-SPELL procedures share the same controller fencing and configured execution slots.
-
-For native desktop Run/Debug, open `examples/desktop_dss_demo.py` in openbexi_ide
-and select the interpreter containing this plugin. In Run > Arguments, set
-`--dss-url http://127.0.0.1:8086` to use the currently running native fixture.
-This procedure explicitly activates its adapter and imports `spell.lang`; the
-ordinary Python desktop remains independent of SPELL.
-
-The first adapter supports Display, current-sample GetTM/Verify, catalogue BuildTC,
-staged Send and relative numeric WaitFor. Unsupported interactive prompts,
-operational graphics and other language families fail explicitly. This profile
-does not implement native DataContainer/Step/Goto/warm-start or full legacy driver
-compatibility. The retained SDK common policy/TIME code is separately tested;
-its presence does not imply every service backend is available.
-
-Original manuals and `SPELL2.6.10-src.zip` are preserved in `docs/reference/`.
-They are essential source authority, with their original licenses, and are not
-copied into the Apache-licensed runtime wheel. Read the
-[source review](docs/SOURCE_REVIEW.md), [roadmap](ROADMAP.md),
-[master prompt](openbexi_spell_plugin_master_prompt.md) and
-[migration](docs/MIGRATION.md).
+Build and test commands for native hosts are in [HOST_RUNTIME.md](docs/HOST_RUNTIME.md).
+The retained DSS baseline has its own tests:
 
 ```powershell
 python -m pip install '.[test]'
 python -m pytest tests -q
 ```
-
-The v0.1 fixture binds only to loopback and uses synthetic satellite data. Paused
-epochs, uncertain command effects and backpressure remain explicit; failed sends
-are never automatically replayed by this adapter. Operational work requires the
-full server's separate migration and acceptance gate. See
-[v0.1 qualification](docs/QUALIFICATION.md) for the tested scope.
-
-Native [service startup/shutdown](docs/SERVICE_RUNTIME.md),
-[watchdog restart after failure and process loss](docs/SERVICE_RESTART.md),
-[child/shared-data/scheduler behavior](docs/CIF_RUNTIME.md) and
-[IPC ownership checks](docs/IPC_OWNERSHIP.md) now pass on pinned CPython 3.13.15.
-See the execution status for current acceptance gates and the roadmap through v0.6.
-
-The [live reconnect milestone](docs/LIVE_RECONNECT.md) now passes 25 context lifecycle
-runs. Native procedures and services survive context failure, pause, regain GUI
-control and resume in the same process. Unsupported native service checkpoint
-requests fail explicitly before startup. The installed artifact is qualified;
-host integration is next, followed by original drivers, conformance and distribution.

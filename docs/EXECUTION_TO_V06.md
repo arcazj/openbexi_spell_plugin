@@ -4,13 +4,14 @@ Authorized target: finish and commit each release in order through plugin v0.6,
 including prerequisite changes and qualification in the sibling openbexi_ide.
 The working IDE v0.2 / bounded plugin v0.1 remains the desktop testing baseline.
 The original-source native foundation v0.2 is now qualified in its separate Linux
-environment; actual host integration is the next phase.
+environment. The v0.3 local host integration is accepted; durable shared
+service and original DSS drivers are next.
 
 | Release | State | Required evidence |
 | --- | --- | --- |
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
-| v0.3 | In progress; native host foundation and neutral IDE extension qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
-| v0.4 | Pending v0.3 and IDE service prerequisites | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
+| v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
+| v0.4 | In progress; IDE durable-service prerequisite first | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
 | v0.5 | Pending v0.4 | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending v0.5 | Reproducible distribution, supported platform matrix, clean installation/removal and upgrades, actual host and DSS-container workflows |
 
@@ -115,11 +116,13 @@ kind. All preceding native gates, ten context tests and 25 lifecycle runs pass.
 The [installed 0.2.0 artifact](NATIVE_PACKAGE.md) now passes seven fresh-image
 checks, removal, byte-identical packaging from one qualified build and the full
 native gate. The v0.2 foundation is accepted on Linux x86_64 / CPython 3.13.15.
-The [host integration milestone](HOST_RUNTIME.md) adds the qualified native
-0.3.0a3 foundation and a committed neutral IDE extension. Display-buffer
-completion ordering is qualified and the installed Qt workflow passes. Full
-adapter and JetBrains host acceptance remain open. Continue
-through the v0.3 OpenBEXI and JetBrains host gates before promoting v0.4.
+The [host integration release](HOST_RUNTIME.md) now passes the native 0.3.0
+package gate, ten native adapter cases, repeated output/stack stress, installed
+CLI lifecycle checks and all three actual host Run/Debug/prompt/Stop/removal
+workflows. Plugin Verifier accepts the tested PyCharm and IntelliJ builds.
+[The host manifest](HOST_QUALIFICATION.json) binds the exact source, image, wheel,
+ZIP and evidence identities. Continue with the neutral IDE durable service and
+original DSS driver contracts for v0.4.
 The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openbexi-spell-host"
+version = "0.3.0"
+description = "Optional OpenBEXI and JetBrains host bridge for the original SPELL runtime"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.entry-points."openbexi.backends.v1"]
+spell = "openbexi_spell_host:describe"
+
+[project.scripts]
+openbexi-spell-host = "openbexi_spell_host.runner:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false

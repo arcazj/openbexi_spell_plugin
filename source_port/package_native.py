@@ -14,7 +14,7 @@ import subprocess
 import sys
 import sysconfig
 
-VERSION = '0.3.0a3'
+VERSION = '0.3.0'
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
