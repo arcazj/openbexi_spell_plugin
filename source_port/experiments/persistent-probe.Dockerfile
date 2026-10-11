@@ -1,0 +1,13 @@
+FROM python:3.13-slim@sha256:eb43ff125d8d58d7449dcba7d336c23bcac412f526d861db493b9994d8010280 AS probe
+RUN apt-get update && apt-get install -y --no-install-recommends g++ libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev
+COPY docs/reference/SPELL2.6.10-src.zip /input/SPELL2.6.10-src.zip
+COPY source_port/native /input/native
+COPY source_port/native_patches.py source_port/native_manifest.py source_port/native_build.py /input/
+COPY source_port/native-build.Dockerfile source_port/native-build.Dockerfile.dockerignore /input/
+RUN python /input/native_build.py
+COPY source_port/experiments /experiment
+RUN python -m pip install --no-cache-dir --require-hashes --only-binary=:all: -r /experiment/persistent-requirements.txt
+RUN python /experiment/build_probe.py
+
+FROM scratch AS evidence
+COPY --from=probe /out /

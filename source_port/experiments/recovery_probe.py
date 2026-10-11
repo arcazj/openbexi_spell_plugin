@@ -56,6 +56,28 @@ class Feasibility(unittest.TestCase):
             self.snapshot('pass\n', 100)
         self.assertIsNone(sys.gettrace())
 
+    def test_existing_trace_is_restored_on_success_and_failure(self):
+        events = []
+        def tracing(frame, event, value):
+            events.append(event)
+            return tracing
+        sys.settrace(tracing)
+        try:
+            snapshot = self.snapshot('value=1\nresult=value+1\n', 2)
+            self.assertIs(sys.gettrace(), tracing)
+            self.assertEqual(probe.resume(snapshot)[1]['result'], 2)
+            self.assertIs(sys.gettrace(), tracing)
+            with self.assertRaises(RuntimeError):
+                self.snapshot('pass', 100)
+            self.assertIs(sys.gettrace(), tracing)
+        finally:
+            sys.settrace(None)
+        self.assertTrue(events)
+
+    def test_state_loader_rejects_non_tuple(self):
+        with self.assertRaises(TypeError):
+            probe.from_state(None)
+
 
 result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Feasibility))
 Path('/out/recovery-probe.json').write_text(json.dumps({

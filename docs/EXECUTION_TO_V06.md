@@ -52,6 +52,12 @@ original Python 3 Makefiles corrects the inventory: 143 library units across 16
 libraries, 135 passing compilation/syntax checks and eight remaining failures.
 Python 2-only handlers are excluded by the upstream build, not silently replaced.
 
+The [persistent recovery experiment](PERSISTENT_RECOVERY.md) passes 13 checks
+through the real WS storage plus eight in-memory checks. It proves selected
+single-frame continuations after SIGKILL in a fresh process, including shared
+globals and exception context. Nested callers, original executor integration and
+DSS effect recovery remain open; this does not close the v0.2 gate.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

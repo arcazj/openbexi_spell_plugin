@@ -1,5 +1,10 @@
 # CPython 3.13 recovery compatibility investigation
 
+The subsequent [persistent recovery experiment](PERSISTENT_RECOVERY.md) now
+qualifies thirteen single-frame persistence checks through the original WS
+storage, including SIGKILL and a fresh interpreter. The six-check milestone below
+describes the earlier in-memory investigation; full executor recovery remains open.
+
 The original SPELL warm-start implementation stores/restores frame instruction
 offsets, local/operand stacks, Python 2 try blocks and caller links. CPython 3.13
 removed that representation. Public frame accessors and the validated f_lineno
