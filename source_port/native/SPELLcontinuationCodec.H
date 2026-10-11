@@ -41,9 +41,11 @@ inline PyObject* source(const std::string& filename) {
     if (!result) SPELLpythonHelper::instance().checkError();
     return result;
 }
-inline void write(const std::string& filename, const std::string& procedure, PyObject* state) {
+inline void write(const std::string& filename, const std::string& procedure, PyObject* state, bool withRuntime=false) {
     SPELLpython313::Owned codec(module()), bytes(source(procedure));
-    SPELLpython313::Owned encoded(PyObject_CallMethod(codec.get(),"encode","OO",bytes.get(),state));
+    SPELLpython313::Owned runtime(withRuntime ? PyObject_CallMethod(codec.get(),"capture_runtime",nullptr) : Py_NewRef(Py_None));
+    if (!runtime.get()) SPELLpythonHelper::instance().checkError();
+    SPELLpython313::Owned encoded(PyObject_CallMethod(codec.get(),"encode","OOO",bytes.get(),state,runtime.get()));
     if (!encoded.get()) SPELLpythonHelper::instance().checkError();
     // A fresh file is committed only after the complete graph and stream close.
     std::string temporary = filename + ".XXXXXX";
@@ -73,11 +75,11 @@ inline void write(const std::string& filename, const std::string& procedure, PyO
     }
     unlink((temporary+"_WRITE").c_str());
 }
-inline PyObject* read(const std::string& filename, const std::string& procedure) {
+inline PyObject* read(const std::string& filename, const std::string& procedure, bool withRuntime=false) {
     SPELLwsStorage storage(filename,SPELLwsStorage::MODE_READ);
     SPELLpython313::Owned metadata(storage.loadObject()), payload(storage.loadObject());
     SPELLpython313::Owned codec(module()), bytes(source(procedure));
-    PyObject* result = PyObject_CallMethod(codec.get(),"decode","OOO",bytes.get(),metadata.get(),payload.get());
+    PyObject* result = PyObject_CallMethod(codec.get(),"decode","OOOO",bytes.get(),metadata.get(),payload.get(),withRuntime ? Py_True : Py_False);
     if (!result) SPELLpythonHelper::instance().checkError();
     return result;
 }

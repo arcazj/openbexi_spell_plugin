@@ -23,6 +23,20 @@ from spell.lang.constants import LONG,HEX
 class DataCheckpoints(unittest.TestCase):
     def setUp(self): native.notifications(False)
     def tearDown(self): native.notifications(False)
+    def test_native_type_identity_does_not_require_adapter_import(self):
+        # Explicit native imports must serialize by reference even when the
+        # Python adapter alias has never been imported by a procedure.
+        previous=sys.modules.pop('spell.lib.adapter.data',None)
+        try:
+            self.assertEqual(dta.DataContainer.__module__,'libSPELL_DTA_v3')
+            self.assertEqual(dta.Var.__module__,'libSPELL_DTA_v3')
+            original=dta.DataContainer('native-only')
+            original['count']=dta.Var(Default=7)
+            restored=cloudpickle.loads(cloudpickle.dumps(original,protocol=5))
+            self.assertIs(type(restored),dta.DataContainer)
+            self.assertEqual(restored['count'],7)
+        finally:
+            if previous is not None: sys.modules['spell.lib.adapter.data']=previous
     def test_primitive_and_nested_values(self):
         for value in (None,True,1234567890123,3.5,'value\x00終',[1,2],{'a':[1,2]}):
             variable=dta.Var(Default=value)

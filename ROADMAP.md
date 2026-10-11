@@ -23,16 +23,14 @@ or invented substitute counts as supported native containers. Qualify imports,
 context/EXEC/CIF injection, service setup/cleanup, memory/error paths and original
 behaviour against independent tests. Keep the v0.1 bounded alias separate.
 
-The source/RPC alpha milestone `0.2.0a1` is implemented and independently checked:
-94 source modules, generated original schemas and the original driver lifecycle
-with traceable patches. See [source port status](docs/SOURCE_PORT.md). The full
-v0.2 phase remains open: unchanged native compile diagnostics identify 37 failing
-units out of 63. Port and qualify DTA/UTIL first, then EXC control flow and WS
-serialization, and only then admit this runtime to IDE/plugin host qualification.
-
-The subsequent [native UTIL milestone](docs/NATIVE_PORT.md) links the actual
-UTIL/SYN implementation and passes sanitizer-backed runtime and embedding tests.
-The patched native syntax probe now compiles 45 of 63 units; full v0.2 stays open.
+The source/RPC alpha `0.2.0a1` preserves 94 source modules and generates the
+original schemas. All 143 native library units now pass compilation checks;
+the original standalone executor links its 120 units and passes 23 command
+checks, including fresh-process crash recovery with native data. See
+[source port status](docs/SOURCE_PORT.md), [executor recovery](docs/EXECUTOR_RECOVERY.md)
+and the [execution status](docs/EXECUTION_TO_V06.md). Native context/service
+lifecycle and complete controller/CIF behavior still gate v0.2 and admission to
+installed IDE/plugin host qualification.
 
 ## v0.3 — real IDE host plugins
 

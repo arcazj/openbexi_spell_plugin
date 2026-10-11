@@ -192,10 +192,16 @@ void SPELLprocedureManager::registerScript(const std::string& file)
         text = text.replace('    // After the execution cycle, wait for the user/server to autorize closure',
             '    m_exitCode = m_executor->getStatus() == STATUS_FINISHED ? 0 : 1;\n\n    // After the execution cycle, wait for the user/server to autorize closure')
         text = text.replace('        LOG_ERROR(msg);\n        // Notify error', '        LOG_ERROR(msg);\n        std::cerr << msg << std::endl;\n        // Notify error')
+        text = text.replace('startup.persistentFile += m_config.timeId + "_Executor_" + theId;',
+            'startup.persistentFile += m_config.timeId + "_Executor_" + theId;\n            if (m_config.recover) startup.persistentFile += "_resume_" + std::to_string(getpid());')
     elif name == 'src/executorcmd/src/SPELLexecutorMain.C':
-        text = text.replace('    interp.mainLoop();\n\n    return 0;', '''    int exitCode=1;
-    try { interp.mainLoop(); exitCode=interp.exitCode(); }
+        text = text.replace('config.warmstart   = (warm == 1);', 'config.warmstart   = (warm == 1 || recover == 1);')
+        text = text.replace('    SPELLcif* cif = NULL;', '    SPELLcif* cif = NULL;\n    int exitCode=1;\n    try {')
+        text = text.replace('    interp.mainLoop();\n\n    return 0;', '''    interp.mainLoop(); exitCode=interp.exitCode(); }
     catch (SPELLcoreException& error) {
+        std::cerr << error.what() << std::endl;
+    }
+    catch (const std::exception& error) {
         std::cerr << error.what() << std::endl;
     }
     interp.shutdown();
@@ -477,7 +483,7 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         PyObject* captureChain();
         void installChain(PyObject* state);
         static PyObject* skipCaller(PyObject* capsule, PyObject* args);''')
-        text = text.replace('SPELLwsStorage* m_storage;', 'PyObject* m_lastState;\n        bool m_resuming;')
+        text = text.replace('SPELLwsStorage* m_storage;', 'PyObject* m_lastState;\n        bool m_resuming;\n        bool m_stagePending;')
     elif name.endswith('SPELLwsWarmStartImpl.C'):
         text = text[:text.index('// FILES TO INCLUDE')] + body('ws_controller.cpp')
     elif name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):

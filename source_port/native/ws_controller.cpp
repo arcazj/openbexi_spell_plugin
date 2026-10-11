@@ -7,7 +7,7 @@
 #include <memory>
 
 SPELLwsWarmStartImpl::SPELLwsWarmStartImpl()
-    : m_topFrame(nullptr), m_recursionDepth(0), m_lastState(nullptr), m_resuming(false) {}
+    : m_topFrame(nullptr), m_recursionDepth(0), m_lastState(nullptr), m_resuming(false), m_stagePending(false) {}
 SPELLwsWarmStartImpl::~SPELLwsWarmStartImpl() { reset(); }
 void SPELLwsWarmStartImpl::initialize(const SPELLwsStartupInfo& info) {
     if (info.workingMode == MODE_UNINIT)
@@ -18,11 +18,13 @@ void SPELLwsWarmStartImpl::initialize(const SPELLwsStartupInfo& info) {
     m_recoveryFile = info.recoveryFile.empty() ? "" : info.recoveryFile+".wsp";
 }
 void SPELLwsWarmStartImpl::reset() {
+    SPELLpython313::GIL gil;
     for (auto* frame: m_frames) delete frame;
     m_frames.clear(); m_topFrame=nullptr; m_recursionDepth=0;
-    Py_CLEAR(m_lastState); m_resuming=false;
+    Py_CLEAR(m_lastState); m_resuming=false; m_stagePending=false;
 }
 void SPELLwsWarmStartImpl::cleanup() {
+    SPELLpython313::GIL gil;
     for (auto* frame: m_frames) frame->cleanup();
     if (!m_persistentFile.empty()) {
         unlink(m_persistentFile.c_str());
@@ -59,10 +61,16 @@ void SPELLwsWarmStartImpl::notifyLine() {
     m_topFrame->eventLine();
     SPELLpython313::Owned state(captureChain());
     Py_XSETREF(m_lastState,Py_NewRef(state.get()));
-    if (getWorkingMode()==MODE_ON_LINE) saveState();
+    if (getWorkingMode()==MODE_ON_LINE || m_stagePending) {
+        saveState();
+        m_stagePending=false;
+    }
 }
 void SPELLwsWarmStartImpl::notifyStage() {
-    if (getWorkingMode()==MODE_ON_STEP) saveState();
+    // Step is a C binding: its caller's live value-stack pointer is not exposed
+    // until the evaluator returns to a trace boundary. Publish at the next safe
+    // line, after Step completed and before that line's effects can execute.
+    if (getWorkingMode()==MODE_ON_STEP) m_stagePending=true;
 }
 PyObject* SPELLwsWarmStartImpl::captureChain() {
     if (m_frames.empty()) THROW_EXCEPTION("Cannot checkpoint procedure", "No active frames", SPELL_ERROR_WSTART);
@@ -87,7 +95,7 @@ void SPELLwsWarmStartImpl::saveState() {
     if (!core.get()) SPELLpythonHelper::instance().checkError();
     SPELLpython313::Owned valid(PyObject_CallMethod(codec.get(),"validate_chain","OO",state.get(),core.get()));
     if (!valid.get()) SPELLpythonHelper::instance().checkError();
-    SPELLcontinuationCodec::write(m_persistentFile,m_startup.procedureFile,state.get());
+    SPELLcontinuationCodec::write(m_persistentFile,m_startup.procedureFile,state.get(),true);
     Py_XSETREF(m_lastState,Py_NewRef(state.get()));
 }
 void SPELLwsWarmStartImpl::installChain(PyObject* state) {
@@ -118,8 +126,15 @@ void SPELLwsWarmStartImpl::installChain(PyObject* state) {
 }
 PyFrameObject* SPELLwsWarmStartImpl::restoreState() {
     if (m_recoveryFile.empty()) THROW_EXCEPTION("Cannot restore procedure", "No recovery path", SPELL_ERROR_WSTART);
-    SPELLpython313::Owned state(SPELLcontinuationCodec::read(m_recoveryFile,m_startup.procedureFile));
-    installChain(state.get());
+    SPELLpython313::Owned decoded(SPELLcontinuationCodec::read(m_recoveryFile,m_startup.procedureFile,true));
+    PyObject* state=PyTuple_GetItem(decoded.get(),0);
+    PyObject* runtime=PyTuple_GetItem(decoded.get(),1);
+    SPELLpython313::Owned codec(SPELLcontinuationCodec::module());
+    SPELLpython313::Owned checked(PyObject_CallMethod(codec.get(),"validate_runtime","O",runtime));
+    if (!checked.get()) SPELLpythonHelper::instance().checkError();
+    installChain(state);
+    SPELLpython313::Owned installed(PyObject_CallMethod(codec.get(),"restore_runtime","O",runtime));
+    if (!installed.get()) SPELLpythonHelper::instance().checkError();
     m_startup.performRecovery=false;
     return reinterpret_cast<PyFrameObject*>(Py_NewRef(m_topFrame->getFrameObject()));
 }

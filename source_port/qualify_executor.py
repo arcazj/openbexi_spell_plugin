@@ -82,6 +82,22 @@ class ExecutorTests(unittest.TestCase):
             "Display('NATIVE_EXECUTOR_COMPLETE')\n")
         self.succeeded(result,'[ DISPLAY ] NATIVE_EXECUTOR_COMPLETE')
 
+    def test_missing_startup_files_fail_without_native_abort(self):
+        script=output/'missing-startup-probe.py'
+        script.write_text("print('SHOULD_NOT_RUN')\n")
+        command=[str(output/'SPELL-ExecutorCmd_v3'),'-f',str(script),
+            '-c',str(config/'server/server.xml'),'-n','example']
+        for label,arguments in [('answers',command+['-a','/out/no-such-answers.txt']),
+                ('configuration',command+['-c','/out/no-such-config.xml']),
+                ('procedure',command+['-f','/out/no-such-procedure.py'])]:
+            with self.subTest(label=label):
+                result=subprocess.run(arguments,capture_output=True,text=True,timeout=15)
+                (output/('executor-missing-'+label+'.log')).write_text(result.stdout+result.stderr)
+                self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+                self.assertNotIn('SHOULD_NOT_RUN',result.stdout)
+                self.assertNotIn('AddressSanitizer:',result.stderr)
+                self.assertNotIn('runtime error:',result.stderr)
+
     def test_nested_live_calls(self):
         result=self.run_code('''
             def child(x):
@@ -244,6 +260,118 @@ class ExecutorTests(unittest.TestCase):
         self.assertEqual(result.returncode,1,result.stdout+result.stderr)
         self.assertIn('ABORT_MARKER',result.stdout)
         self.assertNotIn('SHOULD_NOT_RUN',result.stdout)
+
+    def recover_after_kill(self,mode,damage=None):
+        name=self._testMethodName.removeprefix('test_')
+        procedure=data/'Procedures'/(name+'.py')
+        effects=output/(name+'-effects.txt')
+        procedure.write_text(textwrap.dedent(f'''
+            from spell.runtime import Step,ARGS,PROC,IVARS
+            from libSPELL_DTA_v3 import Var,DataContainer
+            from pathlib import Path
+            Path({str(effects)!r}).write_text('before-checkpoint')
+            shared=DataContainer('checkpoint')
+            shared['count']=Var(Default=7,Range=[0,10])
+            ARGS['checkpoint_count']=7
+            IVARS['shared']=shared['count']
+            def child(value):
+                Step('checkpoint','Recover nested native data')
+                print('CHECKPOINT_READY')
+                assert input()=='continue'
+                import spell.runtime as runtime
+                assert ARGS is runtime.ARGS and IVARS is runtime.IVARS and PROC is runtime.PROC
+                assert ARGS['checkpoint_count']==7 and IVARS['shared']==7
+                assert PROC['STEP'][0]=='checkpoint'
+                value['count']=9
+                return value['count']
+            def parent():
+                return 100+child(shared)+1
+            result=parent()
+            assert result==110
+            assert shared['count']==9
+            print('RECOVERY_COMPLETE',result)
+        '''),encoding='utf-8')
+        context=config/'contexts/context_example.xml'
+        before=context.read_bytes()
+        tree=ET.parse(context)
+        tree.find("./executor/property[@name='SaveStateMode']").text=mode
+        tree.write(context,encoding='utf-8')
+        directory=data/'OutputFiles/Warmstart'
+        previous=set(directory.glob('*.wsp'))
+        command=[str(output/'SPELL-ExecutorCmd_v3'),'-f',str(procedure),
+            '-c',str(config/'server/server.xml'),'-n','example']
+        try:
+            with subprocess.Popen(command+['-w'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE) as process:
+                prefix=b''
+                try:
+                    with selectors.DefaultSelector() as selector:
+                        selector.register(process.stdout,selectors.EVENT_READ)
+                        deadline=time.monotonic()+10
+                        while b'CHECKPOINT_READY' not in prefix and time.monotonic()<deadline:
+                            if selector.select(timeout=max(0,deadline-time.monotonic())):
+                                chunk=os.read(process.stdout.fileno(),65536)
+                                if not chunk: break
+                                prefix+=chunk
+                    self.assertIn(b'CHECKPOINT_READY',prefix,prefix.decode(errors='replace'))
+                    checkpoints=set(directory.glob('*.wsp'))-previous
+                    self.assertEqual(len(checkpoints),1)
+                    checkpoint=checkpoints.pop()
+                    # A distinct value proves recovery does not restart module setup.
+                    effects.write_text('preserve-after-crash')
+                finally:
+                    if process.poll() is None: process.kill()
+                    stdout,stderr=process.communicate(timeout=10)
+                    (output/(name+'-capture.log')).write_bytes(prefix+stdout+stderr)
+            self.assertEqual(process.returncode,-9)
+            if damage=='source':
+                procedure.write_text(procedure.read_text()+'\n# Source changed after checkpoint\n')
+            elif damage=='payload':
+                checkpoint.write_bytes(checkpoint.read_bytes()[:-17])
+            preserved_checkpoint=checkpoint.read_bytes()
+            result=subprocess.run(command+['-r',checkpoint.stem],input='continue\n',
+                capture_output=True,text=True,timeout=20)
+            (output/(name+'-resume.log')).write_text(result.stdout+result.stderr)
+            if damage:
+                self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+                self.assertIn('Recovery failed',result.stdout)
+                self.assertNotIn('RECOVERY_COMPLETE',result.stdout)
+                self.assertEqual(checkpoint.read_bytes(),preserved_checkpoint)
+                if damage=='source': self.assertIn('source/runtime identity mismatch',result.stdout)
+            else:
+                self.succeeded(result,'RECOVERY_COMPLETE 110')
+                self.assertEqual(checkpoint.read_bytes(),preserved_checkpoint)
+            self.assertNotIn('AddressSanitizer:',result.stderr)
+            self.assertNotIn('runtime error:',result.stderr)
+            self.assertEqual(effects.read_text(),'preserve-after-crash')
+        finally:
+            context.write_bytes(before)
+
+    def test_warm_line_recovers_native_nested_stack(self):
+        self.recover_after_kill('ON_LINE')
+
+    def test_warm_step_recovers_native_nested_stack(self):
+        self.recover_after_kill('ON_STEP')
+
+    def test_warm_rejects_changed_source_and_preserves_checkpoint(self):
+        self.recover_after_kill('ON_LINE',damage='source')
+
+    def test_warm_rejects_corrupt_payload_and_preserves_checkpoint(self):
+        self.recover_after_kill('ON_STEP',damage='payload')
+
+    def test_warm_missing_recovery_files_fail_cleanly(self):
+        procedure=output/'missing-checkpoint.py'
+        procedure.write_text("print('SHOULD_NOT_RUN')\n")
+        result=subprocess.run([str(output/'SPELL-ExecutorCmd_v3'),'-f',str(procedure),
+            '-c',str(config/'server/server.xml'),'-n','example','-r','no-such-checkpoint'],
+            capture_output=True,text=True,timeout=15)
+        (output/'executor-missing-checkpoint.log').write_text(result.stdout+result.stderr)
+        self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+        # The original executor restores the paired ASRUN before the frame
+        # checkpoint, so a missing pair is rejected during initialization.
+        self.assertIn('File not found',result.stdout)
+        self.assertIn('no-such-checkpoint.ASRUN',result.stdout)
+        self.assertNotIn('SHOULD_NOT_RUN',result.stdout)
+        self.assertNotIn('AddressSanitizer:',result.stderr)
 
 
 if __name__ == '__main__':

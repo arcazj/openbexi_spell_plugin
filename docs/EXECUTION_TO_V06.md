@@ -108,3 +108,9 @@ units and passes 17 command checks with its real dispatcher and automatic CIF.
 Explicit imports, native data, Step/Goto, prompt validation, error exit codes,
 live output and owned shutdown are covered. Actual executor warm recovery and
 context/service integration still gate v0.2; later releases remain pending.
+
+The [actual executor recovery milestone](EXECUTOR_RECOVERY.md) expands the command
+suite to 23 checks. ON_LINE and ON_STEP resume native data and logical nested
+callers after SIGKILL; runtime data aliases are preserved and damaged or
+source-mismatched checkpoints are rejected without removing the input. Native
+context/service lifecycle and complete control behavior remain open.

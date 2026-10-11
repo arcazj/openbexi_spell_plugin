@@ -25,9 +25,9 @@ static PyType_Slot variableSlots[] = {
     {Py_tp_new, reinterpret_cast<void*>(SPELLdtaVariableObject_New)},
     {0, nullptr}
 };
-static PyType_Spec containerSpec = {"spell.lib.adapter.data.DataContainer", sizeof(SPELLdtaContainerObject), 0,
+static PyType_Spec containerSpec = {"libSPELL_DTA_v3.DataContainer", sizeof(SPELLdtaContainerObject), 0,
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC | Py_TPFLAGS_IMMUTABLETYPE, containerSlots};
-static PyType_Spec variableSpec = {"spell.lib.adapter.data.Var", sizeof(SPELLdtaVariableObject), 0,
+static PyType_Spec variableSpec = {"libSPELL_DTA_v3.Var", sizeof(SPELLdtaVariableObject), 0,
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_IMMUTABLETYPE, variableSlots};
 MOD_INIT(libSPELL_DTA) {
     PyObject* module;

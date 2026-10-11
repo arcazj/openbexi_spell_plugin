@@ -16,7 +16,7 @@ def sha(data):
 
 
 def identity(source):
-    return {'format':'SPELL-continuation/1', 'python':sys.version,
+    return {'format':'SPELL-continuation/2', 'python':sys.version,
         'platform':platform.platform(), 'cloudpickle':cloudpickle.__version__,
         'source_sha256':sha(source), 'codec_sha256':_source_identity,
         'backend_sha256':_source_identity}
@@ -39,8 +39,8 @@ def reject_resources(value, seen=None):
             reject_resources(item, seen)
 
 
-def encode(source, state):
-    reject_resources(state)
+def encode(source, state, runtime=None):
+    reject_resources((state,runtime))
     if cloudpickle.__version__ != '3.1.2':
         raise RuntimeError('Checkpoint codec requires qualified cloudpickle 3.1.2')
     stream = io.BytesIO()
@@ -51,7 +51,7 @@ def encode(source, state):
     namespaces = [entry[0][1] for entry in state] if isinstance(state, list) else [state[1]]
     for namespace in namespaces:
         pickler.globals_ref[id(namespace)] = namespace
-    pickler.dump((state, exception_links(state)))
+    pickler.dump((state, exception_links((state,runtime)), runtime))
     payload = stream.getvalue()
     if len(payload) > 8 * 1024 * 1024:
         raise ValueError('Experiment checkpoint exceeds 8 MiB')
@@ -59,7 +59,7 @@ def encode(source, state):
     return metadata, payload
 
 
-def decode(source, metadata, payload):
+def decode(source, metadata, payload, with_runtime=False):
     expected = identity(source)
     if not isinstance(metadata, dict) or set(metadata) != set(expected) | {'payload_sha256'}:
         raise ValueError('Invalid checkpoint identity')
@@ -69,14 +69,49 @@ def decode(source, metadata, payload):
         raise ValueError('Checkpoint payload integrity mismatch')
     # Only application-owned files are accepted. Identity/CRC/hash checks detect
     # accidents; they do not turn pickle into an untrusted-data interchange format.
-    state, links = cloudpickle.loads(payload)
+    state, links, runtime = cloudpickle.loads(payload)
     for error, cause, context, suppress, notes in links:
         error.__cause__ = cause
         error.__context__ = context
         error.__suppress_context__ = suppress
         if notes is not None:
             error.__notes__ = notes
+    if with_runtime:
+        return state,runtime
+    if runtime:
+        raise ValueError('Runtime data requires the full warm-start controller')
     return state
+
+
+_runtime_names=frozenset(('ARGS','IVARS','PROC','SCDB','GDB'))
+
+
+def capture_runtime():
+    module=sys.modules.get('spell.runtime')
+    return {key:vars(module)[key] for key in _runtime_names if key in vars(module)} if module else {}
+
+
+def validate_runtime(saved):
+    if saved is None:
+        return
+    if type(saved) is not dict or not set(saved).issubset(_runtime_names):
+        raise ValueError('Invalid SPELL runtime data')
+    if saved and 'spell.runtime' not in sys.modules:
+        raise RuntimeError('SPELL runtime must be initialized before recovery')
+    if 'PROC' in saved and type(saved['PROC']) is not dict:
+        raise TypeError('Invalid procedure metadata')
+    if 'ARGS' in saved or 'IVARS' in saved:
+        from libSPELL_DTA_v3 import DataContainer
+        if any(not isinstance(saved[key],DataContainer) for key in ('ARGS','IVARS') if key in saved):
+            raise TypeError('Invalid native procedure data')
+
+
+def restore_runtime(saved):
+    validate_runtime(saved)
+    if saved:
+        # Objects were decoded in the same memo as all caller namespaces, so
+        # imported aliases, closures and the active runtime share one graph.
+        vars(sys.modules['spell.runtime']).update(saved)
 
 
 def exception_links(root):

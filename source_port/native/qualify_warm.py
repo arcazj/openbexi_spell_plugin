@@ -117,7 +117,7 @@ class WarmController(unittest.TestCase):
                     native.manager_initialize(handle,str(self.procedure),{'__name__':'_qualified_procedure'})
                     native.manager_warm_configure(handle,str(self.procedure),self.stem,'',mode)
                     def observe(frame,event):
-                        if mode==1 and event==2 and frame.f_lineno==2: native.manager_warm_action(handle,'stage')
+                        if mode==1 and event==2 and frame.f_lineno==1: native.manager_warm_action(handle,'stage')
                         if mode==2 and event==2 and frame.f_lineno==2: native.manager_warm_action(handle,'save')
                     self.assertEqual(native.manager_execute(handle,observe)[0],0,native.manager_error())
                     self.assertEqual(Path(self.stem+'.wsp').exists(),mode!=3)

@@ -22,7 +22,10 @@ def main():
     parser.add_argument('--warm', action='store_true', help='Require original WS controller and manager logical recovery')
     parser.add_argument('--dta-checkpoints', action='store_true', help='Require native DTA graphs through serialization and original WS recovery')
     parser.add_argument('--executor-command', action='store_true', help='Require the original standalone executor, native bindings and command behavior')
+    parser.add_argument('--executor-warm', action='store_true', help='Require actual executor crash recovery with native runtime data')
     args = parser.parse_args()
+    if args.executor_warm:
+        args.executor_command = True
     if args.executor_command:
         args.dta_checkpoints = True
     if args.dta_checkpoints:
@@ -257,7 +260,19 @@ def main():
             'Operational driver/DSS integration and external effect/resource recovery',
             'Production distribution and supported platform/host matrix',
             'Full RPC framework reinitialization within one process is unsupported; use a fresh process']
-    name = 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.executor_warm:
+        required={'test_warm_line_recovers_native_nested_stack','test_warm_step_recovers_native_nested_stack',
+            'test_missing_startup_files_fail_without_native_abort','test_warm_missing_recovery_files_fail_cleanly',
+            'test_warm_rejects_changed_source_and_preserves_checkpoint','test_warm_rejects_corrupt_payload_and_preserves_checkpoint'}
+        if (report['executor_runtime']['tests'] < 23 or not required.issubset(report['executor_runtime']['cases'])
+                or report['dta_checkpoint_runtime']['tests'] < 13):
+            raise ValueError('Actual executor warm recovery qualification incomplete')
+        report['milestone']='Original executor SIGKILL recovery with logical callers and native runtime data'
+        report['qualification_scope'] += '; actual ON_LINE and ON_STEP checkpoints, fresh-process recovery, nested return operands, native data and ARGS/IVARS/PROC aliases; safe Python cleanup, missing files and corrupt/source-mismatched checkpoint rejection without deleting input checkpoints'
+        report['gaps'][0]='Native service/context lifecycle, complete executor/CIF control and broader recovery scenarios'
+        report['warm_checkpoint_format']='SPELL-continuation/2; runtime-owned data shares the procedure graph'
+        report['step_checkpoint_boundary']='First safe line after the native Step binding returns'
+    name = 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
