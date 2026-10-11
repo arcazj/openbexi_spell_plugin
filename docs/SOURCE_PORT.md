@@ -1,5 +1,8 @@
 # Original-source foundation milestone 0.2.0a1
 
+This page records the `source-v0.2.0a1` Python/RPC milestone. Subsequent native
+porting and its separate evidence are in [native port status](NATIVE_PORT.md).
+
 The isolated `openbexi-spell-source` alpha wheel now builds from the exact supplied
 2.6.10 archive. It contains 94 original Python modules, five hash-checked patches,
 all three original RPC schemas and their generated Python/gRPC modules. The

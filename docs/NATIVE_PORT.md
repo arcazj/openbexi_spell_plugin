@@ -1,0 +1,71 @@
+# CPython 3.13 native port
+
+The first native milestone ports the original UTIL compiler, frame diagnostics,
+line setter and error ownership. It is a tested part of the open v0.2 release,
+not a complete native executor. The separate source alpha wheel and its
+`source-v0.2.0a1` evidence remain historical artifacts.
+
+All eight original UTIL and nine SYN translation units compile and link into an
+actual Python extension with no undefined symbols. Six upstream files have
+SHA-256-checked patches; the archive remains unchanged. An added ownership header
+and replacement function bodies form the complete, reviewable patch material.
+Original licenses and notices remain in the extracted sources.
+
+The compiler uses Py_CompileStringExFlags. Frame reads use public accessors, and
+line jumps use CPython's f_lineno setter, including its restrictions on trace
+events and invalid exception-block jumps. The test exercises both a Python trace
+and an actual C trace callback. This does not yet qualify SPELL Step/Goto's
+label/bytecode analysis or recovery of suspended execution stacks.
+
+Python exceptions are normalized, translated using the original error codes,
+and released with their tracebacks. Every monitor exit balances GIL ownership.
+Original controller abort/terminate state distinguishes control signals from a
+user exception with the same text. New-instance results and imported modules
+have explicit reference ownership. The logger no longer creates Python strings
+at shared-library/process startup, before Py_Initialize.
+
+The helper preserves an existing host interpreter, sys.path, argv and builtins.
+An embedded interpreter uses isolated configuration, and only its owning thread
+may finalize it. Framework loading imports installed modules without injecting
+SPELL symbols into builtins. Executor/context configuration remains a later gate.
+
+Qualification uses Linux x86_64 / CPython 3.13.14 / GCC 14.2.0 with AddressSanitizer
+and UndefinedBehaviorSanitizer. Sixteen runtime tests pass, including 2,000
+exception-payload lifetime checks, 2,000 native instance lifetime checks and 200
+native-thread error transitions. A separate executable passes three owned
+interpreter initialize/execute/error/finalize cycles and rejects finalization
+from another thread. LeakSanitizer is disabled; targeted reference-lifetime
+checks do not establish absence of every native leak.
+
+The remaining native syntax probe is:
+
+| Component | Compile | Fail | Qualification |
+| --- | ---: | ---: | --- |
+| UTIL | 8 | 0 | Linked; the behavior scope above is tested |
+| DTA | 5 | 0 | Syntax only; no container runtime acceptance yet |
+| EXC | 20 | 11 | Syntax only |
+| WS | 12 | 7 | Syntax only |
+
+The total is 45 of 63 units compiling, versus 26 in the unchanged-source probe.
+Failures still include removed parser nodes, bytecode/line-table assumptions,
+opaque frame fields, Python 2 class/instance representations and PyTryBlock.
+The native build reports those failures rather than substituting fake structures.
+
+Build and export into a new evidence directory:
+
+```powershell
+docker build --progress=plain -f source_port/native-build.Dockerfile --output type=local,dest=.qualification/v0.2/native-util-final .
+python source_port/record_native.py --evidence .qualification/v0.2/native-util-final
+```
+
+The Docker build exports diagnostics even after a native compile/test failure;
+its exit status alone is not acceptance. `record_native.py` requires successful
+UTIL compile/link/runtime/embedding results and binds every copied build input
+to the checked-in source. See [the evidence manifest](NATIVE_UTIL_QUALIFICATION.json).
+The base image is digest-pinned; Debian tool packages are recorded but are not
+yet a reproducible production toolchain. The normal DSS container startup issue
+is separate from these successful BuildKit RUN executions.
+
+API references: [frame objects](https://docs.python.org/3.13/c-api/frame.html),
+[compilation](https://docs.python.org/3.13/c-api/veryhigh.html) and
+[interpreter ownership](https://docs.python.org/3.13/c-api/init.html).

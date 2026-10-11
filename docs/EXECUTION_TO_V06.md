@@ -18,6 +18,11 @@ ownership in UTIL. DTA keeps the original native types; EXC and warm-start need
 behavioral qualification beyond compilation. No compatibility shim may pretend
 that removed interpreter stacks or unsupported executor services work.
 
+The first [native UTIL milestone](NATIVE_PORT.md) now links and runs under address
+and undefined-behavior sanitizers. Sixteen behavior tests and three owned
+interpreter cycles pass. DTA compiles, while its runtime and EXC/WS integration
+remain the next v0.2 gates; no later release has been promoted.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

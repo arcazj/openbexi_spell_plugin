@@ -30,6 +30,10 @@ v0.2 phase remains open: unchanged native compile diagnostics identify 37 failin
 units out of 63. Port and qualify DTA/UTIL first, then EXC control flow and WS
 serialization, and only then admit this runtime to IDE/plugin host qualification.
 
+The subsequent [native UTIL milestone](docs/NATIVE_PORT.md) links the actual
+UTIL/SYN implementation and passes sanitizer-backed runtime and embedding tests.
+The patched native syntax probe now compiles 45 of 63 units; full v0.2 stays open.
+
 ## v0.3 — real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with
