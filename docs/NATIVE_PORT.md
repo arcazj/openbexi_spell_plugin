@@ -37,35 +37,53 @@ interpreter initialize/execute/error/finalize cycles and rejects finalization
 from another thread. LeakSanitizer is disabled; targeted reference-lifetime
 checks do not establish absence of every native leak.
 
+The subsequent analyzer milestone replaces the removed parser tree with the
+public `tokenize` API and the obsolete line table with `code.co_lines()`. The
+original SPELLastAnalyzer and SPELLlnotab classes link against the same UTIL/SYN
+objects. Fifteen additional sanitizer-backed tests cover nested continuations,
+strings and f-strings, blank/comment lines, edited files, invalid-source recovery,
+backward line changes, exception handlers, large offsets and reference ownership.
+Actual Python trace events are checked against the resulting line table.
+
+Blank/comment lines inside brackets now remain part of the continuation; source
+edits at an existing filename are reparsed. A failed parse clears the old current
+classification. Artificial line zero is not an executable source line, and an
+empty line table returns -1 instead of dereferencing an empty list. These fixes
+are deliberate corrections to the legacy analyzer, not additional SPELL syntax.
+
 The remaining native syntax probe is:
 
 | Component | Compile | Fail | Qualification |
 | --- | ---: | ---: | --- |
 | UTIL | 8 | 0 | Linked; the behavior scope above is tested |
 | DTA | 5 | 0 | Syntax only; no container runtime acceptance yet |
-| EXC | 20 | 11 | Syntax only |
+| EXC | 22 | 9 | Two analyzer classes linked/tested; other units syntax only |
 | WS | 12 | 7 | Syntax only |
 
-The total is 45 of 63 units compiling, versus 26 in the unchanged-source probe.
-Failures still include removed parser nodes, bytecode/line-table assumptions,
+The total is 47 of 63 units compiling, versus 26 in the unchanged-source probe.
+Failures still include old bytecode assumptions,
 opaque frame fields, Python 2 class/instance representations and PyTryBlock.
 The native build reports those failures rather than substituting fake structures.
 
 Build and export into a new evidence directory:
 
 ```powershell
-docker build --progress=plain -f source_port/native-build.Dockerfile --output type=local,dest=.qualification/v0.2/native-util-final .
-python source_port/record_native.py --evidence .qualification/v0.2/native-util-final
+docker build --progress=plain -f source_port/native-build.Dockerfile --output type=local,dest=.qualification/v0.2/native-analysis-01 .
+python source_port/record_native.py --evidence .qualification/v0.2/native-analysis-01 --analysis
 ```
 
 The Docker build exports diagnostics even after a native compile/test failure;
 its exit status alone is not acceptance. `record_native.py` requires successful
 UTIL compile/link/runtime/embedding results and binds every copied build input
-to the checked-in source. See [the evidence manifest](NATIVE_UTIL_QUALIFICATION.json).
+to the checked-in source. The `--analysis` gate also requires analyzer compile,
+link and behavior checks. See the [analyzer evidence](NATIVE_ANALYSIS_QUALIFICATION.json)
+and the earlier [UTIL evidence](NATIVE_UTIL_QUALIFICATION.json).
 The base image is digest-pinned; Debian tool packages are recorded but are not
 yet a reproducible production toolchain. The normal DSS container startup issue
 is separate from these successful BuildKit RUN executions.
 
 API references: [frame objects](https://docs.python.org/3.13/c-api/frame.html),
 [compilation](https://docs.python.org/3.13/c-api/veryhigh.html) and
-[interpreter ownership](https://docs.python.org/3.13/c-api/init.html).
+[interpreter ownership](https://docs.python.org/3.13/c-api/init.html),
+[tokenization](https://docs.python.org/3.13/library/tokenize.html) and
+[line tables](https://docs.python.org/3.13/library/dis.html#dis.findlinestarts).

@@ -3,6 +3,10 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLastAnalyzer.C': '5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af',
+    'include/SPELL_EXC/SPELLastAnalyzer.H': '7ad2a805f8b499b3438c8b2c848b5cc36129388bd0027bc7c9e749f417dba1f1',
+    'lib/SPELL_EXC/src/SPELLlnotab.C': '5c7598a5444bde5cde810a8335081f8b683579e874e6958ab678999c8e17c5f3',
+    'include/SPELL_EXC/SPELLlnotab.H': '9ed4e9b200153a3c52d29ba9c0d2f2add53f1001acd244ff55cad25d78b188a4',
     'include/SPELL_UTIL/SPELLpythonMonitors.H': 'ff0f9af10116d360b85ea19b3479da94a4df856c95e2c0067c35fbe871caff19',
     'lib/SPELL_UTIL/src/SPELLpythonHelper.C': '2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837',
     'lib/SPELL_UTIL/src/SPELLutils.C': 'ee16758649173ca2c838545f43d6d44dfbd5264bc25bb1fa2257b4ffdd509d70',
@@ -31,7 +35,21 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLpythonMonitors.H'):
+    if name.endswith('SPELLastAnalyzer.H'):
+        text = text.replace('void findNodeLines( struct _node* node, unsigned int depth, unsigned int& parDepth, NodeInfo& info );',
+                            '// Tokenization replaces the removed private parser node API.')
+        text = text.replace('NodeInfo m_currentNode;', 'NodeInfo m_currentNode{};')
+    elif name.endswith('SPELLastAnalyzer.C'):
+        text = text.replace('#include "node.h"\n#include "token.h"', '#include "SPELL_UTIL/SPELLpython313.H"\n#include <algorithm>')
+        text = section(text, 'void SPELLastAnalyzer::process(', 'bool SPELLastAnalyzer::isSimpleLine(',
+                       body('analyze_source.cpp') + '\n//============================================================================\n')
+    elif name.endswith('SPELLlnotab.H'):
+        text = text.replace('return m_lines.front();', 'return m_lines.empty() ? -1 : m_lines.front();')
+    elif name.endswith('SPELLlnotab.C'):
+        text = text.replace('#include "SPELL_EXC/SPELLlnotab.H"', '#include "SPELL_EXC/SPELLlnotab.H"\n#include "SPELL_UTIL/SPELLpython313.H"\n#include "SPELL_UTIL/SPELLpythonHelper.H"')
+        text = section(text, 'void SPELLlnotab::analyze(', 'const int SPELLlnotab::lineAfter(',
+                       body('analyze_lines.cpp') + '\n//============================================================================\n')
+    elif name.endswith('SPELLpythonMonitors.H'):
         text = section(text, '\tvirtual ~SPELLsafePythonOperations()', '\nprivate:', '''
     virtual ~SPELLsafePythonOperations() noexcept(false)
     {

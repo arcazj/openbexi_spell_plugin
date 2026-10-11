@@ -91,6 +91,24 @@ if all(r['exit_code']==0 for r in results):
             if result.returncode == 0:
                 report['embedding'] = json.loads(result.stdout)
 
+        analysis_units = [source/'lib/SPELL_EXC/src'/name for name in ('SPELLastAnalyzer.C','SPELLlnotab.C')]
+        analysis_units.append(Path('/input/native/qualify_analysis.cpp'))
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            report['analysis_units'] = list(pool.map(compile_unit, analysis_units))
+        if all(r['exit_code'] == 0 for r in report['analysis_units']):
+            extension = output/('_spell_analysis_qualification'+sysconfig.get_config_var('EXT_SUFFIX'))
+            objects = [r for r in results if r['unit'] != 'qualify_util.cpp'] + report['analysis_units']
+            result = subprocess.run(['c++','-shared','-pthread','-fsanitize=address,undefined','-Wl,--no-undefined',
+                *[str(output/r['object']) for r in objects], '-L'+sysconfig.get_config_var('LIBDIR'),
+                '-lpython3.13','-llog4cplus','-lz','-o',str(extension)], capture_output=True,text=True,timeout=120)
+            (output/'analysis-link.log').write_text(result.stdout+result.stderr)
+            report['analysis_link_exit_code'] = result.returncode
+            if result.returncode == 0:
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_analysis.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'analysis-runtime.log').write_text(result.stdout+result.stderr)
+                report['analysis_runtime_exit_code'] = result.returncode
+
 def syntax_unit(path):
     stem = path.relative_to(source).as_posix()
     log = output/(stem.replace('/','_')+'.syntax.log')
