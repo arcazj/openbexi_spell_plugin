@@ -13,6 +13,8 @@ PyCodeObject* SPELLpythonHelper::compile(const std::string& filePath)
     PyObject* code = Py_CompileStringExFlags(source.c_str(), filePath.c_str(),
                                             Py_file_input, &flags, -1);
     if (!code) checkError();
+    try { SPELLanalysis313::remember(code, source); }
+    catch (...) { Py_DECREF(code); throw; }
     return reinterpret_cast<PyCodeObject*>(code);
 }
 
@@ -27,6 +29,8 @@ PyCodeObject* SPELLpythonHelper::compileScript(const std::string& source)
     PyObject* code = Py_CompileStringExFlags(source.c_str(), "<string>",
                                             Py_file_input, &flags, -1);
     if (!code) checkError();
+    try { SPELLanalysis313::remember(code, source); }
+    catch (...) { Py_DECREF(code); throw; }
     return reinterpret_cast<PyCodeObject*>(code);
 }
 

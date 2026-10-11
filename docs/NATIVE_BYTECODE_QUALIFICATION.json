@@ -1,0 +1,1147 @@
+{
+  "milestone": "CPython 3.13 original bytecode analyzer with identity-bound source metadata",
+  "release": "v0.2 remains open",
+  "full_spell_native_qualified": false,
+  "qualification_scope": "Linux x86_64, GIL-enabled CPython 3.13; original UTIL/SYN linked in a test extension and embedding executable; original SPELLastAnalyzer and SPELLlnotab linked and behavior-tested; original SPELLgoto static literal analysis, not full native Step/Goto binding integration; original SPELLwsStorage including a fresh-process load/execute check; original SPELLvariableMonitor live locals/cells, edits and notifications; original SPELLbytecode public disassembly and source-scope analysis",
+  "patches": {
+    "lib/SPELL_EXC/src/SPELLbytecode.C": {
+      "upstream_sha256": "ab9e4c3accad70a664cfbfff43da74686777213f0ec98cd85250f73df04fcd60",
+      "sha256": "1eaf483c455d15a5d458e115b4212f8bcedfaeff68f62815120bded7e8f7f78b"
+    },
+    "include/SPELL_EXC/SPELLbytecode.H": {
+      "upstream_sha256": "ade8253aa4387aa5f0fa633a31ec6e1689eb88fc960fb64ece274427141eeb18",
+      "sha256": "e1d35ee21b13e38f91ba30a0e3544e1f2d5cdd2760ee71bc41dfb18cc9904038"
+    },
+    "lib/SPELL_EXC/src/SPELLvariableMonitor.C": {
+      "upstream_sha256": "7162c7a9abab73cb9b9e20bc34f8e32185d6a4ab728e12d80989bf64bcb27aa7",
+      "sha256": "4b5e9bec525d01e5cfbf16ea60c4d00faed1f4085bdfc58a280cdde235d9aaad"
+    },
+    "lib/SPELL_WS/src/SPELLwsStorage.C": {
+      "upstream_sha256": "85fff1d7e917ce5913daaf99ecb385362a2f5323d49d7d41de8125b1e13ee34f",
+      "sha256": "7b7faf7423f6692ac4be3c6e372a3983cc5c6ff5d7dccfd3f47bca1136137a6b"
+    },
+    "lib/SPELL_EXC/src/SPELLgoto.C": {
+      "upstream_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+      "sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+    },
+    "lib/SPELL_EXC/src/SPELLastAnalyzer.C": {
+      "upstream_sha256": "5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af",
+      "sha256": "8c0e5c4412b3e310ad4b80dedf0e64a771419a482574e80999408793c3ba19c8"
+    },
+    "include/SPELL_EXC/SPELLastAnalyzer.H": {
+      "upstream_sha256": "7ad2a805f8b499b3438c8b2c848b5cc36129388bd0027bc7c9e749f417dba1f1",
+      "sha256": "54d029bb074d69b5c411483270db5dd7c9c4bba50c4c7f519b61b4443c9df443"
+    },
+    "lib/SPELL_EXC/src/SPELLlnotab.C": {
+      "upstream_sha256": "5c7598a5444bde5cde810a8335081f8b683579e874e6958ab678999c8e17c5f3",
+      "sha256": "3613259ef9f96f500bbc991700abb56f5eb3834fb93be43d97adde7289816dbb"
+    },
+    "include/SPELL_EXC/SPELLlnotab.H": {
+      "upstream_sha256": "9ed4e9b200153a3c52d29ba9c0d2f2add53f1001acd244ff55cad25d78b188a4",
+      "sha256": "ed88afad6d3dd488f4ee484ab8f1e821b792eab7d7131843cf210c0e721497a7"
+    },
+    "include/SPELL_UTIL/SPELLpythonMonitors.H": {
+      "upstream_sha256": "ff0f9af10116d360b85ea19b3479da94a4df856c95e2c0067c35fbe871caff19",
+      "sha256": "a970f2ec28cdd8fc733cfca4413f27f26ed56d411f0fbbc96dd496d4d7cd0f4f"
+    },
+    "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+      "upstream_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+      "sha256": "e1fa918f7b49f22a583ba2038ab0c618341025069505f4c810da598b03c40b40"
+    },
+    "lib/SPELL_UTIL/src/SPELLutils.C": {
+      "upstream_sha256": "ee16758649173ca2c838545f43d6d44dfbd5264bc25bb1fa2257b4ffdd509d70",
+      "sha256": "13834f108d0c3bf20c5224a191024250012dfde45b22637320f246e0248ef7b6"
+    },
+    "lib/SPELL_UTIL/src/SPELLerror.C": {
+      "upstream_sha256": "e95b2787936e7ee0b56d5e956e6ba07db138dbab13abfec2dc07ef6a859f3f93",
+      "sha256": "93549b365a5e0c3639cba061a7372f6a8705adbdaf2ec5bfea6a744c1eaefbb3"
+    },
+    "include/SPELL_UTIL/SPELLpythonHelper.H": {
+      "upstream_sha256": "4e28c64ccdfeb24c9e855339b2d3b4d6f89caa03216ec9a4730189a635ff139a",
+      "sha256": "dbd5d3c05dc5e1fc37b14512550135d985e3a15ac509f9082090dd4b28d8ec25"
+    },
+    "lib/SPELL_UTIL/src/SPELLlogPython.C": {
+      "upstream_sha256": "2d98e6606c3c9e7a8eada2bd56fe9784547209a9d48644eac24b055234883be4",
+      "sha256": "95ec398b3cc159fbda5d889c1ae6edfee861c19212104fd773625d833edd18e4"
+    },
+    "include/SPELL_UTIL/SPELLpython313.H": {
+      "new": true,
+      "sha256": "cb6829641c5a981f2f467f3afdd44ddab838be6afe5f383490b0bfa77123310a"
+    },
+    "include/SPELL_UTIL/SPELLanalysis313.H": {
+      "new": true,
+      "sha256": "d501c2c4ee9583b7b255c4c7045042692c575f694007ceff1ba5c83e5ab51450"
+    },
+    "include/SPELL_UTIL/SPELLanalysisSource.H": {
+      "new": true,
+      "sha256": "4e196d7cbc1e7ca1626e38b4a5ae563cb48ff6010de7a004937ee541fcc979e4"
+    }
+  },
+  "build": {
+    "python": "3.13.14 (main, Jun 24 2026, 02:06:49) [GCC 14.2.0]",
+    "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
+    "flags": [
+      "c++",
+      "-std=c++17",
+      "-fPIC",
+      "-g",
+      "-O1",
+      "-pthread",
+      "-fmax-errors=8",
+      "-fsanitize=address,undefined",
+      "-fno-sanitize-recover=all",
+      "-fno-omit-frame-pointer",
+      "-I/source/include",
+      "-I/usr/local/include/python3.13"
+    ],
+    "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "input_sources": {
+      "native/SPELLanalysis313.H": "d501c2c4ee9583b7b255c4c7045042692c575f694007ceff1ba5c83e5ab51450",
+      "native/SPELLpython313.H": "cb6829641c5a981f2f467f3afdd44ddab838be6afe5f383490b0bfa77123310a",
+      "native/analysis_support.py": "02c032b45e8958a3e884feabcd4d00db0b0c0e27bdf47a508954a29b82b73ddf",
+      "native/analyze_bytecode.cpp": "afdc94e2ace8da4097202da51d17389f667d71feeae5f12d7c67d61252d2f190",
+      "native/analyze_goto.cpp": "b07fb6eca3219abdef9225db7277474c5e1b03adadea293da62bdbcc26606f4d",
+      "native/analyze_lines.cpp": "77b94db448852d32987f79689fe3d68af0e0629fdb9c2b1956635d9b2fdebc14",
+      "native/analyze_source.cpp": "ac249f8d221c5344bf5052a81f45e8affd990afd6c40abaaa43c794cdf321313",
+      "native/dump_state.cpp": "beef3ed4b2c674942059a9a9f3483fb034dd1a4e342e2b624f985f78231d2a1a",
+      "native/error_conversion.cpp": "a38a8b9cc265ba0a53d0fc08d5a0b8cb5b16719fc643dfe1986b973a24e7f79f",
+      "native/helper_compile.cpp": "40cdb71f30e38a437f68ad0eabea10525df47cf8feeb41741962cf42fc8112e0",
+      "native/helper_lifecycle.cpp": "556130dd5bfbf538ca94ba399b040459c33b110b5ce5503661512494f0016f82",
+      "native/qualify_analysis.cpp": "8a68890853382d80c5bd86b5928cd4af82805f3784718cfbd2927d03b6ceeb08",
+      "native/qualify_analysis.py": "1b9ce8c7e5d314cd982bbc95c4dd108806ed54d1cd3ea2c4b222f81fce915791",
+      "native/qualify_embed.cpp": "5c33143fb0d688c9d9df613ffdb0e2de1cd091f288bf64076214fa77389b0901",
+      "native/qualify_storage.cpp": "8f4e9ae54e1011d91d3b9f4728ca28f31e6a61e67722316003724628dceba1e1",
+      "native/qualify_storage.py": "4019563a758d53c84313efb20a0e3e455d031d43fb15769e9809e8bc1d6a972e",
+      "native/qualify_util.cpp": "9be98840276f34d4ec5c158833bb3c9c5ff5a3f7e1fdf54cc0d458821d508fd0",
+      "native/qualify_util.py": "bc1f2279f21444a01b391b26daeac5c6ef47a1bc594c5b5f27e5a6f3ae6a373e",
+      "native/variable_monitor.cpp": "6fa133df389de0ce79eaecf2ab3a788e743756187535c9f5d8dc427486abb823",
+      "native/ws_storage.cpp": "be50f4f14389077891d467e01b09edafb861b4f7c0250a2a1a95e15e604f08ed",
+      "native-build.Dockerfile": "6555186bc0b4c3f1ecb29cb1e6cd5f760c10d2431729d27b4f5f005a9d44221d",
+      "native-build.Dockerfile.dockerignore": "47dceec3804c236f09850816bbae65ea789054dad36f5e22efb8111192b1708d",
+      "native_build.py": "b85e066762c9c7f631a50f4e782f89e7259c9f84c38534bff158aaa2d4fb3e0c",
+      "native_patches.py": "2e43ded05ea7663ffc66c0849d4ad25c0861915837971807cfe513a63736f111"
+    },
+    "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+    "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
+    "units": [
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLconditionFactoryPOSIX.C",
+        "sha256": "be295e4469685803b0401978ade668c96dd94880f4611ccda4dd20de616bb8e0",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLconditionFactoryPOSIX.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLconditionFactoryPOSIX.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLconditionPOSIX.C",
+        "sha256": "d479e495ddc80d911a8a10b291dcdb981ad850574cf4c990544befab1e000064",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLconditionPOSIX.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLconditionPOSIX.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLevent.C",
+        "sha256": "d369392a4f05f51ce77d5ed2905b7e4342d57c222f9d7f73bd01e04628c14448",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLevent.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLevent.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLmutexFactoryPOSIX.C",
+        "sha256": "79ce06f6557ef7b05cf0c4b99f9688f403167eb4f10c0ab3e56c1b8e7ec1759a",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLmutexFactoryPOSIX.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLmutexFactoryPOSIX.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLmutexPOSIX.C",
+        "sha256": "b6d4fdcf322cc0dc0984106afb6b41eb79c30bb59c51871ec3bfd873a22c5d7c",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLmutexPOSIX.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLmutexPOSIX.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLthread.C",
+        "sha256": "c6cd2650e45ffc114118143a6798ff384278b814f62075b6de069a9eb9f36cff",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLthread.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLthread.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLthreadPool.C",
+        "sha256": "cca545e49b07c3070aa3ab8731cc668aff83cf2b2d55ba0c32179e0663085bbb",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLthreadPool.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLthreadPool.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLthreadWorker.C",
+        "sha256": "5837db53027d132b8cf7b27411c2441259b69fa18be3f97c9d42ff20bea16576",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLthreadWorker.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLthreadWorker.C.log"
+      },
+      {
+        "unit": "lib/SPELL_SYN/src/SPELLtimer.C",
+        "sha256": "80dd7599733c64b5f2769a37c2c8ea1451afc23f12c195545031d67f87cfc0a8",
+        "exit_code": 0,
+        "object": "lib_SPELL_SYN_src_SPELLtimer.C.o",
+        "diagnostic": "lib_SPELL_SYN_src_SPELLtimer.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLcompression.C",
+        "sha256": "ff1c62a3455fd4b70daa235a1492282073e703138fb929644e4ff9511f70074a",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLcompression.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLcompression.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLerror.C",
+        "sha256": "93549b365a5e0c3639cba061a7372f6a8705adbdaf2ec5bfea6a744c1eaefbb3",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLerror.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLerror.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLlog.C",
+        "sha256": "8609457404c26c670524c2c49cefd8c5ab5dc1c127dc55853bb32d0262e257b5",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLlog.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLlog.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLlogPython.C",
+        "sha256": "95ec398b3cc159fbda5d889c1ae6edfee861c19212104fd773625d833edd18e4",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLlogPython.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLlogPython.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLpyArgs.C",
+        "sha256": "f7ecf5c93b31a18a2b7edafeee1bba0ca7edc323e09dfe4decea4facc69b0785",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLpyArgs.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLpyArgs.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLpythonHelper.C",
+        "sha256": "e1fa918f7b49f22a583ba2038ab0c618341025069505f4c810da598b03c40b40",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLpythonHelper.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLpythonHelper.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLtime.C",
+        "sha256": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLtime.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLtime.C.log"
+      },
+      {
+        "unit": "lib/SPELL_UTIL/src/SPELLutils.C",
+        "sha256": "13834f108d0c3bf20c5224a191024250012dfde45b22637320f246e0248ef7b6",
+        "exit_code": 0,
+        "object": "lib_SPELL_UTIL_src_SPELLutils.C.o",
+        "diagnostic": "lib_SPELL_UTIL_src_SPELLutils.C.log"
+      },
+      {
+        "unit": "qualify_util.cpp",
+        "sha256": "9be98840276f34d4ec5c158833bb3c9c5ff5a3f7e1fdf54cc0d458821d508fd0",
+        "exit_code": 0,
+        "object": "qualify_util.cpp.o",
+        "diagnostic": "qualify_util.cpp.log"
+      }
+    ],
+    "full_native_qualified": false,
+    "link_exit_code": 0,
+    "runtime_exit_code": 0,
+    "embed_build_exit_code": 0,
+    "embed_runtime_exit_code": 0,
+    "embedding": {
+      "owned_interpreter_cycles": 3,
+      "foreign_thread_finalize_rejected": true
+    },
+    "analysis_units": [
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLastAnalyzer.C",
+        "sha256": "8c0e5c4412b3e310ad4b80dedf0e64a771419a482574e80999408793c3ba19c8",
+        "exit_code": 0,
+        "object": "lib_SPELL_EXC_src_SPELLastAnalyzer.C.o",
+        "diagnostic": "lib_SPELL_EXC_src_SPELLastAnalyzer.C.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLlnotab.C",
+        "sha256": "3613259ef9f96f500bbc991700abb56f5eb3834fb93be43d97adde7289816dbb",
+        "exit_code": 0,
+        "object": "lib_SPELL_EXC_src_SPELLlnotab.C.o",
+        "diagnostic": "lib_SPELL_EXC_src_SPELLlnotab.C.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLgoto.C",
+        "sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7",
+        "exit_code": 0,
+        "object": "lib_SPELL_EXC_src_SPELLgoto.C.o",
+        "diagnostic": "lib_SPELL_EXC_src_SPELLgoto.C.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLvariableMonitor.C",
+        "sha256": "4b5e9bec525d01e5cfbf16ea60c4d00faed1f4085bdfc58a280cdde235d9aaad",
+        "exit_code": 0,
+        "object": "lib_SPELL_EXC_src_SPELLvariableMonitor.C.o",
+        "diagnostic": "lib_SPELL_EXC_src_SPELLvariableMonitor.C.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbytecode.C",
+        "sha256": "1eaf483c455d15a5d458e115b4212f8bcedfaeff68f62815120bded7e8f7f78b",
+        "exit_code": 0,
+        "object": "lib_SPELL_EXC_src_SPELLbytecode.C.o",
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbytecode.C.log"
+      },
+      {
+        "unit": "qualify_analysis.cpp",
+        "sha256": "8a68890853382d80c5bd86b5928cd4af82805f3784718cfbd2927d03b6ceeb08",
+        "exit_code": 0,
+        "object": "qualify_analysis.cpp.o",
+        "diagnostic": "qualify_analysis.cpp.log"
+      }
+    ],
+    "analysis_link_exit_code": 0,
+    "analysis_runtime_exit_code": 0,
+    "storage_units": [
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsStorage.C",
+        "sha256": "7b7faf7423f6692ac4be3c6e372a3983cc5c6ff5d7dccfd3f47bca1136137a6b",
+        "exit_code": 0,
+        "object": "lib_SPELL_WS_src_SPELLwsStorage.C.o",
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsStorage.C.log"
+      },
+      {
+        "unit": "qualify_storage.cpp",
+        "sha256": "8f4e9ae54e1011d91d3b9f4728ca28f31e6a61e67722316003724628dceba1e1",
+        "exit_code": 0,
+        "object": "qualify_storage.cpp.o",
+        "diagnostic": "qualify_storage.cpp.log"
+      }
+    ],
+    "storage_link_exit_code": 0,
+    "storage_runtime_exit_code": 0,
+    "downstream_syntax": [
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaContainer.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaContainer.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaContainerObjectMethods.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaContainerObjectMethods.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaModule.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaModule.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaVariable.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaVariable.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_DTA/src/SPELLdtaVariableObjectMethods.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_DTA_src_SPELLdtaVariableObjectMethods.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLastAnalyzer.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLastAnalyzer.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbreakpoint.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbreakpoint.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbreakpointType.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbreakpointType.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLbytecode.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLbytecode.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcallstack.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcallstack.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLchildManager.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLchildManager.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcodeTreeLine.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcodeTreeLine.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcodeTreeNode.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcodeTreeNode.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcommandMailbox.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcommandMailbox.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLcontroller.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLcontroller.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutionModel.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutionModel.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutionTrace.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutionTrace.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutor.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutor.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorConfiguration.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorConfiguration.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorImpl.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorImpl.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorPython.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorPython.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLexecutorUtils.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLexecutorUtils.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLframeManager.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLframeManager.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLgoto.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLgoto.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLgotoPython.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLgotoPython.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLimportChecker.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLimportChecker.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLinterpreter.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLinterpreter.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLlnotab.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLlnotab.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLresourceManager.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLresourceManager.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLresourceMonitor.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLresourceMonitor.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLscheduler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLscheduler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLserviceImpl.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLserviceImpl.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLserviceInterpreter.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLserviceInterpreter.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLstepPython.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLstepPython.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLvariableManager.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLvariableManager.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_EXC/src/SPELLvariableMonitor.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_EXC_src_SPELLvariableMonitor.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsClassDataHandler.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsClassDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsCustomTypeDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsCustomTypeDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataCodes.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataCodes.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDataHandlerFactory.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDataHandlerFactory.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDbDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDbDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDictDataHandler.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDictDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsDynamicData.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsDynamicData.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsFrame.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsFrame.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsInstanceDataHandler.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsInstanceDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsListDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsListDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsObjectDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsObjectDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsStaticData.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsStaticData.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsStorage.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsStorage.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTimeDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTimeDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTmItemDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTmItemDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsTupleDataHandler.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsTupleDataHandler.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsWarmStartImpl.C",
+        "exit_code": 1,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsWarmStartImpl.C.syntax.log"
+      },
+      {
+        "unit": "lib/SPELL_WS/src/SPELLwsWorkingMode.C",
+        "exit_code": 0,
+        "diagnostic": "lib_SPELL_WS_src_SPELLwsWorkingMode.C.syntax.log"
+      }
+    ]
+  },
+  "runtime": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "address_sanitizer": true,
+    "undefined_behavior_sanitizer": true,
+    "leak_sanitizer": false,
+    "reference_lifetime_tests": true,
+    "full_spell_executor_qualified": false
+  },
+  "artifacts": {
+    "_spell_analysis_qualification.cpython-313-x86_64-linux-gnu.so": {
+      "bytes": 12526656,
+      "sha256": "65b3f38155fa36b560c143ce0a527ee26a37b1f419dddd47f8b6b615a253717c"
+    },
+    "_spell_storage_qualification.cpython-313-x86_64-linux-gnu.so": {
+      "bytes": 8619832,
+      "sha256": "8b4812325dd4dc3159f8bd3583f62765c62940271232f6fe52ea342907cf3783"
+    },
+    "_spell_util_qualification.cpython-313-x86_64-linux-gnu.so": {
+      "bytes": 8050792,
+      "sha256": "967eb48b5ecdbec54c298b6cded5b2329091485808f001fd386cd6b84abeedc5"
+    },
+    "analysis-link.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "analysis-runtime.json": {
+      "bytes": 202,
+      "sha256": "4d052e428e6c118e0895a46deadd4fa39bbc21b720e8d75031a81306c27e8d3d"
+    },
+    "analysis-runtime.log": {
+      "bytes": 7394,
+      "sha256": "4b655064513ba0deddd203ecf0f51fc0ada89b201eb73eeb2d6049405fdf9d6a"
+    },
+    "embed-build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "embed-runtime.log": {
+      "bytes": 199,
+      "sha256": "03ee884f7460e53767ae2aeb4a5f5f6798c468120aafd9ee23b2df2be71eb651"
+    },
+    "lib_SPELL_DTA_src_SPELLdtaContainer.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_DTA_src_SPELLdtaContainerObjectMethods.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_DTA_src_SPELLdtaModule.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_DTA_src_SPELLdtaVariable.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_DTA_src_SPELLdtaVariableObjectMethods.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLastAnalyzer.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLastAnalyzer.C.o": {
+      "bytes": 1418120,
+      "sha256": "e6e6318f3d0658f319303a4b5dabd4b5b71e89609b860973fea3f8ef89fb2cb8"
+    },
+    "lib_SPELL_EXC_src_SPELLastAnalyzer.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLbreakpoint.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLbreakpointType.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLbytecode.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLbytecode.C.o": {
+      "bytes": 685712,
+      "sha256": "7be93355e68306d615795255134d718c0d7e67a2917ae83a508357c7bc77c283"
+    },
+    "lib_SPELL_EXC_src_SPELLbytecode.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLcallstack.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLchildManager.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLcodeTreeLine.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLcodeTreeNode.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLcommandMailbox.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLcontroller.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutionModel.C.syntax.log": {
+      "bytes": 1777,
+      "sha256": "d496563c4792e89ecbebda7e72b30b2018d344a5f2edba5540dc12088983b634"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutionTrace.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutor.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutorConfiguration.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutorImpl.C.syntax.log": {
+      "bytes": 6994,
+      "sha256": "6e628fc2fecda736ca38382148c3f05fe7168b093e604d13d6cf068b61e52822"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutorPython.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLexecutorUtils.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLframeManager.C.syntax.log": {
+      "bytes": 6107,
+      "sha256": "fc85eacb77df80f94b88826f3e5e421e169c8d8686fdb87c262e9211d5d4afe1"
+    },
+    "lib_SPELL_EXC_src_SPELLgoto.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLgoto.C.o": {
+      "bytes": 1825704,
+      "sha256": "9ae09fc57d05e96af59a97730d32a6c9a551006fb13570fae926e70c54aae6c2"
+    },
+    "lib_SPELL_EXC_src_SPELLgoto.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLgotoPython.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLimportChecker.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLinterpreter.C.syntax.log": {
+      "bytes": 749,
+      "sha256": "ab7ac2ed66d241a8a7c4d167ab3b1a22631ea92180eed3e8e8b363c9081f97a2"
+    },
+    "lib_SPELL_EXC_src_SPELLlnotab.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLlnotab.C.o": {
+      "bytes": 735320,
+      "sha256": "f150e77382ce22a3c5764d313c2ebcca4804cb0bafd52a83e9ec2f8ce80d1465"
+    },
+    "lib_SPELL_EXC_src_SPELLlnotab.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLresourceManager.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLresourceMonitor.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLscheduler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLserviceImpl.C.syntax.log": {
+      "bytes": 6977,
+      "sha256": "2feacf24bd70f9efde3ddbaa387b7b88cc190f4269ede24b2c7a4c36f2e624bb"
+    },
+    "lib_SPELL_EXC_src_SPELLserviceInterpreter.C.syntax.log": {
+      "bytes": 756,
+      "sha256": "db116339337e68055864d53e5ece27d8e50a70bc1da9805099ab7d915af92a9d"
+    },
+    "lib_SPELL_EXC_src_SPELLstepPython.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLvariableManager.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLvariableMonitor.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_EXC_src_SPELLvariableMonitor.C.o": {
+      "bytes": 2599032,
+      "sha256": "0b5ab6160e435018adde6a3de7dd24cc2af815de337f4ec033803d07cf9d9b7f"
+    },
+    "lib_SPELL_EXC_src_SPELLvariableMonitor.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLconditionFactoryPOSIX.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLconditionFactoryPOSIX.C.o": {
+      "bytes": 52976,
+      "sha256": "8fb60b2a4fed4a510be054f60fc9412a80d8b86e3268bda13ed646242c99aa2d"
+    },
+    "lib_SPELL_SYN_src_SPELLconditionPOSIX.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLconditionPOSIX.C.o": {
+      "bytes": 314904,
+      "sha256": "2c207da809a4a2f9719fbc530cf456464d49cdaba85c5bc0a8ce022fc5a870f9"
+    },
+    "lib_SPELL_SYN_src_SPELLevent.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLevent.C.o": {
+      "bytes": 388552,
+      "sha256": "dc3af86bc99a3c02a2c735ae622b257dc726eb6c2f5d2053e9dbace008a39ef2"
+    },
+    "lib_SPELL_SYN_src_SPELLmutexFactoryPOSIX.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLmutexFactoryPOSIX.C.o": {
+      "bytes": 51432,
+      "sha256": "09e77d16139627aa5dc13648c841466720188993ed42925cc668f74297c709c6"
+    },
+    "lib_SPELL_SYN_src_SPELLmutexPOSIX.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLmutexPOSIX.C.o": {
+      "bytes": 75320,
+      "sha256": "84ab30280365ee37714a2ad7620c32898265bdcd245ba556f64983d766110f01"
+    },
+    "lib_SPELL_SYN_src_SPELLthread.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLthread.C.o": {
+      "bytes": 628088,
+      "sha256": "2f81b81efc136bb739be9b25cef33773a5f91d6fd2f4d3335cc953eeaa354dba"
+    },
+    "lib_SPELL_SYN_src_SPELLthreadPool.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLthreadPool.C.o": {
+      "bytes": 515640,
+      "sha256": "d09e5b85782ecbe85c4643347f70fc77207cb45db3f480bbe24991cb0f2ed5a7"
+    },
+    "lib_SPELL_SYN_src_SPELLthreadWorker.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLthreadWorker.C.o": {
+      "bytes": 355712,
+      "sha256": "c2823ebf6d37748bac6002590d9844fc551d4d4c77e9dca33c5754ccbbfdaa32"
+    },
+    "lib_SPELL_SYN_src_SPELLtimer.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_SYN_src_SPELLtimer.C.o": {
+      "bytes": 343160,
+      "sha256": "ae2af4f772a6e1b285fede8812a4768796fc54eb50188a88c4a04880ceed0391"
+    },
+    "lib_SPELL_UTIL_src_SPELLcompression.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLcompression.C.o": {
+      "bytes": 783912,
+      "sha256": "97b826db17279278c7e1bedad6fbef3d9ad3c2add38078b22d617dede7d33a17"
+    },
+    "lib_SPELL_UTIL_src_SPELLerror.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLerror.C.o": {
+      "bytes": 1856600,
+      "sha256": "25034d3c4b61df79a5b9de538f62ed8bc4502fb73fb17d3c7f2c719d1f065793"
+    },
+    "lib_SPELL_UTIL_src_SPELLlog.C.log": {
+      "bytes": 1045,
+      "sha256": "628da6b842e4ea762733bb709fec46006e8c231c0d3ae759aedcbbe3bbc92917"
+    },
+    "lib_SPELL_UTIL_src_SPELLlog.C.o": {
+      "bytes": 520056,
+      "sha256": "46df5e2f4cc83fd551b9af3083af7f7ddc1a552cb72bd5448cdcaa92cde545fe"
+    },
+    "lib_SPELL_UTIL_src_SPELLlogPython.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLlogPython.C.o": {
+      "bytes": 1582464,
+      "sha256": "3485cc71d8f8dc11c3f70389f775473aa35d264f1c12373f84955debd18a3258"
+    },
+    "lib_SPELL_UTIL_src_SPELLpyArgs.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLpyArgs.C.o": {
+      "bytes": 1437936,
+      "sha256": "bc90a4ba98d2b410d212a2298529db193c0bd7c29c55ebc76e2da74ed11d0d2c"
+    },
+    "lib_SPELL_UTIL_src_SPELLpythonHelper.C.log": {
+      "bytes": 715,
+      "sha256": "6c82d3507dbaa7ab82bbce38d00b2bac79afdfa54d028b68ecc5b73f6d5955da"
+    },
+    "lib_SPELL_UTIL_src_SPELLpythonHelper.C.o": {
+      "bytes": 2156152,
+      "sha256": "5481f51e9956bb1302a03c80d4017c8d618f87e44537e7b95a42904f074e3284"
+    },
+    "lib_SPELL_UTIL_src_SPELLtime.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLtime.C.o": {
+      "bytes": 1505608,
+      "sha256": "7ec9bf0674c62ad4261d8caf60ca9bed7d80d49a524513adc4429cc4f294ad91"
+    },
+    "lib_SPELL_UTIL_src_SPELLutils.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_UTIL_src_SPELLutils.C.o": {
+      "bytes": 2596448,
+      "sha256": "76c7499055bf84d1e130355afd735fd2fe1f6dd1c3e474ed6165417f793e1bd6"
+    },
+    "lib_SPELL_WS_src_SPELLwsClassDataHandler.C.syntax.log": {
+      "bytes": 2771,
+      "sha256": "1aac74bc20954b07075aeb47ef649711e59a70c7ca12a52fc27753f29dc54c11"
+    },
+    "lib_SPELL_WS_src_SPELLwsCustomTypeDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsDataCodes.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsDataHandlerFactory.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsDbDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsDictDataHandler.C.syntax.log": {
+      "bytes": 754,
+      "sha256": "07e9247c695d57189ca2e09a983baeb1037c486de2f8360632679c67f007ce6b"
+    },
+    "lib_SPELL_WS_src_SPELLwsDynamicData.C.syntax.log": {
+      "bytes": 2946,
+      "sha256": "6cc4cc25c1fed8fe5b617843420ddc1c756483a1077efc0cb0ace001e73d1c05"
+    },
+    "lib_SPELL_WS_src_SPELLwsFrame.C.syntax.log": {
+      "bytes": 3573,
+      "sha256": "13e14fdf9e2f313b71b788106cd0ed64b4590e6a403512d0562d84bb7ab687b5"
+    },
+    "lib_SPELL_WS_src_SPELLwsInstanceDataHandler.C.syntax.log": {
+      "bytes": 2962,
+      "sha256": "02485e4eabde74eba172549f1379e48708e591d857206708fd6e48690d81a2fe"
+    },
+    "lib_SPELL_WS_src_SPELLwsListDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsObjectDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsStaticData.C.syntax.log": {
+      "bytes": 2839,
+      "sha256": "79635c10ab2505c9929b2d9c6f663abc78592ac32ddd086ce46e573a0a8dffb8"
+    },
+    "lib_SPELL_WS_src_SPELLwsStorage.C.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsStorage.C.o": {
+      "bytes": 1557520,
+      "sha256": "a8b78c2f48e17fca934723698b2148e62688c77ab71533eba0f1bc7b16a6af50"
+    },
+    "lib_SPELL_WS_src_SPELLwsStorage.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsTimeDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsTmItemDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsTupleDataHandler.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lib_SPELL_WS_src_SPELLwsWarmStartImpl.C.syntax.log": {
+      "bytes": 2320,
+      "sha256": "a421b4bf199f9ee0c9a40c1431eef37bd007030056b46ba71cd0271acf23aabb"
+    },
+    "lib_SPELL_WS_src_SPELLwsWorkingMode.C.syntax.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "link.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-build.json": {
+      "bytes": 19989,
+      "sha256": "f79932986217f14564873d133c05a255caf2e59ce3c048a0bcc7b2a3ed3257a6"
+    },
+    "native-patches.json": {
+      "bytes": 3738,
+      "sha256": "103797a180f9a15883505d82f1af807074c878f9c67849f59adf6fbcf015bd54"
+    },
+    "qualify_analysis.cpp.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qualify_analysis.cpp.o": {
+      "bytes": 2068896,
+      "sha256": "5344a4ea1783a994314a44255bbf6a18c3bc3d29ab347ee84fbe3e53dbafcf83"
+    },
+    "qualify_embed": {
+      "bytes": 7866320,
+      "sha256": "6599ba8761402ce53a571b9f800d9ca0a687cf08785f948da6063ee64a22989c"
+    },
+    "qualify_storage.cpp.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qualify_storage.cpp.o": {
+      "bytes": 295168,
+      "sha256": "29168ffd5150f767733fe6466b57aebb2396353809d278cfb9d81cf8afd08c2e"
+    },
+    "qualify_util.cpp.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qualify_util.cpp.o": {
+      "bytes": 672800,
+      "sha256": "68e16a7ed81710c3c25c8b76d2d2182f6e88ea07ddefc47c81bbe872ba27e4ba"
+    },
+    "runtime.log": {
+      "bytes": 2065,
+      "sha256": "b672ff8d96aa97a99df92c424a3392f4cedf7f6d61ed88ee6383de58c2b60d26"
+    },
+    "storage-link.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "storage-runtime.json": {
+      "bytes": 204,
+      "sha256": "b9fdd3e8bd0aa7d7e2e192ab2edb9790714f40117911312298149c886072b560"
+    },
+    "storage-runtime.log": {
+      "bytes": 2139,
+      "sha256": "363b9019dd3c180db61a17df0feebdbf9bb299067c67ccafee853ad434620611"
+    },
+    "util-runtime.json": {
+      "bytes": 238,
+      "sha256": "7c48addb47b4fc608b8f81fd47e3b7e334998cd07d12b98ef6ff837793b128e0"
+    },
+    "\u901a\u4fe1.py": {
+      "bytes": 11,
+      "sha256": "88f92d58d9706e16b293aacf471dd930213780b70cbf773d31c716c3e1e84682"
+    }
+  },
+  "gaps": [
+    "DTA runtime and memory qualification",
+    "EXC Step/Goto/procedure control integration",
+    "WS frame serialization/recovery",
+    "complete native/context/service setup and cleanup",
+    "reproducible production native packaging",
+    "Windows native qualification"
+  ],
+  "source_alpha_evidence": "source-v0.2.0a1 remains the separate historical Python/RPC wheel milestone",
+  "analysis_runtime": {
+    "tests": 57,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "address_sanitizer": true,
+    "undefined_behavior_sanitizer": true,
+    "leak_sanitizer": false,
+    "full_spell_executor_qualified": false
+  },
+  "storage_runtime": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "address_sanitizer": true,
+    "undefined_behavior_sanitizer": true,
+    "leak_sanitizer": false,
+    "full_spell_warm_start_qualified": false
+  }
+}

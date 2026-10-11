@@ -68,11 +68,11 @@ The remaining native syntax probe is:
 | --- | ---: | ---: | --- |
 | UTIL | 8 | 0 | Linked; the behavior scope above is tested |
 | DTA | 5 | 0 | Syntax only; no container runtime acceptance yet |
-| EXC | 24 | 7 | Three analyzers and variable monitor linked/tested; other units syntax only |
+| EXC | 25 | 6 | Four analyzers and variable monitor linked/tested; other units syntax only |
 | WS | 12 | 7 | Storage linked/tested; remaining passing units syntax only |
 
-The total is 49 of 63 units compiling, versus 26 in the unchanged-source probe.
-Failures still include old bytecode assumptions,
+The total is 50 of 63 units compiling, versus 26 in the unchanged-source probe.
+Failures still include
 opaque frame fields, Python 2 class/instance representations and PyTryBlock.
 The native build reports those failures rather than substituting fake structures.
 
@@ -85,6 +85,10 @@ The [live variable monitor](VARIABLE_MONITOR.md) adds 17 checks for public frame
 locals, closure-cell edits, shadowing, notifications and reference ownership.
 Together the native suites now have 16 UTIL, 43 analyzer/watch and 17 storage
 tests, plus three standalone interpreter lifecycle cycles.
+
+The [bytecode analyzer port](BYTECODE_ANALYSIS.md) adds 14 source/disassembly
+checks and raises the analyzer/watch total to 57. The compiler binds source to
+code identity with weak ownership; interpreter reinitialization still passes.
 
 Build and export into a new evidence directory:
 

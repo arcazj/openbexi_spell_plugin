@@ -12,7 +12,10 @@ def main():
     parser.add_argument('--goto', action='store_true', help='Also require static Step/Goto analysis and trace-jump checks')
     parser.add_argument('--storage', action='store_true', help='Require WS storage checks and all preceding native checks')
     parser.add_argument('--watch', action='store_true', help='Require live variable-monitor checks and all preceding checks')
+    parser.add_argument('--bytecode', action='store_true', help='Require source-bound bytecode checks and all preceding checks')
     args = parser.parse_args()
+    if args.bytecode:
+        args.watch = True
     if args.watch:
         args.storage = True
     if args.storage:
@@ -77,7 +80,13 @@ def main():
             raise ValueError('Original variable monitor qualification failed')
         report['milestone'] = 'CPython 3.13 original live variable monitor and previous native milestones'
         report['qualification_scope'] += '; original SPELLvariableMonitor live locals/cells, edits and notifications'
-    name = 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.bytecode:
+        if (report['analysis_runtime']['tests'] < 57
+                or 'lib/SPELL_EXC/src/SPELLbytecode.C' not in {u['unit'] for u in build['analysis_units']}):
+            raise ValueError('Original bytecode analyzer qualification failed')
+        report['milestone'] = 'CPython 3.13 original bytecode analyzer with identity-bound source metadata'
+        report['qualification_scope'] += '; original SPELLbytecode public disassembly and source-scope analysis'
+    name = 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

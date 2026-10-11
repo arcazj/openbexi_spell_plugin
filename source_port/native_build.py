@@ -91,7 +91,7 @@ if all(r['exit_code']==0 for r in results):
             if result.returncode == 0:
                 report['embedding'] = json.loads(result.stdout)
 
-        analysis_units = [source/'lib/SPELL_EXC/src'/name for name in ('SPELLastAnalyzer.C','SPELLlnotab.C','SPELLgoto.C','SPELLvariableMonitor.C')]
+        analysis_units = [source/'lib/SPELL_EXC/src'/name for name in ('SPELLastAnalyzer.C','SPELLlnotab.C','SPELLgoto.C','SPELLvariableMonitor.C','SPELLbytecode.C')]
         analysis_units.append(Path('/input/native/qualify_analysis.cpp'))
         with ThreadPoolExecutor(max_workers=4) as pool:
             report['analysis_units'] = list(pool.map(compile_unit, analysis_units))

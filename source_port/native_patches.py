@@ -3,6 +3,8 @@ import hashlib
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_EXC/src/SPELLbytecode.C': 'ab9e4c3accad70a664cfbfff43da74686777213f0ec98cd85250f73df04fcd60',
+    'include/SPELL_EXC/SPELLbytecode.H': 'ade8253aa4387aa5f0fa633a31ec6e1689eb88fc960fb64ece274427141eeb18',
     'lib/SPELL_EXC/src/SPELLvariableMonitor.C': '7162c7a9abab73cb9b9e20bc34f8e32185d6a4ab728e12d80989bf64bcb27aa7',
     'lib/SPELL_WS/src/SPELLwsStorage.C': '85fff1d7e917ce5913daaf99ecb385362a2f5323d49d7d41de8125b1e13ee34f',
     'lib/SPELL_EXC/src/SPELLgoto.C': '6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f',
@@ -38,7 +40,31 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLvariableMonitor.C'):
+    if name.endswith('SPELLbytecode.H'):
+        text = text.replace('unsigned int end_lineno;', '''unsigned int end_lineno;
+            unsigned int body_lineno;
+            unsigned int finally_lineno;
+            unsigned int finally_end_lineno;
+            std::vector<std::pair<unsigned int,unsigned int>> except_ranges;''')
+    elif name.endswith('SPELLbytecode.C'):
+        text = section(text, '#include "opcode.h"', '// CONSTRUCTOR',
+                       '#include "SPELL_UTIL/SPELLanalysis313.H"\n\n//=============================================================================\n')
+        text = section(text, 'void SPELLbytecode::analyze()', 'bool SPELLbytecode::isExecutable(',
+                       body('analyze_bytecode.cpp') + '\n//=============================================================================\n')
+        text = text.replace('(it->try_lineno < lineNo) && (it->end_try_lineno >= lineNo)',
+                            '(it->body_lineno <= lineNo) && (it->end_try_lineno >= lineNo)')
+        text = section(text, 'bool SPELLbytecode::isInExceptBlock(', 'bool SPELLbytecode::isInFinallyBlock(', '''bool SPELLbytecode::isInExceptBlock(unsigned int lineNo) const {
+    for (const auto& block: m_tryBlocks)
+        for (const auto& range: block.except_ranges)
+            if (range.first <= lineNo && lineNo <= range.second) return true;
+    return false;
+}
+\n//=============================================================================\n''')
+        text = text.replace('(it->end_except_lineno < lineNo) && (it->end_lineno >= lineNo)',
+                            '(it->finally_lineno > 0) && (it->finally_lineno <= lineNo) && (it->finally_end_lineno >= lineNo)')
+        text = text.replace('(it->try_lineno < lineNo) && (it->except_lineno > lineNo)',
+                            '(it->body_lineno <= lineNo) && (it->end_try_lineno >= lineNo)')
+    elif name.endswith('SPELLvariableMonitor.C'):
         marker = '// GLOBALS '
         assert text.count(marker) == 1
         text = text[:text.index(marker)] + '#include "SPELL_UTIL/SPELLpython313.H"\n#include <functional>\n' + body('variable_monitor.cpp')
@@ -92,7 +118,7 @@ def apply(name, original):
         std::thread::id m_ownerThread;
         PyThreadState* m_embeddedThread = nullptr;''')
     elif name.endswith('SPELLpythonHelper.C'):
-        text = text.replace('#include "Python-ast.h"', '#include "SPELL_UTIL/SPELLpython313.H"\n#include <memory>')
+        text = text.replace('#include "Python-ast.h"', '#include "SPELL_UTIL/SPELLpython313.H"\n#include "SPELL_UTIL/SPELLanalysis313.H"\n#include <memory>')
         text = text.replace('#    include "code.h"\n', '')
         text = section(text, 'PyCodeObject* SPELLpythonHelper::compile(',
                        'PyFrameObject* SPELLpythonHelper::createFrame(',
@@ -154,4 +180,12 @@ def apply_tree(source):
     header.write_bytes((ROOT / header.name).read_bytes())
     changed[header.relative_to(source).as_posix()] = {
         'new': True, 'sha256': hashlib.sha256(header.read_bytes()).hexdigest()}
+    bridge = source/'include/SPELL_UTIL/SPELLanalysis313.H'
+    bridge.write_bytes((ROOT/bridge.name).read_bytes())
+    embedded = source/'include/SPELL_UTIL/SPELLanalysisSource.H'
+    support = body('analysis_support.py')
+    assert ')SPELL_ANALYSIS"' not in support
+    embedded.write_text('// SPDX-License-Identifier: GPL-3.0-or-later\nstatic const char analysisSource[] = R"SPELL_ANALYSIS(' + support + ')SPELL_ANALYSIS";\n',encoding='utf-8')
+    for path in (bridge, embedded):
+        changed[path.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
     return changed

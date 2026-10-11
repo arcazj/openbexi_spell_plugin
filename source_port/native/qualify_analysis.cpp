@@ -4,6 +4,7 @@
 #include "SPELL_EXC/SPELLlnotab.H"
 #include "SPELL_EXC/SPELLgoto.H"
 #include "SPELL_EXC/SPELLvariableMonitor.H"
+#include "SPELL_EXC/SPELLbytecode.H"
 #include "SPELL_UTIL/SPELLpython313.H"
 #include <array>
 #include <memory>
@@ -236,6 +237,35 @@ static PyObject* watch_ref(PyObject*, PyObject* args) {
         return Py_NewRef(value ? value : Py_None);
     } catch (const SPELLcoreException& e) { return failure(e); }
 }
+static PyObject* analysis_compile(PyObject*, PyObject* source) {
+    Py_ssize_t size;
+    const char* value = PyUnicode_AsUTF8AndSize(source, &size);
+    if (!value) return nullptr;
+    try { return reinterpret_cast<PyObject*>(SPELLpythonHelper::instance().compileScript(std::string(value, size))); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+}
+static PyObject* bytecode_info(PyObject*, PyObject* args) {
+    PyObject* code;
+    int count;
+    if (!PyArg_ParseTuple(args, "Oi", &code, &count)) return nullptr;
+    if (!PyCode_Check(code) || count < 0 || count > 10000) {
+        PyErr_SetString(PyExc_ValueError, "expected code and 0..10000 lines"); return nullptr;
+    }
+    try {
+        SPELLbytecode analyzer(reinterpret_cast<PyCodeObject*>(code));
+        SPELLpython313::Owned rows(PyList_New(0));
+        if (!rows.get()) return nullptr;
+        for (int n = 1; n <= count; ++n) {
+            SPELLpython313::Owned row(Py_BuildValue("(iiiiiiiii)", n, analyzer.isExecutable(n),
+                analyzer.isKeepWithNext(n), analyzer.isReturnConstant(n), analyzer.isInTryBlock(n),
+                analyzer.isInExceptBlock(n), analyzer.isInFinallyBlock(n), analyzer.isTryBlockEnd(n),
+                analyzer.tryBlockEndLine(n)));
+            if (!row.get() || PyList_Append(rows.get(), row.get()) < 0) return nullptr;
+        }
+        return Py_BuildValue("{s:O,s:i,s:i}", "rows", rows.get(), "last_address", analyzer.getLastAddress(),
+                            "last_line", analyzer.getLastLine());
+    } catch (const SPELLcoreException& e) { return failure(e); }
+}
 static PyMethodDef methods[] = {
     {"create", create, METH_NOARGS, nullptr},
     {"process", process, METH_VARARGS, nullptr},
@@ -247,6 +277,7 @@ static PyMethodDef methods[] = {
     {"watch_state", watch_state, METH_O, nullptr}, {"watch_analyze", watch_analyze, METH_O, nullptr},
     {"watch_events", watch_events, METH_O, nullptr}, {"watch_change", watch_change, METH_VARARGS, nullptr},
     {"watch_get", watch_get, METH_VARARGS, nullptr}, {"watch_ref", watch_ref, METH_VARARGS, nullptr},
+    {"compile_source", analysis_compile, METH_O, nullptr}, {"bytecode_info", bytecode_info, METH_VARARGS, nullptr},
     {nullptr, nullptr, 0, nullptr}
 };
 static PyModuleDef module = {PyModuleDef_HEAD_INIT, "_spell_analysis_qualification", nullptr, -1, methods};

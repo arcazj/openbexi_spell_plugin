@@ -41,6 +41,11 @@ bringing the analyzer/watch suite to 43 and the syntax probe to 49 of 63 units.
 Ordinary frame inspection and edits use supported CPython APIs. Remaining
 executor/WS work is not replaced by the isolated recovery feasibility experiment.
 
+The original [bytecode analyzer](BYTECODE_ANALYSIS.md) adds 14 checks for modern
+instructions and source scopes. Analyzer/watch checks now total 57; UTIL has 16,
+storage has 17, and three embedded cycles pass. The syntax probe is 50 of 63.
+Full executor/service/context and WS recovery integration remain the v0.2 gates.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

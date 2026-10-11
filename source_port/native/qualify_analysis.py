@@ -436,6 +436,120 @@ class NativeAnalysis(unittest.TestCase):
             globals().pop('WATCH_MUTATOR', None)
             globals().pop('WATCH_VICTIM', None)
 
+    def bytecode(self, source):
+        code = native.compile_source(source)
+        return native.bytecode_info(code, len(source.splitlines())), code
+
+    def test_bytecode_instruction_extent_and_executable_lines(self):
+        result, code = self.bytecode('value = 1\n# comment\nvalue += 2\nresult = value\n')
+        self.assertEqual(result['last_address'], max(i.offset for i in dis.get_instructions(code)))
+        self.assertEqual(result['last_line'], 4)
+        self.assertEqual([row[0] for row in result['rows'] if row[1]], [1,3,4])
+
+    def test_bytecode_try_except_else_finally_regions(self):
+        result, _ = self.bytecode('try:\n value = 1\n value += 2\nexcept ValueError:\n value = 9\nelse:\n value = 4\nfinally:\n value += 1\nresult = value\n')
+        rows = result['rows']
+        self.assertEqual([r[0] for r in rows if r[4]], [2,3])
+        self.assertEqual([r[0] for r in rows if r[5]], [5])
+        self.assertEqual([r[0] for r in rows if r[6]], [9])
+        self.assertEqual([r[0] for r in rows if r[7]], [3])
+        self.assertEqual(rows[2][8], 9)
+        self.assertEqual(rows[6][5:7], (0,0))
+
+    def test_bytecode_try_finally_without_handler(self):
+        result, _ = self.bytecode('try:\n value = 1\nfinally:\n value = 2\nresult = value\n')
+        self.assertEqual(result['rows'][1][4:9], (1,0,0,1,4))
+        self.assertEqual(result['rows'][3][6], 1)
+
+    def test_bytecode_multiple_handlers_and_one_line_bodies(self):
+        result, _ = self.bytecode('try: value = 1\nexcept ValueError: value = 2\nexcept TypeError:\n value = 3\nresult = value\n')
+        self.assertTrue(result['rows'][0][4])
+        self.assertEqual([r[0] for r in result['rows'] if r[5]], [2,4])
+        self.assertEqual(result['rows'][0][8], 4)
+
+    def test_bytecode_nested_try_selects_innermost_end(self):
+        result, _ = self.bytecode('try:\n try:\n  value = 1\n except ValueError:\n  value = 2\n value += 1\nexcept TypeError:\n value = 9\nresult = value\n')
+        self.assertEqual(result['rows'][2][8], 5)
+        self.assertEqual(result['rows'][5][8], 8)
+        self.assertEqual(result['rows'][4][4:6], (1,1))
+
+    def test_bytecode_nested_function_does_not_pollute_outer_scope(self):
+        source = 'def outer():\n def inner():\n  try:\n   return 1\n  finally:\n   pass\n return inner()\n'
+        code = native.compile_source(source)
+        outer = next(c for c in code.co_consts if isinstance(c, types.CodeType))
+        inner = next(c for c in outer.co_consts if isinstance(c, types.CodeType))
+        self.assertFalse(any(row[4] or row[6] for row in native.bytecode_info(outer, 7)['rows']))
+        self.assertTrue(native.bytecode_info(inner, 7)['rows'][3][4])
+        self.assertTrue(native.bytecode_info(inner, 7)['rows'][5][6])
+
+    def test_bytecode_multiline_statement_is_kept_together(self):
+        result, _ = self.bytecode('value = (\n  first +\n  second\n)\nresult = value\n')
+        active = [row for row in result['rows'] if row[1] and row[0] < 4]
+        self.assertTrue(active)
+        self.assertTrue(all(row[2] for row in active))
+        self.assertFalse(result['rows'][4][2])
+
+    def test_bytecode_constant_local_and_expression_returns(self):
+        code = native.compile_source('def constant():\n return 42\ndef local(value):\n return value\ndef expression(value):\n return value + 1\n')
+        functions = [c for c in code.co_consts if isinstance(c, types.CodeType)]
+        self.assertTrue(native.bytecode_info(functions[0], 6)['rows'][1][3])
+        self.assertTrue(native.bytecode_info(functions[1], 6)['rows'][3][3])
+        self.assertFalse(native.bytecode_info(functions[2], 6)['rows'][5][3])
+
+    def test_bytecode_missing_and_changed_source_fail_explicitly(self):
+        unavailable = compile('value = 1\n', '<unregistered-source>', 'exec')
+        with self.assertRaisesRegex(RuntimeError, 'unavailable'): native.bytecode_info(unavailable, 1)
+        self.file.write_text('value = 1\n', encoding='utf-8')
+        code = compile(self.file.read_text(), str(self.file), 'exec')
+        self.file.write_text('value = 999\n', encoding='utf-8')
+        with self.assertRaisesRegex(RuntimeError, 'differs'): native.bytecode_info(code, 1)
+
+    def test_bytecode_imported_source_matches_then_keeps_exact_snapshot(self):
+        self.file.write_text('try:\n value = 1\nfinally:\n value = 2\n', encoding='utf-8')
+        code = compile(self.file.read_text(), str(self.file), 'exec')
+        before = native.bytecode_info(code, 4)
+        self.file.write_text('value = 3\n', encoding='utf-8')
+        self.assertEqual(native.bytecode_info(code, 4), before)
+
+    def test_bytecode_source_registry_does_not_retain_code(self):
+        registry = sys.modules.get('_spell_cpython313_analysis')
+        before = len(registry._sources) if registry else 0
+        refs = []
+        for n in range(500):
+            code = native.compile_source(f'def inner():\n return {n}\n')
+            refs.append(weakref.ref(code))
+            refs.extend(weakref.ref(c) for c in code.co_consts if isinstance(c, types.CodeType))
+            del code
+        gc.collect()
+        self.assertTrue(all(ref() is None for ref in refs))
+        self.assertLessEqual(len(sys.modules['_spell_cpython313_analysis']._sources), before)
+
+    def test_bytecode_equal_code_objects_keep_distinct_source_identity(self):
+        first_source = 'value = 1\n# first source\n'
+        second_source = 'value = 1\n# second source\n'
+        first = native.compile_source(first_source)
+        second = native.compile_source(second_source)
+        self.assertEqual(first, second)
+        self.assertIsNot(first, second)
+        registry = sys.modules['_spell_cpython313_analysis']
+        self.assertEqual(registry._source(first), first_source)
+        self.assertEqual(registry._source(second), second_source)
+
+    def test_bytecode_decorated_function_scope(self):
+        code = native.compile_source('def decorate(fn): return fn\n@decorate\ndef target():\n try:\n  return 1\n finally:\n  pass\n')
+        target = next(c for c in code.co_consts if isinstance(c, types.CodeType) and c.co_name == 'target')
+        result = native.bytecode_info(target, 7)
+        self.assertTrue(result['rows'][4][4])
+        self.assertTrue(result['rows'][6][6])
+
+    def test_bytecode_exception_group_handler_scope(self):
+        result, code = self.bytecode("try:\n raise ExceptionGroup('group', [ValueError('value')])\nexcept* ValueError:\n result = 42\n")
+        self.assertTrue(result['rows'][1][4])
+        self.assertTrue(result['rows'][3][5])
+        namespace = {}
+        exec(code, namespace)
+        self.assertEqual(namespace['result'], 42)
+
 
 result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(NativeAnalysis))
 report = {'tests':result.testsRun, 'failures':len(result.failures), 'errors':len(result.errors),
