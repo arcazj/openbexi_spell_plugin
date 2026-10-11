@@ -13,6 +13,15 @@ spec=importlib.util.spec_from_file_location('_spell_analysis_qualification',next
 native=importlib.util.module_from_spec(spec);spec.loader.exec_module(native)
 
 def worker(action, procedure, stem, subject, line, occurrence):
+    if action.startswith('dta-'):
+        action=action.removeprefix('dta-')
+        sys.path.insert(0,'/source/src/spell')
+        path=next(Path('/out').glob('libSPELL_DTA_v3*.so'))
+        for name in ('libSPELL_DTA_v3','_spell_dta_qualification'):
+            spec=importlib.util.spec_from_file_location(name,path)
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            sys.modules[name]=module
+        module.notifications(False)
     namespace={'__name__':'_qualified_procedure'}
     handle=native.manager_create(None)
     native.manager_initialize(handle,procedure,namespace)
@@ -131,8 +140,61 @@ class WarmController(unittest.TestCase):
             self.assertEqual(namespace['result'],3.5)
         finally: native.manager_close(handle)
 
-result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(WarmController))
-Path('/out/warm-runtime.json').write_text(json.dumps({'tests':result.testsRun,'failures':len(result.failures),
+class DataWarm(unittest.TestCase):
+    setUp=WarmController.setUp
+    tearDown=WarmController.tearDown
+    checkpoint=WarmController.checkpoint
+    def process(self,action,subject,line,occurrence=1):
+        return WarmController.process(self,'dta-'+action,subject,line,occurrence)
+    def test_shared_native_data_across_callers_and_second_checkpoint(self):
+        source='''from spell.lib.adapter.data import DataContainer,Var
+a=DataContainer('A')
+b=DataContainer('B')
+v=Var(Default=7,Range=[0,10])
+b[2.5]=v
+a['last']=v
+def child(data):
+ marker=1
+ data['last']=9
+ return data['last']
+result=(child(a),b[2.5],a.values()[0] is b.values()[0],v.__reduce_ex__(5)[2][1],v.__reduce_ex__(5)[2][3] is a)
+'''
+        self.checkpoint(source,'child',9,[9,9,True,'last',True],recapture=('child',10))
+    def test_original_constraints_remain_active_after_recovery(self):
+        source='''from spell.lib.adapter.data import DataContainer,Var
+c=DataContainer('checked')
+c['v']=Var(Default=7,Range=[0,10])
+def run():
+ rejected=False
+ try:
+  c['v']=99
+ except Exception:
+  rejected=True
+ return rejected,c['v']
+result=run()
+'''
+        self.checkpoint(source,'run',5,[True,7])
+    def test_subclass_state_restores_without_constructor_side_effects(self):
+        source='''from spell.lib.adapter.data import DataContainer,Var
+events=[]
+class Variable(Var):
+ def __init__(self,**options):
+  events.append('constructed')
+  super().__init__(**options)
+c=DataContainer('subclass')
+v=Variable(Default=7)
+c['v']=v
+v.owner=c
+def run():
+ marker=1
+ return c['v'],events,v.owner is c
+result=run()
+'''
+        self.checkpoint(source,'run',13,[7,['constructed'],True])
+
+with_data=len(sys.argv)>1 and sys.argv[1]=='--dta'
+result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(DataWarm if with_data else WarmController))
+Path('/out/'+('dta-warm' if with_data else 'warm')+'-runtime.json').write_text(json.dumps({'tests':result.testsRun,'failures':len(result.failures),
     'errors':len(result.errors),'skips':len(result.skipped),'full_spell_executor_qualified':False,
     'physical_python_caller_chain_restored':False,'address_sanitizer':True,
     'undefined_behavior_sanitizer':True,'leak_sanitizer':False},indent=2)+'\n')

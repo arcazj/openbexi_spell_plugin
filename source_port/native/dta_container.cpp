@@ -6,6 +6,7 @@
 #include "SPELL_UTIL/SPELLpython313.H"
 #include "SPELL_UTIL/SPELLpythonMonitors.H"
 #include "SPELL_WRP/SPELLconstants.H"
+#include <unordered_set>
 namespace {
 using SPELLpython313::Owned;
 struct VarClass {
@@ -109,3 +110,23 @@ bool SPELLdtaContainer::hasKey(PyObject* key) {
     return result != 0;
 }
 PyObject* SPELLdtaContainer::getKeys() { return PyDict_Keys(m_dict); }
+void SPELLdtaContainer::restoreSnapshot(const std::string& name, PyObject* values, bool notifications) {
+    VarClass type;
+    if (!PyDict_Check(values)) THROW_EXCEPTION("Cannot restore data container", "Expected variable dictionary", SPELL_ERROR_WSTART);
+    std::unordered_set<SPELLdtaVariable*> retained;
+    Py_ssize_t index=0; PyObject *key,*value;
+    while (PyDict_Next(values,&index,&key,&value)) {
+        if ((!PyUnicode_Check(key) && !PyLong_Check(key) && !PyFloat_Check(key)) || !type.matches(value))
+            THROW_EXCEPTION("Cannot restore data container", "Invalid key or variable type", SPELL_ERROR_WSTART);
+        retained.insert(var(value));
+    }
+    Owned replacement(PyDict_Copy(values));
+    if (!replacement.get()) SPELLpythonHelper::instance().checkError();
+    index=0;
+    while (PyDict_Next(m_dict,&index,&key,&value))
+        if (!retained.count(var(value))) var(value)->detachContainer(this);
+    Py_SETREF(m_dict,Py_NewRef(replacement.get()));
+    m_name=name; m_notificationsEnabled=notifications;
+    // Each Var's saved parent/name is restored separately. Re-inserting through
+    // setValue would overwrite that metadata for Vars shared by containers.
+}

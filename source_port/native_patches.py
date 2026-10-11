@@ -97,15 +97,26 @@ def apply(name, original):
     elif name.endswith('SPELLdtaContainer.H'):
         text = text.replace('void incref();', 'void clear(bool releaseValues = true); // detach borrowed links, optionally clear values')
         text = text.replace('std::vector<std::string> m_varOrder;', '// Python 3 dictionaries preserve insertion order and key identity.')
+        text = text.replace('PyObject* getDict() { return m_dict; };','''PyObject* getDict() { return m_dict; };
+        void setOwner(PyObject* owner) { m_owner=owner; }
+        PyObject* getOwner() const { return m_owner; }
+        void restoreSnapshot(const std::string& name, PyObject* values, bool notifications);''')
+        text = text.replace('PyObject* m_dict;','PyObject* m_dict;\n        PyObject* m_owner=nullptr; // borrowed Python wrapper')
     elif name.endswith('SPELLdtaVariable.H'):
         text = text.replace('void setContainer( SPELLdtaContainer* container );', '''void setContainer( SPELLdtaContainer* container );
         void detachContainer(SPELLdtaContainer* expected) { if (m_container == expected) m_container = nullptr; }''')
+        text = text.replace('void setContainer( SPELLdtaContainer* container );','void setContainer( SPELLdtaContainer* container );\n        SPELLdtaContainer* getContainer() const { return m_container; }')
     elif name.endswith(('SPELLdtaContainer.C', 'SPELLdtaContainerObjectMethods.C', 'SPELLdtaVariableObjectMethods.C')):
         replacement = {'SPELLdtaContainer.C':'dta_container.cpp',
             'SPELLdtaContainerObjectMethods.C':'dta_container_bindings.cpp',
             'SPELLdtaVariableObjectMethods.C':'dta_variable_bindings.cpp'}[Path(name).name]
         text = text[:text.index('// FILES TO INCLUDE')] + body(replacement)
     elif name.endswith('SPELLdtaModule.C'):
+        text = text.replace('#include "object.h"','#include "object.h"\n'+body('dta_checkpoint.cpp'))
+        for kind,prefix in (('Container','container'),('Variable','variable')):
+            marker='static PyMethodDef SPELLdta'+kind+'Object_Methods[] =\n{'
+            assert marker in text
+            text=text.replace(marker,marker+'\n    {"__reduce_ex__",'+prefix+'Reduce,METH_O,"Native checkpoint state"},\n    {"__setstate__",'+prefix+'SetState,METH_O,"Restore native checkpoint state"},')
         # Retain the original public method tables; allocate types per interpreter.
         marker = '//============================================================================\n// Python type specification'
         assert marker in text
@@ -428,8 +439,9 @@ def apply_tree(source):
         changed[path.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
     embedded = source/'include/SPELL_WS/SPELLcontinuationSource.H'
     support = body('continuation_codec.py')
-    identity = hashlib.sha256(b''.join((ROOT/name).read_bytes() for name in
-        ('continuation.cpp','SPELLcontinuation313.H','SPELLcontinuationCodec.H','continuation_codec.py'))).hexdigest()
+    production = [p for p in sorted(ROOT.iterdir()) if p.is_file() and not p.name.startswith('qualify_')]
+    identity = hashlib.sha256(Path(__file__).read_bytes()+b''.join(
+        p.name.encode()+b'\0'+p.read_bytes() for p in production)).hexdigest()
     assert ')SPELL_CONT"' not in support
     embedded.write_text('// SPDX-License-Identifier: GPL-3.0-or-later\nstatic const char continuationSourceIdentity[] = "'+identity+'";\nstatic const char continuationSource[] = R"SPELL_CONT('+support+')SPELL_CONT";\n',encoding='utf-8')
     changed[embedded.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(embedded.read_bytes()).hexdigest()}

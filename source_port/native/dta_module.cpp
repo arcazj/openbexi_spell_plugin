@@ -31,7 +31,7 @@ static PyType_Spec variableSpec = {"spell.lib.adapter.data.Var", sizeof(SPELLdta
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_IMMUTABLETYPE, variableSlots};
 MOD_INIT(libSPELL_DTA) {
     PyObject* module;
-    MOD_DEF(module, MOD_NAME(libSPELL_DTA), "Module for SPELL data containers", NULL);
+    MOD_DEF(module, MOD_NAME(libSPELL_DTA), "Module for SPELL data containers", dtaCheckpointModuleMethods);
     SPELLpython313::Owned container(PyType_FromSpec(&containerSpec)), variable(PyType_FromSpec(&variableSpec));
     if (!container.get() || !variable.get() || PyModule_AddObjectRef(module, "DataContainer", container.get())<0
             || PyModule_AddObjectRef(module, "Var", variable.get())<0) { Py_DECREF(module); return nullptr; }

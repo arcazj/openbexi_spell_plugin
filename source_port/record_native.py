@@ -20,7 +20,10 @@ def main():
     parser.add_argument('--cold', action='store_true', help='Require original manager cold evaluation and all preceding component checks')
     parser.add_argument('--ws-frames', action='store_true', help='Require original WS frame/data integration and shared continuation probes')
     parser.add_argument('--warm', action='store_true', help='Require original WS controller and manager logical recovery')
+    parser.add_argument('--dta-checkpoints', action='store_true', help='Require native DTA graphs through serialization and original WS recovery')
     args = parser.parse_args()
+    if args.dta_checkpoints:
+        args.warm = True
     if args.warm:
         args.ws_frames = True
     if args.ws_frames:
@@ -199,7 +202,20 @@ def main():
         report['milestone'] = 'CPython 3.13 original WS controller and frame-manager logical continuation'
         report['qualification_scope'] += '; one atomic caller graph, original WS callbacks and manager models, 14 integrated checks including SIGKILL/fresh-process recovery and repeated checkpoints'
         report['gaps'][2] = 'Native DTA graph serialization, external dependency/resource recovery and actual executor/CIF checkpoint dispatch'
-    name = 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.dta_checkpoints:
+        checkpoint = json.loads((evidence/'dta-checkpoint-runtime.json').read_text())
+        integrated = json.loads((evidence/'dta-warm-runtime.json').read_text())
+        if (build.get('dta_checkpoint_runtime_exit_code') != 0 or checkpoint['tests'] < 12 or checkpoint['failures']
+                or any(row['exit_code'] for row in checkpoint['cases'])
+                or build.get('dta_warm_runtime_exit_code') != 0 or integrated['tests'] < 3
+                or any(integrated[k] for k in ('failures','errors','skips'))):
+            raise ValueError('Native DTA checkpoint qualification failed')
+        report['dta_checkpoint_runtime'] = checkpoint
+        report['dta_warm_runtime'] = integrated
+        report['milestone'] = 'CPython 3.13 native DTA graph serialization and original WS recovery'
+        report['qualification_scope'] += '; 12 isolated DTA serialization cases and 3 SIGKILL/fresh-process procedure recoveries with native data, aliases, constraints and subclass state'
+        report['gaps'][2] = 'External dependency/resource recovery and actual executor/CIF checkpoint dispatch'
+    name = 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
@@ -209,6 +225,8 @@ def main():
         'cold_tests':report.get('cold_runtime',{}).get('tests',0),
         'ws_frame_tests':report.get('ws_runtime',{}).get('tests',0),
         'warm_tests':report.get('warm_runtime',{}).get('tests',0),
+        'dta_checkpoint_tests':report.get('dta_checkpoint_runtime',{}).get('tests',0),
+        'dta_warm_tests':report.get('dta_warm_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

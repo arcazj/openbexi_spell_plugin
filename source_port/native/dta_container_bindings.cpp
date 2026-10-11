@@ -26,6 +26,7 @@ int SPELLdtaContainerObject_Init(SPELLdtaContainerObject* self, PyObject* args, 
     }
     try {
         auto fresh = std::make_unique<SPELLdtaContainer>(name);
+        fresh->setOwner(reinterpret_cast<PyObject*>(self));
         auto* previous = self->container;
         self->container = fresh.release();
         delete previous;

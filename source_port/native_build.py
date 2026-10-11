@@ -173,6 +173,14 @@ if all(r['exit_code']==0 for r in results):
                     capture_output=True,text=True,timeout=120)
                 (output/'dta-runtime.log').write_text(result.stdout+result.stderr)
                 report['dta_runtime_exit_code'] = result.returncode
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_dta_checkpoint.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'dta-checkpoint-runtime.log').write_text(result.stdout+result.stderr)
+                report['dta_checkpoint_runtime_exit_code'] = result.returncode
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_warm.py','--dta'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'dta-warm-runtime.log').write_text(result.stdout+result.stderr)
+                report['dta_warm_runtime_exit_code'] = result.returncode
                 program = output/'qualify_dta_embed'
                 result = subprocess.run(flags+['/input/native/qualify_dta_embed.cpp',
                     *[str(output/r['object']) for r in objects if r['unit'] != 'qualify_dta.cpp'],

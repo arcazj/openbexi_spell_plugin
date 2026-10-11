@@ -97,3 +97,8 @@ fourteen integrated checks, including crash recovery and repeated checkpoints
 with pending callers. All 143 original library units pass compilation/syntax
 checks. Native DTA checkpoint serialization and the actual executor/context/CIF
 lifecycle remain the next v0.2 gates; later releases remain pending.
+
+The [native DTA checkpoint milestone](DTA_CHECKPOINTS.md) adds twelve serialization
+cases and three integrated procedure crash recoveries with shared native data.
+The actual executor/CIF bindings, dispatch and context lifecycle are next;
+v0.2 remains in progress and v0.3–v0.6 remain pending.
