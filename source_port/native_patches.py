@@ -4,6 +4,8 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_CIFS/SPELLdisplayBuffer.H': '909c4b33d408d703ffa149ee15e522c33b301cb6d78f6cc6de4af4894601c40e',
+    'lib/SPELL_CIFS/src/SPELLdisplayBuffer.C': 'c57d8ca1bbd784bd40da5e4e60544300bc0c242678d89dbba2caad1636720850',
     'lib/SPELL_UTIL/src/SPELLtime.C': '00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585',
     'lib/SPELL_CTX/src/SPELLservice.C': '8edac0867351e1c6354c1ee39bbd329b891a690dd371616ffe3cc69a37912a01',
     'include/SPELL_CTX/SPELLserviceManager.H': '64cf81cd4c38302faf5fb9313602b8d4c77ded11bf5bca9f5d6b62618a443f98',
@@ -1686,6 +1688,23 @@ void SPELLipcClientInterface::waitReady()
         text=text[:start]+'''    cmd = SPELLquoteArgument(SPELLutils::getSPELL_HOME() + PATH_SEPARATOR + "bin" + PATH_SEPARATOR + "SPELL-Context")
         + " -n " + SPELLquoteArgument(name) + " -s " + ISTR(m_port)
         + " -c " + SPELLquoteArgument(m_configFile);'''+text[end:]
+    if name=='include/SPELL_CIFS/SPELLdisplayBuffer.H':
+        text=text.replace('// FILES TO INCLUDE', '#include <atomic>\n// FILES TO INCLUDE', 1)
+        text=text.replace('bool m_working;', 'std::atomic_bool m_working;')
+    elif name=='lib/SPELL_CIFS/src/SPELLdisplayBuffer.C':
+        # Public flush is also called from prompt/status paths. SPELLmutex is
+        # recursive, so callers which already own the buffer lock remain valid.
+        marker='void SPELLdisplayBuffer::flush()\n{'
+        assert text.count(marker)==1
+        text=text.replace(marker, marker+'\n    SPELLmonitor guard(m_lock);')
+    elif name=='lib/SPELL_CIFS/src/SPELLserverCif.C':
+        marker='    SPELLsafeThreadOperations ops("NotifyStatus");'
+        assert text.count(marker)==1
+        text=text.replace(marker, marker+'''
+    // Completion is an output barrier: the host may close immediately after
+    // receiving this status. Do not leave final Display messages on the timer.
+    if (m_buffer && (st.status==STATUS_FINISHED || st.status==STATUS_ERROR || st.status==STATUS_ABORTED))
+        m_buffer->flush();''')
     return text.encode('utf-8')
 
 

@@ -375,6 +375,8 @@ def main():
             log=(evidence/(scenario+'-0-peer.log')).read_text()
             if 'CONTROLLER_SCENARIO_COMPLETE '+scenario not in log or 'CONTEXT_CLOSED' not in log:
                 raise ValueError('Controller scenario did not complete: '+scenario)
+        if 'OUTPUT_BEFORE_TERMINAL_VERIFIED' not in (evidence/'native_controls-0-peer.log').read_text():
+            raise ValueError('Final Display output was not delivered before terminal status')
         if 'QUOTED_PROCEDURE_COMPLETE' not in (evidence/'native_controls-0-peer.log').read_text():
             raise ValueError('Literal procedure argument launch was not qualified')
         for name,value in [('native_controls-result.txt','42'),('native_controls-quoted.txt','literal argument'),('native_prompt-result.txt','answered'),

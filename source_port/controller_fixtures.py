@@ -46,5 +46,7 @@ finally:
     for name, body in cases.items():
         (directory / (name + '.py')).write_text(header + body)
     (directory / "native quoted ' space.py").write_text(header +
-        "from pathlib import Path\nPath('/out/native_controls-quoted.txt').write_text('literal argument')\n")
+        "from pathlib import Path\nfrom spell.lang.functions import Display\n"
+        "Path('/out/native_controls-quoted.txt').write_text('literal argument')\n"
+        "Display('NATIVE_OUTPUT_BARRIER')\n")
     return tuple(cases)

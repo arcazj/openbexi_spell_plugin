@@ -196,6 +196,7 @@ class PendingService:
                         self.assertEqual((output/(controller+'-result.txt')).read_text(),'42')
                         self.assertEqual((output/'native_controls-quoted.txt').read_text(),'literal argument')
                         self.assertIn('QUOTED_PROCEDURE_COMPLETE',result.stdout)
+                        self.assertIn('OUTPUT_BEFORE_TERMINAL_VERIFIED',result.stdout)
                     if controller=='native_prompt': self.assertEqual((output/(controller+'-result.txt')).read_text(),'answered')
                     if controller=='native_failure': self.assertEqual((output/(controller+'-closed.txt')).read_text(),'unwound')
                     if controller in ('native_pause','native_abort'):

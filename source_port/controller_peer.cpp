@@ -23,7 +23,17 @@ class ControllerPeer final:public SPELLipcInterfaceListener {
 public:
     SPELLipcClientInterface* client=nullptr;
     std::atomic_bool rejectedJump{false};
+    std::atomic_bool finalOutput{false}, terminalSeen{false}, outputOrdered{false};
     void processMessage(const SPELLipcMessage& message) override {
+        if (message.hasField(MessageField::FIELD_TEXT) &&
+            message.get(MessageField::FIELD_TEXT).find("NATIVE_OUTPUT_BARRIER")!=std::string::npos)
+            finalOutput=true;
+        if (message.hasField(MessageField::FIELD_PROC_ID) &&
+            message.get(MessageField::FIELD_PROC_ID)=="native quoted ' space#1" &&
+            message.hasField(MessageField::FIELD_EXEC_STATUS) &&
+            message.get(MessageField::FIELD_EXEC_STATUS)=="FINISHED") {
+            outputOrdered=finalOutput.load(); terminalSeen=true;
+        }
         if (message.hasField(MessageField::FIELD_TEXT) &&
             message.get(MessageField::FIELD_TEXT).find("Unable to go to line -1")!=std::string::npos)
             rejectedJump.store(true);
@@ -203,6 +213,11 @@ int main(int argc,char** argv) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
             }
             require(ran && finished,"Quoted procedure did not finish");
+            auto terminalDeadline=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+            while (!peer.terminalSeen && std::chrono::steady_clock::now()<terminalDeadline)
+                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            require(peer.terminalSeen && peer.outputOrdered,"Native terminal status overtook final Display output");
+            std::cout<<"OUTPUT_BEFORE_TERMINAL_VERIFIED"<<std::endl;
             quotedRequest(ContextMessages::REQ_CLOSE_EXEC);
             std::cout<<"QUOTED_PROCEDURE_COMPLETE"<<std::endl;
         }

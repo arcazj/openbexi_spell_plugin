@@ -37,7 +37,7 @@ class InstalledRuntime(unittest.TestCase):
         run([ENV / 'bin/python', '-m', 'pip', 'install', '--no-index', '--find-links=/wheelhouse', WHEEL])
         cls.doctor = json.loads(run([ENV / 'bin/spell-native', 'doctor']))
         assert cls.doctor['environment'] == str(ENV)
-        assert cls.doctor['version'] == '0.3.0a2'
+        assert cls.doctor['version'] == '0.3.0a3'
         cls.example = json.loads(run([ENV / 'bin/spell-native', 'init-example', OUTPUT / 'example']))
 
     def test_installed_native_executor_uses_selected_environment(self):

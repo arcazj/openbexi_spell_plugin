@@ -116,8 +116,9 @@ The [installed 0.2.0 artifact](NATIVE_PACKAGE.md) now passes seven fresh-image
 checks, removal, byte-identical packaging from one qualified build and the full
 native gate. The v0.2 foundation is accepted on Linux x86_64 / CPython 3.13.15.
 The [host integration milestone](HOST_RUNTIME.md) adds the qualified native
-0.3.0a2 foundation and a committed neutral IDE extension. Original display-buffer
-completion ordering and full installed-host acceptance remain open. Continue
+0.3.0a3 foundation and a committed neutral IDE extension. Display-buffer
+completion ordering is qualified and the installed Qt workflow passes. Full
+adapter and JetBrains host acceptance remain open. Continue
 through the v0.3 OpenBEXI and JetBrains host gates before promoting v0.4.
 The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
