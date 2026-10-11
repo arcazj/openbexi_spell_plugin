@@ -1,5 +1,11 @@
 # openbexi_spell_plugin engineering master prompt
 
+The next development session starts from sibling `C:/projects/openbexi_ide`.
+Read its `docs/RESUME_V04.md` before continuing. User requirement: preserve
+`C:/projects/openbexi_spell`; ask the user before removing it, after establishing
+it is no longer needed. Preserve the external legacy archive and local
+qualification artifacts as well.
+
 Current state: the Apache bounded SDK/DSS remains the v0.1.0 desktop testing
 baseline. The separate original-source native foundation is qualified at v0.2.0
 on Linux x86_64 / GIL-enabled CPython 3.13.15, including DTA/UTIL/EXC/WS,
