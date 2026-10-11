@@ -26,7 +26,10 @@ def main():
     parser.add_argument('--context', action='store_true', help='Require original listener/context IPC lifecycle and process/socket regressions')
     parser.add_argument('--service-bindings', action='store_true', help='Require native service registration and owned worker lifecycle')
     parser.add_argument('--service', action='store_true', help='Require actual context-launched service and controlled shutdown')
+    parser.add_argument('--controller', action='store_true', help='Require original server controller and CIF scenarios')
     args = parser.parse_args()
+    if args.controller:
+        args.service=True
     if args.service:
         args.service_bindings=True
     if args.service_bindings:
@@ -326,7 +329,7 @@ def main():
         report['milestone']='Original native service registration, watchdog binding and owned worker shutdown'
         report['qualification_scope'] += '; nine native service registration/worker/watchdog checks, all owned threads joined before interpreter finalization'
     if args.service:
-        if behavior.get('lifecycle_runs')!=7 or behavior.get('service_runs')!=1 or behavior['tests']<3:
+        if behavior.get('lifecycle_runs',0)<7 or behavior.get('service_runs')!=1 or behavior['tests']<3:
             raise ValueError('Actual service process evidence incomplete')
         log=(evidence/'service-0-peer.log').read_text()
         for marker in ('SERVICE_EXECUTABLE_VERIFIED','NATIVE_SERVICE_RUNNING','CONTEXT_CLOSED'):
@@ -343,7 +346,30 @@ def main():
         report['milestone']='Original service launch, native runtime data and controlled shutdown'
         report['qualification_scope'] += '; original context watchdog launches SPELL-Service_v3, live /proc executable identity, native ARGS/IVARS/PROC and worker result, original Close terminates the service and runs Python finally, owned workers are joined and the child exits normally'
         report['gaps'][0]='Broader server controller/CIF behavior, service recovery/restart/failure scenarios and complete native memory audit'
-    name = 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.controller:
+        scenarios={'native_controls','native_pause','native_abort','native_prompt','native_failure'}
+        if context.get('controller_peer_build_exit_code')!=0 or set(behavior.get('controller_scenarios',[]))!=scenarios:
+            raise ValueError('Original server controller scenarios incomplete')
+        if behavior['tests']<5 or behavior.get('lifecycle_runs')!=13 or not behavior.get('missing_reconnect_cancelled'):
+            raise ValueError('Controller lifecycle evidence incomplete')
+        for scenario in scenarios:
+            log=(evidence/(scenario+'-0-peer.log')).read_text()
+            if 'CONTROLLER_SCENARIO_COMPLETE '+scenario not in log or 'CONTEXT_CLOSED' not in log:
+                raise ValueError('Controller scenario did not complete: '+scenario)
+        for name,value in [('native_controls-result.txt','42'),('native_prompt-result.txt','answered'),
+                ('native_failure-closed.txt','unwound')]:
+            if (evidence/name).read_text()!=value: raise ValueError('Wrong controller result: '+name)
+        for scenario in ('native_pause','native_abort'):
+            if int((evidence/(scenario+'-closed.txt')).read_text())<0:
+                raise ValueError('Invalid controller cleanup counter')
+        report['controller_runtime']={'scenarios':sorted(scenarios),'tests':5,'missing_reconnect_cancelled':True,
+            'breakpoint':True,'live_variable_read_and_edit':True,'step':True,'skip':True,'goto_line':True,
+            'pause_stops_progress':True,'resume':True,'abort_finally':True,'prompt_answer':True,
+            'python_error_details_and_finally':True,'full_controller_qualified':False}
+        report['milestone']='Original server breakpoint, Step/Skip/Goto, variables, Pause/Resume, Abort, prompt and error lifecycle'
+        report['qualification_scope'] += '; five actual server controller scenarios over original IPC with checked program output, paused progress and Python cleanup'
+        report['gaps'][0]='Child/scheduler/shared-data CIF scenarios, service failure/restart/recovery and remaining native ownership/error-path checks'
+    name = 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

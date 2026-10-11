@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <thread>
+#include <set>
 
 class Peer final:public SPELLipcInterfaceListener {
 public:
@@ -62,8 +63,13 @@ int main(int argc,char** argv) {
         if (!running) throw std::runtime_error("Context did not become RUNNING");
         std::cout << "CONTEXT_STARTED" << std::endl;
         if (argc==3) {
-            std::string command="/out/server_peer "+std::to_string(contextPort) +
-                (std::string(argv[2])=="--service" ? " native_service --service" : " native_server");
+            const std::string mode=argv[2];
+            const std::set<std::string> controls={"native_controls","native_pause","native_abort","native_prompt","native_failure"};
+            std::string command;
+            if (mode=="--service" || mode=="--server")
+                command="/out/server_peer "+std::to_string(contextPort)+(mode=="--service" ? " native_service --service" : " native_server");
+            else if (controls.count(mode)) command="/out/controller_peer "+std::to_string(contextPort)+" "+mode;
+            else throw std::runtime_error("Unknown context qualification scenario");
             if (std::system(command.c_str())!=0) throw std::runtime_error("Server executor peer failed");
         }
         request(ContextMessages::REQ_CLOSE_CTX);

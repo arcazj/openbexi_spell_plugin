@@ -80,9 +80,9 @@ std::vector<std::string> SPELLvariableMonitor::retrieveNames()
     }
     return {names.begin(), names.end()};
 }
-void SPELLvariableMonitor::initialize()
+void SPELLvariableMonitor::initialize(bool force)
 {
-    if (m_initialized || !s_enabled) return;
+    if (m_initialized || (!s_enabled && !force)) return;
     SPELLpython313::GIL gil;
     retrieveGlobalVariables();
     retrieveLocalVariables();
@@ -152,17 +152,17 @@ bool SPELLvariableMonitor::shouldDiscard(const std::string& name, PyObject* valu
     }
     return false;
 }
-void SPELLvariableMonitor::analyze()
+void SPELLvariableMonitor::analyze(bool force)
 {
-    if (!s_enabled) return;
+    if (!s_enabled && !force) return;
     SPELLpython313::GIL gil;
-    initialize();
+    initialize(force);
     VarMap globalsBefore = m_globalVariables, localsBefore = m_localVariables;
     retrieveGlobalVariables();
     retrieveLocalVariables();
     std::vector<SPELLvarInfo> added, changed, deleted;
     diffVariables(globalsBefore, m_globalVariables, added, changed, deleted);
     diffVariables(localsBefore, m_localVariables, added, changed, deleted);
-    if (m_listener && (!added.empty() || !changed.empty() || !deleted.empty()))
+    if (s_enabled && m_listener && (!added.empty() || !changed.empty() || !deleted.empty()))
         m_listener->variableChanged(added, changed, deleted);
 }

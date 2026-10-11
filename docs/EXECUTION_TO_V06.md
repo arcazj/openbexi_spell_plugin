@@ -26,7 +26,7 @@ The current component and standalone evidence covers:
 | Area | Evidence |
 | --- | --- |
 | UTIL/compiler/frame/error ownership | 22 behavior checks and three owned interpreter cycles |
-| Original analyzer, bytecode, Step/Goto analysis and live variables | 57 checks |
+| Original analyzer, bytecode, Step/Goto analysis and live variables | 58 checks |
 | Frame manager and cold execution | 12 manager checks and eight execution checks |
 | WS storage and frame graph | 17 storage checks and 13 frame/data checks |
 | Original WS controller and logical continuation | 14 integrated checks plus 38 shared continuation probe checks |
@@ -62,9 +62,15 @@ and exits normally. Together with the repeated context/server tests this passes
 seven original IPC lifecycle runs. The CPython 3.13.15 upgrade is backed by
 [isolated trace-unwind evidence](TRACE_UNWIND.md) and reruns of every preceding gate.
 
+The [controller milestone](CONTROLLER_RUNTIME.md) adds five actual server
+scenarios and missing-executor reconnect cancellation. Its 13 lifecycle runs
+qualify breakpoints, variable inspection/editing, Step/Skip/Goto, rejected Goto,
+pause/resume, abort cleanup, prompt response and retained Python errors.
+
 ## Immediate work
 
-Qualify broader server controller/CIF behavior and service failure/restart/recovery. Then
+Qualify child/scheduler/shared-data CIF behavior, service failure/restart/recovery,
+and the remaining ownership/error paths. Then
 complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.

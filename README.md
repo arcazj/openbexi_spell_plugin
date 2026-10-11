@@ -13,7 +13,9 @@ adapter or complete the native SPELL executor port.
 
 The [native context/server milestone](docs/CONTEXT_SERVER.md) launches and
 controls the original server executor over IPC, verifies its result and checks
-normal shutdown. Its build also passes the 23 standalone command checks. See the
+normal shutdown. The [controller milestone](docs/CONTROLLER_RUNTIME.md) adds
+breakpoints, Step/Skip/Goto, live variable editing, pause/resume, abort and prompts.
+Its build also passes the 23 standalone command checks. See the
 [execution status](docs/EXECUTION_TO_V06.md) for the remaining release gates.
 
 ```powershell

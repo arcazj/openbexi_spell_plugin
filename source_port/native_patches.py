@@ -4,6 +4,13 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_EXC/SPELLcontroller.H': '13ef9f674eba595c54f28de89aef816f758c8049be67f1257c6f5457a2acbb37',
+    'lib/SPELL_CTX/src/SPELLexecutorManager.C': '0ed8194465b987c76b2113fb64512190430b6dd64cc02893966bd5817b818312',
+    'lib/SPELL_CTX/src/SPELLexecutor.C': '63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32',
+    'include/SPELL_CTX/SPELLexecutorManager.H': '1dda9ee8dd638986f6a11d4d97a0a169119e1676d4783f8a9db29f9e0301cb7b',
+    'include/SPELL_CTX/SPELLexecutor.H': '6dab907284243d68a44ea10d10e12c6290e91f0eeb773632a9818db6c35972fb',
+    'lib/SPELL_EXC/src/SPELLvariableManager.C': '29161553e78c161ff5c85d527b9dbd1e6767ba22860ce508f1ddd7ea26c17c8b',
+    'include/SPELL_EXC/SPELLvariableMonitor.H': '38330bc82263583ad697ca25a3cbe89e2b38416010ad5961433fbe09ea5fbb16',
     'lib/SPELL_EXC/src/SPELLcontroller.C': 'e056206fb6d16a725bdc8d7b9a031cd4b6ba3ef3104e37f5c370ab581d521bb8',
     'lib/SPELL_CIF/src/SPELLasRun.C': 'b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3',
     'include/SPELL_CIF/SPELLasRun.H': 'bf636883d4a9b3a338e8b2d75eacb3abb74a126f3a39fc1c9367edcf526caaef',
@@ -348,8 +355,32 @@ void setupSignals()
 }
 //=============================================================================
 ''')
+    elif name.endswith('SPELLcontroller.H'):
+        text = text.replace('#define __SPELL_CONTROLLER_H__', '#define __SPELL_CONTROLLER_H__\n#include <mutex>\n#include <memory>')
+        text = text.replace('SPELLevent           m_execLock;', '''SPELLevent           m_execLock;
+        // Only the active CPython trace thread may change frame.f_lineno.
+        std::mutex m_traceMutex;
+        std::unique_ptr<ExecutorCommand> m_traceCommand;
+        SPELLevent m_traceCommandDone;
+        bool m_traceWaiting = false;
+        bool m_traceContinue = false;''')
     elif name.endswith('SPELLcontroller.C'):
         text=text.replace('if (!m_error && !m_finished)', 'if (!m_error)')
+        text=text.replace('        executeCommand(cmd);', '''        bool deferred=false;
+        if (cmd.id==CMD_SKIP || cmd.id==CMD_GOTO) {
+            std::lock_guard<std::mutex> guard(m_traceMutex);
+            if (m_traceWaiting) {
+                m_traceCommandDone.clear();
+                m_traceCommand.reset(new ExecutorCommand(cmd));
+                m_execLock.set();
+                deferred=true;
+            }
+        }
+        // Keep the original mailbox serialization and command completion.
+        if (deferred) m_traceCommandDone.wait();
+        else executeCommand(cmd);''',1)
+        text=section(text,'void SPELLcontroller::doWait()',
+                     'void SPELLcontroller::callbackEventLine(',body('controller_wait.cpp'))
     elif name.endswith('SPELLscheduler.C'):
         text = text.replace('#include "SPELL_EXC/SPELLscheduler.H"','#include "SPELL_EXC/SPELLscheduler.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text = text.replace('    m_pyTM = NULL;\n    delete m_timer;', '''    delete m_timer; // joins before Python references are released
@@ -439,7 +470,35 @@ void SPELLprocedureManager::registerScript(const std::string& file)
 '''
     elif name.endswith('SPELLexecutorConfiguration.C'):
         text = text.replace('m_parentProcId = -1;', 'm_parentProcId = ""; // no parent; never a non-UTF-8 sentinel byte')
+    elif name == 'include/SPELL_CTX/SPELLexecutor.H':
+        text='#include <atomic>\n'+text
+        text=text.replace('    void run();', '    void run();\n    void stop() { m_stopping.store(true); }')
+        text=text.replace('    SPELLexecutor& m_exec;', '    std::atomic_bool m_stopping{false};\n    SPELLexecutor& m_exec;')
+    elif name == 'include/SPELL_CTX/SPELLexecutorManager.H':
+        text=text.replace('ExecutorMap m_pendingLogin;', 'ExecutorMap m_pendingLogin;\n        ExecutorMap m_retiredLogin;')
+    elif name == 'lib/SPELL_CTX/src/SPELLexecutor.C':
+        text=text.replace('    for (;;)', '    while (!m_stopping.load())',1)
+        text=text.replace('\t\t\tm_loginMonitor->join();', '\t\t\tm_loginMonitor->stop();\n            m_loginMonitor->join();\n            delete m_loginMonitor;\n            m_loginMonitor=nullptr;')
+    elif name == 'lib/SPELL_CTX/src/SPELLexecutorManager.C':
+        text=section(text,'void SPELLexecutorManager::cleanup()', 'void SPELLexecutorManager::startExecutor(','''void SPELLexecutorManager::cleanup()
+{
+    ExecutorMap pending,retired;
+    { SPELLmonitor lock(m_lock);
+      pending.swap(m_pendingLogin); retired.swap(m_retiredLogin); }
+    // Destruction cancels and joins monitors outside the manager lock. A
+    // monitor finishing concurrently sees an empty pending map and returns.
+    for (auto& entry : pending) delete entry.second;
+    for (auto& entry : retired) delete entry.second;
+    delete m_persisTable; m_persisTable=nullptr;
+}
+
+''')
+        start=text.index('void SPELLexecutorManager::callback_executorNotReconnected(')
+        end=text.index('void SPELLexecutorManager::recoverExecutor(',start)
+        part=text[start:end].replace('\t\tdelete it->second;', '// The callback runs on this executor\'s own monitor. Retire it\n        // for owner-thread cleanup instead of destroying a running worker.\n        m_retiredLogin.emplace(instanceId,it->second);')
+        text=text[:start]+part+text[end:]
     elif name == 'lib/SPELL_CTX/src/SPELLcontext.C':
+        text=text.replace('\tSPELLexecutorManager::instance().cleanup();\n\tm_clientIPC.cleanup();\n\tSPELLexecutorManager::instance().killAll();', '\tm_clientIPC.cleanup();\n    SPELLexecutorManager::instance().killAll();\n    SPELLexecutorManager::instance().cleanup();')
         text=text.replace('\tSPELLclientManager::instance().removeAllClients();', '''    { SPELLpython313::GIL gil; SPELLprocedureManager::instance().cleanupServices(); }
     for (const auto& id : SPELLserviceManager::instance().getServiceList())
         SPELLserviceManager::instance().closeService(id);
@@ -1029,6 +1088,13 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
                             '(it->finally_lineno > 0) && (it->finally_lineno <= lineNo) && (it->finally_end_lineno >= lineNo)')
         text = text.replace('(it->try_lineno < lineNo) && (it->except_lineno > lineNo)',
                             '(it->body_lineno <= lineNo) && (it->end_try_lineno >= lineNo)')
+    elif name.endswith('SPELLvariableMonitor.H'):
+        text=text.replace('void analyze();','void analyze(bool force=false);')
+        text=text.replace('void initialize();','void initialize(bool force=false);')
+    elif name.endswith('SPELLvariableManager.C'):
+        # This public method is the explicit on-demand CIF refresh. Automatic
+        # status monitoring calls the monitor directly and retains its flag.
+        text=text.replace('getVariableMonitor().analyze();','getVariableMonitor().analyze(true);')
     elif name.endswith('SPELLvariableMonitor.C'):
         marker = '// GLOBALS '
         assert text.count(marker) == 1

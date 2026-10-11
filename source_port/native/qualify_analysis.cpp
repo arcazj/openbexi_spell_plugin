@@ -187,6 +187,20 @@ static PyObject* watch_analyze(PyObject*, PyObject* capsule) {
     catch (const SPELLcoreException& e) { return failure(e); }
     Py_RETURN_NONE;
 }
+static PyObject* watch_disabled_snapshot(PyObject*, PyObject* capsule) {
+    auto* instance=watch(capsule); if (!instance) return nullptr;
+    const bool previous=SPELLvariableMonitor::s_enabled;
+    SPELLvariableMonitor::s_enabled=false;
+    try {
+        instance->monitor->analyze(true);
+        PyObject* result=watch_state(nullptr,capsule);
+        SPELLvariableMonitor::s_enabled=previous;
+        return result;
+    } catch (const SPELLcoreException& error) {
+        SPELLvariableMonitor::s_enabled=previous;
+        return failure(error);
+    }
+}
 static PyObject* watch_events(PyObject*, PyObject* capsule) {
     auto* instance = watch(capsule); if (!instance) return nullptr;
     SPELLpython313::Owned result(PyList_New(0));
@@ -295,6 +309,7 @@ static PyMethodDef methods[] = {
     {"goto_trace", goto_trace, METH_VARARGS, nullptr},
     {"watch_create", watch_create, METH_VARARGS, nullptr}, {"watch_close", watch_close, METH_O, nullptr},
     {"watch_state", watch_state, METH_O, nullptr}, {"watch_analyze", watch_analyze, METH_O, nullptr},
+    {"watch_disabled_snapshot",watch_disabled_snapshot,METH_O,nullptr},
     {"watch_events", watch_events, METH_O, nullptr}, {"watch_change", watch_change, METH_VARARGS, nullptr},
     {"watch_get", watch_get, METH_VARARGS, nullptr}, {"watch_ref", watch_ref, METH_VARARGS, nullptr},
     {"compile_source", analysis_compile, METH_O, nullptr}, {"bytecode_info", bytecode_info, METH_VARARGS, nullptr},

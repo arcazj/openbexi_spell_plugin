@@ -105,6 +105,11 @@ runtime acceptance.
 
 After the context/server milestone, reviewed obsolete project build-cache records
 were pruned by exact ID. Docker's logical cache inventory decreased by
-10,304,141,718 bytes across 34 removed records. The current DSS image, unrelated
+about 10.3 GB across 34 removed records (estimated from Docker's formatted size fields). The current DSS image, unrelated
 images, containers and volumes were preserved. This is cache accounting, not a
 claim that Docker's Windows virtual disk was physically compacted.
+
+A subsequent review removed 113 obsolete project cache records, totaling about
+5.0 GB in Docker's logical accounting. The current DSS image and unrelated
+images, containers and volumes remained intact. Exact before/after inventories
+and selected IDs are retained under `.qualification/v0.2/docker-cache-service-*`.

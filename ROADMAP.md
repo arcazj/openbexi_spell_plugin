@@ -38,6 +38,12 @@ child exit. Its nine binding checks and all preceding native/recovery checks pas
 on the newly pinned CPython 3.13.15; the earlier 3.13.14 build skipped trace-triggered
 cleanup in an independent CPython probe.
 
+The [controller milestone](docs/CONTROLLER_RUNTIME.md) now passes five original
+server scenarios and 13 context lifecycle runs, including Step/Skip/Goto,
+rejected jumps, paused variable editing, prompts, abort cleanup and cancellation
+of a missing executor's reconnect worker. Remaining CIF/service/error-path gates
+stay open.
+
 ## v0.3 â€” real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with

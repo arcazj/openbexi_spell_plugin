@@ -237,6 +237,16 @@ class NativeAnalysis(unittest.TestCase):
             native.goto_trace(code, {})
         self.assertIsNone(sys.gettrace())
 
+    def test_watch_explicit_snapshot_when_automatic_watch_disabled(self):
+        value=41
+        handle=native.watch_create(sys._getframe(),['handle','self'])
+        try:
+            value=42
+            state=native.watch_disabled_snapshot(handle)
+            self.assertEqual(state['locals']['value']['value'],'42')
+            self.assertEqual(native.watch_events(handle),[])
+        finally: native.watch_close(handle)
+
     def test_watch_reads_live_function_locals(self):
         value = 41
         handle = native.watch_create(sys._getframe(), ['handle','self'])
