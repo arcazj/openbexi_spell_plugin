@@ -17,7 +17,10 @@ def main():
     parser.add_argument('--factory', action='store_true', help='Require original frame-factory ownership and WS header isolation checks')
     parser.add_argument('--manager', action='store_true', help='Require linked original frame-manager component behavior and filter lifecycle')
     parser.add_argument('--dta', action='store_true', help='Require original DTA types, value conversion and interpreter lifecycle checks')
+    parser.add_argument('--cold', action='store_true', help='Require original manager cold evaluation and all preceding component checks')
     args = parser.parse_args()
+    if args.cold:
+        args.dta = True
     if args.dta:
         args.manager = True
     if args.manager:
@@ -144,13 +147,22 @@ def main():
         report['milestone'] = 'CPython 3.13 original DTA native type ownership, conversion and interpreter lifecycle'
         report['qualification_scope'] += '; all five original DTA units linked, 18 isolated-process cases, 3000 container lifetimes over three additional interpreter cycles'
         report['gaps'][0] = 'DTA notifications and interactive prompts through the real executor/CIF'
-    name = 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.cold:
+        cold = json.loads((evidence/'cold-runtime.json').read_text())
+        if (build.get('cold_runtime_exit_code') != 0 or cold['tests'] < 8
+                or any(cold[k] for k in ('failures','errors','skips'))):
+            raise ValueError('Original manager cold execution qualification failed')
+        report['cold_runtime'] = cold
+        report['milestone'] = 'CPython 3.13 original manager cold evaluation with live frames'
+        report['qualification_scope'] += '; qualification trace dispatcher calls original manager callbacks; nested calls, live edits, error/control propagation and repeated reloads'
+    name = 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
         'storage_tests':report.get('storage_runtime',{}).get('tests',0), 'embedding_cycles':3,
         'manager_tests':report.get('manager_runtime',{}).get('tests',0),
         'dta_tests':report.get('dta_runtime',{}).get('tests',0),
+        'cold_tests':report.get('cold_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

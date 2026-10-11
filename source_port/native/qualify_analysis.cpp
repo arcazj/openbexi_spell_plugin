@@ -271,6 +271,8 @@ static PyMethodDef methods[] = {
     {"manager_create", manager_create, METH_O, nullptr}, {"manager_close", manager_close, METH_O, nullptr},
     {"manager_script", manager_script, METH_VARARGS, nullptr}, {"manager_event", manager_event, METH_VARARGS, nullptr},
     {"manager_copy", manager_copy, METH_VARARGS, nullptr}, {"manager_definitions", manager_definitions, METH_O, nullptr},
+    {"manager_initialize", manager_initialize, METH_VARARGS, nullptr}, {"manager_execute", manager_execute, METH_VARARGS, nullptr},
+    {"manager_stop", manager_stop, METH_O, nullptr},
     {"ws_filter_set", ws_filter_set, METH_O, nullptr}, {"ws_filter_test", ws_filter_test, METH_VARARGS, nullptr},
     {"create", create, METH_NOARGS, nullptr},
     {"process", process, METH_VARARGS, nullptr},

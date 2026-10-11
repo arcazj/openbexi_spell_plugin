@@ -10,7 +10,7 @@ void SPELLframeManager::runScript(const std::string& script)
     if (!globals.get() || !locals.get()) SPELLpythonHelper::instance().checkError();
     SPELLpython313::Owned result(PyEval_EvalCode(code.get(), globals.get(), locals.get()));
     if (!result.get()) SPELLpythonHelper::instance().checkError();
-    getModel().update();
+    if (m_model) m_model->update();
 }
 
 //=============================================================================

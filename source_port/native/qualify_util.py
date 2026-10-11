@@ -26,6 +26,7 @@ class NativeUtil(unittest.TestCase):
                 frame=native.make_frame(f'procedure-{index}.py', code, False)
                 self.assertIs(frame.f_code, code)
                 self.assertIs(frame.f_globals, main)
+                self.assertIs(frame.f_locals, main)
                 self.assertEqual(main['__file__'], f'procedure-{index}.py')
                 del frame,code
             gc.collect()
@@ -243,8 +244,8 @@ class NativeUtil(unittest.TestCase):
         self.assertEqual(native.native_trace(code, 2, 3), (1, 1))
 
     def test_control_errors_preserve_native_flags(self):
-        self.assertEqual(native.control(False), (True, False))
-        self.assertEqual(native.control(True), (True, False))
+        self.assertEqual(native.control(False), (True, True))
+        self.assertEqual(native.control(True), (True, True))
         def user_error():
             raise RuntimeError('EXECUTION ABORTED')
         self.assertEqual(native.scope(user_error)[0], 8)

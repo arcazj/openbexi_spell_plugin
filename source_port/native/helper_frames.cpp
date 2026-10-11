@@ -12,7 +12,9 @@ PyFrameObject* SPELLpythonHelper::createFrame(const std::string& filename, PyCod
     if (!globals) checkError();
     SPELLpython313::Owned file(PyUnicode_DecodeFSDefaultAndSize(filename.data(), filename.size()));
     if (!file.get() || PyDict_SetItemString(globals, "__file__", file.get())<0) checkError();
-    PyFrameObject* frame = PyFrame_New(PyThreadState_Get(), code, globals, nullptr);
+    // Module execution uses one namespace for locals and globals, so functions
+    // declared by a procedure can resolve its other top-level definitions.
+    PyFrameObject* frame = PyFrame_New(PyThreadState_Get(), code, globals, globals);
     if (!frame) checkError();
     return frame; // Exactly one owned reference.
 }

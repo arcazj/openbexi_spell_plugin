@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_EXC/SPELLframeManager.H': '4c265b25b8e311bef3ff2bf08374e023160346c97d27883b086882daac3602b5',
     'include/SPELL_EXC/SPELLexecutor.H': '6671885f2423ea99d080e0f06049a91b0fee3352e7e0469b19467f53ecb8cb01',
     'include/SPELL_DTA/SPELLdtaContainer.H': 'bf2de9f9ef83507f86acde77e8c5d896009bca6b1c616c809dcab9e53f6e7a07',
     'include/SPELL_DTA/SPELLdtaVariable.H': 'dfbc1e34ae04f9713bf80f4b2edef8fb5c09e678795046a1ce58f88789d915f0',
@@ -56,7 +57,12 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLexecutor.H'):
+    if name.endswith('SPELLframeManager.H'):
+        text = text.replace('#include "SPELL_EXC/SPELLexecutionModel.H"', '#include "SPELL_EXC/SPELLexecutionModel.H"\n#include "SPELL_EXC/SPELLexecutorConfiguration.H"')
+        text = text.replace('void initialize( const std::string& scriptFile );', '''void initialize( const std::string& scriptFile );
+        void initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration);''')
+        text = text.replace('bool                  m_terminated;', 'bool                  m_terminated;\n        bool m_resumePending; // saved continuations require the modern WS adapter')
+    elif name.endswith('SPELLexecutor.H'):
         text = text.replace('static inline SPELLexecutorIF& instance()', 'static bool isAvailable() { return s_instance != nullptr; }\n\n        static inline SPELLexecutorIF& instance()')
     elif name.endswith('SPELLdtaContainer.H'):
         text = text.replace('void incref();', 'void clear(bool releaseValues = true); // detach borrowed links, optionally clear values')
@@ -143,6 +149,23 @@ def apply(name, original):
 \n//=============================================================================\n''')
         text = text.replace('        Py_XDECREF(m_currentFrame);\n', '')
         text = text.replace('\t\tPy_INCREF(m_currentFrame);\n', '')
+        text = text.replace('    m_terminated = false;', '    m_terminated = false;\n    m_resumePending = false;')
+        text = text.replace('    m_model = NULL;\n\n    DEBUG("[EF] Clearing breakpoints");', '    m_model = NULL;\n    m_currentFrame = nullptr;\n\n    DEBUG("[EF] Clearing breakpoints");')
+        text = section(text, 'void SPELLframeManager::initialize(', 'void SPELLframeManager::saveState()', '''void SPELLframeManager::initialize(const std::string& scriptFile)
+{
+    initialize(scriptFile, SPELLexecutor::instance().getConfiguration());
+}
+void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration)
+{
+    m_filename = scriptFile;
+    SPELLvariableMonitor::s_enabled = configuration.isWatchEnabled();
+    SPELLresourceMonitor::s_enabled = configuration.isResourcesDisplayEnabled();
+    reset();
+}
+\n//=============================================================================\n''')
+        text = text.replace('m_initialFrame = m_warmStart->restoreState();', 'm_resumePending = true;\n        m_initialFrame = m_warmStart->restoreState();')
+        text = text.replace('m_initialFrame = m_warmStart->fixState();', 'm_resumePending = true;\n        m_initialFrame = m_warmStart->fixState();')
+        text = section(text, 'const SPELLexecutionResult SPELLframeManager::execute()', 'void SPELLframeManager::checkRuntimeError()', body('frame_manager_execute.cpp'))
         text = text.replace('SPELLwsWarmStartImpl::setGlobalsFilter( PyDict_Keys(mainDict) );', '''SPELLpython313::Owned filterKeys(PyDict_Keys(mainDict));
     if (!filterKeys.get()) SPELLpythonHelper::instance().checkError();
     SPELLwsWarmStartImpl::setGlobalsFilter(filterKeys.get());''')
@@ -308,6 +331,10 @@ def apply(name, original):
         text = text.replace('PyDict_Contains( kargs, KEY_LEVEL )', 'PyDict_GetItemString( kargs, "level" ) != nullptr')
     elif name.endswith('SPELLerror.C'):
         text = text.replace('#include "SPELL_UTIL/SPELLerror.H"', '#include "SPELL_UTIL/SPELLerror.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        # These setters deliberately leave a Python exception for a C callback
+        # to return. A checking monitor consumed it before the caller saw it.
+        text = text.replace('SPELLsafePythonOperations ops("terminate");', 'SPELLpython313::GIL ops;')
+        text = text.replace('SPELLsafePythonOperations ops("SPELLerror::executionTerminated");', 'SPELLpython313::GIL ops;')
         # These two objects are never read. They leaked interpreter-owned types
         # across finalization; the actual control protocol uses RuntimeError.
         text = text.replace('    PyType_Ready(&ExecutionAborted_Type);\n    m_excExecutionAborted = (PyObject*) PyObject_New( PyExecutionAbortedObject, &ExecutionAborted_Type );\n    PyType_Ready(&ExecutionTerminated_Type);\n    m_excExecutionTerminated = (PyObject*) PyObject_New( PyExecutionTerminatedObject, &ExecutionTerminated_Type );',

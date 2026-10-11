@@ -82,3 +82,7 @@ and prompts through the real CIF remain part of the executor integration gate.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only
 demonstrably obsolete project resources and preserves active test services.
+
+The original [cold execution path](COLD_EXECUTION.md) adds eight passing checks
+using live CPython frames, original result flags and a qualification dispatcher.
+Warm continuation and the full executor/context/CIF dispatcher remain open.

@@ -123,6 +123,10 @@ if all(r['exit_code']==0 for r in results):
                     capture_output=True,text=True,timeout=120)
                 (output/'manager-runtime.log').write_text(result.stdout+result.stderr)
                 report['manager_runtime_exit_code'] = result.returncode
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_cold.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'cold-runtime.log').write_text(result.stdout+result.stderr)
+                report['cold_runtime_exit_code'] = result.returncode
 
         storage_units = [source/'lib/SPELL_WS/src/SPELLwsStorage.C',Path('/input/native/qualify_storage.cpp')]
         with ThreadPoolExecutor(max_workers=4) as pool:
