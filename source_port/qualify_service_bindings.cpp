@@ -4,6 +4,8 @@
 #include "SPELL_PRD/SPELLservicePython.H"
 #include "SPELL_PRD/SPELLserviceWatchdogPython.H"
 #include "SPELL_PRD/SPELLprocedureManager.H"
+#include "SPELL_EXC/SPELLserviceInterpreter.H"
+#include "SPELL_EXC/SPELLserviceImpl.H"
 #include <atomic>
 #include <iostream>
 #include <stdexcept>
@@ -16,6 +18,26 @@ static void watchdog(std::string& name) {
 int main() {
     auto& helper=SPELLpythonHelper::instance();
     try {
+        if (Py_IsInitialized()) return 7;
+        auto& interpreter=SPELLserviceInterpreter::instance();
+        SPELLinterpreterConfig recovery{};recovery.recover=true;
+        bool rejected=false;
+        try { interpreter.initialize(recovery,nullptr); }
+        catch (const std::runtime_error& error) {
+            rejected=std::string(error.what()).find("Checkpoint recovery is unavailable for native services")!=std::string::npos;
+        }
+        delete &interpreter;
+        if (!rejected || Py_IsInitialized()) return 8;
+        {
+            SPELLserviceImpl service;
+            rejected=false;
+            try { service.recover(); }
+            catch (const std::runtime_error& error) {
+                rejected=std::string(error.what()).find("Checkpoint recovery is unavailable for native services")!=std::string::npos;
+            }
+            if (!rejected || Py_IsInitialized()) return 9;
+        }
+        std::cout<<"SERVICE_CHECKPOINT_API_REJECTIONS 2 BEFORE_PYTHON"<<std::endl;
         helper.initialize();
         {
             SPELLpython313::GIL gil;

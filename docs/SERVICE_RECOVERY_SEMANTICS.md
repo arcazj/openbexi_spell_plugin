@@ -9,7 +9,7 @@ The archive identity and manual inventory are recorded in [source review](SOURCE
 | Procedure checkpoint recovery | Qualified ON_LINE and ON_STEP fresh-process crash recovery; see [executor recovery](EXECUTOR_RECOVERY.md). |
 | Service Python failure or process loss | Qualified watchdog cold restart in a new native process, with normal replacement shutdown; see [service restart](SERVICE_RESTART.md). |
 | Context loss while service remains alive | Qualified same-process pause, control reattachment, resume and normal cleanup in [live reconnection](LIVE_RECONNECT.md). |
-| Service checkpoint resumption | Open. The source includes recovery entry points, but this is not evidence of a functioning service continuation path. |
+| Service checkpoint resumption | Explicitly unsupported. Native API and command requests are qualified to fail before startup, preserving the requested checkpoint. |
 
 ## Original source paths
 
@@ -46,10 +46,33 @@ The preserved 763-row language inventory contains no `SpellService`,
 This absence does not make the advertised service `-r` path safe: acceptance must
 still prevent a requested recovery from silently restarting the service body.
 
-## Remaining acceptance work
+## Checkpoint policy
 
-Resolve the service checkpoint continuation contract explicitly. The live process
-and control path are now qualified. If checkpoint support is implemented, independent
+The port retains upstream cold restart and live reconnection. It rejects service
+`-r` requests before importing a service, loading a driver or reading the requested
+checkpoint. Direct interpreter initialization and the service implementation's
+`recover()` entry point also reject the request. This prevents the incomplete
+upstream restore-then-`start()` path from silently rerunning a service body.
+
+The original context adds `-w` to service launches. That compatibility flag remains
+accepted, with a diagnostic and checkpoint creation disabled. In-process error
+handling cannot claim that a service continuation is recoverable. Ordinary
+procedure ON_LINE/ON_STEP recovery is unchanged and remains independently tested.
+
+The new qualification exercises both native API entry points before Python
+initialization and the real service command with `-r`, with and without `-w`.
+It requires an explicit error, no executed Python body, and unchanged checkpoint
+bytes. [Build 52 evidence](NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json)
+passes all preceding native gates and ten context tests covering 25 lifecycle
+runs. Two API rejections occur before Python initialization; two real command
+rejections preserve the input checkpoint. Both process kinds also pass three
+live reconnect repetitions, with bounded normal procedure closure.
+
+Native registered-service checkpoints have no contract in the supplied manuals
+or language inventory. This policy is an explicit source-port limitation, not
+an implementation of service checkpoint resumption. If future requirements add
+that contract, it needs its own implementation and qualification. If checkpoint
+support is implemented, independent
 crash/restart tests must prove that the original service body is not rerun from
 its start, persisted state is restored and owned worker threads are recreated
 safely. Imports, command-line option acceptance, commented source and ordinary

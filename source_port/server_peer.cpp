@@ -17,7 +17,7 @@ public:
     SPELLipcClientInterface* client=nullptr;
     void processMessage(const SPELLipcMessage& message) override {
         std::cout << "EVENT " << message.dataStr() << std::endl;
-        if (message.hasField(MessageField::FIELD_MSG_SEQUENCE)) {
+        if (message.getType()==MSG_TYPE_NOTIFY && message.hasField(MessageField::FIELD_MSG_SEQUENCE)) {
             SPELLipcMessage ack(ExecutorMessages::ACKNOWLEDGE);
             ack.setType(MSG_TYPE_ONEWAY);
             ack.setSender("GUI"); ack.setReceiver(message.get(MessageField::FIELD_PROC_ID));

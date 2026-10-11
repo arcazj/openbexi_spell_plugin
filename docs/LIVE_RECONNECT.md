@@ -37,6 +37,16 @@ paused, successful control reattachment and resumed progress. Final acceptance
 also verifies Python `finally`, normal exit and reaping of the adopted child.
 Private test process groups and child-specific reaping leave user services alone.
 
+The [subsequent Build 52 gate](NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json)
+tightens test clients to acknowledge only synchronous notifications and repeats
+each live reconnect case three times. It exposed a shutdown race: automatic
+pause requests could follow Close, and a late pause could erase the close wakeup.
+The context now marks closure before removing its client and stops issuing
+automatic pauses. The controller publishes terminal flags atomically and checks
+them again while arming its wait. All 25 lifecycle runs pass; procedure Close
+must finish within four seconds, run `finally` and exit normally. A successful
+Close response alone cannot pass, since upstream can also respond after force-kill.
+
 Additional checks cover eight fractional-time cases and cancellation before each
 of the two handshake key bytes. Targeted runs cannot pass the release recorder;
 the complete suite and every preceding native gate must pass with matching inputs.

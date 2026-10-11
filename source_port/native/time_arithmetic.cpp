@@ -38,4 +38,3 @@ SPELLtime& SPELLtime::operator-=(SPELLtime& other)
 {
     *this=*this-other; return *this;
 }
-

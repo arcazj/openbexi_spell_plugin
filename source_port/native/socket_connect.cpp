@@ -41,4 +41,3 @@ SPELLsocket* SPELLsocket::connect(const std::string& server,const int& port,
     auto* connection=new SPELLsocket(fd,"spell",{});
     ownership.release(); return connection;
 }
-

@@ -394,7 +394,10 @@ void SPELLchildManager::prepareChild(const std::string& instanceId)
 }
 '''
     elif name.endswith('SPELLcontroller.H'):
-        text = text.replace('#define __SPELL_CONTROLLER_H__', '#define __SPELL_CONTROLLER_H__\n#include <mutex>\n#include <memory>')
+        text = text.replace('#define __SPELL_CONTROLLER_H__', '#define __SPELL_CONTROLLER_H__\n#include <atomic>\n#include <mutex>\n#include <memory>')
+        for field in ('m_finished','m_abort','m_error','m_wantPause'):
+            text,count=re.subn(r'\bbool\s+'+field+r';','std::atomic_bool '+field+';',text)
+            assert count==1,(name,field)
         text = text.replace('SPELLevent           m_execLock;', '''SPELLevent           m_execLock;
         // Only the active CPython trace thread may change frame.f_lineno.
         std::mutex m_traceMutex;
@@ -1603,6 +1606,8 @@ void SPELLipcClientInterface::waitReady()
         assert text.count(connected)==1
         text=text.replace(connected,
             '\t\tm_clientConnection = controllingClient ? CLI_CONNECTED : CLI_NO_CLIENT;\n')
+        text=text.replace('void SPELLexecutor::close()\n{', 'void SPELLexecutor::close()\n{\n    beginClose();')
+        text=text.replace('void SPELLexecutor::forcePause()\n{', 'void SPELLexecutor::forcePause()\n{\n    if (m_closing) return;')
         attach='\t\tSPELLprocessManager::instance().attachProcess( m_model.getInstanceId(), m_model.getPID() );'
         assert text.count(attach)==1
         text=text.replace(attach,r'''        if (!processOk()) {
@@ -1611,6 +1616,17 @@ void SPELLipcClientInterface::waitReady()
             if (m_processStartedEvent.wait(3000) || !processOk())
                 THROW_EXCEPTION("Cannot reconnect executor", "Process attachment did not become ready", SPELL_ERROR_PROCESS);
         }''')
+    if name == 'include/SPELL_CTX/SPELLexecutor.H':
+        text=text.replace('virtual void close();','virtual void close();\n        void beginClose() { m_closing=true; }')
+        text=text.replace('std::atomic<bool> m_reconnecting;', 'std::atomic_bool m_closing{false};\n        std::atomic<bool> m_reconnecting;')
+    if name == 'lib/SPELL_CTX/src/SPELLcontext.C':
+        start=text.index('SPELLipcMessage SPELLcontext::closeExecutor(')
+        end=text.index('SPELLipcMessage SPELLcontext::',start+1)
+        part=text[start:end]
+        lookup='SPELLexecutor* exec = SPELLexecutorManager::instance().getExecutor( instanceId );'
+        assert part.count(lookup)==1
+        part=part.replace(lookup,lookup+'\n        exec->beginClose();')
+        text=text[:start]+part+text[end:]
     if name.endswith('SPELLserverCif.H'):
         text=text.replace('bool waitAcknowledge( const SPELLipcMessage& msg );',
             'bool waitAcknowledge(const SPELLipcMessage& msg,unsigned long generation);\n        void sendAcknowledged(const SPELLipcMessage& msg);')
@@ -1619,6 +1635,31 @@ void SPELLipcClientInterface::waitReady()
             'sendAcknowledged(msg);',text)
         assert count==4,(name,'acknowledged notifications',count)
         text=section(text,'bool SPELLserverCif::waitAcknowledge(', 'void SPELLserverCif::specificNotifyError(', body('cif_acknowledge.cpp'))
+    if name.endswith('SPELLserviceInterpreter.C'):
+        text='#include <stdexcept>\n'+text
+        signature='void SPELLserviceInterpreter::initialize( const SPELLinterpreterConfig& config, SPELLcif* cif )\n{'
+        assert text.count(signature)==1
+        text=text.replace(signature,signature+'''
+    // Upstream service execution calls start(), not the restored frame manager.
+    // Reject recovery before importing a service or loading its driver.
+    if (config.recover)
+        throw std::runtime_error("Checkpoint recovery is unavailable for native services; use explicit cold restart or reconnect a surviving process");''')
+        text=text.replace('    m_config = config;', '''    m_config = config;
+    if (m_config.warmstart)
+        LOG_WARN("Native service checkpoint creation is disabled; -w is retained for context launch compatibility");
+    m_config.warmstart=false;''')
+    if name.endswith('SPELLserviceImpl.C'):
+        text='#include <stdexcept>\n'+text
+        text=section(text,'void SPELLserviceImpl::recover()', 'void SPELLserviceImpl::finalize()', '''void SPELLserviceImpl::recover()
+{
+    throw std::runtime_error("Checkpoint recovery is unavailable for native services; use explicit cold restart or reconnect a surviving process");
+}
+
+''')
+        text=text.replace('bool canRestore = m_frameManager->haveWarmStart();',
+            'const bool canRestore = false; // Service start() cannot consume a restored continuation.')
+        text=text.replace('"Warm start mechanism disabled", true',
+            '"Checkpoint recovery is unavailable for native services", true')
     return text.encode('utf-8')
 
 

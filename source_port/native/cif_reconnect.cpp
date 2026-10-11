@@ -77,4 +77,3 @@ void SPELLserverCif::stopReconnect()
     if (m_ifc && !m_ready) m_ifc->disconnect();
     if (m_reconnectThread.joinable()) m_reconnectThread.join();
 }
-

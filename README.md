@@ -85,7 +85,8 @@ Native [service startup/shutdown](docs/SERVICE_RUNTIME.md),
 [IPC ownership checks](docs/IPC_OWNERSHIP.md) now pass on pinned CPython 3.13.15.
 See the execution status for current acceptance gates and the roadmap through v0.6.
 
-The [live reconnect milestone](docs/LIVE_RECONNECT.md) passes 21 context lifecycle
+The [live reconnect milestone](docs/LIVE_RECONNECT.md) now passes 25 context lifecycle
 runs. Native procedures and services survive context failure, pause, regain GUI
-control and resume in the same process. Service checkpoint semantics and the
-updated installable artifact still gate v0.2.
+control and resume in the same process. Unsupported native service checkpoint
+requests fail explicitly before startup. The updated installable artifact and
+final acceptance review still gate v0.2.

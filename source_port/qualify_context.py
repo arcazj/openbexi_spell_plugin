@@ -90,6 +90,7 @@ class NativeService:
 
 class ContextTests(unittest.TestCase):
     completed_lifecycles=[]
+    service_checkpoint_rejections=0
     def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None,pending_service_pid=None,live_reconnect=None):
         log_before=set(logs.glob('*.log'))
         label=('live-'+live_reconnect if live_reconnect else 'pending-service' if pending_service_pid else 'service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
@@ -250,6 +251,9 @@ class PendingService:
             self.assertFalse((output/'unexpected-pending-service-start.txt').exists(),'Watchdog started a duplicate pending service')
         if controller:
             self.assertIn('[***] End main loop',native_logs)
+        if live_reconnect:
+            self.assertNotIn('Unable to pause procedure',native_logs)
+            self.assertNotIn('Failed to close executor',native_logs)
         if service:
             self.assertIn('[***] End main loop',native_logs)
             self.assertIn('Executor process finished: native_service',native_logs)
@@ -261,7 +265,9 @@ class PendingService:
 
     def test_live_native_processes_reconnect_after_context_crash(self):
         for kind in ('executor','service'):
-            with self.subTest(kind=kind): self.run_context(live_reconnect=kind)
+            for iteration in range(3):
+                with self.subTest(kind=kind,iteration=iteration):
+                    self.run_context(live_reconnect=kind,iteration=iteration)
 
     def test_child_shared_data_and_scheduler_cif(self):
         for scenario in cif_scenarios:
@@ -270,6 +276,28 @@ class PendingService:
     def test_service_watchdog_restarts_failed_native_process(self):
         for scenario in ('failure','crash'):
             with self.subTest(scenario=scenario): self.run_context(service_recovery=scenario)
+
+    def test_service_checkpoint_request_is_rejected_before_startup(self):
+        marker=output/'unexpected-service-recovery-start.txt'
+        procedure=output/'service-recovery-must-not-start.py'
+        procedure.write_text("from pathlib import Path\nPath("+repr(str(marker))+").write_text('started')\n")
+        checkpoint=output/'requested-service-checkpoint.dat'
+        original=b'Preserve the requested checkpoint without opening it as a continuation.\n'
+        checkpoint.write_bytes(original)
+        for warm in (False,True):
+            with self.subTest(warm=warm):
+                args=[str(output/'SPELL-Service_v3'),'-f',str(procedure),'-c',str(config),
+                      '-n','example','-r',str(checkpoint)]+(['-w'] if warm else [])
+                result=subprocess.run(args,capture_output=True,text=True,timeout=5,env=environment)
+                text=result.stdout+result.stderr
+                (output/('service-checkpoint-rejection-'+str(int(warm))+'.log')).write_text(text)
+                self.assertEqual(result.returncode,1,text)
+                self.assertIn('Checkpoint recovery is unavailable for native services',text)
+                self.assertFalse(marker.exists(),'Rejected service recovery executed Python code')
+                self.assertEqual(checkpoint.read_bytes(),original)
+                self.assertNotIn('AddressSanitizer:',text)
+                self.assertNotIn('runtime error:',text)
+                type(self).service_checkpoint_rejections+=1
 
     def test_context_close_cancels_missing_executor_reconnect(self):
         self.run_context(missing_reconnect=True)
@@ -304,6 +332,6 @@ if selection=='all': suite=unittest.defaultTestLoader.loadTestsFromTestCase(Cont
 elif selection=='live-reconnect': suite=unittest.TestSuite([ContextTests('test_live_native_processes_reconnect_after_context_crash')])
 else: raise ValueError('Unknown context qualification selection: '+selection)
 result=unittest.TextTestRunner(verbosity=2).run(suite)
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':len(ContextTests.completed_lifecycles),'completed_lifecycles':ContextTests.completed_lifecycles,'selection':selection,'live_reconnect_scenarios':['executor','service'],'pending_service_cancelled':True,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'service_checkpoint_rejections':ContextTests.service_checkpoint_rejections,'lifecycle_runs':len(ContextTests.completed_lifecycles),'completed_lifecycles':ContextTests.completed_lifecycles,'selection':selection,'live_reconnect_scenarios':['executor','service'],'pending_service_cancelled':True,'cif_scenarios':list(cif_scenarios),'service_restart_scenarios':['failure','crash'],'missing_reconnect_cancelled':True,'service_runs':1,'controller_scenarios':list(controller_scenarios),
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

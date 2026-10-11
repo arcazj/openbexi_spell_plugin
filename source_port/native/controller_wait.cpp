@@ -3,10 +3,13 @@
 // still perform validation, status transitions and mailbox acknowledgement.
 void SPELLcontroller::doWait()
 {
-    if (m_abort || m_error) return;
+    if (m_abort || m_error || m_finished) return;
     m_wantPause=false;
     {
         std::lock_guard<std::mutex> guard(m_traceMutex);
+        // Close may have signalled continuation before this pause took the
+        // mutex. Never erase a terminal wakeup and park the tracing thread.
+        if (m_abort || m_error || m_finished) return;
         m_traceContinue=false;
         m_execLock.clear();
         m_traceWaiting=true;

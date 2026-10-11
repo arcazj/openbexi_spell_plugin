@@ -102,10 +102,16 @@ Python cleanup and child reaping. Key exchange is cancellable, reconnect channel
 have an owned worker, and fractional native time arithmetic has eight checks.
 The installed 0.2.0a2 wheel remains its earlier source snapshot.
 
+The [service recovery policy](SERVICE_RECOVERY_SEMANTICS.md) resolves the incomplete
+upstream native-service checkpoint path by rejecting recovery before startup and
+preserving the requested file. Cold restart and live reconnection remain supported;
+ordinary procedure checkpoint recovery is unchanged. The stricter IPC suite also
+qualifies terminal close/pause races with three reconnect repetitions per process
+kind. All preceding native gates, ten context tests and 25 lifecycle runs pass.
+
 ## Immediate work
 
-Resolve [service checkpoint semantics](SERVICE_RECOVERY_SEMANTICS.md), rebuild the
-installable artifact and complete the v0.2 acceptance review before installing the new runtime into IDE
+Rebuild the installable artifact and complete the v0.2 acceptance review before installing the new runtime into IDE
 hosts. The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 

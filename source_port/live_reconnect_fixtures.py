@@ -4,6 +4,9 @@ from pathlib import Path
 
 def write_fixture(directory: Path, service: bool):
     name = 'native_live_service' if service else 'native_live_executor'
+    # These exact /out files belong to the preceding repetition of this fixture.
+    for suffix in ('starts','progress','closed','ptracer','stacks'):
+        Path('/out/'+name+'-'+suffix+'.txt').unlink(missing_ok=True)
     body = f'''import os,time,signal,faulthandler,ctypes,re
 with open('/usr/include/linux/prctl.h') as header:
     ptracer=int(re.search(r'#\\s*define\\s+PR_SET_PTRACER\\s+(0x[0-9a-fA-F]+)',header.read()).group(1),16)

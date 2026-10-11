@@ -32,7 +32,10 @@ def main():
     parser.add_argument('--ipc-ownership', action='store_true', help='Require socket failure and concurrent IPC shutdown ownership checks')
     parser.add_argument("--context-ownership", action="store_true", help="Require pending service ownership and login/status lifecycle checks")
     parser.add_argument("--live-reconnect", action="store_true", help="Require live native procedure/service reconnection after owned context loss")
+    parser.add_argument('--service-recovery-policy', action='store_true', help='Require explicit service checkpoint rejection before startup, plus all earlier gates')
     args = parser.parse_args()
+    if args.service_recovery_policy:
+        args.live_reconnect=True
     if args.live_reconnect:
         args.context_ownership=True
     if args.context_ownership:
@@ -499,7 +502,38 @@ def main():
         report['milestone']='Live native procedure/service ownership across context crash and reconnection'
         report['qualification_scope'] += '; two owned context SIGKILL cases preserve the same native child, pause progress, reattach through original IPC and close normally; both procedure and service explicitly regain control and resume; both key handshake stages cancel within one second'
         report['gaps'][0]='Service checkpoint semantics and final native foundation acceptance review'
-    name = 'LIVE_RECONNECT' if args.live_reconnect else 'CONTEXT_OWNERSHIP' if args.context_ownership else 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.service_recovery_policy:
+        if behavior['tests']<10 or behavior.get('service_checkpoint_rejections')!=2:
+            raise ValueError('Service checkpoint startup rejection evidence incomplete')
+        if behavior.get('lifecycle_runs',0)<25:
+            raise ValueError('Repeated reconnect lifecycle evidence incomplete')
+        for kind in ('executor','service'):
+            for iteration in range(3):
+                label='live-'+kind+'-'+str(iteration)
+                if label not in behavior.get('completed_lifecycles',[]):
+                    raise ValueError('Reconnect repetition did not complete: '+label)
+                text=(evidence/(label+'-peer.log')).read_text()
+                for marker in ('RECONNECTED_CHILD_RESUMED '+kind,'LIVE_CONTEXT_RECONNECT_VERIFIED '+kind,'CONTEXT_CLOSED'):
+                    if marker not in text: raise ValueError('Reconnect repetition evidence missing: '+label+' '+marker)
+                if kind=='executor' and 'RECONNECTED_PROCEDURE_CLOSED' not in text:
+                    raise ValueError('Repeated procedure Close did not complete')
+        log=(evidence/'service-bindings-runtime.log').read_text()
+        if 'SERVICE_CHECKPOINT_API_REJECTIONS 2 BEFORE_PYTHON' not in log:
+            raise ValueError('Native service API rejection evidence incomplete')
+        for warm in (0,1):
+            log=(evidence/('service-checkpoint-rejection-'+str(warm)+'.log')).read_text()
+            if 'Checkpoint recovery is unavailable for native services' not in log:
+                raise ValueError('Service checkpoint command was not explicitly rejected')
+        report['service_recovery_policy']={'checkpoint_resume_supported':False,
+            'checkpoint_creation_enabled':False,'warm_flag_retained_for_context_launch':True,
+            'native_api_rejections_before_python':2,'command_rejections_before_body':2,
+            'input_checkpoint_preserved':True,'cold_restart_and_live_reconnect_qualified':True,
+            'live_reconnect_repetitions_per_kind':3,'procedure_close_bounded_seconds':4,
+            'procedure_checkpoint_recovery_unchanged_and_qualified':True}
+        report['milestone']='Explicit native service checkpoint policy with cold restart and live reconnection'
+        report['qualification_scope']+='; unsupported native service checkpoint requests fail before Python startup or driver effects, preserve their input file and cannot silently rerun the service body'
+        report['gaps'][0]='Updated installable artifact and final native foundation acceptance review; native service checkpoint resumption is explicitly unsupported'
+    name = 'SERVICE_RECOVERY_POLICY' if args.service_recovery_policy else 'LIVE_RECONNECT' if args.live_reconnect else 'CONTEXT_OWNERSHIP' if args.context_ownership else 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

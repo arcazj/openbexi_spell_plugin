@@ -7,6 +7,7 @@
 #include "SPELL_IPC/SPELLipc_Executor.H"
 #include "SPELL_UTIL/SPELLerror.H"
 #include <chrono>
+#include <atomic>
 #include <cstdlib>
 #include <csignal>
 #include <filesystem>
@@ -22,7 +23,7 @@ class Peer final:public SPELLipcInterfaceListener {
 public:
     SPELLipcClientInterface* client=nullptr;
     void processMessage(const SPELLipcMessage& message) override {
-        if (!message.hasField(MessageField::FIELD_MSG_SEQUENCE) || !client) return;
+        if (message.getType()!=MSG_TYPE_NOTIFY || !message.hasField(MessageField::FIELD_MSG_SEQUENCE) || !client) return;
         SPELLipcMessage ack(ExecutorMessages::ACKNOWLEDGE);ack.setType(MSG_TYPE_ONEWAY);
         ack.setSender("GUI");ack.setReceiver(message.get(MessageField::FIELD_PROC_ID));
         ack.set(MessageField::FIELD_PROC_ID,message.get(MessageField::FIELD_PROC_ID));
@@ -154,8 +155,28 @@ int main(int argc,char** argv) {
         // Exercise their normal Close command while this GUI still acknowledges
         // notifications; services are gracefully closed by context shutdown.
         if (!service) {
-            auto closed=request(*context,ContextMessages::REQ_CLOSE_EXEC);
+            std::atomic_bool closeDone{false};
+            std::thread diagnostic([&] {
+                for (int n=0;n<20 && !closeDone;++n)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                if (closeDone) return;
+                for (auto target:{pid,replacement}) {
+                    if (::getpgid(target)!=group) continue;
+                    const auto output=prefix+"-close-"+std::to_string(target)+"-stacks.txt";
+                    const auto capture="timeout 3 /usr/bin/gdb --batch -ex 'set pagination off' -ex 'thread apply all bt' -p "+
+                        std::to_string(target)+" >"+output+" 2>&1";
+                    std::system(capture.c_str());
+                }
+            });
+            const auto closeStart=std::chrono::steady_clock::now();
+            SPELLipcMessage closed;
+            std::exception_ptr closeError;
+            try { closed=request(*context,ContextMessages::REQ_CLOSE_EXEC); }
+            catch (...) { closeError=std::current_exception(); }
+            closeDone=true;diagnostic.join();
+            if (closeError) std::rethrow_exception(closeError);
             require(!closed.isVoid() && closed.getType()!=MSG_TYPE_ERROR,"Cannot close reconnected procedure");
+            require(std::chrono::steady_clock::now()-closeStart<std::chrono::seconds(4),"Close waited on a redundant pause or kill timeout");
             std::cout<<"RECONNECTED_PROCEDURE_CLOSED"<<std::endl;
         }
         request(*context,ContextMessages::REQ_GUI_LOGOUT);context->disconnect();

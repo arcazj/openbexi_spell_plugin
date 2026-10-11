@@ -27,7 +27,7 @@ public:
         if (message.hasField(MessageField::FIELD_TEXT) &&
             message.get(MessageField::FIELD_TEXT).find("Unable to go to line -1")!=std::string::npos)
             rejectedJump.store(true);
-        if (!message.hasField(MessageField::FIELD_MSG_SEQUENCE)) return;
+        if (message.getType()!=MSG_TYPE_NOTIFY || !message.hasField(MessageField::FIELD_MSG_SEQUENCE)) return;
         SPELLipcMessage ack(ExecutorMessages::ACKNOWLEDGE);
         ack.setType(MSG_TYPE_ONEWAY);
         ack.setSender("GUI"); ack.setReceiver(message.get(MessageField::FIELD_PROC_ID));

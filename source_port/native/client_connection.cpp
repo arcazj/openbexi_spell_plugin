@@ -42,4 +42,3 @@ void SPELLipcClientInterface::connect(bool reconnect)
         throw;
     }
 }
-
