@@ -22,3 +22,13 @@ identities and are not promoted to full SPELL compatibility in this v0.1.
 Both projects have independent fresh local Git histories. Remote GitHub changes
 require the owner's requested scope; no credentials, runtime data, qualification
 caches, old image assets or historical release series belong in this Git.
+
+## GitHub publication
+
+The independent repository is [arcazj/openbexi_spell_plugin](https://github.com/arcazj/openbexi_spell_plugin),
+created privately on 2026-10-11. Its branch is `master` and its local remote is
+`origin`. Publication preserves existing commits and tags, including accepted
+`v0.3.0` at `c34b21c`. Native wheels, the JetBrains ZIP and qualification outputs
+remain local ignored artifacts; a Git push does not distribute them.
+The old GitHub repository and local legacy directory are retained. Removing
+`C:/projects/openbexi_spell` requires the user's confirmation.

@@ -1,6 +1,6 @@
 # openbexi_spell_plugin
 
-SPELL is an optional runtime for [openbexi_ide](../openbexi_ide/README.md),
+SPELL is an optional runtime for [openbexi_ide](https://github.com/arcazj/openbexi_ide),
 PyCharm and IntelliJ IDEA. Procedures use explicit imports from the original
 SPELL library. The neutral IDE stays independent of SPELL.
 
