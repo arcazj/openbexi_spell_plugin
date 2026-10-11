@@ -9,5 +9,6 @@ PyObject* snapshot(PyFrameObject* frame, PyObject* handled);
 PyFrameObject* inspection(PyObject* state);
 int callerOffset(PyFrameObject* parent, PyFrameObject* child);
 PyObject* resume(PyObject* state);
+PyObject* module();
 }
 #endif

@@ -91,3 +91,9 @@ The original [WS frame/data controllers](WS_FRAME_DATA.md) add twelve passing
 checks and use the same continuation engine as the recovery experiments. The
 inventory reaches 142/143; the top-level WS controller and its whole-stack
 integration are still required. The shared engine has 38 passing probe checks.
+
+The [original WS controller and manager recovery](WS_CONTROLLER.md) now add
+fourteen integrated checks, including crash recovery and repeated checkpoints
+with pending callers. All 143 original library units pass compilation/syntax
+checks. Native DTA checkpoint serialization and the actual executor/context/CIF
+lifecycle remain the next v0.2 gates; later releases remain pending.

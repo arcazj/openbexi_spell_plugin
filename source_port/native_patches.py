@@ -4,6 +4,7 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_WS/SPELLwarmstart.H': 'c073afc45bc4feccb0a7501aea58c4deec51499c0517db0c689df5f4d653a280',
     'include/SPELL_WS/SPELLwsDynamicData.H': '0ead809531f5542c91e95131956305e27a39d02c2845af76ce0daa9d6507c2c5',
     'lib/SPELL_WS/src/SPELLwsDynamicData.C': '466ea5544f5e2cfeed11040defe72dc66c0db0606575a685912d130f0e1bc53f',
     'include/SPELL_WS/SPELLwsStaticData.H': '6cb9e5a8b85166e83fcaa3b2b3ba3e2931a1c7d70a72ee9252d6e108385d9525',
@@ -63,7 +64,12 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith(('SPELLwsDynamicData.C','SPELLwsStaticData.C','SPELLwsFrame.C','SPELLwsDynamicData.H')):
+    if name.endswith('SPELLwarmstart.H'):
+        text = text.replace('virtual void saveState() = 0;', '''virtual void saveState() = 0;
+        virtual std::vector<PyFrameObject*> getFrames() const = 0;
+        virtual bool rebindPending(PyFrameObject* frame) = 0;
+        virtual PyObject* resume() = 0;''')
+    elif name.endswith(('SPELLwsDynamicData.C','SPELLwsStaticData.C','SPELLwsFrame.C','SPELLwsDynamicData.H')):
         replacement = {'SPELLwsDynamicData.C':'ws_dynamic.cpp','SPELLwsStaticData.C':'ws_static.cpp',
                        'SPELLwsFrame.C':'ws_frame.cpp','SPELLwsDynamicData.H':'ws_dynamic.h'}[Path(name).name]
         text = text[:text.index('// FILES TO INCLUDE')] + body(replacement)
@@ -76,12 +82,16 @@ def apply(name, original):
         PyObject* getState() const;
         void rebind(PyFrameObject* frame);
         bool isPending() const { return m_pending; }''')
-        text = text.replace('unsigned int m_lastLine;', 'unsigned int m_lastLine;\n        bool m_pending;')
+        text = text.replace('void refresh();', 'void refresh();\n        int getReturnOffset() const { return m_returnOffset; }\n        void setReturnOffset(int value) { m_returnOffset=value; }')
+        text = text.replace('unsigned int m_lastLine;', 'unsigned int m_lastLine;\n        bool m_pending;\n        int m_returnOffset=0;')
     elif name.endswith('SPELLframeManager.H'):
         text = text.replace('#include "SPELL_EXC/SPELLexecutionModel.H"', '#include "SPELL_EXC/SPELLexecutionModel.H"\n#include "SPELL_EXC/SPELLexecutorConfiguration.H"')
         text = text.replace('void initialize( const std::string& scriptFile );', '''void initialize( const std::string& scriptFile );
-        void initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration);''')
+        void initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration, PyObject* environment = nullptr);''')
         text = text.replace('bool                  m_terminated;', 'bool                  m_terminated;\n        bool m_resumePending; // saved continuations require the modern WS adapter')
+        text = text.replace('PyObject*             m_definitions;', 'PyObject*             m_definitions;\n        PyObject* m_environment = nullptr;')
+        text = text.replace('void checkRuntimeError();','void checkRuntimeError();\n        void rebuildRecoveredModels(PyFrameObject* top);')
+        text = text.replace('return (m_initialFrame == m_currentFrame);','return m_modelKeys.size() <= 1;')
     elif name.endswith('SPELLexecutor.H'):
         text = text.replace('static inline SPELLexecutorIF& instance()', 'static bool isAvailable() { return s_instance != nullptr; }\n\n        static inline SPELLexecutorIF& instance()')
     elif name.endswith('SPELLdtaContainer.H'):
@@ -165,6 +175,7 @@ def apply(name, original):
     Py_XDECREF(m_definitions);
     Py_XDECREF(m_code);
     Py_XDECREF(m_initialFrame);
+    Py_XDECREF(m_environment);
 }
 \n//=============================================================================\n''')
         text = text.replace('        Py_XDECREF(m_currentFrame);\n', '')
@@ -175,16 +186,28 @@ def apply(name, original):
 {
     initialize(scriptFile, SPELLexecutor::instance().getConfiguration());
 }
-void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration)
+void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration, PyObject* environment)
 {
+    if (environment && !PyDict_Check(environment))
+        THROW_EXCEPTION("Cannot initialize procedure", "Expected namespace dictionary", SPELL_ERROR_EXECUTION);
+    Py_XSETREF(m_environment,Py_XNewRef(environment));
     m_filename = scriptFile;
     SPELLvariableMonitor::s_enabled = configuration.isWatchEnabled();
     SPELLresourceMonitor::s_enabled = configuration.isResourcesDisplayEnabled();
     reset();
 }
 \n//=============================================================================\n''')
-        text = text.replace('m_initialFrame = m_warmStart->restoreState();', 'm_resumePending = true;\n        m_initialFrame = m_warmStart->restoreState();')
-        text = text.replace('m_initialFrame = m_warmStart->fixState();', 'm_resumePending = true;\n        m_initialFrame = m_warmStart->fixState();')
+        text = section(text, 'void SPELLframeManager::restoreState()', 'void SPELLframeManager::compile()', body('frame_manager_recovery.cpp'))
+        text = text.replace('createFrame( m_filename, m_code )', 'createFrame( m_filename, m_code, m_environment )')
+        text = text.replace('createFrameModel( callLine, frame );', '''if (m_resumePending && m_warmStart && m_warmStart->rebindPending(frame)) {
+        std::string id=m_model->getIdentifier();
+        auto replacement=std::make_unique<SPELLexecutionModel>(id,file,frame,m_discardedNames);
+        replacement->getVariableMonitor().initialize();
+        delete m_model;
+        m_model=replacement.release();
+        m_modelMap[id]=m_model;
+        m_currentFrame=frame;
+    } else createFrameModel(callLine,frame);''')
         text = section(text, 'const SPELLexecutionResult SPELLframeManager::execute()', 'void SPELLframeManager::checkRuntimeError()', body('frame_manager_execute.cpp'))
         text = text.replace('SPELLwsWarmStartImpl::setGlobalsFilter( PyDict_Keys(mainDict) );', '''SPELLpython313::Owned filterKeys(PyDict_Keys(mainDict));
     if (!filterKeys.get()) SPELLpythonHelper::instance().checkError();
@@ -223,12 +246,17 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
     elif name.endswith('SPELLwsWarmStartImpl.H'):
         text = text.replace('#include "SPELL_WS/SPELLwsFrame.H"', 'class SPELLwsFrame; // Private implementation dependency, not required by callers.')
         text = text.replace('\t\tstatic PyObject* s_filterKeys;', '// Filter ownership is per interpreter; see ws_filter.cpp.')
+        text = text.replace('void saveState();','''void saveState();
+        std::vector<PyFrameObject*> getFrames() const;
+        bool rebindPending(PyFrameObject* frame);
+        PyObject* resume();''')
+        text = text.replace('void removeTopFrame();','''void removeTopFrame();
+        PyObject* captureChain();
+        void installChain(PyObject* state);
+        static PyObject* skipCaller(PyObject* capsule, PyObject* args);''')
+        text = text.replace('SPELLwsStorage* m_storage;', 'PyObject* m_lastState;\n        bool m_resuming;')
     elif name.endswith('SPELLwsWarmStartImpl.C'):
-        text = text.replace('#include "SPELL_WS/SPELLwsWarmStartImpl.H"', '#include "SPELL_WS/SPELLwsWarmStartImpl.H"\n#include "SPELL_WS/SPELLwsFrame.H"')
-        text = text.replace('PyObject* SPELLwsWarmStartImpl::s_filterKeys = 0;', '')
-        marker = '//=============================================================================\n// STATIC : SPELLwsWarmStartImpl::setGlobalsFilter()'
-        assert text.count(marker) == 1
-        text = text[:text.index(marker)] + '// Filter methods are compiled from ws_filter.cpp.\n'
+        text = text[:text.index('// FILES TO INCLUDE')] + body('ws_controller.cpp')
     elif name.endswith(('SPELLexecutionModel.C', 'SPELLexecutorImpl.C', 'SPELLserviceImpl.C')):
         text = text.replace('// GLOBALS ', '#include "SPELL_UTIL/SPELLpython313.H"\n\n// GLOBALS ', 1)
         text = text.replace('PYSTR(frame->f_code->co_filename)', 'SPELLpython313::filename(frame)')
@@ -310,6 +338,8 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
     };
 ''')
     elif name.endswith('SPELLpythonHelper.H'):
+        text = text.replace('PyFrameObject* createFrame( const std::string& filename, PyCodeObject* code );',
+            'PyFrameObject* createFrame( const std::string& filename, PyCodeObject* code, PyObject* globals = nullptr );')
         text = text.replace('#define __SPELL_PYHELPER_H__', '#define __SPELL_PYHELPER_H__\n#include <thread>')
         text = text.replace('bool m_initialized;', '''bool m_initialized;
         bool m_ownsInterpreter = false;

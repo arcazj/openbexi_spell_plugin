@@ -19,7 +19,10 @@ def main():
     parser.add_argument('--dta', action='store_true', help='Require original DTA types, value conversion and interpreter lifecycle checks')
     parser.add_argument('--cold', action='store_true', help='Require original manager cold evaluation and all preceding component checks')
     parser.add_argument('--ws-frames', action='store_true', help='Require original WS frame/data integration and shared continuation probes')
+    parser.add_argument('--warm', action='store_true', help='Require original WS controller and manager logical recovery')
     args = parser.parse_args()
+    if args.warm:
+        args.ws_frames = True
     if args.ws_frames:
         args.cold = True
     if args.cold:
@@ -184,7 +187,19 @@ def main():
         report['ws_runtime'] = ws
         report['milestone'] = 'CPython 3.13 original WS frame/static/dynamic state integration'
         report['qualification_scope'] += '; original WS frame/data classes use the shared exact-build continuation engine, inspection views, atomic single-frame storage and restored trace dispatch'
-    name = 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.warm:
+        warm = json.loads((evidence/'warm-runtime.json').read_text())
+        if (build.get('warm_runtime_exit_code') != 0 or warm['tests'] < 14
+                or any(warm[k] for k in ('failures','errors','skips'))
+                or report['ws_runtime']['tests'] < 13
+                or report['library_syntax'] != {'total':143,'pass':143,'fail':0}
+                or 'lib/SPELL_WS/src/SPELLwsWarmStartImpl.C' not in {u['unit'] for u in build['analysis_units']}):
+            raise ValueError('Original WS controller/manager qualification failed')
+        report['warm_runtime'] = warm
+        report['milestone'] = 'CPython 3.13 original WS controller and frame-manager logical continuation'
+        report['qualification_scope'] += '; one atomic caller graph, original WS callbacks and manager models, 14 integrated checks including SIGKILL/fresh-process recovery and repeated checkpoints'
+        report['gaps'][2] = 'Native DTA graph serialization, external dependency/resource recovery and actual executor/CIF checkpoint dispatch'
+    name = 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
@@ -193,6 +208,7 @@ def main():
         'dta_tests':report.get('dta_runtime',{}).get('tests',0),
         'cold_tests':report.get('cold_runtime',{}).get('tests',0),
         'ws_frame_tests':report.get('ws_runtime',{}).get('tests',0),
+        'warm_tests':report.get('warm_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

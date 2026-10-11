@@ -140,6 +140,15 @@ class WarmFrame(unittest.TestCase):
         native.ws_frame_event(handle,'reset')
         with self.assertRaisesRegex(RuntimeError,'saved line'): native.ws_frame_event(handle,'fix')
 
+    def test_malformed_cell_slots_are_rejected_before_inspection(self):
+        handle=self.capture('def outer():\n value=7\n def work():\n  return value\n return work()\nresult=outer()\n',4)
+        state=native.ws_frame_state(handle)
+        for slots,nulls in (((1,),b'\x00'),((None,),b'\x01')):
+            invalid=state[:4]+(slots,nulls)+state[6:]
+            with self.assertRaisesRegex(RuntimeError,'closure cell'): native.ws_frame_set(handle,invalid)
+        self.assertIs(native.ws_frame_state(handle),state)
+        self.assertEqual(native.ws_frame_resume(handle)[0],7)
+
     def test_repeated_frame_lifecycle_releases_code(self):
         refs=[]
         for _ in range(200):

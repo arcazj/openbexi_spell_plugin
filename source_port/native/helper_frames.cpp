@@ -1,15 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-PyFrameObject* SPELLpythonHelper::createFrame(const std::string& filename, PyCodeObject* code)
+PyFrameObject* SPELLpythonHelper::createFrame(const std::string& filename, PyCodeObject* code, PyObject* globals)
 {
     SPELLpython313::GIL gil;
     if (!code || !PyCode_Check(reinterpret_cast<PyObject*>(code))) {
         PyErr_SetString(PyExc_TypeError, "Expected procedure code");
         checkError();
     }
-    PyObject* module = PyImport_AddModule("__main__"); // borrowed
-    if (!module) checkError();
-    PyObject* globals = PyModule_GetDict(module); // borrowed
-    if (!globals) checkError();
+    if (!globals) {
+        PyObject* module = PyImport_AddModule("__main__"); // borrowed
+        if (!module) checkError();
+        globals = PyModule_GetDict(module); // borrowed
+        if (!globals) checkError();
+    }
+    if (!PyDict_Check(globals)) { PyErr_SetString(PyExc_TypeError,"Expected procedure namespace dictionary"); checkError(); }
+    if (!PyDict_GetItemString(globals,"__builtins__")
+        && PyDict_SetItemString(globals,"__builtins__",PyEval_GetBuiltins())<0) checkError();
     SPELLpython313::Owned file(PyUnicode_DecodeFSDefaultAndSize(filename.data(), filename.size()));
     if (!file.get() || PyDict_SetItemString(globals, "__file__", file.get())<0) checkError();
     // Module execution uses one namespace for locals and globals, so functions

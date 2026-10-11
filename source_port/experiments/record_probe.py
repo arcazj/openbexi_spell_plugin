@@ -12,11 +12,14 @@ build = json.loads((directory/'build.json').read_text())
 runtime = json.loads((directory/'recovery-probe.json').read_text())
 if build.get('build_exit_code') != 0 or build.get('runtime_exit_code') != 0:
     raise ValueError('Recovery feasibility experiment failed')
-if runtime['tests'] < 6 or any(runtime[k] for k in ('failures','errors','skips')):
+if runtime['tests'] < 14 or any(runtime[k] for k in ('failures','errors','skips')):
     raise ValueError('Recovery feasibility coverage incomplete')
 for name, digest in build['inputs'].items():
     if hashlib.sha256((Path(__file__).parent/name).read_bytes()).hexdigest() != digest:
         raise ValueError('Evidence predates experiment input: '+name)
+for name,digest in build['shared_continuation'].items():
+    if hashlib.sha256((Path(__file__).parent.parent/'native'/name).read_bytes()).hexdigest() != digest:
+        raise ValueError('Evidence predates shared continuation input: '+name)
 report = {'status':'research only; v0.2 remains open', 'build':build, 'runtime':runtime,
           'artifacts':{p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
                        for p in directory.iterdir() if p.is_file()},

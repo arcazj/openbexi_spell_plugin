@@ -9,7 +9,10 @@ struct QuietMonitors {
     QuietMonitors() { SPELLvariableMonitor::s_enabled = false; SPELLresourceMonitor::s_enabled = false; }
     ~QuietMonitors() { SPELLvariableMonitor::s_enabled = watch; SPELLresourceMonitor::s_enabled = resources; }
 };
-struct ManagerHandle { std::unique_ptr<SPELLframeManager> manager; };
+struct ManagerHandle {
+    std::unique_ptr<SPELLwsWarmStartImpl> warm;
+    std::unique_ptr<SPELLframeManager> manager;
+};
 void destroy_manager(PyObject* capsule) {
     delete static_cast<ManagerHandle*>(PyCapsule_GetPointer(capsule, "SPELL.manager"));
 }
@@ -38,7 +41,7 @@ PyObject* manager_create(PyObject*, PyObject* object) {
 }
 PyObject* manager_close(PyObject*, PyObject* capsule) {
     auto* handle = manager_handle(capsule); if (!handle) return nullptr;
-    handle->manager.reset(); Py_RETURN_NONE;
+    handle->manager.reset(); handle->warm.reset(); Py_RETURN_NONE;
 }
 PyObject* manager_script(PyObject*, PyObject* args) {
     PyObject* capsule; const char* source;
@@ -84,12 +87,12 @@ PyObject* manager_definitions(PyObject*, PyObject* capsule) {
     Py_RETURN_NONE;
 }
 PyObject* manager_initialize(PyObject*, PyObject* args) {
-    PyObject* capsule; const char* filename;
-    if (!PyArg_ParseTuple(args, "Os", &capsule, &filename)) return nullptr;
+    PyObject *capsule, *environment = Py_None; const char* filename;
+    if (!PyArg_ParseTuple(args, "Os|O", &capsule, &filename, &environment)) return nullptr;
     auto* handle = manager_handle(capsule); if (!handle) return nullptr;
     QuietMonitors quiet;
     SPELLexecutorConfig configuration; // the real default configuration class
-    try { handle->manager->initialize(filename, configuration); }
+    try { handle->manager->initialize(filename, configuration, environment == Py_None ? nullptr : environment); }
     catch (const SPELLcoreException& e) { return failure(e); }
     Py_RETURN_NONE;
 }
@@ -152,6 +155,56 @@ PyObject* manager_stop(PyObject*, PyObject* terminate) {
     if (terminate == Py_True) SPELLerror::instance().setExecutionTerminated();
     else SPELLerror::instance().setExecutionAborted();
     return nullptr;
+}
+PyObject* manager_warm_configure(PyObject*, PyObject* args) {
+    PyObject* capsule; const char *procedure,*persistent,*recovery; int mode;
+    if (!PyArg_ParseTuple(args,"Osssi",&capsule,&procedure,&persistent,&recovery,&mode)) return nullptr;
+    auto* handle=manager_handle(capsule); if (!handle) return nullptr;
+    if (mode<0 || mode>3) { PyErr_SetString(PyExc_ValueError,"invalid warm-start mode"); return nullptr; }
+    SPELLwsStartupInfo info;
+    info.procedureFile=procedure; info.persistentFile=persistent; info.recoveryFile=recovery;
+    info.performRecovery=info.recoveryFile!=""; info.workingMode=static_cast<SPELLwsWorkingMode>(mode);
+    auto warm=std::make_unique<SPELLwsWarmStartImpl>();
+    try { warm->initialize(info); }
+    catch (const SPELLcoreException& e) { return failure(e); }
+    handle->manager->setWarmStart(warm.get());
+    handle->warm=std::move(warm);
+    Py_RETURN_NONE;
+}
+PyObject* manager_warm_action(PyObject*,PyObject* args) {
+    PyObject* capsule; const char* action;
+    if (!PyArg_ParseTuple(args,"Os",&capsule,&action)) return nullptr;
+    auto* handle=manager_handle(capsule); if (!handle) return nullptr;
+    QuietMonitors quiet;
+    try {
+        std::string name(action);
+        if (name=="save") handle->manager->saveState();
+        else if (name=="restore") handle->manager->restoreState();
+        else if (name=="fix") handle->manager->fixState();
+        else if (name=="stage") handle->manager->eventStage();
+        else if (name=="reset") handle->manager->reset();
+        else if (name=="cleanup" && handle->warm) handle->warm->cleanup();
+        else { PyErr_SetString(PyExc_ValueError,"unknown warm-start action"); return nullptr; }
+    } catch (const SPELLcoreException& e) { return failure(e); }
+    Py_RETURN_NONE;
+}
+PyObject* manager_warm_frames(PyObject*,PyObject* capsule) {
+    auto* handle=manager_handle(capsule); if (!handle) return nullptr;
+    SPELLpython313::Owned frames(PyList_New(0));
+    if (!frames.get()) return nullptr;
+    if (handle->warm) for (auto* frame:handle->warm->getFrames())
+        if (PyList_Append(frames.get(),reinterpret_cast<PyObject*>(frame))<0) return nullptr;
+    return Py_NewRef(frames.get());
+}
+PyObject* manager_namespace(PyObject*,PyObject* capsule) {
+    auto* handle=manager_handle(capsule); if (!handle) return nullptr;
+    auto* initial=handle->manager->getInitialFrame();
+    if (!initial) { PyErr_SetString(PyExc_RuntimeError,"No initial frame"); return nullptr; }
+    return PyFrame_GetGlobals(initial);
+}
+PyObject* manager_error(PyObject*,PyObject*) {
+    auto* error=SPELLerror::instance().getError();
+    return PyUnicode_FromString(error ? error->what().c_str() : "");
 }
 PyObject* ws_filter_set(PyObject*, PyObject* keys) {
     try { SPELLwsWarmStartImpl::setGlobalsFilter(keys == Py_None ? nullptr : keys); }

@@ -5,6 +5,7 @@
 #include <Python.h>
 #include <frameobject.h>
 #include "internal/pycore_frame.h"
+#include "internal/pycore_code.h"
 #include <vector>
 #include <cstring>
 #include <memory>
@@ -326,6 +327,10 @@ static PyObject* from_state(PyObject*, PyObject* value) {
     for (Py_ssize_t i=0; i<count; ++i) {
         char flag = PyBytes_AS_STRING(nulls)[i];
         if (flag != 0 && flag != 1) { PyErr_SetString(PyExc_ValueError, "invalid null-slot flag"); return nullptr; }
+        if (i < co->co_nlocalsplus && (_PyLocals_GetKind(co->co_localspluskinds,i) & (CO_FAST_CELL|CO_FAST_FREE))
+                && (flag || !PyCell_Check(PyTuple_GET_ITEM(slots,i)))) {
+            PyErr_SetString(PyExc_ValueError,"invalid saved closure cell"); return nullptr;
+        }
     }
     auto* s = new Snapshot();
     s->code = reinterpret_cast<PyCodeObject*>(Py_NewRef(code));
@@ -410,4 +415,15 @@ PyMODINIT_FUNC SPELL_CONTINUATION_INIT() {
         PyErr_SetString(PyExc_ImportError, "recovery experiment ABI mismatch"); return nullptr;
     }
     return PyModule_Create(&module);
+}
+PyObject* SPELLcontinuation313::module() {
+    PyObject* modules = PyImport_GetModuleDict();
+    PyObject* existing = PyDict_GetItemString(modules,SPELL_CONTINUATION_NAME);
+    if (existing) {
+        if (!PyModule_Check(existing)) { PyErr_SetString(PyExc_ImportError,"invalid continuation module"); return nullptr; }
+        return Py_NewRef(existing);
+    }
+    Ref created(SPELL_CONTINUATION_INIT());
+    if (!created.value || PyDict_SetItemString(modules,SPELL_CONTINUATION_NAME,created.value)<0) return nullptr;
+    return Py_NewRef(created.value);
 }

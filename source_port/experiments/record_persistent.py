@@ -19,11 +19,10 @@ runtime = json.loads((directory/'persistent-probe.json').read_text())
 memory = json.loads((directory/'recovery-probe.json').read_text())
 if any(build.get(k) != 0 for k in ('build_exit_code','runtime_exit_code','persistent_runtime_exit_code')):
     raise ValueError('Recovery experiment failed')
-reports = {'persistent':(runtime,13), 'memory':(memory,8)}
+reports = {'persistent':(runtime,13), 'memory':(memory,14)}
 if args.chain:
     if build.get('chain_runtime_exit_code') != 0:
         raise ValueError('Caller recovery experiment failed')
-    reports['memory'] = (memory,10)
     reports['callers'] = (json.loads((directory/'chain-probe.json').read_text()),11)
 for name, minimum in (('util',18),('analysis',57),('storage',17)):
     reports[name] = (json.loads((directory/(name+'-runtime.json')).read_text()),minimum)
@@ -43,6 +42,9 @@ for name, digest in native['input_sources'].items():
 for name, digest in build['inputs'].items():
     if hashlib.sha256((Path(__file__).parent/name).read_bytes()).hexdigest() != digest:
         raise ValueError('Evidence predates experiment input: '+name)
+for name,digest in build['shared_continuation'].items():
+    if hashlib.sha256((root/'source_port/native'/name).read_bytes()).hexdigest() != digest:
+        raise ValueError('Evidence predates shared continuation input: '+name)
 artifact_names = ['build.json','persistent-runtime.log','persistent-probe.json','runtime.log',
                   'recovery-probe.json','native-build.json','native-patches.json']
 artifact_names += [p.name for p in directory.glob('_recovery_probe*.so')]

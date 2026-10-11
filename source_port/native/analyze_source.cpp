@@ -17,6 +17,7 @@ void SPELLastAnalyzer::process(const std::string& filename)
     }
     PyCompilerFlags flags{};
     flags.cf_flags = PyCF_ONLY_AST;
+    flags.cf_feature_version = PY_MINOR_VERSION;
     Owned syntax(Py_CompileStringExFlags(source.c_str(), filename.c_str(), Py_file_input, &flags, -1));
     if (!syntax.get()) helper.checkError();
     Owned io(PyImport_ImportModule("io"));

@@ -3,6 +3,7 @@
 Only application-owned checkpoints are accepted; this is not an import format.
 _source_identity is supplied by the native module from its hashed build inputs.
 """
+import dis
 import hashlib
 import io
 import platform
@@ -97,3 +98,54 @@ def exception_links(root):
         elif isinstance(value, (tuple, list, set, frozenset)):
             pending.extend(value)
     return links
+
+
+def resume_saved(snapshot, probe, skip):
+    if not isinstance(snapshot, list):
+        return probe.resume_traced(snapshot)
+    result = None
+    error = None
+    for index, (saved, delta) in enumerate(snapshot):
+        frame = list(saved)
+        if index and error is None:
+            frame[4] += (result,)
+            frame[5] += b'\x00'
+            frame[6] += delta
+        try:
+            capsule = probe.from_state(tuple(frame))
+            if error is not None:
+                entry = next((entry for entry in dis.Bytecode(frame[0]).exception_entries
+                    if entry.start <= frame[6]*2 < entry.end), None)
+                if entry is None:
+                    skip(index, error)
+                    continue
+                resumed = probe.resume_error(capsule, error, entry.depth, entry.target, entry.lasti, True)
+            else:
+                resumed = probe.resume_traced(capsule)
+            result, namespace, offset, slots = resumed
+            error = None
+        except BaseException as failure:
+            error = failure
+    if error is not None:
+        raise error
+    return result, namespace, offset, slots
+
+
+
+
+def validate_chain(state, probe):
+    if not isinstance(state, list) or not state or len(state)>128:
+        raise ValueError('Invalid checkpoint chain extent')
+    for index, row in enumerate(state):
+        if type(row) is not tuple or len(row)!=2:
+            raise ValueError('Invalid checkpoint frame entry')
+        frame, delta = row
+        if type(delta) is not int or (delta != 0 if index == 0 else delta <= 0):
+            raise ValueError('Invalid caller return offset')
+        candidate = list(frame)
+        if index:
+            candidate[4] += (None,)
+            candidate[5] += b'\x00'
+            candidate[6] += delta
+        probe.from_state(tuple(candidate))
+    return state
