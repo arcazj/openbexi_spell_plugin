@@ -56,6 +56,26 @@ public:
     void processFailed(const std::string) override { ++failures; }
     void processKilled(const std::string) override { ++failures; }
 };
+class Removing final:public SPELLprocessListener {
+public:
+    SPELLevent entered,release;
+    std::atomic_int calls{0};
+    Removing() { entered.clear();release.clear(); }
+    void processStarted(const std::string) override { ++calls;entered.set();release.wait(); }
+    void processFinished(const std::string,const int&) override { ++calls; }
+    void processFailed(const std::string) override { ++calls; }
+    void processKilled(const std::string) override { ++calls; }
+};
+class SelfRemoving final:public SPELLprocessListener {
+public:
+    std::atomic_int calls{0};
+    void processStarted(const std::string id) override {
+        ++calls;SPELLprocessManager::instance().removeListener(id,this);
+    }
+    void processFinished(const std::string,const int&) override { ++calls; }
+    void processFailed(const std::string) override { ++calls; }
+    void processKilled(const std::string) override { ++calls; }
+};
 void interruptWait(int) {}
 int main(int argc,char**) {
     if (argc>1) {
@@ -95,6 +115,24 @@ int main(int argc,char**) {
             }
         }
         auto& manager=SPELLprocessManager::instance();
+        Removing removing;
+        manager.addListener("listener-removal",&removing);
+        manager.startProcess("listener-removal","/bin/true");
+        require(!removing.entered.wait(3000),"Listener callback did not begin");
+        std::atomic_bool removed{false};
+        std::thread unsubscribe([&]{manager.removeListener("listener-removal",&removing);removed=true;});
+        std::this_thread::sleep_for(std::chrono::milliseconds(80));
+        const bool drained=!removed.load();
+        removing.release.set();unsubscribe.join();
+        require(manager.waitProcess("listener-removal")==0,"Listener-removal child failed");
+        manager.clearProcess("listener-removal");
+        require(drained && removing.calls==1,"Unsubscription did not fence in-flight callbacks");
+        SelfRemoving selfRemoving;
+        manager.addListener("self-removal",&selfRemoving);
+        manager.startProcess("self-removal","/bin/true");
+        require(manager.waitProcess("self-removal")==0,"Self-removing callback child failed");
+        manager.clearProcess("self-removal");
+        require(selfRemoving.calls==1,"Self-unsubscription did not stop later callbacks");
         sigset_t mask,previousMask;
         sigemptyset(&mask);
         for (int value : {SIGINT,SIGTERM,SIGHUP,SIGQUIT}) sigaddset(&mask,value);
@@ -148,7 +186,7 @@ int main(int argc,char**) {
         require(rejected,"Duplicate process identifier accepted");
         require(manager.waitProcess("duplicate")==0,"Duplicate request damaged original child");
         manager.clearProcess("duplicate");
-        std::cout << "{\"socket_reuse_cases\":4,\"exit_status_cases\":2,\"callback_restarts\":20,\"duplicate_rejected\":true,\"child_signal_mask_checks\":4,\"interrupted_waits\":1,\"incoming_completion_cases\":4}" << std::endl;
+        std::cout << "{\"socket_reuse_cases\":4,\"exit_status_cases\":2,\"callback_restarts\":20,\"duplicate_rejected\":true,\"child_signal_mask_checks\":4,\"interrupted_waits\":1,\"incoming_completion_cases\":4,\"listener_unsubscribe_drains\":true,\"listener_self_unsubscribe\":true}" << std::endl;
         return 0;
     } catch (const SPELLcoreException& error) { std::cerr << error.what() << std::endl; }
       catch (const std::exception& error) { std::cerr << error.what() << std::endl; }

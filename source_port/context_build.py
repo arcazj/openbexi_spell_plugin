@@ -103,6 +103,21 @@ if all(entry.get('link_exit_code')==0 for entry in report['programs'].values()):
                 UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1'))
         (output/'process-runtime.log').write_text(result.stdout+result.stderr)
         report['process_runtime_exit_code']=result.returncode
+    result=subprocess.run(flags+['/context/qualify_ipc_ownership.cpp','-L/out','-lspell_executor313',
+        '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/qualify_ipc_ownership'],
+        capture_output=True,text=True,timeout=60)
+    (output/'ipc-ownership-build.log').write_text(result.stdout+result.stderr)
+    report['ipc_ownership_build_exit_code']=result.returncode
+    if result.returncode==0:
+        try:
+            result=subprocess.run(['/out/qualify_ipc_ownership'],capture_output=True,text=True,timeout=30,
+                env=dict(os.environ,ASAN_OPTIONS='detect_leaks=0:abort_on_error=1',
+                    UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1'))
+            (output/'ipc-ownership-runtime.log').write_text(result.stdout+result.stderr)
+            report['ipc_ownership_runtime_exit_code']=result.returncode
+        except subprocess.TimeoutExpired as error:
+            (output/'ipc-ownership-runtime.log').write_bytes((error.stdout or b'')+(error.stderr or b'')+b'\nOWNERSHIP_PROBE_TIMEOUT\n')
+            report['ipc_ownership_runtime_exit_code']=124
     result=subprocess.run(flags+['/context/server_peer.cpp','-L/out','-lspell_executor313',
         '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/server_peer'],
         capture_output=True,text=True,timeout=60)

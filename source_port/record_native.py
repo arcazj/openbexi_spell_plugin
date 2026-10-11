@@ -29,7 +29,10 @@ def main():
     parser.add_argument('--controller', action='store_true', help='Require original server controller and CIF scenarios')
     parser.add_argument('--service-restart', action='store_true', help='Require native watchdog restart after Python failure and process loss')
     parser.add_argument('--cif', action='store_true', help='Require child, shared-data and scheduler CIF behavior')
+    parser.add_argument('--ipc-ownership', action='store_true', help='Require socket failure and concurrent IPC shutdown ownership checks')
     args = parser.parse_args()
+    if args.ipc_ownership:
+        args.cif=True
     if args.cif:
         args.service_restart=True
     if args.service_restart:
@@ -312,11 +315,12 @@ def main():
             raise ValueError('Context executor dependency evidence differs')
         lines=[line for line in (evidence/'process-runtime.log').read_text().splitlines() if line.startswith('{')]
         expected={'socket_reuse_cases':4,'exit_status_cases':2,'callback_restarts':20,'duplicate_rejected':True,'child_signal_mask_checks':4,'interrupted_waits':1,'incoming_completion_cases':4}
-        if len(lines)!=1 or json.loads(lines[0])!=expected:
+        process=json.loads(lines[0]) if len(lines)==1 else {}
+        if any(process.get(key)!=value for key,value in expected.items()):
             raise ValueError('Process/socket lifecycle evidence incomplete')
         report['context_build']=context
         report['context_runtime']=behavior
-        report['process_runtime']=expected
+        report['process_runtime']=process
         report['milestone']='Original listener/context/server executor IPC startup, Run and orderly shutdown'
         report['qualification_scope'] += '; listener launches the original context, queries its status and closes it through original IPC; 20 callback-driven process restarts with concurrent waits, fast child exit codes, duplicate rejection and four reused descriptor cleanup cases; context-launched original server executor, explicit imports/native arguments, visible Run, CIF notifications, file result and successful child exit without force-kill fallback'
         report['gaps'][0]='Actual native service lifecycle and complete server controller/CIF behavior'
@@ -419,7 +423,23 @@ def main():
         report['milestone']='Original child procedure, shared-data and scheduler CIF behavior'
         report['qualification_scope'] += '; native parent/child execution, shared context data types/keys/deletion and timed scheduler wait over original IPC'
         report['gaps'][0]='Service reconnect/checkpoint semantics and remaining native ownership/error-path checks'
-    name = 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.ipc_ownership:
+        if not all(report['process_runtime'].get(key) is True for key in
+                ('listener_unsubscribe_drains','listener_self_unsubscribe')):
+            raise ValueError('Native process listener lifetime evidence incomplete')
+        if context.get('ipc_ownership_build_exit_code')!=0 or context.get('ipc_ownership_runtime_exit_code')!=0:
+            raise ValueError('Native IPC ownership probe failed')
+        text=(evidence/'ipc-ownership-runtime.log').read_text()
+        rows=[json.loads(line) for line in text.splitlines() if line.startswith('{')]
+        expected={'failed_bind_attempts':40,'failed_connect_attempts':100,'descriptor_leaks':0,
+            'shutdown_joins_admitted_worker':True,'closed_admission_rejected':True,
+            'concurrent_cancelled_requests':8,'concurrent_disconnect_calls':2}
+        if rows!=[expected]: raise ValueError('Native IPC ownership evidence differs')
+        report['ipc_ownership_runtime']=expected
+        report['milestone']='Native socket error ownership and concurrent IPC shutdown'
+        report['qualification_scope'] += '; failed bind/connect descriptor accounting, owned worker admission/drain and eight concurrent requests cancelled by two disconnect callers'
+        report['gaps'][0]='Service reconnect/checkpoint semantics and remaining native ownership/error-path review'
+    name = 'IPC_OWNERSHIP' if args.ipc_ownership else 'CIF' if args.cif else 'SERVICE_RESTART' if args.service_restart else 'CONTROLLER' if args.controller else 'SERVICE' if args.service else 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

@@ -77,6 +77,12 @@ The [CIF milestone](CIF_RUNTIME.md) adds real blocking parent/child execution,
 shared-data type/key/deletion checks and timed WaitFor. It fixes a child-launch
 lock cycle and passes all 18 lifecycle runs with the preceding native gates.
 
+The [ownership milestone](IPC_OWNERSHIP.md) qualifies failed-socket descriptor
+accounting, atomic worker admission/drain, eight concurrent requests cancelled by
+two disconnect callers and process listener unregistration. All preceding native
+gates and 18 lifecycle runs pass. Native installation, reconnect semantics and
+remaining ownership review still gate v0.2.
+
 ## Immediate work
 
 Review service reconnect/checkpoint semantics and complete the remaining native

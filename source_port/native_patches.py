@@ -4,6 +4,12 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'lib/SPELL_IPC/src/SPELLipcChannel.C': '6129e3bf83729b19d8550d9d4dac761f8fb18f4a7c681e70c8e37005c5bba215',
+    'include/SPELL_IPC/SPELLipcChannel.H': '0732dc2720f944d2dfff371e67598122f50f4615c4705866479c45358e8e925b',
+    'lib/SPELL_IPC/src/SPELLipcServerInterfaceSingle.C': '79d7f62a6b70982cc8a5e64f1517d082464d1271b1e8851c13538435c42d0284',
+    'include/SPELL_IPC/SPELLipcServerInterfaceSingle.H': '54d5d913f116f49ecf8b1304b4ca2a5192f8e8a12888736609099d33bc8cc179',
+    'include/SPELL_IPC/SPELLipcClientInterface.H': '8b9c11c92e264867c406c6ddbcc98bf2300698fdd7cf69b921e7fb08344af00a',
+    'include/SPELL_IPC/SPELLipcTrash.H': '81c6959c6aa793b67ff1b60e62e00dfb8853d1bc9da117381534f544ad138b91',
     'lib/SPELL_EXC/src/SPELLchildManager.C': 'd026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169',
     'include/SPELL_EXC/SPELLchildManager.H': 'c98c691cb249a9c609eeefd897b60ea38921148c96a80ead9313c2a50dd1b97d',
     'include/SPELL_EXC/SPELLcontroller.H': '13ef9f674eba595c54f28de89aef816f758c8049be67f1257c6f5457a2acbb37',
@@ -1246,6 +1252,212 @@ void SPELLframeManager::initialize(const std::string& scriptFile, const SPELLexe
         SPELLpython313::Owned typeOwner(ptype), valueOwner(pvalue), tracebackOwner(ptraceback);''')
         text = text.replace('DEBUG("[ERR] Error already tracked");\n\t\t\treturn;',
                             'DEBUG("[ERR] Error already tracked");\n\t\t\tdelete exc;\n\t\t\treturn;')
+    if name.endswith(('SPELLipcClientInterface.H','SPELLipcServerInterfaceSingle.H','SPELLipcChannel.H')):
+        text='#include <atomic>\n'+text
+        text=re.sub(r'bool\s+(m_connected|m_removeClient);',r'std::atomic_bool \1;',text)
+    if name.endswith('SPELLipcChannel.C'):
+        text=text.replace('std::vector<std::string> SPELLipcChannel::getOngoingRequests()\n{',
+            'std::vector<std::string> SPELLipcChannel::getOngoingRequests()\n{\n    SPELLmonitor lock(m_dataLock);')
+    if name.endswith('SPELLipcTrash.H'):
+        text=text.replace('void place(', 'bool place(')
+    if name.endswith('SPELLipcTrash.C'):
+        text=section(text,'void SPELLipcTrash::place(', 'void SPELLipcTrash::run()', '''bool SPELLipcTrash::place(SPELLipcIncomingBase* message)
+{
+    SPELLmonitor lock(m_dataLock);
+    if (!m_trashWorking) return false; // caller retains an unstarted worker
+    m_messages.push_back(message);
+    try { message->start(); }
+    catch (...) { m_messages.pop_back(); throw; }
+    return true; // collector owns and joins every admitted worker
+}
+
+''')
+    if name.endswith(('SPELLipcClientInterface.C','SPELLipcServerInterface.C','SPELLipcServerInterfaceSingle.C')):
+        text='#include <memory>\n'+text
+        for kind,variable in [('Request','ireq'),('Message','imsg')]:
+            pattern=r'SPELLipcIncoming'+kind+r'\* '+variable+r' = new SPELLipcIncoming'+kind+r'\(([^;]+)\);'
+            replacement=r'auto '+variable+r' = std::make_unique<SPELLipcIncoming'+kind+r'>(\1);'
+            text,count=re.subn(pattern,replacement,text)
+            assert count==1,(name,kind,count)
+            text=re.sub(r'^\s*'+variable+r'->start\(\);\n','\n',text,flags=re.M)
+            text=text.replace('m_trash.place('+variable+');',
+                'if (m_trash.place('+variable+'.get())) '+variable+'.release();')
+    if name.endswith('SPELLipcClientInterface.H'):
+        text='#include <mutex>\n'+text
+        text=re.sub(r'(SPELLmutex\s+m_lock;)', r'\1\n        std::mutex m_lifecycleMutex;',text)
+    if name.endswith('SPELLipcClientInterface.C'):
+        text=text.replace('void SPELLipcClientInterface::connect( bool reconnect )\n{',
+            'void SPELLipcClientInterface::connect( bool reconnect )\n{\n    std::lock_guard<std::mutex> lifecycle(m_lifecycleMutex);')
+        text=text.replace('    if (isConnected()) throw SPELLipcError("Client already connected");\n    if (m_channel) { delete m_channel; m_channel=nullptr; }\n    else delete m_socket;\n    m_socket=nullptr;', '''    SPELLipcChannel* previous=nullptr;
+    SPELLsocket* previousSocket=nullptr;
+    { SPELLmonitor lock(m_lock);
+      if (m_connected) throw SPELLipcError("Client already connected");
+      previous=m_channel; previousSocket=m_socket;
+      m_channel=nullptr; m_socket=nullptr; }
+    if (previous) delete previous; else delete previousSocket;''')
+        text=text.replace('    m_connected = true;\n\n    if (m_channel != NULL) delete m_channel;\n    m_channel = createChannel();\n    m_channel->connect();', '''    {
+        SPELLmonitor lock(m_lock);
+        m_channel=createChannel();
+        m_connected=true;
+        try { m_channel->connect(); }
+        catch (...) { m_connected=false; throw; }
+    }''')
+        text=section(text,'void SPELLipcClientInterface::disconnect()', 'void SPELLipcClientInterface::connectionLost(', '''void SPELLipcClientInterface::disconnect()
+{
+    std::lock_guard<std::mutex> lifecycle(m_lifecycleMutex);
+    SPELLipcChannel* channel=nullptr;
+    SPELLsocket* socket=nullptr;
+    {
+        SPELLmonitor lock(m_lock);
+        m_connected=false;
+        channel=m_channel; socket=m_socket;
+        m_channel=nullptr; m_socket=nullptr;
+    }
+    cancelOutgoingRequests();
+    cancelIncomingRequests();
+    m_mailbox.shutdown();
+    // Response workers observe the revoked slot under m_lock. Join channel
+    // threads outside that lock, so finishing response workers can progress.
+    if (channel) { channel->disconnect(); delete channel; }
+    else delete socket;
+    m_trash.shutdown();
+    m_trash.join();
+}
+
+''')
+        text=section(text,'void SPELLipcClientInterface::cancelOutgoingRequests()',
+                     'void SPELLipcClientInterface::cancelIncomingRequests()', '''void SPELLipcClientInterface::cancelOutgoingRequests()
+{
+    std::list<std::string> pending;
+    { SPELLmonitor lock(m_lock); pending.swap(m_outgoingRequests); }
+    for (const auto& id:pending) m_mailbox.cancel(id);
+}
+
+''')
+        start=text.index('SPELLipcMessage SPELLipcClientInterface::performRequest(')
+        end=text.index('void SPELLipcClientInterface::initialize(',start)
+        part=text[start:end]
+        part=part.replace('                m_mailbox.prepare( reqId );', '''                {
+                    SPELLmonitor lock(m_lock);
+                    if (!m_connected || !m_channel) break;
+                    m_mailbox.prepare(reqId);''')
+        part=part.replace('                DEBUG(NAME + "Waiting response from peer");',
+            '                } // request admission and channel send are atomic with disconnect\n                DEBUG(NAME + "Waiting response from peer");')
+        part=part.replace('                std::list<std::string>::iterator it = std::find(',
+            '                { SPELLmonitor lock(m_lock);\n                std::list<std::string>::iterator it = std::find(')
+        part=part.replace('                retries = 2;', '                }\n                retries = 2;')
+        part=part.replace('    }\n\n    return response;',
+            '        { SPELLmonitor lock(m_lock); m_outgoingRequests.remove(reqId); }\n    }\n\n    return response;')
+        text=text[:start]+part+text[end:]
+    if name.endswith('SPELLipcServerInterface.C'):
+        text=text.replace('int SPELLipcServerInterface::getFreeClientKey()\n{',
+            'int SPELLipcServerInterface::getFreeClientKey()\n{\n    SPELLmonitor lock(m_clientLock);')
+        text=text.replace('\t\t\t\t\tm_usedClientKeys.push_back(key);',
+            '\t\t\t\t\t{ SPELLmonitor lock(m_clientLock); m_usedClientKeys.push_back(key); }')
+        text=section(text,'void SPELLipcServerInterface::cancelOutgoingRequests(',
+                     'void SPELLipcServerInterface::cancelIncomingRequests(', '''void SPELLipcServerInterface::cancelOutgoingRequests(int peerKey)
+{
+    std::vector<std::string> pending;
+    {
+        SPELLmonitor lock(m_clientLock);
+        auto found=m_clients.find(peerKey);
+        if (found!=m_clients.end() && found->second)
+            pending=found->second->getOngoingRequests();
+    }
+    for (const auto& id:pending) m_mailbox.cancel(id);
+}
+
+''')
+        text=section(text,'void SPELLipcServerInterface::addClient(', 'void SPELLipcServerInterface::removeClient(', '''void SPELLipcServerInterface::addClient(int key,SPELLsocket* socket)
+{
+    std::unique_ptr<SPELLsocket> socketOwner(socket);
+    auto channel=std::make_unique<SPELLipcChannel>(m_ifcName,socket,key,*this);
+    socketOwner.release(); // the channel now owns the accepted socket
+    {
+        SPELLmonitor lock(m_clientLock);
+        m_clients[key]=channel.get();
+        try { channel->connect(); }
+        catch (...) {
+            m_clients[key]=nullptr;
+            m_usedClientKeys.erase(std::remove(m_usedClientKeys.begin(),m_usedClientKeys.end(),key),m_usedClientKeys.end());
+            throw;
+        }
+        channel.release();
+    }
+    LOG_INFO(NAME + "Added client " + ISTR(key));
+    m_clientConnectionEvent.set();
+}
+
+''')
+    if name == 'include/SPELL_PRC/SPELLprocessManager.H':
+        text='#include <mutex>\n#include <condition_variable>\n#include <thread>\n'+text
+        text=text.replace('class SPELLprocessManager\n{',body('process_subscription.h')+'\nclass SPELLprocessManager\n{')
+        text=text.replace('std::list<SPELLprocessListener*>', 'std::list<std::shared_ptr<SPELLprocessSubscription>>')
+    if name == 'lib/SPELL_PRC/src/SPELLprocessManager.C':
+        start=text.index('void SPELLprocessManager::addListener(')
+        text=text[:start]+'''void SPELLprocessManager::addListener(const std::string& identifier,SPELLprocessListener* listener)
+{
+    if (!listener) return;
+    SPELLmonitor lock(m_lock);
+    auto& entries=m_listeners[identifier];
+    for (const auto& entry:entries) if (entry->listener==listener) return;
+    entries.push_back(std::make_shared<SPELLprocessSubscription>(listener));
+}
+
+void SPELLprocessManager::removeListener(const std::string& identifier,SPELLprocessListener* listener)
+{
+    SPELLprocessListeners removed;
+    {
+        SPELLmonitor lock(m_lock);
+        auto found=m_listeners.find(identifier);
+        if (found==m_listeners.end()) return;
+        auto& entries=found->second;
+        for (auto it=entries.begin();it!=entries.end();) {
+            if ((*it)->listener==listener) { removed.push_back(*it);it=entries.erase(it); }
+            else ++it;
+        }
+        if (entries.empty()) m_listeners.erase(found);
+    }
+    // Callbacks may invoke manager methods; drain outside the registry lock.
+    for (const auto& entry:removed) entry->cancel();
+}
+'''
+        for event in ('Started','Finished','Killed','Failed'):
+            extra=', int retValue' if event=='Finished' else ''
+            args=',retValue' if event=='Finished' else ''
+            text+='\nvoid SPELLprocessManager::fireProcess'+event+'(std::string identifier'+extra+')\n{\n'
+            text+='''    SPELLprocessListeners snapshot;
+    { SPELLmonitor lock(m_lock);
+      auto found=m_listeners.find(identifier);
+      if (found!=m_listeners.end()) snapshot=found->second; }
+    for (const auto& entry:snapshot)
+'''
+            text+='        entry->invoke([&](SPELLprocessListener* listener){ listener->process'+event+'(identifier'+args+'); });\n}\n'
+    if name.endswith('SPELLsocket.C'):
+        marker='SPELLsocket::SPELLsocket('
+        guard='''namespace {
+class SPELLsocketOwnedFd {
+    int descriptor;
+public:
+    explicit SPELLsocketOwnedFd(int fd):descriptor(fd) {}
+    ~SPELLsocketOwnedFd() { if (descriptor>=0) ::close(descriptor); }
+    void release() { descriptor=-1; }
+};
+}
+'''
+        text=text.replace(marker,guard+marker,1)
+        text=text.replace('    int socketFd = socket(AF_INET, SOCK_STREAM, 0);',
+            '    int socketFd = socket(AF_INET, SOCK_STREAM, 0);\n    SPELLsocketOwnedFd ownership(socketFd);')
+        text=text.replace('            // Set reuse address',
+            '            SPELLsocketOwnedFd ownership(socketFd);\n            // Set reuse address')
+        text=text.replace('            in_port_t port = ntohs(client_addr.sin_port);',
+            '            SPELLsocketOwnedFd ownership(newfd);\n            in_port_t port = ntohs(client_addr.sin_port);')
+        text=text.replace('return new SPELLsocket( newfd, user, groups);',
+            'auto* result=new SPELLsocket(newfd,user,groups); ownership.release(); return result;')
+        text=text.replace('return new SPELLsocket(socketFd, "spell",{});',
+            'auto* result=new SPELLsocket(socketFd,"spell",{}); ownership.release(); return result;')
+        text=text.replace('return new SPELLsocket( socketFd , "spell",{});',
+            'auto* result=new SPELLsocket(socketFd,"spell",{}); ownership.release(); return result;')
     return text.encode('utf-8')
 
 
