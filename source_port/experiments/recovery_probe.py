@@ -91,6 +91,72 @@ class Feasibility(unittest.TestCase):
         snapshot = probe.capture(program, inner, {}, 5)
         self.assertEqual(probe.resume(snapshot)[0], 10)
 
+    def test_resumed_dispatch_sees_restored_state_and_live_edits(self):
+        snapshot = self.snapshot('def run():\n value=7\n value+=3\n return value\nresult=run()\n', 4, function=True)
+        events = []
+        def tracing(frame, event, arg):
+            if frame.f_code.co_filename == 'checkpoint.py':
+                events.append((event, frame.f_lineno, dict(frame.f_locals)))
+                if event == 'line': frame.f_locals['value'] = 42
+            return tracing
+        sys.settrace(tracing)
+        try:
+            self.assertEqual(probe.resume_traced(snapshot)[0], 42)
+            self.assertIs(sys.gettrace(), tracing)
+        finally:
+            sys.settrace(None)
+        self.assertEqual([event for event, _, _ in events], ['call','line','return'])
+        self.assertEqual(events[0][1:], (4, {'value':10}))
+
+    def test_resumed_dispatch_observes_nested_calls_and_exception_cleanup(self):
+        source = 'def child():\n raise ValueError("after restore")\ndef run():\n events=[]\n try:\n  child()\n finally:\n  events.append("finally")\nrun()\n'
+        program = compile(source, 'checkpoint.py', 'exec')
+        subject = next(c for c in program.co_consts if isinstance(c, types.CodeType) and c.co_name == 'run')
+        # Capture before entering try: this in-memory probe stops by unwinding,
+        # which otherwise mutates the shared list in the original finally.
+        # Persistence tests capture and SIGKILL before any unwind.
+        snapshot = probe.capture(program, subject, {}, 5)
+        events = []
+        def tracing(frame, event, arg):
+            if frame.f_code.co_filename == 'checkpoint.py':
+                events.append((frame.f_code.co_name, event, dict(frame.f_locals)))
+            return tracing
+        sys.settrace(tracing)
+        try:
+            with self.assertRaisesRegex(ValueError, 'after restore'): probe.resume_traced(snapshot)
+            self.assertIs(sys.gettrace(), tracing)
+        finally:
+            sys.settrace(None)
+        self.assertIn(('child', 'call'), [(name,event) for name,event,_ in events])
+        self.assertEqual(events[-1], ('run','return', {'events':['finally']}))
+
+    def test_recheckpoint_resumed_live_frame(self):
+        snapshot = self.snapshot('value=7\nvalue+=3\nresult=value\n', 2)
+        saved = []
+        def tracing(frame, event, arg):
+            if frame.f_code.co_filename == 'checkpoint.py' and event == 'line' and frame.f_lineno == 3:
+                saved.append(probe.snapshot(frame, sys.exception()))
+            return tracing
+        sys.settrace(tracing)
+        try: self.assertEqual(probe.resume_traced(snapshot)[1]['result'], 10)
+        finally: sys.settrace(None)
+        self.assertEqual(len(saved), 1)
+        view = probe.inspection(saved[0])
+        self.assertEqual(view.f_lineno, 3)
+        self.assertEqual(view.f_globals['value'], 10)
+        self.assertEqual(probe.resume(probe.from_state(saved[0]))[1]['result'], 10)
+
+    def test_dispatch_failure_restores_previous_trace(self):
+        snapshot = self.snapshot('value=1\nresult=value\n', 2)
+        def tracing(frame, event, arg):
+            if frame.f_code.co_filename == 'checkpoint.py': raise LookupError('dispatch failed')
+            return tracing
+        sys.settrace(tracing)
+        try:
+            with self.assertRaisesRegex(LookupError, 'dispatch failed'): probe.resume_traced(snapshot)
+            self.assertIs(sys.gettrace(), tracing)
+        finally: sys.settrace(None)
+
 
 result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Feasibility))
 Path('/out/recovery-probe.json').write_text(json.dumps({

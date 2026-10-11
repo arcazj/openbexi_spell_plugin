@@ -13,9 +13,9 @@ inputs = Path(__file__).resolve().parent
 extension = out/('_recovery_probe'+sysconfig.get_config_var('EXT_SUFFIX'))
 flags = ['c++','-std=c++17','-shared','-fPIC','-g','-O1','-fsanitize=address,undefined',
          '-fno-sanitize-recover=all','-fno-omit-frame-pointer','-Wl,--no-undefined',
-         '-I'+sysconfig.get_path('include'),str(inputs/'recovery_probe.cpp'),
+         '-I'+sysconfig.get_path('include'),'-I/input/native',str(inputs/'recovery_probe.cpp'),
          '-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o',str(extension)]
-report = {'python':sys.version, 'command':flags, 'experiment_only':True,
+report = {'shared_continuation':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('/input/native').glob('*') if p.name in ('continuation.cpp','SPELLcontinuation313.H')}, 'python':sys.version, 'command':flags, 'experiment_only':True,
           'inputs':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs.iterdir() if p.is_file()}}
 result = subprocess.run(flags,capture_output=True,text=True,timeout=120)
 (out/'build.log').write_text(result.stdout+result.stderr)

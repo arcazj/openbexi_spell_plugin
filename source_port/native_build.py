@@ -103,6 +103,8 @@ if all(r['exit_code']==0 for r in results):
         analysis_units.extend(source/p for p in manifest['SPELL_CFG']['units'])
         analysis_units.extend(source/p for p in manifest['SPELL_PRD']['units'])
         analysis_units.extend(source/'lib/SPELL_WRP/src'/name for name in ('SPELLconfigDict.C','SPELLpyValue.C'))
+        analysis_units.extend(source/'lib/SPELL_WS/src'/name for name in ('SPELLwsStorage.C','SPELLwsStaticData.C','SPELLwsDynamicData.C','SPELLwsFrame.C'))
+        analysis_units.append(Path('/input/native/continuation.cpp'))
         analysis_units.append(Path('/input/native/qualify_analysis.cpp'))
         with ThreadPoolExecutor(max_workers=4) as pool:
             report['analysis_units'] = list(pool.map(compile_unit, analysis_units))
@@ -127,6 +129,10 @@ if all(r['exit_code']==0 for r in results):
                     capture_output=True,text=True,timeout=120)
                 (output/'cold-runtime.log').write_text(result.stdout+result.stderr)
                 report['cold_runtime_exit_code'] = result.returncode
+                result = subprocess.run([sys.executable,'-I','/input/native/qualify_ws.py'],env=env,
+                    capture_output=True,text=True,timeout=120)
+                (output/'ws-runtime.log').write_text(result.stdout+result.stderr)
+                report['ws_runtime_exit_code'] = result.returncode
 
         storage_units = [source/'lib/SPELL_WS/src/SPELLwsStorage.C',Path('/input/native/qualify_storage.cpp')]
         with ThreadPoolExecutor(max_workers=4) as pool:

@@ -4,6 +4,12 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_WS/SPELLwsDynamicData.H': '0ead809531f5542c91e95131956305e27a39d02c2845af76ce0daa9d6507c2c5',
+    'lib/SPELL_WS/src/SPELLwsDynamicData.C': '466ea5544f5e2cfeed11040defe72dc66c0db0606575a685912d130f0e1bc53f',
+    'include/SPELL_WS/SPELLwsStaticData.H': '6cb9e5a8b85166e83fcaa3b2b3ba3e2931a1c7d70a72ee9252d6e108385d9525',
+    'lib/SPELL_WS/src/SPELLwsStaticData.C': 'b5530d8a3dbdff7f3e3e5545a59272ec733f8b9aecb632e263aae19a07c8031a',
+    'include/SPELL_WS/SPELLwsFrame.H': '583b07b7b4dd82a3c360527576d0bc1f129b3a19a7c5e2e598bca9b5e1d6034b',
+    'lib/SPELL_WS/src/SPELLwsFrame.C': 'da9bc5ea2c6037ec2719cd0f3c4929eb975aa018b92a5dd4d4c7d5c63876d2e6',
     'include/SPELL_EXC/SPELLframeManager.H': '4c265b25b8e311bef3ff2bf08374e023160346c97d27883b086882daac3602b5',
     'include/SPELL_EXC/SPELLexecutor.H': '6671885f2423ea99d080e0f06049a91b0fee3352e7e0469b19467f53ecb8cb01',
     'include/SPELL_DTA/SPELLdtaContainer.H': 'bf2de9f9ef83507f86acde77e8c5d896009bca6b1c616c809dcab9e53f6e7a07',
@@ -57,7 +63,21 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Native preimage differs: ' + name)
     text = original.decode('utf-8')
-    if name.endswith('SPELLframeManager.H'):
+    if name.endswith(('SPELLwsDynamicData.C','SPELLwsStaticData.C','SPELLwsFrame.C','SPELLwsDynamicData.H')):
+        replacement = {'SPELLwsDynamicData.C':'ws_dynamic.cpp','SPELLwsStaticData.C':'ws_static.cpp',
+                       'SPELLwsFrame.C':'ws_frame.cpp','SPELLwsDynamicData.H':'ws_dynamic.h'}[Path(name).name]
+        text = text[:text.index('// FILES TO INCLUDE')] + body(replacement)
+    elif name.endswith('SPELLwsStaticData.H'):
+        text = text.replace('void cleanup();','void cleanup();\n        void rebind(PyFrameObject* frame) { m_frame = frame; }')
+    elif name.endswith('SPELLwsFrame.H'):
+        text = text.replace('void reset();','''void reset();
+        void refresh();
+        void setState(PyObject* state);
+        PyObject* getState() const;
+        void rebind(PyFrameObject* frame);
+        bool isPending() const { return m_pending; }''')
+        text = text.replace('unsigned int m_lastLine;', 'unsigned int m_lastLine;\n        bool m_pending;')
+    elif name.endswith('SPELLframeManager.H'):
         text = text.replace('#include "SPELL_EXC/SPELLexecutionModel.H"', '#include "SPELL_EXC/SPELLexecutionModel.H"\n#include "SPELL_EXC/SPELLexecutorConfiguration.H"')
         text = text.replace('void initialize( const std::string& scriptFile );', '''void initialize( const std::string& scriptFile );
         void initialize(const std::string& scriptFile, const SPELLexecutorConfig& configuration);''')
@@ -372,4 +392,15 @@ def apply_tree(source):
     embedded.write_text('// SPDX-License-Identifier: GPL-3.0-or-later\nstatic const char analysisSource[] = R"SPELL_ANALYSIS(' + support + ')SPELL_ANALYSIS";\n',encoding='utf-8')
     for path in (bridge, embedded):
         changed[path.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+    for name in ('SPELLcontinuation313.H','SPELLcontinuationCodec.H'):
+        path = source/'include/SPELL_WS'/name
+        path.write_bytes((ROOT/name).read_bytes())
+        changed[path.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+    embedded = source/'include/SPELL_WS/SPELLcontinuationSource.H'
+    support = body('continuation_codec.py')
+    identity = hashlib.sha256(b''.join((ROOT/name).read_bytes() for name in
+        ('continuation.cpp','SPELLcontinuation313.H','SPELLcontinuationCodec.H','continuation_codec.py'))).hexdigest()
+    assert ')SPELL_CONT"' not in support
+    embedded.write_text('// SPDX-License-Identifier: GPL-3.0-or-later\nstatic const char continuationSourceIdentity[] = "'+identity+'";\nstatic const char continuationSource[] = R"SPELL_CONT('+support+')SPELL_CONT";\n',encoding='utf-8')
+    changed[embedded.relative_to(source).as_posix()] = {'new':True,'sha256':hashlib.sha256(embedded.read_bytes()).hexdigest()}
     return changed

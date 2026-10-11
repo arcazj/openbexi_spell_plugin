@@ -86,3 +86,8 @@ demonstrably obsolete project resources and preserves active test services.
 The original [cold execution path](COLD_EXECUTION.md) adds eight passing checks
 using live CPython frames, original result flags and a qualification dispatcher.
 Warm continuation and the full executor/context/CIF dispatcher remain open.
+
+The original [WS frame/data controllers](WS_FRAME_DATA.md) add twelve passing
+checks and use the same continuation engine as the recovery experiments. The
+inventory reaches 142/143; the top-level WS controller and its whole-stack
+integration are still required. The shared engine has 38 passing probe checks.

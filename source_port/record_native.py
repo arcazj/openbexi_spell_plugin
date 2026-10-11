@@ -18,7 +18,10 @@ def main():
     parser.add_argument('--manager', action='store_true', help='Require linked original frame-manager component behavior and filter lifecycle')
     parser.add_argument('--dta', action='store_true', help='Require original DTA types, value conversion and interpreter lifecycle checks')
     parser.add_argument('--cold', action='store_true', help='Require original manager cold evaluation and all preceding component checks')
+    parser.add_argument('--ws-frames', action='store_true', help='Require original WS frame/data integration and shared continuation probes')
     args = parser.parse_args()
+    if args.ws_frames:
+        args.cold = True
     if args.cold:
         args.dta = True
     if args.dta:
@@ -155,7 +158,33 @@ def main():
         report['cold_runtime'] = cold
         report['milestone'] = 'CPython 3.13 original manager cold evaluation with live frames'
         report['qualification_scope'] += '; qualification trace dispatcher calls original manager callbacks; nested calls, live edits, error/control propagation and repeated reloads'
-    name = 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.ws_frames:
+        ws = json.loads((evidence/'ws-runtime.json').read_text())
+        probe = json.loads((evidence/'build.json').read_text())
+        required = {'lib/SPELL_WS/src/'+name for name in ('SPELLwsFrame.C','SPELLwsStaticData.C','SPELLwsDynamicData.C')}
+        if (build.get('ws_runtime_exit_code') != 0 or ws['tests'] < 12
+                or any(ws[k] for k in ('failures','errors','skips'))
+                or not required.issubset({u['unit'] for u in build['analysis_units']})
+                or report['library_syntax']['pass'] < 142):
+            raise ValueError('Original WS frame/data qualification failed')
+        for name,digest in probe['inputs'].items():
+            if hashlib.sha256((root/'source_port/experiments'/name).read_bytes()).hexdigest() != digest:
+                raise ValueError('Evidence predates continuation probe: '+name)
+        for name,digest in probe['shared_continuation'].items():
+            if hashlib.sha256((root/'source_port/native'/name).read_bytes()).hexdigest() != digest:
+                raise ValueError('Evidence predates shared continuation: '+name)
+        for key in ('build_exit_code','runtime_exit_code','persistent_runtime_exit_code','chain_runtime_exit_code'):
+            if probe.get(key) != 0: raise ValueError('Shared continuation probe failed: '+key)
+        report['continuation_probes'] = {'build':probe}
+        for name,minimum in (('recovery',14),('persistent',13),('chain',11)):
+            result = json.loads((evidence/(name+'-probe.json')).read_text())
+            if result['tests'] < minimum or any(result[k] for k in ('failures','errors','skips')):
+                raise ValueError('Shared continuation qualification failed: '+name)
+            report['continuation_probes'][name] = result
+        report['ws_runtime'] = ws
+        report['milestone'] = 'CPython 3.13 original WS frame/static/dynamic state integration'
+        report['qualification_scope'] += '; original WS frame/data classes use the shared exact-build continuation engine, inspection views, atomic single-frame storage and restored trace dispatch'
+    name = 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
@@ -163,6 +192,7 @@ def main():
         'manager_tests':report.get('manager_runtime',{}).get('tests',0),
         'dta_tests':report.get('dta_runtime',{}).get('tests',0),
         'cold_tests':report.get('cold_runtime',{}).get('tests',0),
+        'ws_frame_tests':report.get('ws_runtime',{}).get('tests',0),
         'downstream_syntax_pass':sum(u['exit_code']==0 for u in build['downstream_syntax']),
         'downstream_syntax_fail':sum(u['exit_code']!=0 for u in build['downstream_syntax']),
         'report':str(destination)}))

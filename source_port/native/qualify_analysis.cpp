@@ -267,7 +267,15 @@ static PyObject* bytecode_info(PyObject*, PyObject* args) {
     } catch (const SPELLcoreException& e) { return failure(e); }
 }
 #include "qualify_manager.inc"
+#include "qualify_ws.inc"
 static PyMethodDef methods[] = {
+    {"ws_frame_create",ws_frame_create,METH_VARARGS,nullptr},
+    {"ws_frame_event",ws_frame_event,METH_VARARGS,nullptr},
+    {"ws_frame_state",ws_frame_state,METH_O,nullptr},
+    {"ws_frame_view",ws_frame_view,METH_O,nullptr},
+    {"ws_frame_resume",ws_frame_resume,METH_O,nullptr},
+    {"ws_frame_set",ws_frame_set,METH_VARARGS,nullptr},
+    {"ws_frame_rebind",ws_frame_rebind,METH_VARARGS,nullptr},
     {"manager_create", manager_create, METH_O, nullptr}, {"manager_close", manager_close, METH_O, nullptr},
     {"manager_script", manager_script, METH_VARARGS, nullptr}, {"manager_event", manager_event, METH_VARARGS, nullptr},
     {"manager_copy", manager_copy, METH_VARARGS, nullptr}, {"manager_definitions", manager_definitions, METH_O, nullptr},
