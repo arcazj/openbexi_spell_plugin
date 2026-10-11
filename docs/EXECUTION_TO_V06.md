@@ -54,6 +54,12 @@ The [context/server milestone](CONTEXT_SERVER.md) adds two passing original IPC
 integration tests, normal server executor shutdown, twenty callback-driven
 process restarts, fast child exit checks and four descriptor reuse cases.
 
+The [service binding milestone](SERVICE_RUNTIME.md) adds eight checks of native
+registration, worker results/errors and watchdog lifecycle, with all owned threads
+joined before finalization. It also expands process/IPC shutdown regressions and
+repeats both context/server scenarios three times. The complete service process
+remains a separate gate.
+
 ## Immediate work
 
 Qualify the original service lifecycle and broader server controller/CIF behavior. Then

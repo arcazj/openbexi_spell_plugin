@@ -41,9 +41,9 @@ with open('/out/server-result.txt','w') as result:
 """)
 
 class ContextTests(unittest.TestCase):
-    def run_context(self,server=False):
+    def run_context(self,server=False,iteration=0):
         log_before=set(logs.glob('*.log'))
-        label='server' if server else 'context'
+        label=('server' if server else 'context')+'-'+str(iteration)
         with (output/(label+'-listener.log')).open('wb') as log:
             process=subprocess.Popen([str(output/'SPELL-Listener'),'-c',str(config)],
                 env=environment,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
@@ -86,13 +86,15 @@ class ContextTests(unittest.TestCase):
 
 
     def test_original_listener_starts_context_and_closes_over_ipc(self):
-        self.run_context()
+        for iteration in range(3):
+            with self.subTest(iteration=iteration): self.run_context(iteration=iteration)
 
     def test_context_launches_actual_server_executor(self):
-        self.run_context(server=True)
+        for iteration in range(3):
+            with self.subTest(iteration=iteration): self.run_context(server=True,iteration=iteration)
 
 
 result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ContextTests))
-(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,
+(output/'context-runtime.json').write_text(json.dumps({'tests':result.testsRun,'lifecycle_runs':6,
     'failures':len(result.failures),'errors':len(result.errors),'skips':len(result.skipped)},indent=2)+'\n')
 raise SystemExit(not result.wasSuccessful())

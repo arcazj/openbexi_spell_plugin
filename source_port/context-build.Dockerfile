@@ -16,7 +16,7 @@ COPY source_port/executor_build.py source_port/qualify_executor.py source_port/p
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
 RUN python /executor/executor_build.py
 
-COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp /context/
+COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py /context/
 COPY source_port/context-build.Dockerfile source_port/context-build.Dockerfile.dockerignore /context/
 RUN python /context/context_build.py
 

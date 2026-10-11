@@ -78,6 +78,18 @@ for folder,program in (('context','SPELL_Context'),('listener','SPELL_Listener')
         entry.update(executable=executable.name,sha256=sha(executable))
 
 if all(entry.get('link_exit_code')==0 for entry in report['programs'].values()):
+    result=subprocess.run(flags+['/context/qualify_service_bindings.cpp','-L/out','-lspell_executor313',
+        '-Wl,-rpath,$ORIGIN','-L'+sysconfig.get_config_var('LIBDIR'),'-lpython3.13','-o','/out/qualify_service_bindings'],
+        capture_output=True,text=True,timeout=60)
+    (output/'service-bindings-build.log').write_text(result.stdout+result.stderr)
+    report['service_bindings_build_exit_code']=result.returncode
+    if result.returncode==0:
+        result=subprocess.run(['/out/qualify_service_bindings'],capture_output=True,text=True,timeout=30,
+            env=dict(os.environ,ASAN_OPTIONS='detect_leaks=0:abort_on_error=1',
+                UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1',PYTHONMALLOC='malloc',
+                SPELL_HOME='/source',SPELL_DATA='/out/executor-data',SPELL_CONFIG='/out/executor-config'))
+        (output/'service-bindings-runtime.log').write_text(result.stdout+result.stderr)
+        report['service_bindings_runtime_exit_code']=result.returncode
     result=subprocess.run(flags+['/context/qualify_process.cpp',
         *[str(output/objects[name]['object']) for name in baseline['library_manifest']['SPELL_PRC']['units']],
         '-L/out','-lspell_executor313','-Wl,-rpath,$ORIGIN',

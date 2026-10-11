@@ -24,7 +24,10 @@ def main():
     parser.add_argument('--executor-command', action='store_true', help='Require the original standalone executor, native bindings and command behavior')
     parser.add_argument('--executor-warm', action='store_true', help='Require actual executor crash recovery with native runtime data')
     parser.add_argument('--context', action='store_true', help='Require original listener/context IPC lifecycle and process/socket regressions')
+    parser.add_argument('--service-bindings', action='store_true', help='Require native service registration and owned worker lifecycle')
     args = parser.parse_args()
+    if args.service_bindings:
+        args.context = True
     if args.context:
         args.executor_warm = True
     if args.executor_warm:
@@ -296,7 +299,7 @@ def main():
         if context['executor_build_sha256']!=hashlib.sha256((evidence/'executor-build.json').read_bytes()).hexdigest():
             raise ValueError('Context executor dependency evidence differs')
         lines=[line for line in (evidence/'process-runtime.log').read_text().splitlines() if line.startswith('{')]
-        expected={'socket_reuse_cases':4,'exit_status_cases':2,'callback_restarts':20,'duplicate_rejected':True}
+        expected={'socket_reuse_cases':4,'exit_status_cases':2,'callback_restarts':20,'duplicate_rejected':True,'child_signal_mask_checks':4,'interrupted_waits':1,'incoming_completion_cases':4}
         if len(lines)!=1 or json.loads(lines[0])!=expected:
             raise ValueError('Process/socket lifecycle evidence incomplete')
         report['context_build']=context
@@ -305,9 +308,23 @@ def main():
         report['milestone']='Original listener/context/server executor IPC startup, Run and orderly shutdown'
         report['qualification_scope'] += '; listener launches the original context, queries its status and closes it through original IPC; 20 callback-driven process restarts with concurrent waits, fast child exit codes, duplicate rejection and four reused descriptor cleanup cases; context-launched original server executor, explicit imports/native arguments, visible Run, CIF notifications, file result and successful child exit without force-kill fallback'
         report['gaps'][0]='Actual native service lifecycle and complete server controller/CIF behavior'
-    name = 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.service_bindings:
+        if behavior.get('lifecycle_runs')!=6:
+            raise ValueError('Repeated listener/context lifecycle evidence incomplete')
+        if any(context.get(key)!=0 for key in ('service_bindings_build_exit_code','service_bindings_runtime_exit_code')):
+            raise ValueError('Native service binding qualification failed')
+        log=(evidence/'service-bindings-runtime.log').read_text()
+        for marker in ('SERVICE_BINDING_TESTS 8','SERVICE_WORKERS_JOINED','SERVICE_BINDINGS_COMPLETE callbacks='):
+            if marker not in log: raise ValueError('Service binding evidence incomplete: '+marker)
+        if any(marker in log for marker in ('ERROR: AddressSanitizer','runtime error:','Fatal Python error')):
+            raise ValueError('Service sanitizer failure')
+        report['service_bindings']={'tests':8,'workers_joined':True,'builtins_unchanged':True,
+            'native_registration':True,'native_watchdog':True,'full_service_process_qualified':False}
+        report['milestone']='Original native service registration, watchdog binding and owned worker shutdown'
+        report['qualification_scope'] += '; eight native service registration/worker/watchdog checks, all owned threads joined before interpreter finalization'
+    name = 'SERVICE_BINDINGS' if args.service_bindings else 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
-    destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),
         'storage_tests':report.get('storage_runtime',{}).get('tests',0), 'embedding_cycles':3,
         'manager_tests':report.get('manager_runtime',{}).get('tests',0),

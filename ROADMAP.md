@@ -1,6 +1,6 @@
 # openbexi_spell_plugin roadmap
 
-## v0.1 — independent plugin and DSS testing baseline
+## v0.1 â€” independent plugin and DSS testing baseline
 
 Retain the bounded SDK/TIME/common policy and existing DSS engine/packets/
 transactional command journal. Package independently; add a loopback deterministic
@@ -13,7 +13,7 @@ This bounded v0.1 phase is complete on Windows x64 / CPython 3.13. Docker image
 building is verified; container startup remains unqualified on this host. See
 [qualification](docs/QUALIFICATION.md) and its source/package manifest.
 
-## v0.2 — original-source library foundation
+## v0.2 â€” original-source library foundation
 
 Reproducibly build/install from the supplied 2.6.10 archive; record source hashes,
 original notices and small traceable patches. Generate original RPC stubs. Reuse
@@ -32,9 +32,11 @@ and [native context/server qualification](docs/CONTEXT_SERVER.md). The listener,
 context and one real server procedure now start, run and exit normally through
 original IPC; process/socket regressions also pass. Native service lifecycle and
 broader controller/CIF behavior still gate v0.2 and installed IDE/plugin host
-qualification.
+qualification. The [service binding milestone](docs/SERVICE_RUNTIME.md) qualifies
+native registration, watchdog callbacks and owned worker shutdown; the full service
+executable remains pending.
 
-## v0.3 — real IDE host plugins
+## v0.3 â€” real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with
 accurate module dependencies, settings/actions/tool window and the shared Python
@@ -42,7 +44,7 @@ library. Verify and exercise install/activate/explicit-import Run/Debug/uninstal
 in real private IntelliJ IDEA and PyCharm sandboxes. Plain Python IDE operation
 survives plugin removal. A Python wheel alone is not JetBrains compatibility.
 
-## v0.4 — drivers and operating modes
+## v0.4 â€” drivers and operating modes
 
 Reuse the original Driver Development Manual and framework lifecycle. Bridge the
 original RPC schema explicitly to the existing binary/Kafka DSS transport; test
@@ -51,7 +53,7 @@ exactly Execution, Monitoring and Development. Move reusable operational server
 components out of the legacy archive only when their dependencies and immutable
 release identities are consciously migrated.
 
-## v0.5 — full SPELL conformance
+## v0.5 â€” full SPELL conformance
 
 Allocate all 763 existing inventory rows; historical 195 ADAPTED / 79 PARTIAL /
 489 GAP classifications are not automatically promoted. Resolve every manual/
@@ -60,7 +62,7 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-## v0.6 — distribution and compatibility
+## v0.6 â€” distribution and compatibility
 
 Qualify reproducible installable artifacts, clean installation/removal, upgrades
 from supported earlier releases, and complete Python/SPELL workflows in
@@ -69,7 +71,7 @@ matrix backed by actual host tests, source/license provenance and user docs.
 Qualify the shipped DSS image at runtime as well as build time. Coordinate the
 neutral IDE's independent release numbers and required shared-service features.
 
-## Later — operational qualification and stable release
+## Later â€” operational qualification and stable release
 
 Proposed v0.7 covers security/capacity and operational recovery/backup acceptance;
 v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.

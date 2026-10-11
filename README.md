@@ -73,3 +73,7 @@ epochs, uncertain command effects and backpressure remain explicit; failed sends
 are never automatically replayed by this adapter. Operational work requires the
 full server's separate migration and acceptance gate. See
 [v0.1 qualification](docs/QUALIFICATION.md) for the tested scope.
+
+Native service registration and worker lifecycle progress is recorded in
+[service qualification](docs/SERVICE_RUNTIME.md). The original service process and
+broader native controls still gate the v0.2 release.
