@@ -28,6 +28,10 @@ the native syntax probe to 47 of 63 passing units. Static Step/Goto analysis add
 the syntax probe to 48 of 63. Full native bindings, bytecode control and warm-start
 still require substantive compatibility work.
 
+The [recovery feasibility investigation](RECOVERY_DESIGN.md) passes six isolated
+checks using an exact-version private frame adapter. It is not shipped or counted
+as full WS recovery; persistence and the original executor integration remain open.
+
 Existing source-alpha evidence is the historical `source-v0.2.0a1` snapshot.
 New evidence must identify its exact source and patches. Release tags are created
 only after the corresponding acceptance gates pass. Cleanup removes only

@@ -1,0 +1,79 @@
+{
+  "status": "research only; v0.2 remains open",
+  "build": {
+    "python": "3.13.14 (main, Jun 24 2026, 02:06:49) [GCC 14.2.0]",
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-shared",
+      "-fPIC",
+      "-g",
+      "-O1",
+      "-fsanitize=address,undefined",
+      "-fno-sanitize-recover=all",
+      "-fno-omit-frame-pointer",
+      "-Wl,--no-undefined",
+      "-I/usr/local/include/python3.13",
+      "/input/recovery_probe.cpp",
+      "-L/usr/local/lib",
+      "-lpython3.13",
+      "-o",
+      "/out/_recovery_probe.cpython-313-x86_64-linux-gnu.so"
+    ],
+    "experiment_only": true,
+    "inputs": {
+      "recovery-probe.Dockerfile": "5264b3e59ceea3b893b3423895d693f5de2885678560de120b90acd99796cc72",
+      "recovery_probe.py": "25e9368c308907b8504534f5acc2480872504b9d7edad634038b7cb854f985f6",
+      "build_probe.py": "b494904d335474680e64c5f74c9903fdc8f8f46b08174c83ce529c1bb8c23577",
+      "recovery-probe.Dockerfile.dockerignore": "cc8d85bbba9a7da5e311b1f4653c7b0cd6672535c18231e0b9252a209687a688",
+      "recovery_probe.cpp": "8337edc6fe32674738d2beeba5dc9d0a153e2dd7cc7927fade0b914ba0991103"
+    },
+    "build_exit_code": 0,
+    "runtime_exit_code": 0
+  },
+  "runtime": {
+    "experiment_only": true,
+    "full_spell_warm_start_qualified": false,
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "persistent_serialization": false,
+    "nested_call_chain": false,
+    "address_sanitizer": true,
+    "undefined_behavior_sanitizer": true,
+    "leak_sanitizer": false
+  },
+  "artifacts": {
+    "build.json": {
+      "bytes": 1065,
+      "sha256": "c0086f0105c6112d612eee83b928bc66b5b0d53fa52858fc6f6a404dcaa618fd"
+    },
+    "build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recovery-probe.json": {
+      "bytes": 297,
+      "sha256": "c28f2d441cc7caa036e5ae273a4c85ee3a5ec80ef7f1814abdf52f0356bad8e0"
+    },
+    "runtime.log": {
+      "bytes": 768,
+      "sha256": "4d95ad6e409857132f574b2506d690f0c1e5f962ef6954af7c24b20e8ec5e423"
+    },
+    "_recovery_probe.cpython-313-x86_64-linux-gnu.so": {
+      "bytes": 183264,
+      "sha256": "f7c31833d3a8961c4d4149cdbed3ea69d1fbddd4d5e874af0174068deefd8060"
+    }
+  },
+  "unqualified": [
+    "persistent serialization",
+    "crash/process recovery",
+    "nested caller frames",
+    "arguments/closures/generators/coroutines",
+    "object graph and external resources",
+    "original SPELL WS integration",
+    "Windows",
+    "other CPython builds"
+  ]
+}
