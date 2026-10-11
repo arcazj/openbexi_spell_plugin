@@ -30,5 +30,9 @@ created privately on 2026-10-11. Its branch is `master` and its local remote is
 `origin`. Publication preserves existing commits and tags, including accepted
 `v0.3.0` at `c34b21c`. Native wheels, the JetBrains ZIP and qualification outputs
 remain local ignored artifacts; a Git push does not distribute them.
-The old GitHub repository and local legacy directory are retained. Removing
-`C:/projects/openbexi_spell` requires the user's confirmation.
+The user subsequently deleted `arcazj/openbexi_SPELL` and `arcazj/openbexi_REI`
+on GitHub; authenticated verification on 2026-10-11 confirmed both old names
+unavailable and both new repositories present. Verified retirement backups and
+the local legacy directory are retained. Removing `C:/projects/openbexi_spell`
+requires the user's confirmation. Resume through the sibling IDE's
+`docs/RESUME_V04.md`: IDE v0.3 prerequisites, then plugin v0.4, v0.5 and v0.6.
