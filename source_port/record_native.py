@@ -23,7 +23,10 @@ def main():
     parser.add_argument('--dta-checkpoints', action='store_true', help='Require native DTA graphs through serialization and original WS recovery')
     parser.add_argument('--executor-command', action='store_true', help='Require the original standalone executor, native bindings and command behavior')
     parser.add_argument('--executor-warm', action='store_true', help='Require actual executor crash recovery with native runtime data')
+    parser.add_argument('--context', action='store_true', help='Require original listener/context IPC lifecycle and process/socket regressions')
     args = parser.parse_args()
+    if args.context:
+        args.executor_warm = True
     if args.executor_warm:
         args.executor_command = True
     if args.executor_command:
@@ -66,9 +69,9 @@ def main():
         if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError('Build evidence predates source: '+name)
     artifacts = {}
-    for path in sorted(evidence.iterdir()):
+    for path in sorted(evidence.rglob("*")):
         if path.is_file():
-            artifacts[path.name] = {'bytes':path.stat().st_size,
+            artifacts[path.relative_to(evidence).as_posix()] = {'bytes':path.stat().st_size,
                                    'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
     report = {
         'milestone':'CPython 3.13 native UTIL compiler/frame/error ownership',
@@ -272,7 +275,37 @@ def main():
         report['gaps'][0]='Native service/context lifecycle, complete executor/CIF control and broader recovery scenarios'
         report['warm_checkpoint_format']='SPELL-continuation/2; runtime-owned data shares the procedure graph'
         report['step_checkpoint_boundary']='First safe line after the native Step binding returns'
-    name = 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
+    if args.context:
+        context = json.loads((evidence/'context-build.json').read_text())
+        behavior = json.loads((evidence/'context-runtime.json').read_text())
+        required = ('process_build_exit_code','process_runtime_exit_code','peer_build_exit_code','server_peer_build_exit_code','qualification_exit_code')
+        if any(context.get(key)!=0 for key in required):
+            raise ValueError('Context/process qualification failed')
+        if behavior['tests']<2 or any(behavior[key] for key in ('failures','errors','skips')):
+            raise ValueError('Context IPC lifecycle qualification incomplete')
+        if set(context['programs']) != {'SPELL_Context','SPELL_Listener','SPELL_Executor_v3','SPELL_Service_v3'}:
+            raise ValueError('Original server programs missing')
+        for entry in context['programs'].values():
+            if entry.get('link_exit_code')!=0 or any(row['exit_code'] for row in entry['units']):
+                raise ValueError('Server program compilation failed')
+            if hashlib.sha256((evidence/entry['executable']).read_bytes()).hexdigest()!=entry['sha256']:
+                raise ValueError('Server executable differs: '+entry['executable'])
+        for name,digest in context['input_sources'].items():
+            if hashlib.sha256((root/'source_port'/name).read_bytes()).hexdigest()!=digest:
+                raise ValueError('Context evidence predates recipe: '+name)
+        if context['executor_build_sha256']!=hashlib.sha256((evidence/'executor-build.json').read_bytes()).hexdigest():
+            raise ValueError('Context executor dependency evidence differs')
+        lines=[line for line in (evidence/'process-runtime.log').read_text().splitlines() if line.startswith('{')]
+        expected={'socket_reuse_cases':4,'exit_status_cases':2,'callback_restarts':20,'duplicate_rejected':True}
+        if len(lines)!=1 or json.loads(lines[0])!=expected:
+            raise ValueError('Process/socket lifecycle evidence incomplete')
+        report['context_build']=context
+        report['context_runtime']=behavior
+        report['process_runtime']=expected
+        report['milestone']='Original listener/context/server executor IPC startup, Run and orderly shutdown'
+        report['qualification_scope'] += '; listener launches the original context, queries its status and closes it through original IPC; 20 callback-driven process restarts with concurrent waits, fast child exit codes, duplicate rejection and four reused descriptor cleanup cases; context-launched original server executor, explicit imports/native arguments, visible Run, CIF notifications, file result and successful child exit without force-kill fallback'
+        report['gaps'][0]='Actual native service lifecycle and complete server controller/CIF behavior'
+    name = 'CONTEXT' if args.context else 'EXECUTOR_WARM' if args.executor_warm else 'EXECUTOR_COMMAND' if args.executor_command else 'DTA_CHECKPOINT' if args.dta_checkpoints else 'WARM' if args.warm else 'WS_FRAMES' if args.ws_frames else 'COLD' if args.cold else 'DTA' if args.dta else 'MANAGER' if args.manager else 'FACTORY' if args.factory else 'FRAMES' if args.frames else 'BYTECODE' if args.bytecode else 'WATCH' if args.watch else 'STORAGE' if args.storage else 'GOTO' if args.goto else 'ANALYSIS' if args.analysis else 'UTIL'
     destination = root/('docs/NATIVE_'+name+'_QUALIFICATION.json')
     destination.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'util_tests':runtime['tests'], 'analysis_tests':report.get('analysis_runtime',{}).get('tests',0),

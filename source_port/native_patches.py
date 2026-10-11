@@ -4,6 +4,18 @@ import re
 from pathlib import Path
 
 PREIMAGES = {
+    'include/SPELL_CIFS/SPELLserverCif.H': 'ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba',
+    'lib/SPELL_CIFS/src/SPELLserverCif.C': '9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7',
+    'src/executor/src/SPELLexecutorMain.C': 'b7d2263cdfc850fa7e2778906cc5893d3d0f2ba9d5e1aee991ea8cd01c61b111',
+    'lib/SPELL_IPC/src/SPELLipcClientInterface.C': '2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5',
+    'lib/SPELL_IPC/src/SPELLsocket.C': '3720c025525a5b63fac8bdf6a0f0cf8c87ab585836b77db3085ddd6990a39cb8',
+    'include/SPELL_IPC/SPELLsocket.H': 'bdf0a1643dc8fc77dd83a47009c3b3a60fa95ea8efca1563fa4e6cfe24942350',
+    'lib/SPELL_CTX/src/SPELLcontext.C': 'cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c',
+    'lib/SPELL_LST/src/SPELLlistenerContext.C': 'ce7c6b3e16847584ad0a6e0e677ed5f9c16de4b560c3a29f7b08f1e8d72c1e2f',
+    'include/SPELL_PRC/SPELLprocess.H': 'd2484b06554a45f808340963a253df43e96ad78dbc152a053bccd0ee533c2a17',
+    'include/SPELL_PRC/SPELLprocessManager.H': 'f2b9306b10592069c71a43efd01d2ae85f722a4e3d96dc51a3826164deb9fcf9',
+    'lib/SPELL_PRC/src/SPELLprocess.C': '2fb4528c3cdc56ca20cfb21a6567dc621690b032b0076f09fe66e276743de6f1',
+    'lib/SPELL_PRC/src/SPELLprocessManager.C': 'aa6ae8d3d2f9d5f804a74eabe5af07d8001ba419ad4e30e158c07f47f2e716db',
     'include/SPELL_SYN/SPELLtimer.H': '152943d761837f7312aa38064f7db9ddbc99ec6e5d392bc44ea58bcd84aff23d',
     'lib/SPELL_CIF/src/SPELLcifHelper.C': '7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24',
     'lib/SPELL_CIFC/src/SPELLautomaticCif.C': 'ea34aa30832faf2ae3f8c605abb281afa45eb4d241b19c7604a5c090a10b625e',
@@ -130,6 +142,60 @@ def apply(name, original):
         text=text.replace('while(isCounting())','while(!m_shuttingDown.load() && isCounting())')
         text=text.replace('        if (callTimerCallback())','        if (m_shuttingDown.load()) return;\n        if (callTimerCallback())')
         text = text.replace('    m_stopEvent.set();\n}', '    m_stopEvent.set();\n    join(); // the worker must leave before its mutexes/events are destroyed\n}',1)
+    elif name.endswith('SPELLsocket.H'):
+        text=text.replace('#define __SPELL_SOCKETS_H__','#define __SPELL_SOCKETS_H__\n#include <atomic>')
+        text=text.replace('int m_socketFd;', 'std::atomic<int> m_socketFd;')
+        text=text.replace('bool m_connected;', 'std::atomic_bool m_connected;')
+    elif name.endswith('SPELLsocket.C'):
+        text=text.replace('SPELLsocket::~SPELLsocket()\n{','SPELLsocket::~SPELLsocket()\n{\n    close();')
+        text=text.replace('if (errno > 0)', 'if (numWritten < 0)')
+        for method,how,return_type in [('shutdownRead','SHUT_RD','void'),('shutdownWrite','SHUT_WR','void'),('shutdown','SHUT_RDWR','int'),('close',None,'void')]:
+            content='    m_connected=false;\n    const int fd=m_socketFd.exchange(-1);\n'
+            content+='    if (fd<0) return'+(' 0' if return_type=='int' else '')+';\n'
+            if how: content+='    ::shutdown(fd,'+how+');\n'
+            content+='    '+('return ' if return_type=='int' else '')+'::close(fd);\n'
+            text,count=re.subn(return_type+r' SPELLsocket::'+method+r'\(\)\s*\{.*?\n\}',lambda _:return_type+' SPELLsocket::'+method+'()\n{\n'+content+'}',text,count=1,flags=re.S)
+            assert count==1,method
+        start=text.index('SPELLsocket* SPELLsocket::acceptClient(')
+        end=text.index('SPELLsocket* SPELLsocket::connect(',start)
+        part=text[start:end].replace('m_socketFd','socketFd')
+        part=part.replace('    // Master file descriptor list','    const int socketFd=m_socketFd.load();\n    if (socketFd<0) { *disconnected=true; return nullptr; }\n    // Master file descriptor list')
+        text=text[:start]+part+text[end:]
+    elif name.endswith('SPELLipcClientInterface.C'):
+        text=section(text,'SPELLipcClientInterface::~SPELLipcClientInterface()', 'void SPELLipcClientInterface::connect(', '''SPELLipcClientInterface::~SPELLipcClientInterface()
+{
+    disconnect();
+}
+//=============================================================================
+''')
+        text=text.replace('    m_socket = SPELLsocket::connect( m_serverHost, m_serverPort );', '''    if (isConnected()) throw SPELLipcError("Client already connected");
+    if (m_channel) { delete m_channel; m_channel=nullptr; }
+    else delete m_socket;
+    m_socket=nullptr;
+    m_socket = SPELLsocket::connect( m_serverHost, m_serverPort );''')
+        text=section(text,'void SPELLipcClientInterface::disconnect()', 'void SPELLipcClientInterface::connectionLost(', '''void SPELLipcClientInterface::disconnect()
+{
+    // Connection loss also requires cleanup: the flag is not ownership.
+    m_connected=false;
+    cancelOutgoingRequests();
+    cancelIncomingRequests();
+    m_mailbox.shutdown();
+    if (m_channel) {
+        DEBUG(NAME + "Cleanup: disconnect channel");
+        m_channel->disconnect();
+        DEBUG(NAME + "Cleanup: destroy channel");
+        delete m_channel; // channel owns and destroys its socket
+        m_channel=nullptr;
+    } else delete m_socket; // connect failed before a channel was installed
+    m_socket=nullptr;
+    DEBUG(NAME + "Cleanup: stop incoming processors");
+    m_trash.shutdown();
+    DEBUG(NAME + "Cleanup: join request collector");
+    m_trash.join();
+    DEBUG(NAME + "Cleanup complete");
+}
+//=============================================================================
+''')
     elif name.endswith('SPELLscheduler.C'):
         text = text.replace('#include "SPELL_EXC/SPELLscheduler.H"','#include "SPELL_EXC/SPELLscheduler.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
         text = text.replace('    m_pyTM = NULL;\n    delete m_timer;', '''    delete m_timer; // joins before Python references are released
@@ -144,6 +210,18 @@ def apply(name, original):
             THROW_EXCEPTION("Invalid prompt answer","Answer is not a valid option index",SPELL_ERROR_EXECUTION);
         promptResult=def.expected[index];''')
         text = '#include <charconv>\n'+text
+    elif name.endswith('SPELLserverCif.H'):
+        text=text.replace('#define __SPELL_SERVER_CIF_H__','#define __SPELL_SERVER_CIF_H__\n#include <atomic>')
+        text=text.replace('bool m_ready;','std::atomic_bool m_ready;')
+    elif name.endswith('SPELLserverCif.C'):
+        # A detached controlling client cannot acknowledge its final status.
+        # Closing cancels notification retries; it does not forge an ACK.
+        text,count=re.subn(r'while\s*\(!waitAcknowledge\(msg\)\);',
+            'while (!isClosing() && !waitAcknowledge(msg));',text)
+        assert count==4
+        text=text.replace('if (!m_ready) return false;', 'if (!m_ready || isClosing()) return false;')
+        text=text.replace('void SPELLserverCif::specificCleanup( bool force )\n{',
+            'void SPELLserverCif::specificCleanup( bool force )\n{\n    setClosing();')
     elif name.endswith('SPELLautomaticCif.C'):
         text = text.replace('rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );', '''rawAnswer = SPELLcifHelper::getRawAnswer( answer, def );
     if (rawAnswer.empty() && !def.options.empty())
@@ -168,6 +246,118 @@ void SPELLprocedureManager::registerScript(const std::string& file)
 '''
     elif name.endswith('SPELLexecutorConfiguration.C'):
         text = text.replace('m_parentProcId = -1;', 'm_parentProcId = ""; // no parent; never a non-UTF-8 sentinel byte')
+    elif name == 'lib/SPELL_CTX/src/SPELLcontext.C':
+        text = text.replace('#include "SPELL_CTX/SPELLcontext.H"', '#include "SPELL_CTX/SPELLcontext.H"\n#include "SPELL_UTIL/SPELLpython313.H"')
+        text,count = re.subn(r'\tif \(SPELLconfiguration::instance\(\).getContextParameter\(USE_DRIVER_TIME\) == "true"\)\n\t\{\n\t\tSPELLdriverManager::instance\(\).cleanup\(true\);\n\t\}', '', text)
+        assert count==1
+        text = text.replace('SPELLpythonHelper::instance().acquireGIL();', '''{ SPELLpython313::GIL gil;
+      SPELLdriverManager::instance().cleanup(true); }
+    // finalize restores the owner's saved thread state itself.''')
+        text = text.replace('m_eventFinish.clear();\n\tm_eventFinish.wait();', 'm_eventFinish.wait();')
+        text = text.replace('void SPELLcontext::start( const SPELLcontextConfiguration& config )\n{',
+            'void SPELLcontext::start( const SPELLcontextConfiguration& config )\n{\n    m_eventFinish.clear(); // arm before publishing IPC readiness')
+    elif name == 'include/SPELL_PRC/SPELLprocess.H':
+        text = text.replace('// FILES TO INCLUDE', '#include <memory>\n#include <atomic>\n#include <mutex>\n// FILES TO INCLUDE',1)
+        text = text.replace('class SPELLprocess : public SPELLthread', 'class SPELLprocess : public SPELLthread, public std::enable_shared_from_this<SPELLprocess>')
+        assert 'enable_shared_from_this<SPELLprocess>' in text
+        text = text.replace('void run();', 'void run();\n        void join();\n        bool isClosing() const { return m_aboutToClose; }')
+        for type_,field in [('pid_t','m_processPID'),('int','m_retValue'),('int','m_status'),
+                ('SPELLprocessStatus','m_statusCode'),('bool','m_killIt'),('bool','m_aboutToClose')]:
+            text,count = re.subn(r'\b'+type_+r'\s+'+field+r';', 'std::atomic<'+type_+'> '+field+';',text)
+            assert count==1,(name,field)
+        text = text.replace('bool                    m_notChild;', 'std::mutex m_waitLock;\n        bool m_notChild;')
+    elif name == 'lib/SPELL_PRC/src/SPELLprocess.C':
+        text = text.replace('// DEFINES ', 'static thread_local SPELLprocess* currentProcess=nullptr;\n// DEFINES ',1)
+        if 'static thread_local SPELLprocess*' not in text:
+            text = text.replace('//=============================================================================', 'static thread_local SPELLprocess* currentProcess=nullptr;\n//=============================================================================',1)
+        text = text.replace('    this->join();', '    if (currentProcess==this) pthread_detach(pthread_self());\n    else this->join();')
+        start=text.index('void SPELLprocess::run()')
+        end=text.index('void SPELLprocess::kill()',start)
+        part=text[start:end]
+        part=part.replace('void SPELLprocess::run()\n{', '''void SPELLprocess::run()
+{
+    struct Current {
+        SPELLprocess* previous=currentProcess;
+        Current(SPELLprocess* value) { currentProcess=value; }
+        ~Current() { currentProcess=previous; }
+    } current(this);
+    // A listener may remove/restart this identifier from this very callback.
+    // Keep the original monitor alive until its native run method returns.
+    auto keepAlive=shared_from_this();
+    int observedStatus=0;''')
+        part=part.replace('&m_status','&observedStatus')
+        # A nonblocking wait here could reap a fast child, leaving the blocking
+        # wait below to misreport ECHILD as an unexpected process death.
+        part=section(part,'\t\tDEBUG("[PRC] Waiting PID");',
+            '\t\tDEBUG("[PRC] The process has started, starting check");','')
+        part=part.replace('m_processPID = popen( m_command );',
+            'm_processPID = popen( m_command );\n            if (m_processPID<=0) THROW_EXCEPTION("Cannot start child", "fork failed", SPELL_ERROR_PROCESS);')
+        part=part.replace('waitpid( m_processPID, &observedStatus, WUNTRACED );','waitpid( m_processPID, &observedStatus, WUNTRACED );\n            m_status=observedStatus;')
+        text=text[:start]+part+text[end:]
+        text = section(text,'int SPELLprocess::wait()', 'pid_t SPELLprocess::popen(', '''void SPELLprocess::join()
+{
+    if (currentProcess==this) return;
+    std::lock_guard<std::mutex> lock(m_waitLock);
+    SPELLthread::join();
+}
+int SPELLprocess::wait()
+{
+    join();
+    return m_retValue;
+}
+//=============================================================================
+''')
+    elif name == 'include/SPELL_PRC/SPELLprocessManager.H':
+        text = text.replace('// FILES TO INCLUDE', '#include <memory>\n// FILES TO INCLUDE',1)
+        text = text.replace('std::map<std::string,SPELLprocess*>', 'std::map<std::string,std::shared_ptr<SPELLprocess>>')
+        text = text.replace('bool checkProcessExist(', 'bool isClosingProcess(const std::string& identifier);\n        bool checkProcessExist(')
+    elif name == 'lib/SPELL_PRC/src/SPELLprocessManager.C':
+        for parameter in ('command','pid'):
+            text=text.replace('SPELLprocess* process = new SPELLprocess(identifier,'+parameter+',this);',
+                'if (m_processes.count(identifier)) THROW_EXCEPTION("Cannot start process", "Duplicate identifier", SPELL_ERROR_PROCESS);\n    auto process=std::make_shared<SPELLprocess>(identifier,'+parameter+',this);')
+        text=text.replace('    process->start();\n','')
+        text=text.replace('    m_processes.insert( std::make_pair( identifier, process ));',
+            '    m_processes.emplace(identifier,process);\n    try { process->start(); } catch (...) { m_processes.erase(identifier); throw; }')
+        text=section(text,'int SPELLprocessManager::waitProcess(', 'SPELLprocessStatus SPELLprocessManager::getProcessStatus(', '''int SPELLprocessManager::waitProcess(const std::string& identifier)
+{
+    std::shared_ptr<SPELLprocess> process;
+    { SPELLmonitor lock(m_lock);
+      auto found=m_processes.find(identifier);
+      if (found==m_processes.end()) THROW_EXCEPTION("Cannot wait for process", "Not found", SPELL_ERROR_PROCESS);
+      process=found->second; }
+    return process->wait();
+}
+bool SPELLprocessManager::isClosingProcess(const std::string& identifier)
+{
+    SPELLmonitor lock(m_lock);
+    auto found=m_processes.find(identifier);
+    return found==m_processes.end() || found->second->isClosing();
+}
+//=============================================================================
+''')
+        text=section(text,'void SPELLprocessManager::clearProcess(', 'void SPELLprocessManager::addListener(', '''void SPELLprocessManager::clearProcess(const std::string& identifier)
+{
+    std::shared_ptr<SPELLprocess> process;
+    { SPELLmonitor lock(m_lock);
+      auto found=m_processes.find(identifier);
+      if (found==m_processes.end()) return;
+      process=found->second;
+      m_processes.erase(found); }
+    process->join();
+}
+//=============================================================================
+''')
+        text=text.replace('mit = listeners.find(identifier);\n    if (mit != m_listeners.end())', 'mit = listeners.find(identifier);\n    if (mit != listeners.end())')
+        text=text.replace('SPELLprocessListenersMap listeners = m_listeners;', 'SPELLprocessListenersMap listeners;\n    { SPELLmonitor lock(m_lock); listeners=m_listeners; }')
+    elif name == 'lib/SPELL_LST/src/SPELLlistenerContext.C':
+        text=text.replace('    closemsg.setType( MSG_TYPE_ONEWAY );', '    SPELLprocessManager::instance().aboutToCloseProcess("CTX_" + name);\n    closemsg.setType( MSG_TYPE_ONEWAY );')
+        for method in ('processKilled','processFailed'):
+            marker='void SPELLlistenerContext::'+method+'( const std::string identifier )\n{'
+            assert marker in text
+            text=text.replace(marker,marker+'\n    if (SPELLprocessManager::instance().isClosingProcess(identifier)) return;')
+        text=text.replace('\n    usleep(10000000);', '\n    usleep(10000000);\n    if (SPELLprocessManager::instance().isClosingProcess(identifier)) return;')
+        text=re.sub(r'(\s*)(SPELLprocessManager::instance\(\).killProcess\(\s*(.*?)\s*\);)',
+            r'\1SPELLprocessManager::instance().aboutToCloseProcess(\3);\1\2',text)
     elif name.endswith('SPELLinterpreter.H'):
         text = text.replace('void mainLoop();','void mainLoop();\n        void shutdown();\n        int exitCode() const { return m_exitCode; }')
         text = text.replace('SPELLcontrollerIF*       m_controller;', 'bool m_controllerStarted=false;\n        SPELLcontrollerIF*       m_controller;')
@@ -181,6 +371,7 @@ void SPELLprocedureManager::registerScript(const std::string& file)
 }
 '''+body('interpreter_shutdown.cpp'))
         text = text.replace('m_controller->begin();','m_controller->begin();\n        m_controllerStarted=true;')
+        text = text.replace('        m_cif->cleanup(false);', '        { SPELLsafeThreadOperations release("Join CIF workers"); m_cif->cleanup(false); }')
         text = text.replace('        m_controller->stop();', '''        m_controller->stop();
         { SPELLsafeThreadOperations release("Join command controller");
           static_cast<SPELLcontroller*>(m_controller)->join(); }
@@ -194,6 +385,17 @@ void SPELLprocedureManager::registerScript(const std::string& file)
         text = text.replace('        LOG_ERROR(msg);\n        // Notify error', '        LOG_ERROR(msg);\n        std::cerr << msg << std::endl;\n        // Notify error')
         text = text.replace('startup.persistentFile += m_config.timeId + "_Executor_" + theId;',
             'startup.persistentFile += m_config.timeId + "_Executor_" + theId;\n            if (m_config.recover) startup.persistentFile += "_resume_" + std::to_string(getpid());')
+    elif name == 'src/executor/src/SPELLexecutorMain.C':
+        text=text.replace('"wp:f:n:c:r:s:"','"wp:f:n:c:r:s:t:"')
+        text=text.replace('config.warmstart   = (warm == 1);','config.warmstart   = (warm == 1 || recover == 1);')
+        text=text.replace('    // Initialize the interpreter','    int exitCode=1;\n    try {\n    // Initialize the interpreter')
+        text=text.replace('    interp.mainLoop();\n\n    return 0;', '''    interp.mainLoop(); exitCode=interp.exitCode(); }
+    catch (SPELLcoreException& error) { std::cerr << error.what() << std::endl; }
+    catch (const std::exception& error) { std::cerr << error.what() << std::endl; }
+    interp.shutdown();
+    delete &interp;
+    delete cif;
+    return exitCode;''')
     elif name == 'src/executorcmd/src/SPELLexecutorMain.C':
         text = text.replace('config.warmstart   = (warm == 1);', 'config.warmstart   = (warm == 1 || recover == 1);')
         text = text.replace('    SPELLcif* cif = NULL;', '    SPELLcif* cif = NULL;\n    int exitCode=1;\n    try {')

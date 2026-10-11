@@ -28,9 +28,11 @@ original schemas. All 143 native library units now pass compilation checks;
 the original standalone executor links its 120 units and passes 23 command
 checks, including fresh-process crash recovery with native data. See
 [source port status](docs/SOURCE_PORT.md), [executor recovery](docs/EXECUTOR_RECOVERY.md)
-and the [execution status](docs/EXECUTION_TO_V06.md). Native context/service
-lifecycle and complete controller/CIF behavior still gate v0.2 and admission to
-installed IDE/plugin host qualification.
+and [native context/server qualification](docs/CONTEXT_SERVER.md). The listener,
+context and one real server procedure now start, run and exit normally through
+original IPC; process/socket regressions also pass. Native service lifecycle and
+broader controller/CIF behavior still gate v0.2 and installed IDE/plugin host
+qualification.
 
 ## v0.3 — real IDE host plugins
 
