@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include <cstdlib>
 void SPELLpythonHelper::initialize()
 {
     if (m_initialized) return;
@@ -8,7 +9,16 @@ void SPELLpythonHelper::initialize()
         PyConfig config;
         PyConfig_InitIsolatedConfig(&config);
         config.buffered_stdio = 0;
-        PyStatus status = Py_InitializeFromConfig(&config);
+        // The installed launcher selects its own isolated virtual environment.
+        // PyConfig ignores PYTHONPATH/PYTHONHOME; never fall back to the build's
+        // site-packages when a runtime environment was explicitly selected.
+        PyStatus status = PyStatus_Ok();
+        if (const char* interpreter = std::getenv("OPENBEXI_SPELL_PYTHON")) {
+            status = PyConfig_SetBytesString(&config,&config.program_name,interpreter);
+            if (!PyStatus_Exception(status))
+                status = PyConfig_SetBytesString(&config,&config.executable,interpreter);
+        }
+        if (!PyStatus_Exception(status)) status = Py_InitializeFromConfig(&config);
         std::string error = PyStatus_Exception(status)
             ? (status.err_msg ? status.err_msg : "Python initialization failed") : "";
         PyConfig_Clear(&config);

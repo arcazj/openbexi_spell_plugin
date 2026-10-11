@@ -7,7 +7,7 @@ original-source runtime is developed in isolated environments.
 
 | Release | State | Required evidence |
 | --- | --- | --- |
-| v0.2 | In progress; source alpha 0.2.0a1 complete | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
+| v0.2 | In progress; native package alpha 0.2.0a2 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
 | v0.3 | Pending v0.2 | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Pending v0.3 and IDE service prerequisites | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
 | v0.5 | Pending v0.4 | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
@@ -82,6 +82,12 @@ accounting, atomic worker admission/drain, eight concurrent requests cancelled b
 two disconnect callers and process listener unregistration. All preceding native
 gates and 18 lifecycle runs pass. Native installation, reconnect semantics and
 remaining ownership review still gate v0.2.
+
+The [installed native package](NATIVE_PACKAGE.md), developer alpha 0.2.0a2,
+passes five fresh-image installation checks, removal and all preceding native
+gates. Two packages from the same native build are byte-identical. It includes
+the real native runtime and corresponding sources; service reconnect/recovery
+review and v0.2 acceptance remain open.
 
 ## Immediate work
 

@@ -60,6 +60,12 @@ two disconnect callers and process listener unregistration. All preceding native
 gates and 18 lifecycle runs pass. Native installation, reconnect semantics and
 remaining ownership review still gate v0.2.
 
+The [installed native package](docs/NATIVE_PACKAGE.md), developer alpha 0.2.0a2,
+passes five fresh-image installation checks, removal and all preceding native
+gates. Two packages from the same native build are byte-identical. It includes
+the real native runtime and corresponding sources; service reconnect/recovery
+review and v0.2 acceptance remain open.
+
 ## v0.3 â€” real IDE host plugins
 
 Implement a versioned OpenBEXI extension and an actual IntelliJ Platform ZIP with

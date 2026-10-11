@@ -61,3 +61,7 @@ Docker cleanup reclaimed another 431.1 MB of unused build cache; the current DSS
 image is retained. Automatic approval review rejected deletion of five obsolete
 local generated build directories with `blocked by policy`. They remain under
 `.qualification/v0.2/`; they are excluded from Git and the released wheel.
+
+The later [native diagnostic package 0.2.0a2](NATIVE_PACKAGE.md) includes the real
+native runtime and passes fresh-image install/run/import/removal checks. The
+0.2.0a1 report above remains the historical Python/RPC foundation snapshot.
