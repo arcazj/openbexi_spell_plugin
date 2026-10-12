@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openbexi-spell-shared"
+version = "0.4.0.dev1"
+description = "Native SPELL durable shared Development provider"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = ["openbexi-spell-host==0.3.0"]
+
+[project.entry-points."openbexi.shared_backends.v1"]
+spell = "openbexi_spell_shared:provider"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false

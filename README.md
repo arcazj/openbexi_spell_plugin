@@ -11,6 +11,11 @@ foundation builds the supplied SPELL 2.6.10 code for CPython 3.13.15, preserving
 source provenance and applicable GPL/LGPL notices. See the exact
 [execution status](docs/EXECUTION_TO_V06.md).
 
+The optional [native shared Development provider](docs/SHARED_RUNTIME.md) now
+connects that runtime to durable IDE sessions, with captured sources, whole-container
+pause, fenced control, native prompts/results and recovery without replay. This
+`0.4.0.dev1` prerequisite does not promote the operational v0.4 release.
+
 ## Native desktop and CLI
 
 Install `openbexi_spell_host-0.3.0-py3-none-any.whl` in the CPython 3.13 environment

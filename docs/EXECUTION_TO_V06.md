@@ -126,6 +126,13 @@ original DSS driver contracts for v0.4.
 The isolated original example driver is a template fixture; operational
 DSS driver support is a separate v0.4 requirement.
 
+The subsequent [native shared Development prerequisite](SHARED_RUNTIME.md) adds
+the optional `openbexi-spell-shared==0.4.0.dev1` provider. It uses the accepted
+native 0.3.0 image unchanged, with captured source/runtime bindings, whole-container
+pause, native prompts/results and durable restart holds. It does not close v0.4;
+continue with original DSS driver contracts, operational effect receipts and
+approved native Execution. Preserve the existing host acceptance artifacts.
+
 Preserve explicit SPELL imports and the three operating modes: Execution,
 Monitoring and Development. Native execution control, GUI control/monitor roles,
 and those operating modes are distinct concepts.
