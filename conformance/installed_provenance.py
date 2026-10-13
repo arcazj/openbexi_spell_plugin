@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 
 PROFILE = 'original-spell-integrated-wheel/1'
 
@@ -96,3 +97,16 @@ def verify_capture(record, inputs, normalized=None):
         source = 'source_port/'+name
         if row['sha256'] != inputs.get(source) and row['lf_sha256'] != normalized.get(source):
             raise ValueError('Installed composition recipe differs from qualification input: '+name)
+
+
+def capture_client(client, inputs, normalized=None):
+    """Read the exact image used by an already launched native DAP client."""
+    encoded = subprocess.check_output(['docker','exec',client.name,'python','-I',
+                                      '/workspace/installed_provenance.py'],timeout=30)
+    record = json.loads(encoded)
+    verify_capture(record, inputs, normalized)
+    return record
+
+
+if __name__ == '__main__':
+    print(json.dumps(capture(),sort_keys=True))

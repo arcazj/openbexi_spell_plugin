@@ -47,7 +47,10 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     source = native_tree(tmp_path)
     report = composition.apply_native_tree(source, ARCHIVE, tmp_path/'evidence')
     accepted = json.loads((ROOT/'conformance/evidence/dta.json').read_text())
-    for name, row in accepted['runtime_sources']['manifest']['source_hashes'].items():
+    expected_sources = dict(accepted['runtime_sources']['manifest']['source_hashes'])
+    review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())
+    expected_sources.update(review['native_manifest']['source_hashes'])
+    for name, row in expected_sources.items():
         assert report['sources'][name]['patched_sha256'] == row['patched']
         assert composition.digest((source/name).read_bytes()) == row['patched']
     checkpoint = report['checkpoint']
@@ -90,9 +93,12 @@ def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
     report = composition.apply_python_tree(site, ARCHIVE, tmp_path/'evidence')
     accepted = json.loads((ROOT/'conformance/evidence/obs.json').read_text())['runtime_sources']['installed']
     command = json.loads((ROOT/'conformance/evidence/cmd.json').read_text())['runtime_sources']['installed']
+    review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())['python_manifest']
     for name in composition.PYTHON_NAMES:
         source = command if name in composition.cmd_patches.PREIMAGES else accepted
         expected = source['/usr/local/lib/python3.13/site-packages/'+name]
+        if name in review:
+            expected = review[name]['sha256']
         assert report['sources'][name]['patched_sha256'] == expected
         assert composition.digest((site/name).read_bytes()) == expected
     verify_evidence(tmp_path/'evidence', report)

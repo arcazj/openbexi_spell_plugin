@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import uuid
+from installed_provenance import capture_client, input_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -86,7 +87,8 @@ def main():
         'conformance/build_common_patch.py', 'conformance/common.Dockerfile',
         'scripts/qualify_host_adapter.py',
         'conformance/inventory.json', 'source_port/patches.py',
-        'docs/reference/SPELL - Language Reference - 2.4.4.pdf')}
+        'docs/reference/SPELL - Language Reference - 2.4.4.pdf', *input_paths(ROOT))}
+    shutil.copyfile(ROOT/'conformance/installed_provenance.py',project/'installed_provenance.py')
     shutil.copyfile(ROOT/'conformance/common_contracts.py', project/'common_contracts.py')
     (project/'main.py').write_text('import common_contracts\n', encoding='utf-8')
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image,
@@ -96,6 +98,7 @@ def main():
     observed = defaultdict(list)
     try:
         client.launch('main.py')
+        integrated = capture_client(client, inputs)
         client.request('configurationDone')
         deadline = time.monotonic() + 300
         while time.monotonic() < deadline:
@@ -138,6 +141,7 @@ def main():
         client = None
         report['checks'].update(terminal_checks(output))
         report['runtime_image'] = image
+        report['runtime_sources'] = {'integrated':integrated}
         assert all(hashlib.sha256((ROOT/name).read_bytes()).hexdigest() == digest
                    for name, digest in inputs.items()), 'Inputs changed while running'
         report['inputs'] = inputs

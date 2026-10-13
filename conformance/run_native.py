@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import uuid
+from installed_provenance import capture_client, input_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT / 'scripts'))
@@ -22,7 +23,8 @@ def main():
     project = output/'project'; project.mkdir(parents=True)
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in (
         'conformance/time_contracts.py','conformance/run_native.py','conformance/inventory.json',
-        'source_port/patches.py','docs/reference/SPELL - Language Reference - 2.4.4.pdf')}
+        'source_port/patches.py','docs/reference/SPELL - Language Reference - 2.4.4.pdf', *input_paths(ROOT))}
+    shutil.copyfile(ROOT/'conformance/installed_provenance.py',project/'installed_provenance.py')
     shutil.copyfile(ROOT/'conformance/time_contracts.py',project/'time_contracts.py')
     (project/'main.py').write_text("from spell.lang.functions import Display\nDisplay('TIME_CONFORMANCE_BEGIN')\nimport time_contracts\nDisplay('TIME_CONFORMANCE_END')\n",encoding='utf-8')
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
@@ -30,11 +32,13 @@ def main():
     client = host.Client(project)
     try:
         client.launch('main.py',noDebug=True)
+        integrated = capture_client(client, inputs)
         client.request('configurationDone')
         assert client.event('exited',timeout=180)['exitCode'] == 0,'Conformance harness failed; inspect transcript'
         client.event('terminated')
         report = json.loads(client.read_file('time-results.json'))
         report['runtime_image'] = image
+        report['runtime_sources'] = {'integrated':integrated}
         assert all(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest for name,digest in inputs.items()),'Conformance inputs changed during execution'
         report['inputs'] = inputs
         inventory = json.loads((ROOT/'conformance/inventory.json').read_text(encoding='utf-8'))

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import uuid
+from installed_provenance import capture_client, input_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
@@ -34,7 +35,9 @@ def main():
         'source_port/data_files_native_patches.py', 'conformance/data_files_native_build.py',
         'conformance/data_files_native.Dockerfile', 'conformance/inventory.json',
         'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf']
+    names = list(dict.fromkeys(names + input_paths(ROOT)))
     inputs = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
+    shutil.copyfile(ROOT/'conformance/installed_provenance.py',project/'installed_provenance.py')
     shutil.copyfile(ROOT/f'conformance/{module}.py', project/f'{module}.py')
     (project/'main.py').write_text(f'import {module}\n', encoding='utf-8')
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'], text=True).strip()
@@ -43,6 +46,7 @@ def main():
     observed = defaultdict(list)
     try:
         client.launch('main.py')
+        integrated = capture_client(client, inputs)
         client.request('configurationDone')
         deadline = time.monotonic()+300
         while time.monotonic() < deadline:
@@ -91,6 +95,7 @@ def main():
                 row['controller_error'] = {'expected':expected,'actual':actual}
         assert all(hashlib.sha256((ROOT/name).read_bytes()).hexdigest() == digest for name,digest in inputs.items()), 'Inputs changed during execution'
         report.update(runtime_image=image, inputs=inputs)
+        report['runtime_sources'] = {'integrated':integrated}
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         failures = {key: row.get('error',row.get('controller_error')) for key,row in report['checks'].items() if not row['passed']}
         print(json.dumps(dict(evidence=str(output),checks=len(report['checks']),

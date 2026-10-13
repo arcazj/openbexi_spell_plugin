@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import uuid
+from installed_provenance import input_paths, verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,10 +22,12 @@ def main():
         'conformance/run_data_race.py','source_port/data_files_patches.py',
         'source_port/data_files_native_patches.py',
         'docs/reference/SPELL2.6.10-src.zip','docs/reference/SPELL - Language Reference - 2.4.4.pdf')
+    names = tuple(dict.fromkeys((*names, *input_paths(ROOT))))
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     name = 'openbexi-data-race-' + uuid.uuid4().hex
     sources = {'controller.py':(ROOT/'conformance/data_race_controller.py').read_bytes(),
+        'installed_provenance.py':(ROOT/'conformance/installed_provenance.py').read_bytes(),
         'worker.py':b'import data_race_worker\n',
         'data_race_worker.py':(ROOT/'conformance/data_race_worker.py').read_bytes(),
         'setup.py':b'''from spell.lang.functions import SetSharedData
@@ -77,6 +80,8 @@ Path('race-final.json').write_text(json.dumps({key:GetSharedData(key,HandleError
                 observations=observations,final_values=final)
         assert all(hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest for name,digest in inputs.items())
         report=dict(inputs=inputs,runtime_image=image,checks=checks)
+        report['runtime_sources'] = json.loads((output/'workspace/race-runtime.json').read_bytes())
+        verify_capture(report['runtime_sources'].get('integrated'),inputs)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
         print(json.dumps({'evidence':str(output),'checks':len(checks),'passed':True}))
     finally:

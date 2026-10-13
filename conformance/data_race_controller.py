@@ -7,6 +7,9 @@ import time
 
 sys.path.insert(0,'/opt/host')
 from native import NativeSession
+sys.path.insert(0,'/workspace')
+from installed_provenance import capture
+Path('race-runtime.json').write_text(json.dumps({'integrated':capture()},indent=2)+'\n',encoding='utf-8')
 
 events = []
 session = NativeSession('/workspace','/workspace/setup.py',{})
