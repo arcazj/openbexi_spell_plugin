@@ -1,0 +1,72 @@
+{
+  "schema": "openbexi.spell.shutdown-pause-review/1",
+  "passed": true,
+  "profile": "original-native-context-executor; Linux amd64 CPython3.13 ASAN/UBSAN",
+  "image": "sha256:525a22135376252ffb0dd4d86ee2b31c96bce51100dd92fc6f1168bf94958d46",
+  "source": {
+    "original_sha256": "63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32",
+    "ported_sha256": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2",
+    "patched_sha256": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33"
+  },
+  "artifacts": {
+    "SPELL-Context": "7dc27a4f870962e79873872c0507bd753685a66ffbc09089e87b57a1bd575c98"
+  },
+  "evidence": {
+    "failed_pair": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\rebuild\\ff3c8de019b44988b7154ba18682706e\\failure-analysis.json",
+      "sha256": "a4e43c0e46f48ed903b75e4e360bedb9a01489cd652e398d547ad5964484a2e4",
+      "bytes": 7151,
+      "lf_sha256": "a4e43c0e46f48ed903b75e4e360bedb9a01489cd652e398d547ad5964484a2e4"
+    },
+    "model": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\shutdown-race-worktree\\.qualification\\v0.6\\shutdown-pause\\8b4d623b30fa4a8d975ca078a2b97e2d4\\shutdown-pause\\result.json",
+      "sha256": "cdef065af3965873e08daad4ca62dfea839474a2e21499e7e1bc92b1a26ad554",
+      "bytes": 16782,
+      "lf_sha256": "cdef065af3965873e08daad4ca62dfea839474a2e21499e7e1bc92b1a26ad554"
+    },
+    "context": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\shutdown-race-worktree\\.qualification\\v0.6\\shutdown-context\\c6062e1a10174daf9cc25ed3d549954a\\result.json",
+      "sha256": "0a3f5130ba2322dbcac1c015a4a4be3a74be4fc9b537fd53559950b43eeb20af",
+      "bytes": 103207,
+      "lf_sha256": "8a2351bcd7b889b02f3f5eae11b512590fa6a87cd22b81e007ee57420fdf42d4"
+    }
+  },
+  "inputs": {
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "conformance/shutdown_pause.cpp": "f386c42f2311cf159b76792bae5fb954cde6b7e2a695ecb25c3a5c053d05664b",
+    "conformance/shutdown_pause_build.py": "ac1c45b79c2855f065279d475b26a88d27838cc4b62faa0adc55e58771ee9c6e",
+    "conformance/shutdown_pause_gate.py": "98f381fab5a79a27c6f2705010dd03b8dbf832d9c428651e2d03e0baf64dd15c",
+    "conformance/shutdown_pause.Dockerfile": "ec9259bb8b5e2dcdcfc1a7988f11a09f4d8d2cf9ea88900b5abd20fd3f27fae7",
+    "conformance/shutdown_pause.Dockerfile.dockerignore": "787c2b3b3689b1bce67a53928a7a0988d570c5d6069b0fb061000abc7788643f",
+    "conformance/record_shutdown_pause.py": "dfc85a58d331758db79c6f414bdc28c87f10563ea17cf9071b0d65796bd6ba6d",
+    "tests/test_shutdown_pause_recipe.py": "b9a7569088da1294f8fefe43f592ec0506d8e9c3b31d3eb51db285d89e376699",
+    "conformance/collect_shutdown_pause.py": "ab82b713e2167ce3ef2a132325b280577d8c906afc010a2c542820120dfdf524",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
+    "distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0"
+  },
+  "raw_inputs": {
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "conformance/shutdown_pause.cpp": "f386c42f2311cf159b76792bae5fb954cde6b7e2a695ecb25c3a5c053d05664b",
+    "conformance/shutdown_pause_build.py": "ac1c45b79c2855f065279d475b26a88d27838cc4b62faa0adc55e58771ee9c6e",
+    "conformance/shutdown_pause_gate.py": "98f381fab5a79a27c6f2705010dd03b8dbf832d9c428651e2d03e0baf64dd15c",
+    "conformance/shutdown_pause.Dockerfile": "ec9259bb8b5e2dcdcfc1a7988f11a09f4d8d2cf9ea88900b5abd20fd3f27fae7",
+    "conformance/shutdown_pause.Dockerfile.dockerignore": "787c2b3b3689b1bce67a53928a7a0988d570c5d6069b0fb061000abc7788643f",
+    "conformance/record_shutdown_pause.py": "dfc85a58d331758db79c6f414bdc28c87f10563ea17cf9071b0d65796bd6ba6d",
+    "tests/test_shutdown_pause_recipe.py": "b9a7569088da1294f8fefe43f592ec0506d8e9c3b31d3eb51db285d89e376699",
+    "conformance/collect_shutdown_pause.py": "ab82b713e2167ce3ef2a132325b280577d8c906afc010a2c542820120dfdf524",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
+    "distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0"
+  },
+  "qualified_rows": [],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "limitations": [
+    "Virtual command dispatch is synchronized by the probe. Each scenario retains its uninitialized IPC model for its entire private process; actual IPC lifecycle/teardown qualification is separate.",
+    "Cancellation observes close/process-terminal flags in bounded requested event waits; this is not a hard real-time guarantee.",
+    "Out-of-order status delivery and the command/check race are unchanged.",
+    "Diagnostic overlay only: a newly reviewed composition and two complete independent wheel builds are still required.",
+    "The separate child lifecycle recipe changes another block of this source and needs explicit checked composition ordering."
+  ]
+}
