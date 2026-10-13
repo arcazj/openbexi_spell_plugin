@@ -1,0 +1,188 @@
+{
+  "schema": "openbexi.spell.common-audit/1",
+  "base_commit": "777399ab01d6eaafedacff31271b127c98910b8d",
+  "runtime_image": "sha256:627f1b3a529e3581618dc739a4f0029c11e29f8ca654a58b284076f9214db708",
+  "manual_sha256": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+  "new_qualification_count": 0,
+  "rows": [
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-RESUME",
+      "manual_pages": "116",
+      "scope": "Driver-specific restart of a command group after its last successful member.",
+      "remaining": "RESEND whole-attempt checks do not cover this driver feature.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PRINT-FORMAT-PS",
+      "manual_pages": "74",
+      "scope": "Actual PrintDisplay PostScript output.",
+      "remaining": "No real GCS printing backend qualified.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PRINT-FORMAT-VECTOR",
+      "manual_pages": "74",
+      "scope": "Actual PrintDisplay ASCII output for alphanumeric displays.",
+      "remaining": "No real GCS printing backend qualified.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-VALUE-FORMAT-ENG",
+      "manual_pages": "39,48,94-95,102",
+      "scope": "Calibrated TM, TC arguments, baseband configuration and memory lookup.",
+      "remaining": "OBS TM checks cover only part; baseband and memory operations remain unqualified.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-VALUE-FORMAT-RAW",
+      "manual_pages": "37,39-40,48,94-95,102",
+      "scope": "Raw TM, TC arguments, baseband configuration and memory lookup.",
+      "remaining": "OBS/CMD checks cover only part; baseband and memory operations remain unqualified.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DEFAULT",
+      "manual_pages": "71-72,85,108",
+      "scope": "Timed-out Prompt default and DataContainer variable default.",
+      "remaining": "DTA defaults pass; actual Prompt timeout/default outcome remains open.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DELAY",
+      "manual_pages": "43,53,55,57,108-109",
+      "scope": "Verify precheck delay, Send TC-to-TM delay, WaitFor duration or telemetry deadline.",
+      "remaining": "OBS verifies only Verify delay; Send/WaitFor semantics require separate evidence.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-END",
+      "manual_pages": "100-103,109",
+      "scope": "Upper bound in memory and TM/TC database operations.",
+      "remaining": "Original helpers exist; real driver operations/filter semantics remain open.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ERROR",
+      "manual_pages": "60-63",
+      "scope": "Status-limit value classification.",
+      "remaining": "This is a limit dictionary key, not Display severity or operation error handling; LIMIT tests absent.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-FORMAT",
+      "manual_pages": "74",
+      "scope": "PrintDisplay PS/VECTOR output.",
+      "remaining": "Format is distinct from ValueFormat; TM or DTA format checks cannot qualify it.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-IGNORE",
+      "manual_pages": "60-63",
+      "scope": "Status-limit value classification.",
+      "remaining": "Distinct from IgnoreCase; LIMIT tests absent.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-MESSAGE",
+      "manual_pages": "58-59,110",
+      "scope": "WaitFor time-condition progress message on each interval.",
+      "remaining": "Native scheduler positive/boundary/failure/recovery tranche next; IPC message contents and timing required.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-NAME",
+      "manual_pages": "61,96-99,102,110",
+      "scope": "Shared variable names, limit definition description, memory datum and TM/TC database identifier.",
+      "remaining": "DATA uses shared names but other families remain open; keyword Get/Clear forms also not fully covered by current DATA suite.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TIME",
+      "manual_pages": "49-50,73,111",
+      "scope": "TC absolute scheduling and OpenDisplay time span.",
+      "remaining": "Proxy rejects scheduled commands; no actual GCS display backend.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TIMEOUT",
+      "manual_pages": "37,40,53,55,57,71-72,112",
+      "scope": "Acquisition deadlines including Verify/Send/WaitFor, and actual Prompt timeout/default behavior.",
+      "remaining": "OBS acquisition and driver bounds do not prove Prompt or composed Send/WaitFor behavior.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TOLERANCE",
+      "manual_pages": "40,55,60,63,65-66,112",
+      "scope": "Verify numeric comparisons, inherited Send/WaitFor comparisons and limit definitions.",
+      "remaining": "OBS Verify tests pass; LIMIT and composed operations remain open.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TYPE",
+      "manual_pages": "60-63,70-72,85,100-103,112",
+      "scope": "Prompt type, DataContainer type, limit type and memory/database selection.",
+      "remaining": "UI/DTA evidence is partial across the complete family scope.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-UNITS",
+      "manual_pages": "112",
+      "scope": "Set a TC argument units name in BuildTC.",
+      "remaining": "Original model stores units; no dedicated behavioral four-dimension proof. Proxy explicitly rejects nonempty units on Send, so no conversion/transmission claim.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-UNTIL",
+      "manual_pages": "112-113",
+      "scope": "Absolute target for WaitFor, accepting TIME or date/time text.",
+      "remaining": "Native scheduler positive/boundary/failure/recovery tranche next; numeric/relative rejection and independent elapsed-time oracle required.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUE",
+      "manual_pages": "96-99,112",
+      "scope": "SetSharedData primitive value; table also lists GetSharedData/ClearSharedData.",
+      "remaining": "Normative chapter and original datahelper consume Value only for Set. Table contradiction requires explicit decision; current DATA primitive-value evidence is not proof of Get/Clear value arguments.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUEFORMAT",
+      "manual_pages": "39-40,48,57,85,94-95,102,112",
+      "scope": "ENG/RAW for TM/TC/baseband/memory; HEX/BIN/DEC/OCT for LONG data variables.",
+      "remaining": "OBS/CMD/DTA portions do not cover baseband/memory/composed waiting.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUETYPE",
+      "manual_pages": "48,112-113",
+      "scope": "Explicitly cast TC argument as LONG/STRING/BOOLEAN/TIME/FLOAT.",
+      "remaining": "Original ValueClass infers Python input type after assigning requested type, overwriting explicit casts. Concrete runtime oracle/fix needed.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-WAIT",
+      "manual_pages": "37,40,44,55-57,113",
+      "scope": "Fresh versus last recorded telemetry, inherited by Verify/Send/WaitFor.",
+      "remaining": "OBS GetTM/Verify pass but composed Send/WaitFor still need native evidence.",
+      "status": "OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-1-015",
+      "manual_pages": "26",
+      "scope": "SPELL driver interfaces and GCS integration.",
+      "remaining": "Successful bounded DSS profiles are not proof of all allocated driver functionality.",
+      "status": "OPEN"
+    }
+  ],
+  "source_review": {
+    "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+    "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
+    "spell/lib/adapter/value.py": "7e91190aa1ab9a3e35176af68a752330ca5c2df0dd3478955d2fdbab0b05c8a4"
+  },
+  "value_manual_conflict": {
+    "explicit_text": "LRM p112 Value table lists SetSharedData, GetSharedData and ClearSharedData.",
+    "normative_chapter": "LRM pp96-99 defines Value for SetSharedData; retrieval/removal use names and scopes.",
+    "original_source": "datahelper.py consumes and removes Value only in SetSharedData_Helper; GetSharedData_Helper and ClearSharedData_Helper consume Name/Scope.",
+    "decision": "Unresolved; retain OPEN until explicit supported interpretation and complete native assertions. No invented Get/Clear value semantics."
+  }
+}
