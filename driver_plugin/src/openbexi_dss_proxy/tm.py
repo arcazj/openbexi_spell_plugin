@@ -7,7 +7,7 @@ from datetime import datetime,timezone
 from spell.stubs import SPELLDriver_pb2 as p
 from spell.utils.grpc_utils import PackValue, UnpackValue
 from .connection import call
-from .common import POLICY
+from .common import POLICY, timeout_seconds
 
 
 def validate_settings(config, allowed=()):
@@ -28,8 +28,8 @@ class Telemetry(TmInterface):
         # Library-only policy modifiers have already been interpreted by the
         # original interface. Only acquisition controls belong on this RPC.
         wire = {k:v for k,v in settings.items() if k in {'Wait','Timeout','ValueFormat'}}
-        if isinstance(wire.get('Timeout'),TIME):
-            wire['Timeout'] = float(wire['Timeout'])
+        if 'Timeout' in wire:
+            wire['Timeout'] = timeout_seconds(wire['Timeout'])
         row = call('TM','RefreshItem',p.TmItemValue(item=p.TmItemDesc(mnemonic=item.name()),config=PackValue(wire)))
         raw,eng = UnpackValue(row.rawValue),UnpackValue(row.engValue)
         item._setRaw(raw)

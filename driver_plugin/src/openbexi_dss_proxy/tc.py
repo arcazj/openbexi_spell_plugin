@@ -5,7 +5,7 @@ from spell.lib.exception import DriverException
 from spell.stubs import SPELLDriver_pb2 as p
 from spell.utils.grpc_utils import PackValue
 from .connection import call
-from .common import POLICY
+from .common import POLICY, timeout_seconds
 
 
 def descriptor(item,config):
@@ -23,11 +23,7 @@ def descriptor(item,config):
         if value.units():
             raise DriverException('Command units require explicit catalog conversion')
         args.append([parameter.name,value.get(),dict(ValueFormat=value.format(),Radix=value.radix(),ValueType=value.vtype())])
-    timeout = settings.get('Timeout',5)
-    if hasattr(timeout,'isRel'):
-        if not timeout.isRel():
-            raise DriverException('Command timeout must be relative')
-        timeout = float(timeout)
+    timeout = timeout_seconds(settings.get('Timeout',5))
     return p.CommandDesc(command=p.TcItemDesc(mnemonic=item.name(),description=item.desc()),args=PackValue(args),config=PackValue({'Timeout':timeout}))
 
 

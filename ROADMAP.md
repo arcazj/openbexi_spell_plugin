@@ -100,6 +100,12 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
+In progress: [the restored full inventory and gate](conformance/README.md) now
+track all 763 rows. TIME has 168 passing native checks across 42 rows, with
+source-derived parsing/UTC/arithmetic fixes. The other 721 rows remain open.
+Native TM/TC timeout conversion and the explicit-import IDE example also pass;
+these milestones do not accept v0.5 or start v0.6 distribution acceptance.
+
 ## v0.6 — distribution and compatibility
 
 Qualify reproducible installable artifacts, clean installation/removal, upgrades

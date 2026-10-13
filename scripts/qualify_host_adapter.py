@@ -100,8 +100,8 @@ class Client:
             self.events.append(message)
         raise AssertionError('Request timed out: ' + command)
 
-    def event(self, event):
-        deadline = time.monotonic() + 30
+    def event(self, event, timeout=30):
+        deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             for message in tuple(self.events):
                 if message.get('event') == event:
@@ -347,8 +347,10 @@ Display('PROMPT_ANSWERED')
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', default=IMAGE)
+    parser.add_argument('--output', type=Path, default=EVIDENCE)
     options = parser.parse_args()
     IMAGE = options.image
+    EVIDENCE = options.output.resolve()
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(NativeHostTests))
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     (EVIDENCE / 'result.json').write_text(json.dumps({

@@ -13,6 +13,7 @@ PREIMAGES = {
     'spell/utils/grpc_utils.py': 'aa6c7f35a2159c4dbd8d98422be7a606b7061d3aba043c738900c1eab19e7049',
     'spell/lib/adapter/databases/datasource.py': 'b56390eead7d8c3536aa4b06d24b8a0331a6717fecb9b1f56bfae94f4d894a96',
     'spell/lib/drivermgr.py': '6926dff1c3a51895263ea79845d9462f5f10e58f07f51fe866882209b2032594',
+    'spell/lib/adapter/utctime.py': '3ba8116f625a261d0f692899e7b4c2f292859cc5c242f10573ccfdd807b76ded',
 }
 
 
@@ -22,7 +23,40 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Upstream patch preimage changed: ' + name)
     text = original.decode('utf-8')
-    if name == 'spell/lib/adapter/data.py':
+    if name == 'spell/lib/adapter/utctime.py':
+        text = text.replace('import datetime,time\n', 'import calendar,datetime,re,time\n')
+        old = '        return time.mktime(val.timetuple())'
+        assert text.count(old) == 1
+        text = text.replace(old, '        return calendar.timegm(val.utctimetuple()) + val.microsecond / 1000000.0')
+        old = '''    def __rsub__(self, timestamp):
+        return TIME(self.value() - self.__translate(timestamp).value())'''
+        assert text.count(old) == 1
+        text = text.replace(old, '''    def __rsub__(self, timestamp):
+        return TIME(self.__translate(timestamp).value() - self.value())''')
+        old = '''    def cnv(self, timestamp):
+
+        mydt = datetime.datetime(1,1,1)'''
+        assert text.count(old) == 1
+        text = text.replace(old, r'''    def cnv(self, timestamp):
+
+        # LRM 2.4.4 pp.32-33: signed seconds and optional relative seconds.
+        # Parse the documented grammar rather than evaluating its components.
+        if isinstance(timestamp, str) and timestamp.startswith(('+', '-')):
+            if re.fullmatch(r'[+-]\d+(?:\.\d{1,6})?', timestamp):
+                return datetime.timedelta(seconds=float(timestamp))
+            relative = re.fullmatch(r'([+-])(?:(\d+) )?(\d+):(\d{2})(?::(\d{2})(?:\.(\d{1,6}))?)?', timestamp)
+            if relative is None:
+                return None
+            sign, days, hours, minutes, seconds, micros = relative.groups()
+            if int(minutes) > 59 or int(seconds or '0') > 59:
+                return None
+            value = datetime.timedelta(days=int(days or '0'), hours=int(hours),
+                minutes=int(minutes), seconds=int(seconds or '0'),
+                microseconds=int((micros or '0').ljust(6, '0')))
+            return -value if sign == '-' else value
+
+        mydt = datetime.datetime(1,1,1)''')
+    elif name == 'spell/lib/adapter/data.py':
         start = text.index('import sys\n')
         text = text[:start] + '''# The source-derived CPython 3.13 port requires the real native library.
 # Import failure must not silently turn DataContainer and Var into dictionaries.
