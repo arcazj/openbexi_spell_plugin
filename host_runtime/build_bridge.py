@@ -26,6 +26,14 @@ with zipfile.ZipFile(root / 'provenance/SPELL2.6.10-src.zip') as archive:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(archive.read(item))
 apply_tree(source)
+manifest = json.loads((root/'manifest.json').read_text())
+composition = manifest.get('composition', {}).get('native')
+if composition:
+    from integrated_patches import apply_native_tree
+    actual = apply_native_tree(source, root/'provenance/SPELL2.6.10-src.zip', Path('/tmp/bridge-composition'))
+    expected = {key:value for key,value in composition.items() if key != 'manifest_sha256'}
+    if actual != expected:
+        raise ValueError('Host headers do not reproduce the installed native composition')
 fields = set()
 for header in (source / 'include/SPELL_IPC').glob('*.H'):
     fields.update(re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', header.read_text()))
@@ -41,6 +49,7 @@ subprocess.run(['c++', '-std=c++17', '-g', '-O1', '-pthread',
 Path('/bridge/build.json').write_text(json.dumps({
     'protocol': 1, 'native_version': metadata.version('openbexi-spell-source'),
     'bridge_sha256': hashlib.sha256(Path('/bridge/spell-host-ipc').read_bytes()).hexdigest(),
+    'native_composition': composition,
     'fields': sorted(fields),
     'packages': subprocess.check_output(['dpkg-query', '-W', 'g++', 'nlohmann-json3-dev'], text=True),
 }, indent=2) + '\n')

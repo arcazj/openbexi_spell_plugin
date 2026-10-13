@@ -2,7 +2,10 @@
 
 SPDX-License-Identifier: GPL-3.0-or-later
 """
+import base64
+import csv
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -12,6 +15,7 @@ import sys
 import time
 import unittest
 import xml.etree.ElementTree as ET
+import zipfile
 
 OUTPUT = Path('/qualification')
 OUTPUT.mkdir(exist_ok=True)
@@ -165,6 +169,45 @@ Path('/qualification/installed-context-result.txt').write_text(str(IVARS['answer
         self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(), manifest['archive_sha256'])
         self.assertTrue((root / 'provenance/source_port/native_patches.py').is_file())
         self.assertTrue((root / 'provenance/source_port/distribution-build.Dockerfile').is_file())
+
+    def test_complete_wheel_record_and_installed_composition(self):
+        root = Path(self.doctor['native_root'])
+        site = root.parent
+        manifest = json.loads((root/'manifest.json').read_text())
+        with zipfile.ZipFile(WHEEL) as archive:
+            record, = [name for name in archive.namelist() if name.endswith('.dist-info/RECORD')]
+            rows = list(csv.reader(io.StringIO(archive.read(record).decode())))
+            self.assertEqual(len(rows), len(archive.namelist()))
+            self.assertEqual({row[0] for row in rows}, set(archive.namelist()))
+            for name, expected, size in rows:
+                if name == record:
+                    self.assertEqual((expected, size), ('', ''))
+                    continue
+                contents = archive.read(name)
+                encoded = base64.urlsafe_b64encode(hashlib.sha256(contents).digest()).rstrip(b'=').decode()
+                self.assertEqual(expected, 'sha256='+encoded, name)
+                self.assertEqual(int(size), len(contents), name)
+                self.assertEqual((site/name).read_bytes(), contents, name)
+        compositions = manifest.get('composition', {})
+        # Legacy diagnostic wheels still use this installed gate. An integrated
+        # manifest must carry both chains, each matching the installed payload.
+        if compositions:
+            self.assertEqual(set(compositions), {'native', 'python'})
+            self.assertEqual(compositions['native']['recipes'], compositions['python']['recipes'])
+            for kind, composition in compositions.items():
+                evidence = root/('provenance/integrated-'+kind)
+                report = (evidence/'manifest.json').read_bytes()
+                self.assertEqual(hashlib.sha256(report).hexdigest(), composition['manifest_sha256'])
+                self.assertEqual(json.loads(report), {k:v for k,v in composition.items() if k != 'manifest_sha256'})
+                for name, row in composition['sources'].items():
+                    for label, expected in row.items():
+                        self.assertEqual(hashlib.sha256((evidence/label.removesuffix('_sha256')/name).read_bytes()).hexdigest(), expected)
+                    if kind == 'python':
+                        self.assertEqual(hashlib.sha256((site/name).read_bytes()).hexdigest(), row['patched_sha256'])
+                for name, row in composition['recipes'].items():
+                    self.assertEqual(hashlib.sha256((evidence/'recipes'/name).read_bytes()).hexdigest(), row['sha256'])
+            checkpoint = compositions['native']['checkpoint']['integrated_identity'].encode()
+            self.assertIn(checkpoint, (root/'bin/libspell_executor313.so').read_bytes())
 
 
 if __name__ == '__main__':

@@ -18,13 +18,16 @@ VERSION = '0.3.0'
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def build(output, evidence, source, recipe):
+def build(output, evidence, source, recipe, integrated=False):
     output.mkdir(parents=True, exist_ok=False)
     # Reuse the independent recorder's complete gate, including current inputs.
     subprocess.run([sys.executable, str(recipe / 'record_native.py'),
                     '--evidence', str(evidence), '--service-recovery-policy'], check=True)
     accepted = recipe.parent / 'docs/NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json'
     report = json.loads(accepted.read_text())
+    if integrated and (not report['build'].get('composition')
+                       or not report['executor_build'].get('composition')):
+        raise ValueError('Integrated wheel requires both composed native and Python qualification')
     package = output / 'src'
     package.mkdir()
     site = Path(sysconfig.get_path('purelib'))
@@ -63,6 +66,19 @@ def build(output, evidence, source, recipe):
     shutil.copytree(recipe, provenance / 'source_port',
                     ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
     shutil.copyfile(accepted, provenance / 'NATIVE_SERVICE_RECOVERY_POLICY_QUALIFICATION.json')
+    compositions = {}
+    if integrated:
+        for kind, build_report in (('native', report['build']), ('python', report['executor_build'])):
+            directory = evidence/('integrated-' + kind)
+            recorded = json.loads((directory/'manifest.json').read_text())
+            if recorded != build_report['composition']:
+                raise ValueError('Composition evidence differs from qualified build: ' + kind)
+            for name, row in recorded['sources'].items():
+                actual = source/name if kind == 'native' else package/name
+                if sha(actual) != row['patched_sha256']:
+                    raise ValueError('Packaged composition source differs: ' + name)
+            shutil.copytree(directory, provenance/('integrated-' + kind))
+            compositions[kind] = {'manifest_sha256':sha(directory/'manifest.json'), **recorded}
     for name, original in [('GPL-3.0.txt', source / 'LICENSE'), ('LGPL-3.0.txt', recipe / 'LGPL-3.0.txt')]:
         shutil.copyfile(original, output / name)
     manifest = {'version': VERSION, 'profile': 'ASan/UBSan diagnostic native foundation',
@@ -74,6 +90,8 @@ def build(output, evidence, source, recipe):
                 'inputs': {p.relative_to(recipe).as_posix(): sha(p) for p in sorted(recipe.rglob('*'))
                            if p.is_file() and '__pycache__' not in p.parts},
                 'release_scope': 'Original native foundation; full language conformance remains separate'}
+    if integrated:
+        manifest['composition'] = compositions
     (runtime / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     (output / 'pyproject.toml').write_text('''[build-system]
 requires = ["setuptools==80.9.0"]
@@ -118,5 +136,6 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--evidence', type=Path, default=Path('/out'))
     parser.add_argument('--source', type=Path, default=Path('/source'))
+    parser.add_argument('--integrated', action='store_true', help='Require the complete qualified composition inside the wheel')
     args = parser.parse_args()
-    print(build(args.output.resolve(), args.evidence.resolve(), args.source.resolve(), Path(__file__).resolve().parent))
+    print(build(args.output.resolve(), args.evidence.resolve(), args.source.resolve(), Path(__file__).resolve().parent, args.integrated))

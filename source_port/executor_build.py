@@ -4,6 +4,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 Build diagnostics are exported even on failure; the recorder gates promotion.
 """
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 import hashlib
 import json
 import os
@@ -16,9 +17,15 @@ import sysconfig
 
 from patches import apply
 
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--integrated', action='store_true', help='Compose checked Python corrections before runtime qualification')
+options = parser.parse_args()
+
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 source, output = Path('/source'), Path('/out')
 baseline = json.loads((output/'native-build.json').read_text())
+if options.integrated and not baseline.get('composition'):
+    raise ValueError('Integrated executor requires the composed native build')
 if 'analysis_units' not in baseline or 'dta_units' not in baseline:
     (output/'executor-build.json').write_text(json.dumps({
         'full_executor_qualified':False,'blocked_by':'native component build failed',
@@ -89,6 +96,13 @@ if all(r['exit_code'] == 0 for r in results):
                 target.parent.mkdir(parents=True,exist_ok=True)
                 target.write_bytes(patched)
                 python_sources[name] = {'original_sha256':sha(path),'sha256':sha(target)}
+            if options.integrated:
+                from integrated_patches import apply_python_tree
+                report['composition'] = apply_python_tree(site, Path('/input/SPELL2.6.10-src.zip'), output/'integrated-python')
+                if report['composition']['recipes'] != baseline['composition']['recipes']:
+                    raise ValueError('Native and Python composition recipes differ')
+                for name in report['composition']['sources']:
+                    python_sources[name]['sha256'] = sha(site/name)
             report['python_sources'] = python_sources
             stubs = site/'spell/stubs'
             stubs.mkdir()

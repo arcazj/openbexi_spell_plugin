@@ -1,5 +1,6 @@
 """Build/link/load exact-source native UTIL. SPDX-License-Identifier: GPL-3.0-or-later."""
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 import hashlib
 import json
 import os
@@ -12,6 +13,10 @@ import zipfile
 
 from native_patches import apply_tree
 from native_manifest import libraries
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--integrated', action='store_true', help='Compose the checked conformance corrections before compilation')
+options = parser.parse_args()
 
 archive = Path('/input/SPELL2.6.10-src.zip')
 assert hashlib.sha256(archive.read_bytes()).hexdigest() == '2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed'
@@ -30,6 +35,12 @@ with zipfile.ZipFile(archive) as z:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(z.read(member))
 patches = apply_tree(source)
+composition = None
+if options.integrated:
+    from integrated_patches import apply_native_tree
+    composition = apply_native_tree(source, archive, output/'integrated-native')
+    for name, row in composition['sources'].items():
+        patches[name] = dict(patches.get(name, {}), **row, sha256=row['patched_sha256'])
 (output / 'native-patches.json').write_text(json.dumps(patches, indent=2)+'\n')
 manifest = libraries(source)
 units = sorted(source/p for lib in ('SPELL_UTIL', 'SPELL_SYN') for p in manifest[lib]['units'])
@@ -53,6 +64,7 @@ def compile_unit(path):
 with ThreadPoolExecutor(max_workers=4) as pool:
     results = list(pool.map(compile_unit, units))
 report = {'python':sys.version, 'platform':platform.platform(), 'flags':flags,
+          'composition':composition,
           'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),
           'input_sources':{p.relative_to('/input').as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
                            for p in sorted(Path('/input').rglob('*'))

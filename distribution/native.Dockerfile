@@ -5,13 +5,15 @@ ENV SOURCE_DATE_EPOCH=1791676800 PYTHONHASHSEED=0 TZ=UTC LC_ALL=C.UTF-8
 COPY docs/reference/SPELL2.6.10-src.zip /input/SPELL2.6.10-src.zip
 COPY source_port/native /input/native
 COPY source_port/native_patches.py source_port/native_manifest.py source_port/native_build.py /input/
+COPY source_port/integrated_patches.py source_port/patches.py source_port/data_files_native_patches.py source_port/data_files_patches.py source_port/dta_native_patches.py source_port/dta_time_patches.py source_port/flow_patches.py source_port/flow_analyze.py source_port/obs_patches.py source_port/ui_native_patches.py /input/
 COPY source_port/native-build.Dockerfile source_port/native-build.Dockerfile.dockerignore /input/
-RUN python /input/native_build.py
+RUN python /input/native_build.py --integrated
 COPY source_port/experiments /experiment
 RUN python /experiment/build_probe.py
 COPY source_port/executor-build.lock source_port/executor_build.py source_port/qualify_executor.py source_port/patches.py /executor/
+COPY source_port/integrated_patches.py source_port/native_patches.py source_port/data_files_native_patches.py source_port/data_files_patches.py source_port/dta_native_patches.py source_port/dta_time_patches.py source_port/flow_patches.py source_port/flow_analyze.py source_port/obs_patches.py source_port/ui_native_patches.py /executor/
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
-RUN python /executor/executor_build.py
+RUN python /executor/executor_build.py --integrated
 COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
 COPY source_port/context-build.Dockerfile source_port/context-build.Dockerfile.dockerignore /context/
 RUN python /context/context_build.py
@@ -19,7 +21,7 @@ COPY source_port /recipe/source_port
 COPY distribution /recipe/distribution
 COPY docs/reference/SPELL2.6.10-src.zip /recipe/docs/reference/SPELL2.6.10-src.zip
 RUN c++ -std=c++17 -g -pthread -fsanitize=address,undefined -I/source/include -I/usr/local/include/python3.13 /recipe/source_port/installed_peer.cpp -L/out -lspell_executor313 -Wl,-rpath,'$ORIGIN' -L/usr/local/lib -lpython3.13 -o /out/installed_peer
-RUN python /recipe/source_port/package_native.py --output /package
+RUN python /recipe/source_port/package_native.py --integrated --output /package
 RUN python /recipe/distribution/stable_wheel.py --package /package --output /stable
 
 FROM ${TOOLCHAIN_IMAGE} AS installed

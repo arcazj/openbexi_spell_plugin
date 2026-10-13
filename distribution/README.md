@@ -56,3 +56,30 @@ distributions; final native rebuilds must integrate every accepted patch.
 Remaining v0.6 gates include a complete v0.5 snapshot, versioned upgrade paths,
 the final DSS image/runtime and actual host workflows against final artifacts,
 the supported platform matrix, and reproducible reconstruction of the toolchain.
+
+The full rebuild now composes the independently checked DATA, FILES, UI, FLOW,
+DTA, TIME and OBS corrections before compiling or running the native gate.
+`source_port/integrated_patches.py` leaves the central port recipes unchanged.
+It rejects unexpected original and ported sources before changing the build tree,
+retains every original/ported/patched source, and adds all composition recipe
+identities to the native continuation fingerprint. Both native and Python chains
+must use identical recipes. The wheel contains the corrected Python sources and
+native binaries together with that provenance; fresh installation verifies the
+entire wheel RECORD, installed bytes and composition manifests.
+
+After a successful pair, build separate fresh host and DSS candidate images:
+
+```powershell
+python distribution/build_images.py --native-wheel <rebuild>/a/distribution/wheels/<wheel>.whl --toolchain-image <retained-toolchain-tag> --toolchain-id sha256:<recorded-id>
+```
+
+The builder snapshots current host/driver sources, builds a fresh driver wheel
+offline, and selects the exact native wheel rather than a historical directory.
+The selected native wheel must match the current composition recipes and every
+wheel RECORD entry. Both Docker builds use `--no-cache --network=none`, record
+exact image identities and verify installed package records. The host bridge
+reconstructs the composed source shipped inside the wheel before compiling.
+The frozen compiler toolchain remains in this diagnostic host image; reducing
+that image and qualifying a production platform are separate release work.
+No existing accepted tag is overwritten and successful construction is not a
+claim that the remaining language clauses or full v0.6 release gate pass.

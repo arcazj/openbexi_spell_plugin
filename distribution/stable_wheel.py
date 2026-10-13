@@ -72,6 +72,7 @@ def stabilize(package, output):
         'wheel': target.name, 'sha256': digest(target.read_bytes()),
         'native_artifacts': manifest['native_artifacts'],
         'python_sources': manifest['python_sources'],
+        'composition': manifest.get('composition'),
         'native_gate_policy': stable,
         'volatile_evidence_separated': True,
         'native_runtime_tests': original_report['executor_runtime']['tests'],

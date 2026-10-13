@@ -49,8 +49,9 @@ def compare(evidence):
         'independent_native_rebuilds': True,
         'native_artifacts_identical': bool(native) and all(native.values()),
         'python_sources_identical': packages[0]['python_sources'] == packages[1]['python_sources'],
+        'composition_identical': bool(packages[0].get('composition')) and packages[0]['composition'] == packages[1].get('composition'),
         'wheel_bytes_identical': packages[0]['sha256'] == packages[1]['sha256'],
-        'fresh_install_and_removal': all(r['tests'] == 7 and not any(r[k] for k in
+        'fresh_install_and_removal': all(r['tests'] == 8 and not any(r[k] for k in
             ('failures', 'errors', 'skips')) and r['uninstall_preserves_plain_python'] and
             r['no_build_tree'] for r in installed),
     }
@@ -62,6 +63,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / '.qualification/v0.6/rebuild')
     parser.add_argument('--toolchain-image', help='Use an existing frozen toolchain instead of apt reconstruction')
+    parser.add_argument('--toolchain-id', help='Require this exact retained toolchain sha256 identity')
     parser.add_argument('--export-toolchain', action='store_true', help='Retain a hash-bound docker image save archive')
     args = parser.parse_args()
     run_id = uuid.uuid4().hex
@@ -94,6 +96,8 @@ def main():
                     '-f', snapshot / 'distribution/toolchain.Dockerfile', '-t', toolchain_tag, snapshot],
                    evidence / 'toolchain-build.log')
         report['toolchain_image'] = image_id(toolchain_tag)
+        if args.toolchain_id and report['toolchain_image'] != args.toolchain_id:
+            raise ValueError('Frozen toolchain differs from the requested identity')
         report['toolchain_tag'] = toolchain_tag
         if args.export_toolchain:
             archive = evidence / 'toolchain-image.tar'
