@@ -65,12 +65,12 @@ try:
     Path('race-release').write_text('both native executors reached the barrier')
     for procedure in workers:
         await_status(procedure,'FINISHED')
-    request('REQ_OPEN_EXEC','inspect#1',dict(GuiMode='CONTROL',Arguments='{}',
+    request('REQ_OPEN_EXEC','race_inspect#1',dict(GuiMode='CONTROL',Arguments='{}',
         OpenMode='{Automatic:True,Visible:True,Blocking:False}'),context=True)
-    workers.append('inspect#1')
-    await_status('inspect#1','PAUSED')
-    request('CMD_RUN','inspect#1',send=True)
-    await_status('inspect#1','FINISHED')
+    workers.append('race_inspect#1')
+    await_status('race_inspect#1','PAUSED')
+    request('CMD_RUN','race_inspect#1',send=True)
+    await_status('race_inspect#1','FINISHED')
 finally:
     for procedure in reversed(workers):
         try:

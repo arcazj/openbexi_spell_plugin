@@ -36,7 +36,7 @@ for index in range(8):
 SetSharedData(Name='race-boundary',Value=[],HandleError=False)
 SetSharedData(Name='race-recovery',Value=0,HandleError=False)
 ''',
-        'inspect.py':b'''import json
+        'race_inspect.py':b'''import json
 from pathlib import Path
 from spell.lang.functions import GetSharedData
 keys=['race-positive-'+str(index) for index in range(8)]+['race-boundary','race-recovery']
