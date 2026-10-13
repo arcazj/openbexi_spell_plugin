@@ -3,6 +3,7 @@ import copy
 import json
 from pathlib import Path
 import sys
+import shutil
 import zipfile
 
 import pytest
@@ -46,11 +47,9 @@ def verify_evidence(output, report):
 def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     source = native_tree(tmp_path)
     report = composition.apply_native_tree(source, ARCHIVE, tmp_path/'evidence')
-    review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())
-    expected_sources = dict(review['native_manifest']['source_hashes'])
-    ipc = json.loads((ROOT/'conformance/evidence/dta_ipc_review.json').read_text())
-    name = composition.dta_ipc_patches.SOURCE
-    expected_sources[name] = ipc['sources']['manifest']['source_hashes'][name]
+    qualified = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())
+    expected_sources = qualified['native']
+    assert set(expected_sources) == set(composition.NATIVE_NAMES)
     for name, row in expected_sources.items():
         assert report['sources'][name]['patched_sha256'] == row['patched']
         assert composition.digest((source/name).read_bytes()) == row['patched']
@@ -92,22 +91,25 @@ def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path):
 def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
     site = python_tree(tmp_path)
     report = composition.apply_python_tree(site, ARCHIVE, tmp_path/'evidence')
-    accepted = json.loads((ROOT/'conformance/evidence/obs.json').read_text())['runtime_sources']['installed']
-    command = json.loads((ROOT/'conformance/evidence/cmd.json').read_text())['runtime_sources']['installed']
-    review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())['python_manifest']
+    expected_sources = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())['python']
+    assert set(expected_sources) == set(composition.PYTHON_NAMES)
     for name in composition.PYTHON_NAMES:
-        source = command if name in composition.cmd_patches.PREIMAGES else accepted
-        expected = source['/usr/local/lib/python3.13/site-packages/'+name]
-        if name in review:
-            expected = review[name]['sha256']
+        expected = expected_sources[name]
         assert report['sources'][name]['patched_sha256'] == expected
         assert composition.digest((site/name).read_bytes()) == expected
     verify_evidence(tmp_path/'evidence', report)
+    state = {name: row['ported_sha256'] for name,row in report['sources'].items()}
+    for stage in report['stages']:
+        for name, row in stage['sources'].items():
+            assert state[name] == row['before_sha256']
+            state[name] = row['after_sha256']
+    assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
 
 
-def test_python_preimage_failure_preserves_tree_then_recovers(tmp_path):
+@pytest.mark.parametrize('name', ['spell/lang/helpers/basehelper.py','spell/lib/adapter/config.py'])
+def test_python_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     site = python_tree(tmp_path)
-    target = site/'spell/lang/helpers/basehelper.py'
+    target = site/name
     original = target.read_bytes()
     target.write_bytes(original+b'\n# unqualified drift\n')
     before = {n:(site/n).read_bytes() for n in composition.PYTHON_NAMES}
@@ -124,3 +126,32 @@ def test_changed_original_archive_is_rejected(tmp_path):
     altered.write_bytes(ARCHIVE.read_bytes()+b'drift')
     with pytest.raises(ValueError, match='Unexpected original SPELL'):
         composition.archive_sources(altered, composition.NATIVE_NAMES)
+
+
+def test_driver_corrections_match_native_evidence_and_preserve_repository(tmp_path):
+    source = tmp_path/'src'
+    shutil.copytree(ROOT/'driver_plugin/src',source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+    originals = {name:(ROOT/'driver_plugin/src'/name).read_bytes() for name in composition.DRIVER_NAMES}
+    report = composition.apply_driver_tree(source, source/'openbexi_dss_proxy/_composition')
+    qualified = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())['driver']
+    assert set(qualified) == set(composition.DRIVER_NAMES)
+    for name in composition.DRIVER_NAMES:
+        assert report['sources'][name]['patched_sha256'] == qualified[name]
+        assert (ROOT/'driver_plugin/src'/name).read_bytes() == originals[name]
+    assert report['python_sources']['openbexi_dss_proxy/limit_support.py'] == '2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac'
+    verify_evidence(source/'openbexi_dss_proxy/_composition', report)
+
+
+@pytest.mark.parametrize('name', ['openbexi_dss_proxy/tm.py','openbexi_dss_proxy/tc.py'])
+def test_driver_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
+    source = tmp_path/'src'
+    shutil.copytree(ROOT/'driver_plugin/src',source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
+    original = (source/name).read_bytes()
+    (source/name).write_bytes(original+b'\n# drift\n')
+    before = {name:(source/name).read_bytes() for name in composition.DRIVER_NAMES}
+    with pytest.raises(ValueError):
+        composition.apply_driver_tree(source, tmp_path/'rejected')
+    assert not (tmp_path/'rejected').exists()
+    assert before == {name:(source/name).read_bytes() for name in before}
+    (source/name).write_bytes(original)
+    composition.apply_driver_tree(source, tmp_path/'recovered')

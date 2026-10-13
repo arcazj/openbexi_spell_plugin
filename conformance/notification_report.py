@@ -30,7 +30,14 @@ def main():
     assert all(row['passed'] for row in report['checks'].values())
     for name, expected in report['inputs'].items():
         assert digest((ROOT/name).read_bytes()) == expected, name
-    assert report['runtime_sources']['overlay'] is not None
+    overlay = report['runtime_sources']['overlay']
+    if overlay is None:
+        installed = report['runtime_sources']['baseline']
+        assert installed is not None
+        composition = installed['manifest']['composition']['python']
+        assert 'notification_patches.py' in composition['recipes']
+        for name in ('spell/lang/modifiers.py','spell/utils/grpc_utils.py','spell/lib/adapter/config.py'):
+            assert composition['sources'][name]['patched_sha256'] == installed['python_sources'][name]
     baseline_raw = args.baseline.read_bytes()
     baseline = json.loads(baseline_raw)
     assert all(not baseline['checks']['notify:'+dimension]['passed'] for dimension in DIMENSIONS)
@@ -59,7 +66,9 @@ def main():
             'resolution':'One fixed-text callable str subtype token, shared by modifiers/functions/runtime imports, delegates unchanged Notification. Copy/deepcopy/pickle reconstruct the singleton. Exact built-in str identity is intentionally no longer true.',
             'preserved':'String equality/hash/repr, keyword and dictionary config, exact config validation, original protobuf string representation, old Notification, and real native ON_LINE/ON_STEP checkpoint recovery.',
             'limitations':['No installed desktop/tabular rendering claim.','No new Prompt timeout/default or cross-family Notify modifier clause claim.',
-                'No arbitrary string-subclass compatibility claim.','Diagnostic overlay supersedes three installed RECORD entries; fresh composed wheels remain required.']},
+                'No arbitrary string-subclass compatibility claim.',
+                ('Diagnostic overlay supersedes three installed RECORD entries; fresh composed wheels remain required.' if overlay else
+                 'Fresh installed source composition was audited; independent rebuilds and full release acceptance remain separate gates.')]},
         raw_result={'path':str(args.result.resolve()),'sha256':digest(raw)},
         baseline={'path':str(args.baseline.resolve()),'sha256':digest(baseline_raw),
                   'runtime_image':baseline['runtime_image'],

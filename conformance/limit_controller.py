@@ -11,7 +11,9 @@ import uuid
 
 sys.path.insert(0, '/workspace/fixture')
 sys.path.insert(0, '/opt/host')
+sys.path.insert(0, '/workspace')
 from native import NativeSession
+from installed_provenance import capture
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.journal import Journal
@@ -192,6 +194,7 @@ finally:
         assert hashlib.sha256(path.read_bytes()).hexdigest() == description['sha256'], name
     Path('/workspace/runtime.json').write_text(json.dumps({
         'interpreter': sys.version,
+        'integrated': capture() if 'limit-patch' not in manifests else None,
         'manifests': manifests,
         'installed': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},
     }, indent=2) + '\n')

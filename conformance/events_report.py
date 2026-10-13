@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from events_cases import CASES, METADATA
+from installed_provenance import verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 DIMENSIONS = {'positive','boundary','failure','recovery'}
@@ -28,6 +29,7 @@ def qualify(raw):
             assert set(prompt['choices']) == set(plan['choices']), name
     for path,expected in report['inputs'].items():
         assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest() == expected,path
+    verify_capture(report['runtime_sources'].get('integrated'),report['inputs'],report.get('lf_normalized_inputs'))
     report['qualified_contracts'] = sorted({c for row in report['checks'].values() for c in row['contracts']})
     assert set(report['qualified_contracts']) == set(CONTRACTS)
     inventory = {row['id']:row for row in json.loads((ROOT/'conformance/inventory.json').read_bytes())['rows']}

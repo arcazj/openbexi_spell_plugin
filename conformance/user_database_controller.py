@@ -48,6 +48,7 @@ site=Path('/usr/local/lib/python3.13/site-packages')
 # Load only the copied harness. Native runtime resolution remains isolated.
 import sys
 sys.path.insert(0,str(workspace))
+from installed_provenance import capture
 from user_database_prompts import run as run_prompts
 (workspace/'prompts.json').write_text(json.dumps(run_prompts(workspace),indent=2)+'\n')
 paths=['spell/lib/adapter/databases/dbfile.py','spell/utils/vimport.py','spell/lang/helpers/filehelper.py']
@@ -56,7 +57,7 @@ installed={name:hashlib.sha256((site/name).read_bytes()).hexdigest() for name in
 for absolute in ('/opt/host/native.py','/bridge/spell-host-ipc'):
     installed[absolute]=hashlib.sha256(Path(absolute).read_bytes()).hexdigest()
 manifest=Path('/opt/user-database-patch/manifest.json')
-report=dict(installed=installed,manifest=json.loads(manifest.read_bytes()) if manifest.exists() else {})
+report=dict(installed=installed,manifest=json.loads(manifest.read_bytes()) if manifest.exists() else {},integrated=capture())
 (workspace/'runtime.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(dict(checks=len(checks),failed={k:v.get('error') for k,v in checks.items() if not v['passed']})),flush=True)
 raise SystemExit(any(not row['passed'] for row in checks.values()))

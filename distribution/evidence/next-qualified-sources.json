@@ -1,0 +1,146 @@
+{
+  "schema": "openbexi.spell.qualified-source-donors/1",
+  "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
+  "generator_sha256": "d054b8c64588d13b711de129d3a80ff6f154e98db530219d6704a89585a590f0",
+  "donors": {
+    "baseline": {
+      "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
+      "path": "conformance/evidence/obs.json",
+      "sha256": "eca8a1bc50a77b6d7b5d5d077363ab178954d767f4090a465bb3515e94c56987"
+    },
+    "command": {
+      "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
+      "path": "conformance/evidence/cmd.json",
+      "sha256": "b17b0fbaf30c91f970aea307b8c02dc07ba3f91588d8773f54842eeec26ad94e"
+    },
+    "time_verify": {
+      "commit": "85bc970ba1da1aa5dc830d70d0e43c786c1b6558",
+      "path": "conformance/evidence/time_verify_review.json",
+      "sha256": "196bb1d2249f904206bb3cd4edc807d419b7acd3f348b971dec3788d8106f591"
+    },
+    "ipc": {
+      "commit": "d9b6be77c1fc2e6ebcf63847a506672222f0fa64",
+      "path": "conformance/evidence/dta_ipc_review.json",
+      "sha256": "0f32bb295e51ed3c8cece500bc834ec07e96b031f697cfda509b8fc32ca47e6f"
+    },
+    "scheduler": {
+      "commit": "8e4a59a603ae5930814773479dcaa5be958b1520",
+      "path": "conformance/evidence/scheduler.json",
+      "sha256": "67172001c46b10a24995e5cc6430dcf8500baa8f705838ee9f9e691614c572a2"
+    },
+    "resource": {
+      "commit": "42b4f01b005b5e138509a9c241c816b7dbc6ca92",
+      "path": "conformance/evidence/resource.json",
+      "sha256": "3c2aa7fb726d535b3a7bb2377880ed3a3ff8e930878ad0ec52255ee66c68f146"
+    },
+    "limit": {
+      "commit": "419b37a434165a66290c0af3f7990201602d62c6",
+      "path": "conformance/evidence/limit.json",
+      "sha256": "f506700c393b0025d019a558c551930184c914163a43062bf7402b9443d1d27a"
+    },
+    "database": {
+      "commit": "8a61a2d61e17713170b1629941d8284b74a427a5",
+      "path": "conformance/evidence/database_import.json",
+      "sha256": "b618d52555b20152c50215bc7746bd36798dd9f2e99d2004f9b1abae9cb5c5c2"
+    },
+    "notification": {
+      "commit": "aece0cfd8633ff375a42158e8dd717eb74e720e0",
+      "path": "conformance/evidence/notification.json",
+      "sha256": "13dc80607a9a810025b8d715a4b86dea702616370aad7cc4270aa6b526e9e92d"
+    },
+    "value_units": {
+      "commit": "6c238b54c9250ce742d76fd0277de671c4780191",
+      "path": "conformance/evidence/value_units.json",
+      "sha256": "671adc1746df8c745adb410c615e0b2a53308bf3598b57151ddc122d421ede61"
+    },
+    "user_database": {
+      "commit": "e5f6b070f6bdf178221c75793ce21a81d3c6a559",
+      "path": "conformance/evidence/user_database.json",
+      "sha256": "175b414c82e5ad43df33621a8f02eb6521bc66939cf18d63de8c7966da24eaf1"
+    }
+  },
+  "native": {
+    "lib/SPELL_CIF/src/SPELLasRun.C": {
+      "original": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+      "ported": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a",
+      "patched": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317"
+    },
+    "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+      "original": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+      "ported": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c",
+      "patched": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724"
+    },
+    "lib/SPELL_CTX/src/SPELLcontext.C": {
+      "original": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
+      "ported": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a",
+      "patched": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+    },
+    "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+      "original": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+      "ported": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e",
+      "patched": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538"
+    },
+    "lib/SPELL_EXC/src/SPELLgoto.C": {
+      "original": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+      "ported": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7",
+      "patched": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4"
+    },
+    "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+      "original": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+      "ported": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02",
+      "patched": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa"
+    },
+    "lib/SPELL_UTIL/src/SPELLtime.C": {
+      "original": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+      "ported": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8",
+      "patched": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec"
+    },
+    "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+      "original": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+      "ported": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+      "patched": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b"
+    },
+    "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+      "original": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+      "ported": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+      "patched": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e"
+    },
+    "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+      "original": "89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e",
+      "ported": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6",
+      "patched": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df"
+    },
+    "lib/SPELL_EXC/src/SPELLscheduler.C": {
+      "original": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
+      "ported": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179",
+      "patched": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b"
+    }
+  },
+  "python": {
+    "spell/lang/helpers/basehelper.py": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+    "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+    "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+    "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+    "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+    "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+    "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+    "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
+    "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+    "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+    "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+    "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+    "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+    "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+    "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+    "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+    "spell/lib/adapter/verifier.py": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+    "spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+    "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+  },
+  "driver": {
+    "openbexi_dss_proxy/tm.py": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6",
+    "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

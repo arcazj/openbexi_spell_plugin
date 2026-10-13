@@ -4,7 +4,11 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import traceback
+
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
 
 workspace = Path('/workspace')
 cases = json.loads((workspace / 'cases.json').read_bytes())
@@ -64,6 +68,6 @@ for relative in ('spell/utils/vimport.py', 'spell/lib/adapter/databases/dbfile.p
         assert installed[relative] == manifests[relative]['sha256']
 for path in (site / 'spell_native/bin').iterdir():
     if path.is_file(): installed[str(path.relative_to(site))] = hashlib.sha256(path.read_bytes()).hexdigest()
-(workspace / 'runtime.json').write_text(json.dumps(dict(installed=installed, manifests=manifests),indent=2)+'\n')
+(workspace / 'runtime.json').write_text(json.dumps(dict(installed=installed, manifests=manifests, integrated=capture()),indent=2)+'\n')
 print(json.dumps(dict(checks=len(checks), failed={k:v.get('error') for k,v in checks.items() if not v['passed']})),flush=True)
 raise SystemExit(any(not row['passed'] for row in checks.values()))

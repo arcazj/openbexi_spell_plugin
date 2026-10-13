@@ -8,6 +8,7 @@ import sys
 import zipfile
 
 from user_database_cases import CASES
+from installed_provenance import verify_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'source_port'))
@@ -38,6 +39,8 @@ def main():
         assert row['passed'] and all(row[key]==value for key,value in spec.items()),name
     for name,expected in report['inputs'].items():
         assert digest(ROOT/name)==expected,name
+    integrated=report['runtime_sources'].get('integrated')
+    verify_capture(integrated,report['inputs'],report.get('lf_normalized_inputs'))
     chain={}
     with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as archive:
         for name,preimage in patch.PREIMAGES.items():
@@ -51,8 +54,16 @@ def main():
             assert hashlib.sha256(before).hexdigest()==preimage,name
             after=patch.apply(name,before)
             expected=hashlib.sha256(after).hexdigest()
-            assert report['runtime_sources']['installed'][name]==expected
-            assert report['runtime_sources']['manifest'][name]==dict(preimage=preimage,sha256=expected)
+            if integrated:
+                composition=integrated['manifest']['composition']['python']
+                final=composition['sources'][name]
+                assert final['original_sha256']==hashlib.sha256(original).hexdigest()
+                assert final['patched_sha256']==report['runtime_sources']['installed'][name]
+                stage,=[stage for stage in composition['stages'] if stage['recipe']=='user_database_patches.py']
+                assert stage['sources'][name]==dict(before_sha256=preimage,after_sha256=expected)
+            else:
+                assert report['runtime_sources']['installed'][name]==expected
+                assert report['runtime_sources']['manifest'][name]==dict(preimage=preimage,sha256=expected)
             chain[name]=dict(original_sha256=hashlib.sha256(original).hexdigest(),stages=stages,patched_sha256=expected)
     assert report['runtime_sources']['installed']['/opt/host/native.py']==digest(ROOT/'host_runtime/python/native.py')
     for mode,dimension in [('abort','failure'),('rename','recovery')]:
@@ -77,8 +88,12 @@ def main():
     assert not baseline['checks']['save:boundary']['passed']
     assert not baseline['prompts']['prompt-rename']['passed']
     unchanged={name:value for name,value in report['runtime_sources']['installed'].items() if name not in patch.PREIMAGES}
-    assert all(baseline['runtime_sources']['installed'][name]==value for name,value in unchanged.items())
+    same_payload=all(baseline['runtime_sources']['installed'][name]==value for name,value in unchanged.items())
+    if not integrated:
+        assert same_payload
     report['baseline']=dict(**reference(args.baseline),runtime_image=baseline['runtime_image'],
+        same_native_and_host_payload=same_payload,
+        scope='Earlier native development counterexample; new integrated composition is independently verified.' if integrated else 'Same native/host payload with only the three declared Python corrections.',
         failed=[name for name,row in baseline['checks'].items() if not row['passed']],
         failed_prompts=[name for name,row in baseline['prompts'].items() if not row['passed']])
     report['regressions']={}
@@ -95,6 +110,8 @@ def main():
         'open':'Full database-formats section remains open: legacy 035 spelling, non-string file keys, nested TIME/custom value serialization and broad database backends are not claimed. Configured SCDB read-only semantics remain a separate tranche.',
         'distribution':'Exact development overlay identities; installed wheel RECORD is superseded for these three modules. Fresh integrated wheel and complete release qualification are separate.'}
     report['full_v05_accepted']=report['v06_dependency_satisfied']=False
+    if integrated:
+        report['scope']['distribution']='Fresh installed native/Python/driver wheel composition with exact source-chain, recipe, artifact and driver RECORD verification; release qualification remains separate.'
     output=ROOT/'conformance/evidence/user_database.json'
     output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(dict(output=str(output),contracts=len(contracts),checks=len(report['checks']),sha256=digest(output)),indent=2))

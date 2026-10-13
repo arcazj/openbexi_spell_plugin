@@ -18,7 +18,21 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'source_port'))
-from integrated_patches import recipe_hashes
+from integrated_patches import apply_driver_tree, recipe_hashes
+sys.path.insert(0, str(ROOT/'driver_plugin/src'))
+from openbexi_dss_proxy.provenance import PREFIX as DRIVER_PREFIX, verify as verify_driver
+
+DRIVER_WHEEL_DOCKERFILE = '''ARG TOOLCHAIN_IMAGE
+FROM ${TOOLCHAIN_IMAGE} AS driver
+ENV SOURCE_DATE_EPOCH=1791676800 PYTHONHASHSEED=0 TZ=UTC LC_ALL=C.UTF-8
+COPY driver_plugin /driver
+RUN python -m pip wheel --no-index --no-build-isolation --no-deps --wheel-dir=/wheels /driver
+RUN python -m pip install --no-index --no-deps /wheels/*.whl
+RUN python -I -c "import json; from pathlib import Path; import openbexi_dss_proxy.provenance as p; manifest=json.loads((Path(p.__file__).parent/'_composition/manifest.json').read_bytes()); result=p.capture(manifest['recipes']); assert result is not None; Path('/driver-installed-record.json').write_text(json.dumps(result,indent=2)+'\\n')"
+FROM scratch
+COPY --from=driver /wheels /wheels
+COPY --from=driver /driver-installed-record.json /driver-installed-record.json
+'''
 
 
 def sha(path):
@@ -37,7 +51,7 @@ def run(command, log):
         raise RuntimeError(f'Command exited {result.returncode}; evidence: {log}')
 
 
-def inspect_wheel(wheel, require_composition=False):
+def inspect_wheel(wheel, require_composition=False, require_driver_composition=False):
     with zipfile.ZipFile(wheel) as archive:
         record, = [name for name in archive.namelist() if name.endswith('.dist-info/RECORD')]
         rows = list(csv.reader(io.StringIO(archive.read(record).decode())))
@@ -68,6 +82,12 @@ def inspect_wheel(wheel, require_composition=False):
                     raise ValueError('Selected wheel predates the current composed recipes: '+kind)
             report['native_artifacts'] = manifest['native_artifacts']
             report['composition'] = manifest['composition']
+        if require_driver_composition:
+            report['driver_composition'] = verify_driver(archive.read, recipe_hashes())
+            python_files = {name for name in archive.namelist()
+                            if name.endswith('.py') and not name.startswith(DRIVER_PREFIX)}
+            if python_files != set(report['driver_composition']['manifest']['python_sources']):
+                raise ValueError('Driver composition does not cover the complete wheel Python source set')
         return report
 
 
@@ -91,6 +111,9 @@ def main():
         report['toolchain'] = toolchain
         for name in ('host_runtime','driver_plugin'):
             shutil.copytree(ROOT/name,snapshot/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','build','*.egg-info'))
+        driver_source = snapshot/'driver_plugin/src'
+        report['driver_source_composition'] = apply_driver_tree(
+            driver_source, driver_source/'openbexi_dss_proxy/_composition')
         (snapshot/'distribution').mkdir()
         for name in ('build_images.py','verify_image.py'):
             shutil.copyfile(ROOT/'distribution'/name,snapshot/'distribution'/name)
@@ -103,13 +126,7 @@ def main():
         # Docker context transfer avoids host bind-mount requirements and keeps
         # compiler-generated wheel metadata outside the source checkout.
         driver_recipe = evidence/'driver-wheel.Dockerfile'
-        driver_recipe.write_text('''ARG TOOLCHAIN_IMAGE
-FROM ${TOOLCHAIN_IMAGE} AS driver
-COPY driver_plugin /driver
-RUN python -m pip wheel --no-index --no-build-isolation --no-deps --wheel-dir=/wheels /driver
-FROM scratch
-COPY --from=driver /wheels /wheels
-''',encoding='utf-8',newline='\n')
+        driver_recipe.write_text(DRIVER_WHEEL_DOCKERFILE,encoding='utf-8',newline='\n')
         run(['docker','build','--no-cache','--network=none','--progress=plain',
              '--build-arg','TOOLCHAIN_IMAGE='+options.toolchain_image,'-f',driver_recipe,
              '--output','type=local,dest='+str(evidence/'driver-package'),snapshot],evidence/'driver-wheel.log')
@@ -117,7 +134,11 @@ COPY --from=driver /wheels /wheels
         shutil.copyfile(built_driver,wheels/'driver'/built_driver.name)
         report['driver_wheel_recipe_sha256'] = sha(driver_recipe)
         driver, = (wheels/'driver').glob('*.whl')
-        report['driver_wheel'] = inspect_wheel(driver)
+        report['driver_wheel'] = inspect_wheel(driver,require_driver_composition=True)
+        installed_driver = json.loads((evidence/'driver-package/driver-installed-record.json').read_bytes())
+        if installed_driver['manifest'] != report['driver_source_composition']:
+            raise ValueError('Independently installed driver differs from its source composition')
+        report['driver_installed_record_sha256'] = sha(evidence/'driver-package/driver-installed-record.json')
         inputs = {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}
         (evidence/'inputs.json').write_text(json.dumps(inputs,indent=2)+'\n',encoding='utf-8',newline='\n')
         report['inputs_sha256'] = sha(evidence/'inputs.json')
@@ -140,6 +161,8 @@ COPY --from=driver /wheels /wheels
         installed = json.loads((evidence/'installed-record.json').read_text())
         if not installed['passed'] or installed['native_artifacts'] != report['native_wheel']['native_artifacts']:
             raise ValueError('Installed native payload differs from the selected wheel')
+        if installed['driver_composition']['manifest'] != report['driver_source_composition']:
+            raise ValueError('Installed driver differs from the selected composed wheel')
         report['installed_record_sha256'] = sha(evidence/'installed-record.json')
         report['passed'] = True
     except Exception as error:

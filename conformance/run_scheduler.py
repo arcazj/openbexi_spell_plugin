@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'conformance'))
 from scheduler_scenarios import SCENARIOS
 from scheduler_checks import qualify
+from installed_provenance import input_paths, verify_capture
 
 
 def main():
@@ -33,6 +34,9 @@ def main():
         'conformance/scheduler_native.Dockerfile','distribution/incremental_native.py',
         'conformance/inventory.json', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
         'docs/reference/SPELL2.6.10-src.zip')}
+    inputs.update({name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in input_paths(ROOT)})
+    normalized={name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+                for name in inputs if name.endswith('.py')}
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image,
                                     '--format', '{{.Id}}'], text=True).strip()
     name = 'openbexi-scheduler-' + uuid.uuid4().hex
@@ -45,6 +49,7 @@ def main():
         with tarfile.open(fileobj=archive, mode='w') as bundle:
             for target, content in (
                 ('controller.py', (ROOT / 'conformance/scheduler_controller.py').read_bytes()),
+                ('installed_provenance.py', (ROOT / 'conformance/installed_provenance.py').read_bytes()),
                 ('scenarios.json', json.dumps(selected).encode()),
             ):
                 item = tarfile.TarInfo(target)
@@ -61,8 +66,10 @@ def main():
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
                    for path, digest in inputs.items()), 'Inputs changed during native execution'
         report = dict(runtime_image=image, inputs=inputs,
+                      lf_normalized_inputs=normalized,
                       runtime_sources=json.loads((output / 'workspace/runtime.json').read_bytes()),
                       controller_exit_code=run.returncode)
+        verify_capture(report['runtime_sources'].get('integrated'),inputs,normalized)
         manifest=report['runtime_sources'].get('scheduler_manifest')
         if manifest:
             for name,path in (('scheduler_patches.py','source_port/scheduler_patches.py'),

@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 from value_units_cases import CASES, METADATA
+from installed_provenance import verify_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 DIMENSIONS={'positive','boundary','failure','recovery'}
@@ -22,6 +23,7 @@ def qualify(raw):
         assert row['contracts']==METADATA[key]['contracts'],key
     for name,digest in report['inputs'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
+    verify_capture(report['runtime_sources'].get('integrated'),report['inputs'],report.get('lf_normalized_inputs'))
     contracts={c for row in report['checks'].values() for c in row['contracts']}
     assert contracts==CONTRACTS
     for contract in CONTRACTS:

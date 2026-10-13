@@ -31,8 +31,13 @@ def verify():
     bridge = json.loads(Path('/bridge/build.json').read_text())
     assert bridge['native_composition'] == manifest['composition']['native']
     assert hashlib.sha256(Path('/bridge/spell-host-ipc').read_bytes()).hexdigest() == bridge['bridge_sha256']
+    from openbexi_dss_proxy.provenance import capture
+    driver = capture(manifest['composition']['native']['recipes'])
+    if driver is None:
+        raise ValueError('Fresh image lacks composed driver provenance')
     return {'passed':True, 'distributions':distributions,
             'native_artifacts':manifest['native_artifacts'],
+            'driver_composition':driver,
             'composition':manifest['composition'], 'bridge_sha256':bridge['bridge_sha256']}
 
 

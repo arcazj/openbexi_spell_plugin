@@ -12,6 +12,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'conformance'))
 from resource_cases import CASES, METADATA
+from installed_provenance import input_paths, verify_capture
 
 
 def main():
@@ -38,6 +39,9 @@ def main():
               ROOT / 'source_port/resource_patches.py',
               ROOT / 'conformance/resource.Dockerfile', ROOT / 'conformance/resource.Dockerfile.dockerignore']
     inputs = {str(path.relative_to(ROOT)).replace('\\', '/'): hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
+    files += [ROOT / path for path in input_paths(ROOT)]
+    inputs.update({path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes()).hexdigest() for path in files})
+    normalized = {path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for path in files}
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image, '--format', '{{.Id}}'], text=True).strip()
     name = 'openbexi-resource-' + uuid.uuid4().hex
     try:
@@ -48,6 +52,7 @@ def main():
         with tarfile.open(fileobj=bundle, mode='w') as archive:
             targets = {
                 'controller.py': (ROOT / 'conformance/resource_controller.py').read_bytes(),
+                'installed_provenance.py': (ROOT / 'conformance/installed_provenance.py').read_bytes(),
                 'procedure/resource_contracts.py': (ROOT / 'conformance/resource_contracts.py').read_bytes(),
                 'procedure/main.py': b'import resource_contracts\nresource_contracts.run()\n',
                 'procedure/cases.json': json.dumps(cases).encode(),
@@ -82,6 +87,7 @@ def main():
                              runtime_error='Native run did not finish cleanly')
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest for path, digest in inputs.items())
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
+        verify_capture(runtime.get('integrated'), inputs, normalized)
         assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/resources.py'] == inputs['driver_plugin/src/openbexi_dss_proxy/resources.py']
         if '/opt/resource-conformance-patch/resource_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/resource-conformance-patch/resource_patches.py'] == inputs['source_port/resource_patches.py']
@@ -89,7 +95,7 @@ def main():
             assert runtime['installed']['/opt/obs-conformance-patch/obs_patches.py'] == inputs['source_port/obs_patches.py']
             for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py'):
                 assert runtime['installed']['/usr/local/lib/python3.13/site-packages/' + path] == inputs['driver_plugin/src/' + path], path
-        report = dict(runtime_image=image, inputs=inputs, checks=checks, observations=observations,
+        report = dict(runtime_image=image, inputs=inputs, lf_normalized_inputs=normalized, checks=checks, observations=observations,
                       runtime_sources=runtime, controller_exit_code=run.returncode,
                       full_v05_accepted=False, v06_dependency_satisfied=False)
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')

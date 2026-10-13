@@ -12,6 +12,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'conformance'))
 from events_cases import CASES, METADATA
+from installed_provenance import input_paths, verify_capture
 
 
 def main():
@@ -38,7 +39,10 @@ def main():
     files += [ROOT/'driver_plugin/src/openbexi_dss_proxy/ev.py']
     files += [ROOT/'driver_plugin/src/openbexi_spell_dss'/name for name in
               ('codec.py','journal.py','rpc.py','server.py')]
+    files = list(dict.fromkeys([*files,*[ROOT/name for name in input_paths(ROOT)]]))
     inputs = {str(path.relative_to(ROOT)).replace('\\', '/'): hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
+    normalized = {path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+                  for path in files if path.suffix=='.py'}
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image, '--format', '{{.Id}}'], text=True).strip()
     name = 'openbexi-events-' + uuid.uuid4().hex
     try:
@@ -49,6 +53,7 @@ def main():
         with tarfile.open(fileobj=bundle, mode='w') as archive:
             targets = {
                 'controller.py': (ROOT / 'conformance/events_controller.py').read_bytes(),
+                'installed_provenance.py': (ROOT / 'conformance/installed_provenance.py').read_bytes(),
                 'procedure/events_contracts.py': (ROOT / 'conformance/events_contracts.py').read_bytes(),
                 'procedure/cmd_contracts.py': (ROOT/'conformance/cmd_contracts.py').read_bytes(),
                 'procedure/main.py': b'import events_contracts\nevents_contracts.run()\n',
@@ -84,9 +89,14 @@ def main():
                              runtime_error='Native run did not finish cleanly')
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest for path, digest in inputs.items())
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
-        assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/ev.py'] == inputs['driver_plugin/src/openbexi_dss_proxy/ev.py']
+        verify_capture(runtime.get('integrated'),inputs,normalized)
+        driver=(runtime.get('integrated') or {}).get('driver_composition')
+        driver_sources=driver['manifest']['python_sources'] if driver else {}
+        def expected_driver(path):
+            return driver_sources.get(path,inputs['driver_plugin/src/'+path])
+        assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/ev.py'] == expected_driver('openbexi_dss_proxy/ev.py')
         for name in ('codec.py','journal.py','rpc.py','server.py'):
-            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_spell_dss/'+name] == inputs['driver_plugin/src/openbexi_spell_dss/'+name],name
+            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_spell_dss/'+name] == expected_driver('openbexi_spell_dss/'+name),name
         if '/opt/obs-conformance-patch/obs_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/obs-conformance-patch/obs_patches.py'] == inputs['source_port/obs_patches.py']
             for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py'):
@@ -95,6 +105,7 @@ def main():
             assert runtime['installed']['/opt/cmd-conformance-patch/cmd_patches.py'] == inputs['source_port/cmd_patches.py']
             assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/tc.py'] == inputs['driver_plugin/src/openbexi_dss_proxy/tc.py']
         report = dict(runtime_image=image, inputs=inputs, checks=checks, observations=observations,
+                      lf_normalized_inputs=normalized,
                       runtime_sources=runtime, controller_exit_code=run.returncode,
                       full_v05_accepted=False, v06_dependency_satisfied=False)
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')

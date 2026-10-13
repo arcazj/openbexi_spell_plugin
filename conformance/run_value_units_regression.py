@@ -98,6 +98,8 @@ def main():
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
         verify_capture(runtime.get('integrated'), inputs, normalized)
         overlay=runtime['diagnostic_overlay'].get('overlay') or {}
+        driver=(runtime.get('integrated') or {}).get('driver_composition')
+        driver_sources=driver['manifest']['python_sources'] if driver else {}
         for directory,recipe in (('limit-patch','limit_patches.py'),('value-units-patch','value_units_patches.py')):
             if directory in overlay:
                 assert overlay[directory]['files'][recipe] in (inputs['source_port/'+recipe],normalized.get('source_port/'+recipe))
@@ -111,7 +113,10 @@ def main():
         for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py', 'openbexi_dss_proxy/tc.py'):
             row=(overlay.get('value-units-patch',{}).get('manifest',{}).get(path)
                  or overlay.get('limit-patch',{}).get('manifest',{}).get(path))
-            expected=(row['sha256'],) if row else (inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path))
+            if driver:
+                expected=(driver_sources[path],)
+            else:
+                expected=(row['sha256'],) if row else (inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path))
             assert runtime['installed']['/usr/local/lib/python3.13/site-packages/' + path] in expected, path
         if '/opt/cmd-conformance-patch/cmd_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/cmd-conformance-patch/cmd_patches.py'] == inputs['source_port/cmd_patches.py']

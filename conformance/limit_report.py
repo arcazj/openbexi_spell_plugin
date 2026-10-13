@@ -142,7 +142,9 @@ def main():
             'GetLimits and SetLimits function-wide clauses remain open; working single-definition selector/property and read/modify/write checks are retained without promoting their broader function claims.',
             'Partial threshold updates use read/merge/write; no concurrent multi-writer atomicity claim.',
             'The original generic-value protobuf encoding represents integers as signed Int64. Out-of-range integers are rejected before effects; finite floating-point thresholds retain their original encoding.',
-            'This overlay is a development qualification image. Final clean wheel construction, RECORD metadata, integrated composition and independent distribution rebuilds remain separate gates.',
+            ('Fresh installed native/driver composition was audited for this run; independent distribution rebuild and full release acceptance remain separate gates.'
+             if report['runtime_sources'].get('integrated') else
+             'This overlay is a development qualification image. Final clean wheel construction, RECORD metadata, integrated composition and independent distribution rebuilds remain separate gates.'),
         ],
     }
     report['regressions'] = {

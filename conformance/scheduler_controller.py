@@ -8,6 +8,9 @@ import time
 
 sys.path.insert(0,'/opt/host')
 from native import NativeSession
+sys.path.insert(0,'/workspace')
+from installed_provenance import capture
+integrated=capture()
 
 results={}
 for name,spec in json.loads(Path('/workspace/scenarios.json').read_text()).items():
@@ -93,5 +96,6 @@ if patch.exists():
         assert hashlib.sha256((site/'spell_native/bin'/name).read_bytes()).hexdigest()==digest,name
     paths += [p for p in patch.rglob('*') if p.is_file() and 'runtime-bin' not in p.parts and 'compiled' not in p.parts]
 Path('/workspace/runtime.json').write_text(json.dumps(dict(interpreter=sys.version,
+    integrated=integrated,
     scheduler_manifest=manifest,
     installed={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}),indent=2)+'\n')

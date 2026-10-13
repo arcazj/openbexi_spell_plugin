@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 
 import cmd_patches
+import database_import_patches
 import data_files_native_patches
 import data_files_patches
 import dta_native_patches
@@ -19,7 +20,13 @@ import dta_ipc_patches
 import dta_time_patches
 import flow_patches
 import obs_patches
+import limit_patches
+import notification_patches
+import resource_patches
+import scheduler_patches
 import ui_native_patches
+import user_database_patches
+import value_units_patches
 
 ARCHIVE_SHA256 = '2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed'
 RECIPE_NAMES = (
@@ -28,14 +35,24 @@ RECIPE_NAMES = (
     'dta_native_patches.py', 'dta_time_patches.py',
     'flow_patches.py', 'flow_analyze.py', 'obs_patches.py', 'ui_native_patches.py',
     'cmd_patches.py', 'dta_ipc_patches.py',
+    'scheduler_patches.py', 'resource_patches.py', 'limit_patches.py',
+    'database_import_patches.py', 'notification_patches.py',
+    'value_units_patches.py',
+    'user_database_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             dta_ipc_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
-                            *flow_patches.PREIMAGES)))
-PYTHON_NAMES = tuple(sorted((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES, *cmd_patches.PREIMAGES,
-                            'spell/lang/helpers/exechelper.py')))
+                            *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
+PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
+                  user_database_patches, notification_patches, value_units_patches)
+DRIVER_RECIPES = (limit_patches, value_units_patches)
+PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
+    *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',
+    *(name for recipe in PYTHON_RECIPES for name in recipe.PREIMAGES if name.startswith('spell/'))))))
+DRIVER_NAMES = tuple(sorted(set(name for recipe in DRIVER_RECIPES for name in recipe.PREIMAGES
+                               if name.startswith('openbexi_dss_proxy/'))))
 
 
 def digest(content):
@@ -101,6 +118,8 @@ def apply_native_tree(source, archive, output):
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
         elif name in dta_time_patches.PREIMAGES:
             patched[name] = dta_time_patches.apply(name, original[name], ported[name])
+        elif name in scheduler_patches.PREIMAGES:
+            patched[name] = scheduler_patches.apply(name, original[name], ported[name])
     # Existing tree recipes run in a scratch tree. Validate every preimage before
     # changing the actual build tree, so a rejected input leaves it untouched.
     with tempfile.TemporaryDirectory(prefix='spell-native-composition-') as folder:
@@ -142,11 +161,33 @@ def apply_python_tree(site, archive, output):
             target = scratch/name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(content)
-        for name in data_files_patches.PREIMAGES:
+        stages = []
+
+        def stage(recipe, names, action):
+            before = {name: digest((scratch/name).read_bytes()) for name in names}
+            action()
+            stages.append({'recipe': Path(recipe.__file__).name, 'sources': {
+                name: {'before_sha256': value, 'after_sha256': digest((scratch/name).read_bytes())}
+                for name, value in before.items()}})
+
+        stage(data_files_patches, data_files_patches.PREIMAGES, lambda: [
             (scratch/name).write_bytes(data_files_patches.apply(name, ported[name]))
-        flow_patches.apply_python_tree(scratch)
-        obs_patches.apply_tree(scratch, Path(folder)/'obs')
-        cmd_patches.apply_tree(scratch, Path(folder)/'cmd')
+            for name in data_files_patches.PREIMAGES])
+        stage(flow_patches, ['spell/lang/helpers/exechelper.py'], lambda: flow_patches.apply_python_tree(scratch))
+        stage(obs_patches, obs_patches.PREIMAGES, lambda: obs_patches.apply_tree(scratch, Path(folder)/'obs'))
+        stage(cmd_patches, cmd_patches.PREIMAGES, lambda: cmd_patches.apply_tree(scratch, Path(folder)/'cmd'))
+        for recipe in PYTHON_RECIPES:
+            changes = {}
+            for name in recipe.PREIMAGES:
+                if not name.startswith('spell/'):
+                    continue
+                before = (scratch/name).read_bytes()
+                if recipe is notification_patches and digest(original[name]) != recipe.ORIGINALS[name]:
+                    raise ValueError('Unexpected original notification source: '+name)
+                after = recipe.apply(name, before)
+                (scratch/name).write_bytes(after)
+                changes[name] = {'before_sha256': digest(before), 'after_sha256': digest(after)}
+            stages.append({'recipe': Path(recipe.__file__).name, 'sources': changes})
         patched = {name: (scratch/name).read_bytes() for name in PYTHON_NAMES}
         for name, content in patched.items():
             compile(content, name, 'exec')
@@ -155,6 +196,42 @@ def apply_python_tree(site, archive, output):
     for name, content in patched.items():
         (site/name).write_bytes(content)
     report = {'schema': 'openbexi.spell.integrated-python/1', 'archive_sha256': ARCHIVE_SHA256,
-              'recipes': recipes, 'sources': records}
+              'recipes': recipes, 'sources': records, 'stages': stages}
+    (Path(output)/'manifest.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
+    return report
+
+
+def apply_driver_tree(site, output):
+    """Compose repository driver sources before wheel building, never after install.
+
+    These are DSS proxy sources, not original SPELL archive members. The manifest
+    uses a separate profile and records the complete source set supplied to the
+    driver wheel, alongside the checked before/after chain for corrected units.
+    """
+    site = Path(site)
+    original = {name: (site/name).read_bytes() for name in DRIVER_NAMES}
+    patched = dict(original)
+    stages = []
+    for recipe in DRIVER_RECIPES:
+        changes = {}
+        for name in recipe.PREIMAGES:
+            if not name.startswith('openbexi_dss_proxy/'):
+                continue
+            before = patched[name]
+            after = recipe.apply(name, before)
+            compile(after, name, 'exec')
+            patched[name] = after
+            changes[name] = {'before_sha256': digest(before), 'after_sha256': digest(after)}
+        stages.append({'recipe': Path(recipe.__file__).name, 'sources': changes})
+    recipes = recipe_hashes()
+    records = write_evidence(output, original, {}, patched, recipes)
+    for name, content in patched.items():
+        (site/name).write_bytes(content)
+    sources = {path.relative_to(site).as_posix(): digest(path.read_bytes())
+               for path in sorted(site.rglob('*.py')) if not path.is_relative_to(Path(output))}
+    report = {'schema': 'openbexi.spell.integrated-driver/1',
+              'source_profile': 'repository-dss-driver-with-checked-corrections',
+              'recipes': recipes, 'sources': records, 'stages': stages,
+              'python_sources': sources}
     (Path(output)/'manifest.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
     return report

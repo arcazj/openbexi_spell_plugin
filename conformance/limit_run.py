@@ -12,6 +12,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'conformance'))
 from limit_cases import CASES, METADATA
+from installed_provenance import input_paths, verify_capture
 
 
 def main():
@@ -43,7 +44,10 @@ def main():
     files += [ROOT / 'conformance/obs_combined.Dockerfile', ROOT / 'conformance/OBS.md']
     files += [ROOT / 'source_port/limit_patches.py', ROOT / 'conformance/limit_runtime.Dockerfile',
               ROOT / 'driver_plugin/src/openbexi_dss_proxy/limit_support.py']
+    files += [ROOT/name for name in input_paths(ROOT)]
+    files += sorted((ROOT/'driver_plugin/src').rglob('*.py'))
     inputs = {str(path.relative_to(ROOT)).replace('\\', '/'): hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
+    normalized = {path.relative_to(ROOT).as_posix():hashlib.sha256(path.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for path in files}
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image, '--format', '{{.Id}}'], text=True).strip()
     name = 'openbexi-limit-' + uuid.uuid4().hex
     try:
@@ -54,6 +58,7 @@ def main():
         with tarfile.open(fileobj=bundle, mode='w') as archive:
             targets = {
                 'controller.py': (ROOT / 'conformance/limit_controller.py').read_bytes(),
+                'installed_provenance.py': (ROOT / 'conformance/installed_provenance.py').read_bytes(),
                 'procedure/' + contracts + '.py': (ROOT / 'conformance' / (contracts + '.py')).read_bytes(),
                 'procedure/main.py': ('import ' + contracts + '\n' + contracts + '.run()\n').encode(),
                 'procedure/cases.json': json.dumps(cases).encode(),
@@ -88,6 +93,17 @@ def main():
                              runtime_error='Native run did not finish cleanly')
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest for path, digest in inputs.items())
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
+        integrated = runtime.get('integrated')
+        verify_capture(integrated, inputs, normalized)
+        if integrated is not None:
+            driver = integrated.get('driver_composition')
+            assert driver is not None, 'LIMIT requires audited installed driver composition'
+            manifest = driver['manifest']
+            for path, expected in manifest['python_sources'].items():
+                correction = manifest['sources'].get(path)
+                original = correction['original_sha256'] if correction else expected
+                assert inputs['driver_plugin/src/'+path] == original, path
+            assert 'limit_patches.py' in manifest['recipes']
         if '/opt/obs-conformance-patch/obs_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/obs-conformance-patch/obs_patches.py'] == inputs['source_port/obs_patches.py']
             for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py'):
@@ -100,7 +116,7 @@ def main():
             assert runtime['installed']['/opt/limit-patch/limit_patches.py'] == inputs['source_port/limit_patches.py']
             assert runtime['installed']['/opt/limit-patch/limit_runtime.Dockerfile'] == inputs['conformance/limit_runtime.Dockerfile']
             assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/limit_support.py'] == inputs['driver_plugin/src/openbexi_dss_proxy/limit_support.py']
-        report = dict(suite=args.suite, runtime_image=image, inputs=inputs, checks=checks, observations=observations,
+        report = dict(suite=args.suite, runtime_image=image, inputs=inputs, lf_normalized_inputs=normalized, checks=checks, observations=observations,
                       runtime_sources=runtime, controller_exit_code=run.returncode,
                       full_v05_accepted=False, v06_dependency_satisfied=False)
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')

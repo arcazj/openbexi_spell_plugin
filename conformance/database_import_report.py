@@ -8,6 +8,7 @@ import sys
 import zipfile
 
 from database_import_cases import CASES
+from installed_provenance import verify_capture
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'source_port'))
@@ -32,13 +33,23 @@ def main():
         assert row['passed'] and all(row[key]==value for key,value in spec.items()),name
     for name,expected in report['inputs'].items():
         assert digest(ROOT/name)==expected,name
+    integrated=report['runtime_sources'].get('integrated')
+    verify_capture(integrated, report['inputs'], report.get('lf_normalized_inputs'))
     with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as archive:
         for name,preimage in patch.PREIMAGES.items():
             original=archive.read('src/spell/'+name)
             assert hashlib.sha256(original).hexdigest()==preimage
             expected=hashlib.sha256(patch.apply(name,original)).hexdigest()
-            assert report['runtime_sources']['installed'][name]==expected
-            assert report['runtime_sources']['manifests'][name]==dict(preimage=preimage,sha256=expected)
+            if integrated:
+                composition=integrated['manifest']['composition']['python']
+                row=composition['sources'][name]
+                assert row['original_sha256']==preimage
+                assert row['patched_sha256']==report['runtime_sources']['installed'][name]
+                stage,=[stage for stage in composition['stages'] if stage['recipe']=='database_import_patches.py']
+                assert stage['sources'][name]==dict(before_sha256=preimage,after_sha256=expected)
+            else:
+                assert report['runtime_sources']['installed'][name]==expected
+                assert report['runtime_sources']['manifests'][name]==dict(preimage=preimage,sha256=expected)
     contracts=sorted({value for row in CASES.values() for value in row['contracts']})
     inventory={row['id']:row for row in json.loads((ROOT/'conformance/inventory.json').read_bytes())['rows']}
     assert len(contracts)==5
@@ -69,6 +80,8 @@ def main():
         'trusted_input':'Original trusted database-expression evaluation remains intact. The missing explicit os import caused its namespace construction to fail and silently return raw strings; this patch restores that namespace. Database files are not treated as an untrusted-data sandbox.',
         'distribution':'Development overlay with exact original/patched source and native binary identities. Fresh integrated wheel construction and final release qualification remain separate.'}
     report['full_v05_accepted']=report['v06_dependency_satisfied']=False
+    if integrated:
+        report['scope']['distribution']='Fresh installed native/Python/driver wheel composition with exact source-chain, recipe, artifact and driver RECORD verification; release qualification remains separate.'
     output=ROOT/'conformance/evidence/database_import.json'
     output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(dict(output=str(output),contracts=len(contracts),checks=len(CASES),sha256=digest(output)),indent=2))
