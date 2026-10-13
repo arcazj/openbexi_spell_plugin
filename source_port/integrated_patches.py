@@ -11,6 +11,7 @@ import re
 import tempfile
 import zipfile
 
+import cmd_patches
 import data_files_native_patches
 import data_files_patches
 import dta_native_patches
@@ -25,12 +26,13 @@ RECIPE_NAMES = (
     'data_files_native_patches.py', 'data_files_patches.py',
     'dta_native_patches.py', 'dta_time_patches.py',
     'flow_patches.py', 'flow_analyze.py', 'obs_patches.py', 'ui_native_patches.py',
+    'cmd_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES)))
-PYTHON_NAMES = tuple(sorted((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
+PYTHON_NAMES = tuple(sorted((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES, *cmd_patches.PREIMAGES,
                             'spell/lang/helpers/exechelper.py')))
 
 
@@ -140,6 +142,7 @@ def apply_python_tree(site, archive, output):
             (scratch/name).write_bytes(data_files_patches.apply(name, ported[name]))
         flow_patches.apply_python_tree(scratch)
         obs_patches.apply_tree(scratch, Path(folder)/'obs')
+        cmd_patches.apply_tree(scratch, Path(folder)/'cmd')
         patched = {name: (scratch/name).read_bytes() for name in PYTHON_NAMES}
         for name, content in patched.items():
             compile(content, name, 'exec')

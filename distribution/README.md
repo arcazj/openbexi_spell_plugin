@@ -58,7 +58,7 @@ the final DSS image/runtime and actual host workflows against final artifacts,
 the supported platform matrix, and reproducible reconstruction of the toolchain.
 
 The full rebuild now composes the independently checked DATA, FILES, UI, FLOW,
-DTA, TIME and OBS corrections before compiling or running the native gate.
+DTA, TIME, OBS and CMD corrections before compiling or running the native gate.
 `source_port/integrated_patches.py` leaves the central port recipes unchanged.
 It rejects unexpected original and ported sources before changing the build tree,
 retains every original/ported/patched source, and adds all composition recipe

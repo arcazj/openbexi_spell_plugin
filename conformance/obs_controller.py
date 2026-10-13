@@ -12,6 +12,9 @@ import uuid
 sys.path.insert(0, '/workspace/fixture')
 sys.path.insert(0, '/opt/host')
 from native import NativeSession
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
+integrated = capture()
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.journal import Journal
@@ -173,6 +176,7 @@ finally:
             path = Path('/usr/local/lib/python3.13/site-packages', name)
             assert hashlib.sha256(path.read_bytes()).hexdigest() == description['sha256'], name
     Path('/workspace/runtime.json').write_text(json.dumps({
+        'integrated': integrated,
         'interpreter': sys.version,
         'manifests': manifests,
         'installed': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths},

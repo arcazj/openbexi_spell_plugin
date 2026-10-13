@@ -89,8 +89,10 @@ def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
     site = python_tree(tmp_path)
     report = composition.apply_python_tree(site, ARCHIVE, tmp_path/'evidence')
     accepted = json.loads((ROOT/'conformance/evidence/obs.json').read_text())['runtime_sources']['installed']
+    command = json.loads((ROOT/'conformance/evidence/cmd.json').read_text())['runtime_sources']['installed']
     for name in composition.PYTHON_NAMES:
-        expected = accepted['/usr/local/lib/python3.13/site-packages/'+name]
+        source = command if name in composition.cmd_patches.PREIMAGES else accepted
+        expected = source['/usr/local/lib/python3.13/site-packages/'+name]
         assert report['sources'][name]['patched_sha256'] == expected
         assert composition.digest((site/name).read_bytes()) == expected
     verify_evidence(tmp_path/'evidence', report)
