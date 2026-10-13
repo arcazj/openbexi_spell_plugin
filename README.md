@@ -11,10 +11,12 @@ foundation builds the supplied SPELL 2.6.10 code for CPython 3.13.15, preserving
 source provenance and applicable GPL/LGPL notices. See the exact
 [execution status](docs/EXECUTION_TO_V06.md).
 
-The optional [native shared Development provider](docs/SHARED_RUNTIME.md) now
-connects that runtime to durable IDE sessions, with captured sources, whole-container
-pause, fenced control, native prompts/results and recovery without replay. This
-`0.4.0.dev1` prerequisite does not promote the operational v0.4 release.
+The [v0.4 original DSS driver and shared provider](docs/DRIVER_RUNTIME.md) connect
+that runtime to durable Development and approved immutable Execution, with
+read-only Monitoring, fenced binary effects, optional Kafka telemetry,
+whole-container pause and recovery without replay. See
+[the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
+simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 
 ## Native desktop and CLI
 

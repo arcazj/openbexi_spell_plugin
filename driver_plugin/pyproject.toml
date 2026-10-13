@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openbexi-spell-dss"
+version = "0.4.0"
+description = "Original SPELL RPC contracts and fenced DSS bridge"
+requires-python = ">=3.13,<3.14"
+license = "GPL-3.0-or-later"
+dependencies = ["grpcio==1.84.0", "protobuf==7.36.2"]
+
+[project.optional-dependencies]
+service = ["openbexi-spell-plugin==0.1.0", "kafka-python==3.0.11"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+openbexi_spell_dss = ["contracts/*.proto", "contracts/*.json"]

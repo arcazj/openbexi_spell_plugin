@@ -1,6 +1,7 @@
-"""Original native SPELL backend for durable shared Development."""
+"""Original native SPELL provider for durable Development and approved Execution."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 from collections import deque
+import base64
 import hashlib
 import io
 import json
@@ -13,11 +14,14 @@ import tarfile
 import tempfile
 import threading
 import time
+from urllib.parse import urlsplit
 
 from openbexi_spell_host.protocol import read, write
 
-VERSION = '0.4.0.dev1'
+VERSION = '0.4.0'
 PROFILE = 'spell-native-shared-development/1'
+DSS_PROFILE = 'spell-native-shared-dss/1'
+EXECUTION_PROFILE = 'spell-native-dss-execution/1'
 
 
 def docker(*args, **options):
@@ -36,10 +40,31 @@ def identities(session, procedure):
 
 
 def validate(binding):
-    if (type(binding) is not dict or set(binding) != {'profile', 'version', 'image'}
-            or binding['profile'] != PROFILE or binding['version'] != VERSION
+    dss = type(binding) is dict and binding.get('profile') in {DSS_PROFILE,EXECUTION_PROFILE}
+    execution = type(binding) is dict and binding.get('profile') == EXECUTION_PROFILE
+    keys = {'profile','version','image'} | ({'driver'} if dss else set()) | ({'release'} if execution else set())
+    if (type(binding) is not dict or set(binding) != keys
+            or binding['profile'] not in {PROFILE,DSS_PROFILE,EXECUTION_PROFILE}
+            or binding['version'] not in ({VERSION,'0.4.0.dev1'} if binding['profile'] == PROFILE else {VERSION})
             or re.fullmatch('sha256:[0-9a-f]{64}', binding['image']) is None):
         raise ValueError('Unsupported native shared runtime binding')
+    if dss:
+        driver = binding['driver']
+        if (type(driver) is not dict or set(driver) not in ({'url','host','port'}, {'url','host','port','kafka'})
+                or type(driver['url']) is not str or len(driver['url']) > 2048
+                or type(driver['host']) is not str or not 1 <= len(driver['host']) <= 253
+                or type(driver['port']) is not int or not 1 <= driver['port'] <= 65535):
+            raise ValueError('Invalid service-owned DSS binding')
+        endpoint = urlsplit(driver['url'])
+        if (endpoint.scheme not in {'http','https'} or not endpoint.hostname or endpoint.username
+                or endpoint.password or endpoint.query or endpoint.fragment):
+            raise ValueError('DSS binding requires an endpoint without embedded credentials')
+        if 'kafka' in driver and (type(driver['kafka']) is not str
+                or re.fullmatch(r'[A-Za-z0-9.-]{1,253}:[0-9]{1,5}',driver['kafka']) is None
+                or not 1 <= int(driver['kafka'].rsplit(':',1)[1]) <= 65535):
+            raise ValueError('Kafka requires one explicit host:port endpoint')
+    if execution and (type(binding['release']) is not str or re.fullmatch('[0-9a-f]{64}',binding['release']) is None):
+        raise ValueError('Invalid approved native release identity')
 
 
 def owned(name, labels, image):
@@ -57,12 +82,30 @@ class Provider:
     api = 1
 
     @staticmethod
+    def for_release(manifest):
+        if manifest.get('profile') != 'plugin-docker-isolated/1' or manifest.get('backend',{}).get('provider') != 'spell':
+            raise ValueError('Unsupported original native Execution release')
+        binding = manifest['backend']['binding']
+        validate(binding)
+        if binding['profile'] != DSS_PROFILE or binding['image'] != manifest['base_image']:
+            raise ValueError('Native Execution requires an explicitly bound DSS runtime')
+        raw = json.dumps(manifest,sort_keys=True,separators=(',', ':'),ensure_ascii=True,allow_nan=False)
+        result = dict(binding,profile=EXECUTION_PROFILE,image=manifest['image'],release=hashlib.sha256(raw.encode()).hexdigest())
+        validate(result)
+        return result
+
+    @staticmethod
     def bind():
         image = os.environ.get('OPENBEXI_SPELL_SHARED_IMAGE', 'openbexi-spell-host:0.3.0')
         info = json.loads(docker('image', 'inspect', image))[0]
         if info['Os'] != 'linux' or info['Architecture'] != 'amd64':
             raise ValueError('Native shared runtime requires the Linux amd64 host image')
         binding = {'profile': PROFILE, 'version': VERSION, 'image': info['Id']}
+        if os.environ.get('OPENBEXI_SPELL_DSS_URL'):
+            address = os.environ['OPENBEXI_SPELL_DSS_TCP'].rsplit(':',1)
+            binding.update(profile=DSS_PROFILE,driver=dict(url=os.environ['OPENBEXI_SPELL_DSS_URL'],host=address[0],port=int(address[1])))
+            if os.environ.get('OPENBEXI_SPELL_DSS_KAFKA'):
+                binding['driver']['kafka'] = os.environ['OPENBEXI_SPELL_DSS_KAFKA']
         validate(binding)
         return binding
 
@@ -102,6 +145,14 @@ class Worker:
         self.inputs = {}
         self.output_chunks = deque()
         self.bootstrap_pids = None
+        self.driver = self.driver_journal = self.driver_transport = None
+        self.execution = binding['profile'] == EXECUTION_PROFILE
+        self.request_handler = None
+        self.write_lock = threading.Lock()
+        self.heartbeat_done = threading.Event()
+
+    def set_request_handler(self,handler):
+        self.request_handler = handler
 
     def inspect(self):
         info = owned(self.name, self.labels, self.binding['image'])
@@ -170,20 +221,38 @@ class Worker:
     def request(self, command, **arguments):
         self.sequence += 1
         sequence = self.sequence
-        write(self.process.stdin, {'seq': sequence, 'type': 'request', 'command': command, 'arguments': arguments})
+        with self.write_lock:
+            write(self.process.stdin, {'seq': sequence, 'type': 'request', 'command': command, 'arguments': arguments})
         deadline = time.monotonic() + 40
         while time.monotonic() < deadline:
-            message = self.next()
+            message = next((m for m in self.pending if m.get('type') == 'response' and m.get('request_seq') == sequence),None)
+            if message is not None:
+                self.pending.remove(message)
+            else:
+                message = self.next()
             if message is None:
                 continue
             if message.get('type') == 'response' and message.get('request_seq') == sequence:
                 if not message.get('success'):
                     raise RuntimeError(message.get('message', 'Native request rejected'))
                 return message.get('body', {})
+            if (message.get('event') == 'openbexi/driverRequest' and self.request_handler
+                    and command != 'openbexi/freezeWatchdog'):
+                self.request_handler({'type':'backend_request','request':message['body']})
+                continue
             if len(self.pending) >= 256:
                 raise ValueError('Native shared pending event bound exceeded')
             self.pending.append(message)
         raise TimeoutError('Native shared request timed out: ' + command)
+
+    def heartbeat(self):
+        try:
+            while not self.heartbeat_done.wait(.5):
+                if not self.frozen:
+                    with self.write_lock:
+                        write(self.process.stdin,{'type':'event','event':'openbexi/heartbeat'})
+        except (OSError,ValueError):
+            return
 
     def start(self):
         with self.lock:
@@ -191,13 +260,45 @@ class Worker:
                 raise ValueError('Native shared worker already closed')
             if owned(self.name, self.labels, self.binding['image']):
                 raise ValueError('Native shared container already exists; recovery required')
-            with self.snapshot() as archive:
-                labels = [arg for key, value in self.labels.items() for arg in ('--label', key + '=' + value)]
-                self.identifier = docker('create', '--init', '-i', '--name', self.name, *labels,
+            if self.binding['profile'] in {DSS_PROFILE,EXECUTION_PROFILE}:
+                from openbexi_spell_dss.transport import Transport
+                from openbexi_spell_dss.journal import Journal
+                from openbexi_spell_dss.rpc import Dispatcher
+                settings = self.binding['driver']
+                self.driver_transport = Transport.from_binding(settings)
+                self.driver_journal = Journal(self.results.parent / 'driver-effects.sqlite')
+                users = {}
+                users_path = os.environ.get('OPENBEXI_SPELL_DSS_USERS')
+                if users_path:
+                    raw = Path(users_path).read_bytes()
+                    if len(raw) > 65536:
+                        raise ValueError('Simulator user file exceeds bounds')
+                    users = json.loads(raw)
+                    if (type(users) is not dict or len(users) > 128
+                            or any(type(k) is not str or re.fullmatch('[A-Za-z0-9_.-]{1,96}',k) is None
+                                   or type(v) is not str or re.fullmatch('[0-9a-f]{64}',v) is None for k,v in users.items())):
+                        raise ValueError('Invalid service-owned simulator account file')
+                self.driver = Dispatcher(self.driver_transport,self.driver_journal,users=users)
+            labels = [arg for key, value in self.labels.items() for arg in ('--label', key + '=' + value)]
+            security = ['--read-only','--user','10003:10003','--workdir','/tmp','--entrypoint','python'] if self.execution else []
+            if self.execution:
+                options = json.loads(docker('info','--format','{{json .SecurityOptions}}'))
+                if not any('seccomp' in option for option in options):
+                    raise ValueError('Native Execution requires Docker seccomp support')
+            self.identifier = docker('create', '--init', '-i', '--name', self.name, *labels,
                     '--network', 'none', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
                     '--pids-limit', '256', '--memory', '1g', '--memory-swap', '1g', '--cpus', '1',
-                    '--tmpfs', '/tmp:rw,nosuid,nodev,size=256m', self.binding['image']).decode().strip()
-                docker('cp', '-a', '-', self.identifier + ':/workspace', stdin=archive)
+                    '--tmpfs', '/tmp:rw,noexec,nosuid,nodev,size=256m', *security,self.binding['image'],
+                    *(['-I','/opt/host/adapter.py'] if self.execution else [])).decode().strip()
+            if self.execution:
+                info = self.inspect()
+                host = info['HostConfig']
+                if (info['Mounts'] or not host['ReadonlyRootfs'] or host['Privileged']
+                        or host['NetworkMode'] != 'none' or info['Config']['User'] != '10003:10003'):
+                    raise ValueError('Native Execution isolation configuration differs')
+            else:
+                with self.snapshot() as archive:
+                    docker('cp', '-a', '-', self.identifier + ':/workspace', stdin=archive)
             self.process = subprocess.Popen(['docker', 'start', '-ai', self.identifier],
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
@@ -205,10 +306,15 @@ class Worker:
                 thread = threading.Thread(target=self._read, args=(stream, protocol), daemon=True)
                 self.threads.append(thread)
                 thread.start()
-            self.request('initialize', adapterID='spell', linesStartAt1=True, pathFormat='path')
+            if self.driver:
+                thread = threading.Thread(target=self.heartbeat,name='native-parent-heartbeat',daemon=True)
+                self.threads.append(thread)
+                thread.start()
+            self.request('initialize', adapterID='spell', linesStartAt1=True, pathFormat='path',privateWatchdog=self.driver is not None)
             self.bootstrap_pids = self.process_ids()
             self.request('launch', project=str(self.project), program=str(self.project / self.script),
-                         args=list(self.arguments), noDebug=False, stopOnEntry=True)
+                         args=list(self.arguments), noDebug=False, stopOnEntry=True,driverRelay=self.driver is not None,
+                         immutableRelease=self.execution)
             self.request('configurationDone')
 
     def resume(self):
@@ -231,6 +337,8 @@ class Worker:
                 raise ValueError('Native shared worker closed')
             info = self.inspect()
             if not info['State']['Paused']:
+                if self.driver:
+                    self.request('openbexi/freezeWatchdog')
                 docker('pause', self.identifier)
             state = self.inspect()['State']
             if not state['Running'] or not state['Paused']:
@@ -250,6 +358,8 @@ class Worker:
         if message is None or message.get('type') != 'event':
             return None
         body, event = message.get('body', {}), message.get('event')
+        if event == 'openbexi/driverRequest':
+            return {'type':'backend_request','request':body}
         if event == 'output':
             text = body.get('output', '')
             if not isinstance(text, str) or len(text) > 1024 * 1024:
@@ -270,18 +380,30 @@ class Worker:
                 raise ValueError('Native termination has no exit receipt')
             if self.bootstrap_pids is None or not self.process_ids().issubset(self.bootstrap_pids):
                 raise ValueError('Native descendant shutdown unconfirmed')
-            from openbexi_spell_host.container import Container
-            self.results.mkdir(parents=True, exist_ok=True)
-            exporter = Container(self.results, image=self.binding['image'])
-            exporter.name, exporter.id, exporter.inputs = self.identifier, self.procedure, self.inputs
-            exporter.export()
+            if not self.execution:
+                from openbexi_spell_host.container import Container
+                self.results.mkdir(parents=True, exist_ok=True)
+                exporter = Container(self.results, image=self.binding['image'])
+                exporter.name, exporter.id, exporter.inputs = self.identifier, self.procedure, self.inputs
+                exporter.export()
             return {'type': 'finished', 'exit_code': self.exit_code}
         return None
+
+    def handle_request(self,event,identity,check):
+        if self.driver is None:
+            raise ValueError('Unexpected native driver request')
+        body = event['request']
+        if type(body) is not dict or set(body) != {'id','path','payload'} or len(body['payload']) > 90000:
+            raise ValueError('Invalid native driver request')
+        raw = base64.b64decode(body['payload'],validate=True)
+        result = self.driver.dispatch(body['path'],raw,identity,body['id'],check)
+        self.request('openbexi/driverReply',id=body['id'],payload=base64.b64encode(result).decode('ascii'))
 
     def close(self):
         with self.lock:
             if self.closed:
                 return
+            self.heartbeat_done.set()
             if self.identifier:
                 info = owned(self.name, self.labels, self.binding['image'])
                 if info:
@@ -302,4 +424,10 @@ class Worker:
                     except OSError:
                         if not stream.closed:
                             stream.raw.close()
+            if self.driver_transport:
+                self.driver_transport.close()
+                self.driver_transport = None
+            if self.driver_journal:
+                self.driver_journal.close()
+                self.driver_journal = None
             self.closed = True

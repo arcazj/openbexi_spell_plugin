@@ -4,15 +4,15 @@ Authorized target: finish and commit each release in order through plugin v0.6,
 including prerequisite changes and qualification in the sibling openbexi_ide.
 The working IDE v0.2 / bounded plugin v0.1 remains the desktop testing baseline.
 The original-source native foundation v0.2 is now qualified in its separate Linux
-environment. The v0.3 local host integration is accepted; durable shared
-service and original DSS drivers are next.
+environment. Local host v0.3 and GENERIC DSS drivers/modes v0.4 are accepted;
+IDE v0.3 supplies the neutral durable authority. Full conformance is next.
 
 | Release | State | Required evidence |
 | --- | --- | --- |
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
 | v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
-| v0.4 | In progress; IDE durable-service prerequisite first | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
-| v0.5 | Pending v0.4 | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
+| v0.4 | Complete for the declared GENERIC simulator profile; see DRIVER_QUALIFICATION.json | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
+| v0.5 | Next | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending v0.5 | Reproducible distribution, supported platform matrix, clean installation/removal and upgrades, actual host and DSS-container workflows |
 
 ## Native foundation
@@ -112,6 +112,12 @@ qualifies terminal close/pause races with three reconnect repetitions per proces
 kind. All preceding native gates, ten context tests and 25 lifecycle runs pass.
 
 ## Immediate work
+
+Current checkpoint: [the v0.4 driver profile](DRIVER_RUNTIME.md) and
+[its acceptance manifest](DRIVER_QUALIFICATION.json) supersede the historical
+prerequisite status below. Continue with v0.5; do not repeat the completed
+original RPC relay, immutable native release, binary/Kafka transport or authority
+integration. Unsupported driver contracts remain explicit conformance work.
 
 The [installed 0.2.0 artifact](NATIVE_PACKAGE.md) now passes seven fresh-image
 checks, removal, byte-identical packaging from one qualified build and the full

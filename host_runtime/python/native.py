@@ -93,7 +93,8 @@ class Bridge:
 
 
 class NativeSession:
-    def __init__(self, project, script, arguments):
+    def __init__(self, project, script, arguments, *, driver_port=None):
+        self.driver_port = driver_port
         self.project = Path(project).resolve()
         self.script = Path(script).resolve()
         if not self.project.is_dir() or not self.script.is_file() or self.script.suffix != '.py':
@@ -123,11 +124,21 @@ class NativeSession:
         # The upstream resolver tokenizes '/' and expects an environment-rooted
         # path. A literal absolute path loses its leading separator there.
         tree.find('procpath').text = '$OPENBEXI_SPELL_PROJECT'
+        if self.driver_port:
+            tree.find('driver').text = 'openbexi_dss_proxy'
+            driver = ET.parse(root / 'session/config/spell/driver_example.xml')
+            driver.getroot().set('id','openbexi_dss_proxy')
+            driver.find('interfaces').text = 'TM,TC,EV,PCS,MEM,RSC,TASK,RNG,USER,TIME'
+            # The server's explicit driver-file inventory points to this file;
+            # changing only its filename would leave the new driver unregistered.
+            driver.write(root / 'session/config/spell/driver_example.xml',encoding='utf-8')
         # Keep the upstream UserLib directory separate. The original executor
         # auto-imports everything in libpath before procedure execution; using
         # the project there would run ordinary script bodies during startup.
         tree.write(config, encoding='utf-8')
         environment = dict(os.environ, **example['environment'], OPENBEXI_SPELL_PROJECT=str(self.project))
+        if self.driver_port:
+            environment['OPENBEXI_DRIVER_RELAY_PORT'] = str(self.driver_port)
         self.log = (root / 'native.log').open('w+')
         self.process = subprocess.Popen(['spell-native', 'listener', '-c', example['config']],
             cwd=self.project, env=environment, stdout=self.log, stderr=subprocess.STDOUT,

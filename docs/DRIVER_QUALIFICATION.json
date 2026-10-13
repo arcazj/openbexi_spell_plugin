@@ -1,0 +1,369 @@
+{
+  "schema": "openbexi.original-driver-qualification/1",
+  "release": "0.4.0",
+  "ide_release": "0.3.0",
+  "release_accepted": true,
+  "qualified_utc": "2026-10-13T01:14:11.887240+00:00",
+  "scope": "Original native driver and operating modes for the declared GENERIC simulator profile",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.15",
+  "base_commits": {
+    "plugin": "c50b4943c2f1eb50b7fcb82de7a52d615a01a245",
+    "ide": "899f6443d38cc81b899bd67af487024933751989"
+  },
+  "image": {
+    "id": "sha256:5440b13a90c4ee402de9320a21fbab2842acf018e7ce3dbf1678aea61135aa94",
+    "base": "sha256:69d29bcd6ec4cd27f822224b723546be15e2de3b5b9d3f38d442b91249c1833d",
+    "layers": [
+      "sha256:a6dc765193a52cbaede3c93a9ff48b9540948dd0774bbe7031fcb5847606f9ac",
+      "sha256:45ddbb9fa174ec3e42a67d8a2fd60119d68e016cff71d174088c24bbbc26e227",
+      "sha256:85ba8efdcdcedd8e7ad9c351efff94cd615d2c70aa76f1c9939a3090f0f266ff",
+      "sha256:9fd5b88d9de93ed2a08fc89969c63abfab02c31c33d81754084f4f0b03c3aad7",
+      "sha256:d2e946966d26c474cdaeca2acba6326df7dd2f4810131272f174f60375920b48",
+      "sha256:e29f9d4191884aa9cbaba2895beecb89eebc8fc5dd7bc3dec085d331f1573d6a",
+      "sha256:b5c208d701b66c6a4cb1d58f880b47378d1be35b72e3f74086465c008bbd6af9",
+      "sha256:1aa284b53d9ba0b75e3fcae1b8fbcbf821eb76da9daf3af3bda310fd0e9e6440",
+      "sha256:d02b13d8b10efeecfc8dadf403f06b504f18c5519f7ace9315010090201063eb",
+      "sha256:9c639c6e0eb8195d31be4eb168730715b2ff4ad1d287989ca46284e9cd7badff",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:426afcb1b67d85be1801dee3218ef77854478165730f5b286adc21a5e4256063",
+      "sha256:c016d5f18d5e0f08d934dc9e41d6d8599789575fc92945341ed9e74e70ac9566",
+      "sha256:91aff1529383ab7234fcfc37d8071f7b3b876512fb934afbb16b51888ad9ca59"
+    ],
+    "runtime": {
+      "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
+      "driver": "0.4.0",
+      "packages": [
+        {
+          "name": "cloudpickle",
+          "version": "3.1.2"
+        },
+        {
+          "name": "grpcio",
+          "version": "1.84.0"
+        },
+        {
+          "name": "openbexi-spell-dss",
+          "version": "0.4.0"
+        },
+        {
+          "name": "openbexi-spell-source",
+          "version": "0.3.0"
+        },
+        {
+          "name": "pip",
+          "version": "26.2.1"
+        },
+        {
+          "name": "protobuf",
+          "version": "7.36.2"
+        },
+        {
+          "name": "typing_extensions",
+          "version": "4.16.0"
+        }
+      ],
+      "wheel_sha256": "60455514da42edd18af8f45c8b35e4f5ba37b99d0bce11e96b3ffa0fda96152d",
+      "host": {
+        "adapter.py": "ae437291e05faca4e8b881b2fd48222f7ba0ad4acaf7e3e8b30cf0204102a550",
+        "native.py": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7"
+      }
+    }
+  },
+  "contracts": {
+    "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "archive_member": "protos/SPELLDriver.proto",
+    "schema_sha256": "f2534b012489a4b9f3cb61e7f4a50ada4aaea7fe0b2de6041b7748d25aa96588",
+    "generator": "grpcio-tools==1.84.0",
+    "patch": "Package-relative generated Python import only; protocol bytes unchanged",
+    "generated_sha256": {
+      "SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+      "SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715"
+    }
+  },
+  "artifacts": {
+    "driver": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\release-wheels\\openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "60455514da42edd18af8f45c8b35e4f5ba37b99d0bce11e96b3ffa0fda96152d"
+    },
+    "provider": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\release-wheels-final\\openbexi_spell_shared-0.4.0-py3-none-any.whl",
+      "sha256": "900edc95922ac742c8826fa3911ea86aae70d00a9182a29ac07df9cee225e3d9"
+    },
+    "bounded_dss_service": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\release-wheels-final\\openbexi_spell_plugin-0.1.0-py3-none-any.whl",
+      "sha256": "893644012ba3b722286adc93346994f1f1526c7d10c60d98605b4a6a112b56a1"
+    },
+    "core": {
+      "path": "C:\\projects\\openbexi_ide\\.qualification\\v0.4\\release-wheels-final\\openbexi_ide-0.3.0-py3-none-any.whl",
+      "sha256": "8509d3bc556f2b6044b682707ad83b61559673174a4c71dddfc5d97cd6cdcf75"
+    },
+    "host": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.3\\host-wheels\\openbexi_spell_host-0.3.0-py3-none-any.whl",
+      "sha256": "17566c7d98862a08df365abc98a1b2505823f591465253be9658f92ad31c74a2"
+    }
+  },
+  "tests": {
+    "core": {
+      "tests": 104,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "path": "C:\\projects\\openbexi_ide\\.qualification\\v0.4\\core-final.xml",
+      "sha256": "8ed5b6867995048a9f21d984c07212f217ec3c7091111d5fdc3b327f04940130"
+    },
+    "release_validation_supplement": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "path": "C:\\projects\\openbexi_ide\\.qualification\\v0.4\\release-validation-final.xml",
+      "sha256": "cdf74c3629da8c752e3a7df3856ebba7c840a9617c40286fa5f98ca9def8b25f"
+    },
+    "plugin": {
+      "tests": 204,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\plugin-final.xml",
+      "sha256": "8ac589497f0e44e374782453954acf49c5936a92da4fba1e4ad482eac6ee5cc6"
+    },
+    "legacy_native": {
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "path": "C:\\projects\\openbexi_ide\\.qualification\\v0.4\\native-legacy-final.xml",
+      "sha256": "8a923989bcf66947edcc6d93f0c3a5fb4153411770bbd60f0ee2caa8b3e53afe"
+    },
+    "installed_driver_native_kafka": {
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-acceptance-01\\tests.xml",
+      "sha256": "416819044abf159df1d1e2550b56d96f77f639e657425ecf49242731ae6f3856"
+    }
+  },
+  "installed": {
+    "passed": true,
+    "python": "3.13.15 (main, Aug 14 2026, 15:36:10) [MSC v.1944 64 bit (AMD64)]",
+    "origins": {
+      "openbexi_runtime": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-01\\Lib\\site-packages\\openbexi_runtime\\__init__.py",
+      "openbexi_spell_shared": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-01\\Lib\\site-packages\\openbexi_spell_shared\\__init__.py",
+      "openbexi_spell_host": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-01\\Lib\\site-packages\\openbexi_spell_host\\__init__.py",
+      "openbexi_spell_dss": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-01\\Lib\\site-packages\\openbexi_spell_dss\\__init__.py",
+      "dss": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-01\\Lib\\site-packages\\dss\\__init__.py"
+    },
+    "packages": [
+      {
+        "name": "Pygments",
+        "version": "2.21.0"
+      },
+      {
+        "name": "colorama",
+        "version": "0.4.6"
+      },
+      {
+        "name": "grpcio",
+        "version": "1.84.0"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.3.1"
+      },
+      {
+        "name": "kafka-python",
+        "version": "3.0.11"
+      },
+      {
+        "name": "openbexi-ide",
+        "version": "0.3.0"
+      },
+      {
+        "name": "openbexi-spell-dss",
+        "version": "0.4.0"
+      },
+      {
+        "name": "openbexi-spell-host",
+        "version": "0.3.0"
+      },
+      {
+        "name": "openbexi-spell-plugin",
+        "version": "0.1.0"
+      },
+      {
+        "name": "openbexi-spell-shared",
+        "version": "0.4.0"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.1"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.6.0"
+      },
+      {
+        "name": "protobuf",
+        "version": "7.36.2"
+      },
+      {
+        "name": "pytest",
+        "version": "8.4.2"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ],
+    "old_development_binding_accepted": true
+  },
+  "installed_evidence": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\installed-acceptance-01\\result.json",
+    "sha256": "34464915edc8c623c24baaa9ced24a000257b3532419be5f32cb32b5dc6ea972"
+  },
+  "neutral_installed_evidence": {
+    "path": "C:\\projects\\openbexi_ide\\.qualification\\v0.4\\core-installed-acceptance-01\\result.json",
+    "sha256": "92f40c91dfbb33c19f0fb0950cdfa6d424ba1d5ba4bb279640b9a19e3224560d"
+  },
+  "neutral_installed_checks": [
+    "fresh non-editable core without Qt or SPELL",
+    "CLI prepare and offline approval",
+    "unapproved release denied",
+    "immutable source despite changed host dependency",
+    "non-root read-only runtime without network or host mounts",
+    "real service kill stops owned container",
+    "restart fences old credentials",
+    "uncertainty hold and paused queue without replay"
+  ],
+  "prior_native_acceptance": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\docs\\HOST_QUALIFICATION.json",
+    "sha256": "e28c04b78afdc0c90fbe9fd3b1fb84a12e4a32f3857a626d26ad2df572eb04ba"
+  },
+  "source_sha256_lf": {
+    "plugin/src/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+    "plugin/src/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+    "plugin/src/dss/engine.py": "cdb4b0cc6643849cbdd9889c2e8db62113111fc2871dec7e8f33c8a064921233",
+    "plugin/src/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+    "plugin/src/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+    "plugin/src/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+    "plugin/src/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+    "plugin/src/dss/server.py": "71f711db2a212c61b1951a255b9ce133f413d2277d295f2cae85ddb0685b5970",
+    "plugin/src/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+    "plugin/src/openbexi_spell/api.py": "18e34091cceec323d1a78e24e9ff2a65cf601b452793f24dbfd86cd66bc9f730",
+    "plugin/src/openbexi_spell/common.py": "098282c74e2a2ecd769c06e75cbc283009709d17ab14c9a970292ecf78452cca",
+    "plugin/src/openbexi_spell/compatibility.py": "8d160eb6c36cc10cf57911e8bf2994f6e55c707fe298c0d7bd2708642cde90c1",
+    "plugin/src/openbexi_spell/time.py": "2337dfdc5419d3e922011df239f45b17b6abe00de57686c6d7f4f9f8178f2b79",
+    "plugin/src/openbexi_spell/__init__.py": "55712c6f299549a507c503312d6edc0f709cdb84ffaf0d25e5d88b4c982bd74f",
+    "plugin/src/openbexi_spell_plugin/runner.py": "bc3a7476b2ba7c3bea49601247d9655e758e4e2fe923977a438312ed2dcbc095",
+    "plugin/src/openbexi_spell_plugin/runtime.py": "8aec53318072dda782bc3c4bfdcc2b64b718964a26936483f872aeed0330d847",
+    "plugin/src/openbexi_spell_plugin/__init__.py": "0039d4ef1f9214653ac126474dbc5bd98c90fdc3d174583d6cdbf430717d46fe",
+    "plugin/src/spell/__init__.py": "521d4af4cea225957261c308af989164be78dc37464255802547bf7cbcc18ec9",
+    "plugin/src/spell/lang/__init__.py": "9e60addb5ec23d5bae7549aac8c61f10155b817afd008c12da421d67889db6ec",
+    "plugin/src/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/common.py": "389c38454201fa7c04cfb5df96d1c65db72d49a8f42ecdd1e2b87f7f9947118f",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/resources.py": "ea596d9aa1ff71e5c454b72dfcff02865134934f528470fda504ce81e65ac6ee",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/tc.py": "98aeffb8ad17334fda2ea819482e8859852bc736c1f00aac3af42e54cf0e1a2b",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/tm.py": "261d89c49dec755c8a8dcc960899a37763e1dae9294537354a242675f8a6ccf1",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "plugin/driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "plugin/driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "plugin/driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "plugin/driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "plugin/driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "plugin/driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "plugin/driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "plugin/driver_plugin/src/openbexi_spell_dss/transport.py": "06d8b6ab289eb4e4ae33d99104c81f69f0c5e5564c1876307059b35a9afb3964",
+    "plugin/driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "plugin/driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "plugin/driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "plugin/driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "plugin/driver_plugin/src/openbexi_spell_dss/contracts/SPELLDriver.proto": "f2534b012489a4b9f3cb61e7f4a50ada4aaea7fe0b2de6041b7748d25aa96588",
+    "plugin/driver_plugin/src/openbexi_spell_dss/contracts/provenance.json": "ed1ece2436b11f77911baf7fac77f5a1fcd58c332057b52103da2e4179a274f1",
+    "plugin/driver_plugin/pyproject.toml": "399979c7fe54313b1a8656578f97121bd7a7250de4437a25971b8b3de7639cd9",
+    "plugin/driver_plugin/Dockerfile": "e2126a630af6bbda879119818292ed776a521ca805c02676d09834bd29bdd280",
+    "plugin/driver_plugin/Dockerfile.dockerignore": "be0a3729c85c3e378c333d67d31d3725e0f5f2a0c919f70c154d2529dcfe8c93",
+    "plugin/host_runtime/python/adapter.py": "ae437291e05faca4e8b881b2fd48222f7ba0ad4acaf7e3e8b30cf0204102a550",
+    "plugin/host_runtime/python/native.py": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7",
+    "plugin/shared_plugin/src/openbexi_spell_shared/__init__.py": "c3bd52f81014fdd63919d4ae83b60d0cb87e9622109614f111c94fd39841476a",
+    "plugin/shared_plugin/pyproject.toml": "91c6da528cafd13391bb8b93ef632eb862bef13b969300c09dfa35612efb425e",
+    "plugin/scripts/generate_driver_contract.py": "a5a23d95808a45b02570014f1d53da26476a940cc1603a61cee22e1776e2a21e",
+    "plugin/scripts/qualify_driver_installed.py": "5682417df155102f17274a59ab9c21a4e7bfbc2398924efd30e0ccb40db7ba5c",
+    "plugin/scripts/record_driver_qualification.py": "818468064a3b98171b002e28c8bd8f8cd626ff1251d9708515aec70216875266",
+    "plugin/tests/test_original_driver.py": "3433fb6ffb944f9986b0dbe245bebb45175795daefe8467c6131a52007f4f3a0",
+    "plugin/tests/kafka_driver_acceptance.py": "dcc3fa87a47ebfc1ae52ab962cce7530769d11a0376f0bdbf492a37bfca0d9c4",
+    "plugin/docs/DRIVER_RUNTIME.md": "19fb37d50557394aed604768febd8d0ea78726cfee53c48b7020ece221e59bb9",
+    "ide/src/openbexi_ide/app.py": "80ec6f471b9737ec9912bcc366dbc2d78b65cb85cbf8069df2ea9720c7cbb2a7",
+    "ide/src/openbexi_ide/controller.py": "2a86fd0fab3e5f0e42009d29caf2e6f9d046af7b5505607c2eb92417578d584e",
+    "ide/src/openbexi_ide/debugger.py": "2c4a72418486d69f27b657581e3f38bdb78d8e1d2b64ba2e5c4e0c8b652678e3",
+    "ide/src/openbexi_ide/editor.py": "74c0201acaf15e91b121e23b3c2bb7d0371f9122bc359509514727b261dbc71d",
+    "ide/src/openbexi_ide/fonts.py": "e99274c43c6a0e04a56152cb420d3802b9ba841883d48f9dbd79b9e40bd66c82",
+    "ide/src/openbexi_ide/session_client.py": "0881cd83dd26ef54371d2c591c1fd17b2575b436bcac76f5845ad952590ca182",
+    "ide/src/openbexi_ide/session_panel.py": "24b8e0577f379125ebd6a688a30272ccf18a9abbec9766daf43d9277eaa151c9",
+    "ide/src/openbexi_ide/themes.py": "1fa6f2559ac41e9f96187b60642714cce070ea81f50c45e6efa7e6aa80ac7bf8",
+    "ide/src/openbexi_ide/__init__.py": "8632fde3fc8e279276892e8ba574045c1e3c4b998c35d56465905c0a2163c5b2",
+    "ide/src/openbexi_ide/__main__.py": "a67c172046323b0efcafe92cb83abc266d5dd4bc931d9312cde1b7bed50643db",
+    "ide/src/openbexi_runtime/cli.py": "09bdba414d3b1162d14b3d43f40d3e023a7f1a58ab33b9f17a5d3213419d0079",
+    "ide/src/openbexi_runtime/dap.py": "f6833b90e7842f0b4fb68ef1c0f8a56808a92986848b2bbcf79eccc8a6d6fc0d",
+    "ide/src/openbexi_runtime/execution_container.py": "368df1b34e988a2f8e9a867a43d1c0e89cf4759b5a96fbc78209dfa388b2f7a0",
+    "ide/src/openbexi_runtime/execution_release.py": "3a9323db588ae6e5721dc13f3b06e3c6ff7173f0fe5b9584c4785f9e1ff94796",
+    "ide/src/openbexi_runtime/execution_transport.py": "02ab4e8094d32bfaf2b414289151f0814d54a21b1f73726e6582420e82fe66c5",
+    "ide/src/openbexi_runtime/interpreter_probe.py": "c87199962b6585904ca52c621f2a8c575e15fc6e9db473bc8489bd2a91a376a8",
+    "ide/src/openbexi_runtime/languages.py": "d3c6526879f193da65245b5c97eb80e16795791fcdee2e595c69dac9d754044c",
+    "ide/src/openbexi_runtime/launch.py": "aa254a4c0955126a80f20aaedba0865a0559728fbea6cdc32f645b59d8d902a6",
+    "ide/src/openbexi_runtime/procedure_identity.py": "e43fbbe481fc43ff42a85d52307b0f41b1eff2f099aed7a8a63e87497225aca0",
+    "ide/src/openbexi_runtime/processes.py": "33d279a8654adca9e90e354a5974b207f884233a98941401f4d4fd0560fabaa1",
+    "ide/src/openbexi_runtime/session.py": "c0da163d5ee5f2029d041423c819e2bd1f7329589feac2f522ad64a551a9d016",
+    "ide/src/openbexi_runtime/session_http.py": "7e5b059cdeb6d80816a9d4634df158bb54ec508103853db3feb94e9219cc6cd3",
+    "ide/src/openbexi_runtime/session_identity.py": "6d7e0a190d5aca9124fde9f530315e3c7f48450085a983c83831858d00eada54",
+    "ide/src/openbexi_runtime/session_store.py": "b622e9c905a8b6c2f6b74f1203fcd571215684db45043df8fa75706f477dd83f",
+    "ide/src/openbexi_runtime/session_worker.py": "eb7f0a3909e02792699fa6c6f17c278d0c08356b66c3e29f31cc5ab705754589",
+    "ide/src/openbexi_runtime/shared_backends.py": "0e65115e62fe321d8d42be52b926008d39d546e749d1819f24f01028fc345134",
+    "ide/src/openbexi_runtime/source_capture.py": "3d1832886fc16ca39ab596f3a598619edf140c0cd181355ba4b1858ef5dd83a1",
+    "ide/src/openbexi_runtime/worker.py": "feb8550adb2bad4d0525b5ca6337abbc2b7ae6a3612c6a283aa5dafb0cb50f6e",
+    "ide/src/openbexi_runtime/__init__.py": "2256d042148d2b6199eb77a7d8346c67296217d7d251243ac92e94393a77bada",
+    "ide/tests/conftest.py": "9859a60d2cce4aa4392839feb80dd4d0fa3a2a7b4039cdeb7ba0784e2699dda8",
+    "ide/tests/native_driver_acceptance.py": "722659001361bcd37307d15aa5dbddf9b3529711dcb9a6a1418b089ac40cd95d",
+    "ide/tests/native_shared_acceptance.py": "e71e7cc4fee800ae3c570a67a68829a0815f8ebbd37c0460fc8743b4cc30c1ba",
+    "ide/tests/test_backends.py": "795fe5d8a52ef4062532e36b87dcb3b910cf6e574d68dcd7e81f7ef1f706a617",
+    "ide/tests/test_debugger.py": "760c3619e872c48ef463568c4385e544df7acf2c4fe0708f71f482dbe68d1d9d",
+    "ide/tests/test_durable_sessions.py": "c70e78cadbb29af50a7796ab48a7fa8f56cc8ba3618927951dd402acfa60a152",
+    "ide/tests/test_execution_release.py": "9130f21ebb585369be984c28f5df4fafcc83face1a37491b7b30f92582f99b10",
+    "ide/tests/test_execution_sessions.py": "49ae4e6fd0ef921268ba600e18b930481bdc96a467d5ad51f1886b00536542c9",
+    "ide/tests/test_runtime.py": "bbbb8a14c0e6624d11cd5f3a1f33309d8e525ed8cf2a3d2e6e84b79379791634",
+    "ide/tests/test_sessions.py": "11a13c94f5309ec4eafe7b9837943714c5924f64c884df1f24776df9c2db01f5",
+    "ide/tests/test_session_backpressure.py": "4c769ec826914fdd43da7fd39b6491bd3d7532ac4043fdf3914af486b3e3fa0c",
+    "ide/tests/test_session_library_threads.py": "a2ac59da05ef8bcb7de57ee9f17f260c2e47a8183d18acea485b8ba07292acfb",
+    "ide/tests/test_session_safe_locals.py": "279d39a5e72c89fedf93968ee5448828459f06af1627590a1b9e383050fb9d78",
+    "ide/tests/test_session_stack_sampling.py": "23dd578963e6377178cb9174566d9ee547ad8d337f61c4fca34c03a9460c15d8",
+    "ide/tests/test_session_tls.py": "ccfd19e066154f9a2aceeda3f4ed8659eca90f6929d5f253dd9fce962bd34b4e",
+    "ide/tests/test_shared_backends.py": "d4be8d31cfb2f3b2a70bb0d278304665e4da79c3aacbe67639e2cb07674c749b",
+    "ide/tests/test_shared_ui.py": "bfd490659823723d3dd1fb4d0e038bbe3265336f205cc685b6e5cb091520ebb0",
+    "ide/tests/test_ui.py": "c557c2d2e7f5b63dd301e06529eb69bba2664dadbe0477c99e467026e785286e",
+    "ide/pyproject.toml": "58f9ffd8881b8cace47579b61a3d476e11ac825761e229885a62cc6792e425df",
+    "ide/docs/PLUGIN_EXECUTION_SERVICE.md": "5bb68485008878e29a01ca9bd56bb5c3a20e8e46006cc4b0e04792bd724e439e"
+  },
+  "limits": [
+    "GENERIC simulator only; no operational procedure approval",
+    "Windows x64 service and Linux amd64 Docker; single durable authority",
+    "Trusted installed provider, service OS account and Docker administrator",
+    "Critical/scheduled TC, vendor Cortex, unused EV streams and full mission semantics remain v0.5",
+    "763-row inventory classifications are not promoted by this milestone",
+    "Independent reproducibility, transitive supplier audits and supported upgrades remain later gates",
+    "Private loopback driver RPC; local trusted DSS/Kafka qualification, not remote broker security",
+    "Shared native debugger inspection remains separate; old host image and JetBrains ZIP unchanged"
+  ]
+}

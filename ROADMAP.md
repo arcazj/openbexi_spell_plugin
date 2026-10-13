@@ -81,6 +81,16 @@ exactly Execution, Monitoring and Development. Move reusable operational server
 components out of the legacy archive only when their dependencies and immutable
 release identities are consciously migrated.
 
+Complete for the declared GENERIC simulator profile on Windows x64 service /
+Linux amd64 Docker, with IDE 0.3 as the neutral durable authority. Original native
+factory/models and all ten RPC families, actual binary TC/Kafka TM, immutable
+approved Execution, Monitoring rejection, controller fencing, alias admission,
+lost-acknowledgement holds, watchdog, pause, revocation and installed wheels are
+qualified in [driver runtime](docs/DRIVER_RUNTIME.md) and
+[its exact evidence](docs/DRIVER_QUALIFICATION.json). Critical/scheduled commands,
+full mission semantics and unsupported vendor contracts remain explicit v0.5
+requirements; no real-mission approval is inferred from simulator acceptance.
+
 ## v0.5 — full SPELL conformance
 
 Allocate all 763 existing inventory rows; historical 195 ADAPTED / 79 PARTIAL /
@@ -105,6 +115,6 @@ Proposed v0.7 covers security/capacity and operational recovery/backup acceptanc
 v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.
 These later releases remain outside the current execution target of v0.6.
 
-The remaining sequence is v0.4, v0.5 and v0.6. Update documentation and
+The remaining sequence is v0.5 and v0.6. Update documentation and
 commit each tested phase in order. A partial milestone may be committed, but
 its parent release remains open until every release gate has passed.

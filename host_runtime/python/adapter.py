@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from native import NativeSession
 
 
-def read_messages(stream, incoming, stop):
+def read_messages(stream, incoming, stop, control=None):
     selector = selectors.DefaultSelector()
     selector.register(stream.fileno(), selectors.EVENT_READ)
     data = bytearray()
@@ -60,6 +60,8 @@ def read_messages(stream, incoming, stop):
                 message = json.loads(data[:length])
                 del data[:length]
                 length = None
+                if control and control(message):
+                    continue
                 while not stop.is_set():
                     try:
                         incoming.put(message, timeout=.1)
@@ -93,13 +95,47 @@ class Adapter:
         self.terminal_wait = None
         self.breakpoints = {}
         self.host_root = ''
+        self.emit_lock = threading.Lock()
+        self.driver_relay = None
+        self.watchdog_enabled = False
+        self.last_heartbeat = time.monotonic()
+        self.freeze_expected = False
+
+    def control(self,message):
+        if message.get('type') == 'event' and message.get('event') == 'openbexi/heartbeat':
+            self.last_heartbeat = time.monotonic()
+            return True
+        if message.get('type') == 'request' and message.get('command') == 'openbexi/driverReply':
+            try:
+                if not self.driver_relay:
+                    raise ValueError('No private driver relay')
+                self.driver_relay.reply(message.get('arguments',{}))
+                self.response(message)
+            except Exception as error:
+                self.response(message,error=error)
+            return True
+        return False
+
+    def watchdog(self,stop):
+        previous = time.monotonic()
+        while not stop.wait(.2):
+            now = time.monotonic()
+            # Docker freezes this monitor together with all user descendants.
+            # One declared freeze permits one bounded grace period on thaw.
+            if self.freeze_expected and now - previous > 1:
+                self.freeze_expected = False
+                self.last_heartbeat = now
+            previous = now
+            if self.watchdog_enabled and now - self.last_heartbeat > 4:
+                os._exit(75)  # Container init then tears down all descendants.
 
     def emit(self, message):
-        self.sequence += 1
-        message['seq'] = self.sequence
-        data = json.dumps(message, ensure_ascii=False).encode('utf-8')
-        sys.stdout.buffer.write(f'Content-Length: {len(data)}\r\n\r\n'.encode() + data)
-        sys.stdout.buffer.flush()
+        with self.emit_lock:
+            self.sequence += 1
+            message['seq'] = self.sequence
+            data = json.dumps(message, ensure_ascii=False).encode('utf-8')
+            sys.stdout.buffer.write(f'Content-Length: {len(data)}\r\n\r\n'.encode() + data)
+            sys.stdout.buffer.flush()
 
     def event(self, event, **body):
         self.emit({'type': 'event', 'event': event, 'body': body})
@@ -129,10 +165,14 @@ class Adapter:
         args = request.get('arguments', {})
         body = {}
         if command == 'initialize':
+            self.watchdog_enabled = args.get('privateWatchdog') is True
+            self.last_heartbeat = time.monotonic()
             body = {'supportsConfigurationDoneRequest': True,
                 'supportsSetVariable': True, 'supportsTerminateRequest': True,
                 'supportsEvaluateForHovers': False,
                 'exceptionBreakpointFilters': []}
+        elif command == 'openbexi/freezeWatchdog':
+            self.freeze_expected = True
         elif command == 'launch':
             if self.session:
                 raise ValueError('This adapter already owns a session')
@@ -143,7 +183,12 @@ class Adapter:
             if not isinstance(supplied, list) or len(supplied) > 1:
                 raise ValueError('SPELL accepts one JSON object argument for native ARGS')
             native_arguments = args.get('spellArguments', json.loads(supplied[0]) if supplied else {})
-            self.session = NativeSession('/workspace', '/workspace/' + relative, native_arguments)
+            if args.get('driverRelay'):
+                from openbexi_spell_dss.relay import Relay
+                self.driver_relay = Relay(self.event)
+            runtime_root = '/release' if args.get('immutableRelease') else '/workspace'
+            self.session = NativeSession(runtime_root, runtime_root + '/' + relative, native_arguments,
+                driver_port=self.driver_relay.port if self.driver_relay else None)
             self.no_debug = bool(args.get('noDebug'))
             self.stop_on_entry = bool(args.get('stopOnEntry'))
             try:
@@ -156,6 +201,10 @@ class Adapter:
             self.response(request)
             self.event('initialized')
             return
+        elif command == 'openbexi/driverReply':
+            if not self.driver_relay:
+                raise ValueError('No private driver relay')
+            self.driver_relay.reply(args)
         elif command in {'disconnect', 'terminate'}:
             if self.session:
                 self.session.close()
@@ -328,7 +377,7 @@ class Adapter:
             if status == 'PAUSED':
                 self.event('stopped', reason='breakpoint', threadId=1, allThreadsStopped=True)
             elif status == 'ERROR':
-                self.event('output', category='stderr', output=self.status.get('ErrorReason', str(self.status)) + '\n')
+                self.event('output', category='stderr', output=self.status.get('ErrorMsg', self.status.get('ErrorReason', str(self.status))) + '\n')
             if status in {'FINISHED', 'ERROR', 'ABORTED'}:
                 exit_code = 0 if status == 'FINISHED' else 1
                 self.session.close()
@@ -341,8 +390,10 @@ def main():
     adapter = Adapter()
     incoming = queue.Queue(maxsize=128)
     stop = threading.Event()
-    reader = threading.Thread(target=read_messages, args=(sys.stdin.buffer, incoming, stop))
+    reader = threading.Thread(target=read_messages, args=(sys.stdin.buffer, incoming, stop,adapter.control))
     reader.start()
+    watchdog = threading.Thread(target=adapter.watchdog,args=(stop,),name='native-parent-watchdog')
+    watchdog.start()
     try:
         while not adapter.done:
             try:
@@ -373,8 +424,11 @@ def main():
     finally:
         stop.set()
         reader.join()
+        watchdog.join()
         if adapter.session:
             adapter.session.close()
+        if adapter.driver_relay:
+            adapter.driver_relay.close()
     return 0
 
 

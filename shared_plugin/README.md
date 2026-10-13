@@ -1,9 +1,10 @@
-# Native shared Development provider
+# Native shared service provider
 
 Optional GPL plugin for the neutral IDE's durable shared service. Uses the
 original native host image through DAP; requires `openbexi-spell-host==0.3.0`
-and a local Linux Docker engine. This prerelease is a Development milestone,
-not plugin v0.4 acceptance or operational Execution authorization.
+and a local Linux Docker engine. Version 0.4.0 adds the original DSS driver and
+approved immutable native Execution through the optional `dss` extra.
 
-See [../docs/SHARED_RUNTIME.md](../docs/SHARED_RUNTIME.md) for the contract,
-installation, pause/recovery semantics and qualification evidence.
+See [../docs/DRIVER_RUNTIME.md](../docs/DRIVER_RUNTIME.md) for installation,
+qualified GENERIC simulator capabilities and mode/authority boundaries.
+The earlier Development evidence remains in `docs/SHARED_RUNTIME.md`.
