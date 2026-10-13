@@ -1,256 +1,327 @@
 {
-  "schema": 2,
+  "schema": 3,
   "v05_accepted": false,
   "v06_accepted": false,
   "total": 763,
-  "qualified": 422,
-  "open": 341,
-  "scope": "Frozen DATA/UI/FLOW/DTA/TIME/OBS/CMD and dictionary IPC composition, before later Event/scheduler/resource/LIMIT/database tranches",
-  "runtime_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
-  "dss_development_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "qualified": 470,
+  "open": 293,
+  "scope": "Source-composed native/Python/driver wheel with all selected native language reports on one exact DSS image; imported PY evaluation excludes generic checkpoint semantics.",
+  "runtime_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
+  "dss_development_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
   "integrated_checkpoint": {
-    "path": "distribution/evidence/integrated-rebuild.json",
-    "sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
-    "lf_sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
-    "bytes": 66190
+    "path": "distribution/evidence/next-integrated-conformance.json",
+    "sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
+    "lf_sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
+    "bytes": 37265
+  },
+  "build_checkpoint": {
+    "path": "distribution/evidence/next-integrated-rebuild.json",
+    "sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
+    "lf_sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
+    "bytes": 9587
   },
   "reports": {
     "data": {
       "path": "conformance/evidence/data.json",
-      "sha256": "215a4328f5cbacf766756b67e1c8e40d780ab6b4745ce495a71314a12e4d8b5c",
-      "bytes": 72221,
-      "lf_sha256": "215a4328f5cbacf766756b67e1c8e40d780ab6b4745ce495a71314a12e4d8b5c"
+      "sha256": "d3b6ccc6b5a2759459a38bf9ce041a6ac44dae182b91e867a9a2a730ccfeaaa3",
+      "lf_sha256": "d3b6ccc6b5a2759459a38bf9ce041a6ac44dae182b91e867a9a2a730ccfeaaa3",
+      "bytes": 106395,
+      "checks": 24
     },
     "files": {
       "path": "conformance/evidence/files.json",
-      "sha256": "743e89d884eff2f1d803a121e74da25845c877331332b29ed8cae5f64705afdf",
-      "bytes": 78018,
-      "lf_sha256": "743e89d884eff2f1d803a121e74da25845c877331332b29ed8cae5f64705afdf"
+      "sha256": "2a49b1bfbb1069f99cb00d369ce7786ffb0cdf94368e36b4617c9d07261f7163",
+      "lf_sha256": "2a49b1bfbb1069f99cb00d369ce7786ffb0cdf94368e36b4617c9d07261f7163",
+      "bytes": 112192,
+      "checks": 36
     },
     "data-race": {
       "path": "conformance/evidence/data-race.json",
-      "sha256": "2876bd15357d9027cd7a70170b2259b654cedbb6809a87f95fbbde75b9e9687b",
-      "bytes": 63845,
-      "lf_sha256": "2876bd15357d9027cd7a70170b2259b654cedbb6809a87f95fbbde75b9e9687b"
+      "sha256": "a4b22fac21997c554cfd7dd4f236ef6c001617d40b28f8233a58f5a0338811db",
+      "lf_sha256": "a4b22fac21997c554cfd7dd4f236ef6c001617d40b28f8233a58f5a0338811db",
+      "bytes": 98243,
+      "checks": 4
     },
     "flow": {
       "path": "conformance/evidence/flow.json",
-      "sha256": "df77357acaa1f0a918b92fd9fae859db5a81d5d22b25b185540c4bee4d6fd1f3",
-      "bytes": 148737,
-      "lf_sha256": "df77357acaa1f0a918b92fd9fae859db5a81d5d22b25b185540c4bee4d6fd1f3"
-    },
-    "time": {
-      "path": "conformance/evidence/time.json",
-      "sha256": "0d1fe8f32a9ef7e1caed51fa19527f570294a4639e51c8049b6da5dcd0a7f203",
-      "bytes": 103142,
-      "lf_sha256": "0d1fe8f32a9ef7e1caed51fa19527f570294a4639e51c8049b6da5dcd0a7f203"
-    },
-    "dta": {
-      "path": "conformance/evidence/dta.json",
-      "sha256": "0f3ab89a10017efe913b5338cf285803e9082b32d77c86439dc6ea9e8303df47",
-      "bytes": 553940,
-      "lf_sha256": "0f3ab89a10017efe913b5338cf285803e9082b32d77c86439dc6ea9e8303df47"
-    },
-    "ui": {
-      "path": "conformance/evidence/ui.json",
-      "sha256": "66b373011db1294f6f78da07f8f7909803b5b48159777fcb42ea77a15d32d2cf",
-      "bytes": 144139,
-      "lf_sha256": "66b373011db1294f6f78da07f8f7909803b5b48159777fcb42ea77a15d32d2cf"
-    },
-    "dta-ipc": {
-      "path": "conformance/evidence/dta-ipc.json",
-      "sha256": "0960c119763641d32433a1594500add8145edf9a5c1732d87016c7f39368cc62",
-      "bytes": 580719,
-      "lf_sha256": "0960c119763641d32433a1594500add8145edf9a5c1732d87016c7f39368cc62"
-    },
-    "cmd": {
-      "path": "conformance/evidence/cmd.json",
-      "sha256": "b17b0fbaf30c91f970aea307b8c02dc07ba3f91588d8773f54842eeec26ad94e",
-      "bytes": 18167973,
-      "lf_sha256": "b17b0fbaf30c91f970aea307b8c02dc07ba3f91588d8773f54842eeec26ad94e"
-    },
-    "python": {
-      "path": "conformance/evidence/python.json",
-      "sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975",
-      "bytes": 324453,
-      "lf_sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975"
-    },
-    "common": {
-      "path": "conformance/evidence/common.json",
-      "sha256": "2468e963750df6516a211d21670027dc5174c5884e473e81f9753573d4e29567",
-      "bytes": 90393,
-      "lf_sha256": "2468e963750df6516a211d21670027dc5174c5884e473e81f9753573d4e29567"
+      "sha256": "0d7f70dfdc679cf24d2a71f93c5cec6df0ec833a14014217704c0c9b5e6a06c6",
+      "lf_sha256": "0d7f70dfdc679cf24d2a71f93c5cec6df0ec833a14014217704c0c9b5e6a06c6",
+      "bytes": 183849,
+      "checks": 36
     },
     "common-silence": {
       "path": "conformance/evidence/common-silence.json",
-      "sha256": "db0fa009007220a47f9309ec9dd727ae1008ed3fd0e3f0dec8cc8a04103d12e2",
-      "bytes": 70370,
-      "lf_sha256": "db0fa009007220a47f9309ec9dd727ae1008ed3fd0e3f0dec8cc8a04103d12e2"
+      "sha256": "002c67c842480ca2b8b9b25a1d3b35dd593b51e981b3834ca329f9a450a0d48f",
+      "lf_sha256": "002c67c842480ca2b8b9b25a1d3b35dd593b51e981b3834ca329f9a450a0d48f",
+      "bytes": 104663,
+      "checks": 4
+    },
+    "dta": {
+      "path": "conformance/evidence/dta.json",
+      "sha256": "1b222e45aae8505679c029d02b5f1ea91d151d8f3fc02a32cbdbc7e785559ffc",
+      "lf_sha256": "1b222e45aae8505679c029d02b5f1ea91d151d8f3fc02a32cbdbc7e785559ffc",
+      "bytes": 588004,
+      "checks": 68
+    },
+    "ui": {
+      "path": "conformance/evidence/ui.json",
+      "sha256": "bf3498ce48de41d8767ca0533460702505044b0f9cf4a432e6b9706437e8ce25",
+      "lf_sha256": "bf3498ce48de41d8767ca0533460702505044b0f9cf4a432e6b9706437e8ce25",
+      "bytes": 177876,
+      "checks": 62
+    },
+    "dta-ipc": {
+      "path": "conformance/evidence/dta-ipc.json",
+      "sha256": "976a8b296a85ff1244b465418291ebd5dfb02cef763cd63e5577547af5efb0c5",
+      "lf_sha256": "976a8b296a85ff1244b465418291ebd5dfb02cef763cd63e5577547af5efb0c5",
+      "bytes": 614892,
+      "checks": 64
+    },
+    "time": {
+      "path": "conformance/evidence/time.json",
+      "sha256": "3e9b9bd9f2ad173e159e1a25394a6590319e8c9722d02249dd844db459527cf2",
+      "lf_sha256": "3e9b9bd9f2ad173e159e1a25394a6590319e8c9722d02249dd844db459527cf2",
+      "bytes": 137784,
+      "checks": 168
+    },
+    "limit": {
+      "path": "conformance/evidence/limit.json",
+      "sha256": "cb9245ceb0fbb9c71dce3b63430c656346a434e4d92396ac45213a0b868e7b01",
+      "lf_sha256": "cb9245ceb0fbb9c71dce3b63430c656346a434e4d92396ac45213a0b868e7b01",
+      "bytes": 7648830,
+      "checks": 144
+    },
+    "notification": {
+      "path": "conformance/evidence/notification.json",
+      "sha256": "2643b38ea45f9ed150320a311b0d01dc2d7a9ded8bf6902bed4bb13e7e30a1f7",
+      "lf_sha256": "2643b38ea45f9ed150320a311b0d01dc2d7a9ded8bf6902bed4bb13e7e30a1f7",
+      "bytes": 256665,
+      "checks": 64
+    },
+    "resource": {
+      "path": "conformance/evidence/resource.json",
+      "sha256": "e054d024812e635c5cf52d0460a4c7c28ffb9e5c3aca299778c342bd573794cb",
+      "lf_sha256": "e054d024812e635c5cf52d0460a4c7c28ffb9e5c3aca299778c342bd573794cb",
+      "bytes": 1456529,
+      "checks": 12
+    },
+    "database_import": {
+      "path": "conformance/evidence/database_import.json",
+      "sha256": "89c6231ecaca442f43bf11db80f106517b84f8f38fae6e56879e6f55578e70d3",
+      "lf_sha256": "89c6231ecaca442f43bf11db80f106517b84f8f38fae6e56879e6f55578e70d3",
+      "bytes": 108625,
+      "checks": 16
+    },
+    "user_database": {
+      "path": "conformance/evidence/user_database.json",
+      "sha256": "7b3a825b55df7a85d05dd7b5effb832e898d5313fa2c26adba38fe1acc85674d",
+      "lf_sha256": "7b3a825b55df7a85d05dd7b5effb832e898d5313fa2c26adba38fe1acc85674d",
+      "bytes": 218178,
+      "checks": 22
+    },
+    "python": {
+      "path": "conformance/evidence/python.json",
+      "sha256": "a52db1f6ad433ed3b2d63f40c09ba86846e17200aed1d1780d07c66eeb7185a6",
+      "lf_sha256": "a52db1f6ad433ed3b2d63f40c09ba86846e17200aed1d1780d07c66eeb7185a6",
+      "bytes": 358933,
+      "checks": 488
+    },
+    "cmd": {
+      "path": "conformance/evidence/cmd.json",
+      "sha256": "f98b60e9e5dbaaf88d59b066975dcab8d57dbc5fda650c5ee7a005f28d7311bb",
+      "lf_sha256": "f98b60e9e5dbaaf88d59b066975dcab8d57dbc5fda650c5ee7a005f28d7311bb",
+      "bytes": 18122755,
+      "checks": 66
+    },
+    "common": {
+      "path": "conformance/evidence/common.json",
+      "sha256": "aba3ad89c77b425ec31d6cb3fc12321762f3be7274f6b6323e7778aa4f42a712",
+      "lf_sha256": "aba3ad89c77b425ec31d6cb3fc12321762f3be7274f6b6323e7778aa4f42a712",
+      "bytes": 124874,
+      "checks": 44
+    },
+    "events": {
+      "path": "conformance/evidence/events.json",
+      "sha256": "cb9ae60239366327b1c64c69a114e3c8ba4a613f8bc25f560c4043dcce9bfbc4",
+      "lf_sha256": "cb9ae60239366327b1c64c69a114e3c8ba4a613f8bc25f560c4043dcce9bfbc4",
+      "bytes": 3753595,
+      "checks": 8
+    },
+    "scheduler": {
+      "path": "conformance/evidence/scheduler.json",
+      "sha256": "48c5468645d220bfa42bc6c069eb6b82b24c13a7b3623fc9cf5ab04ba8a7480a",
+      "lf_sha256": "48c5468645d220bfa42bc6c069eb6b82b24c13a7b3623fc9cf5ab04ba8a7480a",
+      "bytes": 465042,
+      "checks": 9
+    },
+    "value_units": {
+      "path": "conformance/evidence/value_units.json",
+      "sha256": "f369ea976a762834c1e1872d0b8af9b400b812d70f124895aaad9e18debdefcd",
+      "lf_sha256": "f369ea976a762834c1e1872d0b8af9b400b812d70f124895aaad9e18debdefcd",
+      "bytes": 16901883,
+      "checks": 38
     },
     "obs": {
       "path": "conformance/evidence/obs.json",
-      "sha256": "eca8a1bc50a77b6d7b5d5d077363ab178954d767f4090a465bb3515e94c56987",
-      "bytes": 11176102,
-      "lf_sha256": "eca8a1bc50a77b6d7b5d5d077363ab178954d767f4090a465bb3515e94c56987"
+      "sha256": "2296b76f98fa02c29306c9f894bb35588b220932834509a2728bf02263d1c2d4",
+      "lf_sha256": "2296b76f98fa02c29306c9f894bb35588b220932834509a2728bf02263d1c2d4",
+      "bytes": 11211445,
+      "checks": 253
     }
   },
   "checks": {
-    "data": 24,
-    "files": 36,
-    "data-race": 4,
-    "flow": 36,
-    "time": 168,
-    "dta": 68,
-    "ui": 62,
-    "dta-ipc": 64,
-    "cmd": 54,
-    "python": 488,
-    "common": 44,
-    "common-silence": 4,
-    "obs": 189
+    "raw_native": 1439,
+    "host": 10
   },
   "coverage": {
     "path": "conformance/coverage.json",
-    "sha256": "ac636a1de38b303a30ee454b98d3347ea45811d58b403e8fa77644c009c69a2e",
-    "bytes": 538511,
-    "lf_sha256": "ac636a1de38b303a30ee454b98d3347ea45811d58b403e8fa77644c009c69a2e"
+    "sha256": "24223c96787d1617b19e456e7a2386a9f9c8b6d4c0be367de7be94a68f539dc6",
+    "lf_sha256": "24223c96787d1617b19e456e7a2386a9f9c8b6d4c0be367de7be94a68f539dc6",
+    "bytes": 573174
   },
   "gate": {
-    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-gate.json",
-    "sha256": "683becdd2b244a7061fa9a37ce5eba5c120cb280c056688de101e84d5c120c63",
-    "bytes": 75710,
-    "lf_sha256": "683becdd2b244a7061fa9a37ce5eba5c120cb280c056688de101e84d5c120c63"
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/gate.json",
+    "sha256": "25e12b63f3191ada786656725bb89aca0328aefb8b9f8d6914848fa936ba5cf2",
+    "lf_sha256": "25e12b63f3191ada786656725bb89aca0328aefb8b9f8d6914848fa936ba5cf2",
+    "bytes": 65101
   },
   "previous_checkpoint": {
-    "commit": "e365053",
-    "path": "docs/V05_CONFORMANCE_QUALIFICATION.json",
-    "runtime_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
-    "qualified": 401,
-    "open": 362
+    "git_commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
+    "path": "distribution/evidence/integrated-rebuild.json",
+    "sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93"
   },
-  "remaining": [
-    "341 original requirements remain open; no release/version/tag promotion",
-    "Linux x86_64 CPython3.13.15 ASan/UBSan diagnostic runtime; leak sanitizer disabled",
-    "Frozen toolchain archive supports reuse; apt reconstruction is not snapshot locked",
-    "Versioned upgrades and all final installed host workflows remain unqualified",
-    "Later Event/scheduler/resource/LIMIT/database increments are excluded"
-  ],
-  "host_error_recovery": {
-    "scope": "Native language reports retain exact49667 image. Corrected06a98 host was qualified separately; native/Python wheel, all driver wheel members and compiled bridge are byte-identical. No blanket language rerun on06a98 is claimed.",
-    "corrected_host_source_commit": "89fd1f0",
-    "changed_image_inputs": {
-      "host_runtime/tests/test_status_order.py": {
-        "before": "74c84e90571018ebec370017876b56c99ff00898a708afee6d7a0bac4eb31533",
-        "after": "d5eefb83f3194b4825cad653e84d917f16a1739e584d54ee0f5bf34aac9dcef6"
+  "retained_failures": {
+    "scheduler_recorder_schema": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/scheduler-recorder-rejection.json",
+        "sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
+        "lf_sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
+        "bytes": 794
       },
-      "host_runtime/python/adapter.py": {
-        "before": "ae437291e05faca4e8b881b2fd48222f7ba0ad4acaf7e3e8b30cf0204102a550",
-        "after": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
+      "scope": "Strict gate rejected mislabelled self-referential observation links. Recorder correction separates and validates them; native raw observations are unchanged."
+    },
+    "time_startup": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/time/4740896e84b047129b9c210495767387/time-contracts.json",
+        "sha256": "53aa0e351c61169a7cb7d12e4ae24f0382d8e09d4fb06aaba498b14f5d77d00e",
+        "lf_sha256": "677941b64f31e6667d921064aacea23096577c6bed3c4f3622c783c68be549f4",
+        "bytes": 1546
       },
-      ".runtime-input/driver/openbexi_spell_dss-0.4.0-py3-none-any.whl": {
-        "before": "686044a3aaa11c70da0baa6c0688efa992e4ecc65d4cb198973b7da290d32dfa",
-        "after": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5"
-      }
+      "scope": "Native bridge ended before language execution; cause unresolved. Unchanged subsequent direct startup control and TIME168 run passed. No source/deadline changes."
     },
-    "native_wheel_identical": true,
-    "driver_payload_identical": true,
-    "installed_audit_identical": true,
-    "failed_host_report": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/result.json",
-      "sha256": "88dfa6dfc592747fd9d75a28354750eeb3d20ece1316ac35bb951784470d3d55",
-      "bytes": 1026,
-      "lf_sha256": "e238cf85b9036eeac2f903fe0bc151a4dff4ccbaf04ef24111586ecaddd33a6a"
-    },
-    "failed_transcript": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/test_error_reported_and_cleanup.json",
-      "sha256": "46061e82caa6eac01621cf59c74bcd83557f0b9d29e3cc8308b9beb57b289a27",
-      "bytes": 2026,
-      "lf_sha256": "5885b0e196b688c8035d050f6e96d3284a49a026044174690ebf2fe241f12307"
-    },
-    "native_fields": {
-      "fresh": {
-        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/fresh.log",
-        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
-        "bytes": 212,
-        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
+    "value_type_setup": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/value-units/d46c0fc4dfad413a8473afa2380264d9/result.json",
+        "sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
+        "lf_sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
+        "bytes": 16837475
       },
-      "prior": {
-        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/prior.log",
-        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
-        "bytes": 212,
-        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
-      }
+      "scope": "One read-only CreateTcItem ground.snapshot HTTP timeout; no send/effect. Other37 checks passed. The complete unchanged38-check rerun passed. Underlying timeout cause is unproven."
     },
-    "native_probe": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/probe_host_error.py",
-      "sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a",
-      "bytes": 1581,
-      "lf_sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a"
+    "race_harness_import": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/data-race/46edea35088744788a6aae17a87b44be/failure.json",
+        "sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
+        "lf_sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
+        "bytes": 1254
+      },
+      "scope": "Generated inspect.py shadowed stdlib inspect during provenance startup; no behavior executed. Rename-only harness commit9b729d0 resolves collision; real race4 then passes."
     },
-    "native_probe_inputs": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/inputs.json",
-      "sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e",
-      "bytes": 282,
-      "lf_sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e"
-    },
-    "passing_host_report": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/result.json",
-      "sha256": "effd1295a336c0fc45e781de90c31579a1d717a60b670bcb6032609993789db6",
-      "bytes": 1026,
-      "lf_sha256": "87853450987d69a8633f9c90abc657f6683c5065868003129bd44b57173f55d1"
-    },
-    "passing_transcript": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/test_error_reported_and_cleanup.json",
-      "sha256": "62f5606d3186afb4db6bd69284bfa06f514da0293870ca74826331809c8e74a9",
-      "bytes": 2318,
-      "lf_sha256": "bc5b2aea7c85aba382414c8d1e5be63b169ded51dfa71a71af0b321219ea12a5"
-    },
-    "passing_tests": 10,
-    "failures": 0,
-    "source": {
-      "path": "host_runtime/python/adapter.py",
-      "sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460",
-      "bytes": 20362,
-      "lf_sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
+    "recorder_lambda": {
+      "evidence": {
+        "path": "distribution/evidence/recorder-lambda-incident.json",
+        "sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
+        "lf_sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
+        "bytes": 26687
+      },
+      "scope": "Unresolved old49667 fresh ON_LINE warmstart lambda exception/handler counterexample. Current PY imported-evaluation and FLOW live callback claims exclude generic recorder recovery."
     }
   },
+  "remaining": [
+    "293 original requirements remain open; no release/version/tag promotion",
+    "Recorder lambda/exception-handler warmstart failure remains unresolved",
+    "Two initial transient startup/setup failures retained; underlying causes unresolved",
+    "Final installed desktop workflows, versioned upgrades and supported-platform matrix remain unqualified",
+    "Frozen compiler-bearing Linux x86_64 CPython3.13.15 ASan/UBSan image; leak sanitizer disabled",
+    "Retained toolchain is pinned; apt reconstruction is not snapshot locked"
+  ],
   "usable_host_candidate": {
-    "report": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/result.json",
-      "sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720",
-      "bytes": 15744,
-      "lf_sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720"
-    },
-    "installed_record": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/installed-record.json",
-      "sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2",
-      "bytes": 14316,
-      "lf_sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2"
+    "result": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/result.json",
+      "sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "lf_sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "bytes": 48390
     },
     "inputs": {
-      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/inputs.json",
-      "sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782",
-      "bytes": 5535,
-      "lf_sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782"
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/inputs.json",
+      "sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "lf_sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "bytes": 9572
+    },
+    "installed_audit": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/installed-record.json",
+      "sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "lf_sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "bytes": 37493
     },
     "host": {
-      "tag": "openbexi-spell-host:v06-integrated-c4da765bb816",
-      "image": "sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7"
+      "tag": "openbexi-spell-host:v06-integrated-97bb64016332",
+      "image": "sha256:95209eb11db106163c1a2e90b8a5cb63c60e5c613f0b93c9dfb8ad4d17a13853"
     },
     "dss": {
-      "tag": "openbexi-spell-dss:v06-integrated-c4da765bb816",
-      "image": "sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee"
+      "tag": "openbexi-spell-dss:v06-integrated-97bb64016332",
+      "image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342"
+    },
+    "native_wheel": {
+      "name": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
+      "record_files_verified": 442
     },
     "driver_wheel": {
       "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
-      "sha256": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5",
-      "record_files_verified": 31
+      "sha256": "6e491863da48d86daa7160a47f9b43870b7a272e90fda56d42f57262dc3069f5",
+      "record_files_verified": 58
+    },
+    "installed_distributions": {
+      "openbexi-spell-source": {
+        "version": "0.3.0",
+        "record_files_verified": 447
+      },
+      "openbexi-spell-dss": {
+        "version": "0.4.0",
+        "record_files_verified": 61
+      }
+    },
+    "bridge_sha256": "4ab8c8aeb824db1a8390a235108cc572c64b50fef71fb70c9630ce3b74041298",
+    "driver_manifest_sha256": "11e64ca4c39f4ce1873c07db0131f777ee57571b5b935837cb60ddbc926b079a",
+    "logs": {
+      "host_runtime": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/host_runtime-build.log",
+        "sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "lf_sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "bytes": 4764
+      },
+      "driver_plugin": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/driver_plugin-build.log",
+        "sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "lf_sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "bytes": 1912
+      }
     }
   },
+  "repository_tests": {
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/next-checkpoint-package.xml",
+    "sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
+    "lf_sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
+    "bytes": 28701,
+    "tests": 224,
+    "failures": 0,
+    "errors": 0
+  },
   "fresh_git_index_checkout_gate": {
-    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/index-check-ead13dcb8f8e498eaf222f01204c2123/result.json",
-    "sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
-    "lf_sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
-    "bytes": 341
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/index-check-8e27db74e90c4c85b8d53f46f3480fe1/result.json",
+    "sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
+    "lf_sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
+    "bytes": 524
   }
 }

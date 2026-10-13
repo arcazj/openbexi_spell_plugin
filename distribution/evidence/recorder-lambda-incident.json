@@ -1,0 +1,273 @@
+{
+  "schema": "openbexi.spell.recorder-incident/1",
+  "status": "open; counterexample retained; no runtime correction in this composition",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "runtime_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "evidence": {
+    "result.json": {
+      "path": ".qualification/v0.6/checkpoint-error-worktree/.qualification/v0.6/checkpoint-error/d9b7a3e43f8044abaca7b93bea2678db/result.json",
+      "sha256": "eb5c23c36448afe3704c56da7317c0e8ee908667e1c9501e2bd6a62e724f13fd",
+      "lf_sha256": "eb5c23c36448afe3704c56da7317c0e8ee908667e1c9501e2bd6a62e724f13fd",
+      "bytes": 66868
+    },
+    "controller.log": {
+      "path": ".qualification/v0.6/checkpoint-error-worktree/.qualification/v0.6/checkpoint-error/d9b7a3e43f8044abaca7b93bea2678db/controller.log",
+      "sha256": "0704326ae5928f27e5fdcb435e46b27bb7326c491c1b07b2e561f77e78c9d1db",
+      "lf_sha256": "0704326ae5928f27e5fdcb435e46b27bb7326c491c1b07b2e561f77e78c9d1db",
+      "bytes": 200
+    },
+    "workspace.tar": {
+      "path": ".qualification/v0.6/checkpoint-error-worktree/.qualification/v0.6/checkpoint-error/d9b7a3e43f8044abaca7b93bea2678db/workspace.tar",
+      "sha256": "3a08241a51ec6a45f40dbdb39a667eb752916669d5d415e674bf116e41be31fd",
+      "lf_sha256": "6b16fab1a9543e147e8c4c84c441a34ea82af724e2940ea72ae89ae3e69f507f",
+      "bytes": 671232
+    }
+  },
+  "completed_observations": {
+    "ON_LINE:direct-valueerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "direct-valueerror",
+      "execution": "fresh",
+      "passed": true,
+      "procedure_sha256": "76532bd1e6c66647dd9d74ef7efcb7fd3391ebb232e0a26632c15e05117ac539",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-direct-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:16\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_LINE-direct-valueerror-fresh/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:14\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:15\n[ RETURN  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:15\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:direct-valueerror:resume": {
+      "mode": "ON_LINE",
+      "case": "direct-valueerror",
+      "execution": "resume",
+      "passed": true,
+      "procedure_sha256": "d72a774c8a708680f5d0293cbc27f2dfa300d52fb14c9201695a257ba31151ba",
+      "checkpoint_sha256": "d09373293e9c19fd562401121d19e52efeab14fc5f50a6a58ff106550693bb56",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-direct-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-direct-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_122531_Executor___workspace__ON_LINE-direct-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_LINE-direct-valueerror-resume/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:14\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:15\n[ RETURN  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:15\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:lambda-valueerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "lambda-valueerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "71c874cb1d93cec90c03856bbf3f7c740ab28ef3fa163af303563e4e1d08f1aa",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:17\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:12\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 17\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:17\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:12\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 17\\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    }
+  },
+  "controller_termination": {
+    "exit_code": 143,
+    "scope": "Parent-requested stop during fourth scenario; the third scenario had already failed its independent 15-second timeout. The incomplete run does not pass the requested control matrix."
+  },
+  "procedure": {
+    "member": "./ON_LINE-lambda-valueerror-fresh/procedure.py",
+    "source": "from spell.runtime import Step\nfrom pathlib import Path\nimport json\nPath('/workspace/ON_LINE-lambda-valueerror-fresh/effect.txt').write_text(\"module executed\")\nevents=[]\ndef nested():\n    Step(\"checkpoint-control\",\"Original error control\")\n    print(\"CHECKPOINT_ERROR_READY\",flush=True)\n    assert input()==\"continue\"\n    operation=lambda:int('plain original error')\n    try:\n        operation()\n    except ValueError:\n        events.append('caught')\n    assert events==[\"caught\"]\n    Path('/workspace/ON_LINE-lambda-valueerror-fresh/result.json').write_text(json.dumps(events))\nnested()\n",
+    "sha256": "71c874cb1d93cec90c03856bbf3f7c740ab28ef3fa163af303563e4e1d08f1aa"
+  },
+  "inputs": {
+    "conformance/checkpoint_error_controller.py": "d42c3c7a19200cae2c1a9ed8535271f37d6f37310cbdbabe5c5c7f6d240cb304",
+    "conformance/checkpoint_error_run.py": "8c98ccdb797eef8cbf9569cc754e06e48fbd1030d2f731b679979b6272457411",
+    "conformance/scdb_provenance.py": "c32d2d3c5df003730a4db806757c1f571b650e7f341d986b89f73550015f3e05",
+    "conformance/installed_provenance.py": "9adad0652859ae2bcbbb0d3627ba52b525844e8d4daece47c20df8d052f50946"
+  },
+  "applicability": {
+    "observed": "Fresh ON_LINE warmstart execution of a procedure-owned lambda that raises ValueError, caught by the calling procedure, fails at the exception handler with checkpoint requires a synchronous thread-owned frame. Direct-call ValueError controls pass both fresh and restored execution.",
+    "independence": "The reproduced image is the prior untouched 49667 integrated runtime, with no SCDB read-only patch. SCDB cannot explain this baseline failure.",
+    "next_runtime": "The current 1fef runtime retains the same central recorder patch and has no additional frame-manager correction. This incident is an unresolved applicability risk; the old-image observation is not represented as a fresh-image reproduction.",
+    "related_inventory_rows": [
+      {
+        "id": "CMP-LRM244-EXAMPLE-016",
+        "name": "Example 16: user defined function example",
+        "kind": "Example",
+        "pages": "24",
+        "baseline_status": "ADAPTED",
+        "package": "PY"
+      },
+      {
+        "id": "CMP-LRM244-SECTION-2-1-12-013",
+        "name": "2.1.12 User defined functions",
+        "kind": "SourceSection",
+        "pages": "23",
+        "baseline_status": "GAP",
+        "package": "PY"
+      },
+      {
+        "id": "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION",
+        "name": "def name(arguments): ... return ...",
+        "kind": "Syntax",
+        "pages": "23-24",
+        "baseline_status": "PARTIAL",
+        "package": "PY"
+      }
+    ],
+    "current_claim": "PY evidence executes dynamic cases inside an imported oracle and explicitly excludes procedure checkpoint state, line control, worker recovery and service lifecycle. checkpoint_claim is false.",
+    "decision": "Retain the qualified imported language-evaluation dimensions. No lambda/except-specific inventory row claims warmstart recovery. Do not infer recorder qualification from these rows or their successful failure/recovery checks.",
+    "required_followup": "Qualify a checked recorder correction against fresh/restored direct and nested callable exception controls in both ON_LINE and ON_STEP modes, preserving synchronous frame ownership enforcement and existing full recorder gates before accepting this behavior.",
+    "flow_callback_scope": "The FLOW callback-error oracle proves CMD_ACTION error reporting and successful callback replacement in its live executor. It does not claim generic warmstart or restored exception-handler behavior; the passing callback effect/recovery checks therefore do not resolve this recorder incident."
+  },
+  "audited_py_baseline": {
+    "git_commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
+    "path": "conformance/evidence/python.json",
+    "sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975",
+    "checkpoint_claim": false,
+    "checks": {
+      "CMP-LRM244-EXAMPLE-016:positive": {
+        "dimension": "positive",
+        "contracts": [
+          "CMP-LRM244-EXAMPLE-016"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    a, b, c = x + y, x - y, x * y\n    return [a, b, c]\nx, y, z = function(1, 2)\nassert (x, y, z) == (3, -1, 2)\nassert 'a' not in globals() and 'b' not in globals() and 'c' not in globals()\n",
+        "passed": true
+      },
+      "CMP-LRM244-EXAMPLE-016:boundary": {
+        "dimension": "boundary",
+        "contracts": [
+          "CMP-LRM244-EXAMPLE-016"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nassert function(0, 0) == [0, 0, 0]\n",
+        "passed": true
+      },
+      "CMP-LRM244-EXAMPLE-016:failure": {
+        "dimension": "failure",
+        "contracts": [
+          "CMP-LRM244-EXAMPLE-016"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nrejects(TypeError, lambda: function(1))\n",
+        "passed": true
+      },
+      "CMP-LRM244-EXAMPLE-016:recovery": {
+        "dimension": "recovery",
+        "contracts": [
+          "CMP-LRM244-EXAMPLE-016"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nrejects(TypeError, lambda: function(1))\n\ndef function(x, y):\n    a, b, c = x + y, x - y, x * y\n    return [a, b, c]\nx, y, z = function(1, 2)\nassert (x, y, z) == (3, -1, 2)\nassert 'a' not in globals() and 'b' not in globals() and 'c' not in globals()\n",
+        "passed": true
+      },
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:positive": {
+        "dimension": "positive",
+        "contracts": [
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    a, b, c = x + y, x - y, x * y\n    return [a, b, c]\nx, y, z = function(1, 2)\nassert (x, y, z) == (3, -1, 2)\nassert 'a' not in globals() and 'b' not in globals() and 'c' not in globals()\n",
+        "passed": true
+      },
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:boundary": {
+        "dimension": "boundary",
+        "contracts": [
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nassert function(0, 0) == [0, 0, 0]\n",
+        "passed": true
+      },
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:failure": {
+        "dimension": "failure",
+        "contracts": [
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nrejects(TypeError, lambda: function(1))\n",
+        "passed": true
+      },
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:recovery": {
+        "dimension": "recovery",
+        "contracts": [
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION"
+        ],
+        "oracle": "LRM 2.4.4 Python chapter; literal expected values and specific exception types; explicit CPython 3.13/manual decisions in conformance/python.md",
+        "source": "def function(x, y):\n    return [x + y, x - y, x * y]\nrejects(TypeError, lambda: function(1))\n\ndef function(x, y):\n    a, b, c = x + y, x - y, x * y\n    return [a, b, c]\nx, y, z = function(1, 2)\nassert (x, y, z) == (3, -1, 2)\nassert 'a' not in globals() and 'b' not in globals() and 'c' not in globals()\n",
+        "passed": true
+      },
+      "CMP-LRM244-SECTION-2-1-12-013:positive": {
+        "dimension": "positive",
+        "contracts": [
+          "CMP-LRM244-SECTION-2-1-12-013"
+        ],
+        "passed": true,
+        "oracle": "Every explicitly listed child contract must pass its independently asserted positive case. Legacy child evidence remains migration/rejection, not supported original spelling.",
+        "dependencies": [
+          "CMP-LRM244-EXAMPLE-016:positive",
+          "CMP-LRM244-EXAMPLE-017:positive",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:positive",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:positive"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-12-013:boundary": {
+        "dimension": "boundary",
+        "contracts": [
+          "CMP-LRM244-SECTION-2-1-12-013"
+        ],
+        "passed": true,
+        "oracle": "Every explicitly listed child contract must pass its independently asserted boundary case. Legacy child evidence remains migration/rejection, not supported original spelling.",
+        "dependencies": [
+          "CMP-LRM244-EXAMPLE-016:boundary",
+          "CMP-LRM244-EXAMPLE-017:boundary",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:boundary",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:boundary"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-12-013:failure": {
+        "dimension": "failure",
+        "contracts": [
+          "CMP-LRM244-SECTION-2-1-12-013"
+        ],
+        "passed": true,
+        "oracle": "Every explicitly listed child contract must pass its independently asserted failure case. Legacy child evidence remains migration/rejection, not supported original spelling.",
+        "dependencies": [
+          "CMP-LRM244-EXAMPLE-016:failure",
+          "CMP-LRM244-EXAMPLE-017:failure",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:failure",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:failure"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-12-013:recovery": {
+        "dimension": "recovery",
+        "contracts": [
+          "CMP-LRM244-SECTION-2-1-12-013"
+        ],
+        "passed": true,
+        "oracle": "Every explicitly listed child contract must pass its independently asserted recovery case. Legacy child evidence remains migration/rejection, not supported original spelling.",
+        "dependencies": [
+          "CMP-LRM244-EXAMPLE-016:recovery",
+          "CMP-LRM244-EXAMPLE-017:recovery",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:recovery",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:recovery"
+        ]
+      }
+    }
+  },
+  "scope_sources": {
+    "conformance/python.md": {
+      "sha256": "db5116dccc39b7caecb0d35cb40df934afc19da6a10e68e09e1272251480103d",
+      "lf_sha256": "db5116dccc39b7caecb0d35cb40df934afc19da6a10e68e09e1272251480103d"
+    },
+    "conformance/python_contracts.py": {
+      "sha256": "35c2d48a973139b123cb3fc8bf4d8c05d00a291d0c6c32760cae49792b7993fb",
+      "lf_sha256": "35c2d48a973139b123cb3fc8bf4d8c05d00a291d0c6c32760cae49792b7993fb"
+    },
+    "conformance/run_python.py": {
+      "sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8",
+      "lf_sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8"
+    },
+    "conformance/inventory.json": {
+      "sha256": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+      "lf_sha256": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa"
+    },
+    "conformance/FLOW.md": {
+      "sha256": "727189df6ef362c0188550e4652da917ebb20028b5223c299db713379973fb33",
+      "lf_sha256": "727189df6ef362c0188550e4652da917ebb20028b5223c299db713379973fb33"
+    },
+    "conformance/flow_checks.py": {
+      "sha256": "1df904cae4f892432029179ec38ec351ab53a14f8dddbd47494c7d00aff6d3e1",
+      "lf_sha256": "1df904cae4f892432029179ec38ec351ab53a14f8dddbd47494c7d00aff6d3e1"
+    }
+  }
+}

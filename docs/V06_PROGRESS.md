@@ -1,73 +1,60 @@
 # v0.6 distribution prerequisites
 
-v0.6 is not accepted. The current checkpoint has **422 qualified / 341 open**
-original requirements. It retains the preceding 401 qualified rows and adds 21
-bounded CMD rows. Artifact versions and accepted Docker tags remain unchanged.
-The [current conformance manifest](V05_CONFORMANCE_QUALIFICATION.json) and
-[distribution manifest](V06_QUALIFICATION.json) leave both release flags false.
+v0.6 is not accepted. The current checkpoint has **470 qualified / 293 open**
+original requirements. It retains the preceding 422 qualified rows and adds 48
+bounded clauses after actual integrated native runs. Artifact versions and
+accepted Docker tags remain unchanged. Both release flags remain false in the
+[current conformance manifest](V05_CONFORMANCE_QUALIFICATION.json) and
+[distribution manifest](V06_QUALIFICATION.json).
 
-The frozen DATA, UI, FLOW, DTA, TIME, OBS, CMD and dictionary IPC corrections are
-now built together from checked original sources, before wheel creation.
-The central port recipes remain unchanged. Native and Python composition
-manifests bind original, ported and corrected sources, exact recipes, and the
-native continuation identity. The complete wheel RECORD covers these sources,
-provenance, licenses and final native binaries; installed files are unmodified.
+The checked composition now includes DATA, UI, FLOW, DTA, TIME, OBS, CMD,
+dictionary IPC, scheduler, resource, LIMIT, database import/save, Notify and
+ValueType corrections. Native, original SPELL Python and driver proxy changes
+are applied before wheel creation. Their complete RECORDs cover corrected
+sources, original-source evidence, recipe chains and native artifacts.
+The central CPython port recipes remain unchanged.
 
-Two independent builds from source freeze `4371ab5` passed the unchanged complete
-native recorder with `--no-cache --network=none`. All six shipped native binaries,
+Two independent builds from source freeze `5cbbba3` passed the unchanged native
+recorder suite with `--no-cache --network=none`. All six shipped native binaries,
 Python sources, composition manifests and complete wheel bytes are identical.
-Both builds passed eight fresh-install and removal checks without a build tree.
+Both builds passed eight fresh-install/removal checks without a build tree.
 The Linux x86_64 CPython 3.13 wheel remains version 0.3.0; its SHA-256 is
-`812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5`.
+`ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db`.
+The independently built driver wheel remains version 0.4.0, SHA-256
+`6e491863da48d86daa7160a47f9b43870b7a272e90fda56d42f57262dc3069f5`.
 
-Fresh host and DSS images were built offline from that wheel and a newly built
-driver wheel. Installed RECORD, native/Python composition and compiled host
-bridge audits pass. The exact host image is
-`sha256:1bc007b64a5a8dd73f5a565cacfa00f94e7cfd609db41f55a8af11edd32b4809`;
-the DSS image used by the refreshed conformance reports is
-`sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd`.
-It is available locally as `openbexi-spell-dss:v06-integrated-3743ea8c7a3f`.
+Fresh host and DSS images pass installed native/Python/driver RECORD, source
+composition and compiled bridge audits. The host image is
+`sha256:95209eb11db106163c1a2e90b8a5cb63c60e5c613f0b93c9dfb8ad4d17a13853`.
+All selected native conformance reports and ten host debugger workflows pass on
+`sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342`,
+available as `openbexi-spell-dss:v06-integrated-97bb64016332`.
+[Build evidence](../distribution/evidence/next-integrated-rebuild.json) and
+[the native checkpoint](../distribution/evidence/next-integrated-conformance.json)
+bind exact source, artifact, raw-report and normalized-report hashes.
 
-The additional native host suite exposed an adapter defect: it displayed the
-native error heading but discarded its separate reason. The corrected adapter
-preserves both fields and avoids duplicate complete lines. All ten host checks
-now pass on DSS image
-`sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee`,
-tag `openbexi-spell-dss:v06-integrated-c4da765bb816`. Its host image is
-`sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7`.
-The native wheel, every driver-wheel member and compiled bridge are identical.
-Language reports remain bound to `49667cb1`; the host correction has its own
-failed transcript, original IPC fields, passing transcript and image audit.
-No blanket language rerun on the corrected host image is claimed.
+The first TIME attempt ended during native IPC startup; one initial ValueType
+case timed out during read-only ground-state lookup. Unchanged complete reruns
+passed. Both failures remain retained, and their underlying causes are unresolved.
+The race fixture's startup import collision was fixed by renaming its generated
+`inspect.py`. The scheduler recorder now distinguishes native observation links
+from recursive check dependencies; the strict cycle gate remains intact.
 
-On `49667cb1`, native ARGS/IVARS editing passes its 64-check dictionary IPC regression,
-including type/range rejection, Unicode chunks, ownership and recovery. The
-same image is used for the bounded language suites. This does not qualify all
-unimplemented language clauses or broader dictionary behavior.
+A separate [recorder incident](../distribution/evidence/recorder-lambda-incident.json)
+reproduces a procedure-owned lambda exception-handler failure during ON_LINE
+warmstart on the prior 49667 image without the SCDB patch. Current PY evidence
+explicitly qualifies imported evaluation and sets `checkpoint_claim:false`;
+FLOW callback tests qualify live effects and callback replacement. Neither
+qualifies generic restored exception-handler behavior. The current composition
+has no recorder correction, so the incident remains an unresolved release limit.
 
-Evidence is retained beneath
-`.qualification/v0.6/integrated-worktree/.qualification/v0.6/`: rebuild
-`6cc17db52d6440c0a00fff8f4ee7fc72` and images
-`3743ea8c7a3f477fa54556be3ddc17d5` and
-`c4da765bb8164446a3294fae9b913d85`. The committed
-[checkpoint](../distribution/evidence/integrated-rebuild.json) records exact raw
-and LF-normalized hashes, all source-bound reports, and the unchanged open gate.
-Reproduction commands are in [distribution/README.md](../distribution/README.md).
-
-The first integrated build correctly rejected an obsolete checkpoint fixture
-that combined mutually exclusive Range and Expected modifiers. Its failed
-export is retained. The corrected fixture tests valid declarations separately
-and adds rejection and recovery for the forbidden combination; recorder
-thresholds and runtime recipes did not change. See
-[the oracle review](../distribution/CHECKPOINT_ORACLE.md).
-
-Remaining gates include the 341 open requirements, later separately developed
-Event/scheduler/resource/LIMIT/database work, versioned upgrades, all final
-installed host workflows and the supported platform matrix. The compiler-bearing
-ASan/UBSan diagnostic image is not a production platform qualification.
-The exact frozen toolchain can be reused offline; apt reconstruction remains
-unlocked. The historical sections below retain their earlier artifact scope and
-do not claim that those host workflows were rerun on this fresh image.
+The 293 open requirements, generic recorder correction, final installed desktop
+workflows, versioned upgrades and supported-platform matrix still block release.
+Later SCDB read-only, Send/WaitFor timing and child-procedure host changes are
+separate increments. The compiler-bearing Linux x86_64 CPython 3.13.15 ASan/UBSan
+image is diagnostic; leak sanitizer is disabled. The exact toolchain can be
+reused offline, while apt reconstruction remains unlocked. Historical host and
+platform results below retain their own artifact/image scope.
 
 ## Historical host artifact and workflow evidence
 

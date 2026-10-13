@@ -12,16 +12,24 @@ ROOT=Path(__file__).resolve().parents[1]
 CONTRACTS={'CMP-LRM244-MODIFIER-UNTIL','CMP-LRM244-MODIFIER-MESSAGE'}
 
 
+def qualify_observation(name, check, observations, spec):
+    """Separate the recorder's exact scenario link from check dependencies."""
+    assert check.get('dependencies') == [name], (name, 'unexpected observation link')
+    assert 'observation_dependencies' not in check, (name, 'ambiguous observation link')
+    assert name in observations, (name, 'missing observation')
+    actual=observations[name]
+    assert check['passed'] and actual['passed'] and actual['status']=='FINISHED',name
+    assert actual['asrun'],name
+    assert check['contracts']==spec['contracts'] and check['dimension']==spec['dimension'],name
+    check['observation_dependencies']=check.pop('dependencies')
+
+
 def qualify(raw):
     report=deepcopy(raw)
     assert report['controller_exit_code']==0
     assert set(report['checks'])==set(SCENARIOS)==set(report['observations'])
     for name,spec in SCENARIOS.items():
-        check=report['checks'][name]
-        actual=report['observations'][name]
-        assert check['passed'] and actual['passed'] and actual['status']=='FINISHED',name
-        assert actual['asrun'],name
-        assert check['contracts']==spec['contracts'] and check['dimension']==spec['dimension'],name
+        qualify_observation(name,report['checks'][name],report['observations'],spec)
     for path,expected in report['inputs'].items():
         assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==expected,path
     manifest=report['runtime_sources'].get('scheduler_manifest')

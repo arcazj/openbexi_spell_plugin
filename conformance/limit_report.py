@@ -56,9 +56,20 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def matches_suite_identity(report, suite):
+    if report.get('suite') == suite:
+        return True
+    # The original dedicated OBS runner predates the shared LIMIT/OBS runner's
+    # suite field. Its exact bound source identity supplies the same selection;
+    # every case, oracle, input and completion check below remains mandatory.
+    return (suite == 'obs' and 'suite' not in report
+            and report.get('inputs', {}).get('conformance/run_obs.py')
+            == digest(ROOT / 'conformance/run_obs.py'))
+
+
 def read_passed(path, suite):
     report = json.loads(path.read_bytes())
-    assert report['suite'] == suite
+    assert matches_suite_identity(report, suite)
     assert report['controller_exit_code'] == 0
     assert report['observations']['passed'] and report['observations']['status'] == 'FINISHED'
     assert report['checks'] and all(row['passed'] for row in report['checks'].values())
@@ -150,6 +161,8 @@ def main():
     report['regressions'] = {
         'OBS': dict(path=str(args.obs_report.resolve()), sha256=digest(args.obs_report),
                     count=len(obs['checks']), runtime_image=obs['runtime_image'],
+                    raw_suite=obs.get('suite'),
+                    runner_identity='conformance/run_obs.py' if 'suite' not in obs else 'conformance/limit_run.py',
                     unchanged_assertion_inputs={key: value for key, value in obs['inputs'].items() if key.startswith('conformance/obs_')})}
     report['counterexamples'] = [dict(path=str(path.resolve()), sha256=digest(path),
         failed={key: row.get('error') for key, row in json.loads(path.read_bytes())['checks'].items() if not row['passed']})

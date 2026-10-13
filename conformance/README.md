@@ -17,26 +17,27 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-TIME qualifies 42 rows / 168 checks. The [COMMON milestone](COMMON.md) adds 40 of
-its 66 rows and resolves two source errata. Current qualification totals 422
-rows, with 341 open. The prior 401 rows are retained and 21 bounded CMD rows are
-added. Every allocated report has been rerun on the independently rebuilt wheel
-and exact DSS image recorded in the checkpoint. Original manual/source decisions
-and unsupported clauses remain explicit; passing migration tests do not qualify
-unsupported Python syntax.
+Current qualification totals **470 rows, with 293 open**. The prior 422 rows
+are retained, and 48 bounded Event/scheduler/resource/LIMIT/database/Notify/
+ValueType rows are added. Every allocated report was rerun on the independently
+rebuilt wheel and exact DSS image recorded in the checkpoint. Passing migration
+tests do not qualify unsupported Python syntax. PY evaluation explicitly excludes
+generic checkpoint behavior; the retained lambda/exception-handler recorder
+counterexample remains unresolved.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
 | TIME | 42 / 42 | 168 native checks |
-| COMMON | 41 / 66 | Native policy, direct IPC silence and telemetry evidence |
-| PY | 117 / 122 | 488 checks; legacy rejection/migration checks do not qualify support |
-| DATA | 41 / 94 | Original containers/shared context, typed DTA and competing executor CAS |
-| FILES | 40 / 45 | Original filesystem modes, paths and before-effect validation |
+| COMMON | 46 / 66 | Policy, IPC silence, scheduler, ValueType/Units and RESEND |
+| PY | 117 / 122 | 488 checks; imported evaluation, explicit legacy exclusions |
+| DATA | 58 / 94 | Shared context/CAS, typed DTA, configured GDB and atomic user dictionaries |
+| FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
 | FLOW | 23 / 51 | 28 traced scenarios, 36 checks and six scanner checks |
-| UI | 25 / 60 | 62 checks of original prompts and native IPC |
-| OBS | 72 / 104 | Original telemetry acquisition/comparison and actual binary DSS |
+| UI | 28 / 60 | Prompt IPC, Event example and callable Notify compatibility |
+| OBS | 72 / 104 | Telemetry acquisition/comparison and actual binary DSS |
 | CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
-| LIMIT, SPECIAL | 0 / 113 | Family conformance remains open |
+| LIMIT | 18 / 70 | 79 native assertions through actual GENERIC ground limits |
+| SPECIAL | 0 / 43 | Family conformance remains open |
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
 [FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).

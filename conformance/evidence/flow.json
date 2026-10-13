@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "runtime_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
   "inputs": {
     "conformance/flow_scenarios.py": "2ff9437e44d867c73a82dfed1559d92e79f4c605d8ef3d43f684b9e34f2a6675",
     "conformance/flow_controller.py": "f5f9951584d97dc0f59e5b4eb9c56626bfad177b5b3c65801ee2d1c8eca361db",
@@ -12,23 +12,58 @@
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-    "conformance/installed_provenance.py": "9adad0652859ae2bcbbb0d3627ba52b525844e8d4daece47c20df8d052f50946",
+    "conformance/installed_provenance.py": "04c2a879c488e2ef84cf02396d857f5ed0a9a8da6da940dd8e423d8aa2b73674",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
-    "source_port/integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+    "source_port/integrated_patches.py": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
   },
   "runtime_sources": {
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "65d1502e40020ef357fe02ce812ccd9ac1ecdd1658042c91c2c22d442748d35f",
+      "manifest_sha256": "cd46f9685228c958902009a2c10881516c8ba6cad13f0d95846079ca70eea5c5",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -37,9 +72,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "61880dfcc24747d7095968205d8e6335f49b231a751d266595ccaf391331b6a2"
+              "integrated_identity": "7f22a585b64ae6be3a6b2625f71f86d2ae508736768f2c4045275dceed174430"
             },
-            "manifest_sha256": "45fc56699da879a466779ed744ff2c3876865bed10821633d54f0e7cf97faef2",
+            "manifest_sha256": "20e2af6c08cc970dd66eeb238f9992dee8c38c8e815e044992df5fa1d0494d46",
             "recipes": {
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
@@ -52,6 +87,10 @@
               "data_files_patches.py": {
                 "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
                 "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+              },
+              "database_import_patches.py": {
+                "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+                "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -74,12 +113,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
-                "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+                "lf_sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+                "sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373"
+              },
+              "limit_patches.py": {
+                "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+                "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
               },
               "native_patches.py": {
                 "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
                 "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+              },
+              "notification_patches.py": {
+                "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+                "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
               },
               "obs_patches.py": {
                 "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
@@ -89,15 +136,31 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "resource_patches.py": {
+                "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+                "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "scheduler_patches.py": {
+                "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+                "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+              },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
                 "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+              },
+              "user_database_patches.py": {
+                "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+                "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+              },
+              "value_units_patches.py": {
+                "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+                "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
               }
             },
             "schema": "openbexi.spell.integrated-native/1",
             "sources": {
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "20b36d7d5639a914333b8ce2660ceae00d1e7c0c1b593e5c30f0af6b31f0bf97",
+                "patched_sha256": "d89f0efde74e16221e643e41972643cb7e0c86a867c4d20b540acf849f4feaed",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -125,10 +188,25 @@
                 "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
                 "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
               },
+              "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+                "original_sha256": "89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e",
+                "patched_sha256": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df",
+                "ported_sha256": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6"
+              },
+              "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+                "original_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+                "patched_sha256": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e",
+                "ported_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d"
+              },
               "lib/SPELL_EXC/src/SPELLgoto.C": {
                 "original_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
                 "patched_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
                 "ported_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+              },
+              "lib/SPELL_EXC/src/SPELLscheduler.C": {
+                "original_sha256": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
+                "patched_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
+                "ported_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
               },
               "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                 "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
@@ -144,7 +222,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "cef33e4380163100640c3d57f9431c1ec5814653287d1e4fe0e320f272f95c09",
+            "manifest_sha256": "db0faa9996edad17c24207dc4c1673bac09f277df4080738726bf08968660eb5",
             "recipes": {
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
@@ -157,6 +235,10 @@
               "data_files_patches.py": {
                 "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
                 "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+              },
+              "database_import_patches.py": {
+                "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+                "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -179,12 +261,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
-                "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+                "lf_sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+                "sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373"
+              },
+              "limit_patches.py": {
+                "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+                "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
               },
               "native_patches.py": {
                 "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
                 "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+              },
+              "notification_patches.py": {
+                "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+                "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
               },
               "obs_patches.py": {
                 "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
@@ -194,9 +284,25 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "resource_patches.py": {
+                "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+                "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "scheduler_patches.py": {
+                "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+                "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+              },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
                 "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+              },
+              "user_database_patches.py": {
+                "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+                "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+              },
+              "value_units_patches.py": {
+                "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+                "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
               }
             },
             "schema": "openbexi.spell.integrated-python/1",
@@ -218,8 +324,18 @@
               },
               "spell/lang/helpers/filehelper.py": {
                 "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
-                "patched_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+                "patched_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
                 "ported_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+              },
+              "spell/lang/helpers/limhelper.py": {
+                "original_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+                "patched_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+                "ported_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+              },
+              "spell/lang/helpers/rschelper.py": {
+                "original_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+                "patched_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+                "ported_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
               },
               "spell/lang/helpers/tchelper.py": {
                 "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
@@ -228,8 +344,23 @@
               },
               "spell/lang/helpers/tmhelper.py": {
                 "original_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
-                "patched_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+                "patched_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
                 "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+              },
+              "spell/lang/modifiers.py": {
+                "original_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+                "patched_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                "ported_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+              },
+              "spell/lib/adapter/config.py": {
+                "original_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+                "patched_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+                "ported_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+              },
+              "spell/lib/adapter/databases/dbfile.py": {
+                "original_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+                "patched_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+                "ported_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
               },
               "spell/lib/adapter/expression.py": {
                 "original_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
@@ -241,9 +372,14 @@
                 "patched_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
                 "ported_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
               },
+              "spell/lib/adapter/resources.py": {
+                "original_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+                "patched_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+                "ported_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+              },
               "spell/lib/adapter/tc_item.py": {
                 "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
-                "patched_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+                "patched_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
                 "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
               },
               "spell/lib/adapter/tm.py": {
@@ -255,8 +391,166 @@
                 "original_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
                 "patched_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
                 "ported_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+              },
+              "spell/utils/grpc_utils.py": {
+                "original_sha256": "aa6c7f35a2159c4dbd8d98422be7a606b7061d3aba043c738900c1eab19e7049",
+                "patched_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+                "ported_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+              },
+              "spell/utils/vimport.py": {
+                "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
+                "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                "ported_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
               }
-            }
+            },
+            "stages": [
+              {
+                "recipe": "data_files_patches.py",
+                "sources": {
+                  "spell/lang/helpers/datahelper.py": {
+                    "after_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+                    "before_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f"
+                  },
+                  "spell/lang/helpers/filehelper.py": {
+                    "after_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+                    "before_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+                  },
+                  "spell/lib/adapter/file.py": {
+                    "after_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+                    "before_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
+                  }
+                }
+              },
+              {
+                "recipe": "flow_patches.py",
+                "sources": {
+                  "spell/lang/helpers/exechelper.py": {
+                    "after_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+                    "before_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d"
+                  }
+                }
+              },
+              {
+                "recipe": "obs_patches.py",
+                "sources": {
+                  "spell/lang/helpers/basehelper.py": {
+                    "after_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+                    "before_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7"
+                  },
+                  "spell/lang/helpers/tmhelper.py": {
+                    "after_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+                    "before_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+                  },
+                  "spell/lib/adapter/expression.py": {
+                    "after_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+                    "before_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77"
+                  },
+                  "spell/lib/adapter/tm.py": {
+                    "after_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+                    "before_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084"
+                  },
+                  "spell/lib/adapter/verifier.py": {
+                    "after_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+                    "before_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+                  }
+                }
+              },
+              {
+                "recipe": "cmd_patches.py",
+                "sources": {
+                  "spell/lang/helpers/tchelper.py": {
+                    "after_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+                    "before_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
+                  },
+                  "spell/lib/adapter/tc_item.py": {
+                    "after_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+                    "before_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
+                  }
+                }
+              },
+              {
+                "recipe": "resource_patches.py",
+                "sources": {
+                  "spell/lang/helpers/rschelper.py": {
+                    "after_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+                    "before_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
+                  },
+                  "spell/lib/adapter/resources.py": {
+                    "after_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+                    "before_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+                  }
+                }
+              },
+              {
+                "recipe": "limit_patches.py",
+                "sources": {
+                  "spell/lang/helpers/limhelper.py": {
+                    "after_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+                    "before_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+                  },
+                  "spell/lang/helpers/tmhelper.py": {
+                    "after_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
+                    "before_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544"
+                  }
+                }
+              },
+              {
+                "recipe": "database_import_patches.py",
+                "sources": {
+                  "spell/lib/adapter/databases/dbfile.py": {
+                    "after_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095",
+                    "before_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
+                  },
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc",
+                    "before_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+                  }
+                }
+              },
+              {
+                "recipe": "user_database_patches.py",
+                "sources": {
+                  "spell/lang/helpers/filehelper.py": {
+                    "after_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+                    "before_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057"
+                  },
+                  "spell/lib/adapter/databases/dbfile.py": {
+                    "after_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+                    "before_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+                  },
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                    "before_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+                  }
+                }
+              },
+              {
+                "recipe": "notification_patches.py",
+                "sources": {
+                  "spell/lang/modifiers.py": {
+                    "after_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                    "before_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+                  },
+                  "spell/lib/adapter/config.py": {
+                    "after_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+                    "before_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+                  },
+                  "spell/utils/grpc_utils.py": {
+                    "after_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+                    "before_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+                  }
+                }
+              },
+              {
+                "recipe": "value_units_patches.py",
+                "sources": {
+                  "spell/lib/adapter/tc_item.py": {
+                    "after_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+                    "before_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7"
+                  }
+                }
+              }
+            ]
           }
         },
         "inputs": {
@@ -274,6 +568,7 @@
           "controller_peer.cpp": "0b4d6477d0c7e6290e0f1093642efb90f8060b748d5e516a447116fd410a49e2",
           "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
           "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+          "database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
           "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
           "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
           "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
@@ -303,7 +598,8 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+          "integrated_patches.py": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+          "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
           "native-build.Dockerfile": "aefa4f5008371516e6807d13c97fbfde29814294d48becdefa7fe45a3c3110e7",
@@ -385,6 +681,7 @@
           "native_manifest.py": "6babaae871e213a11b63660e18b3a5a2b7e9959b4b54c1ca6bc62cbf2ea11ab9",
           "native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
           "native_probe.py": "3aeac34e80cfb00a0033e87e05e9a4282c2781bc734f58b6f58d8bea2892adf6",
+          "notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
@@ -398,14 +695,18 @@
           "qualify_service_bindings.cpp": "771d4701f695d6285ddd7d55aa50b65deac77f5a747733a7338162c7db79cfcb",
           "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
           "record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
+          "resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
           "runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
+          "scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
           "server_peer.cpp": "65ef0cf1b7e8489223ed95ed366527987d0d61328871588193518ac6a4095403",
           "service_recovery_fixtures.py": "bb7591fec4978600f2da7367d2a837794cb7e0a43c1c7a9a43f9dc7d38a6e5fc",
           "service_recovery_peer.cpp": "9bc05ff17577c3640acb3b2bb48598709395c5fa0112a8912f5da14919633ff9",
           "trace-unwind.Dockerfile": "e1c96eb52127facbf9c205d7210207d6e973e9c2f675aeaf4f505135d7d51fa3",
           "trace-unwind.Dockerfile.dockerignore": "75c9178c954dcdb2c0f4449c622859eaeee9b23c4996112b4664a18630e87e8e",
           "trace_unwind_probe.cpp": "4270b43411bc70dd67a602800a3afa2cf10f464cd44ac616dde5038b0b09c9cc",
-          "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+          "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+          "user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+          "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
           "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
@@ -413,9 +714,9 @@
           "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
           "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
           "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-          "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+          "libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d"
         },
-        "native_gate_policy_sha256": "afca4a235b9f1f29ad02ce74bfb5057bad6d73eacd1ca334bd305b0980fe42cd",
+        "native_gate_policy_sha256": "98cb1f20cfd4d21190c41bd5f2643de6d47d5a58eee5a7e9aa3b5cb62d356c63",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -435,22 +736,22 @@
           "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
           "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
           "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
-          "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+          "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
           "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
-          "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+          "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
           "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
           "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
           "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
-          "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+          "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
           "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
-          "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+          "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
           "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
           "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-          "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+          "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
           "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
           "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
           "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
-          "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+          "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
           "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
           "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
           "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
@@ -459,7 +760,7 @@
           "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
           "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
           "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
-          "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+          "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
           "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
           "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
           "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
@@ -475,11 +776,11 @@
           "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
           "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
           "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
-          "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+          "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
           "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
           "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
           "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-          "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+          "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
           "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
           "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
           "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -513,14 +814,14 @@
           "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
           "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
           "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
-          "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+          "spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
           "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
           "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
           "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
           "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
           "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
           "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-          "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+          "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
         },
         "release_scope": "Original native foundation; full language conformance remains separate",
         "version": "0.3.0"
@@ -531,7 +832,7 @@
         "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
         "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
         "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-        "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+        "libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -549,22 +850,22 @@
         "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
         "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
         "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
-        "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+        "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
         "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
-        "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+        "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
         "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
         "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
         "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
-        "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+        "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
         "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
-        "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+        "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
         "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
         "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-        "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+        "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
         "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
         "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
         "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
-        "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+        "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
         "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
         "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
         "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
@@ -573,7 +874,7 @@
         "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
         "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
         "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
-        "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+        "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
         "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
         "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
         "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
@@ -589,11 +890,11 @@
         "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
         "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
         "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
-        "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+        "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
         "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
         "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
         "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-        "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+        "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
         "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
         "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
         "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -627,20 +928,170 @@
         "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
         "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
         "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
-        "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+        "spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
         "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
         "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
         "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
         "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
         "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
         "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-        "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+        "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+      },
+      "driver_composition": {
+        "profile": "repository-dss-integrated-wheel/1",
+        "manifest_sha256": "11e64ca4c39f4ce1873c07db0131f777ee57571b5b935837cb60ddbc926b079a",
+        "manifest": {
+          "schema": "openbexi.spell.integrated-driver/1",
+          "source_profile": "repository-dss-driver-with-checked-corrections",
+          "recipes": {
+            "integrated_patches.py": {
+              "sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+              "lf_sha256": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373"
+            },
+            "native_patches.py": {
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "patches.py": {
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "data_files_native_patches.py": {
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "dta_native_patches.py": {
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_patches.py": {
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "flow_analyze.py": {
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "obs_patches.py": {
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "ui_native_patches.py": {
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            },
+            "cmd_patches.py": {
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "dta_ipc_patches.py": {
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "scheduler_patches.py": {
+              "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+              "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+            },
+            "resource_patches.py": {
+              "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+              "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+            },
+            "limit_patches.py": {
+              "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+              "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
+            },
+            "database_import_patches.py": {
+              "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+              "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+            },
+            "notification_patches.py": {
+              "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+              "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
+            },
+            "value_units_patches.py": {
+              "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+              "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
+            },
+            "user_database_patches.py": {
+              "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+              "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+            }
+          },
+          "sources": {
+            "openbexi_dss_proxy/tc.py": {
+              "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+              "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+            },
+            "openbexi_dss_proxy/tm.py": {
+              "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+              "patched_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6"
+            }
+          },
+          "stages": [
+            {
+              "recipe": "limit_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tm.py": {
+                  "before_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+                  "after_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6"
+                }
+              }
+            },
+            {
+              "recipe": "value_units_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+                  "after_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+                }
+              }
+            }
+          ],
+          "python_sources": {
+            "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+            "openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+            "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+            "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+            "openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+            "openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+            "openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+            "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+            "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+            "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+            "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+            "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+            "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+            "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+            "openbexi_dss_proxy/tm.py": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6",
+            "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+            "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+            "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+            "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+            "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+            "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+            "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+            "openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+            "openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+            "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
+          }
+        },
+        "record_files_verified": 61
       }
     },
     "native_session_sha256": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7",
     "interpreter": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
     "installed": {
-      "/usr/local/lib/python3.13/site-packages/spell_native/bin/libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a",
+      "/usr/local/lib/python3.13/site-packages/spell_native/bin/libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d",
       "/usr/local/lib/python3.13/site-packages/spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b"
     }
   },
@@ -1169,7 +1620,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step A1: First stage\nStep A2: Last stage",
-            "Time": "1791888649997427"
+            "Time": "1791894145417946"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1195,10 +1646,10 @@
           "Last stage"
         ]
       ],
-      "wire_sha256": "3dee6aeaf4c06c343bd3ceed7f2fa24b6cb4c31c94b91038771762bfad02a26d",
+      "wire_sha256": "a8f179c709894d04e663045e974c9ab6c6028209aeccab91095c24d69d9fc313",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105048_Executor_main#1.ASRUN": "1f97fb1423c2a875ab7659f3ae612a8f36c0863259cc0d17cd46ddd0688dddd1"
+        "session/data/OutputFiles/AsRun/2026-10-13_122224_Executor_main#1.ASRUN": "5dbbe9575bb9bf8329b350b27160e6dae7ed6907fe771211f2b0f944d513fb1e"
       }
     },
     "goto-backward": {
@@ -1218,7 +1669,7 @@
             "Scope": "8",
             "Sequence": "28",
             "Text": "Step LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump",
-            "Time": "1791888658379412"
+            "Time": "1791894153905167"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1240,10 +1691,10 @@
           "Same frame backward jump"
         ]
       ],
-      "wire_sha256": "0082b7a3edc3bbd09175b005dccf21719ae949799a4365d0d12c751afa954475",
+      "wire_sha256": "e55d9caa3442c557cb63868fc0ca1209137d27eaef558f8fded1a8100749ce6f",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105057_Executor_main#1.ASRUN": "0e21e4abc3bc4c52ff3ae4749fb85e0d16a14709e17497988df2d65c73bd3852"
+        "session/data/OutputFiles/AsRun/2026-10-13_122232_Executor_main#1.ASRUN": "7c6ba4f5ad8d3513b7c73c567cc4d8909768da23ee3574e49d4415e8761116a6"
       }
     },
     "goto-dynamic-title": {
@@ -1263,7 +1714,7 @@
             "Scope": "8",
             "Sequence": "18",
             "Text": "Step TARGET: Title from variable",
-            "Time": "1791888667214726"
+            "Time": "1791894162404254"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1285,10 +1736,10 @@
           "Title from variable"
         ]
       ],
-      "wire_sha256": "a392c5d1b46451f5ed61d99e1afe030f391992ca52036342bab804748d57b9d4",
+      "wire_sha256": "a80a6e79dfd99c2d55368e1501d0bf458c9ba0f02c39c2ab9ae0e18bb30bc115",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105106_Executor_main#1.ASRUN": "6f1e966bb6d50ee571d4b00899eabedd8e8643c6dd12136b94892fa0412db16f"
+        "session/data/OutputFiles/AsRun/2026-10-13_122241_Executor_main#1.ASRUN": "776e8f1fb63a58833cb880fe290ca25ac2e479811095ba0608bd3ce573845e94"
       }
     },
     "goto-missing": {
@@ -1299,6 +1750,23 @@
       "messages": [
         {
           "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: MISSING",
+            "Time": "1791894170617497"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
             "Csp": "main:10/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
@@ -1307,7 +1775,7 @@
             "Scope": "2",
             "Sequence": "15",
             "Text": "Unable to jump: Label 'MISSING' not found (error code 14) (fatal:false)",
-            "Time": "1791888675881258"
+            "Time": "1791894170842622"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1325,10 +1793,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "b2cafcee0153503ef50a83972d23fe8d7d39d7629ca7023077f28fa46e26dc70",
+      "wire_sha256": "cb1d5239c6e7bf95781f8fb6b53bc619c2963e9ffaa0ddd49e81741bfd834dbc",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105114_Executor_main#1.ASRUN": "291cf47bdbc67c187807b602b70220c0e749b88adb1fae6b02467e8a2b0833ab"
+        "session/data/OutputFiles/AsRun/2026-10-13_122249_Executor_main#1.ASRUN": "6c195af5b67e0bf310fbb2d9e2a7759a5f6d9dec763a271cf26a66220e7e89c8"
       }
     },
     "goto-cross-function": {
@@ -1347,7 +1815,7 @@
             "Scope": "2",
             "Sequence": "5",
             "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: CHILD",
-            "Time": "1791888684327170"
+            "Time": "1791894179105373"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1364,7 +1832,7 @@
             "Scope": "2",
             "Sequence": "16",
             "Text": "Unable to jump: Label 'CHILD' not found (error code 14) (fatal:false)",
-            "Time": "1791888684557644"
+            "Time": "1791894179330760"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1382,10 +1850,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "943db56af8ebfa536a438ba3c7a3f3fbc9ab837f17131dd0372921a1e57311de",
+      "wire_sha256": "8fb73ec854827d8d893fc3a0542dd9d6d91dbd15b4b6a627fb464ff84cbcd3de",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105123_Executor_main#1.ASRUN": "54fe2162ec705aea0ad91278f7402bf08f8a6658130909e8cf95d20a639a8bd3"
+        "session/data/OutputFiles/AsRun/2026-10-13_122258_Executor_main#1.ASRUN": "0695f9a9fe325cd8ab83994676eb3510685e6f9764e57ddafcc0293091b0ef99"
       }
     },
     "display-not-target": {
@@ -1396,6 +1864,23 @@
       "messages": [
         {
           "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: DISPLAY",
+            "Time": "1791894187582296"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
             "Csp": "main:11/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "INFO",
@@ -1404,7 +1889,7 @@
             "Scope": "8",
             "Sequence": "16",
             "Text": "Step DISPLAY: Not a jump label",
-            "Time": "1791888692807437"
+            "Time": "1791894187810334"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1421,7 +1906,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Unable to jump: Label 'DISPLAY' not found (error code 14) (fatal:false)",
-            "Time": "1791888692808085"
+            "Time": "1791894187810937"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1443,10 +1928,10 @@
           "Not a jump label"
         ]
       ],
-      "wire_sha256": "5fd26e1e1406cabc18f2b25674172e389f3783b73b7ff7daf2ddfb1a542b2409",
+      "wire_sha256": "f39ba12954780d4b88a431e6f90a9d5ed4d9eb92f4edd0babff6a32719ba7760",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105131_Executor_main#1.ASRUN": "34a001308a9a5cb8cdd68979cc2fc49141dfae9e2b70525a833d49a749b0b2f9"
+        "session/data/OutputFiles/AsRun/2026-10-13_122306_Executor_main#1.ASRUN": "a89ac9585d557400b8a93131b0166a1bb361be07e83301e333c9184cfc6880d6"
       }
     },
     "step-invalid-recovery": {
@@ -1470,7 +1955,7 @@
             "Scope": "2",
             "Sequence": "28",
             "Text": "Type error\n - file '/workspace/step-invalid-recovery/main.py', line 12: Expected 2 to 2 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 16: Expected 1 to 1 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 20: Step and Goto use positional arguments (error code 6) (fatal:false)",
-            "Time": "1791888701321963"
+            "Time": "1791894196347052"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1487,7 +1972,7 @@
             "Scope": "8",
             "Sequence": "31",
             "Text": "Step RECOVERED: Valid step after rejected calls",
-            "Time": "1791888701323869"
+            "Time": "1791894196348965"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1509,10 +1994,10 @@
           "Valid step after rejected calls"
         ]
       ],
-      "wire_sha256": "fc60e690f23e3c84eb85f06b736c9b98410624bed0a630a12ef83a92c1c26760",
+      "wire_sha256": "4c4be9d83d86a54e4dac7f7e9f9d85508f45701956c2a83a13e4b53af1416bd2",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105140_Executor_main#1.ASRUN": "fb34c6acb85208343d428bc8f469c91676e505490b730543171a289ab9ab4aae"
+        "session/data/OutputFiles/AsRun/2026-10-13_122315_Executor_main#1.ASRUN": "1a28685986abd82e75987467063989c9294496ca2f1ed2783f1ff3f8eeaa1820"
       }
     },
     "display-step": {
@@ -1532,7 +2017,7 @@
             "Scope": "8",
             "Sequence": "20",
             "Text": "Step DYNAMIC: Computed title value\nStep \nStep RESTORED: Final display",
-            "Time": "1791888709496547"
+            "Time": "1791894204748629"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1558,10 +2043,10 @@
           "Final display"
         ]
       ],
-      "wire_sha256": "f63b49ea7106dcf38a11cf32df64721de163b3707d0cb441893fa47119441f84",
+      "wire_sha256": "6b06bee0680afe47015db798845a1612a59558d841a4c87d9e440be7f42cbd8e",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105148_Executor_main#1.ASRUN": "a77af4a75a7858cb84d48b7bd1d99ae3c281b63f2efcca88f3491ed660bd2993"
+        "session/data/OutputFiles/AsRun/2026-10-13_122323_Executor_main#1.ASRUN": "d438695c34639a13af37f6caaea9bce3bef923bb6e970c72694a849681682721"
       }
     },
     "display-invalid-recovery": {
@@ -1581,7 +2066,7 @@
             "Scope": "2",
             "Sequence": "18",
             "Text": "Type error\n - file '/workspace/display-invalid-recovery/main.py', line 11: DisplayStep() missing 1 required positional argument: 'description' (error code 6) (fatal:false)",
-            "Time": "1791888718158800"
+            "Time": "1791894213252281"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1598,7 +2083,7 @@
             "Scope": "8",
             "Sequence": "21",
             "Text": "Step RECOVERED: Display still works",
-            "Time": "1791888718311300"
+            "Time": "1791894213253953"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1620,10 +2105,10 @@
           "Display still works"
         ]
       ],
-      "wire_sha256": "737f64964f9d237cc6bb9ed5f67140ab88e2c54f99fb4c8124ede51399fdf7d3",
+      "wire_sha256": "7e4f8ff24111693c8a60b2cf9e555a7c185cf1bc22440c77e87ddff52c1483f1",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105156_Executor_main#1.ASRUN": "d7c000a4eae4b45327d2db3bdc6cebcfa93b9e4a3d5a0af05e64e6424bc65e39"
+        "session/data/OutputFiles/AsRun/2026-10-13_122332_Executor_main#1.ASRUN": "4e9ee2c49323d2b70136c043dee80f8e1bf4c1d34aea23131826c666eaf77166"
       }
     },
     "goto-title-function": {
@@ -1643,7 +2128,7 @@
             "Scope": "8",
             "Sequence": "27",
             "Text": "Step TARGET: Title from actual function",
-            "Time": "1791888726689194"
+            "Time": "1791894221900731"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1665,10 +2150,10 @@
           "Title from actual function"
         ]
       ],
-      "wire_sha256": "377ef087024acbf716f12af5fd72bb79955fb5b0a9a36b79e95f572d1b852cf9",
+      "wire_sha256": "01959e79121ec3515bb56ca81fb59965da55313af1b599a15a7dd214c02fb813",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105205_Executor_main#1.ASRUN": "26f05c47851fb1e75170865f2e6c641f195335946516496783439931b99a8629"
+        "session/data/OutputFiles/AsRun/2026-10-13_122340_Executor_main#1.ASRUN": "a30f70550ddca25e5f0db252b5c643b8d4336f4eda2f31f328507e5728f6d0a2"
       }
     },
     "goto-title-conditional": {
@@ -1688,7 +2173,7 @@
             "Scope": "8",
             "Sequence": "19",
             "Text": "Step TARGET: Fallback title",
-            "Time": "1791888734892712"
+            "Time": "1791894230119454"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1710,10 +2195,10 @@
           "Fallback title"
         ]
       ],
-      "wire_sha256": "132d9377d7742f7457e191cd2c38513532c68823eec8ecc64c438436a36bfeb2",
+      "wire_sha256": "60764f4dede6a86fa075828f814ea0eb72bef860719e00210edbffbebd4ed27b",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105213_Executor_main#1.ASRUN": "75b2709473404c3b35f2da28f00f9c62c2a8f8ae12dde46f856c3e89decee19b"
+        "session/data/OutputFiles/AsRun/2026-10-13_122349_Executor_main#1.ASRUN": "5120de15b3619cf379158b1cda2eb659f5065702b11e50967306551239a77c10"
       }
     },
     "goto-nested-frame": {
@@ -1733,7 +2218,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step FIRST: Child first\nStep LAST: Child last",
-            "Time": "1791888743672873"
+            "Time": "1791894238800048"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1759,10 +2244,10 @@
           "Child last"
         ]
       ],
-      "wire_sha256": "b07b2b6c3b39048f960b12d9061660a82e92e69fd0b459834863892ce9bf19eb",
+      "wire_sha256": "027f4ef502be93fa4b0d8233b842b9b393f8b2c475cb5da70020402bcb99f20b",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105222_Executor_main#1.ASRUN": "d939a3a09fa3e6661d52e6a4d7895050564b3d56ff8eaad1c21b9a274c365df8"
+        "session/data/OutputFiles/AsRun/2026-10-13_122357_Executor_main#1.ASRUN": "d09afc1e0dd9d7537a093ddfea805e3523e8e30a44f848040991020256707f75"
       }
     },
     "goto-into-loop": {
@@ -1782,7 +2267,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Unable to go to line 13, Value error: can't jump into the body of a for loop (error code 7) (fatal:false)",
-            "Time": "1791888752263200"
+            "Time": "1791894247501090"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1799,7 +2284,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step INSIDE: Cannot enter loop without iterator",
-            "Time": "1791888752285380"
+            "Time": "1791894247524210"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1821,10 +2306,10 @@
           "Cannot enter loop without iterator"
         ]
       ],
-      "wire_sha256": "f2f02e6404aa87967347c5501b59f2b0228fb2962055b4f42d3be1dbffa4f08c",
+      "wire_sha256": "32e86ab0e11b72a0205272aac05194f7dc3d8103bb34c6ceb64dcdc1a290b44e",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105230_Executor_main#1.ASRUN": "26d094bc3d3d1d6808860fc8ffa3228bbaa4cae75b93cc43fcc11af830e1ff0e"
+        "session/data/OutputFiles/AsRun/2026-10-13_122405_Executor_main#1.ASRUN": "399142ec3876ff5f83aabd19dd5def34a6b95a1fd7ce127b962761881bac6c10"
       }
     },
     "goto-dynamic-target": {
@@ -1844,7 +2329,7 @@
             "Scope": "8",
             "Sequence": "19",
             "Text": "Step LAST: Runtime target expression",
-            "Time": "1791888760304000"
+            "Time": "1791894255559222"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1866,10 +2351,10 @@
           "Runtime target expression"
         ]
       ],
-      "wire_sha256": "c323397c0c1ab3a13598383bc0bf9207edc964229a8bbe34f8712173b943406a",
+      "wire_sha256": "e07ef4bf9b0410fc34ce9d41c6cd9d46ddf49b8d58f87c005c14078223aa7064",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105239_Executor_main#1.ASRUN": "25d0f195b5684c305782a4a5ddffe49898a16a9dda343d0ea0b60e37d2889656"
+        "session/data/OutputFiles/AsRun/2026-10-13_122414_Executor_main#1.ASRUN": "4e5bff18c4db78e3431db103a415871cf1fdc9e417dcaa742117c9b7c1f25a6c"
       }
     },
     "step-boundary": {
@@ -1887,9 +2372,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "8",
-            "Sequence": "17",
+            "Sequence": "16",
             "Text": "Step \nStep \u00e9tape: Unicode title",
-            "Time": "1791888768760780"
+            "Time": "1791894264127616"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1911,10 +2396,10 @@
           "Unicode title"
         ]
       ],
-      "wire_sha256": "22e8f803e6ebac0ca8189660963488805400eefd7499b72e90169fb9c78ea0d3",
+      "wire_sha256": "07468b5492d68d385526d03ca4a1882b6012f485c6d24b4d1039530dc54b6dfe",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105247_Executor_main#1.ASRUN": "4acea8fee5b38e103806b2d896e2687d4c45943913a80af859d3875839f335e2"
+        "session/data/OutputFiles/AsRun/2026-10-13_122422_Executor_main#1.ASRUN": "d44f04e7e43150e0163f31b3c878c4381bf2e61cfe3121add4d1329938e3cef8"
       }
     },
     "finish-custom": {
@@ -1934,7 +2419,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "FLOW finished successfully",
-            "Time": "1791888777271547"
+            "Time": "1791894272517526"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1952,10 +2437,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "ce5a16c28f7e6b4247fb435774d47583427be7ecca50471bc15013b5b4e28ee2",
+      "wire_sha256": "3ba365e5a97737392e7ed2540e4b8437f82d1476099eb09dbf91281df3216779",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105256_Executor_main#1.ASRUN": "8e08cafa38137af14854ea184dfb80477a904ea28d003e47efa0242c850572b6"
+        "session/data/OutputFiles/AsRun/2026-10-13_122431_Executor_main#1.ASRUN": "49d16afd58269fe24c1248e699ad1e300d379d1de71eb8e232d23f0cfc9fdf5d"
       }
     },
     "finish-default": {
@@ -1974,7 +2459,7 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "Completed Execution",
-            "Time": "1791888785728617"
+            "Time": "1791894280980792"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -1992,10 +2477,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "92f757db0842fbd249a71d7805661e2786b48ada5a805a75613452c540265cc2",
+      "wire_sha256": "f20f6395ceb5265fb2917379bc26806584b4c5a64d2641720bc1504897d9fe08",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105304_Executor_main#1.ASRUN": "a6f775a8f6356236554c3e7ae16378cde64750498d4167bb4f7625f5802e3c70"
+        "session/data/OutputFiles/AsRun/2026-10-13_122439_Executor_main#1.ASRUN": "659eba5ae2154aab8dd2b99d08430acd39199807824af1397b6574d4505eaa1f"
       }
     },
     "finish-empty": {
@@ -2014,10 +2499,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "82d5f743879c75db5575b9579253e86d887abf2cbeacf99f071f53906a41103b",
+      "wire_sha256": "8f572d6f578bd19a877645597590adbddbd545c2384813b84050443ac8fb6faf",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105313_Executor_main#1.ASRUN": "e24567515030c2d88c7c62df773e4cc080140914a2b79c5956bc7c1029c82c06"
+        "session/data/OutputFiles/AsRun/2026-10-13_122448_Executor_main#1.ASRUN": "1385727711a7cd33391ee11993d44382d856a90512d6c8d345f162f93c239bce"
       }
     },
     "abort-custom": {
@@ -2037,7 +2522,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "FLOW explicitly aborted",
-            "Time": "1791888802728695"
+            "Time": "1791894297963518"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2055,10 +2540,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "3cd1b6fa85b7286a5f5a8229e90fc94b08739cef1789c24572c55f9ae0a14df6",
+      "wire_sha256": "12a4cf429e29e40e359fc53f586483ec557efe03db4126ac4fc84ff80b825e3c",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105321_Executor_main#1.ASRUN": "e1fe29962c734e23cac00c650945157b68f1228984116600f7bcd84b27d6d33c"
+        "session/data/OutputFiles/AsRun/2026-10-13_122456_Executor_main#1.ASRUN": "a53da6d4de5e3e94f1fb2ff8b53d0f80305a5b55acc575fe2492a25be08fe0f1"
       }
     },
     "abort-default": {
@@ -2077,7 +2562,7 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "Execution Aborted",
-            "Time": "1791888811393333"
+            "Time": "1791894306535759"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2095,10 +2580,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "e6c162d3bd5a720f3b97740edf74cef4faaffd03eaddc8ccbc100f859c490634",
+      "wire_sha256": "a2908b82ad69363998ded7d6772824f7ac504f2ace0accc7f5dfd15ad2902b30",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105330_Executor_main#1.ASRUN": "769a527095a3296105de1b5a56b2a24bc9620ac1751796b1730a380988eb8c9c"
+        "session/data/OutputFiles/AsRun/2026-10-13_122505_Executor_main#1.ASRUN": "4caa2d9f4013aab20ea2e6bbaa42cbed1a1483097c786da2c1434e7ce9f6e679"
       }
     },
     "abort-empty": {
@@ -2117,10 +2602,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "6a2441a6e39d1574e6e8173af8cce5dfddcd396c6eb3d36b8eb9230aa43fc5ce",
+      "wire_sha256": "f02215aa7480929b1a5c5b6aa3c9dac4db07afae4ddfee2e1341ca0b06965a2e",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105338_Executor_main#1.ASRUN": "c50411e19c0f1c7a25c27888f6cfd2063e1796326d3b8d8296a64f46f76ee5a5"
+        "session/data/OutputFiles/AsRun/2026-10-13_122513_Executor_main#1.ASRUN": "1bcbe6830e4d7cb27e5f1d5dac3e15bdb2ab5157d54473e6ab9f23dee6221451"
       }
     },
     "terminal-invalid-recovery": {
@@ -2143,7 +2628,7 @@
             "Scope": "2",
             "Sequence": "25",
             "Text": "Type error\n - file '/workspace/terminal-invalid-recovery/main.py', line 12: Abort() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)\nType error\n - file '/workspace/terminal-invalid-recovery/main.py', line 16: Finish() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)",
-            "Time": "1791888828599520"
+            "Time": "1791894323290792"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2160,7 +2645,7 @@
             "Scope": "1",
             "Sequence": "26",
             "Text": "Recovered from invalid terminal calls",
-            "Time": "1791888828601370"
+            "Time": "1791894323291012"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2178,10 +2663,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "d3bf343904e2747974f6901db6086777b08ac0f1737cf736f9bab8c8740bc8ea",
+      "wire_sha256": "3cbe3ffbd4504c8be79575fcc0d8974aabcc61c65706eeeb6a95db1e75544d35",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105346_Executor_main#1.ASRUN": "0faaa4f8ab2931488a0b322e5741aaf2e15828e5791385e5dc365b2f08d20556"
+        "session/data/OutputFiles/AsRun/2026-10-13_122522_Executor_main#1.ASRUN": "1ad998aa1567503c6ff89bc552ab5544db70e3dcf991bc3d1256baeec8c9560a"
       }
     },
     "pause-resume": {
@@ -2206,7 +2691,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Procedure will pause",
-            "Time": "1791888836665615"
+            "Time": "1791894331999364"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2223,7 +2708,7 @@
             "Scope": "2",
             "Sequence": "26",
             "Text": "Procedure will pause",
-            "Time": "1791888837466293"
+            "Time": "1791894332799909"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2241,10 +2726,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "7a4b469d5086c362b449edc8266e5164986ee76826baab589a5738c609954504",
+      "wire_sha256": "7c5e6c2df29f118ef57b741b0a20ec29ebd2fa5f9945d436e443fc631e5ed634",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105355_Executor_main#1.ASRUN": "b92fb6895d1cc4f19a349b2141b646e15ba8f9eac72835c0d5188b55ab725d54"
+        "session/data/OutputFiles/AsRun/2026-10-13_122530_Executor_main#1.ASRUN": "fb8fc8cd21e97743f46ab359aa11b6871e405d800c614b3625ec6dee6b785e0b"
       }
     },
     "pause-invalid-recovery": {
@@ -2266,7 +2751,7 @@
             "Scope": "2",
             "Sequence": "25",
             "Text": "SPELL exception: Malformed condition ( unknown )",
-            "Time": "1791888847865388"
+            "Time": "1791894342923135"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2275,15 +2760,15 @@
         },
         {
           "fields": {
-            "Csp": "main:17/0",
+            "Csp": "main:18/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "27",
+            "Sequence": "29",
             "Text": "Procedure will pause",
-            "Time": "1791888847894100"
+            "Time": "1791894343123434"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2301,10 +2786,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "500cfe91ca36aae61e19a5e251e59ea036ca498b5ca4941260fb46ed4070a04f",
+      "wire_sha256": "072b4ea77df9c415d33a9e3f494eb0556400f550a6ca4f65f7d75cb734601c0f",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105406_Executor_main#1.ASRUN": "022877d95508157b435df0c89753c1b6a93e9be640477fe0965d257dfeb908c6"
+        "session/data/OutputFiles/AsRun/2026-10-13_122541_Executor_main#1.ASRUN": "99f9f608a8650a0d868f4c8c8f61998314138237f2b936fe443cc58287eccf52"
       }
     },
     "user-actions": {
@@ -2327,7 +2812,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:22/0",
@@ -2355,7 +2840,7 @@
             "ActionEnabled": "false",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:26/0",
@@ -2383,7 +2868,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:30/0",
@@ -2412,7 +2897,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Replacement action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:33/0",
@@ -2442,7 +2927,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Critical action",
             "ActionSeverity": "ERROR",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:36/0",
@@ -2470,7 +2955,7 @@
         {
           "stage": "dismissed",
           "info": {
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:39/0",
@@ -2498,7 +2983,7 @@
         {
           "stage": "dismissed-twice",
           "info": {
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:42/0",
@@ -2529,7 +3014,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-bo1uhwwv/session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-7dtfk4aa/session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:59/0",
@@ -2583,7 +3068,7 @@
             "Scope": "2",
             "Sequence": "23",
             "Text": "Procedure will pause",
-            "Time": "1791888857797902"
+            "Time": "1791894352964391"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2600,7 +3085,7 @@
             "Scope": "2",
             "Sequence": "26",
             "Text": "Running user action 'first_action'",
-            "Time": "1791888857998284"
+            "Time": "1791894353364842"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2609,15 +3094,15 @@
         },
         {
           "fields": {
-            "Csp": "main:26/0",
+            "Csp": "main:25/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "39",
+            "Sequence": "37",
             "Text": "Procedure will pause",
-            "Time": "1791888858998995"
+            "Time": "1791894354165429"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2644,15 +3129,15 @@
         },
         {
           "fields": {
-            "Csp": "main:29/0",
+            "Csp": "main:30/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "50",
+            "Sequence": "52",
             "Text": "Procedure will pause",
-            "Time": "1791888860200043"
+            "Time": "1791894355566839"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2669,7 +3154,7 @@
             "Scope": "2",
             "Sequence": "53",
             "Text": "Running user action 'first_action'",
-            "Time": "1791888860600705"
+            "Time": "1791894355967298"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2689,15 +3174,15 @@
         },
         {
           "fields": {
-            "Csp": "main:32/0",
+            "Csp": "main:33/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "61",
+            "Sequence": "63",
             "Text": "Procedure will pause",
-            "Time": "1791888861201241"
+            "Time": "1791894356567836"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2714,7 +3199,7 @@
             "Scope": "2",
             "Sequence": "64",
             "Text": "Running user action 'replacement_action'",
-            "Time": "1791888861601669"
+            "Time": "1791894356968445"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2742,7 +3227,7 @@
             "Scope": "2",
             "Sequence": "72",
             "Text": "Procedure will pause",
-            "Time": "1791888862202188"
+            "Time": "1791894357569128"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2759,7 +3244,7 @@
             "Scope": "2",
             "Sequence": "75",
             "Text": "Running user action 'replacement_action'",
-            "Time": "1791888862602604"
+            "Time": "1791894357969815"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2776,7 +3261,7 @@
             "Scope": "2",
             "Sequence": "83",
             "Text": "Procedure will pause",
-            "Time": "1791888863203198"
+            "Time": "1791894358570590"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2785,32 +3270,15 @@
         },
         {
           "fields": {
-            "Csp": "main:41/0",
+            "Csp": "main:42/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "93",
+            "Sequence": "95",
             "Text": "Procedure will pause",
-            "Time": "1791888864204150"
-          },
-          "id": "MSG_WRITE",
-          "receiver": "GUI",
-          "sender": "main#1",
-          "type": 6
-        },
-        {
-          "fields": {
-            "Csp": "main:48/0",
-            "ExecutorMode": "PROCEDURE",
-            "Level": "INFO",
-            "MsgType": "DISPLAY",
-            "ProcId": "main#1",
-            "Scope": "2",
-            "Sequence": "105",
-            "Text": "SPELL exception: Expected function as first argument ( unknown )",
-            "Time": "1791888864804636"
+            "Time": "1791894359771551"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2825,9 +3293,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "111",
-            "Text": "SPELL exception: Expected label string as second argument ( unknown )",
-            "Time": "1791888865520900"
+            "Sequence": "110",
+            "Text": "SPELL exception: Expected function as first argument ( unknown )\nSPELL exception: Expected label string as second argument ( unknown )",
+            "Time": "1791894360572254"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2853,26 +3321,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "118",
+            "Sequence": "117",
             "Text": "SPELL exception: Expected function and label ( unknown )",
-            "Time": "1791888865205649"
-          },
-          "id": "MSG_WRITE",
-          "receiver": "GUI",
-          "sender": "main#1",
-          "type": 6
-        },
-        {
-          "fields": {
-            "Csp": "main:58/0",
-            "ExecutorMode": "PROCEDURE",
-            "Level": "WARN",
-            "MsgType": "DISPLAY",
-            "ProcId": "main#1",
-            "Scope": "2",
-            "Sequence": "123",
-            "Text": "Procedure will pause",
-            "Time": "1791888865406116"
+            "Time": "1791894360772564"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2887,9 +3338,26 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "126",
+            "Sequence": "124",
+            "Text": "Procedure will pause",
+            "Time": "1791894361173141"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:59/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "125",
             "Text": "Running user action 'first_action'",
-            "Time": "1791888865806515"
+            "Time": "1791894361573683"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2907,22 +3375,22 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "7e382abc0dbed0f31cf5b10319d7433e3b61e291c5dd970aa9816fb7efcf5c1b",
+      "wire_sha256": "bd8831f7a399b05961fe93b726ff6267beca165519599cdf09c88a4985d76c72",
       "asrun_actions": [
-        "2026-10-13 10:54:17\t19\tUACTION\tENABLED\tmain:19\tPrimary action\tWARN",
-        "2026-10-13 10:54:18\t31\tUACTION\tDISABLED\tmain:22",
-        "2026-10-13 10:54:18\t35\tUACTION\tDISABLED\tmain:23",
-        "2026-10-13 10:54:19\t46\tUACTION\tENABLED\tmain:26",
-        "2026-10-13 10:54:19\t50\tUACTION\tENABLED\tmain:27",
-        "2026-10-13 10:54:20\t62\tUACTION\tENABLED\tmain:30\tReplacement action\tINFO",
-        "2026-10-13 10:54:21\t74\tUACTION\tENABLED\tmain:33\tCritical action\tERROR",
-        "2026-10-13 10:54:22\t86\tUACTION\tDISMISSED\tmain:36",
-        "2026-10-13 10:54:23\t97\tUACTION\tDISMISSED\tmain:39",
-        "2026-10-13 10:54:25\t128\tUACTION\tENABLED\tmain:56\tRecovered action\tINFO",
-        "2026-10-13 10:54:26\t140\tUACTION\tDISMISSED\tmain:59"
+        "2026-10-13 12:25:52\t19\tUACTION\tENABLED\tmain:19\tPrimary action\tWARN",
+        "2026-10-13 12:25:53\t31\tUACTION\tDISABLED\tmain:22",
+        "2026-10-13 12:25:53\t35\tUACTION\tDISABLED\tmain:23",
+        "2026-10-13 12:25:54\t46\tUACTION\tENABLED\tmain:26",
+        "2026-10-13 12:25:55\t50\tUACTION\tENABLED\tmain:27",
+        "2026-10-13 12:25:56\t62\tUACTION\tENABLED\tmain:30\tReplacement action\tINFO",
+        "2026-10-13 12:25:57\t74\tUACTION\tENABLED\tmain:33\tCritical action\tERROR",
+        "2026-10-13 12:25:58\t86\tUACTION\tDISMISSED\tmain:36",
+        "2026-10-13 12:25:59\t97\tUACTION\tDISMISSED\tmain:39",
+        "2026-10-13 12:26:00\t128\tUACTION\tENABLED\tmain:56\tRecovered action\tINFO",
+        "2026-10-13 12:26:01\t140\tUACTION\tDISMISSED\tmain:59"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105416_Executor_main#1.ASRUN": "a483e1664200ef577c8270f21fb25d486cf95fa5b89f0ee79fd78f459479f229"
+        "session/data/OutputFiles/AsRun/2026-10-13_122551_Executor_main#1.ASRUN": "5505ef678a11261d73fd58df42f3cf183245a98e515f71146deef02090a42b53"
       }
     },
     "user-action-invalid-arity": {
@@ -2940,7 +3408,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Preserved action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-ra31hoiw/session/data/OutputFiles/AsRun/2026-10-13_105433_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-jg5qnwva/session/data/OutputFiles/AsRun/2026-10-13_122610_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:18/0",
@@ -2968,7 +3436,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Preserved action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-ra31hoiw/session/data/OutputFiles/AsRun/2026-10-13_105433_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-jg5qnwva/session/data/OutputFiles/AsRun/2026-10-13_122610_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:46/0",
@@ -2997,7 +3465,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-ra31hoiw/session/data/OutputFiles/AsRun/2026-10-13_105433_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-jg5qnwva/session/data/OutputFiles/AsRun/2026-10-13_122610_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:52/0",
@@ -3044,15 +3512,15 @@
         },
         {
           "fields": {
-            "Csp": "main:17/0",
+            "Csp": "main:18/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "22",
+            "Sequence": "24",
             "Text": "Procedure will pause",
-            "Time": "1791888874498406"
+            "Time": "1791894372814829"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3069,7 +3537,7 @@
             "Scope": "2",
             "Sequence": "25",
             "Text": "Running user action 'valid_action'",
-            "Time": "1791888874698797"
+            "Time": "1791894373215237"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3078,15 +3546,15 @@
         },
         {
           "fields": {
-            "Csp": "main:23/0",
+            "Csp": "main:24/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "INFO",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "33",
+            "Sequence": "35",
             "Text": "SPELL exception: EnableUserAction takes no positional arguments ( unknown )",
-            "Time": "1791888875991620"
+            "Time": "1791894373615615"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3095,15 +3563,15 @@
         },
         {
           "fields": {
-            "Csp": "main:28/0",
+            "Csp": "main:32/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "INFO",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "41",
-            "Text": "SPELL exception: DisableUserAction takes no positional arguments ( unknown )",
-            "Time": "1791888875299415"
+            "Sequence": "46",
+            "Text": "SPELL exception: DisableUserAction takes no positional arguments ( unknown )\nSPELL exception: DismissUserAction takes no positional arguments ( unknown )",
+            "Time": "1791894373816475"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3112,15 +3580,15 @@
         },
         {
           "fields": {
-            "Csp": "main:36/0",
+            "Csp": "main:40/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "INFO",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "52",
-            "Text": "SPELL exception: DismissUserAction takes no positional arguments ( unknown )\nSPELL exception: Expected function and label ( unknown )",
-            "Time": "1791888875499621"
+            "Sequence": "57",
+            "Text": "SPELL exception: Expected function and label ( unknown )\nSPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
+            "Time": "1791894374168730"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3136,8 +3604,8 @@
             "ProcId": "main#1",
             "Scope": "2",
             "Sequence": "64",
-            "Text": "SPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )\nSPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
-            "Time": "1791888875699969"
+            "Text": "SPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
+            "Time": "1791894374121622"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3146,15 +3614,15 @@
         },
         {
           "fields": {
-            "Csp": "main:46/0",
+            "Csp": "main:45/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "68",
+            "Sequence": "66",
             "Text": "Procedure will pause",
-            "Time": "1791888875900239"
+            "Time": "1791894374217221"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3171,7 +3639,7 @@
             "Scope": "2",
             "Sequence": "69",
             "Text": "Running user action 'valid_action'",
-            "Time": "1791888876300622"
+            "Time": "1791894374617553"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3200,15 +3668,15 @@
         },
         {
           "fields": {
-            "Csp": "main:52/0",
+            "Csp": "main:51/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "88",
+            "Sequence": "86",
             "Text": "Procedure will pause",
-            "Time": "1791888877701673"
+            "Time": "1791894375818410"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3225,7 +3693,7 @@
             "Scope": "2",
             "Sequence": "89",
             "Text": "Running user action 'valid_action'",
-            "Time": "1791888878102084"
+            "Time": "1791894376218721"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3243,17 +3711,17 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "b55ffd99fc5e3a750e593f67f2782123461877c867ed653b4ec3803b64498dc5",
+      "wire_sha256": "1c93378e4f25611688552acf1d08daa714f593721ee22c539134f80c4d233a9f",
       "asrun_actions": [
-        "2026-10-13 10:54:34\t18\tUACTION\tENABLED\tmain:15\tPreserved action\tINFO",
-        "2026-10-13 10:54:36\t76\tUACTION\tDISABLED\tmain:46",
-        "2026-10-13 10:54:36\t80\tUACTION\tENABLED\tmain:47",
-        "2026-10-13 10:54:37\t84\tUACTION\tDISMISSED\tmain:48",
-        "2026-10-13 10:54:37\t88\tUACTION\tENABLED\tmain:49\tRecovered action\tINFO",
-        "2026-10-13 10:54:38\t100\tUACTION\tDISMISSED\tmain:52"
+        "2026-10-13 12:26:12\t18\tUACTION\tENABLED\tmain:15\tPreserved action\tINFO",
+        "2026-10-13 12:26:14\t76\tUACTION\tDISABLED\tmain:46",
+        "2026-10-13 12:26:15\t80\tUACTION\tENABLED\tmain:47",
+        "2026-10-13 12:26:15\t84\tUACTION\tDISMISSED\tmain:48",
+        "2026-10-13 12:26:15\t88\tUACTION\tENABLED\tmain:49\tRecovered action\tINFO",
+        "2026-10-13 12:26:16\t100\tUACTION\tDISMISSED\tmain:52"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105433_Executor_main#1.ASRUN": "4286070a1c9bfd2f286781d35d168b5fb12ca790fb54f42d4d6a9b2deda73ccb"
+        "session/data/OutputFiles/AsRun/2026-10-13_122610_Executor_main#1.ASRUN": "a7fcb35536751adc864c1082945d7e24ffbe2c612bfb03dbf46661485ecbbdda"
       }
     },
     "user-action-running": {
@@ -3265,10 +3733,10 @@
         "ActionEnabled": "true",
         "ActionLabel": "While running",
         "ActionSeverity": "INFO",
-        "AsRunName": "/tmp/spell-host-7y4s6bcy/session/data/OutputFiles/AsRun/2026-10-13_105445_Executor_main#1.ASRUN",
+        "AsRunName": "/tmp/spell-host-pj5k0g0t/session/data/OutputFiles/AsRun/2026-10-13_122622_Executor_main#1.ASRUN",
         "CodeName": "<module>",
         "Condition": "",
-        "Csp": "main:17/1",
+        "Csp": "main:18/1",
         "ExecutorStatus": "RUNNING",
         "GroupId": "main#1",
         "GuiControl": "1",
@@ -3306,7 +3774,7 @@
             "Scope": "2",
             "Sequence": "35",
             "Text": "Running user action 'running_action'",
-            "Time": "1791888886772636"
+            "Time": "1791894384731942"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3324,13 +3792,13 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "15745bd6b48a9ddb98656ab910ff777df41d581934741557442376bccd553ff5",
+      "wire_sha256": "a336dc83ab072cf726a2ea77881f282793e2817a2be8114232a29b7b0602468f",
       "asrun_actions": [
-        "2026-10-13 10:54:46\t18\tUACTION\tENABLED\tmain:14\tWhile running\tINFO",
-        "2026-10-13 10:54:46\t38\tUACTION\tDISMISSED\tmain:21"
+        "2026-10-13 12:26:24\t18\tUACTION\tENABLED\tmain:14\tWhile running\tINFO",
+        "2026-10-13 12:26:24\t38\tUACTION\tDISMISSED\tmain:21"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105445_Executor_main#1.ASRUN": "7e79a227d236e0628423ad116678dc22cde8c4cb4ad3a72ce90cacc2c7535d59"
+        "session/data/OutputFiles/AsRun/2026-10-13_122622_Executor_main#1.ASRUN": "ea84641cf0e428a1cc287455efaf2a80f23de1a089d4c1a5081a073e0998a8a8"
       }
     },
     "user-action-callback-error": {
@@ -3347,7 +3815,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Broken callback",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-3qmrdhtx/session/data/OutputFiles/AsRun/2026-10-13_105453_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-o74si5eh/session/data/OutputFiles/AsRun/2026-10-13_122631_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:20/0",
@@ -3373,7 +3841,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered callback",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-3qmrdhtx/session/data/OutputFiles/AsRun/2026-10-13_105453_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-o74si5eh/session/data/OutputFiles/AsRun/2026-10-13_122631_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:23/0",
@@ -3419,7 +3887,7 @@
             "Scope": "2",
             "Sequence": "23",
             "Text": "Procedure will pause",
-            "Time": "1791888895296408"
+            "Time": "1791894392683522"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3436,7 +3904,7 @@
             "Scope": "2",
             "Sequence": "26",
             "Text": "Running user action 'broken_action'",
-            "Time": "1791888895588594"
+            "Time": "1791894392981100"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3453,7 +3921,7 @@
             "Scope": "2",
             "Sequence": "27",
             "Text": "Failed to execute user action: Value error\n - file '<string>', line 1\n - file '/workspace/user-action-callback-error/main.py', line 11: FLOW callback fault (error code 7) (fatal:false)",
-            "Time": "1791888895697201"
+            "Time": "1791894393839700"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3481,7 +3949,7 @@
             "Scope": "2",
             "Sequence": "35",
             "Text": "Procedure will pause",
-            "Time": "1791888896297744"
+            "Time": "1791894393684420"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3498,7 +3966,7 @@
             "Scope": "2",
             "Sequence": "38",
             "Text": "Running user action 'recovered_action'",
-            "Time": "1791888896698159"
+            "Time": "1791894394847880"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3516,45 +3984,77 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "d761886203767cac0b7b1acabe8d242c49f78e819963ee4252f8c29fb3327532",
+      "wire_sha256": "99c52b124d5ee9cbddc00341fe81f41b3e37ac3ad58793e192526f7e314290f5",
       "asrun_actions": [
-        "2026-10-13 10:54:54\t19\tUACTION\tENABLED\tmain:17\tBroken callback\tINFO",
-        "2026-10-13 10:54:55\t32\tUACTION\tENABLED\tmain:20\tRecovered callback\tINFO",
-        "2026-10-13 10:54:57\t44\tUACTION\tDISMISSED\tmain:23"
+        "2026-10-13 12:26:32\t19\tUACTION\tENABLED\tmain:17\tBroken callback\tINFO",
+        "2026-10-13 12:26:33\t32\tUACTION\tENABLED\tmain:20\tRecovered callback\tINFO",
+        "2026-10-13 12:26:34\t44\tUACTION\tDISMISSED\tmain:23"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-13_105453_Executor_main#1.ASRUN": "28fb3195c08bd42ab78d9cd5069a3b2df668e85feed9bd739b2c6cef1f85b517"
+        "session/data/OutputFiles/AsRun/2026-10-13_122631_Executor_main#1.ASRUN": "8d8f4c2fab04a04ddeafc8547a83979744f1d1aebefb2c1bf5d98ce5540bed53"
       }
     }
   },
-  "raw_report": {
-    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.5/flow/c5a377b0265a4d0389356675204787c6/result.json",
-    "sha256": "e47a23f0e7d2fa8bea73c9b8ab7e4012440cfd56f5516e72b30a41d51547808e",
-    "bytes": 149603,
-    "lf_sha256": "a5b7750173fcb5f9c2a9603bb728914fb36068ca5c8c8ed811ac000949d0c7e8"
-  },
-  "raw_report_sha256": "e47a23f0e7d2fa8bea73c9b8ab7e4012440cfd56f5516e72b30a41d51547808e",
   "lf_normalized_inputs": {
-    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
-    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
-    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
-    "conformance/installed_provenance.py": "9adad0652859ae2bcbbb0d3627ba52b525844e8d4daece47c20df8d052f50946",
-    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
-    "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
-    "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
-    "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
-    "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
-    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
-    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
-    "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
-    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "conformance/flow_scenarios.py": "2ff9437e44d867c73a82dfed1559d92e79f4c605d8ef3d43f684b9e34f2a6675",
     "conformance/flow_controller.py": "f5f9951584d97dc0f59e5b4eb9c56626bfad177b5b3c65801ee2d1c8eca361db",
     "conformance/run_flow.py": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8",
     "conformance/flow_checks.py": "1df904cae4f892432029179ec38ec351ab53a14f8dddbd47494c7d00aff6d3e1",
     "conformance/flow_analyzer_test.py": "4813c4595145d25371166ffc6d46a0a9ae057947e6019a389405fcc40514bb24",
-    "conformance/FLOW.md": "727189df6ef362c0188550e4652da917ebb20028b5223c299db713379973fb33"
-  }
+    "conformance/FLOW.md": "727189df6ef362c0188550e4652da917ebb20028b5223c299db713379973fb33",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "conformance/installed_provenance.py": "04c2a879c488e2ef84cf02396d857f5ed0a9a8da6da940dd8e423d8aa2b73674",
+    "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+    "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+    "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+    "source_port/integrated_patches.py": "078e9d867cee8843883ba2b21ab72d8f5c4a66adea56eb9396049ba949fdf373",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+    "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
+  },
+  "raw_report": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/flow/d4e8f397ebd84d2dac6729ecb0335673/result.json",
+  "raw_report_sha256": "0abcaddfced244d4f93db7743db03aa04f9a6e67d26ce22b9b951f19e6309ee4",
+  "raw_report_lf_sha256": "8c2b4fbe0b46dceae04e75de8bcb2392883abc775015634fe4d3297e8829cad6",
+  "raw_report_bytes": 181050
 }
