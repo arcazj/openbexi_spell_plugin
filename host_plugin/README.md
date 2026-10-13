@@ -1,4 +1,10 @@
-# SPELL host extension 0.3.0
+# SPELL host extension 0.3.1.dev1
+
+This development candidate includes the console input correction. Its distinct
+version lets a local wheel installation upgrade an existing 0.3.0 host. It does
+not accept the full plugin v0.5/v0.6 release gates. Native child execution also
+requires the corresponding corrected runtime image; select its exact identity
+with `OPENBEXI_SPELL_IMAGE` as recorded in the qualification report.
 
 This optional package connects a host's CPython interpreter to the original
 SPELL native runtime in an owned Docker container. It does not install a
