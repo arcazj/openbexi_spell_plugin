@@ -7,7 +7,7 @@ This preparation has no new runtime image, build, freeze or native qualification
 The historical coverage and donor reports have not been promoted or regenerated.
 Their source hashes describe the earlier commits, not this changed working tree.
 
-The seven production tranches cherry-pick without conflicts:
+The eight production tranches cherry-pick without conflicts:
 
 | Tranche | Original commit | Composition boundary |
 | --- | --- | --- |
@@ -18,17 +18,25 @@ The seven production tranches cherry-pick without conflicts:
 | Queued console input | `15c7dd105a8c3502daf20a38afc73171ce76cb71` | Local host client runner; after the child-host commit, separately bound host wheel and actual Qt evidence |
 | Distinct host upgrade candidate | `4a4c8c915ca7379af3a868269a40559f933e4fed` | Host 0.3.1.dev1 module/package version after console fix; real IDE upgrade and removal, preserving accepted defaults |
 | Caught-exception recorder cleanup | `9c674bd51115e016dd135d3ed76c1ebf8a4ed207` | `SPELLframeManager.C` after the central port; production `fix=True`, without audit instrumentation |
+| Checkpoint source identity and context recovery | `53afd40d46fa1e1c0e116de877a48f2f43ca9060` | `SPELLinterpreter.C` after the central port; `SPELLcontext.C` after the qualified DATA correction |
 
-The current dispatcher binds 24 recipes, 12 native units, 21 original SPELL
+The current dispatcher binds 26 recipes, 13 native units, 21 original SPELL
 Python modules and two corrected driver modules. SCDB adds two Python units;
 timing modifies units already present. The recorder adds one native unit and
-has no SCDB dependency. All four new recipes enter the continuation identity, so
+has no SCDB dependency. The source-identity correction adds the interpreter unit;
+context recovery composes against the exact DATA-corrected context preimage.
+Every recipe enters the continuation identity, so
 these changes require a fresh native build. The central port recipes are unchanged.
 
 `evidence/followup-qualified-sources.json` reads exact committed donor reports,
 retains their commit/report hashes, and verifies the timing preimages against
 the preceding CMD/LIMIT outputs, then Send's preimage against timing's output.
 The prior source fixture remains unchanged.
+The context chain is checked against the separately committed DATA and recovery
+donors, and the identity donor's recorder bytes must equal the earlier recorder
+donor. Native manifests now retain every intermediate stage, including the
+continuation header; installed provenance validates each stage through to the
+final source hashes. The original archive and central port bytes remain fixed.
 Source composition checks compare the final native, Python, driver, child-host
 and local host-client bytes against those independent donors. The recorder's
 complete original/ported/patched hashes and production mode are checked. No
@@ -40,9 +48,11 @@ recorder use the verified composed driver outputs when available. Native cases,
 oracles and retained donor evidence are unchanged. The image auditor also
 checks the complete installed host Python source set against the build snapshot,
 including `children.py` and `prompts.py`; missing, changed or extra modules are
-rejected. The focused composition, preimage-failure/recovery and host-source-set
-suite passes 23 tests, including rejection of Send before its required timing
-stage without modifying the source tree; five recorder provenance parser tests
+rejected. The focused composition, preimage-failure/recovery, identity patch and
+host-source-set suite passes 28 tests plus two subtests, including rejection of
+Send before timing and recovery before DATA without modifying the source tree.
+Eleven shared provenance tests cover native stage ordering and rejection of
+missing or altered stages; five recorder provenance parser tests
 also pass. The
 recorder qualifier replays its retained historical 24+20+4 controls and 23-test
 gate successfully; this is recorder compatibility, not a fresh runtime run.
@@ -61,16 +71,18 @@ These results do not establish behavior of the future combined image.
    additional standalone controls, four IPC error controls and existing 23-test
    executor gate must rerun against the exact installed sources. Preserve the
    synchronous frame-ownership and exceptional RETURN guards.
-2. Resolve the release scope of the separately observed native IPC `main#1` checkpoint
-   source-unavailable failure. Passing standalone controls do not qualify IPC
-   recovery; keep that path explicitly open until its actual contract passes.
+2. Rerun the qualified identity donor's eight native IPC error controls and 22
+   actual recovery controls on the fresh installed composition. The donor proves
+   source resolution and kill/reopen; its diagnostic overlay is not acceptance of
+   this new wheel. Fatal invalid warm-start rejection followed by `UNINIT` remains
+   the observed policy; stable terminal error/recovery UI behavior stays open.
 3. Recheck the final source changes, then freeze one exact Git identity.
    All recipes and full source
    chains must enter the wheels and their RECORDs before installation.
-4. Coordinate with the separately running IPC source-identity investigation.
-   Its uncommitted diagnostic changes are excluded from this preparation; an
-   additional qualified donor requires an explicit composition update before
-   the expensive pair. Ranging changes remain outside this composition.
+4. Finish the fresh identity/provenance recorder handoff and final review before
+   the expensive pair. Ranging and additional child close/kill corrections remain
+   outside this composition. Preparation of dependencies and workflow recorders
+   does not authorize a build or promote coverage.
 
 After freeze, the pinned toolchain is
 `sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2`.

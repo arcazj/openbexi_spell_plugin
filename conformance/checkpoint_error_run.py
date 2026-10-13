@@ -65,7 +65,7 @@ def main():
             recipes=runtime['checkpoint_overlay']['recipes']
             for name,path in [('checkpoint_error_patches.py','source_port/checkpoint_error_patches.py'),
                 ('checkpoint_error_build.py','conformance/checkpoint_error_build.py'),
-                ('incremental_native.py','distribution/incremental_native.py','host_runtime/python/native.py')]:
+                ('incremental_native.py','distribution/incremental_native.py')]:
                 assert recipes[name]==inputs[path],name
         elif runtime.get('profile'):
             verify_capture(runtime,inputs,normalized)

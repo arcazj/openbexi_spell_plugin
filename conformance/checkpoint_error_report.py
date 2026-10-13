@@ -113,8 +113,8 @@ def main():
         limitations=[
             'No new LRM clauses or general Python checkpoint support are qualified.',
             'Existing qualified PY rows retain imported-language evaluation scope and checkpoint_claim=false.',
-            'Native host warmstart remains blocked independently: original recorder source identity is main#1 instead of the physical procedure file; 8 retained baseline IPC controls failed before target recovery.',
-            'The source-identity blocker was not bypassed with a filesystem alias; live native IPC recovery is not claimed.',
+            'Historical native host baseline used main#1 instead of the physical procedure source; all 8 retained baseline IPC controls failed before target recovery.',
+            'This error-recorder report makes no live native IPC recovery claim; the separate checkpoint_identity evidence owns that scope. The historical blocker was not bypassed with a filesystem alias.',
             identity['limitation']],
         qualified_contracts=[],full_v05_accepted=False,full_v06_accepted=False)
     args.output.parent.mkdir(parents=True,exist_ok=True)

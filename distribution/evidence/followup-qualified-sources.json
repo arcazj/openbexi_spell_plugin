@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "7e7b14048dab9fe352e6c8d2a5de5a8264ef4934d825181c61d97c9ac3657aca",
+  "generator_sha256": "a0ace8c8e3b0f48bc902556a61f336418e7a5dc0ca1ee85cc4ab4d94a273f275",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -92,6 +92,11 @@
       "commit": "9c674bd51115e016dd135d3ed76c1ebf8a4ed207",
       "path": "conformance/evidence/checkpoint_error.json",
       "sha256": "aef2970283125ef5ed73cf126f2e4bb23722e693b04f72cfaa649f46e0de60ae"
+    },
+    "checkpoint_identity": {
+      "commit": "53afd40d46fa1e1c0e116de877a48f2f43ca9060",
+      "path": "conformance/evidence/checkpoint_identity.json",
+      "sha256": "d0977385e80245fdc3cf688169d1f5532c3e65d0fcedbed0ef12bb89a76b1636"
     }
   },
   "native": {
@@ -108,7 +113,7 @@
     "lib/SPELL_CTX/src/SPELLcontext.C": {
       "original": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
       "ported": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a",
-      "patched": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+      "patched": "18a6e1ac5a7556232df381b5084d615d91756a4bbdfa2a18aa2fb672108d18d7"
     },
     "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
       "original": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
@@ -154,6 +159,11 @@
       "original": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
       "ported": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf",
       "patched": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7"
+    },
+    "lib/SPELL_EXC/src/SPELLinterpreter.C": {
+      "original": "3dd0a455669237924726637ca4b25ae524acfaf10d577b18a7c36258ad3f1256",
+      "ported": "670726c1853be672353f5e35da579d0e1c1569ab457d7c0cfe3d4c29692e3b33",
+      "patched": "3365e1e1f0ae0c697e9dd7152ad8fd2d4d0b7e0f0f04b73ba82d3cafb165aade"
     }
   },
   "python": {

@@ -23,6 +23,23 @@ def below(root, name):
     return target
 
 
+def verify_stages(kind, record):
+    if 'stages' not in record:
+        if kind == 'native' and 'checkpoint_context_patches.py' in record['recipes']:
+            raise ValueError('Native recovery composition stages are missing')
+        return  # Explicitly supported historical manifests predate native stages.
+    state = {name: row['ported_sha256'] for name,row in record['sources'].items()}
+    for stage in record['stages']:
+        if stage['recipe'] not in record['recipes']:
+            raise ValueError('Unknown '+kind+' composition stage')
+        for name, row in stage['sources'].items():
+            if name not in state or state[name] != row['before_sha256']:
+                raise ValueError('Broken '+kind+' composition chain: '+name)
+            state[name] = row['after_sha256']
+    if state != {name: row['patched_sha256'] for name,row in record['sources'].items()}:
+        raise ValueError(kind+' composition chain output differs')
+
+
 def capture():
     spec = importlib.util.find_spec('spell_native')
     if spec is None or spec.origin is None:
@@ -74,17 +91,7 @@ def capture():
                 raise ValueError('Installed composition recipe differs: '+name)
             if contents != below(root/'provenance/source_port',name).read_bytes():
                 raise ValueError('Installed source recipe copies differ: '+name)
-        if kind == 'python' and 'stages' in record:
-            state = {name: row['ported_sha256'] for name,row in record['sources'].items()}
-            for stage in record['stages']:
-                if stage['recipe'] not in record['recipes']:
-                    raise ValueError('Unknown Python composition stage')
-                for name, row in stage['sources'].items():
-                    if state.get(name) != row['before_sha256']:
-                        raise ValueError('Broken Python composition chain: '+name)
-                    state[name] = row['after_sha256']
-            if state != {name: row['patched_sha256'] for name,row in record['sources'].items()}:
-                raise ValueError('Python composition chain output differs')
+        verify_stages(kind, record)
     identity = composition['native']['checkpoint']['integrated_identity']
     if identity.encode() not in (root/'bin/libspell_executor313.so').read_bytes():
         raise ValueError('Installed native runtime lacks the composed checkpoint identity')

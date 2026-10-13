@@ -56,6 +56,15 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     checkpoint = report['checkpoint']
     assert checkpoint['central_identity'] != checkpoint['integrated_identity']
     assert checkpoint['integrated_identity'] in (source/composition.IDENTITY_HEADER).read_text()
+    state = {name: row['ported_sha256'] for name,row in report['sources'].items()}
+    for stage in report['stages']:
+        assert stage['recipe'] in report['recipes']
+        for name,row in stage['sources'].items():
+            assert state[name] == row['before_sha256']
+            state[name] = row['after_sha256']
+    assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
+    context_stages = [row for row in report['stages'] if composition.checkpoint_context_patches.SOURCE in row['sources']]
+    assert [row['recipe'] for row in context_stages] == ['data_files_native_patches.py','checkpoint_context_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
 
@@ -82,7 +91,9 @@ def test_each_composed_recipe_binds_checkpoint_identity():
 
 
 @pytest.mark.parametrize('name', [next(iter(composition.flow_patches.PREIMAGES)),
-                                 composition.checkpoint_error_patches.SOURCE])
+                                 composition.checkpoint_error_patches.SOURCE,
+                                 composition.checkpoint_identity_patches.SOURCE,
+                                 composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)
     target = source/name
@@ -95,6 +106,19 @@ def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     assert before == {n:(source/n).read_bytes() for n in before}
     target.write_bytes(original)
     composition.apply_native_tree(source, ARCHIVE, tmp_path/'recovered')
+
+
+def test_context_recovery_recipe_rejects_execution_before_data_stage(tmp_path):
+    source = native_tree(tmp_path)
+    name = composition.checkpoint_context_patches.SOURCE
+    original = composition.archive_sources(ARCHIVE,[name])[name]
+    ported = (source/name).read_bytes()
+    with pytest.raises(ValueError,match='composed context'):
+        composition.checkpoint_context_patches.apply(name,original,ported)
+    assert (source/name).read_bytes() == ported
+    data = composition.data_files_native_patches.apply(original,ported)
+    assert composition.digest(data) == composition.checkpoint_context_patches.PORTED
+    assert composition.checkpoint_context_patches.apply(name,original,data) != data
 
 
 def test_complete_python_composition_reproduces_qualified_sources(tmp_path):

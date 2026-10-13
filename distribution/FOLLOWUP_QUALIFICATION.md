@@ -71,8 +71,10 @@ $HostImage = $Built.host_runtime.image
 
 Require the new driver wheel SHA to equal both preflight wheel SHAs. The image
 builder audits the selected native wheel, complete installed wheel RECORDs,
-native artifacts, compiled IPC bridge, every native/Python/driver recipe stage
-and the complete installed host Python source set. It must create fresh wheel
+native artifacts, compiled IPC bridge, driver composition and the complete
+installed host Python source set. Every later native conformance capture also
+validates the retained native/Python manifests and their complete stage chains.
+It must create fresh wheel
 payloads without historical `/opt/*-patch` overlays. Archive these artifacts and
 source snapshots before qualification. The old DSS image
 `sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342`
@@ -134,12 +136,21 @@ uses `$Pair/a/native/executor-runtime.json` and `executor-build.json` through
 `--integrated-gate-dir`; do not run the overlay-only `checkpoint_error_gate.py`
 on a fresh installed image or fabricate its `/out` and patch directories.
 
-**Pending:** the independently demonstrated `main#1` checkpoint source identity
-and obsolete WSS/WSD recovery lookup need their qualified donor, composition
-preimages and actual kill/reopen controls. Append the donor's exact unfiltered
-runner commands here before freeze. The four DISABLED IPC controls do not prove
-warmstart. Existing retained blocker reports remain historical counterexamples;
-do not turn their absence from a new suite into an acceptance claim.
+The checked `53afd40` source-identity/context donor is included in the prepared
+composition. Run its actual original IPC and recovery cases without filters:
+
+```powershell
+& $Python -X utf8 conformance/checkpoint_identity_run.py --image $DssImage
+& $Python -X utf8 conformance/checkpoint_identity_run.py --image $DssImage --recovery
+```
+
+These yield eight error controls and 22 recovery controls, including distinct
+instances and actual kill/reopen with no repeated module effects. The unchanged
+executor/context build gates must match the same installed library and context
+binary. The four DISABLED recorder controls alone do not prove warmstart.
+Retain the old `main#1` and WSS/WSD failures as historical counterexamples.
+Invalid source/CRC warm startup currently emits fatal `MSG_ERROR` followed by
+`UNINIT`; stable terminal error/recovery UI behavior remains unqualified.
 
 ## Installed host client, real native adapter and IDE workflows
 
@@ -262,9 +273,17 @@ all 16 cases on the exact host wheel; see
 `distribution/evidence/installed-pipe-windows.json`. Its initial venv bootstrap
 reported an ensurepip failure; an explicit retry and subsequent offline installs
 passed. That observation is preserved without assigning an underlying cause.
-The Linux installed run remains **not executed**. The controlled Windows peer
-does not establish native image behavior or any Linux claim. Fixture-based
-validator tests are recorded separately from that actual installed run.
+The installed Linux run also passes all 16 cases with the same wheel, helper,
+oracles and locked dependencies on the pinned Linux CPython 3.13 toolchain image;
+see `distribution/evidence/installed-pipe-linux.json`. Its first direct evidence
+copy to Windows failed after a partial copy; the exact copy error detail was not
+retained. The unchanged second run's complete raw tar is preserved. Its initial
+extraction rejected pytest directory symlinks; the regular-file inventory and JUnit were verified
+after extracting the files and retaining the 13 convenience aliases only in the
+tar. Each alias targets a retained case directory. Both collection failures and
+the successful audit remain separate records. These controlled peers establish
+client transport on the declared platforms, not native image behavior.
+Fixture-based validator checks remain separate from these installed runs.
 
 ## Fresh host and driver records
 
@@ -319,13 +338,14 @@ Run the strict standard qualifiers after all contributing raw suites pass:
 - `user_database_report.py $Raw.user_database --baseline $OldUserDatabaseBaseline --files $Raw.files --data $Raw.data`.
 - `scdb_report.py $Raw.scdb --baseline $OldScdbBaseline --database-import $Raw.database --checkpoint-gap $OldScdbGap --policy-oracle-correction $OldScdbOracle`.
 - `checkpoint_error_report.py --baseline $OldRecorderBaseline --audit $OldRecorderAudit --candidate $Raw.recorder --expanded $Raw.recorder_expanded --ipc-baseline $OldIpcErrors --ipc-candidate $Raw.recorder_ipc --ipc-blocker $OldIpcBlocker --integrated-gate-dir "$Pair/a/native" --output conformance/evidence/checkpoint_error.json`.
+- `checkpoint_identity_report.py --baseline-source $OldIdentitySource --baseline-context $OldIdentityContext --errors $Raw.identity_errors --recovery $Raw.identity_recovery --integrated-gate-dir "$Pair/a/native" --output conformance/evidence/checkpoint_identity.json`.
 
-The last recorder's blocker description must be reconciled with any separately
-qualified source/context recovery donor before final recording. Similarly,
-`database_import_report.py` still describes the historical SCDB write gap; its
-read-only scope text must defer to the separately qualified SCDB report after
-fresh composition, without broadening its own read/import claims. These are
-identified recorder text assumptions, not permission to bypass their assertions.
+The error recorder describes its old source-identity failure as historical and
+makes no live IPC recovery claim. The separate identity recorder owns that claim
+and verifies the actual compiled units, library/context binaries and full build
+gates. The database importer likewise retains its historical SCDB write gap and
+defers named read-only view qualification to the separate SCDB report. All old
+failure assertions remain intact; none of these scope changes promote clauses.
 
 DATA/FILES/race/FLOW/silence/DTA/UI/IPC/TIME/PY/COMMON raw results are already in
 the canonical report shape; promote only after full input verification, retaining

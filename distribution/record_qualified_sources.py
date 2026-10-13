@@ -28,6 +28,7 @@ DONORS = {
     'console_input':('15c7dd105a8c3502daf20a38afc73171ce76cb71','console_input_review'),
     'host_upgrade':('4a4c8c915ca7379af3a868269a40559f933e4fed','distribution/evidence/host-console-upgrade.json'),
     'checkpoint_error':('9c674bd51115e016dd135d3ed76c1ebf8a4ed207','checkpoint_error'),
+    'checkpoint_identity':('53afd40d46fa1e1c0e116de877a48f2f43ca9060','checkpoint_identity'),
 }
 
 
@@ -51,6 +52,29 @@ def main():
         raise ValueError('Unexpected or overlapping recorder donor')
     native[recorder['source']] = {name.removesuffix('_sha256'):value
                                 for name,value in recorder['sources'].items()}
+    identity = reports['checkpoint_identity']['runtime_sources']['identity_overlay']
+    if identity['mode'] != 'identity':
+        raise ValueError('Unexpected checkpoint identity donor profile')
+    context_name = composition.checkpoint_context_patches.SOURCE
+    interpreter_name = composition.checkpoint_identity_patches.SOURCE
+    if set(identity['sources']) != {context_name, interpreter_name, recorder['source']}:
+        raise ValueError('Unexpected checkpoint identity native source set')
+    for name, row in identity['sources'].items():
+        expected = {key.removesuffix('_sha256'):value for key,value in row.items()}
+        if name == context_name:
+            if native[name]['original'] != expected['original'] or native[name]['patched'] != expected['ported']:
+                raise ValueError('Context recovery donor preimage differs from qualified DATA output')
+            native[name]['patched'] = expected['patched']
+        elif name == interpreter_name:
+            if name in native:
+                raise ValueError('Unexpected earlier interpreter identity correction')
+            native[name] = expected
+        elif native[name] != expected:
+            raise ValueError('Identity donor recorder differs from qualified recorder output')
+    for recipe in ('checkpoint_identity_patches.py', 'checkpoint_context_patches.py', 'checkpoint_error_patches.py'):
+        committed = subprocess.check_output(['git','show',donors['checkpoint_identity']['commit']+':source_port/'+recipe],cwd=ROOT)
+        if hashlib.sha256(committed).hexdigest() != identity['recipes'][recipe]:
+            raise ValueError('Checkpoint identity recipe differs from its exact donor commit: '+recipe)
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]

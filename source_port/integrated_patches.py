@@ -12,7 +12,9 @@ import tempfile
 import zipfile
 
 import cmd_patches
+import checkpoint_context_patches
 import checkpoint_error_patches
+import checkpoint_identity_patches
 import database_import_patches
 import data_files_native_patches
 import data_files_patches
@@ -45,11 +47,13 @@ RECIPE_NAMES = (
     'user_database_patches.py',
     'scdb_patches.py', 'timing_patches.py',
     'checkpoint_error_patches.py',
+    'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
     'send_verify_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
+                            checkpoint_identity_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
@@ -115,21 +119,44 @@ def apply_native_tree(source, archive, output):
     original = archive_sources(archive, NATIVE_NAMES)
     ported = {name: (source/name).read_bytes() for name in NATIVE_NAMES}
     patched = {}
+    stages = []
+
+    def stage(recipe, name, before, after):
+        stages.append({'recipe': recipe, 'sources': {name: {
+            'before_sha256': digest(before), 'after_sha256': digest(after)}}})
+        return after
+
     for name in NATIVE_NAMES:
         if name == data_files_native_patches.NAME:
-            patched[name] = data_files_native_patches.apply(original[name], ported[name])
+            intermediate = stage('data_files_native_patches.py', name, ported[name],
+                data_files_native_patches.apply(original[name], ported[name]))
+            patched[name] = stage('checkpoint_context_patches.py', name, intermediate,
+                checkpoint_context_patches.apply(name, original[name], intermediate))
+            continue
         elif name == dta_native_patches.SOURCE:
+            recipe = 'dta_native_patches.py'
             patched[name] = dta_native_patches.apply(name, original[name], ported[name])
         elif name == dta_ipc_patches.SOURCE:
+            recipe = 'dta_ipc_patches.py'
             patched[name] = dta_ipc_patches.apply(name, original[name], ported[name])
         elif name == checkpoint_error_patches.SOURCE:
+            recipe = 'checkpoint_error_patches.py'
             patched[name] = checkpoint_error_patches.apply(name, original[name], ported[name], fix=True)
+        elif name == checkpoint_identity_patches.SOURCE:
+            recipe = 'checkpoint_identity_patches.py'
+            patched[name] = checkpoint_identity_patches.apply(name, original[name], ported[name])
         elif name == ui_native_patches.SOURCE:
+            recipe = 'ui_native_patches.py'
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
         elif name in dta_time_patches.PREIMAGES:
+            recipe = 'dta_time_patches.py'
             patched[name] = dta_time_patches.apply(name, original[name], ported[name])
         elif name in scheduler_patches.PREIMAGES:
+            recipe = 'scheduler_patches.py'
             patched[name] = scheduler_patches.apply(name, original[name], ported[name])
+        else:
+            continue  # FLOW validates its original tree recipe below.
+        stage(recipe, name, ported[name], patched[name])
     # Existing tree recipes run in a scratch tree. Validate every preimage before
     # changing the actual build tree, so a rejected input leaves it untouched.
     with tempfile.TemporaryDirectory(prefix='spell-native-composition-') as folder:
@@ -139,7 +166,8 @@ def apply_native_tree(source, archive, output):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(ported[name])
         flow_patches.apply_tree(scratch)
-        patched.update({name: (scratch/name).read_bytes() for name in flow_patches.PREIMAGES})
+        for name in flow_patches.PREIMAGES:
+            patched[name] = stage('flow_patches.py', name, ported[name], (scratch/name).read_bytes())
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'
@@ -150,11 +178,13 @@ def apply_native_tree(source, archive, output):
     identity = checkpoint_identity(base, recipes)
     ported[IDENTITY_HEADER] = header
     patched[IDENTITY_HEADER] = re.sub(pattern, lambda match: match.group(1) + identity.encode() + match.group(3), header)
+    stage('integrated_patches.py', IDENTITY_HEADER, header, patched[IDENTITY_HEADER])
     records = write_evidence(output, original, ported, patched, recipes)
     for name, content in patched.items():
         (source/name).write_bytes(content)
     report = {'schema': 'openbexi.spell.integrated-native/1', 'archive_sha256': ARCHIVE_SHA256,
               'recipes': recipes, 'sources': records,
+              'stages': stages,
               'checkpoint': {'central_identity': base, 'integrated_identity': identity}}
     (Path(output)/'manifest.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
     return report

@@ -8,7 +8,8 @@
     "9c674bd": "b4018e0",
     "15c7dd1": "4ef381d",
     "231700d": "262b519",
-    "4a4c8c9": "a196fd8"
+    "4a4c8c9": "a196fd8",
+    "53afd40": "ae55d76"
   },
   "frozen": false,
   "build_started": false,
@@ -19,11 +20,12 @@
     "OPEN": 293
   },
   "static_source_composition": {
-    "scope": "Static source composition only; no native runtime, compilation or runtime qualification executed",
-    "native_units": 12,
+    "scope": "Static checked source composition only; no compilation or runtime execution",
+    "native_units": 13,
     "python_units": 21,
     "driver_units": 2,
-    "recipes": 24,
+    "recipes": 26,
+    "native_stages": 15,
     "host_units": 4,
     "host_client_units": 5,
     "host_package_inputs": 3,
@@ -34,15 +36,16 @@
     "runtime_qualified": false,
     "frozen": false,
     "manifests": {
-      "native": "82c407bb5bdb24382fbf88641f5f770b6dc1060d34f4ee0afb0a77bad896cf8d",
-      "python": "596c514c0e0e9849668f6fb024c6593cc43a5a01e5127790433d3600e05e96a7",
-      "driver": "700871168e623532a91e18be42cd7ebf418af3f577cd3bc2340967a0ccc33c89"
+      "native": "60c723e4f0320149800431ee1c6df4bd8859b440ed70e026b681551aab06a835",
+      "python": "099bcb48b46c44b3e39835606f9c76918862260807d28844ec01e8b86c5b5122",
+      "driver": "1e6261f3689b85b22ddaf36436d5cc32cae1dcc9fd4ddf571f4f5605b0d191a5"
     },
-    "donor_fixture_sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82",
-    "result_path": ".qualification/v0.6/source-preparation/77a7edc1d2ec492693cc25c9f1e98c5f/result.json",
+    "donor_fixture_sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614",
     "retained_result": {
-      "path": ".qualification/v0.6/source-preparation/77a7edc1d2ec492693cc25c9f1e98c5f/result.json",
-      "sha256": "dfba5c839f500053dbcd5d1da5abfe71a4a4a458db6418aa8c0c50b2755f3889"
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\source-preparation\\1ac57577962c4c6195d587db67b06669\\result.json",
+      "sha256": "4254136bf6beac308486e118b1bd696ce77e3c91af538d47e3a9bb4cfa5974fa",
+      "lf_sha256": "4254136bf6beac308486e118b1bd696ce77e3c91af538d47e3a9bb4cfa5974fa",
+      "bytes": 802
     }
   },
   "checks": [
@@ -158,6 +161,65 @@
     {
       "check": "All distribution/scripts Python AST and eight changed CLI parsers",
       "passed": true
+    },
+    {
+      "check": "Final source composition, installed provenance, workflow artifacts and checkpoint recorder parsers",
+      "passed": true,
+      "tests": 104,
+      "evidence": {
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_error_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_error_report.log",
+          "sha256": "8cc8649498c32602e41813c88ee3f22659ff735c3940c970842d5fbe61574611",
+          "lf_sha256": "343b439f9ba6f1117c37cf3dba19394055d933e2149a16933463820e7b290dd5",
+          "bytes": 897
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_identity_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_identity_report.log",
+          "sha256": "a7c49a6e1d735a8a41957abfa2ed90ac185eba2308ae6fcb0d59f8a5b194de3a",
+          "lf_sha256": "190fd5cd71b30f42b0847b90514fac3603d384216f55002f9c7935d9f15e6ded",
+          "bytes": 889
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_identity_run.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_identity_run.log",
+          "sha256": "cd4a47644700658202d75410adbe4e82807a8dd3cef48ff2baa67e2637c46f07",
+          "lf_sha256": "5e519529fea0bb3f825952f063e35ee7280aeaeb29c3ebec141fa04ebce118d4",
+          "bytes": 331
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/database_import_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\database_import_report.log",
+          "sha256": "3aa7e0918eaf986fa9cc17ff53c7d0e747582c8cbc00512b95d114b8acd6f1be",
+          "lf_sha256": "47d34aefc14b5e55a84086409a17d1ddd65e0f045c92e252eabcc98ed992bc97",
+          "bytes": 394
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/tests.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\tests.log",
+          "sha256": "b947b12b218eecac477a37e0df10d092521bde9ffb1458b7af006f589ec63617",
+          "lf_sha256": "2ad51f00ca26ac52b90ed6f6913615cf4009c371132ebc0fac0b872a7e8154a8",
+          "bytes": 178
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/tests.xml": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\tests.xml",
+          "sha256": "7681b3723db71dc95637dba239d6db2ba9d16526ade2170f07fe569dddac67dc",
+          "lf_sha256": "7681b3723db71dc95637dba239d6db2ba9d16526ade2170f07fe569dddac67dc",
+          "bytes": 16149
+        }
+      }
+    },
+    {
+      "check": "All changed Python AST, four fresh recorder CLI parsers and git diff --check",
+      "passed": true
+    },
+    {
+      "check": "Installed Linux CPython3.13 exact host wheel controlled FIFO/EOF peers",
+      "passed": true,
+      "tests": 16,
+      "evidence": {
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\installed-pipe-linux.json",
+        "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+        "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+        "bytes": 5352
+      },
+      "scope": "Offline controlled peer transport; no native SPELL execution"
     }
   ],
   "changed_inputs": {
@@ -174,12 +236,12 @@
       "lf_sha256": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204"
     },
     "conformance/checkpoint_error_report.py": {
-      "sha256": "b84a8c0a282056c49b2f06571ba093bcc36be5c01f8ddafc2564f501f857aaab",
-      "lf_sha256": "b84a8c0a282056c49b2f06571ba093bcc36be5c01f8ddafc2564f501f857aaab"
+      "sha256": "a73bb530fc301c901e25a67e97bc00b6504fe041d6178fffcb503b02468579ec",
+      "lf_sha256": "a73bb530fc301c901e25a67e97bc00b6504fe041d6178fffcb503b02468579ec"
     },
     "conformance/checkpoint_error_run.py": {
-      "sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff",
-      "lf_sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff"
+      "sha256": "7b3a540869a7c7ae53435c26fbc87749140a9d2d0152cc5e2636c43c8bc359e9",
+      "lf_sha256": "7b3a540869a7c7ae53435c26fbc87749140a9d2d0152cc5e2636c43c8bc359e9"
     },
     "conformance/run_send_verify.py": {
       "sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271",
@@ -210,40 +272,40 @@
       "lf_sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868"
     },
     "distribution/FOLLOWUP_COMPOSITION.md": {
-      "sha256": "ed2f3b776fb5d1ff9c277bc1077f166ce50e348b67026594c32801e2f60f5135",
-      "lf_sha256": "ed2f3b776fb5d1ff9c277bc1077f166ce50e348b67026594c32801e2f60f5135"
+      "sha256": "81fdd4389ddf1e04ddcdec622ad7251419e5f96364fb0343b24ea7eb9d578eb5",
+      "lf_sha256": "81fdd4389ddf1e04ddcdec622ad7251419e5f96364fb0343b24ea7eb9d578eb5"
     },
     "distribution/build_images.py": {
       "sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
       "lf_sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897"
     },
     "distribution/evidence/followup-qualified-sources.json": {
-      "sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82",
-      "lf_sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82"
+      "sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614",
+      "lf_sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614"
     },
     "distribution/native.Dockerfile": {
-      "sha256": "faf569469e020cc7e26729637a90e8669245bf491743f969423acce2a6f99004",
-      "lf_sha256": "faf569469e020cc7e26729637a90e8669245bf491743f969423acce2a6f99004"
+      "sha256": "012ec1c8b93d5e65c89c6e6657d17e827cdba2352892af05137f5520cbfc3c0d",
+      "lf_sha256": "012ec1c8b93d5e65c89c6e6657d17e827cdba2352892af05137f5520cbfc3c0d"
     },
     "distribution/record_qualified_sources.py": {
-      "sha256": "7e7b14048dab9fe352e6c8d2a5de5a8264ef4934d825181c61d97c9ac3657aca",
-      "lf_sha256": "7e7b14048dab9fe352e6c8d2a5de5a8264ef4934d825181c61d97c9ac3657aca"
+      "sha256": "a0ace8c8e3b0f48bc902556a61f336418e7a5dc0ca1ee85cc4ab4d94a273f275",
+      "lf_sha256": "a0ace8c8e3b0f48bc902556a61f336418e7a5dc0ca1ee85cc4ab4d94a273f275"
     },
     "distribution/test_build_images.py": {
       "sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd",
       "lf_sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd"
     },
     "distribution/test_integrated_patches.py": {
-      "sha256": "85c2a612a5620a0d9d96c23348a1fb6eab9368715c8bea46d84b52dc1c0a701a",
-      "lf_sha256": "85c2a612a5620a0d9d96c23348a1fb6eab9368715c8bea46d84b52dc1c0a701a"
+      "sha256": "93cfed1d68113e2c9794d6053e4dee3acc22f463cac1a81f73eb9ee3fd883b31",
+      "lf_sha256": "93cfed1d68113e2c9794d6053e4dee3acc22f463cac1a81f73eb9ee3fd883b31"
     },
     "distribution/verify_image.py": {
       "sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015",
       "lf_sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015"
     },
     "source_port/integrated_patches.py": {
-      "sha256": "61b22db8f93e8c39989751dbdb175acd886f7bd59f580640829910da14288eff",
-      "lf_sha256": "61b22db8f93e8c39989751dbdb175acd886f7bd59f580640829910da14288eff"
+      "sha256": "7b57bdd8963e1027a6922403f212e78d090d523cdde7d3513164e9c2ba0f449e",
+      "lf_sha256": "7b57bdd8963e1027a6922403f212e78d090d523cdde7d3513164e9c2ba0f449e"
     },
     "scripts/qualify_host_input.py": {
       "sha256": "a5ec326bb420d29c0163022c02bf58ac335136075c3681c664afea589d23ab3e",
@@ -258,8 +320,8 @@
       "lf_sha256": "106b898ace3839c8c1576c2676ed91dbf01bdf2725970649f6116ddf9ee9d814"
     },
     "distribution/FOLLOWUP_QUALIFICATION.md": {
-      "sha256": "d5f3aa97bc3bbcfa95b91cf5399d4bf661d6a6e2b4f501691e0f0572f73f7b80",
-      "lf_sha256": "d5f3aa97bc3bbcfa95b91cf5399d4bf661d6a6e2b4f501691e0f0572f73f7b80"
+      "sha256": "3694420c1032e2f43063983d044db6eb6a2d8c4afe998939a838be8127173894",
+      "lf_sha256": "3694420c1032e2f43063983d044db6eb6a2d8c4afe998939a838be8127173894"
     },
     "distribution/evidence/installed-pipe-windows.json": {
       "sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
@@ -308,23 +370,55 @@
     "scripts/qualify_host_upgrade.py": {
       "sha256": "24a5cb3384568f64dbded15200913ea68f9443df653d6644b9b65577460fe331",
       "lf_sha256": "24a5cb3384568f64dbded15200913ea68f9443df653d6644b9b65577460fe331"
+    },
+    "conformance/checkpoint_identity_provenance.py": {
+      "sha256": "934b41e1dd291a93a46a2eb235437de221ee7a216dd6d7fb3c0f6eb47788f013",
+      "lf_sha256": "934b41e1dd291a93a46a2eb235437de221ee7a216dd6d7fb3c0f6eb47788f013"
+    },
+    "conformance/checkpoint_identity_provenance_test.py": {
+      "sha256": "411ce7eb4c9759dde864ece109d51df5d2a485313859ac48aaaa225efa8dc9d6",
+      "lf_sha256": "411ce7eb4c9759dde864ece109d51df5d2a485313859ac48aaaa225efa8dc9d6"
+    },
+    "conformance/checkpoint_identity_report.py": {
+      "sha256": "af58e1ca5492736e48177c01fcb2df20614bd2c28204c428f17133d58fb5686a",
+      "lf_sha256": "af58e1ca5492736e48177c01fcb2df20614bd2c28204c428f17133d58fb5686a"
+    },
+    "conformance/checkpoint_identity_run.py": {
+      "sha256": "f2571d0dfbca8b2f6fa516a007fa34fcd22e6019f1b4ad3889c82fe0e8637fde",
+      "lf_sha256": "f2571d0dfbca8b2f6fa516a007fa34fcd22e6019f1b4ad3889c82fe0e8637fde"
+    },
+    "conformance/database_import_report.py": {
+      "sha256": "d6fba153b3996fa74e899f63993c494280987d9d032bb66d7dd62f7bf8b7f6d6",
+      "lf_sha256": "d6fba153b3996fa74e899f63993c494280987d9d032bb66d7dd62f7bf8b7f6d6"
+    },
+    "conformance/installed_provenance.py": {
+      "sha256": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
+      "lf_sha256": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1"
+    },
+    "distribution/evidence/installed-pipe-linux.json": {
+      "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f"
+    },
+    "distribution/test_installed_provenance.py": {
+      "sha256": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f",
+      "lf_sha256": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f"
     }
   },
   "pending": [
-    "Qualified native IPC source-identity and context recovery donor with actual kill/reopen controls; compose checked stages and rerun preparation",
-    "Final review and explicit Git build freeze; subsequent independent pair and fresh installed conformance",
-    "Actual installed Linux FIFO checks and exact-image lifecycle, host upgrade/Run/Debug/removal and artifact/platform workflows; Windows controlled-peer16 passed",
-    "Reconcile historical SCDB and checkpoint blocker recorder descriptions before fresh canonical recording; preserve old failures",
-    "Browser/VNC close and console scroll acceptance remains open after browser-unavailable tooling result"
+    "Root review and approval of this exact clean source commit before full pinned independent native pair and fresh images",
+    "Fresh installed native conformance and checkpoint identity/error/recovery controls, with current complete source and image bindings",
+    "Exact-image lifecycle, host upgrade/Run/Debug/removal and installed IDE/JetBrains/driver workflows; controlled Windows/Linux pipe checks already pass",
+    "Strict canonical report regeneration and coverage promotion only after current installed sources pass; historical470 remains baseline",
+    "Browser/VNC close and console scroll acceptance is independently pending; ranging and extra child lifecycle changes excluded"
   ],
   "full_v05_accepted": false,
   "full_v06_accepted": false,
   "previous_preparation": {
-    "commit": "480e1508c1452ad4c24c5040510823eacdff93cd",
-    "sha256": "4e00a93a62e7034fce3d5ed7238011767a1e63e3e37062cfda77d913f17d1c6e"
+    "commit": "a9637d9",
+    "sha256": "ec62714705b760eecfc2995bfabfd93992f236343ef14f31e3771b90d9511d39"
   },
   "host_harness_preparation": {
-    "status": "Windows-installed-16-pass; Linux-not-executed",
+    "status": "Windows16 and Linux16 installed pipe checks pass; fresh-image host lifecycle pending",
     "wheel": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\v0.6\\host-candidates\\03fa1f9442bd407e8a2fa1af3bc9cffd\\a\\wheels\\openbexi_spell_host-0.3.1.dev1-py3-none-any.whl",
       "sha256": "d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d"
@@ -346,10 +440,10 @@
       }
     },
     "unit_tests": 54,
-    "docker_started": false,
+    "docker_started": true,
     "native_tests_executed": false,
     "windows_pipe_tests_executed": true,
-    "linux_pipe_tests_executed": false,
+    "linux_pipe_tests_executed": true,
     "linux_test_dependencies": "Hash-locked cached wheelhouse with verified Linux/Windows CPython3.13 closures",
     "release_accepted": false,
     "dependency_record": {
@@ -363,6 +457,12 @@
       "sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
       "lf_sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
       "bytes": 5935
+    },
+    "linux_record": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\installed-pipe-linux.json",
+      "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "bytes": 5352
     }
   },
   "fresh_workflow_recorders": {
@@ -372,5 +472,6 @@
     "image_binding": true,
     "artifact_binding": true,
     "platform_binding": true
-  }
+  },
+  "ready_for_source_freeze_review": true
 }
