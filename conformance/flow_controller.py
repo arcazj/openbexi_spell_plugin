@@ -126,7 +126,10 @@ for name, specification in descriptions.items():
         Path('/workspace/observations.json').write_text(json.dumps(results, indent=2) + '\n', encoding='utf-8')
         print(name, result['passed'], result.get('error', result['status']), flush=True)
 
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
 Path('/workspace/runtime.json').write_text(json.dumps({
+    'integrated': capture(),
     'native_session_sha256': hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest(),
     'interpreter': sys.version,
     'installed': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in (

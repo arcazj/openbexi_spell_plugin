@@ -9,6 +9,7 @@ import tarfile
 import uuid
 import datetime
 import re
+from installed_provenance import input_paths, verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -53,6 +54,7 @@ def main():
     sources += ['source_port/' + name for name in (
         'patches.py', 'native_patches.py', 'dta_native_patches.py', 'dta_time_patches.py',
         'data_files_patches.py', 'data_files_native_patches.py', 'ui_native_patches.py', 'flow_patches.py')]
+    sources = list(dict.fromkeys(sources + input_paths(ROOT)))
     inputs = {name: digest((ROOT/name).read_bytes()) for name in sources}
     normalized = {name: digest((ROOT/name).read_bytes().replace(b'\r\n', b'\n'))
                   for name in sources if name.endswith('.py')}
@@ -70,6 +72,7 @@ def main():
         with tarfile.open(fileobj=archive, mode='w') as bundle:
             entry = ('import os\nos.environ["DTA_GROUPS"] = ' + repr(args.groups) + '\nimport dta_contracts\n').encode()
             for target, content in [('main.py', entry),
+                                    ('installed_provenance.py', (ROOT/'conformance/installed_provenance.py').read_bytes()),
                                     ('dta_contracts.py', (ROOT/'conformance/dta_contracts.py').read_bytes()),
                                     ('controller.py', (ROOT/'conformance/dta_controller.py').read_bytes())]:
                 (output/target).write_bytes(content)
@@ -90,6 +93,7 @@ def main():
         assert run.returncode == 0, str(output/'controller.log')
         report = json.loads((output/'dta-results.json').read_bytes())
         runtime = json.loads((output/'dta-runtime.json').read_bytes())
+        verify_capture(runtime.get('integrated'), inputs, normalized)
         if 'manifest' in runtime:
             for recipe, expected in runtime['manifest']['recipes'].items():
                 source = next(source for source in sources if source.endswith('/' + recipe))

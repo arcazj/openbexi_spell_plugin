@@ -9,8 +9,13 @@ import time
 
 sys.path.insert(0, '/opt/host')
 from native import NativeSession
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
 
 runtime = {'native.py': hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest()}
+integrated = capture()
+if integrated is not None:
+    runtime['integrated'] = integrated
 manifest_path = next((path for path in (Path('/opt/dta-native-patch/manifest.json'),
     Path('/opt/combined-native-patch/manifest.json'),
     Path('/opt/ui-native-patch/manifest.json')) if path.exists()), Path('/nonexistent-ui-manifest'))

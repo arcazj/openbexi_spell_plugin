@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import uuid
+from installed_provenance import input_paths, verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -28,6 +29,7 @@ def main():
         'source_port/dta_native_patches.py', 'source_port/dta_time_patches.py',
         'source_port/data_files_native_patches.py',
         'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf')
+    names = tuple(dict.fromkeys((*names, *input_paths(ROOT))))
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     normalized = {name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
                   for name in names if name.endswith('.py')}
@@ -44,6 +46,7 @@ def main():
         archive = io.BytesIO()
         with tarfile.open(fileobj=archive,mode='w') as bundle:
             for target, content in (('controller.py',(ROOT/'conformance/ui_controller.py').read_bytes()),
+                ('installed_provenance.py',(ROOT/'conformance/installed_provenance.py').read_bytes()),
                 ('ui_contracts.py',(ROOT/'conformance/ui_contracts.py').read_bytes()),
                 ('ui_edge_controller.py',(ROOT/'conformance/ui_edge_controller.py').read_bytes()),
                 ('edges.py',(ROOT/'conformance/ui_edges.py').read_bytes()),
@@ -66,6 +69,7 @@ def main():
         answers = json.loads((output/'ui-answers.json').read_bytes())
         report = json.loads((output/'ui-results.json').read_bytes())
         runtime = json.loads((output/'ui-runtime.json').read_bytes())
+        verify_capture(runtime.get('integrated'), inputs, normalized)
         if 'ui_manifest' in runtime:
             for recipe, digest in runtime['ui_manifest']['recipes'].items():
                 source = next(name for name in names if name.endswith('/' + recipe))
