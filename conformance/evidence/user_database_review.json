@@ -1,0 +1,46 @@
+{
+  "schema": "openbexi.spell.user-database-review/1",
+  "full_v05_accepted": false,
+  "v06_release_accepted": false,
+  "native_baseline_probe": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\user-database\\baseline-02.json",
+    "sha256": "ad170d14c97a6140512d0754fb1ab9255789c52b81d831975383b2733cc558bb"
+  },
+  "initial_candidate_probe": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\user-database\\candidate-01.json",
+    "sha256": "a2537a082284398e7bf2c1671c790da86a7ede9bc99202387725c089cda6faf1"
+  },
+  "final_conformance": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\conformance\\evidence\\user_database.json",
+    "sha256": "ee70af6d0f7cab577a3b3b2a74793a7f6339e09f4496830e82f164e7b2d73ba5"
+  },
+  "discarded_harness_attempts": [
+    {
+      "report": {
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\user-database\\f0609ea721d84ae6b646b01335cb7693\\result.json",
+        "sha256": "710f00888ffbe1d90c6f64e069f9e7d27947ca6120a4fbd3f3b50625097d39e9"
+      },
+      "reason": "Fourteen fixture scripts contained incorrectly escaped source newlines; fixed source quoting, retained all logs."
+    }
+  ],
+  "configured_database_regression_attempt": {
+    "archive": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\database-import\\47ec192098b84353bc631f44fb8cb5b9\\workspace.tar",
+      "sha256": "92669f9e471b6dbcd5bcab6703c207753eccbfdb2744a45748a28b9a02ca42a5"
+    },
+    "accepted": false,
+    "reason": "All16 original configured-database scenarios passed, but the old controller rejected a changed dbfile.py hash against its earlier importer-only overlay manifest. No qualified regression claim is made from this incomplete run; next composed image must rerun with the full composed provenance."
+  },
+  "peer_review": {
+    "finding": "Comment-prefixed keys disappear and scalar/nested nonfinite literals reload as strings. Final recipe rejects those values before replacement; final native save:failure proves byte preservation and temporary-file cleanup.",
+    "native_counterexamples": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\scdb-review\\userdb-counterexamples-02.json",
+      "sha256": "172bc7e767362ada7017227b18a177db4dfbbfbcc1f38407e7108cca868d722f"
+    }
+  },
+  "limitations": [
+    "Only string flat-file keys qualify; full database-formats section remains open.",
+    "No claim of concurrent-writer transactions or directory-fsync crash durability.",
+    "Fresh integrated wheel and unchanged broader conformance suites remain required."
+  ]
+}
