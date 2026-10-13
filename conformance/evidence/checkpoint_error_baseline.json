@@ -1,0 +1,953 @@
+{
+  "runtime_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "inputs": {
+    "conformance/checkpoint_error_controller.py": "d42c3c7a19200cae2c1a9ed8535271f37d6f37310cbdbabe5c5c7f6d240cb304",
+    "conformance/checkpoint_error_run.py": "8c98ccdb797eef8cbf9569cc754e06e48fbd1030d2f731b679979b6272457411",
+    "conformance/scdb_provenance.py": "c32d2d3c5df003730a4db806757c1f571b650e7f341d986b89f73550015f3e05",
+    "conformance/installed_provenance.py": "9adad0652859ae2bcbbb0d3627ba52b525844e8d4daece47c20df8d052f50946"
+  },
+  "options": {
+    "cases": [
+      "direct-valueerror",
+      "lambda-valueerror",
+      "named-valueerror",
+      "lambda-keyerror",
+      "lambda-success",
+      "lambda-original-driver"
+    ],
+    "modes": [
+      "ON_LINE",
+      "ON_STEP"
+    ],
+    "executions": [
+      "fresh",
+      "resume"
+    ]
+  },
+  "checks": {
+    "ON_LINE:direct-valueerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "direct-valueerror",
+      "execution": "fresh",
+      "passed": true,
+      "procedure_sha256": "76532bd1e6c66647dd9d74ef7efcb7fd3391ebb232e0a26632c15e05117ac539",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-direct-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:16\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_LINE-direct-valueerror-fresh/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:14\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:15\n[ RETURN  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:15\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-fresh/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:direct-valueerror:resume": {
+      "mode": "ON_LINE",
+      "case": "direct-valueerror",
+      "execution": "resume",
+      "passed": true,
+      "procedure_sha256": "d72a774c8a708680f5d0293cbc27f2dfa300d52fb14c9201695a257ba31151ba",
+      "checkpoint_sha256": "34ae214e0a112ae24e3c1c0ce8929587652441eab568165890e9951a55c9c57e",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-direct-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-direct-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_122943_Executor___workspace__ON_LINE-direct-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_LINE-direct-valueerror-resume/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:14\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:15\n[ RETURN  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:15\n[  CALL  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_LINE-direct-valueerror-resume/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:lambda-valueerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "lambda-valueerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "71c874cb1d93cec90c03856bbf3f7c740ab28ef3fa163af303563e4e1d08f1aa",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:17\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:12\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 17\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:17\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:12\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-fresh/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 17\\n - file '/workspace/ON_LINE-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:lambda-valueerror:resume": {
+      "mode": "ON_LINE",
+      "case": "lambda-valueerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "361fc0eca62f1df1f6d1b15ff3ff20fc72f97d15215676841da6fba87033338b",
+      "checkpoint_sha256": "50b29f036ba7cbe2025cb5111192f3dfc68cc17e5bc7e2ea7ce3d0439bf14d1d",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-lambda-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:17\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123000_Executor___workspace__ON_LINE-lambda-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:12\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_LINE-lambda-valueerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-valueerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123000_Executor___workspace__ON_LINE-lambda-valueerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:12\\n[  CALL  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-valueerror-resume/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_LINE-lambda-valueerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-valueerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-valueerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-valueerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:named-valueerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "named-valueerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "8b4b846b8c931a86296fef6ee96194af920c445a944eaa3e618618b9f3f35baf",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-named-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:18\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:13\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:11\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_LINE-named-valueerror-fresh/procedure.py', line 18\n - file '/workspace/ON_LINE-named-valueerror-fresh/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-named-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-named-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-named-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-named-valueerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:18\\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:13\\n[  CALL  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-fresh/procedure.py:11\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_LINE-named-valueerror-fresh/procedure.py', line 18\\n - file '/workspace/ON_LINE-named-valueerror-fresh/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-named-valueerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-named-valueerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-named-valueerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:named-valueerror:resume": {
+      "mode": "ON_LINE",
+      "case": "named-valueerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "57b9a8ef29b51f5ff7c4f0e84a029e9917713cd0b8051ed991683c84041566bc",
+      "checkpoint_sha256": "c72ceb11b1e9b07fb7483f87ded7922b33d40254fea89c6cebfdec5f303743ff",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-named-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:18\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-named-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-named-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-named-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-named-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123031_Executor___workspace__ON_LINE-named-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:13\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:11\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_LINE-named-valueerror-resume/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-named-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-named-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-named-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-named-valueerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123031_Executor___workspace__ON_LINE-named-valueerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:13\\n[  CALL  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-named-valueerror-resume/procedure.py:11\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_LINE-named-valueerror-resume/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-named-valueerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-named-valueerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-named-valueerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:lambda-keyerror:fresh": {
+      "mode": "ON_LINE",
+      "case": "lambda-keyerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "be78a01862a588b92c9c60d54fa1916e0e8b199f5d0e382bca831a56564c3a01",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:17\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:12\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_LINE-lambda-keyerror-fresh/procedure.py', line 17\n - file '/workspace/ON_LINE-lambda-keyerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-keyerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-keyerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-keyerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:17\\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:12\\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-fresh/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_LINE-lambda-keyerror-fresh/procedure.py', line 17\\n - file '/workspace/ON_LINE-lambda-keyerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-keyerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-keyerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-keyerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:lambda-keyerror:resume": {
+      "mode": "ON_LINE",
+      "case": "lambda-keyerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "05b7d662da9f5e7556ca4fe942e0e974fd71b2aa7240de760c53d86a264c4d73",
+      "checkpoint_sha256": "750caec7e507868eaca33e72dad38da909e73e323d1dc3bc1d7c75698ebd4bce",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-lambda-keyerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:17\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-keyerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-keyerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-keyerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-keyerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123102_Executor___workspace__ON_LINE-lambda-keyerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:12\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_LINE-lambda-keyerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-keyerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-keyerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-keyerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-keyerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123102_Executor___workspace__ON_LINE-lambda-keyerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:12\\n[  CALL  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-keyerror-resume/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_LINE-lambda-keyerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-keyerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-keyerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-keyerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:lambda-success:fresh": {
+      "mode": "ON_LINE",
+      "case": "lambda-success",
+      "execution": "fresh",
+      "passed": true,
+      "procedure_sha256": "85fef1cce4e0f4c61c0094c4ceca8aeea834fc218767089e0db0b1c42e402144",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-lambda-success-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:15\n[  CALL  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:11\n[  CALL  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:10\n[ RETURN  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:14\n[ RETURN  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:14\n[  LINE  ] /workspace/ON_LINE-lambda-success-fresh/procedure.py:16\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-success-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-success-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-success-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:lambda-success:resume": {
+      "mode": "ON_LINE",
+      "case": "lambda-success",
+      "execution": "resume",
+      "passed": true,
+      "procedure_sha256": "8536bca3147b353fd1f57721b89e496cb02d4ac98d10f60616cb80cfdc1813f7",
+      "checkpoint_sha256": "f4e4b466c438c0b623457c394660f394148eec94211894a7820fbad3756158fc",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-lambda-success-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:15\n[  CALL  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-success-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-success-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-success-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_LINE-lambda-success-resume/procedure.py\n* Enable recovery with file 2026-10-13_123119_Executor___workspace__ON_LINE-lambda-success-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:11\n[  CALL  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:10\n[ RETURN  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:14\n[ RETURN  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:14\n[  CALL  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:15\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:15\n[  LINE  ] /workspace/ON_LINE-lambda-success-resume/procedure.py:16\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-success-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-success-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-success-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_LINE:lambda-original-driver:fresh": {
+      "mode": "ON_LINE",
+      "case": "lambda-original-driver",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "bc7f6b9a71ffd434d614deef8ec9537bf29c9e5542e241acdaae97868bd16ad1",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:19\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:14\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_LINE-lambda-original-driver-fresh/procedure.py', line 19\n - file '/workspace/ON_LINE-lambda-original-driver-fresh/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-original-driver-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-original-driver-fresh/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-original-driver-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:19\\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:13\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:14\\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-fresh/procedure.py:12\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_LINE-lambda-original-driver-fresh/procedure.py', line 19\\n - file '/workspace/ON_LINE-lambda-original-driver-fresh/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-original-driver-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-original-driver-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-original-driver-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_LINE:lambda-original-driver:resume": {
+      "mode": "ON_LINE",
+      "case": "lambda-original-driver",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "bbed386823e34c566a620c38308934bf1faa72ad4e047125bb8a8f989ac9ac60",
+      "checkpoint_sha256": "9aa5347ee021cbd3cffd12f66b4e55daa092bb6af5cd8252097132452b1c29fc",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_LINE-lambda-original-driver-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:0\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:1\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:2\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:3\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:4\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:5\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:19\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:6\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-original-driver-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-original-driver-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-original-driver-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_LINE-lambda-original-driver-resume/procedure.py\n* Enable recovery with file 2026-10-13_123135_Executor___workspace__ON_LINE-lambda-original-driver-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:8\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:9\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:10\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:11\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:13\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:14\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_LINE-lambda-original-driver-resume/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_LINE-lambda-original-driver-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-original-driver-resume/example/config\n*       SPELL_LOG: /workspace/ON_LINE-lambda-original-driver-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_LINE-lambda-original-driver-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123135_Executor___workspace__ON_LINE-lambda-original-driver-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:13\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:14\\n[  CALL  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_LINE-lambda-original-driver-resume/procedure.py:12\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_LINE-lambda-original-driver-resume/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_LINE-lambda-original-driver-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_LINE-lambda-original-driver-resume/example/config\\n*       SPELL_LOG: /workspace/ON_LINE-lambda-original-driver-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:direct-valueerror:fresh": {
+      "mode": "ON_STEP",
+      "case": "direct-valueerror",
+      "execution": "fresh",
+      "passed": true,
+      "procedure_sha256": "79c804e7dfcb0d74f0af4990ae7a41d916c1fad95d96d5f039752b9e9cefd9bb",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_STEP-direct-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:16\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_STEP-direct-valueerror-fresh/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:14\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:15\n[ RETURN  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:15\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-fresh/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-direct-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-direct-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-direct-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_STEP:direct-valueerror:resume": {
+      "mode": "ON_STEP",
+      "case": "direct-valueerror",
+      "execution": "resume",
+      "passed": true,
+      "procedure_sha256": "972d9b542cdcd945d2aeb7ab4aa01b464df705defaf467fed38018a878fae7df",
+      "checkpoint_sha256": "4960dba72aed1d431506e1932229871518a802c69b5203a310f2a063878c9b98",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-direct-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:16\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_STEP-direct-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123152_Executor___workspace__ON_STEP-direct-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:11\n[ DISPLAY ] Value error\n - file '/workspace/ON_STEP-direct-valueerror-resume/procedure.py', line 11: invalid literal for int() with base 10: 'plain original error' (error code 7) (fatal:false) (scope:2)\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:14\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:15\n[ RETURN  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:15\n[  CALL  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:16\n[  LINE  ] /workspace/ON_STEP-direct-valueerror-resume/procedure.py:17\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-direct-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-direct-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-direct-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_STEP:lambda-valueerror:fresh": {
+      "mode": "ON_STEP",
+      "case": "lambda-valueerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "f25ce4b8877e25a43ba20cfa2b1c433ff2510d427af74e347d90e68c207884b7",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:17\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:12\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_STEP-lambda-valueerror-fresh/procedure.py', line 17\n - file '/workspace/ON_STEP-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:17\\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:12\\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-fresh/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_STEP-lambda-valueerror-fresh/procedure.py', line 17\\n - file '/workspace/ON_STEP-lambda-valueerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-valueerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-valueerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-valueerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:lambda-valueerror:resume": {
+      "mode": "ON_STEP",
+      "case": "lambda-valueerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "7a16c036a5e6bf0cce9094787ea68cf67d5d459958785725fdc6b157a718ea3c",
+      "checkpoint_sha256": "5e258efa4b738515d16e9c365c6e6026407929cc4f94f8a500bf26c01c83cf70",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-lambda-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:17\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123208_Executor___workspace__ON_STEP-lambda-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:12\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_STEP-lambda-valueerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-valueerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123208_Executor___workspace__ON_STEP-lambda-valueerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:12\\n[  CALL  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-valueerror-resume/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_STEP-lambda-valueerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-valueerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-valueerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-valueerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:named-valueerror:fresh": {
+      "mode": "ON_STEP",
+      "case": "named-valueerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "61ba99a9c2370c94ca0b409c40994761a5cc4831aa5c412e2104275234bde8c4",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-named-valueerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:18\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:13\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:11\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_STEP-named-valueerror-fresh/procedure.py', line 18\n - file '/workspace/ON_STEP-named-valueerror-fresh/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-named-valueerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-named-valueerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-named-valueerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-named-valueerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:18\\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:13\\n[  CALL  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-fresh/procedure.py:11\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_STEP-named-valueerror-fresh/procedure.py', line 18\\n - file '/workspace/ON_STEP-named-valueerror-fresh/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-named-valueerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-named-valueerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-named-valueerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:named-valueerror:resume": {
+      "mode": "ON_STEP",
+      "case": "named-valueerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "94ad6d7dadf2a2522b970a79fd3d47e4b5b019fa57ab4dc4ad2399b0baa8d24c",
+      "checkpoint_sha256": "e99b64c3bce14034969b4bc2720915a8ad588eaaa695e028d84222458b5901ed",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-named-valueerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:18\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-named-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-named-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-named-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-named-valueerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123239_Executor___workspace__ON_STEP-named-valueerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:13\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:11\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_STEP-named-valueerror-resume/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-named-valueerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-named-valueerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-named-valueerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-named-valueerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123239_Executor___workspace__ON_STEP-named-valueerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:13\\n[  CALL  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-named-valueerror-resume/procedure.py:11\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_STEP-named-valueerror-resume/procedure.py', line 14: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-named-valueerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-named-valueerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-named-valueerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:lambda-keyerror:fresh": {
+      "mode": "ON_STEP",
+      "case": "lambda-keyerror",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "b2ab28e53c492d059bb19437e2565c67422e81344955e07ddc6b039a6bc6799c",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:17\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:12\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_STEP-lambda-keyerror-fresh/procedure.py', line 17\n - file '/workspace/ON_STEP-lambda-keyerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-keyerror-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-keyerror-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-keyerror-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:17\\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:12\\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-fresh/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_STEP-lambda-keyerror-fresh/procedure.py', line 17\\n - file '/workspace/ON_STEP-lambda-keyerror-fresh/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-keyerror-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-keyerror-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-keyerror-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:lambda-keyerror:resume": {
+      "mode": "ON_STEP",
+      "case": "lambda-keyerror",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "ef038ac46726b76b57ffbf50aa5cd2e011ab929362cb05d6d2a5e5479ee8ce44",
+      "checkpoint_sha256": "00f9795b2a98134424e90352300cdc23393200d825262bb52e70ba982f724180",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-lambda-keyerror-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:17\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-keyerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-keyerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-keyerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-keyerror-resume/procedure.py\n* Enable recovery with file 2026-10-13_123310_Executor___workspace__ON_STEP-lambda-keyerror-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:12\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_STEP-lambda-keyerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-keyerror-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-keyerror-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-keyerror-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-keyerror-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123310_Executor___workspace__ON_STEP-lambda-keyerror-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:12\\n[  CALL  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-keyerror-resume/procedure.py:10\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_STEP-lambda-keyerror-resume/procedure.py', line 13: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-keyerror-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-keyerror-resume/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-keyerror-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:lambda-success:fresh": {
+      "mode": "ON_STEP",
+      "case": "lambda-success",
+      "execution": "fresh",
+      "passed": true,
+      "procedure_sha256": "0a5aa5f91f21343328d0c72c63513fbc2bf2b366744155b35d39066d25bde7c7",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_STEP-lambda-success-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:15\n[  CALL  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:11\n[  CALL  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:10\n[ RETURN  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:14\n[ RETURN  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:14\n[  LINE  ] /workspace/ON_STEP-lambda-success-fresh/procedure.py:16\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-success-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-success-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-success-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_STEP:lambda-success:resume": {
+      "mode": "ON_STEP",
+      "case": "lambda-success",
+      "execution": "resume",
+      "passed": true,
+      "procedure_sha256": "26e984bbdc3297c7a5e80f9eaeb32081762931e02a66fffcba3b51d083ee994e",
+      "checkpoint_sha256": "1e31bfa00c6aebd145ead8c40f1f111404760a5cca3f5297b19958ce85a5a329",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-lambda-success-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:15\n[  CALL  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-success-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-success-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-success-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "returncode": 0,
+      "log": "* Run script /workspace/ON_STEP-lambda-success-resume/procedure.py\n* Enable recovery with file 2026-10-13_123327_Executor___workspace__ON_STEP-lambda-success-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:11\n[  CALL  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:10\n[ RETURN  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:14\n[ RETURN  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:14\n[  CALL  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:15\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:15\n[  LINE  ] /workspace/ON_STEP-lambda-success-resume/procedure.py:16\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-success-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-success-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-success-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n"
+    },
+    "ON_STEP:lambda-original-driver:fresh": {
+      "mode": "ON_STEP",
+      "case": "lambda-original-driver",
+      "execution": "fresh",
+      "passed": false,
+      "procedure_sha256": "7c4ffb1d78b13a02d77cdc9eadc66788448e5ebaa2e4d7b3cfcb5a499e5d7db6",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:19\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:14\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\n[  ERROR  ]Execution aborted: Python error\n - file '/workspace/ON_STEP-lambda-original-driver-fresh/procedure.py', line 19\n - file '/workspace/ON_STEP-lambda-original-driver-fresh/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-original-driver-fresh/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-original-driver-fresh/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-original-driver-fresh/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py\\n* Enable warmstart\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:0\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:1\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:2\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:3\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:4\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:5\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:19\\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:6\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:7\\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:13\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:14\\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-fresh/procedure.py:12\\n[  ERROR  ]Execution aborted: Python error\\n - file '/workspace/ON_STEP-lambda-original-driver-fresh/procedure.py', line 19\\n - file '/workspace/ON_STEP-lambda-original-driver-fresh/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-original-driver-fresh/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-original-driver-fresh/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-original-driver-fresh/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    },
+    "ON_STEP:lambda-original-driver:resume": {
+      "mode": "ON_STEP",
+      "case": "lambda-original-driver",
+      "execution": "resume",
+      "passed": false,
+      "procedure_sha256": "5373828debc5584660f6293fe33f3a1d3184f72481ded7c32593c89d0481c9f8",
+      "checkpoint_sha256": "2725191863d18a2aacd41bcc74f5874bb3a1f87298858844712380af3bdfedb2",
+      "capture_returncode": -9,
+      "capture_log": "* Run script /workspace/ON_STEP-lambda-original-driver-resume/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:0\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:1\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:2\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:3\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:4\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:5\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:19\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:6\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:7\n[ DISPLAY ] Step checkpoint-control: Original error control (scope:8)\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:9\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-original-driver-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-original-driver-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-original-driver-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "timed_out": true,
+      "returncode": -9,
+      "log": "* Run script /workspace/ON_STEP-lambda-original-driver-resume/procedure.py\n* Enable recovery with file 2026-10-13_123343_Executor___workspace__ON_STEP-lambda-original-driver-resume__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:8\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:8\nCHECKPOINT_ERROR_READY\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:9\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:10\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:11\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:13\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:14\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\n[  ERROR  ]Execution aborted: Python error\n - file '<string>', line 165\n - file '<string>', line 159\n - file '/workspace/ON_STEP-lambda-original-driver-resume/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/ON_STEP-lambda-original-driver-resume/example/data\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-original-driver-resume/example/config\n*       SPELL_LOG: /workspace/ON_STEP-lambda-original-driver-resume/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "error": "AssertionError(\"* Run script /workspace/ON_STEP-lambda-original-driver-resume/procedure.py\\n* Enable recovery with file 2026-10-13_123343_Executor___workspace__ON_STEP-lambda-original-driver-resume__procedure\\n[ STATUS  ] LOADED\\n[ STATUS  ] RUNNING\\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:8\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:8\\nCHECKPOINT_ERROR_READY\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:9\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:10\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:11\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:13\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:14\\n[  CALL  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\\n[  LINE  ] /workspace/ON_STEP-lambda-original-driver-resume/procedure.py:12\\n[  ERROR  ]Execution aborted: Python error\\n - file '<string>', line 165\\n - file '<string>', line 159\\n - file '/workspace/ON_STEP-lambda-original-driver-resume/procedure.py', line 15: Python error: checkpoint requires a synchronous thread-owned frame (error code 8) (fatal:false) (fatal:false)\\n==============================================================================\\n     SPELL environment configuration\\n==============================================================================\\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\\n*      SPELL_COTS: (NOT DEFINED)\\n*      SPELL_DATA: /workspace/ON_STEP-lambda-original-driver-resume/example/data\\n*    SPELL_CONFIG: /workspace/ON_STEP-lambda-original-driver-resume/example/config\\n*       SPELL_LOG: /workspace/ON_STEP-lambda-original-driver-resume/example/logs\\n==============================================================================\\nlog4cplus:ERROR No appenders could be found for logger (root).\\nlog4cplus:ERROR Please initialize the log4cplus system properly.\\n\")"
+    }
+  },
+  "runtime_sources": {
+    "profile": "original-spell-integrated-wheel/1",
+    "manifest_sha256": "65d1502e40020ef357fe02ce812ccd9ac1ecdd1658042c91c2c22d442748d35f",
+    "manifest": {
+      "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+      "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+      "composition": {
+        "native": {
+          "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+          "checkpoint": {
+            "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
+            "integrated_identity": "61880dfcc24747d7095968205d8e6335f49b231a751d266595ccaf391331b6a2"
+          },
+          "manifest_sha256": "45fc56699da879a466779ed744ff2c3876865bed10821633d54f0e7cf97faef2",
+          "recipes": {
+            "cmd_patches.py": {
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "data_files_native_patches.py": {
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "dta_ipc_patches.py": {
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "dta_native_patches.py": {
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_analyze.py": {
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "flow_patches.py": {
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "integrated_patches.py": {
+              "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+              "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+            },
+            "native_patches.py": {
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "obs_patches.py": {
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "patches.py": {
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "ui_native_patches.py": {
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            }
+          },
+          "schema": "openbexi.spell.integrated-native/1",
+          "sources": {
+            "include/SPELL_WS/SPELLcontinuationSource.H": {
+              "patched_sha256": "20b36d7d5639a914333b8ce2660ceae00d1e7c0c1b593e5c30f0af6b31f0bf97",
+              "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
+            },
+            "lib/SPELL_CIF/src/SPELLasRun.C": {
+              "original_sha256": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+              "patched_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+              "ported_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a"
+            },
+            "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+              "original_sha256": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+              "patched_sha256": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724",
+              "ported_sha256": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c"
+            },
+            "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+              "original_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+              "patched_sha256": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b",
+              "ported_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f"
+            },
+            "lib/SPELL_CTX/src/SPELLcontext.C": {
+              "original_sha256": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
+              "patched_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81",
+              "ported_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a"
+            },
+            "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+              "original_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+              "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
+              "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+            },
+            "lib/SPELL_EXC/src/SPELLgoto.C": {
+              "original_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+              "patched_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
+              "ported_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+            },
+            "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+              "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+              "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
+              "ported_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
+            },
+            "lib/SPELL_UTIL/src/SPELLtime.C": {
+              "original_sha256": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+              "patched_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec",
+              "ported_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8"
+            }
+          }
+        },
+        "python": {
+          "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+          "manifest_sha256": "cef33e4380163100640c3d57f9431c1ec5814653287d1e4fe0e320f272f95c09",
+          "recipes": {
+            "cmd_patches.py": {
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "data_files_native_patches.py": {
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "dta_ipc_patches.py": {
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "dta_native_patches.py": {
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_analyze.py": {
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "flow_patches.py": {
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "integrated_patches.py": {
+              "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+              "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+            },
+            "native_patches.py": {
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "obs_patches.py": {
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "patches.py": {
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "ui_native_patches.py": {
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            }
+          },
+          "schema": "openbexi.spell.integrated-python/1",
+          "sources": {
+            "spell/lang/helpers/basehelper.py": {
+              "original_sha256": "8cbca48bb966b427455acc74177448c73cbb1e31898181a923331afe99b8cd81",
+              "patched_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+              "ported_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7"
+            },
+            "spell/lang/helpers/datahelper.py": {
+              "original_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f",
+              "patched_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+              "ported_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f"
+            },
+            "spell/lang/helpers/exechelper.py": {
+              "original_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d",
+              "patched_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+              "ported_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d"
+            },
+            "spell/lang/helpers/filehelper.py": {
+              "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
+              "patched_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+              "ported_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+            },
+            "spell/lang/helpers/tchelper.py": {
+              "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
+              "patched_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+              "ported_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
+            },
+            "spell/lang/helpers/tmhelper.py": {
+              "original_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
+              "patched_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+              "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+            },
+            "spell/lib/adapter/expression.py": {
+              "original_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
+              "patched_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+              "ported_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77"
+            },
+            "spell/lib/adapter/file.py": {
+              "original_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3",
+              "patched_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+              "ported_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
+            },
+            "spell/lib/adapter/tc_item.py": {
+              "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
+              "patched_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+              "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
+            },
+            "spell/lib/adapter/tm.py": {
+              "original_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084",
+              "patched_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+              "ported_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084"
+            },
+            "spell/lib/adapter/verifier.py": {
+              "original_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
+              "patched_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+              "ported_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+            }
+          }
+        }
+      },
+      "inputs": {
+        "LGPL-3.0.txt": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+        "README.md": "02a5be2b9a3d0b29dad63775bf91079b6a64528238a741ac543175d4f6738ae2",
+        "build.lock": "8c103477731301f7c4ad2c88e74ade1d8ec6e341e0e8058c94f4c9727e533fa7",
+        "build.py": "2ef82935062b54d5072468b2e8fb13e7e442936241f854d65a73e9c52f7ce905",
+        "cif_fixtures.py": "f94a4afc5fbb5ae0d1095b897a9cbd78f1b4b4c18d9b742087377ab3b5d53239",
+        "cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+        "context-build.Dockerfile": "03cdc3eb17825c891e37e1dd8d6a253dbd3db0631e759f4cbad64fb7949d7cd7",
+        "context-build.Dockerfile.dockerignore": "3d6691a9214b1e45d803751f64fb2e13decf07719d668a3806075e731f01cad5",
+        "context_build.py": "631cae5e42b2f8015b811aef3a0c11a248db20e6640ccdf4e38c9a143a7b690f",
+        "context_peer.cpp": "ba5f29f22c239ac6ae365f68eb9ff5bcc6c076420eb05bd7807ad891d6f47a94",
+        "controller_fixtures.py": "57a3fc011d30aca341b71cddd55f0ba412db659ab155d2d83621b90daa0cbd0d",
+        "controller_peer.cpp": "0b4d6477d0c7e6290e0f1093642efb90f8060b748d5e516a447116fd410a49e2",
+        "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+        "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+        "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
+        "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
+        "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
+        "distribution/libSPELL_DTA_v3.py": "b1a6d2d41ccf757c4b1754b198dc30f004a4b2833e7ac72137a1d7c08f417e02",
+        "distribution/runtime.lock": "6953a3d4b8f5735241db614062c76f42bc2f328177c1d04eef7abdff5989ede9",
+        "dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+        "dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+        "dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+        "executor-build.Dockerfile": "3b9307d813de9c50863547f0a87420ac444cf40e86e91ec3b67bed19ab0e3d1c",
+        "executor-build.Dockerfile.dockerignore": "45ca662d313f8e53ee267a4ba63d1e2d2c569f40956329b1e3f201014576ca14",
+        "executor-build.lock": "7b4a0f3ca7e6336a5d472146b5e5c73f3f028af85ad6a2ca0c5c2db1e8d98c7d",
+        "executor_build.py": "b444a90bf17cd77f5e79d121d02e02e82430889a98150f759424b3f409bbc82a",
+        "experiments/build_probe.py": "1645972c914715862f3ec9108e725c699da04a6a6e0c5a8f0addaf66b03b2f62",
+        "experiments/chain_probe.py": "2cdf37f288cb0f658a98c32bc22bf8ef89fef2a983a7e31b14eeccdf306d5686",
+        "experiments/persistent-probe.Dockerfile": "6d8f5cc4473fef28b9a5bb5f7e549f0fe39fa05dfbdd945f6b4a2d94c4c9b1e1",
+        "experiments/persistent-probe.Dockerfile.dockerignore": "0e14bd49a8583254b7cc04522414caeb9a22463e88ea217f57b2791c382f77c0",
+        "experiments/persistent-requirements.txt": "9bd25a4d46fade1310d8a1b38c2ed4fa1b0b04e126a1318d5b14d216551e495d",
+        "experiments/persistent_codec.py": "f1f04bed7914512d1ecaf788eaa08473dccf79e74eaea8ae46247cc963ef2929",
+        "experiments/persistent_probe.py": "4b712627738edd0b5cfe7e874640906c1acd9a8495f142c66bde6428dab9ebf0",
+        "experiments/persistent_worker.py": "938377c3b82b0f84e046439294976c360e63a679e6683fb3aaa8459c456b1e45",
+        "experiments/record_persistent.py": "c39293f3dc63f7d7d393549c1ae2aeeb6c8fc20a60ed4ad2e473485df88682dd",
+        "experiments/record_probe.py": "e902d6d616c5d29df525713d123a22fcd79755a60b2063a5f503867e241796f0",
+        "experiments/recovery-probe.Dockerfile": "13d379e1e3eade55dd0c5b98a9549c90c247507570743bd6d373797dde64da46",
+        "experiments/recovery-probe.Dockerfile.dockerignore": "85d3c2a8553f1772d332954ce036bb0fffd8e19f3a23d200df194128594e563d",
+        "experiments/recovery_probe.cpp": "990194e0e711c9f0deb1de531c8bd0438f2b1e72ccbeb5fa209c6cb6de2040be",
+        "experiments/recovery_probe.py": "9ffb4683751a157606cd5852e559f46674a29c3ee81e1cc0c35799d3e56c9fcb",
+        "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+        "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+        "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
+        "integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+        "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
+        "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
+        "native-build.Dockerfile": "aefa4f5008371516e6807d13c97fbfde29814294d48becdefa7fe45a3c3110e7",
+        "native-build.Dockerfile.dockerignore": "0d689c512e852649e729d167ab0a2edfb92d814b68119af95e59633efd132dd5",
+        "native-probe.Dockerfile": "48600eddce6975af13e78d38da15225498f57889a7fc1e8f45284d77a3cc4329",
+        "native-probe.Dockerfile.dockerignore": "72ec999a8c9192b427c2f143800cc6f1acc3e181f68e8e5362a17c3647f11edc",
+        "native/SPELLanalysis313.H": "d501c2c4ee9583b7b255c4c7045042692c575f694007ceff1ba5c83e5ab51450",
+        "native/SPELLbinding313.H": "a0c5cc7ef11f4b9e8848f7705c51d4884f732192006e6e8e957f0fbda9552386",
+        "native/SPELLcontinuation313.H": "46782a1fab46c81a6459fa5c55c3fe6cf6830b4249f4ed34b0a4a233a5cefb06",
+        "native/SPELLcontinuationCodec.H": "76b4eed39b5c06b53c1f69003a8e24684c62cd8026db8d4b7dacb9e560f8458d",
+        "native/SPELLpython313.H": "20d50b35fe9a0016324c756a7c3cdb865cfe8ef5da1693d70b9b2bc0767eb0b5",
+        "native/analysis_support.py": "02c032b45e8958a3e884feabcd4d00db0b0c0e27bdf47a508954a29b82b73ddf",
+        "native/analyze_bytecode.cpp": "afdc94e2ace8da4097202da51d17389f667d71feeae5f12d7c67d61252d2f190",
+        "native/analyze_goto.cpp": "b07fb6eca3219abdef9225db7277474c5e1b03adadea293da62bdbcc26606f4d",
+        "native/analyze_lines.cpp": "77b94db448852d32987f79689fe3d68af0e0629fdb9c2b1956635d9b2fdebc14",
+        "native/analyze_source.cpp": "750b6c9bd7b01c136e457075ddac65b787e71b68bc93e53dee40057274526047",
+        "native/cif_acknowledge.cpp": "4733faab24ca89105074af01bfa5afdb439e30e11f1f4b1847ac56440f401879",
+        "native/cif_reconnect.cpp": "df57d74416455fc8d47980f17b702f334710a59e945ca303d6d520f69ba8465a",
+        "native/client_connection.cpp": "1ed6b9879853eb99f9ad58692b43ca6fb1dcd8039cc9be7e50965a3e1be437b8",
+        "native/context_wait_status.cpp": "ead6db2900ffcc69dda8244592d7c754478ef9f99cc65cc975f58c0ff39179f2",
+        "native/continuation-requirements.txt": "9bd25a4d46fade1310d8a1b38c2ed4fa1b0b04e126a1318d5b14d216551e495d",
+        "native/continuation.cpp": "c629316746f1b6678e611369e97bf7479bfe8f337c460cae87d4368e52609a61",
+        "native/continuation_codec.py": "1b6dbc37ce13f0d05fe6dd7d81dd37bf08b50d4fa4fcd72b822308ba99221f12",
+        "native/controller_wait.cpp": "87cd8711677c2050e849f30a66eb828a4ad7cc43bc5948c2125726cdc46f54e6",
+        "native/dta_checkpoint.cpp": "05d9610eafe2e01d92be07847003499e63e1842571ace351f1fbbb2ed18c5e39",
+        "native/dta_container.cpp": "be9c9469e2719d479f5bbce04eaf1febffc01df4504b1bc62459f56f3e8ed763",
+        "native/dta_container_bindings.cpp": "25d2977badf3b8dfe95b3015cacaf65c4a679117f6a25c5f185b804faa36b9b2",
+        "native/dta_module.cpp": "79caa97cbff605e6221c8439ae4c346288dc6f0e2b2f86f6b9a0d320e36928b9",
+        "native/dta_variable_bindings.cpp": "e64178b48d4a8df7e414384ab68bc4f4bdbd550717210ed090470a62872bd992",
+        "native/dump_state.cpp": "beef3ed4b2c674942059a9a9f3483fb034dd1a4e342e2b624f985f78231d2a1a",
+        "native/error_conversion.cpp": "a51a56e303d932171add7e7df022a22dc333b2ed23816acff6a07f99271701bb",
+        "native/executor_environment.cpp": "40b2d6eafa8b6290349681ede9c5b381a618ad3146bc7c8ef90ea1b87ed0669f",
+        "native/executor_proc.cpp": "9ca587423b9123cd4a70374f3304ebd57aa4c94662e316ba98212a6b1bbafa53",
+        "native/frame_manager_database.cpp": "a5e3bf7b9d056d412c7e6f40a341682dae3cdd08b94e9ff8d375e0fd0ba7aaf3",
+        "native/frame_manager_definitions.cpp": "6136c8f7f574b6090213a2ebf548df066f72969f9015f4e1c8e1b5a8def0ba4c",
+        "native/frame_manager_execute.cpp": "c1274f3838a3feb42e159aca0f1ff7ce4e552ed7a22a778e2e1eb01a01bf997e",
+        "native/frame_manager_recovery.cpp": "035fa292b2aeb15ce9cd4cabdc7e9ff89eb7a64f23ae71b40cbf8cb41c54ced3",
+        "native/frame_manager_script.cpp": "34c38d9b7ad79faf99283e7b440b42093bcf872159cf3b308264032b471178bd",
+        "native/helper_compile.cpp": "40cdb71f30e38a437f68ad0eabea10525df47cf8feeb41741962cf42fc8112e0",
+        "native/helper_frames.cpp": "0c6921ee5e042b3702eaec81b1dd03ef766caa65c008a8cedc27d3fd9a20d309",
+        "native/helper_lifecycle.cpp": "df8cd1df1be404dc0e06bb7aeeb30173b28678ae5aec2b7b887f7c7b73729113",
+        "native/helper_namespace.cpp": "945da8a1a99a059d6654a0f4ed54beb5ef0424f02e66808c8474f8e02e5a6318",
+        "native/interpreter_shutdown.cpp": "c357a3a046199065d97fea4860c4d9a270c51379eb58937018afdbf6003f07dd",
+        "native/log_binding.cpp": "f4421e46e01c0514a3cfb595b95dcece4899080590dab6ab8b35d790ba0c4058",
+        "native/process_subscription.h": "6fcab6cd51da169dd3624010227e0af4d36419b364de5337f261dcbe15c8019d",
+        "native/py_value_assignment.cpp": "da4b4daf897311c02f58619ca4c734889d18ae20dd98f4b302a840d1397921dc",
+        "native/qualify_analysis.cpp": "375d5b6daa13cfda1e4cd790dcb87dda504511670ca07fd141e1500ce3c14b6d",
+        "native/qualify_analysis.py": "75e59c9d55c0fcf1244831c64dfedbb4fc86e153f279cf26cd28b5bac05feab7",
+        "native/qualify_bindings.cpp": "2d66bed55d70787fba26cc77fd011dcd7b821bed3fba6fdd36d5135417a8df98",
+        "native/qualify_cold.py": "f6d623a46890fdc10808ae3bcbd662f7782b44349f7334869d4dd89d653cca95",
+        "native/qualify_dta.cpp": "62257bd0370be3c3bc07ebdf661c53688c13a6fbafd76e1d694f1949510b06bd",
+        "native/qualify_dta.py": "769d81a6864db6eff7fde83e188e8c8c88d8eb18614efdfa336bb8f6fa609212",
+        "native/qualify_dta_checkpoint.py": "dbed43cd1cb4e901e355760a02656c2ae6e69e42922c0163972b4b82479280e4",
+        "native/qualify_dta_embed.cpp": "a8111d34d50b03121324b618d7c6ac1a033217eefb0e0bdb5e302d08a983c762",
+        "native/qualify_embed.cpp": "e5ac928f1904d00d3412e20aef85f1e98c4fb818ea9b536a41e819ddc786833a",
+        "native/qualify_manager.inc": "c0c524f1c6410dba9305bd4189e05e423daaa935d94026248813b19a5d954209",
+        "native/qualify_manager.py": "172c5ba699700b5fcdc0c261e173f67e857c6fa0fabe9639ec1a2945075635cb",
+        "native/qualify_storage.cpp": "8f4e9ae54e1011d91d3b9f4728ca28f31e6a61e67722316003724628dceba1e1",
+        "native/qualify_storage.py": "4019563a758d53c84313efb20a0e3e455d031d43fb15769e9809e8bc1d6a972e",
+        "native/qualify_util.cpp": "675da29bc3dba40d9590ad0a00ffd51045c942eb5fd750606f25a58303c90049",
+        "native/qualify_util.py": "80bcf36dda39c6fe794d4e1c446dd2f98c97b2e00279c1467344172c51bb57d1",
+        "native/qualify_warm.py": "9e5b89dacfceb4d3c4e5ffb9d3a50e3a465b2da0e3c987ce1024cc0d28585bca",
+        "native/qualify_ws.inc": "5b08c4c48d83b51daf6ca4ccbaffee22769a786d4ee90cf4edd41559bba70f41",
+        "native/qualify_ws.py": "0d176073d15424625b6f2cd04fe8eab992c09987793b92b813acce1f351d50d3",
+        "native/service_registration.cpp": "dddb921737bfd47f31ff4b13e5459ae29c4dbf31943605b6d534e268140863c6",
+        "native/service_watchdog.cpp": "97f51269f1e7e15d0110470a99f301782d0aea2c84f5707d03bdeaea76af35e4",
+        "native/shell_quote.inc": "9d963d039328a24bf08a1453a46ce6ba935bdd1bd80556d15f86796b6b6b3097",
+        "native/socket_connect.cpp": "021bf1732a8771ee62cae0f9c1df6fdffc6f5c06f025a8d7646e274048e27e6a",
+        "native/time_arithmetic.cpp": "41be0be321a55a8efa6c0f27e8b4ad1dbf4158fedb736e9a5d924188b3f54f20",
+        "native/variable_monitor.cpp": "1d65c2199dddfa2adbfd9b10cb10d6b3301d464529f5734534b6724e12855c42",
+        "native/ws_controller.cpp": "69ee47b8afb5a02bb26a7bb18afd5dda272853074189193e60c593c872b165e0",
+        "native/ws_dynamic.cpp": "18298c5134525b219509c5dbb25222f16173de480000c58034fe096c9074512d",
+        "native/ws_dynamic.h": "058a5f4175331f841d11d0e399b58404d354e77cb3433eb90905195bbf7337b9",
+        "native/ws_filter.cpp": "9b762fc08744d15e6d35966b728b9076d71d23a0f7c40986fbbdf7ff01138f06",
+        "native/ws_frame.cpp": "2e291e3c3214b43d77be420cad3fd2310b5b039e14a54894a93f321f252c88fb",
+        "native/ws_static.cpp": "6aa7abafd510f571cab3cac946b2be770d241138b552a5dbf506399f83693317",
+        "native/ws_storage.cpp": "be50f4f14389077891d467e01b09edafb861b4f7c0250a2a1a95e15e604f08ed",
+        "native_build.py": "86b11bac138d630d81ed222d8f2e87b3d5bfc490c94cd043d4a91969bc80e652",
+        "native_manifest.py": "6babaae871e213a11b63660e18b3a5a2b7e9959b4b54c1ca6bc62cbf2ea11ab9",
+        "native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+        "native_probe.py": "3aeac34e80cfb00a0033e87e05e9a4282c2781bc734f58b6f58d8bea2892adf6",
+        "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+        "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
+        "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+        "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
+        "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
+        "qualify_context_ownership.cpp": "ae1de4ae81b47170306a6c8664db3ad39b4648038fafd3aafcf7646667214ea1",
+        "qualify_executor.py": "0370e95844a01184fa0530ec220ac0e2a0636851bd1f57ec447c6e5586872568",
+        "qualify_ipc_ownership.cpp": "4533942d0067d25ee258206b470dfc0a9d5fb1d7ee3ec7f8828c619e1ca8621f",
+        "qualify_package.py": "12107e90724c5c8c1860ccc5401af84f8284413a834c2b319a94e763f5b55ba1",
+        "qualify_process.cpp": "5e6aa65b81a02d015a73ef1d0be028d2a685d4f5743dea27cbcb6d6524277bf6",
+        "qualify_service_bindings.cpp": "771d4701f695d6285ddd7d55aa50b65deac77f5a747733a7338162c7db79cfcb",
+        "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
+        "record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
+        "runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
+        "server_peer.cpp": "65ef0cf1b7e8489223ed95ed366527987d0d61328871588193518ac6a4095403",
+        "service_recovery_fixtures.py": "bb7591fec4978600f2da7367d2a837794cb7e0a43c1c7a9a43f9dc7d38a6e5fc",
+        "service_recovery_peer.cpp": "9bc05ff17577c3640acb3b2bb48598709395c5fa0112a8912f5da14919633ff9",
+        "trace-unwind.Dockerfile": "e1c96eb52127facbf9c205d7210207d6e973e9c2f675aeaf4f505135d7d51fa3",
+        "trace-unwind.Dockerfile.dockerignore": "75c9178c954dcdb2c0f4449c622859eaeee9b23c4996112b4664a18630e87e8e",
+        "trace_unwind_probe.cpp": "4270b43411bc70dd67a602800a3afa2cf10f464cd44ac616dde5038b0b09c9cc",
+        "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+      },
+      "native_artifacts": {
+        "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+        "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
+        "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+      },
+      "native_gate_policy_sha256": "afca4a235b9f1f29ad02ce74bfb5057bad6d73eacd1ca334bd305b0980fe42cd",
+      "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
+      "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
+      "profile": "ASan/UBSan diagnostic native foundation",
+      "python_sources": {
+        "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
+        "spell/config/__init__.py": "e9a3cf44565ca9781894434f3d09957cc0d8d7efd0fcc0e493e61cd4065ee4fd",
+        "spell/config/base.py": "e3c8281c3dd57611722dda067b86755368a11c6d6ed4aeba74931202141a311d",
+        "spell/config/constants.py": "d935e4b57b61316021c666dad43a450ab635c9b2d3d297bc0bc504f1e8c392dd",
+        "spell/config/contexts.py": "a524cdc09b68730cbc62dbdf2a04165248958c22716053259df65304c5be4d33",
+        "spell/config/drivers.py": "5d5a3a183753917483345703d1c429aab3db57c02b91f88f827fb54d9adb9bad",
+        "spell/config/reader.py": "7a3b671be84ec4f43743ada5302114e1dea12bc1c29edfa27e92b1551e614d63",
+        "spell/lang/__init__.py": "e9d66ef319d6813bbb3412029d4dd1d0d7e653063c9536dfb16fc30caaa8c9d3",
+        "spell/lang/constants.py": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63",
+        "spell/lang/functions.py": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735",
+        "spell/lang/helpers/__init__.py": "e69d2eea7957bc52e3a4fb08bcd23543ab85ee9b548b80db59e91e418c967f08",
+        "spell/lang/helpers/basehelper.py": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+        "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+        "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
+        "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+        "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+        "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
+        "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+        "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
+        "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
+        "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+        "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+        "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+        "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+        "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
+        "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
+        "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+        "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
+        "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
+        "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
+        "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+        "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
+        "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
+        "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
+        "spell/lib/adapter/data.py": "a95815dcc408901699d393bf3fb304875583618aa52e140f4207bef3b25a2a0b",
+        "spell/lib/adapter/databases/__init__.py": "199acfcab148111b8f8da37793125dc81ff6dafea8c56a9965c844a7a00a929f",
+        "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+        "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
+        "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
+        "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+        "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
+        "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
+        "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
+        "spell/lib/adapter/databases/dbsvn.py": "0c6179425e2cbfee4d0630d1e94c509eca1e479128b4c781c7bb26fa4b7666b1",
+        "spell/lib/adapter/databases/dbsvnspb.py": "7268148060bd52286a86d06694f2f94785fa0972b4293bdcec5af105e3dcda78",
+        "spell/lib/adapter/dbmgr.py": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+        "spell/lib/adapter/ev.py": "5786a54339262085fb270b6526650bd23104a800d77fa5ebb6522b20d9c3ef2e",
+        "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+        "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+        "spell/lib/adapter/gcstime.py": "03bcea64248879d7a48407d73686518f5eb00b4cfda25e756da50d227cbe00ad",
+        "spell/lib/adapter/interface.py": "fd303da1d4264e520b5048cf6bee88ec89250bd457d8e4a747a063e38b72f504",
+        "spell/lib/adapter/memory.py": "51f5ec82eeecc6bf1c3a552c4f68df874182b391eafe2583e9abe05bd985e902",
+        "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
+        "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
+        "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
+        "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+        "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
+        "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
+        "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
+        "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+        "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+        "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
+        "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
+        "spell/lib/adapter/utctime.py": "ca549684d68decf7cc8edffe8e8f1c4ebbdf05b8162edaaf510538f9bda7572b",
+        "spell/lib/adapter/value.py": "7e91190aa1ab9a3e35176af68a752330ca5c2df0dd3478955d2fdbab0b05c8a4",
+        "spell/lib/adapter/verifier.py": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+        "spell/lib/drivermgr.py": "720bbaa58c8fe325e1712c8b8beac034bdbcd437e8a9a37fd0cbdd2642d43cf3",
+        "spell/lib/empty/__init__.py": "6e78d364c38cf7eba1735d27c61eed2b1b8d441942141e0762bcfc4a4cf29360",
+        "spell/lib/empty/config.py": "6e7fbec72c4d3c0934306b24e75cd923a46c03dd887d531f4f55f254de274e77",
+        "spell/lib/empty/ev.py": "21f2cf0e4f3ea30b71ef1830a2945044ea3644ec223d7927f1deb66e17ef35ac",
+        "spell/lib/empty/memory.py": "62603e587dfa99615cc040482592e4be71ad70d56e7250579b1867299afecdf8",
+        "spell/lib/empty/pcs.py": "9b2d227dcd26fbbbfa9d0b2ccedfb2e85e17eb68df9a1b9d0d9c268988d728ff",
+        "spell/lib/empty/ranging.py": "62d9bc7833f1c259287cacfcd96811891e5b33031976770f9ab70c68f9e9b40a",
+        "spell/lib/empty/resources.py": "b9cd3d011af6d1795a775ee1ae5c454df1ecee9b466a4ff70017d82302ff783b",
+        "spell/lib/empty/task.py": "1326670622d39fa1d2a29c3f8a006e9185faea326e652730401b22ec49ea3d74",
+        "spell/lib/empty/tc.py": "f4ba9324afe4aa56b80bffde4fb223db2c3403452c1f60dba31968ecc5f33a48",
+        "spell/lib/empty/tm.py": "ee850eb0ae38724abaf7ab6ddf8ed4803638eeeb61d18db20e65aa9bad547e74",
+        "spell/lib/empty/usr.py": "2ea9955733ab66f68ea9c41fc0dae41b08e2e7125bb47f0f8ef63e51c2b49da1",
+        "spell/lib/exception.py": "025425c18d18165839762c12ab4cf52eed5affca5c7631f854b39b605b7cd550",
+        "spell/lib/factory.py": "97b5c8974de67956996f0a52d43a9ce1ddbf1008701897744fc5ae800a1d1916",
+        "spell/lib/goto.py": "6499d566d0a89276642ecde36de0a7e889f1986829b22c0999ad943d15981f59",
+        "spell/lib/registry.py": "590822255542ee9f66dd9bf805414d5faea5836c94d9f8642cdb3ecf71c7dc03",
+        "spell/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+        "spell/stubs/SPELLDriver_pb2_grpc.py": "8bec44223f7d1fdef97381ad671407aed274a548e846f560f37f7eeafdba8b10",
+        "spell/stubs/SPELLExecutor_pb2.py": "404eae03a63cd82d3d5848ce00a69100ab3d283308124122f9a276351e239b49",
+        "spell/stubs/SPELLExecutor_pb2_grpc.py": "56ec4e0e968e70f637b461726b8d83ef7c52f4131679c6078d1c0ffb66d561d2",
+        "spell/stubs/SPELLService_pb2.py": "8fdd8b425c0c4783ae5c26209dbb8ca3e21db61e8070242589a5981c67e2ab12",
+        "spell/stubs/SPELLService_pb2_grpc.py": "639293050022d32cf9d18e5ccbafa39c7875ba277219d2d46225443138dbe864",
+        "spell/stubs/__init__.py": "2cb65c9515e66d80e2adfc9f196820efd57cfe3c83f180ee9324c774536f870e",
+        "spell/utils/__init__.py": "990ec6197e735f252b400257fb28bab8c82d8aa104cbab5706b9ef7eeed9ee79",
+        "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
+        "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
+        "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
+        "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+        "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
+        "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
+        "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
+        "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
+        "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
+        "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
+        "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+      },
+      "release_scope": "Original native foundation; full language conformance remains separate",
+      "version": "0.3.0"
+    },
+    "native_artifacts": {
+      "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+      "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
+      "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+    },
+    "python_sources": {
+      "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
+      "spell/config/__init__.py": "e9a3cf44565ca9781894434f3d09957cc0d8d7efd0fcc0e493e61cd4065ee4fd",
+      "spell/config/base.py": "e3c8281c3dd57611722dda067b86755368a11c6d6ed4aeba74931202141a311d",
+      "spell/config/constants.py": "d935e4b57b61316021c666dad43a450ab635c9b2d3d297bc0bc504f1e8c392dd",
+      "spell/config/contexts.py": "a524cdc09b68730cbc62dbdf2a04165248958c22716053259df65304c5be4d33",
+      "spell/config/drivers.py": "5d5a3a183753917483345703d1c429aab3db57c02b91f88f827fb54d9adb9bad",
+      "spell/config/reader.py": "7a3b671be84ec4f43743ada5302114e1dea12bc1c29edfa27e92b1551e614d63",
+      "spell/lang/__init__.py": "e9d66ef319d6813bbb3412029d4dd1d0d7e653063c9536dfb16fc30caaa8c9d3",
+      "spell/lang/constants.py": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63",
+      "spell/lang/functions.py": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735",
+      "spell/lang/helpers/__init__.py": "e69d2eea7957bc52e3a4fb08bcd23543ab85ee9b548b80db59e91e418c967f08",
+      "spell/lang/helpers/basehelper.py": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+      "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+      "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
+      "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+      "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+      "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
+      "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+      "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
+      "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
+      "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+      "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+      "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+      "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+      "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
+      "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
+      "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+      "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
+      "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
+      "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
+      "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+      "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
+      "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
+      "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
+      "spell/lib/adapter/data.py": "a95815dcc408901699d393bf3fb304875583618aa52e140f4207bef3b25a2a0b",
+      "spell/lib/adapter/databases/__init__.py": "199acfcab148111b8f8da37793125dc81ff6dafea8c56a9965c844a7a00a929f",
+      "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+      "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
+      "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
+      "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+      "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
+      "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
+      "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
+      "spell/lib/adapter/databases/dbsvn.py": "0c6179425e2cbfee4d0630d1e94c509eca1e479128b4c781c7bb26fa4b7666b1",
+      "spell/lib/adapter/databases/dbsvnspb.py": "7268148060bd52286a86d06694f2f94785fa0972b4293bdcec5af105e3dcda78",
+      "spell/lib/adapter/dbmgr.py": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+      "spell/lib/adapter/ev.py": "5786a54339262085fb270b6526650bd23104a800d77fa5ebb6522b20d9c3ef2e",
+      "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+      "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+      "spell/lib/adapter/gcstime.py": "03bcea64248879d7a48407d73686518f5eb00b4cfda25e756da50d227cbe00ad",
+      "spell/lib/adapter/interface.py": "fd303da1d4264e520b5048cf6bee88ec89250bd457d8e4a747a063e38b72f504",
+      "spell/lib/adapter/memory.py": "51f5ec82eeecc6bf1c3a552c4f68df874182b391eafe2583e9abe05bd985e902",
+      "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
+      "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
+      "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
+      "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+      "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
+      "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
+      "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
+      "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+      "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+      "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
+      "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
+      "spell/lib/adapter/utctime.py": "ca549684d68decf7cc8edffe8e8f1c4ebbdf05b8162edaaf510538f9bda7572b",
+      "spell/lib/adapter/value.py": "7e91190aa1ab9a3e35176af68a752330ca5c2df0dd3478955d2fdbab0b05c8a4",
+      "spell/lib/adapter/verifier.py": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+      "spell/lib/drivermgr.py": "720bbaa58c8fe325e1712c8b8beac034bdbcd437e8a9a37fd0cbdd2642d43cf3",
+      "spell/lib/empty/__init__.py": "6e78d364c38cf7eba1735d27c61eed2b1b8d441942141e0762bcfc4a4cf29360",
+      "spell/lib/empty/config.py": "6e7fbec72c4d3c0934306b24e75cd923a46c03dd887d531f4f55f254de274e77",
+      "spell/lib/empty/ev.py": "21f2cf0e4f3ea30b71ef1830a2945044ea3644ec223d7927f1deb66e17ef35ac",
+      "spell/lib/empty/memory.py": "62603e587dfa99615cc040482592e4be71ad70d56e7250579b1867299afecdf8",
+      "spell/lib/empty/pcs.py": "9b2d227dcd26fbbbfa9d0b2ccedfb2e85e17eb68df9a1b9d0d9c268988d728ff",
+      "spell/lib/empty/ranging.py": "62d9bc7833f1c259287cacfcd96811891e5b33031976770f9ab70c68f9e9b40a",
+      "spell/lib/empty/resources.py": "b9cd3d011af6d1795a775ee1ae5c454df1ecee9b466a4ff70017d82302ff783b",
+      "spell/lib/empty/task.py": "1326670622d39fa1d2a29c3f8a006e9185faea326e652730401b22ec49ea3d74",
+      "spell/lib/empty/tc.py": "f4ba9324afe4aa56b80bffde4fb223db2c3403452c1f60dba31968ecc5f33a48",
+      "spell/lib/empty/tm.py": "ee850eb0ae38724abaf7ab6ddf8ed4803638eeeb61d18db20e65aa9bad547e74",
+      "spell/lib/empty/usr.py": "2ea9955733ab66f68ea9c41fc0dae41b08e2e7125bb47f0f8ef63e51c2b49da1",
+      "spell/lib/exception.py": "025425c18d18165839762c12ab4cf52eed5affca5c7631f854b39b605b7cd550",
+      "spell/lib/factory.py": "97b5c8974de67956996f0a52d43a9ce1ddbf1008701897744fc5ae800a1d1916",
+      "spell/lib/goto.py": "6499d566d0a89276642ecde36de0a7e889f1986829b22c0999ad943d15981f59",
+      "spell/lib/registry.py": "590822255542ee9f66dd9bf805414d5faea5836c94d9f8642cdb3ecf71c7dc03",
+      "spell/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+      "spell/stubs/SPELLDriver_pb2_grpc.py": "8bec44223f7d1fdef97381ad671407aed274a548e846f560f37f7eeafdba8b10",
+      "spell/stubs/SPELLExecutor_pb2.py": "404eae03a63cd82d3d5848ce00a69100ab3d283308124122f9a276351e239b49",
+      "spell/stubs/SPELLExecutor_pb2_grpc.py": "56ec4e0e968e70f637b461726b8d83ef7c52f4131679c6078d1c0ffb66d561d2",
+      "spell/stubs/SPELLService_pb2.py": "8fdd8b425c0c4783ae5c26209dbb8ca3e21db61e8070242589a5981c67e2ab12",
+      "spell/stubs/SPELLService_pb2_grpc.py": "639293050022d32cf9d18e5ccbafa39c7875ba277219d2d46225443138dbe864",
+      "spell/stubs/__init__.py": "2cb65c9515e66d80e2adfc9f196820efd57cfe3c83f180ee9324c774536f870e",
+      "spell/utils/__init__.py": "990ec6197e735f252b400257fb28bab8c82d8aa104cbab5706b9ef7eeed9ee79",
+      "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
+      "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
+      "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
+      "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+      "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
+      "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
+      "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
+      "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
+      "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
+      "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
+      "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+    }
+  },
+  "controller_exit_code": 0,
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "schema": "openbexi.spell.checkpoint-error-baseline/1",
+  "qualified_contracts": [],
+  "raw_report": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\024874618e044ed1bd872b46dd79dad2\\result.json",
+    "sha256": "fb69612259e987422fd2ca4fcae8a0eb2075f491975c5d7d0f58a344cf0d91ef",
+    "native_logs_archive_sha256": "84411aebbd8957a1a76a830b1ddf7c4a47b1c8b770d45e9f8ec03af5e8d80644"
+  },
+  "baseline_result": {
+    "passed": 8,
+    "failed": 16,
+    "interpretation": "Direct ValueError handling and a successful lambda pass; errors escaping lambda/named-function frames fail in fresh execution and actual kill/resume with both ON_LINE and ON_STEP. Untouched integrated image excludes the SCDB read-only recipe."
+  },
+  "existing_python_scope": {
+    "report": "conformance/evidence/python.json",
+    "sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975",
+    "checkpoint_claim": false,
+    "applicable_rows": [
+      "CMP-LRM244-EXAMPLE-016",
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION",
+      "CMP-LRM244-SECTION-2-1-12-013"
+    ],
+    "preserved_claim": "Imported language evaluation only, explicitly excluding line stepping, jumping, checkpoints, worker recovery and service lifecycle. Existing exact evaluation claims are not requalified or broadened here.",
+    "open_boundary": "Procedure-local function exception unwinding with recorder enabled is not qualified. No general warmstart/checkpoint or full-runtime acceptance follows from the existing Python rows."
+  },
+  "diagnostic_status": "Static hypothesis: callbackEventError sets m_inError and callbackEventReturn skips model/recorder cleanup, leaving the terminated child selected when the caller handler receives LINE. Runtime instrumentation and a candidate correction remain pending.",
+  "v06_dependency_satisfied": false
+}
