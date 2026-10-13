@@ -377,7 +377,11 @@ class Adapter:
             if status == 'PAUSED':
                 self.event('stopped', reason='breakpoint', threadId=1, allThreadsStopped=True)
             elif status == 'ERROR':
-                self.event('output', category='stderr', output=self.status.get('ErrorMsg', self.status.get('ErrorReason', str(self.status))) + '\n')
+                message = self.status.get('ErrorMsg', '')
+                reason = self.status.get('ErrorReason', '')
+                if reason and '\n' + reason + '\n' not in '\n' + message + '\n':
+                    message = message + '\n' + reason if message else reason
+                self.event('output', category='stderr', output=(message or str(self.status)) + '\n')
             if status in {'FINISHED', 'ERROR', 'ABORTED'}:
                 exit_code = 0 if status == 'FINISHED' else 1
                 self.session.close()
