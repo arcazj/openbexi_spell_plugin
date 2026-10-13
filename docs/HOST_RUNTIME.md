@@ -16,6 +16,16 @@ The [console qualification record](../conformance/evidence/console_input_review.
 binds the failing prior wheel, pipe regressions and actual IDE Run/Debug checks.
 This candidate keeps the accepted 0.3.0 artifacts and final v0.6 gate separate.
 
+The installable host candidate is now **0.3.1.dev1**, with a distinct package
+version so the IDE's local-wheel installer can upgrade an existing 0.3.0 host.
+Two independent offline builds produce identical wheels. The actual Qt plugin
+manager upgrades 0.3.0 to this candidate, Run and Debug both deliver successive
+child answers, removal succeeds, and ordinary Python still runs with the private
+project and preferences preserved. The [upgrade record](../distribution/evidence/host-console-upgrade.json)
+binds the exact wheel, all installed members and test transcripts. These checks
+use a private interpreter on the current Windows host; fresh-OS and browser
+verification remain separate.
+
 The local adapter currently owns one Development session. Run, breakpoints,
 current-frame variable inspection/editing, Step, pause, prompt input and normal
 shutdown have independent native adapter checks. Step Out and arbitrary
