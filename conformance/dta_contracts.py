@@ -103,8 +103,10 @@ def typed(dimension, spec):
             data[variable] = 2**40
             equal(data[variable], float(2**40))
         if name in ('RELTIME', 'DATETIME') and dimension == 'boundary':
-            times = (['-00:00:00.000001', '-00:00:00.5', '-00:00:01.5', '+00:00:00.000001']
-                     if name == 'RELTIME' else ['31-Dec-1969 23:59:59.5', '29-Feb-2000 00:00:00.123456'])
+            times = (['-00:00:00.000001', '-00:00:00.5', '-00:00:01.5', '+00:00:00.000001',
+                      '+200000 00:00:00.999999', '-199999 23:59:59.999999']
+                     if name == 'RELTIME' else ['31-Dec-1969 23:59:59.5', '29-Feb-2000 00:00:00.123456',
+                                               '1200-01-01 00:00:00.000001', '3000-01-01 00:00:00.999999'])
             for text in times:
                 value = TIME(text)
                 data[variable] = value
@@ -326,6 +328,36 @@ def time_constraints(dimension):
     equal(data[expected], TIME('01-Jan-1970 00:00:00') if dimension == 'boundary' else TIME('29-Feb-2000 00:00:00'))
 
 
+def time_precision(dimension):
+    data = container()
+    cases = [
+        (DATETIME, datetime.datetime(1200, 1, 1, microsecond=1)),
+        (DATETIME, datetime.datetime(3000, 1, 1, microsecond=999999)),
+        (RELTIME, datetime.timedelta(days=200000, microseconds=999999)),
+        (RELTIME, datetime.timedelta(days=-200000, microseconds=1)),
+    ]
+    if dimension == 'boundary':
+        cases += [(DATETIME, datetime.datetime(1, 1, 1, microsecond=1)),
+                  (DATETIME, datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)),
+                  (RELTIME, datetime.timedelta(days=999999999, seconds=86399, microseconds=999999))]
+    for index, (kind, raw) in enumerate(cases):
+        variable, value = key(str(index)), TIME(raw)
+        data[variable] = Var(Type=kind)
+        if dimension in ('failure', 'recovery'):
+            # Correction enters through actual native CIF and literal TIME
+            # construction; no precision may be lost on either side of IPC.
+            answer = (raw.isoformat(' ') if kind == DATETIME else
+                      ('+200000 00:00:00.999999' if raw.days > 0 else '-199999 23:59:59.999999'))
+            answers(('Invalid input for date/time', [], answer))
+            data[variable] = 42
+            equal(data[variable].value(), raw)
+        for iteration in range(3):
+            data[variable] = value
+            value = data[variable]
+            equal(value.value(), raw)
+            item(variable, TIME(raw))
+
+
 for group, contracts, operation, oracle in (
     ('mapping', ['TYPE-DATACONTAINER', 'EXAMPLE-149'], mapping, 'LRM p.85: native mapping keys/order/iteration and methods; empty/numeric/Unicode boundaries; invalid calls reject without corruption'),
     ('declarations', ['SYNTAX-DATA-CONTAINER-VAR', 'EXAMPLE-150'], declarations, 'LRM pp.84-85: explicit/inferred native variable declarations and independent modifier consistency checks; invalid definitions reject before storage'),
@@ -337,6 +369,7 @@ for group, contracts, operation, oracle in (
     ('literal-inputs', [], literal_inputs, 'LRM pp.84-85 typed user inputs: literal data is accepted, expression-shaped answers are never executed; invalid input reprompts and a later literal recovers; selected Expected strings preserve apostrophes and colons'),
     ('notifications', [], notifications, 'LRM p.84: every native read/assignment has exact IN PROGRESS then SUCCESS/FAILED ITEM messages and values; failed assignment prompts and corrected read/write operations recover in the same container'),
     ('time-constraints', [], time_constraints, 'LRM pp.84-85: native RELTIME limits use chronological order across zero and signed fractions; DATETIME Expected values round-trip at epoch zero and leap day; rejected range assignment recovers through actual prompt'),
+    ('time-precision', [], time_precision, 'Native TIME must preserve integer datetime/timedelta fields across repeated assignment, read and actual correction prompts; independent Python microsecond values include years1/9999 and maximum positive timedelta. No new inventory allocation.'),
 ):
     for dimension in ('positive', 'boundary', 'failure', 'recovery'):
         check(group, contracts, dimension, operation, oracle)

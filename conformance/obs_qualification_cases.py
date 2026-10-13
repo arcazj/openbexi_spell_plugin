@@ -81,9 +81,15 @@ operators = {
 }
 for row, (operator, good, edge, bad) in operators.items():
     statement = lambda values: f"Verify('{VOLTAGE}', {operator}, {values}, Tolerance=0, {POLICY})"
+    failure = f"rejects(SyntaxException, lambda: Verify('{VOLTAGE}', {operator}, {good}, 123, {POLICY}))"
+    if operator in ('lt', 'le', 'gt', 'ge', 'bw', 'nbw'):
+        invalid = "'27', 29.0" if operator in ('bw', 'nbw') else "'29'"
+        failure += '\n' + f"rejects(DriverException, lambda: {statement(invalid)})"
+    boundary = 'assert ' + statement(edge) + '\nassert not ' + statement(bad)
+    if operator in ('eq', 'neq'):
+        boundary += '\n' + ('assert not ' if operator == 'eq' else 'assert ') + statement('10**400')
     contract('operator-' + operator, ['OPERATOR-VERIFY-' + row],
-             'assert ' + statement(good), 'assert ' + statement(edge) + '\nassert not ' + statement(bad),
-             f"rejects(SyntaxException, lambda: Verify('{VOLTAGE}', {operator}, {good}, 123, {POLICY}))")
+             'assert ' + statement(good), boundary, failure)
 
 contract('single', ['EXAMPLE-035', 'SYNTAX-VERIFY-CONDITION', 'SECTION-4-3-1-031'],
          f"assert Verify(['{VOLTAGE}', eq, 28.0], {POLICY})",
@@ -102,7 +108,7 @@ contract('tolerance', ['EXAMPLE-038', 'SECTION-4-3-3-033'],
 
 contract('ignore-case', ['MODIFIER-IGNORECASE', 'EXAMPLE-046', 'SECTION-4-3-8-038'],
          f"assert Verify('TM.THERMAL.MODE', eq, 'off', IgnoreCase=True, {POLICY})",
-         f"assert Verify('TM.THERMAL.MODE', neq, 'oFf', IgnoreCase=False, {POLICY})\nassert not Verify('TM.THERMAL.MODE', neq, 'oFf', IgnoreCase=True, {POLICY})",
+         f"assert Verify('TM.THERMAL.MODE', neq, 'oFf', IgnoreCase=False, {POLICY})\nassert not Verify('TM.THERMAL.MODE', neq, 'oFf', IgnoreCase=True, {POLICY})\nassert not Verify('TM.THERMAL.MODE', eq, 3, IgnoreCase=True, {POLICY})",
          f"rejects(DriverException, lambda: Verify('TM.THERMAL.MODE', lt, 'OFF', IgnoreCase=True, {POLICY}))")
 
 contract('result', ['TYPE-VERIFYRESULT', 'EXAMPLE-039', 'EXAMPLE-040', 'EXAMPLE-041', 'SECTION-4-3-4-034'],
@@ -159,3 +165,17 @@ contract('verify-delay', ['EXAMPLE-045', 'SECTION-4-3-7-037'],
          f"began = time.monotonic()\nassert Verify('{VOLTAGE}', eq, 28.0, Delay=.3, {POLICY})\nassert time.monotonic() - began >= .3",
          f"assert Verify('{VOLTAGE}', eq, 28.0, Delay=TIME('+000 00:00:00.1'), {POLICY})\nassert Verify('{VOLTAGE}', eq, 28.0, Delay=0, {POLICY})",
          f"rejects(SpellException, lambda: Verify('{VOLTAGE}', eq, 28.0, Delay='invalid', {POLICY}))")
+
+contract('comparison-edge-types', [],
+         f"assert not Verify('TM.THERMAL.MODE', eq, 3, IgnoreCase=True, {POLICY})\nassert Verify('TM.THERMAL.MODE', neq, 3, IgnoreCase=True, {POLICY})\nassert not Verify('{VOLTAGE}', eq, '28', {POLICY})",
+         f"assert not Verify('{VOLTAGE}', eq, 10**400, {POLICY})\nassert Verify('{VOLTAGE}', neq, -(10**400), {POLICY})\nassert Verify('{VOLTAGE}', lt, 10**400, {POLICY})\nassert not Verify('{VOLTAGE}', eq, float('inf'), {POLICY})\nassert not Verify('{VOLTAGE}', eq, float('nan'), {POLICY})",
+         f"rejects(DriverException, lambda: Verify('{VOLTAGE}', lt, '29', {POLICY}))\nrejects(DriverException, lambda: Verify('{VOLTAGE}', eq, 28.0, Tolerance=float('nan'), {POLICY}))\nrejects(DriverException, lambda: Verify('{VOLTAGE}', eq, 28.0, RelTolerance=-1, {POLICY}))",
+         f"rejects(DriverException, lambda: Verify('{VOLTAGE}', lt, '29', {POLICY}))\nassert Verify('{VOLTAGE}', eq, 28.0, {POLICY})",
+         oracle='Actual verifier workers and DSS values: mixed-type equality is False, huge integers retain mathematical comparison, invalid ordering/tolerance reaches DriverException through PromptFailure/HandleError; no uncaught worker errors and subsequent normal comparison succeeds. No new inventory allocation.')
+
+contract('comparison-worker-policy', [],
+         f"rejects(DriverException, lambda: Verify('{VOLTAGE}', bw, '27', 29.0, {POLICY}))",
+         f"assert not Verify('{VOLTAGE}', lt, '29', {POLICY.replace('PromptFailure=True', 'PromptFailure=False')})",
+         "plan_prompt(['CANCEL'], 'CANCEL')\nresult = Verify('TM.POWER.BUS_VOLTAGE', lt, '29', Wait=False, Retries=0, PromptUser=True, PromptFailure=True, OnFailure=CANCEL, OnFalse=SKIP)\nassert result is False",
+         f"rejects(DriverException, lambda: Verify('{VOLTAGE}', lt, '29', {POLICY}))\nassert Verify('{VOLTAGE}', eq, 28.0, {POLICY})",
+         oracle='Unexpected comparator exceptions follow original driver-failure policy: propagate when HandleError=False, suppress only under explicit PromptFailure=False, and real OnFailure CANCEL prompt differs from OnFalse SKIP. No new inventory allocation.')
