@@ -29,11 +29,15 @@ class Resources(ResourceInterface):
         if value is None:
             raise DriverException('A resource value cannot be unavailable (None)')
         options = resource_settings(config)
+        try:
+            payload = PackValue(value)
+        except (ValueError, OverflowError, TypeError, SyntaxError) as error:
+            raise DriverException('Resource value cannot be represented by the original driver schema') from error
         # LRM p69: updating a nonexistent GCS variable must fail. The lower
         # simulator RPC also serves administrative creation; the SPELL helper
         # exposes updates of existing resources. This profile has no delete API.
         call('RSC','GetResource',p.ResourceRequest(name=name,config=options))
-        return call('RSC','SetResource',p.ResourceRequest(name=name,value=PackValue(value),config=options)).value
+        return call('RSC','SetResource',p.ResourceRequest(name=name,value=payload,config=options)).value
 
     def _getResource(self,name,isLocal,config=None):
         if isLocal:

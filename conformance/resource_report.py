@@ -40,7 +40,7 @@ def qualify(raw):
     report['inputs']['conformance/resource_report.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     report['scope'] = {
         'manual': 'SPELL Language Reference 2.4.4 pp69/80: resource scope and parameters depend on the driver and GCS.',
-        'profile': 'Existing shared GENERIC simulator resources with finite, non-null JSON values within the driver payload limit. IsLocal=True is unsupported; None retains the original unavailable sentinel. This does not claim arbitrary GCS or Python object support.',
+        'profile': 'Existing shared GENERIC simulator resources with finite, non-null JSON values within the driver payload limit; integer values, including nested values, must fit the original signed Int64 protobuf encoding. IsLocal=True is unsupported; None retains the original unavailable sentinel. This does not claim arbitrary GCS or Python object support.',
         'read': 'Native GetResource preserves exact False, zero, empty string/list/dict, nested dictionaries, float and Unicode values. Missing resources and invalid arguments fail with catchable SPELL exceptions.',
         'write': 'Native SetResource updates existing resources through real binary RPC and the persistent ground database. Dictionary values, including keys named like modifiers, remain data. Rejected names, arity, unavailable/non-finite/oversize values and unsupported local scope do not change resource state or create effect journal rows.',
         'existence': 'The SPELL proxy checks existence before the update RPC. The lower administrative RPC retains resource creation. This profile has no delete API; atomicity against external direct database deletion is not claimed.',
