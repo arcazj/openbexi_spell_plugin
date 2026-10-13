@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "scope": "Synchronous original procedure exception-unwind bookkeeping",
+  "runtime_image": "sha256:d114089990da580adb0933b449cbddb05f498c5e2f0241fa9dc274c0df854ed4",
+  "native_overlay": {
+    "mode": "fix",
+    "source": "lib/SPELL_EXC/src/SPELLframeManager.C",
+    "sources": {
+      "original_sha256": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
+      "ported_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf",
+      "patched_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7"
+    },
+    "recipes": {
+      "checkpoint_error_build.py": "ad3f12441feb3465404f75a264b952663ca001b90f4be10a66d31f73e34cfd66",
+      "incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+      "checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+    },
+    "artifacts": {
+      "libspell_executor313.so": "a10182c2af7e4197b877de9817b4ecd7779ee203aab1eac295fefcdb207818fa"
+    },
+    "original_artifacts": {
+      "libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d"
+    },
+    "limitation": "Diagnostic native overlay; installed RECORD and original package manifest intentionally unchanged. Not distribution acceptance."
+  },
+  "inputs": {
+    "conformance/checkpoint_error.Dockerfile": "a085fa937a974b278b34e20592ec71945ae253b7442a52fdf56861ac6df69e81",
+    "conformance/checkpoint_error.Dockerfile.dockerignore": "c11893fe980e6913cab0cd01efa2b3d0e58a7be237c51124fad66f9c98e692fe",
+    "conformance/checkpoint_error_build.py": "ad3f12441feb3465404f75a264b952663ca001b90f4be10a66d31f73e34cfd66",
+    "conformance/checkpoint_error_controller.py": "37d37868f26d72928bbe2743887539a20005cfbcb2b670b503f2ed90b5a5aa7a",
+    "conformance/checkpoint_error_gate.py": "2f0ce813607d420d069947e276dd43693238f007ac94b7c8b2ab5a69af686d47",
+    "conformance/checkpoint_error_install.py": "2729786f799e9d8d78fb600aa5769a5ec1d530275b5e266c37e9f8b7dca4683e",
+    "conformance/checkpoint_error_ipc.py": "0f3ee5f472c5fa4d472ec2574fb924159e1dc1814e95d337bd608712a762f4ef",
+    "conformance/checkpoint_error_provenance.py": "88715e7d11914a7f109d620dfa536d8d7494b49f39145fce4ce8116723a36a25",
+    "conformance/checkpoint_error_report.py": "a9589b63f98b0474b87c4b7df9588a5686066e7be0d3140ddb892ad706ebb08e",
+    "conformance/checkpoint_error_run.py": "53fb76c50922c52448827ea9b53c19965f13bad04c256908d22e5e8e4f0a1f62",
+    "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+    "source_port/native/continuation.cpp": "c629316746f1b6678e611369e97bf7479bfe8f337c460cae87d4368e52609a61"
+  },
+  "evidence": {
+    "baseline": {
+      "path": ".qualification/v0.6/checkpoint-error/024874618e044ed1bd872b46dd79dad2/result.json",
+      "sha256": "fb69612259e987422fd2ca4fcae8a0eb2075f491975c5d7d0f58a344cf0d91ef"
+    },
+    "audit": {
+      "path": ".qualification/v0.6/checkpoint-error/bbf7c15326844804b313ebf332af3c23/result.json",
+      "sha256": "2895e4a4094e06bf7f4c410d385d79af68ab44424ad3c0fd78b70ce1e2bab06e"
+    },
+    "candidate": {
+      "path": ".qualification/v0.6/checkpoint-error/e939742e1d12479c997a9153741e4bab/result.json",
+      "sha256": "eeb12f5f852e87b5fcc699cef8458c1f175ea3191c7910e13d4eb1a9d2f07216"
+    },
+    "expanded": {
+      "path": ".qualification/v0.6/checkpoint-error/eb74daa5937e420cbae171cce69b6738/result.json",
+      "sha256": "faed3399ab38683cb994220a2993a70ae99dd7a89a977796f060d2862161e922"
+    },
+    "ipc_baseline": {
+      "path": ".qualification/v0.6/checkpoint-error/35cbef6bdb25414ebdc131d2fd637677/result.json",
+      "sha256": "c9bb89cb5387b1ca4707d564a31c8b968ddae336cd8a5b516c2c69bbe4a9f96c"
+    },
+    "ipc_candidate": {
+      "path": ".qualification/v0.6/checkpoint-error/2b4f3758ccdb4d9abaae94a124bffb1d/result.json",
+      "sha256": "e16330ce546ef0b1b28a6593bd401b1a744f236d93d65192040f9511d260494d"
+    },
+    "ipc_blocker": {
+      "path": ".qualification/v0.6/checkpoint-error/967d8e73a0e54f64b3e75ed29ce3fbad/result.json",
+      "sha256": "96eb73fc220dcc6b6615fe3bd8723d2456d726ab8265358e216c891319220543"
+    },
+    "gate": {
+      "path": ".qualification/v0.6/checkpoint-error-gate/1ab1b3fb8b4547009140c7402b6e6dba/result.json",
+      "sha256": "1d8dbe0d83fd23b95075814fb9615d21239c952004ffc726d0e08439ce7e53fc"
+    }
+  },
+  "corrected_exact_controls": [
+    "ON_LINE:lambda-valueerror:fresh",
+    "ON_LINE:lambda-valueerror:resume",
+    "ON_LINE:named-valueerror:fresh",
+    "ON_LINE:named-valueerror:resume",
+    "ON_LINE:lambda-keyerror:fresh",
+    "ON_LINE:lambda-keyerror:resume",
+    "ON_LINE:lambda-original-driver:fresh",
+    "ON_LINE:lambda-original-driver:resume",
+    "ON_STEP:lambda-valueerror:fresh",
+    "ON_STEP:lambda-valueerror:resume",
+    "ON_STEP:named-valueerror:fresh",
+    "ON_STEP:named-valueerror:resume",
+    "ON_STEP:lambda-keyerror:fresh",
+    "ON_STEP:lambda-keyerror:resume",
+    "ON_STEP:lambda-original-driver:fresh",
+    "ON_STEP:lambda-original-driver:resume"
+  ],
+  "passed_checks": {
+    "original_checkpoint_controls": 24,
+    "additional_checkpoint_controls": 20,
+    "native_ipc_regressions": 4,
+    "existing_standalone_executor_gate": 23
+  },
+  "diagnosis": "An exceptional RETURN retained the completed child model. The next LINE in its caller captured the dead child. Audit records actual frame, tracked frame, and model pointers.",
+  "correction": "On a LINE in a known surviving ancestor, retire skipped child models and recorder frames through original return bookkeeping. Retain the original exceptional RETURN guard for uncaught errors.",
+  "unchanged_guards": [
+    "Continuation requires synchronous thread-owned frames",
+    "Original error-mode RETURN retains uncaught error stack"
+  ],
+  "limitations": [
+    "No new LRM clauses or general Python checkpoint support are qualified.",
+    "Existing qualified PY rows retain imported-language evaluation scope and checkpoint_claim=false.",
+    "Native host warmstart remains blocked independently: original recorder source identity is main#1 instead of the physical procedure file; 8 retained baseline IPC controls failed before target recovery.",
+    "The source-identity blocker was not bypassed with a filesystem alias; live native IPC recovery is not claimed.",
+    "Diagnostic native overlay; installed RECORD and original package manifest intentionally unchanged. Not distribution acceptance."
+  ],
+  "qualified_contracts": [],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
