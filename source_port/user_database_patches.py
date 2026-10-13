@@ -93,7 +93,7 @@ def apply(name, raw):
         try:
             # Require the existing storage and its write permission. Atomic
             # replacement alone would bypass a read-only file's permission.
-            original = os.open(self._filename, os.O_WRONLY | getattr(os, 'O_NOFOLLOW', 0))
+            original = os.open(self._filename, os.O_WRONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0))
             try:
                 info = os.fstat(original)
                 if not stat.S_ISREG(info.st_mode):
