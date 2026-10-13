@@ -1,0 +1,3645 @@
+{
+  "runtime_image": "sha256:e1677591c92ee6b14519b0819356a842d0e0a8a9ad3a1f67e49177e58023f919",
+  "inputs": {
+    "conformance/user_database_cases.py": "87eda5684263940552216de6356a9b66e5ffd3e3e370d21ee4d16f95fd3a76f5",
+    "conformance/user_database_controller.py": "61d340f55da4fbc76dcfb63b61a05b82440ed75e7e05255dc6140055beece127",
+    "conformance/run_user_database.py": "5b3595657b3b08d976ddaafaf9236b63ae02db5868a81f2f760c8fd8f2df3710",
+    "conformance/user_database_prompts.py": "2927dea278077b617e280ae9554539f1f5bfa0166e92b97100c664cf174af242",
+    "source_port/user_database_patches.py": "c93515980066512b32d70ba8d1bbc393dbc5de7f71ba9bf0b6450ef4560216d1",
+    "conformance/user_database.Dockerfile": "30b991f6b30461e4e476a00d08f650356da7850af87d4d80ab80b37fe91aa83e",
+    "conformance/user_database.Dockerfile.dockerignore": "ea1ca4e0d108f7a320f81301cf79c3568b3cbcf4e4695e02f65491dca258beba",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "host_runtime/python/native.py": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "conformance/user_database_report.py": "603c316a143b1d88ebec1eb347bca7e84ee4683b6268e7dff4b1f81c9e0fa183"
+  },
+  "checks": {
+    "create:positive": {
+      "passed": true,
+      "source": "\ndb=call(CreateDictionary,uri)\nassert db.id()=='data.IMP' and len(db)==0 and path.read_bytes()==b''\ndb['KEY']=42\nassert path.read_bytes()==b''\n",
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "create:boundary": {
+      "passed": true,
+      "source": "\ndb=call(CreateDictionary,uri+'.custom')\nassert (path.parent/'data.custom').is_file() and not path.exists()\nassert len(db)==0\ndb=CreateDictionary(uri+'configured',{'Notify':False},HandleError=False)\nassert len(db)==0 and (path.parent/'dataconfigured.IMP').is_file()\n",
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "create:failure": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'SAVED 42\\n')\ndb=call(LoadDictionary,uri)\ndb['UNSAVED']=99\nrejects(DriverException,lambda:call(CreateDictionary,uri))\nassert path.read_bytes()==b'SAVED 42\\n' and db['UNSAVED']==99\nfor bad in ('bad name','../escape','/absolute','bad//name',''):\n    rejects(SyntaxException,lambda:call(CreateDictionary,'usr://'+bad))\nrejects(SyntaxException,lambda:call(CreateDictionary,uri+'extra','extra'))\npath.parent.chmod(0o500)\ntry: rejects(DriverException,lambda:call(CreateDictionary,uri+'denied'))\nfinally: path.parent.chmod(0o700)\nassert not (path.parent/'datadenied.IMP').exists()\n",
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os.",
+      "dependencies": [
+        "create-prompt:failure"
+      ]
+    },
+    "create:recovery": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'SAVED 42\\n')\nrejects(DriverException,lambda:call(CreateDictionary,uri))\ndb=call(CreateDictionary,uri+'new')\ndb['KEY']=7\nassert call(SaveDictionary,db) is True\nassert call(LoadDictionary,uri+'new')['KEY']==7\nassert path.read_bytes()==b'SAVED 42\\n'\n",
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os.",
+      "dependencies": [
+        "create-prompt:recovery"
+      ]
+    },
+    "load:positive": {
+      "passed": true,
+      "source": "\npath.write_text(\"KEY 42\\nTEXT 'caf\\u00e9'\\n\",encoding='utf-8')\ndb=call(LoadDictionary,uri)\nassert db['KEY']==42 and db['TEXT']=='caf\\u00e9'\n",
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-143",
+        "CMP-LRM244-SECTION-4-15-5-1-101"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "load:boundary": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'')\nassert len(call(LoadDictionary,uri))==0\npath.write_text(\"VALUE {'items':[0,False,[],{}]}\\n\",encoding='utf-8')\nassert call(LoadDictionary,uri)['VALUE']=={'items':[0,False,[],{}]}\n",
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-143",
+        "CMP-LRM244-SECTION-4-15-5-1-101"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "load:failure": {
+      "passed": true,
+      "source": "\nrejects(DriverException,lambda:call(LoadDictionary,uri))\nassert not path.exists()\nrejects(SyntaxException,lambda:call(LoadDictionary,42))\nrejects(SyntaxException,lambda:call(LoadDictionary,uri,'extra'))\n",
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-143",
+        "CMP-LRM244-SECTION-4-15-5-1-101"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "load:recovery": {
+      "passed": true,
+      "source": "\nrejects(DriverException,lambda:call(LoadDictionary,uri))\npath.write_bytes(b'KEY 7\\n')\nassert call(LoadDictionary,uri)['KEY']==7\n",
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-143",
+        "CMP-LRM244-SECTION-4-15-5-1-101"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "save:positive": {
+      "passed": true,
+      "source": "\ndb=call(CreateDictionary,uri)\ndb['KEY']=42\nassert path.read_bytes()==b''\nassert call(SaveDictionary,db) is True\nassert path.read_bytes()==b'KEY\\t42\\n'\nassert call(LoadDictionary,uri)['KEY']==42\n",
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-145",
+        "CMP-LRM244-SECTION-4-15-5-3-103"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "save:boundary": {
+      "passed": true,
+      "source": "\ndb=call(CreateDictionary,uri)\nvalues={'ZERO':0,'FALSE':False,'EMPTY':'','LIST':[],'DICT':{},'BIG':2**80,\n        'FLOAT':-2.5,'TEXT':' caf\\u00e9  \"quoted\" '+chr(92)+'slash\\nsecond line ',\n        'NESTED':{'items':[False,0,'two  spaces']},'NONE':None}\nfor key,value in values.items(): db[key]=value\ndb['ABS']=TIME('2007-01-23 10:30:00.123456')\ndb['REL']=TIME('-0 00:00:00.000001')\npath.chmod(0o640)\nassert call(SaveDictionary,db) is True\nassert path.stat().st_mode & 0o777 == 0o640\nloaded=call(LoadDictionary,uri)\nfor key,value in values.items():\n    assert loaded[key]==value and type(loaded[key]) is type(value),(key,loaded[key],value)\nassert loaded['ABS'].value()==TIME('2007-01-23 10:30:00.123456').value()\nassert loaded['REL'].value()==TIME('-0 00:00:00.000001').value()\nassert not list(path.parent.glob('.spell-db-*'))\n",
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-145",
+        "CMP-LRM244-SECTION-4-15-5-3-103"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "save:failure": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'KEY 42\\n')\ndb=call(LoadDictionary,uri)\ndb.set('KEY','not an integer',HEX)\nbefore=path.read_bytes()\nrejects(DriverException,lambda:call(SaveDictionary,db))\nassert path.read_bytes()==before and not list(path.parent.glob('.spell-db-*'))\ndb=call(LoadDictionary,uri)\nfor key,value in [('#lost',1),('NONFINITE',float('nan')),('NESTED',{'bad':float('inf')}),('OBJECT',object())]:\n    db[key]=value\n    rejects(DriverException,lambda:call(SaveDictionary,db))\n    assert path.read_bytes()==before and not list(path.parent.glob('.spell-db-*'))\n    del db[key]\ncyclic=[]\ncyclic.append(cyclic)\ndb['CYCLE']=cyclic\nrejects(DriverException,lambda:call(SaveDictionary,db))\nassert path.read_bytes()==before\ndel db['CYCLE']\npath.chmod(0o400)\ntry: rejects(DriverException,lambda:call(SaveDictionary,db))\nfinally: path.chmod(0o600)\nassert path.read_bytes()==before\nrejects(SyntaxException,lambda:call(SaveDictionary,db,'extra'))\npath.unlink()\nrejects(DriverException,lambda:call(SaveDictionary,db))\nassert not path.exists()\n",
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-145",
+        "CMP-LRM244-SECTION-4-15-5-3-103"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "save:recovery": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'KEY 42\\n')\ndb=call(LoadDictionary,uri)\ndb.set('KEY','bad',HEX)\nrejects(DriverException,lambda:call(SaveDictionary,db))\ndb=call(LoadDictionary,uri)\ndb['KEY']=17\nassert call(SaveDictionary,db) is True\nassert call(LoadDictionary,uri)['KEY']==17\n",
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-145",
+        "CMP-LRM244-SECTION-4-15-5-3-103"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "revert:positive": {
+      "passed": true,
+      "source": "\npath.write_text(\"KEY {'items':[1,2]}\\n\",encoding='utf-8')\nbefore=path.read_bytes()\ndb=call(LoadDictionary,uri)\ndb['KEY']['items'][0]=99\ndb['NEW']='unsaved'\nassert path.read_bytes()==before\ndb=call(LoadDictionary,uri)\nassert db['KEY']=={'items':[1,2]} and not db.has_key('NEW')\n",
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-146",
+        "CMP-LRM244-SECTION-4-15-5-4-104"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "revert:boundary": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'')\ndb=call(LoadDictionary,uri)\ndb['KEY']=False\nassert path.read_bytes()==b''\nassert len(call(LoadDictionary,uri))==0\n",
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-146",
+        "CMP-LRM244-SECTION-4-15-5-4-104"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "revert:failure": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'KEY 42\\n')\ndb=call(LoadDictionary,uri)\ndb['KEY']=99\npath.unlink()\nrejects(DriverException,lambda:call(LoadDictionary,uri))\nassert db['KEY']==99\n",
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-146",
+        "CMP-LRM244-SECTION-4-15-5-4-104"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "revert:recovery": {
+      "passed": true,
+      "source": "\npath.write_bytes(b'KEY 42\\n')\ndb=call(LoadDictionary,uri)\ndb['KEY']=99\npath.unlink()\nrejects(DriverException,lambda:call(LoadDictionary,uri))\npath.write_bytes(b'KEY 7\\n')\nassert call(LoadDictionary,uri)['KEY']==7\n",
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-146",
+        "CMP-LRM244-SECTION-4-15-5-4-104"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "formats:positive": {
+      "passed": true,
+      "source": "\npath.write_text(EXAMPLE,encoding='utf-8')\ndb=call(LoadDictionary,uri)\nassert db['KEY1']==45.67\nassert db['KEY2']=='This is a string'\nassert db['KEY3']=='This is another string'\nassert db['KEY4'].value()==TIME('2007/01/23 10:30').value()\nassert db['KEY5']==0b011001\nassert db['KEY6']==[0,1,2,3,4] and db['KEY6'][1]==1\nassert db['KEY7']=={'A':24,'B':34,'C':['X','Y','Z']} and db['KEY7']['C'][2]=='Z'\nassert call(SaveDictionary,db) is True\nassert 'KEY5\\t0b011001\\n' in path.read_text(encoding='utf-8')\ndb=call(LoadDictionary,uri)\nassert db['KEY4'].value()==TIME('2007/01/23 10:30').value() and db['KEY7']['C'][2]=='Z'\n",
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-147",
+        "CMP-LRM244-EXAMPLE-148"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "formats:boundary": {
+      "passed": true,
+      "source": "\npath.write_text(\"TEXT '  two  spaces  '\\nHEX 0x00\\nBIN 0b000000\\nREL -0 00:00:00.000001\\n\",encoding='utf-8')\ndb=call(LoadDictionary,uri)\nassert db['TEXT']=='  two  spaces  ' and db['HEX']==0 and db['BIN']==0\nassert call(SaveDictionary,db) is True\nassert 'BIN\\t0b000000\\n' in path.read_text(encoding='utf-8')\ndb=call(LoadDictionary,uri)\nassert db['REL'].value()==TIME('-0 00:00:00.000001').value()\n",
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-147",
+        "CMP-LRM244-EXAMPLE-148"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "formats:failure": {
+      "passed": true,
+      "source": "\npath.write_text(EXAMPLE,encoding='utf-8')\ndb=call(LoadDictionary,uri)\nrejects(DriverException,lambda:db['MISSING'])\nrejects(IndexError,lambda:db['KEY6'][99])\nrejects(KeyError,lambda:db['KEY7']['MISSING'])\nbefore=path.read_bytes()\ndb.set('KEY5','not a number',BIN+'6')\nrejects(DriverException,lambda:call(SaveDictionary,db))\nassert path.read_bytes()==before\n",
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-147",
+        "CMP-LRM244-EXAMPLE-148"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "formats:recovery": {
+      "passed": true,
+      "source": "\npath.write_text(EXAMPLE,encoding='utf-8')\ndb=call(LoadDictionary,uri)\ndb.set('KEY5','bad',BIN+'6')\nrejects(DriverException,lambda:call(SaveDictionary,db))\ndb=call(LoadDictionary,uri)\ndb['KEY7']['C'][2]='recovered'\nassert call(SaveDictionary,db) is True\nassert call(LoadDictionary,uri)['KEY7']['C'][2]=='recovered'\n",
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-147",
+        "CMP-LRM244-EXAMPLE-148"
+      ],
+      "oracle": "Original native executor and configured usr:// DatabaseFile; independent on-disk bytes, modes and directory entries observed with pathlib/os."
+    },
+    "create-prompt:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Actual native MSG_PROMPT/MSG_ANSWER and terminal status, with independent original/new file bytes; abort preserves existing storage, retry requests a replacement name then creates and saves it.",
+      "observation": {
+        "passed": true,
+        "mode": "abort",
+        "prompts": [
+          {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004R",
+              "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "17",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'",
+              "Time": "1791891867679954"
+            },
+            "answer": "0"
+          }
+        ],
+        "events": [
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "RUNNING",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:1/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "RUNNING",
+                "ProcId": "main#1",
+                "Sequence": "5",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:2/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "2",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:3/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "3",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:4/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "4",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:5/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "5",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:6/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "6",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:7/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "7",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:8/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "8",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "In progress...",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "13",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Creating",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/existing'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "14",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Failed",
+                "ItemStatus": "FAILED",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/existing'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "15",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Failed",
+                "ItemStatus": "FAILED",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "16",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "18",
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+                "Time": "1791891867680020"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "PROMPT",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "PROMPT",
+                "ProcId": "main#1",
+                "Sequence": "19",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "64",
+                "Default": "",
+                "ExecutorMode": "PROCEDURE",
+                "ExpectedValues": "A\u0004R",
+                "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+                "ProcId": "main#1",
+                "Scope": "2",
+                "Sequence": "17",
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'",
+                "Time": "1791891867679954"
+              },
+              "id": "MSG_PROMPT",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 4
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "RUNNING",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "RUNNING",
+                "ProcId": "main#1",
+                "Sequence": "20",
+                "Time": "2026-10-13 11:44:27"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "21",
+                "Text": "Answer: 'A'",
+                "Time": "1791891868352470"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "WARN",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "2",
+                "Sequence": "22",
+                "Text": "Execution aborted by user",
+                "Time": "1791891868363420"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "ABORTED",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "ABORTED",
+                "ProcId": "main#1",
+                "Sequence": "23",
+                "Time": "2026-10-13 11:44:28"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "ABORTED",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          }
+        ],
+        "status": "ABORTED",
+        "files": {
+          "existing.IMP": "SAVED 42\n"
+        }
+      }
+    },
+    "create-prompt:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-144",
+        "CMP-LRM244-SECTION-4-15-5-2-102"
+      ],
+      "oracle": "Actual native MSG_PROMPT/MSG_ANSWER and terminal status, with independent original/new file bytes; abort preserves existing storage, retry requests a replacement name then creates and saves it.",
+      "observation": {
+        "passed": true,
+        "mode": "rename",
+        "prompts": [
+          {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004R",
+              "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "17",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'",
+              "Time": "1791891857246215"
+            },
+            "answer": "1"
+          },
+          {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "32",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "",
+              "ProcId": "main#1",
+              "Scope": "1",
+              "Sequence": "23",
+              "Text": "Enter new database name: ",
+              "Time": "1791891857730671"
+            },
+            "answer": "MyData/renamed"
+          }
+        ],
+        "events": [
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "RUNNING",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:1/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "RUNNING",
+                "ProcId": "main#1",
+                "Sequence": "5",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:2/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "2",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:3/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "3",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:4/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "4",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:5/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "5",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:6/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "6",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:7/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "7",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:8/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "8",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "In progress...",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "13",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Creating",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/existing'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "14",
+                "Time": "2026-10-13 11:44:16"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Failed",
+                "ItemStatus": "FAILED",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/existing'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "15",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Failed",
+                "ItemStatus": "FAILED",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "16",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "18",
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+                "Time": "1791891857246354"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "PROMPT",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "PROMPT",
+                "ProcId": "main#1",
+                "Sequence": "19",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "64",
+                "Default": "",
+                "ExecutorMode": "PROCEDURE",
+                "ExpectedValues": "A\u0004R",
+                "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+                "ProcId": "main#1",
+                "Scope": "2",
+                "Sequence": "17",
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'",
+                "Time": "1791891857246215"
+              },
+              "id": "MSG_PROMPT",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 4
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "RUNNING",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "RUNNING",
+                "ProcId": "main#1",
+                "Sequence": "20",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "21",
+                "Text": "Answer: 'R'",
+                "Time": "1791891857599116"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Repeat",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "22",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "24",
+                "Text": "Enter new database name: \n",
+                "Time": "1791891857730720"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "PROMPT",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "PROMPT",
+                "ProcId": "main#1",
+                "Sequence": "25",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "32",
+                "Default": "",
+                "ExecutorMode": "PROCEDURE",
+                "ExpectedValues": "",
+                "ProcId": "main#1",
+                "Scope": "1",
+                "Sequence": "23",
+                "Text": "Enter new database name: ",
+                "Time": "1791891857730671"
+              },
+              "id": "MSG_PROMPT",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 4
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "RUNNING",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "RUNNING",
+                "ProcId": "main#1",
+                "Sequence": "26",
+                "Time": "2026-10-13 11:44:17"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "16",
+                "Sequence": "27",
+                "Text": "Answer: 'MyData/renamed'",
+                "Time": "1791891858288970"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Creating",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/renamed'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "28",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Created",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/renamed'",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "29",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:8/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Database created",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "30",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:9/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "9",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:10/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "10",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:11/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "11",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:11/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "In progress...",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "34",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:11/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "SUCCESS",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'renamed.IMP'",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "35",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:11/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Database saved",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "36",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:11/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "2",
+                "Sequence": "37",
+                "Text": "Database 'renamed.IMP' saved",
+                "Time": "1791891858592132"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:12/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "12",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:12/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "In progress...",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "39",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:12/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Loading",
+                "ItemStatus": "IN PROGRESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/renamed'",
+                "ProcId": "main#1",
+                "SCount": "0",
+                "Sequence": "40",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:12/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Loaded",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "VALUE",
+                "ItemValue": "'MyData/renamed'",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "41",
+                "Time": "2026-10-13 11:44:18"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:12/0",
+                "ExecutorMode": "PROCEDURE",
+                "Level": "INFO",
+                "MsgType": "DISPLAY",
+                "ProcId": "main#1",
+                "Scope": "2",
+                "Sequence": "42",
+                "Text": "Loading database 'MyData/renamed'",
+                "Time": "1791891858992626"
+              },
+              "id": "MSG_WRITE",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 6
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:12/0",
+                "DataType": "ITEM",
+                "ExecutorMode": "PROCEDURE",
+                "ItemName": "Database",
+                "ItemReason": "Database loaded",
+                "ItemStatus": "SUCCESS",
+                "ItemTime": "",
+                "ItemType": "SYSTEM",
+                "ItemValue": " ",
+                "ProcId": "main#1",
+                "SCount": "1",
+                "Sequence": "43",
+                "Time": "2026-10-13 11:44:19"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:13/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "13",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:19"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:14/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "14",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:19"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:15/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "15",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-13 11:44:19"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Condition": "",
+                "ErrorMsg": "",
+                "ErrorReason": "",
+                "ExecOp": "STATUS",
+                "ExecutorStatus": "FINISHED",
+                "GroupId": "",
+                "GuiKey": "-1",
+                "GuiMode": "UNKNOWN",
+                "OriginId": "GUI (spell)",
+                "ParentId": "",
+                "ProcId": "main#1",
+                "StageId": "(none)",
+                "StageTl": "(none)"
+              },
+              "id": "MSG_EXEC_OP",
+              "receiver": "CLT",
+              "sender": "CTX",
+              "type": 0
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "Csp": "main:15/0",
+                "DataType": "STATUS",
+                "ExecutorMode": "PROCEDURE",
+                "ExecutorStatus": "FINISHED",
+                "ProcId": "main#1",
+                "Sequence": "47",
+                "Time": "2026-10-13 11:44:19"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 1
+            }
+          }
+        ],
+        "status": "FINISHED",
+        "files": {
+          "existing.IMP": "SAVED 42\n",
+          "renamed.IMP": "KEY\t7\n"
+        }
+      }
+    }
+  },
+  "prompts": {
+    "prompt-rename": {
+      "passed": true,
+      "mode": "rename",
+      "prompts": [
+        {
+          "fields": {
+            "Csp": "main:8/0",
+            "DataType": "64",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "A\u0004R",
+            "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "17",
+            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'",
+            "Time": "1791891857246215"
+          },
+          "answer": "1"
+        },
+        {
+          "fields": {
+            "Csp": "main:8/0",
+            "DataType": "32",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "23",
+            "Text": "Enter new database name: ",
+            "Time": "1791891857730671"
+          },
+          "answer": "MyData/renamed"
+        }
+      ],
+      "events": [
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "RUNNING",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:1/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "RUNNING",
+              "ProcId": "main#1",
+              "Sequence": "5",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:2/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "2",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:3/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "3",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:4/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "4",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:5/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "5",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:6/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "6",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:7/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "7",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:8/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "8",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "In progress...",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "13",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Creating",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/existing'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "14",
+              "Time": "2026-10-13 11:44:16"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Failed",
+              "ItemStatus": "FAILED",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/existing'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "15",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Failed",
+              "ItemStatus": "FAILED",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "16",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "18",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+              "Time": "1791891857246354"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "PROMPT",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "PROMPT",
+              "ProcId": "main#1",
+              "Sequence": "19",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004R",
+              "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "17",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-npkpu44k/session/data/User/MyData/existing.IMP'",
+              "Time": "1791891857246215"
+            },
+            "id": "MSG_PROMPT",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 4
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "RUNNING",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "RUNNING",
+              "ProcId": "main#1",
+              "Sequence": "20",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "21",
+              "Text": "Answer: 'R'",
+              "Time": "1791891857599116"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Repeat",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "22",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "24",
+              "Text": "Enter new database name: \n",
+              "Time": "1791891857730720"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "PROMPT",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "PROMPT",
+              "ProcId": "main#1",
+              "Sequence": "25",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "32",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "",
+              "ProcId": "main#1",
+              "Scope": "1",
+              "Sequence": "23",
+              "Text": "Enter new database name: ",
+              "Time": "1791891857730671"
+            },
+            "id": "MSG_PROMPT",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 4
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "RUNNING",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "RUNNING",
+              "ProcId": "main#1",
+              "Sequence": "26",
+              "Time": "2026-10-13 11:44:17"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "27",
+              "Text": "Answer: 'MyData/renamed'",
+              "Time": "1791891858288970"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Creating",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/renamed'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "28",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Created",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/renamed'",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "29",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Database created",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "30",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:9/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "9",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:10/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "10",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:11/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "11",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:11/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "In progress...",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "34",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:11/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "SUCCESS",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'renamed.IMP'",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "35",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:11/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Database saved",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "36",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:11/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "37",
+              "Text": "Database 'renamed.IMP' saved",
+              "Time": "1791891858592132"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:12/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "12",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:12/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "In progress...",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "39",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:12/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Loading",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/renamed'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "40",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:12/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Loaded",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/renamed'",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "41",
+              "Time": "2026-10-13 11:44:18"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:12/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "42",
+              "Text": "Loading database 'MyData/renamed'",
+              "Time": "1791891858992626"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:12/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Database loaded",
+              "ItemStatus": "SUCCESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "1",
+              "Sequence": "43",
+              "Time": "2026-10-13 11:44:19"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:13/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "13",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:19"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:14/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "14",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:19"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:15/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "15",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:19"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "FINISHED",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:15/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "FINISHED",
+              "ProcId": "main#1",
+              "Sequence": "47",
+              "Time": "2026-10-13 11:44:19"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        }
+      ],
+      "status": "FINISHED",
+      "files": {
+        "existing.IMP": "SAVED 42\n",
+        "renamed.IMP": "KEY\t7\n"
+      }
+    },
+    "prompt-abort": {
+      "passed": true,
+      "mode": "abort",
+      "prompts": [
+        {
+          "fields": {
+            "Csp": "main:8/0",
+            "DataType": "64",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "A\u0004R",
+            "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "17",
+            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'",
+            "Time": "1791891867679954"
+          },
+          "answer": "0"
+        }
+      ],
+      "events": [
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "RUNNING",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:1/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "RUNNING",
+              "ProcId": "main#1",
+              "Sequence": "5",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:2/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "2",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:3/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "3",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:4/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "4",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:5/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "5",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:6/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "6",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:7/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "7",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:8/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "8",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "In progress...",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "13",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Creating",
+              "ItemStatus": "IN PROGRESS",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/existing'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "14",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Failed",
+              "ItemStatus": "FAILED",
+              "ItemTime": "",
+              "ItemType": "VALUE",
+              "ItemValue": "'MyData/existing'",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "15",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "ITEM",
+              "ExecutorMode": "PROCEDURE",
+              "ItemName": "Database",
+              "ItemReason": "Failed",
+              "ItemStatus": "FAILED",
+              "ItemTime": "",
+              "ItemType": "SYSTEM",
+              "ItemValue": " ",
+              "ProcId": "main#1",
+              "SCount": "0",
+              "Sequence": "16",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "18",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+              "Time": "1791891867680020"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "PROMPT",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "PROMPT",
+              "ProcId": "main#1",
+              "Sequence": "19",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004R",
+              "OptionValues": "A:Abort this procedure\u0004R:Try to create the dictionary 'MyData/existing' again",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "17",
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-lflm_ro7/session/data/User/MyData/existing.IMP'",
+              "Time": "1791891867679954"
+            },
+            "id": "MSG_PROMPT",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 4
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "RUNNING",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "RUNNING",
+              "ProcId": "main#1",
+              "Sequence": "20",
+              "Time": "2026-10-13 11:44:27"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "INFO",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "16",
+              "Sequence": "21",
+              "Text": "Answer: 'A'",
+              "Time": "1791891868352470"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "ExecutorMode": "PROCEDURE",
+              "Level": "WARN",
+              "MsgType": "DISPLAY",
+              "ProcId": "main#1",
+              "Scope": "2",
+              "Sequence": "22",
+              "Text": "Execution aborted by user",
+              "Time": "1791891868363420"
+            },
+            "id": "MSG_WRITE",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 6
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "ABORTED",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Csp": "main:8/0",
+              "DataType": "STATUS",
+              "ExecutorMode": "PROCEDURE",
+              "ExecutorStatus": "ABORTED",
+              "ProcId": "main#1",
+              "Sequence": "23",
+              "Time": "2026-10-13 11:44:28"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 1
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "Condition": "",
+              "ErrorMsg": "",
+              "ErrorReason": "",
+              "ExecOp": "STATUS",
+              "ExecutorStatus": "ABORTED",
+              "GroupId": "",
+              "GuiKey": "-1",
+              "GuiMode": "UNKNOWN",
+              "OriginId": "GUI (spell)",
+              "ParentId": "",
+              "ProcId": "main#1",
+              "StageId": "(none)",
+              "StageTl": "(none)"
+            },
+            "id": "MSG_EXEC_OP",
+            "receiver": "CLT",
+            "sender": "CTX",
+            "type": 0
+          }
+        }
+      ],
+      "status": "ABORTED",
+      "files": {
+        "existing.IMP": "SAVED 42\n"
+      }
+    }
+  },
+  "runtime_sources": {
+    "installed": {
+      "spell/lib/adapter/databases/dbfile.py": "2cff21fe685b0eb336bcc69c1da02518c7873ef2b53f670a02befcbd836fb49b",
+      "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+      "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+      "spell_native/bin/SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "spell_native/bin/SPELL-Listener": "182c0cdfe6fe9000a90dfb4c5edcc836d007c2e1be3a8938a2dc274b068152a6",
+      "spell_native/bin/SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "spell_native/bin/SPELL-Context": "3b4dc3e760cdec8ae8587e66de565e646787adce55430bd1d4422b3a481347ec",
+      "spell_native/bin/libspell_executor313.so": "98f09628072549d1eeaf8c0265e64c3ed06ca130785d683d1457f6a304f20706",
+      "spell_native/bin/SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
+      "/opt/host/native.py": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7",
+      "/bridge/spell-host-ipc": "a016537c2030fd2a6b1c9f116b331ab65d4b1c8e736f6f0c62950c93fa7fed4a"
+    },
+    "manifest": {
+      "spell/lib/adapter/databases/dbfile.py": {
+        "preimage": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095",
+        "sha256": "2cff21fe685b0eb336bcc69c1da02518c7873ef2b53f670a02befcbd836fb49b"
+      },
+      "spell/lang/helpers/filehelper.py": {
+        "preimage": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+        "sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b"
+      },
+      "spell/utils/vimport.py": {
+        "preimage": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc",
+        "sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+      }
+    }
+  },
+  "controller_exit_code": 0,
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false,
+  "qualified_contracts": [
+    "CMP-LRM244-EXAMPLE-143",
+    "CMP-LRM244-EXAMPLE-144",
+    "CMP-LRM244-EXAMPLE-145",
+    "CMP-LRM244-EXAMPLE-146",
+    "CMP-LRM244-EXAMPLE-147",
+    "CMP-LRM244-EXAMPLE-148",
+    "CMP-LRM244-SECTION-4-15-5-1-101",
+    "CMP-LRM244-SECTION-4-15-5-2-102",
+    "CMP-LRM244-SECTION-4-15-5-3-103",
+    "CMP-LRM244-SECTION-4-15-5-4-104"
+  ],
+  "source_chain": {
+    "spell/lib/adapter/databases/dbfile.py": {
+      "original_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+      "stages": [
+        {
+          "recipe": "database_import_patches.py",
+          "sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+        }
+      ],
+      "patched_sha256": "2cff21fe685b0eb336bcc69c1da02518c7873ef2b53f670a02befcbd836fb49b"
+    },
+    "spell/lang/helpers/filehelper.py": {
+      "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
+      "stages": [
+        {
+          "recipe": "data_files_patches.py",
+          "sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057"
+        }
+      ],
+      "patched_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b"
+    },
+    "spell/utils/vimport.py": {
+      "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
+      "stages": [
+        {
+          "recipe": "database_import_patches.py",
+          "sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+        }
+      ],
+      "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+    }
+  },
+  "raw_report": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\user-database\\2918c0e144da4e35a67de00222518ee3\\result.json",
+    "sha256": "890f543d25b4e1abf982f6d409c8aa1a2244b4c015d27f9c5aa3fe2a7f576b72",
+    "native_logs_archive_sha256": "dbe9ea4ad9daf7e126867392488b2a8153f1a0bf4d7b0c4fc67c5dc9c0cb4f7f"
+  },
+  "baseline": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\user-database\\f9fa7ae7a78e4dacbfefd590b4de758e\\result.json",
+    "sha256": "11f5233e87f34ce48f1128906a5f13251f4ba6c9a232923b6b108a91c4726533",
+    "runtime_image": "sha256:586e24fa6df8cd004607aa1678c546d30a1e2edd439715d873b82dfc8c48faf0",
+    "failed": [
+      "create:failure",
+      "create:recovery",
+      "load:failure",
+      "save:boundary",
+      "save:failure",
+      "formats:positive",
+      "formats:boundary",
+      "formats:failure",
+      "formats:recovery"
+    ],
+    "failed_prompts": [
+      "prompt-rename",
+      "prompt-abort"
+    ]
+  },
+  "regressions": {
+    "FILES": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\files\\4f18c5bc83a04903aa69dc73373a0358\\result.json",
+      "sha256": "5ab89b5b9473a02c0af38301cc42fca23f7e0b78fe6ee64b81e160b49a7a9469",
+      "checks": 36
+    },
+    "DATA": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\data\\3874e195b327473f855aa091aa60d64c\\result.json",
+      "sha256": "52ec4785bb998365445722d47050f7f7e194c6d96ad0883edce6af7c9a885cd2",
+      "checks": 24
+    }
+  },
+  "scope": {
+    "qualified": "LRM pp81-84, Examples143-148 and the four user database operation subsections, using original configured usr:// flat-file databases.",
+    "creation": "Exclusive create preserves both existing file bytes and cached unsaved values; invalid paths/arity and unwritable directories fail. Real native failure prompts prove alternate-name retry and abort.",
+    "saving": "Serialize before publication; write a same-directory temporary file, preserve original mode, fsync the new file and atomically replace the existing file. Missing or read-only storage and serialization failures preserve prior bytes and clean the temporary file. This is not a multiwriter transaction or directory-fsync crash-durability claim.",
+    "round_trip": "UTF-8 literal strings/containers preserve quotes, backslashes and internal whitespace; binary width and exact top-level absolute/relative TIME are serialized without global display-format dependence. Comment-like keys, cyclic/custom values and nonfinite floats are rejected before replacement.",
+    "open": "Full database-formats section remains open: legacy 035 spelling, non-string file keys, nested TIME/custom value serialization and broad database backends are not claimed. Configured SCDB read-only semantics remain a separate tranche.",
+    "distribution": "Exact development overlay identities; installed wheel RECORD is superseded for these three modules. Fresh integrated wheel and complete release qualification are separate."
+  }
+}
