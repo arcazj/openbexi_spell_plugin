@@ -1,0 +1,273 @@
+{
+  "runtime_image": "sha256:586e24fa6df8cd004607aa1678c546d30a1e2edd439715d873b82dfc8c48faf0",
+  "inputs": {
+    "conformance/database_import_cases.py": "a8238e09dbac03ee640788c3c2b2dcdc0f329a69d1f5ba43375af80a11986475",
+    "conformance/database_import_controller.py": "a16d46c7ef319807b816b8b330d4d370157a8bb8a178810859e1287050a2143a",
+    "conformance/run_database_import.py": "8f463263730acb7abae5b45b840680276773646545ed6b342060f5ef2b2f4f8e",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "conformance/database_import.Dockerfile": "252b48195a615321fca508e30345ef72f531cf672e9f48aa2eed84b3ee603f4d",
+    "conformance/database_import.Dockerfile.dockerignore": "c5860e769c56ec81b952c0855a57cae7a688185d11bd0c5e22500e62663aa54f",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "conformance/database_import_report.py": "72aa7ee68ad23c7d5071abf61cc77af6a2eb0cddf145ee6a14c0b7dec4549719"
+  },
+  "checks": {
+    "ground:positive": {
+      "passed": true,
+      "source": "\nassert GDB['DECODER'] == 'CMD_ACT_DEC'\nassert GDB['DECODER_CALIBRATION'] == {0:'DEC1', 1:'DEC2'}\nassert type(GDB['DECODER_CALIBRATION']) is dict\nassert GDB['DECODER_CALIBRATION'][0] == 'DEC1'\nassert GDB['DECODER_CALIBRATION'][1] == 'DEC2'\n",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-DATABASE-GDB",
+        "CMP-LRM244-EXAMPLE-139"
+      ],
+      "dimension": "positive",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "ground:boundary": {
+      "passed": true,
+      "source": "\nexpected = {'ZERO':0, 'FALSE':False, 'EMPTY_TEXT':'', 'EMPTY_LIST':[], 'EMPTY_DICT':{},\n            'BIG':2**80, 'NEGATIVE':-2.5, 'UNICODE':'caf\u00e9 \u03bb', 'NESTED':{'items':[False, 0]}}\nfor key, value in expected.items():\n    assert GDB[key] == value, (key, GDB[key])\n    assert type(GDB[key]) is type(value), key\nassert GDB['DECODER_CALIBRATION'] == {0:'DEC1',1:'DEC2'}\n",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\nZERO 0\nFALSE False\nEMPTY_TEXT ''\nEMPTY_LIST []\nEMPTY_DICT {}\nBIG 1208925819614629174706176\nNEGATIVE -2.5\nUNICODE 'caf\u00e9 \u03bb'\nNESTED {'items':[False,0]}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-DATABASE-GDB",
+        "CMP-LRM244-EXAMPLE-139"
+      ],
+      "dimension": "boundary",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "ground:failure": {
+      "passed": true,
+      "source": "\nrejects(DriverException, lambda: GDB['missing'])\nrejects(KeyError, lambda: GDB['DECODER_CALIBRATION'][2])\nrejects(TypeError, lambda: GDB[[]])\n",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-DATABASE-GDB",
+        "CMP-LRM244-EXAMPLE-139"
+      ],
+      "dimension": "failure",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "ground:recovery": {
+      "passed": true,
+      "source": "\nrejects(DriverException, lambda: GDB['missing'])\nrejects(TypeError, lambda: GDB[[]])\nassert GDB['DECODER'] == 'CMD_ACT_DEC'\nassert GDB['DECODER_CALIBRATION'][0] == 'DEC1'\nassert GDB['DECODER_CALIBRATION'][1] == 'DEC2'\n",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-DATABASE-GDB",
+        "CMP-LRM244-EXAMPLE-139"
+      ],
+      "dimension": "recovery",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-lookup:positive": {
+      "passed": true,
+      "source": "assert SCDB['SC'] == 'Test spacecraft'",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-135"
+      ],
+      "dimension": "positive",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-lookup:boundary": {
+      "passed": true,
+      "source": "assert SCDB['SC'] == 'caf\u00e9 \u03bb'",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'caf\u00e9 \u03bb'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-135"
+      ],
+      "dimension": "boundary",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-lookup:failure": {
+      "passed": true,
+      "source": "rejects(DriverException, lambda: SCDB['missing'])",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-135"
+      ],
+      "dimension": "failure",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-lookup:recovery": {
+      "passed": true,
+      "source": "rejects(DriverException, lambda: SCDB['missing']); assert SCDB['SC'] == 'Test spacecraft'",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-135"
+      ],
+      "dimension": "recovery",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-keys:positive": {
+      "passed": true,
+      "source": "assert list(SCDB.keys()) == ['SC','Spacecraft_Name']",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-136"
+      ],
+      "dimension": "positive",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-keys:boundary": {
+      "passed": true,
+      "source": "assert list(SCDB.keys()) == []",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "# Empty configured spacecraft database\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-136"
+      ],
+      "dimension": "boundary",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-keys:failure": {
+      "passed": true,
+      "source": "rejects(TypeError, lambda: SCDB.keys('unexpected'))",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-136"
+      ],
+      "dimension": "failure",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-keys:recovery": {
+      "passed": true,
+      "source": "rejects(TypeError, lambda: SCDB.keys('unexpected')); assert list(SCDB.keys()) == ['SC','Spacecraft_Name']",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-136"
+      ],
+      "dimension": "recovery",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-existence:positive": {
+      "passed": true,
+      "source": "assert SCDB.has_key('Spacecraft_Name') is True",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-137"
+      ],
+      "dimension": "positive",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-existence:boundary": {
+      "passed": true,
+      "source": "assert SCDB.has_key('Spacecraft_Name') is False",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "# Empty configured spacecraft database\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-137"
+      ],
+      "dimension": "boundary",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-existence:failure": {
+      "passed": true,
+      "source": "rejects(TypeError, lambda: SCDB.has_key())",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-137"
+      ],
+      "dimension": "failure",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    },
+    "spacecraft-existence:recovery": {
+      "passed": true,
+      "source": "rejects(TypeError, lambda: SCDB.has_key()); assert SCDB.has_key('Spacecraft_Name') is True",
+      "ground": "DECODER CMD_ACT_DEC\nDECODER_CALIBRATION {0:'DEC1',1:'DEC2'}\n",
+      "spacecraft": "SC 'Test spacecraft'\nSpacecraft_Name 'Test spacecraft'\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-137"
+      ],
+      "dimension": "recovery",
+      "oracle": "Original native executor startup loads real configured UTF-8 database files; the procedure reads the original runtime database objects."
+    }
+  },
+  "runtime_sources": {
+    "installed": {
+      "spell/utils/vimport.py": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc",
+      "spell/lib/adapter/databases/dbfile.py": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095",
+      "spell_native/bin/SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "spell_native/bin/SPELL-Listener": "182c0cdfe6fe9000a90dfb4c5edcc836d007c2e1be3a8938a2dc274b068152a6",
+      "spell_native/bin/SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "spell_native/bin/SPELL-Context": "3b4dc3e760cdec8ae8587e66de565e646787adce55430bd1d4422b3a481347ec",
+      "spell_native/bin/libspell_executor313.so": "98f09628072549d1eeaf8c0265e64c3ed06ca130785d683d1457f6a304f20706",
+      "spell_native/bin/SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
+    },
+    "manifests": {
+      "spell/utils/vimport.py": {
+        "preimage": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
+        "sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+      },
+      "spell/lib/adapter/databases/dbfile.py": {
+        "preimage": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+        "sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+      }
+    }
+  },
+  "controller_exit_code": 0,
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false,
+  "qualified_contracts": [
+    "CMP-LRM244-DATABASE-GDB",
+    "CMP-LRM244-EXAMPLE-135",
+    "CMP-LRM244-EXAMPLE-136",
+    "CMP-LRM244-EXAMPLE-137",
+    "CMP-LRM244-EXAMPLE-139"
+  ],
+  "raw_report": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\database-import\\0e9a146eaf3e4295ab1e99b056ee0794\\result.json",
+    "sha256": "50e02467f08fff7b7ad8b49a9038d562a5e42563fbf168381559fdfdfea07ca8",
+    "native_logs_archive_sha256": "fc7fa0006acd3570b3f7167aa004d1a3d02482508e2d04e69105484d42369a10"
+  },
+  "baseline": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\database-import\\68d54e0a1b394ce5bb9079d7c08cb6ab\\result.json",
+    "sha256": "e5bd52b33627aadf3e93bd1b454a31e40b9a13976ab2551715de953504677d8d",
+    "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+    "failed": [
+      "ground:positive",
+      "ground:boundary",
+      "ground:failure",
+      "ground:recovery",
+      "spacecraft-lookup:positive",
+      "spacecraft-lookup:boundary",
+      "spacecraft-lookup:recovery"
+    ]
+  },
+  "regressions": {
+    "FILES": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\files\\b15699e7d41644b5be7953a12eeb598d\\result.json",
+      "sha256": "007512513679ae19822857216fb5e5ffc9de6b639a6e387d2f581954a3dab63d",
+      "checks": 36
+    },
+    "DATA": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\data\\b851ce97f2c342f7bb29dd08ea8af68c\\result.json",
+      "sha256": "8a374aa4f261fe9725106474b6973ec2a5e9a15e5591bb9f2284cbe2f3e6e93b",
+      "checks": 24
+    }
+  },
+  "scope": {
+    "manual": "LRM2.4.4 pp78-80, real configured SCDB/GDB files parsed by the original DatabaseFile implementation under the native executor.",
+    "namespace": "The established port requires explicit imports from spell.runtime, as documented in README/source_port/README and docs/EXECUTOR_COMMAND. Every procedure verifies startup already populated both runtime attributes before importing them and verifies Python builtins remain unchanged. Automatic database loading is demonstrated; implicit injection of SPELL names into ordinary Python globals is not claimed.",
+    "ground": "Ground dictionary and calibration mappings load as typed original values, including false/empty/nested values, a large integer and UTF-8 text. Original DriverException for absent database keys and TypeError for invalid key objects remain catchable; successful reads recover after failures.",
+    "spacecraft": "Only Examples135/136/137 are qualified: configured name lookup, keys iteration and the original custom database has_key method. Python built-in dict.has_key compatibility is not inferred.",
+    "read_only_gap": "DATABASE-SCDB and its broader section stay open: the original DatabaseFile permits local assignment although p79 calls SCDB read-only. No read-only semantics were changed by these two importer patches.",
+    "trusted_input": "Original trusted database-expression evaluation remains intact. The missing explicit os import caused its namespace construction to fail and silently return raw strings; this patch restores that namespace. Database files are not treated as an untrusted-data sandbox.",
+    "distribution": "Development overlay with exact original/patched source and native binary identities. Fresh integrated wheel construction and final release qualification remain separate."
+  }
+}

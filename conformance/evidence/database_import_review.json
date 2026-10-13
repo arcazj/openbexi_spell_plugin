@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "observations": {
+    "original_missing_os_diagnosis": {
+      "path": ".qualification/gdb/diagnose.log",
+      "sha256": "e930b11190d653c6054aed276ce8a9f9cb714b082d5785d9b3ad38fb3e8ba984"
+    },
+    "unicode_failure_after_os_import": {
+      "path": ".qualification/gdb/fixed-contract-probe.log",
+      "sha256": "7bac1076a09038e5462e5ccb34f46cde04cafaecee53c0233c1d2e52cc62c9bb"
+    },
+    "original_mutable_scdb_observation": {
+      "path": ".qualification/gdb/utf8-contract-probe.log",
+      "sha256": "04f3e8ff2ef6270b52de2687eb830bffe226f4019730fb50c6ae0b1f886d49c0"
+    },
+    "missing_configured_file_rejection": {
+      "path": ".qualification/gdb/missing-probe.log",
+      "sha256": "dc99fe83400c989f5f9b40ad1e44a38b230ec53fb8b3e56566fd6db2e58d8083"
+    },
+    "incorrect_exception_oracle": {
+      "path": ".qualification/v0.5/database-import/4af66ea170564293ab89a29384336d51/result.json",
+      "sha256": "156a51a3f134919f4230ec3fa1ad0e4675b793c44b4815889010caee38915c25"
+    },
+    "intentional_explicit_import_requirement": {
+      "path": ".qualification/v0.5/database-import/b4f4291785bb41098d75cdf20d2c36a7/result.json",
+      "sha256": "bed90f9b915705cd625dc2ba02afcf8f7425885d2281aff4b5cf482b573553e9"
+    }
+  },
+  "notes": [
+    "The initial fixture assumed KeyError for database lookups and TypeError for has_key([]). Original source instead raises DriverException for absent database keys and checks membership in a list. Corrected oracles preserve those original behaviors and exercise invalid arity for has_key.",
+    "Removing the explicit runtime import produced NameError. This is the existing documented namespace profile, not a runtime defect; final tests verify runtime bindings are already populated at startup and ordinary Python builtins stay unchanged.",
+    "SCDB local mutation remains possible in original DatabaseFile. Full read-only SCDB and section claims stay open.",
+    "Native missing configured GDB file rejects startup with a driver error before executing procedure code."
+  ],
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false
+}
