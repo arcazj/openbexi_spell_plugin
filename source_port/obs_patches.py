@@ -66,6 +66,18 @@ def apply_tree(site, evidence):
             raise SyntaxException("Wrong number of verification comparison values")
 
 ''' + marker)
+            marker = '        finally:\n            if not self.stopped:'
+            assert source.count(marker) == 1
+            source = source.replace(marker, '''        except Exception as ex:
+            # A comparator worker must report failures through the original
+            # PromptFailure/HandleError policy, never masquerade as False.
+            self.error = DriverException("Verification comparison failed",
+                                         type(ex).__name__ + ": " + str(ex))
+            reason = self.error.message + ". " + self.error.reason
+            LOG("[V] " + reason, LOG_ERROR)
+            result = False
+
+''' + marker)
         if name.endswith('/tm.py'):
             old = '            if self.__useConfig.get(PromptUser)!=False:'
             assert source.count(old) == 1
@@ -86,12 +98,37 @@ def apply_tree(site, evidence):
     # width. Do not round a double/string comparison target to float32.
     if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
         return False
+    import math
+    for tolerance in (rel_tol, abs_tol):
+        if (type(tolerance) not in (int, float) or tolerance < 0
+                or (type(tolerance) is float and not math.isfinite(tolerance))):
+            raise DriverException("Tolerance must be finite and nonnegative")
     if a == b:
         return True
-    tolerance = max(rel_tol * max(abs(a), abs(b)), abs_tol)
+    if any(type(value) is float and not math.isfinite(value) for value in (a, b)):
+        return False
+    try:
+        tolerance = max(rel_tol * max(abs(a), abs(b)), abs_tol)
+    except OverflowError:
+        # Python integers have no fixed width. Only use exact rational fallback
+        # when a finite integer cannot be converted to float; ordinary floating
+        # comparisons retain their established inclusive rounding semantics.
+        from fractions import Fraction
+        left, right = Fraction(a), Fraction(b)
+        tolerance = max(Fraction(rel_tol) * max(abs(left), abs(right)), Fraction(abs_tol))
+        return abs(left - right) <= tolerance
     # LRM tolerance is the inclusive interval around the expected value.
     return b - tolerance <= a <= b + tolerance
 ''' + source[end:]
+            for method, mismatch in (('__c_eq', 'False'), ('__c_neq', 'True')):
+                begin = source.index('    def ' + method + '(')
+                end = source.index('    #===', begin)
+                body = source[begin:end]
+                marker = '        if type(cvalue) == str:\n'
+                assert body.count(marker) == 1
+                body = body.replace(marker, marker +
+                    '            if not isinstance(comp, str): return ' + mismatch + '\n')
+                source = source[:begin] + body + source[end:]
         path.write_bytes(source.encode())
         patched = evidence / 'patched' / name
         patched.parent.mkdir(parents=True, exist_ok=True)
