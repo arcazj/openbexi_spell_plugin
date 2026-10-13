@@ -12,7 +12,7 @@
   },
   "final_conformance": {
     "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\conformance\\evidence\\user_database.json",
-    "sha256": "ee70af6d0f7cab577a3b3b2a74793a7f6339e09f4496830e82f164e7b2d73ba5"
+    "sha256": "175b414c82e5ad43df33621a8f02eb6521bc66939cf18d63de8c7966da24eaf1"
   },
   "discarded_harness_attempts": [
     {
@@ -36,11 +36,20 @@
     "native_counterexamples": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\scdb-review\\userdb-counterexamples-02.json",
       "sha256": "172bc7e767362ada7017227b18a177db4dfbbfbcc1f38407e7108cca868d722f"
-    }
+    },
+    "fifo_counterexample": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\scdb-review\\userdb-fifo-counterexample.json",
+      "sha256": "24fa663a382eeff8eee5acdccb9658b8923b4d0478eccdc5e6890864d2db9cff"
+    },
+    "fifo_correction": "Open existing storage with O_NONBLOCK before fstat; an owned FIFO fails promptly without consuming or replacing it. Actual final native failure case additionally checks symlink target bytes and directories remain intact."
   },
   "limitations": [
     "Only string flat-file keys qualify; full database-formats section remains open.",
     "No claim of concurrent-writer transactions or directory-fsync crash durability.",
     "Fresh integrated wheel and unchanged broader conformance suites remain required."
-  ]
+  ],
+  "prior_conformance": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\conformance\\evidence\\user_database.json",
+    "sha256": "ee70af6d0f7cab577a3b3b2a74793a7f6339e09f4496830e82f164e7b2d73ba5"
+  }
 }
