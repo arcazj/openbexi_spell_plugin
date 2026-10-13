@@ -10,6 +10,8 @@ from .common import POLICY, timeout_seconds
 
 def descriptor(item,config):
     settings = dict(config or {},**item.getConfig())
+    if settings.get('Block'):
+        raise DriverException('Atomic command blocks are not qualified in this driver profile')
     # Send_Helper consumes verification/reporting policy before/after injection.
     helper_policy = {'Tolerance','AdjLimits','ConfirmCritical','AllowInterrupt','Wait','Delay','Sequence'}
     if set(settings) - POLICY - helper_policy - {'Time','SendDelay','ReleaseTime','Timeout','Confirm','Block'}:
@@ -46,7 +48,7 @@ class Commands(TcInterface):
         return True
 
     def _sendBlock(self,items,config=None):
-        return self._sendList(items,config)
+        raise DriverException('Atomic command blocks are not qualified in this driver profile')
 
 
 TC = Commands()
