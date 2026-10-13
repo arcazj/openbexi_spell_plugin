@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "purpose": "Native resource correction review; immutable failed and passing observations retained.",
+  "reports": {
+    "baseline_internal_modifier_failure": {
+      "path": ".qualification/v0.5/resource/2b164c65ec0f4eef85f3f831a894b555/result.json",
+      "sha256": "d565397b84d1b439a82f0e363add2edc7d0c800d49a2d821a5f6ea7699fdf429",
+      "runtime_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
+      "checks": 12,
+      "failures": [
+        "resource-read:positive",
+        "resource-read:boundary",
+        "resource-read:recovery",
+        "resource-write:positive",
+        "resource-write:boundary",
+        "resource-write:recovery",
+        "resource-mapping:positive",
+        "resource-mapping:boundary",
+        "resource-mapping:recovery"
+      ]
+    },
+    "baseline_false_values_dictionary_and_missing_write": {
+      "path": ".qualification/v0.5/resource/a94123fd92ac45bd84311bf1807e92e5/result.json",
+      "sha256": "5112e907d3265fa57826cde3b9ff371599cbbdb02aef96d75f79b350685bba6c",
+      "runtime_image": "sha256:efb58e8bd528f5c656d7b741bcfcb7906d0857c11ea1645c736f6478eb9b91d0",
+      "checks": 12,
+      "failures": [
+        "resource-read:boundary",
+        "resource-write:boundary",
+        "resource-write:failure",
+        "resource-write:recovery",
+        "resource-mapping:failure",
+        "resource-mapping:recovery"
+      ]
+    },
+    "intermediate_dictionary_modifier_leak": {
+      "path": ".qualification/v0.5/resource/5fa8a264490946c88b9c81694cde510e/result.json",
+      "sha256": "563976e38dbb3afea8bce3ef121cf78dafb3dd11762ccf0f379591127b847ff1",
+      "runtime_image": "sha256:7335665563ea2ed390a9f289351a6e3588dab3b1785711b8df211a76142ff499",
+      "checks": 12,
+      "failures": [
+        "resource-read:boundary",
+        "resource-write:boundary"
+      ]
+    },
+    "final_native_resource": {
+      "path": ".qualification/v0.5/resource/5fa9fc536b39404d890d73726061a877/result.json",
+      "sha256": "dbb389173ec1a95491aee4301e3267e74673c11c8c6794bce99ef0801e221d4b",
+      "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+      "checks": 12,
+      "failures": []
+    },
+    "common_regression": {
+      "path": ".qualification/v0.5/common/aaee2988a3b94b7692681c87e00e9850/result.json",
+      "sha256": "b6900277b0ad2aa9870499d421c64b3366d153ed3d5a4c7dc62d1276336092fa",
+      "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+      "checks": 44,
+      "failures": []
+    },
+    "driver_regression": {
+      "path": ".qualification/v0.5/resource/driver-regression.xml",
+      "sha256": "1b11127d1f61d8e0710cdc4a8f5437b3145b2bac8a51b04803751c588025b5ca"
+    }
+  },
+  "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+  "regressions": {
+    "common": 44,
+    "driver": 28
+  },
+  "qualified_contracts": 7,
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false
+}
