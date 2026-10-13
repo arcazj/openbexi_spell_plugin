@@ -15,6 +15,11 @@ def settings(config):
 
 def timeout_seconds(value):
     """Translate the original TIME contract, which has rel(), not __float__."""
+    if type(value) is str:
+        try:
+            value = TIME(value)
+        except Exception as error:
+            raise DriverException('Invalid timeout time string') from error
     if isinstance(value, TIME):
         if not value.isRel():
             raise DriverException('Timeout must be relative')

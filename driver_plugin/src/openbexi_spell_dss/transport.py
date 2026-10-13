@@ -116,14 +116,18 @@ class Transport:
     def sample(self, name, *, wait=False, timeout=3):
         if type(wait) is not bool or type(timeout) not in {int,float} or not 0 < timeout <= 30:
             raise ValueError('Invalid telemetry wait/timeout')
-        initial, deadline = self.telemetry.sequence, time.monotonic() + timeout
+        deadline = time.monotonic() + timeout
+        # A cached sequence can lag the source while no procedure is reading.
+        # Wait=True means the next source update after this acquisition starts,
+        # so first bind to the current real snapshot, including an unread one.
+        if wait and not self.kafka:
+            self.telemetry.accept(bytes.fromhex(self.get('telemetry')['packet_hex']))
+        initial = self.telemetry.sequence
         while True:
             if self.error:
                 raise RuntimeError('Kafka telemetry consumer failed') from self.error
             if not self.kafka:
                 self.telemetry.accept(bytes.fromhex(self.get('telemetry')['packet_hex']))
-                if initial < 0 and wait:
-                    initial = self.telemetry.sequence
             if self.telemetry.body is not None and (not wait or self.telemetry.sequence > initial):
                 return self.telemetry.sample(name)
             if time.monotonic() >= deadline:

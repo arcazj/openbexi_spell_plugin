@@ -24,8 +24,13 @@ def main():
         'source_port/ui_native_patches.py', 'distribution/incremental_native.py',
         'conformance/combined_native_build.py', 'conformance/combined_native.Dockerfile',
         'source_port/flow_patches.py', 'source_port/flow_analyze.py',
+        'conformance/dta_native_build.py', 'conformance/dta_native.Dockerfile',
+        'source_port/dta_native_patches.py', 'source_port/dta_time_patches.py',
+        'source_port/data_files_native_patches.py',
         'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf')
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
+    normalized = {name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+                  for name in names if name.endswith('.py')}
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     name = 'openbexi-ui-conformance-' + uuid.uuid4().hex
     def read(relative):
@@ -64,7 +69,7 @@ def main():
         if 'ui_manifest' in runtime:
             for recipe, digest in runtime['ui_manifest']['recipes'].items():
                 source = next(name for name in names if name.endswith('/' + recipe))
-                assert digest == inputs[source], 'Installed patch recipe is stale: ' + recipe
+                assert digest in (inputs[source], normalized.get(source)), 'Installed patch recipe is stale: ' + recipe
         messages = [event.get('message',{}) for event in wire]
         writes = [row['fields'] for row in messages if row.get('id') == 'MSG_WRITE' and row.get('fields',{}).get('Scope') == '1']
         items = [row['fields'] for row in messages if row.get('id') == 'MSG_NOTIFICATION' and row.get('fields',{}).get('DataType') == 'ITEM']
@@ -92,7 +97,7 @@ def main():
                 row.update(passed=False, controller_error=str(error))
         report['checks'].update(json.loads((output/'ui-edge-results.json').read_bytes())['checks'])
         assert all(hashlib.sha256((ROOT/source).read_bytes()).hexdigest()==digest for source,digest in inputs.items())
-        report.update(inputs=inputs,runtime_image=image,runtime_sources=runtime)
+        report.update(inputs=inputs,lf_normalized_inputs=normalized,runtime_image=image,runtime_sources=runtime)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         failures = {key:row.get('error',row.get('controller_error')) for key,row in report['checks'].items() if not row['passed']}
         print(json.dumps(dict(evidence=str(output), checks=len(report['checks']), failures=failures),indent=2))

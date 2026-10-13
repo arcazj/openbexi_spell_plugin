@@ -3,125 +3,97 @@
   "v05_accepted": false,
   "v06_accepted": false,
   "total": 763,
-  "qualified": 316,
-  "open": 447,
-  "scope": "Expanded original language contracts and combined development image regressions",
-  "runtime_image": "sha256:0eadf2e3b1e961a5e403b79b665e70b22c649179ccde40e86ffceae2ee7559ec",
-  "dss_development_image": "sha256:fd350eeaec46d7408384c04d0888e89776a7544c59f88c026e4c70efa1562117",
+  "qualified": 401,
+  "open": 362,
+  "scope": "Native DTA/TIME and actual DSS telemetry checkpoint; original library contract evidence and installed integration regressions",
+  "runtime_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
+  "dss_development_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
   "reports": {
-    "time": {
-      "path": "conformance/evidence/time.json",
-      "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2"
+    "common-silence": {
+      "path": "conformance/evidence/common-silence.json",
+      "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670"
     },
     "common": {
       "path": "conformance/evidence/common.json",
       "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01"
     },
-    "common-silence": {
-      "path": "conformance/evidence/common-silence.json",
-      "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670"
+    "data-race": {
+      "path": "conformance/evidence/data-race.json",
+      "sha256": "6e899ad1a2598f729150d99f85e7b74e4e08ae8bd8fd93fbba0b56cb18f008b9"
+    },
+    "data": {
+      "path": "conformance/evidence/data.json",
+      "sha256": "ebca98edae2b0289c37287e8696dae10e7657894626cf5d56d2ee96fda8c90a7"
+    },
+    "dta": {
+      "path": "conformance/evidence/dta.json",
+      "sha256": "9312f3774e99d292947b332e0d7d05607efe508fff03736bf747bd8ac7d78818"
+    },
+    "files": {
+      "path": "conformance/evidence/files.json",
+      "sha256": "4ec83bf1a34929d5a4c3ef3c3e5ceca728d6469d5d6c4aac363ea79a03509a34"
+    },
+    "flow": {
+      "path": "conformance/evidence/flow.json",
+      "sha256": "812b405f136c041f0e8cf88355cffa5d35b854ec968040e0b1b0dfb335e517a5"
+    },
+    "obs": {
+      "path": "conformance/evidence/obs.json",
+      "sha256": "61c9cc861f12bd0b0ad2016117df05eb458b9f89f4ca85a2d73abc04baa4d718"
     },
     "python": {
       "path": "conformance/evidence/python.json",
       "sha256": "a08c388319681e8d577465482aa74747c22b8c2020e03e2ab1a3fc9305c833b2"
     },
-    "data": {
-      "path": "conformance/evidence/data.json",
-      "sha256": "6a3af7d38cc26b12f51004740a0731a53a937dfec374ca49b7ca88561fab0675"
-    },
-    "files": {
-      "path": "conformance/evidence/files.json",
-      "sha256": "26062be5ad77f5e28cc7dd79135bafa36ba1c2aadbd1ae682906a2aa574bd099"
-    },
-    "data-race": {
-      "path": "conformance/evidence/data-race.json",
-      "sha256": "7e929846e815d9f0e929730bd626e06d9bdbffa174e164fc719c53b49d0c8691"
-    },
-    "flow": {
-      "path": "conformance/evidence/flow.json",
-      "sha256": "5b4c895fa980a45d3efa5a6bc1103679ac1e4b4e9d0541e8c757ca796961a5ce"
+    "time": {
+      "path": "conformance/evidence/time.json",
+      "sha256": "fc6a0bb807b9d2ccf760c1f7898bbe80b7fc7f828b4cee69659e0e8c33e7ce30"
     },
     "ui": {
       "path": "conformance/evidence/ui.json",
-      "sha256": "6e3236c80c9f5d77d9ed3b690dc9b8163120dacefb4b0895adbafb98d40c5669"
+      "sha256": "4fa91fd5ade4a9da58b24a6af790999aac39b1cca5cce24a64d8ba13c50c1a00"
     }
   },
-  "combined_regressions": {
-    "time": {
-      "path": ".qualification/v0.5/combined-regressions/time/33e05e6fdbfd4c50b0d29ade2be49468/result.json",
-      "sha256": "91dfae2886189b3221dccdfd8fb9755f110c9c3cd183b63f0826b046c95b7c10",
-      "checks": 168,
-      "passed": true
-    },
-    "common": {
-      "path": ".qualification/v0.5/combined-regressions/common/948b868602d94e20ae504577e8150333/result.json",
-      "sha256": "1bfaa826414f6cf53fe5b9045f7ee38433639bb1509847a43607c9df152fad13",
-      "checks": 44,
-      "passed": true
-    },
-    "silence": {
-      "path": ".qualification/v0.5/common-silence/fede8761d87e4bbba70cda44ada6eecc/result.json",
-      "sha256": "f94d1b01c09510e99f0452295d48d919b98b72d203ad48825e7d28fd3d2bf6d8",
-      "checks": 4,
-      "passed": true
-    },
-    "host": {
-      "path": ".qualification/v0.5/combined-regressions/host/result.json",
-      "sha256": "dfa7941a58243a141cbc3e9b453b39203761568b9d687e53bcb29f02184ebf77",
-      "tests": 10,
-      "passed": true
-    },
-    "package": {
-      "path": ".qualification/v0.5/combined-regressions/package-tests-final.xml",
-      "sha256": "3eafb0830c5a78ec6a02285c48ccd3e1919b56cb1747090a8fa46f3b4da8319b",
-      "tests": 214,
-      "passed": true
-    },
-    "dss": {
-      "path": "../openbexi_ide/.qualification/ide-v0.5/native-driver-combined.xml",
-      "sha256": "8ca0b642990cddb1a76edc1c34de73e941f7167dc9fe8f6b7d3826b770833bb7",
-      "tests": 9,
-      "passed": true
-    }
+  "combined_checkpoint": {
+    "path": ".qualification/v0.5/obs/checkpoint-final-20261013.json",
+    "sha256": "449b2b40a7a283b9b12b03143f2b9e712cdd58c26dd7339707659207461e7187"
+  },
+  "checks": {
+    "obs_native_assertions": 181,
+    "obs_qualified_contracts": 73,
+    "obs_report_checks": 245,
+    "common": 44,
+    "python_checks": 488,
+    "python_supported_contracts": 117,
+    "python_inventory_rows": 122,
+    "original_driver": 28,
+    "native_host": 10,
+    "data_family_regressions": 394,
+    "native_dss": 9,
+    "package": 212
+  },
+  "coverage": {
+    "path": "conformance/coverage.json",
+    "sha256": "e85d4e76c3c98b37f0dfe7d7fa0319d5f294c37faadd083799254f9e0a2a6dc5"
   },
   "gate": {
-    "path": ".qualification/v0.5/expanded-conformance-gate-final.json",
-    "sha256": "812adef9c97e37be67acf4ccd80b491c30d682e321ff409069c57db9e2d5d530"
+    "path": ".qualification/v0.5/dta-obs-checkpoint-gate.json",
+    "sha256": "29751b4619304d823cd6845f854eb415deada01f4b670a53c35863d7f79b2a03"
   },
-  "native_hashes": {
-    "libspell_executor313.so": "fd0d69a80c4d9a83a05c483a5f025f02afd45806420934a66a866288616b0ac7",
-    "SPELL-Context": "50559be847e262594df8f21aaaccac59bea610e67c70f97c4a57c962b1cf6cdb"
+  "fresh_git_index_checkout_gate": {
+    "path": ".qualification/v0.5/dta-obs-checkout-91e1108e9dc345248959e2454b514613/result.json",
+    "sha256": "b3ed0ab44a8aa1d9e5232c837421448602eb753b49d55073d80d18e03893b1b4"
+  },
+  "native_dss_fixture": {
+    "scope": "Test-only live real DSS feed after a paused fixture packet exceeded unchanged five-second freshness bound.",
+    "ide_test_commit": "c0e2bfe",
+    "failed_and_passed_receipts": "See combined_checkpoint; runtime/image unchanged"
   },
   "remaining": [
-    "447 original inventory contracts",
-    "Final independent integrated native rebuilds",
-    "Final versioned upgrades and three installed host reruns",
-    "Full final distribution/DSS profile qualification"
-  ],
-  "preserved": [
-    "Previously accepted native host and DSS image identities",
-    "Earlier failed and successful qualification evidence",
-    "Original sources and license notices"
-  ],
-  "report_line_endings": {
-    "reason": "Git stores text as LF. Observations and source/runtime identities are unchanged; raw execution reports remain in their retained qualification folders.",
-    "normalized": {
-      "conformance/evidence/data-race.json": {
-        "raw_sha256": "02bb77dc1637dead421effa26c465a8efceae24622d50b1d2d94c8d1d7b80abe",
-        "tracked_sha256": "7e929846e815d9f0e929730bd626e06d9bdbffa174e164fc719c53b49d0c8691"
-      },
-      "conformance/evidence/data.json": {
-        "raw_sha256": "ad1c020ae18b12e40fe96a52b0d0446efb4fd13a2626bfb529d0b42d31803a16",
-        "tracked_sha256": "6a3af7d38cc26b12f51004740a0731a53a937dfec374ca49b7ca88561fab0675"
-      },
-      "conformance/evidence/files.json": {
-        "raw_sha256": "904b65cb739fa70b01de9ef015d998800a5c42b37d2f24bb8c68c0dc0fc98475",
-        "tracked_sha256": "26062be5ad77f5e28cc7dd79135bafa36ba1c2aadbd1ae682906a2aa574bd099"
-      },
-      "conformance/evidence/flow.json": {
-        "raw_sha256": "bf40b07b5907cc192291b66ac7c3f7816b174a86a5b68b16216dfa7b72eaacd9",
-        "tracked_sha256": "5b4c895fa980a45d3efa5a6bc1103679ac1e4b4e9d0541e8c757ca796961a5ce"
-      }
-    }
-  }
+    "362 original inventory rows",
+    "ARGS/IVARS native IPC type identification and edit handling",
+    "Python 2-only syntax/manual compatibility decisions",
+    "Independently rebuilt integrated native/driver wheels with intact RECORD",
+    "Final versioned host/runtime upgrade matrix and full distribution acceptance"
+  ]
 }

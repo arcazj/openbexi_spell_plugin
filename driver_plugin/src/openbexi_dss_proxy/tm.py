@@ -12,9 +12,16 @@ from .common import POLICY, timeout_seconds
 
 def validate_settings(config, allowed=()):
     # Original acquisition/comparison defaults are consumed by TmInterface.
-    known = POLICY | {'ValueFormat','Timeout','Retries','Tolerance','RelTolerance','Wait','IgnoreCase','AllowInterrupt','Delay','Extended','AdjLimits'} | set(allowed)
+    known = POLICY | {'ValueFormat','Timeout','Retries','Tolerance','RelTolerance','Wait','IgnoreCase','AllowInterrupt','Delay','Extended','AdjLimits','Retry','Strict','STEP_ID'} | set(allowed)
     if set(config or {}) - known:
         raise DriverException('Unqualified telemetry modifier: '+','.join(sorted(set(config)-known)))
+    # These are original verifier controls/notification metadata; they stay
+    # inside the library and are never serialized as acquisition modifiers.
+    for key in ('Retry', 'Strict'):
+        if key in (config or {}) and type(config[key]) is not bool:
+            raise DriverException(key + ' must be boolean')
+    if 'STEP_ID' in (config or {}) and (type(config['STEP_ID']) is not int or config['STEP_ID'] < 0):
+        raise DriverException('STEP_ID must be a nonnegative integer')
 
 
 class Telemetry(TmInterface):

@@ -4,6 +4,27 @@ v0.6 is not accepted. It remains dependent on full v0.5 conformance, final nativ
 patch integration, versioned upgrades, and distribution/runtime qualification.
 Accepted earlier artifact versions and Docker tags are preserved.
 
+The current DTA/TIME/OBS checkpoint has **401 qualified / 362 open** original
+requirements. Its combined development image is
+`sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0`.
+It passes 394 DTA/data/files/time/UI/flow checks, 181 direct telemetry assertions,
+488 Python checks, 44 COMMON checks, 28 original-driver tests, 10 native-host
+tests, 9 native DSS integrations and 212 package tests. Exact evidence and fresh
+Git-checkout gate results are in [the current checkpoint](V05_CONFORMANCE_QUALIFICATION.json).
+The sections below retain earlier distribution evidence and its narrower scope.
+
+The native DSS timeout test initially used a paused clock: by acquisition time
+its last real telemetry packet exceeded the unchanged five-second freshness
+limit. The timeout test now uses a real DSS update feed. Invalid-timeout checks,
+command receipt counts and freshness enforcement remain unchanged; two complete
+native executions pass. Both failed and passing fixture evidence is retained.
+
+Full distribution still needs an independent build of all integrated native and
+Python patches into the shipped wheel. Current development overlays alter
+installed files after wheel installation; they must not be passed off as an
+intact final wheel RECORD. ARGS/IVARS edits also expose an obsolete native type
+identifier and remain unqualified.
+
 The [distribution tools](../distribution/README.md) now retain immutable source
 snapshots and compare two fresh native compilations, instead of creating two
 wheels from one compilation. The original complete native recorder still gates

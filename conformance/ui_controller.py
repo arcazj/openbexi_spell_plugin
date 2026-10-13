@@ -11,7 +11,8 @@ sys.path.insert(0, '/opt/host')
 from native import NativeSession
 
 runtime = {'native.py': hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest()}
-manifest_path = next((path for path in (Path('/opt/combined-native-patch/manifest.json'),
+manifest_path = next((path for path in (Path('/opt/dta-native-patch/manifest.json'),
+    Path('/opt/combined-native-patch/manifest.json'),
     Path('/opt/ui-native-patch/manifest.json')) if path.exists()), Path('/nonexistent-ui-manifest'))
 if manifest_path.exists():
     manifest = json.loads(manifest_path.read_text())
