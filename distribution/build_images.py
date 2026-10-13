@@ -100,14 +100,22 @@ def main():
         selected = options.native_wheel.resolve()
         report['native_wheel'] = inspect_wheel(selected,require_composition=True)
         shutil.copyfile(selected,wheels/'native'/selected.name)
-        # Keep wheel generation outside the immutable image-build snapshot.
-        driver_source = evidence/'driver-source'
-        shutil.copytree(snapshot/'driver_plugin',driver_source)
-        run(['docker','run','--rm','--network=none',
-             '--mount',f'type=bind,source={driver_source},target=/driver',
-             '--mount',f'type=bind,source={wheels / "driver"},target=/wheels',
-             options.toolchain_image,'python','-m','pip','wheel','--no-index',
-             '--no-build-isolation','--no-deps','--wheel-dir=/wheels','/driver'],evidence/'driver-wheel.log')
+        # Docker context transfer avoids host bind-mount requirements and keeps
+        # compiler-generated wheel metadata outside the source checkout.
+        driver_recipe = evidence/'driver-wheel.Dockerfile'
+        driver_recipe.write_text('''ARG TOOLCHAIN_IMAGE
+FROM ${TOOLCHAIN_IMAGE} AS driver
+COPY driver_plugin /driver
+RUN python -m pip wheel --no-index --no-build-isolation --no-deps --wheel-dir=/wheels /driver
+FROM scratch
+COPY --from=driver /wheels /wheels
+''',encoding='utf-8',newline='\n')
+        run(['docker','build','--no-cache','--network=none','--progress=plain',
+             '--build-arg','TOOLCHAIN_IMAGE='+options.toolchain_image,'-f',driver_recipe,
+             '--output','type=local,dest='+str(evidence/'driver-package'),snapshot],evidence/'driver-wheel.log')
+        built_driver, = (evidence/'driver-package/wheels').glob('*.whl')
+        shutil.copyfile(built_driver,wheels/'driver'/built_driver.name)
+        report['driver_wheel_recipe_sha256'] = sha(driver_recipe)
         driver, = (wheels/'driver').glob('*.whl')
         report['driver_wheel'] = inspect_wheel(driver)
         inputs = {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}
@@ -127,8 +135,8 @@ def main():
         if inputs != {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}:
             raise ValueError('Image source snapshot changed during build')
         run(['docker','run','--rm','--network=none','--entrypoint','python',
-             '--mount',f'type=bind,source={snapshot / "distribution/verify_image.py"},target=/qualification/verify_image.py,readonly',
-             report['driver_plugin']['image'],'-I','/qualification/verify_image.py'],evidence/'installed-record.json')
+             report['driver_plugin']['image'],'-I','-c',
+             (snapshot/'distribution/verify_image.py').read_text(encoding='utf-8')],evidence/'installed-record.json')
         installed = json.loads((evidence/'installed-record.json').read_text())
         if not installed['passed'] or installed['native_artifacts'] != report['native_wheel']['native_artifacts']:
             raise ValueError('Installed native payload differs from the selected wheel')

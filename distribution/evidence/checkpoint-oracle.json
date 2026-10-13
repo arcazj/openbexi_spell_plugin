@@ -1,0 +1,60 @@
+{
+  "schema": "openbexi.spell.checkpoint-oracle-review/1",
+  "runtime_recipes_changed": false,
+  "recorder_thresholds_changed": false,
+  "full_pair_accepted": false,
+  "manual": "SPELL Language Reference 2.4.4 printed p.85: Range and Expected modifiers cannot be used at the same time",
+  "failed_build": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/result.json",
+    "sha256": "2e06b875f40d756e6b167119a2a6c9134711897041a73aa5733674206fa0ae5e",
+    "lf_sha256": "ce9cc55ff8c3201e1f2084dcb57169067e2bf06c4ace658c52e1a8089f5f02b8"
+  },
+  "failed_gate_log": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/a-build.log",
+    "sha256": "06bcc40f324bc5eb05e56e7dd3fafb472dd10cc33aa91b3b48069b8c18ff118e",
+    "lf_sha256": "06bcc40f324bc5eb05e56e7dd3fafb472dd10cc33aa91b3b48069b8c18ff118e"
+  },
+  "failed_checkpoint_report": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/diagnostic/native/dta-checkpoint-runtime.json",
+    "sha256": "88c9c3a345b7b1dba63b7698c1d4cdd3159711aeaa1e0d463db2e96363cda8e2",
+    "lf_sha256": "88c9c3a345b7b1dba63b7698c1d4cdd3159711aeaa1e0d463db2e96363cda8e2"
+  },
+  "failed_checkpoint_case": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/diagnostic/native/dta-checkpoint-test_constraints_confirm_and_format.log",
+    "sha256": "991f2bb47fbb89cf066577c24ae61244cdaf889f1b276b1ffc01e45ae2d92f23",
+    "lf_sha256": "991f2bb47fbb89cf066577c24ae61244cdaf889f1b276b1ffc01e45ae2d92f23"
+  },
+  "diagnostic_export_recipe": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/diagnostic.Dockerfile",
+    "sha256": "722244f59ce99080bfe97deca91b1ff7245b6e344c71b274d4905e5d41312ebb",
+    "lf_sha256": "722244f59ce99080bfe97deca91b1ff7245b6e344c71b274d4905e5d41312ebb"
+  },
+  "diagnostic_export_log": {
+    "path": ".qualification/v0.6/rebuild/97f9a6b22e51489bb9b08396c41184b1/diagnostic-export.log",
+    "sha256": "089afac1df468e83bc55528f5b8a943e270a5d73b78f96c82d318cf879582d9a",
+    "lf_sha256": "089afac1df468e83bc55528f5b8a943e270a5d73b78f96c82d318cf879582d9a"
+  },
+  "diagnostic_image": "sha256:dc15d9f1f6de3ab00a8a90bc70c0bd2a7bab473b0e18202ea1df087d1085b471",
+  "corrected_fixture": {
+    "path": "source_port/native/qualify_dta_checkpoint.py",
+    "sha256": "dbed43cd1cb4e901e355760a02656c2ae6e69e42922c0163972b4b82479280e4",
+    "lf_sha256": "dbed43cd1cb4e901e355760a02656c2ae6e69e42922c0163972b4b82479280e4"
+  },
+  "focused_report": {
+    "path": ".qualification/v0.6/checkpoint-oracle/9df5c4e709604d23b785fa90bd546ecb/result.json",
+    "sha256": "29dff051433d08356acb62bbac554447f3b7ad7cba6b0dd2252a3a33deb71423",
+    "lf_sha256": "29dff051433d08356acb62bbac554447f3b7ad7cba6b0dd2252a3a33deb71423"
+  },
+  "focused_inputs": {
+    "path": ".qualification/v0.6/checkpoint-oracle/9df5c4e709604d23b785fa90bd546ecb/inputs.json",
+    "sha256": "b1dfacbebdae863e613045933d814a024236731a23e37205b1c274cc22f1318e",
+    "lf_sha256": "b4f0c9c460ad1a7e01fd2f5f7710dbdaa002331af053f8132619c50a4bb5b21d"
+  },
+  "focused_tests": 14,
+  "focused_failures": 0,
+  "limitations": [
+    "Fresh independent no-cache pair still required",
+    "Existing native diagnostic sanitizer profile retained",
+    "Full v0.5/v0.6 release gates remain separate"
+  ]
+}

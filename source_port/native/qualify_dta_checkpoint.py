@@ -19,6 +19,7 @@ def load(name):
     return module
 dta=load('libSPELL_DTA_v3');native=load('_spell_dta_qualification')
 from spell.lang.constants import LONG,HEX
+from spell.lib.exception import SyntaxException
 
 class DataCheckpoints(unittest.TestCase):
     def setUp(self): native.notifications(False)
@@ -45,13 +46,32 @@ class DataCheckpoints(unittest.TestCase):
                 self.assertEqual(native.value(restored),value)
                 self.assertEqual(native.details(restored),native.details(variable))
     def test_constraints_confirm_and_format(self):
-        variable=dta.Var(Default=5,Type=LONG,Range=[0,10],Expected=[3,5,7],ValueFormat=HEX,Confirm=True)
-        restored=pickle.loads(pickle.dumps(variable,protocol=5))
-        self.assertEqual(restored.__reduce_ex__(5)[2][2],variable.__reduce_ex__(5)[2][2])
-        for value in (-1,4,11,'bad'):
-            with self.assertRaises(Exception): native.assign(restored,value)
-        native.assign(restored,7)
-        self.assertEqual(native.value(restored),7)
+        # LRM p.85 forbids combining Range and Expected. Qualify both valid
+        # declarations independently, retaining confirmation and display format.
+        for constraints,invalid in (({'Range':[0,10]},(-1,11,'bad')),
+                                    ({'Expected':[3,5,7]},(-1,4,11,'bad'))):
+            variable=dta.Var(Default=5,Type=LONG,ValueFormat=HEX,Confirm=True,**constraints)
+            for codec in (pickle,cloudpickle):
+                restored=codec.loads(codec.dumps(variable,protocol=5))
+                self.assertEqual(restored.__reduce_ex__(5)[2][2],variable.__reduce_ex__(5)[2][2])
+                for value in invalid:
+                    with self.assertRaises(Exception): native.assign(restored,value)
+                    self.assertEqual(native.value(restored),5)
+                native.assign(restored,7)
+                self.assertEqual(native.value(restored),7)
+                self.assertEqual(native.value(variable),5)
+    def test_mutually_exclusive_constraints_reject_and_restore_recovers(self):
+        with self.assertRaisesRegex(SyntaxException,'Range and Expected cannot be combined'):
+            dta.Var(Default=5,Type=LONG,Range=[0,10],Expected=[3,5,7])
+        variable=dta.Var(Default=5,Type=LONG,Range=[0,10],ValueFormat=HEX,Confirm=True)
+        state=variable.__reduce_ex__(5)[2]
+        invalid=state[:2]+(dict(state[2],Expected=[3,5,7]),)+state[3:]
+        # The private checkpoint codec reports malformed state as ValueError.
+        with self.assertRaisesRegex(ValueError,'Range and Expected cannot be combined'):
+            variable.__setstate__(invalid)
+        self.assertEqual(variable.__reduce_ex__(5)[2][2],state[2])
+        native.assign(variable,7)
+        self.assertEqual(native.value(variable),7)
     def test_uninitialized_value_does_not_prompt(self):
         restored=pickle.loads(pickle.dumps(dta.Var(),protocol=5))
         self.assertIsNone(native.value(restored))
