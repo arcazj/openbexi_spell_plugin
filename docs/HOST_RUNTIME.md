@@ -6,6 +6,16 @@ original-source native SPELL wheel and connects through the original listener,
 context and executor IPC. Project procedures use explicit `spell` imports.
 The host interpreter does not receive a replacement SPELL language runtime.
 
+The next host candidate fixes early console answers: the original runtime can
+print a question before its input event arrives. The runner now retains those
+lines and sends one answer per native prompt, preserving its prompt ID when
+provided. It retains a final piped line without a newline, reports malformed
+UTF-8 through normal cleanup, and bounds input to 64 KiB per line and 128 queued
+lines / 256 KiB. Rejected or uncertain answers are never replayed.
+The [console qualification record](../conformance/evidence/console_input_review.json)
+binds the failing prior wheel, pipe regressions and actual IDE Run/Debug checks.
+This candidate keeps the accepted 0.3.0 artifacts and final v0.6 gate separate.
+
 The local adapter currently owns one Development session. Run, breakpoints,
 current-frame variable inspection/editing, Step, pause, prompt input and normal
 shutdown have independent native adapter checks. Step Out and arbitrary

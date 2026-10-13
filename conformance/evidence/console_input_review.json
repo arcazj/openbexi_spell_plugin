@@ -1,0 +1,65 @@
+{
+  "schema": "openbexi.spell.console-input-review/1",
+  "scope": "Queued console stdin and native child prompt delivery in the local IDE Development host",
+  "inputs": {
+    "host_plugin/src/openbexi_spell_host/runner.py": "8f20136cc9d7c29d7285a126054de58d881e54bcad53848cca0e8390f5c14c9d",
+    "host_plugin/src/openbexi_spell_host/protocol.py": "c4ff6c86c2fe859397e117896ac227481a7d7f6c7aab08d74fc07733181eb8a2",
+    "host_plugin/src/openbexi_spell_host/container.py": "2203d4536660ca0a104ab2404245fa2ee9227cba64033404667e1dbd2b633e39",
+    "host_plugin/tests/test_runner_input.py": "bd40a9225c41e384aab46c2696cb8c356d5dd045e6eb19a5562076aa88e0cc5a",
+    "scripts/qualify_child_desktop.py": "18c98b9e34646dcd61324d1c62644b690a9bc2a5a00af8b4b01597f32484450f"
+  },
+  "baseline": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\desktop\\f30e03b4f99b4adf98dd8fd92bdeb8b1\\result.json",
+    "sha256": "e20b515fca8589ea07dc1f37145c5dccff5d6b058062e075d294a34bfc9548eb"
+  },
+  "baseline_behavior": "Run accepted the first child answer and lost the second early answer after question output but before its actionable prompt; retained console times out waiting for completion.",
+  "pipe_regressions": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\v0.6\\runner-input\\expanded-d515a9459a08481ebb1833c594718bb8\\result.json",
+    "sha256": "8332ad71874b10c6ec42ee1e6ab7d49a6777ead1aaf89c3f0b1fa9d785a4c567"
+  },
+  "pipe_checks": 16,
+  "native_claim_for_pipe_tests": false,
+  "desktop": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\desktop\\c19e0a6e55d249348231d995932bfcce\\result.json",
+    "sha256": "2794e2fe32da5d1d1dacc6d8eab8bde25fb93d991553afd13ac6769622082f71"
+  },
+  "desktop_checks": 2,
+  "desktop_consoles": {
+    "run-console.txt": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\desktop\\c19e0a6e55d249348231d995932bfcce\\run-console.txt",
+      "sha256": "742806cf2e8524c7d9e7bf7a27ea498d87f41b49276ef2f36ef6d8eb60f19039"
+    },
+    "debug-console.txt": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\desktop\\c19e0a6e55d249348231d995932bfcce\\debug-console.txt",
+      "sha256": "5de8f859a32a55f2180b9ef8fc2892c7f4f96cd1f179c8c845e51ca1fde30ef2"
+    }
+  },
+  "runtime_image": "sha256:b7c4cd03377ff1f9e010621caf4cc1ac2dd140d7b08099fb88de98f21823cef5",
+  "ide_commit": "3779d8547f6874e1f93b0dd98efe826d42e5ca81",
+  "wheel": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\host-wheels-stdin-v2\\openbexi_spell_host-0.3.0-py3-none-any.whl",
+    "sha256": "89e73b6646eef839d63e10991b71d4caa92764da45683abaff693ae99f286adc"
+  },
+  "wheel_record": {
+    "all_members_verified": true,
+    "hashed_members": 10,
+    "source_members_verified": 5,
+    "installed_sources_match": true
+  },
+  "behavior": [
+    "Answers entered before an actionable native prompt wait in FIFO order.",
+    "Each answer targets one prompt; supplied promptId is retained.",
+    "The final piped line without a newline is accepted; managed desktop stdin closure still cancels.",
+    "UTF-8 decoding and input-read errors reach normal session cleanup.",
+    "Input limits are 64 KiB per payload line, 128 queued lines and 256 KiB queued UTF-8 data; LF/CRLF framing does not consume the line payload allowance.",
+    "Rejected or uncertain answer transmission does not replay a line or advance queued answers.",
+    "Actual Qt Run and Debug accept two child answers typed through the readonly console, complete the parent, and export the expected child file under the exact image identity."
+  ],
+  "limitations": [
+    "Offscreen Qt interaction does not qualify browser noVNC X-button or wheel behavior.",
+    "This private interpreter run does not qualify a fresh Windows OS installation.",
+    "No language inventory rows are promoted; final distribution integration and full v0.5/v0.6 gates remain open."
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
