@@ -1,39 +1,75 @@
 # v0.6 distribution prerequisites
 
-v0.6 is not accepted. It remains dependent on full v0.5 conformance, final native
-patch integration, versioned upgrades, and distribution/runtime qualification.
-Accepted earlier artifact versions and Docker tags are preserved.
+v0.6 is not accepted. The current checkpoint has **422 qualified / 341 open**
+original requirements. It retains the preceding 401 qualified rows and adds 21
+bounded CMD rows. Artifact versions and accepted Docker tags remain unchanged.
+The [current conformance manifest](V05_CONFORMANCE_QUALIFICATION.json) and
+[distribution manifest](V06_QUALIFICATION.json) leave both release flags false.
 
-The current DTA/TIME/OBS checkpoint has **401 qualified / 362 open** original
-requirements. Its combined development image is
-`sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0`.
-It passes 394 DTA/data/files/time/UI/flow checks, 181 direct telemetry assertions,
-488 Python checks, 44 COMMON checks, 28 original-driver tests, 10 native-host
-tests, 9 native DSS integrations and 212 package tests. Exact evidence and fresh
-Git-checkout gate results are in [the current checkpoint](V05_CONFORMANCE_QUALIFICATION.json).
-The sections below retain earlier distribution evidence and its narrower scope.
+The frozen DATA, UI, FLOW, DTA, TIME, OBS, CMD and dictionary IPC corrections are
+now built together from checked original sources, before wheel creation.
+The central port recipes remain unchanged. Native and Python composition
+manifests bind original, ported and corrected sources, exact recipes, and the
+native continuation identity. The complete wheel RECORD covers these sources,
+provenance, licenses and final native binaries; installed files are unmodified.
 
-The native DSS timeout test initially used a paused clock: by acquisition time
-its last real telemetry packet exceeded the unchanged five-second freshness
-limit. The timeout test now uses a real DSS update feed. Invalid-timeout checks,
-command receipt counts and freshness enforcement remain unchanged; two complete
-native executions pass. Both failed and passing fixture evidence is retained.
+Two independent builds from source freeze `4371ab5` passed the unchanged complete
+native recorder with `--no-cache --network=none`. All six shipped native binaries,
+Python sources, composition manifests and complete wheel bytes are identical.
+Both builds passed eight fresh-install and removal checks without a build tree.
+The Linux x86_64 CPython 3.13 wheel remains version 0.3.0; its SHA-256 is
+`812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5`.
 
-Full distribution still needs an independent build of all integrated native and
-Python patches into the shipped wheel. Current development overlays alter
-installed files after wheel installation; they must not be passed off as an
-intact final wheel RECORD. ARGS/IVARS edits also expose an obsolete native type
-identifier and remain unqualified.
+Fresh host and DSS images were built offline from that wheel and a newly built
+driver wheel. Installed RECORD, native/Python composition and compiled host
+bridge audits pass. The exact host image is
+`sha256:1bc007b64a5a8dd73f5a565cacfa00f94e7cfd609db41f55a8af11edd32b4809`;
+the DSS image used by the refreshed conformance reports is
+`sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd`.
+It is available locally as `openbexi-spell-dss:v06-integrated-3743ea8c7a3f`.
 
-The [distribution tools](../distribution/README.md) now retain immutable source
-snapshots and compare two fresh native compilations, instead of creating two
-wheels from one compilation. The original complete native recorder still gates
-packaging. Volatile qualification logs stay in external per-build evidence;
-original sources, licenses, recipes and native identities remain in the wheel.
-Two packaging integrity checks pass, including RECORD validation and rejection
-of changed native contents.
+The additional native host suite exposed an adapter defect: it displayed the
+native error heading but discarded its separate reason. The corrected adapter
+preserves both fields and avoids duplicate complete lines. All ten host checks
+now pass on DSS image
+`sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee`,
+tag `openbexi-spell-dss:v06-integrated-c4da765bb816`. Its host image is
+`sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7`.
+The native wheel, every driver-wheel member and compiled bridge are identical.
+Language reports remain bound to `49667cb1`; the host correction has its own
+failed transcript, original IPC fields, passing transcript and image audit.
+No blanket language rerun on the corrected host image is claimed.
 
-## Host artifact and workflow evidence
+On `49667cb1`, native ARGS/IVARS editing passes its 64-check dictionary IPC regression,
+including type/range rejection, Unicode chunks, ownership and recovery. The
+same image is used for the bounded language suites. This does not qualify all
+unimplemented language clauses or broader dictionary behavior.
+
+Evidence is retained beneath
+`.qualification/v0.6/integrated-worktree/.qualification/v0.6/`: rebuild
+`6cc17db52d6440c0a00fff8f4ee7fc72` and images
+`3743ea8c7a3f477fa54556be3ddc17d5` and
+`c4da765bb8164446a3294fae9b913d85`. The committed
+[checkpoint](../distribution/evidence/integrated-rebuild.json) records exact raw
+and LF-normalized hashes, all source-bound reports, and the unchanged open gate.
+Reproduction commands are in [distribution/README.md](../distribution/README.md).
+
+The first integrated build correctly rejected an obsolete checkpoint fixture
+that combined mutually exclusive Range and Expected modifiers. Its failed
+export is retained. The corrected fixture tests valid declarations separately
+and adds rejection and recovery for the forbidden combination; recorder
+thresholds and runtime recipes did not change. See
+[the oracle review](../distribution/CHECKPOINT_ORACLE.md).
+
+Remaining gates include the 341 open requirements, later separately developed
+Event/scheduler/resource/LIMIT/database work, versioned upgrades, all final
+installed host workflows and the supported platform matrix. The compiler-bearing
+ASan/UBSan diagnostic image is not a production platform qualification.
+The exact frozen toolchain can be reused offline; apt reconstruction remains
+unlocked. The historical sections below retain their earlier artifact scope and
+do not claim that those host workflows were rerun on this fresh image.
+
+## Historical host artifact and workflow evidence
 
 Two independent Java compilations produced the identical current 0.3.0 ZIP,
 SHA-256 `da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8`.
@@ -65,7 +101,7 @@ Evidence roots:
 These host tests use private profiles and ordinary application test APIs. They
 do not establish visual noVNC X-button closure or mouse-wheel scrolling.
 
-## Native rebuild status
+## Historical COMMON snapshot rebuild
 
 The first independent attempt,
 `.qualification/v0.6/rebuild/6a340659e519410f8d418e5a769c7268`, was rejected by
@@ -98,12 +134,12 @@ using `rebuild.py --toolchain-image` supports offline reuse of the exact compile
 environment. The current native profile remains the Linux x86_64,
 CPython 3.13.15 ASan/UBSan diagnostic build; leak sanitizer is disabled.
 
-Remaining release gates include complete v0.5 acceptance, final integrated native
+At that earlier snapshot, remaining gates included complete v0.5 acceptance, final integrated native
 rebuilds, versioned upgrade paths, final installed artifacts and all three host
 reruns, shipped DSS image runtime qualification, and reproducible toolchain
 reconstruction. Partial evidence must not promote either v0.5 or v0.6.
 
-## Subsequent DATA/FLOW/UI development integration
+## Historical DATA/FLOW/UI development integration
 
 The combined conformance candidate is
 `openbexi-spell-host:v05-ui-flow-data-final`, exact image
@@ -126,12 +162,13 @@ the immutable baseline's independent rebuild evidence. Final release packaging
 must rebuild the integrated source recipes independently and rerun the installed
 host gates with those final bytes.
 
-The complete combined development image now passes 168 TIME checks, 44 COMMON
+That combined development image passed 168 TIME checks, 44 COMMON
 checks, four direct-IPC silence checks and all ten native host regressions.
 Its separately integrated DSS development image is
 `sha256:fd350eeaec46d7408384c04d0888e89776a7544c59f88c026e4c70efa1562117`;
-all nine actual native driver acceptance tests pass. The package/release-gate
-regressions pass 214 tests. These results are bound in
-[the conformance checkpoint](V05_CONFORMANCE_QUALIFICATION.json). The accepted
+all nine actual native driver acceptance tests passed. The package/release-gate
+regressions passed 214 tests. Those reports remain in Git checkpoint `e365053`;
+the [current conformance checkpoint](V05_CONFORMANCE_QUALIFICATION.json) records
+the fresh wheel and image above. The accepted
 DSS v0.4 image is unchanged. This integration closes the current native patch
 regression checks while preserving full release/distribution gates above.

@@ -18,12 +18,12 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 
 Exit 1 means the release is still open; it is currently the expected result.
 TIME qualifies 42 rows / 168 checks. The [COMMON milestone](COMMON.md) adds 40 of
-its 66 rows and resolves two source errata. Current qualification totals 401
-rows, with 362 open. The DTA and telemetry checkpoint adds 85 specific rows;
-its manual/source decisions and open clauses are recorded separately. The specific TIME
-evidence is retained in `evidence/time.json`; it qualifies the development image
-identified there and does not qualify a new distributable native wheel. TIME was
-rerun on the combined COMMON/TIME image after the shared wrapper changes.
+its 66 rows and resolves two source errata. Current qualification totals 422
+rows, with 341 open. The prior 401 rows are retained and 21 bounded CMD rows are
+added. Every allocated report has been rerun on the independently rebuilt wheel
+and exact DSS image recorded in the checkpoint. Original manual/source decisions
+and unsupported clauses remain explicit; passing migration tests do not qualify
+unsupported Python syntax.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
@@ -35,12 +35,13 @@ rerun on the combined COMMON/TIME image after the shared wrapper changes.
 | FLOW | 23 / 51 | 28 traced scenarios, 36 checks and six scanner checks |
 | UI | 25 / 60 | 62 checks of original prompts and native IPC |
 | OBS | 72 / 104 | Original telemetry acquisition/comparison and actual binary DSS |
-| LIMIT, CMD, SPECIAL | 0 / 179 | Family conformance remains open |
+| CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
+| LIMIT, SPECIAL | 0 / 113 | Family conformance remains open |
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
-[FLOW](FLOW.md) and [UI](UI.md).
+[FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).
 The [combined checkpoint](../docs/V05_CONFORMANCE_QUALIFICATION.json) binds the
-final development image, baseline failures and combined native regressions.
+fresh wheel and DSS image, retained baseline failures and combined native regressions.
 It explicitly leaves full v0.5 and dependent v0.6 acceptance false. Passing
 section evidence must recursively depend on supported child behavior; Python 2
 spelling rejection cannot qualify a parent section.
@@ -94,6 +95,8 @@ oversized and boolean values before sending an RPC. The separate native driver
 acceptance test uses original models and actual binary DSS receipts across two
 fresh runs. This closes that defect, not the full cross-family Timeout modifier.
 
-v0.6 depends on the full v0.5 release gate. Independent native rebuilds, packaged
-upgrade/removal, all three actual IDE hosts and the DSS distribution image remain
-required; the development overlays are not substitutes for that acceptance.
+v0.6 depends on the full v0.5 release gate. The current frozen composition passes
+two independent offline native builds, identical complete wheel bytes, eight
+fresh-install/removal checks per build, and installed host/DSS image provenance.
+Versioned upgrades, final host workflows and the remaining language contracts
+still prevent release acceptance. See [distribution progress](../docs/V06_PROGRESS.md).

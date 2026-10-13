@@ -1,99 +1,256 @@
 {
-  "schema": 1,
+  "schema": 2,
   "v05_accepted": false,
   "v06_accepted": false,
   "total": 763,
-  "qualified": 401,
-  "open": 362,
-  "scope": "Native DTA/TIME and actual DSS telemetry checkpoint; original library contract evidence and installed integration regressions",
-  "runtime_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
-  "dss_development_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
+  "qualified": 422,
+  "open": 341,
+  "scope": "Frozen DATA/UI/FLOW/DTA/TIME/OBS/CMD and dictionary IPC composition, before later Event/scheduler/resource/LIMIT/database tranches",
+  "runtime_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "dss_development_image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd",
+  "integrated_checkpoint": {
+    "path": "distribution/evidence/integrated-rebuild.json",
+    "sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
+    "lf_sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
+    "bytes": 66190
+  },
   "reports": {
-    "common-silence": {
-      "path": "conformance/evidence/common-silence.json",
-      "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670"
-    },
-    "common": {
-      "path": "conformance/evidence/common.json",
-      "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01"
-    },
-    "data-race": {
-      "path": "conformance/evidence/data-race.json",
-      "sha256": "6e899ad1a2598f729150d99f85e7b74e4e08ae8bd8fd93fbba0b56cb18f008b9"
-    },
     "data": {
       "path": "conformance/evidence/data.json",
-      "sha256": "ebca98edae2b0289c37287e8696dae10e7657894626cf5d56d2ee96fda8c90a7"
-    },
-    "dta": {
-      "path": "conformance/evidence/dta.json",
-      "sha256": "9312f3774e99d292947b332e0d7d05607efe508fff03736bf747bd8ac7d78818"
+      "sha256": "215a4328f5cbacf766756b67e1c8e40d780ab6b4745ce495a71314a12e4d8b5c",
+      "bytes": 72221,
+      "lf_sha256": "215a4328f5cbacf766756b67e1c8e40d780ab6b4745ce495a71314a12e4d8b5c"
     },
     "files": {
       "path": "conformance/evidence/files.json",
-      "sha256": "4ec83bf1a34929d5a4c3ef3c3e5ceca728d6469d5d6c4aac363ea79a03509a34"
+      "sha256": "743e89d884eff2f1d803a121e74da25845c877331332b29ed8cae5f64705afdf",
+      "bytes": 78018,
+      "lf_sha256": "743e89d884eff2f1d803a121e74da25845c877331332b29ed8cae5f64705afdf"
+    },
+    "data-race": {
+      "path": "conformance/evidence/data-race.json",
+      "sha256": "2876bd15357d9027cd7a70170b2259b654cedbb6809a87f95fbbde75b9e9687b",
+      "bytes": 63845,
+      "lf_sha256": "2876bd15357d9027cd7a70170b2259b654cedbb6809a87f95fbbde75b9e9687b"
     },
     "flow": {
       "path": "conformance/evidence/flow.json",
-      "sha256": "812b405f136c041f0e8cf88355cffa5d35b854ec968040e0b1b0dfb335e517a5"
-    },
-    "obs": {
-      "path": "conformance/evidence/obs.json",
-      "sha256": "61c9cc861f12bd0b0ad2016117df05eb458b9f89f4ca85a2d73abc04baa4d718"
-    },
-    "python": {
-      "path": "conformance/evidence/python.json",
-      "sha256": "a08c388319681e8d577465482aa74747c22b8c2020e03e2ab1a3fc9305c833b2"
+      "sha256": "df77357acaa1f0a918b92fd9fae859db5a81d5d22b25b185540c4bee4d6fd1f3",
+      "bytes": 148737,
+      "lf_sha256": "df77357acaa1f0a918b92fd9fae859db5a81d5d22b25b185540c4bee4d6fd1f3"
     },
     "time": {
       "path": "conformance/evidence/time.json",
-      "sha256": "fc6a0bb807b9d2ccf760c1f7898bbe80b7fc7f828b4cee69659e0e8c33e7ce30"
+      "sha256": "0d1fe8f32a9ef7e1caed51fa19527f570294a4639e51c8049b6da5dcd0a7f203",
+      "bytes": 103142,
+      "lf_sha256": "0d1fe8f32a9ef7e1caed51fa19527f570294a4639e51c8049b6da5dcd0a7f203"
+    },
+    "dta": {
+      "path": "conformance/evidence/dta.json",
+      "sha256": "0f3ab89a10017efe913b5338cf285803e9082b32d77c86439dc6ea9e8303df47",
+      "bytes": 553940,
+      "lf_sha256": "0f3ab89a10017efe913b5338cf285803e9082b32d77c86439dc6ea9e8303df47"
     },
     "ui": {
       "path": "conformance/evidence/ui.json",
-      "sha256": "4fa91fd5ade4a9da58b24a6af790999aac39b1cca5cce24a64d8ba13c50c1a00"
+      "sha256": "66b373011db1294f6f78da07f8f7909803b5b48159777fcb42ea77a15d32d2cf",
+      "bytes": 144139,
+      "lf_sha256": "66b373011db1294f6f78da07f8f7909803b5b48159777fcb42ea77a15d32d2cf"
+    },
+    "dta-ipc": {
+      "path": "conformance/evidence/dta-ipc.json",
+      "sha256": "0960c119763641d32433a1594500add8145edf9a5c1732d87016c7f39368cc62",
+      "bytes": 580719,
+      "lf_sha256": "0960c119763641d32433a1594500add8145edf9a5c1732d87016c7f39368cc62"
+    },
+    "cmd": {
+      "path": "conformance/evidence/cmd.json",
+      "sha256": "b17b0fbaf30c91f970aea307b8c02dc07ba3f91588d8773f54842eeec26ad94e",
+      "bytes": 18167973,
+      "lf_sha256": "b17b0fbaf30c91f970aea307b8c02dc07ba3f91588d8773f54842eeec26ad94e"
+    },
+    "python": {
+      "path": "conformance/evidence/python.json",
+      "sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975",
+      "bytes": 324453,
+      "lf_sha256": "296fae2f02c2d577cdcf03aec3e40354742a97d6206d02948019d8f3c2393975"
+    },
+    "common": {
+      "path": "conformance/evidence/common.json",
+      "sha256": "2468e963750df6516a211d21670027dc5174c5884e473e81f9753573d4e29567",
+      "bytes": 90393,
+      "lf_sha256": "2468e963750df6516a211d21670027dc5174c5884e473e81f9753573d4e29567"
+    },
+    "common-silence": {
+      "path": "conformance/evidence/common-silence.json",
+      "sha256": "db0fa009007220a47f9309ec9dd727ae1008ed3fd0e3f0dec8cc8a04103d12e2",
+      "bytes": 70370,
+      "lf_sha256": "db0fa009007220a47f9309ec9dd727ae1008ed3fd0e3f0dec8cc8a04103d12e2"
+    },
+    "obs": {
+      "path": "conformance/evidence/obs.json",
+      "sha256": "eca8a1bc50a77b6d7b5d5d077363ab178954d767f4090a465bb3515e94c56987",
+      "bytes": 11176102,
+      "lf_sha256": "eca8a1bc50a77b6d7b5d5d077363ab178954d767f4090a465bb3515e94c56987"
     }
   },
-  "combined_checkpoint": {
-    "path": ".qualification/v0.5/obs/checkpoint-final-20261013.json",
-    "sha256": "449b2b40a7a283b9b12b03143f2b9e712cdd58c26dd7339707659207461e7187"
-  },
   "checks": {
-    "obs_native_assertions": 181,
-    "obs_qualified_contracts": 73,
-    "obs_report_checks": 245,
+    "data": 24,
+    "files": 36,
+    "data-race": 4,
+    "flow": 36,
+    "time": 168,
+    "dta": 68,
+    "ui": 62,
+    "dta-ipc": 64,
+    "cmd": 54,
+    "python": 488,
     "common": 44,
-    "python_checks": 488,
-    "python_supported_contracts": 117,
-    "python_inventory_rows": 122,
-    "original_driver": 28,
-    "native_host": 10,
-    "data_family_regressions": 394,
-    "native_dss": 9,
-    "package": 212
+    "common-silence": 4,
+    "obs": 189
   },
   "coverage": {
     "path": "conformance/coverage.json",
-    "sha256": "e85d4e76c3c98b37f0dfe7d7fa0319d5f294c37faadd083799254f9e0a2a6dc5"
+    "sha256": "ac636a1de38b303a30ee454b98d3347ea45811d58b403e8fa77644c009c69a2e",
+    "bytes": 538511,
+    "lf_sha256": "ac636a1de38b303a30ee454b98d3347ea45811d58b403e8fa77644c009c69a2e"
   },
   "gate": {
-    "path": ".qualification/v0.5/dta-obs-checkpoint-gate.json",
-    "sha256": "29751b4619304d823cd6845f854eb415deada01f4b670a53c35863d7f79b2a03"
+    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-gate.json",
+    "sha256": "683becdd2b244a7061fa9a37ce5eba5c120cb280c056688de101e84d5c120c63",
+    "bytes": 75710,
+    "lf_sha256": "683becdd2b244a7061fa9a37ce5eba5c120cb280c056688de101e84d5c120c63"
   },
-  "fresh_git_index_checkout_gate": {
-    "path": ".qualification/v0.5/dta-obs-checkout-91e1108e9dc345248959e2454b514613/result.json",
-    "sha256": "b3ed0ab44a8aa1d9e5232c837421448602eb753b49d55073d80d18e03893b1b4"
-  },
-  "native_dss_fixture": {
-    "scope": "Test-only live real DSS feed after a paused fixture packet exceeded unchanged five-second freshness bound.",
-    "ide_test_commit": "c0e2bfe",
-    "failed_and_passed_receipts": "See combined_checkpoint; runtime/image unchanged"
+  "previous_checkpoint": {
+    "commit": "e365053",
+    "path": "docs/V05_CONFORMANCE_QUALIFICATION.json",
+    "runtime_image": "sha256:3434d53d2963c25ca43fba94c87bc106829eb6203c12aaa9ae51e757496830e0",
+    "qualified": 401,
+    "open": 362
   },
   "remaining": [
-    "362 original inventory rows",
-    "ARGS/IVARS native IPC type identification and edit handling",
-    "Python 2-only syntax/manual compatibility decisions",
-    "Independently rebuilt integrated native/driver wheels with intact RECORD",
-    "Final versioned host/runtime upgrade matrix and full distribution acceptance"
-  ]
+    "341 original requirements remain open; no release/version/tag promotion",
+    "Linux x86_64 CPython3.13.15 ASan/UBSan diagnostic runtime; leak sanitizer disabled",
+    "Frozen toolchain archive supports reuse; apt reconstruction is not snapshot locked",
+    "Versioned upgrades and all final installed host workflows remain unqualified",
+    "Later Event/scheduler/resource/LIMIT/database increments are excluded"
+  ],
+  "host_error_recovery": {
+    "scope": "Native language reports retain exact49667 image. Corrected06a98 host was qualified separately; native/Python wheel, all driver wheel members and compiled bridge are byte-identical. No blanket language rerun on06a98 is claimed.",
+    "corrected_host_source_commit": "89fd1f0",
+    "changed_image_inputs": {
+      "host_runtime/tests/test_status_order.py": {
+        "before": "74c84e90571018ebec370017876b56c99ff00898a708afee6d7a0bac4eb31533",
+        "after": "d5eefb83f3194b4825cad653e84d917f16a1739e584d54ee0f5bf34aac9dcef6"
+      },
+      "host_runtime/python/adapter.py": {
+        "before": "ae437291e05faca4e8b881b2fd48222f7ba0ad4acaf7e3e8b30cf0204102a550",
+        "after": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
+      },
+      ".runtime-input/driver/openbexi_spell_dss-0.4.0-py3-none-any.whl": {
+        "before": "686044a3aaa11c70da0baa6c0688efa992e4ecc65d4cb198973b7da290d32dfa",
+        "after": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5"
+      }
+    },
+    "native_wheel_identical": true,
+    "driver_payload_identical": true,
+    "installed_audit_identical": true,
+    "failed_host_report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/result.json",
+      "sha256": "88dfa6dfc592747fd9d75a28354750eeb3d20ece1316ac35bb951784470d3d55",
+      "bytes": 1026,
+      "lf_sha256": "e238cf85b9036eeac2f903fe0bc151a4dff4ccbaf04ef24111586ecaddd33a6a"
+    },
+    "failed_transcript": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/test_error_reported_and_cleanup.json",
+      "sha256": "46061e82caa6eac01621cf59c74bcd83557f0b9d29e3cc8308b9beb57b289a27",
+      "bytes": 2026,
+      "lf_sha256": "5885b0e196b688c8035d050f6e96d3284a49a026044174690ebf2fe241f12307"
+    },
+    "native_fields": {
+      "fresh": {
+        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/fresh.log",
+        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
+        "bytes": 212,
+        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
+      },
+      "prior": {
+        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/prior.log",
+        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
+        "bytes": 212,
+        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
+      }
+    },
+    "native_probe": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/probe_host_error.py",
+      "sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a",
+      "bytes": 1581,
+      "lf_sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a"
+    },
+    "native_probe_inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/inputs.json",
+      "sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e",
+      "bytes": 282,
+      "lf_sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e"
+    },
+    "passing_host_report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/result.json",
+      "sha256": "effd1295a336c0fc45e781de90c31579a1d717a60b670bcb6032609993789db6",
+      "bytes": 1026,
+      "lf_sha256": "87853450987d69a8633f9c90abc657f6683c5065868003129bd44b57173f55d1"
+    },
+    "passing_transcript": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/test_error_reported_and_cleanup.json",
+      "sha256": "62f5606d3186afb4db6bd69284bfa06f514da0293870ca74826331809c8e74a9",
+      "bytes": 2318,
+      "lf_sha256": "bc5b2aea7c85aba382414c8d1e5be63b169ded51dfa71a71af0b321219ea12a5"
+    },
+    "passing_tests": 10,
+    "failures": 0,
+    "source": {
+      "path": "host_runtime/python/adapter.py",
+      "sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460",
+      "bytes": 20362,
+      "lf_sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
+    }
+  },
+  "usable_host_candidate": {
+    "report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/result.json",
+      "sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720",
+      "bytes": 15744,
+      "lf_sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720"
+    },
+    "installed_record": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/installed-record.json",
+      "sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2",
+      "bytes": 14316,
+      "lf_sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2"
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/inputs.json",
+      "sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782",
+      "bytes": 5535,
+      "lf_sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782"
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-c4da765bb816",
+      "image": "sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-c4da765bb816",
+      "image": "sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee"
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5",
+      "record_files_verified": 31
+    }
+  },
+  "fresh_git_index_checkout_gate": {
+    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/index-check-ead13dcb8f8e498eaf222f01204c2123/result.json",
+    "sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
+    "lf_sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
+    "bytes": 341
+  }
 }

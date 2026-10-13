@@ -2,38 +2,384 @@
   "prerequisites_passed": true,
   "v05_accepted": false,
   "v06_accepted": false,
-  "scope": "Independent COMMON-snapshot native rebuild and current installed host prerequisites",
+  "scope": "Independent integrated native builds, intact source/native wheels and audited host/DSS candidates; full language and final host release gates remain open",
+  "integrated_checkpoint": {
+    "path": "distribution/evidence/integrated-rebuild.json",
+    "sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
+    "lf_sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93",
+    "bytes": 66190
+  },
   "native_rebuild": {
-    "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/result.json",
-    "sha256": "f58a850d9fec23c7332f5bb3240041bfbead1dfe428b19578a548afc1c1a5c2d",
+    "report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/result.json",
+      "sha256": "d6c7f4329d8fb764b0b31b34b4a7b0b5aa71db4a2ac008149f62195bc50d7f7b",
+      "bytes": 57803,
+      "lf_sha256": "01a8825ad09811bbef01effee5ae25dd962718f57c689c6c3cc03806916a9449"
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/inputs.json",
+      "sha256": "f7776965cfb9b47aee7f8b9dcbc43f18d4add2372b1f7541e62fb4be0ac1199a",
+      "bytes": 18249,
+      "lf_sha256": "72e850080626f6288a1287ff1e3ad87b658176b4acf230af252357dcffb10835"
+    },
     "checks": {
       "independent_native_rebuilds": true,
       "native_artifacts_identical": true,
       "python_sources_identical": true,
+      "composition_identical": true,
       "wheel_bytes_identical": true,
       "fresh_install_and_removal": true
     },
-    "source_snapshot_inputs": {
-      "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/inputs.json",
-      "sha256": "d713302ef1f159991fa850c4010bb1e3d50e1c9acd5c82ec7ff31b717ded91a4"
-    },
-    "wheels": [
-      {
-        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/a/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
-        "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
-      },
-      {
-        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/b/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
-        "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
-      }
-    ],
+    "wheel_sha256": "812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5",
     "native_artifacts": {
-      "libspell_executor313.so": "be6d6c4924a4249cadb5de59d8dd96fd3af2baa1e047c0604108cdc5f9854624",
+      "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a",
       "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "SPELL-Context": "e69e987803137457156256a554ba1f931e337cba3cdaabdbc665db9a3ead2454",
-      "SPELL-Listener": "ded795fa7d7a6a32295563ff2860e94106c9112ca573296bb9b9364be8c4c265",
+      "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+      "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
       "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
       "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
+    },
+    "composition": {
+      "native": {
+        "manifest_sha256": "45fc56699da879a466779ed744ff2c3876865bed10821633d54f0e7cf97faef2",
+        "schema": "openbexi.spell.integrated-native/1",
+        "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+        "recipes": {
+          "integrated_patches.py": {
+            "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+            "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+          },
+          "native_patches.py": {
+            "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+            "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+          },
+          "patches.py": {
+            "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+            "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+          },
+          "data_files_native_patches.py": {
+            "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+            "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+          },
+          "data_files_patches.py": {
+            "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+            "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+          },
+          "dta_native_patches.py": {
+            "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+            "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+          },
+          "dta_time_patches.py": {
+            "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+            "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+          },
+          "flow_patches.py": {
+            "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+            "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+          },
+          "flow_analyze.py": {
+            "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+            "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+          },
+          "obs_patches.py": {
+            "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+            "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+          },
+          "ui_native_patches.py": {
+            "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+            "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+          },
+          "cmd_patches.py": {
+            "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+            "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+          },
+          "dta_ipc_patches.py": {
+            "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+            "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+          }
+        },
+        "sources": {
+          "include/SPELL_WS/SPELLcontinuationSource.H": {
+            "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d",
+            "patched_sha256": "20b36d7d5639a914333b8ce2660ceae00d1e7c0c1b593e5c30f0af6b31f0bf97"
+          },
+          "lib/SPELL_CIF/src/SPELLasRun.C": {
+            "original_sha256": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+            "ported_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a",
+            "patched_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317"
+          },
+          "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+            "original_sha256": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+            "ported_sha256": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c",
+            "patched_sha256": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724"
+          },
+          "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+            "original_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+            "ported_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+            "patched_sha256": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b"
+          },
+          "lib/SPELL_CTX/src/SPELLcontext.C": {
+            "original_sha256": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
+            "ported_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a",
+            "patched_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+          },
+          "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+            "original_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+            "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e",
+            "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538"
+          },
+          "lib/SPELL_EXC/src/SPELLgoto.C": {
+            "original_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+            "ported_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7",
+            "patched_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4"
+          },
+          "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+            "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+            "ported_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02",
+            "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa"
+          },
+          "lib/SPELL_UTIL/src/SPELLtime.C": {
+            "original_sha256": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+            "ported_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8",
+            "patched_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec"
+          }
+        },
+        "checkpoint": {
+          "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
+          "integrated_identity": "61880dfcc24747d7095968205d8e6335f49b231a751d266595ccaf391331b6a2"
+        }
+      },
+      "python": {
+        "manifest_sha256": "cef33e4380163100640c3d57f9431c1ec5814653287d1e4fe0e320f272f95c09",
+        "schema": "openbexi.spell.integrated-python/1",
+        "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+        "recipes": {
+          "integrated_patches.py": {
+            "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+            "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+          },
+          "native_patches.py": {
+            "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+            "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+          },
+          "patches.py": {
+            "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+            "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+          },
+          "data_files_native_patches.py": {
+            "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+            "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+          },
+          "data_files_patches.py": {
+            "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+            "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+          },
+          "dta_native_patches.py": {
+            "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+            "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+          },
+          "dta_time_patches.py": {
+            "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+            "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+          },
+          "flow_patches.py": {
+            "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+            "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+          },
+          "flow_analyze.py": {
+            "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+            "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+          },
+          "obs_patches.py": {
+            "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+            "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+          },
+          "ui_native_patches.py": {
+            "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+            "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+          },
+          "cmd_patches.py": {
+            "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+            "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+          },
+          "dta_ipc_patches.py": {
+            "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+            "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+          }
+        },
+        "sources": {
+          "spell/lang/helpers/basehelper.py": {
+            "original_sha256": "8cbca48bb966b427455acc74177448c73cbb1e31898181a923331afe99b8cd81",
+            "ported_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7",
+            "patched_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db"
+          },
+          "spell/lang/helpers/datahelper.py": {
+            "original_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f",
+            "ported_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f",
+            "patched_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0"
+          },
+          "spell/lang/helpers/exechelper.py": {
+            "original_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d",
+            "ported_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d",
+            "patched_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b"
+          },
+          "spell/lang/helpers/filehelper.py": {
+            "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
+            "ported_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
+            "patched_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057"
+          },
+          "spell/lang/helpers/tchelper.py": {
+            "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
+            "ported_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
+            "patched_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e"
+          },
+          "spell/lang/helpers/tmhelper.py": {
+            "original_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
+            "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
+            "patched_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544"
+          },
+          "spell/lib/adapter/expression.py": {
+            "original_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
+            "ported_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
+            "patched_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066"
+          },
+          "spell/lib/adapter/file.py": {
+            "original_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3",
+            "ported_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3",
+            "patched_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9"
+          },
+          "spell/lib/adapter/tc_item.py": {
+            "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
+            "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
+            "patched_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7"
+          },
+          "spell/lib/adapter/tm.py": {
+            "original_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084",
+            "ported_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084",
+            "patched_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f"
+          },
+          "spell/lib/adapter/verifier.py": {
+            "original_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
+            "ported_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
+            "patched_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd"
+          }
+        }
+      }
+    },
+    "builds": {
+      "a": {
+        "log": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/a-build.log",
+          "sha256": "b920f51aee3f8c29c3d22983009ef8ded747d52f5f6d973e2b36587d9a045fc2",
+          "bytes": 41311,
+          "lf_sha256": "b920f51aee3f8c29c3d22983009ef8ded747d52f5f6d973e2b36587d9a045fc2"
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/a/native-qualification.json",
+          "sha256": "30bf4fe7bcaad0a35e32bfee95f9af4a8b1c08d23f390b46fa3c4545bd21a6cc",
+          "bytes": 495818,
+          "lf_sha256": "30bf4fe7bcaad0a35e32bfee95f9af4a8b1c08d23f390b46fa3c4545bd21a6cc"
+        },
+        "installed": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/a/installed/installed-runtime.json",
+          "sha256": "0104dfa7f97b5fccf33fb72f485b7815a947d0217ec21164a9231f1f708f0e99",
+          "bytes": 640,
+          "lf_sha256": "0104dfa7f97b5fccf33fb72f485b7815a947d0217ec21164a9231f1f708f0e99"
+        },
+        "installed_summary": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "wheel": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "wheel_sha256": "812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5",
+          "installed_peer_sha256": "2d706fb24bc0900823d226daee7433cf5693494844e9fb448090f740cf220a97",
+          "no_build_tree": true,
+          "uninstall_preserves_plain_python": true,
+          "installed_example_links": {
+            "SPELL-Executor": "/opt/spell-test-env/lib/python3.13/site-packages/spell_native/bin/SPELL-Executor_v3",
+            "SPELL-Executor_v3": "/opt/spell-test-env/lib/python3.13/site-packages/spell_native/bin/SPELL-Executor_v3"
+          }
+        },
+        "wheel": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/a/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "sha256": "812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5",
+          "bytes": 50972620
+        }
+      },
+      "b": {
+        "log": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/b-build.log",
+          "sha256": "8ebb8372bf49e575fadf4048a2ac2886a77533fc55e8c0fc23ffae6c6fb14b45",
+          "bytes": 40459,
+          "lf_sha256": "8ebb8372bf49e575fadf4048a2ac2886a77533fc55e8c0fc23ffae6c6fb14b45"
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/b/native-qualification.json",
+          "sha256": "1d88f8cad7b29dfd55bc6a9c68020b46deac163717fb9245be4b3d309b501c7e",
+          "bytes": 496076,
+          "lf_sha256": "1d88f8cad7b29dfd55bc6a9c68020b46deac163717fb9245be4b3d309b501c7e"
+        },
+        "installed": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/b/installed/installed-runtime.json",
+          "sha256": "0104dfa7f97b5fccf33fb72f485b7815a947d0217ec21164a9231f1f708f0e99",
+          "bytes": 640,
+          "lf_sha256": "0104dfa7f97b5fccf33fb72f485b7815a947d0217ec21164a9231f1f708f0e99"
+        },
+        "installed_summary": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skips": 0,
+          "wheel": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "wheel_sha256": "812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5",
+          "installed_peer_sha256": "2d706fb24bc0900823d226daee7433cf5693494844e9fb448090f740cf220a97",
+          "no_build_tree": true,
+          "uninstall_preserves_plain_python": true,
+          "installed_example_links": {
+            "SPELL-Executor": "/opt/spell-test-env/lib/python3.13/site-packages/spell_native/bin/SPELL-Executor_v3",
+            "SPELL-Executor_v3": "/opt/spell-test-env/lib/python3.13/site-packages/spell_native/bin/SPELL-Executor_v3"
+          }
+        },
+        "wheel": {
+          "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/rebuild/6cc17db52d6440c0a00fff8f4ee7fc72/b/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "sha256": "812a06662c1fbfe96d869562e1b5a49100941640b12269eb756d1378fc00bfa5",
+          "bytes": 50972620
+        }
+      }
+    }
+  },
+  "images": {
+    "report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/result.json",
+      "sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720",
+      "bytes": 15744,
+      "lf_sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720"
+    },
+    "installed_record": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/installed-record.json",
+      "sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2",
+      "bytes": 14316,
+      "lf_sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2"
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/inputs.json",
+      "sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782",
+      "bytes": 5535,
+      "lf_sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782"
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-c4da765bb816",
+      "image": "sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-c4da765bb816",
+      "image": "sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee"
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5",
+      "record_files_verified": 31
     }
   },
   "toolchain_export": {
@@ -47,74 +393,282 @@
     "sha256": "68735a13c6e54c4649dac5f72c27655ed817aef4ba5595d14b28fc764cf115e9",
     "bytes": 641929216
   },
-  "host_workflows": {
-    "pycharm": {
-      "path": ".qualification/v0.6/hosts/f44a5d0a5baa4ee1b4209d6fa801f45f/result.json",
-      "sha256": "ec4322b8274e36c4bae830406f26fe3fc28df756ef25fb6f9ffb277493f80c89",
-      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
-      "sdk": {
-        "name": "PyCharm",
-        "version": "2026.1.2",
-        "buildNumber": "261.24374.152"
+  "historical_prerequisites": {
+    "prerequisites_passed": true,
+    "v05_accepted": false,
+    "v06_accepted": false,
+    "scope": "Independent COMMON-snapshot native rebuild and current installed host prerequisites",
+    "native_rebuild": {
+      "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/result.json",
+      "sha256": "f58a850d9fec23c7332f5bb3240041bfbead1dfe428b19578a548afc1c1a5c2d",
+      "checks": {
+        "independent_native_rebuilds": true,
+        "native_artifacts_identical": true,
+        "python_sources_identical": true,
+        "wheel_bytes_identical": true,
+        "fresh_install_and_removal": true
+      },
+      "source_snapshot_inputs": {
+        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/inputs.json",
+        "sha256": "d713302ef1f159991fa850c4010bb1e3d50e1c9acd5c82ec7ff31b717ded91a4"
+      },
+      "wheels": [
+        {
+          "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/a/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
+        },
+        {
+          "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/b/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+          "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
+        }
+      ],
+      "native_artifacts": {
+        "libspell_executor313.so": "be6d6c4924a4249cadb5de59d8dd96fd3af2baa1e047c0604108cdc5f9854624",
+        "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+        "SPELL-Context": "e69e987803137457156256a554ba1f931e337cba3cdaabdbc665db9a3ead2454",
+        "SPELL-Listener": "ded795fa7d7a6a32295563ff2860e94106c9112ca573296bb9b9364be8c4c265",
+        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
       }
     },
-    "intellij": {
-      "path": ".qualification/v0.6/hosts/241b73b122c745208d3a7a07cebbe5f9/result.json",
-      "sha256": "d8416cf1c1397a5dd09277af959b8304c5e2a3dfbc9d6e287f4f709dcbc0ce1f",
-      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
-      "sdk": {
-        "name": "IntelliJ IDEA",
-        "version": "2026.2.3",
-        "buildNumber": "262.10968.63"
+    "toolchain_export": {
+      "metadata": {
+        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/toolchain-export.json",
+        "sha256": "4a884530f01f1ffdae8f944f446a9959c1aa4f2d83214a63e3ceba9eab836134"
+      },
+      "image": "sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2",
+      "tag": "openbexi-spell-toolchain:v06-a1f60eb52594",
+      "archive": "toolchain-image.tar",
+      "sha256": "68735a13c6e54c4649dac5f72c27655ed817aef4ba5595d14b28fc764cf115e9",
+      "bytes": 641929216
+    },
+    "host_workflows": {
+      "pycharm": {
+        "path": ".qualification/v0.6/hosts/f44a5d0a5baa4ee1b4209d6fa801f45f/result.json",
+        "sha256": "ec4322b8274e36c4bae830406f26fe3fc28df756ef25fb6f9ffb277493f80c89",
+        "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+        "sdk": {
+          "name": "PyCharm",
+          "version": "2026.1.2",
+          "buildNumber": "261.24374.152"
+        }
+      },
+      "intellij": {
+        "path": ".qualification/v0.6/hosts/241b73b122c745208d3a7a07cebbe5f9/result.json",
+        "sha256": "d8416cf1c1397a5dd09277af959b8304c5e2a3dfbc9d6e287f4f709dcbc0ce1f",
+        "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+        "sdk": {
+          "name": "IntelliJ IDEA",
+          "version": "2026.2.3",
+          "buildNumber": "262.10968.63"
+        }
+      },
+      "openbexi": {
+        "path": ".qualification/v0.6/openbexi/86d977c8f0de46dea373dfcd19923431/result.json",
+        "sha256": "8917032d22d40d057ced52b4fe4a25e1f0345c008575da7fb1a4eeae5a5200c7",
+        "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872"
       }
     },
-    "openbexi": {
-      "path": ".qualification/v0.6/openbexi/86d977c8f0de46dea373dfcd19923431/result.json",
-      "sha256": "8917032d22d40d057ced52b4fe4a25e1f0345c008575da7fb1a4eeae5a5200c7",
-      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872"
-    }
-  },
-  "host_artifacts": {
-    "jetbrains_zip": [
-      {
-        "path": ".qualification/v0.6/jetbrains-a/openbexi-spell-0.3.0.zip",
-        "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+    "host_artifacts": {
+      "jetbrains_zip": [
+        {
+          "path": ".qualification/v0.6/jetbrains-a/openbexi-spell-0.3.0.zip",
+          "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+        },
+        {
+          "path": ".qualification/v0.6/jetbrains-b/openbexi-spell-0.3.0.zip",
+          "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+        }
+      ],
+      "host_wheel": [
+        {
+          "path": ".qualification/v0.6/host-wheels-a/openbexi_spell_host-0.3.0-py3-none-any.whl",
+          "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
+        },
+        {
+          "path": ".qualification/v0.6/host-wheels-b/openbexi_spell_host-0.3.0-py3-none-any.whl",
+          "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
+        }
+      ]
+    },
+    "plugin_verifier": {
+      "PY-261.24374.152": {
+        "path": ".qualification/v0.6/verifier/PY-261.24374.152/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+        "sha256": "d14f012015a4039141e31ade5080c4f179c8e42acdfa5f5745b8db5ad398cf5b",
+        "verdict": "Compatible. 7 usages of experimental API"
       },
-      {
-        "path": ".qualification/v0.6/jetbrains-b/openbexi-spell-0.3.0.zip",
-        "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+      "IU-262.10968.63": {
+        "path": ".qualification/v0.6/verifier/IU-262.10968.63/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+        "sha256": "7da6cbb550d6bd6d7caabc5b772c8745e214aeb56e9ef8bb71ba97a0f30e0d4a",
+        "verdict": "Compatible. 1 usage of experimental API"
       }
-    ],
-    "host_wheel": [
-      {
-        "path": ".qualification/v0.6/host-wheels-a/openbexi_spell_host-0.3.0-py3-none-any.whl",
-        "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
-      },
-      {
-        "path": ".qualification/v0.6/host-wheels-b/openbexi_spell_host-0.3.0-py3-none-any.whl",
-        "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
-      }
+    },
+    "remaining": [
+      "Full v0.5 acceptance",
+      "Final integrated DATA/FLOW/UI native rebuilds",
+      "Versioned upgrade paths",
+      "Final artifact host reruns",
+      "Final shipped DSS image/runtime qualification",
+      "Snapshot-locked apt toolchain reconstruction",
+      "Live noVNC closure/scroll verification"
     ]
   },
-  "plugin_verifier": {
-    "PY-261.24374.152": {
-      "path": ".qualification/v0.6/verifier/PY-261.24374.152/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
-      "sha256": "d14f012015a4039141e31ade5080c4f179c8e42acdfa5f5745b8db5ad398cf5b",
-      "verdict": "Compatible. 7 usages of experimental API"
+  "remaining": [
+    "341 original requirements remain open; no release/version/tag promotion",
+    "Linux x86_64 CPython3.13.15 ASan/UBSan diagnostic runtime; leak sanitizer disabled",
+    "Frozen toolchain archive supports reuse; apt reconstruction is not snapshot locked",
+    "Versioned upgrades and all final installed host workflows remain unqualified",
+    "Later Event/scheduler/resource/LIMIT/database increments are excluded"
+  ],
+  "host_error_recovery": {
+    "scope": "Native language reports retain exact49667 image. Corrected06a98 host was qualified separately; native/Python wheel, all driver wheel members and compiled bridge are byte-identical. No blanket language rerun on06a98 is claimed.",
+    "corrected_host_source_commit": "89fd1f0",
+    "changed_image_inputs": {
+      "host_runtime/tests/test_status_order.py": {
+        "before": "74c84e90571018ebec370017876b56c99ff00898a708afee6d7a0bac4eb31533",
+        "after": "d5eefb83f3194b4825cad653e84d917f16a1739e584d54ee0f5bf34aac9dcef6"
+      },
+      "host_runtime/python/adapter.py": {
+        "before": "ae437291e05faca4e8b881b2fd48222f7ba0ad4acaf7e3e8b30cf0204102a550",
+        "after": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
+      },
+      ".runtime-input/driver/openbexi_spell_dss-0.4.0-py3-none-any.whl": {
+        "before": "686044a3aaa11c70da0baa6c0688efa992e4ecc65d4cb198973b7da290d32dfa",
+        "after": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5"
+      }
     },
-    "IU-262.10968.63": {
-      "path": ".qualification/v0.6/verifier/IU-262.10968.63/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
-      "sha256": "7da6cbb550d6bd6d7caabc5b772c8745e214aeb56e9ef8bb71ba97a0f30e0d4a",
-      "verdict": "Compatible. 1 usage of experimental API"
+    "native_wheel_identical": true,
+    "driver_payload_identical": true,
+    "installed_audit_identical": true,
+    "failed_host_report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/result.json",
+      "sha256": "88dfa6dfc592747fd9d75a28354750eeb3d20ece1316ac35bb951784470d3d55",
+      "bytes": 1026,
+      "lf_sha256": "e238cf85b9036eeac2f903fe0bc151a4dff4ccbaf04ef24111586ecaddd33a6a"
+    },
+    "failed_transcript": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host/test_error_reported_and_cleanup.json",
+      "sha256": "46061e82caa6eac01621cf59c74bcd83557f0b9d29e3cc8308b9beb57b289a27",
+      "bytes": 2026,
+      "lf_sha256": "5885b0e196b688c8035d050f6e96d3284a49a026044174690ebf2fe241f12307"
+    },
+    "native_fields": {
+      "fresh": {
+        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/fresh.log",
+        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
+        "bytes": 212,
+        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
+      },
+      "prior": {
+        "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/prior.log",
+        "sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111",
+        "bytes": 212,
+        "lf_sha256": "0b06335a06a7aee2dd54e30bf2945cfcd84368c88958ff37369733257cd0e111"
+      }
+    },
+    "native_probe": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/probe_host_error.py",
+      "sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a",
+      "bytes": 1581,
+      "lf_sha256": "6ca9d64ae7cbab3fe16028dd6e5e7aaba7c5e18138cef2f91202b9fdb832a59a"
+    },
+    "native_probe_inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/host-error-fields/inputs.json",
+      "sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e",
+      "bytes": 282,
+      "lf_sha256": "572e6fd6bade2004f79a27596d41a810d2bc81c13a1008b133073c7e99e5d79e"
+    },
+    "passing_host_report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/result.json",
+      "sha256": "effd1295a336c0fc45e781de90c31579a1d717a60b670bcb6032609993789db6",
+      "bytes": 1026,
+      "lf_sha256": "87853450987d69a8633f9c90abc657f6683c5065868003129bd44b57173f55d1"
+    },
+    "passing_transcript": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/integrated-native-host-corrected/test_error_reported_and_cleanup.json",
+      "sha256": "62f5606d3186afb4db6bd69284bfa06f514da0293870ca74826331809c8e74a9",
+      "bytes": 2318,
+      "lf_sha256": "bc5b2aea7c85aba382414c8d1e5be63b169ded51dfa71a71af0b321219ea12a5"
+    },
+    "passing_tests": 10,
+    "failures": 0,
+    "source": {
+      "path": "host_runtime/python/adapter.py",
+      "sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460",
+      "bytes": 20362,
+      "lf_sha256": "68ddf2c1d162078b7c2764524d731337a3ec40a0b38b216fd88343b5679af460"
     }
   },
-  "remaining": [
-    "Full v0.5 acceptance",
-    "Final integrated DATA/FLOW/UI native rebuilds",
-    "Versioned upgrade paths",
-    "Final artifact host reruns",
-    "Final shipped DSS image/runtime qualification",
-    "Snapshot-locked apt toolchain reconstruction",
-    "Live noVNC closure/scroll verification"
-  ]
+  "usable_host_candidate": {
+    "report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/result.json",
+      "sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720",
+      "bytes": 15744,
+      "lf_sha256": "7be16a9df7437ef7db4c24cce54d7b5a07a65299ae73147af6f864a816eaf720"
+    },
+    "installed_record": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/installed-record.json",
+      "sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2",
+      "bytes": 14316,
+      "lf_sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2"
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/c4da765bb8164446a3294fae9b913d85/inputs.json",
+      "sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782",
+      "bytes": 5535,
+      "lf_sha256": "5b013af4dc7e276269d8fe4c99b2b6b41d2be2bb0f768fc65e8c7d0e2a016782"
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-c4da765bb816",
+      "image": "sha256:35496cdf432d50af7600880ff4013e321282d397a9652889b11013b7ce6b9ed7"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-c4da765bb816",
+      "image": "sha256:06a98ef6c10adcb7a95dcf2acc3bc8860dcece025ec7e62949b1cc7bf09328ee"
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "80c9a98e55db518d47ec3ef975688b39f24b38e541ec1d56d5d96d84bfa0b3a5",
+      "record_files_verified": 31
+    }
+  },
+  "language_images": {
+    "report": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/3743ea8c7a3f477fa54556be3ddc17d5/result.json",
+      "sha256": "e62e71120055c32adc4aefef238991dbdffe84e3af13c64980441afee2a7213c",
+      "bytes": 15744,
+      "lf_sha256": "e62e71120055c32adc4aefef238991dbdffe84e3af13c64980441afee2a7213c"
+    },
+    "installed_record": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/3743ea8c7a3f477fa54556be3ddc17d5/installed-record.json",
+      "sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2",
+      "bytes": 14316,
+      "lf_sha256": "02dac7a00e5b92609b275512b4fe6e7ed093edfab6b01379120110afb0a249a2"
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/images/3743ea8c7a3f477fa54556be3ddc17d5/inputs.json",
+      "sha256": "d17bddb30b713554e7077e9d3d5287f90a8f53050ed926c6c2eb2e9654f5a04c",
+      "bytes": 5535,
+      "lf_sha256": "d17bddb30b713554e7077e9d3d5287f90a8f53050ed926c6c2eb2e9654f5a04c"
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-3743ea8c7a3f",
+      "image": "sha256:1bc007b64a5a8dd73f5a565cacfa00f94e7cfd609db41f55a8af11edd32b4809"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-3743ea8c7a3f",
+      "image": "sha256:49667cb1aae52c7293a48b2b092b3ace04d53ea55a1adc69bb9d05b16f64e7fd"
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "686044a3aaa11c70da0baa6c0688efa992e4ecc65d4cb198973b7da290d32dfa",
+      "record_files_verified": 31
+    }
+  },
+  "fresh_git_index_checkout_gate": {
+    "path": ".qualification/v0.6/integrated-worktree/.qualification/v0.6/index-check-ead13dcb8f8e498eaf222f01204c2123/result.json",
+    "sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
+    "lf_sha256": "1bf6a1ac536b94eb64759b255b6dbe58564902ce219cb94a32513c4fe3551bc7",
+    "bytes": 341
+  }
 }

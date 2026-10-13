@@ -12,8 +12,15 @@ IDE v0.3 supplies the neutral durable authority. Full conformance is next.
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
 | v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Complete for the declared GENERIC simulator profile; see DRIVER_QUALIFICATION.json | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
-| v0.5 | Next | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
-| v0.6 | Pending v0.5 | Reproducible distribution, supported platform matrix, clean installation/removal and upgrades, actual host and DSS-container workflows |
+| v0.5 | In progress: 422 qualified, 341 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
+| v0.6 | Pending full v0.5; integrated rebuild prerequisite passed | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
+
+The [current checkpoint](V05_CONFORMANCE_QUALIFICATION.json) preserves explicit
+source and image scopes. Two fresh offline compilations produce identical native
+wheels, each passing eight installation/removal tests. The corrected host image
+passes ten native host tests; language reports retain their separately recorded
+exact image. [Distribution progress](V06_PROGRESS.md) identifies the usable
+candidate and remaining release gates. Neither release is promoted.
 
 ## Native foundation
 
@@ -33,7 +40,7 @@ The current component and standalone evidence covers:
 | WS storage and frame graph | 17 storage checks and 13 frame/data checks |
 | Original WS controller and logical continuation | 14 integrated checks plus 38 shared continuation probe checks |
 | Native DTA | 18 runtime cases, 3,000 container lifetimes across three cycles |
-| Native DTA checkpoints | 13 serialization cases and three integrated crash recoveries |
+| Native DTA checkpoints | 14 serialization cases and three integrated crash recoveries |
 | Native executor bindings | 2,400 type lifetimes across three native-only interpreter cycles; 800 in one full-framework process |
 | Actual standalone executor | 23 command checks, including ON_LINE and ON_STEP SIGKILL/fresh-process recovery |
 

@@ -101,13 +101,11 @@ supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows. TIME has 168 passing native checks across 42 rows, with
-source-derived parsing/UTC/arithmetic fixes. The [COMMON policy milestone](conformance/COMMON.md)
-qualifies 40 additional rows, including configuration, prompts, failure/result
-actions, exceptions, abort/recovery and silent feedback. There are 681 open rows;
-the remaining 26 COMMON rows depend on actual family-specific behavior.
-Native TM/TC timeout conversion and the explicit-import IDE example also pass;
-these milestones do not accept v0.5 or start v0.6 distribution acceptance.
+track all 763 rows: 422 are qualified and 341 remain open. The current checkpoint
+retains the preceding 401 rows and adds 21 bounded CMD contracts. Reports bind
+the independent native oracles, current source inputs and exact tested image.
+Later Event, scheduler, resource, LIMIT and database increments are separate.
+These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility
 
@@ -117,6 +115,12 @@ openbexi_ide, IntelliJ IDEA and PyCharm. Publish an explicit supported platform
 matrix backed by actual host tests, source/license provenance and user docs.
 Qualify the shipped DSS image at runtime as well as build time. Coordinate the
 neutral IDE's independent release numbers and required shared-service features.
+
+The [integrated checkpoint](docs/V06_PROGRESS.md) now passes two independent
+offline native builds with identical wheel bytes and eight install/removal tests
+per build. Audited host/DSS images use that wheel; a separate host diagnostic fix
+passes all ten native host tests. Full language conformance, versioned upgrades
+and final host/platform qualification remain open.
 
 ## Later — operational qualification and stable release
 

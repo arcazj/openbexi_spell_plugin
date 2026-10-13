@@ -46,10 +46,8 @@ def verify_evidence(output, report):
 def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     source = native_tree(tmp_path)
     report = composition.apply_native_tree(source, ARCHIVE, tmp_path/'evidence')
-    accepted = json.loads((ROOT/'conformance/evidence/dta.json').read_text())
-    expected_sources = dict(accepted['runtime_sources']['manifest']['source_hashes'])
     review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())
-    expected_sources.update(review['native_manifest']['source_hashes'])
+    expected_sources = dict(review['native_manifest']['source_hashes'])
     ipc = json.loads((ROOT/'conformance/evidence/dta_ipc_review.json').read_text())
     name = composition.dta_ipc_patches.SOURCE
     expected_sources[name] = ipc['sources']['manifest']['source_hashes'][name]
