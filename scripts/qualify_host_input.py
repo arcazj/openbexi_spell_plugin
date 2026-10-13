@@ -8,6 +8,7 @@ import argparse
 import base64
 import csv
 import hashlib
+from importlib.machinery import all_suffixes
 from importlib import metadata
 import io
 import json
@@ -77,9 +78,11 @@ def verify_installed_wheel(wheel, expected_sha):
         if not path.is_relative_to(prefix) or path.read_bytes() != raw:
             raise ValueError('Installed wheel payload mismatch: '+name)
         files[name] = hashlib.sha256(raw).hexdigest()
-    expected_sources = {name for name in payload if name.startswith('openbexi_spell_host/') and name.endswith('.py')}
+    suffixes = tuple(set(all_suffixes())|{'.pyd','.so'})
+    expected_sources = {name for name in payload if name.startswith('openbexi_spell_host/') and name.endswith(suffixes)}
     actual_sources = {'openbexi_spell_host/'+path.relative_to(origin.parent).as_posix()
-                      for path in origin.parent.rglob('*.py')}
+                      for path in origin.parent.rglob('*') if path.is_file() and path.name.endswith(suffixes)
+                      and '__pycache__' not in path.relative_to(origin.parent).parts}
     if actual_sources != expected_sources:
         raise ValueError('Installed host Python source set differs from the wheel')
     if openbexi_spell_host.__version__ != package.version:

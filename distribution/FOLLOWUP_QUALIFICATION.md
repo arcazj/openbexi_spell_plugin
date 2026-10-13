@@ -19,6 +19,7 @@ Use these fixed bindings:
 
 ```powershell
 $Python = 'C:/projects/openbexi_spell_plugin/.venv/Scripts/python.exe'
+$QtPython = 'C:/projects/openbexi_ide/.venv/Scripts/python.exe'
 $Toolchain = 'openbexi-spell-toolchain:v06-a1f60eb52594'
 $ToolchainId = 'sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2'
 $HostDonor = Get-Content distribution/evidence/host-console-upgrade.json -Raw | ConvertFrom-Json
@@ -154,7 +155,7 @@ outputs below must be new, explicitly selected directories.
 & $Python -X utf8 scripts/qualify_host_adapter.py --image $DssImage --output $NativeHostOutput
 & $Python -X utf8 scripts/qualify_child_prompts.py --image $DssImage --output $ChildPromptOutput
 & $InstalledPython -I scripts/qualify_host_lifecycle.py --interpreter $InstalledPython --image $DssImage --wheel $HostWheel --wheel-sha256 $HostWheelSha
-& $Python -X utf8 scripts/qualify_host_upgrade.py --ide $Ide --wheel $HostWheel --previous-wheel $PreviousHostWheel --image $DssImage
+& $QtPython -X utf8 scripts/qualify_host_upgrade.py --ide $Ide --wheel $HostWheel --previous-wheel $PreviousHostWheel --image $DssImage
 ```
 
 The local host tests currently have 21 checks. Native adapter qualification has
@@ -165,6 +166,10 @@ Run it without sibling owned-container creation; ambiguous ownership fails.
 The actual Qt upgrade checks PluginManager replacement, native Run/Debug child
 answers, removal, ordinary Python and project/preferences preservation. Its
 current harness imports the selected IDE source; record that scope honestly.
+`$QtPython` is the separately bound interpreter containing PySide6; the plugin
+test environment `$Python` has no Qt dependency. The upgrade result records its
+actual interpreter, platform, Qt dependency versions and complete IDE source
+hashes. Neither is the private installed-wheel interpreter `$InstalledPython`.
 Repeat adapter/lifecycle tests with `$HostImage` if claiming the standalone host
 image as a separately qualified delivery profile.
 
@@ -172,13 +177,19 @@ Installed IDE and JetBrains delivery remain separate actual artifact workflows:
 
 ```powershell
 & $Python -X utf8 distribution/openbexi_workflows.py --ide $Ide --ide-wheel $IdeWheel --host-wheel $HostWheel --image $DssImage
-& $Python -X utf8 distribution/host_workflows.py --sdk $JetBrainsSdk --plugin $JetBrainsZip --interpreter $InstalledPython --image $DssImage --output $JetBrainsOutput
+& $Python -X utf8 distribution/host_workflows.py --sdk $JetBrainsSdk --plugin $JetBrainsZip --interpreter $InstalledPython --host-wheel $HostWheel --host-wheel-sha256 $HostWheelSha --image $DssImage --output $JetBrainsOutput
+& $Python -X utf8 distribution/qualify_plugin_verifier.py --java $Java --verifier $VerifierJar --plugin $JetBrainsZip --sdk $JetBrainsSdk --output $VerifierOutput
 ```
 
 The first verifies installed IDE origin and actual manifest images; it currently
 installs pinned desktop dependencies from the index, so it is not an offline
 installation claim. The second injects the exact image only into the private
-test settings and checks actual installed/removal workflows. Supply retained
+test settings and checks actual installed/removal workflows. Run both wrappers
+separately for PyCharm (`PY`) and IntelliJ IDEA Ultimate (`IU`). The verifier
+wrapper records the selected ZIP, SDK product metadata, Java and verifier JAR
+hashes, exact invocation, tool version, exit status and verdict inventory.
+An unbound historical `Compatible.` text file does not qualify the candidate.
+Supply retained
 artifact hashes and supported host/platform profiles; do not infer macOS or a
 fresh-Windows-machine test from source IDE automation. The browser/VNC window
 close and console scroll checks remain separate: browser creation was attempted
@@ -187,17 +198,23 @@ but the available computer-use backend reported the browser unavailable.
 For the installed shared driver acceptance, use a separate headless private
 environment containing the selected IDE/runtime, shared, host and composed DSS
 driver wheels plus the locked test dependencies (no PySide6). The existing
-`scripts/qualify_driver_installed.py` checks origins under its interpreter prefix:
+`scripts/qualify_driver_installed.py` binds each executed top-level import to the
+exact selected distribution member and hash, rejects additional importable files,
+and checks complete installed wheel bytes and copied test identities. `$DriverWheelInputs`
+is a JSON map of exactly `openbexi-ide`, `openbexi-spell-shared`,
+`openbexi-spell-host`, `openbexi-spell-dss` and `openbexi-spell-plugin` to objects
+`{"path": "selected-wheel.whl", "sha256": "actual SHA256"}`. Paths resolve from
+the map's directory. Use the driver wheel emitted by the audited fresh image
+build; source checkout driver bytes differ from its checked composition.
 
 ```powershell
-$env:OPENBEXI_NATIVE_TEST_IMAGE = $DssImage
-& $HeadlessPython -I scripts/qualify_driver_installed.py --output $DriverInstalledOutput --ide $Ide --plugin (Get-Location).Path
-Remove-Item Env:OPENBEXI_NATIVE_TEST_IMAGE
+& $HeadlessPython -I scripts/qualify_driver_installed.py --output $DriverInstalledOutput --ide $Ide --plugin (Get-Location).Path --image $DssImage --wheels $DriverWheelInputs
 ```
 
-The copied IDE `native_driver_acceptance.py` consumes this explicit image
-variable. Bind the exact copied test sources and restore any pre-existing
-environment value when orchestrating this command. Historical
+The runner sets `OPENBEXI_NATIVE_TEST_IMAGE` for the copied IDE native tests and
+requires pytest 8.4.2. It clears inherited pytest addopts, disables plugin auto
+loading and uses an empty private config to keep all four test families selected.
+Historical
 `record_host_qualification.py` / `record_driver_qualification.py` hard-code old
 release images; they are not valid final recorders for this candidate.
 
@@ -230,11 +247,56 @@ python -m venv /qualification/interpreter
 /qualification/interpreter/bin/python -I /inputs/qualify_host_input.py --wheel /inputs/openbexi_spell_host-0.3.1.dev1-py3-none-any.whl --wheel-sha256 d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d --tests /inputs/test_runner_input.py --tests-sha256 bd40a9225c41e384aab46c2696cb8c356d5dd045e6eb19a5562076aa88e0cc5a --expected-platform Linux --output /qualification/linux-pipes
 ```
 
-The dependency lock/wheelhouse must be prepared and hashed before this command;
-it must install pytest 8.4.2 and its complete dependencies. Its availability has
-not yet been established. Windows and Linux installed runs of this new helper
-are **not executed** at preparation time. Fifteen fixture-based validator tests
-pass; those tests do not qualify either runtime platform.
+The prepared lock is `distribution/pipe-test-requirements.lock`, SHA256
+`3ffb5369824fccca5b7cf301e75489893cf93bb4b6ccb222bf8b71c6ae4ffe7b`.
+The six exact wheels and their input hashes are recorded in
+`distribution/evidence/pipe-test-wheelhouse.json`; retained wheels are under
+`.qualification/v0.6/pipe-wheelhouse/013bdc31b48a4e52a76c56e12d2bb96d/wheels`.
+All were reused from pip's cache. Five dependencies form the Linux closure;
+Windows adds colorama through an explicit marker. Wheel metadata confirms both
+CPython 3.13 closures, and the Windows offline hash-locked resolver dry run
+succeeds. This is dependency preparation, not Linux execution.
+Copy that exact lock to `/inputs/pipe-test-requirements.lock` and its verified
+wheels to `/test-wheelhouse`. The actual private Windows installed run now passes
+all 16 cases on the exact host wheel; see
+`distribution/evidence/installed-pipe-windows.json`. Its initial venv bootstrap
+reported an ensurepip failure; an explicit retry and subsequent offline installs
+passed. That observation is preserved without assigning an underlying cause.
+The Linux installed run remains **not executed**. The controlled Windows peer
+does not establish native image behavior or any Linux claim. Fixture-based
+validator tests are recorded separately from that actual installed run.
+
+## Fresh host and driver records
+
+Use `distribution/record_workflows.py` after actual fresh workflows pass. It is
+the source/image-bound successor to the historical release recorders; it never
+launches Docker or marks the entire release accepted. Each input map value must
+be an exact `{"path": "...", "sha256": "..."}` reference. The common required
+keys are `image_build`, `native_pair`, `native_wheel` and `driver_wheel`. Native
+and image build results must come from the new successful pair/build; their
+snapshots, installed audit, current recipes and current composed driver bytes
+are revalidated by the recorder.
+
+The `host` map additionally requires `host_wheel`, `ide_wheel`,
+`previous_host_wheel`, `adapter`, `child_prompts`, `lifecycle`, `windows_pipe`,
+`linux_pipe`, `upgrade`, `openbexi`, `jetbrains_zip`, `jetbrains_build`, `pycharm`,
+`intellij`, `pycharm_verifier` and `intellij_verifier`. The two JetBrains entries
+refer to wrapper results, each binding its installed and removed phase results.
+The verifier entries bind the corresponding SDK/product and the same plugin ZIP.
+The `driver` map additionally requires `driver_installed`, `ide_wheel`,
+`host_wheel`, `shared_wheel` and `service_wheel`. The source IDE checkout must
+match the selected IDE wheel and bound tests; no hard-coded historical version
+or image is accepted as a substitute for those comparisons.
+
+```powershell
+& $Python -X utf8 distribution/record_workflows.py --kind host --evidence $HostEvidenceInputs --image $DssImage --ide $Ide --output $FreshHostRecord
+& $Python -X utf8 distribution/record_workflows.py --kind driver --evidence $DriverEvidenceInputs --image $DssImage --ide $Ide --output $FreshDriverRecord
+```
+
+These are strict full workflow records for the declared profiles. Missing Linux,
+JetBrains, native, upgrade or driver evidence prevents a passing record. Their
+outputs use new paths and preserve all historical reports. Helper/parser tests
+and dependency preparation do not satisfy these workflow requirements.
 
 ## Reports, coverage and final review
 

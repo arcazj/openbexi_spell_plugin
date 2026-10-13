@@ -27,12 +27,17 @@ def main():
     parser.add_argument('--plugin', type=Path, required=True)
     parser.add_argument('--interpreter', type=Path, required=True)
     parser.add_argument('--image', required=True)
+    parser.add_argument('--host-wheel', type=Path, required=True)
+    parser.add_argument('--host-wheel-sha256', required=True)
     parser.add_argument('--output', type=Path, default=ROOT / '.qualification/v0.6/hosts')
     options = parser.parse_args()
+    sdk_metadata = options.sdk.resolve()/'product-info.json'
+    product = json.loads(sdk_metadata.read_bytes())
     evidence = options.output.resolve() / uuid.uuid4().hex
     snapshot = evidence / 'source/jetbrains'
     shutil.copytree(ROOT / 'jetbrains', snapshot,
                     ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+    original_sources = {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}
     original = snapshot / 'qualification/HostQualification.java'
     text = original.read_text(encoding='utf-8')
     anchor = 'settings.interpreter = System.getProperty("openbexi.interpreter");'
@@ -44,6 +49,9 @@ def main():
     image = subprocess.check_output(['docker', 'image', 'inspect', options.image,
                                     '--format', '{{.Id}}'], text=True).strip()
     report = {'passed': False, 'image': image, 'plugin_sha256': sha(options.plugin),
+              'sdk':{key:product[key] for key in ('name','version','buildNumber','productCode')},
+              'sdk_metadata_sha256':sha(sdk_metadata),
+              'wrapper_sha256':sha(Path(__file__)), 'original_sources':original_sources,
               'harness_sources': {p.relative_to(snapshot).as_posix(): sha(p)
                   for p in sorted(snapshot.rglob('*')) if p.is_file()},
               'v06_release_accepted': False,
@@ -51,6 +59,12 @@ def main():
     env = dict(os.environ, OPENBEXI_SPELL_QUALIFICATION_IMAGE=image)
     baseline = snapshot.parent / '.qualification/v0.3'
     try:
+        auditor = ROOT/'scripts/qualify_host_input.py'
+        probe = "import json,runpy,sys; f=runpy.run_path(sys.argv[1]); print(json.dumps(f['verify_installed_wheel'](sys.argv[2],sys.argv[3])))"
+        audit_command = [str(options.interpreter.resolve()),'-I','-c',probe,str(auditor),
+            str(options.host_wheel.resolve()),options.host_wheel_sha256]
+        report['installed_auditor_sha256'] = sha(auditor)
+        report['installed_host'] = json.loads(subprocess.check_output(audit_command,text=True))
         for phase in ('installed', 'removed'):
             output = baseline / phase
             command = [sys.executable, str(snapshot / 'qualify.py'), '--sdk', str(options.sdk.resolve()),
@@ -66,6 +80,10 @@ def main():
             assert result['passed'] and result['runtime_images'] == [image], result
             report[phase] = {'result': result_path.relative_to(evidence).as_posix(),
                              'sha256': sha(result_path), 'checks': result['checks'], 'sdk': result['sdk']}
+        assert report['installed_host']==json.loads(subprocess.check_output(audit_command,text=True))
+        assert sha(sdk_metadata)==report['sdk_metadata_sha256']
+        assert all(sha(ROOT/'jetbrains'/name)==digest for name,digest in original_sources.items())
+        assert all(sha(snapshot/name)==digest for name,digest in report['harness_sources'].items())
         report['passed'] = True
     except Exception as error:
         report['error'] = str(error)
