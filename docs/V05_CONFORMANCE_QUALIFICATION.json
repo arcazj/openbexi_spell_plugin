@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "v05_accepted": false,
+  "v06_accepted": false,
+  "total": 763,
+  "qualified": 316,
+  "open": 447,
+  "scope": "Expanded original language contracts and combined development image regressions",
+  "runtime_image": "sha256:0eadf2e3b1e961a5e403b79b665e70b22c649179ccde40e86ffceae2ee7559ec",
+  "dss_development_image": "sha256:fd350eeaec46d7408384c04d0888e89776a7544c59f88c026e4c70efa1562117",
+  "reports": {
+    "time": {
+      "path": "conformance/evidence/time.json",
+      "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2"
+    },
+    "common": {
+      "path": "conformance/evidence/common.json",
+      "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01"
+    },
+    "common-silence": {
+      "path": "conformance/evidence/common-silence.json",
+      "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670"
+    },
+    "python": {
+      "path": "conformance/evidence/python.json",
+      "sha256": "a08c388319681e8d577465482aa74747c22b8c2020e03e2ab1a3fc9305c833b2"
+    },
+    "data": {
+      "path": "conformance/evidence/data.json",
+      "sha256": "ad1c020ae18b12e40fe96a52b0d0446efb4fd13a2626bfb529d0b42d31803a16"
+    },
+    "files": {
+      "path": "conformance/evidence/files.json",
+      "sha256": "904b65cb739fa70b01de9ef015d998800a5c42b37d2f24bb8c68c0dc0fc98475"
+    },
+    "data-race": {
+      "path": "conformance/evidence/data-race.json",
+      "sha256": "02bb77dc1637dead421effa26c465a8efceae24622d50b1d2d94c8d1d7b80abe"
+    },
+    "flow": {
+      "path": "conformance/evidence/flow.json",
+      "sha256": "bf40b07b5907cc192291b66ac7c3f7816b174a86a5b68b16216dfa7b72eaacd9"
+    },
+    "ui": {
+      "path": "conformance/evidence/ui.json",
+      "sha256": "6e3236c80c9f5d77d9ed3b690dc9b8163120dacefb4b0895adbafb98d40c5669"
+    }
+  },
+  "combined_regressions": {
+    "time": {
+      "path": ".qualification/v0.5/combined-regressions/time/33e05e6fdbfd4c50b0d29ade2be49468/result.json",
+      "sha256": "91dfae2886189b3221dccdfd8fb9755f110c9c3cd183b63f0826b046c95b7c10",
+      "checks": 168,
+      "passed": true
+    },
+    "common": {
+      "path": ".qualification/v0.5/combined-regressions/common/948b868602d94e20ae504577e8150333/result.json",
+      "sha256": "1bfaa826414f6cf53fe5b9045f7ee38433639bb1509847a43607c9df152fad13",
+      "checks": 44,
+      "passed": true
+    },
+    "silence": {
+      "path": ".qualification/v0.5/common-silence/fede8761d87e4bbba70cda44ada6eecc/result.json",
+      "sha256": "f94d1b01c09510e99f0452295d48d919b98b72d203ad48825e7d28fd3d2bf6d8",
+      "checks": 4,
+      "passed": true
+    },
+    "host": {
+      "path": ".qualification/v0.5/combined-regressions/host/result.json",
+      "sha256": "dfa7941a58243a141cbc3e9b453b39203761568b9d687e53bcb29f02184ebf77",
+      "tests": 10,
+      "passed": true
+    },
+    "package": {
+      "path": ".qualification/v0.5/combined-regressions/package-tests-final.xml",
+      "sha256": "3eafb0830c5a78ec6a02285c48ccd3e1919b56cb1747090a8fa46f3b4da8319b",
+      "tests": 214,
+      "passed": true
+    },
+    "dss": {
+      "path": "../openbexi_ide/.qualification/ide-v0.5/native-driver-combined.xml",
+      "sha256": "8ca0b642990cddb1a76edc1c34de73e941f7167dc9fe8f6b7d3826b770833bb7",
+      "tests": 9,
+      "passed": true
+    }
+  },
+  "gate": {
+    "path": ".qualification/v0.5/expanded-conformance-gate-final.json",
+    "sha256": "812adef9c97e37be67acf4ccd80b491c30d682e321ff409069c57db9e2d5d530"
+  },
+  "native_hashes": {
+    "libspell_executor313.so": "fd0d69a80c4d9a83a05c483a5f025f02afd45806420934a66a866288616b0ac7",
+    "SPELL-Context": "50559be847e262594df8f21aaaccac59bea610e67c70f97c4a57c962b1cf6cdb"
+  },
+  "remaining": [
+    "447 original inventory contracts",
+    "Final independent integrated native rebuilds",
+    "Final versioned upgrades and three installed host reruns",
+    "Full final distribution/DSS profile qualification"
+  ],
+  "preserved": [
+    "Previously accepted native host and DSS image identities",
+    "Earlier failed and successful qualification evidence",
+    "Original sources and license notices"
+  ]
+}

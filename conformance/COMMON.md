@@ -146,5 +146,6 @@ These require actual family behavior, not more shared-policy assertions:
 | Section 3.1 SPELL drivers | All driver families, including explicit unsupported-service behavior; the GENERIC profile is not full driver compatibility |
 
 Keep these rows open while their owning packages are implemented and tested.
-The five other original errata also remain open. Full v0.5 acceptance still
+The subsequent FLOW milestone qualifies USER-ACTION-DISABLE; four other
+original errata remain open. Full v0.5 acceptance still
 requires every one of the 763 rows; v0.6 distribution acceptance follows it.

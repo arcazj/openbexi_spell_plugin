@@ -1,0 +1,2924 @@
+{
+  "runtime_image": "sha256:0eadf2e3b1e961a5e403b79b665e70b22c649179ccde40e86ffceae2ee7559ec",
+  "inputs": {
+    "conformance/flow_scenarios.py": "2ff9437e44d867c73a82dfed1559d92e79f4c605d8ef3d43f684b9e34f2a6675",
+    "conformance/flow_controller.py": "4aada6e1989fcba69621a3771d4e6e5d0b54d3bb1c5be7f15237a11013362fcc",
+    "conformance/run_flow.py": "7a1460460516fdffeb286349c315e18edac5550eb7ee8a351b28fef717a19d7e",
+    "conformance/flow_checks.py": "1df904cae4f892432029179ec38ec351ab53a14f8dddbd47494c7d00aff6d3e1",
+    "conformance/flow_analyzer_test.py": "4813c4595145d25371166ffc6d46a0a9ae057947e6019a389405fcc40514bb24",
+    "conformance/FLOW.md": "727189df6ef362c0188550e4652da917ebb20028b5223c299db713379973fb33",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed"
+  },
+  "runtime_sources": {
+    "native_session_sha256": "cfde79dccd780d9e53643770abb7d85f7387a5a800463e1e79154c7913e7265e",
+    "interpreter": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
+    "installed": {
+      "/usr/local/lib/python3.13/site-packages/spell_native/bin/libspell_executor313.so": "fd0d69a80c4d9a83a05c483a5f025f02afd45806420934a66a866288616b0ac7",
+      "/usr/local/lib/python3.13/site-packages/spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b"
+    }
+  },
+  "controller_exit_code": 0,
+  "checks": {
+    "step:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-STEP",
+        "CMP-LRM244-EXAMPLE-128",
+        "CMP-LRM244-SECTION-4-14-1-091"
+      ],
+      "oracle": "LRM p75: literal Step label, observed native stage id/title; computed title evaluated only on execution; invalid binding arguments reject; real subsequent Step recovers.",
+      "scenarios": [
+        "goto-literal"
+      ],
+      "passed": true
+    },
+    "step:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-STEP",
+        "CMP-LRM244-EXAMPLE-128",
+        "CMP-LRM244-SECTION-4-14-1-091"
+      ],
+      "oracle": "LRM p75: literal Step label, observed native stage id/title; computed title evaluated only on execution; invalid binding arguments reject; real subsequent Step recovers.",
+      "scenarios": [
+        "goto-dynamic-title",
+        "goto-title-function",
+        "goto-title-conditional",
+        "step-boundary"
+      ],
+      "passed": true
+    },
+    "step:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-STEP",
+        "CMP-LRM244-EXAMPLE-128",
+        "CMP-LRM244-SECTION-4-14-1-091"
+      ],
+      "oracle": "LRM p75: literal Step label, observed native stage id/title; computed title evaluated only on execution; invalid binding arguments reject; real subsequent Step recovers.",
+      "scenarios": [
+        "step-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "step:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-STEP",
+        "CMP-LRM244-EXAMPLE-128",
+        "CMP-LRM244-SECTION-4-14-1-091"
+      ],
+      "oracle": "LRM p75: literal Step label, observed native stage id/title; computed title evaluated only on execution; invalid binding arguments reject; real subsequent Step recovers.",
+      "scenarios": [
+        "step-invalid-recovery",
+        "goto-nested-frame"
+      ],
+      "passed": true
+    },
+    "goto:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
+        "CMP-LRM244-EXAMPLE-129",
+        "CMP-LRM244-SECTION-4-14-2-092"
+      ],
+      "oracle": "LRM pp75-76: forward skips effects, backward executes exactly three stages, runtime target and same-function jump work; unknown/cross-function targets abort; loop-entry transfer rejected with normal sequential effect preserved; fresh worker and invalid-call recovery.",
+      "scenarios": [
+        "goto-literal"
+      ],
+      "passed": true
+    },
+    "goto:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
+        "CMP-LRM244-EXAMPLE-129",
+        "CMP-LRM244-SECTION-4-14-2-092"
+      ],
+      "oracle": "LRM pp75-76: forward skips effects, backward executes exactly three stages, runtime target and same-function jump work; unknown/cross-function targets abort; loop-entry transfer rejected with normal sequential effect preserved; fresh worker and invalid-call recovery.",
+      "scenarios": [
+        "goto-backward",
+        "goto-dynamic-target",
+        "goto-nested-frame"
+      ],
+      "passed": true
+    },
+    "goto:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
+        "CMP-LRM244-EXAMPLE-129",
+        "CMP-LRM244-SECTION-4-14-2-092"
+      ],
+      "oracle": "LRM pp75-76: forward skips effects, backward executes exactly three stages, runtime target and same-function jump work; unknown/cross-function targets abort; loop-entry transfer rejected with normal sequential effect preserved; fresh worker and invalid-call recovery.",
+      "scenarios": [
+        "goto-missing",
+        "goto-cross-function",
+        "goto-into-loop"
+      ],
+      "passed": true
+    },
+    "goto:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
+        "CMP-LRM244-EXAMPLE-129",
+        "CMP-LRM244-SECTION-4-14-2-092"
+      ],
+      "oracle": "LRM pp75-76: forward skips effects, backward executes exactly three stages, runtime target and same-function jump work; unknown/cross-function targets abort; loop-entry transfer rejected with normal sequential effect preserved; fresh worker and invalid-call recovery.",
+      "scenarios": [
+        "step-invalid-recovery",
+        "goto-title-function",
+        "goto-title-conditional"
+      ],
+      "passed": true
+    },
+    "display-step:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAYSTEP",
+        "CMP-LRM244-EXAMPLE-130"
+      ],
+      "oracle": "LRM p76: dynamic id/title appear in native stage notifications, including empty/default display boundary; DisplayStep never registers a jump label; invalid arity rejects and subsequent display recovers.",
+      "scenarios": [
+        "display-step"
+      ],
+      "passed": true
+    },
+    "display-step:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAYSTEP",
+        "CMP-LRM244-EXAMPLE-130"
+      ],
+      "oracle": "LRM p76: dynamic id/title appear in native stage notifications, including empty/default display boundary; DisplayStep never registers a jump label; invalid arity rejects and subsequent display recovers.",
+      "scenarios": [
+        "display-step"
+      ],
+      "passed": true
+    },
+    "display-step:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAYSTEP",
+        "CMP-LRM244-EXAMPLE-130"
+      ],
+      "oracle": "LRM p76: dynamic id/title appear in native stage notifications, including empty/default display boundary; DisplayStep never registers a jump label; invalid arity rejects and subsequent display recovers.",
+      "scenarios": [
+        "display-not-target",
+        "display-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "display-step:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAYSTEP",
+        "CMP-LRM244-EXAMPLE-130"
+      ],
+      "oracle": "LRM p76: dynamic id/title appear in native stage notifications, including empty/default display boundary; DisplayStep never registers a jump label; invalid arity rejects and subsequent display recovers.",
+      "scenarios": [
+        "display-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "finish:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-FINISH"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "finish-custom"
+      ],
+      "passed": true
+    },
+    "finish:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-FINISH"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "finish-default",
+        "finish-empty"
+      ],
+      "passed": true
+    },
+    "finish:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-FINISH"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "terminal-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "finish:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-FINISH"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "terminal-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "abort:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ABORT"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "abort-custom"
+      ],
+      "passed": true
+    },
+    "abort:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ABORT"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "abort-default",
+        "abort-empty"
+      ],
+      "passed": true
+    },
+    "abort:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ABORT"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "terminal-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "abort:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ABORT"
+      ],
+      "oracle": "LRM pp76-77: optional/default/empty terminal messages, exact FINISHED versus ABORTED native status, finally cleanup and no later effects; invalid arity does not terminate and a fresh executor performs valid Finish.",
+      "scenarios": [
+        "terminal-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "pause:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-PAUSE"
+      ],
+      "oracle": "LRM pp76-77: actual PAUSED status and no continuation until explicit CMD_RUN, two consecutive pauses; invalid conditional form without Timeout rejects, then unconditional pause/resume succeeds. Conditional telemetry semantics remain outside this evidence.",
+      "scenarios": [
+        "pause-resume"
+      ],
+      "passed": true
+    },
+    "pause:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-PAUSE"
+      ],
+      "oracle": "LRM pp76-77: actual PAUSED status and no continuation until explicit CMD_RUN, two consecutive pauses; invalid conditional form without Timeout rejects, then unconditional pause/resume succeeds. Conditional telemetry semantics remain outside this evidence.",
+      "scenarios": [
+        "pause-resume"
+      ],
+      "passed": true
+    },
+    "pause:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-PAUSE"
+      ],
+      "oracle": "LRM pp76-77: actual PAUSED status and no continuation until explicit CMD_RUN, two consecutive pauses; invalid conditional form without Timeout rejects, then unconditional pause/resume succeeds. Conditional telemetry semantics remain outside this evidence.",
+      "scenarios": [
+        "pause-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "pause:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-PAUSE"
+      ],
+      "oracle": "LRM pp76-77: actual PAUSED status and no continuation until explicit CMD_RUN, two consecutive pauses; invalid conditional form without Timeout rejects, then unconditional pause/resume succeeds. Conditional telemetry semantics remain outside this evidence.",
+      "scenarios": [
+        "pause-invalid-recovery"
+      ],
+      "passed": true
+    },
+    "user-action:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-SETUSERACTION",
+        "CMP-LRM244-FUNCTION-ENABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISMISSUSERACTION",
+        "CMP-LRM244-EXAMPLE-132",
+        "CMP-LRM244-EXAMPLE-133",
+        "CMP-LRM244-EXAMPLE-134",
+        "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
+        "CMP-LRM244-SECTION-4-14-4-094"
+      ],
+      "oracle": "LRM pp77-78 and original helper/executor: one actual native callback; independent CMD_ACTION proves effects and disabled/dismissed suppression, configuration retained versus reset, named severity in IPC and AsRun, idempotence, rejected calls preserve configuration, callback error is observed and subsequent callback recovers.",
+      "scenarios": [
+        "user-actions",
+        "user-action-running"
+      ],
+      "passed": true
+    },
+    "user-action:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-SETUSERACTION",
+        "CMP-LRM244-FUNCTION-ENABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISMISSUSERACTION",
+        "CMP-LRM244-EXAMPLE-132",
+        "CMP-LRM244-EXAMPLE-133",
+        "CMP-LRM244-EXAMPLE-134",
+        "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
+        "CMP-LRM244-SECTION-4-14-4-094"
+      ],
+      "oracle": "LRM pp77-78 and original helper/executor: one actual native callback; independent CMD_ACTION proves effects and disabled/dismissed suppression, configuration retained versus reset, named severity in IPC and AsRun, idempotence, rejected calls preserve configuration, callback error is observed and subsequent callback recovers.",
+      "scenarios": [
+        "user-actions"
+      ],
+      "passed": true
+    },
+    "user-action:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-SETUSERACTION",
+        "CMP-LRM244-FUNCTION-ENABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISMISSUSERACTION",
+        "CMP-LRM244-EXAMPLE-132",
+        "CMP-LRM244-EXAMPLE-133",
+        "CMP-LRM244-EXAMPLE-134",
+        "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
+        "CMP-LRM244-SECTION-4-14-4-094"
+      ],
+      "oracle": "LRM pp77-78 and original helper/executor: one actual native callback; independent CMD_ACTION proves effects and disabled/dismissed suppression, configuration retained versus reset, named severity in IPC and AsRun, idempotence, rejected calls preserve configuration, callback error is observed and subsequent callback recovers.",
+      "scenarios": [
+        "user-action-invalid-arity",
+        "user-action-callback-error"
+      ],
+      "passed": true
+    },
+    "user-action:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-SETUSERACTION",
+        "CMP-LRM244-FUNCTION-ENABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISABLEUSERACTION",
+        "CMP-LRM244-FUNCTION-DISMISSUSERACTION",
+        "CMP-LRM244-EXAMPLE-132",
+        "CMP-LRM244-EXAMPLE-133",
+        "CMP-LRM244-EXAMPLE-134",
+        "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
+        "CMP-LRM244-SECTION-4-14-4-094"
+      ],
+      "oracle": "LRM pp77-78 and original helper/executor: one actual native callback; independent CMD_ACTION proves effects and disabled/dismissed suppression, configuration retained versus reset, named severity in IPC and AsRun, idempotence, rejected calls preserve configuration, callback error is observed and subsequent callback recovers.",
+      "scenarios": [
+        "user-actions",
+        "user-action-invalid-arity",
+        "user-action-callback-error"
+      ],
+      "passed": true
+    },
+    "terminal-section:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-131",
+        "CMP-LRM244-SECTION-4-14-3-093"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "pause:positive",
+        "abort:positive",
+        "finish:positive"
+      ],
+      "passed": true
+    },
+    "terminal-section:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-131",
+        "CMP-LRM244-SECTION-4-14-3-093"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "pause:boundary",
+        "abort:boundary",
+        "finish:boundary"
+      ],
+      "passed": true
+    },
+    "terminal-section:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-131",
+        "CMP-LRM244-SECTION-4-14-3-093"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "pause:failure",
+        "abort:failure",
+        "finish:failure"
+      ],
+      "passed": true
+    },
+    "terminal-section:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-131",
+        "CMP-LRM244-SECTION-4-14-3-093"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "pause:recovery",
+        "abort:recovery",
+        "finish:recovery"
+      ],
+      "passed": true
+    },
+    "flow-section:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-SECTION-4-14-090"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "step:positive",
+        "goto:positive",
+        "display-step:positive",
+        "pause:positive",
+        "abort:positive",
+        "finish:positive",
+        "user-action:positive"
+      ],
+      "passed": true
+    },
+    "flow-section:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-SECTION-4-14-090"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "step:boundary",
+        "goto:boundary",
+        "display-step:boundary",
+        "pause:boundary",
+        "abort:boundary",
+        "finish:boundary",
+        "user-action:boundary"
+      ],
+      "passed": true
+    },
+    "flow-section:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-SECTION-4-14-090"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "step:failure",
+        "goto:failure",
+        "display-step:failure",
+        "pause:failure",
+        "abort:failure",
+        "finish:failure",
+        "user-action:failure"
+      ],
+      "passed": true
+    },
+    "flow-section:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-SECTION-4-14-090"
+      ],
+      "oracle": "Every explicitly listed native control-flow child check must pass this dimension.",
+      "dependencies": [
+        "step:recovery",
+        "goto:recovery",
+        "display-step:recovery",
+        "pause:recovery",
+        "abort:recovery",
+        "finish:recovery",
+        "user-action:recovery"
+      ],
+      "passed": true
+    }
+  },
+  "observations": {
+    "goto-literal": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": [
+        "A1",
+        "A2"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:19/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "22",
+            "Text": "Step A1: First stage\nStep A2: Last stage",
+            "Time": "1791875047647873"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "A1",
+          "First stage"
+        ],
+        [
+          "A2",
+          "Last stage"
+        ]
+      ],
+      "wire_sha256": "e11955da6590aced811ffb8c7630c8472ad350e9e5f0cc9448e11756a65db15f",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070406_Executor_main#1.ASRUN": "f0fc17097e846435a4407229815cf20fa4a15cfaab84fcad60f1f7a1e2fad4bd"
+      }
+    },
+    "goto-backward": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": 3,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:17/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "28",
+            "Text": "Step LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump",
+            "Time": "1791875056268708"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "LOOP",
+          "Same frame backward jump"
+        ]
+      ],
+      "wire_sha256": "9d269b585b8b22a6378b78060ada69fda957482d741d0a85b33af198ae952d1c",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070415_Executor_main#1.ASRUN": "d31ff7ca82e705d9139810bacdb77a631b34b5dec5a54ae7c8bd2f245a2afe04"
+      }
+    },
+    "goto-dynamic-title": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": "Title from variable",
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "19",
+            "Text": "Step TARGET: Title from variable",
+            "Time": "1791875064575922"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "TARGET",
+          "Title from variable"
+        ]
+      ],
+      "wire_sha256": "d4d0b7b78d24155c6cd4c71bc12e170af358f1e86c677c6748b0bb1cb1832088",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070423_Executor_main#1.ASRUN": "3939df57e18d177ac7fadee0d4d15b739ec5b2c45f631dced6d6ed4878bc57be"
+      }
+    },
+    "goto-missing": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: MISSING",
+            "Time": "1791875072843962"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:10/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "15",
+            "Text": "Unable to jump: Label 'MISSING' not found (error code 14) (fatal:false)",
+            "Time": "1791875073642850"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "e335b750850df888ca847bcf7ee9de1c6ae962f7b00785b64acfd4c6e006d898",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070431_Executor_main#1.ASRUN": "0e0161837c3e4c6a628e70d4b6244412347a7912d93516c591b904cba7110e7c"
+      }
+    },
+    "goto-cross-function": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: CHILD",
+            "Time": "1791875081576691"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:13/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "16",
+            "Text": "Unable to jump: Label 'CHILD' not found (error code 14) (fatal:false)",
+            "Time": "1791875081804363"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "5951d851f916a57b67a3a7ceb88f01def9886a52ee9f966506babf03e904430f",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070440_Executor_main#1.ASRUN": "e38a42fcf97b2407083ea97b023131ca96c30af7183e8a68090f12c997768757"
+      }
+    },
+    "display-not-target": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: DISPLAY",
+            "Time": "1791875089772648"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:11/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "16",
+            "Text": "Step DISPLAY: Not a jump label",
+            "Time": "1791875089993739"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:11/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "17",
+            "Text": "Unable to jump: Label 'DISPLAY' not found (error code 14) (fatal:false)",
+            "Time": "1791875089994257"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "DISPLAY",
+          "Not a jump label"
+        ]
+      ],
+      "wire_sha256": "ef47a02af82da906dfd9f906291e9342d6d12c478a6b357512dfdfe042199b09",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070448_Executor_main#1.ASRUN": "3916c4c2a85aafff09c1411042bc3e2d5d0725bbf7894649f7f43a1f196e5756"
+      }
+    },
+    "step-invalid-recovery": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": [
+        "step-arity",
+        "goto-arity",
+        "step-keyword"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:24/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "28",
+            "Text": "Type error\n - file '/workspace/step-invalid-recovery/main.py', line 12: Expected 2 to 2 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 16: Expected 1 to 1 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 20: Step and Goto use positional arguments (error code 6) (fatal:false)",
+            "Time": "1791875098556250"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:26/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "31",
+            "Text": "Step RECOVERED: Valid step after rejected calls",
+            "Time": "1791875098557567"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "RECOVERED",
+          "Valid step after rejected calls"
+        ]
+      ],
+      "wire_sha256": "eeafaa50e38d07d73476b8061cf930257d2f3a096b3f2aa6f431f0b245b23f74",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070457_Executor_main#1.ASRUN": "05058a31fece783b90f1c2213fbd2d676b6ef348d5d6bb702f26a99d477af780"
+      }
+    },
+    "display-step": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "20",
+            "Text": "Step DYNAMIC: Computed title value\nStep \nStep RESTORED: Final display",
+            "Time": "1791875107130438"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "DYNAMIC",
+          "Computed title value"
+        ],
+        [
+          "RESTORED",
+          "Final display"
+        ]
+      ],
+      "wire_sha256": "6cbaf66605fde58301c34f62717b276cff1ea3ee1fba623158efe1553dd4f6af",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070506_Executor_main#1.ASRUN": "3937ae8d7e63da87cf7c9d8d7d0a15c856564587b789199802494469db6b02c6"
+      }
+    },
+    "display-invalid-recovery": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "18",
+            "Text": "Type error\n - file '/workspace/display-invalid-recovery/main.py', line 11: DisplayStep() missing 1 required positional argument: 'description' (error code 6) (fatal:false)",
+            "Time": "1791875115464225"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:18/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "21",
+            "Text": "Step RECOVERED: Display still works",
+            "Time": "1791875115465507"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "RECOVERED",
+          "Display still works"
+        ]
+      ],
+      "wire_sha256": "621555cf0eef809020a013a565f97e862e7a63721f79c7285e563d5eb708633b",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070514_Executor_main#1.ASRUN": "a417d8d4a1ff76e8a8dd1511b9ff870011aefcc3bceb94320881988bf82bfb6a"
+      }
+    },
+    "goto-title-function": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:21/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "27",
+            "Text": "Step TARGET: Title from actual function",
+            "Time": "1791875124122815"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "TARGET",
+          "Title from actual function"
+        ]
+      ],
+      "wire_sha256": "00820ae4b38846a08324dfec531e533c6b262d851f39917006bb0aeecb23816c",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070522_Executor_main#1.ASRUN": "0ff155364513d52440afac7caf6f0cc4c11b20b09eceb0475ac561d51842fd3b"
+      }
+    },
+    "goto-title-conditional": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "19",
+            "Text": "Step TARGET: Fallback title",
+            "Time": "1791875133354030"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "TARGET",
+          "Fallback title"
+        ]
+      ],
+      "wire_sha256": "4f8af431fa28901e748bb440e68806752f56f024b39c011361db5667f940f1d5",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070532_Executor_main#1.ASRUN": "73a6ce026d5cf4515f93c8d9c7db2207482dfb1ef14f61796e1c4f851f019024"
+      }
+    },
+    "goto-nested-frame": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:17:main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "22",
+            "Text": "Step FIRST: Child first\nStep LAST: Child last",
+            "Time": "1791875142107704"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "FIRST",
+          "Child first"
+        ],
+        [
+          "LAST",
+          "Child last"
+        ]
+      ],
+      "wire_sha256": "9c92ee541b9028b1547567986a00e2435ff50fccb11ccba98fd5220ecbe90b86",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070540_Executor_main#1.ASRUN": "a1b1f1a12e09dc652e2d3117a973aac998f9962c613fe20984ed9fe907a9036e"
+      }
+    },
+    "goto-into-loop": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": "normal continuation",
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:13/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "17",
+            "Text": "Unable to go to line 13, Value error: can't jump into the body of a for loop (error code 7) (fatal:false)",
+            "Time": "1791875149677831"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "22",
+            "Text": "Step INSIDE: Cannot enter loop without iterator",
+            "Time": "1791875149679886"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "INSIDE",
+          "Cannot enter loop without iterator"
+        ]
+      ],
+      "wire_sha256": "75c0fc15bbb6f79492c5f630325a69243c81c9ef939d94a665b3f44df4d58ad5",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070548_Executor_main#1.ASRUN": "2f8abe8b70e78a4b1694042684feb8db76acd0230735bb6c2ca2922e07b43fd0"
+      }
+    },
+    "goto-dynamic-target": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:16/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "19",
+            "Text": "Step LAST: Runtime target expression",
+            "Time": "1791875158181380"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "LAST",
+          "Runtime target expression"
+        ]
+      ],
+      "wire_sha256": "4e2b2175a4d9e0cc9a37764cf23ad50276465b2d76e956ef8c605e29c77a06dc",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070556_Executor_main#1.ASRUN": "b51d03458a9e0143e557132599610dc86f777f6c12af0d33f3b03190a0f730ac"
+      }
+    },
+    "step-boundary": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:13/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "8",
+            "Sequence": "17",
+            "Text": "Step \nStep \u00e9tape: Unicode title",
+            "Time": "1791875166514827"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ],
+        [
+          "\u00e9tape",
+          "Unicode title"
+        ]
+      ],
+      "wire_sha256": "1df30fccf0160fcd0a09be772d9766d248879f687a55ab607e7c26cc8f8ec62c",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070605_Executor_main#1.ASRUN": "156f7b62d5107c2fc2fb0b0fcf8235c0c77838c53d271da120a0f3eb16a544a9"
+      }
+    },
+    "finish-custom": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "cleanup": "finish cleanup",
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:11/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "15",
+            "Text": "FLOW finished successfully",
+            "Time": "1791875175834900"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "28d7bc16921494b753dfc4c99c29223c4169a745afdd4a5259b1121a4b9be809",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070613_Executor_main#1.ASRUN": "f0060f72896aad0bf36deae4e47abb21f61c9aca76b5092de15f88b64217bfd6"
+      }
+    },
+    "finish-default": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:10/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "14",
+            "Text": "Completed Execution",
+            "Time": "1791875184207512"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "bba0f959e26029f54c008d8de3b87c20d74afa246d4d32f7b74568b898721950",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070623_Executor_main#1.ASRUN": "36e5b841460c2f47fc639cb1d83f354d234bb91b1258da0cd8147a1865759b6a"
+      }
+    },
+    "finish-empty": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "d3272ff451f667faa992519dba350ad289677377df74f24d97c13ca020244c93",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070631_Executor_main#1.ASRUN": "fbf0dc1924f74479b0f2351a878102f3f0c21d3fffebd45e37099fc00a2f8c0e"
+      }
+    },
+    "abort-custom": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "cleanup": "abort cleanup",
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:11/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "15",
+            "Text": "FLOW explicitly aborted",
+            "Time": "1791875201492443"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "8b6f15207ea9405356b71e6e6a322f386d5ab58d7bd27ed09ac4b0951f476fc7",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070640_Executor_main#1.ASRUN": "3e7067a00daba25faa14571e8fc3e5fe4a3ad1e91ec738f6d5cde8451a99f258"
+      }
+    },
+    "abort-default": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:10/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "14",
+            "Text": "Execution Aborted",
+            "Time": "1791875209993045"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "55e6285cd8dde4e89002af3483a6a7a6b48460947c650f1d60f8c73c2bacbefd",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070648_Executor_main#1.ASRUN": "19c2fb1db06264f2596daba5f8e1f78ae24b8b79392761678ce3c4381142d601"
+      }
+    },
+    "abort-empty": {
+      "passed": true,
+      "status": "ABORTED",
+      "pauses": [],
+      "action_states": [],
+      "messages": [],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "5795056a847bf497695900781dc038ce1bba8250c8e90d32fd8914295a9c6f4b",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070657_Executor_main#1.ASRUN": "9a401c2bd2668042320f322cbb8915ee2b0c96bdf79068f7ff1896d63829bbe2"
+      }
+    },
+    "terminal-invalid-recovery": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "effects": [
+        "Abort",
+        "Finish"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:21/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "25",
+            "Text": "Type error\n - file '/workspace/terminal-invalid-recovery/main.py', line 12: Abort() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)\nType error\n - file '/workspace/terminal-invalid-recovery/main.py', line 16: Finish() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)",
+            "Time": "1791875226913170"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:21/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "26",
+            "Text": "Recovered from invalid terminal calls",
+            "Time": "1791875226913344"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "f9d3d044654f30dc575cbfbb9c0df18816c3c995dee493361e980f9e92313146",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070705_Executor_main#1.ASRUN": "4e335cc0b18d9ed3f46a06f0e4fb63d3d14c70a6dade398e4e125ce86ce6be61"
+      }
+    },
+    "pause-resume": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [
+        "first",
+        "second"
+      ],
+      "action_states": [],
+      "effects": [
+        "resumed twice"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:11/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "17",
+            "Text": "Procedure will pause",
+            "Time": "1791875238377920"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:14/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "26",
+            "Text": "Procedure will pause",
+            "Time": "1791875238838640"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "7b8f9b025bb2388510d7fd5ad9f0a74f1b12d24512d3c7be402fc54480daaaf1",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070715_Executor_main#1.ASRUN": "a859f5de3e5e5d1b2c3ab26b16ca19317e9b84ff4f96e77b608f7c907cd99ebe"
+      }
+    },
+    "pause-invalid-recovery": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [
+        "recovered"
+      ],
+      "action_states": [],
+      "effects": true,
+      "messages": [
+        {
+          "fields": {
+            "Csp": "main:17/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "25",
+            "Text": "SPELL exception: Malformed condition ( unknown )",
+            "Time": "1791875249756267"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:17/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "27",
+            "Text": "Procedure will pause",
+            "Time": "1791875249777757"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "16ea20ef35782c8f74f4a73084f71f5a7633abe803b2733c4372fff970480e14",
+      "asrun_actions": [],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070727_Executor_main#1.ASRUN": "830b15c717b36ee0ce49f8837337b786d242bbf99a8718150c10b3d5be8e4d76"
+      }
+    },
+    "user-actions": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [
+        "enabled",
+        "disabled",
+        "reenabled",
+        "replaced",
+        "critical",
+        "dismissed",
+        "dismissed-twice",
+        "recovered"
+      ],
+      "action_states": [
+        {
+          "stage": "enabled",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Primary action",
+            "ActionSeverity": "WARN",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:22/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first"
+          ]
+        },
+        {
+          "stage": "disabled",
+          "info": {
+            "ActionEnabled": "false",
+            "ActionLabel": "Primary action",
+            "ActionSeverity": "WARN",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:26/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first"
+          ]
+        },
+        {
+          "stage": "reenabled",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Primary action",
+            "ActionSeverity": "WARN",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:30/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first"
+          ]
+        },
+        {
+          "stage": "replaced",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Replacement action",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:33/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first",
+            "replacement"
+          ]
+        },
+        {
+          "stage": "critical",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Critical action",
+            "ActionSeverity": "ERROR",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:36/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first",
+            "replacement",
+            "replacement"
+          ]
+        },
+        {
+          "stage": "dismissed",
+          "info": {
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:39/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first",
+            "replacement",
+            "replacement"
+          ]
+        },
+        {
+          "stage": "dismissed-twice",
+          "info": {
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:42/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first",
+            "replacement",
+            "replacement"
+          ]
+        },
+        {
+          "stage": "recovered",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Recovered action",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-095nv9dk/session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:59/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "first",
+            "first",
+            "replacement",
+            "replacement",
+            "first"
+          ]
+        }
+      ],
+      "effects": [
+        "function",
+        "label",
+        "arity"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "ActionLabel": "Primary action",
+            "ActionSeverity": "WARN",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:21/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "23",
+            "Text": "Procedure will pause",
+            "Time": "1791875258861401"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:22/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "26",
+            "Text": "Running user action 'first_action'",
+            "Time": "1791875259261817"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:26/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "39",
+            "Text": "Procedure will pause",
+            "Time": "1791875260262513"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ProcId": "main#1"
+          },
+          "id": "MSG_ENABLE_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "ProcId": "main#1"
+          },
+          "id": "MSG_ENABLE_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:30/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "52",
+            "Text": "Procedure will pause",
+            "Time": "1791875261463310"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:30/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "53",
+            "Text": "Running user action 'first_action'",
+            "Time": "1791875261863771"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ActionLabel": "Replacement action",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:32/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "61",
+            "Text": "Procedure will pause",
+            "Time": "1791875262464218"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:33/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "64",
+            "Text": "Running user action 'replacement_action'",
+            "Time": "1791875262864618"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ActionLabel": "Critical action",
+            "ActionSeverity": "ERROR",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:35/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "72",
+            "Text": "Procedure will pause",
+            "Time": "1791875263465154"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:36/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "75",
+            "Text": "Running user action 'replacement_action'",
+            "Time": "1791875263865517"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:39/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "85",
+            "Text": "Procedure will pause",
+            "Time": "1791875264666026"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:42/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "95",
+            "Text": "Procedure will pause",
+            "Time": "1791875265666737"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:48/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "105",
+            "Text": "SPELL exception: Expected function as first argument ( unknown )",
+            "Time": "1791875266467287"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:56/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "116",
+            "Text": "SPELL exception: Expected label string as second argument ( unknown )\nSPELL exception: Expected function and label ( unknown )",
+            "Time": "1791875266667660"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ActionLabel": "Recovered action",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:59/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "124",
+            "Text": "Procedure will pause",
+            "Time": "1791875267681160"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:59/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "125",
+            "Text": "Running user action 'first_action'",
+            "Time": "1791875267468570"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "cd9eedd38c16cdca9592ea603aa53c341c56f60017b5e189ae2f22ce74b9589b",
+      "asrun_actions": [
+        "2026-10-13 07:07:38\t19\tUACTION\tENABLED\tmain:19\tPrimary action\tWARN",
+        "2026-10-13 07:07:39\t31\tUACTION\tDISABLED\tmain:22",
+        "2026-10-13 07:07:39\t35\tUACTION\tDISABLED\tmain:23",
+        "2026-10-13 07:07:40\t46\tUACTION\tENABLED\tmain:26",
+        "2026-10-13 07:07:41\t50\tUACTION\tENABLED\tmain:27",
+        "2026-10-13 07:07:42\t62\tUACTION\tENABLED\tmain:30\tReplacement action\tINFO",
+        "2026-10-13 07:07:43\t74\tUACTION\tENABLED\tmain:33\tCritical action\tERROR",
+        "2026-10-13 07:07:44\t86\tUACTION\tDISMISSED\tmain:36",
+        "2026-10-13 07:07:45\t97\tUACTION\tDISMISSED\tmain:39",
+        "2026-10-13 07:07:46\t128\tUACTION\tENABLED\tmain:56\tRecovered action\tINFO",
+        "2026-10-13 07:07:47\t140\tUACTION\tDISMISSED\tmain:59"
+      ],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070737_Executor_main#1.ASRUN": "cdedce000d0822524d036455ed12c250c90b7277b261a9b157be2c0ccf2028f2"
+      }
+    },
+    "user-action-invalid-arity": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [
+        "initial",
+        "after-rejection",
+        "recovered"
+      ],
+      "action_states": [
+        {
+          "stage": "initial",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Preserved action",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-_qx57wfd/session/data/OutputFiles/AsRun/2026-10-13_070755_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:18/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "valid"
+          ]
+        },
+        {
+          "stage": "after-rejection",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Preserved action",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-_qx57wfd/session/data/OutputFiles/AsRun/2026-10-13_070755_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:46/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "valid",
+            "valid"
+          ]
+        },
+        {
+          "stage": "recovered",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Recovered action",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-_qx57wfd/session/data/OutputFiles/AsRun/2026-10-13_070755_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:52/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "valid",
+            "valid",
+            "valid"
+          ]
+        }
+      ],
+      "effects": [
+        "Enable",
+        "Disable",
+        "Dismiss",
+        "Set arity",
+        "Set boolean severity",
+        "Set unknown severity"
+      ],
+      "messages": [
+        {
+          "fields": {
+            "ActionLabel": "Preserved action",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:18/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "24",
+            "Text": "Procedure will pause",
+            "Time": "1791875277329788"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:18/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "25",
+            "Text": "Running user action 'valid_action'",
+            "Time": "1791875277730215"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:28/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "40",
+            "Text": "SPELL exception: EnableUserAction takes no positional arguments ( unknown )\nSPELL exception: DisableUserAction takes no positional arguments ( unknown )",
+            "Time": "1791875278130509"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:32/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "46",
+            "Text": "SPELL exception: DismissUserAction takes no positional arguments ( unknown )",
+            "Time": "1791875278330700"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:40/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "57",
+            "Text": "SPELL exception: Expected function and label ( unknown )\nSPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
+            "Time": "1791875278530963"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:45/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "64",
+            "Text": "SPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
+            "Time": "1791875278660729"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:45/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "66",
+            "Text": "Procedure will pause",
+            "Time": "1791875278731300"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:46/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "69",
+            "Text": "Running user action 'valid_action'",
+            "Time": "1791875279131768"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ProcId": "main#1"
+          },
+          "id": "MSG_ENABLE_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "ActionLabel": "Recovered action",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:51/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "86",
+            "Text": "Procedure will pause",
+            "Time": "1791875280332617"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:52/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "89",
+            "Text": "Running user action 'valid_action'",
+            "Time": "1791875280732970"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "a5f14efd79c76e5668440c6769e213fe5c46421434a9de54c6c5f7ab128ae685",
+      "asrun_actions": [
+        "2026-10-13 07:07:56\t18\tUACTION\tENABLED\tmain:15\tPreserved action\tINFO",
+        "2026-10-13 07:07:59\t76\tUACTION\tDISABLED\tmain:46",
+        "2026-10-13 07:07:59\t80\tUACTION\tENABLED\tmain:47",
+        "2026-10-13 07:07:59\t84\tUACTION\tDISMISSED\tmain:48",
+        "2026-10-13 07:08:00\t88\tUACTION\tENABLED\tmain:49\tRecovered action\tINFO",
+        "2026-10-13 07:08:01\t100\tUACTION\tDISMISSED\tmain:52"
+      ],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070755_Executor_main#1.ASRUN": "1ab8169a74f8ff12f86eba0a4b611d846e98268e92821d3942e040f0a3dc7a56"
+      }
+    },
+    "user-action-running": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [],
+      "action_states": [],
+      "running_action_info": {
+        "ActionEnabled": "true",
+        "ActionLabel": "While running",
+        "ActionSeverity": "INFO",
+        "AsRunName": "/tmp/spell-host-g3e_p_xz/session/data/OutputFiles/AsRun/2026-10-13_070808_Executor_main#1.ASRUN",
+        "CodeName": "<module>",
+        "Condition": "",
+        "Csp": "main:17/1",
+        "ExecutorStatus": "RUNNING",
+        "GroupId": "main#1",
+        "GuiControl": "1",
+        "GuiControlHost": "openbexi-host-v1",
+        "GuiList": "",
+        "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+        "OriginId": "GUI (spell)",
+        "ParentId": "",
+        "ParentLine": "0",
+        "ProcId": "main#1",
+        "ProcName": "main",
+        "StageId": "",
+        "StageTl": "(none)"
+      },
+      "effects": "running action executed",
+      "messages": [
+        {
+          "fields": {
+            "ActionLabel": "While running",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:18/2",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "30",
+            "Text": "Running user action 'running_action'",
+            "Time": "1791875289568569"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "53d82715d061bedcc3d885c51647df07cedc6942cbee36414a0a8b7d55c320e9",
+      "asrun_actions": [
+        "2026-10-13 07:08:09\t18\tUACTION\tENABLED\tmain:14\tWhile running\tINFO",
+        "2026-10-13 07:08:09\t38\tUACTION\tDISMISSED\tmain:21"
+      ],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070808_Executor_main#1.ASRUN": "70f40356d8878f0b8b8d9fbb8fba618a9cfcd41c70dcf37638dd65b67c7b45ec"
+      }
+    },
+    "user-action-callback-error": {
+      "passed": true,
+      "status": "FINISHED",
+      "pauses": [
+        "broken",
+        "recovered"
+      ],
+      "action_states": [
+        {
+          "stage": "broken",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Broken callback",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-um9mgauj/session/data/OutputFiles/AsRun/2026-10-13_070816_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:20/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": []
+        },
+        {
+          "stage": "recovered",
+          "info": {
+            "ActionEnabled": "true",
+            "ActionLabel": "Recovered callback",
+            "ActionSeverity": "INFO",
+            "AsRunName": "/tmp/spell-host-um9mgauj/session/data/OutputFiles/AsRun/2026-10-13_070816_Executor_main#1.ASRUN",
+            "CodeName": "<module>",
+            "Condition": "",
+            "Csp": "main:23/0",
+            "ExecutorStatus": "PAUSED",
+            "GroupId": "main#1",
+            "GuiControl": "1",
+            "GuiControlHost": "openbexi-host-v1",
+            "GuiList": "",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+            "OriginId": "GUI (spell)",
+            "ParentId": "",
+            "ParentLine": "0",
+            "ProcId": "main#1",
+            "ProcName": "main",
+            "StageId": "",
+            "StageTl": "(none)"
+          },
+          "effects": [
+            "recovered"
+          ]
+        }
+      ],
+      "effects": "callback recovered",
+      "messages": [
+        {
+          "fields": {
+            "ActionLabel": "Broken callback",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:20/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "25",
+            "Text": "Procedure will pause",
+            "Time": "1791875298275488"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:20/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "26",
+            "Text": "Running user action 'broken_action'",
+            "Time": "1791875298538750"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:20/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "ERROR",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "27",
+            "Text": "Failed to execute user action: Value error\n - file '<string>', line 1\n - file '/workspace/user-action-callback-error/main.py', line 11: FLOW callback fault (error code 7) (fatal:false)",
+            "Time": "1791875298676097"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "ActionLabel": "Recovered callback",
+            "ActionSeverity": "INFO",
+            "ProcId": "main#1"
+          },
+          "id": "MSG_SET_UACTION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 0
+        },
+        {
+          "fields": {
+            "Csp": "main:22/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "35",
+            "Text": "Procedure will pause",
+            "Time": "1791875299277357"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:23/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "38",
+            "Text": "Running user action 'recovered_action'",
+            "Time": "1791875299678081"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "stages": [
+        [
+          "",
+          "(none)"
+        ],
+        [
+          "(none)",
+          "(none)"
+        ]
+      ],
+      "wire_sha256": "7ae9a20f7b3bae67848049ddf7c926514665e4c16892fcdd2d20d73f9ee75722",
+      "asrun_actions": [
+        "2026-10-13 07:08:17\t19\tUACTION\tENABLED\tmain:17\tBroken callback\tINFO",
+        "2026-10-13 07:08:19\t32\tUACTION\tENABLED\tmain:20\tRecovered callback\tINFO",
+        "2026-10-13 07:08:20\t44\tUACTION\tDISMISSED\tmain:23"
+      ],
+      "asrun_sha256": {
+        "session/data/OutputFiles/AsRun/2026-10-13_070816_Executor_main#1.ASRUN": "9e609a2c342b777c16edd034862d9ba56ef5112efbade7182035ed21e6d708f6"
+      }
+    }
+  }
+}

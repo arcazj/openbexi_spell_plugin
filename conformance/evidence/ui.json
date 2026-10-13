@@ -1,0 +1,2599 @@
+{
+  "checks": {
+    "display:positive": {
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAY",
+        "CMP-LRM244-EXAMPLE-108",
+        "CMP-LRM244-SECTION-4-9-082",
+        "CMP-LRM244-CONSTANT-SEVERITY-INFORMATION",
+        "CMP-LRM244-CONSTANT-SEVERITY-WARNING",
+        "CMP-LRM244-CONSTANT-SEVERITY-ERROR"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.68: Display emits procedure text at default INFO or explicit WARN/ERROR, returns None; invalid positional severity emits no procedure message; a later valid call succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "INFO",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "6",
+          "Text": "UI:display:positive:0",
+          "Time": "1791875487330521"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "WARN",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "7",
+          "Text": "UI:display:positive:1",
+          "Time": "1791875487331351"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "ERROR",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "10",
+          "Text": "UI:display:positive:2",
+          "Time": "1791875487481555"
+        }
+      ],
+      "items": []
+    },
+    "notify:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-SUCCESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-PROGRESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.68: NAME/VALUE/status notifications reach actual native ITEM messages; empty values survive, malformed argument lists fail without item effects, later valid notifications succeed",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": [
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:positive:SUCCESS",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "8",
+          "Time": "2026-10-13 07:11:27"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:positive:IN PROGRESS",
+          "ItemReason": "",
+          "ItemStatus": "IN PROGRESS",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "9",
+          "Time": "2026-10-13 07:11:27"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:positive:FAILED",
+          "ItemReason": "",
+          "ItemStatus": "FAILED",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "11",
+          "Time": "2026-10-13 07:11:27"
+        }
+      ]
+    },
+    "display:boundary": {
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAY",
+        "CMP-LRM244-EXAMPLE-108",
+        "CMP-LRM244-SECTION-4-9-082",
+        "CMP-LRM244-CONSTANT-SEVERITY-INFORMATION",
+        "CMP-LRM244-CONSTANT-SEVERITY-WARNING",
+        "CMP-LRM244-CONSTANT-SEVERITY-ERROR"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.68: Display emits procedure text at default INFO or explicit WARN/ERROR, returns None; invalid positional severity emits no procedure message; a later valid call succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "INFO",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "12",
+          "Text": "UI:display:boundary:0\nsecond line: caf\u00e9",
+          "Time": "1791875487620505"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "WARN",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "13",
+          "Text": "UI:display:boundary:1\nsecond line: caf\u00e9",
+          "Time": "1791875487621455"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "ERROR",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "14",
+          "Text": "UI:display:boundary:2\nsecond line: caf\u00e9",
+          "Time": "1791875487622347"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "WARN",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "16",
+          "Text": "UI:display:boundary:positional",
+          "Time": "1791875487681904"
+        }
+      ],
+      "items": []
+    },
+    "notify:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-SUCCESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-PROGRESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.68: NAME/VALUE/status notifications reach actual native ITEM messages; empty values survive, malformed argument lists fail without item effects, later valid notifications succeed",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": [
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:boundary:SUCCESS",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "''",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "15",
+          "Time": "2026-10-13 07:11:27"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:boundary:IN PROGRESS",
+          "ItemReason": "",
+          "ItemStatus": "IN PROGRESS",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "''",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "17",
+          "Time": "2026-10-13 07:11:27"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:boundary:FAILED",
+          "ItemReason": "",
+          "ItemStatus": "FAILED",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "''",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "18",
+          "Time": "2026-10-13 07:11:27"
+        }
+      ]
+    },
+    "display:failure": {
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAY",
+        "CMP-LRM244-EXAMPLE-108",
+        "CMP-LRM244-SECTION-4-9-082",
+        "CMP-LRM244-CONSTANT-SEVERITY-INFORMATION",
+        "CMP-LRM244-CONSTANT-SEVERITY-WARNING",
+        "CMP-LRM244-CONSTANT-SEVERITY-ERROR"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.68: Display emits procedure text at default INFO or explicit WARN/ERROR, returns None; invalid positional severity emits no procedure message; a later valid call succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "notify:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-SUCCESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-PROGRESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.68: NAME/VALUE/status notifications reach actual native ITEM messages; empty values survive, malformed argument lists fail without item effects, later valid notifications succeed",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "display:recovery": {
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISPLAY",
+        "CMP-LRM244-EXAMPLE-108",
+        "CMP-LRM244-SECTION-4-9-082",
+        "CMP-LRM244-CONSTANT-SEVERITY-INFORMATION",
+        "CMP-LRM244-CONSTANT-SEVERITY-WARNING",
+        "CMP-LRM244-CONSTANT-SEVERITY-ERROR"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.68: Display emits procedure text at default INFO or explicit WARN/ERROR, returns None; invalid positional severity emits no procedure message; a later valid call succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "WARN",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "20",
+          "Text": "UI:display:recovery:1",
+          "Time": "1791875487914143"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "INFO",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "19",
+          "Text": "UI:display:recovery:0",
+          "Time": "1791875487913548"
+        },
+        {
+          "Csp": "main:1/0",
+          "ExecutorMode": "PROCEDURE",
+          "Level": "ERROR",
+          "MsgType": "DISPLAY",
+          "ProcId": "main#1",
+          "Scope": "1",
+          "Sequence": "23",
+          "Text": "UI:display:recovery:2",
+          "Time": "1791875488823440"
+        }
+      ],
+      "items": []
+    },
+    "notify:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-SUCCESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-PROGRESS",
+        "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.68: NAME/VALUE/status notifications reach actual native ITEM messages; empty values survive, malformed argument lists fail without item effects, later valid notifications succeed",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": [
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:recovery:SUCCESS",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-13 07:11:27",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-13 07:11:27"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:recovery:IN PROGRESS",
+          "ItemReason": "",
+          "ItemStatus": "IN PROGRESS",
+          "ItemTime": "2026-10-13 07:11:28",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "22",
+          "Time": "2026-10-13 07:11:28"
+        },
+        {
+          "Csp": "main:1/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "UI:notify:recovery:FAILED",
+          "ItemReason": "",
+          "ItemStatus": "FAILED",
+          "ItemTime": "2026-10-13 07:11:28",
+          "ItemType": "ITEM",
+          "ItemValue": "'42'",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "24",
+          "Time": "2026-10-13 07:11:28"
+        }
+      ]
+    },
+    "prompt-ok:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK",
+        "CMP-LRM244-EXAMPLE-114"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O",
+            "OptionValues": "O: Ok",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "25",
+            "Text": "UI:prompt-ok:positive:0",
+            "Time": "1791875488264476"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK",
+        "CMP-LRM244-EXAMPLE-114"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O",
+            "OptionValues": "O: Ok",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "31",
+            "Text": "UI:prompt-ok:boundary:0",
+            "Time": "1791875488700937"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK",
+        "CMP-LRM244-EXAMPLE-114"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK",
+        "CMP-LRM244-EXAMPLE-114"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O",
+            "OptionValues": "O: Ok",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "37",
+            "Text": "UI:prompt-ok:recovery:0",
+            "Time": "1791875489148355"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-cancel:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-cancel:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "2",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "C",
+            "OptionValues": "C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "43",
+            "Text": "UI:prompt-cancel:positive:0",
+            "Time": "1791875489577360"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-cancel:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-cancel:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "2",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "C",
+            "OptionValues": "C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "49",
+            "Text": "UI:prompt-cancel:boundary:0",
+            "Time": "1791875490205290"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-cancel:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-cancel:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-cancel:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "2",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "C",
+            "OptionValues": "C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "55",
+            "Text": "UI:prompt-cancel:recovery:0",
+            "Time": "1791875490460944"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "4",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y",
+            "OptionValues": "Y: Yes",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "61",
+            "Text": "UI:prompt-yes:positive:0",
+            "Time": "1791875490896850"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "4",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y",
+            "OptionValues": "Y: Yes",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "67",
+            "Text": "UI:prompt-yes:boundary:0",
+            "Time": "1791875491338234"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "4",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y",
+            "OptionValues": "Y: Yes",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "73",
+            "Text": "UI:prompt-yes:recovery:0",
+            "Time": "1791875491782411"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-no:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-no:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "8",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "N",
+            "OptionValues": "N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "79",
+            "Text": "UI:prompt-no:positive:0",
+            "Time": "1791875492214789"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-no:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-no:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "8",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "N",
+            "OptionValues": "N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "85",
+            "Text": "UI:prompt-no:boundary:0",
+            "Time": "1791875492650969"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-no:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-no:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-no:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "8",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "N",
+            "OptionValues": "N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "91",
+            "Text": "UI:prompt-no:recovery:0",
+            "Time": "1791875493906130"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes-no:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes-no:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "128",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y\u0004N",
+            "OptionValues": "Y: Yes\u0004N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "97",
+            "Text": "UI:prompt-yes-no:positive:0",
+            "Time": "1791875493528787"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes-no:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes-no:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "128",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y\u0004N",
+            "OptionValues": "Y: Yes\u0004N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "103",
+            "Text": "UI:prompt-yes-no:boundary:0",
+            "Time": "1791875493967407"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes-no:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-yes-no:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-yes-no:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "128",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Y\u0004N",
+            "OptionValues": "Y: Yes\u0004N: No",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "109",
+            "Text": "UI:prompt-yes-no:recovery:0",
+            "Time": "1791875494406379"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok-cancel:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok-cancel:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "512",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O\u0004C",
+            "OptionValues": "O: Ok\u0004C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "115",
+            "Text": "UI:prompt-ok-cancel:positive:0",
+            "Time": "1791875494841821"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok-cancel:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok-cancel:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "512",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O\u0004C",
+            "OptionValues": "O: Ok\u0004C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "121",
+            "Text": "UI:prompt-ok-cancel:boundary:0",
+            "Time": "1791875495280631"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok-cancel:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-ok-cancel:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM pp.70-71 and original CIF Boolean conversion: exact native choices and Boolean result; last option and singleton boundaries; invalid message/timeout rejected before prompt; explicit later prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-ok-cancel:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "512",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "O\u0004C",
+            "OptionValues": "O: Ok\u0004C: Cancel",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "127",
+            "Text": "UI:prompt-ok-cancel:recovery:0",
+            "Time": "1791875495719288"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-alpha:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.70: free text including empty and UTF-8 values; invalid message fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-alpha:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "32",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "133",
+            "Text": "UI:prompt-alpha:positive:0",
+            "Time": "1791875496153578"
+          },
+          "answer": "alpha 42 / caf\u00e9"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-alpha:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.70: free text including empty and UTF-8 values; invalid message fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-alpha:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "32",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "139",
+            "Text": "UI:prompt-alpha:boundary:0",
+            "Time": "1791875496590873"
+          },
+          "answer": ""
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-alpha:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.70: free text including empty and UTF-8 values; invalid message fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-alpha:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.70: free text including empty and UTF-8 values; invalid message fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-alpha:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "32",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "145",
+            "Text": "UI:prompt-alpha:recovery:0",
+            "Time": "1791875497294510"
+          },
+          "answer": "alpha 42 / caf\u00e9"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-num:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.70: integer, fractional and zero answers are numbers; invalid native conversion fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-num:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "151",
+            "Text": "UI:prompt-num:positive:0",
+            "Time": "1791875497470605"
+          },
+          "answer": "42"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-num:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.70: integer, fractional and zero answers are numbers; invalid native conversion fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "157",
+            "Text": "UI:prompt-num:boundary:0",
+            "Time": "1791875497907084"
+          },
+          "answer": "-0.25"
+        },
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "163",
+            "Text": "UI:prompt-num:boundary:1",
+            "Time": "1791875498338479"
+          },
+          "answer": "0"
+        },
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "169",
+            "Text": "UI:prompt-num:boundary:2",
+            "Time": "1791875498775350"
+          },
+          "answer": "1e3"
+        },
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "175",
+            "Text": "UI:prompt-num:boundary:3",
+            "Time": "1791875499210145"
+          },
+          "answer": "1E3"
+        },
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "181",
+            "Text": "UI:prompt-num:boundary:4",
+            "Time": "1791875499645153"
+          },
+          "answer": "1e-3"
+        },
+        {
+          "check": "prompt-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "187",
+            "Text": "UI:prompt-num:boundary:5",
+            "Time": "1791875500823160"
+          },
+          "answer": "1E+3"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-num:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.70: integer, fractional and zero answers are numbers; invalid native conversion fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-num:failure",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "193",
+            "Text": "UI:prompt-num:failure:0",
+            "Time": "1791875500520890"
+          },
+          "answer": "not-a-number"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-num:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.70: integer, fractional and zero answers are numbers; invalid native conversion fails; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-num:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "198",
+            "Text": "UI:prompt-num:recovery:0",
+            "Time": "1791875500835055"
+          },
+          "answer": "not-a-number"
+        },
+        {
+          "check": "prompt-num:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "16",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "203",
+            "Text": "UI:prompt-num:recovery:1",
+            "Time": "1791875501145494"
+          },
+          "answer": "42"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-date:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.70: date answers become absolute TIME including leap day; absolute timeout rejected; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-date:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "209",
+            "Text": "UI:prompt-date:positive:0",
+            "Time": "1791875501583789"
+          },
+          "answer": "03-Apr-2006 09:52:34"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-date:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.70: date answers become absolute TIME including leap day; absolute timeout rejected; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-date:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "215",
+            "Text": "UI:prompt-date:boundary:0",
+            "Time": "1791875502205800"
+          },
+          "answer": "29-Feb-2000 00:00:00"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-date:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.70: date answers become absolute TIME including leap day; absolute timeout rejected; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-date:failure",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "221",
+            "Text": "UI:prompt-date:failure:0",
+            "Time": "1791875502457158"
+          },
+          "answer": "not-a-date"
+        },
+        {
+          "check": "prompt-date:failure",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "226",
+            "Text": "UI:prompt-date:failure:1",
+            "Time": "1791875502943671"
+          },
+          "answer": "2000/01/01') if False else 17 #"
+        },
+        {
+          "check": "prompt-date:failure",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "231",
+            "Text": "UI:prompt-date:failure:2",
+            "Time": "1791875503244340"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-date:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.70: date answers become absolute TIME including leap day; absolute timeout rejected; later valid prompt succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-date:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "236",
+            "Text": "UI:prompt-date:recovery:0",
+            "Time": "1791875503562319"
+          },
+          "answer": "not-a-date"
+        },
+        {
+          "check": "prompt-date:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "241",
+            "Text": "UI:prompt-date:recovery:1",
+            "Time": "1791875503873471"
+          },
+          "answer": "2000/01/01') if False else 17 #"
+        },
+        {
+          "check": "prompt-date:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "246",
+            "Text": "UI:prompt-date:recovery:2",
+            "Time": "1791875504191936"
+          },
+          "answer": "1"
+        },
+        {
+          "check": "prompt-date:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "1024",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "251",
+            "Text": "UI:prompt-date:recovery:3",
+            "Time": "1791875504502506"
+          },
+          "answer": "03-Apr-2006 09:52:34"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list:positive": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.71: keyed list returns selected key, first/last options; empty list fails before IPC; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "64",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "A\u0004B",
+            "OptionValues": "A:Option 1\u0004B:Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "257",
+            "Text": "UI:prompt-list:positive:0",
+            "Time": "1791875504933490"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list:boundary": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.71: keyed list returns selected key, first/last options; empty list fails before IPC; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "64",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "A\u0004B",
+            "OptionValues": "A:Option 1\u0004B:Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "263",
+            "Text": "UI:prompt-list:boundary:0",
+            "Time": "1791875505369253"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list:failure": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.71: keyed list returns selected key, first/last options; empty list fails before IPC; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list:recovery": {
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.71: keyed list returns selected key, first/last options; empty list fails before IPC; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "64",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "A\u0004B",
+            "OptionValues": "A:Option 1\u0004B:Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "269",
+            "Text": "UI:prompt-list:recovery:0",
+            "Time": "1791875505807138"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-alpha:positive": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.71: LIST|ALPHA returns selected value, first/last options; empty list fails; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-alpha:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "275",
+            "Text": "UI:prompt-list-alpha:positive:0",
+            "Time": "1791875506243825"
+          },
+          "answer": "0"
+        },
+        {
+          "check": "prompt-list-alpha:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "281",
+            "Text": "UI:prompt-list-alpha:positive:1",
+            "Time": "1791875506681071"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-alpha:boundary": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.71: LIST|ALPHA returns selected value, first/last options; empty list fails; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-alpha:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "287",
+            "Text": "UI:prompt-list-alpha:boundary:0",
+            "Time": "1791875507117683"
+          },
+          "answer": "1"
+        },
+        {
+          "check": "prompt-list-alpha:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "293",
+            "Text": "UI:prompt-list-alpha:boundary:1",
+            "Time": "1791875507553023"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-alpha:failure": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.71: LIST|ALPHA returns selected value, first/last options; empty list fails; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-alpha:recovery": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.71: LIST|ALPHA returns selected value, first/last options; empty list fails; later valid list succeeds",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-alpha:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "299",
+            "Text": "UI:prompt-list-alpha:recovery:0",
+            "Time": "1791875507995050"
+          },
+          "answer": "0"
+        },
+        {
+          "check": "prompt-list-alpha:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "96",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "Option 1\u0004Option 2",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "305",
+            "Text": "UI:prompt-list-alpha:recovery:1",
+            "Time": "1791875508428622"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-num:positive": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "dimension": "positive",
+      "oracle": "LRM p.71 Example116: LIST|NUM returns zero-based option index; original source may conflict and must remain open if it returns one-based values",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-num:positive",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "80",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "1\u00042",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "311",
+            "Text": "UI:prompt-list-num:positive:0",
+            "Time": "1791875508868442"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-num:boundary": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "dimension": "boundary",
+      "oracle": "LRM p.71 Example116: LIST|NUM returns zero-based option index; original source may conflict and must remain open if it returns one-based values",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-num:boundary",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "80",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "1\u00042",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "317",
+            "Text": "UI:prompt-list-num:boundary:0",
+            "Time": "1791875509307632"
+          },
+          "answer": "1"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-num:failure": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "dimension": "failure",
+      "oracle": "LRM p.71 Example116: LIST|NUM returns zero-based option index; original source may conflict and must remain open if it returns one-based values",
+      "passed": true,
+      "controller_answers": [],
+      "writes": [],
+      "items": []
+    },
+    "prompt-list-num:recovery": {
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "dimension": "recovery",
+      "oracle": "LRM p.71 Example116: LIST|NUM returns zero-based option index; original source may conflict and must remain open if it returns one-based values",
+      "passed": true,
+      "controller_answers": [
+        {
+          "check": "prompt-list-num:recovery",
+          "fields": {
+            "Csp": "main:1/0",
+            "DataType": "80",
+            "Default": "",
+            "ExecutorMode": "PROCEDURE",
+            "ExpectedValues": "1\u00042",
+            "OptionValues": "Option 1\u0004Option 2",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "323",
+            "Text": "UI:prompt-list-num:recovery:0",
+            "Time": "1791875509747939"
+          },
+          "answer": "0"
+        }
+      ],
+      "writes": [],
+      "items": []
+    },
+    "wire-list:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "passed": true,
+      "observations": {
+        "list-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "21",
+              "Text": "UI_EDGE:list-text",
+              "Time": "1791875518348624"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-suffix",
+              "Time": "1791875527103524"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-negative",
+              "Time": "1791875535483861"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-past-end",
+              "Time": "1791875543884844"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    },
+    "wire-list:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+        "CMP-LRM244-EXAMPLE-115"
+      ],
+      "passed": true,
+      "observations": {
+        "list-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "21",
+              "Text": "UI_EDGE:list-text",
+              "Time": "1791875518348624"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-suffix",
+              "Time": "1791875527103524"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-negative",
+              "Time": "1791875535483861"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-past-end",
+              "Time": "1791875543884844"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "list-recovery": {
+          "answer": "1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "64",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "A\u0004B",
+              "OptionValues": "A:Option 1\u0004B:Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:list-recovery",
+              "Time": "1791875552374592"
+            }
+          ],
+          "status": "FINISHED",
+          "entered": true,
+          "cleanup": true,
+          "continued": true,
+          "result": {
+            "result": "B",
+            "type": "str"
+          },
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    },
+    "wire-alpha:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "passed": true,
+      "observations": {
+        "alpha-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-text",
+              "Time": "1791875560775643"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-suffix",
+              "Time": "1791875569397697"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-negative",
+              "Time": "1791875577625618"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-past-end",
+              "Time": "1791875586123126"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    },
+    "wire-alpha:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+        "CMP-LRM244-EXAMPLE-117"
+      ],
+      "passed": true,
+      "observations": {
+        "alpha-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-text",
+              "Time": "1791875560775643"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-suffix",
+              "Time": "1791875569397697"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-negative",
+              "Time": "1791875577625618"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-past-end",
+              "Time": "1791875586123126"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "alpha-recovery": {
+          "answer": "1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "96",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "Option 1\u0004Option 2",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:alpha-recovery",
+              "Time": "1791875594588253"
+            }
+          ],
+          "status": "FINISHED",
+          "entered": true,
+          "cleanup": true,
+          "continued": true,
+          "result": {
+            "result": "Option 2",
+            "type": "str"
+          },
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    },
+    "wire-num:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "passed": true,
+      "observations": {
+        "num-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-text",
+              "Time": "1791875603499150"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-suffix",
+              "Time": "1791875611617248"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-negative",
+              "Time": "1791875620897720"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-past-end",
+              "Time": "1791875628522713"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    },
+    "wire-num:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+        "CMP-LRM244-EXAMPLE-116"
+      ],
+      "passed": true,
+      "observations": {
+        "num-text": {
+          "answer": "bad",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-text",
+              "Time": "1791875603499150"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-suffix": {
+          "answer": "1junk",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-suffix",
+              "Time": "1791875611617248"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-negative": {
+          "answer": "-1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-negative",
+              "Time": "1791875620897720"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-past-end": {
+          "answer": "2",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-past-end",
+              "Time": "1791875628522713"
+            }
+          ],
+          "status": "ABORTED",
+          "entered": true,
+          "cleanup": false,
+          "continued": false,
+          "owned_cleanup": true
+        },
+        "num-recovery": {
+          "answer": "1",
+          "passed": true,
+          "prompts": [
+            {
+              "Csp": "edges:14/0",
+              "DataType": "80",
+              "Default": "",
+              "ExecutorMode": "PROCEDURE",
+              "ExpectedValues": "1\u00042",
+              "OptionValues": "Option 1\u0004Option 2",
+              "ProcId": "edges#1",
+              "Scope": "1",
+              "Sequence": "22",
+              "Text": "UI_EDGE:num-recovery",
+              "Time": "1791875636963399"
+            }
+          ],
+          "status": "FINISHED",
+          "entered": true,
+          "cleanup": true,
+          "continued": true,
+          "result": {
+            "result": 1,
+            "type": "int"
+          },
+          "owned_cleanup": true
+        }
+      },
+      "oracle": "Original ClientIF_Prompt forced-abort path: malformed/out-of-range option replies terminate with no continuation; NativeSession closes owned workers; an explicit fresh executor recovers and returns the typed value with normal Python cleanup"
+    }
+  },
+  "inputs": {
+    "conformance/ui_controller.py": "4124525e5395a975a8d6e71163277ec6778fda3898b02f8b2088b3a1797c6a87",
+    "conformance/ui_contracts.py": "851dd4b8e29665ee3e381b3b7411c6d69120c7e8729637c085ad3478981c7a58",
+    "conformance/run_ui.py": "7cf70004f79871a38f46107564ed89964295b0663a3d456b302c54095337c044",
+    "conformance/ui_edge_controller.py": "a0e99034dc2b69c98c1da5c398faabd05551e98714767501865a7b0952f6c62a",
+    "conformance/ui_edges.py": "b46ea80746aec798225ad70bf6c2fe2e8c69ee029857155a9f2bc6567ce1ddd3",
+    "conformance/build_common_patch.py": "7285f304c0bfc4730a6a979becb7b431885cdc8f2ee3261f2c1917035fee140f",
+    "conformance/common.Dockerfile": "ba2a3a8b3069f8f86691f48a3d8fdb5c4290e684e4e336bc58ea42dd09084829",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "conformance/ui_native_build.py": "3a5efb529c21c131a638900db9f0ea963f5d8e4b1e47f0dbe45ddd79d1a05f7f",
+    "conformance/ui_native.Dockerfile": "aa1b2888318a140af6f5484ee1a2b84d384d14f4401661471668a35842417ee5",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+    "conformance/combined_native_build.py": "fe2ebd7ae1984276d305a74a10c26d2569d29c7f8017a16e5486c5404262afde",
+    "conformance/combined_native.Dockerfile": "86b891f8bda63a78b4f8330196508bdc7bd45f30d4964c7c23b46d2f9da7e36a",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3"
+  },
+  "runtime_image": "sha256:0eadf2e3b1e961a5e403b79b665e70b22c649179ccde40e86ffceae2ee7559ec",
+  "runtime_sources": {
+    "native.py": "cfde79dccd780d9e53643770abb7d85f7387a5a800463e1e79154c7913e7265e",
+    "ui_manifest": {
+      "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+      "source_hashes": {
+        "lib/SPELL_CIF/src/SPELLasRun.C": {
+          "original": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+          "ported": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a",
+          "patched": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317"
+        },
+        "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+          "original": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+          "ported": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c",
+          "patched": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724"
+        },
+        "lib/SPELL_EXC/src/SPELLgoto.C": {
+          "original": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+          "ported": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7",
+          "patched": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4"
+        }
+      },
+      "recipes": {
+        "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+        "incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+        "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+        "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+        "combined_native_build.py": "fe2ebd7ae1984276d305a74a10c26d2569d29c7f8017a16e5486c5404262afde"
+      },
+      "artifacts": {
+        "libspell_executor313.so": "fd0d69a80c4d9a83a05c483a5f025f02afd45806420934a66a866288616b0ac7"
+      },
+      "profile": "Integrated UI/FLOW native overlay on DATA runtime; not release acceptance"
+    },
+    "installed": {
+      "libspell_executor313.so": "fd0d69a80c4d9a83a05c483a5f025f02afd45806420934a66a866288616b0ac7"
+    }
+  }
+}

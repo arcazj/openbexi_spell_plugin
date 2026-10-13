@@ -13,6 +13,24 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def supported_check(report, identifier, dimension, visiting=None):
+    """A passing migration test cannot stand in for supported language behavior."""
+    visiting = set() if visiting is None else visiting
+    if identifier in visiting:
+        raise ValueError('Cyclic evidence dependency: ' + identifier)
+    check = report['checks'].get(identifier)
+    if (not check or check.get('passed') is not True or check.get('dimension') != dimension
+            or not check.get('oracle') or check.get('legacy_spelling_supported') is False
+            or check.get('evidence_kind') == 'migration-and-rejection'):
+        return False
+    visiting.add(identifier)
+    try:
+        return all(supported_check(report, child, dimension, visiting)
+                   for child in check.get('dependencies', []))
+    finally:
+        visiting.remove(identifier)
+
+
 def validate(inventory, coverage, root):
     # Reports and large source archives recur across hundreds of dimensions.
     # Caches belong to this validation only; subsequent validations rehash files.
@@ -52,8 +70,8 @@ def validate(inventory, coverage, root):
                 reports[path] = json.loads(path.read_text(encoding='utf-8'))
             report = reports[path]
             check = report['checks'][item['check']]
-            if (check.get('passed') is not True or check.get('dimension') != dimension
-                    or row['id'] not in check.get('contracts', []) or not check.get('oracle')):
+            if (not supported_check(report, item['check'], dimension)
+                    or row['id'] not in check.get('contracts', [])):
                 raise ValueError('Report does not qualify this contract/dimension: ' + row['id'])
             if not report.get('runtime_image') or not report.get('inputs'):
                 raise ValueError('Report lacks runtime and source identities: ' + row['id'])

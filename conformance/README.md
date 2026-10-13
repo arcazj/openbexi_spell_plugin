@@ -18,11 +18,29 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 
 Exit 1 means the release is still open; it is currently the expected result.
 TIME qualifies 42 rows / 168 checks. The [COMMON milestone](COMMON.md) adds 40 of
-its 66 rows and resolves two source errata. In total, 82 rows are qualified and
-681 remain open, including five pre-existing source errata. The specific TIME
+its 66 rows and resolves two source errata. Current qualification totals 316
+rows, with 447 open and four remaining original errata. The specific TIME
 evidence is retained in `evidence/time.json`; it qualifies the development image
 identified there and does not qualify a new distributable native wheel. TIME was
 rerun on the combined COMMON/TIME image after the shared wrapper changes.
+
+| Package | Qualified / inventory | Evidence |
+| --- | --- | --- |
+| TIME | 42 / 42 | 168 native checks |
+| COMMON | 40 / 66 | Native policy and direct IPC silence checks |
+| PY | 117 / 122 | 488 checks; legacy rejection/migration checks do not qualify support |
+| DATA | 29 / 94 | Original containers/shared context plus competing executor CAS |
+| FILES | 40 / 45 | Original filesystem modes, paths and before-effect validation |
+| FLOW | 23 / 51 | 28 traced scenarios, 36 checks and six scanner checks |
+| UI | 25 / 60 | 62 checks of original prompts and native IPC |
+| LIMIT, OBS, CMD, SPECIAL | 0 / 283 | Family conformance remains open |
+
+See [PY](python.md), [DATA/FILES](DATA_FILES.md), [FLOW](FLOW.md) and [UI](UI.md).
+The [combined checkpoint](../docs/V05_CONFORMANCE_QUALIFICATION.json) binds the
+final development image, baseline failures and combined native regressions.
+It explicitly leaves full v0.5 and dependent v0.6 acceptance false. Passing
+section evidence must recursively depend on supported child behavior; Python 2
+spelling rejection cannot qualify a parent section.
 
 ## Reproduce the TIME milestone
 

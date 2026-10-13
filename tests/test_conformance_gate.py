@@ -9,6 +9,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 validate = runpy.run_path(str(ROOT / 'conformance/check.py'))['validate']
+supported_check = runpy.run_path(str(ROOT / 'conformance/check.py'))['supported_check']
 
 
 def inputs():
@@ -63,3 +64,26 @@ def test_release_gate_rejects_failing_or_stale_evidence(tmp_path):
             path.write_text('{}', encoding='utf-8')
         with pytest.raises(ValueError):
             validate(inventory, coverage, tmp_path)
+
+
+def test_migration_evidence_cannot_qualify_legacy_syntax_or_parent_sections():
+    report = json.loads((ROOT/'conformance/evidence/python.json').read_text(encoding='utf-8'))
+    legacy = 'CMP-LRM244-METHOD-DICTIONARY-HAS-KEY:positive'
+    assert report['checks'][legacy]['passed']
+    assert not supported_check(report, legacy, 'positive')
+    parent = next(name for name, check in report['checks'].items() if legacy in check.get('dependencies', []))
+    assert not supported_check(report, parent, 'positive')
+    assert supported_check(report, 'CMP-LRM244-EXAMPLE-001:positive', 'positive')
+
+
+def test_missing_failed_or_cyclic_section_dependencies_are_rejected():
+    base = dict(passed=True, dimension='positive', oracle='all child cases independently pass')
+    report = {'checks': {'parent': dict(base, dependencies=['child']), 'child': dict(base)}}
+    assert supported_check(report, 'parent', 'positive')
+    report['checks']['child']['passed'] = False
+    assert not supported_check(report, 'parent', 'positive')
+    report['checks']['child'].update(passed=True, dependencies=['parent'])
+    with pytest.raises(ValueError, match='Cyclic'):
+        supported_check(report, 'parent', 'positive')
+    del report['checks']['child']
+    assert not supported_check(report, 'parent', 'positive')
