@@ -16,7 +16,7 @@ group('resource-read', ['FUNCTION-GETRESOURCE', 'EXAMPLE-112'], positive="""
 equal(GetResource('value', HandleError=False), 21)
 equal(fixture('resource_state')['resources']['value'], 21)
 """, boundary="""
-for value in (0, False, '', [], {}, -2**60, 2.5, 'café λ', [False, {'items':[0, 1]}], {'PromptUser':'literal data','Wait':False}):
+for value in (0, False, '', [], {}, -(2**63), 2**63-1, 2.5, 'café λ', [False, {'items':[0, 1]}], {'PromptUser':'literal data','Wait':False}):
     assert SetResource('value', value, HandleError=False) is True
     actual = GetResource('value', HandleError=False)
     equal(actual, value)
@@ -38,7 +38,7 @@ assert SetResource('value', 42, HandleError=False) is True
 equal(GetResource('value', HandleError=False), 42)
 equal(fixture('resource_state')['resources']['value'], 42)
 """, boundary="""
-for value in (0, False, '', [], {}, -2**60, 2.5, 'café λ', [False, {'items':[0, 1]}], {'PromptUser':'literal data','Wait':False}):
+for value in (0, False, '', [], {}, -(2**63), 2**63-1, 2.5, 'café λ', [False, {'items':[0, 1]}], {'PromptUser':'literal data','Wait':False}):
     assert SetResource('value', value, HandleError=False) is True
     equal(fixture('resource_state')['resources']['value'], value)
 """, failure="""
@@ -52,6 +52,10 @@ rejects(DriverException, lambda: SetResource('value', None, HandleError=False))
 rejects(DriverException, lambda: SetResource('value', float('inf'), HandleError=False))
 rejects(DriverException, lambda: SetResource('value', float('nan'), HandleError=False))
 rejects(DriverException, lambda: SetResource('value', 'x' * 70000, HandleError=False))
+for value in (-(2**63)-1, 2**63, {'nested':[2**63]}):
+    rejects(DriverException, lambda: SetResource('value', value, HandleError=False))
+plan_prompt(['SKIP','REPEAT','CANCEL','ABORT'], 'CANCEL')
+equal(SetResource('value', {'nested':[2**63]}, OnFailure=SKIP|REPEAT|CANCEL|ABORT, PromptFailure=True), None)
 rejects(DriverException, lambda: SetResource('value', 99, IsLocal=True, HandleError=False))
 after = fixture('resource_state')
 equal(after['resources'], before['resources'])

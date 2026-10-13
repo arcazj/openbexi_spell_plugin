@@ -5,6 +5,7 @@ import time
 
 from spell.runtime import GDB
 from spell.lang.functions import GetResource, SetResource
+from spell.lang.constants import SKIP, REPEAT, CANCEL, ABORT
 from spell.lib.exception import DriverException, SyntaxException
 from spell.lib.exception import SpellException
 

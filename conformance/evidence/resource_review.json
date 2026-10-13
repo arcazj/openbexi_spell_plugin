@@ -43,13 +43,6 @@
         "resource-write:boundary"
       ]
     },
-    "final_native_resource": {
-      "path": ".qualification/v0.5/resource/5fa9fc536b39404d890d73726061a877/result.json",
-      "sha256": "dbb389173ec1a95491aee4301e3267e74673c11c8c6794bce99ef0801e221d4b",
-      "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
-      "checks": 12,
-      "failures": []
-    },
     "common_regression": {
       "path": ".qualification/v0.5/common/aaee2988a3b94b7692681c87e00e9850/result.json",
       "sha256": "b6900277b0ad2aa9870499d421c64b3366d153ed3d5a4c7dc62d1276336092fa",
@@ -60,14 +53,38 @@
     "driver_regression": {
       "path": ".qualification/v0.5/resource/driver-regression.xml",
       "sha256": "1b11127d1f61d8e0710cdc4a8f5437b3145b2bac8a51b04803751c588025b5ca"
+    },
+    "initial_resource_checkpoint": {
+      "path": ".qualification/v0.5/resource/5fa9fc536b39404d890d73726061a877/result.json",
+      "sha256": "dbb389173ec1a95491aee4301e3267e74673c11c8c6794bce99ef0801e221d4b",
+      "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+      "checks": 12,
+      "failures": []
+    },
+    "integer_encoding_failure": {
+      "path": ".qualification/v0.5/resource/4f0f249276c4404284f4dfd2e4c8b945/result.json",
+      "sha256": "27001967722a15ec0fe8e463ad90cf409d2a0cd011c187732ecb0f35f37167e8",
+      "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
+      "checks": 1,
+      "failures": [
+        "resource-write:failure"
+      ]
+    },
+    "final_native_resource": {
+      "path": ".qualification/v0.5/resource/bfa3cb090a244672a6950a1c78c5fbdd/result.json",
+      "sha256": "a90c409e05d48bad16ce04d3a949141a59bb14d68461d9880baa87e5ad5e5655",
+      "runtime_image": "sha256:6e9ab9eaa5d9f6e154baf2e5d09dedc96d74182bfd79549ca1acff189c1ede5c",
+      "checks": 12,
+      "failures": []
     }
   },
-  "runtime_image": "sha256:fdd49dfc54a69a2536820a081c613be6484614fd3e723e633f92524996dc8807",
-  "regressions": {
+  "runtime_image": "sha256:6e9ab9eaa5d9f6e154baf2e5d09dedc96d74182bfd79549ca1acff189c1ede5c",
+  "qualified_contracts": 7,
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false,
+  "prior_regressions": {
     "common": 44,
     "driver": 28
   },
-  "qualified_contracts": 7,
-  "full_v05_accepted": false,
-  "v06_dependency_satisfied": false
+  "integer_followup": "Independent review found original Int64 protobuf encoding errors escaping SPELL failure policy. Exact native signed endpoints, rejected adjacent/nested integers, no-effect checks, and explicit operator CANCEL now pass on the final image; previous COMMON/driver regressions retain their earlier image identity."
 }
