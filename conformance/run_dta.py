@@ -53,6 +53,8 @@ def main():
     sources += ['source_port/' + name for name in (
         'patches.py', 'native_patches.py', 'dta_native_patches.py', 'dta_time_patches.py',
         'data_files_patches.py', 'data_files_native_patches.py', 'ui_native_patches.py', 'flow_patches.py')]
+    sources += ['source_port/dta_ipc_patches.py', 'conformance/dta_ipc_build.py',
+                'conformance/dta_ipc.Dockerfile', 'conformance/dta_ipc.Dockerfile.dockerignore']
     inputs = {name: digest((ROOT/name).read_bytes()) for name in sources}
     normalized = {name: digest((ROOT/name).read_bytes().replace(b'\r\n', b'\n'))
                   for name in sources if name.endswith('.py')}

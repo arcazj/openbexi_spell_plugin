@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "status": "qualified native development checkpoint; integrated wheel and full conformance still required",
+  "accepted": false,
+  "runtime_image": "sha256:9b1dc420207c3b4db06d3cabc98e22038acadd45dd3d630a71af7ea1ed5e5d8d",
+  "checks": 190,
+  "sources": {
+    "host_sha256": "5f581f88e7547d81ae2ae98d644807defecf4397d05ed5752ff9bf3c2f8a9fb7",
+    "manifest": {
+      "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+      "source_hashes": {
+        "lib/SPELL_CIF/src/SPELLasRun.C": {
+          "original": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+          "ported": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a",
+          "patched": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317"
+        },
+        "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+          "original": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+          "ported": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c",
+          "patched": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724"
+        },
+        "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+          "original": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+          "ported": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+          "patched": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b"
+        },
+        "lib/SPELL_CTX/src/SPELLcontext.C": {
+          "original": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
+          "ported": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a",
+          "patched": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+        },
+        "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+          "original": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+          "ported": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e",
+          "patched": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538"
+        },
+        "lib/SPELL_EXC/src/SPELLgoto.C": {
+          "original": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+          "ported": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7",
+          "patched": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4"
+        },
+        "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+          "original": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+          "ported": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02",
+          "patched": "d86c7695c20fde9dd466e7303838330b2f9ab392839a46aada964e6db1e1cdde"
+        },
+        "lib/SPELL_UTIL/src/SPELLtime.C": {
+          "original": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+          "ported": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8",
+          "patched": "edf54af00ead721930d84a3f6e4ef3a909767307ee42fdc0419d1574d1e63525"
+        }
+      },
+      "recipes": {
+        "dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+        "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+        "dta_ipc_build.py": "341f62913a3de384e2830e7e6af0dc3bea808d32deac1971eed86d506e472a04",
+        "incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+        "dta_time_patches.py": "91b78167181dbc56ba55041e5a4e505e0537c1844519867c2c988dcdab0d7f46",
+        "dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+        "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+        "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+        "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+      },
+      "artifacts": {
+        "libspell_executor313.so": "0be8554f2fabc86655795959ed3fdc4f5b0bf860780e0d6f26023ebed165d567",
+        "SPELL-Context": "3b4dc3e760cdec8ae8587e66de565e646787adce55430bd1d4422b3a481347ec",
+        "SPELL-Listener": "182c0cdfe6fe9000a90dfb4c5edcc836d007c2e1be3a8938a2dc274b068152a6"
+      },
+      "profile": "Integrated dictionary IPC/DTA/UI/FLOW native overlay; original DATA context and Python overlays retained; not release acceptance"
+    },
+    "installed": {
+      "libspell_executor313.so": "0be8554f2fabc86655795959ed3fdc4f5b0bf860780e0d6f26023ebed165d567",
+      "SPELL-Context": "3b4dc3e760cdec8ae8587e66de565e646787adce55430bd1d4422b3a481347ec",
+      "SPELL-Listener": "182c0cdfe6fe9000a90dfb4c5edcc836d007c2e1be3a8938a2dc274b068152a6"
+    }
+  },
+  "reports": {
+    "dictionary": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\dta-edit\\0a4fd636565d48d58c101da92b075f58\\result.json",
+      "sha256": "de4bb1e1c4ee7705b8c2bb0163950ec98e1f579f7ac74b076637269c4a235ba7",
+      "checks": 64,
+      "passed": true
+    },
+    "dta": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\dta\\dece577a5a204ebfb0c26f79e6915894\\result.json",
+      "sha256": "4e42266c7bb2761338087ab4a1c70df4b56b6512ef4d0abf4b585afaa0d59643",
+      "checks": 64,
+      "passed": true
+    },
+    "ui": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\ui\\a162104795c545818e306fbda505c4bc\\result.json",
+      "sha256": "cea42a57f5aec6a8edc5b0802a071dd8920d80aeb7edf866d863717e7825a187",
+      "checks": 62,
+      "passed": true
+    }
+  },
+  "manual_scope": "LRM p86 predefined typed ARGS/IVARS and native client editing; p89 child argument loading is separate and not newly promoted here.",
+  "fixes": [
+    "Recognize actual per-interpreter native DataContainer type",
+    "Balanced owned/borrowed references during reads and edits",
+    "Validate typed and ordinary dictionary updates before mutation",
+    "Suppress and restore container/global notifications during client edits, including newly merged Vars",
+    "Reject malformed, out-of-range and stale chunk requests",
+    "Preserve UTF-8 code points between chunk messages"
+  ],
+  "retained_failures": {
+    "original_unsupported_native_type": "C:/projects/openbexi_spell_plugin/.qualification/v0.5/dta-edit/05a9511ad6af4d929a4795397f1e88dc",
+    "merge_new_notification_hang": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\dta-edit\\0fbba23f91f049d3b4f782aef16f8acf",
+    "unicode_chunk_corruption": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\dta-edit\\4801095cd9754f01abf986ebdc863087"
+  },
+  "policy": "Original trusted Development expression evaluation retained. Unknown keys without explicit merge and malformed fields reject before evaluation. No GUI browser interaction or final release is inferred from IPC tests."
+}

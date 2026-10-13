@@ -27,6 +27,8 @@ def main():
         'conformance/dta_native_build.py', 'conformance/dta_native.Dockerfile',
         'source_port/dta_native_patches.py', 'source_port/dta_time_patches.py',
         'source_port/data_files_native_patches.py',
+        'source_port/dta_ipc_patches.py', 'conformance/dta_ipc_build.py',
+        'conformance/dta_ipc.Dockerfile', 'conformance/dta_ipc.Dockerfile.dockerignore',
         'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf')
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     normalized = {name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
