@@ -84,11 +84,14 @@ def main():
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest for path, digest in inputs.items())
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
         verify_capture(runtime.get('integrated'), inputs, normalized)
+        driver = (runtime.get('integrated') or {}).get('driver_composition')
+        driver_sources = driver['manifest']['python_sources'] if driver else {}
         if '/opt/obs-conformance-patch/obs_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/obs-conformance-patch/obs_patches.py'] == inputs['source_port/obs_patches.py']
         for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py'):
-            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/' + path] in (
-                inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path)), path
+            expected = ((driver_sources[path],) if driver else (
+                inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path)))
+            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/' + path] in expected, path
         report = dict(runtime_image=image, inputs=inputs, checks=checks, observations=observations,
                       lf_normalized_inputs=normalized,
                       runtime_sources=runtime, controller_exit_code=run.returncode,
