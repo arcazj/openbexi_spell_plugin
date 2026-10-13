@@ -1,0 +1,120 @@
+{
+  "prerequisites_passed": true,
+  "v05_accepted": false,
+  "v06_accepted": false,
+  "scope": "Independent COMMON-snapshot native rebuild and current installed host prerequisites",
+  "native_rebuild": {
+    "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/result.json",
+    "sha256": "f58a850d9fec23c7332f5bb3240041bfbead1dfe428b19578a548afc1c1a5c2d",
+    "checks": {
+      "independent_native_rebuilds": true,
+      "native_artifacts_identical": true,
+      "python_sources_identical": true,
+      "wheel_bytes_identical": true,
+      "fresh_install_and_removal": true
+    },
+    "source_snapshot_inputs": {
+      "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/inputs.json",
+      "sha256": "d713302ef1f159991fa850c4010bb1e3d50e1c9acd5c82ec7ff31b717ded91a4"
+    },
+    "wheels": [
+      {
+        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/a/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+        "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
+      },
+      {
+        "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/b/distribution/wheels/openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+        "sha256": "8771ee36c55ab4c95d14638275d67637d2d6dcc96b555305e485bd1385d44174"
+      }
+    ],
+    "native_artifacts": {
+      "libspell_executor313.so": "be6d6c4924a4249cadb5de59d8dd96fd3af2baa1e047c0604108cdc5f9854624",
+      "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "SPELL-Context": "e69e987803137457156256a554ba1f931e337cba3cdaabdbc665db9a3ead2454",
+      "SPELL-Listener": "ded795fa7d7a6a32295563ff2860e94106c9112ca573296bb9b9364be8c4c265",
+      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
+    }
+  },
+  "toolchain_export": {
+    "metadata": {
+      "path": ".qualification/v0.6/rebuild/a1f60eb525944f47bd2cfbfc649cc30a/toolchain-export.json",
+      "sha256": "4a884530f01f1ffdae8f944f446a9959c1aa4f2d83214a63e3ceba9eab836134"
+    },
+    "image": "sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2",
+    "tag": "openbexi-spell-toolchain:v06-a1f60eb52594",
+    "archive": "toolchain-image.tar",
+    "sha256": "68735a13c6e54c4649dac5f72c27655ed817aef4ba5595d14b28fc764cf115e9",
+    "bytes": 641929216
+  },
+  "host_workflows": {
+    "pycharm": {
+      "path": ".qualification/v0.6/hosts/f44a5d0a5baa4ee1b4209d6fa801f45f/result.json",
+      "sha256": "ec4322b8274e36c4bae830406f26fe3fc28df756ef25fb6f9ffb277493f80c89",
+      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+      "sdk": {
+        "name": "PyCharm",
+        "version": "2026.1.2",
+        "buildNumber": "261.24374.152"
+      }
+    },
+    "intellij": {
+      "path": ".qualification/v0.6/hosts/241b73b122c745208d3a7a07cebbe5f9/result.json",
+      "sha256": "d8416cf1c1397a5dd09277af959b8304c5e2a3dfbc9d6e287f4f709dcbc0ce1f",
+      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+      "sdk": {
+        "name": "IntelliJ IDEA",
+        "version": "2026.2.3",
+        "buildNumber": "262.10968.63"
+      }
+    },
+    "openbexi": {
+      "path": ".qualification/v0.6/openbexi/86d977c8f0de46dea373dfcd19923431/result.json",
+      "sha256": "8917032d22d40d057ced52b4fe4a25e1f0345c008575da7fb1a4eeae5a5200c7",
+      "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872"
+    }
+  },
+  "host_artifacts": {
+    "jetbrains_zip": [
+      {
+        "path": ".qualification/v0.6/jetbrains-a/openbexi-spell-0.3.0.zip",
+        "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+      },
+      {
+        "path": ".qualification/v0.6/jetbrains-b/openbexi-spell-0.3.0.zip",
+        "sha256": "da56fdc2fec31483d49c75ee4bf207fe75199418562ce331c02bcdcc6c571ef8"
+      }
+    ],
+    "host_wheel": [
+      {
+        "path": ".qualification/v0.6/host-wheels-a/openbexi_spell_host-0.3.0-py3-none-any.whl",
+        "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
+      },
+      {
+        "path": ".qualification/v0.6/host-wheels-b/openbexi_spell_host-0.3.0-py3-none-any.whl",
+        "sha256": "0976a0c49bba647aa1a0b99a7feccd0cbd5921068f97006fae8c9b7b2cea0192"
+      }
+    ]
+  },
+  "plugin_verifier": {
+    "PY-261.24374.152": {
+      "path": ".qualification/v0.6/verifier/PY-261.24374.152/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+      "sha256": "d14f012015a4039141e31ade5080c4f179c8e42acdfa5f5745b8db5ad398cf5b",
+      "verdict": "Compatible. 7 usages of experimental API"
+    },
+    "IU-262.10968.63": {
+      "path": ".qualification/v0.6/verifier/IU-262.10968.63/plugins/org.openbexi.spell/0.3.0/verification-verdict.txt",
+      "sha256": "7da6cbb550d6bd6d7caabc5b772c8745e214aeb56e9ef8bb71ba97a0f30e0d4a",
+      "verdict": "Compatible. 1 usage of experimental API"
+    }
+  },
+  "remaining": [
+    "Full v0.5 acceptance",
+    "Final integrated DATA/FLOW/UI native rebuilds",
+    "Versioned upgrade paths",
+    "Final artifact host reruns",
+    "Final shipped DSS image/runtime qualification",
+    "Snapshot-locked apt toolchain reconstruction",
+    "Live noVNC closure/scroll verification"
+  ]
+}

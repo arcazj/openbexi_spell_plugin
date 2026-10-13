@@ -27,19 +27,19 @@
     },
     "data": {
       "path": "conformance/evidence/data.json",
-      "sha256": "ad1c020ae18b12e40fe96a52b0d0446efb4fd13a2626bfb529d0b42d31803a16"
+      "sha256": "6a3af7d38cc26b12f51004740a0731a53a937dfec374ca49b7ca88561fab0675"
     },
     "files": {
       "path": "conformance/evidence/files.json",
-      "sha256": "904b65cb739fa70b01de9ef015d998800a5c42b37d2f24bb8c68c0dc0fc98475"
+      "sha256": "26062be5ad77f5e28cc7dd79135bafa36ba1c2aadbd1ae682906a2aa574bd099"
     },
     "data-race": {
       "path": "conformance/evidence/data-race.json",
-      "sha256": "02bb77dc1637dead421effa26c465a8efceae24622d50b1d2d94c8d1d7b80abe"
+      "sha256": "7e929846e815d9f0e929730bd626e06d9bdbffa174e164fc719c53b49d0c8691"
     },
     "flow": {
       "path": "conformance/evidence/flow.json",
-      "sha256": "bf40b07b5907cc192291b66ac7c3f7816b174a86a5b68b16216dfa7b72eaacd9"
+      "sha256": "5b4c895fa980a45d3efa5a6bc1103679ac1e4b4e9d0541e8c757ca796961a5ce"
     },
     "ui": {
       "path": "conformance/evidence/ui.json",
@@ -102,5 +102,26 @@
     "Previously accepted native host and DSS image identities",
     "Earlier failed and successful qualification evidence",
     "Original sources and license notices"
-  ]
+  ],
+  "report_line_endings": {
+    "reason": "Git stores text as LF. Observations and source/runtime identities are unchanged; raw execution reports remain in their retained qualification folders.",
+    "normalized": {
+      "conformance/evidence/data-race.json": {
+        "raw_sha256": "02bb77dc1637dead421effa26c465a8efceae24622d50b1d2d94c8d1d7b80abe",
+        "tracked_sha256": "7e929846e815d9f0e929730bd626e06d9bdbffa174e164fc719c53b49d0c8691"
+      },
+      "conformance/evidence/data.json": {
+        "raw_sha256": "ad1c020ae18b12e40fe96a52b0d0446efb4fd13a2626bfb529d0b42d31803a16",
+        "tracked_sha256": "6a3af7d38cc26b12f51004740a0731a53a937dfec374ca49b7ca88561fab0675"
+      },
+      "conformance/evidence/files.json": {
+        "raw_sha256": "904b65cb739fa70b01de9ef015d998800a5c42b37d2f24bb8c68c0dc0fc98475",
+        "tracked_sha256": "26062be5ad77f5e28cc7dd79135bafa36ba1c2aadbd1ae682906a2aa574bd099"
+      },
+      "conformance/evidence/flow.json": {
+        "raw_sha256": "bf40b07b5907cc192291b66ac7c3f7816b174a86a5b68b16216dfa7b72eaacd9",
+        "tracked_sha256": "5b4c895fa980a45d3efa5a6bc1103679ac1e4b4e9d0541e8c757ca796961a5ce"
+      }
+    }
+  }
 }
