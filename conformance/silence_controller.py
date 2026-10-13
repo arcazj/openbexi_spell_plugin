@@ -9,15 +9,23 @@ import time
 sys.path.insert(0, '/opt/host')
 from native import NativeSession
 
-manifest = json.loads(Path('/opt/common-conformance-patch/manifest.json').read_text())
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
+
+integrated = capture()
 runtime = {'native.py': hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest(),
-           'patch_recipe': manifest['files']['patches.py'], 'installed': {}}
-for name, digest in manifest['files'].items():
-    if name.startswith('patched/'):
-        path = Path('/usr/local/lib/python3.13/site-packages')/name.removeprefix('patched/')
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
-        assert actual == digest, name
-        runtime['installed'][name] = actual
+           'integrated': integrated, 'installed': {}}
+if integrated is not None:
+    runtime['patch_recipe'] = integrated['manifest']['composition']['python']['recipes']['patches.py']['sha256']
+else:
+    manifest = json.loads(Path('/opt/common-conformance-patch/manifest.json').read_text())
+    runtime['patch_recipe'] = manifest['files']['patches.py']
+    for name, digest in manifest['files'].items():
+        if name.startswith('patched/'):
+            path = Path('/usr/local/lib/python3.13/site-packages')/name.removeprefix('patched/')
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+            assert actual == digest, name
+            runtime['installed'][name] = actual
 Path('silence-runtime.json').write_text(json.dumps(runtime, indent=2), encoding='utf-8')
 
 events = []

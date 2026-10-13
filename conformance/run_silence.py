@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import uuid
+from installed_provenance import input_paths, verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,6 +23,7 @@ def main():
              'conformance/common.Dockerfile', 'source_port/patches.py',
              'docs/reference/SPELL2.6.10-src.zip',
              'docs/reference/SPELL - Language Reference - 2.4.4.pdf')
+    names = tuple(dict.fromkeys((*names, *input_paths(ROOT))))
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     name = 'openbexi-common-silence-' + uuid.uuid4().hex
@@ -35,7 +37,8 @@ def main():
             '--entrypoint','python',image,'-I','/workspace/controller.py'],check=True,capture_output=True)
         archive = io.BytesIO()
         with tarfile.open(fileobj=archive,mode='w') as bundle:
-            for source, target in (('silence_controller.py','controller.py'),('silence_procedure.py','main.py')):
+            for source, target in (('silence_controller.py','controller.py'),('silence_procedure.py','main.py'),
+                                   ('installed_provenance.py','installed_provenance.py')):
                 content = (ROOT/'conformance'/source).read_bytes()
                 item = tarfile.TarInfo(target)
                 item.size, item.mode, item.uid, item.gid = len(content), 0o644, 10003, 10003
@@ -49,6 +52,7 @@ def main():
         wire = json.loads((output/'silence-wire.json').read_bytes())
         effects = json.loads((output/'silence-effects.json').read_bytes())
         runtime = json.loads((output/'silence-runtime.json').read_bytes())
+        verify_capture(runtime.get('integrated'), inputs)
         assert runtime['patch_recipe'] == inputs['source_port/patches.py']
         messages = [event.get('message',{}) for event in wire]
         writes = [row for row in messages if row.get('id') == 'MSG_WRITE'
