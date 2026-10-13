@@ -1,0 +1,369 @@
+{
+  "checks": {
+    "silent-execution:positive": {
+      "dimension": "positive",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-MODIFIER-NOTIFY",
+        "CMP-LRM244-MODIFIER-VERBOSITY",
+        "CMP-LRM244-EXAMPLE-025",
+        "CMP-LRM244-SECTION-3-6-021"
+      ],
+      "oracle": "LRM p.31 and original SPELLexecutorImpl.C processException: no silent procedure text/item feedback; data effects and system exception diagnostics remain; default feedback resumes",
+      "visible_writes": [
+        {
+          "fields": {
+            "Csp": "main:22/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "20",
+            "Text": "COMMON_VISIBLE_positive",
+            "Time": "1791869514876655"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "visible_notifications": [
+        {
+          "fields": {
+            "Csp": "main:22/0",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_positive'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "21",
+            "Time": "2026-10-13 05:31:54"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        },
+        {
+          "fields": {
+            "Csp": "main:23/0",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_positive'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "23",
+            "Time": "2026-10-13 05:31:55"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        }
+      ],
+      "silent_event_count": 0,
+      "system_diagnostics": [],
+      "observed_effect": 42
+    },
+    "silent-execution:boundary": {
+      "dimension": "boundary",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-MODIFIER-NOTIFY",
+        "CMP-LRM244-MODIFIER-VERBOSITY",
+        "CMP-LRM244-EXAMPLE-025",
+        "CMP-LRM244-SECTION-3-6-021"
+      ],
+      "oracle": "LRM p.31 and original SPELLexecutorImpl.C processException: no silent procedure text/item feedback; data effects and system exception diagnostics remain; default feedback resumes",
+      "visible_writes": [
+        {
+          "fields": {
+            "Csp": "main:13/1",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "32",
+            "Text": "COMMON_VISIBLE_boundary",
+            "Time": "1791869515277241"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "visible_notifications": [
+        {
+          "fields": {
+            "Csp": "main:22/1",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_boundary'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "36",
+            "Time": "2026-10-13 05:31:55"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        },
+        {
+          "fields": {
+            "Csp": "main:23/1",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_boundary'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "38",
+            "Time": "2026-10-13 05:31:55"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        }
+      ],
+      "silent_event_count": 0,
+      "system_diagnostics": [],
+      "observed_effect": 42
+    },
+    "silent-execution:failure": {
+      "dimension": "failure",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-MODIFIER-NOTIFY",
+        "CMP-LRM244-MODIFIER-VERBOSITY",
+        "CMP-LRM244-EXAMPLE-025",
+        "CMP-LRM244-SECTION-3-6-021"
+      ],
+      "oracle": "LRM p.31 and original SPELLexecutorImpl.C processException: no silent procedure text/item feedback; data effects and system exception diagnostics remain; default feedback resumes",
+      "visible_writes": [
+        {
+          "fields": {
+            "Csp": "main:13/2",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "51",
+            "Text": "COMMON_VISIBLE_failure",
+            "Time": "1791869516779560"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "visible_notifications": [
+        {
+          "fields": {
+            "Csp": "main:22/2",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_failure'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "60",
+            "Time": "2026-10-13 05:31:56"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        },
+        {
+          "fields": {
+            "Csp": "main:23/2",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_failure'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "62",
+            "Time": "2026-10-13 05:31:56"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        }
+      ],
+      "silent_event_count": 0,
+      "system_diagnostics": [
+        {
+          "fields": {
+            "Csp": "main:22/2",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "59",
+            "Text": "SPELL exception: Failed to get shared variable data ( Cannot obtain shared variable value: No such variable 'COMMON_HIDDEN_failure_absent' (error code 21) (fatal:false)\n )",
+            "Time": "1791869516278301"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "observed_effect": 42
+    },
+    "silent-execution:recovery": {
+      "dimension": "recovery",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-MODIFIER-NOTIFY",
+        "CMP-LRM244-MODIFIER-VERBOSITY",
+        "CMP-LRM244-EXAMPLE-025",
+        "CMP-LRM244-SECTION-3-6-021"
+      ],
+      "oracle": "LRM p.31 and original SPELLexecutorImpl.C processException: no silent procedure text/item feedback; data effects and system exception diagnostics remain; default feedback resumes",
+      "visible_writes": [
+        {
+          "fields": {
+            "Csp": "main:13/3",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "1",
+            "Sequence": "71",
+            "Text": "COMMON_VISIBLE_recovery",
+            "Time": "1791869516678656"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "visible_notifications": [
+        {
+          "fields": {
+            "Csp": "main:22/3",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_recovery'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "79",
+            "Time": "2026-10-13 05:31:57"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        },
+        {
+          "fields": {
+            "Csp": "main:23/3",
+            "DataType": "ITEM",
+            "ExecutorMode": "PROCEDURE",
+            "ItemName": "'COMMON_VISIBLE_recovery'",
+            "ItemReason": " ",
+            "ItemStatus": "SUCCESS",
+            "ItemTime": "",
+            "ItemType": "VALUE",
+            "ItemValue": "42",
+            "ProcId": "main#1",
+            "SCount": "1",
+            "Sequence": "82",
+            "Time": "2026-10-13 05:31:57"
+          },
+          "id": "MSG_NOTIFICATION",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 1
+        }
+      ],
+      "silent_event_count": 0,
+      "system_diagnostics": [
+        {
+          "fields": {
+            "Csp": "main:22/3",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "80",
+            "Text": "SPELL exception: Failed to get shared variable data ( Cannot obtain shared variable value: No such variable 'COMMON_HIDDEN_recovery_absent' (error code 21) (fatal:false)\n )",
+            "Time": "1791869517790440"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        }
+      ],
+      "observed_effect": 42
+    }
+  },
+  "inputs": {
+    "conformance/silence_controller.py": "c54c3815ae1d554ef5cf3a51a63c992df24306b8eb175aedd890470e51b382aa",
+    "conformance/silence_procedure.py": "a72ca42f58f4c27b4d33ac04f6bf1c5bacb86d65bf8b2400710716d9d8f8f35e",
+    "conformance/run_silence.py": "9990f0c24041dfdaad8271e8ae40a0c4db6e5a7e43b3e1d6b83d71e4ef119433",
+    "conformance/build_common_patch.py": "7285f304c0bfc4730a6a979becb7b431885cdc8f2ee3261f2c1917035fee140f",
+    "conformance/common.Dockerfile": "ba2a3a8b3069f8f86691f48a3d8fdb5c4290e684e4e336bc58ea42dd09084829",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3"
+  },
+  "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+  "runtime_sources": {
+    "native.py": "cfde79dccd780d9e53643770abb7d85f7387a5a800463e1e79154c7913e7265e",
+    "patch_recipe": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "installed": {
+      "patched/spell/lib/adapter/utctime.py": "ca549684d68decf7cc8edffe8e8f1c4ebbdf05b8162edaaf510538f9bda7572b",
+      "patched/spell/lang/helpers/basehelper.py": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7",
+      "patched/spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
+      "patched/spell/config/contexts.py": "a524cdc09b68730cbc62dbdf2a04165248958c22716053259df65304c5be4d33"
+    }
+  }
+}

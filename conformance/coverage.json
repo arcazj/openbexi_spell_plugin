@@ -5,65 +5,185 @@
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-ABORT",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-CANCEL",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-cancel:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-cancel:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-cancel:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-cancel:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-HANDLE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-NOACTION",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "noaction:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "noaction:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "noaction:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "noaction:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-RECHECK",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD: actual fresh telemetry retry, command reinjection and driver-specific partial-group continuation with uncertainty boundaries. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-REPEAT",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "repeat:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "repeat:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "repeat:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "repeat:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-RESEND",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD: actual fresh telemetry retry, command reinjection and driver-specific partial-group continuation with uncertainty boundaries. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-RESUME",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD: actual fresh telemetry retry, command reinjection and driver-specific partial-group continuation with uncertainty boundaries. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-SKIP",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-skip:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-skip:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-skip:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "action-skip:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-CONSTANT-EXECUTION-STATE-ABORTED",
@@ -182,14 +302,14 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "UI: actual PrintDisplay output formats, failures and recovery. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-PRINT-FORMAT-VECTOR",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "UI: actual PrintDisplay output formats, failures and recovery. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
@@ -408,22 +528,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-HOUR:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-HOUR:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-HOUR:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-HOUR:recovery"
         }
       }
@@ -435,22 +555,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-MINUTE:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-MINUTE:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-MINUTE:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-MINUTE:recovery"
         }
       }
@@ -462,22 +582,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-NOW:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-NOW:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-NOW:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-NOW:recovery"
         }
       }
@@ -489,22 +609,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-SECOND:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-SECOND:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-SECOND:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-SECOND:recovery"
         }
       }
@@ -516,22 +636,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TODAY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TODAY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TODAY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TODAY:recovery"
         }
       }
@@ -543,22 +663,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TOMORROW:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TOMORROW:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TOMORROW:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-TOMORROW:recovery"
         }
       }
@@ -570,22 +690,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-YESTERDAY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-YESTERDAY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-YESTERDAY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-CONSTANT-TIME-YESTERDAY:recovery"
         }
       }
@@ -595,14 +715,14 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD/SPECIAL: calibrated versus raw values through original models and actual services. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONSTANT-VALUE-FORMAT-RAW",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD/SPECIAL: calibrated versus raw values through original models and actual services. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-CONTROL-WAITFOR-INTERRUPT",
@@ -670,9 +790,29 @@
     {
       "id": "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-ERRATUM-LIMIT-KEY-LOHIGH",
@@ -684,9 +824,29 @@
     {
       "id": "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
@@ -838,51 +998,191 @@
     {
       "id": "CMP-LRM244-EXAMPLE-019",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-020",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-021",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-022",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "terminal-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-023",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-024",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-025",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-026",
@@ -891,22 +1191,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-026:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-026:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-026:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-026:recovery"
         }
       }
@@ -918,22 +1218,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-027:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-027:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-027:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-027:recovery"
         }
       }
@@ -945,22 +1245,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-028:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-028:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-028:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-028:recovery"
         }
       }
@@ -972,22 +1272,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-029:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-029:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-029:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-EXAMPLE-029:recovery"
         }
       }
@@ -2241,9 +2541,29 @@
     {
       "id": "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-FUNCTION-CLEARSHAREDDATA",
@@ -3106,22 +3426,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ABS:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ABS:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ABS:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ABS:recovery"
         }
       }
@@ -3133,22 +3453,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-FMT:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-FMT:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-FMT:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-FMT:recovery"
         }
       }
@@ -3160,22 +3480,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-HOUR:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-HOUR:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-HOUR:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-HOUR:recovery"
         }
       }
@@ -3187,22 +3507,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ISREL:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ISREL:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ISREL:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-ISREL:recovery"
         }
       }
@@ -3214,22 +3534,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-JULIANDAY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-JULIANDAY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-JULIANDAY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-JULIANDAY:recovery"
         }
       }
@@ -3241,22 +3561,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MINUTE:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MINUTE:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MINUTE:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MINUTE:recovery"
         }
       }
@@ -3268,22 +3588,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MONTH:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MONTH:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MONTH:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-MONTH:recovery"
         }
       }
@@ -3295,22 +3615,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-REL:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-REL:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-REL:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-REL:recovery"
         }
       }
@@ -3322,22 +3642,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-SECOND:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-SECOND:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-SECOND:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-SECOND:recovery"
         }
       }
@@ -3349,22 +3669,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-YEAR:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-YEAR:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-YEAR:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-METHOD-TIME-YEAR:recovery"
         }
       }
@@ -3437,7 +3757,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "UI/DATA: prompt timeout/default behavior and native variable defaults. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-DEFINITION",
@@ -3451,7 +3771,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/OBS/CMD/UI: actual delays, deadlines, fresh acquisition and scheduling across applicable functions. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-DELTA",
@@ -3472,14 +3792,14 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FILES/DATA/UI/SPECIAL: upper bounds, typed prompts and database/memory filters. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-ERROR",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "LIMIT/OBS: actual out-of-limit definitions and verification behavior. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-EXPECTED",
@@ -3498,16 +3818,36 @@
     {
       "id": "CMP-LRM244-MODIFIER-FAILURECODE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-FORMAT",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "CMD/OBS/UI/DATA/SPECIAL: every applicable value and print representation. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-GROUP",
@@ -3519,9 +3859,29 @@
     {
       "id": "CMP-LRM244-MODIFIER-HANDLEERROR",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-HIBOTH",
@@ -3563,7 +3923,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "LIMIT/OBS: actual out-of-limit definitions and verification behavior. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-IGNORECASE",
@@ -3626,7 +3986,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/UI: real wait messages and prompt/display handling. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-MIDPOINT",
@@ -3654,7 +4014,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "DATA/CMD/SPECIAL: applicable named and typed data/model operations. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-NOMINAL",
@@ -3666,30 +4026,110 @@
     {
       "id": "CMP-LRM244-MODIFIER-NOTIFY",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-ONFAILURE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-ONFALSE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-ONTRUE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-PRINTER",
@@ -3701,16 +4141,56 @@
     {
       "id": "CMP-LRM244-MODIFIER-PROMPTFAILURE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-PROMPTUSER",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-RADIX",
@@ -3787,70 +4267,90 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/OBS/CMD/UI: actual delays, deadlines, fresh acquisition and scheduling across applicable functions. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-TIMEOUT",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/OBS/CMD/UI: actual delays, deadlines, fresh acquisition and scheduling across applicable functions. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-TOLERANCE",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "LIMIT/OBS: actual out-of-limit definitions and verification behavior. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-TYPE",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FILES/DATA/UI/SPECIAL: upper bounds, typed prompts and database/memory filters. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-UNITS",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "CMD: native typed/radix/unit TC arguments and actual transport. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-UNTIL",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/OBS/CMD/UI: actual delays, deadlines, fresh acquisition and scheduling across applicable functions. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-VALUE",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "DATA/CMD/SPECIAL: applicable named and typed data/model operations. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-VALUEFORMAT",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "OBS/CMD/SPECIAL: calibrated versus raw values through original models and actual services. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-VALUETYPE",
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "CMD: native typed/radix/unit TC arguments and actual transport. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-VERBOSITY",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-MODIFIER-VISIBLE",
@@ -3864,7 +4364,7 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "FLOW/OBS/CMD/UI: actual delays, deadlines, fresh acquisition and scheduling across applicable functions. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-MODIFIER-WARNING",
@@ -4020,22 +4520,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-ADD:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-ADD:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-ADD:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-ADD:recovery"
         }
       }
@@ -4047,22 +4547,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-MULTIPLY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-MULTIPLY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-MULTIPLY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-MULTIPLY:recovery"
         }
       }
@@ -4074,22 +4574,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-SUBTRACT:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-SUBTRACT:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-SUBTRACT:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-OPERATOR-TIME-SUBTRACT:recovery"
         }
       }
@@ -4153,30 +4653,110 @@
     {
       "id": "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-OUTCOME-OPERATION-FAILURE",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-OUTCOME-OPERATION-SUCCESS",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "operation-success:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "operation-success:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "operation-success:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "operation-success:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-OUTCOME-PROMPT-TIMEOUT",
@@ -4323,49 +4903,169 @@
       "package": "COMMON",
       "status": "OPEN",
       "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "remaining": "All driver families, including unsupported-service behavior beyond the accepted GENERIC profile. Independent positive, boundary, failure and recovery evidence remains required; see conformance/COMMON.md."
     },
     {
       "id": "CMP-LRM244-SECTION-3-2-016",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-3-2-1-017",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-3-3-018",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-3-4-019",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "result-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-3-5-020",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-3-6-021",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common-silence.json",
+          "sha256": "5d41a84c0d1d01e58f13c9304d619fff24334008650dd500dd72934c6d87d670",
+          "check": "silent-execution:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SECTION-4-1-022",
@@ -4374,22 +5074,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-022:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-022:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-022:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-022:recovery"
         }
       }
@@ -4401,22 +5101,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-1-023:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-1-023:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-1-023:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SECTION-4-1-1-023:recovery"
         }
       }
@@ -5261,22 +5961,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-DMY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-DMY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-DMY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-DMY:recovery"
         }
       }
@@ -5288,22 +5988,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-SLASH:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-SLASH:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-SLASH:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-SLASH:recovery"
         }
       }
@@ -5315,22 +6015,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-YMD:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-YMD:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-YMD:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-YMD:recovery"
         }
       }
@@ -5342,22 +6042,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-DMY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-DMY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-DMY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-DMY:recovery"
         }
       }
@@ -5369,22 +6069,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-SLASH:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-SLASH:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-SLASH:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-SLASH:recovery"
         }
       }
@@ -5396,22 +6096,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-YMD:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-YMD:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-YMD:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-YMD:recovery"
         }
       }
@@ -5419,9 +6119,29 @@
     {
       "id": "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "failure-policy:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SYNTAX-BREAK",
@@ -5559,9 +6279,29 @@
     {
       "id": "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "configuration:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SYNTAX-LINE-COMMENT",
@@ -5640,22 +6380,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-DAYS:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-DAYS:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-DAYS:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-DAYS:recovery"
         }
       }
@@ -5667,22 +6407,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-SECONDS:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-SECONDS:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-SECONDS:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-RELATIVE-TIME-SECONDS:recovery"
         }
       }
@@ -5708,22 +6448,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-DAY:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-DAY:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-DAY:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-DAY:recovery"
         }
       }
@@ -5735,22 +6475,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-HOUR:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-HOUR:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-HOUR:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-HOUR:recovery"
         }
       }
@@ -5762,22 +6502,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MINUTE:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MINUTE:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MINUTE:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MINUTE:recovery"
         }
       }
@@ -5789,22 +6529,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-ABBREVIATED:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-ABBREVIATED:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-ABBREVIATED:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-ABBREVIATED:recovery"
         }
       }
@@ -5816,22 +6556,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-NUMERIC:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-NUMERIC:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-NUMERIC:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-NUMERIC:recovery"
         }
       }
@@ -5843,22 +6583,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-SECOND:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-SECOND:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-SECOND:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-SECOND:recovery"
         }
       }
@@ -5870,22 +6610,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-YEAR:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-YEAR:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-YEAR:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-SYNTAX-TIME-OUTPUT-YEAR:recovery"
         }
       }
@@ -5907,9 +6647,29 @@
     {
       "id": "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-SYNTAX-URI-LIMITS",
@@ -6047,9 +6807,29 @@
     {
       "id": "CMP-LRM244-TYPE-DRIVEREXCEPTION",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "handle-error:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-TYPE-FILE",
@@ -6075,9 +6855,29 @@
     {
       "id": "CMP-LRM244-TYPE-HANDLEEXCEPTION",
       "package": "COMMON",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "sha256": "0c8d85d1ed08a343332c8b001bf91ac59d46e913343b95e513ced15227e4fa01",
+          "check": "custom-handle:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-TYPE-INTEGER",
@@ -6149,22 +6949,22 @@
       "evidence": {
         "positive": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-TYPE-TIME:positive"
         },
         "boundary": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-TYPE-TIME:boundary"
         },
         "failure": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-TYPE-TIME:failure"
         },
         "recovery": {
           "report": "conformance/evidence/time.json",
-          "sha256": "06db4640d35a46dd67682cddfe6595b683262dd1e4d9babe19ccb64ce673869f",
+          "sha256": "5dd1ec93462864243dfe04961d80b7eec75cc4884050222311ba60330507bab2",
           "check": "CMP-LRM244-TYPE-TIME:recovery"
         }
       }

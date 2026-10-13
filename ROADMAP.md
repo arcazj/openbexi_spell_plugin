@@ -102,7 +102,10 @@ acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
 track all 763 rows. TIME has 168 passing native checks across 42 rows, with
-source-derived parsing/UTC/arithmetic fixes. The other 721 rows remain open.
+source-derived parsing/UTC/arithmetic fixes. The [COMMON policy milestone](conformance/COMMON.md)
+qualifies 40 additional rows, including configuration, prompts, failure/result
+actions, exceptions, abort/recovery and silent feedback. There are 681 open rows;
+the remaining 26 COMMON rows depend on actual family-specific behavior.
 Native TM/TC timeout conversion and the explicit-import IDE example also pass;
 these milestones do not accept v0.5 or start v0.6 distribution acceptance.
 

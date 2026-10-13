@@ -14,6 +14,9 @@ PREIMAGES = {
     'spell/lib/adapter/databases/datasource.py': 'b56390eead7d8c3536aa4b06d24b8a0331a6717fecb9b1f56bfae94f4d894a96',
     'spell/lib/drivermgr.py': '6926dff1c3a51895263ea79845d9462f5f10e58f07f51fe866882209b2032594',
     'spell/lib/adapter/utctime.py': '3ba8116f625a261d0f692899e7b4c2f292859cc5c242f10573ccfdd807b76ded',
+    'spell/lang/helpers/basehelper.py': '8cbca48bb966b427455acc74177448c73cbb1e31898181a923331afe99b8cd81',
+    'spell/lang/helpers/genhelper.py': '0f5c3bc2fce17e231df4e0474297a9c7fb2faa5fc556e043ca9f64ba70372c86',
+    'spell/config/contexts.py': '1e271d7a7cd6ba180dfbd606e6bf65d45845343506e486ccfb5c620ca90523b1',
 }
 
 
@@ -23,7 +26,107 @@ def apply(name, original):
     if hashlib.sha256(original).hexdigest() != PREIMAGES[name]:
         raise ValueError('Upstream patch preimage changed: ' + name)
     text = original.decode('utf-8')
-    if name == 'spell/lib/adapter/utctime.py':
+    if name == 'spell/lang/helpers/basehelper.py':
+        text = text.replace('        self._customException = self.getConfig(HandleError)\n', '')
+        anchor = '        # Standard exception handling\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, '        self._validateCommonConfig(self.getConfig(), supplied)\n\n' + anchor)
+        anchor = '    def configure(self, *args, **kargs ):\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, anchor + '''        supplied = {}
+        for value in args:
+            if type(value) is dict:
+                supplied.update(value)
+        supplied.update(kargs.get('config', {}))
+        supplied.update({key:value for key,value in kargs.items() if key != 'config'})
+''')
+        anchor = '    def cleanup(self, *args, **kargs ):\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, '''    def _validateCommonConfig(self, config, supplied=None):
+        # LRM pp.28-31,116-117: validate policy before an operation has effects.
+        for modifier in (HandleError, PromptFailure, PromptUser, Notify):
+            if modifier in config and type(config[modifier]) is not bool:
+                raise SyntaxException("Expected boolean modifier: " + modifier)
+        allowed = ABORT|SKIP|CANCEL|REPEAT|RECHECK|RESEND|NOACTION|RESUME|HANDLE
+        for modifier in (OnFailure, OnTrue, OnFalse):
+            if modifier not in config:
+                continue
+            value = config[modifier]
+            if type(value) is not int or value <= 0 or value & ~allowed:
+                raise SyntaxException("Invalid action: " + modifier)
+            if modifier != OnFailure and value & HANDLE:
+                raise SyntaxException("HANDLE requires OnFailure")
+            interactive = config.get(PromptFailure if modifier == OnFailure else PromptUser, True)
+            explicit = supplied is None or modifier in supplied
+            if modifier == OnFailure and value == NOACTION and interactive and explicit:
+                raise SyntaxException("OnFailure=NOACTION requires PromptFailure=False")
+            if not interactive and explicit:
+                if value & (value - 1):
+                    raise SyntaxException("Automatic action must have one value: " + modifier)
+                if value == HANDLE:
+                    raise SyntaxException("HANDLE requires PromptFailure=True")
+            elif interactive and value & NOACTION and value != NOACTION:
+                raise SyntaxException("NOACTION cannot be a prompt option")
+        if FailureCode in config and type(config[FailureCode]) is not int:
+            raise SyntaxException("FailureCode must be an integer")
+
+    #===========================================================================
+    def cleanup(self, *args, **kargs ):
+''')
+        text = text.replace('        shouldPrompt = self._getExceptionFlag(exception)',
+                            '        shouldPrompt = True if options is not None else self._getExceptionFlag(exception)')
+        anchor = '        doPrompt = self.getConfig(PromptUser)\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, anchor + '''        if not doPrompt and cfg & (cfg - 1):
+            raise SyntaxException("Automatic result action must have one value")
+''')
+        anchor = '            cfgAction = self.getConfig(OnFailure)\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, anchor + '''            if cfgAction & (cfgAction - 1):
+                raise SyntaxException("Automatic failure action must have one value")
+''')
+        anchor = '        # If there are no options defined\n'
+        assert text.count(anchor) == 1
+        text = text.replace(anchor, '''        # NOACTION is an automatic failure policy, not an interactive option.
+        # A failed operation has no result to manufacture into success.
+        if options is None and self.getConfig(OnFailure) == NOACTION:
+            return ACTION_NOACTION
+
+''' + anchor)
+        text = text.replace('            result = [False,True]\n        elif action == ACTION_CANCEL:',
+                            '            result = [False,None]\n        elif action == ACTION_CANCEL:')
+        text = text.replace('            self.setConfig({OnFailure:ABORT})',
+                            '            self.addConfig(OnFailure,ABORT)')
+        text = text.replace('        self.__actionStrings = self._ACTIONS',
+                            '        self.__actionStrings = self._ACTIONS.copy()')
+    elif name == 'spell/config/contexts.py':
+        old = '        self.__functionConfig.get(functionName)[modifier] = value'
+        assert text.count(old) == 1
+        text = text.replace(old, '        self.__functionConfig.setdefault(functionName, {})[modifier] = value')
+    elif name == 'spell/lang/helpers/genhelper.py':
+        start = text.index('class ChangeLanguageConfig_Helper(')
+        end = text.index('class GetLanguageConfig_Helper(', start)
+        block = text[start:end]
+        old = '''        elif inspect.isfunction(self.__configurable):
+            self.__isInterface = False'''
+        assert block.count(old) == 1
+        block = block.replace(old, '''        elif inspect.isfunction(self.__configurable):
+            from spell.lang import functions
+            if getattr(functions, self.__configurable.__name__, None) is not self.__configurable:
+                raise SyntaxError("Expected an original SPELL language function")
+            self.__isInterface = False''')
+        anchor = '    #===========================================================================\n    def _doOperation(self, *args, **kargs ):\n'
+        assert block.count(anchor) == 1
+        block = block.replace(anchor, '''        # Validate the whole change before modifying the procedure defaults.
+        from spell.lang import modifiers
+        for name in kargs:
+            if getattr(modifiers, name, None) != name:
+                raise SyntaxException("Unknown modifier: " + repr(name))
+        self._validateCommonConfig(kargs)
+
+''' + anchor)
+        text = text[:start] + block + text[end:]
+    elif name == 'spell/lib/adapter/utctime.py':
         text = text.replace('import datetime,time\n', 'import calendar,datetime,re,time\n')
         old = '        return time.mktime(val.timetuple())'
         assert text.count(old) == 1

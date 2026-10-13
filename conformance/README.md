@@ -17,10 +17,12 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-The first qualified package is TIME: 42 rows / 168 checks. All other 721 rows
-remain open, including the seven pre-existing source errata. The specific TIME
+TIME qualifies 42 rows / 168 checks. The [COMMON milestone](COMMON.md) adds 40 of
+its 66 rows and resolves two source errata. In total, 82 rows are qualified and
+681 remain open, including five pre-existing source errata. The specific TIME
 evidence is retained in `evidence/time.json`; it qualifies the development image
-identified there and does not qualify a new distributable native wheel.
+identified there and does not qualify a new distributable native wheel. TIME was
+rerun on the combined COMMON/TIME image after the shared wrapper changes.
 
 ## Reproduce the TIME milestone
 
@@ -56,7 +58,7 @@ fractions; the patch uses UTC epoch conversion and preserves microseconds.
 Page 34 defines the default output as `dd-mmm-yyyy hh:mm:ss`. Example 29's slash
 output requires an explicit `TIME.fmt()` setting; it is not a second default.
 Tests preserve the page-34 default and exercise every listed format specifier.
-These decisions do not resolve the seven unrelated original errata.
+The COMMON milestone separately resolves its two original errata.
 
 Relative input follows the documented signed-seconds and signed day/time grammar,
 including omitted seconds. Expression evaluation inside a time component is not

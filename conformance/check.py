@@ -14,6 +14,15 @@ def sha(path):
 
 
 def validate(inventory, coverage, root):
+    # Reports and large source archives recur across hundreds of dimensions.
+    # Caches belong to this validation only; subsequent validations rehash files.
+    digests, reports = {}, {}
+    def digest(path):
+        path = path.resolve()
+        if path not in digests:
+            digests[path] = sha(path)
+        return digests[path]
+
     rows = inventory['rows']
     ids = [row['id'] for row in rows]
     if len(ids) != 763 or len(set(ids)) != 763:
@@ -21,7 +30,7 @@ def validate(inventory, coverage, root):
     allocations = coverage['rows']
     if len(allocations) != 763 or {row['id'] for row in allocations} != set(ids):
         raise ValueError('Coverage must allocate every original row exactly once')
-    if coverage['inventory_sha256'] != sha(root / 'conformance/inventory.json'):
+    if coverage['inventory_sha256'] != digest(root / 'conformance/inventory.json'):
         raise ValueError('Inventory changed after coverage allocation')
     failures = []
     counts = Counter()
@@ -37,18 +46,20 @@ def validate(inventory, coverage, root):
             path = (root / item['report']).resolve()
             if not path.is_relative_to(root.resolve()) or not path.is_file():
                 raise ValueError('Missing or external evidence report: ' + row['id'])
-            if sha(path) != item['sha256']:
+            if digest(path) != item['sha256']:
                 raise ValueError('Evidence report hash mismatch: ' + row['id'])
-            report = json.loads(path.read_text(encoding='utf-8'))
+            if path not in reports:
+                reports[path] = json.loads(path.read_text(encoding='utf-8'))
+            report = reports[path]
             check = report['checks'][item['check']]
             if (check.get('passed') is not True or check.get('dimension') != dimension
                     or row['id'] not in check.get('contracts', []) or not check.get('oracle')):
                 raise ValueError('Report does not qualify this contract/dimension: ' + row['id'])
             if not report.get('runtime_image') or not report.get('inputs'):
                 raise ValueError('Report lacks runtime and source identities: ' + row['id'])
-            for name, digest in report['inputs'].items():
+            for name, expected_digest in report['inputs'].items():
                 source = (root / name).resolve()
-                if not source.is_relative_to(root.resolve()) or not source.is_file() or sha(source) != digest:
+                if not source.is_relative_to(root.resolve()) or not source.is_file() or digest(source) != expected_digest:
                     raise ValueError('Evidence input changed: ' + name)
     return {'release': 'v0.5', 'accepted': not failures, 'total': 763,
             'counts': dict(counts), 'open_rows': failures,

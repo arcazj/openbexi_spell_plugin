@@ -1,0 +1,982 @@
+{
+  "checks": {
+    "result-policy:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONTRUE",
+        "CMP-LRM244-MODIFIER-ONFALSE",
+        "CMP-LRM244-MODIFIER-PROMPTUSER",
+        "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
+        "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
+        "CMP-LRM244-SECTION-3-4-019",
+        "CMP-LRM244-EXAMPLE-023"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: True, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: False, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "result-policy:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONTRUE",
+        "CMP-LRM244-MODIFIER-ONFALSE",
+        "CMP-LRM244-MODIFIER-PROMPTUSER",
+        "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
+        "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
+        "CMP-LRM244-SECTION-3-4-019",
+        "CMP-LRM244-EXAMPLE-023"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: True, Please select action",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "CANCEL",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: False, Please select action",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "CANCEL",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "result-policy:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONTRUE",
+        "CMP-LRM244-MODIFIER-ONFALSE",
+        "CMP-LRM244-MODIFIER-PROMPTUSER",
+        "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
+        "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
+        "CMP-LRM244-SECTION-3-4-019",
+        "CMP-LRM244-EXAMPLE-023"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "result-policy:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONTRUE",
+        "CMP-LRM244-MODIFIER-ONFALSE",
+        "CMP-LRM244-MODIFIER-PROMPTUSER",
+        "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
+        "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
+        "CMP-LRM244-SECTION-3-4-019",
+        "CMP-LRM244-EXAMPLE-023"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: True, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: False, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "action-skip:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-SKIP"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "action-skip:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-SKIP"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: False, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "action-skip:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-SKIP"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "action-skip:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-SKIP"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "action-cancel:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-CANCEL"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "action-cancel:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-CANCEL"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP",
+            "CANCEL"
+          ],
+          "text": "Operation result: False, Please select action",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP",
+              "CANCEL"
+            ],
+            "answer": "CANCEL",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "action-cancel:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-CANCEL"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "action-cancel:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-CANCEL"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "noaction:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-NOACTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "noaction:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-NOACTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "noaction:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-NOACTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "noaction:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-NOACTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "failure-policy:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONFAILURE",
+        "CMP-LRM244-MODIFIER-PROMPTFAILURE",
+        "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
+        "CMP-LRM244-EXAMPLE-021",
+        "CMP-LRM244-SECTION-3-3-018",
+        "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
+        "CMP-LRM244-OUTCOME-OPERATION-FAILURE"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "failure-policy:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONFAILURE",
+        "CMP-LRM244-MODIFIER-PROMPTFAILURE",
+        "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
+        "CMP-LRM244-EXAMPLE-021",
+        "CMP-LRM244-SECTION-3-3-018",
+        "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
+        "CMP-LRM244-OUTCOME-OPERATION-FAILURE"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "failure-policy:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONFAILURE",
+        "CMP-LRM244-MODIFIER-PROMPTFAILURE",
+        "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
+        "CMP-LRM244-EXAMPLE-021",
+        "CMP-LRM244-SECTION-3-3-018",
+        "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
+        "CMP-LRM244-OUTCOME-OPERATION-FAILURE"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "failure-policy:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-ONFAILURE",
+        "CMP-LRM244-MODIFIER-PROMPTFAILURE",
+        "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
+        "CMP-LRM244-EXAMPLE-021",
+        "CMP-LRM244-SECTION-3-3-018",
+        "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
+        "CMP-LRM244-OUTCOME-OPERATION-FAILURE"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "handle-error:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-HANDLEERROR",
+        "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
+        "CMP-LRM244-EXAMPLE-024",
+        "CMP-LRM244-SECTION-3-5-020",
+        "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
+        "CMP-LRM244-TYPE-DRIVEREXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "handle-error:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-HANDLEERROR",
+        "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
+        "CMP-LRM244-EXAMPLE-024",
+        "CMP-LRM244-SECTION-3-5-020",
+        "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
+        "CMP-LRM244-TYPE-DRIVEREXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "SKIP"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "handle-error:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-HANDLEERROR",
+        "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
+        "CMP-LRM244-EXAMPLE-024",
+        "CMP-LRM244-SECTION-3-5-020",
+        "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
+        "CMP-LRM244-TYPE-DRIVEREXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "handle-error:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-MODIFIER-HANDLEERROR",
+        "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
+        "CMP-LRM244-EXAMPLE-024",
+        "CMP-LRM244-SECTION-3-5-020",
+        "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
+        "CMP-LRM244-TYPE-DRIVEREXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "custom-handle:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-HANDLE",
+        "CMP-LRM244-MODIFIER-FAILURECODE",
+        "CMP-LRM244-TYPE-HANDLEEXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "SKIP",
+            "HANDLE"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "HANDLE"
+            ],
+            "answer": "HANDLE",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "custom-handle:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-HANDLE",
+        "CMP-LRM244-MODIFIER-FAILURECODE",
+        "CMP-LRM244-TYPE-HANDLEEXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "SKIP",
+            "HANDLE"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "HANDLE"
+            ],
+            "answer": "HANDLE",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "SKIP",
+            "HANDLE"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "HANDLE"
+            ],
+            "answer": "HANDLE",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "custom-handle:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-HANDLE",
+        "CMP-LRM244-MODIFIER-FAILURECODE",
+        "CMP-LRM244-TYPE-HANDLEEXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "custom-handle:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-HANDLE",
+        "CMP-LRM244-MODIFIER-FAILURECODE",
+        "CMP-LRM244-TYPE-HANDLEEXCEPTION"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "SKIP",
+            "HANDLE"
+          ],
+          "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'common-conformance-absent' (error code 21) (fatal:false)\n",
+          "expected": {
+            "choices": [
+              "SKIP",
+              "HANDLE"
+            ],
+            "answer": "HANDLE",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "configuration:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
+        "CMP-LRM244-SECTION-3-2-016",
+        "CMP-LRM244-SECTION-3-2-1-017",
+        "CMP-LRM244-EXAMPLE-019",
+        "CMP-LRM244-EXAMPLE-020",
+        "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "configuration:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
+        "CMP-LRM244-SECTION-3-2-016",
+        "CMP-LRM244-SECTION-3-2-1-017",
+        "CMP-LRM244-EXAMPLE-019",
+        "CMP-LRM244-EXAMPLE-020",
+        "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "configuration:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
+        "CMP-LRM244-SECTION-3-2-016",
+        "CMP-LRM244-SECTION-3-2-1-017",
+        "CMP-LRM244-EXAMPLE-019",
+        "CMP-LRM244-EXAMPLE-020",
+        "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "configuration:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
+        "CMP-LRM244-SECTION-3-2-016",
+        "CMP-LRM244-SECTION-3-2-1-017",
+        "CMP-LRM244-EXAMPLE-019",
+        "CMP-LRM244-EXAMPLE-020",
+        "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "repeat:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-REPEAT"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "ABORT",
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'common-repair-32.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "REPEAT",
+            "repair": "common-repair-32.txt"
+          }
+        }
+      ]
+    },
+    "repeat:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-REPEAT"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'common-repair-boundary-33.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "REPEAT",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'common-repair-boundary-33.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "REPEAT",
+            "repair": "common-repair-boundary-33.txt"
+          }
+        }
+      ]
+    },
+    "repeat:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-REPEAT"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'absent-file.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        }
+      ]
+    },
+    "repeat:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-REPEAT"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": [
+        {
+          "choices": [
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'absent-file.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "SKIP",
+            "repair": null
+          }
+        },
+        {
+          "choices": [
+            "ABORT",
+            "REPEAT",
+            "SKIP"
+          ],
+          "text": "Cannot open 'common-repair-35.txt' for read, reason: Not found",
+          "expected": {
+            "choices": [
+              "ABORT",
+              "REPEAT",
+              "SKIP"
+            ],
+            "answer": "REPEAT",
+            "repair": "common-repair-35.txt"
+          }
+        }
+      ]
+    },
+    "operation-success:positive": {
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-OUTCOME-OPERATION-SUCCESS"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "operation-success:boundary": {
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-OUTCOME-OPERATION-SUCCESS"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "operation-success:failure": {
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-OUTCOME-OPERATION-SUCCESS"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "operation-success:recovery": {
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-OUTCOME-OPERATION-SUCCESS"
+      ],
+      "oracle": "LRM 2.4.4 pp.26-31,116-117; literal results, unchanged blackboard values and real controller prompt choices",
+      "passed": true,
+      "controller_prompts": []
+    },
+    "terminal-policy:positive": {
+      "dimension": "positive",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-ABORT",
+        "CMP-LRM244-EXAMPLE-022"
+      ],
+      "oracle": "LRM pp.28,31,116-117: abort/error prevents continuation, runs cleanup; only an explicit fresh executor recovers with original procedure defaults",
+      "observations": {
+        "failure-auto": {
+          "exit_code": 1,
+          "cleanup": true,
+          "prompts": [],
+          "fresh_defaults": true,
+          "continued": false
+        }
+      }
+    },
+    "terminal-policy:boundary": {
+      "dimension": "boundary",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-ABORT",
+        "CMP-LRM244-EXAMPLE-022"
+      ],
+      "oracle": "LRM pp.28,31,116-117: abort/error prevents continuation, runs cleanup; only an explicit fresh executor recovers with original procedure defaults",
+      "observations": {
+        "true-auto": {
+          "exit_code": 1,
+          "cleanup": true,
+          "prompts": [],
+          "fresh_defaults": true,
+          "continued": false
+        },
+        "false-auto": {
+          "exit_code": 1,
+          "cleanup": true,
+          "prompts": [],
+          "fresh_defaults": true,
+          "continued": false
+        }
+      }
+    },
+    "terminal-policy:failure": {
+      "dimension": "failure",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-ABORT",
+        "CMP-LRM244-EXAMPLE-022"
+      ],
+      "oracle": "LRM pp.28,31,116-117: abort/error prevents continuation, runs cleanup; only an explicit fresh executor recovers with original procedure defaults",
+      "observations": {
+        "failure-interactive": {
+          "exit_code": 1,
+          "cleanup": true,
+          "prompts": [
+            {
+              "text": "Failed to get shared variable data, reason: Cannot obtain shared variable value: No such variable 'absent-common-edge' (error code 21) (fatal:false)\n",
+              "choices": "A\u0004K",
+              "answerFormat": "native option index"
+            }
+          ],
+          "fresh_defaults": true,
+          "continued": false
+        },
+        "uncaught": {
+          "exit_code": 1,
+          "cleanup": true,
+          "prompts": [],
+          "fresh_defaults": true,
+          "continued": false
+        }
+      }
+    },
+    "terminal-policy:recovery": {
+      "dimension": "recovery",
+      "passed": true,
+      "contracts": [
+        "CMP-LRM244-CONSTANT-ACTION-ABORT",
+        "CMP-LRM244-EXAMPLE-022"
+      ],
+      "oracle": "LRM pp.28,31,116-117: abort/error prevents continuation, runs cleanup; only an explicit fresh executor recovers with original procedure defaults",
+      "observations": {
+        "recovery": {
+          "exit_code": 0,
+          "cleanup": true,
+          "prompts": [],
+          "fresh_defaults": true,
+          "continued": true
+        }
+      }
+    }
+  },
+  "runtime_image": "sha256:39eac7c5b3229988ce5b6afb994b3bf988645fdf0989082303ed8f7bba167872",
+  "inputs": {
+    "conformance/common_contracts.py": "345be8cfe4a0c9dc3a9d340dc6f5430e4585e9d0f7d5805e37426f2a9c55c37e",
+    "conformance/common_edges.py": "7d54505f3231e5ef8eb935a1fca1fc91026d38fc2d62cdd7f8d7c0186a1bbedf",
+    "conformance/run_common.py": "28c1f93a0e7483030a7ef0320689596b362f0fd43a9504fed186e32196727b9f",
+    "conformance/build_common_patch.py": "7285f304c0bfc4730a6a979becb7b431885cdc8f2ee3261f2c1917035fee140f",
+    "conformance/common.Dockerfile": "ba2a3a8b3069f8f86691f48a3d8fdb5c4290e684e4e336bc58ea42dd09084829",
+    "scripts/qualify_host_adapter.py": "1af63b69d814e04a43838ed9f1469feae417c8d7dfb0bc6cdd9315dae2ccf7fa",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3"
+  }
+}
