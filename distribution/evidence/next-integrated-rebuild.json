@@ -1,0 +1,191 @@
+{
+  "schema": "openbexi.spell.integrated-rebuild/2",
+  "scope": "Independent fresh-source native rebuilds and fresh host/DSS installed artifacts. Language conformance and desktop workflows are separate gates.",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "native_source_commit": "5cbbba3f5199daafc4d260c35da7f4802b2d70f6",
+  "toolchain": {
+    "tag": "openbexi-spell-toolchain:v06-a1f60eb52594",
+    "image": "sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2",
+    "origin": "Explicit existing frozen image",
+    "bootstrap_limitation": "Retained complete toolchain image is pinned; apt reconstruction is not independently snapshot-locked."
+  },
+  "native_pair": {
+    "result": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/result.json",
+      "sha256": "32386b94b22a4b2882208177ef58882f822b26d62f9080024ecd15c6c2ee8718",
+      "lf_sha256": "b7bb980aa9e71c34f82d7369205b01b93ef25fa1746ada310f795e6b7e879630",
+      "bytes": 88625
+    },
+    "git_binding": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/source-git.json",
+      "sha256": "f23d44b270ee07a5c697e53885d2c7cb9d7b18a07643fb343e8d580b07bb04d9",
+      "lf_sha256": "f23d44b270ee07a5c697e53885d2c7cb9d7b18a07643fb343e8d580b07bb04d9",
+      "bytes": 208
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/inputs.json",
+      "sha256": "9e08af0e11c963b1a09e4469ffb8deba521e8babe7981af99a9b6750d631175e",
+      "lf_sha256": "984121f11fa82d3f8d2d0129bac035d4e3a8921364073a0372c9b89055d10cef",
+      "bytes": 19829
+    },
+    "checks": {
+      "independent_native_rebuilds": true,
+      "native_artifacts_identical": true,
+      "python_sources_identical": true,
+      "composition_identical": true,
+      "wheel_bytes_identical": true,
+      "fresh_install_and_removal": true
+    },
+    "native_artifacts": {
+      "libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d",
+      "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+      "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
+    },
+    "wheel_sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
+    "builds": {
+      "a": {
+        "log": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a-build.log",
+          "sha256": "7bdb7096153c409f5c3ab191a88ce37234855512458ae81750bd7ffab83c3323",
+          "lf_sha256": "7bdb7096153c409f5c3ab191a88ce37234855512458ae81750bd7ffab83c3323",
+          "bytes": 57669
+        },
+        "package_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/distribution/package-result.json",
+          "sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "lf_sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "bytes": 39939
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/native-qualification.json",
+          "sha256": "629868df431b36f391712fa593b289c8e3344350ce4f7a4cb9b35a729d9f589f",
+          "lf_sha256": "629868df431b36f391712fa593b289c8e3344350ce4f7a4cb9b35a729d9f589f",
+          "bytes": 520533
+        },
+        "installed_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/installed/installed-runtime.json",
+          "sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "lf_sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "bytes": 640
+        },
+        "native_runtime_tests": 23,
+        "context_lifecycle_tests": 10,
+        "installed_tests": 8
+      },
+      "b": {
+        "log": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b-build.log",
+          "sha256": "98cec7fddb73f00dafa9fcf7f75c49fa716cbcd9281bb2c7689560de4d2c8ed0",
+          "lf_sha256": "98cec7fddb73f00dafa9fcf7f75c49fa716cbcd9281bb2c7689560de4d2c8ed0",
+          "bytes": 57753
+        },
+        "package_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/distribution/package-result.json",
+          "sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "lf_sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "bytes": 39939
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/native-qualification.json",
+          "sha256": "eec558bd9692f499ced893a240726df134edecef56b75a8787f368c6c13b03e3",
+          "lf_sha256": "eec558bd9692f499ced893a240726df134edecef56b75a8787f368c6c13b03e3",
+          "bytes": 520535
+        },
+        "installed_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/installed/installed-runtime.json",
+          "sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "lf_sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "bytes": 640
+        },
+        "native_runtime_tests": 23,
+        "context_lifecycle_tests": 10,
+        "installed_tests": 8
+      }
+    }
+  },
+  "images": {
+    "result": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/result.json",
+      "sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "lf_sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "bytes": 48390
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/inputs.json",
+      "sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "lf_sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "bytes": 9572
+    },
+    "installed_audit": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/installed-record.json",
+      "sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "lf_sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "bytes": 37493
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-97bb64016332",
+      "image": "sha256:95209eb11db106163c1a2e90b8a5cb63c60e5c613f0b93c9dfb8ad4d17a13853"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-97bb64016332",
+      "image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342"
+    },
+    "native_wheel": {
+      "name": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
+      "record_files_verified": 442
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "6e491863da48d86daa7160a47f9b43870b7a272e90fda56d42f57262dc3069f5",
+      "record_files_verified": 58
+    },
+    "installed_distributions": {
+      "openbexi-spell-source": {
+        "version": "0.3.0",
+        "record_files_verified": 447
+      },
+      "openbexi-spell-dss": {
+        "version": "0.4.0",
+        "record_files_verified": 61
+      }
+    },
+    "bridge_sha256": "4ab8c8aeb824db1a8390a235108cc572c64b50fef71fb70c9630ce3b74041298",
+    "driver_manifest_sha256": "11e64ca4c39f4ce1873c07db0131f777ee57571b5b935837cb60ddbc926b079a",
+    "logs": {
+      "host_runtime": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/host_runtime-build.log",
+        "sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "lf_sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "bytes": 4764
+      },
+      "driver_plugin": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/driver_plugin-build.log",
+        "sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "lf_sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "bytes": 1912
+      }
+    }
+  },
+  "composition_preflight": {
+    "path": "distribution/evidence/next-composition-preflight.json",
+    "sha256": "bfd6b069d66e61083b5a492b74322d01f704ebaf51f39edf71c78f502bbac59e",
+    "lf_sha256": "bfd6b069d66e61083b5a492b74322d01f704ebaf51f39edf71c78f502bbac59e",
+    "bytes": 13156
+  },
+  "source_donors": {
+    "path": "distribution/evidence/next-qualified-sources.json",
+    "sha256": "68866054e6fd5c5f12353a1f5c71f6378d4fd5ef4e32c2e20c29d33e60de854d",
+    "lf_sha256": "68866054e6fd5c5f12353a1f5c71f6378d4fd5ef4e32c2e20c29d33e60de854d",
+    "bytes": 8395
+  },
+  "post_freeze_harness_commits": {
+    "da83c68": "Use checked driver output hashes in OBS/CMD runners",
+    "9b729d0": "Rename race inspection fixture to avoid shadowing the stdlib inspect module"
+  },
+  "post_freeze_harness_changes_affect_runtime_sources": false
+}
