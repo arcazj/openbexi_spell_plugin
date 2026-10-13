@@ -8,6 +8,7 @@ COPY source_port/native_patches.py source_port/native_manifest.py source_port/na
 COPY source_port/integrated_patches.py source_port/patches.py source_port/data_files_native_patches.py source_port/data_files_patches.py source_port/dta_native_patches.py source_port/dta_time_patches.py source_port/flow_patches.py source_port/flow_analyze.py source_port/obs_patches.py source_port/ui_native_patches.py /input/
 COPY source_port/cmd_patches.py source_port/dta_ipc_patches.py /input/
 COPY source_port/scheduler_patches.py source_port/resource_patches.py source_port/limit_patches.py source_port/database_import_patches.py source_port/notification_patches.py source_port/value_units_patches.py source_port/user_database_patches.py /input/
+COPY source_port/scdb_patches.py source_port/timing_patches.py source_port/checkpoint_error_patches.py /input/
 COPY source_port/native-build.Dockerfile source_port/native-build.Dockerfile.dockerignore /input/
 RUN python /input/native_build.py --integrated
 COPY source_port/experiments /experiment
@@ -16,6 +17,7 @@ COPY source_port/executor-build.lock source_port/executor_build.py source_port/q
 COPY source_port/integrated_patches.py source_port/native_patches.py source_port/data_files_native_patches.py source_port/data_files_patches.py source_port/dta_native_patches.py source_port/dta_time_patches.py source_port/flow_patches.py source_port/flow_analyze.py source_port/obs_patches.py source_port/ui_native_patches.py /executor/
 COPY source_port/cmd_patches.py source_port/dta_ipc_patches.py /executor/
 COPY source_port/scheduler_patches.py source_port/resource_patches.py source_port/limit_patches.py source_port/database_import_patches.py source_port/notification_patches.py source_port/value_units_patches.py source_port/user_database_patches.py /executor/
+COPY source_port/scdb_patches.py source_port/timing_patches.py source_port/checkpoint_error_patches.py /executor/
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
 RUN python /executor/executor_build.py --integrated
 COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/

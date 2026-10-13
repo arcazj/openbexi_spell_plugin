@@ -25,6 +25,16 @@ def qualify(raw):
         assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest() == expected, path
     verify_capture(report['runtime_sources']['integrated'], report['inputs'],
                    report.get('lf_normalized_inputs'))
+    fresh=not report['runtime_sources']['diagnostic_overlay'].get('overlay')
+    if fresh:
+        integrated=report['runtime_sources']['integrated']
+        assert integrated and integrated['driver_composition']
+        python=integrated['manifest']['composition']['python']
+        driver=integrated['driver_composition']['manifest']
+        for record,target in ((python,'spell/lang/helpers/tchelper.py'),
+                              (driver,'openbexi_dss_proxy/tm.py')):
+            assert any(stage['recipe']=='timing_patches.py' and target in stage['sources']
+                       for stage in record['stages']),target
     for dimension in DIMENSIONS:
         dependencies = [family+'-wait:'+dimension for family in ('gettm','verify','send','waitfor')]
         if dimension == 'boundary':
@@ -42,7 +52,8 @@ def qualify(raw):
         supported='Wait fresh versus last recorded values in GetTM, Verify, Send verification and native WaitFor, including condition overrides and failure/recovery.',
         open='Complete Delay and Timeout rows, global Send Retries and general modifier composition, Prompt timeout conflict, interrupted waits, full Send/WaitFor, automatic limits and scheduled commands.',
         native='Original native executor and scheduler, original Python helper/verifier, real DSS binary acquisition and command receipts; no simulated language functions.',
-        profile='Only the declared DSS catalog/profile and diagnostic composition chain are exercised.')
+        profile=('Only the declared DSS catalog/profile and verified installed native/Python/driver composition are exercised.' if fresh else
+                 'Only the declared DSS catalog/profile and diagnostic composition chain are exercised.'))
     report['full_v05_accepted'] = report['v06_dependency_satisfied'] = False
     return report
 

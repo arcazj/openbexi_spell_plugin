@@ -47,16 +47,24 @@ def verify_evidence(output, report):
 def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     source = native_tree(tmp_path)
     report = composition.apply_native_tree(source, ARCHIVE, tmp_path/'evidence')
-    qualified = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())
+    qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
     expected_sources = qualified['native']
     assert set(expected_sources) == set(composition.NATIVE_NAMES)
     for name, row in expected_sources.items():
-        assert report['sources'][name]['patched_sha256'] == row['patched']
+        assert report['sources'][name] == {label+'_sha256':value for label,value in row.items()}
         assert composition.digest((source/name).read_bytes()) == row['patched']
     checkpoint = report['checkpoint']
     assert checkpoint['central_identity'] != checkpoint['integrated_identity']
     assert checkpoint['integrated_identity'] in (source/composition.IDENTITY_HEADER).read_text()
     verify_evidence(tmp_path/'evidence', report)
+
+
+def test_host_inputs_match_their_separate_qualified_donors():
+    qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
+    for group in ('host', 'host_client'):
+        assert qualified[group]
+        for name, expected in qualified[group].items():
+            assert composition.digest((ROOT/name).read_bytes()) == expected, name
 
 
 def test_each_composed_recipe_binds_checkpoint_identity():
@@ -73,9 +81,10 @@ def test_each_composed_recipe_binds_checkpoint_identity():
     assert composition.checkpoint_identity('base', recipes) == identity
 
 
-def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path):
+@pytest.mark.parametrize('name', [next(iter(composition.flow_patches.PREIMAGES)),
+                                 composition.checkpoint_error_patches.SOURCE])
+def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)
-    name = next(iter(composition.flow_patches.PREIMAGES))
     target = source/name
     original = target.read_bytes()
     target.write_bytes(original+b'\n// unqualified drift\n')
@@ -91,7 +100,7 @@ def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path):
 def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
     site = python_tree(tmp_path)
     report = composition.apply_python_tree(site, ARCHIVE, tmp_path/'evidence')
-    expected_sources = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())['python']
+    expected_sources = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())['python']
     assert set(expected_sources) == set(composition.PYTHON_NAMES)
     for name in composition.PYTHON_NAMES:
         expected = expected_sources[name]
@@ -133,7 +142,7 @@ def test_driver_corrections_match_native_evidence_and_preserve_repository(tmp_pa
     shutil.copytree(ROOT/'driver_plugin/src',source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     originals = {name:(ROOT/'driver_plugin/src'/name).read_bytes() for name in composition.DRIVER_NAMES}
     report = composition.apply_driver_tree(source, source/'openbexi_dss_proxy/_composition')
-    qualified = json.loads((ROOT/'distribution/evidence/next-qualified-sources.json').read_bytes())['driver']
+    qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())['driver']
     assert set(qualified) == set(composition.DRIVER_NAMES)
     for name in composition.DRIVER_NAMES:
         assert report['sources'][name]['patched_sha256'] == qualified[name]

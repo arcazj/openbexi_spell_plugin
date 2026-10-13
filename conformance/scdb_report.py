@@ -9,6 +9,7 @@ import zipfile
 
 from check import DIMENSIONS, supported_check
 from scdb_cases import CASES, ROWS
+from installed_provenance import verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'source_port'))
@@ -45,16 +46,30 @@ def main():
         assert result['alias_is_new_runtime_binding'] and result['readonly_type'] == 'ReadOnlyDatabase'
     for name, expected in report['inputs'].items():
         assert digest(ROOT/name) == expected, name
-    runtime = report['runtime_sources']['scdb']
-    assert runtime['archive_sha256'] == patch.ARCHIVE_SHA256
-    assert runtime['recipe_sha256'] == digest(ROOT/'source_port/scdb_patches.py')
+    integrated = report['runtime_sources'].get('integrated')
+    if integrated:
+        verify_capture(integrated, report['inputs'], report.get('lf_normalized_inputs'))
+        composition = integrated['manifest']['composition']['python']
+        assert composition['archive_sha256'] == patch.ARCHIVE_SHA256
+        stages = [row for row in composition['stages'] if row['recipe'] == 'scdb_patches.py']
+        assert len(stages) == 1 and stages[0] == report['runtime_sources']['scdb_stage']
+        assert set(stages[0]['sources']) == set(patch.PREIMAGES)
+    else:
+        runtime = report['runtime_sources']['scdb']
+        assert runtime['archive_sha256'] == patch.ARCHIVE_SHA256
+        assert runtime['recipe_sha256'] == digest(ROOT/'source_port/scdb_patches.py')
     with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as archive:
         for name, preimage in patch.PREIMAGES.items():
             original = archive.read('src/spell/'+name)
             assert hashlib.sha256(original).hexdigest() == preimage
             patched = hashlib.sha256(patch.apply(name, original)).hexdigest()
-            assert runtime['sources'][name] == dict(original_sha256=preimage,
-                ported_sha256=preimage, patched_sha256=patched)
+            if integrated:
+                assert stages[0]['sources'][name] == dict(before_sha256=preimage, after_sha256=patched)
+                assert composition['sources'][name]['original_sha256'] == preimage
+                assert composition['sources'][name]['patched_sha256'] == integrated['python_sources'][name]
+            else:
+                assert runtime['sources'][name] == dict(original_sha256=preimage,
+                    ported_sha256=preimage, patched_sha256=patched)
     baseline = json.loads(args.baseline.read_bytes())
     assert set(baseline['checks']) == set(CASES)
     assert baseline['runtime_sources']['scdb'] is None
@@ -69,7 +84,8 @@ def main():
     assert len(regression['checks']) == 16 and all(row['passed'] for row in regression['checks'].values())
     report['regressions'] = {'database_import': dict(reference(args.database_import, regression), checks=16)}
     gap = json.loads(args.checkpoint_gap.read_bytes())
-    assert gap['runtime_image'] == report['runtime_image']
+    if not integrated:
+        assert gap['runtime_image'] == report['runtime_image']
     assert all(gap['checks'][name]['passed'] for name in CASES)
     for name in checkpoints:
         row = gap['checks'][name]
@@ -79,8 +95,9 @@ def main():
     assert not correction['checks']['write:save-policy']['passed']
     report['retained_observations'] = {
         'checkpoint_lambda_error': dict(reference(args.checkpoint_gap, gap),
-            status='unresolved', modes=['ON_LINE', 'ON_STEP'],
-            observation='SCDB aliases and detached data restored, but rejecting writes through procedure-local lambdas after resume produced checkpoint requires a synchronous thread-owned frame and timed out. Direct public-method calls and direct SaveDictionary pass on identical runtime bytes. No original-error control has isolated the cause; generic lambda/error-handler checkpoint compatibility is not qualified.'),
+            same_runtime_image=gap['runtime_image'] == report['runtime_image'],
+            status='historical-failure-retained', modes=['ON_LINE', 'ON_STEP'],
+            observation='In this retained historical run, SCDB aliases and detached data restored, but rejecting writes through procedure-local lambdas after resume produced checkpoint requires a synchronous thread-owned frame and timed out. Direct public-method calls and direct SaveDictionary passed on the same historical runtime. Later recorder controls and corrections are separately evidenced; this report does not qualify the lambda/error-handler checkpoint path.'),
         'save_failure_policy_oracle': dict(reference(args.policy_oracle_correction, correction),
             status='oracle-corrected',
             observation='The initial oracle used PromptUser=False for a SaveDictionary operation exception. The original helper uses PromptFailure for that policy, so the corrected actual native test uses PromptFailure=False with OnFailure=CANCEL. The original prompt/failure trace is retained; no runtime source change was made for this test correction.')}
@@ -108,9 +125,11 @@ def main():
         'backend': 'Configured original flat-file DatabaseFile backend, including real typed data, failed refresh snapshot preservation, and successful refresh recovery. Other backend profiles are not inferred.',
         'read_only': 'Public assignment, deletion, set, create, commit, SaveDictionary and DBMGR create fail without changing in-memory or independently observed file data. Nested get/item values and keys are detached. Original GDB and user databases remain writable and are independently reopened in fresh native processes.',
         'permissions': 'The contract protects the named runtime SCDB API. Direct filesystem writes, alternate file aliases, deliberate private-attribute manipulation and operating-system permissions are outside this claim.',
-        'checkpoint': 'Both actual native ON_LINE and ON_STEP kill/resume modes restore saved aliases to the new runtime SCDB binding, preserve detached nested values and reject direct public method/SaveDictionary calls. The retained post-resume lambda/error-handler failure remains unresolved and is not included in acceptance.',
+        'checkpoint': 'Both actual native ON_LINE and ON_STEP kill/resume modes restore saved aliases to the new runtime SCDB binding, preserve detached nested values and reject direct public method/SaveDictionary calls. The retained historical post-resume lambda/error-handler failure is outside this acceptance; any later recorder correction requires its own exact-source evidence.',
         'distribution': 'Diagnostic overlay over an audited integrated image with original/ported/patched sources and native identities retained. Overlay edits intentionally do not update installed wheel RECORD; a fresh composed wheel and installed RECORD audit are still required for distribution acceptance.'}
     report['full_v05_accepted'] = report['full_v06_accepted'] = report['v06_dependency_satisfied'] = False
+    if integrated:
+        report['scope']['distribution'] = 'Fresh installed original native/Python/driver composition and complete RECORD verified. The exact SCDB stage and final installed source hashes are bound; this does not accept the complete release.'
     output = ROOT/'conformance/evidence/scdb.json'
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
     print(json.dumps(dict(output=str(output), contracts=ROWS, native_checks=26,

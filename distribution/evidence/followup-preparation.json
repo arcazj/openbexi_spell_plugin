@@ -1,0 +1,162 @@
+{
+  "schema": "openbexi.spell.composition-preparation/1",
+  "base_commit": "6f82c2c01bc5dde1fb18500e1367e3d257df1d9f",
+  "cherry_picks": {
+    "e85a2e9": "e162834",
+    "bfac147": "ded2e8c",
+    "166caff": "469b7a3",
+    "9c674bd": "b4018e0",
+    "15c7dd1": "4ef381d"
+  },
+  "frozen": false,
+  "build_started": false,
+  "runtime_qualified": false,
+  "row_promotions": 0,
+  "historical_counts": {
+    "QUALIFIED": 470,
+    "OPEN": 293
+  },
+  "static_source_composition": {
+    "scope": "Exact checked source transformation only; no native compilation or runtime execution",
+    "native_units": 12,
+    "python_units": 21,
+    "driver_units": 2,
+    "recipes": 23,
+    "host_units": 4,
+    "host_client_units": 5,
+    "donor_outputs_match": true,
+    "central_port_unchanged": true,
+    "retained_result": {
+      "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/result.json",
+      "sha256": "ab8b6fd68974ed8a5b93f3ff9e863ef27690dfb246216071bfc1772aa19ed904"
+    },
+    "manifests": {
+      "native": {
+        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/native-evidence/manifest.json",
+        "sha256": "9df3f68c69a72eea22dad19531a76f8976e43bb069ebc52bb41c9fddbe32ee1c"
+      },
+      "python": {
+        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/python-evidence/manifest.json",
+        "sha256": "81521f2529835bd099901f14b5b4b4aaef938b726a87888f747213a38b91f397"
+      },
+      "driver": {
+        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/driver-evidence/manifest.json",
+        "sha256": "d36d50b59dae0cf25ffee41e4cc62218108b9cdc1723e3d2965e1c524dc84c5f"
+      }
+    },
+    "current_donor_fixture_sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51"
+  },
+  "checks": [
+    {
+      "command": "python -X utf8 -m pytest distribution/test_integrated_patches.py distribution/test_build_images.py -q",
+      "passed": true,
+      "tests": 22,
+      "scope": "Source composition and package/input validation only"
+    },
+    {
+      "command": "python -X utf8 conformance/checkpoint_error_provenance_test.py",
+      "passed": true,
+      "tests": 5,
+      "scope": "Provenance parser only"
+    },
+    {
+      "check": "Changed Python AST and git diff --check",
+      "passed": true
+    },
+    {
+      "check": "Strict recorder qualifier replay",
+      "passed": true,
+      "scope": "Retained donor runtime reports only; no new native execution",
+      "result": {
+        "path": ".qualification/recorder-adapter-compat-final.json",
+        "sha256": "fe065b9a282c338664b6187f4b07e9113a8c3c45a22b3e2fea024775cd320a28"
+      }
+    }
+  ],
+  "changed_inputs": {
+    "ROADMAP.md": {
+      "sha256": "434efe279f8ec997cd887574b97bb7d660f0eba9f9e56357cf329e3363b1549f",
+      "lf_sha256": "434efe279f8ec997cd887574b97bb7d660f0eba9f9e56357cf329e3363b1549f"
+    },
+    "conformance/checkpoint_error_provenance.py": {
+      "sha256": "99a61d0e4478781e65fc04fa64502a53f3693f438e35fbd72a062c255bda6439",
+      "lf_sha256": "99a61d0e4478781e65fc04fa64502a53f3693f438e35fbd72a062c255bda6439"
+    },
+    "conformance/checkpoint_error_provenance_test.py": {
+      "sha256": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204",
+      "lf_sha256": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204"
+    },
+    "conformance/checkpoint_error_report.py": {
+      "sha256": "b84a8c0a282056c49b2f06571ba093bcc36be5c01f8ddafc2564f501f857aaab",
+      "lf_sha256": "b84a8c0a282056c49b2f06571ba093bcc36be5c01f8ddafc2564f501f857aaab"
+    },
+    "conformance/checkpoint_error_run.py": {
+      "sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff",
+      "lf_sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff"
+    },
+    "conformance/run_timing.py": {
+      "sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+      "lf_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+    },
+    "conformance/scdb_provenance.py": {
+      "sha256": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8",
+      "lf_sha256": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8"
+    },
+    "conformance/scdb_report.py": {
+      "sha256": "fda568482cf27027632dd7e848582c3f6c262db3888c1361d70897a1cb273ff9",
+      "lf_sha256": "fda568482cf27027632dd7e848582c3f6c262db3888c1361d70897a1cb273ff9"
+    },
+    "conformance/scdb_run.py": {
+      "sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd",
+      "lf_sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd"
+    },
+    "conformance/timing_report.py": {
+      "sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868",
+      "lf_sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868"
+    },
+    "distribution/FOLLOWUP_COMPOSITION.md": {
+      "sha256": "f67a4da408adb5efd313962e0614342dd6ca2d82161553945066845bb11dd88d",
+      "lf_sha256": "f67a4da408adb5efd313962e0614342dd6ca2d82161553945066845bb11dd88d"
+    },
+    "distribution/build_images.py": {
+      "sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
+      "lf_sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897"
+    },
+    "distribution/evidence/followup-qualified-sources.json": {
+      "sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51",
+      "lf_sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51"
+    },
+    "distribution/native.Dockerfile": {
+      "sha256": "4c4c9c2e622d773f824671c2d8a91857b709323b9fa90dfb24e37c11f20aa6e0",
+      "lf_sha256": "4c4c9c2e622d773f824671c2d8a91857b709323b9fa90dfb24e37c11f20aa6e0"
+    },
+    "distribution/record_qualified_sources.py": {
+      "sha256": "73ea356c891c5e75125a40b0d1880a78bea3941152ea8220bbf300f30d1f7252",
+      "lf_sha256": "73ea356c891c5e75125a40b0d1880a78bea3941152ea8220bbf300f30d1f7252"
+    },
+    "distribution/test_build_images.py": {
+      "sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd",
+      "lf_sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd"
+    },
+    "distribution/test_integrated_patches.py": {
+      "sha256": "73ebb4a53ce2868e230b70c2e9ed38aa64812504f8f7286d4d9ab54ef8f08e6b",
+      "lf_sha256": "73ebb4a53ce2868e230b70c2e9ed38aa64812504f8f7286d4d9ab54ef8f08e6b"
+    },
+    "distribution/verify_image.py": {
+      "sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015",
+      "lf_sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015"
+    },
+    "source_port/integrated_patches.py": {
+      "sha256": "25c50842cf0cf429c0b5df0ae3098b905d0d0a9b8c80b013f6b2327e18702c7d",
+      "lf_sha256": "25c50842cf0cf429c0b5df0ae3098b905d0d0a9b8c80b013f6b2327e18702c7d"
+    }
+  },
+  "pending": [
+    "Distinct host-client version with actual upgrade and removal evidence",
+    "Final qualified Send tranche conclusion before composition freeze",
+    "Separate native IPC checkpoint-source failure investigation and scope",
+    "Parent review and explicit build freeze; subsequent independent pair and fresh installed conformance"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

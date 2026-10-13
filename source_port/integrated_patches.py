@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 
 import cmd_patches
+import checkpoint_error_patches
 import database_import_patches
 import data_files_native_patches
 import data_files_patches
@@ -24,6 +25,8 @@ import limit_patches
 import notification_patches
 import resource_patches
 import scheduler_patches
+import scdb_patches
+import timing_patches
 import ui_native_patches
 import user_database_patches
 import value_units_patches
@@ -39,15 +42,18 @@ RECIPE_NAMES = (
     'database_import_patches.py', 'notification_patches.py',
     'value_units_patches.py',
     'user_database_patches.py',
+    'scdb_patches.py', 'timing_patches.py',
+    'checkpoint_error_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
-                            dta_ipc_patches.SOURCE,
+                            dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
-                  user_database_patches, notification_patches, value_units_patches)
-DRIVER_RECIPES = (limit_patches, value_units_patches)
+                  user_database_patches, notification_patches, value_units_patches,
+                  scdb_patches, timing_patches)
+DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches)
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',
     *(name for recipe in PYTHON_RECIPES for name in recipe.PREIMAGES if name.startswith('spell/'))))))
@@ -114,6 +120,8 @@ def apply_native_tree(source, archive, output):
             patched[name] = dta_native_patches.apply(name, original[name], ported[name])
         elif name == dta_ipc_patches.SOURCE:
             patched[name] = dta_ipc_patches.apply(name, original[name], ported[name])
+        elif name == checkpoint_error_patches.SOURCE:
+            patched[name] = checkpoint_error_patches.apply(name, original[name], ported[name], fix=True)
         elif name == ui_native_patches.SOURCE:
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
         elif name in dta_time_patches.PREIMAGES:
@@ -184,6 +192,8 @@ def apply_python_tree(site, archive, output):
                 before = (scratch/name).read_bytes()
                 if recipe is notification_patches and digest(original[name]) != recipe.ORIGINALS[name]:
                     raise ValueError('Unexpected original notification source: '+name)
+                if recipe is scdb_patches and digest(original[name]) != recipe.PREIMAGES[name]:
+                    raise ValueError('Unexpected original SCDB source: '+name)
                 after = recipe.apply(name, before)
                 (scratch/name).write_bytes(after)
                 changes[name] = {'before_sha256': digest(before), 'after_sha256': digest(after)}

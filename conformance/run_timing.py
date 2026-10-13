@@ -98,6 +98,7 @@ def main():
         assert all(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest for path, digest in inputs.items())
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
         verify_capture(runtime.get('integrated'), inputs, normalized)
+        composed_driver=(runtime.get('integrated') or {}).get('driver_composition')
         overlay=runtime['diagnostic_overlay'].get('overlay') or {}
         for directory,recipe in (('limit-patch','limit_patches.py'),('timing-patch','timing_patches.py')):
             if directory in overlay:
@@ -112,11 +113,18 @@ def main():
         for path in ('openbexi_dss_proxy/tm.py', 'openbexi_dss_proxy/common.py', 'openbexi_spell_dss/transport.py', 'openbexi_dss_proxy/tc.py'):
             row=(overlay.get('timing-patch',{}).get('manifest',{}).get(path)
                  or overlay.get('limit-patch',{}).get('manifest',{}).get(path))
-            expected=(row['sha256'],) if row else (inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path))
+            if row:
+                expected=(row['sha256'],)
+            elif composed_driver:
+                expected=(composed_driver['manifest']['python_sources'][path],)
+            else:
+                expected=(inputs['driver_plugin/src/' + path], normalized.get('driver_plugin/src/' + path))
             assert runtime['installed']['/usr/local/lib/python3.13/site-packages/' + path] in expected, path
         if '/opt/cmd-conformance-patch/cmd_patches.py' in runtime['installed']:
             assert runtime['installed']['/opt/cmd-conformance-patch/cmd_patches.py'] == inputs['source_port/cmd_patches.py']
-            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/tc.py'] == inputs['driver_plugin/src/openbexi_dss_proxy/tc.py']
+            expected_tc=(composed_driver['manifest']['python_sources']['openbexi_dss_proxy/tc.py']
+                         if composed_driver else inputs['driver_plugin/src/openbexi_dss_proxy/tc.py'])
+            assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/tc.py'] == expected_tc
         report = dict(runtime_image=image, inputs=inputs, checks=checks, observations=observations,
                       lf_normalized_inputs=normalized,
                       runtime_sources=runtime, controller_exit_code=run.returncode,

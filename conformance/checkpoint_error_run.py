@@ -5,10 +5,13 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tarfile
 import uuid
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'conformance'))
+from installed_provenance import input_paths,verify_capture
 
 
 def main():
@@ -32,8 +35,10 @@ def main():
     files += [ROOT/name for name in ('source_port/checkpoint_error_patches.py',
         'conformance/checkpoint_error_build.py','conformance/checkpoint_error_install.py',
         'conformance/checkpoint_error.Dockerfile','conformance/checkpoint_error.Dockerfile.dockerignore',
-        'distribution/incremental_native.py')]
+        'distribution/incremental_native.py','host_runtime/python/native.py')]
+    files=list(dict.fromkeys([*files,*(ROOT/name for name in input_paths(ROOT))]))
     inputs={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+    normalized={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in files}
     image=subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     name='openbexi-checkpoint-error-'+uuid.uuid4().hex
     try:
@@ -42,7 +47,7 @@ def main():
             '-I','/workspace/'+controller],check=True,capture_output=True)
         archive=io.BytesIO()
         with tarfile.open(fileobj=archive,mode='w') as bundle:
-            entries=[(p.name,p.read_bytes()) for p in files if p.suffix=='.py']+[('input.json',json.dumps(options).encode())]
+            entries=[(p.name,p.read_bytes()) for p in files if p.suffix=='.py' and p.parent==ROOT/'conformance']+[('input.json',json.dumps(options).encode())]
             for target,data in entries:
                 item=tarfile.TarInfo(target)
                 item.size,item.uid,item.gid,item.mode=len(data),10003,10003,0o644
@@ -60,10 +65,12 @@ def main():
             recipes=runtime['checkpoint_overlay']['recipes']
             for name,path in [('checkpoint_error_patches.py','source_port/checkpoint_error_patches.py'),
                 ('checkpoint_error_build.py','conformance/checkpoint_error_build.py'),
-                ('incremental_native.py','distribution/incremental_native.py')]:
+                ('incremental_native.py','distribution/incremental_native.py','host_runtime/python/native.py')]:
                 assert recipes[name]==inputs[path],name
+        elif runtime.get('profile'):
+            verify_capture(runtime,inputs,normalized)
         assert all(hashlib.sha256((ROOT/n).read_bytes()).hexdigest()==h for n,h in inputs.items())
-        report=dict(runtime_image=image,inputs=inputs,options=options,checks=checks,runtime_sources=runtime,
+        report=dict(runtime_image=image,inputs=inputs,lf_normalized_inputs=normalized,options=options,checks=checks,runtime_sources=runtime,
             controller_exit_code=run.returncode,full_v05_accepted=False,full_v06_accepted=False)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         print(json.dumps(dict(output=str(output),checks=len(checks),failed=[k for k,v in checks.items() if not v['passed']]),indent=2))

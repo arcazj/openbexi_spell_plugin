@@ -3,6 +3,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+from installed_provenance import capture as installed_capture
 
 
 def sha(raw):
@@ -11,6 +12,13 @@ def sha(raw):
 
 def capture():
     root = Path(importlib.util.find_spec('spell_native').origin).parent
+    if not Path('/opt/scdb-input/baseline-installed.json').exists():
+        integrated = installed_capture()
+        composition = integrated['manifest']['composition']['python']
+        stages = [stage for stage in composition['stages'] if stage['recipe'] == 'scdb_patches.py']
+        if len(stages) != 1:
+            raise ValueError('Expected one checked SCDB composition stage')
+        return dict(integrated=integrated, scdb_stage=stages[0])
     base = json.loads(Path('/opt/scdb-input/baseline-installed.json').read_bytes())
     assert sha((root/'manifest.json').read_bytes()) == base['manifest_sha256']
     importer_root = Path('/opt/database-import-patch')

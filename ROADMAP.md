@@ -101,10 +101,13 @@ supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows: 422 are qualified and 341 remain open. The current checkpoint
-retains the preceding 401 rows and adds 21 bounded CMD contracts. Reports bind
-the independent native oracles, current source inputs and exact tested image.
-Later Event, scheduler, resource, LIMIT and database increments are separate.
+track all 763 rows: the committed `6f82c2c` checkpoint qualifies 470 and leaves
+293 open. It retains the preceding 422 rows and adds 48 bounded clauses after
+actual integrated native runs. Reports bind independent native oracles, source
+inputs and exact DSS image `1fef3e69`. SCDB, Send/WaitFor timing, child-host,
+console input and recorder exception-unwind fixes are pending later composition;
+their donor results do not qualify a new combined runtime. The separate native
+IPC warmstart source-identity failure remains open.
 These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility
@@ -118,8 +121,8 @@ neutral IDE's independent release numbers and required shared-service features.
 
 The [integrated checkpoint](docs/V06_PROGRESS.md) now passes two independent
 offline native builds with identical wheel bytes and eight install/removal tests
-per build. Audited host/DSS images use that wheel; a separate host diagnostic fix
-passes all ten native host tests. Full language conformance, versioned upgrades
+per build. Audited host/DSS images use that wheel; the exact DSS image used by
+the language reports also passes all ten native host tests. Full language conformance, versioned upgrades
 and final host/platform qualification remain open.
 
 ## Later — operational qualification and stable release

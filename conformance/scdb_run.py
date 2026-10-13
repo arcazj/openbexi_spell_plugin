@@ -48,10 +48,13 @@ def main():
             members={p.name.removeprefix('./'):p for p in bundle.getmembers() if p.isfile()}
             checks=json.loads(bundle.extractfile(members['checks.json']).read())
             runtime=json.loads(bundle.extractfile(members['runtime.json']).read())
-        verify_capture(runtime['baseline'],inputs)
-        assert runtime['import_recipe_sha256']==inputs['source_port/database_import_patches.py']
-        if runtime['scdb']:
-            assert runtime['scdb']['recipe_sha256']==inputs['source_port/scdb_patches.py']
+        if runtime.get('integrated'):
+            verify_capture(runtime['integrated'],inputs)
+        else:
+            verify_capture(runtime['baseline'],inputs)
+            assert runtime['import_recipe_sha256']==inputs['source_port/database_import_patches.py']
+            if runtime['scdb']:
+                assert runtime['scdb']['recipe_sha256']==inputs['source_port/scdb_patches.py']
         assert all(hashlib.sha256((ROOT/n).read_bytes()).hexdigest()==h for n,h in inputs.items())
         report=dict(runtime_image=image,inputs=inputs,checks=checks,runtime_sources=runtime,
             controller_exit_code=run.returncode,full_v05_accepted=False,full_v06_accepted=False)

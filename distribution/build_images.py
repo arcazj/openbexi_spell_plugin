@@ -39,6 +39,14 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def verify_host_sources(directory, actual):
+    expected = {path.relative_to(directory).as_posix():sha(path)
+                for path in sorted(directory.rglob('*.py'))}
+    if not expected or actual != expected:
+        raise ValueError('Installed host source set differs from the frozen image inputs')
+    return expected
+
+
 def inspect(tag):
     return subprocess.check_output(['docker','image','inspect',tag,'--format','{{.Id}}'],text=True).strip()
 
@@ -163,6 +171,8 @@ def main():
             raise ValueError('Installed native payload differs from the selected wheel')
         if installed['driver_composition']['manifest'] != report['driver_source_composition']:
             raise ValueError('Installed driver differs from the selected composed wheel')
+        report['host_sources'] = verify_host_sources(
+            snapshot/'host_runtime/python', installed.get('host_sources'))
         report['installed_record_sha256'] = sha(evidence/'installed-record.json')
         report['passed'] = True
     except Exception as error:
