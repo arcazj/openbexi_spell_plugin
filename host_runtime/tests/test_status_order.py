@@ -27,6 +27,7 @@ class StatusOrderTests(unittest.TestCase):
                 adapter.configured = True
                 adapter.notified_status = 'ERROR'
                 class Peer:
+                    instance = 'main#1'
                     events = queue.Queue()
                     closed = False
                     def request(self, command):
@@ -48,9 +49,10 @@ class StatusOrderTests(unittest.TestCase):
         adapter.configured = True
         adapter.await_running = True
         class Peer:
+            instance = 'main#1'
             events = queue.Queue()
             def request(self, command):
-                self.events.put({'message': {'fields': {'DataType': 'STATUS', 'ExecutorStatus': 'RUNNING'}}})
+                self.events.put({'message': {'fields': {'ProcId':'main#1', 'DataType': 'STATUS', 'ExecutorStatus': 'RUNNING'}}})
                 adapter.drain_events()
                 return {'ExecutorStatus': 'PAUSED'}
         adapter.session = Peer()
@@ -60,7 +62,7 @@ class StatusOrderTests(unittest.TestCase):
         adapter.session.request = lambda command: {'ExecutorStatus': 'RUNNING'}
         adapter.poll()
         self.assertEqual(messages, [])
-        adapter.session.events.put({'message': {'fields': {'DataType': 'STATUS', 'ExecutorStatus': 'PAUSED'}}})
+        adapter.session.events.put({'message': {'fields': {'ProcId':'main#1', 'DataType': 'STATUS', 'ExecutorStatus': 'PAUSED'}}})
         adapter.session.request = lambda command: {'ExecutorStatus': 'PAUSED'}
         adapter.poll()
         self.assertEqual([message['event'] for message in messages], ['stopped'])

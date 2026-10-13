@@ -24,6 +24,18 @@ The optional argument is one JSON object, made available through native `ARGS`.
 Set `OPENBEXI_SPELL_IMAGE` to the locally qualified runtime image while developing.
 The default is `openbexi-spell-host:0.3.0`.
 
+The current development host starts visible, automatic `StartProc` children
+through the original native protocol and routes each console answer to the
+procedure that requested it. Nested children and successive parent/child prompts
+are supported. One prompt is exposed at a time; `openbexi/inputRequest` and
+`spell/prompt` include `promptId` and `procedureId`. A client can return `promptId`
+with `openbexi/input` or `spell/promptAnswer` to reject stale answers. Older clients
+can answer the single exposed prompt without a token.
+
+Child debugger threads, manual child execution controls, browser presentation,
+and children continuing after the root procedure exits remain open work.
+The native child and prompt checks do not qualify those behaviors.
+
 This is a Development runtime with the original example driver. Operational DSS
 drivers, Execution and Monitoring, full conformance and broader platform
 distribution are separate roadmap phases. The matching JetBrains ZIP provides
