@@ -26,6 +26,7 @@ import notification_patches
 import resource_patches
 import scheduler_patches
 import scdb_patches
+import send_verify_patches
 import timing_patches
 import ui_native_patches
 import user_database_patches
@@ -44,6 +45,7 @@ RECIPE_NAMES = (
     'user_database_patches.py',
     'scdb_patches.py', 'timing_patches.py',
     'checkpoint_error_patches.py',
+    'send_verify_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -52,7 +54,7 @@ NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, notification_patches, value_units_patches,
-                  scdb_patches, timing_patches)
+                  scdb_patches, timing_patches, send_verify_patches)
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches)
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',

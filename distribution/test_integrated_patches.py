@@ -61,7 +61,7 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
 
 def test_host_inputs_match_their_separate_qualified_donors():
     qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
-    for group in ('host', 'host_client'):
+    for group in ('host', 'host_client', 'host_package'):
         assert qualified[group]
         for name, expected in qualified[group].items():
             assert composition.digest((ROOT/name).read_bytes()) == expected, name
@@ -113,6 +113,19 @@ def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
             assert state[name] == row['before_sha256']
             state[name] = row['after_sha256']
     assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
+
+
+def test_send_recipe_cannot_precede_required_timing_stage(tmp_path, monkeypatch):
+    site = python_tree(tmp_path)
+    before = {name:(site/name).read_bytes() for name in composition.PYTHON_NAMES}
+    recipes = list(composition.PYTHON_RECIPES)
+    recipes.remove(composition.send_verify_patches)
+    recipes.insert(recipes.index(composition.timing_patches), composition.send_verify_patches)
+    monkeypatch.setattr(composition, 'PYTHON_RECIPES', tuple(recipes))
+    with pytest.raises(AssertionError, match='spell/lang/helpers/tchelper.py'):
+        composition.apply_python_tree(site, ARCHIVE, tmp_path/'rejected')
+    assert not (tmp_path/'rejected').exists()
+    assert before == {name:(site/name).read_bytes() for name in before}
 
 
 @pytest.mark.parametrize('name', ['spell/lang/helpers/basehelper.py','spell/lib/adapter/config.py'])

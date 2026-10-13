@@ -23,8 +23,10 @@ DONORS = {
     'user_database':('e5f6b070f6bdf178221c75793ce21a81d3c6a559','user_database'),
     'scdb':('e85a2e9b77465ba6865949f3884f41d655840196','scdb'),
     'timing':('bfac147f03ac539114465f5d63b81e40237a3d4a','timing'),
+    'send_verify':('231700dbeabe46ad3f488dc0db33fdc460860889','send_verify'),
     'child_host':('166caff449f208d41859d41257517fc8fec6f509','child_host_review'),
     'console_input':('15c7dd105a8c3502daf20a38afc73171ce76cb71','console_input_review'),
+    'host_upgrade':('4a4c8c915ca7379af3a868269a40559f933e4fed','distribution/evidence/host-console-upgrade.json'),
     'checkpoint_error':('9c674bd51115e016dd135d3ed76c1ebf8a4ed207','checkpoint_error'),
 }
 
@@ -36,7 +38,7 @@ def main():
     reports, donors = {}, {}
     for key,(revision,name) in DONORS.items():
         commit = subprocess.check_output(['git','rev-parse',revision],cwd=ROOT,text=True).strip()
-        path = 'conformance/evidence/'+name+'.json'
+        path = name if '/' in name else 'conformance/evidence/'+name+'.json'
         raw = subprocess.check_output(['git','show',commit+':'+path],cwd=ROOT)
         reports[key] = json.loads(raw)
         donors[key] = {'commit':commit,'path':path,'sha256':hashlib.sha256(raw).hexdigest()}
@@ -71,6 +73,11 @@ def main():
         if outputs[name] != row['preimage_sha256']:
             raise ValueError('Timing donor chain differs from earlier qualified output: '+name)
         outputs[name] = row['sha256']
+    send = reports['send_verify']['runtime_sources']['diagnostic_overlay']['overlay']['send-verify-patch']['manifest']
+    for name, row in send.items():
+        if python[name] != row['preimage_sha256']:
+            raise ValueError('Send donor chain differs from qualified timing output: '+name)
+        python[name] = row['sha256']
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     console_commit = donors['console_input']['commit']
@@ -82,6 +89,20 @@ def main():
     for name,value in reports['console_input']['inputs'].items():
         if name.startswith('host_plugin/src/') and host_client.get(name) != value:
             raise ValueError('Console donor source differs from its exact commit: '+name)
+    upgrade = reports['host_upgrade']
+    if not upgrade['passed'] or not all(upgrade['wheel_record'][name] for name in
+            ('all_members_verified','installed_members_match','source_members_match')):
+        raise ValueError('Host upgrade donor lacks complete installed wheel evidence')
+    upgraded_client = {'host_plugin/src/'+name:value for name,value in upgrade['host_client_sources'].items()}
+    if set(upgraded_client) != set(host_client):
+        raise ValueError('Host upgrade donor changes the declared client source set')
+    host_package = {name:value for name,value in upgrade['inputs'].items()
+                    if name in ('host_plugin/pyproject.toml','host_plugin/README.md','host_plugin/LICENSE')}
+    for name,value in {**upgraded_client,**host_package}.items():
+        raw = subprocess.check_output(['git','show',donors['host_upgrade']['commit']+':'+name],cwd=ROOT)
+        if hashlib.sha256(raw).hexdigest() != value:
+            raise ValueError('Host upgrade donor source differs from its exact commit: '+name)
+    host_client = upgraded_client
     if set(native) != set(composition.NATIVE_NAMES):
         raise ValueError('Qualified native source set differs from composition')
     result = {'schema':'openbexi.spell.qualified-source-donors/1',
@@ -89,7 +110,8 @@ def main():
         'generator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'donors':donors,'native':native,
         'python':{name:python[name] for name in composition.PYTHON_NAMES},'driver':driver,
-        'host':host, 'host_client':host_client,
+        'host':host, 'host_client':host_client, 'host_package':host_package,
+        'host_candidate':{'version':upgrade['version'],'wheel_sha256':upgrade['wheel']['sha256']},
         'full_v05_accepted':False,'full_v06_accepted':False}
     output = ROOT/'distribution/evidence/followup-qualified-sources.json'
     output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')

@@ -7,25 +7,28 @@ This preparation has no new runtime image, build, freeze or native qualification
 The historical coverage and donor reports have not been promoted or regenerated.
 Their source hashes describe the earlier commits, not this changed working tree.
 
-The five production tranches cherry-pick without conflicts:
+The seven production tranches cherry-pick without conflicts:
 
 | Tranche | Original commit | Composition boundary |
 | --- | --- | --- |
 | Named SCDB read-only view | `e85a2e9b77465ba6865949f3884f41d655840196` | Original `database.py` and `dbmgr.py`; ordered after database import and user-database corrections |
 | Send/WaitFor telemetry handoff | `bfac147f03ac539114465f5d63b81e40237a3d4a` | `tchelper.py` after CMD; proxy `tm.py` after LIMIT |
+| Send verification modifiers | `231700dbeabe46ad3f488dc0db33fdc460860889` | `tchelper.py` after timing; no driver or native-unit changes |
 | Child-procedure host and prompt routing | `166caff449f208d41859d41257517fc8fec6f509` | Four host Python modules; independent of original SPELL and driver source recipes |
 | Queued console input | `15c7dd105a8c3502daf20a38afc73171ce76cb71` | Local host client runner; after the child-host commit, separately bound host wheel and actual Qt evidence |
+| Distinct host upgrade candidate | `4a4c8c915ca7379af3a868269a40559f933e4fed` | Host 0.3.1.dev1 module/package version after console fix; real IDE upgrade and removal, preserving accepted defaults |
 | Caught-exception recorder cleanup | `9c674bd51115e016dd135d3ed76c1ebf8a4ed207` | `SPELLframeManager.C` after the central port; production `fix=True`, without audit instrumentation |
 
-The current dispatcher binds 23 recipes, 12 native units, 21 original SPELL
+The current dispatcher binds 24 recipes, 12 native units, 21 original SPELL
 Python modules and two corrected driver modules. SCDB adds two Python units;
 timing modifies units already present. The recorder adds one native unit and
-has no SCDB dependency. All three recipes enter the continuation identity, so
+has no SCDB dependency. All four new recipes enter the continuation identity, so
 these changes require a fresh native build. The central port recipes are unchanged.
 
 `evidence/followup-qualified-sources.json` reads exact committed donor reports,
 retains their commit/report hashes, and verifies the timing preimages against
-the preceding CMD/LIMIT outputs. The prior source fixture remains unchanged.
+the preceding CMD/LIMIT outputs, then Send's preimage against timing's output.
+The prior source fixture remains unchanged.
 Source composition checks compare the final native, Python, driver, child-host
 and local host-client bytes against those independent donors. The recorder's
 complete original/ported/patched hashes and production mode are checked. No
@@ -38,12 +41,18 @@ oracles and retained donor evidence are unchanged. The image auditor also
 checks the complete installed host Python source set against the build snapshot,
 including `children.py` and `prompts.py`; missing, changed or extra modules are
 rejected. The focused composition, preimage-failure/recovery and host-source-set
-suite passes 22 tests; five recorder provenance parser tests also pass. The
+suite passes 23 tests, including rejection of Send before its required timing
+stage without modifying the source tree; five recorder provenance parser tests
+also pass. The
 recorder qualifier replays its retained historical 24+20+4 controls and 23-test
 gate successfully; this is recorder compatibility, not a fresh runtime run.
 The console donor retains its independent host wheel RECORD audit, 16 pipe
-checks and actual Qt Run/Debug evidence. Those results do not establish behavior
-of the future combined image.
+checks and actual Qt Run/Debug evidence. The distinct 0.3.1.dev1 donor adds two
+identical offline wheel builds, full RECORD and installed-payload verification,
+real Qt upgrade from 0.3.0, Run/Debug, removal and ordinary Python afterward.
+The exact client wheel SHA is
+`d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d`.
+These results do not establish behavior of the future combined image.
 
 ## Before a build freeze
 
@@ -55,17 +64,13 @@ of the future combined image.
 2. Resolve the release scope of the separately observed native IPC `main#1` checkpoint
    source-unavailable failure. Passing standalone controls do not qualify IPC
    recovery; keep that path explicitly open until its actual contract passes.
-3. Integrate the pending distinct host-client version and its actual upgrade
-   evidence. The console fix currently retains version 0.3.0, which an ordinary
-   install can skip when that version is already installed. The parent's
-   separately prepared 0.3.1.dev1 candidate is not included yet.
-4. Recheck the final source changes, then freeze one exact Git identity.
+3. Recheck the final source changes, then freeze one exact Git identity.
    All recipes and full source
    chains must enter the wheels and their RECORDs before installation.
-5. Coordinate with the separately running Send verification and IPC source
-   identity investigations. Their uncommitted diagnostic changes are excluded
-   from this preparation; an additional qualified donor requires an explicit
-   composition update before the expensive pair.
+4. Coordinate with the separately running IPC source-identity investigation.
+   Its uncommitted diagnostic changes are excluded from this preparation; an
+   additional qualified donor requires an explicit composition update before
+   the expensive pair. Ranging changes remain outside this composition.
 
 After freeze, the pinned toolchain is
 `sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2`.
@@ -84,6 +89,7 @@ inventory rows within their recorded profiles. Neither v0.5 nor v0.6 is accepted
 The new donors propose only `DATABASE-SCDB`, `SECTION-4-15-1-096` and
 `MODIFIER-WAIT`. Those three rows remain open until actual fresh composed
 evidence passes all dimensions and strict source/dependency validation. Child
-host and recorder workflows add no inventory row by themselves. Even successful integration
+host, Send modifier and recorder workflows add no inventory row by themselves.
+Even successful integration
 would leave at least 290 original rows open, plus the remaining distribution,
 upgrade, host/platform and unresolved recorder/IPC requirements.

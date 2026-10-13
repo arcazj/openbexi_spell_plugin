@@ -21,13 +21,22 @@ def qualify(raw):
     for name,digest in report['inputs'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest,name
     verify_capture(report['runtime_sources']['integrated'],report['inputs'],report.get('lf_normalized_inputs'))
-    overlay=report['runtime_sources']['diagnostic_overlay']['overlay']
-    assert set(overlay)=={'limit-patch','timing-patch','send-verify-patch'}
+    overlay=report['runtime_sources']['diagnostic_overlay'].get('overlay')
+    if overlay:
+        assert set(overlay)=={'limit-patch','timing-patch','send-verify-patch'}
+    else:
+        integrated=report['runtime_sources']['integrated']
+        assert integrated and integrated['driver_composition']
+        python=integrated['manifest']['composition']['python']
+        assert any(stage['recipe']=='send_verify_patches.py'
+                   and 'spell/lang/helpers/tchelper.py' in stage['sources']
+                   for stage in python['stages'])
     report['qualified_contracts']=[]
     report['scope']={'supported':'Bounded composed Send global Retries, IgnoreCase and ValueFormat with native effects and failure/recovery.',
                      'open':'Full Send, general modifier composition, full-family ValueFormat and all untested inventory dependencies.',
                      'manual':'LRM2.4.4 pp40,44,54,109,111',
-                     'profile':'Original native executor plus checked Python-only diagnostic overlay and real DSS.'}
+                     'profile':('Original native executor plus checked Python-only diagnostic overlay and real DSS.' if overlay else
+                                'Verified installed native/Python/driver composition and real DSS.')}
     report['full_v05_accepted']=report['v06_dependency_satisfied']=False
     return report
 

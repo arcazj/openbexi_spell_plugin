@@ -6,7 +6,9 @@
     "bfac147": "ded2e8c",
     "166caff": "469b7a3",
     "9c674bd": "b4018e0",
-    "15c7dd1": "4ef381d"
+    "15c7dd1": "4ef381d",
+    "231700d": "262b519",
+    "4a4c8c9": "a196fd8"
   },
   "frozen": false,
   "build_started": false,
@@ -17,41 +19,38 @@
     "OPEN": 293
   },
   "static_source_composition": {
-    "scope": "Exact checked source transformation only; no native compilation or runtime execution",
+    "scope": "Static source composition only; no native runtime, compilation or runtime qualification executed",
     "native_units": 12,
     "python_units": 21,
     "driver_units": 2,
-    "recipes": 23,
+    "recipes": 24,
     "host_units": 4,
     "host_client_units": 5,
+    "host_package_inputs": 3,
     "donor_outputs_match": true,
     "central_port_unchanged": true,
-    "retained_result": {
-      "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/result.json",
-      "sha256": "ab8b6fd68974ed8a5b93f3ff9e863ef27690dfb246216071bfc1772aa19ed904"
-    },
+    "coverage_unchanged": true,
+    "build_started": false,
+    "runtime_qualified": false,
+    "frozen": false,
     "manifests": {
-      "native": {
-        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/native-evidence/manifest.json",
-        "sha256": "9df3f68c69a72eea22dad19531a76f8976e43bb069ebc52bb41c9fddbe32ee1c"
-      },
-      "python": {
-        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/python-evidence/manifest.json",
-        "sha256": "81521f2529835bd099901f14b5b4b4aaef938b726a87888f747213a38b91f397"
-      },
-      "driver": {
-        "path": ".qualification/v0.6/source-preparation/84d510e791f343b6831d70b6e5591274/driver-evidence/manifest.json",
-        "sha256": "d36d50b59dae0cf25ffee41e4cc62218108b9cdc1723e3d2965e1c524dc84c5f"
-      }
+      "native": "82c407bb5bdb24382fbf88641f5f770b6dc1060d34f4ee0afb0a77bad896cf8d",
+      "python": "596c514c0e0e9849668f6fb024c6593cc43a5a01e5127790433d3600e05e96a7",
+      "driver": "700871168e623532a91e18be42cd7ebf418af3f577cd3bc2340967a0ccc33c89"
     },
-    "current_donor_fixture_sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51"
+    "donor_fixture_sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82",
+    "result_path": ".qualification/v0.6/source-preparation/77a7edc1d2ec492693cc25c9f1e98c5f/result.json",
+    "retained_result": {
+      "path": ".qualification/v0.6/source-preparation/77a7edc1d2ec492693cc25c9f1e98c5f/result.json",
+      "sha256": "dfba5c839f500053dbcd5d1da5abfe71a4a4a458db6418aa8c0c50b2755f3889"
+    }
   },
   "checks": [
     {
       "command": "python -X utf8 -m pytest distribution/test_integrated_patches.py distribution/test_build_images.py -q",
       "passed": true,
-      "tests": 22,
-      "scope": "Source composition and package/input validation only"
+      "tests": 23,
+      "scope": "Source composition and package/input validation, including rejected Send-before-timing ordering"
     },
     {
       "command": "python -X utf8 conformance/checkpoint_error_provenance_test.py",
@@ -94,6 +93,10 @@
       "sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff",
       "lf_sha256": "cc9f2648e2f7919bb4bca297e1b57dce442f5935716f0918c179b24ef92602ff"
     },
+    "conformance/run_send_verify.py": {
+      "sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271",
+      "lf_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271"
+    },
     "conformance/run_timing.py": {
       "sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
       "lf_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
@@ -110,53 +113,60 @@
       "sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd",
       "lf_sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd"
     },
+    "conformance/send_verify_report.py": {
+      "sha256": "81625408250ba5b595f86e654d54724b3d5cde65911fd6ab58afecfa116bfb5d",
+      "lf_sha256": "81625408250ba5b595f86e654d54724b3d5cde65911fd6ab58afecfa116bfb5d"
+    },
     "conformance/timing_report.py": {
       "sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868",
       "lf_sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868"
     },
     "distribution/FOLLOWUP_COMPOSITION.md": {
-      "sha256": "f67a4da408adb5efd313962e0614342dd6ca2d82161553945066845bb11dd88d",
-      "lf_sha256": "f67a4da408adb5efd313962e0614342dd6ca2d82161553945066845bb11dd88d"
+      "sha256": "ed2f3b776fb5d1ff9c277bc1077f166ce50e348b67026594c32801e2f60f5135",
+      "lf_sha256": "ed2f3b776fb5d1ff9c277bc1077f166ce50e348b67026594c32801e2f60f5135"
     },
     "distribution/build_images.py": {
       "sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
       "lf_sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897"
     },
     "distribution/evidence/followup-qualified-sources.json": {
-      "sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51",
-      "lf_sha256": "b6894da37906facee3861f842ac9888f054fd97120a051b422ebbb68704fce51"
+      "sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82",
+      "lf_sha256": "3a3900aa4d8fc64f6d6174a84ab6f937d1ce5d5d4aff2a969ab634f156bded82"
     },
     "distribution/native.Dockerfile": {
-      "sha256": "4c4c9c2e622d773f824671c2d8a91857b709323b9fa90dfb24e37c11f20aa6e0",
-      "lf_sha256": "4c4c9c2e622d773f824671c2d8a91857b709323b9fa90dfb24e37c11f20aa6e0"
+      "sha256": "faf569469e020cc7e26729637a90e8669245bf491743f969423acce2a6f99004",
+      "lf_sha256": "faf569469e020cc7e26729637a90e8669245bf491743f969423acce2a6f99004"
     },
     "distribution/record_qualified_sources.py": {
-      "sha256": "73ea356c891c5e75125a40b0d1880a78bea3941152ea8220bbf300f30d1f7252",
-      "lf_sha256": "73ea356c891c5e75125a40b0d1880a78bea3941152ea8220bbf300f30d1f7252"
+      "sha256": "7e7b14048dab9fe352e6c8d2a5de5a8264ef4934d825181c61d97c9ac3657aca",
+      "lf_sha256": "7e7b14048dab9fe352e6c8d2a5de5a8264ef4934d825181c61d97c9ac3657aca"
     },
     "distribution/test_build_images.py": {
       "sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd",
       "lf_sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd"
     },
     "distribution/test_integrated_patches.py": {
-      "sha256": "73ebb4a53ce2868e230b70c2e9ed38aa64812504f8f7286d4d9ab54ef8f08e6b",
-      "lf_sha256": "73ebb4a53ce2868e230b70c2e9ed38aa64812504f8f7286d4d9ab54ef8f08e6b"
+      "sha256": "85c2a612a5620a0d9d96c23348a1fb6eab9368715c8bea46d84b52dc1c0a701a",
+      "lf_sha256": "85c2a612a5620a0d9d96c23348a1fb6eab9368715c8bea46d84b52dc1c0a701a"
     },
     "distribution/verify_image.py": {
       "sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015",
       "lf_sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015"
     },
     "source_port/integrated_patches.py": {
-      "sha256": "25c50842cf0cf429c0b5df0ae3098b905d0d0a9b8c80b013f6b2327e18702c7d",
-      "lf_sha256": "25c50842cf0cf429c0b5df0ae3098b905d0d0a9b8c80b013f6b2327e18702c7d"
+      "sha256": "61b22db8f93e8c39989751dbdb175acd886f7bd59f580640829910da14288eff",
+      "lf_sha256": "61b22db8f93e8c39989751dbdb175acd886f7bd59f580640829910da14288eff"
     }
   },
   "pending": [
-    "Distinct host-client version with actual upgrade and removal evidence",
-    "Final qualified Send tranche conclusion before composition freeze",
     "Separate native IPC checkpoint-source failure investigation and scope",
-    "Parent review and explicit build freeze; subsequent independent pair and fresh installed conformance"
+    "Parent review and explicit build freeze; subsequent independent pair and fresh installed conformance",
+    "Fresh combined-image host upgrade/Run/Debug/removal and final host/platform workflows"
   ],
   "full_v05_accepted": false,
-  "full_v06_accepted": false
+  "full_v06_accepted": false,
+  "previous_preparation": {
+    "commit": "6c43af6008fb898f1326ccd5ffa0e25cd7cb6f99",
+    "sha256": "1631dbe6fdb4f56629d18e1dff50e8e612018dbd8f04aa6ababddc8c62e8ed2e"
+  }
 }
