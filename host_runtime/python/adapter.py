@@ -18,6 +18,8 @@ import types
 # -I intentionally excludes cwd; only the installed adapter directory is added.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from native import NativeSession
+from children import ChildProcedures
+from prompts import PromptQueue
 
 
 def read_messages(stream, incoming, stop, control=None):
@@ -100,6 +102,8 @@ class Adapter:
         self.watchdog_enabled = False
         self.last_heartbeat = time.monotonic()
         self.freeze_expected = False
+        self.children = None
+        self.prompts = None
 
     def control(self,message):
         if message.get('type') == 'event' and message.get('event') == 'openbexi/heartbeat':
@@ -198,6 +202,8 @@ class Adapter:
                 session.close()
                 raise
             self.session.pump = self.drain_events
+            self.children = ChildProcedures(self.session.instance)
+            self.prompts = PromptQueue(self.session.instance)
             self.response(request)
             self.event('initialized')
             return
@@ -307,13 +313,51 @@ class Adapter:
                 self.event('continued', threadId=1, allThreadsContinued=True)
             return
         elif command in {'spell/promptAnswer', 'openbexi/input'}:
-            if self.session.request('REQ_EXEC_STATUS').get('ExecutorStatus') != 'PROMPT':
-                raise ValueError('The native procedure is not waiting for a prompt answer')
-            value = args['text'] if command == 'openbexi/input' else args['value']
-            self.session.request('MSG_ANSWER', {'ReturnValue': str(value)}, send=True)
+            self.answer_prompt(request, args)
+            return
         else:
             raise ValueError('Unsupported native debugger request: ' + command)
         self.response(request, body)
+
+    def expose_prompt(self, repeat=False):
+        if not self.prompts:
+            return
+        prompt = self.prompts.expose(repeat)
+        if prompt is None:
+            return
+        fields = dict(prompt.fields, promptId=prompt.identifier, procedureId=prompt.procedure)
+        self.event('spell/prompt', **fields)
+        self.event('openbexi/inputRequest', text=fields.get('Text', ''),
+                   choices=fields.get('ExpectedValues', ''), answerFormat='native option index',
+                   promptId=prompt.identifier, procedureId=prompt.procedure)
+        self.event('output', category='console', output='SPELL prompt: ' + fields.get('Text', '') + '\n')
+
+    def answer_prompt(self, request, args):
+        prompt = None
+        try:
+            if not self.prompts:
+                raise ValueError('No active native prompt accepts an answer')
+            prompt = self.prompts.begin(args.get('promptId'))
+            value = args['text'] if request['command'] == 'openbexi/input' else args['value']
+            status = self.session.request('REQ_EXEC_STATUS', procedure=prompt.procedure)
+            if status.get('ExecutorStatus') != 'PROMPT':
+                self.prompts.invalidate(prompt.procedure)
+                raise ValueError('The native procedure is not waiting for a prompt answer')
+            self.prompts.before_send(prompt)
+            self.session.request('MSG_ANSWER', {'ReturnValue': str(value)}, send=True,
+                                 procedure=prompt.procedure)
+            self.prompts.complete(prompt)
+        except Exception as error:
+            if prompt and self.prompts.answering is prompt:
+                self.prompts.cancel(prompt)
+            self.response(request, error=error)
+            if self.prompts and not self.prompts.failure:
+                self.expose_prompt(repeat=True)
+            return
+        self.response(request)
+        # Preserve response/event order for clients that clear their input state
+        # when submitting an answer. Withheld prompts become visible only now.
+        self.expose_prompt()
 
     def require_paused(self):
         self.status = self.session.request('REQ_EXEC_STATUS')
@@ -330,20 +374,20 @@ class Adapter:
                 break
             message = item.get('message', {})
             fields = message.get('fields', {})
-            if fields.get('DataType') == 'STATUS':
+            if self.children:
+                self.children.observe(message)
+            if self.prompts:
+                self.prompts.observe(message, self.children.children if self.children else ())
+            if fields.get('DataType') == 'STATUS' and fields.get('ProcId') == self.session.instance:
                 self.status_revision += 1
                 self.notified_status = fields.get('ExecutorStatus')
                 if self.notified_status == 'RUNNING':
                     self.await_running = False
             if message.get('id') == 'MSG_WRITE':
                 self.event('output', category='stdout', output=fields.get('Text', '') + '\n')
-            elif message.get('id') == 'MSG_PROMPT':
-                self.event('spell/prompt', **fields)
-                self.event('openbexi/inputRequest', text=fields.get('Text', ''),
-                           choices=fields.get('ExpectedValues', ''), answerFormat='native option index')
-                self.event('output', category='console', output='SPELL prompt: ' + fields.get('Text', '') + '\n')
             elif item.get('event') == 'connectionError':
                 raise RuntimeError(item.get('error', 'Native connection failed'))
+        self.expose_prompt()
 
     def poll(self):
         if not self.session:
@@ -351,6 +395,8 @@ class Adapter:
         self.drain_events()
         if not self.configured:
             return
+        if self.children:
+            self.children.service(self.session)
         revision = self.status_revision
         self.status = self.session.request('REQ_EXEC_STATUS')
         # Notifications can arrive while the synchronous status reply is in
