@@ -13,12 +13,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--image', default='openbexi-spell-host:v05-dta-time-context-development')
+    parser.add_argument('--image', default='openbexi-spell-dss:v05-dta-ipc-development')
     args = parser.parse_args()
     output = ROOT/'.qualification/v0.5/dta-edit'/uuid.uuid4().hex
     output.mkdir(parents=True)
     names = ['conformance/dta_edit_controller.py', 'conformance/run_dta_edit.py',
              'source_port/dta_native_patches.py', 'source_port/dta_time_patches.py',
+             'source_port/dta_ipc_patches.py', 'conformance/dta_ipc_build.py',
+             'conformance/dta_ipc.Dockerfile', 'conformance/dta_ipc.Dockerfile.dockerignore',
+             'source_port/ui_native_patches.py', 'source_port/data_files_native_patches.py',
+             'source_port/flow_patches.py', 'source_port/flow_analyze.py',
+             'source_port/native_patches.py', 'distribution/incremental_native.py',
              'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf']
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     normalized = {name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
@@ -45,6 +50,9 @@ def main():
         report = dict(runtime_image=image,inputs=inputs,lf_normalized_inputs=normalized,controller_exit=result.returncode)
         path = output/'workspace/dta-edit-results.json'
         if path.exists(): report.update(json.loads(path.read_bytes()))
+        for recipe, expected in report.get('runtime_sources', {}).get('manifest', {}).get('recipes', {}).items():
+            source = next(name for name in names if name.endswith('/' + recipe))
+            assert expected in (inputs[source], normalized.get(source)), 'Installed recipe is stale: ' + source
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         print(json.dumps(dict(evidence=str(output),passed=report.get('passed',False),controller_exit=result.returncode),indent=2))
         return result.returncode or int(not report.get('passed', False))
