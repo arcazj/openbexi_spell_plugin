@@ -50,6 +50,9 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     expected_sources = dict(accepted['runtime_sources']['manifest']['source_hashes'])
     review = json.loads((ROOT/'conformance/evidence/time_verify_review.json').read_text())
     expected_sources.update(review['native_manifest']['source_hashes'])
+    ipc = json.loads((ROOT/'conformance/evidence/dta_ipc_review.json').read_text())
+    name = composition.dta_ipc_patches.SOURCE
+    expected_sources[name] = ipc['sources']['manifest']['source_hashes'][name]
     for name, row in expected_sources.items():
         assert report['sources'][name]['patched_sha256'] == row['patched']
         assert composition.digest((source/name).read_bytes()) == row['patched']

@@ -15,6 +15,7 @@ import cmd_patches
 import data_files_native_patches
 import data_files_patches
 import dta_native_patches
+import dta_ipc_patches
 import dta_time_patches
 import flow_patches
 import obs_patches
@@ -26,10 +27,11 @@ RECIPE_NAMES = (
     'data_files_native_patches.py', 'data_files_patches.py',
     'dta_native_patches.py', 'dta_time_patches.py',
     'flow_patches.py', 'flow_analyze.py', 'obs_patches.py', 'ui_native_patches.py',
-    'cmd_patches.py',
+    'cmd_patches.py', 'dta_ipc_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
+                            dta_ipc_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES)))
 PYTHON_NAMES = tuple(sorted((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES, *cmd_patches.PREIMAGES,
@@ -93,6 +95,8 @@ def apply_native_tree(source, archive, output):
             patched[name] = data_files_native_patches.apply(original[name], ported[name])
         elif name == dta_native_patches.SOURCE:
             patched[name] = dta_native_patches.apply(name, original[name], ported[name])
+        elif name == dta_ipc_patches.SOURCE:
+            patched[name] = dta_ipc_patches.apply(name, original[name], ported[name])
         elif name == ui_native_patches.SOURCE:
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
         elif name in dta_time_patches.PREIMAGES:

@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import uuid
+from installed_provenance import input_paths, verify_capture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,6 +26,7 @@ def main():
              'source_port/flow_patches.py', 'source_port/flow_analyze.py',
              'source_port/native_patches.py', 'distribution/incremental_native.py',
              'docs/reference/SPELL2.6.10-src.zip', 'docs/reference/SPELL - Language Reference - 2.4.4.pdf']
+    names = list(dict.fromkeys(names + input_paths(ROOT)))
     inputs = {name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     normalized = {name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
                   for name in names if name.endswith('.py')}
@@ -41,6 +43,10 @@ def main():
             entry = tarfile.TarInfo('controller.py')
             entry.size,entry.mode,entry.uid,entry.gid = len(content),0o644,10003,10003
             bundle.addfile(entry,io.BytesIO(content))
+            helper = (ROOT/'conformance/installed_provenance.py').read_bytes()
+            entry = tarfile.TarInfo('installed_provenance.py')
+            entry.size,entry.mode,entry.uid,entry.gid = len(helper),0o644,10003,10003
+            bundle.addfile(entry,io.BytesIO(helper))
         subprocess.run(['docker','cp','-a','-',name+':/workspace'],input=archive.getvalue(),check=True,capture_output=True)
         result = subprocess.run(['docker','start','-a',name],capture_output=True,timeout=150)
         (output/'controller.log').write_bytes(result.stdout+result.stderr)
@@ -50,6 +56,7 @@ def main():
         report = dict(runtime_image=image,inputs=inputs,lf_normalized_inputs=normalized,controller_exit=result.returncode)
         path = output/'workspace/dta-edit-results.json'
         if path.exists(): report.update(json.loads(path.read_bytes()))
+        verify_capture(report.get('runtime_sources',{}).get('integrated'),inputs,normalized)
         for recipe, expected in report.get('runtime_sources', {}).get('manifest', {}).get('recipes', {}).items():
             source = next(name for name in names if name.endswith('/' + recipe))
             assert expected in (inputs[source], normalized.get(source)), 'Installed recipe is stale: ' + source

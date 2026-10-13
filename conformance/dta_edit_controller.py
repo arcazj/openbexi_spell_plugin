@@ -10,11 +10,16 @@ import time
 
 sys.path.insert(0, '/opt/host')
 from native import NativeSession
+sys.path.insert(0, '/workspace')
+from installed_provenance import capture
 
 project = Path('/workspace')
 events = []
 results = {'checks': {}, 'observations': []}
 runtime = {'host_sha256': hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest()}
+integrated = capture()
+if integrated is not None:
+    runtime['integrated'] = integrated
 manifest_path = Path('/opt/dta-native-patch/manifest.json')
 if manifest_path.exists():
     manifest = json.loads(manifest_path.read_bytes())
