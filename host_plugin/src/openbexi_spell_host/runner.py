@@ -1,6 +1,7 @@
 """Execute explicit-import SPELL procedures using the native DAP runtime."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 import argparse
+from collections import deque
 import os
 from pathlib import Path
 import queue
@@ -31,7 +32,9 @@ def main(argv=None):
     sequence = 0
     exit_code = 1
     eof = False
-    prompt = False
+    prompt = None
+    pending_inputs = deque()
+    pending_bytes = 0
     disconnecting = False
 
     def publish(value):
@@ -54,19 +57,26 @@ def main(argv=None):
         # Raw OS reads avoid a daemon holding Python's buffered stdin lock at
         # finalization when a desktop console remains open after completion.
         pending = bytearray()
-        while not stopped.is_set():
-            data = os.read(sys.stdin.fileno(), 8192)
-            if not data:
-                publish({'inputEof': True})
-                return
-            pending.extend(data)
-            if len(pending) > 65536:
-                publish(ValueError('Prompt input exceeds 64 KiB'))
-                return
-            while b'\n' in pending:
-                line, _, rest = pending.partition(b'\n')
-                pending[:] = rest
-                publish({'input': line.decode('utf-8').rstrip('\r')})
+        try:
+            while not stopped.is_set():
+                data = os.read(sys.stdin.fileno(), 8192)
+                if not data:
+                    if pending:
+                        publish({'input': pending.decode('utf-8').rstrip('\r')})
+                    publish({'inputEof': True})
+                    return
+                pending.extend(data)
+                while b'\n' in pending:
+                    line, _, rest = pending.partition(b'\n')
+                    line = line.removesuffix(b'\r')
+                    if len(line) > 65536:
+                        raise ValueError('Prompt input exceeds 64 KiB')
+                    pending[:] = rest
+                    publish({'input': line.decode('utf-8').rstrip('\r')})
+                if len(pending) > 65536 + pending.endswith(b'\r'):
+                    raise ValueError('Prompt input exceeds 64 KiB')
+        except Exception as error:
+            publish(error)
 
     def send(command, **values):
         nonlocal sequence
@@ -94,14 +104,20 @@ def main(argv=None):
                 raise message
             if message.get('inputEof'):
                 eof = True
-                if os.environ.get('OPENBEXI_HOST_MANAGED') == '1' or prompt:
+                if os.environ.get('OPENBEXI_HOST_MANAGED') == '1' or (prompt is not None and not pending_inputs):
                     exit_code = 130
                     send('disconnect', terminateDebuggee=True)
                     disconnecting = True
             elif 'input' in message:
-                if prompt:
-                    send('spell/promptAnswer', value=message['input'])
-                    prompt = False
+                if not disconnecting:
+                    value = message['input']
+                    size = len(value.encode('utf-8'))
+                    if len(pending_inputs) >= 128 or pending_bytes + size > 256 * 1024:
+                        raise ValueError('Pending prompt input exceeds 128 lines or 256 KiB')
+                    # Native question text can precede its MSG_PROMPT. Preserve
+                    # early console lines just as a normal stdin pipe would.
+                    pending_inputs.append((value, size))
+                    pending_bytes += size
             elif message.get('type') == 'response':
                 if not message.get('success'):
                     raise RuntimeError(message.get('message', 'Native command failed'))
@@ -114,10 +130,10 @@ def main(argv=None):
                 stream = sys.stderr if body.get('category') == 'stderr' else sys.stdout
                 print(body.get('output', ''), end='', file=stream, flush=True)
             elif message.get('event') == 'spell/prompt':
-                prompt = True
+                prompt = message['body']
                 values = message['body'].get('ExpectedValues', '')
                 print('SPELL choices (enter the native option index): ' + values, flush=True)
-                if eof:
+                if eof and not pending_inputs:
                     raise RuntimeError('SPELL prompt requires input but stdin is closed')
             elif message.get('event') == 'exited':
                 exit_code = message['body']['exitCode']
@@ -126,6 +142,16 @@ def main(argv=None):
                 print('SPELL run files: ' + str(destination), file=sys.stderr, flush=True)
                 send('disconnect', terminateDebuggee=True)
                 disconnecting = True
+            if prompt is not None and pending_inputs and not disconnecting:
+                value, size = pending_inputs.popleft()
+                pending_bytes -= size
+                values = {'value': value}
+                if 'promptId' in prompt:
+                    values['promptId'] = prompt['promptId']
+                # Clear before sending; an uncertain transport outcome must not
+                # replay this line against the current or a later question.
+                prompt = None
+                send('spell/promptAnswer', **values)
         return exit_code
     except KeyboardInterrupt:
         exit_code = 130
