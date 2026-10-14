@@ -15,6 +15,14 @@ from installed_provenance import input_paths
 from checkpoint_identity_provenance import qualification_identity
 
 
+def checks_passed(checks, options):
+    expected = {mode+':'+case for mode in options['modes'] for case in options['cases']}
+    return bool(expected) and set(checks) == expected and all(
+        row.get('passed') is True and not any(row.get(key) for key in
+        ('error', 'cleanup_error', 'extra_cleanup_error', 'drain_error', 'sanitizer_failure'))
+        for row in checks.values())
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image',required=True)
@@ -73,11 +81,12 @@ def main():
         elif runtime.get('profile'):
             qualification_identity(runtime,inputs,normalized)
         assert all(hashlib.sha256((ROOT/n).read_bytes()).hexdigest()==h for n,h in inputs.items())
-        report=dict(runtime_image=image,inputs=inputs,lf_normalized_inputs=normalized,options=options,checks=checks,runtime_sources=runtime,
+        passed = run.returncode == 0 and checks_passed(checks, options)
+        report=dict(passed=passed,runtime_image=image,inputs=inputs,lf_normalized_inputs=normalized,options=options,checks=checks,runtime_sources=runtime,
             controller_exit_code=run.returncode,full_v05_accepted=False,full_v06_accepted=False)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         print(json.dumps(dict(output=str(output),checks=len(checks),failed=[k for k,v in checks.items() if not v['passed']]),indent=2))
-        return bool(run.returncode)
+        return not passed
     finally:
         subprocess.run(['docker','rm','-f',name],capture_output=True,timeout=20)
 
