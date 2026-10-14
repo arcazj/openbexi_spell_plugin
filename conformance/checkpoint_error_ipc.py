@@ -85,8 +85,24 @@ for mode in options['modes']:
             session.pump=drain
             session.request('CMD_RUN',send=True)
             if case=='user-action-error':
-                row['paused']=wait_for({'PAUSED','ERROR','ABORTED'})
-                assert row['paused']['ExecutorStatus']=='PAUSED',row['paused']
+                # CMD_RUN is asynchronous; the initial PAUSED snapshot does
+                # not mean the procedure has reached its registered action.
+                deadline=time.monotonic()+12
+                ready=None
+                while time.monotonic()<deadline:
+                    row['paused']=status()
+                    ready=next((e['message'] for e in reversed(events)
+                        if e.get('message',{}).get('id')=='MSG_NOTIFICATION'
+                        and e['message'].get('fields',{}).get('ProcId')==session.instance
+                        and e['message']['fields'].get('DataType')=='STATUS'
+                        and e['message']['fields'].get('ExecutorStatus')=='PAUSED'
+                        and e['message']['fields'].get('ActionEnabled')=='True'
+                        and e['message']['fields'].get('ActionLabel')=='Failing callback'),None)
+                    if ready and row['paused'].get('ExecutorStatus')=='PAUSED':break
+                    if row['paused'].get('ExecutorStatus') in {'ERROR','ABORTED','FINISHED'}:break
+                    time.sleep(.025)
+                assert ready and row['paused']['ExecutorStatus']=='PAUSED',(row['paused'],events)
+                row['action_ready']=ready
                 session.request('CMD_ACTION',send=True)
                 deadline=time.monotonic()+5
                 while not (folder/'action.txt').exists() and time.monotonic()<deadline:
