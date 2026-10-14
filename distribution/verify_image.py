@@ -36,6 +36,8 @@ def verify():
     if driver is None:
         raise ValueError('Fresh image lacks composed driver provenance')
     return {'passed':True, 'distributions':distributions,
+            'host_sources':{path.relative_to('/opt/host').as_posix():hashlib.sha256(path.read_bytes()).hexdigest()
+                            for path in sorted(Path('/opt/host').rglob('*.py'))},
             'native_artifacts':manifest['native_artifacts'],
             'driver_composition':driver,
             'composition':manifest['composition'], 'bridge_sha256':bridge['bridge_sha256']}

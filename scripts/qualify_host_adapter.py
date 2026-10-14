@@ -298,6 +298,85 @@ Display('PROMPT_ANSWERED')
         self.assertEqual(self.client.event('exited')['exitCode'], 0)
         self.client.event('terminated')
 
+    def test_default_visible_child_runs_and_delivers_native_arguments(self):
+        self.write('main.py', '''from spell.lang.functions import StartProc
+from pathlib import Path
+assert StartProc('child', args=[['value', 21]], HandleError=False) is True
+Path('parent.txt').write_text('finished')
+''')
+        self.write('child.py', '''from spell.runtime import ARGS
+from pathlib import Path
+Path('child.txt').write_text(str(ARGS['value'] * 2))
+''')
+        self.client.launch('main.py', noDebug=True)
+        self.client.request('configurationDone')
+        self.assertEqual(self.client.event('exited')['exitCode'], 0)
+        self.client.event('terminated')
+        self.assertEqual(self.client.read_file('child.txt'), '42')
+        self.assertEqual(self.client.read_file('parent.txt'), 'finished')
+
+    def test_nested_and_sequential_children_are_started_once(self):
+        self.write('main.py', '''from spell.lang.functions import StartProc
+from pathlib import Path
+for index in range(2):
+    assert StartProc('child', HandleError=False) is True
+Path('parent.txt').write_text('finished')
+''')
+        self.write('child.py', '''from spell.lang.functions import StartProc
+assert StartProc('grandchild', HandleError=False) is True
+''')
+        self.write('grandchild.py', '''from pathlib import Path
+count = Path('count.txt')
+count.write_text(str(int(count.read_text()) + 1 if count.exists() else 1))
+''')
+        self.client.launch('main.py', noDebug=True)
+        self.client.request('configurationDone')
+        self.assertEqual(self.client.event('exited')['exitCode'], 0)
+        self.client.event('terminated')
+        self.assertEqual(self.client.read_file('count.txt'), '2')
+        self.assertEqual(self.client.read_file('parent.txt'), 'finished')
+
+    def test_child_error_returns_control_to_parent_error_handler(self):
+        self.write('child.py', "raise ValueError('intentional native child failure')\n")
+        self.write('main.py', '''from spell.lang.functions import StartProc
+from spell.lib.exception import DriverException
+from pathlib import Path
+try:
+    StartProc('child', HandleError=False)
+except DriverException:
+    Path('parent.txt').write_text('caught child failure')
+else:
+    raise AssertionError('Child error must fail blocking StartProc')
+''')
+        self.client.launch('main.py', noDebug=True)
+        self.client.request('configurationDone')
+        self.assertEqual(self.client.event('exited')['exitCode'], 0)
+        self.client.event('terminated')
+        self.assertEqual(self.client.read_file('parent.txt'), 'caught child failure')
+
+    def test_child_prompt_answer_routes_to_waiting_child(self):
+        self.write('main.py', '''from spell.lang.functions import StartProc
+from pathlib import Path
+assert StartProc('child', HandleError=False) is True
+Path('parent.txt').write_text('finished')
+''')
+        self.write('child.py', '''from spell.lang.functions import Prompt
+from spell.lang.constants import YES_NO
+from pathlib import Path
+assert Prompt('Continue child?', Type=YES_NO) is True
+Path('child.txt').write_text('answered')
+''')
+        self.client.launch('main.py', noDebug=True)
+        self.client.request('configurationDone')
+        prompt = self.client.event('openbexi/inputRequest')
+        self.assertEqual(prompt['text'], 'Continue child?')
+        self.assertTrue(prompt['procedureId'].startswith('child#'))
+        self.client.request('openbexi/input', text='0')
+        self.assertEqual(self.client.event('exited')['exitCode'], 0)
+        self.client.event('terminated')
+        self.assertEqual(self.client.read_file('child.txt'), 'answered')
+        self.assertEqual(self.client.read_file('parent.txt'), 'finished')
+
     def test_burst_output_keeps_order_and_final_marker(self):
         self.write('burst.py', "from spell.lang.functions import Display\nfor index in range(1200):\n    Display('BURST_%04d' % index)\nDisplay('BURST_COMPLETE')\n")
         self.client.launch('burst.py', noDebug=True)
@@ -357,6 +436,7 @@ if __name__ == '__main__':
         'tests': result.testsRun, 'failures': len(result.failures), 'errors': len(result.errors),
         'image': subprocess.check_output(['docker', 'image', 'inspect', IMAGE, '--format', '{{.Id}}'], text=True).strip(),
         'inputs': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-                   for p in sorted((ROOT / 'host_runtime').rglob('*')) if p.is_file() and '__pycache__' not in p.parts},
+                   for p in [*sorted((ROOT / 'host_runtime').rglob('*')), Path(__file__).resolve()]
+                   if p.is_file() and '__pycache__' not in p.parts},
     }, indent=2) + '\n')
     raise SystemExit(not result.wasSuccessful())

@@ -1,6 +1,13 @@
 # v0.6 distribution prerequisites
 
-v0.6 is not accepted. The current checkpoint has **470 qualified / 293 open**
+The newer [follow-up conformance checkpoint](FOLLOWUP_CONFORMANCE_QUALIFICATION.json)
+qualifies 473 of 763 original requirements, with 290 still open. It includes the
+independently reproduced shutdown/SCDB/checkpoint composition and all language
+regressions. The combined child lifecycle runtime is under separate qualification.
+Full v0.5/v0.6 release acceptance remains false. The artifact narrative below is
+the retained earlier 470-row checkpoint.
+
+v0.6 is not accepted. The earlier checkpoint has **470 qualified / 293 open**
 original requirements. It retains the preceding 422 qualified rows and adds 48
 bounded clauses after actual integrated native runs. Artifact versions and
 accepted Docker tags remain unchanged. Both release flags remain false in the

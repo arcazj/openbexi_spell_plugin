@@ -1,8 +1,10 @@
 """Upgrade the installed host through the real IDE plugin manager and run child prompts."""
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import os
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -45,6 +47,11 @@ def main():
               'wheel_sha256':hashlib.sha256(args.wheel.read_bytes()).hexdigest(),
               'previous_wheel_sha256':hashlib.sha256(args.previous_wheel.read_bytes()).hexdigest(),
               'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              'qt_interpreter':{'executable':sys.executable,'python':sys.version,'platform':platform.platform(),
+                  'system':platform.system(),'implementation':platform.python_implementation(),
+                  'dependencies':{name:importlib.metadata.version(name) for name in ('PySide6-Essentials','shiboken6')}},
+              'ide_source_inputs':{p.relative_to(args.ide.resolve()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in (args.ide.resolve()/'src').rglob('*.py')},
               'ide_commit':subprocess.check_output(['git','-C',str(args.ide),'rev-parse','HEAD'],text=True).strip()}
     application = QApplication([])
     view = MainWindow(project,QSettings(str(evidence/'preferences.ini'),QSettings.IniFormat))
@@ -154,6 +161,8 @@ Display('CHILD_CHOICES_COMPLETE')
         settings.sync()
         assert settings.value('qualification/preserved') == 'unchanged'
         report['checks'].append('Plugin manager removes the upgraded host; ordinary Python still runs and project/preferences survive')
+        assert report['ide_source_inputs']=={p.relative_to(args.ide.resolve()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in (args.ide.resolve()/'src').rglob('*.py')}
         report['passed'] = True
     except Exception:
         report['error'] = traceback.format_exc()

@@ -16,6 +16,24 @@ builder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)
 
 
+@pytest.mark.parametrize('change', ['unchanged', 'missing-child', 'extra-module', 'changed-prompt'])
+def test_installed_host_requires_exact_complete_source_set(tmp_path, change):
+    for name in ('adapter.py', 'children.py', 'prompts.py'):
+        (tmp_path/name).write_text('value = '+repr(name)+'\n', encoding='utf-8')
+    actual = {path.name:builder.sha(path) for path in tmp_path.glob('*.py')}
+    if change == 'missing-child':
+        actual.pop('children.py')
+    elif change == 'extra-module':
+        actual['undeclared.py'] = '0'*64
+    elif change == 'changed-prompt':
+        actual['prompts.py'] = '0'*64
+    if change == 'unchanged':
+        assert builder.verify_host_sources(tmp_path, actual) == actual
+    else:
+        with pytest.raises(ValueError, match='Installed host source set differs'):
+            builder.verify_host_sources(tmp_path, actual)
+
+
 def wheel(path, recipes=None, tamper=False):
     binary, python = b'preserved-native-payload', b'print(42)\n'
     manifest = {'native_artifacts':{'runtime':hashlib.sha256(binary).hexdigest()},

@@ -189,9 +189,10 @@ class NativeSession:
         raise RuntimeError('Native procedure startup timed out: ' + str(info) +
                            '; paused notification: ' + str(paused_notification))
 
-    def request(self, identifier, fields=None, *, context=False, send=False):
-        return self.context.exchange(identifier, 'CTX' if context else self.instance,
-            dict(fields or {}, ProcId=self.instance), send=send, pump=self.pump)
+    def request(self, identifier, fields=None, *, context=False, send=False, procedure=None):
+        target = self.instance if procedure is None else procedure
+        return self.context.exchange(identifier, 'CTX' if context else target,
+            dict(fields or {}, ProcId=target), send=send, pump=self.pump)
 
     def close(self):
         errors = []

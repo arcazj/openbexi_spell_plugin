@@ -1,0 +1,94 @@
+{
+  "scope": "Original native SPELL visible automatic child startup and console prompt ownership through the host DAP adapter. No language inventory rows promoted by these host checks.",
+  "baseline": {
+    "native_probe": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\baseline.json",
+      "sha256": "5636ccbec29850eecc4e4b5b79d9fbf05d3be38e2b5a523f20c21badb00373ba"
+    },
+    "probe_workspace": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\baseline-workspace.tar",
+      "sha256": "56d5ee03d61fe84adf603ef9f866b95998533cdbe75fc6a5688058470fcedb1f"
+    },
+    "same_base_dap": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\dap-baseline-01\\result.json",
+      "sha256": "89e53bc444df1dae9bdcd46f872d99af02d7065519deaa8857866d15577059a1"
+    },
+    "same_base_transcript": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\dap-baseline-01\\test_default_visible_child_runs_and_delivers_native_arguments.json",
+      "sha256": "e72b48683f3753bfb11a28b9999be9dd96a2c6055b332c30caf5f07dc36f6040"
+    },
+    "same_base_workspace": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\dap-baseline-01\\workspace.tar",
+      "sha256": "d2e284fca1ac0699cc63a533f88f51de0e09cc9b6695c0c7b71c4ae45c162324"
+    },
+    "observed": "The exact integrated base exposes Starting procedure child and Waiting for child procedure, times out waiting for exited, and produces neither child nor parent output files. The earlier explicit native probe independently records child PAUSED and parent WAITING.",
+    "limitation": "docker cp of the live tmpfs returned an empty archive; the same-base comparison retains its DAP transcript and workspace, not a native-log capture."
+  },
+  "image": "sha256:b7c4cd03377ff1f9e010621caf4cc1ac2dd140d7b08099fb88de98f21823cef5",
+  "base_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
+  "installed_host": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\installed-host.json",
+    "sha256": "381f1416edbb1a98c33e5a9112ddf581009cfb2962aa7705075eb331eef227cd"
+  },
+  "image_input": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\candidate-input\\input-sha256.json",
+    "sha256": "7fc6a37eb83b439392f3b4faba2245747ac77bc7c41f606638c0df2ea8bc58bc"
+  },
+  "native_reports": [
+    {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\host-candidate-01\\result.json",
+      "sha256": "c9aaeea9fcb526328f69f5f55c14154f04edfa84aad94b63661ac9cffe30e0a0"
+    },
+    {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\children\\prompt-candidate-01\\result.json",
+      "sha256": "b1e210baf185e45f133820c2fec8aa42fbeed27964e1d6b08e8ab5af2cb441e6"
+    }
+  ],
+  "native_checks": 16,
+  "local_tests": {
+    "count": 21,
+    "command": "python -m unittest discover -s host_runtime/tests -v",
+    "result": "PASS"
+  },
+  "inputs": {
+    "host_runtime/build_bridge.py": "ebfb24187d8deceeeb6fcdf13f615ee2d2c502bfabcb609f7c57dc6deef9dbd0",
+    "host_runtime/Dockerfile": "c9fd67a3c42d65a300881dc8c2335a45bebcc83ff00212511aca90d1b8e20c32",
+    "host_runtime/Dockerfile.dockerignore": "84247e35cc4334290a30d98ca3ae3e3d58667eb9b2cec87b3d96102964182de4",
+    "host_runtime/native_bridge.cpp": "f575bcfc080413e601b79b35d8c4ea5131724b43d22cd5de61650d3d858b5fb5",
+    "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
+    "host_runtime/python/children.py": "5b1702226c91b4de865a2a83a7e34e6d1c3418d0e17d530539031b749f493ea3",
+    "host_runtime/python/native.py": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
+    "host_runtime/python/prompts.py": "6a1cda3019e8126842b637a227b2c02c3c1ac930c60269a5a3cdb2d0765db2cb",
+    "host_runtime/tests/test_bridge.py": "453bead64cdd70b9530ab020a8546282c8ffaae9f47b2aa468f7368885e1767a",
+    "host_runtime/tests/test_children.py": "6fd03a9cc76ae7a16d40efe9ffe8008f9076cd8bd90bdc1f9b4e383b59277a01",
+    "host_runtime/tests/test_prompts.py": "f738da28f7a22cbf91a5a1e6018ff9fb1221b470ec1f9ade83a3b97d43d57225",
+    "host_runtime/tests/test_status_order.py": "636c597c691fdcbaba98292eeb5c8f035e56fef74434dcdf379f1565a5e84a1a",
+    "scripts/qualify_host_adapter.py": "c04c77a6b5d68a9c385e7540e4bfd641a77174384388f847e739e29bff9ed4f7",
+    "scripts/qualify_child_prompts.py": "816bd861435a2c439f86f2c2cebc569bb04588d1c2f37d9b6d07c37a6bc0f9b6"
+  },
+  "original_source": {
+    "archive": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\docs\\reference\\SPELL2.6.10-src.zip",
+      "sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed"
+    },
+    "member": "lib/SPELL_EXC/src/SPELLexecutorImpl.C",
+    "behavior": "executeInternal explicitly delegates the initial RUN of visible automatic procedures to the controlling GUI; the initial root pause must remain under debugger configuration control."
+  },
+  "behavior": [
+    "Only descendants observed through native OPEN operations are considered for automatic startup; child requests use explicit native procedure IDs.",
+    "Notification observation performs no nested IPC. Child startup is serviced between exchanges, after native PAUSED, once per observed child instance.",
+    "Child STATUS notifications cannot satisfy the root startup or terminal notification barrier.",
+    "One queued prompt is exposed at a time, retaining its native ProcId and an adapter token; answers route to that procedure and supplied stale tokens have no native effect.",
+    "Prompt expiry, close and terminal status invalidate pending answers. An uncertain send fails the session instead of replaying the answer.",
+    "Actual native tests cover root debugger regressions, child ARGS, nested/sequential children, parent error recovery, child/root prompt succession, stale-token rejection, and overlapping nonblocking child/parent prompts."
+  ],
+  "open": [
+    "Manual child execution controls and child debugger threads",
+    "Visible browser presentation",
+    "Child lifecycle after root completion",
+    "General recorder/checkpoint qualification",
+    "Full v0.5/v0.6 release acceptance"
+  ],
+  "full_v05_accepted": false,
+  "v06_dependency_satisfied": false
+}

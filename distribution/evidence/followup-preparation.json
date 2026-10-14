@@ -1,0 +1,477 @@
+{
+  "schema": "openbexi.spell.composition-preparation/1",
+  "base_commit": "6f82c2c01bc5dde1fb18500e1367e3d257df1d9f",
+  "cherry_picks": {
+    "e85a2e9": "e162834",
+    "bfac147": "ded2e8c",
+    "166caff": "469b7a3",
+    "9c674bd": "b4018e0",
+    "15c7dd1": "4ef381d",
+    "231700d": "262b519",
+    "4a4c8c9": "a196fd8",
+    "53afd40": "ae55d76"
+  },
+  "frozen": false,
+  "build_started": false,
+  "runtime_qualified": false,
+  "row_promotions": 0,
+  "historical_counts": {
+    "QUALIFIED": 470,
+    "OPEN": 293
+  },
+  "static_source_composition": {
+    "scope": "Static checked source composition only; no compilation or runtime execution",
+    "native_units": 13,
+    "python_units": 21,
+    "driver_units": 2,
+    "recipes": 26,
+    "native_stages": 15,
+    "host_units": 4,
+    "host_client_units": 5,
+    "host_package_inputs": 3,
+    "donor_outputs_match": true,
+    "central_port_unchanged": true,
+    "coverage_unchanged": true,
+    "build_started": false,
+    "runtime_qualified": false,
+    "frozen": false,
+    "manifests": {
+      "native": "60c723e4f0320149800431ee1c6df4bd8859b440ed70e026b681551aab06a835",
+      "python": "099bcb48b46c44b3e39835606f9c76918862260807d28844ec01e8b86c5b5122",
+      "driver": "1e6261f3689b85b22ddaf36436d5cc32cae1dcc9fd4ddf571f4f5605b0d191a5"
+    },
+    "donor_fixture_sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614",
+    "retained_result": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\source-preparation\\1ac57577962c4c6195d587db67b06669\\result.json",
+      "sha256": "4254136bf6beac308486e118b1bd696ce77e3c91af538d47e3a9bb4cfa5974fa",
+      "lf_sha256": "4254136bf6beac308486e118b1bd696ce77e3c91af538d47e3a9bb4cfa5974fa",
+      "bytes": 802
+    }
+  },
+  "checks": [
+    {
+      "command": "python -X utf8 -m pytest distribution/test_integrated_patches.py distribution/test_build_images.py -q",
+      "passed": true,
+      "tests": 23,
+      "scope": "Source composition and package/input validation, including rejected Send-before-timing ordering"
+    },
+    {
+      "command": "python -X utf8 conformance/checkpoint_error_provenance_test.py",
+      "passed": true,
+      "tests": 5,
+      "scope": "Provenance parser only"
+    },
+    {
+      "check": "Changed Python AST and git diff --check",
+      "passed": true
+    },
+    {
+      "check": "Strict recorder qualifier replay",
+      "passed": true,
+      "scope": "Retained donor runtime reports only; no new native execution",
+      "result": {
+        "path": ".qualification/recorder-adapter-compat-final.json",
+        "sha256": "fe065b9a282c338664b6187f4b07e9113a8c3c45a22b3e2fea024775cd320a28"
+      }
+    },
+    {
+      "command": "python -X utf8 -m pytest distribution/test_host_installed_harness.py -q",
+      "passed": true,
+      "tests": 15,
+      "scope": "Fixture-based installed-wheel, source-set, import binding and exact-image rejection checks; no actual Docker or installed pipe execution",
+      "evidence": {
+        ".qualification/v0.6/host-harness-preparation/tests.xml": {
+          "sha256": "153d693ea89b687353c94a241d0e393a0948c4a9a935de062332f386db97a643",
+          "lf_sha256": "153d693ea89b687353c94a241d0e393a0948c4a9a935de062332f386db97a643"
+        },
+        ".qualification/v0.6/host-harness-preparation/tests.log": {
+          "sha256": "c4f9147ffa6c19a1d629df94996cab7bb88c7f252e8ac8b21563a5160ad3bd31",
+          "lf_sha256": "c4f9147ffa6c19a1d629df94996cab7bb88c7f252e8ac8b21563a5160ad3bd31"
+        }
+      }
+    },
+    {
+      "command": "python -m pytest distribution/test_workflow_evidence.py distribution/test_host_installed_harness.py -q",
+      "passed": true,
+      "tests": 54,
+      "scope": "Artifact/import/platform/verifier negative checks; no Docker/native execution",
+      "evidence": {
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-00.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-00.log",
+          "sha256": "7ce654310543da618bf517bfd40227e137f5e1565972c4b57d948db4ab9bba98",
+          "lf_sha256": "5cba95917bc1621c3318d3b4b123d4e7127ebb5853472adaa8dc36ea7b627129",
+          "bytes": 101
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-01.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-01.log",
+          "sha256": "e3fa0370ba69932175cfe263f88b69b51c23d622ac843cc3e424150b016d4ae3",
+          "lf_sha256": "e74a484d9fcf42178c8e914e1f31e557c50fb4c8387969cf8014f159db9f091a",
+          "bytes": 547
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-02.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-02.log",
+          "sha256": "f7500c33170bdbefe7b9b5460f04f3d3fbb40af2e12fad8c117a7bcc39be50fe",
+          "lf_sha256": "3eea6ce031fd02e18069d832c05cb46136a7c144c917049725ebbad840d7db9a",
+          "bytes": 420
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-03.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-03.log",
+          "sha256": "876f238929e5c6082504426462ad3db105e5d89dc504f6352d6ae51a95775bd9",
+          "lf_sha256": "a98b8be876079fc8be6c4ba089bf5e9a5988f4ce4e472965a887c7ce069f8a12",
+          "bytes": 529
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-04.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-04.log",
+          "sha256": "ee9f7cf2ee0bd1ac7cda34ce3eb29ae10ce4dcbd43dc44f9ac829b3be13e65d2",
+          "lf_sha256": "38d844da2944c01a87c9d156122a7cde9102f6f284e65f5acc5f27412266da83",
+          "bytes": 833
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-05.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-05.log",
+          "sha256": "a0524176e763260feac7ca9f09aab36cd98e9f622c501934bc3a71fbd7d1b11d",
+          "lf_sha256": "054291e14acee742a32e454107564e2c8f3df8340325c170bb7f58cd90853844",
+          "bytes": 359
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-06.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-06.log",
+          "sha256": "b3f4092bb7432953688e16655819fded7b1976254c63687849f8aa6fb92405af",
+          "lf_sha256": "7b4e6029db514f0c593c0c17280528acc78fa9a40a4a222d502046641702ffe1",
+          "bytes": 515
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-07.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-07.log",
+          "sha256": "932562bb33a4d58d5615ec4babad3fe23e28ad9e1b755aff3462a1accfcb6926",
+          "lf_sha256": "0a14b7cde04b1ddf4bdc919d6136e0afc2ad58dc59a4a50895ab437380fafa07",
+          "bytes": 855
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/command-08.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\command-08.log",
+          "sha256": "853540a33cc29b6724e464ae9d51e9717259c8d62d4c9fac0d4521a22584744d",
+          "lf_sha256": "5e040ef431ce605732a7728f5b533a1aef2c577a5f4a0d90112fa6503d209881",
+          "bytes": 380
+        },
+        ".qualification/v0.6/workflow-preparation/dbb6b0a47b8a42b2985f6b2d22a7dfbb/tests.xml": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\workflow-preparation\\dbb6b0a47b8a42b2985f6b2d22a7dfbb\\tests.xml",
+          "sha256": "9f8a2b9d600f725b6397bf126ffccbe8db22cbae8b2c17f454480dc82a77780d",
+          "lf_sha256": "9f8a2b9d600f725b6397bf126ffccbe8db22cbae8b2c17f454480dc82a77780d",
+          "bytes": 8586
+        }
+      }
+    },
+    {
+      "check": "All distribution/scripts Python AST and eight changed CLI parsers",
+      "passed": true
+    },
+    {
+      "check": "Final source composition, installed provenance, workflow artifacts and checkpoint recorder parsers",
+      "passed": true,
+      "tests": 104,
+      "evidence": {
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_error_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_error_report.log",
+          "sha256": "8cc8649498c32602e41813c88ee3f22659ff735c3940c970842d5fbe61574611",
+          "lf_sha256": "343b439f9ba6f1117c37cf3dba19394055d933e2149a16933463820e7b290dd5",
+          "bytes": 897
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_identity_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_identity_report.log",
+          "sha256": "a7c49a6e1d735a8a41957abfa2ed90ac185eba2308ae6fcb0d59f8a5b194de3a",
+          "lf_sha256": "190fd5cd71b30f42b0847b90514fac3603d384216f55002f9c7935d9f15e6ded",
+          "bytes": 889
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/checkpoint_identity_run.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\checkpoint_identity_run.log",
+          "sha256": "cd4a47644700658202d75410adbe4e82807a8dd3cef48ff2baa67e2637c46f07",
+          "lf_sha256": "5e519529fea0bb3f825952f063e35ee7280aeaeb29c3ebec141fa04ebce118d4",
+          "bytes": 331
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/database_import_report.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\database_import_report.log",
+          "sha256": "3aa7e0918eaf986fa9cc17ff53c7d0e747582c8cbc00512b95d114b8acd6f1be",
+          "lf_sha256": "47d34aefc14b5e55a84086409a17d1ddd65e0f045c92e252eabcc98ed992bc97",
+          "bytes": 394
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/tests.log": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\tests.log",
+          "sha256": "b947b12b218eecac477a37e0df10d092521bde9ffb1458b7af006f589ec63617",
+          "lf_sha256": "2ad51f00ca26ac52b90ed6f6913615cf4009c371132ebc0fac0b872a7e8154a8",
+          "bytes": 178
+        },
+        ".qualification/v0.6/final-preparation/2420f96a30d04aeb9c2b02899bae9ee2/tests.xml": {
+          "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\final-preparation\\2420f96a30d04aeb9c2b02899bae9ee2\\tests.xml",
+          "sha256": "7681b3723db71dc95637dba239d6db2ba9d16526ade2170f07fe569dddac67dc",
+          "lf_sha256": "7681b3723db71dc95637dba239d6db2ba9d16526ade2170f07fe569dddac67dc",
+          "bytes": 16149
+        }
+      }
+    },
+    {
+      "check": "All changed Python AST, four fresh recorder CLI parsers and git diff --check",
+      "passed": true
+    },
+    {
+      "check": "Installed Linux CPython3.13 exact host wheel controlled FIFO/EOF peers",
+      "passed": true,
+      "tests": 16,
+      "evidence": {
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\installed-pipe-linux.json",
+        "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+        "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+        "bytes": 5352
+      },
+      "scope": "Offline controlled peer transport; no native SPELL execution"
+    }
+  ],
+  "changed_inputs": {
+    "ROADMAP.md": {
+      "sha256": "434efe279f8ec997cd887574b97bb7d660f0eba9f9e56357cf329e3363b1549f",
+      "lf_sha256": "434efe279f8ec997cd887574b97bb7d660f0eba9f9e56357cf329e3363b1549f"
+    },
+    "conformance/checkpoint_error_provenance.py": {
+      "sha256": "99a61d0e4478781e65fc04fa64502a53f3693f438e35fbd72a062c255bda6439",
+      "lf_sha256": "99a61d0e4478781e65fc04fa64502a53f3693f438e35fbd72a062c255bda6439"
+    },
+    "conformance/checkpoint_error_provenance_test.py": {
+      "sha256": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204",
+      "lf_sha256": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204"
+    },
+    "conformance/checkpoint_error_report.py": {
+      "sha256": "a73bb530fc301c901e25a67e97bc00b6504fe041d6178fffcb503b02468579ec",
+      "lf_sha256": "a73bb530fc301c901e25a67e97bc00b6504fe041d6178fffcb503b02468579ec"
+    },
+    "conformance/checkpoint_error_run.py": {
+      "sha256": "7b3a540869a7c7ae53435c26fbc87749140a9d2d0152cc5e2636c43c8bc359e9",
+      "lf_sha256": "7b3a540869a7c7ae53435c26fbc87749140a9d2d0152cc5e2636c43c8bc359e9"
+    },
+    "conformance/run_send_verify.py": {
+      "sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271",
+      "lf_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271"
+    },
+    "conformance/run_timing.py": {
+      "sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+      "lf_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+    },
+    "conformance/scdb_provenance.py": {
+      "sha256": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8",
+      "lf_sha256": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8"
+    },
+    "conformance/scdb_report.py": {
+      "sha256": "fda568482cf27027632dd7e848582c3f6c262db3888c1361d70897a1cb273ff9",
+      "lf_sha256": "fda568482cf27027632dd7e848582c3f6c262db3888c1361d70897a1cb273ff9"
+    },
+    "conformance/scdb_run.py": {
+      "sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd",
+      "lf_sha256": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd"
+    },
+    "conformance/send_verify_report.py": {
+      "sha256": "81625408250ba5b595f86e654d54724b3d5cde65911fd6ab58afecfa116bfb5d",
+      "lf_sha256": "81625408250ba5b595f86e654d54724b3d5cde65911fd6ab58afecfa116bfb5d"
+    },
+    "conformance/timing_report.py": {
+      "sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868",
+      "lf_sha256": "1072cc0e00a6b842149aec2f28480d02c0a9bfc9e4d88f3cd57cf96dee011868"
+    },
+    "distribution/FOLLOWUP_COMPOSITION.md": {
+      "sha256": "81fdd4389ddf1e04ddcdec622ad7251419e5f96364fb0343b24ea7eb9d578eb5",
+      "lf_sha256": "81fdd4389ddf1e04ddcdec622ad7251419e5f96364fb0343b24ea7eb9d578eb5"
+    },
+    "distribution/build_images.py": {
+      "sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
+      "lf_sha256": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897"
+    },
+    "distribution/evidence/followup-qualified-sources.json": {
+      "sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614",
+      "lf_sha256": "fbb1f8fd7303955c46c3c02fcac925fcfaa143ca8e39ee9059d4d5b29bc09614"
+    },
+    "distribution/native.Dockerfile": {
+      "sha256": "012ec1c8b93d5e65c89c6e6657d17e827cdba2352892af05137f5520cbfc3c0d",
+      "lf_sha256": "012ec1c8b93d5e65c89c6e6657d17e827cdba2352892af05137f5520cbfc3c0d"
+    },
+    "distribution/record_qualified_sources.py": {
+      "sha256": "a0ace8c8e3b0f48bc902556a61f336418e7a5dc0ca1ee85cc4ab4d94a273f275",
+      "lf_sha256": "a0ace8c8e3b0f48bc902556a61f336418e7a5dc0ca1ee85cc4ab4d94a273f275"
+    },
+    "distribution/test_build_images.py": {
+      "sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd",
+      "lf_sha256": "aa12f5316f5fa04a15c29f5826f3516142f9ee2f8a0b7a68fd54291c111d69dd"
+    },
+    "distribution/test_integrated_patches.py": {
+      "sha256": "93cfed1d68113e2c9794d6053e4dee3acc22f463cac1a81f73eb9ee3fd883b31",
+      "lf_sha256": "93cfed1d68113e2c9794d6053e4dee3acc22f463cac1a81f73eb9ee3fd883b31"
+    },
+    "distribution/verify_image.py": {
+      "sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015",
+      "lf_sha256": "0c8c3970e0b97624a796948ca35eea4b5b428aa3ca56715c25bb50be69e01015"
+    },
+    "source_port/integrated_patches.py": {
+      "sha256": "7b57bdd8963e1027a6922403f212e78d090d523cdde7d3513164e9c2ba0f449e",
+      "lf_sha256": "7b57bdd8963e1027a6922403f212e78d090d523cdde7d3513164e9c2ba0f449e"
+    },
+    "scripts/qualify_host_input.py": {
+      "sha256": "a5ec326bb420d29c0163022c02bf58ac335136075c3681c664afea589d23ab3e",
+      "lf_sha256": "a5ec326bb420d29c0163022c02bf58ac335136075c3681c664afea589d23ab3e"
+    },
+    "scripts/qualify_host_lifecycle.py": {
+      "sha256": "75d9e4da083053e8d4185afba4d864d2a71da650c31b0ad01dafae27fde5d338",
+      "lf_sha256": "75d9e4da083053e8d4185afba4d864d2a71da650c31b0ad01dafae27fde5d338"
+    },
+    "distribution/test_host_installed_harness.py": {
+      "sha256": "106b898ace3839c8c1576c2676ed91dbf01bdf2725970649f6116ddf9ee9d814",
+      "lf_sha256": "106b898ace3839c8c1576c2676ed91dbf01bdf2725970649f6116ddf9ee9d814"
+    },
+    "distribution/FOLLOWUP_QUALIFICATION.md": {
+      "sha256": "3694420c1032e2f43063983d044db6eb6a2d8c4afe998939a838be8127173894",
+      "lf_sha256": "3694420c1032e2f43063983d044db6eb6a2d8c4afe998939a838be8127173894"
+    },
+    "distribution/evidence/installed-pipe-windows.json": {
+      "sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
+      "lf_sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e"
+    },
+    "distribution/evidence/pipe-test-wheelhouse.json": {
+      "sha256": "75ce6f601288aacd82475ab0d3167cb4c563f0ec89bf44d1b81b08f866f2b0de",
+      "lf_sha256": "75ce6f601288aacd82475ab0d3167cb4c563f0ec89bf44d1b81b08f866f2b0de"
+    },
+    "distribution/host_workflows.py": {
+      "sha256": "3f6d57389cf84bcbc1acd33e17a6f0faa5a4fb206a65b259ee05b9bc9791e8a9",
+      "lf_sha256": "3f6d57389cf84bcbc1acd33e17a6f0faa5a4fb206a65b259ee05b9bc9791e8a9"
+    },
+    "distribution/openbexi_workflows.py": {
+      "sha256": "eb746bd7b33c4b868eb34812874c776515642752ccb897a2c61c14e3e2feb203",
+      "lf_sha256": "eb746bd7b33c4b868eb34812874c776515642752ccb897a2c61c14e3e2feb203"
+    },
+    "distribution/pipe-test-requirements.lock": {
+      "sha256": "3ffb5369824fccca5b7cf301e75489893cf93bb4b6ccb222bf8b71c6ae4ffe7b",
+      "lf_sha256": "3ffb5369824fccca5b7cf301e75489893cf93bb4b6ccb222bf8b71c6ae4ffe7b"
+    },
+    "distribution/prepare_pipe_dependencies.py": {
+      "sha256": "4bf491b6d0910596660ac08074753b2dd6456a015da0aa396d83978304cd0c26",
+      "lf_sha256": "4bf491b6d0910596660ac08074753b2dd6456a015da0aa396d83978304cd0c26"
+    },
+    "distribution/qualify_plugin_verifier.py": {
+      "sha256": "c577e3ff89eb75421cfaf7d46c366635f903b7cd5d1a893c247ba3d075af1d72",
+      "lf_sha256": "c577e3ff89eb75421cfaf7d46c366635f903b7cd5d1a893c247ba3d075af1d72"
+    },
+    "distribution/record_workflows.py": {
+      "sha256": "31c4747cbbd8b72ed1b3cf05c7507da20ffec5065cee314adb766206a1742d91",
+      "lf_sha256": "31c4747cbbd8b72ed1b3cf05c7507da20ffec5065cee314adb766206a1742d91"
+    },
+    "distribution/test_workflow_evidence.py": {
+      "sha256": "176930f5a09309ada9446faddb643131f429ce3be95f5d6a990c6dacfb20198a",
+      "lf_sha256": "176930f5a09309ada9446faddb643131f429ce3be95f5d6a990c6dacfb20198a"
+    },
+    "distribution/workflow_evidence.py": {
+      "sha256": "ecc38af982518dab393bc3c8db2a07b1798423e1bd2445ebfd07086883724a09",
+      "lf_sha256": "ecc38af982518dab393bc3c8db2a07b1798423e1bd2445ebfd07086883724a09"
+    },
+    "scripts/qualify_driver_installed.py": {
+      "sha256": "4a07185cf096187d4808bf771604f0895c01e35ac737f383290fd24d39eb082a",
+      "lf_sha256": "4a07185cf096187d4808bf771604f0895c01e35ac737f383290fd24d39eb082a"
+    },
+    "scripts/qualify_host_upgrade.py": {
+      "sha256": "24a5cb3384568f64dbded15200913ea68f9443df653d6644b9b65577460fe331",
+      "lf_sha256": "24a5cb3384568f64dbded15200913ea68f9443df653d6644b9b65577460fe331"
+    },
+    "conformance/checkpoint_identity_provenance.py": {
+      "sha256": "934b41e1dd291a93a46a2eb235437de221ee7a216dd6d7fb3c0f6eb47788f013",
+      "lf_sha256": "934b41e1dd291a93a46a2eb235437de221ee7a216dd6d7fb3c0f6eb47788f013"
+    },
+    "conformance/checkpoint_identity_provenance_test.py": {
+      "sha256": "411ce7eb4c9759dde864ece109d51df5d2a485313859ac48aaaa225efa8dc9d6",
+      "lf_sha256": "411ce7eb4c9759dde864ece109d51df5d2a485313859ac48aaaa225efa8dc9d6"
+    },
+    "conformance/checkpoint_identity_report.py": {
+      "sha256": "af58e1ca5492736e48177c01fcb2df20614bd2c28204c428f17133d58fb5686a",
+      "lf_sha256": "af58e1ca5492736e48177c01fcb2df20614bd2c28204c428f17133d58fb5686a"
+    },
+    "conformance/checkpoint_identity_run.py": {
+      "sha256": "f2571d0dfbca8b2f6fa516a007fa34fcd22e6019f1b4ad3889c82fe0e8637fde",
+      "lf_sha256": "f2571d0dfbca8b2f6fa516a007fa34fcd22e6019f1b4ad3889c82fe0e8637fde"
+    },
+    "conformance/database_import_report.py": {
+      "sha256": "d6fba153b3996fa74e899f63993c494280987d9d032bb66d7dd62f7bf8b7f6d6",
+      "lf_sha256": "d6fba153b3996fa74e899f63993c494280987d9d032bb66d7dd62f7bf8b7f6d6"
+    },
+    "conformance/installed_provenance.py": {
+      "sha256": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
+      "lf_sha256": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1"
+    },
+    "distribution/evidence/installed-pipe-linux.json": {
+      "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f"
+    },
+    "distribution/test_installed_provenance.py": {
+      "sha256": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f",
+      "lf_sha256": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f"
+    }
+  },
+  "pending": [
+    "Root review and approval of this exact clean source commit before full pinned independent native pair and fresh images",
+    "Fresh installed native conformance and checkpoint identity/error/recovery controls, with current complete source and image bindings",
+    "Exact-image lifecycle, host upgrade/Run/Debug/removal and installed IDE/JetBrains/driver workflows; controlled Windows/Linux pipe checks already pass",
+    "Strict canonical report regeneration and coverage promotion only after current installed sources pass; historical470 remains baseline",
+    "Browser/VNC close and console scroll acceptance is independently pending; ranging and extra child lifecycle changes excluded"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "previous_preparation": {
+    "commit": "a9637d9",
+    "sha256": "ec62714705b760eecfc2995bfabfd93992f236343ef14f31e3771b90d9511d39"
+  },
+  "host_harness_preparation": {
+    "status": "Windows16 and Linux16 installed pipe checks pass; fresh-image host lifecycle pending",
+    "wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\v0.6\\host-candidates\\03fa1f9442bd407e8a2fa1af3bc9cffd\\a\\wheels\\openbexi_spell_host-0.3.1.dev1-py3-none-any.whl",
+      "sha256": "d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d"
+    },
+    "wheel_version": "0.3.1.dev1",
+    "original_tests": {
+      "path": "host_plugin/tests/test_runner_input.py",
+      "sha256": "bd40a9225c41e384aab46c2696cb8c356d5dd045e6eb19a5562076aa88e0cc5a",
+      "lf_sha256": "bd40a9225c41e384aab46c2696cb8c356d5dd045e6eb19a5562076aa88e0cc5a"
+    },
+    "harnesses": {
+      "scripts/qualify_host_input.py": {
+        "sha256": "a5ec326bb420d29c0163022c02bf58ac335136075c3681c664afea589d23ab3e",
+        "lf_sha256": "a5ec326bb420d29c0163022c02bf58ac335136075c3681c664afea589d23ab3e"
+      },
+      "scripts/qualify_host_lifecycle.py": {
+        "sha256": "75d9e4da083053e8d4185afba4d864d2a71da650c31b0ad01dafae27fde5d338",
+        "lf_sha256": "75d9e4da083053e8d4185afba4d864d2a71da650c31b0ad01dafae27fde5d338"
+      }
+    },
+    "unit_tests": 54,
+    "docker_started": true,
+    "native_tests_executed": false,
+    "windows_pipe_tests_executed": true,
+    "linux_pipe_tests_executed": true,
+    "linux_test_dependencies": "Hash-locked cached wheelhouse with verified Linux/Windows CPython3.13 closures",
+    "release_accepted": false,
+    "dependency_record": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\pipe-test-wheelhouse.json",
+      "sha256": "75ce6f601288aacd82475ab0d3167cb4c563f0ec89bf44d1b81b08f866f2b0de",
+      "lf_sha256": "75ce6f601288aacd82475ab0d3167cb4c563f0ec89bf44d1b81b08f866f2b0de",
+      "bytes": 6740
+    },
+    "windows_record": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\installed-pipe-windows.json",
+      "sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
+      "lf_sha256": "61d26d294af7cb34ea3e2bebd58b4767e1971a3c6046336870199ddd205b7a6e",
+      "bytes": 5935
+    },
+    "linux_record": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\distribution\\evidence\\installed-pipe-linux.json",
+      "sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "lf_sha256": "45f6b3bce872dac542fc9a8b27734baf952a37bbaa41a52bcee02187dd7d808f",
+      "bytes": 5352
+    }
+  },
+  "fresh_workflow_recorders": {
+    "prepared": true,
+    "executed": false,
+    "source_binding": true,
+    "image_binding": true,
+    "artifact_binding": true,
+    "platform_binding": true
+  },
+  "ready_for_source_freeze_review": true
+}
