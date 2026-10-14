@@ -116,7 +116,21 @@ for mode in options['modes']:
             assert record['metadata']['source_sha256']==source_hash,record
             (folder/record['filename']).write_bytes(path.read_bytes())
             return path,record
-        def complete(instance,value):
+        def complete(instance,value,event_start=0):
+            # A status snapshot can expose PROMPT before the asynchronous prompt
+            # has been delivered. After recovery, an old instance's prompt must
+            # not authorize an answer to the newly opened instance.
+            deadline=time.monotonic()+12
+            while time.monotonic()<deadline:
+                drain()
+                prompts=[event['message'] for event in events[event_start:]
+                    if event.get('message',{}).get('id')=='MSG_PROMPT'
+                    and event['message'].get('fields',{}).get('ProcId')==instance
+                    and event['message']['fields'].get('Text')=='CHECKPOINT_IDENTITY_READY']
+                if prompts:break
+                time.sleep(.025)
+            else:raise TimeoutError('No delivered recovery prompt for '+instance)
+            row.setdefault('answered_prompts',[]).append(prompts[-1])
             request('MSG_ANSWER',instance,{'ReturnValue':'continue'},send=True)
             final=wait_for({'FINISHED','ERROR','ABORTED'},instance)
             assert final['ExecutorStatus']=='FINISHED',final
@@ -221,7 +235,7 @@ for mode in options['modes']:
                             row['resumed_checkpoints']=[metadata(p) for p in files('main#1')]
                             assert row['resumed_checkpoints']
                             assert all(p['metadata']['source_sha256']==source_hash for p in row['resumed_checkpoints'])
-                            row['final']=complete('main#1',11)
+                            row['final']=complete('main#1',11,reopen_event_start)
                 if expected_reason or case=='invalid-path':
                     assert not (folder/'result-11.json').exists()
                     assert (folder/'effects-11.txt').read_text()=='module executed\n'
