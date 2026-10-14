@@ -17,20 +17,22 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **470 rows, with 293 open**. The prior 422 rows
-are retained, and 48 bounded Event/scheduler/resource/LIMIT/database/Notify/
-ValueType rows are added. Every allocated report was rerun on the independently
-rebuilt wheel and exact DSS image recorded in the checkpoint. Passing migration
-tests do not qualify unsupported Python syntax. PY evaluation explicitly excludes
-generic checkpoint behavior; the retained lambda/exception-handler recorder
-counterexample remains unresolved.
+Current qualification totals **473 rows, with 290 open**. The prior 470 rows
+are retained; two SCDB rows and the Wait modifier now have independently checked
+positive, boundary, failure and recovery evidence. All language suites use the
+independently rebuilt wheel and exact DSS image in the
+[follow-up checkpoint](../docs/FOLLOWUP_CONFORMANCE_QUALIFICATION.json).
+Checkpoint qualification passes 78 controls plus six repeated timing controls.
+The original failures remain recorded, including two harness synchronization
+corrections. PY evaluation still excludes generic checkpoint behavior and
+unsupported Python syntax remains open.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
 | TIME | 42 / 42 | 168 native checks |
-| COMMON | 46 / 66 | Policy, IPC silence, scheduler, ValueType/Units and RESEND |
+| COMMON | 47 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
 | PY | 117 / 122 | 488 checks; imported evaluation, explicit legacy exclusions |
-| DATA | 58 / 94 | Shared context/CAS, typed DTA, configured GDB and atomic user dictionaries |
+| DATA | 60 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
 | FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
 | FLOW | 23 / 51 | 28 traced scenarios, 36 checks and six scanner checks |
 | UI | 28 / 60 | Prompt IPC, Event example and callable Notify compatibility |
@@ -41,8 +43,8 @@ counterexample remains unresolved.
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
 [FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).
-The [combined checkpoint](../docs/V05_CONFORMANCE_QUALIFICATION.json) binds the
-fresh wheel and DSS image, retained baseline failures and combined native regressions.
+The [previous combined checkpoint](../docs/V05_CONFORMANCE_QUALIFICATION.json)
+retains the historical 470-row artifact and baseline evidence.
 It explicitly leaves full v0.5 and dependent v0.6 acceptance false. Passing
 section evidence must recursively depend on supported child behavior; Python 2
 spelling rejection cannot qualify a parent section.

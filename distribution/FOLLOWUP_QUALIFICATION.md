@@ -1,11 +1,13 @@
 # Follow-up qualification runbook
 
-This is a prepared sequence, **not an executed qualification or build freeze**.
-The accepted source checkpoint is still 470 qualified / 293 open at `6f82c2c`.
-Main's subsequent host-only fixes do not qualify the changed native composition.
-Do not start this sequence until the parent reviews the final source-identity and
-context-recovery donor, its checked composition and the final Git freeze.
-Ranging and further child close/kill work remain separate.
+The independently rebuilt follow-up runtime and all language suites have now
+been qualified: see [the 473-qualified / 290-open checkpoint](../docs/FOLLOWUP_CONFORMANCE_QUALIFICATION.json).
+The 78 checkpoint controls and six repeated timing controls pass after explicit
+prompt/action readiness checks and strict runner failure propagation. Failed
+attempts remain retained. Full v0.5/v0.6 acceptance remains false.
+Combined child close/kill integration is being built separately from frozen
+commit `bfff701`; it is not covered by this runtime checkpoint. Ranging remains
+separate. The commands below describe the reproducible qualification sequence.
 
 ## Bind the inputs before execution
 

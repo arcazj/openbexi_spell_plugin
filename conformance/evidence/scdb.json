@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:1bc6f3caedabd8664f1aa7162a9e85276c6a7526dfd9cc8637ddd976b1eff2b2",
+  "runtime_image": "sha256:05250401718be55f148c687e6cc3a7964ce0bde8ac7d190fb6dba7796b39a53f",
   "inputs": {
     "conformance/scdb.Dockerfile": "55f11f4ec1078c5d3451eef92f8631e16f9c662bb58152e23749802b283984a1",
     "conformance/scdb.Dockerfile.dockerignore": "46d1d034edbfc4d0d36687bd458403a86113c6d14eb5f6bf893e8f00c0257ec8",
@@ -7,11 +7,14 @@
     "conformance/scdb_cases.py": "0e1099bdd2fb1318561fbf80e66c8b9ace22128267b43c5de086c7328da7432a",
     "conformance/scdb_checkpoint.py": "37887333955c87c2d221428e19de6e888798d63ec2b0f9961872f1654f7b8428",
     "conformance/scdb_controller.py": "a9d3c15a0adaf9793fd83e5e057b80ff0e9af20919c51aa8070e037dcbb0dc95",
-    "conformance/scdb_provenance.py": "c32d2d3c5df003730a4db806757c1f571b650e7f341d986b89f73550015f3e05",
-    "conformance/scdb_report.py": "47296334b030ab588aa1effeb7a3b64fca96e1fc0cab43860bb0f873e179ba13",
-    "conformance/scdb_run.py": "4b89e736cb47c63825429a27adcbd9a496bc0bd9bf11a0e2b811b2e67dd8ec88",
-    "conformance/installed_provenance.py": "9adad0652859ae2bcbbb0d3627ba52b525844e8d4daece47c20df8d052f50946",
+    "conformance/scdb_provenance.py": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8",
+    "conformance/scdb_report.py": "fda568482cf27027632dd7e848582c3f6c262db3888c1361d70897a1cb273ff9",
+    "conformance/scdb_run.py": "56b01db9e5d6d04bf887618b36a691de8c62e52fc512af50b2165bb7cd0935dd",
+    "conformance/installed_provenance.py": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+    "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+    "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
@@ -20,12 +23,49 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+    "source_port/integrated_patches.py": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
     "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3"
@@ -933,13 +973,13 @@
       "fresh_source": null,
       "oracle": "Original native startup installs named SCDB through the actual DBMGR; public writes fail without memory/file effects, detached values/keys preserve read-only state, real backend refresh recovers, GDB/user databases stay writable.",
       "returncode": 0,
-      "native_log": "* Run script /workspace/reload-positive/data/Procedures/main.py\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/reload-positive/data\n*    SPELL_CONFIG: /workspace/reload-positive/config\n*       SPELL_LOG: /workspace/reload-positive/logs\n==============================================================================\n[ WARNING ] ATTENTION: no warmstart mechanism is being used (scope:2)\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:0\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:1\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:2\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:3\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:4\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:5\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:6\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:7\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:8\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:9\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:10\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:11\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:12\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:49\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:50\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:51\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:52\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:53\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:22\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:23\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:24\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:25\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:26\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:27\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:28\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:30\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:31\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:32\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:33\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:34\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:34\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:56\n[ DISPLAY ] SCDB_READONLY_PASSED (scope:1)\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:57\n[ STATUS  ] FINISHED\n",
+      "native_log": "* Run script /workspace/reload-positive/data/Procedures/main.py\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/reload-positive/data\n*    SPELL_CONFIG: /workspace/reload-positive/config\n*       SPELL_LOG: /workspace/reload-positive/logs\n==============================================================================\n[ WARNING ] ATTENTION: no warmstart mechanism is being used (scope:2)\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:0\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:1\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:2\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:3\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:4\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:5\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:6\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:7\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:8\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:9\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:10\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:11\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:12\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:49\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:50\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:51\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:52\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:53\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:22\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:23\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:24\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:25\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:54\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:26\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:27\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:28\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:30\n[  CALL  ] /workspace/reload-positive/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:31\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:32\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:33\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:34\n[ RETURN  ] /workspace/reload-positive/data/Procedures/main.py:34\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:56\n[ DISPLAY ] SCDB_READONLY_PASSED (scope:1)\n[  LINE  ] /workspace/reload-positive/data/Procedures/main.py:57\n[ STATUS  ] FINISHED\n",
       "controls": [
         {
           "request": {
             "action": "replace",
             "content": "SC 'External update'\nZERO 2\n",
-            "token": "218571213952600"
+            "token": "3795702291600"
           },
           "before_hex": "53432027546573742073706163656372616674270a537061636563726166745f4e616d652027546573742073706163656372616674270a5a45524f20300a46414c53452046616c73650a454d5054592027270a4e4553544544207b276974656d73273a5b312c7b27666c6167273a46616c73657d5d7d0a",
           "after_hex": "5343202745787465726e616c20757064617465270a5a45524f20320a"
@@ -1053,7 +1093,7 @@
           "request": {
             "action": "replace",
             "content": "# externally emptied file\n",
-            "token": "218574275307100"
+            "token": "3798772193600"
           },
           "before_hex": "53432027546573742073706163656372616674270a537061636563726166745f4e616d652027546573742073706163656372616674270a5a45524f20300a46414c53452046616c73650a454d5054592027270a4e4553544544207b276974656d73273a5b312c7b27666c6167273a46616c73657d5d7d0a",
           "after_hex": "232065787465726e616c6c7920656d70746965642066696c650a"
@@ -1095,13 +1135,13 @@
       "fresh_source": null,
       "oracle": "Original native startup installs named SCDB through the actual DBMGR; public writes fail without memory/file effects, detached values/keys preserve read-only state, real backend refresh recovers, GDB/user databases stay writable.",
       "returncode": 0,
-      "native_log": "* Run script /workspace/reload-failure-recovery/data/Procedures/main.py\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/reload-failure-recovery/data\n*    SPELL_CONFIG: /workspace/reload-failure-recovery/config\n*       SPELL_LOG: /workspace/reload-failure-recovery/logs\n==============================================================================\n[ WARNING ] ATTENTION: no warmstart mechanism is being used (scope:2)\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:0\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:1\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:2\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:3\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:4\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:5\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:6\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:7\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:8\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:9\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:10\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:11\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:12\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:49\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:50\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:51\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:16\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:17\n[ DISPLAY ] SPELL exception: Database file not found: '/workspace/reload-failure-recovery/data/SpacecraftDB/SCDB.DB' ( unknown ) (scope:2)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:18\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:52\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:53\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:54\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:16\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:17\n[ DISPLAY ] SPELL exception: Cannot refresh read-only database ( 'utf-8' codec can't decode byte 0xff in position 20: invalid start byte ) (scope:2)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:18\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:55\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:56\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:57\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:58\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:22\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:23\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:24\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:25\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:26\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:27\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:28\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:30\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:31\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:32\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:33\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:34\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:34\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:61\n[ DISPLAY ] SCDB_READONLY_PASSED (scope:1)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:62\n[ STATUS  ] FINISHED\n",
+      "native_log": "* Run script /workspace/reload-failure-recovery/data/Procedures/main.py\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/reload-failure-recovery/data\n*    SPELL_CONFIG: /workspace/reload-failure-recovery/config\n*       SPELL_LOG: /workspace/reload-failure-recovery/logs\n==============================================================================\n[ WARNING ] ATTENTION: no warmstart mechanism is being used (scope:2)\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:0\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:1\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:2\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:3\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:4\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:5\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:6\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:7\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:8\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:9\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:10\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:11\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:12\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:49\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:50\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:51\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:16\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:17\n[ DISPLAY ] SPELL exception: Database file not found: '/workspace/reload-failure-recovery/data/SpacecraftDB/SCDB.DB' ( unknown ) (scope:2)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:18\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:52\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:53\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:54\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:15\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:16\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:17\n[ DISPLAY ] SPELL exception: Cannot refresh read-only database ( 'utf-8' codec can't decode byte 0xff in position 20: invalid start byte ) (scope:2)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:18\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:19\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:55\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:56\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:35\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:36\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:37\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:38\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:39\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:40\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:46\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:41\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:42\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:43\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:44\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:45\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:57\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:58\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:21\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:22\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:23\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:24\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:25\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:59\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:26\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:27\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:28\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:30\n[  CALL  ] /workspace/reload-failure-recovery/data/Procedures/main.py:13\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:14\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:31\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:32\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:33\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:34\n[ RETURN  ] /workspace/reload-failure-recovery/data/Procedures/main.py:34\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:61\n[ DISPLAY ] SCDB_READONLY_PASSED (scope:1)\n[  LINE  ] /workspace/reload-failure-recovery/data/Procedures/main.py:62\n[ STATUS  ] FINISHED\n",
       "controls": [
         {
           "request": {
             "action": "remove",
             "content": null,
-            "token": "218575126327400"
+            "token": "3799603044300"
           },
           "before_hex": "53432027546573742073706163656372616674270a537061636563726166745f4e616d652027546573742073706163656372616674270a5a45524f20300a46414c53452046616c73650a454d5054592027270a4e4553544544207b276974656d73273a5b312c7b27666c6167273a46616c73657d5d7d0a",
           "after_hex": null
@@ -1110,7 +1150,7 @@
           "request": {
             "action": "invalid-utf8",
             "content": null,
-            "token": "218575167661700"
+            "token": "3799654958000"
           },
           "before_hex": null,
           "after_hex": "534320277061727469616c270a42524f4b454e20ff0a"
@@ -1119,7 +1159,7 @@
           "request": {
             "action": "replace",
             "content": "SC 'Recovered'\nNESTED {'items':[2,{'flag':True}]}\n",
-            "token": "218575208285300"
+            "token": "3799695816200"
           },
           "before_hex": "534320277061727469616c270a42524f4b454e20ff0a",
           "after_hex": "534320275265636f7665726564270a4e4553544544207b276974656d73273a5b322c7b27666c6167273a547275657d5d7d0a"
@@ -1365,8 +1405,8 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:39\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step scdb-checkpoint: Preserve read-only database aliases (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nSCDB_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-13_120349_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nSCDB_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:28\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:29\n[  ITEM  ] Database<SYSTEM>:   (IN PROGRESS) Comment: In progress... Time:  Count: 0\n[  ITEM  ] Database<VALUE>: 'SCDB.DB' (FAILED) Comment: FAILED Time:  Count: 0\n[  ERROR  ] Failed to save database Database is read-only ( SCDB ) (scope:2)\n[  ITEM  ] Database<SYSTEM>:   (FAILED) Comment: Failed Time:  Count: 0\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) ( unknown ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:30\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:31\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:34\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:35\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:36\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:37\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:38\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:37\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:37\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:40\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "7adaacc305b1667633265f1e52dafdbb37be901725440089f6318eb51b978bec",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-14_020830_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nSCDB_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:28\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:29\n[  ITEM  ] Database<SYSTEM>:   (IN PROGRESS) Comment: In progress... Time:  Count: 0\n[  ITEM  ] Database<VALUE>: 'SCDB.DB' (FAILED) Comment: FAILED Time:  Count: 0\n[  ERROR  ] Failed to save database Database is read-only ( SCDB ) (scope:2)\n[  ITEM  ] Database<SYSTEM>:   (FAILED) Comment: Failed Time:  Count: 0\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) ( unknown ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:30\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:31\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:34\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:35\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:36\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:37\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:38\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:37\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:37\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:40\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "a312a1795886c8fb2769ce46857aee94fe209f3bc4c52811a224e2b47d3da38d",
       "procedure_sha256": "8c5007aa55a5324578b4326d9e62340ca9b004570231e47d63563a5931a2b95e",
       "result": {
         "restored": true,
@@ -1384,8 +1424,8 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:39\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step scdb-checkpoint: Preserve read-only database aliases (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nSCDB_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-13_120351_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nSCDB_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:28\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:29\n[  ITEM  ] Database<SYSTEM>:   (IN PROGRESS) Comment: In progress... Time:  Count: 0\n[  ITEM  ] Database<VALUE>: 'SCDB.DB' (FAILED) Comment: FAILED Time:  Count: 0\n[  ERROR  ] Failed to save database Database is read-only ( SCDB ) (scope:2)\n[  ITEM  ] Database<SYSTEM>:   (FAILED) Comment: Failed Time:  Count: 0\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) ( unknown ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:30\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:31\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:34\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:35\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:36\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:37\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:38\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:37\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:37\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:40\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "26c7fef9170fa3e7b01230e68a8879315ec6f12eea5b0f9723c293f5e1469051",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-14_020832_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nSCDB_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:22\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:23\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:24\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:25\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:28\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:29\n[  ITEM  ] Database<SYSTEM>:   (IN PROGRESS) Comment: In progress... Time:  Count: 0\n[  ITEM  ] Database<VALUE>: 'SCDB.DB' (FAILED) Comment: FAILED Time:  Count: 0\n[  ERROR  ] Failed to save database Database is read-only ( SCDB ) (scope:2)\n[  ITEM  ] Database<SYSTEM>:   (FAILED) Comment: Failed Time:  Count: 0\n[ DISPLAY ] SPELL exception: Database is read-only ( SCDB ) ( unknown ) (scope:2)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:30\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:31\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:34\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:35\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:36\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:37\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:38\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:37\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:37\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:39\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:40\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "dfd8b585aa47659c06eb8a8a56fe82a7fc24c311a9625daf61986135656dc114",
       "procedure_sha256": "614b0536c7249c107583de3d7281921b26b4fa5ab57a84603942533fc6a13177",
       "result": {
         "restored": true,
@@ -1467,9 +1507,9 @@
     }
   },
   "runtime_sources": {
-    "baseline": {
+    "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "65d1502e40020ef357fe02ce812ccd9ac1ecdd1658042c91c2c22d442748d35f",
+      "manifest_sha256": "d6cb73228f5e33229cecffcde137aae926a23cab5df149abd23b0ebe758e0553",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -1478,10 +1518,22 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "61880dfcc24747d7095968205d8e6335f49b231a751d266595ccaf391331b6a2"
+              "integrated_identity": "8ca43ca467df6daa560ce1b058912b1bbd49205063145f7531310ea1a10e1b68"
             },
-            "manifest_sha256": "45fc56699da879a466779ed744ff2c3876865bed10821633d54f0e7cf97faef2",
+            "manifest_sha256": "9f94cd990c3fd66dee7d0875955086068b33543ba820056e1eb169b747fa6d92",
             "recipes": {
+              "checkpoint_context_patches.py": {
+                "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+                "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+              },
+              "checkpoint_error_patches.py": {
+                "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+                "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+              },
+              "checkpoint_identity_patches.py": {
+                "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+                "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+              },
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
@@ -1493,6 +1545,10 @@
               "data_files_patches.py": {
                 "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
                 "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+              },
+              "database_import_patches.py": {
+                "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+                "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -1515,12 +1571,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
-                "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+                "lf_sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f",
+                "sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f"
+              },
+              "limit_patches.py": {
+                "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+                "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
               },
               "native_patches.py": {
                 "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
                 "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+              },
+              "notification_patches.py": {
+                "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+                "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
               },
               "obs_patches.py": {
                 "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
@@ -1530,15 +1594,47 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "resource_patches.py": {
+                "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+                "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "scdb_patches.py": {
+                "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+                "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+              },
+              "scheduler_patches.py": {
+                "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+                "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+              },
+              "send_verify_patches.py": {
+                "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+                "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+              },
+              "shutdown_pause_patches.py": {
+                "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+                "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+              },
+              "timing_patches.py": {
+                "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+                "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+              },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
                 "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+              },
+              "user_database_patches.py": {
+                "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+                "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+              },
+              "value_units_patches.py": {
+                "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+                "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
               }
             },
             "schema": "openbexi.spell.integrated-native/1",
             "sources": {
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "20b36d7d5639a914333b8ce2660ceae00d1e7c0c1b593e5c30f0af6b31f0bf97",
+                "patched_sha256": "5c5d697fc6c54feaa44fe60ea4c0c5148f8c5db8299a4a503362af39b758f7cd",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -1558,18 +1654,48 @@
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
                 "original_sha256": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
-                "patched_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81",
+                "patched_sha256": "18a6e1ac5a7556232df381b5084d615d91756a4bbdfa2a18aa2fb672108d18d7",
                 "ported_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a"
+              },
+              "lib/SPELL_CTX/src/SPELLexecutor.C": {
+                "original_sha256": "63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32",
+                "patched_sha256": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33",
+                "ported_sha256": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2"
               },
               "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
                 "original_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
                 "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
                 "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
               },
+              "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+                "original_sha256": "89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e",
+                "patched_sha256": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df",
+                "ported_sha256": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6"
+              },
+              "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+                "original_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+                "patched_sha256": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e",
+                "ported_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d"
+              },
+              "lib/SPELL_EXC/src/SPELLframeManager.C": {
+                "original_sha256": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
+                "patched_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7",
+                "ported_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf"
+              },
               "lib/SPELL_EXC/src/SPELLgoto.C": {
                 "original_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
                 "patched_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
                 "ported_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+              },
+              "lib/SPELL_EXC/src/SPELLinterpreter.C": {
+                "original_sha256": "3dd0a455669237924726637ca4b25ae524acfaf10d577b18a7c36258ad3f1256",
+                "patched_sha256": "3365e1e1f0ae0c697e9dd7152ad8fd2d4d0b7e0f0f04b73ba82d3cafb165aade",
+                "ported_sha256": "670726c1853be672353f5e35da579d0e1c1569ab457d7c0cfe3d4c29692e3b33"
+              },
+              "lib/SPELL_EXC/src/SPELLscheduler.C": {
+                "original_sha256": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
+                "patched_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
+                "ported_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
               },
               "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                 "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
@@ -1581,12 +1707,170 @@
                 "patched_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec",
                 "ported_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8"
               }
-            }
+            },
+            "stages": [
+              {
+                "recipe": "ui_native_patches.py",
+                "sources": {
+                  "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+                    "after_sha256": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724",
+                    "before_sha256": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c"
+                  }
+                }
+              },
+              {
+                "recipe": "dta_ipc_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+                    "after_sha256": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b",
+                    "before_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f"
+                  }
+                }
+              },
+              {
+                "recipe": "data_files_native_patches.py",
+                "sources": {
+                  "lib/SPELL_CTX/src/SPELLcontext.C": {
+                    "after_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81",
+                    "before_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a"
+                  }
+                }
+              },
+              {
+                "recipe": "checkpoint_context_patches.py",
+                "sources": {
+                  "lib/SPELL_CTX/src/SPELLcontext.C": {
+                    "after_sha256": "18a6e1ac5a7556232df381b5084d615d91756a4bbdfa2a18aa2fb672108d18d7",
+                    "before_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+                  }
+                }
+              },
+              {
+                "recipe": "shutdown_pause_patches.py",
+                "sources": {
+                  "lib/SPELL_CTX/src/SPELLexecutor.C": {
+                    "after_sha256": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33",
+                    "before_sha256": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2"
+                  }
+                }
+              },
+              {
+                "recipe": "dta_native_patches.py",
+                "sources": {
+                  "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+                    "after_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
+                    "before_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+                  }
+                }
+              },
+              {
+                "recipe": "scheduler_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+                    "after_sha256": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df",
+                    "before_sha256": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6"
+                  }
+                }
+              },
+              {
+                "recipe": "scheduler_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+                    "after_sha256": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e",
+                    "before_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d"
+                  }
+                }
+              },
+              {
+                "recipe": "checkpoint_error_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLframeManager.C": {
+                    "after_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7",
+                    "before_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf"
+                  }
+                }
+              },
+              {
+                "recipe": "checkpoint_identity_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLinterpreter.C": {
+                    "after_sha256": "3365e1e1f0ae0c697e9dd7152ad8fd2d4d0b7e0f0f04b73ba82d3cafb165aade",
+                    "before_sha256": "670726c1853be672353f5e35da579d0e1c1569ab457d7c0cfe3d4c29692e3b33"
+                  }
+                }
+              },
+              {
+                "recipe": "scheduler_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLscheduler.C": {
+                    "after_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
+                    "before_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
+                  }
+                }
+              },
+              {
+                "recipe": "dta_time_patches.py",
+                "sources": {
+                  "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+                    "after_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
+                    "before_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
+                  }
+                }
+              },
+              {
+                "recipe": "dta_time_patches.py",
+                "sources": {
+                  "lib/SPELL_UTIL/src/SPELLtime.C": {
+                    "after_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec",
+                    "before_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8"
+                  }
+                }
+              },
+              {
+                "recipe": "flow_patches.py",
+                "sources": {
+                  "lib/SPELL_CIF/src/SPELLasRun.C": {
+                    "after_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+                    "before_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a"
+                  }
+                }
+              },
+              {
+                "recipe": "flow_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLgoto.C": {
+                    "after_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
+                    "before_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+                  }
+                }
+              },
+              {
+                "recipe": "integrated_patches.py",
+                "sources": {
+                  "include/SPELL_WS/SPELLcontinuationSource.H": {
+                    "after_sha256": "5c5d697fc6c54feaa44fe60ea4c0c5148f8c5db8299a4a503362af39b758f7cd",
+                    "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
+                  }
+                }
+              }
+            ]
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "cef33e4380163100640c3d57f9431c1ec5814653287d1e4fe0e320f272f95c09",
+            "manifest_sha256": "5cfcd927ca64fe5b7cdcccfcae1d0fcdda7a499f669163f6a3499085e13e27a3",
             "recipes": {
+              "checkpoint_context_patches.py": {
+                "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+                "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+              },
+              "checkpoint_error_patches.py": {
+                "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+                "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+              },
+              "checkpoint_identity_patches.py": {
+                "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+                "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+              },
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
@@ -1598,6 +1882,10 @@
               "data_files_patches.py": {
                 "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
                 "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+              },
+              "database_import_patches.py": {
+                "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+                "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -1620,12 +1908,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
-                "sha256": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e"
+                "lf_sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f",
+                "sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f"
+              },
+              "limit_patches.py": {
+                "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+                "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
               },
               "native_patches.py": {
                 "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
                 "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+              },
+              "notification_patches.py": {
+                "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+                "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
               },
               "obs_patches.py": {
                 "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
@@ -1635,9 +1931,41 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "resource_patches.py": {
+                "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+                "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "scdb_patches.py": {
+                "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+                "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+              },
+              "scheduler_patches.py": {
+                "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+                "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+              },
+              "send_verify_patches.py": {
+                "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+                "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+              },
+              "shutdown_pause_patches.py": {
+                "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+                "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+              },
+              "timing_patches.py": {
+                "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+                "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+              },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
                 "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+              },
+              "user_database_patches.py": {
+                "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+                "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+              },
+              "value_units_patches.py": {
+                "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+                "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
               }
             },
             "schema": "openbexi.spell.integrated-python/1",
@@ -1659,18 +1987,53 @@
               },
               "spell/lang/helpers/filehelper.py": {
                 "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
-                "patched_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+                "patched_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
                 "ported_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+              },
+              "spell/lang/helpers/limhelper.py": {
+                "original_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+                "patched_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+                "ported_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+              },
+              "spell/lang/helpers/rschelper.py": {
+                "original_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+                "patched_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+                "ported_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
               },
               "spell/lang/helpers/tchelper.py": {
                 "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
-                "patched_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+                "patched_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
                 "ported_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
               },
               "spell/lang/helpers/tmhelper.py": {
                 "original_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
-                "patched_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+                "patched_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
                 "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+              },
+              "spell/lang/modifiers.py": {
+                "original_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+                "patched_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                "ported_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+              },
+              "spell/lib/adapter/config.py": {
+                "original_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+                "patched_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+                "ported_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+              },
+              "spell/lib/adapter/databases/database.py": {
+                "original_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+                "patched_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
+                "ported_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e"
+              },
+              "spell/lib/adapter/databases/dbfile.py": {
+                "original_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+                "patched_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+                "ported_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
+              },
+              "spell/lib/adapter/dbmgr.py": {
+                "original_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+                "patched_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+                "ported_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188"
               },
               "spell/lib/adapter/expression.py": {
                 "original_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
@@ -1682,9 +2045,14 @@
                 "patched_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
                 "ported_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
               },
+              "spell/lib/adapter/resources.py": {
+                "original_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+                "patched_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+                "ported_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+              },
               "spell/lib/adapter/tc_item.py": {
                 "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
-                "patched_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+                "patched_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
                 "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
               },
               "spell/lib/adapter/tm.py": {
@@ -1696,8 +2064,197 @@
                 "original_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
                 "patched_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
                 "ported_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+              },
+              "spell/utils/grpc_utils.py": {
+                "original_sha256": "aa6c7f35a2159c4dbd8d98422be7a606b7061d3aba043c738900c1eab19e7049",
+                "patched_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+                "ported_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+              },
+              "spell/utils/vimport.py": {
+                "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
+                "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                "ported_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
               }
-            }
+            },
+            "stages": [
+              {
+                "recipe": "data_files_patches.py",
+                "sources": {
+                  "spell/lang/helpers/datahelper.py": {
+                    "after_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+                    "before_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f"
+                  },
+                  "spell/lang/helpers/filehelper.py": {
+                    "after_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+                    "before_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+                  },
+                  "spell/lib/adapter/file.py": {
+                    "after_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+                    "before_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
+                  }
+                }
+              },
+              {
+                "recipe": "flow_patches.py",
+                "sources": {
+                  "spell/lang/helpers/exechelper.py": {
+                    "after_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+                    "before_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d"
+                  }
+                }
+              },
+              {
+                "recipe": "obs_patches.py",
+                "sources": {
+                  "spell/lang/helpers/basehelper.py": {
+                    "after_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+                    "before_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7"
+                  },
+                  "spell/lang/helpers/tmhelper.py": {
+                    "after_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+                    "before_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+                  },
+                  "spell/lib/adapter/expression.py": {
+                    "after_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+                    "before_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77"
+                  },
+                  "spell/lib/adapter/tm.py": {
+                    "after_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+                    "before_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084"
+                  },
+                  "spell/lib/adapter/verifier.py": {
+                    "after_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+                    "before_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+                  }
+                }
+              },
+              {
+                "recipe": "cmd_patches.py",
+                "sources": {
+                  "spell/lang/helpers/tchelper.py": {
+                    "after_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+                    "before_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
+                  },
+                  "spell/lib/adapter/tc_item.py": {
+                    "after_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+                    "before_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
+                  }
+                }
+              },
+              {
+                "recipe": "resource_patches.py",
+                "sources": {
+                  "spell/lang/helpers/rschelper.py": {
+                    "after_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+                    "before_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
+                  },
+                  "spell/lib/adapter/resources.py": {
+                    "after_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+                    "before_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+                  }
+                }
+              },
+              {
+                "recipe": "limit_patches.py",
+                "sources": {
+                  "spell/lang/helpers/limhelper.py": {
+                    "after_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+                    "before_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+                  },
+                  "spell/lang/helpers/tmhelper.py": {
+                    "after_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
+                    "before_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544"
+                  }
+                }
+              },
+              {
+                "recipe": "database_import_patches.py",
+                "sources": {
+                  "spell/lib/adapter/databases/dbfile.py": {
+                    "after_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095",
+                    "before_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
+                  },
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc",
+                    "before_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+                  }
+                }
+              },
+              {
+                "recipe": "user_database_patches.py",
+                "sources": {
+                  "spell/lang/helpers/filehelper.py": {
+                    "after_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+                    "before_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057"
+                  },
+                  "spell/lib/adapter/databases/dbfile.py": {
+                    "after_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+                    "before_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+                  },
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                    "before_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+                  }
+                }
+              },
+              {
+                "recipe": "notification_patches.py",
+                "sources": {
+                  "spell/lang/modifiers.py": {
+                    "after_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                    "before_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+                  },
+                  "spell/lib/adapter/config.py": {
+                    "after_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+                    "before_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+                  },
+                  "spell/utils/grpc_utils.py": {
+                    "after_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+                    "before_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+                  }
+                }
+              },
+              {
+                "recipe": "value_units_patches.py",
+                "sources": {
+                  "spell/lib/adapter/tc_item.py": {
+                    "after_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+                    "before_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7"
+                  }
+                }
+              },
+              {
+                "recipe": "scdb_patches.py",
+                "sources": {
+                  "spell/lib/adapter/databases/database.py": {
+                    "after_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
+                    "before_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e"
+                  },
+                  "spell/lib/adapter/dbmgr.py": {
+                    "after_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+                    "before_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188"
+                  }
+                }
+              },
+              {
+                "recipe": "timing_patches.py",
+                "sources": {
+                  "spell/lang/helpers/tchelper.py": {
+                    "after_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8",
+                    "before_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e"
+                  }
+                }
+              },
+              {
+                "recipe": "send_verify_patches.py",
+                "sources": {
+                  "spell/lang/helpers/tchelper.py": {
+                    "after_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+                    "before_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8"
+                  }
+                }
+              }
+            ]
           }
         },
         "inputs": {
@@ -1705,6 +2262,9 @@
           "README.md": "02a5be2b9a3d0b29dad63775bf91079b6a64528238a741ac543175d4f6738ae2",
           "build.lock": "8c103477731301f7c4ad2c88e74ade1d8ec6e341e0e8058c94f4c9727e533fa7",
           "build.py": "2ef82935062b54d5072468b2e8fb13e7e442936241f854d65a73e9c52f7ce905",
+          "checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+          "checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+          "checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
           "cif_fixtures.py": "f94a4afc5fbb5ae0d1095b897a9cbd78f1b4b4c18d9b742087377ab3b5d53239",
           "cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
           "context-build.Dockerfile": "03cdc3eb17825c891e37e1dd8d6a253dbd3db0631e759f4cbad64fb7949d7cd7",
@@ -1715,6 +2275,7 @@
           "controller_peer.cpp": "0b4d6477d0c7e6290e0f1093642efb90f8060b748d5e516a447116fd410a49e2",
           "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
           "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+          "database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
           "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
           "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
           "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
@@ -1744,7 +2305,8 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "b06d69cf5005d7025f1c1883e5210e8bbc0f4a29db13c5641b06690d713e483e",
+          "integrated_patches.py": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f",
+          "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
           "native-build.Dockerfile": "aefa4f5008371516e6807d13c97fbfde29814294d48becdefa7fe45a3c3110e7",
@@ -1826,6 +2388,7 @@
           "native_manifest.py": "6babaae871e213a11b63660e18b3a5a2b7e9959b4b54c1ca6bc62cbf2ea11ab9",
           "native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
           "native_probe.py": "3aeac34e80cfb00a0033e87e05e9a4282c2781bc734f58b6f58d8bea2892adf6",
+          "notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
@@ -1839,24 +2402,32 @@
           "qualify_service_bindings.cpp": "771d4701f695d6285ddd7d55aa50b65deac77f5a747733a7338162c7db79cfcb",
           "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
           "record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
+          "resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
           "runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
+          "scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+          "scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+          "send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
           "server_peer.cpp": "65ef0cf1b7e8489223ed95ed366527987d0d61328871588193518ac6a4095403",
           "service_recovery_fixtures.py": "bb7591fec4978600f2da7367d2a837794cb7e0a43c1c7a9a43f9dc7d38a6e5fc",
           "service_recovery_peer.cpp": "9bc05ff17577c3640acb3b2bb48598709395c5fa0112a8912f5da14919633ff9",
+          "shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+          "timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
           "trace-unwind.Dockerfile": "e1c96eb52127facbf9c205d7210207d6e973e9c2f675aeaf4f505135d7d51fa3",
           "trace-unwind.Dockerfile.dockerignore": "75c9178c954dcdb2c0f4449c622859eaeee9b23c4996112b4664a18630e87e8e",
           "trace_unwind_probe.cpp": "4270b43411bc70dd67a602800a3afa2cf10f464cd44ac616dde5038b0b09c9cc",
-          "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+          "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+          "user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+          "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+          "SPELL-Context": "7dc27a4f870962e79873872c0507bd753685a66ffbc09089e87b57a1bd575c98",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
           "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
           "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-          "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+          "libspell_executor313.so": "071688da8677215288901ee6269fca4c65bb8c82e964e89eb62c9eef30f969da"
         },
-        "native_gate_policy_sha256": "afca4a235b9f1f29ad02ce74bfb5057bad6d73eacd1ca334bd305b0980fe42cd",
+        "native_gate_policy_sha256": "df8a7b6914b08af46b1a007c0b4198c42826adba1de18474bfde717f062246da",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1876,37 +2447,37 @@
           "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
           "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
           "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
-          "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+          "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
           "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
-          "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+          "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
           "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
           "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
           "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
-          "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
-          "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
-          "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+          "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+          "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+          "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
           "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
           "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-          "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+          "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
           "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
           "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
           "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
-          "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+          "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
           "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
           "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
           "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
           "spell/lib/adapter/data.py": "a95815dcc408901699d393bf3fb304875583618aa52e140f4207bef3b25a2a0b",
           "spell/lib/adapter/databases/__init__.py": "199acfcab148111b8f8da37793125dc81ff6dafea8c56a9965c844a7a00a929f",
-          "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+          "spell/lib/adapter/databases/database.py": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
           "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
           "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
-          "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+          "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
           "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
           "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
           "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
           "spell/lib/adapter/databases/dbsvn.py": "0c6179425e2cbfee4d0630d1e94c509eca1e479128b4c781c7bb26fa4b7666b1",
           "spell/lib/adapter/databases/dbsvnspb.py": "7268148060bd52286a86d06694f2f94785fa0972b4293bdcec5af105e3dcda78",
-          "spell/lib/adapter/dbmgr.py": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+          "spell/lib/adapter/dbmgr.py": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
           "spell/lib/adapter/ev.py": "5786a54339262085fb270b6526650bd23104a800d77fa5ebb6522b20d9c3ef2e",
           "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
           "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
@@ -1916,11 +2487,11 @@
           "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
           "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
           "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
-          "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+          "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
           "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
           "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
           "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-          "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+          "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
           "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
           "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
           "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -1954,25 +2525,25 @@
           "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
           "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
           "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
-          "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+          "spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
           "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
           "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
           "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
           "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
           "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
           "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-          "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+          "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
         },
         "release_scope": "Original native foundation; full language conformance remains separate",
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+        "SPELL-Context": "7dc27a4f870962e79873872c0507bd753685a66ffbc09089e87b57a1bd575c98",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
         "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
         "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-        "libspell_executor313.so": "45c26140c8c0f9b89d8173518f38e826ff43b7d1372b80facafcab690f3d666a"
+        "libspell_executor313.so": "071688da8677215288901ee6269fca4c65bb8c82e964e89eb62c9eef30f969da"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1990,37 +2561,37 @@
         "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
         "spell/lang/helpers/evhelper.py": "22e0935293ea01df60d86744c5dd14043e0c693d822b50a7f170326791d9c804",
         "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
-        "spell/lang/helpers/filehelper.py": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+        "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
         "spell/lang/helpers/genhelper.py": "c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe",
-        "spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+        "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
         "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
         "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
         "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
-        "spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
-        "spell/lang/helpers/tchelper.py": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
-        "spell/lang/helpers/tmhelper.py": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+        "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+        "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+        "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
         "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
         "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-        "spell/lang/modifiers.py": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+        "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
         "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
         "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
         "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
-        "spell/lib/adapter/config.py": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+        "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
         "spell/lib/adapter/constants/__init__.py": "e25d05cf82e242ac25e2336abac5a541c0f2d855a6870235c52f872bccf6638b",
         "spell/lib/adapter/constants/core.py": "58501708ce6b8e61a9c11241c7bee8ee30609019f7fa337ce24063f73e9b236b",
         "spell/lib/adapter/constants/notification.py": "af913f04e9d669a714d80a4999598c05fccd26ca91d5bfc96439edcd772c606b",
         "spell/lib/adapter/data.py": "a95815dcc408901699d393bf3fb304875583618aa52e140f4207bef3b25a2a0b",
         "spell/lib/adapter/databases/__init__.py": "199acfcab148111b8f8da37793125dc81ff6dafea8c56a9965c844a7a00a929f",
-        "spell/lib/adapter/databases/database.py": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+        "spell/lib/adapter/databases/database.py": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
         "spell/lib/adapter/databases/datasource.py": "5f54233f517fb1c6e0cc9e659391d69abc5d98a9f897657af561c1243e492df1",
         "spell/lib/adapter/databases/dbasrun.py": "d1c0ac40422fb917a76cc9d483ce6b68bc2ecd8e37c85be57979c9464a7b43c5",
-        "spell/lib/adapter/databases/dbfile.py": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+        "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
         "spell/lib/adapter/databases/dbfileeph.py": "333e77561e7ef149de1b7d7ce99de15dba003039602d673b3165ed5d77bad0fb",
         "spell/lib/adapter/databases/dbfilespb.py": "56f7e8eab1ca31738c2d66ce29ddca7007fa7a8bd1c2f9876e777b2174b50563",
         "spell/lib/adapter/databases/dbraw.py": "ddf3e14aaab3cc2ad10ce6c74ec5287641f0cf0ec059fb76f18653f435a750d3",
         "spell/lib/adapter/databases/dbsvn.py": "0c6179425e2cbfee4d0630d1e94c509eca1e479128b4c781c7bb26fa4b7666b1",
         "spell/lib/adapter/databases/dbsvnspb.py": "7268148060bd52286a86d06694f2f94785fa0972b4293bdcec5af105e3dcda78",
-        "spell/lib/adapter/dbmgr.py": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+        "spell/lib/adapter/dbmgr.py": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
         "spell/lib/adapter/ev.py": "5786a54339262085fb270b6526650bd23104a800d77fa5ebb6522b20d9c3ef2e",
         "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
         "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
@@ -2030,11 +2601,11 @@
         "spell/lib/adapter/pcs.py": "b064a6523a386b05725f53c53a8dc948d3847de3ab71377ec0cf788503df8e59",
         "spell/lib/adapter/pcs_item.py": "acfdff0c1de3f50f447e0012fe0eb6fac47a16023e92a9b40379cb114088f98f",
         "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
-        "spell/lib/adapter/resources.py": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+        "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
         "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
         "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
         "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-        "spell/lib/adapter/tc_item.py": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+        "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
         "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
         "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
         "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -2068,45 +2639,216 @@
         "spell/utils/corba.py": "487eef920ce41830dcbd0e9d5ecdf43d2b99249a412a3dd531bf502ee2886a03",
         "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
         "spell/utils/getch.py": "f82ebbd067ef01c6aa39459d24b988afdb01f8992176a96fe056240dcefc9e13",
-        "spell/utils/grpc_utils.py": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7",
+        "spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
         "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
         "spell/utils/memoize.py": "607f3a61722e564637ba1e895e3087af21f0ddb0f7fd5a8dfb6cc1598446a661",
         "spell/utils/resources_utils.py": "1f1aa00f617d644121e1ac7464478ba44f41d07ddcdc27d611453531ad1c2a09",
         "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
         "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
         "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-        "spell/utils/vimport.py": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
-      }
-    },
-    "importer": {
-      "spell/utils/vimport.py": {
-        "preimage": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
-        "sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+        "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
       },
-      "spell/lib/adapter/databases/dbfile.py": {
-        "preimage": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
-        "sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+      "driver_composition": {
+        "profile": "repository-dss-integrated-wheel/1",
+        "manifest_sha256": "641d2575f9b5d9712a45e6c5c5845009fab413e1e3f5a3f943203ac1fe971796",
+        "manifest": {
+          "schema": "openbexi.spell.integrated-driver/1",
+          "source_profile": "repository-dss-driver-with-checked-corrections",
+          "recipes": {
+            "integrated_patches.py": {
+              "sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f",
+              "lf_sha256": "5f358a0f18e095a1159d6adade6f00a04c5177c542b2ce45216be88159a5e36f"
+            },
+            "native_patches.py": {
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "patches.py": {
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "data_files_native_patches.py": {
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "dta_native_patches.py": {
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_patches.py": {
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "flow_analyze.py": {
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "obs_patches.py": {
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "ui_native_patches.py": {
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            },
+            "cmd_patches.py": {
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "dta_ipc_patches.py": {
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "scheduler_patches.py": {
+              "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+              "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+            },
+            "resource_patches.py": {
+              "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+              "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+            },
+            "limit_patches.py": {
+              "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+              "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
+            },
+            "database_import_patches.py": {
+              "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+              "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+            },
+            "notification_patches.py": {
+              "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+              "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
+            },
+            "value_units_patches.py": {
+              "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+              "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
+            },
+            "user_database_patches.py": {
+              "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+              "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+            },
+            "scdb_patches.py": {
+              "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+              "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+            },
+            "timing_patches.py": {
+              "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+              "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+            },
+            "checkpoint_error_patches.py": {
+              "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+              "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+            },
+            "checkpoint_identity_patches.py": {
+              "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+              "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+            },
+            "checkpoint_context_patches.py": {
+              "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+              "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+            },
+            "send_verify_patches.py": {
+              "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+              "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+            },
+            "shutdown_pause_patches.py": {
+              "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+              "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+            }
+          },
+          "sources": {
+            "openbexi_dss_proxy/tc.py": {
+              "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+              "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+            },
+            "openbexi_dss_proxy/tm.py": {
+              "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+              "patched_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+            }
+          },
+          "stages": [
+            {
+              "recipe": "limit_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tm.py": {
+                  "before_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+                  "after_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6"
+                }
+              }
+            },
+            {
+              "recipe": "value_units_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+                  "after_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+                }
+              }
+            },
+            {
+              "recipe": "timing_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tm.py": {
+                  "before_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6",
+                  "after_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+                }
+              }
+            }
+          ],
+          "python_sources": {
+            "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+            "openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+            "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+            "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+            "openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+            "openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+            "openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+            "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+            "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+            "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+            "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+            "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+            "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+            "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+            "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
+            "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+            "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+            "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+            "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+            "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+            "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+            "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+            "openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+            "openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+            "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
+          }
+        },
+        "record_files_verified": 68
       }
     },
-    "scdb": {
-      "schema": "openbexi.spell.scdb-overlay/1",
+    "scdb_stage": {
+      "recipe": "scdb_patches.py",
       "sources": {
         "spell/lib/adapter/databases/database.py": {
-          "original_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
-          "ported_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
-          "patched_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0"
+          "after_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
+          "before_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e"
         },
         "spell/lib/adapter/dbmgr.py": {
-          "original_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
-          "ported_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
-          "patched_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e"
+          "after_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+          "before_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188"
         }
-      },
-      "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-      "recipe_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
-      "limitation": "Diagnostic overlay; fresh composed wheel with complete RECORD is required for distribution acceptance."
-    },
-    "import_recipe_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+      }
+    }
   },
   "controller_exit_code": 0,
   "full_v05_accepted": false,
@@ -2140,9 +2882,9 @@
   },
   "regressions": {
     "database_import": {
-      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.5\\database-import\\13f05552db38438ba9ab16165a3678e8\\result.json",
-      "sha256": "b2f900f301927c2ab0bdcabbb0f2734c0cb0587b213a986a066b56e3423c3f76",
-      "runtime_image": "sha256:1bc6f3caedabd8664f1aa7162a9e85276c6a7526dfd9cc8637ddd976b1eff2b2",
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.5\\database-import\\dcc583ad526e440eb28560a5efc39531\\result.json",
+      "sha256": "da63bcbf02d09105d432dc918851d29d389c0b3c2144197a8a42c14e559cf8bf",
+      "runtime_image": "sha256:05250401718be55f148c687e6cc3a7964ce0bde8ac7d190fb6dba7796b39a53f",
       "checks": 16
     }
   },
@@ -2151,12 +2893,13 @@
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\db929575831a4a7f89732bcc3e8e87fd\\result.json",
       "sha256": "4599c36b631af07c552849eb610f16da4ee91cacbabd6765f1704be1bb04d4db",
       "runtime_image": "sha256:1bc6f3caedabd8664f1aa7162a9e85276c6a7526dfd9cc8637ddd976b1eff2b2",
-      "status": "unresolved",
+      "same_runtime_image": false,
+      "status": "historical-failure-retained",
       "modes": [
         "ON_LINE",
         "ON_STEP"
       ],
-      "observation": "SCDB aliases and detached data restored, but rejecting writes through procedure-local lambdas after resume produced checkpoint requires a synchronous thread-owned frame and timed out. Direct public-method calls and direct SaveDictionary pass on identical runtime bytes. No original-error control has isolated the cause; generic lambda/error-handler checkpoint compatibility is not qualified."
+      "observation": "In this retained historical run, SCDB aliases and detached data restored, but rejecting writes through procedure-local lambdas after resume produced checkpoint requires a synchronous thread-owned frame and timed out. Direct public-method calls and direct SaveDictionary passed on the same historical runtime. Later recorder controls and corrections are separately evidenced; this report does not qualify the lambda/error-handler checkpoint path."
     },
     "save_failure_policy_oracle": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\7752529775534e2f9cbdfc551ee22d13\\result.json",
@@ -2177,10 +2920,10 @@
     "recovery": "SCDB:recovery"
   },
   "raw_report": {
-    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\1f9867d37d2f4b10a5252e01b2dd7a05\\result.json",
-    "sha256": "9ee016b01f0cc725f153cabf9dc439463ea3ba93a93ff9c19ba7025054852da2",
-    "runtime_image": "sha256:1bc6f3caedabd8664f1aa7162a9e85276c6a7526dfd9cc8637ddd976b1eff2b2",
-    "native_logs_archive_sha256": "d609e547700a2ebbf78de2ea78d984eee741a1822191f201d4fb469081e258b5",
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\scdb\\4aa7cbf2e675432ab13b784de374ed32\\result.json",
+    "sha256": "e77d0e8368363582f5fe6138052def03df143ac96c3c1550c3f56348b9fb468e",
+    "runtime_image": "sha256:05250401718be55f148c687e6cc3a7964ce0bde8ac7d190fb6dba7796b39a53f",
+    "native_logs_archive_sha256": "f2bda60ebb27e4b42b960d13f4e46ebc8d19269da65bfa3a8d5ce121243a17da",
     "checks": 26
   },
   "scope": {
@@ -2189,8 +2932,8 @@
     "backend": "Configured original flat-file DatabaseFile backend, including real typed data, failed refresh snapshot preservation, and successful refresh recovery. Other backend profiles are not inferred.",
     "read_only": "Public assignment, deletion, set, create, commit, SaveDictionary and DBMGR create fail without changing in-memory or independently observed file data. Nested get/item values and keys are detached. Original GDB and user databases remain writable and are independently reopened in fresh native processes.",
     "permissions": "The contract protects the named runtime SCDB API. Direct filesystem writes, alternate file aliases, deliberate private-attribute manipulation and operating-system permissions are outside this claim.",
-    "checkpoint": "Both actual native ON_LINE and ON_STEP kill/resume modes restore saved aliases to the new runtime SCDB binding, preserve detached nested values and reject direct public method/SaveDictionary calls. The retained post-resume lambda/error-handler failure remains unresolved and is not included in acceptance.",
-    "distribution": "Diagnostic overlay over an audited integrated image with original/ported/patched sources and native identities retained. Overlay edits intentionally do not update installed wheel RECORD; a fresh composed wheel and installed RECORD audit are still required for distribution acceptance."
+    "checkpoint": "Both actual native ON_LINE and ON_STEP kill/resume modes restore saved aliases to the new runtime SCDB binding, preserve detached nested values and reject direct public method/SaveDictionary calls. The retained historical post-resume lambda/error-handler failure is outside this acceptance; any later recorder correction requires its own exact-source evidence.",
+    "distribution": "Fresh installed original native/Python/driver composition and complete RECORD verified. The exact SCDB stage and final installed source hashes are bound; this does not accept the complete release."
   },
   "v06_dependency_satisfied": false
 }
