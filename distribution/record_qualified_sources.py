@@ -29,6 +29,7 @@ DONORS = {
     'host_upgrade':('4a4c8c915ca7379af3a868269a40559f933e4fed','distribution/evidence/host-console-upgrade.json'),
     'checkpoint_error':('9c674bd51115e016dd135d3ed76c1ebf8a4ed207','checkpoint_error'),
     'checkpoint_identity':('53afd40d46fa1e1c0e116de877a48f2f43ca9060','checkpoint_identity'),
+    'shutdown_pause':('a97118ea78011205db886e8a9556220201809960','shutdown_pause_review'),
 }
 
 
@@ -75,6 +76,15 @@ def main():
         committed = subprocess.check_output(['git','show',donors['checkpoint_identity']['commit']+':source_port/'+recipe],cwd=ROOT)
         if hashlib.sha256(committed).hexdigest() != identity['recipes'][recipe]:
             raise ValueError('Checkpoint identity recipe differs from its exact donor commit: '+recipe)
+    shutdown = reports['shutdown_pause']
+    if not shutdown['passed'] or composition.shutdown_pause_patches.SOURCE in native:
+        raise ValueError('Unexpected or overlapping shutdown cancellation donor')
+    native[composition.shutdown_pause_patches.SOURCE] = {
+        key.removesuffix('_sha256'):value for key,value in shutdown['source'].items()}
+    recipe = 'source_port/shutdown_pause_patches.py'
+    committed = subprocess.check_output(['git','show',donors['shutdown_pause']['commit']+':'+recipe],cwd=ROOT)
+    if hashlib.sha256(committed).hexdigest() != shutdown['inputs'][recipe]:
+        raise ValueError('Shutdown recipe differs from qualified donor')
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]

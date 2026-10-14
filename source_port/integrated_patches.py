@@ -29,6 +29,7 @@ import resource_patches
 import scheduler_patches
 import scdb_patches
 import send_verify_patches
+import shutdown_pause_patches
 import timing_patches
 import ui_native_patches
 import user_database_patches
@@ -49,11 +50,13 @@ RECIPE_NAMES = (
     'checkpoint_error_patches.py',
     'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
     'send_verify_patches.py',
+    'shutdown_pause_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
+                            shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
@@ -145,6 +148,9 @@ def apply_native_tree(source, archive, output):
         elif name == checkpoint_identity_patches.SOURCE:
             recipe = 'checkpoint_identity_patches.py'
             patched[name] = checkpoint_identity_patches.apply(name, original[name], ported[name])
+        elif name == shutdown_pause_patches.SOURCE:
+            recipe = 'shutdown_pause_patches.py'
+            patched[name] = shutdown_pause_patches.apply(name, original[name], ported[name])
         elif name == ui_native_patches.SOURCE:
             recipe = 'ui_native_patches.py'
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])

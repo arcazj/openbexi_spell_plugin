@@ -3,7 +3,10 @@
 This isolated worktree starts at `6f82c2c01bc5dde1fb18500e1367e3d257df1d9f`.
 The last qualified checkpoint remains **470 qualified / 293 open**, on exact
 DSS image `1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342`.
-This preparation has no new runtime image, build, freeze or native qualification.
+The first frozen pair at `120ed73` failed its second context gate on a real
+forced-pause/shutdown race; its first build passed. Both builds produced identical
+native binaries. The retained pair remains failed. Qualified shutdown donor
+`a97118e` is now composed for a fresh pair; no combined runtime is accepted.
 The historical coverage and donor reports have not been promoted or regenerated.
 Their source hashes describe the earlier commits, not this changed working tree.
 
@@ -20,7 +23,7 @@ The eight production tranches cherry-pick without conflicts:
 | Caught-exception recorder cleanup | `9c674bd51115e016dd135d3ed76c1ebf8a4ed207` | `SPELLframeManager.C` after the central port; production `fix=True`, without audit instrumentation |
 | Checkpoint source identity and context recovery | `53afd40d46fa1e1c0e116de877a48f2f43ca9060` | `SPELLinterpreter.C` after the central port; `SPELLcontext.C` after the qualified DATA correction |
 
-The current dispatcher binds 26 recipes, 13 native units, 21 original SPELL
+The current dispatcher binds 27 recipes, 14 native units, 21 original SPELL
 Python modules and two corrected driver modules. SCDB adds two Python units;
 timing modifies units already present. The recorder adds one native unit and
 has no SCDB dependency. The source-identity correction adds the interpreter unit;
@@ -105,3 +108,15 @@ host, Send modifier and recorder workflows add no inventory row by themselves.
 Even successful integration
 would leave at least 290 original rows open, plus the remaining distribution,
 upgrade, host/platform and unresolved recorder/IPC requirements.
+
+## Shutdown cancellation follow-up
+
+The checked `shutdown_pause_patches.py` changes only context executor
+`forcePause`: active waits observe close/process termination while preserving
+the five-second deadline and ordinary `waitStatus`. Its independent donor has
+10 passing controls (baseline failed five) and the unchanged 25-lifecycle context
+gate. Composition tests compare the complete source bytes to that committed
+donor. Child close/kill and ranging changes remain excluded from this freeze.
+
+Local preparation: 99 distribution tests and four shutdown recipe tests pass.
+A new driver preflight and full independent native pair remain required.
