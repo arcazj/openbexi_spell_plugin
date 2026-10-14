@@ -1,0 +1,1284 @@
+{
+  "schema": "openbexi.spell.fresh-workflows/1",
+  "kind": "driver",
+  "passed": true,
+  "runtime": {
+    "image": "sha256:2a18e4f10a028df06785a2b6326ee1a3b42fcdba6073b9b051916574ef656b66",
+    "host_image": "sha256:66d2ac7b82d4c2ddb5fd99e51e6396033e0499d9e87ff33aa3887ca0eb7d722f",
+    "toolchain": "sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2",
+    "native_wheel": {
+      "name": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "d3f78ba9657b0ce2306759a410f4505107c646044e805344faed6a0e135d8f61",
+      "record_files_verified": 497,
+      "native_artifacts": {
+        "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
+        "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
+        "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+      },
+      "composition": {
+        "native": {
+          "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+          "checkpoint": {
+            "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
+            "integrated_identity": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8"
+          },
+          "manifest_sha256": "2dd9e7cb5964f6f13b3ca3d8f8e31ebde4b3f645ac749f0e6b08b741dd6c9a0f",
+          "recipes": {
+            "checkpoint_context_patches.py": {
+              "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+              "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+            },
+            "checkpoint_error_patches.py": {
+              "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+              "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+            },
+            "checkpoint_identity_patches.py": {
+              "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+              "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+            },
+            "child_lifecycle_patches.py": {
+              "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+              "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+            },
+            "cmd_patches.py": {
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "data_files_native_patches.py": {
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "database_import_patches.py": {
+              "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+              "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+            },
+            "dta_ipc_patches.py": {
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "dta_native_patches.py": {
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_analyze.py": {
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "flow_patches.py": {
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "integrated_patches.py": {
+              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+            },
+            "limit_patches.py": {
+              "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+              "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
+            },
+            "native_patches.py": {
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "notification_patches.py": {
+              "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+              "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
+            },
+            "obs_patches.py": {
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "patches.py": {
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "resource_patches.py": {
+              "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+              "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+            },
+            "scdb_patches.py": {
+              "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+              "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+            },
+            "scheduler_patches.py": {
+              "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+              "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+            },
+            "send_verify_patches.py": {
+              "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+              "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+            },
+            "shutdown_pause_patches.py": {
+              "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+              "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+            },
+            "timing_patches.py": {
+              "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+              "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+            },
+            "ui_native_patches.py": {
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            },
+            "user_database_patches.py": {
+              "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+              "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+            },
+            "value_units_patches.py": {
+              "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+              "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
+            }
+          },
+          "schema": "openbexi.spell.integrated-native/1",
+          "sources": {
+            "include/SPELL_WS/SPELLcontinuationSource.H": {
+              "patched_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+              "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
+            },
+            "lib/SPELL_CIF/src/SPELLasRun.C": {
+              "original_sha256": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
+              "patched_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+              "ported_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a"
+            },
+            "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+              "original_sha256": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
+              "patched_sha256": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724",
+              "ported_sha256": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c"
+            },
+            "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+              "original_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
+              "patched_sha256": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b",
+              "ported_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f"
+            },
+            "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+              "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
+              "patched_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
+              "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+            },
+            "lib/SPELL_CTX/src/SPELLcontext.C": {
+              "original_sha256": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
+              "patched_sha256": "18a6e1ac5a7556232df381b5084d615d91756a4bbdfa2a18aa2fb672108d18d7",
+              "ported_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a"
+            },
+            "lib/SPELL_CTX/src/SPELLexecutor.C": {
+              "original_sha256": "63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32",
+              "patched_sha256": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598",
+              "ported_sha256": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2"
+            },
+            "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+              "original_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
+              "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
+              "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+            },
+            "lib/SPELL_EXC/src/SPELLchildManager.C": {
+              "original_sha256": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
+              "patched_sha256": "10696aa78e422601589c291c0d2f7bae0890190651e6639ca08d69cca33b050b",
+              "ported_sha256": "b775fac05feb16f6ec775322c693eeef4ce6b3111aba2b20d560f1192b92182d"
+            },
+            "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+              "original_sha256": "89abec69514d3022550ef4f39264895a5fc9df18bff82b7a7ff535389b66e33e",
+              "patched_sha256": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df",
+              "ported_sha256": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6"
+            },
+            "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+              "original_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
+              "patched_sha256": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e",
+              "ported_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d"
+            },
+            "lib/SPELL_EXC/src/SPELLframeManager.C": {
+              "original_sha256": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
+              "patched_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7",
+              "ported_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf"
+            },
+            "lib/SPELL_EXC/src/SPELLgoto.C": {
+              "original_sha256": "6ff696df62c225f7adb17d12dd0e8581988eb0bf327105c45d07ebbacae4560f",
+              "patched_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
+              "ported_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+            },
+            "lib/SPELL_EXC/src/SPELLinterpreter.C": {
+              "original_sha256": "3dd0a455669237924726637ca4b25ae524acfaf10d577b18a7c36258ad3f1256",
+              "patched_sha256": "3365e1e1f0ae0c697e9dd7152ad8fd2d4d0b7e0f0f04b73ba82d3cafb165aade",
+              "ported_sha256": "670726c1853be672353f5e35da579d0e1c1569ab457d7c0cfe3d4c29692e3b33"
+            },
+            "lib/SPELL_EXC/src/SPELLscheduler.C": {
+              "original_sha256": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
+              "patched_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
+              "ported_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
+            },
+            "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+              "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
+              "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
+              "ported_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
+            },
+            "lib/SPELL_UTIL/src/SPELLtime.C": {
+              "original_sha256": "00eee7607928a34af2ba69a687b290566687155a80d7299d9a4a1f432f248585",
+              "patched_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec",
+              "ported_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8"
+            }
+          },
+          "stages": [
+            {
+              "recipe": "ui_native_patches.py",
+              "sources": {
+                "lib/SPELL_CIF/src/SPELLcifHelper.C": {
+                  "after_sha256": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724",
+                  "before_sha256": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c"
+                }
+              }
+            },
+            {
+              "recipe": "dta_ipc_patches.py",
+              "sources": {
+                "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
+                  "after_sha256": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b",
+                  "before_sha256": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f"
+                }
+              }
+            },
+            {
+              "recipe": "child_lifecycle_patches.py",
+              "sources": {
+                "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                  "after_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
+                  "before_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+                }
+              }
+            },
+            {
+              "recipe": "data_files_native_patches.py",
+              "sources": {
+                "lib/SPELL_CTX/src/SPELLcontext.C": {
+                  "after_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81",
+                  "before_sha256": "e390d60cff2a8a92f5cb7a684ef0ca95965c228b7d38566c8dddcadf0207aa4a"
+                }
+              }
+            },
+            {
+              "recipe": "checkpoint_context_patches.py",
+              "sources": {
+                "lib/SPELL_CTX/src/SPELLcontext.C": {
+                  "after_sha256": "18a6e1ac5a7556232df381b5084d615d91756a4bbdfa2a18aa2fb672108d18d7",
+                  "before_sha256": "9618798e11004db0d42422b16806c3a7fbe0c53ebbe8a2bba05fa5e410940b81"
+                }
+              }
+            },
+            {
+              "recipe": "shutdown_pause_patches.py",
+              "sources": {
+                "lib/SPELL_CTX/src/SPELLexecutor.C": {
+                  "after_sha256": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33",
+                  "before_sha256": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2"
+                }
+              }
+            },
+            {
+              "recipe": "child_lifecycle_patches.py",
+              "sources": {
+                "lib/SPELL_CTX/src/SPELLexecutor.C": {
+                  "after_sha256": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598",
+                  "before_sha256": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33"
+                }
+              }
+            },
+            {
+              "recipe": "dta_native_patches.py",
+              "sources": {
+                "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
+                  "after_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
+                  "before_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+                }
+              }
+            },
+            {
+              "recipe": "child_lifecycle_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLchildManager.C": {
+                  "after_sha256": "10696aa78e422601589c291c0d2f7bae0890190651e6639ca08d69cca33b050b",
+                  "before_sha256": "b775fac05feb16f6ec775322c693eeef4ce6b3111aba2b20d560f1192b92182d"
+                }
+              }
+            },
+            {
+              "recipe": "scheduler_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLexecutorPython.C": {
+                  "after_sha256": "2c426bf7a781d044aa23418c9ec81d755e61442b8474d6d6bf22ffdd66a3f9df",
+                  "before_sha256": "8fe2ff2c9e80fb93d7437a05c62e7a7cae13e30b20bfc6258a4820f601d995d6"
+                }
+              }
+            },
+            {
+              "recipe": "scheduler_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
+                  "after_sha256": "7b4369c9d219f8f330b83ae211ab7fb3f76ea0383fce0103088e15eb13c6626e",
+                  "before_sha256": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d"
+                }
+              }
+            },
+            {
+              "recipe": "checkpoint_error_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLframeManager.C": {
+                  "after_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7",
+                  "before_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf"
+                }
+              }
+            },
+            {
+              "recipe": "checkpoint_identity_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLinterpreter.C": {
+                  "after_sha256": "3365e1e1f0ae0c697e9dd7152ad8fd2d4d0b7e0f0f04b73ba82d3cafb165aade",
+                  "before_sha256": "670726c1853be672353f5e35da579d0e1c1569ab457d7c0cfe3d4c29692e3b33"
+                }
+              }
+            },
+            {
+              "recipe": "scheduler_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLscheduler.C": {
+                  "after_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
+                  "before_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
+                }
+              }
+            },
+            {
+              "recipe": "dta_time_patches.py",
+              "sources": {
+                "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+                  "after_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
+                  "before_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
+                }
+              }
+            },
+            {
+              "recipe": "dta_time_patches.py",
+              "sources": {
+                "lib/SPELL_UTIL/src/SPELLtime.C": {
+                  "after_sha256": "bce67d9caaf4751bfc85b53665c66cba75db0b0df332d6f2e1e291e6fdc4c0ec",
+                  "before_sha256": "51125a81fbe7e674376de71af7bc6eeb25f06d8be35f6425e658d508ba5394f8"
+                }
+              }
+            },
+            {
+              "recipe": "flow_patches.py",
+              "sources": {
+                "lib/SPELL_CIF/src/SPELLasRun.C": {
+                  "after_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+                  "before_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a"
+                }
+              }
+            },
+            {
+              "recipe": "flow_patches.py",
+              "sources": {
+                "lib/SPELL_EXC/src/SPELLgoto.C": {
+                  "after_sha256": "0bf97d26f68ec0a97386fbc4cfbffcd4656414edbced5c785e3187827ac37bf4",
+                  "before_sha256": "e11ed91568be4b4874b00677ce387e511f58bef960a7ead8195e4e5be22da7a7"
+                }
+              }
+            },
+            {
+              "recipe": "integrated_patches.py",
+              "sources": {
+                "include/SPELL_WS/SPELLcontinuationSource.H": {
+                  "after_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                  "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
+                }
+              }
+            }
+          ]
+        },
+        "python": {
+          "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+          "manifest_sha256": "4ec8de20f49a4a01c953f6ecfd93911030a1f14de1d0135f5389ff672e5b087c",
+          "recipes": {
+            "checkpoint_context_patches.py": {
+              "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+              "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+            },
+            "checkpoint_error_patches.py": {
+              "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+              "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+            },
+            "checkpoint_identity_patches.py": {
+              "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+              "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+            },
+            "child_lifecycle_patches.py": {
+              "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+              "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+            },
+            "cmd_patches.py": {
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "data_files_native_patches.py": {
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "database_import_patches.py": {
+              "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+              "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+            },
+            "dta_ipc_patches.py": {
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "dta_native_patches.py": {
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_analyze.py": {
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "flow_patches.py": {
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "integrated_patches.py": {
+              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+            },
+            "limit_patches.py": {
+              "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+              "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
+            },
+            "native_patches.py": {
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "notification_patches.py": {
+              "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+              "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
+            },
+            "obs_patches.py": {
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "patches.py": {
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "resource_patches.py": {
+              "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+              "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+            },
+            "scdb_patches.py": {
+              "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+              "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+            },
+            "scheduler_patches.py": {
+              "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+              "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+            },
+            "send_verify_patches.py": {
+              "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+              "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+            },
+            "shutdown_pause_patches.py": {
+              "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+              "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+            },
+            "timing_patches.py": {
+              "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+              "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+            },
+            "ui_native_patches.py": {
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            },
+            "user_database_patches.py": {
+              "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+              "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+            },
+            "value_units_patches.py": {
+              "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+              "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
+            }
+          },
+          "schema": "openbexi.spell.integrated-python/1",
+          "sources": {
+            "spell/lang/helpers/basehelper.py": {
+              "original_sha256": "8cbca48bb966b427455acc74177448c73cbb1e31898181a923331afe99b8cd81",
+              "patched_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+              "ported_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7"
+            },
+            "spell/lang/helpers/datahelper.py": {
+              "original_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f",
+              "patched_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+              "ported_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f"
+            },
+            "spell/lang/helpers/exechelper.py": {
+              "original_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d",
+              "patched_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+              "ported_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d"
+            },
+            "spell/lang/helpers/filehelper.py": {
+              "original_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d",
+              "patched_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+              "ported_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+            },
+            "spell/lang/helpers/limhelper.py": {
+              "original_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
+              "patched_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+              "ported_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+            },
+            "spell/lang/helpers/rschelper.py": {
+              "original_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
+              "patched_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+              "ported_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
+            },
+            "spell/lang/helpers/tchelper.py": {
+              "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
+              "patched_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+              "ported_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
+            },
+            "spell/lang/helpers/tmhelper.py": {
+              "original_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832",
+              "patched_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
+              "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+            },
+            "spell/lang/modifiers.py": {
+              "original_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
+              "patched_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+              "ported_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+            },
+            "spell/lib/adapter/config.py": {
+              "original_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6",
+              "patched_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+              "ported_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+            },
+            "spell/lib/adapter/databases/database.py": {
+              "original_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e",
+              "patched_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
+              "ported_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e"
+            },
+            "spell/lib/adapter/databases/dbfile.py": {
+              "original_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a",
+              "patched_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+              "ported_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
+            },
+            "spell/lib/adapter/dbmgr.py": {
+              "original_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188",
+              "patched_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+              "ported_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188"
+            },
+            "spell/lib/adapter/expression.py": {
+              "original_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77",
+              "patched_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+              "ported_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77"
+            },
+            "spell/lib/adapter/file.py": {
+              "original_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3",
+              "patched_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+              "ported_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
+            },
+            "spell/lib/adapter/resources.py": {
+              "original_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15",
+              "patched_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+              "ported_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+            },
+            "spell/lib/adapter/tc_item.py": {
+              "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
+              "patched_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+              "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
+            },
+            "spell/lib/adapter/tm.py": {
+              "original_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084",
+              "patched_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+              "ported_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084"
+            },
+            "spell/lib/adapter/verifier.py": {
+              "original_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7",
+              "patched_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+              "ported_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+            },
+            "spell/utils/grpc_utils.py": {
+              "original_sha256": "aa6c7f35a2159c4dbd8d98422be7a606b7061d3aba043c738900c1eab19e7049",
+              "patched_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+              "ported_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+            },
+            "spell/utils/vimport.py": {
+              "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
+              "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+              "ported_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+            }
+          },
+          "stages": [
+            {
+              "recipe": "data_files_patches.py",
+              "sources": {
+                "spell/lang/helpers/datahelper.py": {
+                  "after_sha256": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
+                  "before_sha256": "4b571bc724d87f30be4000f612d8edc972ae8147ae0fecfbf5528331cb6cdd5f"
+                },
+                "spell/lang/helpers/filehelper.py": {
+                  "after_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057",
+                  "before_sha256": "98577dc51eb604408fae9401f9a203a6612e01a5e004ef112156d87aee3a7d0d"
+                },
+                "spell/lib/adapter/file.py": {
+                  "after_sha256": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
+                  "before_sha256": "72b7f18a6fc07d9b6aa4b15ac419e33a7c2f9ce77c5c8b75cf201d5a808e19b3"
+                }
+              }
+            },
+            {
+              "recipe": "flow_patches.py",
+              "sources": {
+                "spell/lang/helpers/exechelper.py": {
+                  "after_sha256": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
+                  "before_sha256": "ed1996d406a999f832a0a1e83039f619cf99f1901a9f4f4eab9492944549814d"
+                }
+              }
+            },
+            {
+              "recipe": "obs_patches.py",
+              "sources": {
+                "spell/lang/helpers/basehelper.py": {
+                  "after_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
+                  "before_sha256": "82297f2de69c3d93633c04c4e3b8695fda22633760a12a040413223d3d26f7d7"
+                },
+                "spell/lang/helpers/tmhelper.py": {
+                  "after_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544",
+                  "before_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
+                },
+                "spell/lib/adapter/expression.py": {
+                  "after_sha256": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
+                  "before_sha256": "3adee1ac91f2a5dc8ffcb052f3b6198595cef328eb44c4d9435cb45334cc4b77"
+                },
+                "spell/lib/adapter/tm.py": {
+                  "after_sha256": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
+                  "before_sha256": "a61e819a6e8767bced46c31bf32b486e467c9e8f2e04ddf480c504ceacc62084"
+                },
+                "spell/lib/adapter/verifier.py": {
+                  "after_sha256": "b423a5e594f8d07795e4d81a15f32a42ff5810fdeeee7cb477ebcf9c84dda2dd",
+                  "before_sha256": "2a32881c0de3ee716c8a51aa5e34bfbea731b2948dbdcf4ec813df50bcdd79f7"
+                }
+              }
+            },
+            {
+              "recipe": "cmd_patches.py",
+              "sources": {
+                "spell/lang/helpers/tchelper.py": {
+                  "after_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e",
+                  "before_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
+                },
+                "spell/lib/adapter/tc_item.py": {
+                  "after_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7",
+                  "before_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
+                }
+              }
+            },
+            {
+              "recipe": "resource_patches.py",
+              "sources": {
+                "spell/lang/helpers/rschelper.py": {
+                  "after_sha256": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
+                  "before_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d"
+                },
+                "spell/lib/adapter/resources.py": {
+                  "after_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
+                  "before_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
+                }
+              }
+            },
+            {
+              "recipe": "limit_patches.py",
+              "sources": {
+                "spell/lang/helpers/limhelper.py": {
+                  "after_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+                  "before_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+                },
+                "spell/lang/helpers/tmhelper.py": {
+                  "after_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
+                  "before_sha256": "04e6c2fec2cca7b71c10fd9158b19eba154a89fb49d23e9560c89ceb76b2c544"
+                }
+              }
+            },
+            {
+              "recipe": "database_import_patches.py",
+              "sources": {
+                "spell/lib/adapter/databases/dbfile.py": {
+                  "after_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095",
+                  "before_sha256": "d3b3da232b938170f05e3158035f863df69ea448a1518ab448c18b8562d2c88a"
+                },
+                "spell/utils/vimport.py": {
+                  "after_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc",
+                  "before_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
+                }
+              }
+            },
+            {
+              "recipe": "user_database_patches.py",
+              "sources": {
+                "spell/lang/helpers/filehelper.py": {
+                  "after_sha256": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
+                  "before_sha256": "6d1f9ad5f5ee6f0b473ac650f1f0012fd9644b1ca8beca105ac11257e844a057"
+                },
+                "spell/lib/adapter/databases/dbfile.py": {
+                  "after_sha256": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
+                  "before_sha256": "743b1d290976c37126e1ac0cc6c195948910645ab4e76f756997713cf7ec8095"
+                },
+                "spell/utils/vimport.py": {
+                  "after_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                  "before_sha256": "6fe27600fac803b5d17ac5caedf2fb96abccc4451a456f1b0a1772e80b0699fc"
+                }
+              }
+            },
+            {
+              "recipe": "notification_patches.py",
+              "sources": {
+                "spell/lang/modifiers.py": {
+                  "after_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                  "before_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
+                },
+                "spell/lib/adapter/config.py": {
+                  "after_sha256": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
+                  "before_sha256": "ba5ca0c1183e994dee015b0d617e31dc316827b58ca1614525a523e1e0211dc6"
+                },
+                "spell/utils/grpc_utils.py": {
+                  "after_sha256": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
+                  "before_sha256": "bb748250b475adb305286dbda0603da886b894b4ac105bf010310a8302004ef7"
+                }
+              }
+            },
+            {
+              "recipe": "value_units_patches.py",
+              "sources": {
+                "spell/lib/adapter/tc_item.py": {
+                  "after_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+                  "before_sha256": "26701dba2b1c218e5418dbcd9b1038bd0306670aa3ca98218f8d491e6ed401f7"
+                }
+              }
+            },
+            {
+              "recipe": "scdb_patches.py",
+              "sources": {
+                "spell/lib/adapter/databases/database.py": {
+                  "after_sha256": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
+                  "before_sha256": "f1913ae35258bc177711b9a33645f4867627e3d32087eac107bc801da4b07b0e"
+                },
+                "spell/lib/adapter/dbmgr.py": {
+                  "after_sha256": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+                  "before_sha256": "c1852dffb2e4ef363ca2b779dd5f7778c46ca81bc13204e0d9a71b2712d50188"
+                }
+              }
+            },
+            {
+              "recipe": "timing_patches.py",
+              "sources": {
+                "spell/lang/helpers/tchelper.py": {
+                  "after_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8",
+                  "before_sha256": "efa7ec315be2553050fcb82567d205f458bf6c7899726fbaab92ebb8f9d1ea3e"
+                }
+              }
+            },
+            {
+              "recipe": "send_verify_patches.py",
+              "sources": {
+                "spell/lang/helpers/tchelper.py": {
+                  "after_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+                  "before_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "41583ea8b9de9e5cf7faf829d0c5a1cd89f1de4395c316b3932433b602d22aae",
+      "record_files_verified": 66,
+      "driver_composition": {
+        "profile": "repository-dss-integrated-wheel/1",
+        "manifest_sha256": "1a97d32189d895567f884f62077be91b4d3c19518e0e0b1dc69c734bc9275d64",
+        "manifest": {
+          "schema": "openbexi.spell.integrated-driver/1",
+          "source_profile": "repository-dss-driver-with-checked-corrections",
+          "recipes": {
+            "integrated_patches.py": {
+              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+            },
+            "native_patches.py": {
+              "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+              "lf_sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927"
+            },
+            "patches.py": {
+              "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+              "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "data_files_native_patches.py": {
+              "sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+              "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4"
+            },
+            "data_files_patches.py": {
+              "sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+              "lf_sha256": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c"
+            },
+            "dta_native_patches.py": {
+              "sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+              "lf_sha256": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd"
+            },
+            "dta_time_patches.py": {
+              "sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+              "lf_sha256": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e"
+            },
+            "flow_patches.py": {
+              "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+              "lf_sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
+            },
+            "flow_analyze.py": {
+              "sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+              "lf_sha256": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf"
+            },
+            "obs_patches.py": {
+              "sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+              "lf_sha256": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3"
+            },
+            "ui_native_patches.py": {
+              "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+              "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
+            },
+            "cmd_patches.py": {
+              "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+              "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+            },
+            "dta_ipc_patches.py": {
+              "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+              "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
+            },
+            "scheduler_patches.py": {
+              "sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+              "lf_sha256": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2"
+            },
+            "resource_patches.py": {
+              "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+              "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+            },
+            "limit_patches.py": {
+              "sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+              "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888"
+            },
+            "database_import_patches.py": {
+              "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+              "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
+            },
+            "notification_patches.py": {
+              "sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+              "lf_sha256": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483"
+            },
+            "value_units_patches.py": {
+              "sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+              "lf_sha256": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
+            },
+            "user_database_patches.py": {
+              "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+              "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
+            },
+            "scdb_patches.py": {
+              "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+              "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
+            },
+            "timing_patches.py": {
+              "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+              "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+            },
+            "checkpoint_error_patches.py": {
+              "sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+              "lf_sha256": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e"
+            },
+            "checkpoint_identity_patches.py": {
+              "sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+              "lf_sha256": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d"
+            },
+            "checkpoint_context_patches.py": {
+              "sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+              "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a"
+            },
+            "send_verify_patches.py": {
+              "sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+              "lf_sha256": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f"
+            },
+            "shutdown_pause_patches.py": {
+              "sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+              "lf_sha256": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628"
+            },
+            "child_lifecycle_patches.py": {
+              "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+              "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+            }
+          },
+          "sources": {
+            "openbexi_dss_proxy/tc.py": {
+              "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+              "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+            },
+            "openbexi_dss_proxy/tm.py": {
+              "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+              "patched_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+            }
+          },
+          "stages": [
+            {
+              "recipe": "limit_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tm.py": {
+                  "before_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+                  "after_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6"
+                }
+              }
+            },
+            {
+              "recipe": "value_units_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+                  "after_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+                }
+              }
+            },
+            {
+              "recipe": "timing_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/tm.py": {
+                  "before_sha256": "21c8a9c0bf4927868cd320505d89a3315c03d4afee6d09c727f05982d8857ad6",
+                  "after_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+                }
+              }
+            }
+          ],
+          "python_sources": {
+            "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+            "openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+            "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+            "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+            "openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+            "openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+            "openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+            "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+            "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+            "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+            "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+            "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+            "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+            "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+            "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
+            "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+            "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+            "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+            "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+            "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+            "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+            "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+            "openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+            "openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+            "openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+            "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
+          }
+        }
+      }
+    },
+    "installed_audit": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\images\\fc7ef6f384d34460b4016ffbe5f14837\\installed-record.json",
+      "sha256": "5b07e25cdf592ddedeed4c5998515314ea4655ae076ec6b9809156bdd657c5e9",
+      "lf_sha256": "5b07e25cdf592ddedeed4c5998515314ea4655ae076ec6b9809156bdd657c5e9",
+      "bytes": 54384
+    }
+  },
+  "qualification": {
+    "tests": {
+      "tests": 49,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "installed": {
+      "openbexi-ide": {
+        "name": "openbexi-ide",
+        "version": "1.0.0rc4",
+        "sha256": "dd7128eec2c542402296f4c8e22b4c07157cf826de78a06bebb06135b5f936ec",
+        "members": {
+          "openbexi_ide/__init__.py": "8632fde3fc8e279276892e8ba574045c1e3c4b998c35d56465905c0a2163c5b2",
+          "openbexi_ide/__main__.py": "a67c172046323b0efcafe92cb83abc266d5dd4bc931d9312cde1b7bed50643db",
+          "openbexi_ide/app.py": "0b6d3784aa41c629f88aa89dea49d4a1e76bc83a0c5627eefdeac671847e9b36",
+          "openbexi_ide/console.py": "4df50b5221b31be1646ccd897ddc51a77ff1be140e9b8fc238ad099285689bfb",
+          "openbexi_ide/controller.py": "2a86fd0fab3e5f0e42009d29caf2e6f9d046af7b5505607c2eb92417578d584e",
+          "openbexi_ide/debugger.py": "2c4a72418486d69f27b657581e3f38bdb78d8e1d2b64ba2e5c4e0c8b652678e3",
+          "openbexi_ide/editor.py": "76c979564896aee99dca2f19dd188101b5498c70ded4991dddeb26237a0fced4",
+          "openbexi_ide/fonts.py": "e99274c43c6a0e04a56152cb420d3802b9ba841883d48f9dbd79b9e40bd66c82",
+          "openbexi_ide/navigation.py": "b14850951c9ed1a10ed2203126f8382e07c99839b07cf9a552ee25451c3dc987",
+          "openbexi_ide/plugin_manager.py": "c7c01b9b30fe0560ac5666f3d5e7d02759aacfe82601426c953d56c9ace69339",
+          "openbexi_ide/productivity.py": "0bdab0a1cd32966aa579eab7aa19a0b08f8fc95218449488fcfc3b42af59ceb7",
+          "openbexi_ide/session_client.py": "652449ed0e8889948c5438c2b257ce5478a711abe48fa5f1b1ec6b16f54cccb8",
+          "openbexi_ide/session_panel.py": "24b8e0577f379125ebd6a688a30272ccf18a9abbec9766daf43d9277eaa151c9",
+          "openbexi_ide/shared_debugger.py": "538745a5216b07e7e37f970e08cddb2ba89f58b611eb4679f247e289d1ce5b0d",
+          "openbexi_ide/source_view.py": "413ef2c931aa40284e889cc3f38985ce2c4d21194ba4e514f8dfba3c8a315e81",
+          "openbexi_ide/themes.py": "1fa6f2559ac41e9f96187b60642714cce070ea81f50c45e6efa7e6aa80ac7bf8",
+          "openbexi_ide-1.0.0rc4.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "openbexi_ide-1.0.0rc4.dist-info/licenses/NOTICE": "8d25ac93e0e41c1401a61d1e8908d695eebd0bc72aa8a442b42e75ae41397c0c",
+          "openbexi_runtime/__init__.py": "2256d042148d2b6199eb77a7d8346c67296217d7d251243ac92e94393a77bada",
+          "openbexi_runtime/bounded_http.py": "0c995b71194e994c16f51b62b877add726bbb19b6553f48dbd22f324b81229d8",
+          "openbexi_runtime/cli.py": "b68794a7107d79a5c2ba063bad5f40e012dbf1c60f1e8bd0ff00efcc39896ccd",
+          "openbexi_runtime/dap.py": "f6833b90e7842f0b4fb68ef1c0f8a56808a92986848b2bbcf79eccc8a6d6fc0d",
+          "openbexi_runtime/diagnostics.py": "365af6e74a803561a1547c83eb6419df741cb1dce9f43df0a9ab7328bff061a2",
+          "openbexi_runtime/execution_container.py": "368df1b34e988a2f8e9a867a43d1c0e89cf4759b5a96fbc78209dfa388b2f7a0",
+          "openbexi_runtime/execution_release.py": "3a9323db588ae6e5721dc13f3b06e3c6ff7173f0fe5b9584c4785f9e1ff94796",
+          "openbexi_runtime/execution_transport.py": "02ab4e8094d32bfaf2b414289151f0814d54a21b1f73726e6582420e82fe66c5",
+          "openbexi_runtime/interpreter_probe.py": "c87199962b6585904ca52c621f2a8c575e15fc6e9db473bc8489bd2a91a376a8",
+          "openbexi_runtime/languages.py": "d3c6526879f193da65245b5c97eb80e16795791fcdee2e595c69dac9d754044c",
+          "openbexi_runtime/launch.py": "66ec8e74b7aca23b24244720ed9cc031b29d34ce48e13bd2108662460acea406",
+          "openbexi_runtime/plugin_inventory.py": "874a8e923a92ea2aa16e266a3cc6db98ef1bf08bfc92224c179add7fb5e3b453",
+          "openbexi_runtime/procedure_identity.py": "e43fbbe481fc43ff42a85d52307b0f41b1eff2f099aed7a8a63e87497225aca0",
+          "openbexi_runtime/processes.py": "0d59aa976dacc7f2514b2595ae4c47e4312abae95641f9a82568bc8e2bc7ebed",
+          "openbexi_runtime/session.py": "28ca1ebe342d16872c7ba89b6174aa944f55d5e1c8c364eeb295520c1371cf53",
+          "openbexi_runtime/session_http.py": "94b0ee3d5b69f3e0eab4979e5a1e1aae35cd31a4398f23b1170d84fc33946ccd",
+          "openbexi_runtime/session_identity.py": "6d7e0a190d5aca9124fde9f530315e3c7f48450085a983c83831858d00eada54",
+          "openbexi_runtime/session_store.py": "b622e9c905a8b6c2f6b74f1203fcd571215684db45043df8fa75706f477dd83f",
+          "openbexi_runtime/session_worker.py": "eb7f0a3909e02792699fa6c6f17c278d0c08356b66c3e29f31cc5ab705754589",
+          "openbexi_runtime/shared_backends.py": "0e65115e62fe321d8d42be52b926008d39d546e749d1819f24f01028fc345134",
+          "openbexi_runtime/shared_debug.py": "117f5ff8e969f8bfe7aff84bb54a2b90ca3290e418e9808e5da98d396459377a",
+          "openbexi_runtime/source_capture.py": "3d1832886fc16ca39ab596f3a598619edf140c0cd181355ba4b1858ef5dd83a1",
+          "openbexi_runtime/worker.py": "feb8550adb2bad4d0525b5ca6337abbc2b7ae6a3612c6a283aa5dafb0cb50f6e",
+          "openbexi_ide-1.0.0rc4.dist-info/METADATA": "1aa7c5c3e982a78d1c843bc56fcb698667827900e4c87112aa645cfed9424a67",
+          "openbexi_ide-1.0.0rc4.dist-info/WHEEL": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b",
+          "openbexi_ide-1.0.0rc4.dist-info/entry_points.txt": "ece4e3ac37485531b720e6446b04f45f6c65b942bcbd955dd69838a49339c2dd",
+          "openbexi_ide-1.0.0rc4.dist-info/top_level.txt": "be3be416a3114212987220123cd71e3a3799c8672420b2754f0b49af57960300"
+        },
+        "installed_members_verified": 45
+      },
+      "openbexi-spell-host": {
+        "name": "openbexi-spell-host",
+        "version": "0.3.1.dev1",
+        "sha256": "d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d",
+        "members": {
+          "openbexi_spell_host/__init__.py": "a32d1f55538b95af6564e5ca45fbaa7a5b4816651ecd44a34480ac0d31f2f000",
+          "openbexi_spell_host/container.py": "2203d4536660ca0a104ab2404245fa2ee9227cba64033404667e1dbd2b633e39",
+          "openbexi_spell_host/dap.py": "28c8ae9ea8b9047514e9d0f1d6c6c5f199c58dd11d4d3e3d1bfd42fb791afef0",
+          "openbexi_spell_host/protocol.py": "c4ff6c86c2fe859397e117896ac227481a7d7f6c7aab08d74fc07733181eb8a2",
+          "openbexi_spell_host/runner.py": "8f20136cc9d7c29d7285a126054de58d881e54bcad53848cca0e8390f5c14c9d",
+          "openbexi_spell_host-0.3.1.dev1.dist-info/licenses/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "openbexi_spell_host-0.3.1.dev1.dist-info/METADATA": "16e7661b813285b42c92fbf45e2c517a88825007142b1c8f0d17abca66c607f0",
+          "openbexi_spell_host-0.3.1.dev1.dist-info/WHEEL": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b",
+          "openbexi_spell_host-0.3.1.dev1.dist-info/entry_points.txt": "39faf503c376805f1308b9f593e6ab26ac8951bc77043e44be8ef2576d0bc378",
+          "openbexi_spell_host-0.3.1.dev1.dist-info/top_level.txt": "57222e0131dd5a411dff917ac456437cdeb3f101ab4f1f4444540f6febc94504"
+        },
+        "installed_members_verified": 10
+      },
+      "openbexi-spell-shared": {
+        "name": "openbexi-spell-shared",
+        "version": "0.4.0.post1",
+        "sha256": "393a0addfac99f9e58e668cfc84123c2c044abb9afde271d8d71d2935a023cd3",
+        "members": {
+          "openbexi_spell_shared/__init__.py": "c3bd52f81014fdd63919d4ae83b60d0cb87e9622109614f111c94fd39841476a",
+          "openbexi_spell_shared-0.4.0.post1.dist-info/licenses/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "openbexi_spell_shared-0.4.0.post1.dist-info/METADATA": "3e40ca4a71f13f902c50f30c6095e0eebe954dce6a1b3a2ed7c1d300474db995",
+          "openbexi_spell_shared-0.4.0.post1.dist-info/WHEEL": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b",
+          "openbexi_spell_shared-0.4.0.post1.dist-info/entry_points.txt": "82c65d1d721ab030db8e20db4d8a8faad77c94ac3cc72effbcad42cbeeeb3ec2",
+          "openbexi_spell_shared-0.4.0.post1.dist-info/top_level.txt": "0de4fe4871958c024542185874c36f519b8dcabd48876c870dacbf181969e909"
+        },
+        "installed_members_verified": 6
+      },
+      "openbexi-spell-dss": {
+        "name": "openbexi-spell-dss",
+        "version": "0.4.0",
+        "sha256": "41583ea8b9de9e5cf7faf829d0c5a1cd89f1de4395c316b3932433b602d22aae",
+        "members": {
+          "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+          "openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+          "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+          "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+          "openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+          "openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+          "openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+          "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+          "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+          "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+          "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+          "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+          "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+          "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+          "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
+          "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+          "openbexi_dss_proxy/_composition/manifest.json": "1a97d32189d895567f884f62077be91b4d3c19518e0e0b1dc69c734bc9275d64",
+          "openbexi_dss_proxy/_composition/original/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+          "openbexi_dss_proxy/_composition/original/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+          "openbexi_dss_proxy/_composition/patched/openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+          "openbexi_dss_proxy/_composition/patched/openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
+          "openbexi_dss_proxy/_composition/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+          "openbexi_dss_proxy/_composition/recipes/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+          "openbexi_dss_proxy/_composition/recipes/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+          "openbexi_dss_proxy/_composition/recipes/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+          "openbexi_dss_proxy/_composition/recipes/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+          "openbexi_dss_proxy/_composition/recipes/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+          "openbexi_dss_proxy/_composition/recipes/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+          "openbexi_dss_proxy/_composition/recipes/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+          "openbexi_dss_proxy/_composition/recipes/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+          "openbexi_dss_proxy/_composition/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+          "openbexi_dss_proxy/_composition/recipes/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+          "openbexi_dss_proxy/_composition/recipes/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+          "openbexi_dss_proxy/_composition/recipes/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+          "openbexi_dss_proxy/_composition/recipes/integrated_patches.py": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+          "openbexi_dss_proxy/_composition/recipes/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+          "openbexi_dss_proxy/_composition/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+          "openbexi_dss_proxy/_composition/recipes/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+          "openbexi_dss_proxy/_composition/recipes/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+          "openbexi_dss_proxy/_composition/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+          "openbexi_dss_proxy/_composition/recipes/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+          "openbexi_dss_proxy/_composition/recipes/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+          "openbexi_dss_proxy/_composition/recipes/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+          "openbexi_dss_proxy/_composition/recipes/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+          "openbexi_dss_proxy/_composition/recipes/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+          "openbexi_dss_proxy/_composition/recipes/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+          "openbexi_dss_proxy/_composition/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+          "openbexi_dss_proxy/_composition/recipes/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+          "openbexi_dss_proxy/_composition/recipes/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+          "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+          "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+          "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+          "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+          "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+          "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+          "openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+          "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+          "openbexi_spell_dss/contracts/SPELLDriver.proto": "f2534b012489a4b9f3cb61e7f4a50ada4aaea7fe0b2de6041b7748d25aa96588",
+          "openbexi_spell_dss/contracts/provenance.json": "ed1ece2436b11f77911baf7fac77f5a1fcd58c332057b52103da2e4179a274f1",
+          "openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+          "openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+          "openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+          "openbexi_spell_dss-0.4.0.dist-info/licenses/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "openbexi_spell_dss-0.4.0.dist-info/METADATA": "eed9f77055af9e88bdf764b2485f231b4542ae5337c59d77f1440e51bd57230f",
+          "openbexi_spell_dss-0.4.0.dist-info/WHEEL": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b",
+          "openbexi_spell_dss-0.4.0.dist-info/top_level.txt": "6d562f0eb860cbe0d0c3aadaa7d21eb9c236ff30b11c38986b2f75a0767c6d9e"
+        },
+        "installed_members_verified": 66
+      },
+      "openbexi-spell-plugin": {
+        "name": "openbexi-spell-plugin",
+        "version": "0.1.0",
+        "sha256": "893644012ba3b722286adc93346994f1f1526c7d10c60d98605b4a6a112b56a1",
+        "members": {
+          "dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+          "dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+          "dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+          "dss/engine.py": "cdb4b0cc6643849cbdd9889c2e8db62113111fc2871dec7e8f33c8a064921233",
+          "dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+          "dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+          "dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+          "dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+          "dss/server.py": "71f711db2a212c61b1951a255b9ce133f413d2277d295f2cae85ddb0685b5970",
+          "dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+          "openbexi_spell/__init__.py": "55712c6f299549a507c503312d6edc0f709cdb84ffaf0d25e5d88b4c982bd74f",
+          "openbexi_spell/api.py": "18e34091cceec323d1a78e24e9ff2a65cf601b452793f24dbfd86cd66bc9f730",
+          "openbexi_spell/common.py": "098282c74e2a2ecd769c06e75cbc283009709d17ab14c9a970292ecf78452cca",
+          "openbexi_spell/compatibility.py": "8d160eb6c36cc10cf57911e8bf2994f6e55c707fe298c0d7bd2708642cde90c1",
+          "openbexi_spell/time.py": "2337dfdc5419d3e922011df239f45b17b6abe00de57686c6d7f4f9f8178f2b79",
+          "openbexi_spell_plugin/__init__.py": "0039d4ef1f9214653ac126474dbc5bd98c90fdc3d174583d6cdbf430717d46fe",
+          "openbexi_spell_plugin/runner.py": "bc3a7476b2ba7c3bea49601247d9655e758e4e2fe923977a438312ed2dcbc095",
+          "openbexi_spell_plugin/runtime.py": "8aec53318072dda782bc3c4bfdcc2b64b718964a26936483f872aeed0330d847",
+          "openbexi_spell_plugin-0.1.0.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "openbexi_spell_plugin-0.1.0.dist-info/licenses/NOTICE": "d7dbc72842061ccf4e3e5d4830e4b06347a1b9e04d0c1b39a1e33066c1056f38",
+          "spell/__init__.py": "521d4af4cea225957261c308af989164be78dc37464255802547bf7cbcc18ec9",
+          "spell/lang/__init__.py": "9e60addb5ec23d5bae7549aac8c61f10155b817afd008c12da421d67889db6ec",
+          "openbexi_spell_plugin-0.1.0.dist-info/METADATA": "1dc457307809b0573fe51670874d9b8afaaa70bf204754545c4b463fca8be21f",
+          "openbexi_spell_plugin-0.1.0.dist-info/WHEEL": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b",
+          "openbexi_spell_plugin-0.1.0.dist-info/entry_points.txt": "8c4ebc1e9e9c6d6a72b5c9ef6ae08b62c7100bd39c1473024d995133344a22ae",
+          "openbexi_spell_plugin-0.1.0.dist-info/top_level.txt": "cef3102b25ed879bf917801dc09b5a576acf6d5d52e7e8ef46568e200f56c931"
+        },
+        "installed_members_verified": 26
+      }
+    },
+    "scope": "Selected installed wheel set and complete unfiltered native/shared/original-driver/Kafka test families; no complete release or remote-broker security acceptance"
+  },
+  "evidence": {
+    "native_pair": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\result.json",
+      "sha256": "22adfa5b77b935df8e68468db7f93953ebaeb7f3f06927ed626c7515e88d6db2",
+      "lf_sha256": "e9d3a6356907696995b2022610476ff6936a9d3cfa43a253fd572a202b078127",
+      "bytes": 120373
+    },
+    "image_build": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\images\\fc7ef6f384d34460b4016ffbe5f14837\\result.json",
+      "sha256": "f1c745a263de881b07c9cb303236587acb1a596202a570ecf8e63b511411d323",
+      "lf_sha256": "f1c745a263de881b07c9cb303236587acb1a596202a570ecf8e63b511411d323",
+      "bytes": 68051
+    },
+    "native_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\distribution\\wheels\\openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "d3f78ba9657b0ce2306759a410f4505107c646044e805344faed6a0e135d8f61",
+      "lf_sha256": "b124de02d496bfc970478788fab514fd32f9f620f8a3a9964235df4c59bf8915",
+      "bytes": 51422814
+    },
+    "driver_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\images\\fc7ef6f384d34460b4016ffbe5f14837\\driver-package\\wheels\\openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "41583ea8b9de9e5cf7faf829d0c5a1cd89f1de4395c316b3932433b602d22aae",
+      "lf_sha256": "a42131cdc93455b697b0f586b5b0de715ec5b43ce29048808cf77f3e3a0f15b5",
+      "bytes": 166950
+    },
+    "ide_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\installed-host\\5d7aea462fdd43bfbdc29a4065df7041\\openbexi_ide-1.0.0rc4-py3-none-any.whl",
+      "sha256": "dd7128eec2c542402296f4c8e22b4c07157cf826de78a06bebb06135b5f936ec",
+      "lf_sha256": "4a63521762bf8957d7641ad872d8817f291132c80ee304f9a0479c0b7a8ff30e",
+      "bytes": 121390
+    },
+    "host_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\child-procedure-worktree\\.qualification\\v0.6\\host-candidates\\03fa1f9442bd407e8a2fa1af3bc9cffd\\a\\wheels\\openbexi_spell_host-0.3.1.dev1-py3-none-any.whl",
+      "sha256": "d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d",
+      "lf_sha256": "d2b7cc41711d8ec7014e83babc6f2890f2bdf3c5668c6cffdf180d5ceeb1648d",
+      "bytes": 23300
+    },
+    "driver_installed": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\driver-install\\0998609d5e1d4cce810531cef0ea678d\\qualification-resource-fixture\\result.json",
+      "sha256": "88520e358db3e21dfff028eb2bbe1904a8b3739e8d7f1e508f4321c68e74f046",
+      "lf_sha256": "5f1b1649d5e48f41b7986e79b8e7c701700057beba2763fa4777475f593c6f05",
+      "bytes": 27017
+    },
+    "shared_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\sw\\.qualification\\v0.6\\shared-candidates\\25c2d46553004769a0c11d13b5de3f1f\\a\\wheels\\openbexi_spell_shared-0.4.0.post1-py3-none-any.whl",
+      "sha256": "393a0addfac99f9e58e668cfc84123c2c044abb9afde271d8d71d2935a023cd3",
+      "lf_sha256": "393a0addfac99f9e58e668cfc84123c2c044abb9afde271d8d71d2935a023cd3",
+      "bytes": 20858
+    },
+    "service_wheel": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.4\\release-wheels-final\\openbexi_spell_plugin-0.1.0-py3-none-any.whl",
+      "sha256": "893644012ba3b722286adc93346994f1f1526c7d10c60d98605b4a6a112b56a1",
+      "lf_sha256": "3170a71f65d9dd3fba1fbc36a3282552108d9d9c71844d0a2acaa79198930204",
+      "bytes": 54053
+    }
+  },
+  "input_manifest": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\host-delivery\\476ae64d1c0e4b97b5d060ab653e9446\\driver-inputs.json",
+    "sha256": "c88d7b7bc87c25d8255e878956b8451dc5e4ede2ff3e92e1a9aaab9d0c467449",
+    "lf_sha256": "c88d7b7bc87c25d8255e878956b8451dc5e4ede2ff3e92e1a9aaab9d0c467449",
+    "bytes": 2578
+  },
+  "recorder_sha256": "31c4747cbbd8b72ed1b3cf05c7507da20ffec5065cee314adb766206a1742d91",
+  "helper_sha256": "ecc38af982518dab393bc3c8db2a07b1798423e1bd2445ebfd07086883724a09",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "qualified_contracts": []
+}
