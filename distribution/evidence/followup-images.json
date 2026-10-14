@@ -26,10 +26,30 @@
     "tag": "openbexi-spell-dss:v06-integrated-7fdd41dd1085",
     "image": "sha256:05250401718be55f148c687e6cc3a7964ce0bde8ac7d190fb6dba7796b39a53f"
   },
-  "scope": "Fresh offline no-cache host and DSS images; installed native/driver wheel RECORD, source composition and compiled bridge audits pass. Full native regressions and installed host/workflow qualification remain required.",
+  "scope": "Fresh offline no-cache host and DSS images; installed native/driver wheel RECORD, source composition and compiled bridge audits pass. DATA 24 and FILES 36 checks pass on this exact DSS image. Remaining 22 native suites, recorder/recovery and installed host/workflow qualification remain required; no conformance rows promoted.",
   "driver_preflight": {
     "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.6\\driver-preflight\\603b0a69f01549f095b5e51da7d50646\\result.json",
     "sha256": "a7c1a629a4059a173b0ad59cd0a9867f309c9385063ebdbad47f8bdb7ff42ea2",
     "two_wheels_match_fresh_image": true
+  },
+  "native_regressions": {
+    "data": {
+      "passed": true,
+      "checks": 24,
+      "contracts": 29,
+      "report": {
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.5\\data\\3c4b991ba81b41a885112a0c8eb01a25\\result.json",
+        "sha256": "71313e4f2d61735f61844e16f85bb01eb66d567687bd7ff5e001e657258d0ae7"
+      }
+    },
+    "files": {
+      "passed": true,
+      "checks": 36,
+      "contracts": 40,
+      "report": {
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\followup-integrated-worktree\\.qualification\\v0.5\\files\\5f6dfb67886040509e3af649763d6b5a\\result.json",
+        "sha256": "66b8eb405276de76c0c8f0db0f1cecd75f54ff31d9771a2558db61efba3126f0"
+      }
+    }
   }
 }
