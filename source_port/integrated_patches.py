@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 
 import cmd_patches
+import child_lifecycle_patches
 import checkpoint_context_patches
 import checkpoint_error_patches
 import checkpoint_identity_patches
@@ -51,14 +52,16 @@ RECIPE_NAMES = (
     'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
     'send_verify_patches.py',
     'shutdown_pause_patches.py',
+    'child_lifecycle_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
-NATIVE_NAMES = tuple(sorted((data_files_native_patches.NAME, dta_native_patches.SOURCE,
+NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
                             shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
-                            *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES)))
+                            *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES,
+                            *child_lifecycle_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches)
@@ -149,8 +152,14 @@ def apply_native_tree(source, archive, output):
             recipe = 'checkpoint_identity_patches.py'
             patched[name] = checkpoint_identity_patches.apply(name, original[name], ported[name])
         elif name == shutdown_pause_patches.SOURCE:
-            recipe = 'shutdown_pause_patches.py'
-            patched[name] = shutdown_pause_patches.apply(name, original[name], ported[name])
+            intermediate = stage('shutdown_pause_patches.py', name, ported[name],
+                shutdown_pause_patches.apply(name, original[name], ported[name]))
+            patched[name] = stage('child_lifecycle_patches.py', name, intermediate,
+                compose_child_shutdown(name, original[name], ported[name], intermediate))
+            continue
+        elif name in child_lifecycle_patches.PREIMAGES:
+            recipe = 'child_lifecycle_patches.py'
+            patched[name] = child_lifecycle_patches.apply(name, original[name], ported[name])
         elif name == ui_native_patches.SOURCE:
             recipe = 'ui_native_patches.py'
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
@@ -194,6 +203,22 @@ def apply_native_tree(source, archive, output):
               'checkpoint': {'central_identity': base, 'integrated_identity': identity}}
     (Path(output)/'manifest.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
     return report
+
+
+def compose_child_shutdown(name, original, ported, shutdown):
+    """Join disjoint checked donor blocks without relaxing either preimage."""
+    expected = shutdown_pause_patches.apply(name, original, ported)
+    if shutdown != expected:
+        raise ValueError('Child composition requires exact shutdown output')
+    child = child_lifecycle_patches.apply(name, original, ported)
+    before = shutdown_pause_patches.BEFORE.encode('utf-8')
+    after = shutdown_pause_patches.AFTER.encode('utf-8')
+    if child.count(before) != 1 or after in child:
+        raise ValueError('Child donor overlaps the shutdown implementation')
+    combined = child.replace(before, after)
+    if combined.replace(after, before) != child:
+        raise ValueError('Combined source does not preserve exact child donor')
+    return combined
 
 
 def apply_python_tree(site, archive, output):

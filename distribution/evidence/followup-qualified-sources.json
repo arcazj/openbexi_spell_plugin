@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "d95a58e85bf69abdcb5cc43bf67c014b84089aa941945b18ffb3ab7275870980",
+  "generator_sha256": "f4cc1b180b6e9f14b0ed3e4466486d9cb2eed819bdcc00f4fd0a5f2ee4b11c57",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -102,6 +102,11 @@
       "commit": "a97118ea78011205db886e8a9556220201809960",
       "path": "conformance/evidence/shutdown_pause_review.json",
       "sha256": "75a0c7a83aa9a3cdf1960eb2ab8cb9d8f5c19085f1abb33aab28d288601cbebd"
+    },
+    "child_lifecycle": {
+      "commit": "4543128e93d7c8a6ee8b27e595f34fe6d5831a65",
+      "path": "conformance/evidence/child_lifecycle.json",
+      "sha256": "6e8f5cf0b8e1dc8f6a331f375e1ad0b06829854c42d91fe92a904af74893e4fa"
     }
   },
   "native": {
@@ -173,7 +178,17 @@
     "lib/SPELL_CTX/src/SPELLexecutor.C": {
       "original": "63db5c0e063e08ad4fea0bcd4c66efb53b205beb6218a226c6ab7573ae677d32",
       "ported": "59809d4d3d333207b5d3def831b6e8572d3ad20a1cd36298baa18ed7893ccee2",
-      "patched": "fa847a22bd88e970b1ae17f523c2c53b492f0722f0449eb232897ff24a1e6e33"
+      "patched": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598"
+    },
+    "lib/SPELL_EXC/src/SPELLchildManager.C": {
+      "original": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
+      "ported": "b775fac05feb16f6ec775322c693eeef4ce6b3111aba2b20d560f1192b92182d",
+      "patched": "10696aa78e422601589c291c0d2f7bae0890190651e6639ca08d69cca33b050b"
+    },
+    "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+      "original": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
+      "ported": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82",
+      "patched": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
     }
   },
   "python": {
