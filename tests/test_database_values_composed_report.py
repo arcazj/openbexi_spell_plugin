@@ -1,5 +1,6 @@
 """Only current installed-wheel observations qualify the database octal row."""
 import json
+import io
 from pathlib import Path
 import shutil
 import sys
@@ -28,7 +29,7 @@ def test_composed_proof_qualifies_only_the_p83_database_literal(proof):
 
 
 @pytest.mark.parametrize('mutation', ['failed', 'missing-regression', 'image', 'overlay', 'payload',
-                                     'source', 'stage', 'prompt', 'archive'])
+                                     'source', 'stage', 'prompt', 'fixture', 'archive'])
 def test_altered_installed_observations_are_rejected(proof, tmp_path, mutation):
     index = 1 if mutation == 'prompt' else 0
     original = proof[index]
@@ -56,6 +57,16 @@ def test_altered_installed_observations_are_rejected(proof, tmp_path, mutation):
         stages[:] = [row for row in stages if row['recipe'] != 'database_values_patches.py']
     elif mutation == 'prompt':
         report['prompts']['prompt-abort']['files']['existing.IMP'] = 'OVERWRITTEN'
+    elif mutation == 'fixture':
+        rewritten = io.BytesIO()
+        with tarfile.open(tmp_path / 'workspace.tar') as original, tarfile.open(fileobj=rewritten, mode='w') as changed:
+            for member in original:
+                content = original.extractfile(member).read() if member.isfile() else None
+                if member.name.removeprefix('./') == 'octal-values/data/GroundDB/GDB.DB':
+                    content = content.replace(b'OCTAL 035', b'OCTAL 29')
+                    member.size = len(content)
+                changed.addfile(member, io.BytesIO(content) if content is not None else None)
+        (tmp_path / 'workspace.tar').write_bytes(rewritten.getvalue())
     else:
         (tmp_path / 'workspace.tar').write_bytes(b'changed archive')
     target.write_text(json.dumps(report), encoding='utf-8')

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tarfile
 
 from database_values_cases import CASES
 from database_values_report import verify_archive
@@ -45,6 +46,21 @@ def qualify(values_path, user_path, image):
             assert name not in inputs or inputs[name] == digest, name
             inputs[name] = digest
         verify_archive(path, report, cases, report is user)
+    # The native assertions must have read the original octal text, not an
+    # equivalent decimal fixture that would conceal the importer defect.
+    with tarfile.open(values_path.parent / 'workspace.tar') as archive:
+        members = {row.name.removeprefix('./'): row for row in archive.getmembers() if row.isfile()}
+        read = lambda name: archive.extractfile(members[name]).read()
+        for name, spec in CASES.items():
+            project = name.replace(':', '-')
+            for key, file in (('ground', 'GroundDB/GDB.DB'), ('spacecraft', 'SpacecraftDB/SCDB.DB')):
+                assert read(project + '/data/' + file).decode('utf-8') == spec[key], name
+        observed = json.loads(read('octal-values/data/Procedures/imported-values.json'))
+        assert observed['OCTAL'] == {'type': 'int', 'repr': '29'}
+        observed = json.loads(read('octal-boundaries/data/Procedures/imported-values.json'))
+        for key, value in {'ZERO': 0, 'ZEROS': 0, 'MAX_DIGIT': 7, 'NEGATIVE': -29,
+                           'POSITIVE': 29, 'LARGE': 1208925819614629174706176}.items():
+            assert observed[key] == {'type': 'int', 'repr': str(value)}, key
     assert user['runtime_sources']['installed']['/opt/host/native.py'] == sha(ROOT / 'host_runtime/python/native.py')
     assert set(user['prompts']) == {'prompt-abort', 'prompt-rename'}
     for mode in ('abort', 'rename'):
