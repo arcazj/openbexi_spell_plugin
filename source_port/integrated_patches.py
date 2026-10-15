@@ -26,6 +26,7 @@ import flow_patches
 import obs_patches
 import limit_patches
 import notification_patches
+import prompt_timeout_patches
 import resource_patches
 import scheduler_patches
 import scdb_patches
@@ -53,6 +54,7 @@ RECIPE_NAMES = (
     'send_verify_patches.py',
     'shutdown_pause_patches.py',
     'child_lifecycle_patches.py',
+    'prompt_timeout_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -61,7 +63,8 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES,
-                            *child_lifecycle_patches.PREIMAGES))))
+                            *child_lifecycle_patches.PREIMAGES,
+                            *prompt_timeout_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches)
@@ -160,6 +163,14 @@ def apply_native_tree(source, archive, output):
         elif name in child_lifecycle_patches.PREIMAGES:
             recipe = 'child_lifecycle_patches.py'
             patched[name] = child_lifecycle_patches.apply(name, original[name], ported[name])
+            if name in prompt_timeout_patches.PREIMAGES:
+                intermediate = stage(recipe, name, ported[name], patched[name])
+                patched[name] = stage('prompt_timeout_patches.py', name, intermediate,
+                    prompt_timeout_patches.apply(name, original[name], intermediate))
+                continue
+        elif name in prompt_timeout_patches.PREIMAGES:
+            recipe = 'prompt_timeout_patches.py'
+            patched[name] = prompt_timeout_patches.apply(name, original[name], ported[name])
         elif name == ui_native_patches.SOURCE:
             recipe = 'ui_native_patches.py'
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
