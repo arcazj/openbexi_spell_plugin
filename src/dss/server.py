@@ -345,14 +345,20 @@ class ApiHandler(BaseHTTPRequestHandler):
     def _error(self, status: int, code: str) -> None:
         self._reply(status, {"error_code": code})
 
-    def _reject_body(self, length: int) -> None:
+    def _reject_body(self, status: int, code: str, length: int | None = None) -> None:
         # Closing with unread request bytes can reset the connection on Windows
-        # and discard the 413 response. Half-close the reply, then drain a bounded
+        # and discard the error response. Half-close the reply, then drain a bounded
         # amount without parsing or applying any of the rejected body.
         self.close_connection = True
-        self._error(413, "DSS_REQUEST_BOUNDS")
+        self._error(status, code)
         self.wfile.flush()
         self.connection.shutdown(socket.SHUT_WR)
+        if length is None:
+            lengths = self.headers.get_all("Content-Length", [])
+            try:
+                length = int(lengths[0]) if len(lengths) == 1 and lengths[0].isdigit() else 2 * MAX_BODY
+            except ValueError:
+                length = 2 * MAX_BODY
         remaining = min(length, 2 * MAX_BODY)
         deadline = time.monotonic() + 0.25
         while remaining > 0:
@@ -407,21 +413,25 @@ class ApiHandler(BaseHTTPRequestHandler):
         runtime = self.server.runtime
         origin = self.headers.get("Origin")
         if origin is not None and origin not in runtime.allowed_origins:
-            self._error(403, "DSS_ORIGIN_DENIED")
+            self._reject_body(403, "DSS_ORIGIN_DENIED")
             return
         if self.headers.get("Content-Type", "").split(";", 1)[0].strip().lower() != "application/json":
-            self._error(415, "DSS_JSON_REQUIRED")
+            self._reject_body(415, "DSS_JSON_REQUIRED")
             return
         if self.headers.get("Transfer-Encoding") is not None:
-            self._error(400, "DSS_REQUEST_INVALID")
+            self._reject_body(400, "DSS_REQUEST_INVALID")
             return
         try:
             lengths = self.headers.get_all("Content-Length", [])
-            if len(lengths) != 1 or not lengths[0].isdigit():
-                raise ValueError("length required")
-            length = int(lengths[0])
+            try:
+                if len(lengths) != 1 or not lengths[0].isdigit():
+                    raise ValueError("length required")
+                length = int(lengths[0])
+            except ValueError:
+                self._reject_body(400, "DSS_REQUEST_INVALID")
+                return
             if not 2 <= length <= MAX_BODY:
-                self._reject_body(length)
+                self._reject_body(413, "DSS_REQUEST_BOUNDS", length)
                 return
             raw = self.rfile.read(length)
             if len(raw) != length:

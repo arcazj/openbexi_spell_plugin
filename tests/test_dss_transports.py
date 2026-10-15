@@ -159,17 +159,41 @@ def test_http_duplicate_and_oversized_inputs_cannot_change_state(runtime):
     assert runtime.engine.state() == before
 
 
-def test_oversized_header_without_body_releases_bounded_http_workers(runtime):
+@pytest.mark.parametrize("headers,status,code", [
+    ({"Origin": "https://example.invalid"}, 403, "DSS_ORIGIN_DENIED"),
+    ({"Content-Type": "text/plain"}, 415, "DSS_JSON_REQUIRED"),
+    ({"Transfer-Encoding": "chunked"}, 400, "DSS_REQUEST_INVALID"),
+    ({"Content-Length": "invalid"}, 400, "DSS_REQUEST_INVALID"),
+])
+def test_header_rejections_deliver_error_with_unread_body(runtime, headers, status, code):
+    before = runtime.engine.state()
+    with serving(ApiServer(("127.0.0.1", 0), runtime)) as address:
+        for _ in range(64):
+            with closing(http.client.HTTPConnection(*address, timeout=3)) as connection:
+                connection.request("POST", "/api/v1/control", body=json.dumps({"action": "x" * 65536}),
+                                   headers={"Content-Type": "application/json", **headers})
+                response = connection.getresponse()
+                assert response.status == status
+                assert json.loads(response.read()) == {"error_code": code}
+    assert runtime.engine.state() == before
+
+
+@pytest.mark.parametrize("extra,status,code", [
+    (b"", 413, "DSS_REQUEST_BOUNDS"),
+    (b"Origin: https://example.invalid\r\n", 403, "DSS_ORIGIN_DENIED"),
+    (b"Transfer-Encoding: chunked\r\n", 400, "DSS_REQUEST_INVALID"),
+])
+def test_rejected_header_without_body_releases_bounded_http_workers(runtime, extra, status, code):
     before = runtime.engine.state()
     with serving(ApiServer(("127.0.0.1", 0), runtime)) as address, ExitStack() as clients:
         for _ in range(4):
             connection = clients.enter_context(closing(socket.create_connection(address, timeout=3)))
             connection.sendall(b"POST /api/v1/control HTTP/1.1\r\nHost: localhost\r\n"
-                               b"Content-Type: application/json\r\nContent-Length: 1000000000\r\n\r\n")
+                               b"Content-Type: application/json\r\nContent-Length: 1000000000\r\n" + extra + b"\r\n")
             response = http.client.HTTPResponse(connection)
             response.begin()
-            assert response.status == 413
-            assert json.loads(response.read()) == {"error_code": "DSS_REQUEST_BOUNDS"}
+            assert response.status == status
+            assert json.loads(response.read()) == {"error_code": code}
             # Keep the original socket's write side open: no EOF or body arrives.
         time.sleep(1)
         with closing(http.client.HTTPConnection(*address, timeout=3)) as connection:
