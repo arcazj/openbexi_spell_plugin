@@ -32,6 +32,7 @@ DONORS = {
     'shutdown_pause':('a97118ea78011205db886e8a9556220201809960','shutdown_pause_review'),
     'child_lifecycle':('4543128e93d7c8a6ee8b27e595f34fe6d5831a65','child_lifecycle'),
     'prompt_timeout':('8a89ba8','prompt_timeout'),
+    'prompt_controls':('2d3cd53637675be73544bcb60a843bbc534ee939','prompt_controls'),
     'rng':('922d578','rng'),
     'rng_state':('669c1d7','rng_state'),
 }
@@ -134,6 +135,36 @@ def main():
             raise ValueError('Prompt header has an unexpected predecessor')
         if hashes['patched'] != stage['after_sha256']:
             raise ValueError('Prompt composition output differs from its qualified stage')
+        native[name] = hashes
+    controls = reports['prompt_controls']
+    recipe = 'prompt_control_patches.py'
+    if controls['passed'] is not True or controls['qualified_contracts'] != []:
+        raise ValueError('Prompt control donor lacks independent native controls')
+    committed = subprocess.check_output(
+        ['git','show',donors['prompt_controls']['commit']+':source_port/'+recipe],cwd=ROOT)
+    if hashlib.sha256(committed).hexdigest() != controls['recipe']['sha256']:
+        raise ValueError('Prompt control recipe differs from its qualified commit')
+    changed = {}
+    for stage in controls['native_stages']:
+        if stage['recipe'] != recipe or set(changed) & set(stage['sources']):
+            raise ValueError('Unexpected prompt control composition stage')
+        changed.update(stage['sources'])
+    if set(changed) != set(composition.prompt_control_patches.PREIMAGES):
+        raise ValueError('Prompt control source set differs from its qualified composition')
+    for name, stage in changed.items():
+        hashes = {key.removesuffix('_sha256'):value
+                  for key,value in controls['native_sources'][name].items()}
+        original, before = composition.prompt_control_patches.PREIMAGES[name]
+        if hashes['original'] != original or stage['before_sha256'] != before:
+            raise ValueError('Prompt control donor preimage differs: '+name)
+        if name in native:
+            if (any(native[name][key] != hashes[key] for key in ('original','ported'))
+                    or native[name]['patched'] != stage['before_sha256']):
+                raise ValueError('Prompt control overlaps an unexpected donor: '+name)
+        elif hashes['ported'] != stage['before_sha256']:
+            raise ValueError('Prompt control IPC source has an unexpected predecessor')
+        if hashes['patched'] != stage['after_sha256']:
+            raise ValueError('Prompt control output differs from its qualified stage')
         native[name] = hashes
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}

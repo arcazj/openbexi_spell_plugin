@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "b6ea5f0105454497289683cbba7258c023a6ad75b0f45543c7e610d46041decb",
+  "generator_sha256": "ba247157a6c761f140e4fcc41877431d5cfe3a7874fa0019c4d827d9f2832e09",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -113,6 +113,11 @@
       "path": "conformance/evidence/prompt_timeout.json",
       "sha256": "188afd23746609156e5b89de7b75fb4257b375eda39ed5113a13e01b90784b73"
     },
+    "prompt_controls": {
+      "commit": "2d3cd53637675be73544bcb60a843bbc534ee939",
+      "path": "conformance/evidence/prompt_controls.json",
+      "sha256": "b7048f0d231bbd8dbbf8f24929b8ee6106fc635021df2f155f9ef596bd65c6c1"
+    },
     "rng": {
       "commit": "922d578ec14d4907b4cde2c0aaeee5a5ec5b6325",
       "path": "conformance/evidence/rng.json",
@@ -202,13 +207,23 @@
     },
     "lib/SPELL_CIFS/src/SPELLserverCif.C": {
       "original": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-      "patched": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+      "patched": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
       "ported": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
     },
     "include/SPELL_CIFS/SPELLserverCif.H": {
       "original": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
-      "patched": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+      "patched": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
       "ported": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+    },
+    "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+      "original": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
+      "patched": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+      "ported": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+    },
+    "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+      "original": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
+      "patched": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+      "ported": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
     }
   },
   "python": {
