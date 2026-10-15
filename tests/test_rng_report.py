@@ -21,7 +21,7 @@ def recorded_raw():
     return report
 
 
-def test_only_catalog_rows_qualify_and_diagnostic_observations_remain():
+def test_only_complete_catalog_rows_qualify():
     raw=recorded_raw()
     report=qualify(raw)
     assert len(report['checks'])==12  # Eight native controls plus four explicit conjunctions.

@@ -83,6 +83,7 @@ def qualify(raw):
     if composed:
         report['scope'].update(
             observed='Eight catalog controls through original native helpers and the persistent GENERIC driver; activity semantics are qualified separately.',
+            open='Full schedule/activity library contracts and periodic plan execution, dual paths, baseband list/ENG/RAW configuration, GetRangingStatus constant conflict, RF hardware and other drivers.',
             distribution='Fresh composed wheels with installed RECORD, recipe chains and helper/proxy/Ground bytes verified; complete release acceptance remains separate.')
     retained={}
     for name in ('events','controls'):
