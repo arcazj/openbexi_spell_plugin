@@ -2,20 +2,43 @@
 import json
 from pathlib import Path
 import shutil
+import hashlib
+import subprocess
 import sys
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'conformance'))
+import database_values_report as diagnostic
 from database_values_report import qualify
 
 
 @pytest.fixture(scope='module')
-def proof():
+def proof(tmp_path_factory):
     record = json.loads((ROOT / 'conformance/evidence/database_values.json').read_bytes())
-    return (Path(record['raw']['values']['path']), Path(record['raw']['user']['path']),
-            Path(record['build']['path']))
+    # This diagnostic predates the composed package. Verify it against its exact
+    # committed inputs; current-runtime acceptance has a separate test module.
+    frozen = tmp_path_factory.mktemp('octal-diagnostic-donor')
+    donor = 'a494986733ce6f4ceefda41684824f12bfbc5660'
+    names = dict(record['inputs'])
+    names.update({'conformance/evidence/' + name + '.json': row['sha256']
+                  for name, row in record['retained_failures'].items()})
+    for name, expected in names.items():
+        current = (ROOT / name).read_bytes()
+        contents = current if hashlib.sha256(current).hexdigest() == expected else subprocess.check_output(
+            ['git', 'show', donor + ':' + name], cwd=ROOT)
+        assert hashlib.sha256(contents).hexdigest() == expected, name
+        target = frozen / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(contents)
+    original_validate = diagnostic.validate_report
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(diagnostic, 'ROOT', frozen)
+        patch.setattr(diagnostic, 'validate_report',
+            lambda path, image, count: original_validate(path, image, count, root=frozen))
+        yield (Path(record['raw']['values']['path']), Path(record['raw']['user']['path']),
+               Path(record['build']['path']))
 
 
 def test_diagnostic_pass_does_not_promote_an_overlaid_artifact(proof):

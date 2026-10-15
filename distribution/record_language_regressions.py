@@ -123,6 +123,8 @@ def main():
     run('child_return_report.py', '--start', raw['child-start'],
         '--modes', proofs['modes'], '--image', image)
     run('database_scope_report.py', raw['database-import'], '--image', image)
+    run('database_values_composed_report.py', '--values', raw['database-values'],
+        '--user', raw['user-database'], '--image', image)
     run('rng_report.py', raw['rng-catalog'], '--baseline', args.rng_baseline)
     run('rng_state_report.py', raw['rng-state'], '--baseline', args.rng_state_baseline,
         '--driver', args.rng_driver, '--legacy-and-migration', args.rng_legacy_and_migration)

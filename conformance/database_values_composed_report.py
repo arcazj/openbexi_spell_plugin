@@ -1,0 +1,113 @@
+"""Qualify the p83 database octal literal only on the composed installed wheel."""
+import argparse
+from copy import deepcopy
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+from database_values_cases import CASES
+from database_values_report import verify_archive
+from installed_provenance import verify_capture, verify_stages
+from user_database_cases import CASES as USER_CASES
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'distribution'))
+from run_language_regressions import validate_report
+
+CONTRACT = 'CMP-LRM244-SYNTAX-INTEGER-OCTAL'
+DONOR = 'a494986733ce6f4ceefda41684824f12bfbc5660'
+DIMENSIONS = {'positive': 'octal-values', 'boundary': 'octal-boundaries',
+              'failure': 'non-octal-text', 'recovery': 'import-recovery'}
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def qualify(values_path, user_path, image):
+    values, user = (json.loads(path.read_bytes()) for path in (values_path, user_path))
+    inputs = {}
+    for path, report, cases in ((values_path, values, CASES), (user_path, user, USER_CASES)):
+        validate_report(path, image, len(cases))
+        assert set(report['checks']) == set(cases)
+        capture = report['runtime_sources']
+        assert not capture.get('overlay') and not capture.get('manifest')
+        runtime = capture['integrated']
+        assert runtime is not None and runtime['driver_composition'] is not None
+        verify_capture(runtime, report['inputs'], report.get('lf_normalized_inputs'))
+        for kind, record in runtime['manifest']['composition'].items():
+            verify_stages(kind, record)
+        assert runtime == values['runtime_sources']['integrated']
+        assert capture['installed']['spell/utils/vimport.py'] == runtime['python_sources']['spell/utils/vimport.py']
+        for name, digest in report['inputs'].items():
+            assert name not in inputs or inputs[name] == digest, name
+            inputs[name] = digest
+        verify_archive(path, report, cases, report is user)
+    assert user['runtime_sources']['installed']['/opt/host/native.py'] == sha(ROOT / 'host_runtime/python/native.py')
+    assert set(user['prompts']) == {'prompt-abort', 'prompt-rename'}
+    for mode in ('abort', 'rename'):
+        prompt = user['prompts']['prompt-' + mode]
+        assert prompt['passed'] and prompt['mode'] == mode
+        assert prompt['status'] == ('ABORTED' if mode == 'abort' else 'FINISHED')
+        assert len(prompt['prompts']) == (1 if mode == 'abort' else 2)
+        expected = {'existing.IMP': 'SAVED 42\n'}
+        if mode == 'rename':
+            expected['renamed.IMP'] = 'KEY\t7\n'
+        assert prompt['files'] == expected
+
+    donor_path = 'conformance/evidence/database_values.json'
+    donor_bytes = subprocess.check_output(['git', 'show', DONOR + ':' + donor_path], cwd=ROOT)
+    donor = json.loads(donor_bytes)
+    assert donor['passed'] and donor['qualified_contracts'] == []
+    assert donor['passed_checks'] == {'values_and_import': 24, 'user_persistence': 20, 'user_prompts': 2}
+    source = donor['source']
+    runtime = values['runtime_sources']['integrated']
+    composition = runtime['manifest']['composition']['python']
+    recipe = 'database_values_patches.py'
+    stage, = [row for row in composition['stages'] if row['recipe'] == recipe]
+    assert stage['sources'] == {source['name']: {
+        'before_sha256': source['preimage_sha256'], 'after_sha256': source['patched_sha256']}}
+    assert composition['recipes'][recipe]['sha256'] == donor['inputs']['source_port/' + recipe]
+    assert composition['sources'][source['name']]['patched_sha256'] == source['patched_sha256']
+    assert runtime['python_sources'][source['name']] == source['patched_sha256']
+    inventory = json.loads((ROOT / 'conformance/inventory.json').read_bytes())
+    item, = [row for row in inventory['rows'] if row['id'] == CONTRACT]
+    assert item['name'] == '035' and item['pages'] == '83' and item['package'] == 'PY'
+    assert sha(ROOT / 'docs/reference/SPELL - Language Reference - 2.4.4.pdf') == 'ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3'
+    checks = {}
+    for dimension, name in DIMENSIONS.items():
+        row = deepcopy(values['checks'][name])
+        row.update(contracts=[CONTRACT], dimension=dimension, legacy_spelling_supported=True,
+            oracle='LRM p83 database-file value grammar: literal 035 is integer 29; signed/zero/large octal, quoted and invalid-digit text, and import after an error have independent native assertions.')
+        checks[name] = row
+    for name in ('conformance/database_values_composed_report.py', 'conformance/database_values_report.py',
+                 'conformance/database_values_user_controller.py', 'tests/test_database_values_composed_report.py'):
+        inputs[name] = sha(ROOT / name)
+    return dict(passed=True, runtime_image=image, inputs=inputs, checks=checks,
+        qualified_contracts=[CONTRACT], source=source, stage=stage,
+        diagnostic_donor={'commit': DONOR, 'path': donor_path, 'sha256': hashlib.sha256(donor_bytes).hexdigest()},
+        raw={name: {'path': str(path.resolve()), 'sha256': sha(path),
+                    'workspace_sha256': sha(path.parent / 'workspace.tar')}
+             for name, path in (('values', values_path), ('user', user_path))},
+        regressions={'values_and_import': len(CASES), 'user_persistence': len(USER_CASES), 'user_prompts': 2},
+        scope='Original p83 database-file octal grammar on a freshly composed installed wheel; explicit-import native profile.',
+        exclusions=['Python procedure-source octal literals', 'Complete database-file grammar', 'Whole database chapter'],
+        full_v05_accepted=False, full_v06_accepted=False)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--values', type=Path, required=True)
+    parser.add_argument('--user', type=Path, required=True)
+    parser.add_argument('--image', required=True)
+    args = parser.parse_args()
+    report = qualify(args.values, args.user, args.image)
+    output = ROOT / 'conformance/evidence/database_values_composed.json'
+    output.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
+    print(json.dumps({'output': str(output), 'contracts': 1, 'checks': report['regressions']}))
+
+
+if __name__ == '__main__':
+    main()
