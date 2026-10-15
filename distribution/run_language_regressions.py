@@ -92,7 +92,7 @@ def main():
                                      '--format', '{{.Id}}'], text=True).strip()
     output = args.output.resolve() / uuid.uuid4().hex
     output.mkdir(parents=True)
-    result = {'passed': False, 'complete_sequence': args.suite is None,
+    result = {'passed': False, 'state': 'running', 'complete_sequence': args.suite is None,
               'image': image, 'source_commit': subprocess.check_output(
                   ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'runner_sha256': sha(Path(__file__)), 'suites': [],
@@ -118,12 +118,16 @@ def main():
         except (ValueError, OSError, KeyError, TypeError) as error:
             stage['error'] = str(error)
         result['suites'].append(stage)
-        result['passed'] = all(row['passed'] for row in result['suites'])
+        if not stage['passed']:
+            result['state'] = 'failed'
         (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n',
                                           encoding='utf-8', newline='\n')
         print(name + ': ' + ('PASS' if stage['passed'] else 'FAIL ' + stage['error']), flush=True)
         if not stage['passed']:
             return 1
+    result.update(passed=True, state='completed')
+    (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n',
+                                      encoding='utf-8', newline='\n')
     return 0
 
 
