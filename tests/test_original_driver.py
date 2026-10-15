@@ -220,8 +220,20 @@ def test_all_service_families_have_truthful_simulator_behavior(bridge):
     ranging = g.SPELLDriverInterface_RNGStub(channel)
     assert list(ranging.GetBasebandNames(pack({}),timeout=3).names) == ['DSS-BBE-1']
     path = p.Ranging(bbe='DSS-BBE-1',antenna='DSS-ANTENNA-1')
-    assert not ranging.StartRanging(path,timeout=3).value
+    separate_schedule = 'ranging_schedule_enabled' in dispatcher.ground.state()
+    if separate_schedule:
+        # The checked LRM p93 correction keeps on-demand activity independent.
+        assert dispatcher.ground.state()['ranging_schedule_enabled'] is False
+        assert ranging.StartRanging(path,timeout=3).value
+        assert dispatcher.ground.state()['ranging']=='RANGING'
+        assert dispatcher.ground.state()['ranging_schedule_enabled'] is False
+    else:
+        # Retain the explicitly legacy raw-source profile, not a manual claim.
+        assert not ranging.StartRanging(path,timeout=3).value
     assert ranging.EnableRanging(p.Ranging(),timeout=3).value
+    if separate_schedule:
+        assert dispatcher.ground.state()['ranging']=='RANGING'
+        assert dispatcher.ground.state()['ranging_schedule_enabled'] is True
     assert ranging.StartRanging(path,timeout=3).value
     assert ranging.GetRangingStatus(pack({}),timeout=3).value == 'RANGING'
     assert ranging.AbortRanging(p.Ranging(),timeout=3).value
