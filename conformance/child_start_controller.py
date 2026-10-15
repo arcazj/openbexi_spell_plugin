@@ -53,6 +53,7 @@ for name,spec in CASES.items():
 
     try:
         session.start()
+        row['parent_instance']=session.instance
         session.pump=drain
         session.request('CMD_RUN',send=True)
         wait_for(lambda:(project/'failed-start.json').exists())
@@ -78,6 +79,7 @@ for name,spec in CASES.items():
                     time.sleep(.075)
                 session.request('CMD_RUN',send=True,procedure=child)
             wait_for(lambda:session.request('REQ_EXEC_STATUS',procedure=child)['ExecutorStatus']=='FINISHED')
+            row['child_status']=session.request('REQ_EXEC_STATUS',procedure=child)['ExecutorStatus']
             assert (project/'child-finished.txt').read_text()=='finished'
         wait_for(lambda:session.request('REQ_EXEC_STATUS')['ExecutorStatus'] in {'FINISHED','ERROR','ABORTED'})
         row['parent_status']=session.request('REQ_EXEC_STATUS')['ExecutorStatus']
