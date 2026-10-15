@@ -46,7 +46,10 @@ static std::string spellLegacyComparison(const std::string& source)
     char* data = nullptr;
     Py_ssize_t size = 0;
     if (PyBytes_AsStringAndSize(result.get(), &data, &size) < 0) helper.checkError();
-    return std::string(data, static_cast<size_t>(size));
+    std::string compatible(data, static_cast<size_t>(size));
+    // Break the local function/globals cycle after copying its bytes.
+    PyDict_Clear(environment.get());
+    return compatible;
 }
 
 '''.replace('SYNTAX_SOURCE', json.dumps(syntax, ensure_ascii=True))
