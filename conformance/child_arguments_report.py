@@ -55,7 +55,8 @@ def qualify(raw_path):
         scope='Examples 160-161 and list-of-pairs args keyword syntax through real native parent and child executors.',
         exclusions=['Whole StartProc and argument-transfer section','Library priorities and named procedure headers',
                     'Non-blocking/manual/hidden modes','Complex argument object families','Checkpoint/warm-start recovery'])
-    for name in ('conformance/child_arguments_report.py','conformance/CHILD_ARGUMENTS.md','tests/test_child_arguments_report.py'):
+    for name in ('conformance/child_arguments_report.py','conformance/CHILD_ARGUMENTS.md',
+                 'tests/test_child_arguments_report.py','distribution/run_language_regressions.py'):
         report['inputs'][name]=sha(ROOT/name)
     return report
 
