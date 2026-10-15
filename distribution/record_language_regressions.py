@@ -122,6 +122,8 @@ def main():
     run('child_start_report.py', raw['child-start'], '--image', image)
     run('child_return_report.py', '--start', raw['child-start'],
         '--modes', proofs['modes'], '--image', image)
+    run('child_execution_report.py', '--start', raw['child-start'],
+        '--modes', proofs['modes'], '--image', image)
     run('database_scope_report.py', raw['database-import'], '--image', image)
     run('database_values_composed_report.py', '--values', raw['database-values'],
         '--user', raw['user-database'], '--image', image)
