@@ -17,7 +17,7 @@ expected = {'ZERO':0, 'ZEROS':0, 'MAX_DIGIT':7, 'NEGATIVE':-29, 'POSITIVE':29,
             'LARGE':1208925819614629174706176}
 for key,value in expected.items():
     assert type(GDB[key]) is int and GDB[key] == value, (key, repr(GDB[key]))
-""", 'ZERO 0\nZEROS 000\nMAX_DIGIT 07\nNEGATIVE -035\nPOSITIVE +035\nLARGE 04000000000000000000000000000\n')
+""", 'ZERO 0\nZEROS 000\nMAX_DIGIT 07\nNEGATIVE -035\nPOSITIVE +035\nLARGE 0400000000000000000000000000\n')
 add('non-octal-text', """
 assert GDB['TEXT'] == '035' and type(GDB['TEXT']) is str
 assert GDB['NOT_OCTAL'] == '038' and type(GDB['NOT_OCTAL']) is str
