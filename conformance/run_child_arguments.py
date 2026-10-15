@@ -1,4 +1,4 @@
-"""Retain eight native StartProc argument controls on a fresh installed image."""
+"""Retain native StartProc argument controls on a fresh installed image."""
 import argparse
 import hashlib
 import io

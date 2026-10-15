@@ -22,7 +22,7 @@ from spell.runtime import ARGS
 '''
 
 
-def case(group, dimension, arguments, child, expected, *, reject=False, launch=True):
+def case(group, dimension, arguments, child, expected, *, reject=False, launch=True, reply=None):
     parent = PREFIX + (REJECT if reject else '')
     if launch:
         parent += f"assert StartProc('child', args={arguments}, HandleError=False) is True\n"
@@ -31,10 +31,10 @@ def case(group, dimension, arguments, child, expected, *, reject=False, launch=T
                  else ['EXAMPLE-161'])
     CASES[group+':'+dimension] = dict(
         dimension=dimension, contracts=['CMP-LRM244-'+name for name in contracts],
-        oracle='LRM p89 Examples 160-161: original StartProc transfers argument pairs to the real child ARGS container; malformed definitions reject before opening a child and missing-key access fails independently.',
+        oracle='LRM p89 Examples 160-161 with pp84-85 container semantics: original StartProc transfers argument pairs to the real child ARGS; malformed definitions and invalid keys reject, while missing variables prompt for initialization.',
         parent=parent, child=CHILD_PREFIX+child,
         expected_parent={'rejections':4 if reject else 0},
-        expected_child=expected, expected_children=int(launch))
+        expected_child=expected, expected_children=int(launch), reply=reply)
 
 
 PAIR = '''assert type(ARGS['A']) is int and ARGS['A']==1
@@ -44,12 +44,12 @@ Path('child-result.json').write_text(json.dumps({'A':ARGS['A'],'B':ARGS['B']}))
 EMPTY = '''assert len(ARGS)==0
 Path('child-result.json').write_text(json.dumps({'length':len(ARGS)}))
 '''
-MISSING = '''try:
-    ARGS['MISSING']
-except KeyError:
-    missing=True
+INVALID_KEY = '''try:
+    ARGS[[]]
+except TypeError:
+    rejected=True
 else:
-    raise AssertionError('Missing argument did not raise KeyError')
+    raise AssertionError('Invalid argument key did not raise TypeError')
 '''
 case('arguments','positive',"[['A',1],['B',2]]",PAIR,{'A':1,'B':2})
 case('arguments','boundary','[]',EMPTY,{'length':0})
@@ -61,7 +61,17 @@ assert type(ARGS['B']) is bool and ARGS['B'] is False
 assert type(ARGS['C']) is str and ARGS['C']==''
 Path('child-result.json').write_text(json.dumps({'types':[type(ARGS[k]).__name__ for k in ('A','B','C')]}))
 ''',{'types':['int','bool','str']})
-case('access','failure',"[['A',1]]",MISSING+"Path('child-result.json').write_text(json.dumps({'missing':missing}))\n",{'missing':True})
-case('access','recovery',"[['A',1]]",MISSING+'''assert type(ARGS['A']) is int and ARGS['A']==1
-Path('child-result.json').write_text(json.dumps({'missing':missing,'A':ARGS['A']}))
-''',{'missing':True,'A':1})
+case('access','failure',"[['A',1]]",INVALID_KEY+"Path('child-result.json').write_text(json.dumps({'rejected':rejected}))\n",{'rejected':True})
+case('access','recovery',"[['A',1]]",INVALID_KEY+'''assert type(ARGS['A']) is int and ARGS['A']==1
+assert ARGS.keys()==['A']
+Path('child-result.json').write_text(json.dumps({'rejected':rejected,'A':ARGS['A']}))
+''',{'rejected':True,'A':1})
+case('missing','positive',"[['A',1]]",'''value=ARGS['MISSING']
+assert type(value) is int and value==7
+Path('child-result.json').write_text(json.dumps({'MISSING':value}))
+''',{'MISSING':7},reply='7')
+case('missing','recovery',"[['A',1]]",'''value=ARGS['MISSING']
+assert type(value) is int and value==7
+assert ARGS['MISSING']==7 and ARGS['A']==1
+Path('child-result.json').write_text(json.dumps({'MISSING':ARGS['MISSING'],'A':ARGS['A']}))
+''',{'MISSING':7,'A':1},reply='7')

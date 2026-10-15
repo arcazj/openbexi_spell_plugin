@@ -18,11 +18,11 @@ def raw_path():
 def test_native_arguments_qualify_only_the_declared_examples_and_syntax():
     report=qualify(raw_path())
     assert set(report['qualified_contracts'])==CONTRACTS
-    assert len(report['checks'])==8
+    assert len(report['checks'])==10
     assert not report['full_v05_accepted'] and not report['full_v06_accepted']
 
 
-@pytest.mark.parametrize('mutation',['failed','missing','source','contract','child','host','runtime'])
+@pytest.mark.parametrize('mutation',['failed','missing','source','contract','child','host','runtime','prompt'])
 def test_incomplete_or_altered_argument_evidence_is_rejected(tmp_path,mutation):
     report=json.loads(raw_path().read_bytes())
     key='arguments:positive'
@@ -38,8 +38,10 @@ def test_incomplete_or_altered_argument_evidence_is_rejected(tmp_path,mutation):
         report['checks'][key]['child_instances']=[]
     elif mutation=='host':
         report['host_inputs']={}
-    else:
+    elif mutation=='runtime':
         report['runtime_sources']['integrated']=None
+    else:
+        report['checks'][key]['prompts']=[{}]
     target=tmp_path/'result.json'
     target.write_text(json.dumps(report))
     with pytest.raises((AssertionError,ValueError)):

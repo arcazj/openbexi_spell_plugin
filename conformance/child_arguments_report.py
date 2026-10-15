@@ -35,6 +35,10 @@ def qualify(raw_path):
         assert row['contracts']==spec['contracts'] and row['dimension']==spec['dimension'],name
         assert row['parent_status']=='FINISHED' and row['parent_result']==spec['expected_parent'],name
         assert len(row['child_instances'])==spec['expected_children'],name
+        assert len(row['prompts'])==len(row['replies'])==int(spec['reply'] is not None),name
+        if spec['reply'] is not None:
+            assert row['replies']==[{'procedure':row['child_instances'][0],'answer':spec['reply']}],name
+            assert "does not contain variable 'MISSING'" in row['prompts'][0]['Text'],name
         assert all(status=='FINISHED' for status in row['child_statuses'].values()),name
         project=raw_path.parent/'workspace'/name.replace(':','-')
         assert (project/'main.py').read_text(encoding='utf-8')==spec['parent']
@@ -57,6 +61,10 @@ def qualify(raw_path):
     rejected=json.loads(rejected_path.read_bytes())
     assert len(rejected['checks'])==8
     assert {name for name,row in rejected['checks'].items() if row['passed']}=={'arguments:failure'}
+    missing_path=Path(correction['missing_key_assumption']['path'])
+    assert sha(missing_path)==correction['missing_key_assumption']['sha256']
+    missing=json.loads(missing_path.read_bytes())
+    assert {name for name,row in missing['checks'].items() if not row['passed']}=={'access:failure','access:recovery'}
     report.update(qualified_contracts=sorted(CONTRACTS),
         raw={'path':str(raw_path.resolve()),'sha256':sha(raw_path)},
         harness_correction={'path':'conformance/evidence/child_arguments_harness.json','sha256':sha(correction_path)},
@@ -66,7 +74,7 @@ def qualify(raw_path):
                     'Automatic SPELL symbol injection into builtins or procedure globals'])
     for name in ('conformance/child_arguments_report.py','conformance/CHILD_ARGUMENTS.md',
                  'tests/test_child_arguments_report.py','distribution/run_language_regressions.py',
-                 'conformance/evidence/child_arguments_harness.json'):
+                 'conformance/evidence/child_arguments_harness.json','docs/NATIVE_PACKAGE.md'):
         report['inputs'][name]=sha(ROOT/name)
     return report
 

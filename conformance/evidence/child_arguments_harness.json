@@ -96,5 +96,37 @@
     }
   },
   "full_v05_accepted": false,
-  "full_v06_accepted": false
+  "full_v06_accepted": false,
+  "missing_key_assumption": {
+    "path": "C:\\obarguments\\.qualification\\child-arguments\\b545ca26506c4c6c9c5fc2bc315b8231\\result.json",
+    "sha256": "945f15b5943cf03932be8f7cf14798c98aae09c6258143c79d0f899dc36f2b02",
+    "source_commit": "79e00e8",
+    "reason": "A missing native data-container variable prompts for initialization under LRM pp84-85; expecting Python dict KeyError was a harness error.",
+    "observed_prompts": {
+      "access:failure": {
+        "Csp": "child:7/0",
+        "DataType": "32",
+        "Default": "",
+        "ExecutorMode": "PROCEDURE",
+        "ExpectedValues": "",
+        "ProcId": "child#0",
+        "Scope": "1",
+        "Sequence": "12",
+        "Text": "Data set 'Calling Arguments' does not contain variable 'MISSING'.\nPlease provide a value for it.",
+        "Time": "1792033994354978"
+      },
+      "access:recovery": {
+        "Csp": "child:7/0",
+        "DataType": "32",
+        "Default": "",
+        "ExecutorMode": "PROCEDURE",
+        "ExpectedValues": "",
+        "ProcId": "child#0",
+        "Scope": "1",
+        "Sequence": "12",
+        "Text": "Data set 'Calling Arguments' does not contain variable 'MISSING'.\nPlease provide a value for it.",
+        "Time": "1792034028453604"
+      }
+    }
+  }
 }

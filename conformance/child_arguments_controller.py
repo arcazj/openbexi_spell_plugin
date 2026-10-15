@@ -26,8 +26,9 @@ for name,spec in CASES.items():
     session = NativeSession(project,project/'main.py',{})
     children = ChildProcedures(session.instance)
     events = []
+    pending_prompts = []
     row = {key:spec[key] for key in ('dimension','contracts','oracle')}
-    row.update(passed=False,source=spec['parent'],child_source=spec['child'])
+    row.update(passed=False,source=spec['parent'],child_source=spec['child'],prompts=[],replies=[])
 
     def drain():
         while True:
@@ -40,6 +41,10 @@ for name,spec in CASES.items():
                 raise RuntimeError(event)
             if 'message' in event:
                 children.observe(event['message'])
+                if event['message']['id']=='MSG_PROMPT':
+                    fields=event['message']['fields']
+                    row['prompts'].append(fields)
+                    pending_prompts.append(fields)
 
     try:
         session.start()
@@ -50,6 +55,13 @@ for name,spec in CASES.items():
         while time.monotonic()<deadline:
             drain()
             children.service(session)
+            while pending_prompts:
+                fields=pending_prompts.pop(0)
+                assert spec['reply'] is not None and not row['replies'],'Unexpected or repeated prompt'
+                assert "does not contain variable 'MISSING'" in fields['Text']
+                assert fields['ProcId'] in children.children,'Prompt did not come from the child'
+                session.request('MSG_ANSWER',{'ReturnValue':spec['reply']},send=True,procedure=fields['ProcId'])
+                row['replies'].append({'procedure':fields['ProcId'],'answer':spec['reply']})
             status = session.request('REQ_EXEC_STATUS')['ExecutorStatus']
             if status in {'FINISHED','ERROR','ABORTED'}:
                 break
@@ -63,6 +75,7 @@ for name,spec in CASES.items():
             and e['message']['fields'].get('ParentId') == session.instance}
         row['child_instances'] = sorted(instances)
         assert len(instances) == spec['expected_children'],instances
+        assert len(row['prompts'])==len(row['replies'])==int(spec['reply'] is not None)
         row['inventory'] = session.request('REQ_EXEC_LIST',context=True)
         inventory = set(filter(None,row['inventory']['ExecutorList'].split('\x03')))
         assert inventory == {session.instance,*instances},inventory
