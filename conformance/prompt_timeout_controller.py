@@ -50,16 +50,21 @@ for name, spec in CASES.items():
             drain()
             if spec.get('no_prompt'):
                 assert not prompts, prompts
-            if prompts and 'reply' in spec and not answers:
+            if prompts and ('reply' in spec or spec.get('cancel')) and not answers:
                 assert len(prompts) == 1, prompts
                 assert status == 'PROMPT', status
                 assert not (project / 'result.json').exists()
                 if time.monotonic() - prompts[0]['received'] >= spec['hold']:
-                    session.request('MSG_ANSWER', {'ReturnValue': spec['reply']}, send=True)
-                    answers.append(spec['reply'])
+                    if spec.get('cancel'):
+                        session.request('MSG_CANCEL', send=True)
+                        answers.append('CANCEL')
+                    else:
+                        for reply in [spec['reply'], *spec.get('extra_replies', [])]:
+                            session.request('MSG_ANSWER', {'ReturnValue': reply}, send=True)
+                            answers.append(reply)
             if status in ('FINISHED', 'ERROR', 'ABORTED'):
                 row['status'] = status
-                assert status == 'FINISHED', status
+                assert status == spec.get('expected_status', 'FINISHED'), status
                 break
             time.sleep(.01)
         else:
@@ -77,7 +82,11 @@ for name, spec in CASES.items():
             else:
                 assert default in ('A', 'B'), prompts
         if 'reply' in spec:
-            assert answers == [spec['reply']], answers
+            assert answers == [spec['reply'], *spec.get('extra_replies', [])], answers
+        elif spec.get('cancel'):
+            assert answers == ['CANCEL'], answers
+            assert (project / 'cleanup.txt').read_text() == 'cancelled'
+            assert not (project / 'result.json').exists()
         else:
             assert not answers
         row['passed'] = True

@@ -53,4 +53,15 @@ CASES = {
     'operator:positive': {'dimension': 'positive',
                            'source': indefinite('Timeout=1.5,'),
                            'answer': 'B', 'reply': '1', 'hold': 0.05},
+    'duplicate:boundary': {'dimension': 'boundary',
+                            'source': indefinite('Timeout=1.5,'),
+                            'answer': 'B', 'reply': '1', 'extra_replies': ['0'], 'hold': 0},
+    'cancel:failure': {'dimension': 'failure', 'cancel': True, 'hold': 0.05,
+                       'expected_status': 'ABORTED', 'source': PREAMBLE + f'''try:
+    answer=Prompt('CANCEL_TIMED_DEFAULT', {OPTIONS}, Type=LIST,
+                  Default='A', Timeout=1.5, HandleError=False)
+    Path('result.json').write_text(json.dumps(dict(answer=answer)))
+finally:
+    Path('cleanup.txt').write_text('cancelled')
+'''},
 }

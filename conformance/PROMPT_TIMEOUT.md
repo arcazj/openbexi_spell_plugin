@@ -10,12 +10,13 @@ Both 0.25-second timed defaults remained blocked after five seconds. Five contro
 passed: zero timeout, omitted timeout, omitted default, explicit answer before
 timeout, and rejection of a malformed timeout. No requirement is promoted.
 
-Run `conformance/run_prompt_timeout.py --image <immutable-image-id>` to repeat
-the seven actual native IPC procedures. The controller never supplies a timed
+Run `conformance/run_prompt_timeout.py --image <immutable-image-id>` for the
+nine native IPC procedures, including duplicate-answer and cancellation controls
+added after the seven-case baseline. The controller never supplies a timed
 default. Each report retains source identities, runtime provenance, prompt/answer
 events, elapsed time, errors and cleanup results.
 
-The next correction must arbitrate the default, operator answer and cancellation
-in the native CIF, preserve fractional timeouts, and pass the existing prompt,
-error-policy and child lifecycle controls before composing a new release runtime.
+The candidate correction arbitrates the default, operator answer and cancellation
+in the native CIF with a monotonic fractional timeout. Fresh build, installed
+prompt, error-policy and child lifecycle controls are required before promotion.
 Empty defaults and the full Prompt contract remain outside this narrow example.
