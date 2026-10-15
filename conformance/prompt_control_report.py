@@ -77,6 +77,7 @@ def qualify(stress_path, modes_path, timed_path, pair_path, abort_stress_path):
             ('stress', stress_path), ('modes', modes_path), ('timed', timed_path),
             ('native_pair', pair_path), ('abort_stress', abort_stress_path))},
         native_sources={name: native['sources'][name] for name in PREIMAGES},
+        native_stages=stages,
         recipe=native['recipes']['prompt_control_patches.py'], retained_failures=retained,
         inputs={name: sha(ROOT / name) for name in ('conformance/prompt_control_report.py',
             'conformance/PROMPT_CONTROLS.md', 'source_port/prompt_control_patches.py')},
