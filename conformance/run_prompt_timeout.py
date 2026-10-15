@@ -17,7 +17,17 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
+    parser.add_argument('--repeat-duplicate', type=int,
+                        help='Diagnostic only: repeat the conflicting-answer boundary in independent executors')
     args = parser.parse_args()
+    if args.repeat_duplicate is not None and not 1 <= args.repeat_duplicate <= 32:
+        parser.error('--repeat-duplicate must be between 1 and 32')
+    cases = CASES if args.repeat_duplicate is None else {
+        f'duplicate-{index}:boundary': CASES['duplicate:boundary'] for index in range(args.repeat_duplicate)}
+    case_source = (ROOT / 'conformance/prompt_timeout_cases.py').read_bytes()
+    if args.repeat_duplicate is not None:
+        case_source += (f'\nCASES = {{"duplicate-%s:boundary" % i: CASES["duplicate:boundary"] '
+                        f'for i in range({args.repeat_duplicate})}}\n').encode('utf-8')
     token = uuid.uuid4().hex
     output = ROOT / '.qualification/prompt-timeout' / token
     output.mkdir(parents=True)
@@ -37,7 +47,7 @@ def main():
         archive = io.BytesIO()
         with tarfile.open(fileobj=archive, mode='w') as bundle:
             for source in ('prompt_timeout_cases.py', 'prompt_timeout_controller.py', 'installed_provenance.py'):
-                content = (ROOT / 'conformance' / source).read_bytes()
+                content = case_source if source == 'prompt_timeout_cases.py' else (ROOT / 'conformance' / source).read_bytes()
                 item = tarfile.TarInfo(source)
                 item.size, item.mode, item.uid, item.gid = len(content), 0o644, 10003, 10003
                 bundle.addfile(item, io.BytesIO(content))
@@ -59,11 +69,14 @@ def main():
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
         verify_capture(runtime, inputs)
         assert all(hashlib.sha256((ROOT / n).read_bytes()).hexdigest() == v for n, v in inputs.items())
-        report = {'passed': exit_code == 0 and set(checks) == set(CASES)
+        assert (output / 'workspace/prompt_timeout_cases.py').read_bytes() == case_source
+        report = {'passed': exit_code == 0 and set(checks) == set(cases)
                             and all(c['passed'] for c in checks.values()),
                   'runtime_image': image, 'inputs': inputs, 'checks': checks,
                   'runtime_sources': {'integrated': runtime}, 'controller_exit_code': exit_code,
                   'timed_out': timed_out,
+                  'selection': 'complete' if args.repeat_duplicate is None else 'duplicate-order',
+                  'generated_cases_sha256': hashlib.sha256(case_source).hexdigest(),
                   'full_v05_accepted': False, 'full_v06_accepted': False}
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
         print(json.dumps({'output': str(output), 'passed': report['passed'],
