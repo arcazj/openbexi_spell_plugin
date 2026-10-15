@@ -5,17 +5,17 @@
   "host_image": "sha256:3f10ba3a887f902b313bb8c880ce58b55611e05ed9992ed16772dfeac2770dae",
   "total": 763,
   "counts": {
-    "QUALIFIED": 480,
-    "OPEN": 283
+    "QUALIFIED": 483,
+    "OPEN": 280
   },
   "coverage": {
     "path": "conformance/coverage.json",
-    "sha256": "be0add5a0ee8401c21060da4f6fb388957e12df9ef23e854da3bd23fe3bdd3de"
+    "sha256": "953bbd8e58ee7d52c879d6df94debfd59bf2e256eba4af3e7e2289b716a83967"
   },
   "previous_published_checkpoint": {
-    "commit": "64ea2a522c87e01c85b9240edebd435f01921fed",
-    "qualified": 473,
-    "open": 290
+    "commit": "cb1d453ae44f7fd33cbf0e22c39c06ae485c50f2",
+    "qualified": 480,
+    "open": 283
   },
   "refreshed_baseline": {
     "commit": "a14ca61ec3f6afe103432b093d3c12897a9d3fc6",
@@ -24,17 +24,13 @@
     "coverage_sha256": "a1054411f8f28023652d0633dc0c67265163d8c43f8955a4adabedd02c2638b7"
   },
   "newly_qualified_since_published": [
-    "CMP-LRM244-EXAMPLE-118",
-    "CMP-LRM244-EXAMPLE-160",
-    "CMP-LRM244-EXAMPLE-161",
-    "CMP-LRM244-EXAMPLE-174",
-    "CMP-LRM244-FUNCTION-GETANTENNANAMES",
-    "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
-    "CMP-LRM244-SYNTAX-PROCEDURE-ARGUMENT"
+    "CMP-LRM244-METHOD-DICTIONARY-HAS-KEY",
+    "CMP-LRM244-OUTCOME-STARTPROC-TRUE",
+    "CMP-LRM244-SECTION-4-16-1-6-114"
   ],
   "promotions": {
-    "path": "distribution/evidence/prompt-controls-promotions.json",
-    "sha256": "38230cc7ff1d8a95b7ca2ce5c458b73433a52d9737bfa634eadfc5e53eb8a993"
+    "path": "distribution/evidence/child-return-promotions.json",
+    "sha256": "a1357f3472f4876632c0a18c691b63af5df0ef9d5348c875c195a3e99b6f49d7"
   },
   "native_regressions": {
     "path": "distribution/evidence/prompt-controls-language-regressions.json",
@@ -162,6 +158,14 @@
     {
       "path": "conformance/evidence/checkpoint_identity.json",
       "sha256": "b2170473f15dcd48faccb58897923e426403c5253ce657c14035cdf83895abe3"
+    },
+    {
+      "path": "conformance/evidence/child_returns.json",
+      "sha256": "1280042f2d187c1623d19912a68069ab9ad59df918b17a2be10aeea147155e89"
+    },
+    {
+      "path": "conformance/evidence/database_scope.json",
+      "sha256": "482c93f62613046850cee443784d53bbdf1f636fe0b41f07e7da250378e46e77"
     }
   ],
   "independent_builds_and_images": {
@@ -183,21 +187,39 @@
   "local_verification": {
     "passed": true,
     "command": "python -m pytest tests host_plugin/tests host_runtime/tests distribution conformance -q",
-    "passed_tests": 510,
+    "passed_tests": 538,
     "passed_subtests": 64,
     "pytest_version": "9.1.1",
     "junit": {
-      "path": "C:\\obprompt_control\\.qualification\\prompt-controls-final-tests.xml",
-      "sha256": "7e0c0f14406925cce6852671fc101700e3899e4299841c3b61d1f2829103fe03"
+      "path": "C:\\obchild_start\\.qualification\\child-returns-final-tests.xml",
+      "sha256": "64ffa72afde59ea73930a6dd108fd3876c7c2b514cbe084d166b2a47c57e0169"
     }
   },
   "limitations": [
     "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan build; compiler remains installed and leak detection disabled",
     "Root SDK HTTP correction has separate installed-wheel evidence; final production profile and installed-host workflows remain open",
-    "283 original language requirements remain open; diagnostic releases are not stable acceptance",
-    "Versioned upgrades, final installed OpenBEXI/IntelliJ/PyCharm workflows, platform and operational gates remain open"
+    "280 original language requirements remain open; diagnostic releases are not stable acceptance",
+    "Versioned upgrades, final installed OpenBEXI/IntelliJ/PyCharm workflows, platform and operational gates remain open",
+    "The database octal correction remains a separate diagnostic overlay; it is not part of this qualified runtime"
   ],
   "full_v05_accepted": false,
   "full_v06_accepted": false,
-  "stable_v1_accepted": false
+  "stable_v1_accepted": false,
+  "previous_promotions": {
+    "path": "distribution/evidence/prompt-controls-promotions.json",
+    "sha256": "38230cc7ff1d8a95b7ca2ce5c458b73433a52d9737bfa634eadfc5e53eb8a993",
+    "coverage_commit": "cb1d453ae44f7fd33cbf0e22c39c06ae485c50f2"
+  },
+  "incremental_native_checks": 8,
+  "child_start": {
+    "path": "conformance/evidence/child_start.json",
+    "sha256": "57e98ed2bc4ce8c740f68c4a885013b169f5aac71440f0e3f1b21a234749cff2"
+  },
+  "incremental_evidence_tests": {
+    "passed": 28,
+    "junit": {
+      "path": "C:\\obchild_start\\.qualification\\child-return-and-database-scope-tests.xml",
+      "sha256": "ef8ecf19df6cdefcc5b8d3158cefa9def0fe6215b66c877e7820713e37a019cd"
+    }
+  }
 }

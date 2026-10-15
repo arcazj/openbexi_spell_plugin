@@ -24,8 +24,8 @@ The later [prompt controls](PROMPT_CONTROLS.md) also correct competing-answer
 ordering and abort deadlock; their 55 focused trials and 14 child lifecycle
 checks pass on the same image as the full 33-suite regression sequence.
 
-The [current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) has **480 qualified /
-283 open** requirements. This timed-default proof qualifies only Example 118;
+The [current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) has **483 qualified /
+280 open** requirements. This timed-default proof qualifies only Example 118;
 empty defaults and the full Prompt contract remain open. Full v0.5/v0.6
 acceptance remains false. The earlier 474-row checkpoint and its Windows HTTP
 failure are retained in [the historical record](../docs/PROMPT_CONFORMANCE_QUALIFICATION.json).
