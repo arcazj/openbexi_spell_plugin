@@ -18,9 +18,9 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def qualify(path):
+def qualify(path, image):
     raw = json.loads(path.read_bytes())
-    validate_report(path, raw['runtime_image'], len(CASES))
+    validate_report(path, image, len(CASES))
     assert raw['passed'] and not raw['timed_out']
     assert set(raw['checks']) == set(CASES)
     captured = raw['runtime_sources']['integrated']
@@ -32,6 +32,7 @@ def qualify(path):
         assert row['source'] == spec['parent'] and row['child_source'] == spec['child'], name
         assert row['rejection']['exception'] == 'DriverException' and row['rejection']['message'], name
         assert row['parent_status'] == 'FINISHED' and row['result'] == spec['expected'], name
+        assert row['result']['rejected'] is True, name
         assert not any(key.endswith('_error') for key in row), name
         project = path.parent / 'workspace' / name
         for file, expected in (('main.py', spec['parent']), ('child.py', spec['child'])):
@@ -49,6 +50,7 @@ def qualify(path):
                        for event in events), name
         expected = {row['parent_instance']}
         if spec['recovery']:
+            assert row['result']['returned'] is True, name
             assert row['child_status'] == 'FINISHED', name
             assert (project / 'child-finished.txt').read_text(encoding='utf-8') == 'finished', name
             assert opened == {row['child_instance']}, name
@@ -78,8 +80,9 @@ def qualify(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('raw', type=Path)
+    parser.add_argument('--image', required=True)
     args = parser.parse_args()
-    report = qualify(args.raw)
+    report = qualify(args.raw, args.image)
     path = ROOT / 'conformance/evidence/child_start.json'
     path.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(json.dumps({'output': str(path), 'checks': len(report['checks']), 'contracts': 0}))
