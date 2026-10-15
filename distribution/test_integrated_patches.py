@@ -162,6 +162,19 @@ def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
     assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
 
 
+def test_octal_recipe_cannot_precede_user_database_stage(tmp_path, monkeypatch):
+    site = python_tree(tmp_path)
+    before = {name:(site/name).read_bytes() for name in composition.PYTHON_NAMES}
+    recipes = list(composition.PYTHON_RECIPES)
+    recipes.remove(composition.database_values_patches)
+    recipes.insert(recipes.index(composition.user_database_patches), composition.database_values_patches)
+    monkeypatch.setattr(composition, 'PYTHON_RECIPES', tuple(recipes))
+    with pytest.raises(ValueError, match='Unexpected composed database value importer'):
+        composition.apply_python_tree(site, ARCHIVE, tmp_path/'rejected')
+    assert not (tmp_path/'rejected').exists()
+    assert before == {name:(site/name).read_bytes() for name in before}
+
+
 def test_send_recipe_cannot_precede_required_timing_stage(tmp_path, monkeypatch):
     site = python_tree(tmp_path)
     before = {name:(site/name).read_bytes() for name in composition.PYTHON_NAMES}
@@ -176,7 +189,7 @@ def test_send_recipe_cannot_precede_required_timing_stage(tmp_path, monkeypatch)
 
 
 @pytest.mark.parametrize('name', ['spell/lang/helpers/basehelper.py','spell/lib/adapter/config.py',
-                                 'spell/lang/helpers/rnghelper.py'])
+                                 'spell/lang/helpers/rnghelper.py', 'spell/utils/vimport.py'])
 def test_python_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     site = python_tree(tmp_path)
     target = site/name

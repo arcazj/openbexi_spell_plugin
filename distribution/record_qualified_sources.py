@@ -21,6 +21,7 @@ DONORS = {
     'notification':('aece0cfd8633ff375a42158e8dd717eb74e720e0','notification'),
     'value_units':('6c238b54c9250ce742d76fd0277de671c4780191','value_units'),
     'user_database':('e5f6b070f6bdf178221c75793ce21a81d3c6a559','user_database'),
+    'database_values':('a494986733ce6f4ceefda41684824f12bfbc5660','database_values'),
     'scdb':('e85a2e9b77465ba6865949f3884f41d655840196','scdb'),
     'timing':('bfac147f03ac539114465f5d63b81e40237a3d4a','timing'),
     'send_verify':('231700dbeabe46ad3f488dc0db33fdc460860889','send_verify'),
@@ -175,6 +176,20 @@ def main():
         python.update({name:row['sha256'] for name,row in reports[key]['runtime_sources']['manifests'][kind].items()})
     python.update(reports['database']['runtime_sources']['installed'])
     python.update(reports['user_database']['runtime_sources']['installed'])
+    octal = reports['database_values']
+    recipe = 'source_port/database_values_patches.py'
+    committed = subprocess.check_output(
+        ['git','show',donors['database_values']['commit']+':'+recipe],cwd=ROOT)
+    if (octal['passed'] is not True or octal['qualified_contracts'] != []
+            or octal['passed_checks'] != {'values_and_import':24,'user_persistence':20,'user_prompts':2}
+            or hashlib.sha256(committed).hexdigest() != octal['inputs'][recipe]):
+        raise ValueError('Database value donor lacks the qualified diagnostic source identity')
+    source = octal['source']
+    if (set(composition.database_values_patches.PREIMAGES) != {source['name']}
+            or python[source['name']] != source['preimage_sha256']
+            or composition.database_values_patches.PREIMAGES[source['name']] != source['preimage_sha256']):
+        raise ValueError('Database value donor differs from the qualified import/persistence chain')
+    python[source['name']] = source['patched_sha256']
     python.update({name:row['patched_sha256'] for name,row in reports['notification']['runtime_sources']['overlay']['sources'].items()})
     values = reports['value_units']['runtime_sources']['installed']
     python.update({name:values[prefix+name] for name in composition.value_units_patches.PREIMAGES if name.startswith('spell/')})

@@ -17,6 +17,7 @@ import checkpoint_context_patches
 import checkpoint_error_patches
 import checkpoint_identity_patches
 import database_import_patches
+import database_values_patches
 import data_files_native_patches
 import data_files_patches
 import dta_native_patches
@@ -50,7 +51,7 @@ RECIPE_NAMES = (
     'scheduler_patches.py', 'resource_patches.py', 'limit_patches.py',
     'database_import_patches.py', 'notification_patches.py',
     'value_units_patches.py',
-    'user_database_patches.py',
+    'user_database_patches.py', 'database_values_patches.py',
     'scdb_patches.py', 'timing_patches.py',
     'checkpoint_error_patches.py',
     'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
@@ -72,7 +73,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *prompt_timeout_patches.PREIMAGES,
                             *prompt_control_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
-                  user_database_patches, notification_patches, value_units_patches,
+                  user_database_patches, database_values_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches)
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches)
 DRIVER_PREFIXES = ('openbexi_dss_proxy/', 'openbexi_spell_dss/')
