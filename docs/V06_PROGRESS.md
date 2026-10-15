@@ -1,13 +1,11 @@
 # v0.6 distribution prerequisites
 
-The current [combined-runtime checkpoint](PROMPT_CONFORMANCE_QUALIFICATION.json)
-qualifies 474 of 763 original requirements, with 289 still open. It includes native
-timed defaults, the preceding child/recovery composition, all 30 native suites
-(1,607 raw checks), two identical offline builds and fresh install/removal checks.
-Final installed-host workflows remain open for this image. The previous child
-checkpoint and its host/driver acceptance remain preserved in commit `64ea2a5`.
-Full v0.5/v0.6 release acceptance remains false. The artifact narrative below is
-the retained earlier 470-row checkpoint.
+The [current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **480 of 763**
+requirements, with **283 open**. All 33 native suites (1,646 raw checks), focused
+prompt/child controls, two identical offline builds and fresh install/removal
+checks pass. Final installed-host workflows, upgrades, the production profile
+and full v0.5/v0.6 release acceptance remain open. The root SDK HTTP fix has
+separate installed-wheel evidence. The narratives below retain earlier artifacts.
 
 ## Historical 470-requirement checkpoint
 

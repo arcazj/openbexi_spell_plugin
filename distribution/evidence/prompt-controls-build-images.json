@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "scope": "Reproducible native/driver candidate, installed image verification and prompt/child regressions; full language checkpoint refresh pending",
+  "source_freeze_commit": "96c65f41fae8fb837a5b602be8238649daebc24b",
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "host_image": "sha256:3f10ba3a887f902b313bb8c880ce58b55611e05ed9992ed16772dfeac2770dae",
+  "native_wheel_sha256": "3bae8d34d0cdde970cc7e9c55d43e5e54db1afc33369c1660091cc9fc9d12adb",
+  "driver_wheel_sha256": "f324cd19d87ef4b7eb39e1155333d5302f7873829ce5b6f312c73097f7536f8e",
+  "native_builds": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-cancellation-build\\native\\48e54f9e0c834292be494faefa4d9ed4\\result.json",
+    "sha256": "9d1dd0eb4f1485ed9da1274fbdf761387bb6928263508c809f3da55b3f3879ae"
+  },
+  "driver_builds": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-cancellation-build\\driver\\fa3e7dcc16954a118308ec935defe276\\result.json",
+    "sha256": "e3bed8b8099d6c073d3b49a85e84c928e526e54e702e427580e1a128a1ea7769"
+  },
+  "fresh_images": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-cancellation-build\\images\\afcb699053524c33a95385ec5502ed67\\result.json",
+    "sha256": "9779c9e0dd91025e5a5087ac5c9e6a0a4fddc8add4ed3463ad59647f65173b93"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obprompt_control\\.qualification\\child-regressions\\1f693cbab8c047658344cc5094eb90b1\\result.json",
+    "sha256": "80fabe422f4ba47269f5e559d48094f4a38342d0d880a05e4ba3c2916996a5f1"
+  },
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "b7048f0d231bbd8dbbf8f24929b8ee6106fc635021df2f155f9ef596bd65c6c1"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "prompt_controls_checks": {
+    "duplicate_answers": 24,
+    "abort_at_prompt": 12,
+    "child_modes": 9,
+    "timed_prompts": 10
+  },
+  "evidence_verifier_tests": {
+    "checks": 15,
+    "junit": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-control-evidence-tests.xml",
+      "sha256": "083d7bf71f619f8c77b9e0c6a40d84167ddb82834bc6a25f9dd140eb5e4162cc"
+    }
+  },
+  "source_composition_tests": {
+    "checks": 29,
+    "junit": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-cancellation-qualified-source-tests.xml",
+      "sha256": "4d1fa36f4a7530cde9882d7ee83d51aa46b0410e0774d4f411d3438ee80b21f7"
+    }
+  },
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan build; compiler remains installed and leak detection disabled",
+    "Root SDK HTTP correction has separate installed-wheel evidence; final production profile and installed-host workflows remain open"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

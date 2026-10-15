@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:d341d01f3dc06aa91dd684f35281c171e9255930df4b28833a973998b4fb4b96",
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
   "inputs": {
     "conformance/flow_scenarios.py": "2ff9437e44d867c73a82dfed1559d92e79f4c605d8ef3d43f684b9e34f2a6675",
     "conformance/flow_controller.py": "f5f9951584d97dc0f59e5b4eb9c56626bfad177b5b3c65801ee2d1c8eca361db",
@@ -24,14 +24,17 @@
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
-    "source_port/integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
     "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
     "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
     "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
@@ -40,7 +43,7 @@
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
-    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
     "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
@@ -72,7 +75,7 @@
   "runtime_sources": {
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "ab0918206a3b1295cc922b56b7d1a0d063336bc5f3ff5e411c498e750b099108",
+      "manifest_sha256": "11e98c45431b73124710139fb1036b743e282cdef58de512b47fb973bcaa38d1",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -81,9 +84,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2"
+              "integrated_identity": "9c8927aca41c08d75450d8467dba489050b8352260b34194628fecd3eb552013"
             },
-            "manifest_sha256": "8cde44b2ed8efab4f370e2a2232ab342c07c465f12f92cf0b314edd4f2717d5f",
+            "manifest_sha256": "5f87675cc2338cfd808628875702b9ba53e107219fe0793badb94032aa4ac5f2",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -138,8 +141,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -161,6 +164,10 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "prompt_control_patches.py": {
+                "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+                "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
                 "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
@@ -168,6 +175,14 @@
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
                 "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "rng_patches.py": {
+                "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+                "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+              },
+              "rng_state_patches.py": {
+                "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+                "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
               },
               "scdb_patches.py": {
                 "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
@@ -206,11 +221,11 @@
             "sources": {
               "include/SPELL_CIFS/SPELLserverCif.H": {
                 "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
-                "patched_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                "patched_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
+                "patched_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -230,7 +245,7 @@
               },
               "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                 "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-                "patched_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+                "patched_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
                 "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -283,6 +298,16 @@
                 "patched_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
                 "ported_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
               },
+              "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+                "original_sha256": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
+                "patched_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+                "ported_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+              },
+              "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+                "original_sha256": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
+                "patched_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+                "ported_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+              },
               "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                 "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
                 "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
@@ -301,6 +326,15 @@
                   "include/SPELL_CIFS/SPELLserverCif.H": {
                     "after_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
                     "before_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "include/SPELL_CIFS/SPELLserverCif.H": {
+                    "after_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
+                    "before_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4"
                   }
                 }
               },
@@ -337,6 +371,15 @@
                   "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                     "after_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
                     "before_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                    "after_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
+                    "before_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa"
                   }
                 }
               },
@@ -440,6 +483,24 @@
                 }
               },
               {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+                    "after_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+                    "before_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+                    "after_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+                    "before_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+                  }
+                }
+              },
+              {
                 "recipe": "dta_time_patches.py",
                 "sources": {
                   "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
@@ -479,7 +540,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
+                    "after_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -488,7 +549,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "7aa7952f773069374acdde437aee400512a76a14c8a160b70fd6651561056e96",
+            "manifest_sha256": "1cc2e69c695e720a57091b4d320469bc8be4c18e9a8f125b0fa38a5685b26372",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -543,8 +604,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -566,6 +627,10 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "prompt_control_patches.py": {
+                "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+                "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
                 "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
@@ -573,6 +638,14 @@
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
                 "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "rng_patches.py": {
+                "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+                "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+              },
+              "rng_state_patches.py": {
+                "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+                "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
               },
               "scdb_patches.py": {
                 "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
@@ -633,6 +706,11 @@
                 "original_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
                 "patched_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
                 "ported_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+              },
+              "spell/lang/helpers/rnghelper.py": {
+                "original_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+                "patched_sha256": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
+                "ported_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61"
               },
               "spell/lang/helpers/rschelper.py": {
                 "original_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
@@ -892,6 +970,15 @@
                     "before_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8"
                   }
                 }
+              },
+              {
+                "recipe": "rng_patches.py",
+                "sources": {
+                  "spell/lang/helpers/rnghelper.py": {
+                    "after_sha256": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
+                    "before_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61"
+                  }
+                }
               }
             ]
           }
@@ -945,7 +1032,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+          "integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -1032,6 +1119,7 @@
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+          "prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
           "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
           "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
           "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
@@ -1044,6 +1132,8 @@
           "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
           "record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
           "resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+          "rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+          "rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
           "runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
           "scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
           "scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
@@ -1061,14 +1151,14 @@
           "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
+          "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-          "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+          "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
+          "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
         },
-        "native_gate_policy_sha256": "48ef37db7d055afe824c1baed812a9ea738bcbf2695f1a6763b773a6776861d3",
+        "native_gate_policy_sha256": "b9cf2d9a0d4c0b4c5046ca616877eba3841939007e5ec4fd0d987ee982e35bb2",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1093,7 +1183,7 @@
           "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
           "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
           "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
-          "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+          "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
           "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
           "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
           "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
@@ -1179,12 +1269,12 @@
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
+        "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-        "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+        "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
+        "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1207,7 +1297,7 @@
         "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
         "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
         "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
-        "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+        "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
         "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
         "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
         "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
@@ -1291,14 +1381,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "49cef02a0a1fcc87b0e49098d2c9031006a4dfc7204316e5bfbd03f6b5c7b1ae",
+        "manifest_sha256": "2cb303ffcbacfe6c0048d7d078f647c5aebe25a99e8391cf256b68ea2f45b021",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+              "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+              "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -1411,9 +1501,25 @@
             "prompt_timeout_patches.py": {
               "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
               "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
+            },
+            "prompt_control_patches.py": {
+              "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+              "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+            },
+            "rng_patches.py": {
+              "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+              "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+            },
+            "rng_state_patches.py": {
+              "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+              "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
             }
           },
           "sources": {
+            "openbexi_dss_proxy/ranging.py": {
+              "original_sha256": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+              "patched_sha256": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388"
+            },
             "openbexi_dss_proxy/tc.py": {
               "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
               "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
@@ -1421,6 +1527,10 @@
             "openbexi_dss_proxy/tm.py": {
               "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
               "patched_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+            },
+            "openbexi_spell_dss/ground.py": {
+              "original_sha256": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+              "patched_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
             }
           },
           "stages": [
@@ -1450,6 +1560,24 @@
                   "after_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
                 }
               }
+            },
+            {
+              "recipe": "rng_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/ranging.py": {
+                  "before_sha256": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+                  "after_sha256": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388"
+                }
+              }
+            },
+            {
+              "recipe": "rng_state_patches.py",
+              "sources": {
+                "openbexi_spell_dss/ground.py": {
+                  "before_sha256": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+                  "after_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
+                }
+              }
             }
           ],
           "python_sources": {
@@ -1463,7 +1591,7 @@
             "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
             "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
             "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
-            "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+            "openbexi_dss_proxy/ranging.py": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388",
             "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
             "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
             "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
@@ -1471,7 +1599,7 @@
             "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
             "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
             "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
-            "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+            "openbexi_spell_dss/ground.py": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07",
             "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
             "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
             "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
@@ -1482,13 +1610,13 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 70
+        "record_files_verified": 77
       }
     },
     "native_session_sha256": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
     "interpreter": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
     "installed": {
-      "/usr/local/lib/python3.13/site-packages/spell_native/bin/libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7",
+      "/usr/local/lib/python3.13/site-packages/spell_native/bin/libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7",
       "/usr/local/lib/python3.13/site-packages/spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b"
     }
   },
@@ -2017,7 +2145,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step A1: First stage\nStep A2: Last stage",
-            "Time": "1792028556768250"
+            "Time": "1792040718202645"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2043,10 +2171,10 @@
           "Last stage"
         ]
       ],
-      "wire_sha256": "7f1898afd9df676b8f0f42c92514403172a9d639d756947e7cebbb008658d126",
+      "wire_sha256": "a41295345fd600f253d44e9db7168ea4c11ea5da534a5ae1500e4f830f25cef5",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014235_Executor_main#1.ASRUN": "9a354e48205695fd043b51f024b3c3cd0175265218fb75d219461a9dfaa3cf2d"
+        "session/data/OutputFiles/AsRun/2026-10-15_050517_Executor_main#1.ASRUN": "d3a9c392df9ae10634d44b8b107759c8e765b616efe1c57bb06c28cc2e934dfd"
       }
     },
     "goto-backward": {
@@ -2066,7 +2194,7 @@
             "Scope": "8",
             "Sequence": "28",
             "Text": "Step LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump\nStep LOOP: Same frame backward jump",
-            "Time": "1792028565230726"
+            "Time": "1792040726716160"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2088,10 +2216,10 @@
           "Same frame backward jump"
         ]
       ],
-      "wire_sha256": "8ab2ecf5acc1cb0dcd43d65627e83a86f8dd160b1d089b9f6b95d75364a333f1",
+      "wire_sha256": "0d31dc1f684a19b9bb0af765b1f955b38e52dbebae1c56f5d290850750007cf1",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014244_Executor_main#1.ASRUN": "0433dcd7356a3071ccf6bb5a53c1ce752d140374bde1f4f251d1c99c0b5ff9ba"
+        "session/data/OutputFiles/AsRun/2026-10-15_050525_Executor_main#1.ASRUN": "d54c0aec4eebeb34e0cd563ceb78bda68889de50b0f246cd83ec37ef39dcd282"
       }
     },
     "goto-dynamic-title": {
@@ -2111,7 +2239,7 @@
             "Scope": "8",
             "Sequence": "19",
             "Text": "Step TARGET: Title from variable",
-            "Time": "1792028573677575"
+            "Time": "1792040735168240"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2133,10 +2261,10 @@
           "Title from variable"
         ]
       ],
-      "wire_sha256": "2cf79aa33d54c046d1f0b7bf3e1dc15254544115caeadeb8c8c645a3cf21cbe5",
+      "wire_sha256": "91026795cf6cec1cc5e5f0242ed1c2c386bd4a86ecf0392b123d1b15e7140442",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014252_Executor_main#1.ASRUN": "bfb8dd86bd9201a90deb6f8ea71f838732e2720d020ae086b30cd433a8b800bb"
+        "session/data/OutputFiles/AsRun/2026-10-15_050534_Executor_main#1.ASRUN": "cc5398f953064bf232fe818ed9fa236ee7f809028a4b1bb81d9b93b60aa7c581"
       }
     },
     "goto-missing": {
@@ -2147,6 +2275,23 @@
       "messages": [
         {
           "fields": {
+            "Csp": "main:1/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "5",
+            "Text": "WARNING: found wrong 'Goto()' sentences in this procedure\nPlease check the code, the following target labels were not found: MISSING",
+            "Time": "1792040743419031"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
             "Csp": "main:10/0",
             "ExecutorMode": "PROCEDURE",
             "Level": "WARN",
@@ -2155,7 +2300,7 @@
             "Scope": "2",
             "Sequence": "15",
             "Text": "Unable to jump: Label 'MISSING' not found (error code 14) (fatal:false)",
-            "Time": "1792028582222773"
+            "Time": "1792040743641294"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2173,10 +2318,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "127f19bb6d672b849e44d6bf71ec54f34b59971a00b35a5cdec75376b48f1cf4",
+      "wire_sha256": "980c69a331ad531c13f16050483cd74f8c606c35f3c0b1941261731b8d78c10a",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014301_Executor_main#1.ASRUN": "f19014805d057bbbc202c1d478c54af4f2bcfaa2c8820653d18b7a4469266843"
+        "session/data/OutputFiles/AsRun/2026-10-15_050542_Executor_main#1.ASRUN": "ff9178f588057683310315604e0b0b3bcd45d980cc32d3db9d231fb786c6ca42"
       }
     },
     "goto-cross-function": {
@@ -2195,7 +2340,7 @@
             "Scope": "2",
             "Sequence": "16",
             "Text": "Unable to jump: Label 'CHILD' not found (error code 14) (fatal:false)",
-            "Time": "1792028590683227"
+            "Time": "1792040752157486"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2213,10 +2358,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "2fac37ac2e657013411aaec34744b1ddce09e8c508c29d0723e9f70c1b74181c",
+      "wire_sha256": "87e0393300c9c2b4fb753520656da41df5f22d78ace9d6c54b38b60861a3c311",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014309_Executor_main#1.ASRUN": "101677bc91babde072635b4b66c634d9e99f5ceccd86e7d6acc87eea4c08f19b"
+        "session/data/OutputFiles/AsRun/2026-10-15_050551_Executor_main#1.ASRUN": "2b7c41547ad5401820b2b7055a97480af8ac46accc2f8cec7871855b18ea6370"
       }
     },
     "display-not-target": {
@@ -2235,7 +2380,7 @@
             "Scope": "8",
             "Sequence": "16",
             "Text": "Step DISPLAY: Not a jump label",
-            "Time": "1792028599248486"
+            "Time": "1792040760628621"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2252,7 +2397,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Unable to jump: Label 'DISPLAY' not found (error code 14) (fatal:false)",
-            "Time": "1792028599249282"
+            "Time": "1792040760629372"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2274,10 +2419,10 @@
           "Not a jump label"
         ]
       ],
-      "wire_sha256": "3b92d2fc149b66cd362cb9b5549f389adb22bc4febcc2261aca15f0a10dd6dcf",
+      "wire_sha256": "8fb17ff38ae0b35ed305d8674753bb437d40e2984476783abab384a89f875840",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014318_Executor_main#1.ASRUN": "e652b5737ffdf4806e6e9849dba6b4dac045d588f0fce28679ba70183b3be961"
+        "session/data/OutputFiles/AsRun/2026-10-15_050559_Executor_main#1.ASRUN": "0599a80f0169ac36cfb35c99f3a9abb8c7f67136c3f285ffd21f49c6a832de22"
       }
     },
     "step-invalid-recovery": {
@@ -2301,7 +2446,7 @@
             "Scope": "2",
             "Sequence": "28",
             "Text": "Type error\n - file '/workspace/step-invalid-recovery/main.py', line 12: Expected 2 to 2 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 16: Expected 1 to 1 positional arguments, received 0 (error code 6) (fatal:false)\nType error\n - file '/workspace/step-invalid-recovery/main.py', line 20: Step and Goto use positional arguments (error code 6) (fatal:false)",
-            "Time": "1792028607576316"
+            "Time": "1792040769820120"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2318,7 +2463,7 @@
             "Scope": "8",
             "Sequence": "31",
             "Text": "Step RECOVERED: Valid step after rejected calls",
-            "Time": "1792028607577733"
+            "Time": "1792040769835920"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2340,10 +2485,10 @@
           "Valid step after rejected calls"
         ]
       ],
-      "wire_sha256": "c8713237957ee8b4ce6dfe162da15cb6d5a7efedf3b422f2fb035c34ff085fac",
+      "wire_sha256": "26c5db1d998bf1faee3497da1bc5e70cb7b72c4afc44f70f0f029047f5a18637",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014326_Executor_main#1.ASRUN": "12ae2ec1feff8d3765f46448dde0f85b05e117d125d929c9506152847d353f64"
+        "session/data/OutputFiles/AsRun/2026-10-15_050608_Executor_main#1.ASRUN": "f579f20bd0b0831a6ef7a939bd701e45079bea0b0bbee08cdc0762d5ad1b8160"
       }
     },
     "display-step": {
@@ -2363,7 +2508,7 @@
             "Scope": "8",
             "Sequence": "20",
             "Text": "Step DYNAMIC: Computed title value\nStep \nStep RESTORED: Final display",
-            "Time": "1792028616471210"
+            "Time": "1792040777650493"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2389,10 +2534,10 @@
           "Final display"
         ]
       ],
-      "wire_sha256": "0ee8ae92ef8415791c8ab77bcd2183f856b058c0d7956ea5048ce07eb1d681de",
+      "wire_sha256": "77f3374f14a2e23bd61b073cba958f6b976e26fd5b0200f695b2f7910c9d0031",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014335_Executor_main#1.ASRUN": "b6190202c137275ab347aa73251096ea780f19cc30ccc6ca5cc10acc315a5269"
+        "session/data/OutputFiles/AsRun/2026-10-15_050616_Executor_main#1.ASRUN": "fcf15abe6f1677ad4d128452476507762717b06720c9c33d5e17ee7bd8a85477"
       }
     },
     "display-invalid-recovery": {
@@ -2412,7 +2557,7 @@
             "Scope": "2",
             "Sequence": "18",
             "Text": "Type error\n - file '/workspace/display-invalid-recovery/main.py', line 11: DisplayStep() missing 1 required positional argument: 'description' (error code 6) (fatal:false)",
-            "Time": "1792028624487289"
+            "Time": "1792040786229580"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2429,7 +2574,7 @@
             "Scope": "8",
             "Sequence": "21",
             "Text": "Step RECOVERED: Display still works",
-            "Time": "1792028624488918"
+            "Time": "1792040786242760"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2451,10 +2596,10 @@
           "Display still works"
         ]
       ],
-      "wire_sha256": "dafec8e2d3ab84c6a88d08dfdb8b0a8fed6e2b1b6d985dfb097f0708afed71f2",
+      "wire_sha256": "a0f24532f48f70457829cbfe43d5607c6bf1163dd6ac107d9c8e98e75ea51a81",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014343_Executor_main#1.ASRUN": "3dc345081ef9007c62068fcc8738a5f75472780baef49e95581ba6cec45666c9"
+        "session/data/OutputFiles/AsRun/2026-10-15_050624_Executor_main#1.ASRUN": "2641fa24dd3f5ae3417af2e1fef12b381260e7b7dce8cda465ad0c88300c9a51"
       }
     },
     "goto-title-function": {
@@ -2474,7 +2619,7 @@
             "Scope": "8",
             "Sequence": "27",
             "Text": "Step TARGET: Title from actual function",
-            "Time": "1792028633205420"
+            "Time": "1792040794713600"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2496,10 +2641,10 @@
           "Title from actual function"
         ]
       ],
-      "wire_sha256": "fa5b86e8c38a5bb9a8bb12aac142dd25091a518fc5a65cf7c6581bd61f18f9b5",
+      "wire_sha256": "7094889920fc06cb53ec5c17a02c7576b5968572cf7f127c189237823789faed",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014351_Executor_main#1.ASRUN": "ed684f7b17447e3ba46d1325f382ac1d1d58d8daa3fabb90a8b1d219f751dfb5"
+        "session/data/OutputFiles/AsRun/2026-10-15_050633_Executor_main#1.ASRUN": "d9ee7adb5eca3be250bcfe8953705bad6078c4861ed4dde156a7c3b00f11d939"
       }
     },
     "goto-title-conditional": {
@@ -2519,7 +2664,7 @@
             "Scope": "8",
             "Sequence": "19",
             "Text": "Step TARGET: Fallback title",
-            "Time": "1792028641473713"
+            "Time": "1792040802974617"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2541,10 +2686,10 @@
           "Fallback title"
         ]
       ],
-      "wire_sha256": "c63658e42423633c58e0917e39735250c0dfe3892110b602688a6894dacff0d9",
+      "wire_sha256": "9a73c6c90293e0fc4ee7e8a0b979bae150fd1efd6569f537c712f587287dc881",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014400_Executor_main#1.ASRUN": "e84f1fd0ef06576a3283444fbab39933a58f7082864ab332e60d623e11915248"
+        "session/data/OutputFiles/AsRun/2026-10-15_050641_Executor_main#1.ASRUN": "a18392ce4dd32f7e8a72f26eaa249422246666f001e9d45c0ee36c613a07baf6"
       }
     },
     "goto-nested-frame": {
@@ -2564,7 +2709,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step FIRST: Child first\nStep LAST: Child last",
-            "Time": "1792028650871300"
+            "Time": "1792040811596531"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2590,10 +2735,10 @@
           "Child last"
         ]
       ],
-      "wire_sha256": "073a16a06e2e1705185bcb551f88db2a1069b8497735f6bb521753dfcc53eeb5",
+      "wire_sha256": "7b5bd66d0e25a960747b8eaf6835c63455d4af5e8e24118a109c5273efecdf15",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014408_Executor_main#1.ASRUN": "65083d839e73c55d3bd27a11c9fc030d9f31b2af0f3e8c2678e486668b4ba362"
+        "session/data/OutputFiles/AsRun/2026-10-15_050650_Executor_main#1.ASRUN": "d1242c65f802743d9af0e5f707e4c7ba8a1361c2a3946ae604977373a3763325"
       }
     },
     "goto-into-loop": {
@@ -2613,7 +2758,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Unable to go to line 13, Value error: can't jump into the body of a for loop (error code 7) (fatal:false)",
-            "Time": "1792028658391483"
+            "Time": "1792040820313790"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2630,7 +2775,7 @@
             "Scope": "8",
             "Sequence": "22",
             "Text": "Step INSIDE: Cannot enter loop without iterator",
-            "Time": "1792028658393749"
+            "Time": "1792040820333000"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2652,10 +2797,10 @@
           "Cannot enter loop without iterator"
         ]
       ],
-      "wire_sha256": "cdc27e588813dc8eda7b3ab73368229cc28f639d530e5f9306b9b20df0e3aed9",
+      "wire_sha256": "d0a8a7662c8cca7c02e813ce7b2975b9c05bafafe2c41199fbf10e6da0ab0ed4",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014417_Executor_main#1.ASRUN": "880e4f43999689ebd5dee878761308d10b4fe09496dd94f5ff00d0128794a986"
+        "session/data/OutputFiles/AsRun/2026-10-15_050658_Executor_main#1.ASRUN": "f3ef65ac88439596c3a1c5f7a60f6ac212c5728d18ab24541e99b907d64c4805"
       }
     },
     "goto-dynamic-target": {
@@ -2675,7 +2820,7 @@
             "Scope": "8",
             "Sequence": "19",
             "Text": "Step LAST: Runtime target expression",
-            "Time": "1792028666874921"
+            "Time": "1792040828412172"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2697,10 +2842,10 @@
           "Runtime target expression"
         ]
       ],
-      "wire_sha256": "eb86dae2261426f8159f83640ba02f0b9af8055eb3d16af92ae70ea97c92d8d5",
+      "wire_sha256": "5503755b7dab4a4f18ab92b3c1e3db31aae262f145336ae059b972dddd16d296",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014425_Executor_main#1.ASRUN": "94a1cc1507a16c5d2c7a47c91089af6b8c7fa6124a21c2c473cf19f0d81937b3"
+        "session/data/OutputFiles/AsRun/2026-10-15_050707_Executor_main#1.ASRUN": "cf3db6ef03de67336c8ddb3aef372736c9e9158e620cc7467439f1fba1f8ea52"
       }
     },
     "step-boundary": {
@@ -2720,7 +2865,7 @@
             "Scope": "8",
             "Sequence": "17",
             "Text": "Step \nStep \u00e9tape: Unicode title",
-            "Time": "1792028675462445"
+            "Time": "1792040836863371"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2742,10 +2887,10 @@
           "Unicode title"
         ]
       ],
-      "wire_sha256": "be8687c1ec112e822c675851331bef60e2efd2f0c96bc425c8f59e63032b9d0c",
+      "wire_sha256": "abf7032bd04927caec0c262a51eacfaf3a8a027c6c09a553bd267c89552cd646",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014434_Executor_main#1.ASRUN": "dc750a6839f1ff77c90d477d0df028e36029082f524ea965257abd7d633bf088"
+        "session/data/OutputFiles/AsRun/2026-10-15_050715_Executor_main#1.ASRUN": "d4220e3cba263a4b16c536851c6d28ea2e691c84d38c56efdb1ede8a7fc87c12"
       }
     },
     "finish-custom": {
@@ -2765,7 +2910,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "FLOW finished successfully",
-            "Time": "1792028683927369"
+            "Time": "1792040845349529"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2783,10 +2928,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "491a0924ef00c330553ea4da8eddb6862903016b799f71304a24ad93bcf79b7c",
+      "wire_sha256": "4106f18bb0c4302744ba1ef0d83062d1dc109a8ec3264b54767845721892d6c9",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014442_Executor_main#1.ASRUN": "16b5e557f507b513740545d22b629f207a50e6525a2d7b2ff625446cb7db261e"
+        "session/data/OutputFiles/AsRun/2026-10-15_050724_Executor_main#1.ASRUN": "b0ec704371e180ad5cde22753c01ef174d29c5ce6719fabb120c11ce64295ac6"
       }
     },
     "finish-default": {
@@ -2805,7 +2950,7 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "Completed Execution",
-            "Time": "1792028692357613"
+            "Time": "1792040853843423"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2823,10 +2968,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "c6609e7d96804e7ad4172b1c634f3e189bbeeda44f882ad9276a9b6414d0bfb7",
+      "wire_sha256": "338b791f4687c41d56088251736164e638e15bf4528efd815c6da22a4eba7bbc",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014451_Executor_main#1.ASRUN": "6d5d0fc48a26b22683d405aa114940a554c0b96db27ff5ecdc5e6509cf95a42d"
+        "session/data/OutputFiles/AsRun/2026-10-15_050732_Executor_main#1.ASRUN": "0bdb49f43c23f5d40f3aafec8e45cd0a5d26598ab663f7bca6395e8202c4c4da"
       }
     },
     "finish-empty": {
@@ -2845,10 +2990,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "652f6ccb07ee3d923d4e76bce12f46ccc247560740325c3db835b523c931e978",
+      "wire_sha256": "e202acf21580ec6209af36ce012653957e0e11ad1c13255a7126e1b3fced301e",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014459_Executor_main#1.ASRUN": "4a0bdae057547e026f0b7baec52410d6ddc8895fa36232c01124207b862fbf39"
+        "session/data/OutputFiles/AsRun/2026-10-15_050741_Executor_main#1.ASRUN": "5eabc04f40b430af0bad7e48c1f1f076a00960e174a14e0f3d240af6efa44e5e"
       }
     },
     "abort-custom": {
@@ -2868,7 +3013,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "FLOW explicitly aborted",
-            "Time": "1792028709110416"
+            "Time": "1792040870795943"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2886,10 +3031,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "b69b398e7f6f962a64bbb9758d8c4787fd910cb4b82a50f6f33ae133ec4ac0ce",
+      "wire_sha256": "790bd56bbfad13c95e78d7907cb952d9d82d129b9d61b53a6ccc352915926ed3",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014508_Executor_main#1.ASRUN": "0d8a822c3a058b20e677cc46991415b0e7c185a1318d26c66f9ddb77a699f873"
+        "session/data/OutputFiles/AsRun/2026-10-15_050749_Executor_main#1.ASRUN": "ff01ec362aa75df6dd9b0e263d48e4b73d9fa1155ff80c0d71d495abb8bf91cf"
       }
     },
     "abort-default": {
@@ -2908,7 +3053,7 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "Execution Aborted",
-            "Time": "1792028717589380"
+            "Time": "1792040879275320"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2926,10 +3071,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "a59a32086d35ac32de7d946c7bbef5f6d3678584138a43278f210ad727f8abfe",
+      "wire_sha256": "d4799618dd7c4150a91bfb8528bf0296e152da7d16b40ff8bbbc0737e52bb185",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014516_Executor_main#1.ASRUN": "c91da0693d3b00e98ece6d493ed97b2e4a9186aae1bb361bd5c8315a85ef1f9c"
+        "session/data/OutputFiles/AsRun/2026-10-15_050758_Executor_main#1.ASRUN": "5c7e7fa958c00f0e1babd5319f4085e26c6bc79c4e5c76c3f2c404336ad5f2c9"
       }
     },
     "abort-empty": {
@@ -2948,10 +3093,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "ab7ac6951c206e637fa813543073991402ec533f0e023ff84ec52336467251f7",
+      "wire_sha256": "93829cf071ba9771661db805432ae92efbacbe64cdeac16fd9871b3bf0d641e0",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014525_Executor_main#1.ASRUN": "2704bff1dd8a867a38289a863e5b58384a5a149e645b9eff668a08820a3b3b0b"
+        "session/data/OutputFiles/AsRun/2026-10-15_050806_Executor_main#1.ASRUN": "7d7c70923f48d3c9890aaffcb47f745a15c11cf47300127c15edddd977226c41"
       }
     },
     "terminal-invalid-recovery": {
@@ -2968,13 +3113,13 @@
           "fields": {
             "Csp": "main:21/0",
             "ExecutorMode": "PROCEDURE",
-            "Level": "INFO",
+            "Level": "WARN",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
-            "Scope": "2",
-            "Sequence": "25",
-            "Text": "Type error\n - file '/workspace/terminal-invalid-recovery/main.py', line 12: Abort() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)\nType error\n - file '/workspace/terminal-invalid-recovery/main.py', line 16: Finish() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)",
-            "Time": "1792028734523006"
+            "Scope": "1",
+            "Sequence": "26",
+            "Text": "Recovered from invalid terminal calls",
+            "Time": "1792040896211138"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -2985,13 +3130,13 @@
           "fields": {
             "Csp": "main:21/0",
             "ExecutorMode": "PROCEDURE",
-            "Level": "WARN",
+            "Level": "INFO",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
-            "Scope": "1",
-            "Sequence": "26",
-            "Text": "Recovered from invalid terminal calls",
-            "Time": "1792028734523249"
+            "Scope": "2",
+            "Sequence": "25",
+            "Text": "Type error\n - file '/workspace/terminal-invalid-recovery/main.py', line 12: Abort() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)\nType error\n - file '/workspace/terminal-invalid-recovery/main.py', line 16: Finish() takes from 0 to 1 positional arguments but 2 were given (error code 6) (fatal:false)",
+            "Time": "1792040896210956"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3009,10 +3154,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "2793a4d2f95a64ab5d46ad249e6edd314734471c7c55fdb7f136ddb940861fcd",
+      "wire_sha256": "623a86389790014c01b1d2aed2486692caeb7df4b02faa6c1526b8f821995129",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014533_Executor_main#1.ASRUN": "d5649802e99f6df81e0664452509c984ca37a6f6a81a6f430e83c7899916775d"
+        "session/data/OutputFiles/AsRun/2026-10-15_050815_Executor_main#1.ASRUN": "eeadeab4c1e472689aac1837f90caf4378709f153a44a4554d263caeaf1ca6bd"
       }
     },
     "pause-resume": {
@@ -3037,7 +3182,7 @@
             "Scope": "2",
             "Sequence": "17",
             "Text": "Procedure will pause",
-            "Time": "1792028743131411"
+            "Time": "1792040904831428"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3054,7 +3199,7 @@
             "Scope": "2",
             "Sequence": "24",
             "Text": "Procedure will pause",
-            "Time": "1792028743932170"
+            "Time": "1792040905632101"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3072,10 +3217,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "a2a85a145441f821fd9135010808661c939709f240a2af820f0d1c5c58027d56",
+      "wire_sha256": "9908a2a68ba4726762001d7db90f3afc6411f7cfa1285d50901c8ee32f80f4af",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014541_Executor_main#1.ASRUN": "6a61cfaa205302931645ccc921dcb45d140e2bd80123bfc3f1a55057e8510b1d"
+        "session/data/OutputFiles/AsRun/2026-10-15_050823_Executor_main#1.ASRUN": "7b011b8a2cfa4d84c2d9a210f21230b560786671acfc6ba4fb3e0175c1356c12"
       }
     },
     "pause-invalid-recovery": {
@@ -3097,7 +3242,7 @@
             "Scope": "2",
             "Sequence": "25",
             "Text": "SPELL exception: Malformed condition ( unknown )",
-            "Time": "1792028754309332"
+            "Time": "1792040915884720"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3114,7 +3259,7 @@
             "Scope": "2",
             "Sequence": "29",
             "Text": "Procedure will pause",
-            "Time": "1792028754509906"
+            "Time": "1792040916849770"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3132,10 +3277,10 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "b915c6a89bcf78335252ae208fd281c010ee3cb6fefdfc8d57d77eab0a947325",
+      "wire_sha256": "c1763e164e5436f308b6f9149e4e107cebe5a706b300841bf92c9af16e62be57",
       "asrun_actions": [],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014552_Executor_main#1.ASRUN": "91d476b45dbce8240166a65a4c2d2058cae9e55176b80cc44f810e93d9d05283"
+        "session/data/OutputFiles/AsRun/2026-10-15_050834_Executor_main#1.ASRUN": "9b69be709af22deec04c9bb7697b8faf63134e2e9738f7b73c26a3b3ea7b44da"
       }
     },
     "user-actions": {
@@ -3158,7 +3303,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:22/0",
@@ -3186,7 +3331,7 @@
             "ActionEnabled": "false",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:26/0",
@@ -3214,7 +3359,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Primary action",
             "ActionSeverity": "WARN",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:30/0",
@@ -3243,7 +3388,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Replacement action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:33/0",
@@ -3273,7 +3418,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Critical action",
             "ActionSeverity": "ERROR",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:36/0",
@@ -3301,7 +3446,7 @@
         {
           "stage": "dismissed",
           "info": {
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:39/0",
@@ -3329,7 +3474,7 @@
         {
           "stage": "dismissed-twice",
           "info": {
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:42/0",
@@ -3360,7 +3505,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-7ora84yt/session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-g0zsw30e/session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:59/0",
@@ -3412,9 +3557,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "22",
+            "Sequence": "23",
             "Text": "Procedure will pause",
-            "Time": "1792028764315424"
+            "Time": "1792040925893829"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3431,7 +3576,7 @@
             "Scope": "2",
             "Sequence": "26",
             "Text": "Running user action 'first_action'",
-            "Time": "1792028764916336"
+            "Time": "1792040926938700"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3448,7 +3593,7 @@
             "Scope": "2",
             "Sequence": "39",
             "Text": "Procedure will pause",
-            "Time": "1792028765717647"
+            "Time": "1792040927949800"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3483,7 +3628,7 @@
             "Scope": "2",
             "Sequence": "50",
             "Text": "Procedure will pause",
-            "Time": "1792028766918855"
+            "Time": "1792040928296456"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3500,7 +3645,7 @@
             "Scope": "2",
             "Sequence": "53",
             "Text": "Running user action 'first_action'",
-            "Time": "1792028767319766"
+            "Time": "1792040928697162"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3528,7 +3673,7 @@
             "Scope": "2",
             "Sequence": "61",
             "Text": "Procedure will pause",
-            "Time": "1792028767920577"
+            "Time": "1792040929297587"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3545,7 +3690,7 @@
             "Scope": "2",
             "Sequence": "64",
             "Text": "Running user action 'replacement_action'",
-            "Time": "1792028768321171"
+            "Time": "1792040929698001"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3573,7 +3718,7 @@
             "Scope": "2",
             "Sequence": "72",
             "Text": "Procedure will pause",
-            "Time": "1792028768921723"
+            "Time": "1792040930298480"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3590,7 +3735,7 @@
             "Scope": "2",
             "Sequence": "75",
             "Text": "Running user action 'replacement_action'",
-            "Time": "1792028769322376"
+            "Time": "1792040930698815"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3607,7 +3752,7 @@
             "Scope": "2",
             "Sequence": "83",
             "Text": "Procedure will pause",
-            "Time": "1792028769923062"
+            "Time": "1792040931299287"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3624,7 +3769,7 @@
             "Scope": "2",
             "Sequence": "95",
             "Text": "Procedure will pause",
-            "Time": "1792028770924373"
+            "Time": "1792040932300203"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3641,7 +3786,7 @@
             "Scope": "2",
             "Sequence": "110",
             "Text": "SPELL exception: Expected function as first argument ( unknown )\nSPELL exception: Expected label string as second argument ( unknown )",
-            "Time": "1792028771725501"
+            "Time": "1792040933100872"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3669,7 +3814,7 @@
             "Scope": "2",
             "Sequence": "117",
             "Text": "SPELL exception: Expected function and label ( unknown )",
-            "Time": "1792028771926031"
+            "Time": "1792040933301139"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3686,7 +3831,7 @@
             "Scope": "2",
             "Sequence": "122",
             "Text": "Procedure will pause",
-            "Time": "1792028772126350"
+            "Time": "1792040933501482"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3703,7 +3848,7 @@
             "Scope": "2",
             "Sequence": "125",
             "Text": "Running user action 'first_action'",
-            "Time": "1792028772526656"
+            "Time": "1792040933901977"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3721,22 +3866,22 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "35fb16ef70fb38b4ac149d00f8ce86403b5026f0cc5a72a8a3876afebb932ef5",
+      "wire_sha256": "46b546a35b7c6df284ec0e37b082a1f6554847dcfbd38efbe2c28142bbf0740f",
       "asrun_actions": [
-        "2026-10-15 01:46:04\t19\tUACTION\tENABLED\tmain:19\tPrimary action\tWARN",
-        "2026-10-15 01:46:05\t31\tUACTION\tDISABLED\tmain:22",
-        "2026-10-15 01:46:05\t35\tUACTION\tDISABLED\tmain:23",
-        "2026-10-15 01:46:06\t46\tUACTION\tENABLED\tmain:26",
-        "2026-10-15 01:46:06\t50\tUACTION\tENABLED\tmain:27",
-        "2026-10-15 01:46:07\t62\tUACTION\tENABLED\tmain:30\tReplacement action\tINFO",
-        "2026-10-15 01:46:08\t74\tUACTION\tENABLED\tmain:33\tCritical action\tERROR",
-        "2026-10-15 01:46:09\t86\tUACTION\tDISMISSED\tmain:36",
-        "2026-10-15 01:46:10\t97\tUACTION\tDISMISSED\tmain:39",
-        "2026-10-15 01:46:11\t128\tUACTION\tENABLED\tmain:56\tRecovered action\tINFO",
-        "2026-10-15 01:46:12\t140\tUACTION\tDISMISSED\tmain:59"
+        "2026-10-15 05:08:45\t19\tUACTION\tENABLED\tmain:19\tPrimary action\tWARN",
+        "2026-10-15 05:08:46\t31\tUACTION\tDISABLED\tmain:22",
+        "2026-10-15 05:08:46\t35\tUACTION\tDISABLED\tmain:23",
+        "2026-10-15 05:08:47\t46\tUACTION\tENABLED\tmain:26",
+        "2026-10-15 05:08:47\t50\tUACTION\tENABLED\tmain:27",
+        "2026-10-15 05:08:48\t62\tUACTION\tENABLED\tmain:30\tReplacement action\tINFO",
+        "2026-10-15 05:08:49\t74\tUACTION\tENABLED\tmain:33\tCritical action\tERROR",
+        "2026-10-15 05:08:51\t86\tUACTION\tDISMISSED\tmain:36",
+        "2026-10-15 05:08:51\t97\tUACTION\tDISMISSED\tmain:39",
+        "2026-10-15 05:08:53\t128\tUACTION\tENABLED\tmain:56\tRecovered action\tINFO",
+        "2026-10-15 05:08:54\t140\tUACTION\tDISMISSED\tmain:59"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014602_Executor_main#1.ASRUN": "b9e727afcd1a442944868857c40e20503eb481bb4c71d143cca021c8a3a911bc"
+        "session/data/OutputFiles/AsRun/2026-10-15_050844_Executor_main#1.ASRUN": "e8c6f4b43baf8523df7f21485e7aa67d5ff45ac9cc2e5ad30f596b1b05dd9cc4"
       }
     },
     "user-action-invalid-arity": {
@@ -3754,7 +3899,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Preserved action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-rmasar24/session/data/OutputFiles/AsRun/2026-10-15_014621_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-nerxwffn/session/data/OutputFiles/AsRun/2026-10-15_050900_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:18/0",
@@ -3782,7 +3927,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Preserved action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-rmasar24/session/data/OutputFiles/AsRun/2026-10-15_014621_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-nerxwffn/session/data/OutputFiles/AsRun/2026-10-15_050900_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:46/0",
@@ -3811,7 +3956,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered action",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-rmasar24/session/data/OutputFiles/AsRun/2026-10-15_014621_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-nerxwffn/session/data/OutputFiles/AsRun/2026-10-15_050900_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:52/0",
@@ -3866,7 +4011,7 @@
             "Scope": "2",
             "Sequence": "22",
             "Text": "Procedure will pause",
-            "Time": "1792028782769011"
+            "Time": "1792040942331155"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3883,7 +4028,24 @@
             "Scope": "2",
             "Sequence": "25",
             "Text": "Running user action 'valid_action'",
-            "Time": "1792028783369631"
+            "Time": "1792040942732144"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:24/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "INFO",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "35",
+            "Text": "SPELL exception: EnableUserAction takes no positional arguments ( unknown )",
+            "Time": "1792040943132517"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3898,9 +4060,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "40",
-            "Text": "SPELL exception: EnableUserAction takes no positional arguments ( unknown )\nSPELL exception: DisableUserAction takes no positional arguments ( unknown )",
-            "Time": "1792028783770027"
+            "Sequence": "41",
+            "Text": "SPELL exception: DisableUserAction takes no positional arguments ( unknown )",
+            "Time": "1792040943332768"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3915,26 +4077,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "51",
+            "Sequence": "52",
             "Text": "SPELL exception: DismissUserAction takes no positional arguments ( unknown )\nSPELL exception: Expected function and label ( unknown )",
-            "Time": "1792028783970365"
-          },
-          "id": "MSG_WRITE",
-          "receiver": "GUI",
-          "sender": "main#1",
-          "type": 6
-        },
-        {
-          "fields": {
-            "Csp": "main:44/0",
-            "ExecutorMode": "PROCEDURE",
-            "Level": "INFO",
-            "MsgType": "DISPLAY",
-            "ProcId": "main#1",
-            "Scope": "2",
-            "Sequence": "61",
-            "Text": "SPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )\nSPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
-            "Time": "1792028784170606"
+            "Time": "1792040943533084"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3945,13 +4090,13 @@
           "fields": {
             "Csp": "main:45/0",
             "ExecutorMode": "PROCEDURE",
-            "Level": "WARN",
+            "Level": "INFO",
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "65",
-            "Text": "Procedure will pause",
-            "Time": "1792028784370924"
+            "Sequence": "64",
+            "Text": "SPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )\nSPELL exception: Expected INFORMATION, WARNING or ERROR severity ( unknown )",
+            "Time": "1792040943733713"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -3967,8 +4112,25 @@
             "ProcId": "main#1",
             "Scope": "2",
             "Sequence": "68",
+            "Text": "Procedure will pause",
+            "Time": "1792040943934033"
+          },
+          "id": "MSG_WRITE",
+          "receiver": "GUI",
+          "sender": "main#1",
+          "type": 6
+        },
+        {
+          "fields": {
+            "Csp": "main:46/0",
+            "ExecutorMode": "PROCEDURE",
+            "Level": "WARN",
+            "MsgType": "DISPLAY",
+            "ProcId": "main#1",
+            "Scope": "2",
+            "Sequence": "69",
             "Text": "Running user action 'valid_action'",
-            "Time": "1792028784771310"
+            "Time": "1792040944334443"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4003,9 +4165,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "85",
+            "Sequence": "86",
             "Text": "Procedure will pause",
-            "Time": "1792028785972701"
+            "Time": "1792040945535671"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4020,9 +4182,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "88",
+            "Sequence": "89",
             "Text": "Running user action 'valid_action'",
-            "Time": "1792028786373878"
+            "Time": "1792040945936093"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4040,17 +4202,17 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "573509f05f9600c843164c99d2be3724f11ceb0f274ac6eeadfd157f1a05941c",
+      "wire_sha256": "9ec0846695538d9d2640e610109c3f4d081fe17d3bb3c1117fdc2bf1efeb3418",
       "asrun_actions": [
-        "2026-10-15 01:46:22\t18\tUACTION\tENABLED\tmain:15\tPreserved action\tINFO",
-        "2026-10-15 01:46:25\t76\tUACTION\tDISABLED\tmain:46",
-        "2026-10-15 01:46:25\t80\tUACTION\tENABLED\tmain:47",
-        "2026-10-15 01:46:25\t84\tUACTION\tDISMISSED\tmain:48",
-        "2026-10-15 01:46:25\t88\tUACTION\tENABLED\tmain:49\tRecovered action\tINFO",
-        "2026-10-15 01:46:26\t100\tUACTION\tDISMISSED\tmain:52"
+        "2026-10-15 05:09:02\t18\tUACTION\tENABLED\tmain:15\tPreserved action\tINFO",
+        "2026-10-15 05:09:04\t76\tUACTION\tDISABLED\tmain:46",
+        "2026-10-15 05:09:04\t80\tUACTION\tENABLED\tmain:47",
+        "2026-10-15 05:09:05\t84\tUACTION\tDISMISSED\tmain:48",
+        "2026-10-15 05:09:05\t88\tUACTION\tENABLED\tmain:49\tRecovered action\tINFO",
+        "2026-10-15 05:09:06\t100\tUACTION\tDISMISSED\tmain:52"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014621_Executor_main#1.ASRUN": "631fb7af0a1379063ae0445eebe3dca090c0e891cbae43a4a57d73cb6cace399"
+        "session/data/OutputFiles/AsRun/2026-10-15_050900_Executor_main#1.ASRUN": "9a2df06648d8430d9e0aa0d60610352f810d373c229a941d79b2b0197b617db4"
       }
     },
     "user-action-running": {
@@ -4062,7 +4224,7 @@
         "ActionEnabled": "true",
         "ActionLabel": "While running",
         "ActionSeverity": "INFO",
-        "AsRunName": "/tmp/spell-host-c02gtt7o/session/data/OutputFiles/AsRun/2026-10-15_014633_Executor_main#1.ASRUN",
+        "AsRunName": "/tmp/spell-host-qhcqp0js/session/data/OutputFiles/AsRun/2026-10-15_050913_Executor_main#1.ASRUN",
         "CodeName": "<module>",
         "Condition": "",
         "Csp": "main:18/1",
@@ -4101,9 +4263,9 @@
             "MsgType": "DISPLAY",
             "ProcId": "main#1",
             "Scope": "2",
-            "Sequence": "35",
+            "Sequence": "36",
             "Text": "Running user action 'running_action'",
-            "Time": "1792028795256514"
+            "Time": "1792040954991217"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4121,13 +4283,13 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "ea718901c1870772c4b634b4bef07b108cec77bd07259238dcf51660304d707e",
+      "wire_sha256": "0fe5e9296dd1c467451b4d2d34244750a122600c0e7ab126237c9a90398564b0",
       "asrun_actions": [
-        "2026-10-15 01:46:34\t18\tUACTION\tENABLED\tmain:14\tWhile running\tINFO",
-        "2026-10-15 01:46:35\t38\tUACTION\tDISMISSED\tmain:21"
+        "2026-10-15 05:09:14\t18\tUACTION\tENABLED\tmain:14\tWhile running\tINFO",
+        "2026-10-15 05:09:14\t38\tUACTION\tDISMISSED\tmain:21"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014633_Executor_main#1.ASRUN": "a782c0489276f6f48568758a56b8aa1b212fb089eb4a57d908a33c46cfa50945"
+        "session/data/OutputFiles/AsRun/2026-10-15_050913_Executor_main#1.ASRUN": "42ac1dbcb08a464e2e7d1351bd03ed60c64134e505657a81852493f75bbe8624"
       }
     },
     "user-action-callback-error": {
@@ -4144,7 +4306,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Broken callback",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-u_r_e_9f/session/data/OutputFiles/AsRun/2026-10-15_014642_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-qfjuv5o8/session/data/OutputFiles/AsRun/2026-10-15_050921_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:20/0",
@@ -4170,7 +4332,7 @@
             "ActionEnabled": "true",
             "ActionLabel": "Recovered callback",
             "ActionSeverity": "INFO",
-            "AsRunName": "/tmp/spell-host-u_r_e_9f/session/data/OutputFiles/AsRun/2026-10-15_014642_Executor_main#1.ASRUN",
+            "AsRunName": "/tmp/spell-host-qfjuv5o8/session/data/OutputFiles/AsRun/2026-10-15_050921_Executor_main#1.ASRUN",
             "CodeName": "<module>",
             "Condition": "",
             "Csp": "main:23/0",
@@ -4216,7 +4378,7 @@
             "Scope": "2",
             "Sequence": "23",
             "Text": "Procedure will pause",
-            "Time": "1792028803725274"
+            "Time": "1792040963249655"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4233,7 +4395,7 @@
             "Scope": "2",
             "Sequence": "26",
             "Text": "Running user action 'broken_action'",
-            "Time": "1792028804117191"
+            "Time": "1792040963642260"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4250,7 +4412,7 @@
             "Scope": "2",
             "Sequence": "27",
             "Text": "Failed to execute user action: Value error\n - file '<string>', line 1\n - file '/workspace/user-action-callback-error/main.py', line 11: FLOW callback fault (error code 7) (fatal:false)",
-            "Time": "1792028804126102"
+            "Time": "1792040963650544"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4278,7 +4440,7 @@
             "Scope": "2",
             "Sequence": "37",
             "Text": "Procedure will pause",
-            "Time": "1792028804927089"
+            "Time": "1792040964451677"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4295,7 +4457,7 @@
             "Scope": "2",
             "Sequence": "38",
             "Text": "Running user action 'recovered_action'",
-            "Time": "1792028805327635"
+            "Time": "1792040964852116"
           },
           "id": "MSG_WRITE",
           "receiver": "GUI",
@@ -4313,14 +4475,14 @@
           "(none)"
         ]
       ],
-      "wire_sha256": "8956abf9ff4fd3c79c868504c5b74dde20f8a81b3edd46a6435a727ed274dbf0",
+      "wire_sha256": "c6445e2ed41478e9cee68548f4748494df065bcfe5482dfcd0a0f24831d1ae61",
       "asrun_actions": [
-        "2026-10-15 01:46:43\t19\tUACTION\tENABLED\tmain:17\tBroken callback\tINFO",
-        "2026-10-15 01:46:44\t32\tUACTION\tENABLED\tmain:20\tRecovered callback\tINFO",
-        "2026-10-15 01:46:45\t44\tUACTION\tDISMISSED\tmain:23"
+        "2026-10-15 05:09:22\t19\tUACTION\tENABLED\tmain:17\tBroken callback\tINFO",
+        "2026-10-15 05:09:24\t32\tUACTION\tENABLED\tmain:20\tRecovered callback\tINFO",
+        "2026-10-15 05:09:25\t44\tUACTION\tDISMISSED\tmain:23"
       ],
       "asrun_sha256": {
-        "session/data/OutputFiles/AsRun/2026-10-15_014642_Executor_main#1.ASRUN": "724c967b492bf3343eeb759ccb0441620efc295d30022187c1b054ade4672818"
+        "session/data/OutputFiles/AsRun/2026-10-15_050921_Executor_main#1.ASRUN": "8d9a3e4a390f379e26587ba53df4661d55458156a14b1e9b36943b9cc5d35ae7"
       }
     }
   }

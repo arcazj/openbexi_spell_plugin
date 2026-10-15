@@ -71,6 +71,12 @@ def qualify(stress_path, modes_path, timed_path, pair_path, abort_stress_path):
         assert report['passed'] is False
         assert sha(Path(report['raw']['path'])) == report['raw']['sha256']
         retained[name] = reference(path)
+    path = ROOT / 'conformance/evidence/prompt_abort_deadlock.json'
+    diagnostic = json.loads(path.read_bytes())
+    assert diagnostic['passed'] is False
+    for name in ('trace', 'processes', 'controller', 'cases', 'checks'):
+        assert sha(Path(diagnostic[name]['path'])) == diagnostic[name]['sha256']
+    retained['prompt_abort_deadlock'] = reference(path)
     return dict(passed=True, runtime_image=image, qualified_contracts=[],
         scope='24 conflicting-answer trials, 12 abort-at-prompt trials, nine child-mode controls and the complete timed-prompt suite; no additional inventory promotion',
         raw={name: reference(path) for name, path in (

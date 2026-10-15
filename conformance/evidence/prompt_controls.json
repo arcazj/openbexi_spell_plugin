@@ -1,0 +1,121 @@
+{
+  "passed": true,
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "qualified_contracts": [],
+  "scope": "24 conflicting-answer trials, 12 abort-at-prompt trials, nine child-mode controls and the complete timed-prompt suite; no additional inventory promotion",
+  "raw": {
+    "stress": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-timeout\\32406613d61b4194b66cd1f8b3e892fc\\result.json",
+      "sha256": "9204bb524d3396ad32b1f54202b5799c1c914d29bb9f48915ae6bd6d5929468a"
+    },
+    "modes": {
+      "path": "C:\\obprompt_control\\.qualification\\child-modes\\b3132337e0694f058b7bfc82af1955ec\\result.json",
+      "sha256": "e77839f7294de4ff0623514a64cfc0a82de4b2eca082cb90468a72c71233dd55"
+    },
+    "timed": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-timeout\\0063ee3325cb454c841ad9a34aaaf5f2\\result.json",
+      "sha256": "41265725e329b1d8546eff9daac1975ed3b74524e079239932218162a05af97d"
+    },
+    "native_pair": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-cancellation-build\\native\\48e54f9e0c834292be494faefa4d9ed4\\result.json",
+      "sha256": "9d1dd0eb4f1485ed9da1274fbdf761387bb6928263508c809f3da55b3f3879ae"
+    },
+    "abort_stress": {
+      "path": "C:\\obprompt_control\\.qualification\\child-modes\\87f1ad73360c4327af7742744ab58eba\\result.json",
+      "sha256": "a0e08067fbfceb93bae67185666eebe7deb630211ed8bf5b207e159e1cb36dee"
+    }
+  },
+  "native_sources": {
+    "include/SPELL_CIFS/SPELLserverCif.H": {
+      "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
+      "patched_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
+      "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+    },
+    "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+      "original_sha256": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
+      "patched_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+      "ported_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+    },
+    "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+      "original_sha256": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
+      "patched_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+      "ported_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+    },
+    "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+      "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
+      "patched_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
+      "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+    }
+  },
+  "native_stages": [
+    {
+      "recipe": "prompt_control_patches.py",
+      "sources": {
+        "include/SPELL_CIFS/SPELLserverCif.H": {
+          "after_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
+          "before_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4"
+        }
+      }
+    },
+    {
+      "recipe": "prompt_control_patches.py",
+      "sources": {
+        "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+          "after_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
+          "before_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa"
+        }
+      }
+    },
+    {
+      "recipe": "prompt_control_patches.py",
+      "sources": {
+        "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+          "after_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+          "before_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+        }
+      }
+    },
+    {
+      "recipe": "prompt_control_patches.py",
+      "sources": {
+        "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+          "after_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+          "before_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+        }
+      }
+    }
+  ],
+  "recipe": {
+    "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+  },
+  "retained_failures": {
+    "prompt_order_baseline": {
+      "path": "C:\\obprompt_control\\conformance\\evidence\\prompt_order_baseline.json",
+      "sha256": "7b43a639a33763d2671d35ac8f8b36351096ab93d4b78efe8a632f6418e7d022"
+    },
+    "prompt_order_stress_baseline": {
+      "path": "C:\\obprompt_control\\conformance\\evidence\\prompt_order_stress_baseline.json",
+      "sha256": "06fdf95c48c0dd863f5d4e7a3c3d13838a121e09904d6598320939e0f1d9fcaf"
+    },
+    "child_modes_baseline": {
+      "path": "C:\\obprompt_control\\conformance\\evidence\\child_modes_baseline.json",
+      "sha256": "7eac8f669b59afd5a1c039ee16c33830ba99e58614b12508ea3e34f747f01557"
+    },
+    "prompt_controls_first_candidate": {
+      "path": "C:\\obprompt_control\\conformance\\evidence\\prompt_controls_first_candidate.json",
+      "sha256": "9e1d4e407b7fedf22a3fe10f033af5b2ef49e420597ce1909cf5fbf0ff9c04ac"
+    },
+    "prompt_abort_deadlock": {
+      "path": "C:\\obprompt_control\\conformance\\evidence\\prompt_abort_deadlock.json",
+      "sha256": "68eccd7d783869440243c9dfacbcff99b8d4c0308e0d638800c2294c2ad587c5"
+    }
+  },
+  "inputs": {
+    "conformance/prompt_control_report.py": "a411417b6f07fa91a96904a0530d75da05e8255ceee121334fe6befd20bc611c",
+    "conformance/PROMPT_CONTROLS.md": "475822d1803aea996fd871f8f3652483d04ec8775ef3fd55972c1dfefcfff763",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
