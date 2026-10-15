@@ -100,12 +100,12 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows: the current checkpoint qualifies 474 and leaves
-289 open. Its [combined-runtime record](docs/PROMPT_CONFORMANCE_QUALIFICATION.json)
-binds all 30 native suites, including the timed-default example and checkpoint
-recovery, to two identical offline builds. Final installed-host workflows must
-be repeated on this image.
+In progress: [the full inventory](conformance/README.md) has **480 qualified /
+283 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
+binds all 33 native suites to identical offline rebuilds, including prompt-order,
+abort and recovery controls. Seven requirements are newly qualified since the
+published 473-row checkpoint: the timed-default example, three child-argument
+rows and three ranging-catalog rows. Final host workflows remain open.
 These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility
@@ -117,11 +117,11 @@ matrix backed by actual host tests, source/license provenance and user docs.
 Qualify the shipped DSS image at runtime as well as build time. Coordinate the
 neutral IDE's independent release numbers and required shared-service features.
 
-The [integrated checkpoint](docs/V06_PROGRESS.md) now passes two independent
+The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) passes two independent
 offline native builds with identical wheel bytes and eight install/removal tests
-per build. Audited host/DSS images use that wheel; the exact DSS image used by
-the language reports also passes all ten native host tests. Full language conformance, versioned upgrades
-and final host/platform qualification remain open.
+per build. Fresh host/DSS images pass installed provenance checks. Full language
+conformance, versioned upgrades, production packaging and final installed
+OpenBEXI/IntelliJ/PyCharm workflows remain open.
 
 ## v0.7 — operational qualification
 

@@ -17,15 +17,12 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **473 rows, with 290 open**. The prior 470 rows
-are retained; two SCDB rows and the Wait modifier now have independently checked
-positive, boundary, failure and recovery evidence. All language suites use the
-independently rebuilt wheel and exact DSS image in the
-[follow-up checkpoint](../docs/FOLLOWUP_CONFORMANCE_QUALIFICATION.json).
-Checkpoint qualification passes 78 controls plus six repeated timing controls.
-The original failures remain recorded, including two harness synchronization
-corrections. PY evaluation still excludes generic checkpoint behavior and
-unsupported Python syntax remains open.
+Current qualification totals **480 rows, with 283 open**. The
+[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 33 native suites
+(1,646 raw checks) to the same rebuilt DSS image. Seven rows are newly qualified
+since the published 473-row checkpoint: timed defaults, three child-argument rows
+and three ranging-catalog rows. Focused prompt/child controls and the historical
+failures remain separately recorded. Full v0.5/v0.6 acceptance remains false.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
@@ -34,12 +31,12 @@ unsupported Python syntax remains open.
 | PY | 117 / 122 | 488 checks; imported evaluation, explicit legacy exclusions |
 | DATA | 60 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
 | FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
-| FLOW | 23 / 51 | 28 traced scenarios, 36 checks and six scanner checks |
-| UI | 28 / 60 | Prompt IPC, Event example and callable Notify compatibility |
+| FLOW | 26 / 51 | Native flow plus explicit child arguments |
+| UI | 29 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
 | OBS | 72 / 104 | Telemetry acquisition/comparison and actual binary DSS |
 | CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
 | LIMIT | 18 / 70 | 79 native assertions through actual GENERIC ground limits |
-| SPECIAL | 0 / 43 | Family conformance remains open |
+| SPECIAL | 3 / 43 | Baseband/antenna catalogs; remaining family contracts open |
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
 [FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).

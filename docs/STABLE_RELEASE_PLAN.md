@@ -12,12 +12,15 @@ remaining limits. Retain detailed machine-readable evidence separately.
 | v1.0.0-rc1 | Frozen source/artifact set; end-to-end regression, operational and installation gates pass; concise installation/recovery documentation. |
 | v1.0.0 | Release-candidate defects resolved and affected gates repeated; exact artifact hashes and accepted scope recorded; stable tag on master. |
 
-Current accepted scope ends at the v0.4 GENERIC simulator profile. The committed
-language checkpoint qualifies 474 requirements with 289 open. The timed-prompt
-runtime passes all 30 native suites (1,607 raw checks), two identical offline
-builds and fresh install/removal checks; see [its evidence](PROMPT_CONFORMANCE_QUALIFICATION.json).
-Final installed-host workflows remain open for this image.
-Passing prerequisite work does not accept its parent release.
+Current accepted scope ends at the v0.4 GENERIC simulator profile. The
+[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **480 requirements with
+283 open**. All 33 native suites pass on the rebuilt runtime; final installed-host
+workflows remain open. Passing prerequisites do not accept their parent release.
+
+Next language work: child startup and recovery, database/manual scope conflicts,
+then the remaining telemetry/command/limit, display, data and special-service
+contracts. Each increment needs independent positive, boundary, failure and
+recovery evidence. Preserve all 763 original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to
 run the combined runtime sequence. It retains each raw report and rejects failed
