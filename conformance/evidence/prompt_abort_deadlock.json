@@ -1,0 +1,32 @@
+{
+  "passed": false,
+  "scope": "Native debugger observation of the first candidate cancellation deadlock; diagnostic root/ptrace container, not release qualification",
+  "runtime_image": "sha256:f7bc2a18ad2a114589ba2370e23656055a9c0c299ba3ffd062aed21038c23965",
+  "source_freeze": "4d374f292b6d12af9c438c0a0be4483c5f213775",
+  "trace": {
+    "path": "C:\\obprompt_control\\.qualification\\prompt-abort-debug\\63dc95b9ab144ecf974c495dc456cca2\\workspace\\blocking-abort\\gdb-126.txt",
+    "sha256": "dea6146d234d4377de1dd3560fcc44b73a9ac1ca6fd305da6b73d67828f593ae"
+  },
+  "processes": {
+    "path": "C:\\obprompt_control\\.qualification\\prompt-abort-debug\\63dc95b9ab144ecf974c495dc456cca2\\workspace\\blocking-abort\\processes.json",
+    "sha256": "2c1c0d258135afa671f931d6e1b5bbe8ee38854c473129758f11f698d956934d"
+  },
+  "controller": {
+    "path": "C:\\obprompt_control\\.qualification\\prompt-abort-debug\\63dc95b9ab144ecf974c495dc456cca2\\workspace\\child_modes_controller.py",
+    "sha256": "28f0e040d8f52595cd76752757888146228217d1e2108c1077f056980bcab7aa"
+  },
+  "cases": {
+    "path": "C:\\obprompt_control\\.qualification\\prompt-abort-debug\\63dc95b9ab144ecf974c495dc456cca2\\workspace\\child_modes_cases.py",
+    "sha256": "0d5f0eeed148e9f4e10316b704773301652f3b752a427bdee782b82712b53e97"
+  },
+  "checks": {
+    "path": "C:\\obprompt_control\\.qualification\\prompt-abort-debug\\63dc95b9ab144ecf974c495dc456cca2\\workspace\\checks.json",
+    "sha256": "1bc3d2fdd5874ac6e547920d4224e7744642814cabe1f22a234c90f31068eb4e"
+  },
+  "findings": [
+    "Procedure thread: specificPrompt -> executor.abort waits for command mutex while holding GIL.",
+    "IPC worker: cancelPrompt -> scheduler.cancelPrompt -> executor.abort -> onCommand waits for GIL while holding command mutex."
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

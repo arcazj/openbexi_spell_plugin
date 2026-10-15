@@ -182,6 +182,11 @@ def apply_native_tree(source, archive, output):
         elif name in prompt_timeout_patches.PREIMAGES:
             recipe = 'prompt_timeout_patches.py'
             patched[name] = prompt_timeout_patches.apply(name, original[name], ported[name])
+            if name in prompt_control_patches.PREIMAGES:
+                intermediate = stage(recipe, name, ported[name], patched[name])
+                patched[name] = stage('prompt_control_patches.py', name, intermediate,
+                    prompt_control_patches.apply(name, original[name], intermediate))
+                continue
         elif name in prompt_control_patches.PREIMAGES:
             recipe = 'prompt_control_patches.py'
             patched[name] = prompt_control_patches.apply(name, original[name], ported[name])
