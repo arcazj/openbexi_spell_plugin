@@ -16,19 +16,18 @@ added after the seven-case baseline. The controller never supplies a timed
 default. Each report retains source identities, runtime provenance, prompt/answer
 events, elapsed time, errors and cleanup results.
 
-The [installed candidate](evidence/prompt_timeout.json) passes all ten cases and
-binds two identical offline builds, each with 23 executor, 10 context and eight
-fresh-install/removal checks. Its native CIF uses a monotonic deadline and one
-synchronized selection among a default, operator answer and cancellation.
-The 62 existing UI, 44 common-policy and 14 child lifecycle controls also pass;
-[their record](../distribution/evidence/prompt-build-images.json) retains the
-exact reports. The complete 30-suite sequence passes 1,607 raw checks on the same
-image. The [current checkpoint](../docs/PROMPT_CONFORMANCE_QUALIFICATION.json)
-preserves the preceding 473 requirements and adds only Example 118, using the
-literal one-minute case as positive evidence: **474 qualified / 289 open**.
-Full v0.5/v0.6 acceptance remains false.
-Empty defaults and the full Prompt contract remain outside this narrow example.
+The [installed candidate](evidence/prompt_timeout.json) passes all ten cases
+and binds two identical offline builds, each with 23 executor, 10 context and
+eight fresh-install/removal checks. Its native CIF uses a monotonic deadline and
+one synchronized selection among default, operator answer and cancellation.
+The later [prompt controls](PROMPT_CONTROLS.md) also correct competing-answer
+ordering and abort deadlock; their 55 focused trials and 14 child lifecycle
+checks pass on the same image as the full 33-suite regression sequence.
 
-The local post-run suite retained an intermittent Windows HTTP rejection failure
-(434 passed, one failed; 64 subtests passed). Its separate correction is included
-in the next composed candidate and requires fresh qualification.
+The [current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) has **480 qualified /
+283 open** requirements. This timed-default proof qualifies only Example 118;
+empty defaults and the full Prompt contract remain open. Full v0.5/v0.6
+acceptance remains false. The earlier 474-row checkpoint and its Windows HTTP
+failure are retained in [the historical record](../docs/PROMPT_CONFORMANCE_QUALIFICATION.json).
+The [separate HTTP correction](../distribution/evidence/http-rejection.json)
+now has installed SDK wheel evidence.
