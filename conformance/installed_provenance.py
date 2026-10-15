@@ -107,6 +107,7 @@ def capture():
 def input_paths(root):
     """Bind all current checked recipes before launching the independent client."""
     return ['conformance/installed_provenance.py', 'source_port/flow_analyze.py',
+            'source_port/legacy_compare_syntax.py',
             *[path.relative_to(root).as_posix() for path in sorted((root/'source_port').glob('*patches.py'))],
             'driver_plugin/pyproject.toml',
             *[path.relative_to(root).as_posix() for path in sorted((root/'driver_plugin/src').rglob('*.py'))
