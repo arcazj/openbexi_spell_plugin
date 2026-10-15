@@ -97,6 +97,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  composition.checkpoint_identity_patches.SOURCE,
                                  *composition.child_lifecycle_patches.PREIMAGES,
                                  *composition.prompt_timeout_patches.PREIMAGES,
+                                 *composition.prompt_control_patches.PREIMAGES,
                                  composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)
