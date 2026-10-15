@@ -5,7 +5,12 @@ CASES = {}
 
 
 def add(name, source, values=''):
-    CASES[name] = dict(source=source, ground=GROUND + values, spacecraft=SPACECRAFT,
+    observed = '''from pathlib import Path
+import json
+Path(__file__).with_name('imported-values.json').write_text(json.dumps({
+    key: {'type':type(GDB[key]).__name__, 'repr':repr(GDB[key])} for key in GDB.keys()}))
+'''
+    CASES[name] = dict(source=observed + source, ground=GROUND + values, spacecraft=SPACECRAFT,
         contracts=[], oracle='Literal numeric expectations from LRM p83 through configured DatabaseFile loading; no inventory promotion.')
 
 
