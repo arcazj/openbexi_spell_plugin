@@ -1,0 +1,43 @@
+{
+  "passed": false,
+  "scope": "First prompt-control candidate; answer-order controls pass, child abort remains unresolved",
+  "source_freeze": "4d374f292b6d12af9c438c0a0be4483c5f213775",
+  "runtime_image": "sha256:f7bc2a18ad2a114589ba2370e23656055a9c0c299ba3ffd062aed21038c23965",
+  "raw": {
+    "path": "C:\\obprompt_control\\.qualification\\child-modes\\20df13decc624797808abd93308c1f51\\result.json",
+    "sha256": "c7be09327558422f1350504e46b26524f19cfe3026b3fceaeb969ba270fcb4b6"
+  },
+  "passing_prerequisites": {
+    "stress": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-timeout\\a7896a6f53b1441fa1f0a8ad71c88bb2\\result.json",
+      "sha256": "15c0bc18e2c762b29d2ade4553a8f77f754d28f389700463c636e54b7bdebf00"
+    },
+    "timed": {
+      "path": "C:\\obprompt_control\\.qualification\\prompt-timeout\\bc528aa7c6b3419fbd395bffa3100cbc\\result.json",
+      "sha256": "1f797925b48c8d7bf3ee896999292e92fb9c4f78df23cfccebd18d5b7baffa0f"
+    },
+    "native_pair": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-control-build\\native\\77e09e3af82f41e4a440890d5414e814\\result.json",
+      "sha256": "68d893a68417f9715fb8d145adf68a18064a0034eaa7987ba99d4f23354f9e6a"
+    },
+    "fresh_images": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-control-build\\images\\078b27aafd2d4c3081b2cd68cd24c0a9\\result.json",
+      "sha256": "2df0f3ec05d841706e8b713a08e9bfeb58363e443c088ac760b14df33c55d81d"
+    }
+  },
+  "passed_cases": [
+    "blocking-success",
+    "blocking-immediate",
+    "blocking-error",
+    "blocking-recovery",
+    "nonblocking-success",
+    "nonblocking-late-error",
+    "manual-blocking",
+    "manual-nonblocking"
+  ],
+  "failed_cases": {
+    "blocking-abort": "Traceback (most recent call last):\n  File \"/workspace/child_modes_controller.py\", line 93, in <module>\n    wait_for(lambda:session.request('REQ_EXEC_STATUS',procedure=child)['ExecutorStatus']==spec['outcome'])\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/child_modes_controller.py\", line 46, in wait_for\n    raise TimeoutError('Child mode condition: '+name)\nTimeoutError: Child mode condition: blocking-abort\n"
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
