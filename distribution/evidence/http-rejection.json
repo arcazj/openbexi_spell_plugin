@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "scope": "Windows local DSS HTTP rejection; SDK wheel and final host qualification remain pending",
+  "scope": "Windows local and privately installed SDK HTTP rejection; final native host and release qualification remain pending",
   "oversized_rejection_history": {
     "passed": true,
     "scope": "Windows local HTTP oversized-body rejection; native checkpoint refresh remains pending",
@@ -59,5 +59,14 @@
   },
   "behavior": "Send the rejection response, half-close its write side, then drain at most 128 KiB for at most 250 ms without parsing or applying the body. Invalid or ambiguous lengths use the same bounded drain.",
   "full_v05_accepted": false,
-  "full_v06_accepted": false
+  "full_v06_accepted": false,
+  "sdk_wheel": {
+    "path": "C:\\obranging\\.qualification\\sdk-http\\9243cf88ff194a5c9146d009311cc788\\result.json",
+    "sha256": "8c18fa3c1e8faef459e02050c8c158d90938750556627d2777da74a97efff50d"
+  },
+  "retained_harness_failure": {
+    "path": "C:\\obranging\\.qualification\\sdk-http\\b4296f3d05d049dcb620f888c5526299\\result.json",
+    "sha256": "f2381e890b7282b74edcf49e276faa9726035e5d3ea66bce354bc9d482676c56",
+    "reason": "Qualification harness iterated dependency names instead of wheel records; corrected before installed tests."
+  }
 }

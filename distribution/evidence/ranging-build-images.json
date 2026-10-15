@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "scope": "Reproducible installed native/driver candidate and child lifecycle regressions; full language checkpoint refresh pending",
+  "source_freeze_commit": "dddaf75",
+  "runtime_image": "sha256:e1d2347c3bdba20a0ef349785b29e865209637df7f9ca01337cd8f2c10fe8b9a",
+  "host_image": "sha256:1f218647aeee3e1d79db37b73bc6f8a1766a94438cfb50900021cdf2f1ac1cd7",
+  "native_wheel_sha256": "5dfb683f00cb7848f1b106b615b718b7336b75d5fee3becc4dc244b61d90ee69",
+  "driver_wheel_sha256": "fdbf1d89305d14707b2359d6ab55c4eebd51407d0723b016d63bc08b4022201e",
+  "native_builds": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\ranging-build\\native\\ff8d2adf59dc4303944c5c034dfe2562\\result.json",
+    "sha256": "4c2af64417f742071247e28a10285e9657dcd5835c266496759c0eb433ed129c"
+  },
+  "driver_builds": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\ranging-build\\driver\\f62af06c84b841778d26e1e75e9da7a6\\result.json",
+    "sha256": "b45fbe71c3903dedd2e5955cf626a54444d871512de48a58e6f7feb899309ab9"
+  },
+  "fresh_images": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\ranging-build\\images\\c48396f2bbad4c03af1ce1d808aba128\\result.json",
+    "sha256": "ab99932b4b1b1a67597881c69890356fb47c09cf7ff805f500876c31a48bb604"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obranging\\.qualification\\child-regressions\\9b51da3f080d463bae6e635db8b46650\\result.json",
+    "sha256": "52edd6ecc0e36926a18ef01325aa28b0ec54538ed2579ca5794843b2baf87aac"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan build; compiler remains installed and leak detection disabled",
+    "Native and driver recipes frozen; root SDK HTTP correction is separately built and qualified",
+    "Final production profile, platform matrix and installed host workflows remain open"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
