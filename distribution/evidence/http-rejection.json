@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "Windows local HTTP oversized-body rejection; native checkpoint refresh remains pending",
+  "baseline": {
+    "path": "C:\\obranging\\.qualification\\http-rejection\\05516b9d2b1446209ffd6904236db58a\\baseline.json",
+    "sha256": "c5da71d8fe48692b85872c7445a57ea9023a3d44bb466e30d69aa00d571f8f53",
+    "source_commit": "1770c05",
+    "connection_aborts": 4,
+    "attempts": 200
+  },
+  "candidate": {
+    "path": "C:\\obranging\\.qualification\\http-rejection\\5322cd33366746339e465820d2f1bf2b\\candidate.json",
+    "sha256": "94a30d821a44762cd353db4fe75dea739da72fb7175cf492b89cf1661fd0dabf",
+    "source_sha256": "d532f13c05fb927bffcac255c3290c967cf96a0c140da4d09a81eafa74877c07",
+    "connection_aborts": 0,
+    "attempts": 200
+  },
+  "transport_tests": {
+    "path": "C:\\obranging\\.qualification\\http-rejection\\corrected-transports.xml",
+    "sha256": "792f29d6d6526f50977e9ff9c9aa1d1942000b23c7d787fdfeb02753f427f592",
+    "passed": 16
+  },
+  "behavior": "Send the 413 response, half-close its write side, then drain at most 128 KiB for at most 250 ms without parsing or applying the rejected body.",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

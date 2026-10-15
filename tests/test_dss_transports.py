@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from contextlib import closing, contextmanager
+from contextlib import ExitStack, closing, contextmanager
 import hashlib
 import http.client
 import json
 import socket
 import threading
+import time
 import uuid
 
 import pytest
@@ -151,7 +152,31 @@ def test_http_duplicate_and_oversized_inputs_cannot_change_state(runtime):
             response = connection.getresponse()
             assert response.status == 400
             response.read()
-        assert post(address, "/api/v1/control", {"action": "x" * 65536})[0] == 413
+        # Repeated real connections expose the unread-body close race on Windows.
+        for _ in range(64):
+            assert post(address, "/api/v1/control", {"action": "x" * 65536}) == (
+                413, {"error_code": "DSS_REQUEST_BOUNDS"})
+    assert runtime.engine.state() == before
+
+
+def test_oversized_header_without_body_releases_bounded_http_workers(runtime):
+    before = runtime.engine.state()
+    with serving(ApiServer(("127.0.0.1", 0), runtime)) as address, ExitStack() as clients:
+        for _ in range(4):
+            connection = clients.enter_context(closing(socket.create_connection(address, timeout=3)))
+            connection.sendall(b"POST /api/v1/control HTTP/1.1\r\nHost: localhost\r\n"
+                               b"Content-Type: application/json\r\nContent-Length: 1000000000\r\n\r\n")
+            response = http.client.HTTPResponse(connection)
+            response.begin()
+            assert response.status == 413
+            assert json.loads(response.read()) == {"error_code": "DSS_REQUEST_BOUNDS"}
+            # Keep the original socket's write side open: no EOF or body arrives.
+        time.sleep(1)
+        with closing(http.client.HTTPConnection(*address, timeout=3)) as connection:
+            connection.request("GET", "/api/v1/state")
+            response = connection.getresponse()
+            assert response.status == 200
+            response.read()
     assert runtime.engine.state() == before
 
 

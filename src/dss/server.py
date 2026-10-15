@@ -345,6 +345,29 @@ class ApiHandler(BaseHTTPRequestHandler):
     def _error(self, status: int, code: str) -> None:
         self._reply(status, {"error_code": code})
 
+    def _reject_body(self, length: int) -> None:
+        # Closing with unread request bytes can reset the connection on Windows
+        # and discard the 413 response. Half-close the reply, then drain a bounded
+        # amount without parsing or applying any of the rejected body.
+        self.close_connection = True
+        self._error(413, "DSS_REQUEST_BOUNDS")
+        self.wfile.flush()
+        self.connection.shutdown(socket.SHUT_WR)
+        remaining = min(length, 2 * MAX_BODY)
+        deadline = time.monotonic() + 0.25
+        while remaining > 0:
+            wait = deadline - time.monotonic()
+            if wait <= 0:
+                break
+            self.connection.settimeout(wait)
+            try:
+                chunk = self.rfile.read1(min(remaining, 8192))
+            except OSError:
+                break
+            if not chunk:
+                break
+            remaining -= len(chunk)
+
     def do_GET(self) -> None:
         runtime = self.server.runtime
         route = urlsplit(self.path)
@@ -398,7 +421,7 @@ class ApiHandler(BaseHTTPRequestHandler):
                 raise ValueError("length required")
             length = int(lengths[0])
             if not 2 <= length <= MAX_BODY:
-                self._error(413, "DSS_REQUEST_BOUNDS")
+                self._reject_body(length)
                 return
             raw = self.rfile.read(length)
             if len(raw) != length:
