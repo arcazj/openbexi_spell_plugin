@@ -31,6 +31,7 @@ DONORS = {
     'checkpoint_identity':('53afd40d46fa1e1c0e116de877a48f2f43ca9060','checkpoint_identity'),
     'shutdown_pause':('a97118ea78011205db886e8a9556220201809960','shutdown_pause_review'),
     'child_lifecycle':('4543128e93d7c8a6ee8b27e595f34fe6d5831a65','child_lifecycle'),
+    'prompt_timeout':('8a89ba8','prompt_timeout'),
 }
 
 
@@ -105,6 +106,33 @@ def main():
             raise ValueError('Unexpected overlapping child source: '+name)
         else:
             native[name] = expected
+    prompt = reports['prompt_timeout']
+    if (prompt['passed'] is not True or len(prompt['checks']) != 10
+            or any(row['passed'] is not True for row in prompt['checks'].values())
+            or prompt['qualified_contracts'] != ['CMP-LRM244-EXAMPLE-118']):
+        raise ValueError('Prompt donor lacks complete native observations')
+    prompt_sources = prompt['runtime_sources']['integrated']['manifest']['composition']['native']
+    recipe = 'prompt_timeout_patches.py'
+    committed = subprocess.check_output(['git','show',donors['prompt_timeout']['commit']+':source_port/'+recipe],cwd=ROOT)
+    if hashlib.sha256(committed).hexdigest() != prompt_sources['recipes'][recipe]['sha256']:
+        raise ValueError('Prompt recipe differs from its qualified commit')
+    stages = [stage for stage in prompt_sources['stages'] if stage['recipe'] == recipe]
+    changed = {name:row for stage in stages for name,row in stage['sources'].items()}
+    if set(changed) != set(composition.prompt_timeout_patches.PREIMAGES):
+        raise ValueError('Prompt source set differs from its qualified composition')
+    for name, stage in changed.items():
+        hashes = {key.removesuffix('_sha256'):value
+                  for key,value in prompt_sources['sources'][name].items()}
+        if name in native:
+            if (native[name]['original'] != hashes['original']
+                    or native[name]['ported'] != hashes['ported']
+                    or native[name]['patched'] != stage['before_sha256']):
+                raise ValueError('Prompt correction overlaps an unexpected donor: '+name)
+        elif hashes['ported'] != stage['before_sha256']:
+            raise ValueError('Prompt header has an unexpected predecessor')
+        if hashes['patched'] != stage['after_sha256']:
+            raise ValueError('Prompt composition output differs from its qualified stage')
+        native[name] = hashes
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]

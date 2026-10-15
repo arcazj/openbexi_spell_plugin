@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "f4cc1b180b6e9f14b0ed3e4466486d9cb2eed819bdcc00f4fd0a5f2ee4b11c57",
+  "generator_sha256": "944af98574aac71cc0302b0dffd563969f2fbb9fe32791961eb296970c4f5955",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -107,6 +107,11 @@
       "commit": "4543128e93d7c8a6ee8b27e595f34fe6d5831a65",
       "path": "conformance/evidence/child_lifecycle.json",
       "sha256": "6e8f5cf0b8e1dc8f6a331f375e1ad0b06829854c42d91fe92a904af74893e4fa"
+    },
+    "prompt_timeout": {
+      "commit": "8a89ba8d373e5896de2b521216129d276a7a4546",
+      "path": "conformance/evidence/prompt_timeout.json",
+      "sha256": "188afd23746609156e5b89de7b75fb4257b375eda39ed5113a13e01b90784b73"
     }
   },
   "native": {
@@ -187,8 +192,13 @@
     },
     "lib/SPELL_CIFS/src/SPELLserverCif.C": {
       "original": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-      "ported": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82",
-      "patched": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
+      "patched": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+      "ported": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+    },
+    "include/SPELL_CIFS/SPELLserverCif.H": {
+      "original": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
+      "patched": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+      "ported": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
     }
   },
   "python": {

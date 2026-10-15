@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "scope": "Reproducible installed prompt candidate and focused regressions; full checkpoint integration pending",
+  "source_freeze_commit": "da0f1af",
+  "runtime_image": "sha256:d341d01f3dc06aa91dd684f35281c171e9255930df4b28833a973998b4fb4b96",
+  "host_image": "sha256:a95a7c6eef9f31f2929f6326c710c960450cc1fe5fd12025552bddc0d9af2d63",
+  "native_wheel_sha256": "00d4f0d194f52f4fd261d24460d56655a320038d91f28cc0d46dc1bbe550aa40",
+  "native_builds": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\result.json",
+    "sha256": "48d725c2f632ed8f7abea355982d60853eb5becd213e7a4695a7e28d5b761d4c"
+  },
+  "fresh_images": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\images\\6256d1dcd88344f1880265319862e1ab\\result.json",
+    "sha256": "f157594d75c68debf6c6685fadf6b0cee88573f4673dc02d8a43cd8405904987"
+  },
+  "prompt": {
+    "path": "C:\\obprompt\\conformance\\evidence\\prompt_timeout.json",
+    "sha256": "188afd23746609156e5b89de7b75fb4257b375eda39ed5113a13e01b90784b73"
+  },
+  "ui_and_common": {
+    "path": "C:\\obprompt\\.qualification\\language-regressions\\66268927f502425897a031f5ac5cf29d\\result.json",
+    "sha256": "c6524e5dad03860ab05c941b007ecbde28bff2efc38c94daaed38dd106dc986c"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obprompt\\.qualification\\child-regressions\\a318627baf9c44f2be2a05fbef88e4eb\\result.json",
+    "sha256": "13b1f2ba2629e1ce01e949d8a123d0ece9c14b7aaa641d196c77f5d628b333b8"
+  },
+  "focused_checks": {
+    "prompt": 10,
+    "ui": 62,
+    "common": 44,
+    "child_lifecycle": 14
+  },
+  "source_composition_tests": {
+    "passed": 31,
+    "command": "python -m pytest distribution/test_integrated_patches.py distribution/test_language_regressions.py -q"
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
