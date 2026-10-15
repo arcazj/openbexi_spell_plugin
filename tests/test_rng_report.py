@@ -7,13 +7,14 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'conformance'))
-from rng_cases import METADATA
+from rng_cases import CASES, METADATA
 from rng_report import CONTRACTS, EXCLUDED, qualify
 from check import supported_check
 
 
 def recorded_raw():
     report=json.loads((ROOT/'conformance/evidence/rng.json').read_bytes())
+    report['checks']={key:row for key,row in report['checks'].items() if key in CASES}
     # Reconstruct the recorded associations before qualification exclusions.
     for key,row in report['checks'].items():
         row['contracts']=list(METADATA[key]['contracts'])
@@ -23,7 +24,7 @@ def recorded_raw():
 def test_only_catalog_rows_qualify_and_diagnostic_observations_remain():
     raw=recorded_raw()
     report=qualify(raw)
-    assert len(report['checks'])==8
+    assert len(report['checks'])==12  # Eight native controls plus four explicit conjunctions.
     assert set(report['qualified_contracts'])==CONTRACTS
     assert len(CONTRACTS)==3
     assert set(report['excluded_contracts'])==set(EXCLUDED)
@@ -33,6 +34,12 @@ def test_only_catalog_rows_qualify_and_diagnostic_observations_remain():
     for key,row in report['checks'].items():
         if row['contracts']:
             assert supported_check(report,key,row['dimension'])
+    for dimension in ('positive','boundary','failure','recovery'):
+        aggregate='catalog-example174:'+dimension
+        assert report['checks'][aggregate]['dependencies']==[
+            'baseband-names:'+dimension,'antenna-names:'+dimension]
+        report['checks']['antenna-names:'+dimension]['passed']=False
+        assert not supported_check(report,aggregate,dimension)
 
 
 @pytest.mark.parametrize('mutation',['failed','dimension','contract','missing','prompts'])

@@ -55,6 +55,17 @@ def qualify(raw):
             row['qualification_scope']='Diagnostic current-profile observation only; schedule/activity semantics remain open.'
     for contract in CONTRACTS:
         assert {row['dimension'] for row in report['checks'].values() if contract in row['contracts']}==DIMENSIONS
+    if composed:
+        # Example 174 contains both list calls; one catalog alone cannot support it.
+        example='CMP-LRM244-EXAMPLE-174'
+        for row in report['checks'].values():
+            row['contracts']=[name for name in row['contracts'] if name!=example]
+        for dimension in sorted(DIMENSIONS):
+            dependencies=[name+':'+dimension for name in ('baseband-names','antenna-names')]
+            report['checks']['catalog-example174:'+dimension]=dict(
+                passed=all(report['checks'][key]['passed'] for key in dependencies),
+                contracts=[example],dimension=dimension,dependencies=dependencies,
+                oracle='LRM p95 Example 174 requires both known-baseband and known-antenna lists; both native controls must pass.')
     report['qualified_contracts']=sorted(CONTRACTS)
     report['excluded_contracts']=EXCLUDED
     if composed:
