@@ -26,7 +26,7 @@ def main():
     output=ROOT/'.qualification/child-modes'/token
     output.mkdir(parents=True)
     names=['conformance/child_modes_cases.py','conformance/child_modes_controller.py',
-           'conformance/run_child_modes.py','conformance/inventory.json',
+           'conformance/run_child_modes.py','conformance/CHILD_MODES.md','conformance/inventory.json',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
            'docs/reference/SPELL2.6.10-src.zip',*input_paths(ROOT),
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'host_runtime/python').glob('*.py'))]]
