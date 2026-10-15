@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "scope": "Synchronous original procedure exception-unwind bookkeeping",
-  "runtime_image": "sha256:2a18e4f10a028df06785a2b6326ee1a3b42fcdba6073b9b051916574ef656b66",
+  "runtime_image": "sha256:d341d01f3dc06aa91dd684f35281c171e9255930df4b28833a973998b4fb4b96",
   "runtime_provenance": {
     "kind": "installed-composition",
-    "runtime_sha256": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3",
+    "runtime_sha256": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7",
     "evidence": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "91f43b0ac2529d048ca6d184c1ce51ada5437ed5e4dced0a79f8572826a31522",
+      "manifest_sha256": "ab0918206a3b1295cc922b56b7d1a0d063336bc5f3ff5e411c498e750b099108",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -16,9 +16,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8"
+              "integrated_identity": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2"
             },
-            "manifest_sha256": "2dd9e7cb5964f6f13b3ca3d8f8e31ebde4b3f645ac749f0e6b08b741dd6c9a0f",
+            "manifest_sha256": "8cde44b2ed8efab4f370e2a2232ab342c07c465f12f92cf0b314edd4f2717d5f",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -73,8 +73,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-                "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -95,6 +95,10 @@
               "patches.py": {
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+              },
+              "prompt_timeout_patches.py": {
+                "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+                "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
               },
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -135,8 +139,13 @@
             },
             "schema": "openbexi.spell.integrated-native/1",
             "sources": {
+              "include/SPELL_CIFS/SPELLserverCif.H": {
+                "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
+                "patched_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+              },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                "patched_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -156,7 +165,7 @@
               },
               "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                 "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-                "patched_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
+                "patched_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
                 "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -222,6 +231,15 @@
             },
             "stages": [
               {
+                "recipe": "prompt_timeout_patches.py",
+                "sources": {
+                  "include/SPELL_CIFS/SPELLserverCif.H": {
+                    "after_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                    "before_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+                  }
+                }
+              },
+              {
                 "recipe": "ui_native_patches.py",
                 "sources": {
                   "lib/SPELL_CIF/src/SPELLcifHelper.C": {
@@ -245,6 +263,15 @@
                   "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                     "after_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
                     "before_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_timeout_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                    "after_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+                    "before_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
                   }
                 }
               },
@@ -387,7 +414,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                    "after_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -396,7 +423,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "4ec8de20f49a4a01c953f6ecfd93911030a1f14de1d0135f5389ff672e5b087c",
+            "manifest_sha256": "7aa7952f773069374acdde437aee400512a76a14c8a160b70fd6651561056e96",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -451,8 +478,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-                "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -473,6 +500,10 @@
               "patches.py": {
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+              },
+              "prompt_timeout_patches.py": {
+                "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+                "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
               },
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -849,7 +880,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+          "integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -936,6 +967,7 @@
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+          "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
           "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
           "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
           "qualify_context_ownership.cpp": "ae1de4ae81b47170306a6c8664db3ad39b4648038fafd3aafcf7646667214ea1",
@@ -966,12 +998,12 @@
         "native_artifacts": {
           "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-          "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+          "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
           "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-          "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-          "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+          "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+          "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
         },
-        "native_gate_policy_sha256": "18186f11ac10dcd31c3b6839182c3d03ca6dd2b95e54c15c143c2c84bbb590a0",
+        "native_gate_policy_sha256": "48ef37db7d055afe824c1baed812a9ea738bcbf2695f1a6763b773a6776861d3",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1084,10 +1116,10 @@
       "native_artifacts": {
         "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
         "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-        "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+        "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+        "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1194,14 +1226,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "1a97d32189d895567f884f62077be91b4d3c19518e0e0b1dc69c734bc9275d64",
+        "manifest_sha256": "49cef02a0a1fcc87b0e49098d2c9031006a4dfc7204316e5bfbd03f6b5c7b1ae",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -1310,6 +1342,10 @@
             "child_lifecycle_patches.py": {
               "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
               "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+            },
+            "prompt_timeout_patches.py": {
+              "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+              "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
             }
           },
           "sources": {
@@ -1381,7 +1417,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 69
+        "record_files_verified": 70
       }
     },
     "limitation": "Fresh installed composition; behavior claims remain limited to the executed controls."
@@ -1412,31 +1448,31 @@
       "sha256": "2895e4a4094e06bf7f4c410d385d79af68ab44424ad3c0fd78b70ce1e2bab06e"
     },
     "candidate": {
-      "path": "C:\\obstable\\.qualification\\v0.6\\checkpoint-error\\03131ced805b4673999e36664a2b680d\\result.json",
-      "sha256": "6705f65c3f14ea1c48bebea8cf59371667d6bc1e7860e35e0ba6f8974ac13e8e"
+      "path": "C:\\obprompt\\.qualification\\v0.6\\checkpoint-error\\2363c082a32e43888661e64c3007fa15\\result.json",
+      "sha256": "78513fba9b751e5b1a4965a7a59aefa660a75b5b9265a598b580e35f39829e7b"
     },
     "expanded": {
-      "path": "C:\\obstable\\.qualification\\v0.6\\checkpoint-error\\1dd7a55769f14f34841fa03df65859d2\\result.json",
-      "sha256": "872d4fef754e9dae94655444b1812ea1ceec235cb364605304741e30d3340f7f"
+      "path": "C:\\obprompt\\.qualification\\v0.6\\checkpoint-error\\cda14c22f5bf42b0b6bcabd11c69ed18\\result.json",
+      "sha256": "2509e66b8a64bdae7efbd619f32ed00d421362519ad53d7ccb01a29fb46bef28"
     },
     "ipc_baseline": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\35cbef6bdb25414ebdc131d2fd637677\\result.json",
       "sha256": "c9bb89cb5387b1ca4707d564a31c8b968ddae336cd8a5b516c2c69bbe4a9f96c"
     },
     "ipc_candidate": {
-      "path": "C:\\obstable\\.qualification\\v0.6\\checkpoint-error\\1b29fc74edae4b7fbc4104ac9f9456b0\\result.json",
-      "sha256": "3cb94ce1afb54955eb41fdd14eb1c43345a28d9226ceccff42053099c0bf4042"
+      "path": "C:\\obprompt\\.qualification\\v0.6\\checkpoint-error\\1cfd3b2f3b1a43e4a2120738094f2cda\\result.json",
+      "sha256": "5a2e68f651a17e6ee0e2dc3db93b785814382b47ee99b6d99f39eecbd22c2370"
     },
     "ipc_blocker": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\967d8e73a0e54f64b3e75ed29ce3fbad\\result.json",
       "sha256": "96eb73fc220dcc6b6615fe3bd8723d2456d726ab8265358e216c891319220543"
     },
     "gate": {
-      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\executor-runtime.json",
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\executor-runtime.json",
       "sha256": "2bb48dbd420197e5bb76ea2f847f29590f3dd9f186c065773a37b8559ec3177c",
       "build": {
-        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\executor-build.json",
-        "sha256": "2a9a8d8b75e85d5b475a5304aa5724f060e3e0834a5043512e29572cffbf6baf"
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\executor-build.json",
+        "sha256": "e1189cdc840328dc47815b666a40f0f4e895eb97fc8cb64a17b9f0922362472a"
       }
     }
   },

@@ -19,10 +19,10 @@
     "Fresh installed source composition is verified; runtime claims remain limited to the executed controls",
     "Existing qualified PY language rows do not claim native checkpoint/recovery support"
   ],
-  "runtime_image": "sha256:2a18e4f10a028df06785a2b6326ee1a3b42fcdba6073b9b051916574ef656b66",
+  "runtime_image": "sha256:d341d01f3dc06aa91dd684f35281c171e9255930df4b28833a973998b4fb4b96",
   "runtime_sources": {
     "profile": "original-spell-integrated-wheel/1",
-    "manifest_sha256": "91f43b0ac2529d048ca6d184c1ce51ada5437ed5e4dced0a79f8572826a31522",
+    "manifest_sha256": "ab0918206a3b1295cc922b56b7d1a0d063336bc5f3ff5e411c498e750b099108",
     "manifest": {
       "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
       "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -31,9 +31,9 @@
           "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
           "checkpoint": {
             "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-            "integrated_identity": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8"
+            "integrated_identity": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2"
           },
-          "manifest_sha256": "2dd9e7cb5964f6f13b3ca3d8f8e31ebde4b3f645ac749f0e6b08b741dd6c9a0f",
+          "manifest_sha256": "8cde44b2ed8efab4f370e2a2232ab342c07c465f12f92cf0b314edd4f2717d5f",
           "recipes": {
             "checkpoint_context_patches.py": {
               "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -88,8 +88,8 @@
               "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
             },
             "integrated_patches.py": {
-              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
             },
             "limit_patches.py": {
               "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -110,6 +110,10 @@
             "patches.py": {
               "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
               "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "prompt_timeout_patches.py": {
+              "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+              "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
             },
             "resource_patches.py": {
               "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -150,8 +154,13 @@
           },
           "schema": "openbexi.spell.integrated-native/1",
           "sources": {
+            "include/SPELL_CIFS/SPELLserverCif.H": {
+              "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
+              "patched_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+              "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+            },
             "include/SPELL_WS/SPELLcontinuationSource.H": {
-              "patched_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+              "patched_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
               "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
             },
             "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -171,7 +180,7 @@
             },
             "lib/SPELL_CIFS/src/SPELLserverCif.C": {
               "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-              "patched_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
+              "patched_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
               "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
             },
             "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -237,6 +246,15 @@
           },
           "stages": [
             {
+              "recipe": "prompt_timeout_patches.py",
+              "sources": {
+                "include/SPELL_CIFS/SPELLserverCif.H": {
+                  "after_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                  "before_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+                }
+              }
+            },
+            {
               "recipe": "ui_native_patches.py",
               "sources": {
                 "lib/SPELL_CIF/src/SPELLcifHelper.C": {
@@ -260,6 +278,15 @@
                 "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                   "after_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
                   "before_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+                }
+              }
+            },
+            {
+              "recipe": "prompt_timeout_patches.py",
+              "sources": {
+                "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                  "after_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+                  "before_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
                 }
               }
             },
@@ -402,7 +429,7 @@
               "recipe": "integrated_patches.py",
               "sources": {
                 "include/SPELL_WS/SPELLcontinuationSource.H": {
-                  "after_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                  "after_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
                   "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                 }
               }
@@ -411,7 +438,7 @@
         },
         "python": {
           "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-          "manifest_sha256": "4ec8de20f49a4a01c953f6ecfd93911030a1f14de1d0135f5389ff672e5b087c",
+          "manifest_sha256": "7aa7952f773069374acdde437aee400512a76a14c8a160b70fd6651561056e96",
           "recipes": {
             "checkpoint_context_patches.py": {
               "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -466,8 +493,8 @@
               "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
             },
             "integrated_patches.py": {
-              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
             },
             "limit_patches.py": {
               "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -488,6 +515,10 @@
             "patches.py": {
               "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
               "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+            },
+            "prompt_timeout_patches.py": {
+              "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+              "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
             },
             "resource_patches.py": {
               "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -864,7 +895,7 @@
         "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
         "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
         "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-        "integrated_patches.py": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+        "integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
         "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
         "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
         "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -951,6 +982,7 @@
         "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
         "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
         "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+        "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
         "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
         "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
         "qualify_context_ownership.cpp": "ae1de4ae81b47170306a6c8664db3ad39b4648038fafd3aafcf7646667214ea1",
@@ -981,12 +1013,12 @@
       "native_artifacts": {
         "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
         "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-        "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+        "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+        "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
       },
-      "native_gate_policy_sha256": "18186f11ac10dcd31c3b6839182c3d03ca6dd2b95e54c15c143c2c84bbb590a0",
+      "native_gate_policy_sha256": "48ef37db7d055afe824c1baed812a9ea738bcbf2695f1a6763b773a6776861d3",
       "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
       "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
       "profile": "ASan/UBSan diagnostic native foundation",
@@ -1099,10 +1131,10 @@
     "native_artifacts": {
       "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
       "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
       "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-      "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+      "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+      "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
     },
     "python_sources": {
       "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1209,14 +1241,14 @@
     },
     "driver_composition": {
       "profile": "repository-dss-integrated-wheel/1",
-      "manifest_sha256": "1a97d32189d895567f884f62077be91b4d3c19518e0e0b1dc69c734bc9275d64",
+      "manifest_sha256": "49cef02a0a1fcc87b0e49098d2c9031006a4dfc7204316e5bfbd03f6b5c7b1ae",
       "manifest": {
         "schema": "openbexi.spell.integrated-driver/1",
         "source_profile": "repository-dss-driver-with-checked-corrections",
         "recipes": {
           "integrated_patches.py": {
-            "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-            "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+            "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+            "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
           },
           "native_patches.py": {
             "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -1325,6 +1357,10 @@
           "child_lifecycle_patches.py": {
             "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
             "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+          },
+          "prompt_timeout_patches.py": {
+            "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+            "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
           }
         },
         "sources": {
@@ -1396,7 +1432,7 @@
           "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
         }
       },
-      "record_files_verified": 69
+      "record_files_verified": 70
     },
     "host_native_sha256": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2"
   },
@@ -1405,14 +1441,14 @@
     "native_artifacts": {
       "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
       "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
       "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-      "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+      "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+      "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
     },
     "evidence": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "91f43b0ac2529d048ca6d184c1ce51ada5437ed5e4dced0a79f8572826a31522",
+      "manifest_sha256": "ab0918206a3b1295cc922b56b7d1a0d063336bc5f3ff5e411c498e750b099108",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -1421,9 +1457,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8"
+              "integrated_identity": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2"
             },
-            "manifest_sha256": "2dd9e7cb5964f6f13b3ca3d8f8e31ebde4b3f645ac749f0e6b08b741dd6c9a0f",
+            "manifest_sha256": "8cde44b2ed8efab4f370e2a2232ab342c07c465f12f92cf0b314edd4f2717d5f",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1478,8 +1514,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-                "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -1500,6 +1536,10 @@
               "patches.py": {
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+              },
+              "prompt_timeout_patches.py": {
+                "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+                "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
               },
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -1540,8 +1580,13 @@
             },
             "schema": "openbexi.spell.integrated-native/1",
             "sources": {
+              "include/SPELL_CIFS/SPELLserverCif.H": {
+                "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
+                "patched_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+              },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                "patched_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -1561,7 +1606,7 @@
               },
               "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                 "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-                "patched_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
+                "patched_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
                 "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -1627,6 +1672,15 @@
             },
             "stages": [
               {
+                "recipe": "prompt_timeout_patches.py",
+                "sources": {
+                  "include/SPELL_CIFS/SPELLserverCif.H": {
+                    "after_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                    "before_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+                  }
+                }
+              },
+              {
                 "recipe": "ui_native_patches.py",
                 "sources": {
                   "lib/SPELL_CIF/src/SPELLcifHelper.C": {
@@ -1650,6 +1704,15 @@
                   "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                     "after_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2",
                     "before_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_timeout_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                    "after_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+                    "before_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
                   }
                 }
               },
@@ -1792,7 +1855,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "b45fba517c97ea38f3124da321db155f9163cb6044b57e4a1163fd202fe4324f",
+                    "after_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -1801,7 +1864,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "4ec8de20f49a4a01c953f6ecfd93911030a1f14de1d0135f5389ff672e5b087c",
+            "manifest_sha256": "7aa7952f773069374acdde437aee400512a76a14c8a160b70fd6651561056e96",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1856,8 +1919,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-                "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -1878,6 +1941,10 @@
               "patches.py": {
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
+              },
+              "prompt_timeout_patches.py": {
+                "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+                "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
               },
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
@@ -2254,7 +2321,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+          "integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -2341,6 +2408,7 @@
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+          "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
           "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
           "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
           "qualify_context_ownership.cpp": "ae1de4ae81b47170306a6c8664db3ad39b4648038fafd3aafcf7646667214ea1",
@@ -2371,12 +2439,12 @@
         "native_artifacts": {
           "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-          "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+          "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
           "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-          "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-          "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+          "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+          "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
         },
-        "native_gate_policy_sha256": "18186f11ac10dcd31c3b6839182c3d03ca6dd2b95e54c15c143c2c84bbb590a0",
+        "native_gate_policy_sha256": "48ef37db7d055afe824c1baed812a9ea738bcbf2695f1a6763b773a6776861d3",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -2489,10 +2557,10 @@
       "native_artifacts": {
         "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-        "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+        "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
         "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
-        "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b",
-        "libspell_executor313.so": "52db5717606966cda3fe6e806905cea5349778dc38451e4eef5a5b60afa28bf3"
+        "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
+        "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -2599,14 +2667,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "1a97d32189d895567f884f62077be91b4d3c19518e0e0b1dc69c734bc9275d64",
+        "manifest_sha256": "49cef02a0a1fcc87b0e49098d2c9031006a4dfc7204316e5bfbd03f6b5c7b1ae",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
-              "lf_sha256": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0"
+              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -2715,6 +2783,10 @@
             "child_lifecycle_patches.py": {
               "sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
               "lf_sha256": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879"
+            },
+            "prompt_timeout_patches.py": {
+              "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+              "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
             }
           },
           "sources": {
@@ -2786,7 +2858,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 69
+        "record_files_verified": 70
       }
     },
     "limitation": "Fresh installed source composition is verified; runtime claims remain limited to the executed controls"
@@ -3158,8 +3230,8 @@
   },
   "native_errors": {
     "evidence": {
-      "path": "C:\\obstable\\.qualification\\v0.6\\checkpoint-identity\\bc494520b9ea40ccb51d8c1b36e4758c\\result.json",
-      "sha256": "4a96718d2033293b846b607a57ac62574a76d3cd952f1a1f121940968059e867"
+      "path": "C:\\obprompt\\.qualification\\v0.6\\checkpoint-identity\\0dec178be01b4c0c9c74eee0abfc0f57\\result.json",
+      "sha256": "3a275f30e5b2b10499a5e581672733edf82e3c9c9e63d23efa8a9a483782f440"
     },
     "checks": {
       "ON_LINE:module-error": {
@@ -3193,8 +3265,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "e6bb9398d9cd0fc1eb501fb3c21ba5943fd91fd4e8248f073b8c16b269c88270",
-        "events_sha256": "6d350192606464a21762c8d7ee541da8c016a098eba03268be463b95c7cf0ced"
+        "log_sha256": "f7df64306687d05ff7ef2ae9a13cd21b19b3aa2f2fc37f48640b6c4f12ec0836",
+        "events_sha256": "56a0153748510b9edd9f0cc4dd975ee11555f38deb33c30fb4ac6214a922e1d1"
       },
       "ON_LINE:named-error": {
         "passed": true,
@@ -3227,8 +3299,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "aff08007c0287a8a88ca9c537cf84461f8681f639f4c12f18771ff58ebd04964",
-        "events_sha256": "710f6a90fdd84f1dc1c8d24f2e7e69ccd33ab0f4ef3dc44fc6b5233879ede014"
+        "log_sha256": "a32c0c79e9c5e68f3f895845d3f8100f804b9fdf221b3caf3b1b4f2ffd077284",
+        "events_sha256": "34a463d3ef62e6df59d641a52dae75ac5a7b0fc1a8e65cb5ece68566fa61ac9b"
       },
       "ON_LINE:nested-error": {
         "passed": true,
@@ -3261,8 +3333,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "60ef08ea2cbf2ec0506223c58fb1eecd03ad6515d8e8c125fe2e7c109afe906f",
-        "events_sha256": "164beca12e6c5d2274ba6db8b6f7106b2226145b1bef8a815730db2af91c9ef3"
+        "log_sha256": "b8c244ac9d321c52b8e83f0e64dc98359330248c71e5af0b08ce5f967356f966",
+        "events_sha256": "26a86f43b8e940276023686eac7c3d22e0f47979bec85cd9beb62ce7095bb926"
       },
       "ON_LINE:user-action-error": {
         "passed": true,
@@ -3279,8 +3351,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "c21466c314953f02d1b65f81434f72b1a8d7f0bc30ef64dca74f4125917ee1ef",
-        "events_sha256": "801780a13ce29096bc24dadb8fd1324902fc004c89d213f13aea2fc66eeea387"
+        "log_sha256": "26c12346f5526de1a774a59333598a81c97eba2b931c1111c8a1e2a991e924f1",
+        "events_sha256": "75137abae4a7350aaeca25e65b7fda4bd2256a75a9d4deb3221f0635b3bc4da4"
       },
       "ON_STEP:module-error": {
         "passed": true,
@@ -3313,8 +3385,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "dda3b34f1a4f847b6eddfb0dd84339367f812313cbee48ce5fefb99561f9a354",
-        "events_sha256": "abbac5f4522c0dc3c7f039692738329aecc16464c3edab3b0afbd540c004639b"
+        "log_sha256": "f01446d0d2d4f83d32281ddc75e7791288e3d0c532754773f1c062c63cb54b0d",
+        "events_sha256": "48e949c524373b90aff0a7ef7d83f9b95d9718e07ad2b91385eb38e235df49d5"
       },
       "ON_STEP:named-error": {
         "passed": true,
@@ -3347,8 +3419,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "159ec2ff487c2820d1e4715337c1f0633b277e114b19369043a00b5b81080e07",
-        "events_sha256": "1062ce848677ff1e0e6263c79cd345f7e636043a789b4c72b7574429da43f9d2"
+        "log_sha256": "8358442a8ae0a6e50b3f563730f5c0c14313f8111dd3be319edec562519fcb62",
+        "events_sha256": "6c101156f166755bc132ff9c6c7fb2c960369bc36bb262b09b13377488f134ea"
       },
       "ON_STEP:nested-error": {
         "passed": true,
@@ -3381,8 +3453,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "3ae9477c8d7d20e3c13ed283fc8deadb9579a3b59d07bcebf919b4a97288c38b",
-        "events_sha256": "c7ec36b99809109ca4f7439fd9bd367f19f94d8433111ad35f52ce8251f5b1b3"
+        "log_sha256": "49368cfffd36878c0f92e59ed24bd7dae5abd68ad0f5bf59b26a1b2de9681844",
+        "events_sha256": "0a422e904ef099a161d97e9b3fe2a78afefb2714103bea6c2c0f3f1629b5d833"
       },
       "ON_STEP:user-action-error": {
         "passed": true,
@@ -3399,15 +3471,15 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "f298ff82e7953666407a10ea52e5b02d789048684ef503a95571bf9bb256ac8c",
-        "events_sha256": "60e5a97daab1212702ed2586315ac2cad4f5c75f34b53ecdb2cc1ea821e9fb00"
+        "log_sha256": "01dd1064083d3e7a7c9b6687c705fb980e37979cf2b9ae02979868dcf5ce5f13",
+        "events_sha256": "2e7bda8746ec15ca28e0583b5df859d4200c1dfaf8f718c6a96ec4f9f594bd97"
       }
     }
   },
   "native_recovery": {
     "evidence": {
-      "path": "C:\\obstable\\.qualification\\v0.6\\checkpoint-identity\\9f7903cf62fc4cc79c5e714299a66000\\result.json",
-      "sha256": "d57493125442afb763b1f24f39d8d6ce3f5a5b5e949ada1a360fdd8f926fd247"
+      "path": "C:\\obprompt\\.qualification\\v0.6\\checkpoint-identity\\df1cb033c564436fb4905139bd2889b4\\result.json",
+      "sha256": "033e2c1572f74f28cd41cae51174464030c521fdde750f7239e01d8aad176410"
     },
     "checks": {
       "ON_LINE:normal": {
@@ -3416,17 +3488,17 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005035_Executor_main#1.wsp",
-          "sha256": "1fa42733b55f0b12d36bdfd5a921da6b13c7b7786950545631831d3bb9fe85f6",
+          "filename": "2026-10-15_022330_Executor_main#1.wsp",
+          "sha256": "9b988fe9b70013c8045524572ab3d73d3fc4beaadfb09fba27d0165444e02e8e",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "6e43497b132cd6ae8007ab9ba187933f5fdd204e1b2523f78be5b618ed3c7e20"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "eaa50489aa3f621b75892f392e643d7ae5a36c94f71fd2b8f3e8e9f6d388f80a"
           }
         },
         "answered_prompts": [
@@ -3441,7 +3513,7 @@
               "Scope": "1",
               "Sequence": "21",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025437238138"
+              "Time": "1792031012347344"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3454,8 +3526,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "b41e2017e119b60c6a090ca0c33f3cd0b88452a5ecf286e06e87498e8a380b97",
-        "events_sha256": "4d8968942ad67f8849cf96dc5a70b7c7d8c6ac4c5bc28cda04667a16724983bc"
+        "log_sha256": "41f10fe12d4cb387801ebd46f8a4ce086a6f1fb7c0ee66a4db0ed4afb634e013",
+        "events_sha256": "1c700392f89074611cd61625613c7f3715b2616c4a015c7ff182a6218cdc20c1"
       },
       "ON_LINE:two-instances": {
         "passed": true,
@@ -3463,32 +3535,32 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005044_Executor_main#1.wsp",
-          "sha256": "0998db50f0a1017dbd4961b22b9b2172557083c483fc5fbecc2b993f4d052c38",
+          "filename": "2026-10-15_022339_Executor_main#1.wsp",
+          "sha256": "8193a2e928dd86429311b404fb0f4c77310e686abc4b9253308ceefd0dfae699",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "69ae777525379c2ebf9a23e429e7bc76c07334b00db7488bdb82f8cbbd08bd38"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "e0f1e5bbefa3413ab903fbb2d76de888e440547da3bc6d6786a5835a6e59c041"
           }
         },
         "open_second": {},
         "second_checkpoint": {
-          "filename": "2026-10-15_005046_Executor_main#2.wsp",
-          "sha256": "d9b1fbdeb04394eaa50c24cb43de323101a81b0b5f8ac8259c30a36ad4f5926d",
+          "filename": "2026-10-15_022341_Executor_main#2.wsp",
+          "sha256": "41f7068e09e326656efd16b9c1de40d08abeb51c6f73606faf9868394cfaffb5",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "f1a0c2000d080a7025d6bb3b6d588838a49bf28cd978202134c7306e742519d3"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "4d6586975a363bcd7dafb1a0ca81a6d0ba1759e18d017ae0d5b948ddd30ff50a"
           }
         },
         "answered_prompts": [
@@ -3501,9 +3573,9 @@
               "ExpectedValues": "",
               "ProcId": "main#2",
               "Scope": "1",
-              "Sequence": "22",
+              "Sequence": "21",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025447934054"
+              "Time": "1792031022661401"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3519,9 +3591,9 @@
               "ExpectedValues": "",
               "ProcId": "main#1",
               "Scope": "1",
-              "Sequence": "22",
+              "Sequence": "21",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025445868046"
+              "Time": "1792031020908686"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3539,8 +3611,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "e11dfff1561dc5d7577dbe7b2e86632929d6c982d02bd77b09ebeda77691e439",
-        "events_sha256": "746e7b80cf1a823c2a42b65ef8d9ae08d0cb57666239e20a1dc18ce74509260b"
+        "log_sha256": "5f10498c3c5a2dde1ed114790b589ac4d78a0982c9e2dd13a522c07c9be2bf3b",
+        "events_sha256": "6c7916fb9f2b9e55a5fff1522f777c13c4de011d102999af92c0818b63e860fa"
       },
       "ON_LINE:kill-resume": {
         "passed": true,
@@ -3548,17 +3620,17 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005058_Executor_main#1.wsp",
-          "sha256": "5ff616e8ec56a838f797c8c8224ba7a12cd92857142ef32323f108b493fc0d21",
+          "filename": "2026-10-15_022353_Executor_main#1.wsp",
+          "sha256": "7c7cdc754256c65def525b90237cdf475216786dd84dd049a66a1f29ed30f85d",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "a69efedb410f6645ea0e4d6e417a4308233b65454a06a11c4eb22ca5cbfd913a"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "2d7a92ac6a25079715e6c7a1ef93b7e5cca7b9b074718a6eec365b336658628b"
           }
         },
         "kill": {},
@@ -3573,21 +3645,21 @@
           "ProcId": "main#1",
           "Scope": "1",
           "Text": "CHECKPOINT_IDENTITY_READY",
-          "Time": "1792025462703340"
+          "Time": "1792031037702952"
         },
         "resumed_checkpoints": [
           {
-            "filename": "2026-10-15_005058_Executor_main#1.wsp",
-            "sha256": "5ff616e8ec56a838f797c8c8224ba7a12cd92857142ef32323f108b493fc0d21",
+            "filename": "2026-10-15_022353_Executor_main#1.wsp",
+            "sha256": "7c7cdc754256c65def525b90237cdf475216786dd84dd049a66a1f29ed30f85d",
             "metadata": {
               "format": "SPELL-continuation/2",
               "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
               "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
               "cloudpickle": "3.1.2",
               "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-              "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-              "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-              "payload_sha256": "a69efedb410f6645ea0e4d6e417a4308233b65454a06a11c4eb22ca5cbfd913a"
+              "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+              "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+              "payload_sha256": "2d7a92ac6a25079715e6c7a1ef93b7e5cca7b9b074718a6eec365b336658628b"
             }
           }
         ],
@@ -3603,7 +3675,7 @@
               "Scope": "1",
               "Sequence": "6",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025462603023"
+              "Time": "1792031037600214"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3617,8 +3689,8 @@
           "ProcId": "main#1"
         },
         "original_checkpoint_unchanged": true,
-        "log_sha256": "68d45241174b14d82e15c62a45ee458fbea6e45fa3196d89a57a3c2a8c883cd0",
-        "events_sha256": "7ef88b73663379ec61cf5f4fd8966f4668c308b80ad007e409f3f13eb9d587ed"
+        "log_sha256": "db2ed247218eb4beeb7f62ae7b534a6842e18416fb202adf78d70fb466e40af7",
+        "events_sha256": "c7be8d5fac0c779c5f80d6977f3c5b29be0fde7c54a5a392b434d64ec8050068"
       },
       "ON_LINE:changed-source": {
         "passed": true,
@@ -3626,17 +3698,17 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005109_Executor_main#1.wsp",
-          "sha256": "81bdec581d1f4a7ab6211f1989dbe01e7963bcd711a67d31a719914274870ac8",
+          "filename": "2026-10-15_022404_Executor_main#1.wsp",
+          "sha256": "ec6ca3c90d75147a1cee14837f47d64e5b8b28a97a14b8e5e0e15fc8f878c3e2",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "329eb3f2b3f7eb20b6b543655e896ab69ad03e48efe73b6b87a8e9629b3eeed0"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "714a8c6b642c6196bc8795c1d7f6658ca7fcf4779945f326b8127e83541ea5f3"
           }
         },
         "kill": {},
@@ -3657,15 +3729,15 @@
             "FatalError": "True",
             "ProcId": "main#1",
             "Sequence": "1",
-            "Time": "2026-10-15 00:51:12"
+            "Time": "2026-10-15 02:24:07"
           },
           "id": "MSG_ERROR",
           "receiver": "GUI",
           "sender": "main#1",
           "type": 7
         },
-        "log_sha256": "b8d2d12df42a9363a9b1f477ecd088b101a2c5d5f78b2663e826def3d1d164c8",
-        "events_sha256": "821ee9257984062db0f0317721b1fc26f76a29c29d92ea8297e7285ffafaf7e4"
+        "log_sha256": "a1c2de2f0bf7a19a71bab748dad85183d59363f5a11324f191e21c7ea44dd5eb",
+        "events_sha256": "2e63b52750eb1fc44697896d31671c3f9056669e557bd1b94b5e5ae73e702021"
       },
       "ON_LINE:missing-wsp": {
         "passed": true,
@@ -3673,23 +3745,23 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005120_Executor_main#1.wsp",
-          "sha256": "d0505e71f9c09fbed6de1b200a3ccc61d3684820409df400c560e5e0984a62b9",
+          "filename": "2026-10-15_022415_Executor_main#1.wsp",
+          "sha256": "e06b799b6bbfa2eaa2c2e4d656e6508661ec07737c0986e5245f2b005b120400",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "22a89476aed4cebee3da11b88cee0be8b75205e0a95e4a8eb45bec7625e655bc"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "92ac6127e3d5f3c04c76392485f633a13f02f91ff8cdc465afcb64d800dee87a"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-        "log_sha256": "44da90c7b5a660129b97a6cba7d7fcb2eb9f83552cb0db13afd021ef7a443937",
-        "events_sha256": "810ddb720fd09fd250375e26c6c121a5b8b905d95633d7931bd410cb585fa8f1"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "8c168d49449c598c0f3de4a5f523383c4db44d92e5e4c14dc0baf6810ae5e340",
+        "events_sha256": "e75793f842c6722dd58da6871a25327c1b5eca124f6ce624fbedb21f5a93efb3"
       },
       "ON_LINE:empty-wsp": {
         "passed": true,
@@ -3697,23 +3769,23 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005128_Executor_main#1.wsp",
-          "sha256": "30a1d67f07426c7a019ddabd65ce72ad1a98895a27fb1b3bed3dc471890ce7cf",
+          "filename": "2026-10-15_022423_Executor_main#1.wsp",
+          "sha256": "daf01b57e0e79963aa1f3e828d94a5d5143fbc1fa3de54f29ecf755b3f141a04",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "757a655524bc7955ab514fde8033614dfe5bc83d46b6b8be9d6f780a625cbfff"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "f763a712125af450d4160eb6a1e7b5c13bd6e88e3f02dc92f12342ec241d2b0a"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file has zero bytes (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
-        "log_sha256": "d0708b627f3253bd79b76b6c712be15e3f4ec0aa8fa6dfde3f202d008817189e",
-        "events_sha256": "b2f20cfb1f5ca3df83170f57052357cccd37d3b5081ef058d96900db27e40ecf"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file has zero bytes (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
+        "log_sha256": "87dc52e18b0e576c266badc4084ece690823377c56290bf269d2f05f2070e53e",
+        "events_sha256": "3b5c993f39f2b9f84118543cf21b89eae531c425fd5ffb9c0d0ae60e0d4a7369"
       },
       "ON_LINE:corrupt-wsp": {
         "passed": true,
@@ -3721,17 +3793,17 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005136_Executor_main#1.wsp",
-          "sha256": "48373d8e99e88ac7acf162a005f37ab8172501d43b92a0cdf05f7a9e1640d94f",
+          "filename": "2026-10-15_022431_Executor_main#1.wsp",
+          "sha256": "16633d18cdbfa51164e1bdf7c79260e7ced73a2ce427e93cb683921473d904f6",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "7b0dd70ee08071e7699c2510778f8eec0ce54ef68126eb0172722a46f7e40df0"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "1f2d5c5f4a4c4f16e141e5b59fd5b26a971af0a8155312de484cb156155b0f22"
           }
         },
         "kill": {},
@@ -3752,15 +3824,15 @@
             "FatalError": "True",
             "ProcId": "main#1",
             "Sequence": "1",
-            "Time": "2026-10-15 00:51:40"
+            "Time": "2026-10-15 02:24:34"
           },
           "id": "MSG_ERROR",
           "receiver": "GUI",
           "sender": "main#1",
           "type": 7
         },
-        "log_sha256": "1ce7c7acd30d2aaeb6d506a8c48fa46f4b06d4e96b8d1ab84c9d238126e20241",
-        "events_sha256": "deb70e0338d9e0815a76cbaa2af549291bf5f86a3e58bba54509fdc601be448e"
+        "log_sha256": "30be7601f4a26ceda17e29d8853806761c4c035e1e6883b135ac5f7e409ee51d",
+        "events_sha256": "be4d7fd97ff76270b8ecc1f69ecac5db1fb4378e889788ba2124fea5b250ae45"
       },
       "ON_LINE:missing-asrun": {
         "passed": true,
@@ -3768,23 +3840,23 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005147_Executor_main#1.wsp",
-          "sha256": "c3053098177aa670bcde81007c105abd8925ad6d3e45bf95659bdfc96cc8cb61",
+          "filename": "2026-10-15_022442_Executor_main#1.wsp",
+          "sha256": "a7c6babc8628e90ffa299e7ca5f755886dabdfdc8072f79d5e5d115c4ae97740",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "c85e7d801a0477a8cd0cdcd5ee3d6f39d6f84410aec20c3fcc632a433dd9992f"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "4e2c678dc8dd149b0c9fef2f05195a3dfe67d3ed5d07adb679db7317a8ea2479"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file missing: '/tmp/spell-host-kjxnlq1c/session/data/OutputFiles/AsRun/2026-10-15_005147_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-        "log_sha256": "d3d8c164a5b65128a1527f6cb446e540d19e440b67f7f5eadf30f047d8b0599b",
-        "events_sha256": "565c6b1d329498f3819002a707f1e5a84de68040e43627a73fad26ebcfcb7a78"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file missing: '/tmp/spell-host-v4m95mth/session/data/OutputFiles/AsRun/2026-10-15_022442_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "7dcaa9e31296449bb1a7c3982c16856b012f7548e11a231b842f3fbd16b7721d",
+        "events_sha256": "6a5abdcfda89785a2831186bc2a5ba63438db07dd7e29a476d407d3e8cecce28"
       },
       "ON_LINE:empty-asrun": {
         "passed": true,
@@ -3792,23 +3864,23 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005155_Executor_main#1.wsp",
-          "sha256": "ed008ea1aa1183057e1c9e1916c6e1b58d6778fb8fcaea20b033b085bf4f6432",
+          "filename": "2026-10-15_022450_Executor_main#1.wsp",
+          "sha256": "e3bd4e390af3751809c02bd78f5c16cf7604dce3820c2e6a6f212afb2927ed8d",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "8c0baae6f978d4cde8c2bc52b1586421247bc768b0e4f37e6b1597e3cbeef093"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "3a8a5cfb65f5747522efe1d00c3d040919951a5357e5706e50fd7384aecf184d"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file has zero bytes: '2026-10-15_005155_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-        "log_sha256": "7d013e6ec14584df566a39d725b94b1216a87849b14cb742fe5501c066a15cb5",
-        "events_sha256": "ccccc0535567429498943e09f89d133fc44667f83b0767180c6bccd522749a60"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file has zero bytes: '2026-10-15_022450_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "3e3d2f8f37f17d0f98c9ecfcb7123bde014c592dc6136dbbabfe774959330742",
+        "events_sha256": "323aab87fbe3a5ce079ca089da568aec2f82aeff55a3e56f11183658fd089666"
       },
       "ON_LINE:invalid-path": {
         "passed": true,
@@ -3816,30 +3888,30 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005204_Executor_main#1.wsp",
-          "sha256": "80014349b59f3d430eaa9f81b88ac59e5047c04d7e5fc83c0b992fbe71939a3c",
+          "filename": "2026-10-15_022459_Executor_main#1.wsp",
+          "sha256": "1324d69df7f44e14b42b60826ddad8347b04fedcc1285aec574cc78f31b3ad67",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "f3b9a543c527fc7535c4015628d302fd8ed7d8268abc8f53a22686a82754b4d6"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "a4b9091fe19740f5a3767d4e0f9177719e84fdac58d537b324cbb182ffccdc94"
           }
         },
         "kill": {},
         "rejected_names": {
-          "../2026-10-15_005204_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-          "..\\2026-10-15_005204_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-          "/2026-10-15_005204_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
+          "../2026-10-15_022459_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+          "..\\2026-10-15_022459_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
+          "/2026-10-15_022459_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
           ".": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 18}",
           "..": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 19}",
           "": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 20}"
         },
-        "log_sha256": "07ab525243485a9b754c26ce094a6f5702274aacc174594fa8a7eec762097997",
-        "events_sha256": "2b794ddd2716fb7153f954713d8284c5acb88c00c348d11cc31c2d92b75f42d6"
+        "log_sha256": "817e317e64fb114cc5932f66c67f5f9da4892810ec9040aef2f1670872cb8437",
+        "events_sha256": "ead5c4f3d1ea279bbac62d81dc4905fe9e77bd6cfeef5edc633ef0b8ac6c0108"
       },
       "ON_LINE:partial-stem": {
         "passed": true,
@@ -3847,23 +3919,23 @@
         "mode": "ON_LINE",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005212_Executor_main#1.wsp",
-          "sha256": "f120b533e29d6dd1a0a13486ccf29d72cddba54a8dec3090b61f588484b4dbbd",
+          "filename": "2026-10-15_022507_Executor_main#1.wsp",
+          "sha256": "0fbbed9ec4d29b452e62dcc643894b3cc52bd96ac434ab97e49f745efad17834",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "2fdba873b510ae7ddf609ab3e3ebc19868fc781d80f23c6de5670483d17ad9f9"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "0cdcf1f044d5a5eb531e9dfe53ee7976686fce00c07611590274d10166b31338"
           }
         },
         "kill": {},
         "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-        "log_sha256": "f90b6fdf492d404af77f486dd09cfcfc82592ed168e380e1807f7f337540ba48",
-        "events_sha256": "3caa6e1261638299fb282cca17cb19813f6bc0185f3957cbf998ca95e5bc051b"
+        "log_sha256": "fe4d541f210a539152d1b2b879f3b64965dd9cfad6ad6763b92d2b298600a2bb",
+        "events_sha256": "6d5b3a04206fc76274b7ecef010bc1994a14de022980a2d225cb59bea87ad21b"
       },
       "ON_STEP:normal": {
         "passed": true,
@@ -3871,17 +3943,17 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005221_Executor_main#1.wsp",
-          "sha256": "46f1d4a4d2964f7911c7418cb25b36812bb721c37055f57cccd1250a33e588a7",
+          "filename": "2026-10-15_022516_Executor_main#1.wsp",
+          "sha256": "2ef6b89005d24d0264bbf0aed78e39d462c77915c5925c084c2b64448bb8bade",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "3aaeb775545ca7150c6eab3b343526a7783d9ef456b15a261aad2e36628be615"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "d204b8144f8de22874d8608d07dedd48d4abd987e6643a2e38265164ca56d63b"
           }
         },
         "answered_prompts": [
@@ -3894,9 +3966,9 @@
               "ExpectedValues": "",
               "ProcId": "main#1",
               "Scope": "1",
-              "Sequence": "21",
+              "Sequence": "22",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025542756343"
+              "Time": "1792031117756735"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3909,8 +3981,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "09bd3f52b25afa1b1459a9d7820262832e92b13139edda468e1c0bd562179ce2",
-        "events_sha256": "9bdb226f679efe33f71647721cacb0d14de66600b0be995917765bcc44e5e2e4"
+        "log_sha256": "fa6a5adcf8ee434adabdb8ebb7250f51bfeb169fa91b73f3b2f3e28feec53ff6",
+        "events_sha256": "9666716df43300358b95948321140f4c7ac21d0342bfc324869c65e0b425ec76"
       },
       "ON_STEP:two-instances": {
         "passed": true,
@@ -3918,32 +3990,32 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005229_Executor_main#1.wsp",
-          "sha256": "ea24f0d266b1dd35f636ea8fb151f52bcda8a057f6a3705955658311ab9254d4",
+          "filename": "2026-10-15_022524_Executor_main#1.wsp",
+          "sha256": "b8fcca7614e647ac319e92823df29a2fea830bf384321dd175535bafeeeb0832",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "30412eb7a41708eb50b63375dfcf242139ce04134d2ab0df2691448504758029"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "dfc4ce5477f90d24a0a1844d304700d5313083e3633b7719c243cbfb9ada126c"
           }
         },
         "open_second": {},
         "second_checkpoint": {
-          "filename": "2026-10-15_005231_Executor_main#2.wsp",
-          "sha256": "eeca1c9ba5a43a3d2a02e8988f035a7432248acc4bbd8ecada79f4321e2df4ce",
+          "filename": "2026-10-15_022526_Executor_main#2.wsp",
+          "sha256": "d197667aa7d665e912deed5664e7edc1fb960b1579707f80d88d15b00db9ff73",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "69ac79495bc5fbe4a3dbd1eacd1b4290db17dfeb9cc24cdcf25dff6f9e551c5e"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "83cee77ca952110bcbda6eeb8c3c390bf14af92eca88cc3527f6d4dc3cc07e3a"
           }
         },
         "answered_prompts": [
@@ -3958,7 +4030,7 @@
               "Scope": "1",
               "Sequence": "21",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025553887440"
+              "Time": "1792031127870364"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3976,7 +4048,7 @@
               "Scope": "1",
               "Sequence": "22",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025551401966"
+              "Time": "1792031126260172"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3994,8 +4066,8 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1"
         },
-        "log_sha256": "05f9e88719a25d56ce10296ea026f210be871f9f4ad8dd4a2fae5d2adc5f1889",
-        "events_sha256": "4ee7cd19d488c22263ae28d957604951e84b2ef003b9a4be0b7422177e8b5a90"
+        "log_sha256": "be5eb9fb1503f1ab3c80dcf5be5c283e1b0a750126775d1a0e6f09a1f1b4ac7f",
+        "events_sha256": "101d792ec0f73553ff0a92f98aafee290b176eb19cb4e1b1d0a09094d6eddd97"
       },
       "ON_STEP:kill-resume": {
         "passed": true,
@@ -4003,17 +4075,17 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005244_Executor_main#1.wsp",
-          "sha256": "38d8591cfe0651abbc04a722d74485d52effcfa1e422e38bf15db98ae34ac3ae",
+          "filename": "2026-10-15_022537_Executor_main#1.wsp",
+          "sha256": "31013eed4237646439a7a8eaadcbdbe8eb7e96ce8fd722846596df44c7d29cf3",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "ed20e135098fd13cc6d755e47c947af0a92ddfc99695e9ff1eb7a6fb6403b165"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "1895597af21ca6e055a98a56b70b26e95e6d2ab805b876be7aa1be95c75cee37"
           }
         },
         "kill": {},
@@ -4028,21 +4100,21 @@
           "ProcId": "main#1",
           "Scope": "1",
           "Text": "CHECKPOINT_IDENTITY_READY",
-          "Time": "1792025568261544"
+          "Time": "1792031140906354"
         },
         "resumed_checkpoints": [
           {
-            "filename": "2026-10-15_005244_Executor_main#1.wsp",
-            "sha256": "38d8591cfe0651abbc04a722d74485d52effcfa1e422e38bf15db98ae34ac3ae",
+            "filename": "2026-10-15_022537_Executor_main#1.wsp",
+            "sha256": "31013eed4237646439a7a8eaadcbdbe8eb7e96ce8fd722846596df44c7d29cf3",
             "metadata": {
               "format": "SPELL-continuation/2",
               "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
               "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
               "cloudpickle": "3.1.2",
               "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-              "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-              "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-              "payload_sha256": "ed20e135098fd13cc6d755e47c947af0a92ddfc99695e9ff1eb7a6fb6403b165"
+              "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+              "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+              "payload_sha256": "1895597af21ca6e055a98a56b70b26e95e6d2ab805b876be7aa1be95c75cee37"
             }
           }
         ],
@@ -4058,7 +4130,7 @@
               "Scope": "1",
               "Sequence": "6",
               "Text": "CHECKPOINT_IDENTITY_READY",
-              "Time": "1792025568159735"
+              "Time": "1792031140805834"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -4072,8 +4144,8 @@
           "ProcId": "main#1"
         },
         "original_checkpoint_unchanged": true,
-        "log_sha256": "8628f694c6e8534281bf42f91c2f9b3669d92fc42d27aff481490f5ecf4d12f9",
-        "events_sha256": "d79a617e6df6352e7dce50c9f36188f820df1287db597456f41a405300000cfe"
+        "log_sha256": "143806c04d8b16a640b54ba7d22f19c29b6e82477944ce2f78cf837fb0351858",
+        "events_sha256": "4d161e1f12fd4b34d926363cadba12e8847013c60cb06b9764bf17465a27aa16"
       },
       "ON_STEP:changed-source": {
         "passed": true,
@@ -4081,17 +4153,17 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005254_Executor_main#1.wsp",
-          "sha256": "a27d377a58d0fe4f79f7a30376869d870b62e5fffa73fce710cd96938c9d55cf",
+          "filename": "2026-10-15_022547_Executor_main#1.wsp",
+          "sha256": "bc591abd1677c5f69a6edb8c1aff27a4d4ec7e5b801fd2fbca9841ea0240316b",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "122d1b72035a8bf573820f16735cf49379c4384a2e42e2a7d3013735beb286c6"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "55a24b5c5173ddd611e32631e189a0a522255aaab30ff257841a6011a2676f40"
           }
         },
         "kill": {},
@@ -4112,15 +4184,15 @@
             "FatalError": "True",
             "ProcId": "main#1",
             "Sequence": "1",
-            "Time": "2026-10-15 00:52:58"
+            "Time": "2026-10-15 02:25:50"
           },
           "id": "MSG_ERROR",
           "receiver": "GUI",
           "sender": "main#1",
           "type": 7
         },
-        "log_sha256": "20050d8b4915e472b020296b4dd9487a57a937b9e4f4d7a204452fe3c6bb410d",
-        "events_sha256": "f5931225934c734950a855ce0ca7967cb39ece81e4fc1fbc2038c0173c8c66c5"
+        "log_sha256": "7b60cad59ef3b5bd82542fbd1524a412cd19728033572745ee790f9d80c3e633",
+        "events_sha256": "86be3fe8897dcfc50253a5fbc2717df14e6a71346493f1102b5ba5bb466192e3"
       },
       "ON_STEP:missing-wsp": {
         "passed": true,
@@ -4128,23 +4200,23 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005305_Executor_main#1.wsp",
-          "sha256": "b11087040be60ca1ae8705c265dbf5b2f6f8cdd300578284ff7f92d84d6f6893",
+          "filename": "2026-10-15_022558_Executor_main#1.wsp",
+          "sha256": "c22351b9fc60bf0ae0962e2f25d1b8ad50be340dabddfd9f798c90887b3b4b9d",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "1ccdf72a070535a28d6fb5ce5e77303bc7412b29ead1b6fa89b1b3c5c5ba92ca"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "b7b3e61e9cac8da9e48affaa1360ed533da7ad21d222a1cd035924409ca4c6f6"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-        "log_sha256": "fdae8315f5403dd5ccfe58473c420ce189498e710c140675f4b73167d6ce1a17",
-        "events_sha256": "bec98caef3e3f1140cc84f1809acdcdadecf770b794bb55527a1a7f43cba93c0"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "8d86d35fabb1e2e8063b99244f9912f33935cd69ebaa382e94f9c73b998d8777",
+        "events_sha256": "d9fcdf0598d8649c5a573ceddfb03a1cd457eb82489166c496eb683f07e73149"
       },
       "ON_STEP:empty-wsp": {
         "passed": true,
@@ -4152,23 +4224,23 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005313_Executor_main#1.wsp",
-          "sha256": "f929bfe55a7e22eb144115f5f8f3b341ef9c260cbc90f50af101c61210281acb",
+          "filename": "2026-10-15_022606_Executor_main#1.wsp",
+          "sha256": "537a7e5a12ef494efe529e1060cb48936333ba6fe28cfcc3d22c78a1578ed1a6",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "ecf9813d890571789356602034d5fcfea045ea336092184fa49988ae978c772c"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "ee6a3d082560d4ba351e12b58443344ff8abf00172cc13808b13d343c05b4898"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file has zero bytes (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-        "log_sha256": "2fb8fb7de893b62714c4baac2471d2a3050577776df83eb5c774c8188283b13c",
-        "events_sha256": "c8acca1f8f130e3ed1c0524c267a9dd0ecfb37ecc03bc709843ba37f0b1e2fe0"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file has zero bytes (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "8b401eb0bd0f94ea62814c88896981156a9c0177458efa5733b8726f53f69a24",
+        "events_sha256": "614ad460223e091c9518e150088c60ca92f1977f8101f6d46ffa2958174cd21c"
       },
       "ON_STEP:corrupt-wsp": {
         "passed": true,
@@ -4176,17 +4248,17 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005322_Executor_main#1.wsp",
-          "sha256": "4c1787b854acefa82bba439d723e74d030d0a7d48177d247688b9ac0d319ae27",
+          "filename": "2026-10-15_022615_Executor_main#1.wsp",
+          "sha256": "1c125d2dcc4a42ef240844f14337c5fd81842d3f515294039b6cafff2a62796f",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "fdd1f3db1c1538f6251b3c66a3204be3dd2a2def2a2f4b2aa6c10451faa36fc1"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "f628d2aed5aec084ae7863af67501e3cc79dcbe8d2c78d07ab3501a0b823d66a"
           }
         },
         "kill": {},
@@ -4207,15 +4279,15 @@
             "FatalError": "True",
             "ProcId": "main#1",
             "Sequence": "1",
-            "Time": "2026-10-15 00:53:25"
+            "Time": "2026-10-15 02:26:18"
           },
           "id": "MSG_ERROR",
           "receiver": "GUI",
           "sender": "main#1",
           "type": 7
         },
-        "log_sha256": "4744c8f324e1690183c8e9e66a5180f95ae127a5536eee29f0336f09603cc104",
-        "events_sha256": "df19e24e92a372c90567bea2a56700e99fdd2abaaa7ee0b6c74796ed64ef16ee"
+        "log_sha256": "a064c5230f1414ee3d303a82560a587795937ea416662ec818e6d14dec0590fd",
+        "events_sha256": "151d749f4cd95d640289b2d1386741572bc1d20d88bdc0248fef144cdf2ec009"
       },
       "ON_STEP:missing-asrun": {
         "passed": true,
@@ -4223,23 +4295,23 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005333_Executor_main#1.wsp",
-          "sha256": "91ad744d2a2343bd3e0b119670dc056d5fbabd34b47a9891b0b73d73fce60014",
+          "filename": "2026-10-15_022625_Executor_main#1.wsp",
+          "sha256": "6a2adc8a1454162b0672ab771da3111ed7dec2c590a141d24358cd7e6c5fa982",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "b12934615e94b7993b19782b08aab9cac7613db11db4873ebe86cc23c92187b1"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "4be9289b1589f481a1cf2828be96365e0e956892431a4c842f334f4972045ab1"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file missing: '/tmp/spell-host-it4bwqxg/session/data/OutputFiles/AsRun/2026-10-15_005333_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-        "log_sha256": "84f5c28c6a4be53d02b87d0ac8f42fdcf127755f477604cd9f37ae005ef5a341",
-        "events_sha256": "3c72f2ded2aabf0514c65c792a5ed579ab0f8581f914bfae19f83b87c5042aee"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file missing: '/tmp/spell-host-in4j3r_e/session/data/OutputFiles/AsRun/2026-10-15_022625_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "fe93e0246bc56310e8a9bac3f16678deb373322c9c80ad651b697da339d7d252",
+        "events_sha256": "e62aaea6f19626c09c8957d01bf0eb73f197bf0e1897a70cd19e614821015b60"
       },
       "ON_STEP:empty-asrun": {
         "passed": true,
@@ -4247,23 +4319,23 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005341_Executor_main#1.wsp",
-          "sha256": "0e82b7e3f5658354aa29d0aff8494ec5b92c9fed5e11a3d9d9c3dcd462cc579d",
+          "filename": "2026-10-15_022634_Executor_main#1.wsp",
+          "sha256": "fb02aefac31be30158eb276ec01a2c667795035e6dfe5994f1ba6247b704cd05",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "fb7d5be3454eea523877970616087d7e2117911f3cc8ca64ecda7dce5e84773d"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "213b10bbbbaaeefb52d4d32f3e5d8ade6f99c270d29167bbf368baccbd922fc1"
           }
         },
         "kill": {},
-        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file has zero bytes: '2026-10-15_005341_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
-        "log_sha256": "009e009cb05bad7ede00bc28cb4485565546e9ff9bcee596af2a9d7fe01b0073",
-        "events_sha256": "2ffe1915213cba2daac35d34f7bddc332b69d43caea5340eb7c561891fe9de34"
+        "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': \"Recovery file check failed: ASRUN file has zero bytes: '2026-10-15_022634_Executor_main#1.ASRUN' (error code 20) (fatal:false)\"}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+        "log_sha256": "2386be1d254a8fb60807165d53a989647c7689e234f13719018f4d16cda92d10",
+        "events_sha256": "2cdb3cf3aac94867bd716596714a56898bc75721a417ce6b432f1447258626c1"
       },
       "ON_STEP:invalid-path": {
         "passed": true,
@@ -4271,30 +4343,30 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005350_Executor_main#1.wsp",
-          "sha256": "176a4c7afaa08157dbc9fc267ff1f7901601d841a962bba466d0b39c2daab9ef",
+          "filename": "2026-10-15_022642_Executor_main#1.wsp",
+          "sha256": "cc45de797e2dbe06a287210fe76530f109266e7e0cd0ae46a86e00bec05fc2f7",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "91f8191b74fe7d55ec9e185c3033d4469eeb1f5f30598acf52378428db3c98ce"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "9f4639bd33c5a432fc4f64f7d3347fa00459e4a252102e0d17d545245b93b910"
           }
         },
         "kill": {},
         "rejected_names": {
-          "../2026-10-15_005350_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-          "..\\2026-10-15_005350_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
-          "/2026-10-15_005350_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
+          "../2026-10-15_022642_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
+          "..\\2026-10-15_022642_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 16}",
+          "/2026-10-15_022642_Executor_main#1": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 17}",
           ".": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 18}",
           "..": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 19}",
           "": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: Invalid recovery basename (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 20}"
         },
-        "log_sha256": "4c7bfa139a2be5cccc271d76ad6c37f206c92dcc4d11caa7480ca9f675563d55",
-        "events_sha256": "fcd1aa8166886895ff22b0cb3de60d6838ecb109d5e3a3c4412b699860d7ffd9"
+        "log_sha256": "db065485f79ef8e0160471902cbb10df252e41c1e813ddb48a7daae088714d82",
+        "events_sha256": "140e9288fc37dd5d1a1f14b5207ce77ddd74ab8dacb9662e897186427101487a"
       },
       "ON_STEP:partial-stem": {
         "passed": true,
@@ -4302,33 +4374,33 @@
         "mode": "ON_STEP",
         "procedure_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
         "checkpoint": {
-          "filename": "2026-10-15_005358_Executor_main#1.wsp",
-          "sha256": "6c37273412e74446f1b94ffc5a51a112b8195a5a71a1478ab33163cd487b6d80",
+          "filename": "2026-10-15_022651_Executor_main#1.wsp",
+          "sha256": "4961fa4de3c0b69996341db480e0770a802ba058bcc8b332d778c69f27b312a3",
           "metadata": {
             "format": "SPELL-continuation/2",
             "python": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
             "platform": "Linux-7.0.14-linuxkit-x86_64-with-glibc2.41",
             "cloudpickle": "3.1.2",
             "source_sha256": "e2a5c57a720812a1bbd3a42a9035d13bd3262cc5ea4160c060a7c2a0091feaa3",
-            "codec_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "backend_sha256": "fcc90225fa89f8c335d81624942e2097e218730a69bd1f1eb917d2f162a126c8",
-            "payload_sha256": "c206a8fa3cf4f6afcd13f4527351f010a68fcfda24c729ab16fbb1d028789a77"
+            "codec_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "backend_sha256": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2",
+            "payload_sha256": "e321aa1fc39d571202bded44160893fbf9732895c756f9934de654c3914183d3"
           }
         },
         "kill": {},
         "reopen_error": "REQ_RECOVER_EXEC: {'message': {'fields': {'ErrorMsg': 'Cannot recover executor', 'ErrorReason': 'Recovery file check failed: WSP data file missing (error code 20) (fatal:false)'}, 'id': 'RSP_RECOVER_EXEC', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 15}",
-        "log_sha256": "54268fba356fed6d2357216bf083e38254a13c62ea7f4d12568c9c6186ecfe27",
-        "events_sha256": "19a50b35aa3143ed1a45bf6f261bce3fe33825e4cfc51db5e3028cce303d7052"
+        "log_sha256": "51379923cbf752f9dd46d63de4771c6792f5887623d8d600c80a94b2946e1165",
+        "events_sha256": "342aa6e41bfc14a1e7b40aa63ac79440966b4e64c4fe1f31ce7c868ce73055e4"
       }
     }
   },
   "standalone_gate": {
     "evidence": {
-      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\executor-runtime.json",
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\executor-runtime.json",
       "sha256": "2bb48dbd420197e5bb76ea2f847f29590f3dd9f186c065773a37b8559ec3177c",
       "build": {
-        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\executor-build.json",
-        "sha256": "2a9a8d8b75e85d5b475a5304aa5724f060e3e0834a5043512e29572cffbf6baf"
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\executor-build.json",
+        "sha256": "e1189cdc840328dc47815b666a40f0f4e895eb97fc8cb64a17b9f0922362472a"
       }
     },
     "gate": {
@@ -4365,11 +4437,11 @@
   },
   "context_gate": {
     "evidence": {
-      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\context-runtime.json",
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\context-runtime.json",
       "sha256": "150a0b46d2551914e658b667f9551ba1588b52bf697396e594632c3f4bda410d",
       "build": {
-        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\child-build\\native\\7a0823329dcf4ed6bfe0601c7a2ea793\\a\\native\\context-build.json",
-        "sha256": "cfa7be6415206c3ed55ad26903e65dcf4f302405cff633d74ba78f39192a9a3d"
+        "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\prompt-build\\native\\21d93793b0e64070a7699cd03f3ff79d\\a\\native\\context-build.json",
+        "sha256": "e0dc51b9dd97d759c0a20a286a88960f81dc273cad702263a6b86092cee7bb35"
       }
     },
     "gate": {
@@ -4458,12 +4530,13 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "9a55a500b3b688d31cfd4f11f8bc9e4854fea39d5a88618762b69c68ed75eea0",
+    "source_port/integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
     "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
     "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",

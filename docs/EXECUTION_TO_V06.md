@@ -14,13 +14,14 @@ IDE v0.3 supplies the neutral durable authority. Full conformance is next.
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
 | v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Complete for the declared GENERIC simulator profile; see DRIVER_QUALIFICATION.json | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
-| v0.5 | In progress: 473 qualified, 290 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
+| v0.5 | In progress: 474 qualified, 289 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending full v0.5; integrated rebuild prerequisite passed | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
 
-The [current checkpoint](CHILD_CONFORMANCE_QUALIFICATION.json) binds the combined
-child lifecycle runtime to two identical offline native builds, installed
-host/driver workflows and all 29 existing language/recovery suites. This includes
-the qualified lambda/exception-unwind and checkpoint identity corrections.
+The [current checkpoint](PROMPT_CONFORMANCE_QUALIFICATION.json) binds native timed
+defaults and child lifecycle corrections to two identical offline builds and all
+30 language/recovery suites. This includes the qualified lambda/exception-unwind
+and checkpoint identity corrections. Final installed-host workflows remain open
+on this image; the preceding child-runtime evidence is retained in commit `64ea2a5`.
 [Distribution progress](V06_PROGRESS.md) identifies the usable candidate and
 remaining release gates. Neither release is promoted.
 
