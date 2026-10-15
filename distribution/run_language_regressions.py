@@ -20,6 +20,7 @@ SUITES = [
     ('dta', 'run_dta.py', [], 68),
     ('ui', 'run_ui.py', [], 62),
     ('prompt-timeout', 'run_prompt_timeout.py', [], 10),
+    ('child-arguments', 'run_child_arguments.py', [], 10),
     ('rng-catalog', 'run_rng.py', ['--catalog-only'], 8),
     ('rng-state', 'run_rng_state.py', [], 21),
     ('dta-ipc', 'run_dta_edit.py', [], 64),
