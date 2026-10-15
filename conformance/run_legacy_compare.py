@@ -24,6 +24,9 @@ def main():
     names = [*input_paths(ROOT), 'conformance/legacy_compare_cases.py',
         'conformance/legacy_compare_controller.py', 'conformance/legacy_compare_provenance.py',
         'conformance/run_legacy_compare.py', 'source_port/legacy_compare_syntax.py',
+        'conformance/legacy_compare_build.py', 'conformance/legacy_compare_install.py',
+        'conformance/legacy_compare.Dockerfile', 'conformance/legacy_compare.Dockerfile.dockerignore',
+        'distribution/incremental_native.py', 'docs/reference/SPELL2.6.10-src.zip',
         'docs/reference/SPELL - Language Reference - 2.4.4.pdf', 'conformance/inventory.json']
     inputs = {name: sha(ROOT / name) for name in names}
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()

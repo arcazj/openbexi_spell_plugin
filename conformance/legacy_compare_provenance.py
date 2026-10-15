@@ -23,6 +23,9 @@ def capture():
         return dict(integrated=installed_capture(), installed=files(), overlay=None)
     base = json.loads(baseline.read_bytes())
     manifest = json.loads((EVIDENCE / 'manifest.json').read_bytes())
+    compiled = EVIDENCE / 'compiled/incremental-build.json'
+    assert sha(compiled) == manifest['incremental_build_sha256']
+    assert json.loads(compiled.read_bytes())['passed'] is True
     expected = dict(base['installed'])
     for name, digest in manifest['artifacts'].items():
         path = 'spell_native/bin/' + name
