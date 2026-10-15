@@ -101,11 +101,11 @@ supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows: the current checkpoint qualifies 473 and leaves
-290 open. Its [combined-runtime record](docs/CHILD_CONFORMANCE_QUALIFICATION.json)
-binds all 29 existing native suites, including SCDB/timing and checkpoint recovery,
-to the child lifecycle composition. Independent rebuild and installed host/driver
-evidence pass on that same composition.
+track all 763 rows: the current checkpoint qualifies 474 and leaves
+289 open. Its [combined-runtime record](docs/PROMPT_CONFORMANCE_QUALIFICATION.json)
+binds all 30 native suites, including the timed-default example and checkpoint
+recovery, to two identical offline builds. Final installed-host workflows must
+be repeated on this image.
 These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility

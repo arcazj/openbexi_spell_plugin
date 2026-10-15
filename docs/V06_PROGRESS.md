@@ -1,9 +1,11 @@
 # v0.6 distribution prerequisites
 
-The current [combined-runtime checkpoint](CHILD_CONFORMANCE_QUALIFICATION.json)
-qualifies 473 of 763 original requirements, with 290 still open. It includes the
-independently reproduced shutdown/SCDB/checkpoint/child lifecycle composition,
-all 29 existing native suites (1,597 raw checks), and installed host/driver gates.
+The current [combined-runtime checkpoint](PROMPT_CONFORMANCE_QUALIFICATION.json)
+qualifies 474 of 763 original requirements, with 289 still open. It includes native
+timed defaults, the preceding child/recovery composition, all 30 native suites
+(1,607 raw checks), two identical offline builds and fresh install/removal checks.
+Final installed-host workflows remain open for this image. The previous child
+checkpoint and its host/driver acceptance remain preserved in commit `64ea2a5`.
 Full v0.5/v0.6 release acceptance remains false. The artifact narrative below is
 the retained earlier 470-row checkpoint.
 

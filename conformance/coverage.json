@@ -3891,9 +3891,29 @@
     {
       "id": "CMP-LRM244-EXAMPLE-118",
       "package": "UI",
-      "status": "OPEN",
-      "evidence": {},
-      "remaining": "Independent positive, boundary, failure and recovery evidence against the original native runtime; resolve applicable manual/source conflicts."
+      "status": "QUALIFIED",
+      "evidence": {
+        "positive": {
+          "report": "conformance/evidence/prompt_timeout.json",
+          "sha256": "c076583ecf4e8b3722786467d4a61f2c9d8428a2c804c7aaf88c93f15a6667ad",
+          "check": "minute:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/prompt_timeout.json",
+          "sha256": "c076583ecf4e8b3722786467d4a61f2c9d8428a2c804c7aaf88c93f15a6667ad",
+          "check": "default:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/prompt_timeout.json",
+          "sha256": "c076583ecf4e8b3722786467d4a61f2c9d8428a2c804c7aaf88c93f15a6667ad",
+          "check": "default:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/prompt_timeout.json",
+          "sha256": "c076583ecf4e8b3722786467d4a61f2c9d8428a2c804c7aaf88c93f15a6667ad",
+          "check": "default:recovery"
+        }
+      }
     },
     {
       "id": "CMP-LRM244-EXAMPLE-119",
