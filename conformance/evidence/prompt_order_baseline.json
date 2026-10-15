@@ -1,0 +1,54 @@
+{
+  "passed": false,
+  "scope": "Retained prompt answer-order failure; blocks the combined checkpoint",
+  "runtime_image": "sha256:e1d2347c3bdba20a0ef349785b29e865209637df7f9ca01337cd8f2c10fe8b9a",
+  "source_commit": "e44d528f51c49f3aac56c417f70c4524a03767d8",
+  "raw": {
+    "path": "C:\\obranging\\.qualification\\prompt-timeout\\d992b589421e42dc86c9af0496b8f679\\result.json",
+    "sha256": "05759ccc41e1a7b591ef754ee00d05abd6f55fffec07f5f1055c3181bb60fabf"
+  },
+  "sequence": {
+    "path": "C:\\obranging\\.qualification\\language-regressions\\88af1a3b535944cdb9eae57798ad8c02\\result.json",
+    "sha256": "0a94948665f7d19f37ca22be79cc7d306db4953da5ce5d3bd5e6ec488e0065af"
+  },
+  "passed_suites": [
+    "data",
+    "files",
+    "data-race",
+    "flow",
+    "common-silence",
+    "resource",
+    "database-import",
+    "user-database",
+    "dta",
+    "ui"
+  ],
+  "failed_check": "duplicate:boundary",
+  "sent_answers": [
+    "1",
+    "0"
+  ],
+  "expected_answer": "B",
+  "actual_answer": "A",
+  "native_errors": [
+    {
+      "Csp": "main:9/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Python error\n - file '/workspace/duplicate-boundary/main.py', line 9",
+      "ErrorReason": "'A'",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "main#1",
+      "Sequence": "21",
+      "Time": "2026-10-15 03:44:21"
+    }
+  ],
+  "events": {
+    "path": "C:\\obranging\\.qualification\\prompt-timeout\\d992b589421e42dc86c9af0496b8f679\\workspace\\duplicate-boundary\\events.json",
+    "sha256": "0cc3be9b9b042e32acd099298021b2a2f450acaf541cd50aa1bebb6dfd1adbd5"
+  },
+  "finding": "Two answers were sent in order; the procedure assertion observed A from the second answer. Independent IPC message workers can reorder callbacks; candidate repair and focused proof pending.",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
