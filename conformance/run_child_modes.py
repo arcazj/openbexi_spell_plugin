@@ -21,7 +21,16 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image',required=True)
+    parser.add_argument('--repeat-abort',type=int,help='Run independent abort-at-prompt controls (1..16)')
     args=parser.parse_args()
+    if args.repeat_abort is not None and not 1 <= args.repeat_abort <= 16:
+        parser.error('--repeat-abort must be in 1..16')
+    cases=CASES
+    case_source=(ROOT/'conformance/child_modes_cases.py').read_bytes()
+    if args.repeat_abort is not None:
+        cases={f'blocking-abort-{index}':CASES['blocking-abort'] for index in range(args.repeat_abort)}
+        case_source += ("\nCASES = {f'blocking-abort-{index}': CASES['blocking-abort'] "
+                        f"for index in range({args.repeat_abort})}}\n").encode()
     token=uuid.uuid4().hex
     output=ROOT/'.qualification/child-modes'/token
     output.mkdir(parents=True)
@@ -42,7 +51,7 @@ def main():
         archive=io.BytesIO()
         with tarfile.open(fileobj=archive,mode='w') as bundle:
             for source in ('child_modes_cases.py','child_modes_controller.py','installed_provenance.py'):
-                content=(ROOT/'conformance'/source).read_bytes()
+                content=case_source if source=='child_modes_cases.py' else (ROOT/'conformance'/source).read_bytes()
                 item=tarfile.TarInfo(source)
                 item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
                 bundle.addfile(item,io.BytesIO(content))
@@ -64,9 +73,12 @@ def main():
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())
-        report=dict(passed=exit_code==0 and set(checks)==set(CASES) and all(r['passed'] for r in checks.values()),
+        assert (output/'workspace/child_modes_cases.py').read_bytes()==case_source
+        report=dict(passed=exit_code==0 and set(checks)==set(cases) and all(r['passed'] for r in checks.values()),
             runtime_image=image,inputs=inputs,checks=checks,runtime_sources={'integrated':runtime},
             host_inputs=host,controller_exit_code=exit_code,timed_out=timed_out,
+            selection='complete' if args.repeat_abort is None else 'abort-at-prompt',
+            generated_cases_sha256=hashlib.sha256(case_source).hexdigest(),
             full_v05_accepted=False,full_v06_accepted=False)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         print(json.dumps({'output':str(output),'passed':report['passed'],

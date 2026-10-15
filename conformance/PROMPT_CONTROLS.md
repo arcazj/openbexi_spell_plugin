@@ -28,8 +28,8 @@ the ordinary command path.
 `evidence/child_modes_baseline.json` retains that failure and eight passing cases.
 
 The recipes check exact original and composed preimages. Required validation is
-repeated conflicting answers in independent executors, all timed-prompt and
-child-mode controls, fresh reproducible native builds, and the complete combined
+24 conflicting-answer and 12 abort-at-prompt trials in independent executors,
+all timed-prompt and child-mode controls, fresh reproducible native builds, and the complete combined
 regression sequence. These repairs qualify no additional inventory rows by
 themselves. Passing controls are recorded separately in `evidence/prompt_controls.json`;
 the full combined checkpoint and release gates remain additional requirements.

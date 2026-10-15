@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--session', type=Path, action='append', required=True)
     parser.add_argument('--baseline-commit', required=True)
     parser.add_argument('--native-gate-dir', type=Path, required=True)
+    parser.add_argument('--prompt-controls', type=Path, required=True)
     parser.add_argument('--rng-driver', type=Path, required=True)
     parser.add_argument('--rng-legacy-and-migration', type=Path, required=True)
     parser.add_argument('--rng-baseline', type=Path, required=True)
@@ -53,6 +54,17 @@ def main():
             validate_report(Path(raw[name]), image, minima[name])
     if set(raw) != set(minima):
         raise ValueError('Incomplete native sequence: ' + ', '.join(sorted(set(minima) - set(raw))))
+
+    # The combined runtime previously passed builds but failed answer ordering
+    # and prompt abort. Require the independent controls before refreshing rows.
+    sys.path.insert(0, str(ROOT / 'conformance'))
+    from prompt_control_report import qualify as qualify_controls
+    controls = json.loads(args.prompt_controls.read_bytes())
+    proofs = {name: Path(reference(row)) for name, row in controls['raw'].items()}
+    verified = qualify_controls(proofs['stress'], proofs['modes'], proofs['timed'],
+                                proofs['native_pair'], proofs['abort_stress'])
+    if controls != verified or controls['runtime_image'] != image:
+        raise ValueError('Prompt controls differ from the selected runtime or current evidence')
 
     commands = []
     def run(script, *options):
@@ -139,6 +151,8 @@ def main():
               'raw_reports': {k: {'path': v, 'sha256': sha(Path(v))} for k, v in raw.items()},
               'qualifier_commands': commands, 'counts': gate['counts'], 'total': gate['total'],
               'coverage_sha256': sha(ROOT / 'conformance/coverage.json'),
+              'prompt_controls': {'path': str(args.prompt_controls.resolve()),
+                                  'sha256': sha(args.prompt_controls)},
               'full_v05_accepted': gate['accepted'], 'full_v06_accepted': False}
     args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(json.dumps({'output': str(args.output), 'counts': gate['counts']}))
