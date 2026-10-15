@@ -1,0 +1,24 @@
+{
+  "passed": false,
+  "scope": "Child mode diagnostic; no inventory promotion",
+  "runtime_image": "sha256:e1d2347c3bdba20a0ef349785b29e865209637df7f9ca01337cd8f2c10fe8b9a",
+  "source_commit": "b280a91",
+  "raw": {
+    "path": "C:\\obevents\\.qualification\\child-modes\\05cf3741bde1465bb0928f291d954352\\result.json",
+    "sha256": "0e3bf09e82c40b461d5757db75c4f0d7c6c7d0190af6d37e13b1668ca05b9134"
+  },
+  "passed_cases": [
+    "blocking-success",
+    "blocking-immediate",
+    "blocking-error",
+    "blocking-recovery",
+    "nonblocking-success",
+    "nonblocking-late-error",
+    "manual-blocking",
+    "manual-nonblocking"
+  ],
+  "failed_case": "blocking-abort",
+  "observation": "CMD_ABORT sent to a child awaiting a prompt did not reach ABORTED within 20 seconds; parent remained WAITING. Blocking failure propagation, nonblocking late errors and manual startup controls passed.",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
