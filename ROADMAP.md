@@ -101,11 +101,11 @@ supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows: the committed `57a0c09` checkpoint qualifies 473 and leaves
-290 open. Its [follow-up record](docs/FOLLOWUP_CONFORMANCE_QUALIFICATION.json)
-binds independent native oracles, source inputs, SCDB/timing and checkpoint
-recovery controls. The newer child lifecycle composition has independent rebuild
-and installed host/driver evidence; its complete language rerun is in progress.
+track all 763 rows: the current checkpoint qualifies 473 and leaves
+290 open. Its [combined-runtime record](docs/CHILD_CONFORMANCE_QUALIFICATION.json)
+binds all 29 existing native suites, including SCDB/timing and checkpoint recovery,
+to the child lifecycle composition. Independent rebuild and installed host/driver
+evidence pass on that same composition.
 These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility

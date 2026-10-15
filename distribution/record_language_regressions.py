@@ -2,7 +2,6 @@
 import argparse
 import json
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
@@ -62,7 +61,10 @@ def main():
               'common-silence': 'common-silence', 'dta': 'dta', 'ui': 'ui',
               'dta-ipc': 'dta-ipc', 'time': 'time', 'python': 'python', 'common': 'common'}
     for suite, target in direct.items():
-        shutil.copyfile(raw[suite], ROOT / 'conformance/evidence' / (target + '.json'))
+        # Canonical reports must retain the bytes whose hashes Git will publish.
+        # Preserve immutable raw evidence separately, including its line endings.
+        (ROOT / 'conformance/evidence' / (target + '.json')).write_text(
+            Path(raw[suite]).read_text(encoding='utf-8'), encoding='utf-8', newline='\n')
     for suite, script in [('obs', 'obs'), ('cmd', 'cmd'), ('events', 'events'),
                           ('scheduler', 'scheduler'), ('value-units', 'value_units'),
                           ('timing', 'timing'), ('send-verify', 'send_verify'), ('resource', 'resource')]:

@@ -13,9 +13,9 @@ remaining limits. Retain detailed machine-readable evidence separately.
 | v1.0.0 | Release-candidate defects resolved and affected gates repeated; exact artifact hashes and accepted scope recorded; stable tag on master. |
 
 Current accepted scope ends at the v0.4 GENERIC simulator profile. The committed
-language checkpoint qualifies 473 requirements with 290 open. The newer combined
-child runtime has reproducible builds and installed host/driver evidence; its
-full language and recovery sequence must pass before updating that checkpoint.
+language checkpoint qualifies 473 requirements with 290 open. The combined child
+runtime passes all 29 existing native suites (1,597 raw checks), reproducible builds
+and installed host/driver gates; see [its evidence](CHILD_CONFORMANCE_QUALIFICATION.json).
 Passing prerequisite work does not accept its parent release.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to

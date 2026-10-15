@@ -17,12 +17,12 @@ IDE v0.3 supplies the neutral durable authority. Full conformance is next.
 | v0.5 | In progress: 473 qualified, 290 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending full v0.5; integrated rebuild prerequisite passed | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
 
-The [current checkpoint](V05_CONFORMANCE_QUALIFICATION.json) preserves explicit
-source and image scopes. Two fresh offline compilations produce identical native
-wheels, each passing eight installation/removal tests. The same exact DSS image
-passes all selected language suites and ten native host tests. The separate
-lambda/exception-handler checkpoint counterexample remains unresolved. [Distribution progress](V06_PROGRESS.md) identifies the usable
-candidate and remaining release gates. Neither release is promoted.
+The [current checkpoint](CHILD_CONFORMANCE_QUALIFICATION.json) binds the combined
+child lifecycle runtime to two identical offline native builds, installed
+host/driver workflows and all 29 existing language/recovery suites. This includes
+the qualified lambda/exception-unwind and checkpoint identity corrections.
+[Distribution progress](V06_PROGRESS.md) identifies the usable candidate and
+remaining release gates. Neither release is promoted.
 
 ## Native foundation
 
