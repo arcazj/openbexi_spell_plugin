@@ -1,9 +1,9 @@
-"""A declared diagnostic overlay, preserving the verified fresh-wheel identity."""
+"""Verify ranging sources in composed wheels or retained diagnostic overlays."""
 import hashlib
 import json
 from pathlib import Path
 import sys
-from installed_provenance import capture as installed_capture
+from installed_provenance import capture as installed_capture, verify_capture, verify_stages
 
 SITE=Path('/usr/local/lib/python3.13/site-packages')
 EVIDENCE=Path('/opt/rng-patch')
@@ -20,6 +20,37 @@ def sources():
             if path.is_file() and (path.suffix in ('.py','.so') or path.parent.name=='bin'):
                 result[path.relative_to(SITE).as_posix()]=digest(path)
     return result
+
+
+def verify_composed(runtime, inputs, normalized):
+    """Require actual composed helper, proxy and Ground bytes without an overlay."""
+    assert runtime.get('overlay') is None and runtime.get('base_overlay') is None
+    record=runtime['integrated']
+    assert record and record['driver_composition']
+    verify_capture(record,inputs,normalized)
+    python=record['manifest']['composition']['python']
+    driver=record['driver_composition']['manifest']
+    for kind,manifest in (('python',python),('driver',driver)):
+        assert {'rng_patches.py','rng_state_patches.py'} <= set(manifest['recipes'])
+        assert manifest['stages'],kind
+    verify_stages('python',python)
+    state={name:row['original_sha256'] for name,row in driver['sources'].items()}
+    for stage in driver['stages']:
+        assert stage['recipe'] in driver['recipes']
+        for name,row in stage['sources'].items():
+            assert state.get(name)==row['before_sha256'],name
+            state[name]=row['after_sha256']
+    assert state=={name:row['patched_sha256'] for name,row in driver['sources'].items()}
+    for name,recipe,manifest,installed in (
+        ('spell/lang/helpers/rnghelper.py','rng_patches.py',python,record['python_sources']),
+        ('openbexi_dss_proxy/ranging.py','rng_patches.py',driver,driver['python_sources']),
+        ('openbexi_spell_dss/ground.py','rng_state_patches.py',driver,driver['python_sources'])):
+        row=manifest['sources'][name]
+        assert runtime['installed'][name]==installed[name]==row['patched_sha256'],name
+        stages=[stage for stage in manifest['stages'] if name in stage['sources']]
+        assert stages and stages[-1]['recipe']==recipe,name
+        assert stages[-1]['sources'][name]['after_sha256']==row['patched_sha256'],name
+    return driver['sources']['openbexi_spell_dss/ground.py']
 
 
 def capture():

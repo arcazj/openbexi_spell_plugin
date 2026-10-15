@@ -23,14 +23,13 @@ def recorded_raw():
 def test_only_catalog_rows_qualify_and_diagnostic_observations_remain():
     raw=recorded_raw()
     report=qualify(raw)
-    assert len(report['checks'])==36
+    assert len(report['checks'])==8
     assert set(report['qualified_contracts'])==CONTRACTS
     assert len(CONTRACTS)==3
     assert set(report['excluded_contracts'])==set(EXCLUDED)
     assert {c for row in report['checks'].values() for c in row['contracts']}==CONTRACTS
-    assert report['checks']['start-single:boundary']['contracts']==[]
-    assert report['checks']['start-single:boundary']['observed_contracts']==['CMP-LRM244-EXAMPLE-170']
-    assert raw['checks']['start-single:boundary']['contracts']==['CMP-LRM244-EXAMPLE-170']
+    assert report['selection']=='catalog'
+    assert report['runtime_sources']['overlay'] is None
     for key,row in report['checks'].items():
         if row['contracts']:
             assert supported_check(report,key,row['dimension'])
@@ -49,6 +48,25 @@ def test_failed_or_incomplete_evidence_is_rejected(mutation):
     elif mutation=='missing':
         del report['checks'][key]
     else:
-        report['checks']['policy:positive']['prompts']=[]
+        report['checks'][key]['prompts'].append({})
     with pytest.raises(AssertionError):
+        qualify(report)
+
+
+@pytest.mark.parametrize('mutation',['selection','overlay','bytes','stage','recipe'])
+def test_catalog_requires_fresh_composed_ranging_sources(mutation):
+    report=recorded_raw()
+    runtime=report['runtime_sources']
+    driver=runtime['integrated']['driver_composition']['manifest']
+    if mutation=='selection':
+        report['selection']='explicit'
+    elif mutation=='overlay':
+        runtime['overlay']={'manifest':{}}
+    elif mutation=='bytes':
+        runtime['installed']['openbexi_spell_dss/ground.py']='0'*64
+    elif mutation=='stage':
+        driver['stages']=[row for row in driver['stages'] if row['recipe']!='rng_state_patches.py']
+    else:
+        del driver['recipes']['rng_patches.py']
+    with pytest.raises((AssertionError,ValueError)):
         qualify(report)

@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 
 from rng_state_cases import CASES, METADATA
 from installed_provenance import verify_capture
+from rng_provenance import verify_composed
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -26,8 +27,12 @@ def qualify(raw):
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==expected,name
     runtime=report['runtime_sources']
     verify_capture(runtime['integrated'],report['inputs'],report['lf_normalized_inputs'])
-    assert set(runtime['overlay']['manifest'])=={'openbexi_spell_dss/ground.py'}
-    assert set(runtime['base_overlay']['manifest'])=={'spell/lang/helpers/rnghelper.py','openbexi_dss_proxy/ranging.py'}
+    composed=runtime.get('overlay') is None
+    if composed:
+        verify_composed(runtime,report['inputs'],report['lf_normalized_inputs'])
+    else:
+        assert set(runtime['overlay']['manifest'])=={'openbexi_spell_dss/ground.py'}
+        assert set(runtime['base_overlay']['manifest'])=={'spell/lang/helpers/rnghelper.py','openbexi_dss_proxy/ranging.py'}
     for name in ('conformance/rng_state_report.py','conformance/RNG_STATE_RESULTS.md',
                  'tests/test_rng_state_patch.py','tests/test_rng_state_report.py'):
         report['inputs'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
@@ -39,6 +44,8 @@ def qualify(raw):
         qualification='Zero new inventory rows promoted by this behavioral correction; full library contracts remain separately reviewed.',
         rollback='Old conflated-state runtime is not a qualified writer for the migrated database; rollback requires a compatible retained database snapshot.',
         distribution='Checked diagnostic overlay; fresh composition/RECORD and full release qualification remain separate gates.')
+    if composed:
+        report['scope']['distribution']='Fresh composed wheels with installed RECORD, recipe chains and helper/proxy/Ground bytes verified; full release qualification remains separate.'
     report.setdefault('retained_observation_arrays',{})
     for name in ('events','controls'):
         if name not in report['observations']:
@@ -60,9 +67,15 @@ def add_regression(report,path,count,profile):
             assert report['inputs'][name]==expected,name
         report['inputs'][name]=expected
     if profile=='separate-state':
-        row=report['runtime_sources']['overlay']['manifest']['openbexi_spell_dss/ground.py']
-        assert regression['ground_preimage']==row['preimage_sha256']
-        assert regression['ground_patched']==row['sha256']
+        runtime=report['runtime_sources']
+        if runtime.get('overlay') is None:
+            row=verify_composed(runtime,report['inputs'],report['lf_normalized_inputs'])
+            before,after=row['original_sha256'],row['patched_sha256']
+        else:
+            row=runtime['overlay']['manifest']['openbexi_spell_dss/ground.py']
+            before,after=row['preimage_sha256'],row['sha256']
+        assert regression['ground_preimage']==before
+        assert regression['ground_patched']==after
     junit=path.with_name('junit.xml')
     suite=ET.fromstring(junit.read_bytes()).find('testsuite')
     assert suite is not None and int(suite.attrib['tests'])==count

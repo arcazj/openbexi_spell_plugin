@@ -174,7 +174,8 @@ def test_send_recipe_cannot_precede_required_timing_stage(tmp_path, monkeypatch)
     assert before == {name:(site/name).read_bytes() for name in before}
 
 
-@pytest.mark.parametrize('name', ['spell/lang/helpers/basehelper.py','spell/lib/adapter/config.py'])
+@pytest.mark.parametrize('name', ['spell/lang/helpers/basehelper.py','spell/lib/adapter/config.py',
+                                 'spell/lang/helpers/rnghelper.py'])
 def test_python_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     site = python_tree(tmp_path)
     target = site/name
@@ -210,7 +211,8 @@ def test_driver_corrections_match_native_evidence_and_preserve_repository(tmp_pa
     verify_evidence(source/'openbexi_dss_proxy/_composition', report)
 
 
-@pytest.mark.parametrize('name', ['openbexi_dss_proxy/tm.py','openbexi_dss_proxy/tc.py'])
+@pytest.mark.parametrize('name', ['openbexi_dss_proxy/tm.py','openbexi_dss_proxy/tc.py',
+                                 'openbexi_dss_proxy/ranging.py','openbexi_spell_dss/ground.py'])
 def test_driver_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = tmp_path/'src'
     shutil.copytree(ROOT/'driver_plugin/src',source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))

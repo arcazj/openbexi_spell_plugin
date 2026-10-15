@@ -7,9 +7,11 @@ from pathlib import Path
 
 from rng_cases import CASES, METADATA
 from installed_provenance import verify_capture
+from rng_provenance import verify_composed
 
 ROOT=Path(__file__).resolve().parents[1]
 DIMENSIONS={'positive','boundary','failure','recovery'}
+CATALOG_CASES={key for key in CASES if key.startswith(('baseband-names:','antenna-names:'))}
 CONTRACTS={'CMP-LRM244-'+name for name in (
     'FUNCTION-GETBASEBANDNAMES','FUNCTION-GETANTENNANAMES','EXAMPLE-174')}
 EXCLUDED={'CMP-LRM244-'+name:reason for name,reason in (
@@ -25,7 +27,10 @@ def qualify(raw):
     report=deepcopy(raw)
     assert report['controller_exit_code']==0
     assert report['observations']['passed'] and report['observations']['status']=='FINISHED'
-    assert set(report['checks'])==set(CASES)
+    composed=report['runtime_sources'].get('overlay') is None
+    assert set(report['checks'])==(CATALOG_CASES if composed else set(CASES))
+    if composed:
+        assert report['selection']=='catalog'
     for key,row in report['checks'].items():
         assert row['passed'] and row['source']==CASES[key],key
         assert row['contracts']==METADATA[key]['contracts'],key
@@ -36,10 +41,12 @@ def qualify(raw):
     runtime=report['runtime_sources']
     assert runtime['integrated'] and runtime['integrated']['driver_composition']
     verify_capture(runtime['integrated'],report['inputs'],report['lf_normalized_inputs'])
-    assert runtime['overlay'], 'This isolated qualification requires its checked overlay'
-    assert set(runtime['overlay']['manifest'])=={'spell/lang/helpers/rnghelper.py','openbexi_dss_proxy/ranging.py'}
+    if composed:
+        verify_composed(runtime,report['inputs'],report['lf_normalized_inputs'])
+    else:
+        assert set(runtime['overlay']['manifest'])=={'spell/lang/helpers/rnghelper.py','openbexi_dss_proxy/ranging.py'}
     actual={name for row in report['checks'].values() for name in row['contracts']}
-    assert actual==CONTRACTS|set(EXCLUDED)
+    assert actual==(CONTRACTS if composed else CONTRACTS|set(EXCLUDED))
     for row in report['checks'].values():
         excluded=[name for name in row['contracts'] if name in EXCLUDED]
         if excluded:
@@ -50,6 +57,8 @@ def qualify(raw):
         assert {row['dimension'] for row in report['checks'].values() if contract in row['contracts']}==DIMENSIONS
     report['qualified_contracts']=sorted(CONTRACTS)
     report['excluded_contracts']=EXCLUDED
+    if composed:
+        report['excluded_contracts']={name:'Separate schedule/activity controls are retained; this catalog run does not qualify the complete manual contract.' for name in EXCLUDED}
     report['inputs']['conformance/rng_report.py']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     for name in ('conformance/RNG_RESULTS.md','tests/test_rng_report.py','docs/reference/SPELL - Driver Development Manual - 2.4.4.pdf'):
         report['inputs'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
@@ -60,6 +69,10 @@ def qualify(raw):
         open='Schedule/activity separation including enable/disable/start/abort/calibration clauses, dual paths, whole functions and sections, baseband list/ENG/RAW configuration, GetRangingStatus constant conflict, RF hardware and other drivers.',
         execution='Imported independent oracle calls original native helpers; generic warm-start/checkpoint recovery is not claimed.',
         distribution='Python-only diagnostic overlay on an independently rebuilt native checkpoint. Fresh composed wheels and complete release qualification remain separate.')
+    if composed:
+        report['scope'].update(
+            observed='Eight catalog controls through original native helpers and the persistent GENERIC driver; activity semantics are qualified separately.',
+            distribution='Fresh composed wheels with installed RECORD, recipe chains and helper/proxy/Ground bytes verified; complete release acceptance remains separate.')
     retained={}
     for name in ('events','controls'):
         if name in report['observations']:
@@ -94,7 +107,7 @@ def main():
     report['raw_report_path']=str(args.raw.resolve())
     output=ROOT/'conformance/evidence/rng.json'
     output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
-    print(json.dumps(dict(output=str(output),checks=len(CASES),contracts=len(CONTRACTS))))
+    print(json.dumps(dict(output=str(output),checks=len(report['checks']),contracts=len(CONTRACTS))))
 
 
 if __name__=='__main__':

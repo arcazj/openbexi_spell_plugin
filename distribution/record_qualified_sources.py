@@ -32,6 +32,8 @@ DONORS = {
     'shutdown_pause':('a97118ea78011205db886e8a9556220201809960','shutdown_pause_review'),
     'child_lifecycle':('4543128e93d7c8a6ee8b27e595f34fe6d5831a65','child_lifecycle'),
     'prompt_timeout':('8a89ba8','prompt_timeout'),
+    'rng':('922d578','rng'),
+    'rng_state':('669c1d7','rng_state'),
 }
 
 
@@ -160,6 +162,19 @@ def main():
         if python[name] != row['preimage_sha256']:
             raise ValueError('Send donor chain differs from qualified timing output: '+name)
         python[name] = row['sha256']
+    for key, recipe in (('rng', 'rng_patches.py'), ('rng_state', 'rng_state_patches.py')):
+        donor = reports[key]
+        committed = subprocess.check_output(['git','show',donors[key]['commit']+':source_port/'+recipe],cwd=ROOT)
+        if hashlib.sha256(committed).hexdigest() != donor['inputs']['source_port/'+recipe]:
+            raise ValueError('Ranging recipe differs from qualified donor: '+recipe)
+        for name, row in donor['runtime_sources']['overlay']['manifest'].items():
+            outputs = python if name.startswith('spell/') else driver
+            if name in outputs:
+                if outputs[name] != row['preimage_sha256']:
+                    raise ValueError('Ranging donor differs from earlier qualified output: '+name)
+            elif donor['inputs'].get('driver_plugin/src/'+name) != row['preimage_sha256']:
+                raise ValueError('Ranging driver input differs from qualified donor: '+name)
+            outputs[name] = row['sha256']
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     console_commit = donors['console_input']['commit']

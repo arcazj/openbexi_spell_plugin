@@ -28,6 +28,8 @@ import limit_patches
 import notification_patches
 import prompt_timeout_patches
 import resource_patches
+import rng_patches
+import rng_state_patches
 import scheduler_patches
 import scdb_patches
 import send_verify_patches
@@ -55,6 +57,7 @@ RECIPE_NAMES = (
     'shutdown_pause_patches.py',
     'child_lifecycle_patches.py',
     'prompt_timeout_patches.py',
+    'rng_patches.py', 'rng_state_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -67,13 +70,14 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *prompt_timeout_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, notification_patches, value_units_patches,
-                  scdb_patches, timing_patches, send_verify_patches)
-DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches)
+                  scdb_patches, timing_patches, send_verify_patches, rng_patches)
+DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches)
+DRIVER_PREFIXES = ('openbexi_dss_proxy/', 'openbexi_spell_dss/')
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',
     *(name for recipe in PYTHON_RECIPES for name in recipe.PREIMAGES if name.startswith('spell/'))))))
 DRIVER_NAMES = tuple(sorted(set(name for recipe in DRIVER_RECIPES for name in recipe.PREIMAGES
-                               if name.startswith('openbexi_dss_proxy/'))))
+                               if name.startswith(DRIVER_PREFIXES))))
 
 
 def digest(content):
@@ -288,7 +292,7 @@ def apply_python_tree(site, archive, output):
 def apply_driver_tree(site, output):
     """Compose repository driver sources before wheel building, never after install.
 
-    These are DSS proxy sources, not original SPELL archive members. The manifest
+    These are DSS driver sources, not original SPELL archive members. The manifest
     uses a separate profile and records the complete source set supplied to the
     driver wheel, alongside the checked before/after chain for corrected units.
     """
@@ -299,7 +303,7 @@ def apply_driver_tree(site, output):
     for recipe in DRIVER_RECIPES:
         changes = {}
         for name in recipe.PREIMAGES:
-            if not name.startswith('openbexi_dss_proxy/'):
+            if not name.startswith(DRIVER_PREFIXES):
                 continue
             before = patched[name]
             after = recipe.apply(name, before)

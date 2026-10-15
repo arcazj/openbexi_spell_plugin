@@ -19,7 +19,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
     parser.add_argument('--case', action='append')
+    parser.add_argument('--catalog-only', action='store_true',
+                        help='Run the eight catalog controls, excluding legacy activity observations')
     args = parser.parse_args()
+    if args.catalog_only:
+        assert args.case is None, 'Select catalog-only or explicit cases'
+        args.case=[key for key in CASES if key.startswith(('baseband-names:','antenna-names:'))]
+    assert args.case is None or set(args.case)<=set(CASES), 'Unknown ranging case'
     cases = {k: v for k, v in CASES.items() if args.case is None or k in args.case}
     assert cases
     output = ROOT / '.qualification/v0.5/rng' / uuid.uuid4().hex
@@ -94,6 +100,7 @@ def main():
             for name in ('rng_provenance.py','rng.Dockerfile'):
                 assert runtime['overlay']['files'][name] in (inputs['conformance/'+name],normalized['conformance/'+name])
         report = dict(runtime_image=image, inputs=inputs, lf_normalized_inputs=normalized, checks=checks, observations=observations,
+                      selection='catalog' if args.catalog_only else ('explicit' if args.case else 'diagnostic-all'),
                       runtime_sources=runtime, controller_exit_code=run.returncode,
                       full_v05_accepted=False, v06_dependency_satisfied=False)
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8', newline='\n')

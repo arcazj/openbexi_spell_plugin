@@ -4,6 +4,7 @@ Only the Ground class is loaded from recipe output in this test process. The
 dispatcher, gRPC server, transport, journal, actual DSS engine and packet paths
 are the existing implementations. No repository or installed source is rewritten.
 """
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -21,7 +22,11 @@ import pytest
 
 
 def main():
-    output=ROOT/'.qualification/rng-state-driver'/uuid.uuid4().hex
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--legacy-and-migration',action='store_true',
+                        help='Run the legacy driver plus SQLite migration controls without replacing Ground')
+    args=parser.parse_args()
+    output=ROOT/'.qualification'/('rng-state-local' if args.legacy_and_migration else 'rng-state-driver')/uuid.uuid4().hex
     output.mkdir(parents=True)
     source_name='openbexi_spell_dss/ground.py'
     before=(ROOT/'driver_plugin/src'/source_name).read_bytes()
@@ -33,9 +38,13 @@ def main():
     hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in inputs}
     helper=runpy.run_path(str(ROOT/'tests/test_rng_state_patch.py'))
     original=ground.Ground
-    ground.Ground=helper['candidate']()
+    if not args.legacy_and_migration:
+        ground.Ground=helper['candidate']()
     try:
-        result=pytest.main(['-q',str(ROOT/'tests/test_original_driver.py'),
+        tests=[str(ROOT/'tests/test_original_driver.py')]
+        if args.legacy_and_migration:
+            tests.append(str(ROOT/'tests/test_rng_state_patch.py'))
+        result=pytest.main(['-q',*tests,
             '--basetemp',str(output/'workspace'),'--junitxml',str(output/'junit.xml')])
     finally:
         ground.Ground=original
@@ -43,7 +52,8 @@ def main():
     report=dict(passed=result==0,exit_code=int(result),
         inputs=hashes,
         ground_preimage=hashlib.sha256(before).hexdigest(),ground_patched=hashlib.sha256(patched).hexdigest(),
-        scope='Existing real binary driver regression suite with checked Ground class; no native SPELL qualification claim.')
+        scope=('Legacy driver and SQLite migration controls' if args.legacy_and_migration else
+               'Existing real binary driver regression suite with checked Ground class; no native SPELL qualification claim.'))
     (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(output=str(output),passed=report['passed'])))
     return int(result)

@@ -20,6 +20,10 @@ def main():
     parser.add_argument('--session', type=Path, action='append', required=True)
     parser.add_argument('--baseline-commit', required=True)
     parser.add_argument('--native-gate-dir', type=Path, required=True)
+    parser.add_argument('--rng-driver', type=Path, required=True)
+    parser.add_argument('--rng-legacy-and-migration', type=Path, required=True)
+    parser.add_argument('--rng-baseline', type=Path, required=True)
+    parser.add_argument('--rng-state-baseline', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     baseline = subprocess.check_output(['git', 'rev-parse', args.baseline_commit],
@@ -102,6 +106,9 @@ def main():
         '--output', ROOT / 'conformance/evidence/checkpoint_identity.json')
     run('prompt_timeout_report.py', raw['prompt-timeout'],
         '--native-pair', args.native_gate_dir.resolve().parents[1] / 'result.json')
+    run('rng_report.py', raw['rng-catalog'], '--baseline', args.rng_baseline)
+    run('rng_state_report.py', raw['rng-state'], '--baseline', args.rng_state_baseline,
+        '--driver', args.rng_driver, '--legacy-and-migration', args.rng_legacy_and_migration)
 
     sys.path.insert(0, str(ROOT / 'conformance'))
     from check import supported_check, validate

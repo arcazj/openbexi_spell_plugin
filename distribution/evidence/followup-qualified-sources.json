@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "944af98574aac71cc0302b0dffd563969f2fbb9fe32791961eb296970c4f5955",
+  "generator_sha256": "b6ea5f0105454497289683cbba7258c023a6ad75b0f45543c7e610d46041decb",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -112,6 +112,16 @@
       "commit": "8a89ba8d373e5896de2b521216129d276a7a4546",
       "path": "conformance/evidence/prompt_timeout.json",
       "sha256": "188afd23746609156e5b89de7b75fb4257b375eda39ed5113a13e01b90784b73"
+    },
+    "rng": {
+      "commit": "922d578ec14d4907b4cde2c0aaeee5a5ec5b6325",
+      "path": "conformance/evidence/rng.json",
+      "sha256": "1494c77ca494810234064c9414e664c8b8fc781d6e20fd75fad170a8c7ec5694"
+    },
+    "rng_state": {
+      "commit": "669c1d794f26492c32b2e2031f4bb6b07fa6f136",
+      "path": "conformance/evidence/rng_state.json",
+      "sha256": "e20d7eb2940ace9ce106a9a99d6baa95eaa1bd4a5538022e72df154bf4cd63d5"
     }
   },
   "native": {
@@ -207,6 +217,7 @@
     "spell/lang/helpers/exechelper.py": "fae4c58ab9222e54e08f7372dea0520e8a7f699939e565ed596c664a195d2d6b",
     "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
     "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+    "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
     "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
     "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
     "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
@@ -226,7 +237,9 @@
   },
   "driver": {
     "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
-    "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+    "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+    "openbexi_dss_proxy/ranging.py": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388",
+    "openbexi_spell_dss/ground.py": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
   },
   "host": {
     "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
