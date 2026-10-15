@@ -100,6 +100,8 @@ def main():
         '--errors', raw['identity-errors'], '--recovery', raw['identity-recovery'],
         '--integrated-gate-dir', args.native_gate_dir,
         '--output', ROOT / 'conformance/evidence/checkpoint_identity.json')
+    run('prompt_timeout_report.py', raw['prompt-timeout'],
+        '--native-pair', args.native_gate_dir.resolve().parents[1] / 'result.json')
 
     sys.path.insert(0, str(ROOT / 'conformance'))
     from check import supported_check, validate

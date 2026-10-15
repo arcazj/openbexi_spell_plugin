@@ -43,7 +43,7 @@ for name, spec in CASES.items():
         session.start()
         session.pump = drain
         session.request('CMD_RUN', send=True)
-        deadline = time.monotonic() + 5
+        deadline = time.monotonic() + spec.get('deadline', 5)
         while time.monotonic() < deadline:
             drain()
             status = session.request('REQ_EXEC_STATUS').get('ExecutorStatus')
@@ -68,7 +68,7 @@ for name, spec in CASES.items():
                 break
             time.sleep(.01)
         else:
-            raise TimeoutError('Native timed prompt did not return within five seconds')
+            raise TimeoutError('Native timed prompt did not return within its observation deadline')
         if spec.get('rejected'):
             assert (project / 'rejected.txt').read_text() == 'SyntaxException'
         if 'answer' in spec:

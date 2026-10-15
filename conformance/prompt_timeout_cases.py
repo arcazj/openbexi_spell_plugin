@@ -17,13 +17,13 @@ else:
 '''
 
 
-def timed(default, prefix=''):
+def timed(default, prefix='', timeout='0.25', minimum=0.25):
     return PREAMBLE + prefix + f'''began=time.monotonic()
 answer=Prompt('TIMED_DEFAULT', {OPTIONS}, Type=LIST,
-              Default='{default}', Timeout=0.25, HandleError=False)
+              Default='{default}', Timeout={timeout}, HandleError=False)
 elapsed=time.monotonic()-began
 assert answer == '{default}', repr(answer)
-assert elapsed >= 0.25, elapsed
+assert elapsed >= {minimum}, elapsed
 Path('result.json').write_text(json.dumps(dict(answer=answer,elapsed=elapsed)))
 '''
 
@@ -44,6 +44,10 @@ CASES = {
                         'rejected': True, 'no_prompt': True},
     'default:recovery': {'dimension': 'recovery', 'source': timed('A', REJECT),
                          'answer': 'A', 'rejected': True},
+    'minute:positive': {'dimension': 'positive',
+                         'source': timed('A', 'from spell.lib.adapter.utctime import MINUTE\n',
+                                         timeout='1*MINUTE', minimum=60),
+                         'answer': 'A', 'deadline': 65, 'minimum_elapsed': 60},
     'no-timeout:boundary': {'dimension': 'boundary', 'source': indefinite(''),
                             'answer': 'B', 'reply': '1', 'hold': 0.35},
     'no-default:boundary': {'dimension': 'boundary',

@@ -19,6 +19,7 @@ SUITES = [
     ('user-database', 'run_user_database.py', [], 20),
     ('dta', 'run_dta.py', [], 68),
     ('ui', 'run_ui.py', [], 62),
+    ('prompt-timeout', 'run_prompt_timeout.py', [], 10),
     ('dta-ipc', 'run_dta_edit.py', [], 64),
     ('time', 'run_native.py', [], 168),
     ('limit', 'limit_run.py', [], 79),
