@@ -30,6 +30,7 @@ DONORS = {
     'checkpoint_error':('9c674bd51115e016dd135d3ed76c1ebf8a4ed207','checkpoint_error'),
     'checkpoint_identity':('53afd40d46fa1e1c0e116de877a48f2f43ca9060','checkpoint_identity'),
     'shutdown_pause':('a97118ea78011205db886e8a9556220201809960','shutdown_pause_review'),
+    'child_lifecycle':('4543128e93d7c8a6ee8b27e595f34fe6d5831a65','child_lifecycle'),
 }
 
 
@@ -85,6 +86,25 @@ def main():
     committed = subprocess.check_output(['git','show',donors['shutdown_pause']['commit']+':'+recipe],cwd=ROOT)
     if hashlib.sha256(committed).hexdigest() != shutdown['inputs'][recipe]:
         raise ValueError('Shutdown recipe differs from qualified donor')
+    child = reports['child_lifecycle']['runtime_sources']['child_lifecycle_overlay']
+    recipe = 'source_port/child_lifecycle_patches.py'
+    committed = subprocess.check_output(['git','show',donors['child_lifecycle']['commit']+':'+recipe],cwd=ROOT)
+    if hashlib.sha256(committed).hexdigest() != child['recipes']['child_lifecycle_patches.py']:
+        raise ValueError('Child lifecycle recipe differs from qualified donor')
+    for name, hashes in child['sources'].items():
+        expected = {key.removesuffix('_sha256'):value for key,value in hashes.items()}
+        if name == composition.shutdown_pause_patches.SOURCE:
+            if any(native[name][key] != expected[key] for key in ('original','ported')):
+                raise ValueError('Child and shutdown donors have different source bases')
+            # Reviewed union of their disjoint blocks, not a runtime acceptance.
+            # Undoing forcePause reproduces the exact qualified child source.
+            if expected['patched'] != '4caf451be4eb5efd28ac02c7d745ab0fdbddd7a484d904fc6a887b7dad3f298e':
+                raise ValueError('Unexpected child context source')
+            native[name]['patched'] = 'e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598'
+        elif name in native:
+            raise ValueError('Unexpected overlapping child source: '+name)
+        else:
+            native[name] = expected
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]
