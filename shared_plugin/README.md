@@ -1,5 +1,9 @@
 # Native shared service provider
 
+Package 0.4.0.post1 permits installation with either the original 0.3.0 host or
+the 0.3.1.dev1 console-fix candidate. The shared runtime binding remains 0.4.0;
+this packaging correction changes no provider code or persisted binding.
+
 Optional GPL plugin for the neutral IDE's durable shared service. Uses the
 original native host image through DAP; requires `openbexi-spell-host==0.3.0`
 and a local Linux Docker engine. Version 0.4.0 adds the original DSS driver and
