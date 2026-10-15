@@ -1,0 +1,36 @@
+{
+  "passed": false,
+  "scope": "Native value trace confirms legacy octal values fall through to string or relative TIME instead of integers",
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "raw": {
+    "path": "C:\\obdatabase_scope\\.qualification\\database-values\\29c0ca7bc2fe4294bc59743c3e89aa82\\result.json",
+    "sha256": "1c1e07962460d8e6ed850a8d645ba9a57a4c8b8b37b36715e2ab63ec9393ff25",
+    "workspace_sha256": "4100d0889ac3a42b2e89cac3ae0d09ce2668953f21049f174aaa14d8c9825000"
+  },
+  "observations": {
+    "035": {
+      "type": "str",
+      "value": "035"
+    },
+    "07": {
+      "type": "str",
+      "value": "07"
+    },
+    "-035": {
+      "type": "TIME",
+      "seconds": -35
+    },
+    "+035": {
+      "type": "TIME",
+      "seconds": 35
+    }
+  },
+  "checks": 6,
+  "failed": [
+    "octal-values",
+    "octal-boundaries",
+    "import-recovery"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
