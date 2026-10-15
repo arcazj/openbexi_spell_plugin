@@ -18,12 +18,12 @@ whole-container pause and recovery without replay. See
 [the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
 simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 
-The current [conformance checkpoint](docs/V05_CONFORMANCE_QUALIFICATION.json)
-qualifies 470 of 763 requirements; 293 remain open. Its integrated native wheel
-passes two independent offline rebuilds, and the same diagnostic runtime image
-passes all ten native host checks. See [distribution progress](docs/V06_PROGRESS.md)
-for exact artifacts, retained timeout/recorder incidents and remaining release gates.
-Neither v0.5 nor v0.6 is accepted.
+The committed [conformance checkpoint](docs/FOLLOWUP_CONFORMANCE_QUALIFICATION.json)
+qualifies 473 of 763 requirements; 290 remain open. The newer child runtime has
+reproducible builds and installed host/driver evidence; full language regression
+qualification is underway. See [distribution progress](docs/V06_PROGRESS.md) and
+the [plan through stable v1.0](docs/STABLE_RELEASE_PLAN.md). Neither v0.5 nor v0.6
+is accepted.
 
 ## Native desktop and CLI
 
