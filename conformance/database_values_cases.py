@@ -48,3 +48,23 @@ assert value == 255 and type(value) is int
 assert ExportValue(value,kind) == '0xFF'
 assert GDB['HEX'] == 255
 """, 'HEX 0xFF\n')
+
+add('time-and-float', """
+from spell.lib.adapter.utctime import TIME
+assert GDB['RELATIVE'].value() == TIME('+0 00:00:35').value()
+assert GDB['ABSOLUTE'].value() == TIME('2007/01/23 10:30').value()
+assert GDB['FLOAT'] == 0.35 and type(GDB['FLOAT']) is float
+""", 'RELATIVE +0 00:00:35\nABSOLUTE 2007/01/23 10:30\nFLOAT 0.35\n')
+add('octal-roundtrip', """
+from spell.utils.vimport import ImportValue, ExportValue
+from spell.lang.constants import OCT
+for text,expected in [('035',29),('-035',-29),('+035',29),('00',0)]:
+    value,kind = ImportValue(text)
+    assert type(value) is int and value == expected and kind == OCT
+    restored,_ = ImportValue(ExportValue(value,kind))
+    assert type(restored) is int and restored == expected
+""")
+
+# The affected importer must retain every existing native SCDB/GDB file control.
+from database_import_cases import CASES as EXISTING
+CASES.update({'regression-' + name: spec for name, spec in EXISTING.items()})
