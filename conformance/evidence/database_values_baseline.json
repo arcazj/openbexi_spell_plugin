@@ -1,0 +1,25 @@
+{
+  "passed": false,
+  "scope": "Original six native database-value diagnostics; three octal assertions fail before any value-import correction",
+  "source_commit": "02496818c51743e6459b98e1f923e8a4b09f7915",
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "raw": {
+    "path": "C:\\obdatabase_scope\\.qualification\\database-values\\5040fa6c0bc242b2a1f0770eb56a0abe\\result.json",
+    "sha256": "15a2b397498f51bb05efdf48fb2c1044c243bf27dc979b359120babdf8f71acb",
+    "workspace_sha256": "52d64531519145b5358993f4695272446bfea0c79fa136489a0feb1c2e55e981"
+  },
+  "checks": 6,
+  "failed": {
+    "octal-values": "AssertionError: Native startup/execution failed: 1",
+    "octal-boundaries": "AssertionError: Native startup/execution failed: 1",
+    "import-recovery": "AssertionError: Native startup/execution failed: 1"
+  },
+  "passed_cases": [
+    "non-octal-text",
+    "binary-type",
+    "hex-type"
+  ],
+  "installed_vimport_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
