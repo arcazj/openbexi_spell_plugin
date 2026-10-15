@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:d341d01f3dc06aa91dd684f35281c171e9255930df4b28833a973998b4fb4b96",
+  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
   "inputs": {
     "conformance/user_database_cases.py": "7710882e5f0fd19773bafd57fe3cde7417117feef11785a0330831b042b8a318",
     "conformance/user_database_controller.py": "2c49e7fd19d3b6dc0b8ebca11d3bcaee5b12005d37e5df72274c4fb0a6227b66",
@@ -28,12 +28,15 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
     "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
     "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
     "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
@@ -41,7 +44,7 @@
     "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
-    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
     "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
@@ -99,12 +102,15 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
     "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
     "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
     "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
@@ -112,7 +118,7 @@
     "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
-    "driver_plugin/pyproject.toml": "595913e0b18246ceef9d07d4d96aae865f3e58b6fbabf2121d0658e73b4902ae",
+    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
     "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
@@ -371,8 +377,8 @@
               "ProcId": "main#1",
               "Scope": "2",
               "Sequence": "17",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'",
-              "Time": "1792028922748306"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'",
+              "Time": "1792041082614476"
             },
             "answer": "0"
           }
@@ -412,7 +418,7 @@
                 "ExecutorStatus": "RUNNING",
                 "ProcId": "main#1",
                 "Sequence": "5",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:21"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -432,7 +438,7 @@
                 "Sequence": "2",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -452,7 +458,7 @@
                 "Sequence": "3",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -472,27 +478,7 @@
                 "Sequence": "4",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
-              },
-              "id": "MSG_NOTIFICATION",
-              "receiver": "GUI",
-              "sender": "main#1",
-              "type": 2
-            }
-          },
-          {
-            "event": "message",
-            "message": {
-              "fields": {
-                "CodeName": "<module>",
-                "Csp": "main:5/0",
-                "DataType": "CURRENT_LINE",
-                "ExecutorMode": "PROCEDURE",
-                "ProcId": "main#1",
-                "Sequence": "5",
-                "StageId": "",
-                "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -512,7 +498,27 @@
                 "Sequence": "6",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
+              },
+              "id": "MSG_NOTIFICATION",
+              "receiver": "GUI",
+              "sender": "main#1",
+              "type": 2
+            }
+          },
+          {
+            "event": "message",
+            "message": {
+              "fields": {
+                "CodeName": "<module>",
+                "Csp": "main:5/0",
+                "DataType": "CURRENT_LINE",
+                "ExecutorMode": "PROCEDURE",
+                "ProcId": "main#1",
+                "Sequence": "5",
+                "StageId": "",
+                "StageTl": "(none)",
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -532,7 +538,7 @@
                 "Sequence": "7",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -552,7 +558,7 @@
                 "Sequence": "8",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -576,7 +582,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "13",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -600,7 +606,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "14",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -624,7 +630,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "15",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -648,7 +654,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "16",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -667,8 +673,8 @@
                 "ProcId": "main#1",
                 "Scope": "16",
                 "Sequence": "18",
-                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
-                "Time": "1792028922748370"
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+                "Time": "1792041082614544"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -710,7 +716,7 @@
                 "ExecutorStatus": "PROMPT",
                 "ProcId": "main#1",
                 "Sequence": "19",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -731,8 +737,8 @@
                 "ProcId": "main#1",
                 "Scope": "2",
                 "Sequence": "17",
-                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'",
-                "Time": "1792028922748306"
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'",
+                "Time": "1792041082614476"
               },
               "id": "MSG_PROMPT",
               "receiver": "GUI",
@@ -774,7 +780,7 @@
                 "ExecutorStatus": "RUNNING",
                 "ProcId": "main#1",
                 "Sequence": "20",
-                "Time": "2026-10-15 01:48:42"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -794,7 +800,7 @@
                 "Scope": "16",
                 "Sequence": "21",
                 "Text": "Answer: 'A'",
-                "Time": "1792028923100183"
+                "Time": "1792041082919097"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -814,7 +820,7 @@
                 "Scope": "2",
                 "Sequence": "22",
                 "Text": "Execution aborted by user",
-                "Time": "1792028923101612"
+                "Time": "1792041082920156"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -856,7 +862,7 @@
                 "ExecutorStatus": "ABORTED",
                 "ProcId": "main#1",
                 "Sequence": "23",
-                "Time": "2026-10-15 01:48:43"
+                "Time": "2026-10-15 05:11:22"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -894,8 +900,8 @@
               "ProcId": "main#1",
               "Scope": "2",
               "Sequence": "17",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'",
-              "Time": "1792028912208485"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'",
+              "Time": "1792041071954419"
             },
             "answer": "1"
           },
@@ -910,7 +916,7 @@
               "Scope": "1",
               "Sequence": "23",
               "Text": "Enter new database name: ",
-              "Time": "1792028912685726"
+              "Time": "1792041072426249"
             },
             "answer": "MyData/renamed"
           }
@@ -950,7 +956,7 @@
                 "ExecutorStatus": "RUNNING",
                 "ProcId": "main#1",
                 "Sequence": "5",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -970,7 +976,7 @@
                 "Sequence": "2",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -990,7 +996,7 @@
                 "Sequence": "3",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1010,7 +1016,7 @@
                 "Sequence": "4",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1030,7 +1036,7 @@
                 "Sequence": "5",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1050,7 +1056,7 @@
                 "Sequence": "6",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1070,7 +1076,7 @@
                 "Sequence": "7",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1090,7 +1096,7 @@
                 "Sequence": "8",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1114,7 +1120,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "13",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1138,7 +1144,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "14",
-                "Time": "2026-10-15 01:48:31"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1162,7 +1168,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "15",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1186,7 +1192,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "16",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1205,8 +1211,8 @@
                 "ProcId": "main#1",
                 "Scope": "16",
                 "Sequence": "18",
-                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
-                "Time": "1792028912208549"
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+                "Time": "1792041071954493"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1248,7 +1254,7 @@
                 "ExecutorStatus": "PROMPT",
                 "ProcId": "main#1",
                 "Sequence": "19",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:11"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1269,8 +1275,8 @@
                 "ProcId": "main#1",
                 "Scope": "2",
                 "Sequence": "17",
-                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'",
-                "Time": "1792028912208485"
+                "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'",
+                "Time": "1792041071954419"
               },
               "id": "MSG_PROMPT",
               "receiver": "GUI",
@@ -1312,7 +1318,7 @@
                 "ExecutorStatus": "RUNNING",
                 "ProcId": "main#1",
                 "Sequence": "20",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1332,7 +1338,7 @@
                 "Scope": "16",
                 "Sequence": "21",
                 "Text": "Answer: 'R'",
-                "Time": "1792028912561022"
+                "Time": "1792041072301581"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1356,7 +1362,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "22",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1376,7 +1382,7 @@
                 "Scope": "16",
                 "Sequence": "24",
                 "Text": "Enter new database name: \n",
-                "Time": "1792028912685773"
+                "Time": "1792041072426294"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1418,7 +1424,7 @@
                 "ExecutorStatus": "PROMPT",
                 "ProcId": "main#1",
                 "Sequence": "25",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1439,7 +1445,7 @@
                 "Scope": "1",
                 "Sequence": "23",
                 "Text": "Enter new database name: ",
-                "Time": "1792028912685726"
+                "Time": "1792041072426249"
               },
               "id": "MSG_PROMPT",
               "receiver": "GUI",
@@ -1481,7 +1487,7 @@
                 "ExecutorStatus": "RUNNING",
                 "ProcId": "main#1",
                 "Sequence": "26",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1501,7 +1507,7 @@
                 "Scope": "16",
                 "Sequence": "27",
                 "Text": "Answer: 'MyData/renamed'",
-                "Time": "1792028912991384"
+                "Time": "1792041072730956"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1525,7 +1531,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "28",
-                "Time": "2026-10-15 01:48:32"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1549,7 +1555,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "29",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1573,7 +1579,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "30",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:12"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1593,7 +1599,7 @@
                 "Sequence": "9",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1613,7 +1619,7 @@
                 "Sequence": "10",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1633,7 +1639,7 @@
                 "Sequence": "11",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1657,7 +1663,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "34",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1681,7 +1687,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "35",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1705,7 +1711,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "36",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1725,7 +1731,7 @@
                 "Scope": "2",
                 "Sequence": "37",
                 "Text": "Database 'renamed.IMP' saved",
-                "Time": "1792028913535164"
+                "Time": "1792041073287091"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1745,7 +1751,7 @@
                 "Sequence": "12",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1769,7 +1775,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "39",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1793,7 +1799,7 @@
                 "ProcId": "main#1",
                 "SCount": "0",
                 "Sequence": "40",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1817,7 +1823,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "41",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1837,7 +1843,7 @@
                 "Scope": "2",
                 "Sequence": "42",
                 "Text": "Loading database 'MyData/renamed'",
-                "Time": "1792028913935550"
+                "Time": "1792041073687695"
               },
               "id": "MSG_WRITE",
               "receiver": "GUI",
@@ -1861,7 +1867,7 @@
                 "ProcId": "main#1",
                 "SCount": "1",
                 "Sequence": "43",
-                "Time": "2026-10-15 01:48:33"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1881,7 +1887,7 @@
                 "Sequence": "13",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:34"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1901,7 +1907,7 @@
                 "Sequence": "14",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:34"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1921,7 +1927,7 @@
                 "Sequence": "15",
                 "StageId": "",
                 "StageTl": "(none)",
-                "Time": "2026-10-15 01:48:34"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1963,7 +1969,7 @@
                 "ExecutorStatus": "FINISHED",
                 "ProcId": "main#1",
                 "Sequence": "47",
-                "Time": "2026-10-15 01:48:34"
+                "Time": "2026-10-15 05:11:13"
               },
               "id": "MSG_NOTIFICATION",
               "receiver": "GUI",
@@ -1996,8 +2002,8 @@
             "ProcId": "main#1",
             "Scope": "2",
             "Sequence": "17",
-            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'",
-            "Time": "1792028912208485"
+            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'",
+            "Time": "1792041071954419"
           },
           "answer": "1"
         },
@@ -2012,7 +2018,7 @@
             "Scope": "1",
             "Sequence": "23",
             "Text": "Enter new database name: ",
-            "Time": "1792028912685726"
+            "Time": "1792041072426249"
           },
           "answer": "MyData/renamed"
         }
@@ -2052,7 +2058,7 @@
               "ExecutorStatus": "RUNNING",
               "ProcId": "main#1",
               "Sequence": "5",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2072,7 +2078,7 @@
               "Sequence": "2",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2092,7 +2098,7 @@
               "Sequence": "3",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2112,7 +2118,7 @@
               "Sequence": "4",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2132,7 +2138,7 @@
               "Sequence": "5",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2152,7 +2158,7 @@
               "Sequence": "6",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2172,7 +2178,7 @@
               "Sequence": "7",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2192,7 +2198,7 @@
               "Sequence": "8",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2216,7 +2222,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "13",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2240,7 +2246,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "14",
-              "Time": "2026-10-15 01:48:31"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2264,7 +2270,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "15",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2288,7 +2294,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "16",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2307,8 +2313,8 @@
               "ProcId": "main#1",
               "Scope": "16",
               "Sequence": "18",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
-              "Time": "1792028912208549"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+              "Time": "1792041071954493"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2350,7 +2356,7 @@
               "ExecutorStatus": "PROMPT",
               "ProcId": "main#1",
               "Sequence": "19",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:11"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2371,8 +2377,8 @@
               "ProcId": "main#1",
               "Scope": "2",
               "Sequence": "17",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xg4_00da/session/data/User/MyData/existing.IMP'",
-              "Time": "1792028912208485"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-x_060keu/session/data/User/MyData/existing.IMP'",
+              "Time": "1792041071954419"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -2414,7 +2420,7 @@
               "ExecutorStatus": "RUNNING",
               "ProcId": "main#1",
               "Sequence": "20",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2434,7 +2440,7 @@
               "Scope": "16",
               "Sequence": "21",
               "Text": "Answer: 'R'",
-              "Time": "1792028912561022"
+              "Time": "1792041072301581"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2458,7 +2464,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "22",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2478,7 +2484,7 @@
               "Scope": "16",
               "Sequence": "24",
               "Text": "Enter new database name: \n",
-              "Time": "1792028912685773"
+              "Time": "1792041072426294"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2520,7 +2526,7 @@
               "ExecutorStatus": "PROMPT",
               "ProcId": "main#1",
               "Sequence": "25",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2541,7 +2547,7 @@
               "Scope": "1",
               "Sequence": "23",
               "Text": "Enter new database name: ",
-              "Time": "1792028912685726"
+              "Time": "1792041072426249"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -2583,7 +2589,7 @@
               "ExecutorStatus": "RUNNING",
               "ProcId": "main#1",
               "Sequence": "26",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2603,7 +2609,7 @@
               "Scope": "16",
               "Sequence": "27",
               "Text": "Answer: 'MyData/renamed'",
-              "Time": "1792028912991384"
+              "Time": "1792041072730956"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2627,7 +2633,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "28",
-              "Time": "2026-10-15 01:48:32"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2651,7 +2657,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "29",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2675,7 +2681,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "30",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:12"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2695,7 +2701,7 @@
               "Sequence": "9",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2715,7 +2721,7 @@
               "Sequence": "10",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2735,7 +2741,7 @@
               "Sequence": "11",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2759,7 +2765,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "34",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2783,7 +2789,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "35",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2807,7 +2813,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "36",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2827,7 +2833,7 @@
               "Scope": "2",
               "Sequence": "37",
               "Text": "Database 'renamed.IMP' saved",
-              "Time": "1792028913535164"
+              "Time": "1792041073287091"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2847,7 +2853,7 @@
               "Sequence": "12",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2871,7 +2877,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "39",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2895,7 +2901,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "40",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2919,7 +2925,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "41",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2939,7 +2945,7 @@
               "Scope": "2",
               "Sequence": "42",
               "Text": "Loading database 'MyData/renamed'",
-              "Time": "1792028913935550"
+              "Time": "1792041073687695"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -2963,7 +2969,7 @@
               "ProcId": "main#1",
               "SCount": "1",
               "Sequence": "43",
-              "Time": "2026-10-15 01:48:33"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -2983,7 +2989,7 @@
               "Sequence": "13",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:34"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3003,7 +3009,7 @@
               "Sequence": "14",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:34"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3023,7 +3029,7 @@
               "Sequence": "15",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:34"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3065,7 +3071,7 @@
               "ExecutorStatus": "FINISHED",
               "ProcId": "main#1",
               "Sequence": "47",
-              "Time": "2026-10-15 01:48:34"
+              "Time": "2026-10-15 05:11:13"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3095,8 +3101,8 @@
             "ProcId": "main#1",
             "Scope": "2",
             "Sequence": "17",
-            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'",
-            "Time": "1792028922748306"
+            "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'",
+            "Time": "1792041082614476"
           },
           "answer": "0"
         }
@@ -3136,7 +3142,7 @@
               "ExecutorStatus": "RUNNING",
               "ProcId": "main#1",
               "Sequence": "5",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:21"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3156,7 +3162,7 @@
               "Sequence": "2",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3176,7 +3182,7 @@
               "Sequence": "3",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3196,27 +3202,7 @@
               "Sequence": "4",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
-            },
-            "id": "MSG_NOTIFICATION",
-            "receiver": "GUI",
-            "sender": "main#1",
-            "type": 2
-          }
-        },
-        {
-          "event": "message",
-          "message": {
-            "fields": {
-              "CodeName": "<module>",
-              "Csp": "main:5/0",
-              "DataType": "CURRENT_LINE",
-              "ExecutorMode": "PROCEDURE",
-              "ProcId": "main#1",
-              "Sequence": "5",
-              "StageId": "",
-              "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3236,7 +3222,27 @@
               "Sequence": "6",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
+            },
+            "id": "MSG_NOTIFICATION",
+            "receiver": "GUI",
+            "sender": "main#1",
+            "type": 2
+          }
+        },
+        {
+          "event": "message",
+          "message": {
+            "fields": {
+              "CodeName": "<module>",
+              "Csp": "main:5/0",
+              "DataType": "CURRENT_LINE",
+              "ExecutorMode": "PROCEDURE",
+              "ProcId": "main#1",
+              "Sequence": "5",
+              "StageId": "",
+              "StageTl": "(none)",
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3256,7 +3262,7 @@
               "Sequence": "7",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3276,7 +3282,7 @@
               "Sequence": "8",
               "StageId": "",
               "StageTl": "(none)",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3300,7 +3306,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "13",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3324,7 +3330,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "14",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3348,7 +3354,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "15",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3372,7 +3378,7 @@
               "ProcId": "main#1",
               "SCount": "0",
               "Sequence": "16",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3391,8 +3397,8 @@
               "ProcId": "main#1",
               "Scope": "16",
               "Sequence": "18",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
-              "Time": "1792028922748370"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'\nAvailable options:\n   - A:Abort this procedure\n   - R:Try to create the dictionary 'MyData/existing' again\n",
+              "Time": "1792041082614544"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -3434,7 +3440,7 @@
               "ExecutorStatus": "PROMPT",
               "ProcId": "main#1",
               "Sequence": "19",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3455,8 +3461,8 @@
               "ProcId": "main#1",
               "Scope": "2",
               "Sequence": "17",
-              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-y4n_5rvk/session/data/User/MyData/existing.IMP'",
-              "Time": "1792028922748306"
+              "Text": "Cannot create database, reason: [Errno 17] File exists: '/tmp/spell-host-xbchckc0/session/data/User/MyData/existing.IMP'",
+              "Time": "1792041082614476"
             },
             "id": "MSG_PROMPT",
             "receiver": "GUI",
@@ -3498,7 +3504,7 @@
               "ExecutorStatus": "RUNNING",
               "ProcId": "main#1",
               "Sequence": "20",
-              "Time": "2026-10-15 01:48:42"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3518,7 +3524,7 @@
               "Scope": "16",
               "Sequence": "21",
               "Text": "Answer: 'A'",
-              "Time": "1792028923100183"
+              "Time": "1792041082919097"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -3538,7 +3544,7 @@
               "Scope": "2",
               "Sequence": "22",
               "Text": "Execution aborted by user",
-              "Time": "1792028923101612"
+              "Time": "1792041082920156"
             },
             "id": "MSG_WRITE",
             "receiver": "GUI",
@@ -3580,7 +3586,7 @@
               "ExecutorStatus": "ABORTED",
               "ProcId": "main#1",
               "Sequence": "23",
-              "Time": "2026-10-15 01:48:43"
+              "Time": "2026-10-15 05:11:22"
             },
             "id": "MSG_NOTIFICATION",
             "receiver": "GUI",
@@ -3601,10 +3607,10 @@
       "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
       "spell/lang/helpers/filehelper.py": "e5a8e1bdced8d2d87e3f4a437fea9a0fd502c1a4b68dee750ba27e8e5744b98b",
       "spell_native/bin/SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "spell_native/bin/SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+      "spell_native/bin/SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
       "spell_native/bin/SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-      "spell_native/bin/SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
-      "spell_native/bin/libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7",
+      "spell_native/bin/SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
+      "spell_native/bin/libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7",
       "spell_native/bin/SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
       "/opt/host/native.py": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
       "/bridge/spell-host-ipc": "4ab8c8aeb824db1a8390a235108cc572c64b50fef71fb70c9630ce3b74041298"
@@ -3612,7 +3618,7 @@
     "manifest": {},
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "ab0918206a3b1295cc922b56b7d1a0d063336bc5f3ff5e411c498e750b099108",
+      "manifest_sha256": "11e98c45431b73124710139fb1036b743e282cdef58de512b47fb973bcaa38d1",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -3621,9 +3627,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "40752d65427497ba09d322d6dad89fe9252ad0b21540b5a57012e6a9a58831a2"
+              "integrated_identity": "9c8927aca41c08d75450d8467dba489050b8352260b34194628fecd3eb552013"
             },
-            "manifest_sha256": "8cde44b2ed8efab4f370e2a2232ab342c07c465f12f92cf0b314edd4f2717d5f",
+            "manifest_sha256": "5f87675cc2338cfd808628875702b9ba53e107219fe0793badb94032aa4ac5f2",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -3678,8 +3684,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -3701,6 +3707,10 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "prompt_control_patches.py": {
+                "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+                "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
                 "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
@@ -3708,6 +3718,14 @@
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
                 "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "rng_patches.py": {
+                "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+                "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+              },
+              "rng_state_patches.py": {
+                "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+                "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
               },
               "scdb_patches.py": {
                 "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
@@ -3746,11 +3764,11 @@
             "sources": {
               "include/SPELL_CIFS/SPELLserverCif.H": {
                 "original_sha256": "ad3ce9638c238300604e0408cacfa387a561cf0c9c662583b6bcccee5fffdeba",
-                "patched_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
+                "patched_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
+                "patched_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -3770,7 +3788,7 @@
               },
               "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                 "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-                "patched_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
+                "patched_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
                 "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -3823,6 +3841,16 @@
                 "patched_sha256": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b",
                 "ported_sha256": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179"
               },
+              "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+                "original_sha256": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
+                "patched_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+                "ported_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+              },
+              "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+                "original_sha256": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
+                "patched_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+                "ported_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+              },
               "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                 "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
                 "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
@@ -3841,6 +3869,15 @@
                   "include/SPELL_CIFS/SPELLserverCif.H": {
                     "after_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4",
                     "before_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "include/SPELL_CIFS/SPELLserverCif.H": {
+                    "after_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
+                    "before_sha256": "6bd06b476bab0f7007315bd5aef68745e690ec9e28cd6d8c432d43d144a2c1f4"
                   }
                 }
               },
@@ -3877,6 +3914,15 @@
                   "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                     "after_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa",
                     "before_sha256": "4e8c8eb53f20678451d412499e174a578a24b94be1701c5c5787136b2dbb1bf2"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                    "after_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
+                    "before_sha256": "af2c86036aee031acc63802d778d5f058419b7fbc3a75e6006cfa5faea132aaa"
                   }
                 }
               },
@@ -3980,6 +4026,24 @@
                 }
               },
               {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcClientInterface.C": {
+                    "after_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+                    "before_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+                  }
+                }
+              },
+              {
+                "recipe": "prompt_control_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
+                    "after_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+                    "before_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+                  }
+                }
+              },
+              {
                 "recipe": "dta_time_patches.py",
                 "sources": {
                   "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
@@ -4019,7 +4083,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "7ceebb22fe280b2a099464d4473f757b861d12c5ae68cf3ff0c835c33f35a871",
+                    "after_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -4028,7 +4092,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "7aa7952f773069374acdde437aee400512a76a14c8a160b70fd6651561056e96",
+            "manifest_sha256": "1cc2e69c695e720a57091b4d320469bc8be4c18e9a8f125b0fa38a5685b26372",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -4083,8 +4147,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-                "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -4106,6 +4170,10 @@
                 "lf_sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
                 "sha256": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27"
               },
+              "prompt_control_patches.py": {
+                "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+                "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
                 "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
@@ -4113,6 +4181,14 @@
               "resource_patches.py": {
                 "lf_sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
                 "sha256": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8"
+              },
+              "rng_patches.py": {
+                "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+                "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+              },
+              "rng_state_patches.py": {
+                "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+                "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
               },
               "scdb_patches.py": {
                 "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
@@ -4173,6 +4249,11 @@
                 "original_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
                 "patched_sha256": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
                 "ported_sha256": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511"
+              },
+              "spell/lang/helpers/rnghelper.py": {
+                "original_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+                "patched_sha256": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
+                "ported_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61"
               },
               "spell/lang/helpers/rschelper.py": {
                 "original_sha256": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
@@ -4432,6 +4513,15 @@
                     "before_sha256": "c40677470312d45aa2d28de92ab05aaa116e1d1d6644038dc94957bcbe6c8ec8"
                   }
                 }
+              },
+              {
+                "recipe": "rng_patches.py",
+                "sources": {
+                  "spell/lang/helpers/rnghelper.py": {
+                    "after_sha256": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
+                    "before_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61"
+                  }
+                }
               }
             ]
           }
@@ -4485,7 +4575,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
+          "integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -4572,6 +4662,7 @@
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+          "prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
           "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
           "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
           "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
@@ -4584,6 +4675,8 @@
           "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
           "record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
           "resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+          "rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+          "rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
           "runtime.lock": "3ecb59d2615e082fb0c71bed2b88be406c87737af625d6c847039ebff9211a1b",
           "scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
           "scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
@@ -4601,14 +4694,14 @@
           "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
+          "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-          "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+          "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
+          "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
         },
-        "native_gate_policy_sha256": "48ef37db7d055afe824c1baed812a9ea738bcbf2695f1a6763b773a6776861d3",
+        "native_gate_policy_sha256": "b9cf2d9a0d4c0b4c5046ca616877eba3841939007e5ec4fd0d987ee982e35bb2",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -4633,7 +4726,7 @@
           "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
           "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
           "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
-          "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+          "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
           "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
           "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
           "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
@@ -4719,12 +4812,12 @@
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "6924978c1a2ec7f24d6ab5ed16ca924986409ccce42b0ddd754b5d236632b8ed",
+        "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-        "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+        "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "2e10b5c716155dda11a7d64ec313b829f4d1f0c695fc656c1be788567706dcb7"
+        "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -4747,7 +4840,7 @@
         "spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
         "spell/lang/helpers/memhelper.py": "514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5",
         "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
-        "spell/lang/helpers/rnghelper.py": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61",
+        "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
         "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
         "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
         "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
@@ -4831,14 +4924,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "49cef02a0a1fcc87b0e49098d2c9031006a4dfc7204316e5bfbd03f6b5c7b1ae",
+        "manifest_sha256": "2cb303ffcbacfe6c0048d7d078f647c5aebe25a99e8391cf256b68ea2f45b021",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442",
-              "lf_sha256": "e413bc0f8ccfbc5c119f3ec799d8f34a03cbc1429dee73b30e59da8b8ab03442"
+              "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+              "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -4951,9 +5044,25 @@
             "prompt_timeout_patches.py": {
               "sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
               "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077"
+            },
+            "prompt_control_patches.py": {
+              "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+              "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+            },
+            "rng_patches.py": {
+              "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+              "lf_sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6"
+            },
+            "rng_state_patches.py": {
+              "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+              "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
             }
           },
           "sources": {
+            "openbexi_dss_proxy/ranging.py": {
+              "original_sha256": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+              "patched_sha256": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388"
+            },
             "openbexi_dss_proxy/tc.py": {
               "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
               "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
@@ -4961,6 +5070,10 @@
             "openbexi_dss_proxy/tm.py": {
               "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
               "patched_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
+            },
+            "openbexi_spell_dss/ground.py": {
+              "original_sha256": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+              "patched_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
             }
           },
           "stages": [
@@ -4990,6 +5103,24 @@
                   "after_sha256": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203"
                 }
               }
+            },
+            {
+              "recipe": "rng_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/ranging.py": {
+                  "before_sha256": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+                  "after_sha256": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388"
+                }
+              }
+            },
+            {
+              "recipe": "rng_state_patches.py",
+              "sources": {
+                "openbexi_spell_dss/ground.py": {
+                  "before_sha256": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+                  "after_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
+                }
+              }
             }
           ],
           "python_sources": {
@@ -5003,7 +5134,7 @@
             "openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
             "openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
             "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
-            "openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+            "openbexi_dss_proxy/ranging.py": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388",
             "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
             "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
             "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
@@ -5011,7 +5142,7 @@
             "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
             "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
             "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
-            "openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+            "openbexi_spell_dss/ground.py": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07",
             "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
             "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
             "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
@@ -5022,7 +5153,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 70
+        "record_files_verified": 77
       }
     }
   },
@@ -5074,9 +5205,9 @@
     }
   },
   "raw_report": {
-    "path": "C:\\obprompt\\.qualification\\v0.5\\user-database\\8588ab6c9c5443bc98fbbeae397a2554\\result.json",
-    "sha256": "4e7bfc7eb7c2494f66c7306c7727645da16082231a4d3aefd166c5294975bb82",
-    "native_logs_archive_sha256": "6218134c80414b3665921b5cf6a68046612300d211b1d53e13768b3887824bf0"
+    "path": "C:\\obprompt_control\\.qualification\\v0.5\\user-database\\65b0ec74d16e46a8af59b3c587feb359\\result.json",
+    "sha256": "23a8c76bddacd3070f9746ffeaa52409a7ec59c57845011fcb50d8c0932b431f",
+    "native_logs_archive_sha256": "e6beb3957bb8cf79ff9480e1d8b2f9eb2577b2a7a5c102efe8ccf8618e8a6c0b"
   },
   "baseline": {
     "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\user-database\\f9fa7ae7a78e4dacbfefd590b4de758e\\result.json",
@@ -5102,13 +5233,13 @@
   },
   "regressions": {
     "FILES": {
-      "path": "C:\\obprompt\\.qualification\\v0.5\\files\\05bea6448f234fc197b0958c49fa6eb5\\result.json",
-      "sha256": "fc5b4e14a46119af305ddfb63cdb1eba257977e86efd4cdce4d894287c33ca6a",
+      "path": "C:\\obprompt_control\\.qualification\\v0.5\\files\\e6260a29c41b4a26ba030618c213365d\\result.json",
+      "sha256": "6656a07cece44e29c5e119d5bdaf554d3bb9da0a4bbf6462e539716ecc91eb18",
       "checks": 36
     },
     "DATA": {
-      "path": "C:\\obprompt\\.qualification\\v0.5\\data\\9edf73dcc68042dbb7a24c3b0ed06232\\result.json",
-      "sha256": "63aceb84c1dce45736576fc91b14808fc741c6dfe7423d9f3322c35e7e71e4e4",
+      "path": "C:\\obprompt_control\\.qualification\\v0.5\\data\\984356ca5f244307a89ce0de584d929c\\result.json",
+      "sha256": "d479a7e927dec0fc818afbb00bbc740efff0de2397c3bf9b2701221bf2fe6bf8",
       "checks": 24
     }
   },
