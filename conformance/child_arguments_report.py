@@ -50,13 +50,23 @@ def qualify(raw_path):
         assert {row['dimension'] for row in raw['checks'].values() if contract in row['contracts']}=={
             'positive','boundary','failure','recovery'}
     report=deepcopy(raw)
+    correction_path=ROOT/'conformance/evidence/child_arguments_harness.json'
+    correction=json.loads(correction_path.read_bytes())
+    rejected_path=Path(correction['raw']['path'])
+    assert sha(rejected_path)==correction['raw']['sha256']
+    rejected=json.loads(rejected_path.read_bytes())
+    assert len(rejected['checks'])==8
+    assert {name for name,row in rejected['checks'].items() if row['passed']}=={'arguments:failure'}
     report.update(qualified_contracts=sorted(CONTRACTS),
         raw={'path':str(raw_path.resolve()),'sha256':sha(raw_path)},
-        scope='Examples 160-161 and list-of-pairs args keyword syntax through real native parent and child executors.',
+        harness_correction={'path':'conformance/evidence/child_arguments_harness.json','sha256':sha(correction_path)},
+        scope='Explicit-import native profile: Examples 160-161 and list-of-pairs args keyword syntax through real parent and child executors.',
         exclusions=['Whole StartProc and argument-transfer section','Library priorities and named procedure headers',
-                    'Non-blocking/manual/hidden modes','Complex argument object families','Checkpoint/warm-start recovery'])
+                    'Non-blocking/manual/hidden modes','Complex argument object families','Checkpoint/warm-start recovery',
+                    'Automatic SPELL symbol injection into builtins or procedure globals'])
     for name in ('conformance/child_arguments_report.py','conformance/CHILD_ARGUMENTS.md',
-                 'tests/test_child_arguments_report.py','distribution/run_language_regressions.py'):
+                 'tests/test_child_arguments_report.py','distribution/run_language_regressions.py',
+                 'conformance/evidence/child_arguments_harness.json'):
         report['inputs'][name]=sha(ROOT/name)
     return report
 

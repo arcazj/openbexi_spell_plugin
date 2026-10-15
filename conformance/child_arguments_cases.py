@@ -16,6 +16,9 @@ REJECT = '''for bad in ((), 'invalid', [['A']], [('A',1)]):
 '''
 CHILD_PREFIX = '''import json
 from pathlib import Path
+import builtins
+assert not hasattr(builtins,'ARGS')
+from spell.runtime import ARGS
 '''
 
 

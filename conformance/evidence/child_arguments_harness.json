@@ -1,0 +1,100 @@
+{
+  "scope": "Retained harness mistake, not a runtime defect: the probe omitted the explicit spell.runtime ARGS import required by the accepted native profile.",
+  "raw": {
+    "path": "C:\\obarguments\\.qualification\\child-arguments\\29fb56b8271a43898db903e925ec3958\\result.json",
+    "sha256": "e1fdfeeb7668458fdff07d3fffa2cd0c975512feea53cfc95eb5153191b9ff30"
+  },
+  "source_commit": "da6a860",
+  "runtime_image": "sha256:e1d2347c3bdba20a0ef349785b29e865209637df7f9ca01337cd8f2c10fe8b9a",
+  "passed_cases": [
+    "arguments:failure"
+  ],
+  "failed_cases": {
+    "arguments:positive": {
+      "Csp": "child:3/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/arguments-positive/child.py', line 3",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "8",
+      "Time": "2026-10-15 03:08:31"
+    },
+    "arguments:boundary": {
+      "Csp": "child:3/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/arguments-boundary/child.py', line 3",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "8",
+      "Time": "2026-10-15 03:08:41"
+    },
+    "arguments:recovery": {
+      "Csp": "child:3/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/arguments-recovery/child.py', line 3",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "8",
+      "Time": "2026-10-15 03:09:00"
+    },
+    "access:positive": {
+      "Csp": "child:3/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/access-positive/child.py', line 3",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "8",
+      "Time": "2026-10-15 03:09:11"
+    },
+    "access:boundary": {
+      "Csp": "child:3/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/access-boundary/child.py', line 3",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "8",
+      "Time": "2026-10-15 03:09:21"
+    },
+    "access:failure": {
+      "Csp": "child:5/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/access-failure/child.py', line 4",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "10",
+      "Time": "2026-10-15 03:09:32"
+    },
+    "access:recovery": {
+      "Csp": "child:5/0",
+      "DataType": "STATUS",
+      "ErrorMsg": "Execution aborted: Name error\n - file '/workspace/access-recovery/child.py', line 4",
+      "ErrorReason": "name 'ARGS' is not defined",
+      "ExecutorMode": "PROCEDURE",
+      "ExecutorStatus": "ERROR",
+      "FatalError": "False",
+      "ProcId": "child#0",
+      "Sequence": "10",
+      "Time": "2026-10-15 03:09:44"
+    }
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
