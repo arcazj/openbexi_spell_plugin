@@ -13,8 +13,8 @@ remaining limits. Retain detailed machine-readable evidence separately.
 | v1.0.0 | Release-candidate defects resolved and affected gates repeated; exact artifact hashes and accepted scope recorded; stable tag on master. |
 
 Current accepted scope ends at the v0.4 GENERIC simulator profile. The
-[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **480 requirements with
-283 open**. All 33 native suites pass on the rebuilt runtime; final installed-host
+[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **483 requirements with
+280 open**. All 33 native suites pass on the rebuilt runtime; final installed-host
 workflows remain open. Passing prerequisites do not accept their parent release.
 
 Next language work: child startup and recovery, database/manual scope conflicts,

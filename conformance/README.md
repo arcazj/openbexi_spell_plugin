@@ -17,26 +17,29 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **480 rows, with 283 open**. The
+Current qualification totals **483 rows, with 280 open**. The
 [current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 33 native suites
-(1,646 raw checks) to the same rebuilt DSS image. Seven rows are newly qualified
-since the published 473-row checkpoint: timed defaults, three child-argument rows
-and three ranging-catalog rows. Focused prompt/child controls and the historical
-failures remain separately recorded. Full v0.5/v0.6 acceptance remains false.
+(1,646 raw checks) to the same rebuilt DSS image. Three requirements are newly
+qualified since the published 480-row checkpoint: two bounded child return
+clauses and the page-79 SCDB existence method. Eight additional native startup
+controls pass. Full v0.5/v0.6 acceptance remains false.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
 | TIME | 42 / 42 | 168 native checks |
 | COMMON | 47 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
-| PY | 117 / 122 | 488 checks; imported evaluation, explicit legacy exclusions |
+| PY | 118 / 122 | 488 Python checks plus the documented SCDB method |
 | DATA | 60 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
 | FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
-| FLOW | 26 / 51 | Native flow plus explicit child arguments |
+| FLOW | 28 / 51 | Native flow, explicit child arguments and return clauses |
 | UI | 29 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
 | OBS | 72 / 104 | Telemetry acquisition/comparison and actual binary DSS |
 | CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
 | LIMIT | 18 / 70 | 79 native assertions through actual GENERIC ground limits |
 | SPECIAL | 3 / 43 | Baseband/antenna catalogs; remaining family contracts open |
+
+The [page-79 scope resolution](DATABASE_SCOPE.md) qualifies `SCDB.has_key`;
+Python built-in dictionary compatibility is not inferred.
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
 [FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).

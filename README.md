@@ -18,8 +18,8 @@ whole-container pause and recovery without replay. See
 [the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
 simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 
-The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **480 of 763**
-requirements; **283 remain open**. All 33 native suites pass (1,646 raw checks)
+The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **483 of 763**
+requirements; **280 remain open**. All 33 native suites pass (1,646 raw checks)
 on the installed runtime from identical offline rebuilds. Prompt ordering and
 abort fixes also pass 55 focused controls and 14 child lifecycle checks. Installed SDK tests cover the
 separate Windows HTTP rejection fix. Final host workflows and full v0.5/v0.6
