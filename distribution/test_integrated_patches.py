@@ -65,6 +65,8 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
     context_stages = [row for row in report['stages'] if composition.checkpoint_context_patches.SOURCE in row['sources']]
     assert [row['recipe'] for row in context_stages] == ['data_files_native_patches.py','checkpoint_context_patches.py']
+    child_context_stages = [row for row in report['stages'] if composition.shutdown_pause_patches.SOURCE in row['sources']]
+    assert [row['recipe'] for row in child_context_stages] == ['shutdown_pause_patches.py','child_lifecycle_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
 
@@ -93,6 +95,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
 @pytest.mark.parametrize('name', [next(iter(composition.flow_patches.PREIMAGES)),
                                  composition.checkpoint_error_patches.SOURCE,
                                  composition.checkpoint_identity_patches.SOURCE,
+                                 *composition.child_lifecycle_patches.PREIMAGES,
                                  composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)
@@ -106,6 +109,24 @@ def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     assert before == {n:(source/n).read_bytes() for n in before}
     target.write_bytes(original)
     composition.apply_native_tree(source, ARCHIVE, tmp_path/'recovered')
+
+
+def test_child_shutdown_union_preserves_donor_and_rejects_drift(tmp_path, monkeypatch):
+    source = native_tree(tmp_path)
+    recipe = composition.shutdown_pause_patches
+    name = recipe.SOURCE
+    original = composition.archive_sources(ARCHIVE,[name])[name]
+    ported = (source/name).read_bytes()
+    shutdown = recipe.apply(name,original,ported)
+    child = composition.child_lifecycle_patches.apply(name,original,ported)
+    combined = composition.compose_child_shutdown(name,original,ported,shutdown)
+    assert combined.replace(recipe.AFTER.encode(),recipe.BEFORE.encode()) == child
+    with pytest.raises(ValueError,match='exact shutdown output'):
+        composition.compose_child_shutdown(name,original,ported,shutdown+b'\n')
+    monkeypatch.setattr(composition.child_lifecycle_patches,'apply',
+        lambda *_:child.replace(recipe.BEFORE.encode(),b'overlapping edit'))
+    with pytest.raises(ValueError,match='overlaps'):
+        composition.compose_child_shutdown(name,original,ported,shutdown)
 
 
 def test_context_recovery_recipe_rejects_execution_before_data_stage(tmp_path):

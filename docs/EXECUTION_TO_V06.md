@@ -1,7 +1,9 @@
 # Execution through v0.6
 
-Authorized target: finish and commit each release in order through plugin v0.6,
-including prerequisite changes and qualification in the sibling openbexi_ide.
+The execution target now extends through stable v1.0, with each accepted release
+committed and pushed to GitHub master. See [the current plan](STABLE_RELEASE_PLAN.md).
+This document retains the foundation and v0.6 prerequisite history, including
+changes and qualification in the sibling openbexi_ide.
 The working IDE v0.2 / bounded plugin v0.1 remains the desktop testing baseline.
 The original-source native foundation v0.2 is now qualified in its separate Linux
 environment. Local host v0.3 and GENERIC DSS drivers/modes v0.4 are accepted;
@@ -12,15 +14,15 @@ IDE v0.3 supplies the neutral durable authority. Full conformance is next.
 | v0.2 | Complete; installed native package 0.2.0 qualified | Original native library, EXC/WS recovery, context/EXEC/CIF and service lifecycle, memory/error paths |
 | v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Complete for the declared GENERIC simulator profile; see DRIVER_QUALIFICATION.json | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
-| v0.5 | In progress: 470 qualified, 293 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
+| v0.5 | In progress: 473 qualified, 290 open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
 | v0.6 | Pending full v0.5; integrated rebuild prerequisite passed | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
 
-The [current checkpoint](V05_CONFORMANCE_QUALIFICATION.json) preserves explicit
-source and image scopes. Two fresh offline compilations produce identical native
-wheels, each passing eight installation/removal tests. The same exact DSS image
-passes all selected language suites and ten native host tests. The separate
-lambda/exception-handler checkpoint counterexample remains unresolved. [Distribution progress](V06_PROGRESS.md) identifies the usable
-candidate and remaining release gates. Neither release is promoted.
+The [current checkpoint](CHILD_CONFORMANCE_QUALIFICATION.json) binds the combined
+child lifecycle runtime to two identical offline native builds, installed
+host/driver workflows and all 29 existing language/recovery suites. This includes
+the qualified lambda/exception-unwind and checkpoint identity corrections.
+[Distribution progress](V06_PROGRESS.md) identifies the usable candidate and
+remaining release gates. Neither release is promoted.
 
 ## Native foundation
 

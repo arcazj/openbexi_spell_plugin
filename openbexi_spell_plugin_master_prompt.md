@@ -16,7 +16,9 @@ service cold restart and live reconnection are qualified. The local Development
 host integration v0.3.0 is accepted in OpenBEXI, IntelliJ IDEA and PyCharm, with
 exact artifacts and scope in docs/HOST_QUALIFICATION.json. Continue with durable
 shared services and original DSS drivers in v0.4, then full inventory conformance
-and distribution through v0.6. Local host acceptance does not establish
+and distribution through v0.6, then operational qualification and stable v1.0
+as specified in docs/STABLE_RELEASE_PLAN.md. Commit and push each accepted
+release to GitHub master with concise documentation. Local host acceptance does not establish
 full language compatibility. The subsequent v0.4 GENERIC DSS profile and IDE
 v0.3 durable authority are accepted in docs/DRIVER_QUALIFICATION.json. Resume at
 v0.5 full conformance, preserving the declared simulator-only driver boundaries.

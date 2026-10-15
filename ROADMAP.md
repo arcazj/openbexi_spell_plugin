@@ -101,13 +101,11 @@ supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
 In progress: [the restored full inventory and gate](conformance/README.md) now
-track all 763 rows: the committed `6f82c2c` checkpoint qualifies 470 and leaves
-293 open. It retains the preceding 422 rows and adds 48 bounded clauses after
-actual integrated native runs. Reports bind independent native oracles, source
-inputs and exact DSS image `1fef3e69`. SCDB, Send/WaitFor timing, child-host,
-console input and recorder exception-unwind fixes are pending later composition;
-their donor results do not qualify a new combined runtime. The separate native
-IPC warmstart source-identity failure remains open.
+track all 763 rows: the current checkpoint qualifies 473 and leaves
+290 open. Its [combined-runtime record](docs/CHILD_CONFORMANCE_QUALIFICATION.json)
+binds all 29 existing native suites, including SCDB/timing and checkpoint recovery,
+to the child lifecycle composition. Independent rebuild and installed host/driver
+evidence pass on that same composition.
 These milestones do not accept v0.5 or satisfy its v0.6 dependency.
 
 ## v0.6 — distribution and compatibility
@@ -125,12 +123,21 @@ per build. Audited host/DSS images use that wheel; the exact DSS image used by
 the language reports also passes all ten native host tests. Full language conformance, versioned upgrades
 and final host/platform qualification remain open.
 
-## Later — operational qualification and stable release
+## v0.7 — operational qualification
 
-Proposed v0.7 covers security/capacity and operational recovery/backup acceptance;
-v1.0.0-rc1 freezes features for end-to-end acceptance before stable v1.0.0.
-These later releases remain outside the current execution target of v0.6.
+Qualify installed service security/capacity, controller fencing, uncertain-effect
+handling, overload and backup/recovery. Bind the checks to the shipped artifacts
+and declared simulator/platform scope.
 
-The remaining sequence is v0.5 and v0.6. Update documentation and
-commit each tested phase in order. A partial milestone may be committed, but
+## v1.0.0-rc1 and stable v1.0.0
+
+Freeze features for end-to-end acceptance, resolve candidate defects and repeat
+affected gates before stable release. Publish concise release notes, installation
+and recovery instructions, supported platforms and exact artifact identities.
+The execution target now includes stable v1.0.0; see the
+[release acceptance plan](docs/STABLE_RELEASE_PLAN.md).
+
+The remaining sequence is v0.5, v0.6, v0.7, v1.0.0-rc1 and v1.0.0. Update concise
+documentation and commit/push each accepted release to GitHub master in order.
+A partial milestone may be committed, but
 its parent release remains open until every release gate has passed.
