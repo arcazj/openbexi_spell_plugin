@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "3daa9853d0ef384abaa259690f938f1d15fff35b00f175652625d9134c955b66",
+  "generator_sha256": "e127bdf4115973ebfbc4a9d497a752afc09ef62983acf7297e0c574f4875bbb6",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -173,6 +173,16 @@
       "path": "distribution/evidence/group-block-native-review.json",
       "sha256": "b780a05c56fa632b80839ae6a2c4d4bbdcd16a0cb591cddb52c785f02ea3b224"
     },
+    "manoeuvre": {
+      "commit": "0f566eed68af3c4f9002c4bb9a0f3ad787d07588",
+      "path": "conformance/evidence/manoeuvre_database_review.json",
+      "sha256": "01d212166f57e7fee2c9d28422a29fa10ac2fcd556d059cf82e03c6eaed03573"
+    },
+    "procedure_library": {
+      "commit": "a8e2bcdb6d7477ecb32c96362a391c66b0c43460",
+      "path": "conformance/evidence/procedure_library_review.json",
+      "sha256": "8a7e8688786a564efb824073c1f1a03f9af89e00fdc6099d7acc3d092f975d10"
+    },
     "limit_features": {
       "path": "distribution/evidence/limit-features-native-review.json",
       "sha256": "fe8cb40048929c429c0fbbb2c75f9c46af4d1b8c9551f9605c96aa16f2b9348d",
@@ -263,7 +273,7 @@
     "lib/SPELL_EXC/src/SPELLchildManager.C": {
       "original": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
       "ported": "b775fac05feb16f6ec775322c693eeef4ce6b3111aba2b20d560f1192b92182d",
-      "patched": "10696aa78e422601589c291c0d2f7bae0890190651e6639ca08d69cca33b050b"
+      "patched": "3599d6a86a83db5e3193b41500e121639f7687878bcd49d63de76cddf11451ba"
     },
     "lib/SPELL_CIFS/src/SPELLserverCif.C": {
       "original": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
@@ -328,7 +338,7 @@
     "spell/lib/adapter/config.py": "ff7b291d70f69129a0189a7e98214601f18f555afbced2d0d961e95d08698b69",
     "spell/lib/adapter/databases/database.py": "2d43696843c0f7492137c925474a545429686cebdaf1f219a7c64af5020f7ba0",
     "spell/lib/adapter/databases/dbfile.py": "6005af75f09953c6f262b07376a57ead5228cff99945a5311a0a3da5837f8618",
-    "spell/lib/adapter/dbmgr.py": "012b987e033454acfa8001f81beaa39eb5dcb5b909e57e557991cadab892cf1e",
+    "spell/lib/adapter/dbmgr.py": "0bc1a201ea890b08b9688926c5b94c65dad08d2833d9b52f07191b5b15208acc",
     "spell/lib/adapter/expression.py": "340f907322bb2498da3d9bc1ebdc93f8634e2858bc8d11b04ad26cf0c1ad2066",
     "spell/lib/adapter/file.py": "d32ff9625af76b8a40b5b39b296452b9256ac20de76ecf107a30026a30ffd3c9",
     "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
@@ -372,6 +382,10 @@
     "host_plugin/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
     "host_plugin/README.md": "d0d8a2888025b5ec5d0042391864fd4120ad4cc7b72d6bf6e3bb634db99b85f4",
     "host_plugin/pyproject.toml": "aa72374e17870e894e581cb2ad9b7f449a029358f8a238fd0364d603afb3cbdc"
+  },
+  "native_distribution": {
+    "source_port/distribution/launcher.py": "4b8b8687ad3de4eb62828cda25108c7766599db158fe2d66d946c672e5d17e59",
+    "source_port/distribution/library.py": "d4b8e56187020e851b1c6425a3faaac95097154607f343dc093301f84760ada1"
   },
   "host_candidate": {
     "version": "0.3.1.dev1",

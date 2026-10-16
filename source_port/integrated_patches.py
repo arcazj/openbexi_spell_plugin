@@ -35,6 +35,8 @@ import obs_patches
 import limit_patches
 import limit_feature_patches
 import telemetry_feature_patches
+import manoeuvre_database_patches
+import procedure_library_patches
 import notification_patches
 import prompt_control_patches
 import prompt_startup_patches
@@ -81,6 +83,7 @@ RECIPE_NAMES = (
     'display_patches.py', 'command_feature_patches.py',
     'command_catalog_patches.py', 'command_group_patches.py',
     'limit_feature_patches.py', 'telemetry_feature_patches.py',
+    'manoeuvre_database_patches.py', 'procedure_library_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -100,7 +103,7 @@ PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
-                  limit_feature_patches, telemetry_feature_patches)
+                  limit_feature_patches, telemetry_feature_patches, manoeuvre_database_patches)
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches)
@@ -268,6 +271,10 @@ def apply_native_tree(source, archive, output):
         flow_patches.apply_tree(scratch)
         for name in flow_patches.PREIMAGES:
             patched[name] = stage('flow_patches.py', name, ported[name], (scratch/name).read_bytes())
+    name = procedure_library_patches.SOURCE
+    before = patched[name]
+    patched[name] = stage('procedure_library_patches.py', name, before,
+        procedure_library_patches.apply(name, before))
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'

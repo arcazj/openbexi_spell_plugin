@@ -49,6 +49,8 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     report = composition.apply_native_tree(source, ARCHIVE, tmp_path/'evidence')
     qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
     expected_sources = qualified['native']
+    for name,digest in qualified['native_distribution'].items():
+        assert composition.digest((ROOT/name).read_bytes()) == digest
     assert set(expected_sources) == set(composition.NATIVE_NAMES)
     for name, row in expected_sources.items():
         assert report['sources'][name] == {label+'_sha256':value for label,value in row.items()}

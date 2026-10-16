@@ -44,6 +44,8 @@ DONORS = {
     'wait_interrupt':('728d9ba4fc154f7bbb924233d3b67e8fa7043de0','wait_interrupt'),
     'proc_dictionary':('c22ba3d0f5e2362c2384f09036bfff30e83080b1','proc_dictionary'),
     'display_commands':('f602418','distribution/evidence/group-block-native-review.json'),
+    'manoeuvre':('0f566ee','manoeuvre_database_review'),
+    'procedure_library':('a8e2bcd','procedure_library_review'),
 }
 
 
@@ -368,6 +370,8 @@ def main():
         from feature_source_donors import apply
         source_identities=json.loads((ROOT/'distribution/evidence/limit-telemetry-source-donors.json').read_bytes())
         donors.update(apply(python,driver,composition,source_identities))
+    from library_source_donors import apply as apply_libraries
+    native_distribution = apply_libraries(python,native,composition,reports)
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     startup = reports['context_startup']
@@ -412,6 +416,7 @@ def main():
         'donors':donors,'native':native,
         'python':{name:python[name] for name in composition.PYTHON_NAMES},'driver':driver,
         'host':host, 'host_client':host_client, 'host_package':host_package,
+        'native_distribution':native_distribution,
         'host_candidate':{'version':upgrade['version'],'wheel_sha256':upgrade['wheel']['sha256']},
         'full_v05_accepted':False,'full_v06_accepted':False}
     output = ROOT/'distribution/evidence/followup-qualified-sources.json'
