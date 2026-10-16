@@ -41,6 +41,14 @@ The original executor represents each step as `[id, title]` and includes the
 instance suffix in the procedure name. Checks preserve these representations
 and cross-check parent/child names against actual context notifications.
 
+The retained error-reload probe found another original-source defect: the
+`CANCEL_RECOVER` reload branch reset the frame but retained the old procedure
+database, and the outer execution loop treated every error continuation as
+recovery. A reload after failure therefore kept modified PROC entries and an
+old call stack. The correction rebuilds the execution environment for this
+reload branch and uses the existing reload flag to distinguish a new run from
+checkpoint recovery. The twelve lifecycle cases must pass with this correction.
+
 Fresh composed builds and all existing native regression suites are required
 before accepting the correction into a published checkpoint. Full v0.5 still
 requires all 763 inventory rows.

@@ -21,5 +21,7 @@ def test_dictionary_patch_preserves_one_argument_evaluation(name):
     assert before.count('helper.eval(expression,false)')==after.count('helper.eval(expression,false)')==1
     assert after.count('"openbexi.spell.proc.arguments"')==2
     assert 'setText(DatabaseConstants::ARGS,getConfiguration().getArguments());' not in after
+    assert after.count('loadExecutionEnvironment();')==before.count('loadExecutionEnvironment();')+1
+    assert 'resetEntities = m_controller->shouldReload();' in after
     for bad_original,bad_ported in ((original+b'\n',ported),(original,ported+b'\n'),(original,result)):
         with pytest.raises(ValueError):patch.apply(name,bad_original,bad_ported)

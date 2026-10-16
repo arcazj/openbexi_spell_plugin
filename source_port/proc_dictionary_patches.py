@@ -27,6 +27,18 @@ def apply(name, original, ported):
             raise ValueError('Procedure dictionary anchor differs: '+before)
         text=text.replace(before, after)
 
+    replace('''\t        \tm_frameManager->reset();
+\t        \tcontinueExecuting = true;''','''\t        \tm_frameManager->reset();
+                // RELOAD starts a new procedure database, unlike RECOVER.
+                // Preserve the evaluated initial arguments in interpreter state.
+                loadExecutionEnvironment();
+\t        \tcontinueExecuting = true;''')
+    replace('''\t\t\t\t\t// We will recover, so do not reset entities
+\t\t\t\t\tresetEntities = false;''','''                    // Error handling can return after either RELOAD or RECOVER.
+                    // Only recovery retains the old call stack and initial step.
+                    resetEntities = m_controller->shouldReload();
+                    m_initStepDone = !resetEntities;''')
+
     replace('    helper.install(args.get(),"ARGS");', '''    helper.install(args.get(),"ARGS");
     // Preserve the values evaluated above without evaluating caller code twice.
     // Interpreter ownership avoids process-static references surviving finalization
