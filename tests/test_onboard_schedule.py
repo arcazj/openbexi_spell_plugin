@@ -199,3 +199,16 @@ def test_running_clock_executes_schedule_and_paused_clock_retains_it():
         engine.control('RESUME',paused['epoch'],paused['revision'])
         assert engine.advance(3)['core']['commands_executed']==1
     finally:engine.close()
+
+
+def test_additional_information_is_bound_to_command_definition():
+    engine=DssEngine(':memory:');command=body(engine)
+    command['additional_info']={'note':'café λ'}
+    try:
+        send(engine,command,'TRANSPORT')
+        before=evidence(engine)
+        for altered in (dict(command,additional_info={'note':'changed'}),
+                        {key:value for key,value in command.items() if key!='additional_info'}):
+            with pytest.raises(DssConflict,match='definition changed'):send(engine,altered,'RELEASE')
+            assert evidence(engine)==before
+    finally:engine.close()

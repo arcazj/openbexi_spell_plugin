@@ -24,8 +24,25 @@ restart, duplicate receipts, invalid and changed times, queue capacity, failure,
 clock pause/resume, and effects on later dynamics. Existing DSS engine and
 transport regressions also passed.
 
-This is an isolated implementation candidate. The SPELL proxy, ground release
-scheduling, group/block protocol, RPC deadlines, command confirmation, native
+The isolated `command_execution` driver module now exercises individual commands
+over real DSS binary TCP. It distinguishes a ground hold (no TC frame before
+ReleaseTime/SendDelay) from onboard Time (TRANSPORT, LOADING, RELEASE and
+ACKNOWLEDGEMENT before execution). LoadOnly finishes after two actual stage
+receipts. The driver reconnects between stages without replaying a stage, keeps
+checking live authority, and preserves uncertain outcomes after any write.
+Additional information reaches the binary packets and persisted command
+definition. Deadline calculations use integer simulation nanoseconds; SendDelay
+extends the verification window. A one-minute Timeout is accepted by this module.
+
+The combined 120 tests cover these paths, the onboard engine, and existing DSS
+engine/transport behavior. An initial delay test used an 80-millisecond total
+verification budget, which expired after two real network stages. Its database,
+sources and failing report are retained. The corrected test waits longer than
+Timeout alone and then verifies completion within SendDelay+Timeout, with enough
+time for the real network exchanges. Production deadline logic was preserved.
+
+This is an isolated implementation candidate. The SPELL proxy, group/block
+protocol, RPC deadlines, command confirmation, original dispatcher integration, native
 capture, and composed package qualification remain incomplete. No language
 coverage or release acceptance is promoted by this change. Shared transport
 frames with timetags currently require further per-element implementation.

@@ -390,6 +390,10 @@ class DssEngine:
             command=self.db.execute("SELECT * FROM commands WHERE scenario_id=? AND plan_id=? AND element_id=?",identity).fetchone()
             command_definition={"command_name":body["command_name"],"arguments":body["arguments"],
                 "command_digest":body["command_digest"],"procedure_id":body["procedure_id"],"execution_id":body["execution_id"]}
+            if "additional_info" in body:
+                if type(body["additional_info"]) is not dict or len(canonical(body["additional_info"])) > 8192:
+                    raise ValueError("command additional information must be a bounded dictionary")
+                command_definition["additional_info"] = body["additional_info"]
             execution_target = None
             if "execution_time_unix_ns" in body:
                 execution_time = body["execution_time_unix_ns"]
