@@ -36,6 +36,8 @@ distinct private input/output directories in the genuine generated context,
 then runs the unchanged host and native launcher. Procedures check those paths,
 read input, recover from a missing file, and write separate output. The
 configuration, fixture launcher and file contents are retained for inspection.
+Unicode file contents explicitly use UTF-8. They do not rely on the embedded
+interpreter's locale-dependent default text encoding.
 
 The original executor represents each step as `[id, title]` and includes the
 instance suffix in the procedure name. Checks preserve these representations

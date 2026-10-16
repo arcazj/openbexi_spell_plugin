@@ -17,13 +17,13 @@ PATHS=textwrap.dedent('''\
     assert input_path!=output_path and input_path.is_dir() and output_path.is_dir()
     path_errors=[]
     try:
-        (input_path/'missing-input.txt').read_text()
+        (input_path/'missing-input.txt').read_text(encoding='utf-8')
     except FileNotFoundError:
         path_errors.append('missing-input')
     assert path_errors==['missing-input']
-    assert (input_path/'input.txt').read_text()==plan['content']
-    (output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'])
-    assert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text()==plan['content']
+    assert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']
+    (output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')
+    assert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']
 ''')
 
 LIFETIME = textwrap.dedent('''\
