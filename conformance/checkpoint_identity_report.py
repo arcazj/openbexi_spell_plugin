@@ -51,7 +51,11 @@ def qualify_run(report,cases,kind):
     mailbox_inputs = {'conformance/ipc_mailbox_provenance.py', 'conformance/ipc_mailbox_build.py',
         'conformance/ipc_mailbox_race.cpp', 'conformance/ipc_mailbox_install.py',
         'conformance/ipc_mailbox.Dockerfile'}
-    allowed = (expanded, expanded | mailbox_inputs) if installed else (set(REQUIRED_INPUTS), expanded)
+    snapshot_inputs = {'conformance/context_snapshot.Dockerfile',
+        'conformance/context_snapshot_build.py', 'conformance/context_snapshot_install.py',
+        'conformance/context_snapshot_probe.py', 'conformance/context_snapshot_provenance.py'}
+    allowed = (expanded, expanded | mailbox_inputs, expanded | mailbox_inputs | snapshot_inputs) \
+        if installed else (set(REQUIRED_INPUTS), expanded)
     assert set(report['inputs']) in allowed
     for name,expected in report['inputs'].items():
         assert sha((ROOT/name).read_bytes())==expected,name
