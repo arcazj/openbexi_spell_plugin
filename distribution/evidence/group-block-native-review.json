@@ -1,0 +1,1264 @@
+{
+  "passed": true,
+  "source_revision": "0b17c1c3abee2ad24eec01f334962c40de8e8992",
+  "raw": {
+    "path": "C:\\obcommand_group\\.qualification\\command-group\\67ed90fe181d4913ad829389f4ac7a81\\result.json",
+    "sha256": "5d72f8825c3f434dc233f249e85c39d94df23db337144c44ac372b88cc122027"
+  },
+  "runtime_image": "sha256:d960aa664ed543952220fd9bf6685d79bfce445df38397c47d1c675e480cd070",
+  "overlay_manifest": {
+    "path": "C:\\obcommand_group\\.qualification\\command-group-candidate\\9eee6ff0a51d49cba70a0f8b3abec820\\overlay\\manifest.json",
+    "sha256": "37346d5dca4d55449920e5dedc4755fe3e3081318f1023aa69a4394b475ce5c4"
+  },
+  "observations": {
+    "API:positive": {
+      "binary_stages": [],
+      "member_states": [],
+      "final_native": [],
+      "competitor_rejected": false
+    },
+    "Group:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:09.549",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:53:09"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:09.811",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:53:09"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Group:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:20.678",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:53:20"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Group:failure": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "FAILED",
+          "NOT_SENT"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:31.289",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:53:31"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "TC.SIMULATOR.RESET",
+          "ItemReason": "Execution failed (Stage 'RELEASE' is 'FAILED')",
+          "ItemStatus": "FAILED",
+          "ItemTime": "2026-10-16 16:53:31.551",
+          "ItemType": "EXECUTION",
+          "ItemValue": "RELEASE",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:53:31"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "Status is 'NOT_SENT'",
+          "ItemStatus": "IN PROGRESS",
+          "ItemTime": "2026-10-16 16:53:31.632",
+          "ItemType": "EXECUTION",
+          "ItemValue": "NOT_SENT",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:53:31"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Group:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/1",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:42.728",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "35",
+          "Time": "2026-10-16 16:53:42"
+        },
+        {
+          "Csp": "main:24:main:14/1",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:42.930",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "37",
+          "Time": "2026-10-16 16:53:42"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Group:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:53.141",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:53:53"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:53:53.385",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:53:53"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "GroupLoadOnly:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "TRANSPORT",
+        "LOADING"
+      ],
+      "member_states": [
+        [
+          "LOADED",
+          "LOADED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:03.918",
+          "ItemType": "EXECUTION",
+          "ItemValue": "LOADING",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:54:03"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:04.142",
+          "ItemType": "EXECUTION",
+          "ItemValue": "LOADING",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:54:04"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "GroupTime:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "TRANSPORT",
+        "ONBOARD_EXECUTION",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:16.084",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "20",
+          "Time": "2026-10-16 16:54:16"
+        },
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:16.327",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:54:16"
+        }
+      ],
+      "competitor_rejected": true
+    },
+    "GroupSequence:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED",
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:26.743",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:54:26"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD2",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:26.945",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "23",
+          "Time": "2026-10-16 16:54:26"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:27.167",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "25",
+          "Time": "2026-10-16 16:54:27"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "SEQ.DUPLICATE,,0@CMD1,,1@CMD1,,2@CMD2",
+          "ItemReason": " ,, ,, ,, ",
+          "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+          "ItemTime": "2026-10-16 16:54:28.018,,2026-10-16 16:54:27.370,,2026-10-16 16:54:27.613,,2026-10-16 16:54:27.816",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "4",
+          "Sequence": "33",
+          "Time": "2026-10-16 16:54:28"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Block:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:37.122",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:54:37"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:37.385",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:54:37"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Block:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:48.298",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:54:48"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Block:failure": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "FAILED",
+          "LOADED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:54:59.085",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:54:59"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "TC.SIMULATOR.RESET",
+          "ItemReason": "Execution failed (Stage 'RELEASE' is 'FAILED')",
+          "ItemStatus": "FAILED",
+          "ItemTime": "2026-10-16 16:54:59.287",
+          "ItemType": "EXECUTION",
+          "ItemValue": "RELEASE",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:54:59"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "Status is 'LOADED'",
+          "ItemStatus": "IN PROGRESS",
+          "ItemTime": "2026-10-16 16:54:59.409",
+          "ItemType": "EXECUTION",
+          "ItemValue": "LOADING",
+          "ProcId": "main#1",
+          "SCount": "0",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:54:59"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Block:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/1",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:10.564",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "35",
+          "Time": "2026-10-16 16:55:10"
+        },
+        {
+          "Csp": "main:24:main:14/1",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:10.826",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "37",
+          "Time": "2026-10-16 16:55:10"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "Block:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:20.949",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:55:20"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:21.212",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:55:21"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "BlockLoadOnly:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "LOADING"
+      ],
+      "member_states": [
+        [
+          "LOADED",
+          "LOADED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:31.816",
+          "ItemType": "EXECUTION",
+          "ItemValue": "LOADING",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "19",
+          "Time": "2026-10-16 16:55:31"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:32.059",
+          "ItemType": "EXECUTION",
+          "ItemValue": "LOADING",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:55:32"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "BlockTime:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:43.572",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "20",
+          "Time": "2026-10-16 16:55:43"
+        },
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:43.775",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:55:43"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "BlockSequence:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED",
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:54.414",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "21",
+          "Time": "2026-10-16 16:55:54"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD2",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:54.616",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "23",
+          "Time": "2026-10-16 16:55:54"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:55:54.859",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "25",
+          "Time": "2026-10-16 16:55:54"
+        },
+        {
+          "Csp": "main:23:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "SEQ.DUPLICATE,,0@CMD1,,1@CMD1,,2@CMD2",
+          "ItemReason": " ,, ,, ,, ",
+          "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+          "ItemTime": "2026-10-16 16:55:55.750,,2026-10-16 16:55:55.081,,2026-10-16 16:55:55.284,,2026-10-16 16:55:55.487",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "4",
+          "Sequence": "33",
+          "Time": "2026-10-16 16:55:55"
+        }
+      ],
+      "competitor_rejected": false
+    },
+    "GroupDelay:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [
+        [
+          "SUCCEEDED",
+          "SUCCEEDED"
+        ]
+      ],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:56:05.385",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "20",
+          "Time": "2026-10-16 16:56:05"
+        },
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:56:05.587",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:56:05"
+        }
+      ],
+      "competitor_rejected": true
+    },
+    "ListDelay:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "member_states": [],
+      "final_native": [
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD1",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:56:16.453",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "20",
+          "Time": "2026-10-16 16:56:16"
+        },
+        {
+          "Csp": "main:24:main:14/0",
+          "DataType": "ITEM",
+          "ExecutorMode": "PROCEDURE",
+          "ItemName": "CMD3",
+          "ItemReason": "",
+          "ItemStatus": "SUCCESS",
+          "ItemTime": "2026-10-16 16:56:16.918",
+          "ItemType": "EXECUTION",
+          "ItemValue": "ONBOARD_EXECUTION",
+          "ProcId": "main#1",
+          "SCount": "1",
+          "Sequence": "22",
+          "Time": "2026-10-16 16:56:16"
+        }
+      ],
+      "competitor_rejected": false
+    }
+  },
+  "artifacts": {
+    "checks.json": "446824674a0c307922e2681983a404bbdde896e21bfea41cd086caedd43faabc",
+    "command_catalog_cases.py": "5d799eb8d69d623bbc9910c99cce809e889f9f7702b926d95263b9f2cc4c2898",
+    "command_group_cases.py": "aa689194b887840450cf193630279acb3a33d1c08878b0451a71c6b89d957c84",
+    "command_group_controller.py": "2461b088a25db1725940684d28dc8e277bd52f467a3cf49e21943cb4e3f0a988",
+    "command_group_provenance.py": "2bf940dafb496f13dab651b538bc2fd8d5511e5e22a08956e5f6b323267f1eb1",
+    "host-inputs.json": "bca9ed06a76703a7cca4484bdc0c645b94c79aca0174b50cd431397417bb121b",
+    "installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
+    "runtime.json": "d48d0eb04b8a5f697d2ce36f4e30062793119a28ecd80b3780d798274087a5a7",
+    "selected-cases.json": "4ee6e8f511539d0d84a3522d32fbf4926a8d6bd154555a38f6cd37dbdece9882",
+    "API-positive/driver.sqlite": "4a2fa8115abda6ceb990b784e4a197557c5b9f2276c30428e38292058e55543b",
+    "API-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "API-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "API-positive/dss.sqlite": "ac80e1d4460a534d7413108114016b7a2ebfdb0f5789611caada398ed7cb9143",
+    "API-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "API-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "API-positive/events.json": "dfafe4165778d769c7c23608d6004de77a50f3995755d4c375e04a84883a5b5e",
+    "API-positive/main.py": "89fe8ac94de470671abc22e1b39fa9fdb73c4b0680d695d7db5a0d0c19970bf5",
+    "API-positive/native.log": "3eb0adc35e73544f3fefdd366af68c309a3ccbe79b2687979b14e740035233ae",
+    "API-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Block-boundary/driver.sqlite": "ba08231aca736ae0be5f9b0374d46fc825e0eb3dbb9cc6e1e1411dc47969d557",
+    "Block-boundary/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-boundary/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-boundary/dss.sqlite": "dfceed858c2bc9e2d116dfa1def707ec0f532b61638fb182299ec6c27545eaa6",
+    "Block-boundary/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-boundary/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-boundary/events.json": "884a6c59b6138584284373d1d62340deed2e0bc6cd0297ded0aa731cc6b296fc",
+    "Block-boundary/main.py": "b144580fa45a6df666343efe28149098ea98f3ef4172237edb9606dce898b024",
+    "Block-boundary/native.log": "f677d8aca12fb7396e25fe8b27a1067a1d83009b0cfe050b17e146a7942f264e",
+    "Block-boundary/observed.json": "7b3233cba8fe25dbfd1cf0115260b3266a03e914ed1f95796091a62b8034fe50",
+    "Block-boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Block-encoding/driver.sqlite": "acfb16c1be430e0b976a7dfbe3aeeee2ec152a80bcd87b23e3c2f97628a5eebe",
+    "Block-encoding/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-encoding/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-encoding/dss.sqlite": "cccfa3ec504bf77d88631c9a94132b6c6f5b9b7d0e0f9ac6b6d59632ebcc7ece",
+    "Block-encoding/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-encoding/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-encoding/events.json": "247fd22c954684e4f90e1fdedf40c5748b9fb85ee24844cc69a4ad22b035f310",
+    "Block-encoding/main.py": "bbeee6c1485f571e91d9be5273f851883c77b5ce57140824f170ddb65809c8e3",
+    "Block-encoding/native.log": "c2f0868753a04fc9ed2d058e81fe42fa26247ab049076dba04f6020a4785fc43",
+    "Block-encoding/observed.json": "1e47520343490e8d23b46fbc0952bdfde2e677130c9072b65bc5bff0e6234312",
+    "Block-encoding/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Block-failure/driver.sqlite": "048bc7e51f36c49ed9ae70376581f37ccac33df8e8dbe90a8ea5ef3e624a2f7c",
+    "Block-failure/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-failure/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-failure/dss.sqlite": "c5c1d6b78909f9da3f1643bc8a85369d84dbebb238223407d20cd14d596086ee",
+    "Block-failure/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-failure/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-failure/events.json": "367d82b420cf201f1309a9ecf87d3fbefa8e7bf85a5d4324b9f40f3e58e28e5f",
+    "Block-failure/main.py": "eaed5e6a66ff9b82c20c23816220fb7b375916bf43c2ea58029c63bd07b154a6",
+    "Block-failure/native.log": "5d4b2a1174ca1b0a05846f0946a5a746fbd68441dc84f12062fc8842e8b6090f",
+    "Block-failure/observed.json": "eb3d6fc1516f2d86c6718daec7b1e391bb3907286af57bbee1e96f4376ca0aec",
+    "Block-failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Block-positive/driver.sqlite": "b4a160308b6542df32b9b8c55ba3a9902c0a89480927a0a7adfcecf68c545a35",
+    "Block-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-positive/dss.sqlite": "120e4fd0173618589864e4f25b0360adae3815f42eb9891bd02d869b56407d08",
+    "Block-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-positive/events.json": "0f6e9f997fb5a36614532e658a6e82722b2020ea34028e95b2572c4e23553fc5",
+    "Block-positive/main.py": "93657f7019dc1de926701e4648f4130fd55ae143f4d89076510856e58352d550",
+    "Block-positive/native.log": "a5f16e9bbe30b66cebf2a505ef813027a77505b17096c49ad7eaccc2cae85f22",
+    "Block-positive/observed.json": "27049eed34cb7e01d2ff11d02956531139beebff3b5835d7850289e1a446264c",
+    "Block-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Block-recovery/driver.sqlite": "1c345d64cf37bfc42de4ec345f1a85460905f4622706e6455bab419b86dabfb7",
+    "Block-recovery/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-recovery/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-recovery/dss.sqlite": "093d3a9be0d8b238fd872b4f31e5b0d0e45f01cf2dcb057133722570a6d96d44",
+    "Block-recovery/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Block-recovery/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Block-recovery/events.json": "2c2f19bde8da01db0468c8fc22b927d081050e9d45661b74b7fea211f8751240",
+    "Block-recovery/main.py": "21cdb74466720696105b55f250b6aa9963c7b32dc038f9d4315ef440b8569bc7",
+    "Block-recovery/native.log": "efed9e2700956115f1ef1b9459e7080d0782a1f1a111386ba1b75f2d91bf11e7",
+    "Block-recovery/observed.json": "527036cebdb5ce30f950873d80fb0882dfff8436e4e0bed113ab7852107930ae",
+    "Block-recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "BlockLoadOnly-positive/driver.sqlite": "d009942151075bd855ae714b6a0e295edf1d0a543eb9ee52b0ba6ab5a070989b",
+    "BlockLoadOnly-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockLoadOnly-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockLoadOnly-positive/dss.sqlite": "43a0a33329102aa961cd18cd8b0d404ae237c48c7456c2940819978db85b48a8",
+    "BlockLoadOnly-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockLoadOnly-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockLoadOnly-positive/events.json": "e4b7875bcf01e8015d97197f9b47150828681bec4290b8f383ec99cf72a1c700",
+    "BlockLoadOnly-positive/main.py": "f626efe70b6b146a1339851f8276206412436189d82353b6a3d6b75f67b754fe",
+    "BlockLoadOnly-positive/native.log": "fa081909e709413fbcfa7be308dfc177e7941a3b0bbc2054b1e1a26c071c6ed1",
+    "BlockLoadOnly-positive/observed.json": "fabdc40100c9b383908d1f12e44d798353f253419a965e9d555793476b6e5522",
+    "BlockLoadOnly-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "BlockSequence-positive/driver.sqlite": "856a5a7edf799770200c5b3a0af65255cdd2bcba559f74a91c92529b12ca9eee",
+    "BlockSequence-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockSequence-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockSequence-positive/dss.sqlite": "7e09b15b0ad79b179679a60ac591733deee6fde575fd6ed5a7e05b9cdc5257fd",
+    "BlockSequence-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockSequence-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockSequence-positive/events.json": "1e2d33cad30da62a0e54137c466c23fe566b61ecc86dfbf0facd9c2f812cab5b",
+    "BlockSequence-positive/main.py": "45f5d10cae318e675354835be13ed891986ac21a50e2502f48fe23c9087d7b5b",
+    "BlockSequence-positive/native.log": "74586d4dd915c4b37c0d8706187b64e11db24b4597c5fbf7158dd65ac7e3d1e4",
+    "BlockSequence-positive/observed.json": "d0e4603601badc70cebcd1434eee3a9493e15a642bd700ae55794c298867dbad",
+    "BlockSequence-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "BlockTime-positive/driver.sqlite": "1c33ad210977b5176487d34ebce5010d5e69ea7094575d47c63382e5eccefcf8",
+    "BlockTime-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockTime-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockTime-positive/dss.sqlite": "a93c20270ac24520234d6dfc609ccf5a0e673cd94641c128f95e9d2529a3cbeb",
+    "BlockTime-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "BlockTime-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BlockTime-positive/events.json": "c2a16b1728f2b039cb7e5bda80b2d3c4d2781c71736015e71df7dd5f7378966e",
+    "BlockTime-positive/main.py": "f6a9f2630764d2731ef78368c6b6dd4ea107425cfda5ef4f7d1834c94c8fda75",
+    "BlockTime-positive/native.log": "b41916fec6ced05f381e9416a4dcb4011ddc22ba102996ed64b945462b7c64b5",
+    "BlockTime-positive/observed.json": "f6c1bfbc8529c36f956ba2b0abfc2fe109a2b4d0dde4ca59aa11425f6bedf50f",
+    "BlockTime-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Group-boundary/driver.sqlite": "c4a440fba08eaf0b23751c6868f18fa9214d16c0cfab7427f26eda49b21b0157",
+    "Group-boundary/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-boundary/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-boundary/dss.sqlite": "5fbdd74ea3b77cbda75f13b481cbefe1ba37f2f6efe63544721cfb25b055cbc2",
+    "Group-boundary/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-boundary/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-boundary/events.json": "c0391566eac658b8c6d6ace11c189acf2234951b2cf588df1cbec76f3f1d3c17",
+    "Group-boundary/main.py": "ada28c11f48f90611977eadc2769c9572480039198621359b1674b3821a56713",
+    "Group-boundary/native.log": "db01d96d43c14cbae5cd9dd4fbf7d6424e63d7dc15f0c0e7b284a0ac6c66fd95",
+    "Group-boundary/observed.json": "1c2b7e41a3eef97ae69e2028073f1977ccf92221cca63d7c1b4402adb676843e",
+    "Group-boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Group-encoding/driver.sqlite": "ddc27f8207eed82ebb0e9f9fde6f6ddb95566a26d984d95bf864a34079fdb2fd",
+    "Group-encoding/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-encoding/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-encoding/dss.sqlite": "c45fb845634e18478a880e9ba900730e057e725938285e2e49713c4815ca6b08",
+    "Group-encoding/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-encoding/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-encoding/events.json": "de0b8d7cafbc37c7c21fff5149e3a57d05fd037f1fa36f6a64a3aca7988b23b3",
+    "Group-encoding/main.py": "cbbd29c452d92cc4363751d6cef2c55fb21f5cae7bc9cecb0075bcfb526fecac",
+    "Group-encoding/native.log": "1ec80420e665119555f0467fd6fd2476d3b2e2e4ffe2290898645cb8aaf16fb6",
+    "Group-encoding/observed.json": "c4d39f465f8e67aee5669523585758c24fd6981eca64020393934db0bce1ea5c",
+    "Group-encoding/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Group-failure/driver.sqlite": "afb5e50537ca0fb5900e8edc3d22b64a475b8e27f5b384824db8ddc0bb46b248",
+    "Group-failure/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-failure/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-failure/dss.sqlite": "456718f8aee081cecae222d7ebc93557a0c87fbd49350db8496b481310e462d1",
+    "Group-failure/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-failure/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-failure/events.json": "af1616d8c070cd6073f3f0c5d0f3eb622ec5409008915a1871e850e24e704f4e",
+    "Group-failure/main.py": "2310c8787632a46d8ce07ff5fd4019e98be84a99956f66ce5e519c03fcb3d511",
+    "Group-failure/native.log": "31033b6752c7da3c239137fe4a97e86baf17645fc67300d45db2cfc0022929d0",
+    "Group-failure/observed.json": "b267b2959cfb50c35e823c57f5e5197c065420d820c0866abd7e025c635a1e9b",
+    "Group-failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Group-positive/driver.sqlite": "3bcbed2de8fa661e923bf41622a3085d311b53bc0164920a6e709bf97fd5b828",
+    "Group-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-positive/dss.sqlite": "998a158329e8defcce112ff05001dfbde74856c5c0d812f88762e3af026e27ef",
+    "Group-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-positive/events.json": "48019b170fb26974a62f2a7eb476086cd2bedaf610adda915427c1fc07765944",
+    "Group-positive/main.py": "0e5fcd8e57fd6e7cf1ffddf16b4878489a428abd09e66cef59e0657ddc4a7b92",
+    "Group-positive/native.log": "fc5eaf7c5abb17c3975d04eb351ef0460c631ae2751123aec2906fdd441bc9a6",
+    "Group-positive/observed.json": "089b15f0e9fee0b04558d9586c53ab19072228a3d57b530f9cc084f42a567989",
+    "Group-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "Group-recovery/driver.sqlite": "27f144557efb5d09f76cef787c89c7a3653e26dac16e755ec7c05bea753973f8",
+    "Group-recovery/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-recovery/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-recovery/dss.sqlite": "84e5eb7cfc97fc5ce89b8924a6496f96f2468359fcfb902c94411c3087a4eeaa",
+    "Group-recovery/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "Group-recovery/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "Group-recovery/events.json": "0258edb0de63f7d88be4dafc9e5da3a16450790fbd77a274ca7478703e549f38",
+    "Group-recovery/main.py": "7b9dfc3931133461e2a9003d96340e7e22252dd6313711d47c68d22812536464",
+    "Group-recovery/native.log": "8db63a5809d2c455781253814bab97a9959276b233c8d46b15e5e8278d17a8f1",
+    "Group-recovery/observed.json": "5918e1c5e53aa945cc655c1bc0309b05c4ceb51dd580bbf3226490847575ffcf",
+    "Group-recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "GroupDelay-positive/driver.sqlite": "7fbcbe4f311cb1dec4fae990a32289bffcd372693c86637f04e7d4c1aa64236c",
+    "GroupDelay-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupDelay-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupDelay-positive/dss.sqlite": "6409d621de2409d23de228a6af9d9d8da0b83fbaef28123837528ea89306401a",
+    "GroupDelay-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupDelay-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupDelay-positive/events.json": "f1974d29508f7222d3c8475be79b6dab4d51099f92b72c6d5bc2e503034762f6",
+    "GroupDelay-positive/main.py": "c1ca717372f333c6c107987e9dc9cca14e53b66fa18947208ab50cf29c916de6",
+    "GroupDelay-positive/native.log": "ae335117e6a2315e140b8228a56a5c55f032e9156d5ec27b23237164db3dd337",
+    "GroupDelay-positive/observed.json": "fae5e679d1b919557a7460c73069330037803f207340d80d61cedc3af23870b9",
+    "GroupDelay-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "GroupLoadOnly-positive/driver.sqlite": "d956303c177b84ec5928f8bd3132761066881f8e908a60de3438114a15bf7d18",
+    "GroupLoadOnly-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupLoadOnly-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupLoadOnly-positive/dss.sqlite": "69d9b7a41aa7787e8d759568eca09e6ab1f10544738a2fc575978ea12c4ec6c3",
+    "GroupLoadOnly-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupLoadOnly-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupLoadOnly-positive/events.json": "4b55fe26a09f892f1c42ab858e5b9232148944fab724d9545c739cd35aa32257",
+    "GroupLoadOnly-positive/main.py": "3f6769b91c5dc0cb78fddbdd9f604d9bc55fe5f5d9abd9e96b814c1b2c5928f0",
+    "GroupLoadOnly-positive/native.log": "841efce572611ed30b22f58358a3e8ccccec4de864568c0f2ddfb3b138bfa085",
+    "GroupLoadOnly-positive/observed.json": "f1058144869796a9d0a0abdad2ef29738216f0a840b34a0ee825fe1165ece23e",
+    "GroupLoadOnly-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "GroupSequence-positive/driver.sqlite": "3f2f86e4784265c64ea7a629260f2eb859a069c907eb8e487d7b96c6f00cc874",
+    "GroupSequence-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupSequence-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupSequence-positive/dss.sqlite": "39b379d1efcf963a3e54d1f59a363081110ef64f6b5796819a7815db15c7d0d8",
+    "GroupSequence-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupSequence-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupSequence-positive/events.json": "5ca353041d3e9a9984c2b6fe289c568ac534f6926fb18e0a9dc57beb1197c026",
+    "GroupSequence-positive/main.py": "e76944928e8418b2a18c74deaf41050386db95385c6d466469586283b093551c",
+    "GroupSequence-positive/native.log": "043881d74364672673f62aa72595fb4db3e265f83e50625dd928f30c86ec6484",
+    "GroupSequence-positive/observed.json": "808d37e8dbff945709cb73aa62298fe0e65847a83a3721b58d12f45b3fe06755",
+    "GroupSequence-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "GroupTime-positive/driver.sqlite": "12368904fc36439fa61a7b44811af7a0a03987b30ea5bc7a9f7e7173343a6581",
+    "GroupTime-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupTime-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupTime-positive/dss.sqlite": "ab569e0699c77d468ab2386875bc3ee17c6b4008e716b627e782011c69f7a0c9",
+    "GroupTime-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "GroupTime-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "GroupTime-positive/events.json": "dd9bea53211a95de6550480bda38657e8201a7f7061baf7ab8150e0c75b59156",
+    "GroupTime-positive/main.py": "db78b8f46e6f3b3006df7e648544ce7b719a944de249cf9a0b9a88ee9dadda78",
+    "GroupTime-positive/native.log": "f7588fbc2e9132e5730c0c19debb23cbbf3bd480a18f795e9e9643bef5ec2a53",
+    "GroupTime-positive/observed.json": "6aa9edecf9621029c9702d440a5f9c0a1270212db0181b2a89db301d3d8ec766",
+    "GroupTime-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "ListDelay-positive/driver.sqlite": "ad89163513b83d5b8f170dc273d651b8f56320284926f3bbd86c3a08b23023ee",
+    "ListDelay-positive/driver.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "ListDelay-positive/driver.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ListDelay-positive/dss.sqlite": "37733cfae1fa55cec776281daa6aa3bd89d288c261d6b71c34dc3a04e60c7c5a",
+    "ListDelay-positive/dss.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+    "ListDelay-positive/dss.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ListDelay-positive/events.json": "922c0b078f219856e3776decdc314eae9eb4e492ce6f4b80016b8728fef363c0",
+    "ListDelay-positive/main.py": "f50d4586272abe372d72dce52428fd70accda65338a50f89ef398f2b00d20a51",
+    "ListDelay-positive/native.log": "4e26dae332c78e1b72398552e5b262f8493e1b5eb3d655c0f0460befb218a440",
+    "ListDelay-positive/observed.json": "ec3a9cdddee3c86eb1a8d90a087a5de63490084a236c36560b6169b9be0cc9b9",
+    "ListDelay-positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "fixture/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+    "fixture/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+    "fixture/dss/engine.py": "604663fb2a921922fc5318a31923b95523aec5193e31495ef310cacf1714a8ce",
+    "fixture/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+    "fixture/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+    "fixture/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+    "fixture/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+    "fixture/dss/server.py": "a136d929c27d7934cb72562b3be0849a19681040c42e2e959a139e055e7b3383",
+    "fixture/dss/uplink.py": "04bf381b2c4273e3aa107312586811c32cd4b2289a14151e7773960f6f08683a",
+    "fixture/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+    "fixture/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e"
+  },
+  "qualified_contracts": [],
+  "full_v05_accepted": false
+}
