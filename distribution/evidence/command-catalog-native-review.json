@@ -1,0 +1,247 @@
+{
+  "state": "11 native catalog and critical-confirmation cases passed; ordered native child statuses, Unicode metadata and no-effect cancellation independently checked",
+  "source_commit": "4bf655f",
+  "native_cases": 11,
+  "runtime_image": "sha256:61ac99f88dd79b985790cf658277e1766b67bff714bc3f1b730d026ac6170df7",
+  "native_result": {
+    "path": "C:\\obcommand_catalog\\.qualification\\command-catalog\\044dc6353748409ba0d90bcf1e254aad\\result.json",
+    "sha256": "dab7f4b45ff49645250c5f27cc573a22db50caf3b8496f9f94e4f77ada742c5e"
+  },
+  "pipeline": {
+    "path": "C:\\obcommand_catalog\\.qualification\\command-catalog-candidate\\829e0e5273bb4acca04643afd2e9ed25\\result.json",
+    "sha256": "f47fed2df1c80d4f1bbc5cc0262bad43fee7165f9d58987a2e7b74debc160cf3"
+  },
+  "observations": {
+    "Sequence:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": {
+        "Csp": "main:23:main:14/0",
+        "DataType": "ITEM",
+        "ExecutorMode": "PROCEDURE",
+        "ItemName": "SEQNAME,,0@CMD1,,1@CMD2,,2@CMD3",
+        "ItemReason": " ,, ,, ,, ",
+        "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+        "ItemTime": "2026-10-16 16:14:30.905,,2026-10-16 16:14:29.654,,2026-10-16 16:14:30.127,,2026-10-16 16:14:30.702",
+        "ItemType": "EXECUTION",
+        "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+        "ProcId": "main#1",
+        "SCount": "4",
+        "Sequence": "31",
+        "Time": "2026-10-16 16:14:30"
+      },
+      "prompt_answers": []
+    },
+    "Sequence:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": {
+        "Csp": "main:23:main:14/0",
+        "DataType": "ITEM",
+        "ExecutorMode": "PROCEDURE",
+        "ItemName": "SEQ.DUPLICATE,,0@CMD1,,1@CMD1,,2@CMD2",
+        "ItemReason": " ,, ,, ,, ",
+        "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+        "ItemTime": "2026-10-16 16:14:41.332,,2026-10-16 16:14:40.177,,2026-10-16 16:14:40.656,,2026-10-16 16:14:41.109",
+        "ItemType": "EXECUTION",
+        "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+        "ProcId": "main#1",
+        "SCount": "4",
+        "Sequence": "31",
+        "Time": "2026-10-16 16:14:41"
+      },
+      "prompt_answers": []
+    },
+    "Sequence:failure": {
+      "binary_stages": [],
+      "native_sequence_final": null,
+      "prompt_answers": []
+    },
+    "Sequence:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": {
+        "Csp": "main:24:main:14/1",
+        "DataType": "ITEM",
+        "ExecutorMode": "PROCEDURE",
+        "ItemName": "SEQ.DUPLICATE,,0@CMD1,,1@CMD1,,2@CMD2",
+        "ItemReason": " ,, ,, ,, ",
+        "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+        "ItemTime": "2026-10-16 16:15:01.284,,2026-10-16 16:15:00.161,,2026-10-16 16:15:00.611,,2026-10-16 16:15:01.080",
+        "ItemType": "EXECUTION",
+        "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+        "ProcId": "main#1",
+        "SCount": "4",
+        "Sequence": "44",
+        "Time": "2026-10-16 16:15:01"
+      },
+      "prompt_answers": []
+    },
+    "Sequence:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION",
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": {
+        "Csp": "main:23:main:14/0",
+        "DataType": "ITEM",
+        "ExecutorMode": "PROCEDURE",
+        "ItemName": "SEQNAME,,0@CMD1,,1@CMD2,,2@CMD3",
+        "ItemReason": " ,, ,, ,, ",
+        "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+        "ItemTime": "2026-10-16 16:15:11.775,,2026-10-16 16:15:10.653,,2026-10-16 16:15:11.102,,2026-10-16 16:15:11.572",
+        "ItemType": "EXECUTION",
+        "ItemValue": "ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION,,ONBOARD_EXECUTION",
+        "ProcId": "main#1",
+        "SCount": "4",
+        "Sequence": "31",
+        "Time": "2026-10-16 16:15:11"
+      },
+      "prompt_answers": []
+    },
+    "SequenceLoadOnly:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "TRANSPORT",
+        "LOADING",
+        "TRANSPORT",
+        "LOADING"
+      ],
+      "native_sequence_final": {
+        "Csp": "main:23:main:14/0",
+        "DataType": "ITEM",
+        "ExecutorMode": "PROCEDURE",
+        "ItemName": "SEQNAME,,0@CMD1,,1@CMD2,,2@CMD3",
+        "ItemReason": " ,, ,, ,, ",
+        "ItemStatus": "SUCCESS,,SUCCESS,,SUCCESS,,SUCCESS",
+        "ItemTime": "2026-10-16 16:15:22.770,,2026-10-16 16:15:21.656,,2026-10-16 16:15:22.110,,2026-10-16 16:15:22.524",
+        "ItemType": "EXECUTION",
+        "ItemValue": "LOADING,,LOADING,,LOADING,,LOADING",
+        "ProcId": "main#1",
+        "SCount": "4",
+        "Sequence": "31",
+        "Time": "2026-10-16 16:15:22"
+      },
+      "prompt_answers": []
+    },
+    "ConfirmCritical:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": null,
+      "prompt_answers": [
+        "O"
+      ]
+    },
+    "ConfirmCritical:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": null,
+      "prompt_answers": []
+    },
+    "ConfirmCritical:failure": {
+      "binary_stages": [],
+      "native_sequence_final": null,
+      "prompt_answers": [
+        "C"
+      ]
+    },
+    "ConfirmCritical:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": null,
+      "prompt_answers": [
+        "C",
+        "O"
+      ]
+    },
+    "ConfirmCritical:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_sequence_final": null,
+      "prompt_answers": [
+        "O"
+      ]
+    }
+  },
+  "qualified_contracts": [],
+  "full_v05_accepted": false
+}
