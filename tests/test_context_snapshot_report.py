@@ -21,7 +21,8 @@ def evidence():
 
 def test_diagnostic_evidence_retains_all_controls(evidence):
     record, paths, directory, _ = evidence
-    actual = qualify(paths, directory, Path(record['retained_failure']['path']))
+    actual = qualify(paths, directory, Path(record['retained_failure']['path']),
+                     source_revision='406bab3')
     assert actual['passed_checks'] == {'errors':8,'recovery':22,'startup':40}
     assert actual['qualified_contracts'] == [] and not actual['full_v05_accepted']
     assert actual['probes']['probes']['original']['observation']['coherent'] is False

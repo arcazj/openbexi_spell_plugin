@@ -119,7 +119,7 @@ def verify_archive(path, raw, kind):
             assert 'AddressSanitizer:' not in row.get('log','') and 'runtime error:' not in row.get('log','')
 
 
-def qualify(paths, directory, failure_path):
+def qualify(paths, directory, failure_path, source_revision=None):
     raws = {kind:json.loads(path.read_bytes()) for kind,path in paths.items()}
     assert set(paths) == {'errors','recovery','startup'}
     runtime = raws['startup']['runtime_sources']
@@ -127,7 +127,16 @@ def qualify(paths, directory, failure_path):
     inputs = {}
     for kind, count in [('errors',8),('recovery',22),('startup',40)]:
         raw, path = raws[kind], paths[kind]
-        validate_report(path, image, count)
+        if source_revision is None:
+            validate_report(path, image, count)
+        else:
+            # Diagnostic history remains verifiable after the composition changes.
+            # This never substitutes for validation of a newly composed runtime.
+            assert raw['runtime_image'] == image and raw.get('controller_exit_code', 0) == 0
+            assert raw['inputs']
+            for name, digest in raw['inputs'].items():
+                content = subprocess.check_output(['git', 'show', source_revision + ':' + name], cwd=ROOT)
+                assert hashlib.sha256(content).hexdigest() == digest, name
         assert raw['passed'] and len(raw['checks']) == count and raw['runtime_sources'] == runtime
         qualification_identity(runtime, raw['inputs'], raw.get('lf_normalized_inputs'))
         verify_archive(path, raw, kind)
