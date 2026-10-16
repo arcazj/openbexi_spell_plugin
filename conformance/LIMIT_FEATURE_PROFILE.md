@@ -40,11 +40,14 @@ the definitions. The normal file is a GENERIC simulator fixture, not a vendor
 ground-system file. RestoreNormalLimits returns to the profile's empty initial
 limit database without removing injected telemetry.
 
-The source has defects beyond its driver subset: EnableAlarm and DisableAlarm
-only display an unimplemented warning and return True; AdjustLimits passes an
-unsupported positional configuration; status conversion removes punctuation;
-STEP validation compares values with type objects. The candidate must replace
-these paths and demonstrate effects rather than accepting their return values.
+The retained native baseline confirms defects beyond the driver subset:
+EnableAlarm and DisableAlarm return True without changing alarm control; status
+adjustment fails on a list, STEP setup references an unassigned variable, and
+LoadLimits calls its driver with a missing argument. One numeric AdjustLimits
+condition with a per-condition tolerance already works in the baseline. The
+candidate extends that behavior with atomic multi-parameter and status updates.
+Status values must preserve punctuation, and alarm controls must demonstrate
+persisted effects rather than relying on their return values.
 
 The Language Reference section 4.8.7 says SetLimits in prose, while examples 103
 and 104 and the source API use AdjustLimits. The candidate follows AdjustLimits.
