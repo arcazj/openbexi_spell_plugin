@@ -30,7 +30,7 @@ def main():
            'conformance/ranging_complete.Dockerfile','source_port/ranging_complete_patches.py',
            'driver_plugin/src/openbexi_spell_dss/ranging_complete.py','driver_plugin/src/openbexi_dss_proxy/ranging_complete.py',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
-           'docs/reference/SPELL2.6.10-src.zip','conformance/MEMORY_NATIVE_BASELINE.md',*input_paths(ROOT),
+           'docs/reference/SPELL2.6.10-src.zip','conformance/RNG.md',*input_paths(ROOT),
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'src/dss').rglob('*')) if p.is_file() and p.suffix in ('.py','.json')],
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'host_runtime/python').glob('*.py'))]]
     inputs={n:sha(ROOT/n) for n in names}

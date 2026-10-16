@@ -28,7 +28,7 @@ def main():
     names=['conformance/ranging_complete_cases.py','conformance/ranging_complete_controller.py',
            'conformance/run_ranging_complete.py','conformance/inventory.json',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
-           'docs/reference/SPELL2.6.10-src.zip','conformance/MEMORY_NATIVE_BASELINE.md',*input_paths(ROOT),
+           'docs/reference/SPELL2.6.10-src.zip','conformance/RNG.md',*input_paths(ROOT),
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'src/dss').rglob('*')) if p.is_file() and p.suffix in ('.py','.json')],
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'host_runtime/python').glob('*.py'))]]
     inputs={n:sha(ROOT/n) for n in names}
