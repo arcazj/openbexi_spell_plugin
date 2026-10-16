@@ -77,6 +77,45 @@ class Limits:
             state['limits'][name] = {key: generic[key] for key in definitions.THRESHOLDS}
         else:state['limits'].pop(name, None)
 
+    def adjusted(self, state, settings):
+        if type(settings) is not dict or set(settings) != {'Conditions'}:
+            raise ValueError('Invalid limit adjustment request')
+        conditions = settings['Conditions']
+        if type(conditions) is not list or not 1 <= len(conditions) <= 128:
+            raise ValueError('Expected one to 128 adjustment conditions')
+        seen = set()
+        for condition in conditions:
+            if type(condition) is not dict or set(condition) != {'Parameter', 'Value', 'Tolerance', 'Select'}:
+                raise ValueError('Invalid limit adjustment condition')
+            name, value = condition['Parameter'], condition['Value']
+            self.database.item(name)
+            if name in seen:raise ValueError('Duplicate adjustment parameter')
+            seen.add(name)
+            rows = self.collection(state, name)
+            keys = definitions.selected(rows, condition['Select'], self.active)
+            if not rows and condition['Select'] in ('ACTIVE', 'ALL'):keys = ['GENERIC']
+            if not keys:raise ValueError('No selected limit definitions to adjust')
+            for key in keys:
+                old = rows.get(key)
+                if type(value) is str or type(value) is list:
+                    values = [value] if type(value) is str else value
+                    if not values:raise ValueError('Expected nominal status values')
+                    # Validate exact strings and duplicates before touching the old lists.
+                    fresh = definitions.definition({'Nominal': values})
+                    if old is not None and old['Type'] != 'STATUS':
+                        raise ValueError('Status adjustment requires a STATUS definition')
+                    patch = {status: list((old or fresh)[status]) for status in definitions.STATUSES}
+                    for status in ('Warning', 'Error', 'Ignore'):
+                        patch[status] = [item for item in patch[status] if item not in values]
+                    patch['Nominal'] += [item for item in values if item not in patch['Nominal']]
+                else:
+                    if old is not None and old['Type'] != 'HARDSOFT':
+                        raise ValueError('Numeric adjustment requires a HARDSOFT definition')
+                    patch = {'Midpoint': definitions.number(value), 'Tolerance': definitions.number(condition['Tolerance'])}
+                rows[key] = definitions.definition(patch, old)
+            self.validate_types(name, rows)
+            self.publish(state, name, rows)
+
     def change(self, mutation, check):
         def validate():
             state = self.ground.state()
@@ -138,6 +177,9 @@ class Limits:
             if payload.get(CONTROL) != PROFILE or set(payload)-{CONTROL, 'Operation', 'Settings'}:
                 raise ValueError('Unknown limit payload profile')
             operation, settings = payload.get('Operation'), payload.get('Settings')
+            if operation == 'Adjust':
+                if name:raise ValueError('Adjustments identify parameters in their conditions')
+                return self.change(lambda state: self.adjusted(state, settings), check)
             if operation == 'Load':
                 if name or type(settings) is not dict or set(settings) != {'File'}:
                     raise ValueError('Invalid limit file request')

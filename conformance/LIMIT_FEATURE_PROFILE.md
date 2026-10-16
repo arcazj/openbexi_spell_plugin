@@ -58,3 +58,10 @@ parentheses; it was corrected to test actual nested Boolean operators. A
 standalone test import failure was corrected by making its local source path
 explicit. The retained JUnit files are under .qualification; these results do
 not substitute for the pending native suite and independent evidence review.
+
+The second backend/adapter pass includes 40 checks (18 syntax and 22 real RPC
+checks). It exercises an actual journal close/reopen and atomic multi-parameter
+adjustments. The native candidate contains 48 scenarios across 12 feature groups,
+each with positive, boundary, failure and recovery cases. Its diagnostic image
+must replay every source change over a verified composed wheel and retain the
+normal limit-file bytes. Running these cases remains a separate pending gate.

@@ -117,11 +117,16 @@ def test_alarm_enable_disable_and_restart_preserve_real_storage(env):
     assert alarm(env)
     assert operation(env, 'Alarm', {'Enabled': False})
     assert not alarm(env)
+    path = env.journal.db.execute('PRAGMA database_list').fetchone()[2]
+    env.journal.close()
+    env.journal = type(env.journal)(path)
+    env.dispatcher.journal = env.journal
     env.dispatcher.ground = type(env.dispatcher.ground)(env.transport, env.journal)
     assert not alarm(env)
     assert get(env, Select='GENERIC', Value='LoRed') == 10
     assert operation(env, 'Alarm', {'Enabled': True})
     assert alarm(env)
+    env.journal.close()
 
 
 def test_dynamic_algorithm_uses_catalog_values_and_rejects_invalid_source(env):
@@ -171,6 +176,46 @@ def test_limit_file_has_actual_persisted_hash_and_atomic_definitions(env):
     for uri in ('limits://absent', 'limits://../normal', 'file://normal'):
         with pytest.raises(ValueError):operation(env, 'Load', {'File': uri}, '')
         assert snapshot(env) == before
+
+
+def adjustment(name, value, tolerance=0, selection='ACTIVE'):
+    return dict(Parameter=name, Value=value, Tolerance=tolerance, Select=selection)
+
+
+def test_condition_adjustment_uses_each_tolerance_and_moves_exact_status_members(env):
+    assert set_limits(env, Definition=dict(HARD, Name='Keep metadata'))
+    assert set_limits(env, 'TM.CORE.MODE', Definition={'Nominal': ['NOMINAL'], 'Warning': ['SAFE'], 'Error': ['FAILED']})
+    assert operation(env, 'Adjust', {'Conditions': [adjustment('TMparam', 3.4, .1),
+        adjustment('TM.CORE.MODE', ['SAFE'])]}, '')
+    row = get(env, Select='GENERIC')
+    assert row['LoRed'] == pytest.approx(3.3) and row['HiRed'] == pytest.approx(3.5)
+    assert row['Name'] == 'Keep metadata'
+    row = get(env, 'TM.CORE.MODE', Select='GENERIC')
+    assert row['Nominal'] == ['NOMINAL', 'SAFE'] and row['Warning'] == [] and row['Error'] == ['FAILED']
+    assert operation(env, 'Adjust', {'Conditions': [adjustment('TM.CORE.MODE', 'FAILED')]}, '')
+    assert get(env, 'TM.CORE.MODE', Select='GENERIC', Value='Error') == []
+
+
+def test_last_invalid_adjustment_rolls_back_all_parameters_and_recovers(env):
+    assert set_limits(env, Definition=HARD)
+    before = snapshot(env)
+    with pytest.raises(ValueError):operation(env, 'Adjust', {'Conditions': [
+        adjustment('TMparam', 3.4, .1), adjustment('TM.CORE.MODE', 25)]}, '')
+    assert snapshot(env) == before
+    assert operation(env, 'Adjust', {'Conditions': [adjustment('TMparam', 3.4, .1)]}, '')
+    assert get(env, Select='GENERIC', Value='Midpoint') == pytest.approx(3.4)
+
+
+def test_invalid_reading_does_not_change_hysteresis_and_recovery_requires_new_sample(env):
+    assert set_limits(env, Definition=dict(HARD, Hysteresis=2))
+    assert inject(env, 50)
+    assert not alarm(env)
+    assert inject(env, 50, valid=False)
+    before = snapshot(env)
+    with pytest.raises(ValueError):alarm(env)
+    assert snapshot(env) == before
+    assert inject(env, 50)
+    assert alarm(env)
 
 
 def test_receipted_duplicate_never_reapplies_after_another_update(env):
