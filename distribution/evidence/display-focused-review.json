@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "scope": "Focused repository-source protobuf/HTTP tests; native display and full-language qualification still pending",
+  "tests": 45,
+  "junit": {
+    "path": "C:\\obdisplay_impl\\.qualification\\display-application-tests-06.xml",
+    "sha256": "c263a9300bdcfd6fe772588f7d18b8820e9f21f5808ff6034734178db1438c3a"
+  },
+  "retained_failure": {
+    "path": "C:\\obdisplay_impl\\.qualification\\display-spool-capacity-failure\\result.json",
+    "sha256": "7fc9b014bd4470845e3243397f108a891d48d633db7fc627854f22f074b37155"
+  },
+  "correction": "Deduplicate acquired snapshots and preview the complete state transition before the effect journal records an intent; preserve cached receipt and unresolved effect behavior. Native follow-up preserves original completion delays, removes helper-owned AllowInterrupt from display RPC, and uses original explicit-relative TIME syntax.",
+  "inputs": {
+    "driver_plugin/src/openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
+    "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+    "source_port/display_patches.py": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
+    "tests/test_gcs_display_application.py": "c841949f3b3b5c0ed2e4661234ba71854e3258248df95b4c7036293a028de218",
+    "conformance/display_cases.py": "5ae7b1dbf69eea492302090ea4d26ac0a49a33ce169982dc94e88bb3f3163f4e",
+    "conformance/display_contracts.py": "c90f85751e32808fc695ad8f34ea42e46ba1a04550a8a5d420d0ee56460d186d",
+    "conformance/GCS_DISPLAY_IMPLEMENTATION.md": "7820fc85ad120242d833bd8e44814963fb7aee7ce7b825a4af6872a6a226476a"
+  },
+  "candidate_native_cases": 35,
+  "qualified_contracts": [],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "retained_native_failure": {
+    "path": "C:\\obdisplay_impl\\.qualification\\gcs-display\\7c85b47014ba4e648845bd0bd1c01493\\result.json",
+    "sha256": "54bf73196f9ecfb7cc51ef78750c0714a110a73ba0163c34d204b542d1e62077",
+    "source_commit": "8767b5d24c6fd43eb85ec8c768b17468241d0e57"
+  }
+}

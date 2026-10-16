@@ -10,6 +10,9 @@ requires-python = ">=3.13,<3.14"
 license = "GPL-3.0-or-later"
 dependencies = ["grpcio==1.84.0", "protobuf==7.36.2"]
 
+[project.scripts]
+openbexi-spell-displays = "openbexi_spell_dss.display_viewer:main"
+
 [project.optional-dependencies]
 service = ["openbexi-spell-plugin==0.1.0", "kafka-python==3.0.11"]
 
