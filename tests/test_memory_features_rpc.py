@@ -164,6 +164,31 @@ def test_proxy_embedded_fields_and_integer_addresses_cross_original_rpc(env,inte
     assert module.database('CMD1','TC','GENERIC',{'AllowInterrupt':interruptible,'Name':'CMD1','Type':'TC','Source':'GENERIC','Begin':'3','End':'4'})=={}
 
 
+def test_original_tm_adapter_defaults_allow_exact_and_bounded_catalog_queries(env):
+    module=proxy(env)
+    # These are the original TmInterface.INTERFACE_DEFAULTS, in addition to the
+    # helper-owned options exercised above. The native suite tests their actual
+    # merge by the original adapter, without replacing the helper or its config.
+    config={'Timeout':15,'Retries':2,'Tolerance':0,'RelTolerance':1e-9,
+            'Wait':False,'IgnoreCase':False,'ValueFormat':'Eng format',
+            'AllowInterrupt':False,'Notify':True,'HandleError':False,'PromptUser':False}
+    assert module.database('TM.POWER.BUS_VOLTAGE','TM','GENERIC',config)['item_code']==1
+    assert module.database('CMD1','TC','GENERIC',dict(config,Begin='3',End='4'))=={}
+    assert env.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
+
+
+@pytest.mark.parametrize('key,value',[
+    ('Timeout',30),('Retries',3),('Tolerance',1),('RelTolerance',.1),
+    ('Wait',True),('IgnoreCase',True),('Wait',0),('Unknown',True),
+])
+def test_catalog_rejects_nondefault_acquisition_or_unknown_options(env,key,value):
+    module=proxy(env);calls=[]
+    module.call=lambda *args:calls.append(args)
+    with pytest.raises(RuntimeError,match='Unsupported database query modifier'):
+        module.database('CMD1','TC','GENERIC',{key:value})
+    assert calls==[]
+
+
 def test_proxy_writes_ascii_atomically_and_preserves_existing_file_on_rpc_failure(env,tmp_path):
     capture(env)
     module=proxy(env);root=tmp_path/'reports';root.mkdir()
