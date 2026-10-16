@@ -123,7 +123,7 @@ def case_proof(name,spec,row,project):
         refreshes=refreshes,repairs=len(repairs)+len(controls),terminal_status=row['status'],qualified_contracts=[])
 
 
-def review(path,overlay,limit_overlay,revision,image):
+def review(path,overlay,limit_overlay,revision,image,native_wheel=None,driver_wheel=None):
     raw=read(path);specs=cases(revision)
     validate_report(path,image,4,source_revision=revision)
     assert raw['passed'] and not raw['timed_out'] and raw['controller_exit_code']==0
@@ -137,10 +137,19 @@ def review(path,overlay,limit_overlay,revision,image):
     for name in ('telemetry_policy_cases.py','telemetry_policy_controller.py','telemetry_surface_cases.py','telemetry_features_provenance.py','installed_provenance.py'):
         assert sha(workspace/name)==raw['inputs']['conformance/'+name]
     assert read(workspace/'host-inputs.json')==raw['host_inputs']
-    provenance(raw,overlay,limit_overlay,revision)
+    composed=None
+    if raw['runtime_sources']['profile']=='fresh-composed-limit-telemetry-wheel/1':
+        from limit_telemetry_sources import verify
+        assert native_wheel is not None and driver_wheel is not None
+        assert overlay is None and limit_overlay is None
+        composed=verify(raw,native_wheel,driver_wheel)
+    else:
+        assert native_wheel is None and driver_wheel is None
+        provenance(raw,overlay,limit_overlay,revision)
     checks={name:case_proof(name,specs[name],row,workspace/name.replace(':','__')) for name,row in raw['checks'].items()}
     return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),checks=checks,
-        overlay=str(overlay.resolve()),limit_overlay=str(limit_overlay.resolve()),
+        overlay=str(overlay.resolve()) if overlay else None,limit_overlay=str(limit_overlay.resolve()) if limit_overlay else None,
+        composed_wheels=composed,
         review_source=ref(Path(__file__)),source_inputs=raw['inputs'],artifacts=raw['artifacts'],
         qualified_contracts=[],full_v05_accepted=False,scope='Four original GetTM failure actions; full composed telemetry mapping remains pending')
 
@@ -148,9 +157,10 @@ def review(path,overlay,limit_overlay,revision,image):
 if __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser()
-    for key in ('raw','overlay','limit-overlay','output'):parser.add_argument('--'+key,type=Path,required=True)
+    for key in ('raw','output'):parser.add_argument('--'+key,type=Path,required=True)
+    for key in ('overlay','limit-overlay','native-wheel','driver-wheel'):parser.add_argument('--'+key,type=Path)
     for key in ('revision','image'):parser.add_argument('--'+key,required=True)
-    args=parser.parse_args();result=review(args.raw,args.overlay,args.limit_overlay,args.revision,args.image)
+    args=parser.parse_args();result=review(args.raw,args.overlay,args.limit_overlay,args.revision,args.image,args.native_wheel,args.driver_wheel)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(passed=True,cases=4,output=str(args.output))))
