@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
+  "runtime_image": "sha256:abdd4fcde9b4dc7e21eca1424f53707d178cf1c09785e39a480c6ec751c92802",
   "inputs": {
     "conformance/prompt_timeout_cases.py": "1f1508ec11280808f31f11acf7d03fecd81c8f339915b3eab91ef419565488c3",
     "conformance/prompt_timeout_controller.py": "3296fdcf8d2252067b6c5fe15b55dc7eed02075ac1af1063f8c21b0abab464f2",
@@ -8,7 +8,7 @@
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
+    "conformance/installed_provenance.py": "5872fd23deea57300645c32db8cd753107d051d69ec746b9b1de3998bedef670",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
     "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -16,16 +16,20 @@
     "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
     "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+    "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
     "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
     "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+    "source_port/display_patches.py": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
+    "source_port/integrated_patches.py": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -49,8 +53,11 @@
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
     "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
-    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
+    "driver_plugin/pyproject.toml": "f41a887babca86d43efe98f1b802bb1c77673963e7908e20f3d01860537baf1a",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
+    "driver_plugin/src/openbexi_dss_proxy/command_group.py": "a69012b3a59670ad1dcb67fbe5264ba52b7400356172e2c7ce95d6475441333d",
+    "driver_plugin/src/openbexi_dss_proxy/command_settings.py": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
     "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
     "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
@@ -68,6 +75,16 @@
     "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
     "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
     "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/command_blocks.py": "6bb03cca63283bf244010c74b037960367493144d8879818897ad387ce9a5767",
+    "driver_plugin/src/openbexi_spell_dss/command_budget.py": "08d6858bec5f168ff96c7a12b95a111f2a4391a22f0d929a7f788bf230f675da",
+    "driver_plugin/src/openbexi_spell_dss/command_catalog.py": "5674d07c2dcf62782dd4fc8e05a9ef7084c04a57b982b22a75325941ff496764",
+    "driver_plugin/src/openbexi_spell_dss/command_execution.py": "3c7d048327ae4338ae9d4c72597acdb6d468ec63f19ae96fef1c7882d580e477",
+    "driver_plugin/src/openbexi_spell_dss/command_group_rpc.py": "9c6443989c617efdaaaeb45b7bf241cfb05ae1b2868a93f391a38e145c8f78ac",
+    "driver_plugin/src/openbexi_spell_dss/command_groups.py": "f54ed3eac7d3bdb231f3b5513941224e8228f51864205b1c7dc34551764ac023",
+    "driver_plugin/src/openbexi_spell_dss/command_results.py": "5eebfd3c44893d6fb1ce5eab55099c85f016fb72b5dc3cce11c97d4a6851270f",
+    "driver_plugin/src/openbexi_spell_dss/command_rpc.py": "387ac050ebeb69ed6e862e6f4f39051d85db7b0925feacf4aebd7b422553dc99",
+    "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+    "driver_plugin/src/openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
     "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
     "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
     "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
@@ -78,7 +95,7 @@
     "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
     "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
     "conformance/prompt_timeout_report.py": "66a8c2ef9f935ab948ad66fc5ad23c8ac7de2d85f54a96d7c8194c9e577f41ca",
-    "distribution/run_language_regressions.py": "e2c95c07b0f8e335cc35d0eeddd5553320a6d4e0138498a5a82467fff78a08c1"
+    "distribution/run_language_regressions.py": "44801e1299014a2a6f983edd89bc7141de8d92f8df1b3dd46fc7a16390567788"
   },
   "checks": {
     "default:positive": {
@@ -102,18 +119,18 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "TIMED_DEFAULT",
-            "Time": "1792159330209733"
+            "Time": "1792179788184513"
           },
-          "received": 50386.6380466
+          "received": 70844.468764
         }
       ],
       "answers": [],
       "status": "FINISHED",
       "result": {
         "answer": "B",
-        "elapsed": 0.5207861000017147
+        "elapsed": 0.5208539000013843
       },
-      "events_sha256": "e1bf475d4cfaa807b436b683c5953f863461471863d6f243e5debf0c0ba16cc2"
+      "events_sha256": "bcb8529f539c2c0f67cac1dc11055bd179e2ac87c2d461842b6bb14c75637bec"
     },
     "default:boundary": {
       "passed": true,
@@ -136,9 +153,9 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "EXPLICIT_ANSWER",
-            "Time": "1792159338615974"
+            "Time": "1792179796605361"
           },
-          "received": 50395.0457754
+          "received": 70852.8939649
         }
       ],
       "answers": [
@@ -148,7 +165,7 @@
       "result": {
         "answer": "B"
       },
-      "events_sha256": "2417ca7731f5827c7e5bc113230c4b8a03191822a32267e7c9999c3ced6f7c32"
+      "events_sha256": "e15cd3c6ea755dfa551e8932efd67bb3c4edd5b8f9b789c9ef5e7b72a533db4b"
     },
     "default:failure": {
       "passed": true,
@@ -161,7 +178,7 @@
       "prompts": [],
       "answers": [],
       "status": "FINISHED",
-      "events_sha256": "c6e29c1968403dd281b7aeb38a050c20637130db72b4c41b714a94534499c4d3"
+      "events_sha256": "2a7fb9f79e61c8f6d5e80cccbf7c589a76e2e50cc6073facba5cbe9c08e50c19"
     },
     "default:recovery": {
       "passed": true,
@@ -182,20 +199,20 @@
             "OptionValues": "A :Option 1\u0004B :Option 2",
             "ProcId": "main#1",
             "Scope": "1",
-            "Sequence": "21",
+            "Sequence": "20",
             "Text": "TIMED_DEFAULT",
-            "Time": "1792159355568332"
+            "Time": "1792179813334361"
           },
-          "received": 50412.0429321
+          "received": 70869.6649722
         }
       ],
       "answers": [],
       "status": "FINISHED",
       "result": {
         "answer": "A",
-        "elapsed": 0.5957637000028626
+        "elapsed": 0.5961027000012109
       },
-      "events_sha256": "2c86cf0bb4bb2cf35084509a7065ef0812fdb6e1063d7f13752492f1bb991d0f"
+      "events_sha256": "4033e710efe5743c2d595643d81b45934cdda8c10b62272311ce1dd8ac8527fe"
     },
     "minute:positive": {
       "passed": true,
@@ -218,18 +235,18 @@
             "Scope": "1",
             "Sequence": "16",
             "Text": "TIMED_DEFAULT",
-            "Time": "1792159363871794"
+            "Time": "1792179821806395"
           },
-          "received": 50420.2977435
+          "received": 70878.0877408
         }
       ],
       "answers": [],
       "status": "FINISHED",
       "result": {
         "answer": "A",
-        "elapsed": 60.27611080000497
+        "elapsed": 60.25185769998643
       },
-      "events_sha256": "01efdb0c617b023c84d9d26dce61e0c2b672af9bc97e38debfafc84e607b9acb"
+      "events_sha256": "f24bff6333bf8eb237e338e658605efc61234e0d7911c64866dc37cbe178e100"
     },
     "no-timeout:boundary": {
       "passed": true,
@@ -252,9 +269,9 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "EXPLICIT_ANSWER",
-            "Time": "1792159432310741"
+            "Time": "1792179890223305"
           },
-          "received": 50488.7367246
+          "received": 70946.5027531
         }
       ],
       "answers": [
@@ -264,7 +281,7 @@
       "result": {
         "answer": "B"
       },
-      "events_sha256": "93b9c5d7daa873e8f31b44c78366bfaa9cc69c10a12d02854fa6317e0eb1199f"
+      "events_sha256": "678077546c1e9a293914c536b846081546476dcdefef029208f02f886f3a9f72"
     },
     "no-default:boundary": {
       "passed": true,
@@ -287,9 +304,9 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "EXPLICIT_ANSWER",
-            "Time": "1792159440720749"
+            "Time": "1792179898683475"
           },
-          "received": 50497.1467041
+          "received": 70954.9647444
         }
       ],
       "answers": [
@@ -299,7 +316,7 @@
       "result": {
         "answer": "B"
       },
-      "events_sha256": "1c724fb1e91869a6045fdfdc50884e3a53c63c2e8d57b341125c5c9acd3464f7"
+      "events_sha256": "73941557029040a045c0b3eb2c720e4ad04f2830af435df0c67363e77665013a"
     },
     "operator:positive": {
       "passed": true,
@@ -322,9 +339,9 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "EXPLICIT_ANSWER",
-            "Time": "1792159451952330"
+            "Time": "1792179909100518"
           },
-          "received": 50507.5228015
+          "received": 70965.3807351
         }
       ],
       "answers": [
@@ -334,7 +351,7 @@
       "result": {
         "answer": "B"
       },
-      "events_sha256": "ffa5cee1626896e746c74e45a18e98c0571b5808912d2708c77083298198306c"
+      "events_sha256": "3da048fd0358be43cbaae8a248577e403712220fd36772e9e19a22572004bb1b"
     },
     "duplicate:boundary": {
       "passed": true,
@@ -357,9 +374,9 @@
             "Scope": "1",
             "Sequence": "14",
             "Text": "EXPLICIT_ANSWER",
-            "Time": "1792159459463523"
+            "Time": "1792179917513392"
           },
-          "received": 50515.8943227
+          "received": 70973.7917399
         }
       ],
       "answers": [
@@ -370,7 +387,7 @@
       "result": {
         "answer": "B"
       },
-      "events_sha256": "78bfaf046d530f63634bb4a918999b7d6fc68bf06b8c8775ece20fc6b58fbe4a"
+      "events_sha256": "828888e3ad68202ce4f2ce47d814c9bec8722b24823281eaef1b471c07442cbe"
     },
     "cancel:failure": {
       "passed": true,
@@ -393,22 +410,22 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "CANCEL_TIMED_DEFAULT",
-            "Time": "1792159467855921"
+            "Time": "1792179925938913"
           },
-          "received": 50524.2827952
+          "received": 70982.2166466
         }
       ],
       "answers": [
         "CANCEL"
       ],
       "status": "ABORTED",
-      "events_sha256": "c844100518ec90984e3bc7d245ec09e4bd219bed04c59b525a31f36e51f3c5fb"
+      "events_sha256": "a8314382ef37a999468053a6235a81420b2619ad0cbc0dcff940b7bc19565078"
     }
   },
   "runtime_sources": {
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "0b8fd555070e212eb2f744896ed34ec3baae8066249f75947f2bad35d25ac321",
+      "manifest_sha256": "f51b755963615b6d03e3d8622474613fdd4ff765e5000b7966883f11a12e8d5c",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -417,9 +434,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "a09d70f50e40c642086fd1ebf8dfc2b4901073bd280618357836b38d618ec367"
+              "integrated_identity": "43a7b6937f3a9a8b9875820154d2e73b78e24bad919bd82954f60987254c16e7"
             },
-            "manifest_sha256": "1237f5ee21160bab55eddc99e6c708f0512fda47f37e6c589c758fc8d25a9762",
+            "manifest_sha256": "a8f06d2ab1163e92706fade4788f2c20d195a86884f8c99c4dff3e8e40c0b4d7",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -441,6 +458,18 @@
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
               },
+              "command_catalog_patches.py": {
+                "lf_sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+                "sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502"
+              },
+              "command_feature_patches.py": {
+                "lf_sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+                "sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0"
+              },
+              "command_group_patches.py": {
+                "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+                "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
+              },
               "context_snapshot_patches.py": {
                 "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
                 "sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0"
@@ -460,6 +489,10 @@
               "database_values_patches.py": {
                 "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
                 "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
+              "display_patches.py": {
+                "lf_sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
+                "sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -482,8 +515,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
-                "sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d"
+                "lf_sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
+                "sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a"
               },
               "ipc_mailbox_patches.py": {
                 "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
@@ -590,7 +623,7 @@
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "a96f898f460d6e6a156cbc5f5e9eee850542585e22a9486a26ea2e81adc19c6c",
+                "patched_sha256": "f7f9ea343aa704d072a0b248a6a28d25138818ed141933fc5063cc9edae02360",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -1002,7 +1035,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "a96f898f460d6e6a156cbc5f5e9eee850542585e22a9486a26ea2e81adc19c6c",
+                    "after_sha256": "f7f9ea343aa704d072a0b248a6a28d25138818ed141933fc5063cc9edae02360",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -1011,7 +1044,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "ceed5f189739780e70635573a9605a38841fccae72714e43b8594da554bccd42",
+            "manifest_sha256": "95396781cff3c430f1c243549c643d4b987e98d40099f4de6822535f4cb8c8d8",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1033,6 +1066,18 @@
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
               },
+              "command_catalog_patches.py": {
+                "lf_sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+                "sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502"
+              },
+              "command_feature_patches.py": {
+                "lf_sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+                "sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0"
+              },
+              "command_group_patches.py": {
+                "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+                "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
+              },
               "context_snapshot_patches.py": {
                 "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
                 "sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0"
@@ -1052,6 +1097,10 @@
               "database_values_patches.py": {
                 "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
                 "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
+              "display_patches.py": {
+                "lf_sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
+                "sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610"
               },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
@@ -1074,8 +1123,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
-                "sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d"
+                "lf_sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
+                "sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a"
               },
               "ipc_mailbox_patches.py": {
                 "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
@@ -1176,6 +1225,16 @@
             },
             "schema": "openbexi.spell.integrated-python/1",
             "sources": {
+              "spell/lang/constants.py": {
+                "original_sha256": "0a343ec475546ea1020d6558019f520f686c90304904bd4dcf67efb7ce57cbc9",
+                "patched_sha256": "2497936cae1dda6540a7d85e3a956f646a56779c65d8789e0f9582b6bba89063",
+                "ported_sha256": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63"
+              },
+              "spell/lang/functions.py": {
+                "original_sha256": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735",
+                "patched_sha256": "b052dea1d9701117d703462dec427d5d120f4e99b6b77a2d3df2dab0e797ce11",
+                "ported_sha256": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735"
+              },
               "spell/lang/helpers/basehelper.py": {
                 "original_sha256": "8cbca48bb966b427455acc74177448c73cbb1e31898181a923331afe99b8cd81",
                 "patched_sha256": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
@@ -1213,7 +1272,7 @@
               },
               "spell/lang/helpers/tchelper.py": {
                 "original_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
-                "patched_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+                "patched_sha256": "5ed1798b28ec307e2e007d85243b4461725b0d89acf4568e95c042cbac7ddc51",
                 "ported_sha256": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd"
               },
               "spell/lang/helpers/tmhelper.py": {
@@ -1221,9 +1280,14 @@
                 "patched_sha256": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
                 "ported_sha256": "cb9a59b147e1079953b7e625273093ddeebe0515d4140f5514844b162154b832"
               },
+              "spell/lang/helpers/tskhelper.py": {
+                "original_sha256": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
+                "patched_sha256": "31c104b833dc30a01a560e74036e1499cdb14f86ee25a29b56448ffe685b8c4a",
+                "ported_sha256": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f"
+              },
               "spell/lang/modifiers.py": {
                 "original_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df",
-                "patched_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+                "patched_sha256": "033dff13d12a12ec7f1fcfd9a7c6ef38709228bd41509664a56074236e0b60ab",
                 "ported_sha256": "799c35daa6af10f8755decb6a5e12a366547ac38ef99138898b294ff4421d8df"
               },
               "spell/lib/adapter/config.py": {
@@ -1261,9 +1325,19 @@
                 "patched_sha256": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
                 "ported_sha256": "c33189285856245aaf0c530ec26c05306357ad9bc4aa860120131dfa2a2e8c15"
               },
+              "spell/lib/adapter/task.py": {
+                "original_sha256": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
+                "patched_sha256": "1313165d80bb4d55e4b733d084850e3a405b1527bd6fa5b8830326a60ed5f59b",
+                "ported_sha256": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe"
+              },
+              "spell/lib/adapter/tc.py": {
+                "original_sha256": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
+                "patched_sha256": "c3ba72030cc9e84a6919547448c56c3000ce56f7252e36a794a96ceac5e26cbb",
+                "ported_sha256": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5"
+              },
               "spell/lib/adapter/tc_item.py": {
                 "original_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64",
-                "patched_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+                "patched_sha256": "8e5a1a31d11c6b169f895f2cde86377d3ec2a14821707e32499eb1cb29c744df",
                 "ported_sha256": "63c573d9c7f279a3bfc288db67acaec0afaa117e413922c231d4e57a0aa3cf64"
               },
               "spell/lib/adapter/tm.py": {
@@ -1482,6 +1556,61 @@
                     "before_sha256": "8a892776f286c2cc3230d45bebd871da39dca3e4d67ee4af1093afd1b1c09a61"
                   }
                 }
+              },
+              {
+                "recipe": "display_patches.py",
+                "sources": {
+                  "spell/lang/constants.py": {
+                    "after_sha256": "2497936cae1dda6540a7d85e3a956f646a56779c65d8789e0f9582b6bba89063",
+                    "before_sha256": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63"
+                  },
+                  "spell/lang/functions.py": {
+                    "after_sha256": "b052dea1d9701117d703462dec427d5d120f4e99b6b77a2d3df2dab0e797ce11",
+                    "before_sha256": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735"
+                  },
+                  "spell/lang/helpers/tskhelper.py": {
+                    "after_sha256": "31c104b833dc30a01a560e74036e1499cdb14f86ee25a29b56448ffe685b8c4a",
+                    "before_sha256": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f"
+                  },
+                  "spell/lang/modifiers.py": {
+                    "after_sha256": "bc28c8155ff0d9cc1690cd054588738658d95339b74baa473a52a220c8699558",
+                    "before_sha256": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452"
+                  },
+                  "spell/lib/adapter/task.py": {
+                    "after_sha256": "1313165d80bb4d55e4b733d084850e3a405b1527bd6fa5b8830326a60ed5f59b",
+                    "before_sha256": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe"
+                  }
+                }
+              },
+              {
+                "recipe": "command_feature_patches.py",
+                "sources": {}
+              },
+              {
+                "recipe": "command_catalog_patches.py",
+                "sources": {
+                  "spell/lib/adapter/tc.py": {
+                    "after_sha256": "c3ba72030cc9e84a6919547448c56c3000ce56f7252e36a794a96ceac5e26cbb",
+                    "before_sha256": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5"
+                  },
+                  "spell/lib/adapter/tc_item.py": {
+                    "after_sha256": "8e5a1a31d11c6b169f895f2cde86377d3ec2a14821707e32499eb1cb29c744df",
+                    "before_sha256": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634"
+                  }
+                }
+              },
+              {
+                "recipe": "command_group_patches.py",
+                "sources": {
+                  "spell/lang/helpers/tchelper.py": {
+                    "after_sha256": "5ed1798b28ec307e2e007d85243b4461725b0d89acf4568e95c042cbac7ddc51",
+                    "before_sha256": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58"
+                  },
+                  "spell/lang/modifiers.py": {
+                    "after_sha256": "033dff13d12a12ec7f1fcfd9a7c6ef38709228bd41509664a56074236e0b60ab",
+                    "before_sha256": "bc28c8155ff0d9cc1690cd054588738658d95339b74baa473a52a220c8699558"
+                  }
+                }
               }
             ]
           }
@@ -1497,6 +1626,9 @@
           "child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
           "cif_fixtures.py": "f94a4afc5fbb5ae0d1095b897a9cbd78f1b4b4c18d9b742087377ab3b5d53239",
           "cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+          "command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+          "command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+          "command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
           "context-build.Dockerfile": "03cdc3eb17825c891e37e1dd8d6a253dbd3db0631e759f4cbad64fb7949d7cd7",
           "context-build.Dockerfile.dockerignore": "3d6691a9214b1e45d803751f64fb2e13decf07719d668a3806075e731f01cad5",
           "context_build.py": "631cae5e42b2f8015b811aef3a0c11a248db20e6640ccdf4e38c9a143a7b690f",
@@ -1508,6 +1640,7 @@
           "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
           "database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
           "database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+          "display_patches.py": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
           "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
           "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
           "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
@@ -1537,7 +1670,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
+          "integrated_patches.py": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
           "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
           "legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
           "legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
@@ -1667,9 +1800,9 @@
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
           "SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "01e9bfc0301363628297806741d6275288b47f296969a36b4119bc78e95beab7"
+          "libspell_executor313.so": "3e0a25f40656956945b97cd07663971c5af880e73480b536e7e61ec656a70d2e"
         },
-        "native_gate_policy_sha256": "a836b18be2f1739855ec54f8e40ed78371095c2f26416e74d30f527e171b660c",
+        "native_gate_policy_sha256": "427d9aec8c91f3f43a83a20d171897c56403ef91a34c247358d0ba8396c0faf4",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1682,8 +1815,8 @@
           "spell/config/drivers.py": "5d5a3a183753917483345703d1c429aab3db57c02b91f88f827fb54d9adb9bad",
           "spell/config/reader.py": "7a3b671be84ec4f43743ada5302114e1dea12bc1c29edfa27e92b1551e614d63",
           "spell/lang/__init__.py": "e9d66ef319d6813bbb3412029d4dd1d0d7e653063c9536dfb16fc30caaa8c9d3",
-          "spell/lang/constants.py": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63",
-          "spell/lang/functions.py": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735",
+          "spell/lang/constants.py": "2497936cae1dda6540a7d85e3a956f646a56779c65d8789e0f9582b6bba89063",
+          "spell/lang/functions.py": "b052dea1d9701117d703462dec427d5d120f4e99b6b77a2d3df2dab0e797ce11",
           "spell/lang/helpers/__init__.py": "e69d2eea7957bc52e3a4fb08bcd23543ab85ee9b548b80db59e91e418c967f08",
           "spell/lang/helpers/basehelper.py": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
           "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
@@ -1696,11 +1829,11 @@
           "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
           "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
           "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
-          "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+          "spell/lang/helpers/tchelper.py": "5ed1798b28ec307e2e007d85243b4461725b0d89acf4568e95c042cbac7ddc51",
           "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
-          "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
+          "spell/lang/helpers/tskhelper.py": "31c104b833dc30a01a560e74036e1499cdb14f86ee25a29b56448ffe685b8c4a",
           "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-          "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+          "spell/lang/modifiers.py": "033dff13d12a12ec7f1fcfd9a7c6ef38709228bd41509664a56074236e0b60ab",
           "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
           "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
           "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
@@ -1731,9 +1864,9 @@
           "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
           "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
           "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
-          "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
-          "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-          "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+          "spell/lib/adapter/task.py": "1313165d80bb4d55e4b733d084850e3a405b1527bd6fa5b8830326a60ed5f59b",
+          "spell/lib/adapter/tc.py": "c3ba72030cc9e84a6919547448c56c3000ce56f7252e36a794a96ceac5e26cbb",
+          "spell/lib/adapter/tc_item.py": "8e5a1a31d11c6b169f895f2cde86377d3ec2a14821707e32499eb1cb29c744df",
           "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
           "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
           "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -1785,7 +1918,7 @@
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
         "SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "01e9bfc0301363628297806741d6275288b47f296969a36b4119bc78e95beab7"
+        "libspell_executor313.so": "3e0a25f40656956945b97cd07663971c5af880e73480b536e7e61ec656a70d2e"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1796,8 +1929,8 @@
         "spell/config/drivers.py": "5d5a3a183753917483345703d1c429aab3db57c02b91f88f827fb54d9adb9bad",
         "spell/config/reader.py": "7a3b671be84ec4f43743ada5302114e1dea12bc1c29edfa27e92b1551e614d63",
         "spell/lang/__init__.py": "e9d66ef319d6813bbb3412029d4dd1d0d7e653063c9536dfb16fc30caaa8c9d3",
-        "spell/lang/constants.py": "6a3a6e80e712bfcca6bc1bbb2d6f50b7b444b63d8396b9e0c9884c2fbc1dbb63",
-        "spell/lang/functions.py": "168836e0a4bc96f8e2a67b5190f532b2154d6be1d697f1f818341349c221e735",
+        "spell/lang/constants.py": "2497936cae1dda6540a7d85e3a956f646a56779c65d8789e0f9582b6bba89063",
+        "spell/lang/functions.py": "b052dea1d9701117d703462dec427d5d120f4e99b6b77a2d3df2dab0e797ce11",
         "spell/lang/helpers/__init__.py": "e69d2eea7957bc52e3a4fb08bcd23543ab85ee9b548b80db59e91e418c967f08",
         "spell/lang/helpers/basehelper.py": "53ae279ba0402bfe9e4c99be88589a761d1a6cc654a79d1abfa0579480d477db",
         "spell/lang/helpers/datahelper.py": "2a4e69f1823d326d3d16c772abc96c496edcbdce861c7ec96a28db803b6ad6d0",
@@ -1810,11 +1943,11 @@
         "spell/lang/helpers/pcshelper.py": "dd517050399076d2b7db0032da18f43840916effd257e738ea39550e81800220",
         "spell/lang/helpers/rnghelper.py": "12a95ccbf1bdd3857a6d6e8bced9222af0fc6d67318e4c3412546d166b20bd18",
         "spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
-        "spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
+        "spell/lang/helpers/tchelper.py": "5ed1798b28ec307e2e007d85243b4461725b0d89acf4568e95c042cbac7ddc51",
         "spell/lang/helpers/tmhelper.py": "159d860642f35c3668b1c125dff4f82f129367bce29a4161613828f1dada31f6",
-        "spell/lang/helpers/tskhelper.py": "e45cd0f5a1c69706b0739878a9a993346979cd11013215e56bee87837531b58f",
+        "spell/lang/helpers/tskhelper.py": "31c104b833dc30a01a560e74036e1499cdb14f86ee25a29b56448ffe685b8c4a",
         "spell/lang/helpers/usrhelper.py": "6e31deb22415a1b6694af06d86051a8968b6aeb5c1f8f317e70a00e3e0359831",
-        "spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
+        "spell/lang/modifiers.py": "033dff13d12a12ec7f1fcfd9a7c6ef38709228bd41509664a56074236e0b60ab",
         "spell/lang/user.py": "04abb4c80d1d963ac5a2735ba6a206a85ab52fe84811c1e10f65735837fbd0d3",
         "spell/lib/__init__.py": "a36d5ada6bce2d80cb479b7b655b4e8081d8c82996c46b3147ac678b262dde80",
         "spell/lib/adapter/__init__.py": "bc855bad5167f9188039537f1bbaa8d74aef54fbeceac3210a7be425e4e1cba5",
@@ -1845,9 +1978,9 @@
         "spell/lib/adapter/ranging.py": "a1bdbe12b9bc59417170a85512b466d69ffb77036cb45ff5e46ab6e8330e1672",
         "spell/lib/adapter/resources.py": "b0ae6932b5c83af6c215dff64bf128e0fe9dceb040a448bf140abcadb3d963aa",
         "spell/lib/adapter/result.py": "f5953c0bffbe6cee196d5049bb10abf385680831b0b970173b875fb58b7a40e2",
-        "spell/lib/adapter/task.py": "924d5e4722e0bc58228256717067e0e9f5efa812cf7be14e9807808a83f6f8fe",
-        "spell/lib/adapter/tc.py": "9ba0622e243c97bdb59c263c30324b588b7d7025014cfaafdcbbb0a0e45b58c5",
-        "spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
+        "spell/lib/adapter/task.py": "1313165d80bb4d55e4b733d084850e3a405b1527bd6fa5b8830326a60ed5f59b",
+        "spell/lib/adapter/tc.py": "c3ba72030cc9e84a6919547448c56c3000ce56f7252e36a794a96ceac5e26cbb",
+        "spell/lib/adapter/tc_item.py": "8e5a1a31d11c6b169f895f2cde86377d3ec2a14821707e32499eb1cb29c744df",
         "spell/lib/adapter/tm.py": "138a8a418797b59e832001ecb097bb07be34a6721cd71c59613c656fa68cbd8f",
         "spell/lib/adapter/tm_item.py": "6d0ecfff58e51b1be6f06208bf5bfa8d0f38cb0e6682d779fa11798b922f34fa",
         "spell/lib/adapter/usr.py": "996b81c92405a4ea617300eee691e367cb16855704dcc9d5b6a5a3ace3d9dfed",
@@ -1892,14 +2025,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "abadf2609f76aa1512c018c3c9e171858c99fc53c983e710df8ce66ea03d1fa9",
+        "manifest_sha256": "776fe79a951f9e1056400ee5f13df0f9f3b8e460f323d0292911b0b6d03768c3",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
-              "lf_sha256": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d"
+              "sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
+              "lf_sha256": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -2056,16 +2189,44 @@
             "rng_state_patches.py": {
               "sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
               "lf_sha256": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308"
+            },
+            "display_patches.py": {
+              "sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
+              "lf_sha256": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610"
+            },
+            "command_feature_patches.py": {
+              "sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+              "lf_sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0"
+            },
+            "command_catalog_patches.py": {
+              "sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+              "lf_sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502"
+            },
+            "command_group_patches.py": {
+              "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+              "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
             }
           },
           "sources": {
+            "openbexi_dss_proxy/command_settings.py": {
+              "original_sha256": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
+              "patched_sha256": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3"
+            },
+            "openbexi_dss_proxy/connection.py": {
+              "original_sha256": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+              "patched_sha256": "33d9d6296cd86ec83aaf79c1a2cfb3a0d329a961b134421f710ed39e8a7cbb26"
+            },
             "openbexi_dss_proxy/ranging.py": {
               "original_sha256": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
               "patched_sha256": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388"
             },
+            "openbexi_dss_proxy/task.py": {
+              "original_sha256": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+              "patched_sha256": "dae745f9dc97845f102a4c09cf015fcacd4fbed55266cc34b3b9e0e95cd9eed8"
+            },
             "openbexi_dss_proxy/tc.py": {
               "original_sha256": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
-              "patched_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651"
+              "patched_sha256": "eff7b4a4aaed831336d794328d95d389930f96dcd54f2c07370fba46c940760e"
             },
             "openbexi_dss_proxy/tm.py": {
               "original_sha256": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
@@ -2073,7 +2234,19 @@
             },
             "openbexi_spell_dss/ground.py": {
               "original_sha256": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
-              "patched_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
+              "patched_sha256": "e2a72ed8b333499892c9cf456317ac1dec23da641af7999a0358600ce9811461"
+            },
+            "openbexi_spell_dss/journal.py": {
+              "original_sha256": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+              "patched_sha256": "87c6ba1a10858d225fd7041f3cbabaf489612410457a6699ae2777eb97c4b8df"
+            },
+            "openbexi_spell_dss/relay.py": {
+              "original_sha256": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+              "patched_sha256": "fea5ca7fd37c1cf9da336cef3e93d101c509f9f9eb76b3a576283fbd67ad755a"
+            },
+            "openbexi_spell_dss/rpc.py": {
+              "original_sha256": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+              "patched_sha256": "816152c5a6ddbcb8509cea9ec10b94254be2c2b42e50026b23b04f7ffa47a179"
             }
           },
           "stages": [
@@ -2121,13 +2294,88 @@
                   "after_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07"
                 }
               }
+            },
+            {
+              "recipe": "display_patches.py",
+              "sources": {
+                "openbexi_dss_proxy/task.py": {
+                  "before_sha256": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+                  "after_sha256": "dae745f9dc97845f102a4c09cf015fcacd4fbed55266cc34b3b9e0e95cd9eed8"
+                },
+                "openbexi_spell_dss/ground.py": {
+                  "before_sha256": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07",
+                  "after_sha256": "e2a72ed8b333499892c9cf456317ac1dec23da641af7999a0358600ce9811461"
+                },
+                "openbexi_spell_dss/rpc.py": {
+                  "before_sha256": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+                  "after_sha256": "e28effbb3c580149b4e031b7f4f9336dee007728f44bce8c128e25a6a260dc63"
+                },
+                "openbexi_spell_dss/journal.py": {
+                  "before_sha256": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+                  "after_sha256": "87c6ba1a10858d225fd7041f3cbabaf489612410457a6699ae2777eb97c4b8df"
+                }
+              }
+            },
+            {
+              "recipe": "command_feature_patches.py",
+              "sources": {
+                "openbexi_spell_dss/rpc.py": {
+                  "before_sha256": "e28effbb3c580149b4e031b7f4f9336dee007728f44bce8c128e25a6a260dc63",
+                  "after_sha256": "0f12406d766b060354ffdb9a0fddaaf5ad42038ad3a90ee28decf09bf8c4f438"
+                },
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+                  "after_sha256": "e60cbc882c47e98924faeeefe310c790b3f430a32c630e959cf84a227cb3b9af"
+                },
+                "openbexi_dss_proxy/connection.py": {
+                  "before_sha256": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+                  "after_sha256": "33d9d6296cd86ec83aaf79c1a2cfb3a0d329a961b134421f710ed39e8a7cbb26"
+                },
+                "openbexi_spell_dss/relay.py": {
+                  "before_sha256": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+                  "after_sha256": "fea5ca7fd37c1cf9da336cef3e93d101c509f9f9eb76b3a576283fbd67ad755a"
+                }
+              }
+            },
+            {
+              "recipe": "command_catalog_patches.py",
+              "sources": {
+                "openbexi_spell_dss/rpc.py": {
+                  "before_sha256": "0f12406d766b060354ffdb9a0fddaaf5ad42038ad3a90ee28decf09bf8c4f438",
+                  "after_sha256": "f063450c2eeeb2ea716d2595c0dc6acef499a7aef0b151d91386a109fd29f251"
+                },
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "e60cbc882c47e98924faeeefe310c790b3f430a32c630e959cf84a227cb3b9af",
+                  "after_sha256": "e2eeb2e4ec6ba259e65a8f0c98105d5352ed73a0c7e2301233c6ba248d712ae7"
+                }
+              }
+            },
+            {
+              "recipe": "command_group_patches.py",
+              "sources": {
+                "openbexi_spell_dss/rpc.py": {
+                  "before_sha256": "f063450c2eeeb2ea716d2595c0dc6acef499a7aef0b151d91386a109fd29f251",
+                  "after_sha256": "816152c5a6ddbcb8509cea9ec10b94254be2c2b42e50026b23b04f7ffa47a179"
+                },
+                "openbexi_dss_proxy/tc.py": {
+                  "before_sha256": "e2eeb2e4ec6ba259e65a8f0c98105d5352ed73a0c7e2301233c6ba248d712ae7",
+                  "after_sha256": "eff7b4a4aaed831336d794328d95d389930f96dcd54f2c07370fba46c940760e"
+                },
+                "openbexi_dss_proxy/command_settings.py": {
+                  "before_sha256": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
+                  "after_sha256": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3"
+                }
+              }
             }
           ],
           "python_sources": {
             "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+            "openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
+            "openbexi_dss_proxy/command_group.py": "a69012b3a59670ad1dcb67fbe5264ba52b7400356172e2c7ce95d6475441333d",
+            "openbexi_dss_proxy/command_settings.py": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3",
             "openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
             "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
-            "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+            "openbexi_dss_proxy/connection.py": "33d9d6296cd86ec83aaf79c1a2cfb3a0d329a961b134421f710ed39e8a7cbb26",
             "openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
             "openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
             "openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
@@ -2136,16 +2384,26 @@
             "openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
             "openbexi_dss_proxy/ranging.py": "c8586f47b47dbaa5f1d3fb411a33c8f2f4746bdaa0276fa80de61e004b716388",
             "openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
-            "openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
-            "openbexi_dss_proxy/tc.py": "19e24099b2b132764d83c8429eb3af5c794745b8bfbd07ccd4d1e48a7ae53651",
+            "openbexi_dss_proxy/task.py": "dae745f9dc97845f102a4c09cf015fcacd4fbed55266cc34b3b9e0e95cd9eed8",
+            "openbexi_dss_proxy/tc.py": "eff7b4a4aaed831336d794328d95d389930f96dcd54f2c07370fba46c940760e",
             "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
             "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
             "openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
             "openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
-            "openbexi_spell_dss/ground.py": "cb7524ea79718eec5c8467b701d00fe15318781cb7b5509df8fccfc3eb9aea07",
-            "openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
-            "openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
-            "openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+            "openbexi_spell_dss/command_blocks.py": "6bb03cca63283bf244010c74b037960367493144d8879818897ad387ce9a5767",
+            "openbexi_spell_dss/command_budget.py": "08d6858bec5f168ff96c7a12b95a111f2a4391a22f0d929a7f788bf230f675da",
+            "openbexi_spell_dss/command_catalog.py": "5674d07c2dcf62782dd4fc8e05a9ef7084c04a57b982b22a75325941ff496764",
+            "openbexi_spell_dss/command_execution.py": "3c7d048327ae4338ae9d4c72597acdb6d468ec63f19ae96fef1c7882d580e477",
+            "openbexi_spell_dss/command_group_rpc.py": "9c6443989c617efdaaaeb45b7bf241cfb05ae1b2868a93f391a38e145c8f78ac",
+            "openbexi_spell_dss/command_groups.py": "f54ed3eac7d3bdb231f3b5513941224e8228f51864205b1c7dc34551764ac023",
+            "openbexi_spell_dss/command_results.py": "5eebfd3c44893d6fb1ce5eab55099c85f016fb72b5dc3cce11c97d4a6851270f",
+            "openbexi_spell_dss/command_rpc.py": "387ac050ebeb69ed6e862e6f4f39051d85db7b0925feacf4aebd7b422553dc99",
+            "openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+            "openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
+            "openbexi_spell_dss/ground.py": "e2a72ed8b333499892c9cf456317ac1dec23da641af7999a0358600ce9811461",
+            "openbexi_spell_dss/journal.py": "87c6ba1a10858d225fd7041f3cbabaf489612410457a6699ae2777eb97c4b8df",
+            "openbexi_spell_dss/relay.py": "fea5ca7fd37c1cf9da336cef3e93d101c509f9f9eb76b3a576283fbd67ad755a",
+            "openbexi_spell_dss/rpc.py": "816152c5a6ddbcb8509cea9ec10b94254be2c2b42e50026b23b04f7ffa47a179",
             "openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
             "openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
             "openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
@@ -2153,7 +2411,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 85
+        "record_files_verified": 116
       }
     }
   },
@@ -2174,15 +2432,15 @@
     "Generic procedure checkpoint/warm-start recovery"
   ],
   "raw": {
-    "path": "C:\\obwait_proc_composed\\.qualification\\prompt-timeout\\5ee2ab87701f41be948e3992e17b01fa\\result.json",
-    "sha256": "0f013cb7012fd243cc81f8de2621b398f1ad7e1345191abf82dfc8766afbeee4"
+    "path": "C:\\obcommand_composed\\.qualification\\prompt-timeout\\adc89053a3384a54a76b117155797792\\result.json",
+    "sha256": "0733f8dd3ef8be39592071187b2da07069945e3067aab88998a5ed5fb0e23902"
   },
   "baseline": {
-    "path": "C:\\obwait_proc_composed\\conformance\\evidence\\prompt_timeout_baseline.json",
+    "path": "C:\\obcommand_composed\\conformance\\evidence\\prompt_timeout_baseline.json",
     "sha256": "d4f21e2c933a00541d2d3dafc2749967d56d62e3ce82b69250c9986c95e3c457"
   },
   "independent_builds": {
-    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\native\\182686ad5ac447be84df3c96eb7bdfa7\\result.json",
-    "sha256": "a180202f5100ab7e42c3d9f129cfdddaae4a2b6f434f888b8fbf56651df18737"
+    "path": "C:\\obcommand_composed\\.qualification\\command-build\\native\\1b8c619c5b7a46449aba0dba63687965\\result.json",
+    "sha256": "5def563538f33768bafc9db42a4f0be495ff27a23d6519d27aeb9fd11df84a6b"
   }
 }

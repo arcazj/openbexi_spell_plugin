@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "scope": "Composed command and display checkpoint; release gates remain open",
+  "source_freeze_commit": "8079858d0522145d5b91200108a79365155f314c",
+  "pipeline": {
+    "path": "C:\\obcommand_composed\\.qualification\\command-resume-candidate\\c959feed055a402eb297d5500c02cae9\\result.json",
+    "sha256": "b3517dec96c6d96669aba14d87bbe0ccce16c7a7b70cf8c74628ea5313606028"
+  },
+  "runtime_image": "sha256:abdd4fcde9b4dc7e21eca1424f53707d178cf1c09785e39a480c6ec751c92802",
+  "host_image": "sha256:f46f4024188ad558166779cd2d9fa57acb4f9136287127230a327046f1e986b7",
+  "native_wheel_sha256": "d2747f2e733aa7fff01036d17b7e180d58291cc0bfca6c9d36c6c939c7e64e35",
+  "driver_wheel_sha256": "256700f4022acda30f668d2acfa1821fd58575275e67317dafdf8241d5966927",
+  "native_builds": {
+    "path": "C:\\obcommand_composed\\.qualification\\command-build\\native\\1b8c619c5b7a46449aba0dba63687965\\result.json",
+    "sha256": "5def563538f33768bafc9db42a4f0be495ff27a23d6519d27aeb9fd11df84a6b"
+  },
+  "driver_builds": {
+    "path": "C:\\obcommand_composed\\.qualification\\command-build\\driver\\6d4840b56c52492d9727425b3e1db27b\\result.json",
+    "sha256": "371af637eb01dbeed30a3c11612da4bb4dc5826cdc4ad16cce66a0ff61344fd2"
+  },
+  "fresh_images": {
+    "path": "C:\\obcommand_composed\\.qualification\\command-build\\images\\c107ac1c4516475f929b49b227133dd2\\result.json",
+    "sha256": "182abaefc7e1fe0a607987e84e0c362a48f7202461b8330c87deb31ab8a38314"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obcommand_composed\\.qualification\\child-regressions\\c9dcf1e0aa664f31917ee70513fff91a\\result.json",
+    "sha256": "1056a9b5f045218a12345abd723b40b2c68faba0a2329d09b66accbec9a6ce5f"
+  },
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "7a11f031ef49d9d00c67a36075681b9ca619d0a7c1357137cee603fd4b851a25"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "prompt_controls_checks": {
+    "duplicate_answers": 24,
+    "abort_at_prompt": 12,
+    "child_modes": 9,
+    "timed_prompts": 10
+  },
+  "source_composition_tests": {
+    "checks": 39,
+    "junit": {
+      "path": ".qualification/command-composition-source-tests-02.xml",
+      "sha256": "b0b0fca28e2d08d818501cec779711d2de238dfec1ebaa991fbacbd9ca404ec6"
+    }
+  },
+  "command_diagnostic": {
+    "path": "C:\\obcommand_composed\\conformance\\evidence\\command_features.json",
+    "sha256": "e04eb39290f3a78d1389adbf69223ca16ec51176a5a5f49426cecb743b17733b"
+  },
+  "display_diagnostic": {
+    "path": "C:\\obcommand_composed\\conformance\\evidence\\display.json",
+    "sha256": "f593c54f3fbf4c8e3f56eaaa502f187a530990238948c640d068013c4ba98cf9"
+  },
+  "context_observer_review": {
+    "path": "distribution/evidence/context-harness-review.json",
+    "sha256": "47422cfc3d44607c0561a9004314e0934d7416f2b47e7aa71ea6a20844f6d698"
+  },
+  "historical_evidence_tests": {
+    "checks": 22,
+    "junit": {
+      "path": ".qualification/composed-historical-command-display-tests.xml",
+      "sha256": "c7c02c0a01caf8deb0c34d50a657c191a422fa76c26ebc3ed7679514af91f6bc"
+    }
+  },
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan profile; compiler installed and leak detection disabled",
+    "Final production packages, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm and platform/operational gates remain open",
+    "Legacy <> compatibility applies to native procedure compilation; imported Python modules and eval/compile retain CPython syntax"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

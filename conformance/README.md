@@ -17,25 +17,25 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **523 rows, with 240 open**. The
-[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 44 native suites
-(1,837 raw checks) to the same rebuilt DSS image. This increment qualifies
-[interrupted waits](WAIT_CONTROLS.md), [interval progress](WAIT_INTERVALS.md),
-[PROC dictionaries](PROC_DICTIONARY.md) and [predefined ARGS/IVARS](PREDEFINED_CONTAINERS.md).
-The independent diagnostic source corrections are reproduced in both fresh
-builds. Full v0.5/v0.6 acceptance remains false.
+Current qualification totals **573 rows, with 190 open**. The
+[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 48 native suites
+(1,932 raw checks) to the same rebuilt DSS image. The
+[composed command/display evidence](evidence/command_display_composed.json)
+qualifies 50 additional requirements after independently replaying the source
+corrections and checking actual RPC, SQLite, notification and output artifacts.
+Full v0.5/v0.6 acceptance remains false.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
 | TIME | 42 / 42 | 168 native checks |
-| COMMON | 47 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
+| COMMON | 49 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
 | PY | 122 / 122 | Python sections, SCDB method, database octal and native legacy comparison |
 | DATA | 72 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
 | FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
 | FLOW | 36 / 51 | Native flow, child arguments, return and execution clauses |
-| UI | 29 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
+| UI | 51 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
 | OBS | 88 / 104 | Telemetry acquisition/comparison and actual binary DSS |
-| CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
+| CMD | 47 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
 | LIMIT | 18 / 70 | 79 native assertions through actual GENERIC ground limits |
 | SPECIAL | 3 / 43 | Baseband/antenna catalogs; remaining family contracts open |
 
