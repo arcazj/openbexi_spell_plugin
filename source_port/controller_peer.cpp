@@ -16,6 +16,19 @@
 #include <thread>
 
 using Fields=std::initializer_list<std::pair<std::string,std::string>>;
+// The production IPC client dispatches messages to independent worker threads.
+// This oracle must observe TCP arrival order, not worker scheduling order.
+class OrderedControllerClient final:public SPELLipcClientInterface {
+    std::ofstream wire;
+public:
+    OrderedControllerClient(const std::string& name,const std::string& host,int port,
+                            const std::string& evidence)
+        :SPELLipcClientInterface(name,host,port),wire(evidence) {}
+    void incomingMessage(const SPELLipcMessage& message) override {
+        wire << message.dataStr() << std::endl;
+        if (m_connected && m_listener) m_listener->processMessage(message);
+    }
+};
 static void require(bool ok,const std::string& message) {
     if (!ok) throw std::runtime_error(message);
 }
@@ -55,7 +68,8 @@ int main(int argc,char** argv) {
     if (argc!=3) return 2;
     const std::string procedure=argv[2],instance=procedure+"#1";
     ControllerPeer peer;
-    SPELLipcClientInterface client("CONTROLLER-QUALIFICATION","127.0.0.1",std::stoi(argv[1]));
+    OrderedControllerClient client("CONTROLLER-QUALIFICATION","127.0.0.1",std::stoi(argv[1]),
+                                 "/out/"+procedure+"-wire.log");
     peer.client=&client;
     try {
         client.initialize(&peer); client.connect();

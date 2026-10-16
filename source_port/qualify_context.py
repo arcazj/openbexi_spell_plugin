@@ -92,8 +92,10 @@ class ContextTests(unittest.TestCase):
     completed_lifecycles=[]
     service_checkpoint_rejections=0
     def run_context(self,server=False,iteration=0,service=False,controller=None,missing_reconnect=False,service_recovery=None,pending_service_pid=None,live_reconnect=None):
-        log_before=set(logs.glob('*.log'))
         label=('live-'+live_reconnect if live_reconnect else 'pending-service' if pending_service_pid else 'service-'+service_recovery if service_recovery else 'missing-reconnect' if missing_reconnect else controller or ('service' if service else 'server' if server else 'context'))+'-'+str(iteration)
+        case_logs=logs/label
+        case_logs.mkdir(exist_ok=False)
+        case_environment=dict(environment,SPELL_LOG=str(case_logs))
         # Each scenario owns a fresh registry. Preserve failed-case evidence,
         # but do not reconnect a killed child from another isolated test.
         runtime=output/'executor-data/Runtime'
@@ -159,12 +161,28 @@ class PendingService:
             reaper.start()
         with (output/(label+'-listener.log')).open('wb') as log:
             process=subprocess.Popen([str(output/'SPELL-Listener'),'-c',str(config)],
-                env=environment,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+                env=case_environment,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
             try:
-                # The listener opens both sockets before starting its context.
-                time.sleep(.5)
+                # Observe this process's listening socket inodes. A fixed sleep
+                # can expire before a cold listener binds either port.
+                deadline=time.monotonic()+10
+                while True:
+                    self.assertIsNone(process.poll(),'Listener exited before opening its sockets')
+                    descriptors=Path('/proc')/str(process.pid)/'fd'
+                    sockets=set()
+                    for fd in descriptors.iterdir():
+                        try: sockets.add(os.readlink(fd))
+                        except FileNotFoundError: pass
+                    ports=set()
+                    for row in Path('/proc/net/tcp').read_text().splitlines()[1:]:
+                        fields=row.split()
+                        if fields[3]=='0A' and 'socket:['+fields[9]+']' in sockets:
+                            ports.add(int(fields[1].split(':')[1],16))
+                    if {19980,19981}<=ports:break
+                    self.assertLess(time.monotonic(),deadline,'Listener did not open both sockets')
+                    time.sleep(.02)
                 try:
-                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--live-'+live_reconnect] if live_reconnect else ['--pending-service'] if pending_service_pid else ['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=dict(environment,OPENBEXI_QUALIFICATION_PGID=str(process.pid)),
+                    result=subprocess.run([str(output/'context_peer'),'19980']+(['--live-'+live_reconnect] if live_reconnect else ['--pending-service'] if pending_service_pid else ['--service-'+service_recovery] if service_recovery else [controller] if controller else ['--service'] if service else ['--server'] if server else []),env=dict(case_environment,OPENBEXI_QUALIFICATION_PGID=str(process.pid)),
                         capture_output=True,text=True,timeout=50)
                 except subprocess.TimeoutExpired as error:
                     (output/(label+'-peer.log')).write_bytes((error.stdout or b'')+(error.stderr or b''))
@@ -238,7 +256,7 @@ class PendingService:
         self.assertNotIn('AddressSanitizer:',text)
         self.assertNotIn('runtime error:',text)
         self.assertNotIn('Fatal Python error:',text)
-        native_logs='\n'.join(path.read_text(errors='replace') for path in set(logs.glob('*.log'))-log_before)
+        native_logs='\n'.join(path.read_text(errors='replace') for path in case_logs.glob('*.log'))
         self.assertFalse('try kill' in native_logs,'Executor required a forced kill; see native logs')
         self.assertFalse('killing instead' in native_logs,'Context required a forced kill; see native logs')
         self.assertIn('Context process finished: CTX_example',native_logs)

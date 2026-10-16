@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "scope": "Qualification observer correction only; fresh native builds still required",
+  "native_image": "sha256:7ee4c59c72594bb425e81a21f5e7609afb1b171abc7d97f2dc8db5d658af8e0f",
+  "original_failed_build": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\native\\ce27bafc813f468ab8d03e1934ac8238\\result.json",
+    "sha256": "b85569ef4802837f02ebfc7c7109e78e5b901a948c5a32c2e9dfca4f1b308e72"
+  },
+  "original_log": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\native\\ce27bafc813f468ab8d03e1934ac8238\\a-build.log",
+    "sha256": "d068d66cd0e1df9adf0de15fd97942677816a4140c80cb4c9aedd7c9648a6a36"
+  },
+  "retained_native_build": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\native\\ce27bafc813f468ab8d03e1934ac8238\\failed-context.tar.gz",
+    "sha256": "38d21eeb456e3d9b6b81a70026aeee1d5d44771e4df1a8495fa3767c79a2fd54"
+  },
+  "observations": {
+    "focused": {
+      "path": "C:\\obcontext_harness\\.qualification\\context-harness\\23d0017f396f4bc087f876c2f2862250\\result.json",
+      "sha256": "48aa021d65150362816bcb39b82777dfb73b1f7351a140a2cad252d8e89d5eef"
+    },
+    "asynchronous": {
+      "path": "C:\\obcontext_harness\\.qualification\\context-harness\\4caf66a8418a4a349123a3aa1b444430\\result.json",
+      "sha256": "88a46bd566297c7c9fe1feb60167925431c876a6c59c9e4605f1f56664fdf9f2"
+    },
+    "ordered": {
+      "path": "C:\\obcontext_harness\\.qualification\\context-harness\\55a26a42eb7246f0913f532435e8159b\\result.json",
+      "sha256": "18f2b782ecdc6ac8258e0e44b519d1aba37fa414720554fff383102784823d82"
+    }
+  },
+  "sources": {
+    "source_port/qualify_context.py": "8ce2aa8c78390f26c4a2a73e7e11495f832f1e45be98424c0dcfa8e2204488cf",
+    "source_port/controller_peer.cpp": "f901ea7684634f3251015b64ea221a18b5532174fac74c78007e90b38645d3ea"
+  },
+  "checks": {
+    "focused_native_scenarios": 8,
+    "delayed_async_false_failures": 3,
+    "delayed_ordered_native_passes": 3,
+    "controlled_callback_delay_ms": 200
+  },
+  "wire_order": {
+    "asynchronous": {
+      "evidence": {
+        "path": "C:\\obcontext_harness\\.qualification\\context-harness\\4caf66a8418a4a349123a3aa1b444430\\workspace\\native\\native_controls-wire.log",
+        "sha256": "f0daa222f90f70647c2759e7a20086d7536a6d30c665c6b6b5195e8e17c768d5"
+      },
+      "output_line": 52,
+      "terminal_lines": [
+        53,
+        54
+      ],
+      "scope": "Final repeated control; each repeat retains its separate native/peer log"
+    },
+    "ordered": {
+      "evidence": {
+        "path": "C:\\obcontext_harness\\.qualification\\context-harness\\55a26a42eb7246f0913f532435e8159b\\workspace\\native\\native_controls-wire.log",
+        "sha256": "7f73abe76b388aa1c6b889872b3ee14d5e10d8e99d53848681f147c5a8f89af0"
+      },
+      "output_line": 50,
+      "terminal_lines": [
+        51,
+        52
+      ],
+      "scope": "Final repeated control; each repeat retains its separate native/peer log"
+    }
+  },
+  "findings": [
+    "Fixed half-second startup sleep expired before socket bind",
+    "Second case reused first case timestamped listener log, excluding successful shutdown from new-file set",
+    "Concurrent GUI callback workers falsely reordered the final output observation despite correct retained socket order"
+  ],
+  "corrections": [
+    "Observe both listening socket inodes owned by the listener PID",
+    "Separate native log directory for every case",
+    "Observe messages synchronously on qualifier client receive thread; retain original protocol and ACKs"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
