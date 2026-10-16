@@ -34,9 +34,15 @@ def supported_check(report, identifier, dimension, visiting=None):
 def validate(inventory, coverage, root):
     # Reports and large source archives recur across hundreds of dimensions.
     # Caches belong to this validation only; subsequent validations rehash files.
-    digests, reports = {}, {}
+    digests, reports, resolved, verified_reports = {}, {}, {}, set()
+    root = root.resolve()
+    def resolve(path):
+        if path not in resolved:
+            resolved[path] = path.resolve()
+        return resolved[path]
+
     def digest(path):
-        path = path.resolve()
+        path = resolve(path)
         if path not in digests:
             digests[path] = sha(path)
         return digests[path]
@@ -61,8 +67,8 @@ def validate(inventory, coverage, root):
             raise ValueError('Missing independent evidence dimension: ' + row['id'])
         for dimension in DIMENSIONS:
             item = row['evidence'][dimension]
-            path = (root / item['report']).resolve()
-            if not path.is_relative_to(root.resolve()) or not path.is_file():
+            path = resolve(root / item['report'])
+            if not path.is_relative_to(root) or not path.is_file():
                 raise ValueError('Missing or external evidence report: ' + row['id'])
             if digest(path) != item['sha256']:
                 raise ValueError('Evidence report hash mismatch: ' + row['id'])
@@ -73,12 +79,14 @@ def validate(inventory, coverage, root):
             if (not supported_check(report, item['check'], dimension)
                     or row['id'] not in check.get('contracts', [])):
                 raise ValueError('Report does not qualify this contract/dimension: ' + row['id'])
-            if not report.get('runtime_image') or not report.get('inputs'):
-                raise ValueError('Report lacks runtime and source identities: ' + row['id'])
-            for name, expected_digest in report['inputs'].items():
-                source = (root / name).resolve()
-                if not source.is_relative_to(root.resolve()) or not source.is_file() or digest(source) != expected_digest:
-                    raise ValueError('Evidence input changed: ' + name)
+            if path not in verified_reports:
+                if not report.get('runtime_image') or not report.get('inputs'):
+                    raise ValueError('Report lacks runtime and source identities: ' + row['id'])
+                for name, expected_digest in report['inputs'].items():
+                    source = resolve(root / name)
+                    if not source.is_relative_to(root) or not source.is_file() or digest(source) != expected_digest:
+                        raise ValueError('Evidence input changed: ' + name)
+                verified_reports.add(path)
     return {'release': 'v0.5', 'accepted': not failures, 'total': 763,
             'counts': dict(counts), 'open_rows': failures,
             'v0.6_dependency_satisfied': not failures}
