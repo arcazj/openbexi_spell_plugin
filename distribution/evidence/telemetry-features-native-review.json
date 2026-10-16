@@ -1,0 +1,1430 @@
+{
+  "passed": true,
+  "runtime_image": "sha256:b3e067c96c41f3e299095731700737b994eeca37c3276c373e55fd6a377cbd4b",
+  "source_revision": "735c859b67dcd967a0d19a4add4326a4563bb83e",
+  "raw": {
+    "path": "C:\\obtelemetry_review\\.qualification\\telemetry-features\\c4de63d62e95448887183088d62de2c7\\result.json",
+    "sha256": "c24f4517fa273863782bba76a84167486c106a1eea3e2e6f5c052b096f992123"
+  },
+  "checks": {
+    "quality:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004460499985725619,
+          "started": 72655.2618783
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "quality:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 2,
+      "packet_count": 3,
+      "scenario_count": 3,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.0040123999933712184,
+          "started": 72666.7901105
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.003939200003514998,
+          "started": 72668.1942168
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "quality:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.004125100007513538,
+          "started": 72676.9225643
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "quality:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 3,
+      "scenario_count": 3,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.003939300004276447,
+          "started": 72685.6352641
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004265900002792478,
+          "started": 72686.8139888
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "validity:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.003983000002335757,
+          "started": 72696.0754556
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "validity:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Raw format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.004186499994830228,
+          "started": 72707.6886069
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "validity:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.004247399992891587,
+          "started": 72717.8981662
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "validity:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 3,
+      "scenario_count": 3,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.00433300000440795,
+          "started": 72726.6064628
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.003967999989981763,
+          "started": 72727.7424407
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "freshness:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004068599999300204,
+          "started": 72737.0473619
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "freshness:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0040041000029305,
+          "started": 72751.8469163
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.00427000000490807,
+          "started": 72755.6050399
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "freshness:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.004054199991514906,
+          "started": 72764.8319283
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "freshness:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 3,
+      "scenario_count": 3,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": false,
+          "seconds": 0.004120699988561682,
+          "started": 72773.5314991
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004019999993033707,
+          "started": 72774.66572
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "availability:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0042428000015206635,
+          "started": 72783.9864861
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "availability:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004087000008439645,
+          "started": 72795.5388042
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "availability:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 2,
+      "scenario_count": 2,
+      "refreshes": [],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "availability:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 3,
+      "scenario_count": 3,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.003950199999962933,
+          "started": 72815.9355935
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "link:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0039853000052971765,
+          "started": 72825.7682922
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "link:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "link:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "link:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004041699998197146,
+          "started": 72859.37414
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "minute:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 4,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 60.0,
+            "Wait": true
+          },
+          "valid": true,
+          "seconds": 35.48413840000285,
+          "started": 72870.8077505
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        },
+        {
+          "acquisition_elapsed": 36.56905450001068
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "minute:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 7,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 3600,
+            "Wait": true
+          },
+          "valid": true,
+          "seconds": 0.5185634999943431,
+          "started": 72917.3938204
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "minute:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 4,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "minute:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 5,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 60.0,
+            "Wait": true
+          },
+          "valid": true,
+          "seconds": 0.5204604000027757,
+          "started": 72944.2263927
+        }
+      ],
+      "observations": [
+        {
+          "actual": 28.0,
+          "expected": 28.0
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "printed:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.00599760000477545,
+          "started": 72955.8691384
+        },
+        {
+          "name": "TM.THERMAL.MODE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004188200007774867,
+          "started": 72955.990845
+        }
+      ],
+      "observations": [
+        {
+          "actual": [
+            true,
+            true
+          ],
+          "expected": [
+            true,
+            true
+          ]
+        },
+        {
+          "displayed": "0: TM.POWER.BUS_VOLTAGE : True"
+        },
+        {
+          "displayed": "1: TM.THERMAL.MODE : True"
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "printed:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004047900001751259,
+          "started": 72966.7553757
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004104799998458475,
+          "started": 72966.8760314
+        }
+      ],
+      "observations": [
+        {
+          "actual": [
+            true,
+            false
+          ],
+          "expected": [
+            true,
+            false
+          ]
+        },
+        {
+          "displayed": "0: TM.POWER.BUS_VOLTAGE : True"
+        },
+        {
+          "displayed": "1: TM.POWER.BUS_VOLTAGE : False"
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "printed:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004348699992988259,
+          "started": 72977.9128019
+        },
+        {
+          "name": "TM.THERMAL.MODE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0039487000030931085,
+          "started": 72978.0334241
+        }
+      ],
+      "observations": [
+        {
+          "actual": [
+            false,
+            false
+          ],
+          "expected": [
+            false,
+            false
+          ]
+        },
+        {
+          "displayed": "0: TM.POWER.BUS_VOLTAGE : False"
+        },
+        {
+          "displayed": "1: TM.THERMAL.MODE : False"
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "printed:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004270399993401952,
+          "started": 72989.3144973
+        },
+        {
+          "name": "TM.THERMAL.MODE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.00455669999064412,
+          "started": 72989.4352723
+        }
+      ],
+      "observations": [
+        {
+          "actual": [
+            true,
+            true
+          ],
+          "expected": [
+            true,
+            true
+          ]
+        },
+        {
+          "displayed": "0: TM.POWER.BUS_VOLTAGE : True"
+        },
+        {
+          "displayed": "1: TM.THERMAL.MODE : True"
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "between-list:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0039363999967463315,
+          "started": 72999.2082797
+        }
+      ],
+      "observations": [
+        {
+          "actual": true,
+          "expected": true
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "between-list:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [],
+      "api_failures": 0,
+      "packet_count": 13,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.00421370001276955,
+          "started": 73010.6174293
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004092599992873147,
+          "started": 73012.0122375
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004275300001609139,
+          "started": 73013.4680407
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.0044353999983286485,
+          "started": 73015.0254365
+        }
+      ],
+      "observations": [
+        {
+          "actual": true,
+          "expected": true
+        },
+        {
+          "actual": true,
+          "expected": true
+        },
+        {
+          "actual": false,
+          "expected": false
+        },
+        {
+          "actual": false,
+          "expected": false
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "between-list:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004038999992189929,
+          "started": 73025.0947441
+        }
+      ],
+      "observations": [],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    },
+    "between-list:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [],
+      "api_failures": 1,
+      "packet_count": 1,
+      "scenario_count": 1,
+      "refreshes": [
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004079299993463792,
+          "started": 73035.7330801
+        },
+        {
+          "name": "TM.POWER.BUS_VOLTAGE",
+          "settings": {
+            "ValueFormat": "Eng format",
+            "Timeout": 30,
+            "Wait": false
+          },
+          "valid": true,
+          "seconds": 0.004149800006416626,
+          "started": 73036.8318359
+        }
+      ],
+      "observations": [
+        {
+          "actual": true,
+          "expected": true
+        }
+      ],
+      "oracle": "Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses"
+    }
+  },
+  "overlay": "C:\\oblimit_impl\\.qualification\\telemetry-review-preflight\\0456518e9e684feb92be3acbe7c81ed8\\overlay",
+  "limit_overlay": "C:\\oblimit_review\\.qualification\\limit-review-preflight\\28afbc466d9c465c8eaac5b66ad6f6e4\\overlay",
+  "inputs": {
+    "conformance/telemetry_features_review.py": "b6750e4da5115677010b75480a5a2feafa137cc4972373bdb83cf0d09b0dcdf2",
+    "conformance/limit_features_review.py": "08a56aa3d2941fdebcf77306b8ae8f94c03576228ddc07330724ee4a810d2b69",
+    "tests/test_telemetry_features_review.py": "60d189eaf5505cbccbcab62926775a4156e32fb50185ee71ac5c8267869801c8"
+  },
+  "source_inputs": {
+    "conformance/telemetry_features_cases.py": "af6b521f713282944e18f5e3124ac628fc5b7a7ac4f7e6416af29d1ea2dc6a43",
+    "conformance/telemetry_features_controller.py": "619e6f82daa1e8e91a9d3039790ec31303e0788b0390246ee6c8bb2430230a8c",
+    "conformance/run_telemetry_features.py": "1ee53aa448d279280a2f6271cb30d55a529bc3ab6c4aaaad77feb54155c34df6",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "conformance/telemetry_surface_cases.py": "4e59cbd1297bc89d96d7ffbaf2cef8aa45f574c599b04fc25d55f0de57e8daa1",
+    "conformance/telemetry_features_provenance.py": "0946a2136a7ef2e6017e87db8093b735dc1b161a901d5bb7287df64b039715a0",
+    "conformance/telemetry_features.Dockerfile": "fc502c58666e4fe7078b82f09c0da33477bb4230b98e769bb9f919639960cb89",
+    "conformance/telemetry_features.Dockerfile.dockerignore": "cc7d85c3764ddbf0e0ca25cd845a850f9256c14e4d78da4dbdcd906229908db4",
+    "conformance/TELEMETRY_DEADLINE_PROFILE.md": "03d9601ef8ca955399cc98d687259c687379c3b20596cfd45e518af2119e8666",
+    "driver_plugin/src/openbexi_spell_dss/limit_files/normal.json": "3410facc072f888c4620e129d5fd27261659e45baef51442178a45193b6b0783",
+    "conformance/TELEMETRY_BOUNDARY_REVIEW.md": "7fc5f400ed47533126355d7cc3959befdb00b4443b5b9d991e9916e0372217c2",
+    "tests/test_telemetry_comparison_boundaries.py": "ec94c33580a27af93f5da1f1217fc34ffa592178517746f8800d439d88ecb005",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "conformance/TELEMETRY_SURFACE_BASELINE.md": "1b91754f1cd9cb9b365bd7ab8dacf7141fc2005092b3e34a1eefa727e3b92f17",
+    "conformance/installed_provenance.py": "5872fd23deea57300645c32db8cd753107d051d69ec746b9b1de3998bedef670",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+    "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+    "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+    "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+    "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+    "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+    "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+    "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+    "source_port/display_patches.py": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
+    "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+    "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+    "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/integrated_patches.py": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+    "source_port/limit_feature_patches.py": "e442327f5bdc24d4bdab027bfe539e8091cc0434c1cffc0e40f76a11577d0174",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+    "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/proc_dictionary_patches.py": "925aaefe4aef6fe5dad3887626f726adde659847654715d5b197f2507e5ddc45",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
+    "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+    "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "source_port/telemetry_feature_patches.py": "9679a7dae81445dbc3fe821f38976f5eddc06a3eb245695d81222019fa0d4da5",
+    "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
+    "driver_plugin/pyproject.toml": "288903757f27da4d9b777a699f8da2ca1edb7970c4717fa0bb7d16506357b235",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
+    "driver_plugin/src/openbexi_dss_proxy/command_group.py": "4911a9d9726f2d46a775fba56776c55a4d6f2b250562fd95ea71b1bccb323249",
+    "driver_plugin/src/openbexi_dss_proxy/command_settings.py": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_arguments.py": "d0262093bff4c7be45f2ffc272675cdeedfe9d746ec1ee0c0e671d1a7ec5a9f1",
+    "driver_plugin/src/openbexi_dss_proxy/limit_profile.py": "57cf0be8cb334422f67829288c99472247dcff20d73c3b8dda98977a0ce06cf7",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/command_blocks.py": "6bb03cca63283bf244010c74b037960367493144d8879818897ad387ce9a5767",
+    "driver_plugin/src/openbexi_spell_dss/command_budget.py": "08d6858bec5f168ff96c7a12b95a111f2a4391a22f0d929a7f788bf230f675da",
+    "driver_plugin/src/openbexi_spell_dss/command_catalog.py": "5674d07c2dcf62782dd4fc8e05a9ef7084c04a57b982b22a75325941ff496764",
+    "driver_plugin/src/openbexi_spell_dss/command_execution.py": "3c7d048327ae4338ae9d4c72597acdb6d468ec63f19ae96fef1c7882d580e477",
+    "driver_plugin/src/openbexi_spell_dss/command_group_rpc.py": "9c6443989c617efdaaaeb45b7bf241cfb05ae1b2868a93f391a38e145c8f78ac",
+    "driver_plugin/src/openbexi_spell_dss/command_groups.py": "f54ed3eac7d3bdb231f3b5513941224e8228f51864205b1c7dc34551764ac023",
+    "driver_plugin/src/openbexi_spell_dss/command_results.py": "5eebfd3c44893d6fb1ce5eab55099c85f016fb72b5dc3cce11c97d4a6851270f",
+    "driver_plugin/src/openbexi_spell_dss/command_rpc.py": "387ac050ebeb69ed6e862e6f4f39051d85db7b0925feacf4aebd7b422553dc99",
+    "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+    "driver_plugin/src/openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/limit_algorithm.py": "41c66e5c8ca0a11bcfad60bf223f366976c4f0ed5072f2b76f846247e5287ec9",
+    "driver_plugin/src/openbexi_spell_dss/limit_definitions.py": "1330fd4936ba97760066dbdd3f755bc6c037310e1a217dce5d0b6ca30d284626",
+    "driver_plugin/src/openbexi_spell_dss/limits.py": "6edbaed47e212ff04d6b36c0633e4df9ae66f4c4e028915799fa049956129a4c",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/telemetry_budget.py": "c314b4c3091222a7e0457d53946bb7bd2a2e81e4c4787508835fd75ae06fbf70",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+    "src/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+    "src/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+    "src/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+    "src/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+    "src/dss/engine.py": "604663fb2a921922fc5318a31923b95523aec5193e31495ef310cacf1714a8ce",
+    "src/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+    "src/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+    "src/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+    "src/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+    "src/dss/server.py": "a136d929c27d7934cb72562b3be0849a19681040c42e2e959a139e055e7b3383",
+    "src/dss/uplink.py": "04bf381b2c4273e3aa107312586811c32cd4b2289a14151e7773960f6f08683a",
+    "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
+    "host_runtime/python/children.py": "5b1702226c91b4de865a2a83a7e34e6d1c3418d0e17d530539031b749f493ea3",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
+    "host_runtime/python/prompts.py": "6a1cda3019e8126842b637a227b2c02c3c1ac930c60269a5a3cdb2d0765db2cb"
+  },
+  "artifacts": {
+    "checks.json": "0f7f38cdb64e42ed23af60ab949bb41ad30f6d2a2a04f3ec68947cd01d742429",
+    "host-inputs.json": "bca9ed06a76703a7cca4484bdc0c645b94c79aca0174b50cd431397417bb121b",
+    "installed_provenance.py": "5872fd23deea57300645c32db8cd753107d051d69ec746b9b1de3998bedef670",
+    "runtime.json": "b61f92821b4f3d4443b3795fe6101daae76fab7466c8853072c94c359b8609bd",
+    "selected-cases.json": "51306501335c0f8679cddac377c3ebe0cfb903c0d440941e81e054ebb09e6957",
+    "telemetry_features_cases.py": "af6b521f713282944e18f5e3124ac628fc5b7a7ac4f7e6416af29d1ea2dc6a43",
+    "telemetry_features_controller.py": "619e6f82daa1e8e91a9d3039790ec31303e0788b0390246ee6c8bb2430230a8c",
+    "telemetry_features_provenance.py": "0946a2136a7ef2e6017e87db8093b735dc1b161a901d5bb7287df64b039715a0",
+    "telemetry_surface_cases.py": "4e59cbd1297bc89d96d7ffbaf2cef8aa45f574c599b04fc25d55f0de57e8daa1",
+    "availability__boundary/driver.sqlite": "5fa25abbc5eb2b9eedd56db6771a62b54b3a666b552d5f61abd6a7df667c7e70",
+    "availability__boundary/dss.sqlite": "f457ebafd33b8a76978347d91ed8385853d9694d23a5126c66c465a99cddb6b7",
+    "availability__boundary/events.json": "5c0e19842c23f8f082e9cf4493af35e46b0b993c00d860f4df1eccdcc2867454",
+    "availability__boundary/main.py": "c09e5734608c718a14483cfd838dad8feef75aaeb6a86e0b2eb7d8882ea288a7",
+    "availability__boundary/native.log": "473183b37e906e786aa857474d8f52e8a6b5a598eac220d1e7d5bc6a1e1356c5",
+    "availability__boundary/observed.json": "d8f3573c1e7e3e26b31a985ded1408d1bc17e62cb2f34832ffdba776b7a4c0c2",
+    "availability__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "availability__failure/driver.sqlite": "ff0d108ef9669bfab5aa4123a69414f6d55935d83f4e6c7b1ba389a73b993d87",
+    "availability__failure/dss.sqlite": "9924be41d4a33e524ee3d0254bf1d19f539097fdf0cc90715ab33b7fbac0c30a",
+    "availability__failure/events.json": "2c409a13075aeb3f11b0d42352f8ae9b119653d3878cb575d980463ba66c31f7",
+    "availability__failure/main.py": "e463fce2bf194eb821c8f0ced8cc2009cf9e350e411be67578de833fb37585d9",
+    "availability__failure/native.log": "4ead0fc28026421517a334a4db72d73c2b76c40d61644220f1092e02f8d0a944",
+    "availability__failure/observed.json": "3f4e5ebb8d8d8938b1c5a7e2c805dfb2ff38c8de1296e56df45b52d58207f94c",
+    "availability__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "availability__positive/driver.sqlite": "1683281eed06eca8acdd8eb9eddb8f7cbce21fb26b469f357f62a354ea6dc1a4",
+    "availability__positive/dss.sqlite": "c144e4c87082bb2187dfcb73443bead4b00f02cc1bddda746de2f08b945246f4",
+    "availability__positive/events.json": "1351e71dbe1afa142f2d3c7006a2076f2082e0a5f4ef41bde4b9355cd9f3ebf6",
+    "availability__positive/main.py": "93297ca70553284fe428b77bdaf2f4a789d5824c1c09f083b383f617c6ec1c11",
+    "availability__positive/native.log": "46831def5a4b14a14508666f26a7791bdaa3b011f0fa314ef7429af75c45659f",
+    "availability__positive/observed.json": "f51207edbc08a26995f963f1a7e54136ebb875000d5946ff4ec6f66c879dc614",
+    "availability__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "availability__recovery/driver.sqlite": "b35a63fec4df7ff66b1dd0c9a391312829eed576c9caf9dbe7cee84073342c69",
+    "availability__recovery/dss.sqlite": "2b499e9f9a855bc4a011ba8620243fcf9081bfe18cee2d4c3d01b7e95380dc4d",
+    "availability__recovery/events.json": "a7da6d0b88510690b7e6332d9e7d3d70353c95cf8ab0423baa4c5ef7d6d18c44",
+    "availability__recovery/fixture-72815411993500.json": "a9cd24e0e969eabc524829bf1124339da175225c25331f9181440be1d4b6ebc6",
+    "availability__recovery/fixture-request.json": "3eb34e64ccc1595f08157524ab04030010bd0739c782b0fab6139d1b81d9f054",
+    "availability__recovery/main.py": "9bf94683ea54d1cb15a5050d31b5ca603732ed21a0351a7a1ea8bcf652945bee",
+    "availability__recovery/native.log": "c5e5b4144ddb33a1e20ba857eff3d6474f24cb1d8c7b06c4895b0a04ad6f5967",
+    "availability__recovery/observed.json": "26400b010356de280b26cdff383a3a0c2401721b45bf09a4ed83d72f7d8bccab",
+    "availability__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "between-list__boundary/driver.sqlite": "5347a831c09300dfae5abe44d700c87937ee66c70ede018ef20084e9a6b9bd4d",
+    "between-list__boundary/dss.sqlite": "2992158734267b64dfb3771496ac0942c6a9b4d45bb20949dfdf7eef2ea08369",
+    "between-list__boundary/events.json": "e16fb5603df7f1da77ff4b6f840cac867a999ba5d374d7b7ab1029a1c95eba85",
+    "between-list__boundary/fixture-73009739495800.json": "93b8639775487ec9e5e77f79bacb7ddb9db71dcde171733cc7c4ef0d2045c726",
+    "between-list__boundary/fixture-request.json": "466c757878633f0448cbc0e620ce44b631ba61458fac5962366bc253d0eea95f",
+    "between-list__boundary/main.py": "17d6741553d89a68e45c4bbc93974a29baac2492b482636f3a36bfedca2e895d",
+    "between-list__boundary/native.log": "15cf548358217a735872940fff021d129038cfc642669e867a47ad99240b0ec2",
+    "between-list__boundary/observed.json": "4f9e4ab0881bb349ab41a61580b1416c76dc4960224b68776ef3f3703911abe3",
+    "between-list__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "between-list__failure/driver.sqlite": "1a20449e7f5e83a5bba3736f274802c7d886f543310b663b71187b5abeaafe6c",
+    "between-list__failure/dss.sqlite": "220d27c200f72745296d14f22eb6af5538fa8f7bcdccbdbbce62e1a7bd218893",
+    "between-list__failure/events.json": "661bfa445d862128d54d1e2a70732f5cc409824797aec4768ebed48554ba44cd",
+    "between-list__failure/main.py": "81ce1f073d6bc0757159dd1194d297273f070214f6a8e35fe665fbd723a21a30",
+    "between-list__failure/native.log": "849bb949ede7fca013a08a9a9c052cd2f018e7a547c0c598b583ceb45ddff1eb",
+    "between-list__failure/observed.json": "43d00591f2707b8998e87b446d12b6c420f4c6b7c4b2237953e5423831006ac5",
+    "between-list__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "between-list__positive/driver.sqlite": "fb838feb52502f54b6b514524cce26bd33b026842360eb0977f1bf44d47a36c6",
+    "between-list__positive/dss.sqlite": "8c7679fd9d9f0994a6e7d14c2bfe98537e554622e19b4f154000d78c4f47c645",
+    "between-list__positive/events.json": "ff9b3af17a9211eb11075e3f9942e04271d16d53d29ed82631591ca69a16eeb9",
+    "between-list__positive/main.py": "c7d00b6dcf19db77b06aafae987f087da90748f08ac0145b41e89b6aec97faf0",
+    "between-list__positive/native.log": "81944fddf450bd71f93d3bd1bf938cf7a595e849a21517ead5081b0ec4593a8d",
+    "between-list__positive/observed.json": "426963105405af071767e0080f0a4c08b03dd323bbbe0208af80521ec0097379",
+    "between-list__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "between-list__recovery/driver.sqlite": "e488f1206bb3b86a6718f8dc1af268734c8aa4a9dccee3d4da739155cdb303b5",
+    "between-list__recovery/dss.sqlite": "e578537c3bff5ca7f7ac58a1b2fd14c1f1e652fa6fcf594c409213c1d0d73052",
+    "between-list__recovery/events.json": "9a97c1e9b5cb8ff5e7658011de96c28919cc57afd0098c65ec097b4f5450da63",
+    "between-list__recovery/main.py": "e03e1bbd078cc20b2836375ddc4230412cb596ee307f09f8a6749f494cea0f6f",
+    "between-list__recovery/native.log": "e46d7e656c30bbb08ea3d6d286e2e006c08fb3e4e8f0d8ca0885b18f60a42dbf",
+    "between-list__recovery/observed.json": "bab4efa0efca917637f78c959c91e02dacf3e5fa6fa3904ab0dc110dff217293",
+    "between-list__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "freshness__boundary/driver.sqlite": "4931f25e63e03686e7dee23d471b6aaa2821f4dcc1879110d3c08b4ec4e62530",
+    "freshness__boundary/dss.sqlite": "264f7e17db12be76d85c17c86192008d5e2ac77f846db091ba6c1fe6f6219973",
+    "freshness__boundary/events.json": "ee0ed88f60c7d3c842e79af86cd05005c366365b5aaba8dd7f09f2a1af389f3e",
+    "freshness__boundary/fixture-72747842300000.json": "edc3bc6e4a582e6e24bbe076273da55fa32a11157d13dc0d3906d914d28e588a",
+    "freshness__boundary/fixture-request.json": "48fc2a18e78001ae139a9d15368f3879a8c3f5f65c6a2c7e1ac8498a6714d00f",
+    "freshness__boundary/main.py": "23b96986b52f98c413ed3b717a3ae053c04d1a356adc5943cdb9d61003f986a3",
+    "freshness__boundary/native.log": "727820acbf533d9d300e2a8e4e49724e27ae24ee9e1c4c1d0a5ecff7d0e3504f",
+    "freshness__boundary/observed.json": "eeb34c416c78aa678d58fb5938e501b60033512c4ee82d29181f29f18a6f122c",
+    "freshness__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "freshness__failure/driver.sqlite": "041864baae3267ace547316e05d4bc9a337c1be89b16c2ab0b03062f301101d1",
+    "freshness__failure/dss.sqlite": "0d474823411b370c9dfa2cc90070d7c07f1e9b5bb9e7ef4f5376246e7ddc167a",
+    "freshness__failure/events.json": "a41b85db480a6f40051adcc131e4e5e0c71e5e0cc34640a481e3dbe0c1f9dcc7",
+    "freshness__failure/main.py": "e463fce2bf194eb821c8f0ced8cc2009cf9e350e411be67578de833fb37585d9",
+    "freshness__failure/native.log": "7506a9aafba63bcfff64927a1250e5975714f4c3f5fde392ce74c2f6e3ac0c8a",
+    "freshness__failure/observed.json": "506f77342628ce43e6f7f22414d1013230421963fc42d062404d7910a87711ed",
+    "freshness__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "freshness__positive/driver.sqlite": "167be6f67f903eb8584a44b0e2c4e1b441970278e8773e8363e1d74bb7bc7dcd",
+    "freshness__positive/dss.sqlite": "4ca26033ba3d18c11a8ae07e8566c0791538050d8cface6e031639868228b454",
+    "freshness__positive/events.json": "2d3197fecb3c9e0cfcb5a521a507a3ed8c11b3592b05e7de06db44d4588e44f4",
+    "freshness__positive/main.py": "93297ca70553284fe428b77bdaf2f4a789d5824c1c09f083b383f617c6ec1c11",
+    "freshness__positive/native.log": "6d2546fca0a6fad8c1a91f06ffd3ca0cfb86dd0400534723be3b8c86b1eda941",
+    "freshness__positive/observed.json": "e6f701176161efef7fb141e5e009d250e413c8c4c57f9e1aedc4f3d1409c115c",
+    "freshness__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "freshness__recovery/driver.sqlite": "7e8b4d655355f980d5d5c8d0d0ed3f8a8cde5491ead8c3fc50730ec9650f7b26",
+    "freshness__recovery/dss.sqlite": "c876b9e597fc34ea497f47a96e1a3abf92953611ced364ed9fa0a215f98bef56",
+    "freshness__recovery/events.json": "56d286c7013ac72b60e30e2ff02d3870c326e1f1bc55173078d1f70a021365d8",
+    "freshness__recovery/fixture-72774181848900.json": "2514687591bdcfedd8237c0279ed035d76d67a74b8bfdf9def6d65f833a541d3",
+    "freshness__recovery/fixture-request.json": "018ee8047dafe3fc50ded7c2bf066fe73323a0e171ab92f3c73972662218264e",
+    "freshness__recovery/main.py": "9bf94683ea54d1cb15a5050d31b5ca603732ed21a0351a7a1ea8bcf652945bee",
+    "freshness__recovery/native.log": "4e9dbf52da93b488c5e65ed878177e5bc7b4f5187eb60578cc95bc480819cb4a",
+    "freshness__recovery/observed.json": "08836188932de0176c3f818c15164f2c8fc65ddbfa692393d382eb82afdfc2f7",
+    "freshness__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "link__boundary/driver.sqlite": "4ae27970f39edb503f895334ec707476d389a5c6e69243b01e7ac96418765462",
+    "link__boundary/dss.sqlite": "3dab55659bc781dc8c7f92af811b341c0d58240f86200605b000f3301bee7358",
+    "link__boundary/events.json": "fa6279f2c17ff40bd966bc10224ccf4bd06d569b01d2de1c9b2132519d5a4ee0",
+    "link__boundary/fixture-72836030304600.json": "0dd9526109ddb2626b5dd1bfd8b03136fee5d0629b45b94205c1924d7c1753d9",
+    "link__boundary/fixture-72836560116900.json": "0dd9526109ddb2626b5dd1bfd8b03136fee5d0629b45b94205c1924d7c1753d9",
+    "link__boundary/fixture-request.json": "214ed36cfcd8673cd86bbbe5c625c262cb255e4b47903ec30992d24d825d5691",
+    "link__boundary/main.py": "77cc64d9d67f0ca5bc94748c62d33e731ef9421883587565e1562c6d743f7856",
+    "link__boundary/native.log": "2bf3142ac7d0a528e0f0ad7361d572f1e1b3be399aa23cec75e598c1d35cf446",
+    "link__boundary/observed.json": "1c255b20e06f33b9cf564e4b163e0ae90208fcc2e42d4bb99e2789b9dd9498da",
+    "link__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "link__failure/driver.sqlite": "914edb544be9482bf453e298342a5825952c2db8d148587bc3103ea768128958",
+    "link__failure/dss.sqlite": "e7a150eb9b0f80120ce547ac146f52ae01c9254efa8a6bb539892bd430534707",
+    "link__failure/events.json": "4929e421a99600f9d6c2704b24a1eb29b147e3cdccd2538b7b9d8ce8c064fbfa",
+    "link__failure/fixture-72846738712400.json": "a1422d72ff449e24d95b2032492c4c02c4a2782a48c62afdba45a5de50eefb49",
+    "link__failure/fixture-request.json": "6fa22044489167b5b2d13a29b262179f60da7db19653c48c0e4e580515744573",
+    "link__failure/main.py": "9e336356786f8f963b6690434a9d767a151e7134841f40fec887a193edbca96a",
+    "link__failure/native.log": "ed0ed06c717371847281f58b175a64913844e9b0a75d2f68d612936c6794ed6a",
+    "link__failure/observed.json": "a491fecb10dd10c1e7f0e4f48dc3d580513b208ecc4c2cc317731239d6a30729",
+    "link__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "link__positive/driver.sqlite": "dbf33c62067c1cf68c136bd086018bc42ce6bd0788b9521341d0a986e4d84c81",
+    "link__positive/dss.sqlite": "107d15f818820ad4b3f05392dab254d20f41d5331543deadd374340a6a7e08d3",
+    "link__positive/events.json": "2866675940b8094931b368192496e295b4077b668f26588beb3869edb49dde2a",
+    "link__positive/fixture-72825220482300.json": "dfd471eb28a45c1f425a21bd71e6e7c6a2a7f7dd8e64770577bfab210470ed54",
+    "link__positive/fixture-request.json": "c59d4320a49f2e3f48f6861fb9a38e4c5db8e0c4a8aed0e70b8c05819068fc82",
+    "link__positive/main.py": "e98e007cc7f70633bfecc19e88ce3f1983f6ad09caf9f7e67fa1cbaeda7a35bf",
+    "link__positive/native.log": "f6fa8c27a3c18c8a3c0e5d020e78f64eb83e773fbe65dc1287394d2fbce1112d",
+    "link__positive/observed.json": "86c1d7733d4cdeed32d06a80cf45b1eb23a24768bf80d675a449216d67d1db52",
+    "link__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "link__recovery/driver.sqlite": "5af18cd3cdbbe08f537872f9a346c8c1c098c4b572b90393c3fc9f18dd54081b",
+    "link__recovery/dss.sqlite": "ceba6b3613ab181c4621b229c65516b283831ee4e8324ea39823788b77c93751",
+    "link__recovery/events.json": "7200682fe0537aa5caeead4bae13ebcd65362d4013fa6566f1060cd29396003a",
+    "link__recovery/fixture-72857429307300.json": "55c01810333b506c871e134bcc881d1fc96f5374e2f63cbb92929295ac5082bd",
+    "link__recovery/fixture-72858837732500.json": "1e9724d7fcd1815df7ce1ce9d082b0c8afa220a331151cb36a8af50e6e7e947c",
+    "link__recovery/fixture-request.json": "c8aba57cb38a9adf80245da3ea6935027d7570ff3927b00fb6cb1c60b82d8bf9",
+    "link__recovery/main.py": "5c5bb1afe67223391b3f13ec5592d82ca84424b5e032b8e4e4a4d8bc7c094e24",
+    "link__recovery/native.log": "1ad8e65d2f618423e86944b16635de85007358a233016102b00dafeae09f1fd9",
+    "link__recovery/observed.json": "842a52aecc7202803cf23bd65ed1d56ea063b560e8f7dab7633ec7e9b34bc5bc",
+    "link__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "minute__boundary/driver.sqlite": "868dce22c9106fa1a088e06560738af3b7fbb28551a29de3f89bf9c21d57bc65",
+    "minute__boundary/dss.sqlite": "6d2893c7f2affa9a5ef3c4a5f3313b6324b023f3eafbc604fae8cf8f49e008f2",
+    "minute__boundary/events.json": "b6da7477ef8451c9ee2c783da760aad53ed81b8cce5dfddb278917fc8d9a094d",
+    "minute__boundary/fixture-72916778123100.json": "8a3f01f87b833d1599a85a85d19cd886392f76ff941777cd8b27a04b79bfd6db",
+    "minute__boundary/fixture-request.json": "3bdb3fea9a12d6a0d179437544eb3f677b73784e069adec08d7237deaa046f34",
+    "minute__boundary/main.py": "64bc2c1135896515011fdb9e974edaa2666256197a7f8d7c5bb812c20b549fac",
+    "minute__boundary/native.log": "8b2c90f11eef72adf605aae1177834f2c2b1fc4abbeddd39254a5fff4fa4ed80",
+    "minute__boundary/observed.json": "bb1d21a7b3496ec6613a093333c98abb61bbb838220b65b034d1b9a6e97a1022",
+    "minute__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "minute__failure/driver.sqlite": "dd0f9cdb761c4ac6058ef6d9313b0fb25a8e367069773e4d91ac340b7ef20dec",
+    "minute__failure/dss.sqlite": "0fff46a388d7aae917548eecdf3beb1d416a8361d04a56ed4569c9dea995d66f",
+    "minute__failure/events.json": "9e4d0bd41e551f6da5b9b3fddebfcd2ae463dfa388d25ff084a9097f82a842a1",
+    "minute__failure/main.py": "b10e9c8f188cb5c9faea49ab75a41c2e7e7fc0bcdee3ef75837dd9e0f0e07392",
+    "minute__failure/native.log": "acf21ee93105c339ef7216ab259d5a362d62ad9f4fb1da3197fb6c4782a9304c",
+    "minute__failure/observed.json": "21c7e717220c55a1417c4fcd3768888fe87780d99fb13c286ce15e6ece6b1dac",
+    "minute__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "minute__positive/driver.sqlite": "75b8e37386d5b87e18eec83b6dfd951854bd56d5964c8f857e587316a6870c8b",
+    "minute__positive/dss.sqlite": "b6eeb72354f18abce392933f34fe48d2ffc01d2ba443dcfc994d03da07908a62",
+    "minute__positive/events.json": "3e1bb779dc08ed42fd979c822fcf07568649fbc1d0a6a3c01495b6435f7c574c",
+    "minute__positive/fixture-72870190166400.json": "3bf9c330bfae77ff7c0a8e4c2d37b43a855b84c277cd1c262b84d6c9233e2e7d",
+    "minute__positive/fixture-request.json": "f8e46c46b5a0b112c07d988bfb4aede0d35b9816b31b4e92c91fe54e96f72233",
+    "minute__positive/main.py": "a2fe6f3db398dbc0d1eb935a368ce63e5e56ea0bdd72d4e633cc8f02b5f645b5",
+    "minute__positive/native.log": "12ea6782e4b791898f8b85a8abf25669d8ae8b86c688af3c45f9212eaf8c7eaf",
+    "minute__positive/observed.json": "8b7198d383eee524d8c31f173e9b8ebacd6c2f6c1d6a2b5222233846666c3e48",
+    "minute__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "minute__recovery/driver.sqlite": "02bf8bc1433a3c170a49ef457d53446ee4222a8d5e3d83e0ff89f7cae5917614",
+    "minute__recovery/dss.sqlite": "655f7c0d9387976f8955f7561241661069c77a61fb2a45558eb63d355e0a1b01",
+    "minute__recovery/events.json": "20da5a5f76c8b578a537e68c106a9dc81d1f2b957dc06fe7a20bb07f1427acee",
+    "minute__recovery/fixture-72943639695100.json": "3405681f6648d851a6243de133c2ad5be110a4eca99f6868e20c2dbf782d05c2",
+    "minute__recovery/fixture-request.json": "fbff241ca814e8037a28a0178252ecad705cf9d720efdd07de71a7cc38294cc6",
+    "minute__recovery/main.py": "fd309ea471d88c474aa46386e4bfd230e0df21a29be4d2a170c8390cfe49a346",
+    "minute__recovery/native.log": "5415d47389ebadea376a675ec8b903822e27d184e089b8f2de70f1aecf2aa560",
+    "minute__recovery/observed.json": "26cdc1fe4ab3fe03845c16994d6a86c500e626c00ac3f0727d917866d331088c",
+    "minute__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "printed__boundary/driver.sqlite": "fc25c012926309f24b91ef586a6305ca4f989630fb419a646cac4a47c96c05cd",
+    "printed__boundary/dss.sqlite": "c2a94a3c48590e9641a193fc02e5793c1ab24e1c2ba18023a09c4b4535bbb6b9",
+    "printed__boundary/events.json": "69a95abe79b0f35cfd9c8a59298de91ca52523d66865d30c40947261de9db4b3",
+    "printed__boundary/main.py": "ccb97deb56ea79a88e7bdd0a13b1e185e937865ac2c80a4021adf161c52b927c",
+    "printed__boundary/native.log": "eddbaba2248cdb89ed4d2edd0fc02cb208289fd8924c855d54a0232f8b990fb7",
+    "printed__boundary/observed.json": "9964551e078389baa4095e8062912d56b69ab37bcf1182df3789a323f1a495a1",
+    "printed__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "printed__failure/driver.sqlite": "08abe8c831268fb14ee34e1b04ffc4b2e94ea3e12d38d6548868ced1c20acfe5",
+    "printed__failure/dss.sqlite": "5f6f58c57b6da74a0e0af4c886726bafcbed53828ebf3fe195eb3ec6ee0f30cb",
+    "printed__failure/events.json": "e3b44b0a1164471f84d4d5bd954013a1ba6c2a7809a381cd7598640b8a0c9e0c",
+    "printed__failure/main.py": "547c1999de43ab09ff4c661b4bff633fd6d59a0cd2afa95240f2a93ac742414b",
+    "printed__failure/native.log": "535f863328f8492d565073595217440ea2dfe47361d721ac3f3b9a170fa4b09d",
+    "printed__failure/observed.json": "dac910ae78d5f9d0eb23312fec1f3c176d1655aeb51a6ff73d6e767ea487d7ca",
+    "printed__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "printed__positive/driver.sqlite": "230c67423565510f2ab393894752e14215651a01bd8b3c7f23fac0f5f630d3cd",
+    "printed__positive/dss.sqlite": "6d4f3e1affb9c10a1c3810e3daa7dda8aa992db07a0c58efec672be60cc3391e",
+    "printed__positive/events.json": "4c75e6cd728f1907af567307c90c964e4f6d2445b43f5117a5857780b295d12f",
+    "printed__positive/main.py": "462d55f6bc1e084d3deab7baa8f634598f383c22a95e0b5c30f74fdc07185f20",
+    "printed__positive/native.log": "fde882861212c45e47df9134b8a64c0ef089c191e2c939e7eb37acdcc34e6af3",
+    "printed__positive/observed.json": "331b3e65942583a48bebee3068fd5ec6dbda3c9c460dfd9c4938d7503fc80c3d",
+    "printed__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "printed__recovery/driver.sqlite": "039f9140cc468149daf4f32edec7606e5cb2b911cf013354dc443c63424cde99",
+    "printed__recovery/dss.sqlite": "49fe4bf9771b9d56c047b23cb5520583d8dfc7d9f2c7450a4a43ab591b5f9237",
+    "printed__recovery/events.json": "96ad707b7ebe69f509054fe5e1ad9d17f6c820f958819feb3b24cc52c771d56d",
+    "printed__recovery/main.py": "58434b931a23c1a6587a444646fbae8db5dea9b7fe7045e1afb6b2cb832883b4",
+    "printed__recovery/native.log": "9817ddffc2da07896c18907f39f5e15112d732e686b84050791c5ddab330bd0f",
+    "printed__recovery/observed.json": "4311ea285ee2d2f48cb71070b342e89e378e02ca89fed536e1ce2e9f95ab0b04",
+    "printed__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "quality__boundary/driver.sqlite": "acff0131bafb7b2527bfde2a445332d8b710d2d49a672708911698724b84da31",
+    "quality__boundary/dss.sqlite": "a3225ddca2dfb8f19d4d7e7713809a1ff0e2cf461240a05c580e91bc8bb378a0",
+    "quality__boundary/events.json": "4a4902415d1e22bc003a39846fcf2f1b100f51ef73bdbacdf59836ed67007809",
+    "quality__boundary/fixture-72666028526700.json": "d7a7733df9c4bc9523c371df7bd6d54508bda73b5eae2d43303c8ae1ed362478",
+    "quality__boundary/fixture-72667444867500.json": "647ba41d82474b3f9d6281bbe05e41ba1e2337a0949707b61f8f84ddc39f0fd7",
+    "quality__boundary/fixture-request.json": "acb6441b9b7f3fb9f8294958fd927659d6d56690f90337dbc1b15b125f19d425",
+    "quality__boundary/main.py": "dd69e431bbabc59acc22e43be10dbbabc4d3c8bef3e477a80cd831fdf4e262b0",
+    "quality__boundary/native.log": "489c117fa05fcc92e04cc7f16edd224dda4c241d70603fe40473346661e64ba6",
+    "quality__boundary/observed.json": "53ece314236aac5efdf6abf4b1dbd3d07b7afbf20eba76aa4c16150312e22e2d",
+    "quality__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "quality__failure/driver.sqlite": "c2b5015927f7cd660d8b28d5ffbccb29bdd9789b83bc15eba52a1b572503a359",
+    "quality__failure/dss.sqlite": "6d79a166f55685221900c547362fd3eb618a1d17875e10e956e927a82396d3ab",
+    "quality__failure/events.json": "9a32d89bdba72227a31a2b768f8ca7542e5f77be1b4ab13b299e0052bd0b0a95",
+    "quality__failure/main.py": "e463fce2bf194eb821c8f0ced8cc2009cf9e350e411be67578de833fb37585d9",
+    "quality__failure/native.log": "a594c1c290e93fa8bf389bcc39ab8411b8e0f7614f4eb57c6da0568013c826ce",
+    "quality__failure/observed.json": "dc55c79245c385acfd3da0d2f04bf7874e1b8e0b2e6cb1783fb776089033c46e",
+    "quality__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "quality__positive/driver.sqlite": "3d33b34999ec4e721244ce5cdd847bf6e8f64384152cd46a05ff27f7cdd40009",
+    "quality__positive/dss.sqlite": "59182e3e257535f54d6f0fbd49d92f87bb824ca019d52793ff6a23240bbf5f2a",
+    "quality__positive/events.json": "548f934444e820c11039a407656b7b0a85309813d69fa9f3951eefb4ae682bda",
+    "quality__positive/main.py": "93297ca70553284fe428b77bdaf2f4a789d5824c1c09f083b383f617c6ec1c11",
+    "quality__positive/native.log": "e9a1fb803ae348a48f75bb5f30ffcaf1da356ef88ed353cab264924f7cd66725",
+    "quality__positive/observed.json": "c6fe6b299203ea2a286a8c6d481d5a818ee3cfb83438f177c485e69528bd954d",
+    "quality__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "quality__recovery/driver.sqlite": "a4c4357521bd6b0a533b0135072232f2dcd45b672d53a227977a79e926480759",
+    "quality__recovery/dss.sqlite": "1f7dfdeabb1b90a64a6ec3cd5fc0b942e6fa43986a1f2560c9618cd1a64902d6",
+    "quality__recovery/events.json": "ea28f167f4651658a9459c3c9dbd3271f251e3ff0a954730e28ca1e39e014f0a",
+    "quality__recovery/fixture-72686287027100.json": "df0a149568af374535987900cb938f6f8dfa7eccc3828405eb7baf7c907e1a03",
+    "quality__recovery/fixture-request.json": "d163f05392fdac391b69420747a4d972ef96545d02eb1292f28a3ec1b4d7e9c1",
+    "quality__recovery/main.py": "9bf94683ea54d1cb15a5050d31b5ca603732ed21a0351a7a1ea8bcf652945bee",
+    "quality__recovery/native.log": "618b91c80cbf01403aa18e1e9f2bc2a935763425b4730dbf3b65ce974bbb912b",
+    "quality__recovery/observed.json": "9636ebaf6b1c4b20a2540112307144e2cff98e01b137312938096d7cda06123a",
+    "quality__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "validity__boundary/driver.sqlite": "065de0209f285c6d186f0d438879f64a84eb6da1e72d2c53faeaa4528630767d",
+    "validity__boundary/dss.sqlite": "95144f64ea6b9e87a83615a65795696975277145efb042e6b2ba7d39ae98340f",
+    "validity__boundary/events.json": "4019e23a290bda3b75f0ed675e02e1a2abde6996382f4bcf6bd5ba2bf0a32bad",
+    "validity__boundary/fixture-72706919068600.json": "ba3a8913608e26c9906b9c301b3c320f7aca36db598ae40c2ae95e94118d4ec0",
+    "validity__boundary/fixture-request.json": "cf0664899ca2dd0b5450eac7e371e20f249812c467baebdbf44b4d40eb54d8d9",
+    "validity__boundary/main.py": "ad8c3d0cc751eaddf5e4dd496801b3abbd5d23c61cb2d951e08c83fdc6cf7ef2",
+    "validity__boundary/native.log": "a45100468b6c6a79bb3a8484559f92d3aaa6fe3dc79d5a56558122dcd1a891a2",
+    "validity__boundary/observed.json": "a73fd420bb45d037245a2eb108496ba30be436b847748efd65e72ea1ed2134ec",
+    "validity__boundary/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "validity__failure/driver.sqlite": "93c6092684306a8016e2cfcc41ec9826c5b62e626a641182d8c7abfbff423e4f",
+    "validity__failure/dss.sqlite": "fc6ab43eb5dfd8822f3afaf0bf2e012201c0aab1efd999c9d24e6f6ec0cd55c7",
+    "validity__failure/events.json": "8599719bbf8d8dd400af92443d838bb2eeefc09cdbc6a884512a0f53a5be89f8",
+    "validity__failure/main.py": "e463fce2bf194eb821c8f0ced8cc2009cf9e350e411be67578de833fb37585d9",
+    "validity__failure/native.log": "fcafe6f58ee06955c3262d4bd2b0e17ef92b43683355604b8287cc9589cd9cba",
+    "validity__failure/observed.json": "31cedac1e0b8d67444378b07e407cf05293ab386b0d6059af738c8a8a832f443",
+    "validity__failure/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "validity__positive/driver.sqlite": "ae46936bccb5eebf18832a20adfa47e88c445ac59ac76aee2bcb8e2dfc0ed2a6",
+    "validity__positive/dss.sqlite": "db914d5bcc926f5697c37f828c70d89a632ad8219d8bef1ff865c70d50afc1c9",
+    "validity__positive/events.json": "3eafcaec04e30aca3365ccfd121ad5d82cd74fb0b8153ac403391a9395cf5980",
+    "validity__positive/main.py": "93297ca70553284fe428b77bdaf2f4a789d5824c1c09f083b383f617c6ec1c11",
+    "validity__positive/native.log": "35ac6062ded6665c0d8e73f82a97f576029271324142b83903467417246c2b49",
+    "validity__positive/observed.json": "a499d77c94654e17d409bac5e4bf18c40eb84cc88bdb030d300e7d8a639c003b",
+    "validity__positive/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "validity__recovery/driver.sqlite": "7b5b501870d79399ee1bf356b808134cb795159d40aab5290989344db5d253aa",
+    "validity__recovery/dss.sqlite": "36f4846a585d69e6107a3eb4bd197705f19ff00706193e688be23dfa025552e4",
+    "validity__recovery/events.json": "a1029c395648b532632648b51b4e7968ecdbc93685737d644d1538d3aaf8ff91",
+    "validity__recovery/fixture-72727257644500.json": "d46b4ea3ec3de43c612c089b99be014658a331186fbea293282b530b44587169",
+    "validity__recovery/fixture-request.json": "0d3b634002ccb9d1431a6d1993728b4ab29ed4eae7fddd76b05f846461e8aad1",
+    "validity__recovery/main.py": "9bf94683ea54d1cb15a5050d31b5ca603732ed21a0351a7a1ea8bcf652945bee",
+    "validity__recovery/native.log": "af0747ea9ec932bf782c1e31ecbea7cce7aa269cbe2159448e1d51a58f7d8f3a",
+    "validity__recovery/observed.json": "3ee6053b15fab659276b7f64f256c4ec6aafaae3b14e565b396feebcd6e91a58",
+    "validity__recovery/result.json": "900c4956a8aa002f7d1794fa83e7272a3b749e56bd7c3ed31b2e9a804409848b",
+    "fixture/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+    "fixture/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+    "fixture/dss/engine.py": "604663fb2a921922fc5318a31923b95523aec5193e31495ef310cacf1714a8ce",
+    "fixture/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+    "fixture/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+    "fixture/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+    "fixture/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+    "fixture/dss/server.py": "a136d929c27d7934cb72562b3be0849a19681040c42e2e959a139e055e7b3383",
+    "fixture/dss/uplink.py": "04bf381b2c4273e3aa107312586811c32cd4b2289a14151e7773960f6f08683a",
+    "fixture/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+    "fixture/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e"
+  },
+  "qualified_contracts": [],
+  "full_v05_accepted": false,
+  "scope": "Independent telemetry diagnostic review; composed regressions and requirement mapping remain pending"
+}
