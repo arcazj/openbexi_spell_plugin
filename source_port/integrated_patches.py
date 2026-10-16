@@ -38,6 +38,8 @@ import limit_feature_patches
 import telemetry_feature_patches
 import manoeuvre_database_patches
 import procedure_library_patches
+import prompt_complete_patches
+import event_text_patches
 import notification_patches
 import prompt_control_patches
 import prompt_startup_patches
@@ -92,6 +94,7 @@ RECIPE_NAMES = (
     'manoeuvre_database_patches.py', 'procedure_library_patches.py',
     'ranging_complete_patches.py',
     'ranging_reopen_patches.py', 'memory_feature_patches.py', 'memory_ranging_patches.py',
+    'prompt_complete_patches.py', 'event_text_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -106,7 +109,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *prompt_timeout_patches.PREIMAGES,
                             *legacy_compare_patches.PREIMAGES,
                             *proc_dictionary_patches.PREIMAGES,
-                            *prompt_control_patches.PREIMAGES))))
+                            *prompt_control_patches.PREIMAGES, *prompt_complete_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches,
@@ -116,7 +119,7 @@ PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, ranging_complete_patches,
-                  ranging_reopen_patches, memory_ranging_patches)
+                  ranging_reopen_patches, memory_ranging_patches, event_text_patches)
 DRIVER_PREFIXES = ('openbexi_dss_proxy/', 'openbexi_spell_dss/')
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',
@@ -285,6 +288,10 @@ def apply_native_tree(source, archive, output):
     before = patched[name]
     patched[name] = stage('procedure_library_patches.py', name, before,
         procedure_library_patches.apply(name, before))
+    for name in prompt_complete_patches.PREIMAGES:
+        before = patched.get(name, ported[name])
+        patched[name] = stage('prompt_complete_patches.py', name, before,
+            prompt_complete_patches.apply(name, before))
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'

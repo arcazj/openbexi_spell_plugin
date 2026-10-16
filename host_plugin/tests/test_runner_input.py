@@ -106,6 +106,10 @@ class OwnedPeer:
             self.process.terminate()
             self.process.wait(timeout=5)
 runner.Container=OwnedPeer
+def record_reminder():
+    with (root/'reminders.txt').open('a',encoding='utf-8') as output:
+        output.write('reminder\n')
+runner.reminder=record_reminder
 raise SystemExit(runner.main(['--project',str(root),'--program',str(root/'procedure.py')]))
 '''
 
@@ -243,6 +247,19 @@ def test_early_lines_wait_for_each_prompt_across_two_sequences(runner_pipe):
     peer.input('last\n')
     peer.wait(lambda: len(peer.answers()) == 5)
     assert peer.answers() == expected+[{'value': 'last', 'promptId': 'late'}]
+    peer.finish()
+
+
+def test_timeout_reminder_dispatch_does_not_answer_or_close_prompt(runner_pipe):
+    peer=runner_pipe
+    peer.prompt('remind-1')
+    peer.event('openbexi/promptReminder',{'promptId':'remind-1','procedureId':'main#1'})
+    path=peer.root/'reminders.txt'
+    peer.wait(lambda:path.exists() and path.read_text()=='reminder\n')
+    peer.unchanged(0)
+    peer.input('operator\n')
+    peer.wait(lambda:len(peer.answers())==1)
+    assert peer.answers()==[{'value':'operator','promptId':'remind-1'}]
     peer.finish()
 
 

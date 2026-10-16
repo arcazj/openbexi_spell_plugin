@@ -430,6 +430,10 @@ class Adapter:
             # while waiting for it (notably the startup PAUSED -> RUNNING).
             # Query again after that transition before emitting stopped.
             return
+        if self.prompts:
+            for prompt in self.prompts.reminders():
+                self.event('openbexi/promptReminder', promptId=prompt.identifier,
+                           procedureId=prompt.procedure)
         status = self.status.get('ExecutorStatus')
         if self.await_running:
             return

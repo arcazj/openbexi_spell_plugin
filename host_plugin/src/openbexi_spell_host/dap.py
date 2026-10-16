@@ -5,6 +5,7 @@ import sys
 
 from .container import Container
 from .protocol import read, write
+from .sound import reminder
 
 
 def main():
@@ -16,6 +17,8 @@ def main():
     try:
         process = container.start(stdin=sys.stdin.buffer, stderr=sys.stderr.buffer)
         while (message := read(process.stdout)) is not None:
+            if message.get('event') == 'openbexi/promptReminder':
+                reminder()
             if message.get('event') == 'terminated':
                 destination = container.export()
                 if destination:

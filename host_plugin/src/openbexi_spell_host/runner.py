@@ -11,6 +11,7 @@ import threading
 
 from .container import Container
 from .protocol import read, write
+from .sound import reminder
 
 
 def main(argv=None):
@@ -129,6 +130,8 @@ def main(argv=None):
                 body = message['body']
                 stream = sys.stderr if body.get('category') == 'stderr' else sys.stdout
                 print(body.get('output', ''), end='', file=stream, flush=True)
+            elif message.get('event') == 'openbexi/promptReminder':
+                reminder()
             elif message.get('event') == 'spell/prompt':
                 prompt = message['body']
                 values = message['body'].get('ExpectedValues', '')

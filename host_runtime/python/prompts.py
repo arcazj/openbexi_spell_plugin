@@ -1,6 +1,8 @@
 """One exposed native prompt, with answers bound to its actual procedure."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 from dataclasses import dataclass
+import math
+import time
 
 
 @dataclass(eq=False)
@@ -9,16 +11,19 @@ class Prompt:
     procedure: str
     fields: dict
     phase: str = 'queued'
+    reminder_deadline: float | None = None
+    reminded: bool = False
 
 
 class PromptQueue:
-    def __init__(self, root):
+    def __init__(self, root, clock=time.monotonic):
         self.root = root
         self.pending = []
         self.active = None
         self.answering = None
         self.sequence = 0
         self.failure = None
+        self.clock = clock
 
     def invalidate(self, procedure):
         self.pending[:] = [entry for entry in self.pending if entry.procedure != procedure]
@@ -47,7 +52,23 @@ class PromptQueue:
         if len(self.pending) + bool(self.active) >= 128:
             raise RuntimeError('Native prompt queue exceeds 128 procedures')
         self.sequence += 1
-        self.pending.append(Prompt(str(self.sequence), procedure, dict(fields)))
+        entry = Prompt(str(self.sequence), procedure, dict(fields))
+        if 'TimeoutMicroseconds' in fields:
+            duration = float(fields['TimeoutMicroseconds']) / 1000000
+            supplied = fields.get('DefaultProvided')
+            if not math.isfinite(duration) or duration < 0 or supplied not in ('True','False'):
+                raise RuntimeError('Invalid native prompt timeout metadata')
+            if duration > 0 and supplied == 'False':
+                entry.reminder_deadline = self.clock() + duration
+        self.pending.append(entry)
+
+    def reminders(self):
+        entry = self.active
+        if (self.answering or entry is None or entry.phase != 'active' or entry.reminded
+                or entry.reminder_deadline is None or self.clock() < entry.reminder_deadline):
+            return []
+        entry.reminded = True
+        return [entry]
 
     def expose(self, repeat=False):
         if self.failure:
