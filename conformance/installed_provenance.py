@@ -114,6 +114,41 @@ def input_paths(root):
               if '__pycache__' not in path.parts]]
 
 
+def capture_application():
+    """Explicit composed-image profile, with complete installed wheel source sets."""
+    import base64
+    from importlib.metadata import distribution
+
+    for name in ('display-patch', 'command-patch', 'command-catalog-patch', 'command-group-patch'):
+        if (Path('/opt')/name).exists():
+            raise ValueError('Composed application image contains a diagnostic overlay: '+name)
+    integrated = capture()
+    if integrated is None or integrated['driver_composition'] is None:
+        raise ValueError('Composed application requires both installed package manifests')
+    site = Path(importlib.util.find_spec('spell_native').origin).parent.parent
+    expected = {}
+    prefixes = ('spell/', 'spell_native/', 'openbexi_dss_proxy/', 'openbexi_spell_dss/')
+    def included(name):
+        return name.startswith(prefixes) and (Path(name).suffix in ('.py', '.so') or Path(name).parent.name == 'bin')
+    for package in ('openbexi-spell-source', 'openbexi-spell-dss'):
+        files = distribution(package).files
+        if files is None:
+            raise ValueError('Installed package has no RECORD: '+package)
+        for file in files:
+            name = file.as_posix()
+            if not included(name):
+                continue
+            if name in expected or file.hash is None or file.hash.mode != 'sha256':
+                raise ValueError('Unbound or overlapping installed package source: '+name)
+            expected[name] = base64.urlsafe_b64decode(file.hash.value+'='*((-len(file.hash.value)) % 4)).hex()
+    actual = {path.relative_to(site).as_posix(): digest(path.read_bytes())
+              for package in prefixes for path in (site/package).rglob('*')
+              if path.is_file() and included(path.relative_to(site).as_posix())}
+    if actual != expected:
+        raise ValueError('Installed application source set differs from its wheel RECORDs')
+    return dict(profile='fresh-composed-display-command-wheel/1', integrated=integrated, installed=actual)
+
+
 def verify_capture(record, inputs, normalized=None):
     if record is None:
         return

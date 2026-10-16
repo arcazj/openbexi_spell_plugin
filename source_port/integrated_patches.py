@@ -12,6 +12,10 @@ import tempfile
 import zipfile
 
 import cmd_patches
+import display_patches
+import command_feature_patches
+import command_catalog_patches
+import command_group_patches
 import child_lifecycle_patches
 import checkpoint_context_patches
 import checkpoint_error_patches
@@ -72,6 +76,8 @@ RECIPE_NAMES = (
     'context_snapshot_patches.py',
     'legacy_compare_patches.py', 'legacy_compare_syntax.py',
     'rng_patches.py', 'rng_state_patches.py',
+    'display_patches.py', 'command_feature_patches.py',
+    'command_catalog_patches.py', 'command_group_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -89,8 +95,10 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *prompt_control_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
-                  scdb_patches, timing_patches, send_verify_patches, rng_patches)
-DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches)
+                  scdb_patches, timing_patches, send_verify_patches, rng_patches,
+                  display_patches, command_feature_patches, command_catalog_patches, command_group_patches)
+DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
+                  display_patches, command_feature_patches, command_catalog_patches, command_group_patches)
 DRIVER_PREFIXES = ('openbexi_dss_proxy/', 'openbexi_spell_dss/')
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',

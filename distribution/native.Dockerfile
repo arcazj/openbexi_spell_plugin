@@ -20,6 +20,7 @@ COPY source_port/ipc_mailbox_patches.py /input/
 COPY source_port/context_snapshot_patches.py /input/
 COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /input/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /input/
+COPY source_port/display_patches.py source_port/command_feature_patches.py source_port/command_catalog_patches.py source_port/command_group_patches.py /input/
 COPY source_port/native-build.Dockerfile source_port/native-build.Dockerfile.dockerignore /input/
 RUN python /input/native_build.py --integrated
 COPY source_port/experiments /experiment
@@ -40,6 +41,7 @@ COPY source_port/ipc_mailbox_patches.py /executor/
 COPY source_port/context_snapshot_patches.py /executor/
 COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /executor/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /executor/
+COPY source_port/display_patches.py source_port/command_feature_patches.py source_port/command_catalog_patches.py source_port/command_group_patches.py /executor/
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
 RUN python /executor/executor_build.py --integrated
 COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/

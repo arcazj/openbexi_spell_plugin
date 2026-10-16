@@ -1,5 +1,6 @@
 """Observe remaining command behavior through real native helpers and binary DSS RPC."""
 import hashlib
+import os
 import json
 from pathlib import Path
 import queue
@@ -12,6 +13,8 @@ import uuid
 sys.path[:0]=['/opt/host','/workspace/fixture','/workspace']
 from native import NativeSession
 from command_provenance import capture
+if os.environ.get('OPENBEXI_CONFORMANCE_COMPOSED') == '1':
+    from installed_provenance import capture_application as capture
 from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p
 from command_scheduling_cases import CASES

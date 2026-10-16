@@ -31,9 +31,11 @@ from openbexi_spell_dss.transport import Transport
 def composed(name):
     path = 'openbexi_spell_dss/'+name+'.py'
     raw = (ROOT/'driver_plugin/src'/path).read_bytes()
-    for recipe in integrated_patches.DRIVER_RECIPES+(display_patches,command_feature_patches):
+    for recipe in integrated_patches.DRIVER_RECIPES:
         if path in recipe.PREIMAGES:
             raw = recipe.apply(path,raw)
+        if recipe is command_feature_patches:
+            break  # Preserve this focused individual-command fixture's scope.
     module = types.ModuleType('openbexi_spell_dss._command_rpc_test_'+name)
     exec(compile(raw,path,'exec'),module.__dict__)
     return module

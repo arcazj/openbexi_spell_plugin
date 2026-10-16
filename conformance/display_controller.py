@@ -1,5 +1,6 @@
 """Observe native SPELL display helpers through original RPC and a real local viewer."""
 import hashlib
+import os
 import json
 from pathlib import Path
 import queue
@@ -13,6 +14,8 @@ import uuid
 sys.path[:0] = ['/opt/host', '/workspace/fixture', '/workspace']
 from native import NativeSession
 from display_provenance import capture
+if os.environ.get('OPENBEXI_CONFORMANCE_COMPOSED') == '1':
+    from installed_provenance import capture_application as capture
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.journal import Journal

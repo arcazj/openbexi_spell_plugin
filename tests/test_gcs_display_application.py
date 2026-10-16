@@ -37,6 +37,8 @@ def original(name):
         raw = (ROOT / 'driver_plugin/src' / name).read_bytes()
         recipes = integrated_patches.DRIVER_RECIPES
     for recipe in recipes:
+        if recipe is display_patches:
+            break  # This fixture verifies the exact pre-display source contract.
         if name in recipe.PREIMAGES:
             raw = recipe.apply(name, raw)
     return raw

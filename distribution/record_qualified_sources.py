@@ -43,6 +43,7 @@ DONORS = {
     'prompt_startup':('39c652686b20da4cd179712abce16fe4df8e9699','prompt_startup'),
     'wait_interrupt':('728d9ba4fc154f7bbb924233d3b67e8fa7043de0','wait_interrupt'),
     'proc_dictionary':('c22ba3d0f5e2362c2384f09036bfff30e83080b1','proc_dictionary'),
+    'display_commands':('f602418','distribution/evidence/group-block-native-review.json'),
 }
 
 
@@ -335,6 +336,34 @@ def main():
             elif donor['inputs'].get('driver_plugin/src/'+name) != row['preimage_sha256']:
                 raise ValueError('Ranging driver input differs from qualified donor: '+name)
             outputs[name] = row['sha256']
+    # These expectations come from the retained native image, independently of
+    # the current composition result. Every command/display source was present
+    # in that image; unchanged prior donors must still agree exactly.
+    command_review = reports['display_commands']
+    raw_path = Path(command_review['raw']['path'])
+    raw_bytes = raw_path.read_bytes()
+    if (not command_review['passed'] or len(command_review['observations']) != 19
+            or hashlib.sha256(raw_bytes).hexdigest() != command_review['raw']['sha256']):
+        raise ValueError('Command/display donor lacks its independently reviewed native capture')
+    commands = json.loads(raw_bytes)
+    if not commands['passed'] or commands['runtime_image'] != command_review['runtime_image']:
+        raise ValueError('Command/display runtime differs from its native review')
+    additions = (composition.display_patches, composition.command_feature_patches,
+                 composition.command_catalog_patches, composition.command_group_patches)
+    changed = {name for recipe in additions for name in recipe.PREIMAGES}
+    installed = commands['runtime_sources']['installed']
+    for recipe in additions:
+        name = 'source_port/'+Path(recipe.__file__).name
+        captured = subprocess.check_output(['git','show',command_review['source_revision']+':'+name],cwd=ROOT)
+        if hashlib.sha256(captured).hexdigest() != commands['inputs'][name]:
+            raise ValueError('Command/display donor recipe differs from its frozen source: '+name)
+        if captured.replace(b'\r\n',b'\n') != (ROOT/name).read_bytes().replace(b'\r\n',b'\n'):
+            raise ValueError('Current command/display recipe differs from native donor: '+name)
+    for previous, names in ((python, composition.PYTHON_NAMES), (driver, composition.DRIVER_NAMES)):
+        for name in names:
+            if name in previous and name not in changed and previous[name] != installed[name]:
+                raise ValueError('Command/display donor changes an unrelated qualified source: '+name)
+            previous[name] = installed[name]
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     startup = reports['context_startup']

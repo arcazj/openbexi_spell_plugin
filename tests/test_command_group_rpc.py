@@ -20,8 +20,7 @@ def bridge(tmp_path,monkeypatch):
     def composed(name):
         if name!='rpc':return scheduling_module(name)
         path='openbexi_spell_dss/rpc.py';raw=(base.ROOT/'driver_plugin/src'/path).read_bytes()
-        for recipe in base.integrated_patches.DRIVER_RECIPES+(base.display_patches,base.command_feature_patches,
-                command_catalog_patches,command_group_patches):
+        for recipe in base.integrated_patches.DRIVER_RECIPES:
             if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
         module=types.ModuleType('openbexi_spell_dss._command_group_rpc_test')
         exec(compile(raw,path,'exec'),module.__dict__);return module

@@ -21,6 +21,7 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
+    parser.add_argument('--composed', action='store_true')
     parser.add_argument('--case', action='append', choices=list(CASES))
     args = parser.parse_args()
     cases = {key: value for key,value in CASES.items() if args.case is None or key in args.case}
@@ -43,11 +44,13 @@ def main():
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image, '--format', '{{.Id}}'], text=True).strip()
     name = 'openbexi-gcs-display-' + uuid.uuid4().hex
     created = False
-    report = dict(passed=False, runtime_image=image, inputs=inputs, diagnostic_only=True,
+    exported = False
+    report = dict(composed=args.composed, passed=False, runtime_image=image, inputs=inputs, diagnostic_only=True,
                   qualified_contracts=[], full_v05_accepted=False, full_v06_accepted=False)
     try:
         subprocess.run(['docker', 'create', '--init', '--name', name, '--network', 'none',
             '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--pids-limit', '256',
+            '--env', 'OPENBEXI_CONFORMANCE_COMPOSED='+str(int(args.composed)),
             '--entrypoint', 'python', image, '-I', '/workspace/display_controller.py'], check=True, capture_output=True)
         created = True
         targets = {filename: (ROOT / 'conformance' / filename).read_bytes() for filename in
@@ -80,22 +83,26 @@ def main():
             logs = subprocess.run(['docker', 'logs', name], check=True, capture_output=True, timeout=20)
             (output / 'controller.log').write_bytes(logs.stdout + logs.stderr)
         subprocess.run(['docker', 'cp', name + ':/workspace/.', str(output / 'workspace')], check=True, capture_output=True)
+        exported = True
         runtime = json.loads((output / 'workspace/runtime.json').read_bytes())
         verify_capture(runtime['integrated'], inputs)
-        assert runtime['profile'] == 'fresh-wheel-plus-declared-display-overlay/1'
-        overlay = runtime['overlay']
-        assert set(overlay['manifest']) == {
-            'spell/lang/functions.py', 'spell/lang/constants.py', 'spell/lang/modifiers.py',
-            'spell/lang/helpers/tskhelper.py', 'spell/lib/adapter/task.py',
-            'openbexi_dss_proxy/task.py', 'openbexi_spell_dss/ground.py',
-            'openbexi_spell_dss/rpc.py', 'openbexi_spell_dss/journal.py'}
-        for item in ('display_provenance.py', 'display.Dockerfile', 'installed_provenance.py'):
-            assert overlay['files'][item] == inputs['conformance/' + item]
-        assert overlay['files']['display_patches.py'] == inputs['source_port/display_patches.py']
-        assert set(overlay['added_sources']) == {'openbexi_spell_dss/displays.py', 'openbexi_spell_dss/display_viewer.py'}
-        for item, value in overlay['added_sources'].items():
-            assert value == inputs['driver_plugin/src/' + item] == runtime['installed'][item]
-            assert overlay['files']['modules/' + item] == value
+        if args.composed:
+            assert runtime['profile'] == 'fresh-composed-display-command-wheel/1'
+        else:
+            assert runtime['profile'] == 'fresh-wheel-plus-declared-display-overlay/1'
+            overlay = runtime['overlay']
+            assert set(overlay['manifest']) == {
+                'spell/lang/functions.py', 'spell/lang/constants.py', 'spell/lang/modifiers.py',
+                'spell/lang/helpers/tskhelper.py', 'spell/lib/adapter/task.py',
+                'openbexi_dss_proxy/task.py', 'openbexi_spell_dss/ground.py',
+                'openbexi_spell_dss/rpc.py', 'openbexi_spell_dss/journal.py'}
+            for item in ('display_provenance.py', 'display.Dockerfile', 'installed_provenance.py'):
+                assert overlay['files'][item] == inputs['conformance/' + item]
+            assert overlay['files']['display_patches.py'] == inputs['source_port/display_patches.py']
+            assert set(overlay['added_sources']) == {'openbexi_spell_dss/displays.py', 'openbexi_spell_dss/display_viewer.py'}
+            for item, value in overlay['added_sources'].items():
+                assert value == inputs['driver_plugin/src/' + item] == runtime['installed'][item]
+                assert overlay['files']['modules/' + item] == value
         host = json.loads((output / 'workspace/host-inputs.json').read_bytes())
         assert host == {path.name: sha(path) for path in (ROOT / 'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT / item) == value for item,value in inputs.items())
@@ -112,8 +119,10 @@ def main():
         import traceback
         report['error'] = traceback.format_exc()
     finally:
-        if created:
+        if created and exported:
             subprocess.run(['docker', 'rm', '-f', name], capture_output=True, timeout=20)
+        elif created:
+            print('Retained container after incomplete export: '+name, flush=True)
         (output / 'result.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8', newline='\n')
         print(json.dumps(dict(output=str(output), passed=report['passed'], error=report.get('error'),
             failures={key: row.get('error') for key,row in report.get('checks', {}).items() if not row['passed']})), flush=True)

@@ -21,6 +21,7 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image',required=True)
+    parser.add_argument('--composed',action='store_true')
     parser.add_argument('--case',action='append',choices=list(CASES))
     args=parser.parse_args()
     cases={name:spec for name,spec in CASES.items() if args.case is None or name in args.case}
@@ -43,6 +44,7 @@ def main():
     try:
         subprocess.run(['docker','create','--init','--name',name,'--network','none',
             '--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256',
+            '--env','OPENBEXI_CONFORMANCE_COMPOSED='+str(int(args.composed)),
             '--entrypoint','python',image,'-u','/workspace/command_scheduling_controller.py'],check=True,capture_output=True)
         created=True
         archive=io.BytesIO()
@@ -79,13 +81,14 @@ def main():
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
         verify_capture(runtime['integrated'],inputs)
-        assert runtime['profile']=='fresh-wheel-plus-display-and-command-overlays/1'
+        assert runtime['profile']==('fresh-composed-display-command-wheel/1' if args.composed else 'fresh-wheel-plus-display-and-command-overlays/1')
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())
-        report=dict(passed=exit_code==0 and set(checks)==set(cases) and all(r['passed'] for r in checks.values()),
+        report=dict(composed=args.composed,passed=exit_code==0 and set(checks)==set(cases) and all(r['passed'] for r in checks.values()),
             runtime_image=image,inputs=inputs,checks=checks,runtime_sources=runtime,
             host_inputs=host,controller_exit_code=exit_code,timed_out=timed_out,
+            artifacts={p.relative_to(output/'workspace').as_posix():sha(p) for p in (output/'workspace').rglob('*') if p.is_file()},
             diagnostic_only=True,qualified_contracts=[],full_v05_accepted=False,full_v06_accepted=False)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
         print(json.dumps({'output':str(output),'passed':report['passed'],
