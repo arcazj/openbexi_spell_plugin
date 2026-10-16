@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "runtime_image": "sha256:610435520ae909bbbf9f22cc150b7a4e9ff77eaff77210aa41223e0470171455",
+  "baseline_image": "sha256:0da90f935213189611f81648793720ae508acf21e4e9671bbe1e31fccd7d9c14",
+  "inputs": {
+    "conformance/checkpoint_identity_ipc.py": "18d1fabdad54e32f111f19d78efeefa35bb8837246cb32f1572a0715b0f2ae01",
+    "conformance/checkpoint_identity_recovery.py": "3a79f1c382d534e6c6b954ba84e2299bb6676d0522d636ba793ea8eeb5bf0983",
+    "conformance/checkpoint_identity_run.py": "4779efc609fbdbd78c74f52b149cfe5ae29d226104e9044f29c3ec0550ebb9eb",
+    "conformance/scdb_provenance.py": "0fec746cb281a8420f2264905441c585ec53e073b2dd41a5f1871876d06d67d8",
+    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
+    "conformance/checkpoint_identity_provenance.py": "934b41e1dd291a93a46a2eb235437de221ee7a216dd6d7fb3c0f6eb47788f013",
+    "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+    "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+    "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+    "conformance/checkpoint_identity_build.py": "3137f8be303d450284a255a64aebb33415def1579845721909dcaa79cfdc75d2",
+    "conformance/checkpoint_identity_install.py": "7c6809856005488b0d94931d9f3fb9b336ab257ba9035439e442c71f3a19d777",
+    "conformance/checkpoint_identity.Dockerfile": "0deab9a78ba3eeb00fb13905ad92d5421af34e4ccd0f7af2f07d20a6c7b0c638",
+    "conformance/checkpoint_identity.Dockerfile.dockerignore": "ab2d22a31452aa379f783f6c083ac8c3d2721e0c798fff895688f308666e08eb",
+    "distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+    "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+    "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+    "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+    "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+    "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/integrated_patches.py": "46c08b1655a192c80346488b1ca6848026a79ec29e0677682d7f47cf8ffc1298",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+    "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+    "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+    "conformance/ipc_mailbox_provenance.py": "c8157847c818b6bf04bb2ef4166e39f5a97987be041b82859b41411f4d37eb4c",
+    "conformance/ipc_mailbox_build.py": "2ce768153dd0db35be5fa9ed592fc4e0b33a6c2d894d1d23db74748a0b1ab8c8",
+    "conformance/ipc_mailbox_race.cpp": "786ee78db0fd2d98a2a5495476ff19a8907617137f65ccda45162374db16e234",
+    "conformance/ipc_mailbox_install.py": "92d4b4acc46437c8abbccb3bdc75a456feab8c29b65e0f73a91d88789946fb3a",
+    "conformance/ipc_mailbox.Dockerfile": "a6cb917a32c5950dc9595ff012db6956fba488ae3e5824a020b72c9943e5dc1a",
+    "conformance/context_snapshot_provenance.py": "7de001d668c5b0c5d38b41d922bcefea3fb57832273015747f72c4fa946c39c9",
+    "conformance/context_snapshot_build.py": "99c4d82cb80fd02146a851bf2dfa4a323477b19fb31a6791b3d9f4b1d09077ff",
+    "conformance/context_snapshot_probe.py": "c0f613027833ac428f1b359abf3ec476f81dcbe5aa5496d391ff798c2bd3a9c0",
+    "conformance/context_snapshot_install.py": "351a540b965a4c02540a443e95e05e5b64a861ad6df587282137607766051062",
+    "conformance/context_snapshot.Dockerfile": "78c086035b59dd46715450f7f5da24b8045a71172ba8f9500efb87891d8f6640",
+    "conformance/context_snapshot_startup.py": "7a3be7af16f18550c2cbb5e150aff7ead0b4d60677b0ca52d2f3b519c076fdfa",
+    "conformance/run_context_snapshot.py": "be78e11a57d9410ed8e615d9ac725ef7e89ffbf35bd2e8d0ac7398f9174bdfca",
+    "conformance/context_snapshot.Dockerfile.dockerignore": "905980b0387dd18d9647622b6872e406dcbb1631677f5ee1c2fbf59824196582",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "conformance/context_snapshot_report.py": "56408c6716dee46a53b2ebaf1df63a22f1ef0c0aea09735ecb70572730f95585",
+    "tests/test_context_snapshot_report.py": "62d5512f9ef1d75682dfc7289e6adbed1eb105226cedb2d32c4acc3c7370e003"
+  },
+  "source": "lib/SPELL_LST/src/SPELLlistenerContext.C",
+  "original_sha256": "ce7c6b3e16847584ad0a6e0e677ed5f9c16de4b560c3a29f7b08f1e8d72c1e2f",
+  "preimage_sha256": "aac1c7e223a52622670a836464d55e6ad54b7f96fd1250ab4f755867c012d5ac",
+  "patched_sha256": "b6e567e8cf6e598025e62c8fa9774da174a980906c80dbac9366102f75d30c25",
+  "recipes": {
+    "context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+    "context_snapshot_build.py": "99c4d82cb80fd02146a851bf2dfa4a323477b19fb31a6791b3d9f4b1d09077ff",
+    "context_snapshot_probe.py": "c0f613027833ac428f1b359abf3ec476f81dcbe5aa5496d391ff798c2bd3a9c0",
+    "incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0"
+  },
+  "native_artifacts": {
+    "SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417"
+  },
+  "probes": {
+    "passed": true,
+    "source": "lib/SPELL_LST/src/SPELLlistenerContext.C",
+    "preimage_sha256": "aac1c7e223a52622670a836464d55e6ad54b7f96fd1250ab4f755867c012d5ac",
+    "patched_sha256": "b6e567e8cf6e598025e62c8fa9774da174a980906c80dbac9366102f75d30c25",
+    "probes": {
+      "original": {
+        "exit_code": 1,
+        "observation": {
+          "port": "0",
+          "status": "RUNNING",
+          "update_completed_during_read": true,
+          "coherent": false,
+          "subsequent_current": true,
+          "unknown_context_rejected": true
+        },
+        "source_sha256": "462fa581a2e745a88da9c08d4fec9bc37b1ea8f0b80b5819beb432ccb5bfaed4",
+        "binary_sha256": "c04e5f68f2bef77f2d2f15562854e277c9002f33527044ecd882810efbe1b770"
+      },
+      "patched": {
+        "exit_code": 0,
+        "observation": {
+          "port": "0",
+          "status": "AVAILABLE",
+          "update_completed_during_read": false,
+          "coherent": true,
+          "subsequent_current": true,
+          "unknown_context_rejected": true
+        },
+        "source_sha256": "80c74d1890f919cb8de368d9ff064e2a1fefc3b554434be17611cef59814bdf7",
+        "binary_sha256": "a5fca89dd778660bbdb2cfcd625fd599bbdb343432f6711654b8bf32363b656b"
+      }
+    },
+    "scope": "Controlled exact listener-method interleaving; native IPC acceptance remains required"
+  },
+  "export": {
+    "path": "C:\\obcontext_snapshot\\.qualification\\context-snapshot-export\\480087d6c15d4394abc5203387dfdf36",
+    "manifest_sha256": "7fffb1c08aec4e3ab1619f31fc3ed68ecc5148ac47971f46e893352953a2b447"
+  },
+  "raw": {
+    "errors": {
+      "path": "C:\\obcontext_snapshot\\.qualification\\v0.6\\checkpoint-identity\\07ddce8007ce499b83b4e3c6ccc99651\\result.json",
+      "sha256": "f23868869144efd38f9c0f009952a08b8e39f7b8a725668e2c7a5adf2a8a7e55",
+      "workspace_sha256": "8918f609a0df9d9bc97ccc9452f09b9f95faa566d7bc37ff8cc91a878201bb5b"
+    },
+    "recovery": {
+      "path": "C:\\obcontext_snapshot\\.qualification\\v0.6\\checkpoint-identity\\bbd7262e4363458291941c1e532958d5\\result.json",
+      "sha256": "9f794e2d80fe2cd6052e51b2f8567c5f4e139e9c21fc9948a7cb2f7162685d40",
+      "workspace_sha256": "60c0bb42e02e5fb259f3c505dc03ff7e32cebb63204837f3d58e3a291dda5251"
+    },
+    "startup": {
+      "path": "C:\\obcontext_snapshot\\.qualification\\context-snapshot-startup\\663a858d9e5e466fa1e31e941b5c07e4\\result.json",
+      "sha256": "0fb45bddf3dd647fad74e59283e8ef1faaba12bbbb08920b874bdcc0b4144c2b",
+      "workspace_sha256": "e739a0a30b8cf13f30f0d757b494012aab377f54f7262ef6e5f0db8b250fd45f"
+    }
+  },
+  "retained_failure": {
+    "path": "C:\\oblegacy_compare\\.qualification\\v0.6\\checkpoint-identity\\0b3eeff75a5b42c98711c78a8256ada0\\result.json",
+    "sha256": "01d48c7f6c8d35fdc73e81ac273496f9811dac7a6f8387976a1ff62d9b336fe0",
+    "workspace_sha256": "0a4065e7dbd38bd73ddc3e70c73dcd52677b6cc683b758e8202b04d93bd10c41"
+  },
+  "passed_checks": {
+    "errors": 8,
+    "recovery": 22,
+    "startup": 40
+  },
+  "qualified_contracts": [],
+  "scope": "Coherent listener context metadata, with exact-method interleaving controls and real IPC startup/recovery",
+  "limitations": [
+    "The retained startup failure did not log the requested port; the controlled probe independently demonstrates the torn-snapshot defect.",
+    "Diagnostic one-binary overlay; fresh composed packages and full regressions remain required."
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "stable_v1_accepted": false
+}
