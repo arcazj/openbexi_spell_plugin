@@ -103,12 +103,54 @@ def report_from_stdout(stdout):
     raise ValueError('Runner did not identify its raw report')
 
 
+def verified_prefix(path, image, root=ROOT, source_revision=None, suites=SUITES):
+    """Adopt only the uninterrupted, byte-verified successful prefix of a run."""
+    prior = json.loads(path.read_bytes())
+    if (prior.get('image') != image or prior.get('passed') is not False or
+            prior.get('state') != 'failed' or not prior.get('complete_sequence')):
+        raise ValueError('Resume requires a failed full sequence on the same image')
+    stages = prior.get('suites', [])
+    if not stages or len(stages) > len(suites):
+        raise ValueError('Invalid prior suite sequence')
+    adopted = []
+    for index, stage in enumerate(stages):
+        name, script, options, minimum = suites[index]
+        if stage.get('suite') != name:
+            raise ValueError('Prior suite order differs: ' + name)
+        if stage.get('passed') is not True:
+            if index != len(stages) - 1:
+                raise ValueError('Failed suite is not the end of the retained sequence')
+            break
+        command = stage.get('command', [])
+        expected_tail = [*options, '--image', image]
+        if (len(command) != 4 + len(expected_tail) or
+                command[1:3] != ['-X', 'utf8'] or
+                Path(command[3]).name != script or command[4:] != expected_tail):
+            raise ValueError('Prior suite invocation differs: ' + name)
+        if stage.get('exit_code') != 0:
+            raise ValueError('Prior suite process failed: ' + name)
+        for kind in ('raw', 'log'):
+            reference = stage[kind]
+            if sha(Path(reference['path'])) != reference['sha256']:
+                raise ValueError('Prior ' + kind + ' bytes changed: ' + name)
+        validated = validate_report(Path(stage['raw']['path']), image, minimum, root, source_revision)
+        if validated != stage['raw']:
+            raise ValueError('Prior raw report summary differs: ' + name)
+        adopted.append(dict(stage, adopted_from=dict(path=str(path.resolve()), sha256=sha(path))))
+    else:
+        raise ValueError('Failed full sequence has no failing terminal suite')
+    return adopted
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
     parser.add_argument('--output', type=Path, default=ROOT / '.qualification/language-regressions')
     parser.add_argument('--suite', action='append', choices=[s[0] for s in SUITES])
+    parser.add_argument('--resume', type=Path, help='Verify and reuse the passing prefix of a failed full sequence')
     args = parser.parse_args()
+    if args.resume and args.suite:
+        parser.error('--resume requires the full mandatory sequence')
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image,
                                      '--format', '{{.Id}}'], text=True).strip()
     output = args.output.resolve() / uuid.uuid4().hex
@@ -118,8 +160,15 @@ def main():
                   ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'runner_sha256': sha(Path(__file__)), 'suites': [],
               'full_v05_accepted': False, 'full_v06_accepted': False}
+    if args.resume:
+        result['suites'] = verified_prefix(args.resume, image, source_revision=result['source_commit'])
+        result['resumed_from'] = dict(path=str(args.resume.resolve()), sha256=sha(args.resume))
+        print('Verified passing prefix: ' + str(len(result['suites'])), flush=True)
     print('Evidence: ' + str(output), flush=True)
-    for name, script, options, minimum in SUITES:
+    adopted = len(result['suites'])
+    for index, (name, script, options, minimum) in enumerate(SUITES):
+        if index < adopted:
+            continue
         if args.suite and name not in args.suite:
             continue
         command = [sys.executable, '-X', 'utf8', str(ROOT / 'conformance' / script),
