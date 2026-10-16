@@ -34,14 +34,19 @@ ok=all(observed['functions'].values()) and all(observed['formats'].values()) and
 closed=call('CloseDisplay')
 ok=opened and closed
 ''',
-    'display-options':'''opened=call('OpenDisplay',**{Host:'DSS','Monitor':1,'Reuse':True,Time:TIME('00:01:00')})
-closed=call('CloseDisplay',**{Host:'DSS'})
-ok=opened and closed
+    'display-options':'''outcomes=[]
+for options in ({Host:'DSS'},{'Monitor':1},{'Reuse':True},{Time:TIME('00:01:00')},
+                {Host:'DSS','Monitor':1,'Reuse':False,Time:TIME('00:01:00')}):
+    outcomes.append(call('OpenDisplay',**options))
+    outcomes.append(call('CloseDisplay',**{Host:'DSS'}))
+ok=all(outcomes)
 ''',
     'print-vector':'''opened=call('OpenDisplay')
-printed=call('PrintDisplay',**{Format:'VECTOR',Printer:'DSS_REPORTS'})
+vector=call('PrintDisplay',**{Format:'VECTOR'})
+postscript=call('PrintDisplay',**{Format:'PS'})
+printer=call('PrintDisplay',**{Printer:'DSS_REPORTS'})
 closed=call('CloseDisplay')
-ok=opened and printed and closed
+ok=opened and vector and postscript and printer and closed
 ''',
 }
 
