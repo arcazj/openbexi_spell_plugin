@@ -153,8 +153,11 @@ def archive_proof(raw,files,revision):
     return checks
 
 
-def review(paths,overlay,telemetry,limits,revision,image):
-    assert set(paths)=={'formats','user','values'}
+def review(paths,overlay,telemetry,limits,revision,image,*,native_wheel=None,driver_wheel=None):
+    composed=overlay is None
+    assert set(paths)==({'formats'} if composed else {'formats','user','values'})
+    if composed:assert telemetry is limits is None and native_wheel is not None and driver_wheel is not None
+    wheels=None
     checks={};references={};archives={};sources=None
     for suite,path in paths.items():
         raw=read(path)
@@ -164,7 +167,10 @@ def review(paths,overlay,telemetry,limits,revision,image):
             assert hashlib.sha256(content).hexdigest()==value
             assert hashlib.sha256(content.replace(b'\r\n',b'\n')).hexdigest()==raw['lf_normalized_inputs'][name]
         verify_capture(raw['runtime_sources']['integrated'],raw['inputs'],raw['lf_normalized_inputs'])
-        overlay_proof(raw,overlay,telemetry,limits,revision)
+        if composed:
+            from limit_telemetry_sources import verify
+            wheels=verify(raw,native_wheel,driver_wheel,profile='fresh-composed-database-format-wheel/1',required_recipes=('database_format_patches.py',))
+        else:overlay_proof(raw,overlay,telemetry,limits,revision)
         assert sources is None or sources==raw['runtime_sources'];sources=raw['runtime_sources']
         with tarfile.open(path.parent/'workspace.tar') as archive:
             entries=[v for v in archive.getmembers() if v.isfile()]
@@ -172,9 +178,9 @@ def review(paths,overlay,telemetry,limits,revision,image):
             assert len(files)==len(entries)
         checks.update({suite+':'+name:row for name,row in archive_proof(raw,files,revision).items()})
         references[suite]=ref(path);archives[suite]=ref(path.parent/'workspace.tar')
-    assert len(checks)==52
+    assert len(checks)==(8 if composed else 52)
     return dict(passed=True,runtime_image=image,source_revision=revision,raw=references,archives=archives,
-        overlay=str(overlay.resolve()),telemetry_overlay=str(telemetry.resolve()),limit_overlay=str(limits.resolve()),
+        overlay=str(overlay.resolve()) if overlay else None,telemetry_overlay=str(telemetry.resolve()) if telemetry else None,limit_overlay=str(limits.resolve()) if limits else None,composed_wheels=wheels,
         checks=checks,review_source=ref(Path(__file__)),source_inputs=raw['inputs'],
         reviewed_parent_inputs={'driver_plugin/src/openbexi_spell_dss/limit_files/normal.json':
             hashlib.sha256(source_bytes(ROOT,'driver_plugin/src/openbexi_spell_dss/limit_files/normal.json',revision)).hexdigest()},

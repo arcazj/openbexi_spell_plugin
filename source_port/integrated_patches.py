@@ -23,6 +23,7 @@ import checkpoint_identity_patches
 import context_snapshot_patches
 import database_import_patches
 import database_values_patches
+import database_format_patches
 import data_files_native_patches
 import data_files_patches
 import dta_native_patches
@@ -69,7 +70,7 @@ RECIPE_NAMES = (
     'scheduler_patches.py', 'resource_patches.py', 'limit_patches.py',
     'database_import_patches.py', 'notification_patches.py',
     'value_units_patches.py',
-    'user_database_patches.py', 'database_values_patches.py',
+    'user_database_patches.py', 'database_values_patches.py', 'database_format_patches.py',
     'scdb_patches.py', 'timing_patches.py',
     'checkpoint_error_patches.py',
     'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
@@ -110,7 +111,7 @@ PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, manoeuvre_database_patches,
-                  ranging_complete_patches, memory_feature_patches)
+                  ranging_complete_patches, memory_feature_patches, database_format_patches)
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, ranging_complete_patches,

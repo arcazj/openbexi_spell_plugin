@@ -30,6 +30,10 @@ def verify_composed(runtime, inputs, normalized):
         stages=[stage for stage in manifest['stages'] if name in stage['sources']]
         assert stages and any(stage['recipe']==recipe for stage in stages),name
         terminal='display_patches.py' if name.endswith('/ground.py') and 'display_patches.py' in manifest['recipes'] else recipe
+        if 'ranging_complete_patches.py' in manifest['recipes']:
+            terminal='ranging_complete_patches.py'
+            if name.endswith('/ground.py'):
+                terminal='memory_ranging_patches.py' if 'memory_ranging_patches.py' in manifest['recipes'] else 'ranging_reopen_patches.py'
         assert stages[-1]['recipe']==terminal,name
         assert stages[-1]['sources'][name]['after_sha256']==row['patched_sha256'],name
     return driver['sources']['openbexi_spell_dss/ground.py']

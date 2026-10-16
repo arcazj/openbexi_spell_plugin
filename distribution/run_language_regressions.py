@@ -20,6 +20,7 @@ SUITES = [
     ('resource', 'run_resource.py', [], 12),
     ('database-import', 'run_database_import.py', [], 16),
     ('database-values', 'run_database_values.py', [], 24),
+    ('database-formats', 'run_database_formats.py', [], 8),
     ('user-database', 'run_user_database.py', [], 20),
     ('manoeuvre', 'run_manoeuvre_candidate.py', [], 8),
     ('dta', 'run_dta.py', [], 68),

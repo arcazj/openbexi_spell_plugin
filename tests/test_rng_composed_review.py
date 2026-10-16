@@ -1,5 +1,7 @@
 """Retained native ranging bytes include the later display composition stage."""
 import copy
+import hashlib
+import subprocess
 import json
 from pathlib import Path
 import sys
@@ -14,7 +16,9 @@ from rng_composed_review import verify_composed
 @pytest.fixture(scope='module')
 def captured():
     # Immutable command candidate: the observer and runtime remain unchanged.
-    path=ROOT/'.qualification/v0.5/rng/ac175c8032e843c4923391e8eabc8f74/result.json'
+    proof=json.loads(subprocess.check_output(['git','show','ffc6d660a111e9478f8a1d0280651f37d2dfb10d:conformance/evidence/rng.json'],cwd=ROOT))
+    path=Path(proof['raw_report_path'])
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==proof['raw_report_sha256']
     raw=json.loads(path.read_bytes())
     return raw
 

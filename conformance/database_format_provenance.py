@@ -11,6 +11,12 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application=capture_application()
+        recipes=application['integrated']['manifest']['composition']['native']['recipes']
+        if 'database_format_patches.py' not in recipes:raise ValueError('Composed database format recipe is absent')
+        return dict(application,profile='fresh-composed-database-format-wheel/1')
     base=json.loads((EVIDENCE/'base.json').read_bytes())
     if base['profile']!='fresh-composed-limit-telemetry-overlays/1':raise ValueError('Database format base differs')
     expected=dict(base['installed'])
