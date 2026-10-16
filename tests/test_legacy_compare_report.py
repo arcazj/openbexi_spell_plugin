@@ -1,9 +1,11 @@
 """The diagnostic verifier must reject substituted sources and incomplete logs."""
 import io
+import hashlib
 import json
 from pathlib import Path
 import sys
 import tarfile
+import zipfile
 
 import pytest
 
@@ -74,3 +76,71 @@ def test_untrustworthy_archive_is_rejected(tmp_path, mutation):
         raw['checks']['positive']['passed'] = True
     with pytest.raises(AssertionError):
         report.verify_archive(write_archive(tmp_path, raw, files), raw, original)
+
+
+@pytest.fixture
+def exported(tmp_path):
+    sys.path.insert(0, str(report.ROOT / 'source_port'))
+    import native_patches
+    import dta_time_patches
+    digest = lambda value: hashlib.sha256(value).hexdigest()
+
+    def write(name, content):
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        return digest(content)
+
+    manifest = dict(passed=True, sources={}, recipes={}, artifacts={}, original_artifacts={})
+    compiled = dict(passed=True, full_qualification_passed=False, units={}, artifacts={})
+    with zipfile.ZipFile(report.ROOT / 'docs/reference/SPELL2.6.10-src.zip') as archive:
+        for name in report.patch.PREIMAGES:
+            original = archive.read(name)
+            ported = native_patches.apply(name, original)
+            if name.endswith('SPELLpythonHelper.C'):
+                ported = dta_time_patches.apply(name, original, ported)
+            patched = report.patch.apply(name, original, ported)
+            manifest['sources'][name] = {
+                label + '_sha256': write(label + '/' + name, content)
+                for label, content in (('original', original), ('ported', ported), ('patched', patched))}
+            compiled['units'][name] = dict(exit_code=0, original_sha256=digest(ported), patched_sha256=digest(patched))
+    for name, source in report.RECIPES.items():
+        manifest['recipes'][name] = write(name, (report.ROOT / source).read_bytes())
+    compiled['recipe_sha256'] = manifest['recipes']['incremental_native.py']
+    before, after = {}, {}
+    for name in report.ARTIFACTS:
+        original = digest(('original test artifact ' + name).encode())
+        patched = write('compiled/' + name, ('changed test artifact ' + name).encode())
+        manifest['original_artifacts'][name], manifest['artifacts'][name] = original, patched
+        before['spell_native/bin/' + name], after['spell_native/bin/' + name] = original, patched
+        compiled['artifacts'][name] = dict(exit_code=0, sha256=patched, original_sha256=original)
+    manifest['incremental_build_sha256'] = write('compiled/incremental-build.json', json.dumps(compiled).encode())
+    baseline = dict(integrated={'fixture': 'validator unit test'}, installed=before, overlay=None)
+    candidate = dict(integrated=baseline['integrated'], installed=after, overlay=manifest)
+    write('baseline.json', json.dumps({key: baseline[key] for key in ('integrated', 'installed')}).encode())
+    write('manifest.json', json.dumps(manifest).encode())
+    return tmp_path, baseline, candidate
+
+
+def test_exact_export_binds_source_recipe_and_all_installed_changes(exported):
+    folder, baseline, candidate = exported
+    assert report.verify_export(folder, baseline, candidate) == candidate['overlay']
+
+
+@pytest.mark.parametrize('mutation', ['source', 'recipe', 'artifact', 'compile-record', 'extra-installed', 'wrong-base'])
+def test_altered_export_is_rejected(exported, mutation):
+    folder, baseline, candidate = exported
+    if mutation == 'source':
+        (folder / 'patched' / next(iter(report.patch.PREIMAGES))).write_bytes(b'unverified')
+    elif mutation == 'recipe':
+        (folder / 'legacy_compare_syntax.py').write_bytes(b'unverified')
+    elif mutation == 'artifact':
+        (folder / 'compiled/libspell_executor313.so').write_bytes(b'unverified')
+    elif mutation == 'compile-record':
+        (folder / 'compiled/incremental-build.json').write_text('{}')
+    elif mutation == 'extra-installed':
+        candidate['installed']['spell/undeclared.py'] = 'unverified'
+    elif mutation == 'wrong-base':
+        baseline['installed']['spell_native/bin/SPELL-Context'] = 'unverified'
+    with pytest.raises((AssertionError, ValueError)):
+        report.verify_export(folder, baseline, candidate)

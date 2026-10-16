@@ -77,6 +77,7 @@ def verify_export(directory, baseline, candidate):
     assert sha(compiled_path) == manifest['incremental_build_sha256']
     compiled = json.loads(compiled_path.read_bytes())
     assert compiled['passed'] and not compiled['full_qualification_passed']
+    assert compiled['recipe_sha256'] == manifest['recipes']['incremental_native.py']
     assert set(compiled['units']) == set(patch.PREIMAGES)
     assert set(compiled['artifacts']) == ARTIFACTS
     with zipfile.ZipFile(ROOT / 'docs/reference/SPELL2.6.10-src.zip') as archive:
@@ -97,6 +98,7 @@ def verify_export(directory, baseline, candidate):
         assert expected[destination] == manifest['original_artifacts'][name]
         assert digest != expected[destination] and sha(directory / 'compiled' / name) == digest
         assert compiled['artifacts'][name]['sha256'] == digest
+        assert compiled['artifacts'][name]['original_sha256'] == manifest['original_artifacts'][name]
         assert compiled['artifacts'][name]['exit_code'] == 0
         expected[destination] = digest
     assert candidate['installed'] == expected, 'Undeclared installed payload change'
