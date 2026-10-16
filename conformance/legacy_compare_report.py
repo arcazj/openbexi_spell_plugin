@@ -58,7 +58,7 @@ def verify_archive(path, report, original):
             log = read(name + '/native.log')
             assert b'AddressSanitizer:' not in log and b'runtime error:' not in log, name
             if name in INVALID or (original and name in EXPECTED_FAILURES):
-                assert b'SyntaxError' in log and b'LEGACY_COMPARE_PASSED' not in log, name
+                assert b'Error during preparation: Syntax error:' in log and b'LEGACY_COMPARE_PASSED' not in log, name
             else:
                 assert row['exit_code'] == 0
                 assert b'[ STATUS  ] FINISHED' in log and b'LEGACY_COMPARE_PASSED' in log, name

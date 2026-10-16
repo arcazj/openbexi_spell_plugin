@@ -27,7 +27,7 @@ for name, source in {**CASES, **INVALID}.items():
         if name in CASES:
             assert run.returncode == 0 and b'[ STATUS  ] FINISHED' in log and b'LEGACY_COMPARE_PASSED' in log, 'Procedure did not finish successfully'
         else:
-            assert b'SyntaxError' in log and b'LEGACY_COMPARE_PASSED' not in log, 'Malformed grammar was not rejected'
+            assert b'Error during preparation: Syntax error:' in log and b'LEGACY_COMPARE_PASSED' not in log, 'Malformed grammar was not rejected'
         checks[name] = dict(passed=True, source=source, expected='FINISHED' if name in CASES else 'SyntaxError', exit_code=run.returncode)
     except Exception as error:
         checks[name] = dict(passed=False, source=source, error=type(error).__name__ + ': ' + str(error), traceback=traceback.format_exc())

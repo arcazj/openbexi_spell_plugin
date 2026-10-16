@@ -25,7 +25,7 @@ def fixture_files(original):
         suffix = "\nfrom spell.lang.functions import Display\nDisplay('LEGACY_COMPARE_PASSED')\n" if name in report.CASES else ''
         files[name + '/data/Procedures/main.py'] = (source + suffix).encode('utf-8')
         files[name + '/data/Procedures/comparison_fixture.py'] = report.FIXTURE.encode('utf-8')
-        files[name + '/native.log'] = b'SyntaxError' if failed or invalid else b'[ STATUS  ] FINISHED LEGACY_COMPARE_PASSED'
+        files[name + '/native.log'] = b'Error during preparation: Syntax error: invalid syntax' if failed or invalid else b'[ STATUS  ] FINISHED LEGACY_COMPARE_PASSED'
     raw = {'passed': not original, 'controller_exit_code': int(original),
            'checks': checks, 'runtime_sources': {'fixture': 'validator unit test'}}
     return raw, files
