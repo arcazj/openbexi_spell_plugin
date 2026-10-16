@@ -14,7 +14,16 @@ KEY='_OpenBEXICommandGroup'
 SOURCE='OPENBEXI_COMMAND_RESULTS'
 
 
-def settings(item,config):return dict(config or {},**item.getConfig())
+def settings(item,config):
+    local = item.getConfig()
+    # TcInterface chooses its block path from the call configuration before
+    # applying item overrides. Validate both sources so an item default cannot
+    # hide a malformed flag that already selected a different transport path.
+    for options in (config or {}, local):
+        for name in ('Block', 'Group'):
+            if name in options and type(options[name]) is not bool:
+                raise DriverException(name+' must be boolean')
+    return dict(config or {},**local)
 
 
 def requested(items,config):
