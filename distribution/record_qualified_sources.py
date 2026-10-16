@@ -41,6 +41,8 @@ DONORS = {
     'legacy_compare':('fc44409cd5493ca0ad6e924b2b45d01d34387b6d','legacy_compare'),
     'context_snapshot':('342b1f12ad6c315a686581b64455c250c8d1d08b','context_snapshot'),
     'prompt_startup':('39c652686b20da4cd179712abce16fe4df8e9699','prompt_startup'),
+    'wait_interrupt':('728d9ba4fc154f7bbb924233d3b67e8fa7043de0','wait_interrupt'),
+    'proc_dictionary':('c22ba3d0f5e2362c2384f09036bfff30e83080b1','proc_dictionary'),
 }
 
 
@@ -255,6 +257,30 @@ def main():
             native[name]['patched'] = hashes['patched']
         else:
             native[name] = hashes
+    for key, count, recipe in (('wait_interrupt', 24, composition.wait_interrupt_patches),
+                               ('proc_dictionary', 16, composition.proc_dictionary_patches)):
+        report = reports[key]
+        overlay = report['qualification_identity']['evidence']
+        filename = key + '_patches.py'
+        committed = subprocess.check_output(
+            ['git', 'show', donors[key]['commit'] + ':source_port/' + filename], cwd=ROOT)
+        if (report['passed'] is not True or report['qualified_contracts'] != []
+                or len(report['checks']) != count + 4
+                or any(row['passed'] is not True for row in report['checks'].values())
+                or not overlay['passed'] or overlay['full_release_accepted']
+                or hashlib.sha256(committed).hexdigest() != overlay['recipes'][filename]
+                or set(overlay['sources']) != set(recipe.PREIMAGES)):
+            raise ValueError('Diagnostic donor lacks complete native evidence: ' + key)
+        for name, row in overlay['sources'].items():
+            hashes = {label.removesuffix('_sha256'): value for label, value in row.items()}
+            if (hashes['original'], hashes['ported']) != recipe.PREIMAGES[name]:
+                raise ValueError('Diagnostic donor preimage differs: ' + name)
+            if name in native:
+                if native[name]['original'] != hashes['original'] or native[name]['patched'] != hashes['ported']:
+                    raise ValueError('Diagnostic donor does not follow its qualified predecessor: ' + name)
+                native[name]['patched'] = hashes['patched']
+            else:
+                native[name] = hashes
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]

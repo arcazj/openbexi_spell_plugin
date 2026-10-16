@@ -79,6 +79,13 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
         'prompt_control_patches.py', 'prompt_startup_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
+    scheduler = composition.wait_interrupt_patches.SOURCE
+    assert [row['recipe'] for row in report['stages'] if scheduler in row['sources']] == [
+        'scheduler_patches.py', 'wait_interrupt_patches.py']
+    for name in composition.proc_dictionary_patches.PREIMAGES:
+        assert [row['recipe'] for row in report['stages'] if name in row['sources']] == [
+            'proc_dictionary_patches.py']
+
 
 def test_host_inputs_match_their_separate_qualified_donors():
     qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
@@ -111,6 +118,8 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  composition.ipc_mailbox_patches.SOURCE,
                                  composition.context_snapshot_patches.SOURCE,
                                  *composition.legacy_compare_patches.PREIMAGES,
+                                 *composition.proc_dictionary_patches.PREIMAGES,
+                                 composition.wait_interrupt_patches.SOURCE,
                                  composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)

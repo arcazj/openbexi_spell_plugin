@@ -33,6 +33,7 @@ import notification_patches
 import prompt_control_patches
 import prompt_startup_patches
 import prompt_timeout_patches
+import proc_dictionary_patches
 import resource_patches
 import rng_patches
 import rng_state_patches
@@ -44,6 +45,7 @@ import timing_patches
 import ui_native_patches
 import user_database_patches
 import value_units_patches
+import wait_interrupt_patches
 
 ARCHIVE_SHA256 = '2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed'
 RECIPE_NAMES = (
@@ -65,6 +67,7 @@ RECIPE_NAMES = (
     'prompt_timeout_patches.py',
     'prompt_control_patches.py',
     'prompt_startup_patches.py',
+    'proc_dictionary_patches.py', 'wait_interrupt_patches.py',
     'ipc_mailbox_patches.py',
     'context_snapshot_patches.py',
     'legacy_compare_patches.py', 'legacy_compare_syntax.py',
@@ -82,6 +85,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *child_lifecycle_patches.PREIMAGES,
                             *prompt_timeout_patches.PREIMAGES,
                             *legacy_compare_patches.PREIMAGES,
+                            *proc_dictionary_patches.PREIMAGES,
                             *prompt_control_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
@@ -215,6 +219,9 @@ def apply_native_tree(source, archive, output):
         elif name == ui_native_patches.SOURCE:
             recipe = 'ui_native_patches.py'
             patched[name] = ui_native_patches.apply(name, original[name], ported[name])
+        elif name in proc_dictionary_patches.PREIMAGES:
+            recipe = 'proc_dictionary_patches.py'
+            patched[name] = proc_dictionary_patches.apply(name, original[name], ported[name])
         elif name in dta_time_patches.PREIMAGES:
             recipe = 'dta_time_patches.py'
             patched[name] = dta_time_patches.apply(name, original[name], ported[name])
@@ -229,6 +236,11 @@ def apply_native_tree(source, archive, output):
         elif name in scheduler_patches.PREIMAGES:
             recipe = 'scheduler_patches.py'
             patched[name] = scheduler_patches.apply(name, original[name], ported[name])
+            if name in wait_interrupt_patches.PREIMAGES:
+                intermediate = stage(recipe, name, ported[name], patched[name])
+                patched[name] = stage('wait_interrupt_patches.py', name, intermediate,
+                    wait_interrupt_patches.apply(name, original[name], intermediate))
+                continue
         else:
             continue  # FLOW validates its original tree recipe below.
         stage(recipe, name, ported[name], patched[name])

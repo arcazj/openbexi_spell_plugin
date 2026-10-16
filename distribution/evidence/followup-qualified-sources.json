@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "a0af4ddfb125b6ff99412f59c02acaa2d0712f381ce553de81f55834d3ad3184",
+  "generator_sha256": "755a2d0fb1ad9643a10d23154a44b93014546f5e92477576ed24b1c4ca42e7fe",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -157,6 +157,16 @@
       "commit": "39c652686b20da4cd179712abce16fe4df8e9699",
       "path": "conformance/evidence/prompt_startup.json",
       "sha256": "9920ca55fb52322536ccbdf70797d69e891b22de8c45051e8cfae0b1c5b346bd"
+    },
+    "wait_interrupt": {
+      "commit": "728d9ba4fc154f7bbb924233d3b67e8fa7043de0",
+      "path": "conformance/evidence/wait_interrupt.json",
+      "sha256": "94783e355aeb6876eb0a1970c8576657b6aee721191a94d3a1fb1b4abab06641"
+    },
+    "proc_dictionary": {
+      "commit": "c22ba3d0f5e2362c2384f09036bfff30e83080b1",
+      "path": "conformance/evidence/proc_dictionary.json",
+      "sha256": "6ee1a52503d2109de4fe0a9ebaf9713596bfd69f4e4042cec69e228c5968153f"
     }
   },
   "native": {
@@ -213,7 +223,7 @@
     "lib/SPELL_EXC/src/SPELLscheduler.C": {
       "original": "2d00d9b9d5e5296799582e7937873639ca4400eb204fec174317b29c36bdd50a",
       "ported": "7ae4398e50ffa06a3efd3b53921ea233156e471c8e894b5ef33a579c8aa06179",
-      "patched": "9669db2983f8927c60fbe853a2eae865f15f0a5d8432e9d1c9f1edd6d80ee93b"
+      "patched": "dc5db22f21100347bf9b71445fb1aef4ea8895a955d08b3d8ec6156a9ab750f7"
     },
     "lib/SPELL_EXC/src/SPELLframeManager.C": {
       "original": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
@@ -269,6 +279,16 @@
       "original": "5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af",
       "ported": "57c83b92019fb31adfa1e81c670fda3f883b25d0fc6371c0ef7abda063814519",
       "patched": "a7ec5596aab44456fc922d3fc801fa2ec6b9ae87a62f95f98ad12ebcbf60d459"
+    },
+    "lib/SPELL_EXC/src/SPELLexecutorImpl.C": {
+      "original": "3a891afdf5e0dbcd75f97db263e3c30311c597872e434fc91b6c993683b2b0df",
+      "ported": "6bcf61d299669fc28b713592acaea65a02ba21b33d751db47416ab88f5f0e450",
+      "patched": "83ae4cc423fec11e8ad142b83069ca73a69977ee0ea2da841a0e60f93c360210"
+    },
+    "lib/SPELL_EXC/src/SPELLserviceImpl.C": {
+      "original": "9e56ddfa666429777f37ab7bedb76de9a539145050123096554339bb1ea40382",
+      "ported": "13153f3cc00a747a2eab5524eac12f47401d4f1ccf56a24f3de66ef28397728f",
+      "patched": "15fcaa56d2c09ee6fb7b447d9ae8b158efbdeb46799a71e879f39cf9fa1b12fe"
     }
   },
   "python": {
