@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / 'distribution'))
 sys.path.insert(0, str(ROOT / 'source_port'))
 from run_language_regressions import validate_report
 from prompt_control_patches import PREIMAGES
+from prompt_startup_patches import PREIMAGES as STARTUP_PREIMAGES
 
 
 def sha(path):
@@ -62,7 +63,14 @@ def qualify(stress_path, modes_path, timed_path, pair_path, abort_stress_path):
     for name, (original, before) in PREIMAGES.items():
         assert native['sources'][name]['original_sha256'] == original
         assert changed[name]['before_sha256'] == before
-        assert changed[name]['after_sha256'] == native['sources'][name]['patched_sha256']
+        after = changed[name]['after_sha256']
+        if name in STARTUP_PREIMAGES and 'prompt_startup_patches.py' in native['recipes']:
+            assert (original, after) == STARTUP_PREIMAGES[name]
+            later = [stage['sources'][name] for stage in native['stages']
+                     if stage['recipe']=='prompt_startup_patches.py' and name in stage['sources']]
+            assert len(later)==1 and later[0]['before_sha256']==after
+            after = later[0]['after_sha256']
+        assert after == native['sources'][name]['patched_sha256']
     retained = {}
     for name in ('prompt_order_baseline', 'prompt_order_stress_baseline', 'child_modes_baseline',
                  'prompt_controls_first_candidate'):

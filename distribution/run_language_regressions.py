@@ -10,6 +10,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 SUITES = [
     ('context-startup', 'run_context_snapshot.py', ['--repeat', '40'], 40),
+    ('prompt-startup', 'run_prompt_startup.py', ['--suite', 'early', '--composed'], 40),
     ('data', 'run_data_files.py', ['data'], 24),
     ('files', 'run_data_files.py', ['files'], 36),
     ('data-race', 'run_data_race.py', [], 4),
@@ -24,6 +25,7 @@ SUITES = [
     ('prompt-timeout', 'run_prompt_timeout.py', [], 10),
     ('child-arguments', 'run_child_arguments.py', [], 10),
     ('child-start', 'run_child_start.py', [], 8),
+    ('child-policy', 'run_child_policy.py', [], 8),
     ('rng-catalog', 'run_rng.py', ['--catalog-only'], 8),
     ('rng-state', 'run_rng_state.py', [], 21),
     ('dta-ipc', 'run_dta_edit.py', [], 64),
@@ -37,6 +39,7 @@ SUITES = [
     ('common', 'run_common.py', [], 44),
     ('events', 'run_events.py', [], 8),
     ('scheduler', 'run_scheduler.py', [], 9),
+    ('wait-time', 'run_wait_time.py', [], 8),
     ('value-units', 'run_value_units.py', [], 38),
     ('scdb', 'scdb_run.py', [], 26),
     ('timing', 'run_timing.py', [], 36),

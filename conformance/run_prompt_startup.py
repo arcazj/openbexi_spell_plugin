@@ -9,7 +9,7 @@ import tarfile
 import traceback
 import uuid
 
-from installed_provenance import input_paths
+from installed_provenance import input_paths, verify_capture
 from prompt_startup_provenance import RECIPES, qualification_identity
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +17,7 @@ sha = lambda raw: hashlib.sha256(raw).hexdigest()
 SUITES = ('early', 'lifecycle', 'removed', 'reopen', 'modes', 'abort', 'timeout', 'duplicate')
 
 
-def sources_for(suite):
+def sources_for(suite, composed=False):
     lifecycle = suite in ('early', 'lifecycle', 'removed', 'reopen')
     controller = ('child_lifecycle_reopen.py' if suite == 'reopen' else 'child_lifecycle_controller.py') if lifecycle else (
         'child_modes_controller.py' if suite in ('modes', 'abort') else 'prompt_timeout_controller.py')
@@ -30,7 +30,8 @@ def sources_for(suite):
     text = sources[controller].decode()
     anchor = 'from installed_provenance import capture'
     assert text.count(anchor) == 1
-    text = text.replace(anchor, 'from prompt_startup_provenance import capture')
+    if not composed:
+        text = text.replace(anchor, 'from prompt_startup_provenance import capture')
     if suite == 'early':
         text = text.replace("for operation in ('close', 'kill'):", "for trial in range(40):\n    operation = 'close'")
         text = text.replace("for phase in (('prompt', 'finished') if rejection or removed else ('prompt', 'finished', 'none')):", "for phase in ('none',):")
@@ -48,9 +49,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
     parser.add_argument('--suite', choices=SUITES, required=True)
+    parser.add_argument('--composed', action='store_true', help='Require original installed-wheel provenance')
     args = parser.parse_args()
     assert args.image.startswith('sha256:') and len(args.image) == 71
-    controller, sources, options = sources_for(args.suite)
+    controller, sources, options = sources_for(args.suite, args.composed)
     names = list(dict.fromkeys([*input_paths(ROOT), *RECIPES.values(),
         'conformance/run_prompt_startup.py', 'conformance/prompt_startup_install.py',
         'conformance/prompt_startup.Dockerfile', 'conformance/prompt_startup.Dockerfile.dockerignore',
@@ -61,6 +63,7 @@ def main():
     output.mkdir(parents=True)
     name = 'openbexi-prompt-startup-' + output.name
     report = dict(passed=False, suite=args.suite, runtime_image=args.image, inputs=inputs,
+        composed=args.composed,
         generated_sources={name:sha(raw) for name, raw in sources.items()},
         full_v05_accepted=False, full_v06_accepted=False)
     print('Evidence: ' + str(output), flush=True)
@@ -102,7 +105,11 @@ def main():
                     else:
                         checks, runtime = json.loads(read('checks.json')), json.loads(read('runtime.json'))
                     report['checks'], report['runtime_sources'] = checks, runtime
-                    qualification_identity(runtime, inputs)
+                    if args.composed:
+                        assert runtime is not None and 'prompt_startup_overlay' not in runtime
+                        verify_capture(runtime, inputs)
+                    else:
+                        qualification_identity(runtime, inputs)
                     assert all(sha((ROOT / filename).read_bytes()) == digest for filename,digest in inputs.items())
                     expected = dict(early=40,lifecycle=6,removed=4,reopen=4,modes=9,abort=12,duplicate=24)
                     if args.suite == 'timeout':

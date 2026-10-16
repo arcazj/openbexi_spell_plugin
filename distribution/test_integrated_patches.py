@@ -73,6 +73,10 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     listener = composition.context_snapshot_patches.SOURCE
     assert [row['recipe'] for row in report['stages'] if listener in row['sources']] == [
         'context_snapshot_patches.py']
+    prompt = composition.prompt_startup_patches.SOURCE
+    assert [row['recipe'] for row in report['stages'] if prompt in row['sources']] == [
+        'child_lifecycle_patches.py', 'prompt_timeout_patches.py',
+        'prompt_control_patches.py', 'prompt_startup_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
 

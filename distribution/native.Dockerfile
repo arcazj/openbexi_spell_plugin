@@ -13,6 +13,7 @@ COPY source_port/checkpoint_identity_patches.py source_port/checkpoint_context_p
 COPY source_port/shutdown_pause_patches.py /input/
 COPY source_port/child_lifecycle_patches.py source_port/prompt_timeout_patches.py /input/
 COPY source_port/prompt_control_patches.py /input/
+COPY source_port/prompt_startup_patches.py /input/
 COPY source_port/database_values_patches.py /input/
 COPY source_port/ipc_mailbox_patches.py /input/
 COPY source_port/context_snapshot_patches.py /input/
@@ -31,6 +32,7 @@ COPY source_port/checkpoint_identity_patches.py source_port/checkpoint_context_p
 COPY source_port/shutdown_pause_patches.py /executor/
 COPY source_port/child_lifecycle_patches.py source_port/prompt_timeout_patches.py /executor/
 COPY source_port/prompt_control_patches.py /executor/
+COPY source_port/prompt_startup_patches.py /executor/
 COPY source_port/database_values_patches.py /executor/
 COPY source_port/ipc_mailbox_patches.py /executor/
 COPY source_port/context_snapshot_patches.py /executor/

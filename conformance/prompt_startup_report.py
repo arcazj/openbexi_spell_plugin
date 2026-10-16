@@ -85,7 +85,7 @@ def verify_run(path, raw, suite):
     assert not any(key.endswith('error') for key in raw)
     archive_path = path.parent / 'workspace.tar'
     assert sha(archive_path) == raw['workspace_sha256']
-    _, sources, _ = sources_for(suite)
+    _, sources, _ = sources_for(suite, composed=raw.get('composed', False))
     assert raw['generated_sources'] == {name:digest(data) for name,data in sources.items()}
     if suite == 'early':
         expected = {f'close-none-{n}' for n in range(40)}

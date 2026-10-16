@@ -40,6 +40,7 @@ DONORS = {
     'ipc_mailbox':('463e34f','ipc_mailbox'),
     'legacy_compare':('fc44409cd5493ca0ad6e924b2b45d01d34387b6d','legacy_compare'),
     'context_snapshot':('342b1f12ad6c315a686581b64455c250c8d1d08b','context_snapshot'),
+    'prompt_startup':('39c652686b20da4cd179712abce16fe4df8e9699','prompt_startup'),
 }
 
 
@@ -171,6 +172,28 @@ def main():
         if hashes['patched'] != stage['after_sha256']:
             raise ValueError('Prompt control output differs from its qualified stage')
         native[name] = hashes
+    startup = reports['prompt_startup']
+    recipe = 'prompt_startup_patches.py'
+    committed = subprocess.check_output(
+        ['git','show',donors['prompt_startup']['commit']+':source_port/'+recipe],cwd=ROOT)
+    name = composition.prompt_startup_patches.SOURCE
+    if (startup['passed'] is not True or startup['qualified_contracts'] != []
+            or startup['passed_checks'] != dict(early=40,lifecycle=6,removed=4,reopen=4,
+                modes=9,abort=12,timeout=10,duplicate=24)
+            or hashlib.sha256(committed).hexdigest() != startup['recipes'][recipe]
+            or (startup['original_sha256'],startup['preimage_sha256']) != composition.prompt_startup_patches.PREIMAGES[name]
+            or startup['source'] != name or native[name]['patched'] != startup['preimage_sha256']
+            or native[name]['original'] != startup['original_sha256']):
+        raise ValueError('Prompt transition donor lacks native controls or expected predecessor')
+    probes = startup['probes']['probes']
+    if set(probes) != {'original','patched'}:
+        raise ValueError('Prompt transition donor lacks both differential controls')
+    for label, row in probes.items():
+        if (row['exit_code'] != (0 if label=='patched' else 1)
+                or row['observation'] != {kind:dict(ack_during_transition=label=='patched',
+                    winner_preserved=True) for kind in ('startup','cancel')}):
+            raise ValueError('Prompt transition differential acknowledgement controls differ')
+    native[name]['patched'] = startup['patched_sha256']
     mailbox = reports['ipc_mailbox']
     recipe = 'ipc_mailbox_patches.py'
     committed = subprocess.check_output(

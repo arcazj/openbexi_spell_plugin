@@ -128,6 +128,14 @@ def main():
     run('database_values_composed_report.py', '--values', raw['database-values'],
         '--user', raw['user-database'], '--image', image)
     run('legacy_compare_composed_report.py', raw['legacy-compare'], '--image', image)
+    run('context_snapshot_composed_report.py', raw['context-startup'], '--image', image)
+    run('prompt_startup_composed_report.py', raw['prompt-startup'], '--image', image)
+    run('python_sections_report.py', '--python', raw['python'], '--comparison', raw['legacy-compare'],
+        '--database', raw['database-import'], '--values', raw['database-values'],
+        '--user', raw['user-database'], '--image', image)
+    run('child_policy_report.py', '--policy', raw['child-policy'], '--start', raw['child-start'],
+        '--modes', proofs['modes'], '--image', image)
+    run('wait_time_report.py', raw['wait-time'], '--image', image)
     run('rng_report.py', raw['rng-catalog'], '--baseline', args.rng_baseline)
     run('rng_state_report.py', raw['rng-state'], '--baseline', args.rng_state_baseline,
         '--driver', args.rng_driver, '--legacy-and-migration', args.rng_legacy_and_migration)

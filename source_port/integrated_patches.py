@@ -31,6 +31,7 @@ import obs_patches
 import limit_patches
 import notification_patches
 import prompt_control_patches
+import prompt_startup_patches
 import prompt_timeout_patches
 import resource_patches
 import rng_patches
@@ -63,6 +64,7 @@ RECIPE_NAMES = (
     'child_lifecycle_patches.py',
     'prompt_timeout_patches.py',
     'prompt_control_patches.py',
+    'prompt_startup_patches.py',
     'ipc_mailbox_patches.py',
     'context_snapshot_patches.py',
     'legacy_compare_patches.py', 'legacy_compare_syntax.py',
@@ -194,6 +196,10 @@ def apply_native_tree(source, archive, output):
                     intermediate = patched[name]
                     patched[name] = stage('prompt_control_patches.py', name, intermediate,
                         prompt_control_patches.apply(name, original[name], intermediate))
+                if name in prompt_startup_patches.PREIMAGES:
+                    intermediate = patched[name]
+                    patched[name] = stage('prompt_startup_patches.py', name, intermediate,
+                        prompt_startup_patches.apply(name, original[name], intermediate))
                 continue
         elif name in prompt_timeout_patches.PREIMAGES:
             recipe = 'prompt_timeout_patches.py'
