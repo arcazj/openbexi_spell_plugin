@@ -16,6 +16,7 @@ import child_lifecycle_patches
 import checkpoint_context_patches
 import checkpoint_error_patches
 import checkpoint_identity_patches
+import context_snapshot_patches
 import database_import_patches
 import database_values_patches
 import data_files_native_patches
@@ -63,6 +64,7 @@ RECIPE_NAMES = (
     'prompt_timeout_patches.py',
     'prompt_control_patches.py',
     'ipc_mailbox_patches.py',
+    'context_snapshot_patches.py',
     'legacy_compare_patches.py', 'legacy_compare_syntax.py',
     'rng_patches.py', 'rng_state_patches.py',
 )
@@ -71,6 +73,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
                             ipc_mailbox_patches.SOURCE,
+                            context_snapshot_patches.SOURCE,
                             shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES,
@@ -171,6 +174,9 @@ def apply_native_tree(source, archive, output):
         elif name == ipc_mailbox_patches.SOURCE:
             recipe = 'ipc_mailbox_patches.py'
             patched[name] = ipc_mailbox_patches.apply(ported[name])
+        elif name == context_snapshot_patches.SOURCE:
+            recipe = 'context_snapshot_patches.py'
+            patched[name] = context_snapshot_patches.apply(name, original[name], ported[name])
         elif name == shutdown_pause_patches.SOURCE:
             intermediate = stage('shutdown_pause_patches.py', name, ported[name],
                 shutdown_pause_patches.apply(name, original[name], ported[name]))

@@ -70,6 +70,9 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     helper = 'lib/SPELL_UTIL/src/SPELLpythonHelper.C'
     assert [row['recipe'] for row in report['stages'] if helper in row['sources']] == [
         'dta_time_patches.py', 'legacy_compare_patches.py']
+    listener = composition.context_snapshot_patches.SOURCE
+    assert [row['recipe'] for row in report['stages'] if listener in row['sources']] == [
+        'context_snapshot_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
 
@@ -102,6 +105,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  *composition.prompt_timeout_patches.PREIMAGES,
                                  *composition.prompt_control_patches.PREIMAGES,
                                  composition.ipc_mailbox_patches.SOURCE,
+                                 composition.context_snapshot_patches.SOURCE,
                                  *composition.legacy_compare_patches.PREIMAGES,
                                  composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):

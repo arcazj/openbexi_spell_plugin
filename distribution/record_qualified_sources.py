@@ -39,6 +39,7 @@ DONORS = {
     'context_startup':('f843cb8','context_startup_review'),
     'ipc_mailbox':('463e34f','ipc_mailbox'),
     'legacy_compare':('fc44409cd5493ca0ad6e924b2b45d01d34387b6d','legacy_compare'),
+    'context_snapshot':('342b1f12ad6c315a686581b64455c250c8d1d08b','context_snapshot'),
 }
 
 
@@ -189,6 +190,28 @@ def main():
                                            [mailbox['source']])[mailbox['source']]
     native[mailbox['source']] = dict(original=hashlib.sha256(original).hexdigest(),
         ported=mailbox['preimage_sha256'], patched=mailbox['patched_sha256'])
+    snapshot = reports['context_snapshot']
+    recipe = 'context_snapshot_patches.py'
+    committed = subprocess.check_output(
+        ['git', 'show', donors['context_snapshot']['commit'] + ':source_port/' + recipe], cwd=ROOT)
+    if (snapshot['passed'] is not True or snapshot['source'] in native
+            or snapshot['qualified_contracts'] != []
+            or snapshot['passed_checks'] != {'errors':8, 'recovery':22, 'startup':40}
+            or hashlib.sha256(committed).hexdigest() != snapshot['recipes'][recipe]
+            or snapshot['source'] != composition.context_snapshot_patches.SOURCE
+            or snapshot['original_sha256'] != composition.context_snapshot_patches.ORIGINAL
+            or snapshot['preimage_sha256'] != composition.context_snapshot_patches.PORTED):
+        raise ValueError('Listener snapshot donor lacks qualified source and native controls')
+    probes = snapshot['probes']['probes']
+    if set(probes) != {'original', 'patched'} or any(
+            row['exit_code'] != (0 if name == 'patched' else 1)
+            or row['observation']['coherent'] is not (name == 'patched')
+            or not row['observation']['subsequent_current']
+            or not row['observation']['unknown_context_rejected']
+            for name, row in probes.items()):
+        raise ValueError('Listener snapshot donor lacks differential interleaving controls')
+    native[snapshot['source']] = dict(original=snapshot['original_sha256'],
+        ported=snapshot['preimage_sha256'], patched=snapshot['patched_sha256'])
     legacy = reports['legacy_compare']
     if (legacy['passed'] is not True or legacy['qualified_contracts'] != []
             or legacy['passed_checks'] != 15 or len(legacy['retained_baseline_failures']) != 11

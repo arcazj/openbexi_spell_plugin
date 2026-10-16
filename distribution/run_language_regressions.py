@@ -9,6 +9,7 @@ import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITES = [
+    ('context-startup', 'run_context_snapshot.py', ['--repeat', '40'], 40),
     ('data', 'run_data_files.py', ['data'], 24),
     ('files', 'run_data_files.py', ['files'], 36),
     ('data-race', 'run_data_race.py', [], 4),
