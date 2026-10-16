@@ -8,8 +8,10 @@ import json
 from pathlib import Path
 import spell.lang.functions as functions
 import spell.lang.constants as constants
-from spell.lang.modifiers import OnFailure,PromptUser,Host,Monitor,Reuse,Time,Format,Printer
-from spell.lang.constants import CANCEL,MINUTE
+import spell.lang.modifiers as modifiers
+from spell.lang.modifiers import OnFailure,PromptUser,Host,Time,Format,Printer
+from spell.lang.constants import CANCEL
+from spell.lib.adapter.utctime import TIME
 observed={'calls':[]}
 def call(name,**options):
     row={'function':name,'options':{k:str(v) for k,v in options.items()}}
@@ -25,13 +27,14 @@ def call(name,**options):
 BODIES={
     'api-surface':'''observed['functions']={name:callable(getattr(functions,name,None)) for name in ('OpenWorkspace','CloseWorkspace')}
 observed['formats']={name:getattr(constants,name,None) for name in ('PS','VECTOR')}
-ok=all(observed['functions'].values()) and all(observed['formats'].values())
+observed['modifiers']={name:getattr(modifiers,name,None) for name in ('Monitor','Reuse')}
+ok=all(observed['functions'].values()) and all(observed['formats'].values()) and all(observed['modifiers'].values())
 ''',
     'display-lifecycle':'''opened=call('OpenDisplay')
 closed=call('CloseDisplay')
 ok=opened and closed
 ''',
-    'display-options':'''opened=call('OpenDisplay',**{Host:'DSS',Monitor:1,Reuse:True,Time:MINUTE})
+    'display-options':'''opened=call('OpenDisplay',**{Host:'DSS','Monitor':1,'Reuse':True,Time:TIME('00:01:00')})
 closed=call('CloseDisplay',**{Host:'DSS'})
 ok=opened and closed
 ''',
