@@ -177,6 +177,23 @@ def test_original_tm_adapter_defaults_allow_exact_and_bounded_catalog_queries(en
     assert env.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
 
 
+def test_original_language_xml_interface_defaults_are_not_query_filters(env):
+    import zipfile
+    import xml.etree.ElementTree as ET
+    with zipfile.ZipFile(base.ROOT/'docs/reference/SPELL2.6.10-src.zip') as archive:
+        document=ET.fromstring(archive.read('config/spell/language.xml'))
+    fields={node.attrib['name']:node.text for node in document.find("defaults[@interface='TM']")}
+    defaults={key:ast.literal_eval(fields[key]) for key in
+              ('Timeout','Retries','Tolerance','Wait','Delay','IgnoreCase','AdjLimits')}
+    assert defaults['Timeout']==30 and defaults['Tolerance']==.1
+    module=proxy(env)
+    assert module.database('CMD1','TC','GENERIC',defaults,defaults)['command_code']==2
+    for key,value in [('Timeout',31),('Tolerance',.2),('Delay',1),('AdjLimits',True)]:
+        with pytest.raises(RuntimeError,match='Unsupported database query modifier: '+key):
+            module.database('CMD1','TC','GENERIC',dict(defaults,**{key:value}),defaults)
+    assert env.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
+
+
 @pytest.mark.parametrize('key,value',[
     ('Timeout',30),('Retries',3),('Tolerance',1),('RelTolerance',.1),
     ('Wait',True),('IgnoreCase',True),('Wait',0),('Unknown',True),

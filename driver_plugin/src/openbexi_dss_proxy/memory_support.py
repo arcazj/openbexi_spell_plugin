@@ -92,15 +92,19 @@ def lookup(name,address,image,rtype,source,config):
         image=image,report_type=rtype,source=source,config=PackValue(wire))))
 
 
-def database(name,rtype,source,config):
+def database(name,rtype,source,config,defaults=None):
     wire=options(config,{'Name','Type','Source'})
     # TmInterface.databaseLookup merges the telemetry acquisition defaults into
     # every lookup. They are not query filters. Accept only those exact defaults
     # here; reject non-default acquisition options rather than silently ignoring
     # a requested behavior on this read-only catalog operation.
-    defaults={'Timeout':15,'Retries':2,'Tolerance':0,'RelTolerance':1e-9,
-              'Wait':False,'IgnoreCase':False}
-    for key,default in defaults.items():
+    acquisition={'Timeout':15,'Retries':2,'Tolerance':0,'RelTolerance':1e-9,
+                 'Wait':False,'IgnoreCase':False,'Delay':None,'AdjLimits':False}
+    # The native interface overlays language.xml on INTERFACE_DEFAULTS. Compare
+    # against that actual interface configuration, not hard-coded class defaults.
+    if defaults is not None:
+        acquisition.update({key:value for key,value in defaults.items() if key in acquisition})
+    for key,default in acquisition.items():
         if key in wire:
             value=wire.pop(key)
             if type(value) is not type(default) or value!=default:

@@ -11,6 +11,7 @@ PREIMAGES={
  'openbexi_dss_proxy/tm.py':'4ddaeacbeb5d400fa8750e01a56f936f290d5f59ac76e40a93649c82ddda2dfd',
  'openbexi_dss_proxy/memory.py':'3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7',
  'spell/lang/helpers/memhelper.py':'514a99e1dce2f7a92426295425a9ee8de718a35a4b933d0829348a67325436e5',
+ 'spell/lang/helpers/genhelper.py':'c7840f567a4852adab5bd3595bdffb38adcfa6bf00013fb08faadb3f725190fe',
 }
 
 
@@ -38,7 +39,7 @@ def apply(name,raw):
 """+source[end:]
     elif name=='openbexi_dss_proxy/tm.py':
         source=replace(source,"        return UnpackValue(call('TM','DatabaseLookup',p.LookupRequest(name=name,type=resource_type,source=source)).lookup)",
-            "        from .memory_support import database\n        return database(name,resource_type,source,config)")
+            "        from .memory_support import database\n        from spell.lib.adapter.tm import INTERFACE_DEFAULTS\n        defaults=dict(INTERFACE_DEFAULTS,**self.getConfig())\n        return database(name,resource_type,source,config,defaults)")
     elif name=='openbexi_dss_proxy/memory.py':
         source=replace(source,'from .common import settings','from .common import settings\nfrom . import memory_support as support')
         start=source.index('    def _generateReport(');end=source.index('    def _dataObjectLookup(',start)
@@ -59,6 +60,9 @@ def apply(name,raw):
             "p.DataObjectLookupRequest(name=name,type=ltype,config=settings(support.options(config,{'Name','Type'})))")
         source=replace(source,"source=source,valformat=valueFormat,config=settings(config))",
             "source=source,valformat=valueFormat,config=settings(support.options(config,{'Name','Type','Source','ValueFormat'})))")
+    elif name=='spell/lang/helpers/genhelper.py':
+        start=source.index('class TMTCLookup_Helper')
+        source=source[:start]+replace(source[start:], '        return [False, True]', '        return [False, None]')
     else:
         split=source.index('class DataObjectLookup_Helper')
         head,tail=source[:split],source[split:]
