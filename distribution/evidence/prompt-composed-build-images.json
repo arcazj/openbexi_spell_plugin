@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "scope": "Composed prompt transition and language closure checkpoint; release gates remain open",
+  "source_freeze_commit": "3a4c1e1c660a73cddf80bdbe934f12629fcf7a5f",
+  "pipeline": {
+    "path": "C:\\obprompt_composed\\.qualification\\prompt-composed-candidate\\38f4758ef71c4af2a7ea6e8bed33053e\\result.json",
+    "sha256": "f5140b3400d7097b1babb7aec028a038d5451cf9a6bb2d2a7fd7390ee9b7f838"
+  },
+  "runtime_image": "sha256:03e52c84157460e5b90261e390d4a4b8af0ff75e886e58b6a7075ac22fff113d",
+  "host_image": "sha256:8db76bcff67ddb92f2213e3497cfc7b572e619e287a66269f4746d644fb8570b",
+  "native_wheel_sha256": "74a1ff33efab340f0ac5de4ac61c10e418f3c2b6917dd4c116e4abbbc369fcdc",
+  "driver_wheel_sha256": "f9e599e5e40c8a85f1c4e14792f3c1f112d5d1782ebb2873ad4ea5dc155db567",
+  "native_builds": {
+    "path": "C:\\obprompt_composed\\.qualification\\prompt-composed-build\\native\\32117d2685794976a2307e587a46ad83\\result.json",
+    "sha256": "e7d063c11829630e9c0f2c79b66d7242900a9e9cce8ff1e6ec405869c45c7178"
+  },
+  "driver_builds": {
+    "path": "C:\\obprompt_composed\\.qualification\\prompt-composed-build\\driver\\9e7cad75a1534ffab82a880ab885a7c6\\result.json",
+    "sha256": "5d790f9389cee42d1505096cd8a35ea2da24495370f63eb4e8927b193821c1ed"
+  },
+  "fresh_images": {
+    "path": "C:\\obprompt_composed\\.qualification\\prompt-composed-build\\images\\21a9cacd3b304a41ab78e5a042a7b65e\\result.json",
+    "sha256": "ab92d6330ccb4cc10ef3223831d845796846521f13e30ba2e181b78a2dde0a3c"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obprompt_composed\\.qualification\\child-regressions\\4665890d156e4ffbac51d950f674940e\\result.json",
+    "sha256": "d71a46317569fc82175752e090f441edfd78873255e36adb9514770d66173b7a"
+  },
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "65597b4277fc0fb7248e578ecc6f4ba722ba8bda7df0b38448817bdd9657dbaf"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "prompt_controls_checks": {
+    "duplicate_answers": 24,
+    "abort_at_prompt": 12,
+    "child_modes": 9,
+    "timed_prompts": 10
+  },
+  "source_composition_tests": {
+    "checks": 60,
+    "junit": {
+      "path": ".qualification/prompt-composed-preparation/deba51ab537a4f43acd550845931317a/tests.xml",
+      "sha256": "f5f71419310973741bf49004e4e330f6e66fa5d3bae1adab4676f825e7d5900a"
+    }
+  },
+  "comparison_diagnostic": {
+    "path": "C:\\obprompt_composed\\conformance\\evidence\\legacy_compare.json",
+    "sha256": "9144c3b6edf89488dd5c153d8ec4b12399947821ee6c62cc4890803793b69b0a"
+  },
+  "prompt_diagnostic": {
+    "path": "C:\\obprompt_composed\\conformance\\evidence\\prompt_startup.json",
+    "sha256": "9920ca55fb52322536ccbdf70797d69e891b22de8c45051e8cfae0b1c5b346bd"
+  },
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan profile; compiler installed and leak detection disabled",
+    "Final production packages, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm and platform/operational gates remain open",
+    "Legacy <> compatibility applies to native procedure compilation; imported Python modules and eval/compile retain CPython syntax"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}
