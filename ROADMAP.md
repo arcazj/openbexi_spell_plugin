@@ -100,14 +100,13 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-In progress: [the full inventory](conformance/README.md) has **483 qualified /
-280 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
-binds all 33 native suites to identical offline rebuilds, including prompt-order,
-abort and recovery controls. Three requirements are newly qualified since the
-published 480-row checkpoint: two bounded StartProc return clauses and the
-page-79 SCDB existence method. Eight additional native failed-load/recovery
-controls pass. Final host workflows remain open.
-These milestones do not accept v0.5 or satisfy its v0.6 dependency.
+In progress: [the full inventory](conformance/README.md) has **487 qualified /
+276 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
+binds all 35 native suites to identical offline rebuilds. Four requirements are
+newly qualified since the published 483-row checkpoint: database octal values,
+nonblocking/manual examples and the automatic/manual section. Final host
+workflows and full v0.5/v0.6 acceptance remain open. The composed runtime also
+contains the verified IPC mailbox lifetime correction.
 
 ## v0.6 — distribution and compatibility
 

@@ -21,12 +21,14 @@ simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 Download the accepted [v0.4.0 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.4.0),
 published with the exact qualified wheels, installation instructions and checksums.
 
-The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **483 of 763**
-requirements; **280 remain open**. All 33 native suites pass (1,646 raw checks)
-on the installed runtime from identical offline rebuilds. Prompt ordering and
-abort fixes also pass 55 focused controls and 14 child lifecycle checks. Installed SDK tests cover the
-separate Windows HTTP rejection fix. Final host workflows and full v0.5/v0.6
-acceptance remain open. See [the release plan](docs/STABLE_RELEASE_PLAN.md).
+The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **487 of 763**
+requirements; **276 remain open**. All 35 native suites pass (1,678 raw checks)
+on the installed runtime from identical offline rebuilds. This increment adds
+database octal values and three bounded child-execution clauses. It also fixes
+the native IPC response/cancellation queue use-after-free, with retained original
+sanitizer failures and passing deterministic race and recovery controls. Prompt/child
+regressions and install/removal checks pass. Full release and final host gates
+remain open; see [the release plan](docs/STABLE_RELEASE_PLAN.md).
 
 ## Native desktop and CLI
 
