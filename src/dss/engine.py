@@ -52,6 +52,9 @@ class DssEngine:
             CREATE TABLE IF NOT EXISTS commands (scenario_id TEXT NOT NULL, plan_id TEXT NOT NULL,
                 element_id TEXT NOT NULL, definition TEXT NOT NULL, results TEXT NOT NULL,
                 executed INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(scenario_id,plan_id,element_id));
+            CREATE TABLE IF NOT EXISTS onboard_schedule (scenario_id TEXT NOT NULL, plan_id TEXT NOT NULL,
+                element_id TEXT NOT NULL, target_sim_time_ns INTEGER NOT NULL, operation_id TEXT NOT NULL,
+                PRIMARY KEY(scenario_id,plan_id,element_id));
             CREATE TABLE IF NOT EXISTS operations (operation_id TEXT NOT NULL, scenario_id TEXT NOT NULL,
                 plan_id TEXT NOT NULL, element_id TEXT NOT NULL, stage TEXT NOT NULL,
                 request_hash TEXT NOT NULL, raw_tc BLOB NOT NULL, acknowledgement TEXT NOT NULL,
@@ -176,16 +179,23 @@ class DssEngine:
                     for row in self.db.execute("SELECT * FROM commands WHERE scenario_id=? AND executed=0 ORDER BY plan_id,element_id",(old["scenario_id"],))
                     if json.loads(row["results"]).get("TRANSPORT")=="ACCEPTED"
                     and not json.loads(row["results"]).get("RELEASE")]
+                scheduled = [dict(row) for row in self.db.execute(
+                    "SELECT plan_id,element_id,target_sim_time_ns FROM onboard_schedule WHERE scenario_id=? ORDER BY target_sim_time_ns,plan_id,element_id",
+                    (old["scenario_id"],))]
                 if retirement_token is not None and (type(retirement_token) is not str
                         or retirement_token != scenario_retirement_token(old)):
                     raise DssConflict("scenario retirement acknowledgement is stale or invalid")
                 if pending and retirement_token is None:
                     raise DssConflict("unreleased commands require explicit test-case retirement")
+                if scheduled and retirement_token is None:
+                    raise DssConflict("pending onboard executions require explicit test-case retirement")
                 if retirement_token is not None:
                     retirement = {"reason":"QUALIFICATION_CASE_TERMINATED","state_revision":old["revision"],
                         "state_sha256":hashlib.sha256(canonical(old)).hexdigest(),
                         "acknowledgement_sha256":retirement_token,"unreleased_commands":pending,
                         "next_scenario_id":scenario_id}
+                    if scheduled:
+                        retirement["scheduled_commands"] = scheduled
                     self.db.execute("INSERT INTO metadata VALUES (?,?)",("retirement:"+old["epoch"],canonical(retirement).decode()))
             elif retirement_token is not None:
                 raise DssConflict("no previous scenario can be retired")
@@ -226,9 +236,10 @@ class DssEngine:
             self._save(state)
             return deepcopy(state)
 
-    def _ticks(self, state, count):
-        model, bus, payload, core = self.catalog.material["dynamics"], state["bus"], state["payload"], state["core"]
+    def _ticks(self, state, count, faults):
+        model = self.catalog.material["dynamics"]
         for _ in range(count):
+            bus, payload, core = state["bus"], state["payload"], state["core"]
             load = model["base_load_mw"] + (model["payload_load_mw"] if payload["enabled"] else 0) + (model["heater_load_mw"] if bus["heater"] else 0)
             bus["load_mw"], bus["generated_mw"] = load, model["solar_generation_mw"]
             energy = bus["energy_remainder_mw_ticks"] + bus["generated_mw"] - load
@@ -243,14 +254,42 @@ class DssEngine:
             if payload["enabled"]: payload["generated_data_bytes"] += model["payload_bytes_per_tick"]
             core["tick"] += 1
             core["sim_time_ns"] += model["tick_ns"]
+            self._execute_due(state, faults)
         state["revision"] += 1
+
+    def _execute_due(self, state, faults):
+        """The spacecraft clock executes persisted timetags without a live driver."""
+        due = self.db.execute("SELECT * FROM onboard_schedule WHERE scenario_id=? AND target_sim_time_ns<=? "
+            "ORDER BY target_sim_time_ns,rowid", (state["scenario_id"], state["core"]["sim_time_ns"])).fetchall()
+        for scheduled in due:
+            identity = tuple(scheduled[key] for key in ("scenario_id", "plan_id", "element_id"))
+            command = self.db.execute("SELECT * FROM commands WHERE scenario_id=? AND plan_id=? AND element_id=?", identity).fetchone()
+            if command is None or command["executed"]:
+                raise DssConflict("persisted onboard schedule is inconsistent")
+            definition, results = json.loads(command["definition"]), json.loads(command["results"])
+            if results.get("RELEASE") != "RELEASED":
+                raise DssConflict("onboard command has not been released")
+            try:
+                if faults.get("execution_fail"):
+                    raise DssConflict("simulated onboard execution failure")
+                self._effect(state, self.catalog.command(definition["command_name"]), definition["arguments"])
+                state["core"]["last_operation_id"] = scheduled["operation_id"]
+                results.update(ONBOARD_EXECUTION="SUCCEEDED", VERIFICATION="FAILED" if faults.get("verification_fail") else "PASSED")
+                self.db.execute("UPDATE commands SET executed=1 WHERE scenario_id=? AND plan_id=? AND element_id=?", identity)
+            except DssConflict:
+                results.update(ONBOARD_EXECUTION="FAILED", VERIFICATION="FAILED")
+            results["execution_sim_time_ns"] = state["core"]["sim_time_ns"]
+            self.db.execute("UPDATE commands SET results=? WHERE scenario_id=? AND plan_id=? AND element_id=?",
+                            (canonical(results).decode(), *identity))
+            self.db.execute("DELETE FROM onboard_schedule WHERE scenario_id=? AND plan_id=? AND element_id=?", identity)
+            self._tm(state, faults, scheduled["operation_id"], definition["command_name"])
 
     def advance(self, ticks: int = 1) -> dict:
         if type(ticks) is not int or not 1 <= ticks <= 1000: raise ValueError("tick count outside bounds")
         with self._transaction():
             row = self._current(); state, faults = json.loads(row["state"]), json.loads(row["faults"])
             if state["running"] and not self.outbox_status()["backpressure"]:
-                self._ticks(state,ticks)
+                self._ticks(state,ticks,faults)
                 if not faults.get("telemetry_paused"): self._tm(state,faults)
                 self._save(state)
             return deepcopy(state)
@@ -265,7 +304,7 @@ class DssEngine:
                 raise DssConflict("DSS control epoch/revision is stale")
             if action == "STEP":
                 if state["running"]: raise DssConflict("pause before single stepping")
-                self._ticks(state,ticks)
+                self._ticks(state,ticks,faults)
             else:
                 state["running"] = action == "RESUME"
                 state["revision"] += 1
@@ -343,7 +382,7 @@ class DssEngine:
                 if target>state["core"]["sim_time_ns"]:
                     if faults.get("auto_advance_scheduled_time"):
                         step=self.catalog.material["dynamics"]["tick_ns"]
-                        self._ticks(state,(target-state["core"]["sim_time_ns"]+step-1)//step)
+                        self._ticks(state,(target-state["core"]["sim_time_ns"]+step-1)//step,faults)
                         self._tm(state,faults)
                     else: not_due=True
             definition=self.catalog.command(body["command_name"]); validate_command(body["command_name"],body["arguments"])
@@ -351,6 +390,15 @@ class DssEngine:
             command=self.db.execute("SELECT * FROM commands WHERE scenario_id=? AND plan_id=? AND element_id=?",identity).fetchone()
             command_definition={"command_name":body["command_name"],"arguments":body["arguments"],
                 "command_digest":body["command_digest"],"procedure_id":body["procedure_id"],"execution_id":body["execution_id"]}
+            execution_target = None
+            if "execution_time_unix_ns" in body:
+                execution_time = body["execution_time_unix_ns"]
+                if type(execution_time) is not int or not 0 <= execution_time < (1 << 63):
+                    raise ValueError("onboard execution time must be absolute UTC nanoseconds")
+                execution_target = max(0, execution_time - state["clock_epoch_unix_ns"])
+                if execution_target > state["core"]["sim_time_ns"] + 86_400_000_000_000:
+                    raise ValueError("onboard execution time exceeds one-day bound")
+                command_definition["execution_time_unix_ns"] = execution_time
             if command and json.loads(command["definition"]) != command_definition: raise DssConflict("command element definition changed")
             results=json.loads(command["results"]) if command else {}
             stage=body["stage"]; outcome=OUTCOMES[stage]; detail={"provider":"generic-dss","database_digest":self.catalog.digest}
@@ -360,6 +408,8 @@ class DssEngine:
             elif stage == "TRANSPORT":
                 if faults.get("transport_reject"): outcome="REJECTED"
                 elif body.get("elements") is not None:
+                    if execution_target is not None:
+                        raise ValueError("shared command frames require per-element execution times")
                     elements=body["elements"]
                     if type(elements) is not list or not 1 <= len(elements) <= 64:
                         raise ValueError("shared transport elements exceed bounds")
@@ -392,6 +442,14 @@ class DssEngine:
             elif stage == "RELEASE":
                 if command["executed"]: outcome=results.get("RELEASE","RELEASED")
                 elif results.get("RELEASE"): outcome=results["RELEASE"]
+                elif execution_target is not None and execution_target > state["core"]["sim_time_ns"]:
+                    if self.db.execute("SELECT count(*) FROM onboard_schedule WHERE scenario_id=?", (state["scenario_id"],)).fetchone()[0] >= 64:
+                        raise DssConflict("onboard execution schedule capacity exceeded")
+                    results.update(RELEASE="RELEASED", ACKNOWLEDGEMENT="ACKNOWLEDGED")
+                    self.db.execute("INSERT INTO onboard_schedule VALUES (?,?,?,?,?)", (*identity, execution_target, body["operation_id"]))
+                    self.db.execute("UPDATE commands SET results=? WHERE scenario_id=? AND plan_id=? AND element_id=?", (canonical(results).decode(), *identity))
+                    state["revision"] += 1
+                    self._tm(state, faults, body["operation_id"], body["command_name"])
                 else:
                     if faults.get("execution_fail"):
                         results.update(RELEASE="RELEASED",ACKNOWLEDGEMENT="ACKNOWLEDGED",ONBOARD_EXECUTION="FAILED",VERIFICATION="FAILED")
@@ -407,6 +465,9 @@ class DssEngine:
                             detail["reason"]=str(exc)
                     self.db.execute("UPDATE commands SET results=? WHERE scenario_id=? AND plan_id=? AND element_id=?",(canonical(results).decode(),*identity))
                     self._tm(state,faults,body["operation_id"],body["command_name"])
+            elif stage == "ONBOARD_EXECUTION" and self.db.execute(
+                    "SELECT 1 FROM onboard_schedule WHERE scenario_id=? AND plan_id=? AND element_id=?", identity).fetchone():
+                outcome = "PENDING"
             else: outcome=results.get(stage,{"ACKNOWLEDGEMENT":"UNCERTAIN","ONBOARD_EXECUTION":"UNCERTAIN","VERIFICATION":"INDETERMINATE"}.get(stage,"FAILED"))
             if not not_due and stage == "VERIFICATION" and command and command["executed"]:
                 outcome, verification_detail=self._verify(state,faults,body.get("verification",[]),body.get("tolerance",0.0))
