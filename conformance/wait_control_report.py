@@ -26,7 +26,12 @@ def qualify(path,image):
     raw=json.loads(path.read_bytes())
     validate_report(path,image,len(CASES))
     assert raw['passed'] and not raw['timed_out'] and set(raw['checks'])==set(CASES)
-    verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
+    diagnostic=raw.get('diagnostic_overlay',False)
+    if diagnostic:
+        from wait_interrupt_provenance import qualification_identity
+        assert qualification_identity(raw['runtime_sources'],raw['inputs'])==raw['qualification_identity']
+    else:
+        verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
     assert raw['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
     workspace=path.parent/'workspace'
     assert json.loads((workspace/'checks.json').read_bytes())==raw['checks']
@@ -34,7 +39,14 @@ def qualify(path,image):
         if name.startswith('src/dss/'):
             assert sha(workspace/'fixture'/name.removeprefix('src/'))==digest,name
     for name in ('wait_control_cases.py','wait_control_controller.py','installed_provenance.py'):
-        assert sha(workspace/name)==raw['inputs']['conformance/'+name]
+        if diagnostic and name=='wait_control_controller.py':
+            expected=(ROOT/'conformance'/name).read_bytes().replace(
+                b'from installed_provenance import capture',b'from wait_interrupt_provenance import capture')
+            assert (workspace/name).read_bytes()==expected
+        else:
+            assert sha(workspace/name)==raw['inputs']['conformance/'+name]
+    if diagnostic:
+        for name,digest in raw['generated_sources'].items():assert sha(workspace/name)==digest
     checks=deepcopy(raw['checks'])
     for name,spec in CASES.items():
         row=checks[name]
@@ -93,12 +105,13 @@ def qualify(path,image):
         dependencies=[key for key,spec in CASES.items() if spec['dimension']==dimension]
         assert len(dependencies)==6
         checks['interrupt-controls:'+dimension]=dict(passed=True,dimension=dimension,
-            contracts=CONTRACTS,dependencies=dependencies,
+            contracts=[] if diagnostic else CONTRACTS,dependencies=dependencies,
             oracle='All relative, absolute and telemetry STEP/SKIP leaves must independently pass this dimension. PAUSE in the manual maps to native IPC PAUSED.')
     inputs=dict(raw['inputs'])
     for name in ('conformance/wait_control_report.py','tests/test_wait_control_report.py'):
         inputs[name]=sha(ROOT/name)
-    return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,qualified_contracts=CONTRACTS,
+    return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,
+        qualified_contracts=[] if diagnostic else CONTRACTS,candidate_contracts=CONTRACTS if diagnostic else [],
         raw=dict(path=str(path.resolve()),sha256=sha(path)),
         scope='LRM pp57-58 interruption, resumption and cancellation of time and telemetry waits',
         exclusions=['Full WaitFor function','Complete telemetry verification/modifier surface','Interval progression'],
