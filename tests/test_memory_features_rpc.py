@@ -156,11 +156,12 @@ def context(root):
         getLocationPath=lambda scheme:str(root),getLocationExt=lambda scheme:'')
 
 
-def test_proxy_embedded_fields_and_integer_addresses_cross_original_rpc(env):
+@pytest.mark.parametrize('interruptible',[False,True])
+def test_proxy_embedded_fields_and_integer_addresses_cross_original_rpc(env,interruptible):
     module=proxy(env)
-    assert module.capture('GENERIC','snapshot',{'Source':'GENERIC','Name':'snapshot','Type':'TM'})
-    assert module.lookup(None,1,'snapshot','TM','GENERIC',{'Image':'snapshot','Address':1,'Type':'TM','Source':'GENERIC','ValueFormat':'Raw format'})=={'TM.POWER.BUS_VOLTAGE':28000}
-    assert module.database('CMD1','TC','GENERIC',{'Name':'CMD1','Type':'TC','Source':'GENERIC','Begin':'3','End':'4'})=={}
+    assert module.capture('GENERIC','snapshot',{'AllowInterrupt':interruptible,'Source':'GENERIC','Name':'snapshot','Type':'TM'})
+    assert module.lookup(None,1,'snapshot','TM','GENERIC',{'AllowInterrupt':interruptible,'Image':'snapshot','Address':1,'Type':'TM','Source':'GENERIC','ValueFormat':'Raw format'})=={'TM.POWER.BUS_VOLTAGE':28000}
+    assert module.database('CMD1','TC','GENERIC',{'AllowInterrupt':interruptible,'Name':'CMD1','Type':'TC','Source':'GENERIC','Begin':'3','End':'4'})=={}
 
 
 def test_proxy_writes_ascii_atomically_and_preserves_existing_file_on_rpc_failure(env,tmp_path):

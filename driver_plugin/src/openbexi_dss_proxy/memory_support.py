@@ -14,7 +14,10 @@ from .connection import call
 
 
 def options(config,embedded):
-    return {key:value for key,value in (config or {}).items() if key not in POLICY and key not in embedded}
+    # BaseHelper consumes this control locally before calling the adapter.
+    # It is present even when the procedure supplied no memory modifiers.
+    local_policy=POLICY | {'AllowInterrupt'}
+    return {key:value for key,value in (config or {}).items() if key not in local_policy and key not in embedded}
 
 
 def destination(context,uri):
@@ -51,11 +54,11 @@ def generate(owner,image,rtype,begin,end,source,config):
     target=destination(owner.getContextConfig(),uri)
     # Reserve a writable temporary before the remote effect; retain an existing
     # destination until both RPCs and the complete ASCII write have succeeded.
-    target.parent.mkdir(parents=True,exist_ok=True)
     report_id=uuid.uuid4().hex
     wire['ReportId']=report_id
     temporary=None
     try:
+        target.parent.mkdir(parents=True,exist_ok=True)
         descriptor,temporary=tempfile.mkstemp(prefix='.spell-memory-',dir=target.parent)
         with os.fdopen(descriptor,'wb') as stream:
             if not call('MEM','GenerateReport',p.MemoryReportRequest(image=image,report_type=rtype,
