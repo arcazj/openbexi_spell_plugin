@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import traceback
 
 ROOT = Path('/workspace')
 sys.path[:0] = [str(ROOT), '/opt/host']
@@ -13,7 +14,7 @@ if Path('/opt/context-snapshot-patch').exists():
 else:
     from installed_provenance import capture
 
-SOURCE = "from spell.lang.functions import Display\nDisplay('STARTUP_SNAPSHOT_PASSED')\n"
+SOURCE = "from pathlib import Path\nPath('startup-result.txt').write_text('STARTUP_SNAPSHOT_PASSED')\n"
 runtime = capture()
 runtime['host_native_sha256'] = hashlib.sha256(Path('/opt/host/native.py').read_bytes()).hexdigest()
 (ROOT / 'runtime.json').write_text(json.dumps(runtime, indent=2))
@@ -47,8 +48,9 @@ for index in range(options['repeat']):
         missing = session.listener.exchange('REQ_CTX_INFO', 'LST', {'ContextName':'missing-context'})
         assert missing['ContextStatus'] == 'ERROR' and missing['ContextPort'] == '0', missing
         current = session.listener.exchange('REQ_CTX_INFO', 'LST', {'ContextName':'example'})
-        assert current['ContextStatus'] == 'RUNNING'
-        assert int(current['ContextPort']) == int(session.context.process.args[1])
+        row.update(missing=missing, current=current)
+        assert current['ContextStatus'] == 'RUNNING', current
+        assert int(current['ContextPort']) == int(session.context.process.args[1]), current
         session.request('CMD_RUN', send=True)
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
@@ -56,16 +58,18 @@ for index in range(options['repeat']):
             if status.get('ExecutorStatus') in ('FINISHED','ERROR','ABORTED'):
                 break
             time.sleep(.025)
+        row['final'] = status
         assert status['ExecutorStatus'] == 'FINISHED', status
         session.log.flush()
         session.log.seek(0)
         log = session.log.read()
-        assert 'STARTUP_SNAPSHOT_PASSED' in log
-        assert 'AddressSanitizer:' not in log and 'runtime error:' not in log
         (folder / 'native.log').write_text(log, encoding='utf-8')
+        assert (folder / 'startup-result.txt').read_text() == 'STARTUP_SNAPSHOT_PASSED', 'Procedure effect missing'
+        assert 'AddressSanitizer:' not in log and 'runtime error:' not in log
         row.update(passed=True, final=status, missing=missing, current=current)
     except Exception as error:
         row['error'] = repr(error)
+        row['traceback'] = traceback.format_exc()
     finally:
         try:
             session.close()
