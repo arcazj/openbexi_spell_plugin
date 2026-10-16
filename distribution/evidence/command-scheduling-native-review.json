@@ -1,0 +1,370 @@
+{
+  "state": "30 native scheduling probes passed; independent metadata, native load-only notification and exact recipe replay verified",
+  "source_commit": "7719aedf1c08b0beb19a86966d122b77e3c4d03b",
+  "native_cases": 30,
+  "runtime_image": "sha256:7c5ad82034ee30b158f3f4fa882cbbb8afbb7da2e5b247b47e250825c81b4e30",
+  "native_result": {
+    "path": "C:\\obcommand_impl\\.qualification\\command-scheduling\\9e03e8befcd94dddb6a88d8e61445133\\result.json",
+    "sha256": "59d6bccd22af17c4298510f7b3fa9ea1a1edb546fb4c6b2768b21505a808892a"
+  },
+  "pipeline": {
+    "path": "C:\\obcommand_impl\\.qualification\\command-scheduling-candidate\\2ede16abfd2847eda85afef047615d77\\result.json",
+    "sha256": "aef93c5800e3d38667a196c4c1f76df390b92c7b22962774c885c648adff4dd6"
+  },
+  "observations": {
+    "Time:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "Time:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 0
+    },
+    "Time:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "Time:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "Time:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 16
+    },
+    "ReleaseTime:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "ReleaseTime:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "ReleaseTime:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "ReleaseTime:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "ReleaseTime:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 18
+    },
+    "SendDelay:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "SendDelay:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "SendDelay:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "SendDelay:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "SendDelay:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 3
+    },
+    "LoadOnly:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 0
+    },
+    "LoadOnly:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "LoadOnly:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "LoadOnly:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 0
+    },
+    "LoadOnly:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 0
+    },
+    "Timeout:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "Timeout:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "Timeout:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "Timeout:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "Timeout:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "addInfo:positive": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "addInfo:boundary": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "addInfo:failure": {
+      "binary_stages": [],
+      "native_return_types": [
+        null
+      ],
+      "independent_clock_observations": 0
+    },
+    "addInfo:recovery": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        null,
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    },
+    "addInfo:encoding": {
+      "binary_stages": [
+        "TRANSPORT",
+        "LOADING",
+        "RELEASE",
+        "ACKNOWLEDGEMENT",
+        "ONBOARD_EXECUTION"
+      ],
+      "native_return_types": [
+        "bool"
+      ],
+      "independent_clock_observations": 1
+    }
+  },
+  "qualified_contracts": [],
+  "full_v05_accepted": false,
+  "remaining": "Strict requirement mapping, forged-evidence rejection tests, grouped/block/sequence/critical confirmation behavior, fresh package composition and full qualification are still required."
+}

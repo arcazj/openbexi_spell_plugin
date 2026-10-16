@@ -41,8 +41,15 @@ sources and failing report are retained. The corrected test waits longer than
 Timeout alone and then verifies completion within SendDelay+Timeout, with enough
 time for the real network exchanges. Production deadline logic was preserved.
 
-This is an isolated implementation candidate. The SPELL proxy, group/block
-protocol, RPC deadlines, command confirmation, original dispatcher integration, native
-capture, and composed package qualification remain incomplete. No language
+The original SPELL proxy and dispatcher now carry individual scheduling,
+LoadOnly, one-minute timeouts and metadata. Seventy-one focused tests and thirty
+original native cases passed. Native capture exposed the original SendDelay=None
+default; its complete counterexample is retained and the corrected adapter was
+replayed. The native LoadOnly notification reports LOADING/SUCCESS, and native
+metadata arrives unchanged in actual binary frames. The outer RPC envelope
+permits scheduled waits; a real 36-second relay test passed.
+
+Group/block transport, sequence expansion, critical confirmation, strict evidence
+qualification and fresh composed package acceptance remain incomplete. No language
 coverage or release acceptance is promoted by this change. Shared transport
 frames with timetags currently require further per-element implementation.
