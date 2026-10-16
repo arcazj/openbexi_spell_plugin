@@ -61,15 +61,19 @@ assert observed['finished']>=target
 ''',waiting=True)
 case('message','positive','''
 started=time.monotonic()
-assert WaitFor(2.4,Interval=.6,Message='SCHED:message:positive',config=CFG) is True
+assert WaitFor(3.4,Interval=.6,Message='SCHED:message:positive',config=CFG) is True
 observed['elapsed']=time.monotonic()-started
-assert observed['elapsed']>=2.4
+assert observed['elapsed']>=3.4
 ''',waiting=True,message='SCHED:message:positive',minimum_messages=2,minimum_spacing=.4)
+# The native 200ms timer also waits for acknowledged countdown/display IPC.
+# A 1.6s target could expire before a second .6s message under normal load.
+# Keep fractional/staged intervals and the two-message oracle, but allow several
+# complete timer/acknowledgement cycles. Exact staged cadence has its own suite.
 case('message','boundary','''
 started=time.monotonic()
-assert WaitFor(1.6,Interval=[.6,.2],Message='SCHED:message:boundary: caf\u00e9\\nsecond line',config=CFG) is True
+assert WaitFor(3.6,Interval=[.6,.2],Message='SCHED:message:boundary: caf\u00e9\\nsecond line',config=CFG) is True
 observed['elapsed']=time.monotonic()-started
-assert observed['elapsed']>=1.6
+assert observed['elapsed']>=3.6
 ''',waiting=True,message='SCHED:message:boundary: caf\u00e9\nsecond line',minimum_messages=2,minimum_spacing=.1)
 case('message','failure','''
 rejected(lambda:WaitFor(1,Interval=.2,Message='',config=CFG))
@@ -79,7 +83,7 @@ assert len(observed['rejected'])==3
 ''',no_waiting=True)
 case('message','recovery','''
 rejected(lambda:WaitFor(1,Interval=.2,Message='',config=CFG))
-assert WaitFor(1.4,Interval=.4,Message='SCHED:message:recovery',config=CFG) is True
+assert WaitFor(2.4,Interval=.4,Message='SCHED:message:recovery',config=CFG) is True
 observed['continued']=True
 ''',waiting=True,message='SCHED:message:recovery',minimum_messages=2,minimum_spacing=.2)
 case('message','integer-control','''
