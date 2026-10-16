@@ -18,8 +18,9 @@ def test_all_remaining_special_rows_have_complete_feature_dependencies():
     baseline=json.loads(subprocess.check_output(['git','show',
         'ffc6d660a111e9478f8a1d0280651f37d2dfb10d:conformance/coverage.json'],cwd=ROOT))
     expected={r['id'] for r in baseline['rows'] if r['status']!='QUALIFIED' and
-        (r['package']=='SPECIAL' or r['id']=='CMP-LRM244-CONSTANT-RANGING-STATE-ERROR')}
-    assert {'CMP-LRM244-'+name for name in MAP}==expected and len(expected)==41
+        (r['package']=='SPECIAL' or r['id'].startswith('CMP-LRM244-CONSTANT-RANGING-STATE-')
+         or r['id']=='CMP-LRM244-SECTION-4-18-4-128')}
+    assert {'CMP-LRM244-'+name for name in MAP}==expected and len(expected)==45
     for dependencies in MAP.values():
         assert len(set(dependencies))==len(dependencies)
         for suite,feature in dependencies:

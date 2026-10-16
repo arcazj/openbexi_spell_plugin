@@ -19,6 +19,7 @@ from run_language_regressions import validate_report
 
 CONTRACT = 'CMP-LRM244-SYNTAX-INTEGER-OCTAL'
 DONOR = 'a494986733ce6f4ceefda41684824f12bfbc5660'
+FORMAT_DONOR = '3f361e3c547056cbed7aa7e7ea8071b4b690a970'
 DIMENSIONS = {'positive': 'octal-values', 'boundary': 'octal-boundaries',
               'failure': 'non-octal-text', 'recovery': 'import-recovery'}
 
@@ -86,8 +87,29 @@ def qualify(values_path, user_path, image):
     assert stage['sources'] == {source['name']: {
         'before_sha256': source['preimage_sha256'], 'after_sha256': source['patched_sha256']}}
     assert composition['recipes'][recipe]['sha256'] == donor['inputs']['source_port/' + recipe]
-    assert composition['sources'][source['name']]['patched_sha256'] == source['patched_sha256']
-    assert runtime['python_sources'][source['name']] == source['patched_sha256']
+    final_digest = source['patched_sha256']
+    format_donor = None
+    if 'database_format_patches.py' in composition['recipes']:
+        # The independently reviewed format extension follows the original octal
+        # repair. Keep both exact stages and the final installed bytes bound.
+        proof_bytes = subprocess.check_output(['git','show',FORMAT_DONOR+
+            ':conformance/evidence/database_format_review.json'],cwd=ROOT)
+        proof = json.loads(proof_bytes)
+        original_path = Path(proof['raw']['formats']['path'])
+        assert sha(original_path) == proof['raw']['formats']['sha256']
+        original = json.loads(original_path.read_bytes())
+        expected = original['runtime_sources']['overlay']['manifest'][source['name']]
+        following = [row for row in composition['stages'] if source['name'] in row['sources']]
+        assert following[-2]['recipe'] == recipe and following[-1]['recipe'] == 'database_format_patches.py'
+        assert expected['preimage_sha256'] == final_digest
+        assert following[-1]['sources'][source['name']] == {
+            'before_sha256':final_digest,'after_sha256':expected['sha256']}
+        assert composition['recipes']['database_format_patches.py']['sha256'] == original['inputs']['source_port/database_format_patches.py']
+        final_digest = expected['sha256']
+        format_donor = dict(commit=FORMAT_DONOR,sha256=hashlib.sha256(proof_bytes).hexdigest(),
+            raw=proof['raw']['formats'],source=expected)
+    assert composition['sources'][source['name']]['patched_sha256'] == final_digest
+    assert runtime['python_sources'][source['name']] == final_digest
     inventory = json.loads((ROOT / 'conformance/inventory.json').read_bytes())
     item, = [row for row in inventory['rows'] if row['id'] == CONTRACT]
     assert item['name'] == '035' and item['pages'] == '83' and item['package'] == 'PY'
@@ -102,7 +124,7 @@ def qualify(values_path, user_path, image):
                  'conformance/database_values_user_controller.py', 'tests/test_database_values_composed_report.py'):
         inputs[name] = sha(ROOT / name)
     return dict(passed=True, runtime_image=image, inputs=inputs, checks=checks,
-        qualified_contracts=[CONTRACT], source=source, stage=stage,
+        qualified_contracts=[CONTRACT], source=source, stage=stage, format_donor=format_donor,
         diagnostic_donor={'commit': DONOR, 'path': donor_path, 'sha256': hashlib.sha256(donor_bytes).hexdigest()},
         raw={name: {'path': str(path.resolve()), 'sha256': sha(path),
                     'workspace_sha256': sha(path.parent / 'workspace.tar')}

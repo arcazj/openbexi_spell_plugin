@@ -19,7 +19,9 @@ bind(('FUNCTION-ABORTRANGING','EXAMPLE-172'), 'ranging', 'dual','calibration','s
 bind(('FUNCTION-SETBASEBANDCONFIG','FUNCTION-GETBASEBANDCONFIG','EXAMPLE-173',
       'SECTION-4-18-3-127'), 'ranging', 'baseband-batch','baseband-format')
 bind(('FUNCTION-STARTRANGINGCALIBRATION','EXAMPLE-175'), 'ranging', 'calibration','status','schedule-dual')
-bind(('FUNCTION-GETRANGINGSTATUS','EXAMPLE-176','CONSTANT-RANGING-STATE-ERROR'), 'ranging','status')
+bind(('FUNCTION-GETRANGINGSTATUS','EXAMPLE-176','CONSTANT-RANGING-STATE-ERROR',
+      'CONSTANT-RANGING-STATE-IDLE','CONSTANT-RANGING-STATE-RANGING',
+      'CONSTANT-RANGING-STATE-CALIBRATING','SECTION-4-18-4-128'), 'ranging','status')
 bind(('SECTION-4-18-2-126',), 'ranging','dual','calibration','schedule-dual','status')
 bind(('SECTION-4-18-124',), 'ranging','dual','calibration','schedule-dual','status','baseband-batch','baseband-format')
 bind(('FUNCTION-GENERATEMEMORYREPORT','EXAMPLE-191','MODIFIER-DESTINATION',
@@ -68,7 +70,7 @@ def qualify(sequence_path, native_wheel, driver_wheel):
     assert all(reviewed[name]['composed_wheels']['passed'] for name in ('memory','ranging'))
     checks = dimensional_mapping(MAP, reviewed)
     inventory = {r['id']:r for r in read(ROOT/'conformance/inventory.json')['rows']}
-    assert len(MAP) == 41 and {PREFIX+name for name in MAP} <= set(inventory)
+    assert len(MAP) == 45 and {PREFIX+name for name in MAP} <= set(inventory)
     merge_review_inputs(inputs, reviewed.values())
     for name in ('conformance/special_complete_report.py','conformance/ranging_complete_review.py',
                  'conformance/memory_complete_review.py','tests/test_special_complete_mapping.py'):
