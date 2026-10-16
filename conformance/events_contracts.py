@@ -15,7 +15,8 @@ def verify_events(before, expected):
     deadline = time.monotonic()+3
     while True:
         after=fixture('observe')
-        native=[e['message']['fields'] for e in after['native'] if e.get('message',{}).get('id')=='MSG_WRITE']
+        native=[e['message']['fields'] for e in after['native'][len(before['native']):]
+                if e.get('message',{}).get('id')=='MSG_WRITE']
         actual=[e for e in native if e.get('Text') in [row[0] for row in expected] and e.get('Scope')=='1']
         if len(actual)>=len(expected) or time.monotonic()>deadline:break
         time.sleep(.03)

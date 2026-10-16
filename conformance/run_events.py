@@ -25,7 +25,7 @@ def main():
     output = ROOT / '.qualification/v0.5/events' / uuid.uuid4().hex
     output.mkdir(parents=True)
     files = [ROOT / 'conformance' / name for name in
-             ('events_cases.py', 'events_controller.py', 'events_contracts.py', 'run_events.py')]
+             ('events_cases.py', 'events_controller.py', 'events_contracts.py', 'run_events.py', 'event_text_provenance.py')]
     files += sorted(path for path in (ROOT / 'src/dss').rglob('*')
                     if path.is_file() and path.suffix in ('.py', '.json'))
     files += [ROOT / 'conformance/inventory.json', ROOT / 'docs/reference/SPELL - Language Reference - 2.4.4.pdf']
@@ -54,6 +54,7 @@ def main():
             targets = {
                 'controller.py': (ROOT / 'conformance/events_controller.py').read_bytes(),
                 'installed_provenance.py': (ROOT / 'conformance/installed_provenance.py').read_bytes(),
+                'event_text_provenance.py': (ROOT / 'conformance/event_text_provenance.py').read_bytes(),
                 'procedure/events_contracts.py': (ROOT / 'conformance/events_contracts.py').read_bytes(),
                 'procedure/cmd_contracts.py': (ROOT/'conformance/cmd_contracts.py').read_bytes(),
                 'procedure/main.py': b'import events_contracts\nevents_contracts.run()\n',
@@ -93,6 +94,16 @@ def main():
         driver=(runtime.get('integrated') or {}).get('driver_composition')
         driver_sources=driver['manifest']['python_sources'] if driver else {}
         def expected_driver(path):
+            overlay=output/'workspace/event-text-overlay'
+            if path=='openbexi_spell_dss/rpc.py' and overlay.exists():
+                sys.path.insert(0,str(ROOT/'source_port'))
+                from event_text_patches import apply
+                change=json.loads((overlay/'build.json').read_bytes())
+                before=(overlay/'original-rpc.py').read_bytes();after=(overlay/'patched-rpc.py').read_bytes()
+                assert hashlib.sha256(before).hexdigest()==change['before_sha256']==driver_sources[path]
+                assert apply(path,before)==after
+                assert hashlib.sha256(after).hexdigest()==change['after_sha256']
+                return change['after_sha256']
             return driver_sources.get(path,inputs['driver_plugin/src/'+path])
         assert runtime['installed']['/usr/local/lib/python3.13/site-packages/openbexi_dss_proxy/ev.py'] == expected_driver('openbexi_dss_proxy/ev.py')
         for name in ('codec.py','journal.py','rpc.py','server.py'):
@@ -114,7 +125,8 @@ def main():
         return bool(run.returncode or not observations['passed'] or len(checks) != len(cases)
                     or any(not value['passed'] for value in checks.values()))
     finally:
-        subprocess.run(['docker', 'rm', '-f', name], capture_output=True, timeout=20)
+        # Keep the owned diagnostic container and copied evidence for review.
+        subprocess.run(['docker', 'stop', '--time', '10', name], capture_output=True, timeout=20)
 
 
 if __name__ == '__main__':
