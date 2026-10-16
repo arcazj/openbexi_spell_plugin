@@ -32,7 +32,7 @@ def frozen(name, revision):
     return module
 
 
-def review(path, overlay, revision, image):
+def review(path, overlay, revision, image, composed=False):
     raw = read(path)
     cases = frozen('conformance/command_group_cases.py', revision).CASES
     validate_report(path, image, len(cases), source_revision=revision)
@@ -52,31 +52,36 @@ def review(path, overlay, revision, image):
         assert sha(workspace/name) == raw['inputs']['conformance/'+name]
     runtime = raw['runtime_sources']
     verify_capture(runtime['integrated'], raw['inputs'])
-    assert runtime['profile'] == 'fresh-wheel-plus-display-command-catalog-and-group-overlays/1'
-    record = runtime['overlay']
-    assert record['files'] == {p.relative_to(overlay).as_posix(): sha(p)
-                              for p in overlay.rglob('*') if p.is_file() and p.name != 'base.json'}
-    assert sha(overlay/'base.json') == runtime['base_sha256']
-    base = read(overlay/'base.json')
-    assert base['integrated'] == runtime['integrated'] and base['profile'] == runtime['base_profile']
-    assert read(overlay/'manifest.json') == record['manifest']
-    recipe = frozen('source_port/command_group_patches.py', revision)
-    assert sha(overlay/'command_group_patches.py') == raw['inputs']['source_port/command_group_patches.py']
-    assert set(recipe.PREIMAGES) == set(record['manifest'])
-    expected = dict(base['installed'])
-    for name, row in record['manifest'].items():
-        before, after = overlay/'original'/name, overlay/'patched'/name
-        assert sha(before) == expected[name] == row['preimage_sha256']
-        assert recipe.apply(name, before.read_bytes()) == after.read_bytes()
-        expected[name] = sha(after)
-        assert expected[name] == row['sha256']
-    additions = frozen('conformance/command_group_provenance.py', revision).ADDED
-    assert set(record['added_sources']) == set(additions)
-    for name, digest in record['added_sources'].items():
-        assert name not in expected
-        assert sha(overlay/'modules'/name) == digest == raw['inputs']['driver_plugin/src/'+name]
-        expected[name] = digest
-    assert runtime['installed'] == expected
+    if composed:
+        assert overlay is None and raw['composed']
+        assert runtime['profile'] == 'fresh-composed-display-command-wheel/1'
+        assert raw['artifacts'] == {p.relative_to(workspace).as_posix(): sha(p) for p in workspace.rglob('*') if p.is_file()}
+    else:
+        assert runtime['profile'] == 'fresh-wheel-plus-display-command-catalog-and-group-overlays/1'
+        record = runtime['overlay']
+        assert record['files'] == {p.relative_to(overlay).as_posix(): sha(p)
+                                  for p in overlay.rglob('*') if p.is_file() and p.name != 'base.json'}
+        assert sha(overlay/'base.json') == runtime['base_sha256']
+        base = read(overlay/'base.json')
+        assert base['integrated'] == runtime['integrated'] and base['profile'] == runtime['base_profile']
+        assert read(overlay/'manifest.json') == record['manifest']
+        recipe = frozen('source_port/command_group_patches.py', revision)
+        assert sha(overlay/'command_group_patches.py') == raw['inputs']['source_port/command_group_patches.py']
+        assert set(recipe.PREIMAGES) == set(record['manifest'])
+        expected = dict(base['installed'])
+        for name, row in record['manifest'].items():
+            before, after = overlay/'original'/name, overlay/'patched'/name
+            assert sha(before) == expected[name] == row['preimage_sha256']
+            assert recipe.apply(name, before.read_bytes()) == after.read_bytes()
+            expected[name] = sha(after)
+            assert expected[name] == row['sha256']
+        additions = frozen('conformance/command_group_provenance.py', revision).ADDED
+        assert set(record['added_sources']) == set(additions)
+        for name, digest in record['added_sources'].items():
+            assert name not in expected
+            assert sha(overlay/'modules'/name) == digest == raw['inputs']['driver_plugin/src/'+name]
+            expected[name] = digest
+        assert runtime['installed'] == expected
     observations = {}
     for name, spec in cases.items():
         row = raw['checks'][name]
@@ -179,7 +184,7 @@ def review(path, overlay, revision, image):
             final_native=list({n['ItemName']: n for n in native}.values()),
             competitor_rejected=bool(spec.get('competitor')))
     return dict(passed=True, source_revision=revision, raw=ref(path), runtime_image=image,
-        overlay_manifest=ref(overlay/'manifest.json'), observations=observations,
+        overlay_manifest=ref(overlay/'manifest.json') if overlay else None, observations=observations,
         artifacts={p.relative_to(workspace).as_posix(): sha(p) for p in workspace.rglob('*') if p.is_file()},
         qualified_contracts=[], full_v05_accepted=False)
 

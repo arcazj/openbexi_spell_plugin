@@ -44,7 +44,7 @@ def qualify(raw):
         'manual':'SPELL Language Reference2.4.4 pp47–55',
         'supported':'Basic construction, Send(name/item), demonstrated argument syntax and catalog encoding, ordinary sequential lists with actual partial failures, confirmation and explicit recovery.',
         'open':'Full BuildTC/Send and command argument types/casting, GCS sequences, scheduling, load-only, critical confirmation, platform addInfo, atomic Group/Block and combined telemetry/limit behavior are not qualified.',
-        'unsupported_blocks':'Before-effect rejection is regression evidence only, not support for Block or its example/section.',
+        'block_validation':'Malformed flags and empty blocks reject before effects. Supported Group/Block behavior is qualified by the separate command/display composition report.',
         'failure_oracle':'Actual simulator SAFE mode: CMD2 succeeds, CMD1 has RELEASE/FAILED, CMD3 remains unsent. Both automatic cancellation and native ABORT/RESEND/SKIP/CANCEL action prompt are asserted.',
         'uncertain_effects':'Retained separately by original driver and native DSS regression suites; known false receipts and unknown outcomes are not interchangeable.'
     }
