@@ -21,7 +21,7 @@ import patches
 from zipfile import ZipFile
 from dss.local import create_servers
 from openbexi_spell_dss.codec import pack
-from openbexi_spell_dss.displays import document, screen, MAX_INSTANCES, MAX_JOBS
+from openbexi_spell_dss.displays import document, screen, snapshot_for, MAX_INSTANCES, MAX_JOBS
 from openbexi_spell_dss.server import Server
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p, SPELLDriver_pb2_grpc as g
 from openbexi_spell_dss.transport import Transport
@@ -133,11 +133,11 @@ def test_unicode_names_html_and_plot_time_axis_are_real(bridge):
     assert 'Displays/Telemetría' in html and '<table>' in html and '<svg ' in html
     app, = applications(bridge).values()
     record = app['displays']['DSS_TREND']
-    element = ElementTree.fromstring(screen('DSS_TREND', record))
+    element = ElementTree.fromstring(screen('DSS_TREND', record, state))
     labels = [row.text for row in element.iter('{http://www.w3.org/2000/svg}text')]
     from datetime import datetime
     assert (datetime.fromisoformat(labels[1]) - datetime.fromisoformat(labels[0])).total_seconds() == .25
-    assert record['snapshot']['samples'] == bridge.runtime.engine.telemetry()['samples']
+    assert snapshot_for(record, state)['samples'] == bridge.runtime.engine.telemetry()['samples']
     assert '<circle ' in html
 
 
@@ -222,7 +222,7 @@ def test_monitoring_cannot_open_and_legacy_snapshot_survives_upgrade(bridge):
     bridge.who['mode'] = 'Development'
     bridge.call('PrintDisplay', Format='VECTOR')
     app, = applications(bridge).values()
-    assert app['displays']['DSS_TELEMETRY']['snapshot'] == snapshot
+    assert snapshot_for(app['displays']['DSS_TELEMETRY'], bridge.ground.state()) == snapshot
     reopened = bridge.journal_type(bridge.path)
     try:
         ground = bridge.ground_type(bridge.transport, reopened)
@@ -291,6 +291,76 @@ def test_known_full_spool_rejects_without_pending_intent(bridge):
     assert rejected.value.code() == grpc.StatusCode.INVALID_ARGUMENT
     assert bridge.ground.state() == before
     assert bridge.journal.db.execute("SELECT count(*) FROM effects WHERE state='PENDING'").fetchone()[0] == 0
+    bridge.call('CloseDisplay')
+
+
+def test_all64_real_print_documents_fit_declared_spool_capacity(bridge):
+    bridge.call('OpenDisplay')
+    for _ in range(MAX_JOBS):
+        bridge.call('PrintDisplay', Format='VECTOR')
+    state = bridge.ground.state()
+    assert len(state['display_jobs']) == MAX_JOBS
+    assert len(json.dumps(state).encode()) < 1024 * 1024
+    with pytest.raises(grpc.RpcError) as rejected:
+        bridge.call('PrintDisplay', Format='VECTOR')
+    assert rejected.value.code() == grpc.StatusCode.INVALID_ARGUMENT
+    assert bridge.ground.state() == state
+    bridge.call('CloseDisplay')
+
+
+def test_optional_validation_preserves_uncertain_and_cached_receipt_rules(tmp_path):
+    patched = module('journal')
+    journal = patched.Journal(tmp_path / 'effects.sqlite')
+    who = dict(session=uuid.uuid4().hex, procedure=uuid.uuid4().hex, definition='test', version='test',
+               controller_epoch=1, procedure_fence=1, mode='Development', release=None)
+    request = uuid.uuid4().hex
+    validations = []
+    def invalid():
+        validations.append(False)
+        raise ValueError('Not open')
+    try:
+        with pytest.raises(ValueError, match='Not open'):
+            journal.begin(who, request, 'close', b'request', validate=invalid)
+        assert journal.db.execute('SELECT count(*) FROM effects').fetchone()[0] == 0
+        assert journal.db.execute('SELECT count(*) FROM fences').fetchone()[0] == 0
+        assert journal.begin(who, request, 'close', b'request', validate=lambda: validations.append(True)) is None
+        for identity in (request, uuid.uuid4().hex):
+            with pytest.raises(patched.UncertainEffect):
+                journal.begin(who, identity, 'close', b'request', validate=invalid)
+        assert validations == [False, True]
+        journal.finish(who, request, b'')
+        assert journal.begin(who, request, 'close', b'request', validate=invalid) == b''
+        assert validations == [False, True]
+        journal.begin(dict(who, controller_epoch=2), uuid.uuid4().hex, 'another', b'')
+        with pytest.raises(PermissionError, match='Stale'):
+            journal.begin(who, request, 'close', b'request', validate=invalid)
+        assert validations == [False, True]
+    finally:
+        journal.close()
+
+
+@pytest.mark.parametrize('bound', ['state-size', 'report-count'])
+def test_shared_ground_capacity_rejects_before_intent_and_recovers(bridge, bound):
+    if bound == 'state-size':
+        bridge.ground.update(lambda state: state['resources'].update(padding='x' * 1030000))
+        operation = 'OpenDisplay'
+    else:
+        bridge.call('OpenDisplay')
+        bridge.ground.update(lambda state: state['reports'].update({str(i): {} for i in range(128)}))
+        operation = 'PrintDisplay'
+    before = bridge.ground.state()
+    count = bridge.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]
+    with pytest.raises(grpc.RpcError) as rejected:
+        bridge.call(operation)
+    assert rejected.value.code() == grpc.StatusCode.INVALID_ARGUMENT
+    assert bridge.ground.state() == before
+    assert bridge.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0] == count
+    if bound == 'state-size':
+        bridge.ground.update(lambda state: state['resources'].pop('padding'))
+        bridge.call('OpenDisplay')
+    else:
+        bridge.ground.update(lambda state: state['reports'].clear())
+        bridge.call('PrintDisplay')
     bridge.call('CloseDisplay')
 
 

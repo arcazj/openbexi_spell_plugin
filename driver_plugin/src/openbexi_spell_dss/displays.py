@@ -5,9 +5,12 @@ and a durable DSS_REPORTS spool. It does not claim a physical monitor or printer
 """
 # SPDX-License-Identifier: GPL-3.0-or-later
 from datetime import datetime, timezone
+from copy import deepcopy
+import hashlib
 from html import escape
 import math
 from google.protobuf.empty_pb2 import Empty
+from .journal import canonical
 
 
 DISPLAYS = {'DSS_TELEMETRY': 'alphanumeric', 'DSS_TREND': 'plot',
@@ -69,11 +72,16 @@ def postscript_document(display, snapshot, span_seconds=60):
     return '\n'.join([*out, '%%EOF', ''])
 
 
-def screen(display, record):
+def snapshot_for(record, state):
+    return record['snapshot'] if 'snapshot' in record else state['display_snapshots'][record['snapshot_sha256']]
+
+
+def screen(display, record, state=None):
     title = escape(display)
+    snapshot = snapshot_for(record, state or {})
     if record['kind'] == 'alphanumeric':
         rows = ''.join('<tr>' + ''.join('<td>' + escape(value) + '</td>' for value in row) + '</tr>'
-                       for row in values(record['snapshot']))
+                       for row in values(snapshot))
         body = '<table><thead><tr><th>Item</th><th>Engineering</th><th>Validity</th><th>Acquired ns</th></tr></thead><tbody>' + rows + '</tbody></table>'
     else:
         end = record['acquired_at_unix_ns'] / 1e9
@@ -81,7 +89,7 @@ def screen(display, record):
         labels = [datetime.fromtimestamp(v, timezone.utc).isoformat() for v in (start, end)]
         # A newly opened time plot has one acquired sample per numeric parameter.
         # Its time axis still covers the requested initial span; no history is fabricated.
-        numeric = [(row[0], float(row[1])) for row in values(record['snapshot'])
+        numeric = [(row[0], float(row[1])) for row in values(snapshot)
                    if _numeric(row[1])]
         maximum = max([abs(value) for _, value in numeric] + [1.0])
         dots = ''.join('<circle cx="750" cy="%.3f" r="4"><title>%s: %s</title></circle>' %
@@ -174,69 +182,92 @@ class Displays:
                     raise ValueError('GENERIC print spool capacity exceeded')
 
         def operate():
-            snapshot = self.ground.transport.get('telemetry') if method != 'CloseDisplay' else None
             check()
-
-            def update(state):
-                validate_state(state)
-                apps = state.setdefault('display_applications', self.applications(state))
-                if apps:
-                    state['display_application_sequence'] = max(
-                        state.get('display_application_sequence', 0), max(map(int, apps)))
-                jobs = state.setdefault('display_jobs', {})
-                matching = [app for app in apps.values() if app['host'] == host]
-                if method == 'OpenDisplay':
-                    candidates = [app for app in matching if app['monitor'] == monitor]
-                    if reuse and candidates:
-                        app = max(candidates, key=lambda item: int(item['id']))
-                    else:
-                        if len(apps) >= MAX_INSTANCES:
-                            raise ValueError('GENERIC display application capacity exceeded')
-                        number = state.get('display_application_sequence', 0) + 1
-                        state['display_application_sequence'] = number
-                        app = dict(id=str(number), host=host, monitor=monitor, displays={}, workspaces={})
-                        apps[app['id']] = app
-                    for display in names:
-                        app['displays'][display] = dict(kind=DISPLAYS[display], snapshot=snapshot,
-                            span_seconds=span, acquired_at_unix_ns=max(
-                                row['acquired_at_unix_ns'] for row in snapshot['samples']))
-                    if workspace:
-                        app['workspaces'][name] = list(names)
-                elif method == 'CloseDisplay':
-                    selected = [app for app in matching if name in app['workspaces' if workspace else 'displays']]
-                    if not selected:
-                        raise ValueError(('Workspace' if workspace else 'Display') + ' is not open on workstation')
-                    for app in selected:
-                        for display in names:
-                            app['displays'].pop(display, None)
-                        # A partially closed workspace is no longer an open workspace.
-                        app['workspaces'] = {key: members for key, members in app['workspaces'].items()
-                                             if all(member in app['displays'] for member in members)}
-                        if not app['displays']:
-                            del apps[app['id']]
-                else:
-                    selected = [app for app in matching if name in app['displays']]
-                    if not selected:
-                        raise ValueError('Display is not open on workstation')
-                    if len(jobs) >= MAX_JOBS:
-                        raise ValueError('GENERIC print spool capacity exceeded')
-                    number = state.get('display_job_sequence', 0) + 1
-                    state['display_job_sequence'] = number
-                    app = max(selected, key=lambda item: int(item['id']))
-                    print_span = app['displays'][name]['span_seconds']
-                    content = (postscript_document(name, snapshot, print_span) if fmt == 'PS'
-                               else ascii_document(name, snapshot))
-                    job = dict(id=str(number), display=name, host=host, printer=printer, format=fmt,
-                        media_type='application/postscript' if fmt == 'PS' else 'text/plain',
-                        content=content, status='SPOOLED' if printer else 'FILE', snapshot=snapshot,
-                        application=app['id'], span_seconds=print_span)
-                    jobs[job['id']] = job
-                    state['reports']['display-' + name] = job
             self.ground.update(update)
             return Empty()
+
+        captured = {}
+
+        def update(state):
+            snapshot = captured['snapshot']
+            validate_state(state)
+            apps = state.setdefault('display_applications', self.applications(state))
+            if apps:
+                state['display_application_sequence'] = max(
+                    state.get('display_application_sequence', 0), max(map(int, apps)))
+            jobs = state.setdefault('display_jobs', {})
+            snapshots = state.setdefault('display_snapshots', {})
+            snapshot_hash = hashlib.sha256(canonical(snapshot).encode('utf-8')).hexdigest() if snapshot is not None else None
+            if snapshot_hash is not None:
+                snapshots.setdefault(snapshot_hash, snapshot)
+            matching = [app for app in apps.values() if app['host'] == host]
+            if method == 'OpenDisplay':
+                candidates = [app for app in matching if app['monitor'] == monitor]
+                if reuse and candidates:
+                    app = max(candidates, key=lambda item: int(item['id']))
+                else:
+                    if len(apps) >= MAX_INSTANCES:
+                        raise ValueError('GENERIC display application capacity exceeded')
+                    number = state.get('display_application_sequence', 0) + 1
+                    state['display_application_sequence'] = number
+                    app = dict(id=str(number), host=host, monitor=monitor, displays={}, workspaces={})
+                    apps[app['id']] = app
+                for display in names:
+                    app['displays'][display] = dict(kind=DISPLAYS[display], snapshot_sha256=snapshot_hash,
+                        span_seconds=span, acquired_at_unix_ns=max(
+                            row['acquired_at_unix_ns'] for row in snapshot['samples']))
+                if workspace:
+                    app['workspaces'][name] = list(names)
+            elif method == 'CloseDisplay':
+                selected = [app for app in matching if name in app['workspaces' if workspace else 'displays']]
+                if not selected:
+                    raise ValueError(('Workspace' if workspace else 'Display') + ' is not open on workstation')
+                for app in selected:
+                    for display in names:
+                        app['displays'].pop(display, None)
+                    # A partially closed workspace is no longer an open workspace.
+                    app['workspaces'] = {key: members for key, members in app['workspaces'].items()
+                                         if all(member in app['displays'] for member in members)}
+                    if not app['displays']:
+                        del apps[app['id']]
+            else:
+                selected = [app for app in matching if name in app['displays']]
+                if not selected:
+                    raise ValueError('Display is not open on workstation')
+                if len(jobs) >= MAX_JOBS:
+                    raise ValueError('GENERIC print spool capacity exceeded')
+                number = state.get('display_job_sequence', 0) + 1
+                state['display_job_sequence'] = number
+                app = max(selected, key=lambda item: int(item['id']))
+                print_span = app['displays'][name]['span_seconds']
+                content = (postscript_document(name, snapshot, print_span) if fmt == 'PS'
+                           else ascii_document(name, snapshot))
+                job = dict(id=str(number), display=name, host=host, printer=printer, format=fmt,
+                    media_type='application/postscript' if fmt == 'PS' else 'text/plain',
+                    content=content, status='SPOOLED' if printer else 'FILE', snapshot_sha256=snapshot_hash,
+                    application=app['id'], span_seconds=print_span)
+                jobs[job['id']] = job
+                state['reports']['display-' + name] = job
+            referenced = {row['snapshot_sha256'] for app in apps.values() for row in app['displays'].values()
+                          if 'snapshot_sha256' in row}
+            referenced.update(job['snapshot_sha256'] for job in jobs.values() if 'snapshot_sha256' in job)
+            state['display_snapshots'] = {key: value for key,value in snapshots.items() if key in referenced}
+
+        def validate():
+            validate_state(self.ground.state())
+            captured['snapshot'] = self.ground.transport.get('telemetry') if method != 'CloseDisplay' else None
+            # Preview the same pure state transition before recording an intent.
+            # The shared ground journal has its own byte budget in addition to
+            # the application/job count bounds; known capacity failures are safe.
+            planned = deepcopy(self.ground.state())
+            update(planned)
+            if (len(canonical(planned)) > 1024 * 1024
+                    or any(len(planned[key]) > 128 for key in
+                           ('resources', 'limits', 'injections', 'images', 'reports', 'displays', 'users'))):
+                raise ValueError('Simulator ground service capacity exceeded')
         # Journal executes this under its transaction, after duplicate/fence
         # checks and before a new intent. A rejected request cannot poison a run.
-        operate.validate = lambda: validate_state(self.ground.state())
+        operate.validate = validate
         return operate
 
 
@@ -246,7 +277,7 @@ def document(state):
     for app in apps.values():
         label = escape('%s / monitor %s / application %s' % (app['host'], app['monitor'], app['id']))
         sections.append('<article data-application="' + escape(app['id']) + '"><h1>' + label + '</h1>'
-                        + ''.join(screen(name, record) for name, record in app['displays'].items()) + '</article>')
+                        + ''.join(screen(name, record, state) for name, record in app['displays'].items()) + '</article>')
     return ('<!doctype html><html lang="en"><meta charset="utf-8"><title>GENERIC GCS displays</title>'
             '<style>body{font:16px sans-serif;margin:2rem}article{border:1px solid #888;padding:1rem;margin:1rem 0}'
             'table{border-collapse:collapse}th,td{border:1px solid #aaa;padding:.3rem;text-align:left}'

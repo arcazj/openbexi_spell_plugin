@@ -172,7 +172,7 @@ for fmt in (PS,VECTOR):
     good(PrintDisplay,UNICODE_ALPHA,Format=fmt)
     job=last_job();equal(job['display'],UNICODE_ALPHA);assert job['content'].isascii()
     print_document(job,fmt,False)
-assert 'Telemetr\\xeda' in last_job()['content']
+assert r'Telemetr\\xeda' in last_job()['content']
 good(CloseDisplay,UNICODE_ALPHA)
 """)
 
@@ -203,3 +203,60 @@ for fmt in (PS,VECTOR):
 before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
 good(CloseWorkspace,UNICODE_WORKSPACE,Host='DSS_AUX');equal(apps(),{})
 """)
+
+# Encoding is additional coverage. These separate recovery scenarios retain a
+# rejected call, reopen the real persistent driver, and complete valid operations.
+RECOVERY = {
+    'lifecycle': """bad(CloseDisplay,ALPHA)
+fixture('reopen')
+good(OpenDisplay,UNICODE_ALPHA);good(CloseDisplay,UNICODE_ALPHA);equal(apps(),{})
+""",
+    'workspace': """bad(OpenWorkspace,'missing')
+good(OpenWorkspace,UNICODE_WORKSPACE)
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+good(CloseWorkspace,UNICODE_WORKSPACE)
+bad(CloseWorkspace,UNICODE_WORKSPACE)
+good(OpenWorkspace,WORKSPACE);good(CloseWorkspace,WORKSPACE);equal(apps(),{})
+""",
+    'routing': """good(OpenWorkspace,WORKSPACE,Host='DSS_AUX',Monitor=2)
+bad(CloseWorkspace,WORKSPACE,Host='DSS')
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+good(CloseWorkspace,WORKSPACE,Host='DSS_AUX')
+good(OpenWorkspace,WORKSPACE,Host='DSS',Monitor=1)
+equal((one_app()['host'],one_app()['monitor']),('DSS',1))
+good(CloseWorkspace,WORKSPACE,Host='DSS');equal(apps(),{})
+""",
+    'reuse': """good(OpenDisplay,ALPHA,Reuse=False)
+bad(OpenDisplay,UNICODE_ALPHA,Reuse=1)
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+good(OpenDisplay,UNICODE_ALPHA,Reuse=True)
+equal(len(apps()),1);equal(set(one_app()['displays']),{ALPHA,UNICODE_ALPHA})
+good(CloseDisplay,ALPHA);good(CloseDisplay,UNICODE_ALPHA);equal(apps(),{})
+""",
+    'timespan': """good(OpenDisplay,PLOT,Time=.25)
+bad(OpenDisplay,PLOT,Time=0)
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+good(OpenDisplay,PLOT,Time=HOUR,Reuse=True)
+equal(one_app()['displays'][PLOT]['span_seconds'],3600);plot_axis(3600)
+good(CloseDisplay,PLOT);equal(apps(),{})
+""",
+    'printing': """good(OpenDisplay,UNICODE_ALPHA)
+bad(PrintDisplay,UNICODE_ALPHA,Format='PDF')
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+for fmt in (PS,VECTOR):
+    good(PrintDisplay,UNICODE_ALPHA,Format=fmt);print_document(last_job(),fmt,False)
+good(CloseDisplay,UNICODE_ALPHA);equal(apps(),{})
+""",
+    'printer': """good(OpenDisplay,UNICODE_ALPHA,Host='DSS_AUX')
+bad(PrintDisplay,UNICODE_ALPHA,Host='DSS_AUX',Printer='missing')
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+for fmt in (PS,VECTOR):
+    good(PrintDisplay,UNICODE_ALPHA,Host='DSS_AUX',Printer='DSS_REPORTS',Format=fmt)
+    print_document(last_job(),fmt,True)
+before=mark();after=fixture('reopen');equal(before['ground'],after['ground'])
+good(CloseDisplay,UNICODE_ALPHA,Host='DSS_AUX');equal(apps(),{})
+""",
+}
+assert set(RECOVERY) == {row['family'] for row in CASES.values()}
+for name, source in RECOVERY.items():
+    CASES[name + ':recovery'] = dict(dimension='recovery', family=name, source=source)

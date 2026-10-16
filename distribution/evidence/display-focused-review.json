@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "scope": "Focused repository-source protobuf/HTTP tests; native display and full-language qualification still pending",
+  "tests": 39,
+  "junit": {
+    "path": "C:\\obdisplay_impl\\.qualification\\display-application-tests-05.xml",
+    "sha256": "f3e3ba7217fc13303b6f4a8cabb1cf4cdb3cc157ee8f8d728165b35789154e6a"
+  },
+  "retained_failure": {
+    "path": "C:\\obdisplay_impl\\.qualification\\display-spool-capacity-failure\\result.json",
+    "sha256": "7fc9b014bd4470845e3243397f108a891d48d633db7fc627854f22f074b37155"
+  },
+  "correction": "Deduplicate acquired snapshots and preview the complete state transition before the effect journal records an intent; preserve cached receipt and unresolved effect behavior.",
+  "inputs": {
+    "driver_plugin/src/openbexi_spell_dss/displays.py": "7d9b2db744bf7a1c44afa9a482e70667ce45fa03f1e8bf34471ad5becf1dab8f",
+    "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+    "source_port/display_patches.py": "d821bd9854cd9499556c58fb4b62dbe2b76bace7f3176c02ab9cf6c31865400a",
+    "tests/test_gcs_display_application.py": "d6e12f606a28e0ae66695cb43f89f0b39a7d6fc5eff34f3f91e321bb8b831451"
+  },
+  "candidate_native_cases": 35,
+  "qualified_contracts": [],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

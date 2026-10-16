@@ -61,7 +61,7 @@ def observe():
         effects = [dict(request_id=row[0], state=row[1], receipt=row[2].hex() if row[2] is not None else None,
                         digest=row[3]) for row in journal.db.execute(
             'SELECT request_id,state,receipt,digest FROM effects ORDER BY created_ns')]
-    return dict(ground=dispatcher.ground.state(), effects=effects,
+    return dict(ground=dispatcher.ground.state(), telemetry=runtime.engine.telemetry(), effects=effects,
                 rpc=[row for row in calls if row['check'] == current()])
 
 
@@ -109,7 +109,7 @@ try:
                 action = command['action']
                 if action == 'reset':
                     def reset(state):
-                        state.update(displays={}, display_applications={}, display_jobs={},
+                        state.update(displays={}, display_applications={}, display_jobs={}, display_snapshots={},
                                      display_application_sequence=0, display_job_sequence=0)
                         state['reports'] = {key: value for key,value in state['reports'].items()
                                             if not key.startswith('display-')}

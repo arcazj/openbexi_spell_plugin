@@ -19,6 +19,10 @@ path syntax. This profile accepts positive finite plot spans up to one day, at
 most 16 application instances and 64 retained print jobs. Time applies to plots;
 VECTOR applies to alphanumeric displays. PS output renders the actual acquired
 values or plot. VECTOR is ASCII with recoverable escapes for non-ASCII text.
+The existing shared ground-state size and collection limits also apply. Identical
+acquired snapshots are stored once and referenced by hash; unused snapshots are
+removed from that pool when no display or retained job refers to them. The
+proposed state transition is checked against all limits before an effect intent.
 
 PrintDisplay without Printer creates a downloadable document. Printer=DSS_REPORTS
 places that document in the persistent virtual spool. Both remain available in
@@ -46,3 +50,10 @@ State validation runs inside the journal transaction after authority and cached
 receipt checks, but before a new effect intent. Invalid state does not poison the
 run, and a repeated receipted close still succeeds after the first call removed
 the display. Native binaries are unchanged by this isolated Python correction.
+
+The initial real-spool boundary test retained 30 completed jobs before repeated
+full snapshot copies filled the shared state limit. Its database, original source
+bytes and failing test report are retained under the ignored qualification
+directory. Snapshot deduplication and complete capacity preflight replace that
+behavior; the corrected tests fill all 64 jobs and check rejection/recovery for
+both the shared size bound and the report-count bound.

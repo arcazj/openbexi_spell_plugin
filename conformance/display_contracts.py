@@ -74,11 +74,14 @@ def bad(function, target, **options):
 
 
 def last_job():
-    jobs = mark()['ground']['display_jobs']
-    return jobs[max(jobs, key=int)]
+    state = mark()['ground']
+    jobs = state['display_jobs']
+    job = jobs[max(jobs, key=int)]
+    return dict(job, snapshot=state['display_snapshots'][job['snapshot_sha256']])
 
 
 def print_document(job, fmt, spooled):
+    equal(job['snapshot'], mark()['telemetry'])
     equal(job['format'], fmt)
     equal(job['status'], 'SPOOLED' if spooled else 'FILE')
     equal(job['printer'], 'DSS_REPORTS' if spooled else '')
@@ -99,6 +102,10 @@ def print_document(job, fmt, spooled):
 
 
 def plot_axis(span):
+    observed = mark()
+    app, = observed['ground']['display_applications'].values()
+    record = app['displays'][PLOT]
+    equal(observed['ground']['display_snapshots'][record['snapshot_sha256']], observed['telemetry'])
     markup = fixture('viewer')['html']
     start = markup.index('<svg ')
     end = markup.index('</svg>', start) + len('</svg>')
