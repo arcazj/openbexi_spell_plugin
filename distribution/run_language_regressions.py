@@ -1,5 +1,6 @@
 """Run the full native regression sequence, retaining and checking each raw report."""
 import argparse
+import ast
 import hashlib
 import json
 from pathlib import Path
@@ -149,15 +150,68 @@ def verified_prefix(path, image, root=ROOT, source_revision=None, suites=SUITES)
     return adopted
 
 
+def verified_extension(path, image, root=ROOT, source_revision=None, suites=SUITES):
+    """Extend a complete, immutable older suite list without rerunning its prefix."""
+    prior = json.loads(path.read_bytes())
+    if (prior.get('image') != image or prior.get('passed') is not True or
+            prior.get('state') != 'completed' or prior.get('complete_sequence') is not True):
+        raise ValueError('Extension requires a completed full sequence on the same image')
+    revision = prior.get('source_commit')
+    if not isinstance(revision, str) or len(revision) != 40:
+        raise ValueError('Completed sequence has no immutable source revision')
+    runner = source_bytes(root, 'distribution/run_language_regressions.py', revision)
+    if hashlib.sha256(runner).hexdigest() != prior.get('runner_sha256'):
+        raise ValueError('Completed runner differs from its committed source')
+    declarations = [node.value for node in ast.parse(runner).body
+                    if isinstance(node, ast.Assign) and any(
+                        isinstance(target, ast.Name) and target.id == 'SUITES' for target in node.targets)]
+    if len(declarations) != 1:
+        raise ValueError('Completed runner has no unique literal suite declaration')
+    # The frozen list uses a literal list comprehension for checkpoint options.
+    # Permit data construction only: no calls, attributes, subscripts or imports.
+    allowed = (ast.List, ast.Tuple, ast.Constant, ast.ListComp, ast.comprehension,
+               ast.Name, ast.Load, ast.Store)
+    if any(not isinstance(node, allowed) for node in ast.walk(declarations[0])):
+        raise ValueError('Completed suite declaration contains executable operations')
+    previous = eval(compile(ast.Expression(declarations[0]), '<frozen suites>', 'eval'),
+                    {'__builtins__': {}})
+    stages = prior.get('suites', [])
+    if (not previous or len(stages) != len(previous) or len(previous) >= len(suites) or
+            previous != suites[:len(previous)]):
+        raise ValueError('Completed suite list is not the exact shorter prefix')
+    adopted = []
+    for stage, (name, script, options, minimum) in zip(stages, previous):
+        command = stage.get('command', [])
+        tail = [*options, '--image', image]
+        if (stage.get('suite') != name or stage.get('passed') is not True or
+                stage.get('exit_code') != 0 or len(command) != 4 + len(tail) or
+                command[1:3] != ['-X', 'utf8'] or Path(command[3]).name != script or
+                command[4:] != tail):
+            raise ValueError('Completed suite invocation or result differs: ' + name)
+        for kind in ('raw', 'log'):
+            reference = stage[kind]
+            if sha(Path(reference['path'])) != reference['sha256']:
+                raise ValueError('Completed ' + kind + ' bytes changed: ' + name)
+        # Both the original and the new source trees must bind the exact inputs.
+        for selected_revision in (revision, source_revision):
+            if validate_report(Path(stage['raw']['path']), image, minimum, root,
+                               selected_revision) != stage['raw']:
+                raise ValueError('Completed raw report summary differs: ' + name)
+        adopted.append(dict(stage, adopted_from=dict(path=str(path.resolve()), sha256=sha(path))))
+    return adopted
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', required=True)
     parser.add_argument('--output', type=Path, default=ROOT / '.qualification/language-regressions')
     parser.add_argument('--suite', action='append', choices=[s[0] for s in SUITES])
-    parser.add_argument('--resume', type=Path, help='Verify and reuse the passing prefix of a failed full sequence')
+    reuse = parser.add_mutually_exclusive_group()
+    reuse.add_argument('--resume', type=Path, help='Verify and reuse the passing prefix of a failed full sequence')
+    reuse.add_argument('--extend', type=Path, help='Verify a completed older full sequence and run only appended suites')
     args = parser.parse_args()
-    if args.resume and args.suite:
-        parser.error('--resume requires the full mandatory sequence')
+    if (args.resume or args.extend) and args.suite:
+        parser.error('--resume and --extend require the full mandatory sequence')
     image = subprocess.check_output(['docker', 'image', 'inspect', args.image,
                                      '--format', '{{.Id}}'], text=True).strip()
     output = args.output.resolve() / uuid.uuid4().hex
@@ -171,6 +225,10 @@ def main():
         result['suites'] = verified_prefix(args.resume, image, source_revision=result['source_commit'])
         result['resumed_from'] = dict(path=str(args.resume.resolve()), sha256=sha(args.resume))
         print('Verified passing prefix: ' + str(len(result['suites'])), flush=True)
+    elif args.extend:
+        result['suites'] = verified_extension(args.extend, image, source_revision=result['source_commit'])
+        result['extended_from'] = dict(path=str(args.extend.resolve()), sha256=sha(args.extend))
+        print('Verified completed prefix: ' + str(len(result['suites'])), flush=True)
     print('Evidence: ' + str(output), flush=True)
     adopted = len(result['suites'])
     for index, (name, script, options, minimum) in enumerate(SUITES):
