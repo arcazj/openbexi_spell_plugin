@@ -1,197 +1,229 @@
 {
   "passed": true,
   "scope": "Verified language checkpoint; full releases remain open",
-  "runtime_image": "sha256:628190dec8544577b2e8aef97afd70032870eb12d1ef91da97e9fc50e62ccdf4",
-  "host_image": "sha256:161e636648fab1dab6f929d29be3f715db2a7ee53ffe38ced2ad13a23d911f14",
+  "runtime_image": "sha256:03e52c84157460e5b90261e390d4a4b8af0ff75e886e58b6a7075ac22fff113d",
+  "host_image": "sha256:8db76bcff67ddb92f2213e3497cfc7b572e619e287a66269f4746d644fb8570b",
   "total": 763,
   "counts": {
-    "QUALIFIED": 487,
-    "OPEN": 276
+    "QUALIFIED": 499,
+    "OPEN": 264
   },
   "coverage": {
     "path": "conformance/coverage.json",
-    "sha256": "de6db49b8b095bf206b12eb68c79fc17f12d9e9c056d603c814d128256fa69d5"
+    "sha256": "aba4b12a0cdf9a6dde307952448b7425aff417f745d33b4ad7c265935863b217"
   },
   "previous_published_checkpoint": {
-    "commit": "e024bf250c883c7ab6e0599855afdea7310bff63",
-    "qualified": 483,
-    "open": 280
+    "commit": "75e8736b279fd641fd1bfada992b1ad54e8abc82",
+    "qualified": 487,
+    "open": 276
   },
   "refreshed_baseline": {
-    "commit": "b7dd09825480afe17df8fc78d2eb1a1d47873c9d",
-    "qualified": 483,
-    "open": 280,
-    "coverage_sha256": "135db4e2851b70a2248c2bc29693370db56a240117451c42ce229ab795f499ad"
+    "commit": "840bf44fed9eefbc3e492603358077dea423aa97",
+    "qualified": 487,
+    "open": 276,
+    "coverage_sha256": "b31023da8fcf9d5468f79f992d8e0280c8a7ddffad278b01740d091f113a1031"
   },
   "newly_qualified_since_published": [
-    "CMP-LRM244-EXAMPLE-156",
-    "CMP-LRM244-EXAMPLE-158",
-    "CMP-LRM244-SECTION-4-16-1-4-112",
-    "CMP-LRM244-SYNTAX-INTEGER-OCTAL"
+    "CMP-LRM244-CONSTANT-EXECUTION-STATE-ABORTED",
+    "CMP-LRM244-CONSTANT-EXECUTION-STATE-ERROR",
+    "CMP-LRM244-CONSTANT-EXECUTION-STATE-FINISHED",
+    "CMP-LRM244-EXAMPLE-078",
+    "CMP-LRM244-EXAMPLE-079",
+    "CMP-LRM244-MODIFIER-BLOCKING",
+    "CMP-LRM244-OPERATOR-PYTHON-LEGACY-NOT-EQUAL",
+    "CMP-LRM244-SECTION-2-1-001",
+    "CMP-LRM244-SECTION-2-1-8-009",
+    "CMP-LRM244-SECTION-4-16-1-2-110",
+    "CMP-LRM244-SECTION-4-6-1-065",
+    "CMP-LRM244-SECTION-4-6-2-066"
   ],
   "promotions": {
-    "path": "distribution/evidence/database-values-promotions.json",
-    "sha256": "3d9311a64970a9d68534b6784abd542f19c4e96e36b44e95f21e48f5b4029f25"
+    "path": "distribution/evidence/prompt-composed-promotions.json",
+    "sha256": "49ee94b399048b4b2d7daa6dde023fc32fcdd8da45696c8d5b7300875b0b39f0"
   },
   "native_regressions": {
-    "path": "distribution/evidence/database-values-language-regressions.json",
-    "sha256": "79eb005efdcb689c2c3d2058f2d3adcfc20f2f5945d7bf6169e7c090f732e5a4"
+    "path": "distribution/evidence/prompt-composed-language-regressions.json",
+    "sha256": "2cccb30d4d87e783b9325f584bdfcf627bce0983520e641e9ba012f40dc388a9"
   },
-  "native_suites": 35,
-  "raw_checks": 1678,
+  "native_suites": 40,
+  "raw_checks": 1789,
   "reports": [
     {
       "path": "conformance/evidence/data.json",
-      "sha256": "856b48914ed9d5fab1f7489303cb151294eb2408565d05cf4be8127965c24279"
+      "sha256": "8f5ec5c1a1463c336799aacccb5b059ca0995a293654dc29d242915fe45e8e7e"
     },
     {
       "path": "conformance/evidence/files.json",
-      "sha256": "a5656675df2c924ba2181f6083b60fe4ed8e98691c9b4ee00360246e0d7e0222"
+      "sha256": "650960301b6328e1754a71f58077010b74e5e5778f8e254fa620d9f59a808404"
     },
     {
       "path": "conformance/evidence/data-race.json",
-      "sha256": "3c662f82d2ff1c9b89983722ee0224d8c2e01e96dc172bd23142fc32ffe51cb8"
+      "sha256": "feccd0cc519a466d3c61e6c32c2aabd6a3d8a91b0dc20012c873d1760d12c557"
     },
     {
       "path": "conformance/evidence/flow.json",
-      "sha256": "b0a8e9291443e41fbb981532414eabdd21696da2029695a2c05ab2258d88b753"
+      "sha256": "1072d76ca9abed1edd4159b78053a24b63d8c665cefb1ba984346c14dd3d1638"
     },
     {
       "path": "conformance/evidence/common-silence.json",
-      "sha256": "0da81e4bec5c359b367c37fd6c39aaa8a9140dd43bc2b2ef06d0bf9ac2e3ea2b"
+      "sha256": "ab671aa40a96e2d29f44b1bc11a95cf49239a2ab5075d55dbee78bee86f02ec0"
     },
     {
       "path": "conformance/evidence/resource.json",
-      "sha256": "fc184d0afcc18cfcb47c50f8e81ad1400591c4de2d6fc74d45bc15c93e64aee9"
+      "sha256": "b53afdd52851897a870747de98d38366d9aa5d545d519380f2ce5667f8be707a"
     },
     {
       "path": "conformance/evidence/database_import.json",
-      "sha256": "c16689300fe4c124f9a1573cabc319eee4a50e7bef9bf6e8cdb5cbe458928759"
+      "sha256": "92bd6c9210422ffe4d7d2a975ab795f9c738903692af7a2058ddcadd9ee6316e"
     },
     {
       "path": "conformance/evidence/user_database.json",
-      "sha256": "dee99ae2265c9aa3ef9bb1d20f588bc6d54dd3be8e7cd4eabcd0d24a3295ead1"
+      "sha256": "936b9d2293e83a338851af4502227f22cdbd192ffe82744ebf5abad691ce5118"
     },
     {
       "path": "conformance/evidence/dta.json",
-      "sha256": "4e94da202d1579c0733e98838894258ffb9b998c521da4847f928f8128a1c71b"
+      "sha256": "4a33a1bea3a5aacbc7f3e3bd440641a5b23c93cfe5c0c034e33b9eac274faa4f"
     },
     {
       "path": "conformance/evidence/ui.json",
-      "sha256": "a4364006b07d4179aa034badc36dfee92252e06b3453a09ff7eaa1d3ececf392"
+      "sha256": "c6fa931562470bf9b48ba7394c53b80f96e92de656166747a96302cf8abbc86f"
     },
     {
       "path": "conformance/evidence/prompt_timeout.json",
-      "sha256": "7fbef33d4fc37e6e183d6bbedc3188fa2bab57bdb5eb647030f0703f2807407d"
+      "sha256": "3aa923afbb665ef65744665c8530db482ae673cdc006b28e7a1582946cfc61b6"
     },
     {
       "path": "conformance/evidence/child_arguments.json",
-      "sha256": "dd2695ff691b62cdb4e2e97507c3e211ce1765175208e80c63792bf812520f7d"
+      "sha256": "492c4c9060a76228adb45974e2ffd803fb5457da604874ffe6ffdd7e7731f861"
     },
     {
       "path": "conformance/evidence/rng.json",
-      "sha256": "6958f4b8a3a0adbbcf281eb7f909b47c8580bb3b05f97a3dfbdd8189c9099948"
+      "sha256": "f3d88db1b2cb5b2d26b16d7be12511abe61aea747d793faf2a041db119f42124"
     },
     {
       "path": "conformance/evidence/rng_state.json",
-      "sha256": "f14a525f8d406f11c10b6f9023fb76d3aaea22b0dabca43cce5cc2c66cbb25bd"
+      "sha256": "02892594a6638b0b6ab5d088c665d745da8d26aa51fbbea2a12b5077b9c3ee36"
     },
     {
       "path": "conformance/evidence/dta-ipc.json",
-      "sha256": "54200657648032fc909e2ce7a5681e5ef622664efc195714848e5c013a314c3a"
+      "sha256": "07e8cd2e827060633b911ce0d8ccb7575eb44045c78f2ff4b42935470d89f4c8"
     },
     {
       "path": "conformance/evidence/time.json",
-      "sha256": "ce9494544a216313d54e3d15fb81edb60eb1a3090b8f0909e6caf08a74eb476d"
+      "sha256": "3ed8a2c0674d8b2508aaca9c0340991248127d71c87d1e9cde0fdac389940428"
     },
     {
       "path": "conformance/evidence/limit.json",
-      "sha256": "0f0e7ede09d50cdf96c6e190293ee0a01d39c17be14395e6101e32c21e5d31b5"
+      "sha256": "c8311ed90f9bbe9c1674c1beef724f8846ad828ff7e27c209f77187402566762"
     },
     {
       "path": "conformance/evidence/notification.json",
-      "sha256": "967dd99f5f6bb79e05d6dff70a98c63a19b11fee24c498eb915443adb3d0a2a2"
+      "sha256": "efde9a8e4e45d649e26d240fcc239bd6604ae557185adf08265e45eed2cb81b8"
     },
     {
       "path": "conformance/evidence/obs.json",
-      "sha256": "dd3bab0f080f2dba931c6e7ffb97514ab3b6019219525bf3511bc468011def03"
+      "sha256": "a668e4048e81fa3dc86510dcc078be5d7e6274282cc12ecfbd240452eb82d826"
     },
     {
       "path": "conformance/evidence/cmd.json",
-      "sha256": "668f3c664f3d0e5d5e480f0f9cb12d50a7b764b8df1010b2bc189d191ba92bff"
+      "sha256": "161cb85bcdf81f4444d3efb474ad99511bd763f8fcecd0cae31c671545c694dc"
     },
     {
       "path": "conformance/evidence/python.json",
-      "sha256": "f2b4c139d8ff125f8c85253b905e93e53137a5d2012cc27fd76525121dee487b"
+      "sha256": "718628d1a6447918776c58a398f8ebf3267ac6c12bf181c131b2f78a9f028e8c"
     },
     {
       "path": "conformance/evidence/common.json",
-      "sha256": "88891962721993f456d875b446640fb075d7dfb2d4c087c8e12efb94a8f687d8"
+      "sha256": "0a7929c4884e59409f3ef00992a28096e7e2ab6d4425640daaf72c41eaa9b1ab"
     },
     {
       "path": "conformance/evidence/events.json",
-      "sha256": "5cf45d58bfcb689e6644f36b3f27557dec6645f0cfefddc32adf19b361651e6d"
+      "sha256": "9b8a6d49d93e23aa79496d3d3b35b432204f10ff3f4157901e7dbea5798f31f8"
     },
     {
       "path": "conformance/evidence/scheduler.json",
-      "sha256": "395b6e2ce69f07520044541b8bdb0323a75848a960e92b241d4283d4165047e5"
+      "sha256": "9d7b649ee427546f5215586193e6acab816a19115dbd525875bfefcdf6f736a0"
     },
     {
       "path": "conformance/evidence/value_units.json",
-      "sha256": "b1f7f55f52fa8374cd1812883f9505cf8e61ba5d3c9eb97d9532031219debb17"
+      "sha256": "98504af6b3af821f39c3ebba04822c68cf98c9e0dd91f3b55dc5c102ec48d816"
     },
     {
       "path": "conformance/evidence/scdb.json",
-      "sha256": "5de155c71ec7be14b4b6629b24c391372770157a92cbb6fedf32a0d17fe2d4d9"
+      "sha256": "c09761c640966cbbe86f71186304b16797530f5dc8685c6fd76dd7c956a5696f"
     },
     {
       "path": "conformance/evidence/timing.json",
-      "sha256": "c44fe8bc4cdad980cf75ab922e3e1f1b9f66214dbf6bd296d5f03e13af98a924"
+      "sha256": "74c4b74147e7902f02a00ee2b4f2f6dd8252390a1f047afa535942be0b93098f"
     },
     {
       "path": "conformance/evidence/send_verify.json",
-      "sha256": "66ee097e8f2decba4c03fa1aa1df03537b94785dc045e89478fc7c9968ebf633"
+      "sha256": "b8d66c3dfe1a1b31bd14533c92d0ecf4c607de3e6c54700d923ae9b0ae5742ac"
     },
     {
       "path": "conformance/evidence/checkpoint_error.json",
-      "sha256": "d769b08ffdff2ea3cb7a26ec5b3b606c7ad431e07cd3a9730dc7416b9dba9e68"
+      "sha256": "5516b65d1d25da38f3fede919f6e65e1331f7e22f3ce20290652a26db50fb7e5"
     },
     {
       "path": "conformance/evidence/checkpoint_identity.json",
-      "sha256": "be36e732e91b18a428a5203d0078ae3c00e5ab88d7c5b8b480678578f856b576"
+      "sha256": "4cd6ebb4cbd92e45d2daa5816d693d08f1c6598c02237fa0302e021a30491e93"
     },
     {
       "path": "conformance/evidence/child_returns.json",
-      "sha256": "369a436f1cb604d0b896d6dd0e99db7217ecf394a2291399aabce3f84f3e7b86"
+      "sha256": "e09e50414251c436c9c27611d8452468dd94200a2856fdd4fba847c8a07dc353"
     },
     {
       "path": "conformance/evidence/database_scope.json",
-      "sha256": "6dbfda8354f149eb92a8d27856583dbd4f4dcf08b340fa933fdda3e5eb4a43a4"
+      "sha256": "7a348c51c34db3a972e6ac4c0308c3f82abb555b2c07b88a01078d8122ab8931"
     },
     {
       "path": "conformance/evidence/database_values_composed.json",
-      "sha256": "a0f050aad9d44338bba9770bf70f1545097d4ffea0e32f524482f5c34724f8a8"
+      "sha256": "a285254ecbad21e9d6141a4f022585e2cda5f845f2a6fdc14978e65eb0bad2cc"
     },
     {
       "path": "conformance/evidence/child_execution.json",
-      "sha256": "a366022e9f545adcca991238347007ca4f528f391ad1fb70fceba56b85b39e49"
+      "sha256": "d5d73948235e68ee55655ff905b5e9078d6e7b6e54f838ca577d80532ad525ad"
+    },
+    {
+      "path": "conformance/evidence/legacy_compare_composed.json",
+      "sha256": "ef8adbee57d17a3f3874f115134eeeb46abf3b5601b661e8616cb415e976bdd7"
+    },
+    {
+      "path": "conformance/evidence/context_snapshot_composed.json",
+      "sha256": "3beb3c5427f6249f083c5979583409799a6bc962eb66ae6405c760df3f751f8a"
+    },
+    {
+      "path": "conformance/evidence/prompt_startup_composed.json",
+      "sha256": "27d5e974558afd9beadbb94a636e3b5e876fb098d138157bae13ddee55c7f6ee"
+    },
+    {
+      "path": "conformance/evidence/python_sections.json",
+      "sha256": "4113a0146838d7065f5cbcc4f9403809f3f300362071cdc887860c66c6fe9b95"
+    },
+    {
+      "path": "conformance/evidence/child_policy.json",
+      "sha256": "a9dae6323c8c3c3bfa159b6306d482f37aeb5ec58fdb19cdb2341c3694584458"
+    },
+    {
+      "path": "conformance/evidence/wait_time.json",
+      "sha256": "7b13ee59ff6dc984a60d8a2b50cd6f86990d3914f470ec6db0d96a3b5e978690"
     }
   ],
   "independent_builds_and_images": {
-    "path": "distribution/evidence/database-values-build-images.json",
-    "sha256": "9dbb0e145101f54eb41260d09af9329117539e431df1cbae8609fd48ca7dd3a6"
+    "path": "distribution/evidence/prompt-composed-build-images.json",
+    "sha256": "da7b9e2f10b095eea4f954dd71b08dac264fa1ab03d260d44b34273bd4d74f61"
   },
   "prompt_controls": {
     "path": "conformance/evidence/prompt_controls.json",
-    "sha256": "828cd2669d9ad79c5e8a6b2fdbf8e6d73adab7c03845a1e91bd5b9bda1d996a3"
+    "sha256": "65597b4277fc0fb7248e578ecc6f4ba722ba8bda7df0b38448817bdd9657dbaf"
   },
   "child_lifecycle": {
-    "path": "C:\\obdatabase_scope\\.qualification\\child-regressions\\31a8ef8592244a3d833ffe5831d10ca8\\result.json",
-    "sha256": "ed3f0eba77a984f8fab3f8c8b2b28350963fa08afd2ab8a32a3832033772bb75"
+    "path": "C:\\obprompt_composed\\.qualification\\child-regressions\\4665890d156e4ffbac51d950f674940e\\result.json",
+    "sha256": "d71a46317569fc82175752e090f441edfd78873255e36adb9514770d66173b7a"
   },
   "child_start": {
     "path": "conformance/evidence/child_start.json",
-    "sha256": "7349d4a0068e5b8ff7b4daddf6786e8c46aa95a20a193ef74bbae85a6c2fddcb"
+    "sha256": "96c775fcbf0ed9aa50b5e184681db6fc5f57bb5bd34fbeb91fa47a5a205b1f9b"
   },
   "sdk_http": {
     "path": "distribution/evidence/http-rejection.json",
@@ -200,19 +232,19 @@
   "local_verification": {
     "passed": true,
     "command": "python -m pytest tests host_plugin/tests host_runtime/tests distribution conformance -q",
-    "passed_tests": 582,
+    "passed_tests": 704,
     "passed_subtests": 64,
     "pytest_version": "9.1.1",
     "junit": {
-      "path": "C:\\obdatabase_scope\\.qualification\\database-values-final-tests.xml",
-      "sha256": "5940a2b907361fb669364c9e4f4e50f8d28d0096fd757a03fc91da1401907006"
+      "path": "C:\\obprompt_composed\\.qualification\\prompt-composed-final-tests.xml",
+      "sha256": "e8ef0dc86eb22fd2ad38376c47c91ada703295b8ab49c59a95d42408f7163a57"
     }
   },
   "limitations": [
     "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan profile; compiler installed and leak detection disabled",
     "Final production packages, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm and platform/operational gates remain open",
-    "Root SDK HTTP correction has separate installed-wheel evidence",
-    "276 original language requirements remain open; stable release acceptance remains false"
+    "Legacy <> compatibility applies to native procedure compilation; imported Python modules and eval/compile retain CPython syntax",
+    "264 original language requirements remain open; stable release acceptance remains false"
   ],
   "full_v05_accepted": false,
   "full_v06_accepted": false,
