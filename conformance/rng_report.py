@@ -7,7 +7,7 @@ from pathlib import Path
 
 from rng_cases import CASES, METADATA
 from installed_provenance import verify_capture
-from rng_provenance import verify_composed
+from rng_composed_review import verify_composed
 
 ROOT=Path(__file__).resolve().parents[1]
 DIMENSIONS={'positive','boundary','failure','recovery'}
@@ -71,7 +71,7 @@ def qualify(raw):
     if composed:
         report['excluded_contracts']={name:'Separate schedule/activity controls are retained; this catalog run does not qualify the complete manual contract.' for name in EXCLUDED}
     report['inputs']['conformance/rng_report.py']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    for name in ('conformance/RNG_RESULTS.md','tests/test_rng_report.py','docs/reference/SPELL - Driver Development Manual - 2.4.4.pdf'):
+    for name in ('conformance/rng_composed_review.py','conformance/RNG_RESULTS.md','tests/test_rng_report.py','docs/reference/SPELL - Driver Development Manual - 2.4.4.pdf'):
         report['inputs'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
     report['scope']=dict(
         manual='LRM 2.4.4 pp93–95; no manual erratum introduced.',

@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 from rng_state_cases import CASES, METADATA
 from installed_provenance import verify_capture
-from rng_provenance import verify_composed
+from rng_composed_review import verify_composed
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -33,7 +33,7 @@ def qualify(raw):
     else:
         assert set(runtime['overlay']['manifest'])=={'openbexi_spell_dss/ground.py'}
         assert set(runtime['base_overlay']['manifest'])=={'spell/lang/helpers/rnghelper.py','openbexi_dss_proxy/ranging.py'}
-    for name in ('conformance/rng_state_report.py','conformance/RNG_STATE_RESULTS.md',
+    for name in ('conformance/rng_composed_review.py','conformance/rng_state_report.py','conformance/RNG_STATE_RESULTS.md',
                  'tests/test_rng_state_patch.py','tests/test_rng_state_report.py'):
         report['inputs'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
     report['qualified_contracts']=[]
@@ -70,7 +70,12 @@ def add_regression(report,path,count,profile):
         runtime=report['runtime_sources']
         if runtime.get('overlay') is None:
             row=verify_composed(runtime,report['inputs'],report['lf_normalized_inputs'])
-            before,after=row['original_sha256'],row['patched_sha256']
+            # These retained unit tests qualify the original state stage.
+            # The complete final composition is checked above and by native cases.
+            driver=runtime['integrated']['driver_composition']['manifest']
+            stage,=[s for s in driver['stages'] if s['recipe']=='rng_state_patches.py']
+            source=stage['sources']['openbexi_spell_dss/ground.py']
+            before,after=source['before_sha256'],source['after_sha256']
         else:
             row=runtime['overlay']['manifest']['openbexi_spell_dss/ground.py']
             before,after=row['preimage_sha256'],row['sha256']
