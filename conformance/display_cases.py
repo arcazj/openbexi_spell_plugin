@@ -9,10 +9,10 @@ def family(name, **dimensions):
 
 
 family('lifecycle',
-    positive="""good(OpenDisplay, ALPHA)
+    positive="""good_default(OpenDisplay, ALPHA)
 app=one_app();equal(app['host'],'DSS');equal(app['monitor'],1)
 equal(set(app['displays']),{ALPHA})
-good(CloseDisplay, ALPHA);equal(apps(),{})
+good_default(CloseDisplay, ALPHA);equal(apps(),{})
 """,
     boundary="""good(OpenDisplay, ALPHA)
 good(OpenDisplay, ALPHA);equal(len(apps()),1)
@@ -130,14 +130,14 @@ good(CloseDisplay,PLOT)
     equal(one_app()['displays'][PLOT]['span_seconds'],span);plot_axis(span)
 good(CloseDisplay,PLOT);equal(apps(),{})
 """,
-    failure="""for span in (0,-1,True,86401,TIME('2026-001/00:00:00')):
+    failure="""for span in (0,-1,True,86401,TIME('2026/01/01 00:00:00')):
     bad(OpenDisplay,PLOT,Time=span)
 bad(OpenDisplay,ALPHA,Time=1)
 good(OpenDisplay,PLOT,Time=1);good(CloseDisplay,PLOT);equal(apps(),{})
 """,
-    encoding="""good(OpenDisplay,PLOT,Time=TIME('00:00:01.125'))
+    encoding="""good(OpenDisplay,PLOT,Time=TIME('+00:00:01.125'))
 equal(one_app()['displays'][PLOT]['span_seconds'],1.125);plot_axis(1.125)
-good(OpenDisplay,PLOT,Time=TIME('01:00:00'),Reuse=True)
+good(OpenDisplay,PLOT,Time=TIME('+01:00:00'),Reuse=True)
 equal(one_app()['displays'][PLOT]['span_seconds'],3600)
 good(CloseDisplay,PLOT);equal(apps(),{})
 """)
@@ -146,7 +146,8 @@ family('printing',
     positive="""equal((PS,VECTOR),('PS','VECTOR'))
 good(OpenDisplay,ALPHA)
 for fmt in (PS,VECTOR):
-    good(PrintDisplay,ALPHA,Format=fmt)
+    if fmt==PS:good_default(PrintDisplay,ALPHA)
+    else:good(PrintDisplay,ALPHA,Format=fmt)
     print_document(last_job(),fmt,False)
 good(CloseDisplay,ALPHA)
 """,

@@ -9,6 +9,7 @@ from copy import deepcopy
 import hashlib
 from html import escape
 import math
+import time
 from google.protobuf.empty_pb2 import Empty
 from .journal import canonical
 
@@ -131,7 +132,7 @@ class Displays:
         catalog = WORKSPACES if workspace else DISPLAYS
         if type(name) is not str or name not in catalog:
             raise ValueError('Unknown GENERIC ' + ('workspace' if workspace else 'display'))
-        allowed = {'Host'}
+        allowed = {'Host', 'Delay'}
         if method == 'OpenDisplay':
             allowed |= {'Monitor', 'Reuse'} | (set() if workspace else {'Time'})
         elif method == 'PrintDisplay':
@@ -163,6 +164,9 @@ class Displays:
         printer = options.get('Printer', '')
         if type(printer) is not str or printer not in ('', 'DSS_REPORTS'):
             raise ValueError('Unknown GENERIC printer')
+        delay = options.get('Delay', 0)
+        if type(delay) not in (int, float) or not math.isfinite(delay) or not 0 <= delay <= 30:
+            raise ValueError('Display completion delay must be finite and between zero and 30 seconds')
         names = WORKSPACES[name] if workspace else (name,)
 
         def validate_state(state):
@@ -184,6 +188,16 @@ class Displays:
         def operate():
             check()
             self.ground.update(update)
+            # Original language.xml supplies launch/print/close settling delays.
+            # Preserve those defaults and remain responsive to authority loss.
+            deadline = time.monotonic() + delay
+            while True:
+                check()
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                if self.ground.transport.stop.wait(min(.025, remaining)):
+                    raise RuntimeError('Display transport closed during completion delay')
             return Empty()
 
         captured = {}

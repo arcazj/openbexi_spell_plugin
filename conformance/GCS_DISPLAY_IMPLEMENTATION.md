@@ -46,6 +46,18 @@ native display calls. The original TASK protobuf schema is unchanged; workspace
 calls carry a reserved private discriminator in its configuration dictionary.
 That discriminator is rejected as a user-supplied modifier.
 
+The original wrapper consumes AllowInterrupt itself. The proxy therefore keeps
+that policy out of the display RPC. Original language.xml supplies Delay=6 for
+opening/printing and Delay=3 for closing; this backend honors the completion
+delay, with repeated authority checks. Finite delays from zero through 30 seconds
+are supported. Native positive cases retain the original defaults and verify
+their elapsed time; unrelated boundary cases explicitly request Delay=0.
+
+The first native candidate rejected all display calls because those original
+wrapper/default settings were not accounted for. That complete failed capture
+is retained. Two time cases also used incorrect original TIME spellings; the
+corrected probes use explicit '+' relative times and a documented absolute date.
+
 State validation runs inside the journal transaction after authority and cached
 receipt checks, but before a new effect intent. Invalid state does not poison the
 run, and a repeated receipted close still succeeds after the first call removed

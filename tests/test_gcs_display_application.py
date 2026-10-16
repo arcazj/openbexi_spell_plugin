@@ -5,6 +5,7 @@ import importlib
 import json
 import sys
 import threading
+import time
 import types
 import uuid
 from xml.etree import ElementTree
@@ -362,6 +363,27 @@ def test_shared_ground_capacity_rejects_before_intent_and_recovers(bridge, bound
         bridge.ground.update(lambda state: state['reports'].clear())
         bridge.call('PrintDisplay')
     bridge.call('CloseDisplay')
+
+
+def test_display_completion_delay_finishes_after_real_state_change(bridge):
+    began = time.monotonic()
+    bridge.call('OpenDisplay', Delay=.05)
+    assert time.monotonic()-began >= .05
+    assert len(applications(bridge)) == 1
+    bridge.call('PrintDisplay', Delay=0, Format='ps')
+    assert bridge.ground.state()['display_jobs']['1']['format'] == 'PS'
+    bridge.call('CloseDisplay', Delay=0)
+
+
+@pytest.mark.parametrize('delay', [-1, True, 31, float('nan'), None])
+def test_invalid_display_delay_rejects_before_an_effect_and_recovers(bridge, delay):
+    before = bridge.ground.state()
+    with pytest.raises((grpc.RpcError, ValueError)):
+        bridge.call('OpenDisplay', Delay=delay)
+    assert bridge.ground.state() == before
+    assert bridge.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0] == 0
+    bridge.call('OpenDisplay', Delay=0)
+    bridge.call('CloseDisplay', Delay=0)
 
 
 @pytest.mark.parametrize('name', list(display_patches.PREIMAGES))

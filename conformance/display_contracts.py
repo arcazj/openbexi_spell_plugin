@@ -14,7 +14,7 @@ from spell.lib.exception import SpellException
 
 ALPHA, PLOT, WORKSPACE = 'DSS_TELEMETRY', 'DSS_TREND', 'DSS_WORKSPACE'
 UNICODE_ALPHA, UNICODE_WORKSPACE = 'Displays/Telemetría', 'Workspaces/Operación'
-CFG = dict(HandleError=False, PromptUser=False)
+CFG = dict(HandleError=False, PromptUser=False, Delay=0)
 calls = []
 
 
@@ -53,10 +53,24 @@ def one_app():
 
 
 def good(function, target, **options):
+    defaults = ({'Delay': 6, 'Format': 'ps'} if function is PrintDisplay else
+                {'Delay': 6} if function is OpenDisplay else {'Delay': 3} if function is CloseDisplay else {})
+    effective = {**defaults, **{key:value for key,value in CFG.items() if key=='Delay'}, **options}
+    began = time.monotonic()
     result = function(target, **dict(CFG, **options))
-    calls.append(dict(function=function.__name__, target=target, options={k: str(v) for k,v in options.items()},
+    calls.append(dict(function=function.__name__, target=target, options={k: str(v) for k,v in effective.items()},
+                      explicit_options={k: str(v) for k,v in options.items()}, seconds=time.monotonic()-began,
                       returned=result, return_type=type(result).__name__))
     assert result is True, calls[-1]
+
+
+def good_default(function, target, **options):
+    previous = CFG.pop('Delay')
+    try:
+        good(function, target, **options)
+        assert calls[-1]['seconds'] >= float(calls[-1]['options']['Delay'])
+    finally:
+        CFG['Delay'] = previous
 
 
 def bad(function, target, **options):

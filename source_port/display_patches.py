@@ -77,6 +77,8 @@ from spell.lib.exception import DriverException
 
 def display_settings(config, workspace=False):
     config = dict(config or {})
+    # WrapperHelper consumes this policy itself; it is not a GCS option.
+    config.pop('AllowInterrupt', None)
     if '_OpenBEXIWorkspace' in config:
         raise DriverException('Reserved driver workspace discriminator')
     span = config.get('Time')
