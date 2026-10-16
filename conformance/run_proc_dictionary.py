@@ -8,7 +8,6 @@ import subprocess
 import tarfile
 import uuid
 
-from proc_metadata_cases import CASES
 from installed_provenance import input_paths
 from proc_dictionary_provenance import RECIPES, qualification_identity
 
@@ -22,11 +21,18 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image',required=True)
+    parser.add_argument('--suite',choices=('baseline','lifecycle'),default='baseline')
     args=parser.parse_args()
+    if args.suite=='baseline':
+        from proc_metadata_cases import CASES
+        prefix='proc_metadata'
+    else:
+        from proc_lifecycle_cases import CASES
+        prefix='proc_lifecycle'
     token=uuid.uuid4().hex
-    output=ROOT/'.qualification/proc-dictionary'/token
+    output=ROOT/('.qualification/proc-dictionary-'+args.suite)/token
     output.mkdir(parents=True)
-    names=['conformance/proc_metadata_cases.py','conformance/proc_metadata_controller.py',
+    names=['conformance/'+prefix+'_cases.py','conformance/'+prefix+'_controller.py',
            'conformance/run_proc_metadata.py','conformance/inventory.json',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
            'docs/reference/SPELL2.6.10-src.zip',*input_paths(ROOT),*RECIPES.values(),
@@ -40,14 +46,14 @@ def main():
     try:
         subprocess.run(['docker','create','--init','--name',name,'--network','none',
             '--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256',
-            '--entrypoint','python',image,'-u','/workspace/proc_metadata_controller.py'],check=True,capture_output=True)
+            '--entrypoint','python',image,'-u','/workspace/'+prefix+'_controller.py'],check=True,capture_output=True)
         created=True
         archive=io.BytesIO()
         generated={}
         with tarfile.open(fileobj=archive,mode='w') as bundle:
-            for source in ('proc_metadata_cases.py','proc_metadata_controller.py','installed_provenance.py','proc_dictionary_provenance.py'):
+            for source in (prefix+'_cases.py',prefix+'_controller.py','installed_provenance.py','proc_dictionary_provenance.py'):
                 content=(ROOT/'conformance'/source).read_bytes()
-                if source=='proc_metadata_controller.py':
+                if source==prefix+'_controller.py':
                     assert content.count(b'from installed_provenance import capture')==1
                     content=content.replace(b'from installed_provenance import capture',b'from proc_dictionary_provenance import capture')
                 generated[source]=hashlib.sha256(content).hexdigest()
