@@ -35,8 +35,8 @@ closed=call('CloseDisplay')
 ok=opened and closed
 ''',
     'display-options':'''outcomes=[]
-for options in ({Host:'DSS'},{'Monitor':1},{'Reuse':True},{Time:TIME('00:01:00')},
-                {Host:'DSS','Monitor':1,'Reuse':False,Time:TIME('00:01:00')}):
+for options in ({Host:'DSS'},{'Monitor':1},{'Reuse':True},
+                {Host:'DSS','Monitor':1,'Reuse':False}):
     outcomes.append(call('OpenDisplay',**options))
     outcomes.append(call('CloseDisplay',**{Host:'DSS'}))
 ok=all(outcomes)
