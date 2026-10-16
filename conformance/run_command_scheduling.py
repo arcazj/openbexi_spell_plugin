@@ -28,7 +28,7 @@ def main():
     token=uuid.uuid4().hex
     output=ROOT/'.qualification/command-scheduling'/token
     output.mkdir(parents=True)
-    names=['conformance/command_scheduling_cases.py','conformance/command_scheduling_controller.py',
+    names=['conformance/command_scheduling_cases.py','conformance/command_scheduling_controller.py','conformance/clock_step.py',
            'conformance/run_command_scheduling.py','conformance/inventory.json','conformance/command_provenance.py','conformance/command.Dockerfile','conformance/command.Dockerfile.dockerignore',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
            'docs/reference/SPELL2.6.10-src.zip','conformance/COMMAND_FEATURE_BASELINE.md',*input_paths(ROOT),
@@ -53,7 +53,7 @@ def main():
             item=tarfile.TarInfo('selected-cases.json')
             item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
             bundle.addfile(item,io.BytesIO(content))
-            for source in ('command_scheduling_cases.py','command_scheduling_controller.py','installed_provenance.py','command_provenance.py'):
+            for source in ('command_scheduling_cases.py','command_scheduling_controller.py','clock_step.py','installed_provenance.py','command_provenance.py'):
                 content=(ROOT/'conformance'/source).read_bytes()
                 item=tarfile.TarInfo(source)
                 item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
