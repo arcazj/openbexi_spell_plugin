@@ -32,6 +32,7 @@ def main():
            'conformance/telemetry_surface_cases.py','conformance/telemetry_features_provenance.py',
            'conformance/telemetry_features.Dockerfile','conformance/telemetry_features.Dockerfile.dockerignore',
            'conformance/TELEMETRY_DEADLINE_PROFILE.md','driver_plugin/src/openbexi_spell_dss/limit_files/normal.json',
+           'conformance/TELEMETRY_BOUNDARY_REVIEW.md','tests/test_telemetry_comparison_boundaries.py',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
            'docs/reference/SPELL2.6.10-src.zip','conformance/TELEMETRY_SURFACE_BASELINE.md',*input_paths(ROOT),
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'src/dss').rglob('*')) if p.is_file() and p.suffix in ('.py','.json')],

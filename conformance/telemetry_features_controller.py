@@ -71,7 +71,7 @@ for name,spec in CASES.items():
                     before=runtime.engine.state()
                     before_packet=runtime.engine.telemetry()['packet_hex']
                     if command['action']=='reset':
-                        runtime.engine.reset('telemetry-recovery-'+name,faults=command['faults'],expected_epoch=before['epoch'])
+                        runtime.engine.reset('telemetry-recovery-'+name+'-'+command['token'],faults=command['faults'],expected_epoch=before['epoch'])
                         transport.close()
                         transport=Transport('http://127.0.0.1:'+str(api.server_port),tcp.server_address)
                         dispatcher.transport=transport
