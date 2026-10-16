@@ -112,7 +112,8 @@ def qualify(path,image,source_revision=None):
             contracts=[] if diagnostic else CONTRACTS,dependencies=dependencies,
             oracle='All relative, absolute and telemetry STEP/SKIP leaves must independently pass this dimension. PAUSE in the manual maps to native IPC PAUSED.')
     inputs=dict(raw['inputs'])
-    for name in ('conformance/wait_control_report.py','tests/test_wait_control_report.py'):
+    for name in ('conformance/wait_control_report.py','tests/test_wait_control_report.py',
+                 'distribution/run_language_regressions.py','distribution/evidence_sources.py'):
         inputs[name]=sha(ROOT/name)
     if not diagnostic:
         inputs['conformance/composed_diagnostic_proof.py']=sha(ROOT/'conformance/composed_diagnostic_proof.py')

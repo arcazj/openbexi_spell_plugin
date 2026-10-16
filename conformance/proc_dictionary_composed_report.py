@@ -16,7 +16,8 @@ def qualify(baseline_path,lifecycle_path,image):
     for dimension in ('positive','boundary','failure','recovery'):
         checks['procedure-dictionary:'+dimension]['contracts']=CANDIDATE_CONTRACTS
     for name in ('conformance/proc_dictionary_composed_report.py','conformance/proc_dictionary_report.py',
-                 'conformance/composed_diagnostic_proof.py','tests/test_proc_dictionary_composed_report.py'):
+                 'conformance/composed_diagnostic_proof.py','tests/test_proc_dictionary_composed_report.py',
+                 'distribution/run_language_regressions.py','distribution/evidence_sources.py'):
         inputs[name]=sha(ROOT/name)
     return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,
         qualified_contracts=CANDIDATE_CONTRACTS,diagnostic_donor=donor,
