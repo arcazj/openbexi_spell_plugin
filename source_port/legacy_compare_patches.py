@@ -10,7 +10,7 @@ from pathlib import Path
 PREIMAGES = {
     'lib/SPELL_UTIL/src/SPELLpythonHelper.C': (
         '2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837',
-        '408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02'),
+        '8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa'),
     'lib/SPELL_EXC/src/SPELLastAnalyzer.C': (
         '5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af',
         '57c83b92019fb31adfa1e81c670fda3f883b25d0fc6371c0ef7abda063814519'),
