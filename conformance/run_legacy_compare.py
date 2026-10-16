@@ -24,6 +24,7 @@ def main():
     names = [*input_paths(ROOT), 'conformance/legacy_compare_cases.py',
         'conformance/legacy_compare_controller.py', 'conformance/legacy_compare_provenance.py',
         'conformance/run_legacy_compare.py', 'source_port/legacy_compare_syntax.py',
+        'source_port/legacy_compare_patches.py',
         'conformance/legacy_compare_build.py', 'conformance/legacy_compare_install.py',
         'conformance/legacy_compare.Dockerfile', 'conformance/legacy_compare.Dockerfile.dockerignore',
         'distribution/incremental_native.py', 'docs/reference/SPELL2.6.10-src.zip',
