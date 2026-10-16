@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 import hashlib
 import json
 from pathlib import Path
-import sqlite3
+from evidence_database import evidence_database
 import sys
 import types
 
@@ -64,7 +64,7 @@ def case_proof(name,spec,row,project):
     assert row['held']==[dict(status='PROMPT',returned=False)]*(3*len(prompts))
     assert row['states'][-1]['status']==spec['expected_status']
     assert row['receipts']==[]
-    with sqlite3.connect((project/'dss.sqlite').resolve().as_uri()+'?mode=ro',uri=True) as db:
+    with evidence_database(project/'dss.sqlite') as db:
         scenarios={key:dict(epoch=epoch,state=json.loads(state),faults=json.loads(faults))
             for key,epoch,state,faults in db.execute('SELECT id,epoch,state,faults FROM scenarios')}
         packets=[packet for packet, in db.execute('SELECT packet FROM packets')]
@@ -82,7 +82,7 @@ def case_proof(name,spec,row,project):
             raw=bytes.fromhex(record[when+'_packet_hex']);assert raw in packets
             packet=decode_tm(raw)
             assert packet['scenario_id']==record[when]['scenario_id'] and packet['satellite_epoch']==record[when]['epoch']
-        assert scenarios[record['after']['scenario_id']]['faults']['telemetry_quality']=='GOOD'
+        assert scenarios[record['after']['scenario_id']]['faults']=={}
     if repairs:assert repairs[0]['prompt']==spec['repair_after']-1
     for record,saved in zip(controls,observed['fixtures']):
         command=record['command'];assert command['action']=='reset' and command['faults']=={}
@@ -113,7 +113,7 @@ def case_proof(name,spec,row,project):
             refreshes.append(dict(valid=response.validity,raw=unpack(response.rawValue),eng=unpack(response.engValue),timestamp=response.timestamp))
     expected={'positive':[False,True],'boundary':[False,False,True],'failure':[False],'recovery':[False,True]}[dimension]
     assert [item['valid'] for item in refreshes]==expected
-    with sqlite3.connect((project/'driver.sqlite').resolve().as_uri()+'?mode=ro',uri=True) as db:
+    with evidence_database(project/'driver.sqlite') as db:
         grounds=[json.loads(state) for state, in db.execute('SELECT state FROM ground')]
         journal=db.execute('SELECT digest,state,receipt FROM effects').fetchall()
     assert row['initial_ground'] in grounds and row['final_ground'] in grounds
