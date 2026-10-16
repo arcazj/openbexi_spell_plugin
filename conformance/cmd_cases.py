@@ -37,7 +37,7 @@ add('group-items','failure',"before=mark(); rejects(SyntaxException,lambda:Send(
 add('group-items','recovery',"before=mark(); one=BuildTC('CMDNAME',args=[['ARG1',-1.5]],config=CFG); assert Send(group=[one],config=CFG) is True; effects(before,['CMDNAME']); equal(mark()['state']['payload']['setpoint_milli'],-1500)")
 
 add('malformed-argument','failure',"before=mark(); rejects(SyntaxException,lambda:BuildTC('CMDNAME',args=[['ARG1']],config=CFG)); effects(before,[])")
-add('unsupported-block','failure',"before=mark(); rejects(DriverException,lambda:Send(group=[BuildTC('CMD1',config=CFG),BuildTC('CMD2',config=CFG)],config=dict(CFG,Block=True))); effects(before,[])")
+add('invalid-block','failure',"before=mark(); rejects(DriverException,lambda:Send(group=[BuildTC('CMD1',config=CFG),BuildTC('CMD2',config=CFG)],config=dict(CFG,Block='invalid'))); effects(before,[])")
 
 add('group-empty','failure',"before=mark(); rejects(SyntaxException,lambda:Send(group=[],config=CFG)); effects(before,[])")
 add('partial-group','failure',"""
@@ -107,4 +107,4 @@ for radix in ('DEC','HEX','OCT','BIN'):
 for key in METADATA:
     METADATA[key]['contracts'] = ['CMP-LRM244-'+row for row in GROUP_ROWS.get(key.split(':')[0],())]
 
-add("unsupported-direct-block","failure","from spell.lib.registry import REGISTRY; before=mark(); rejects(DriverException,lambda:REGISTRY['TC']._sendBlock([BuildTC('CMD1',config=CFG)],CFG)); effects(before,[])")
+add("empty-direct-block","failure","from spell.lib.registry import REGISTRY; before=mark(); rejects(DriverException,lambda:REGISTRY['TC']._sendBlock([],CFG)); effects(before,[])")
