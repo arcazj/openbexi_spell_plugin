@@ -16,11 +16,12 @@ Neither telemetry acquisition nor countdown notifications may advance while
 the interrupted state is held. Every case includes a subsequent successful wait.
 Failure cases catch an invalid duration and also issue a duplicate interrupt.
 
-The prepared suite has 24 cases: three condition types, two control actions and
-four dimensions. Preparation alone is not evidence of compatibility. The full
-WaitFor function, interval progression and other modifiers require separate
-qualification. No inventory status changes until all native observations and
-the independent report validator pass on the exact installed image.
+The suite has 24 cases: three condition types, two control actions and four
+dimensions. Its strict report requires all leaves and the exact committed
+scheduler correction in the freshly installed package. See the
+[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) for acceptance status.
+The full WaitFor function, interval progression and other modifiers require
+separate qualification.
 
 The native Executor_Wait binding returns True for SCH_ABORTED (the UI SKIP
 path); only SCH_TIMEOUT returns False. This is distinct from choosing CANCEL
