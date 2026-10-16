@@ -3,7 +3,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import sqlite3
+from evidence_database import evidence_database
 import sys
 import types
 
@@ -109,7 +109,7 @@ def review(path, overlay, revision, image, composed=False):
         assert row['initial_dss']['core']['commands_executed'] == 0
         assert row['final_dss']['core']['commands_executed'] == spec['expected_executions']
         assert row['final_dss']['core']['loaded_commands_count'] == spec['expected_loaded']
-        with sqlite3.connect((project/'dss.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+        with evidence_database(project/'dss.sqlite') as db:
             stored = db.execute('SELECT request_hash,raw_tc,acknowledgement FROM operations ORDER BY rowid').fetchall()
         assert len(stored) == len(receipts)
         frames, ack_hashes = [], {}
@@ -130,7 +130,7 @@ def review(path, overlay, revision, image, composed=False):
         if spec['dimension'] == 'encoding':
             expected_info = {'note': 'caf\u00e9 \u03bb \u9065\u6e2c'}
             assert all(e['additional_info'] == expected_info for f in frames for e in f.get('elements', [f]))
-        with sqlite3.connect((project/'driver.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+        with evidence_database(project/'driver.sqlite') as db:
             exists = db.execute("SELECT 1 FROM sqlite_master WHERE name='command_results'").fetchone()
             results = [json.loads(r[0]) for r in db.execute('SELECT result FROM command_results ORDER BY rowid')] if exists else []
         assert results == row['member_results']
