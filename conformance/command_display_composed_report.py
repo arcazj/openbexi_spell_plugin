@@ -92,7 +92,8 @@ def qualify(paths, image, revision):
         assert read(ROOT/name) == expected
         assert expected['generator_sha256'] == sha(ROOT/'distribution/record_qualified_sources.py')
         assert {key:value['patched_sha256'] for key,value in python['sources'].items()} == expected['python']
-        assert {key:value['patched_sha256'] for key,value in native['sources'].items()} == expected['native']
+        for key,value in expected['native'].items():
+            assert native['sources'][key] == {label+'_sha256':digest for label,digest in value.items()}
         for key,value in expected['driver'].items():assert driver['python_sources'][key] == value
         selected.update(expected['python']); selected.update(expected['driver'])
         selected.update(expected['driver_additions'])
