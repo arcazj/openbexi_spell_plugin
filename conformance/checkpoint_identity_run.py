@@ -46,6 +46,9 @@ def main():
         'conformance/checkpoint_identity.Dockerfile','conformance/checkpoint_identity.Dockerfile.dockerignore',
         'distribution/incremental_native.py','host_runtime/python/native.py')]
     files=list(dict.fromkeys([*files,*(ROOT/name for name in input_paths(ROOT))]))
+    files += [ROOT / name for name in ('conformance/ipc_mailbox_provenance.py',
+        'conformance/ipc_mailbox_build.py', 'conformance/ipc_mailbox_race.cpp',
+        'conformance/ipc_mailbox_install.py', 'conformance/ipc_mailbox.Dockerfile')]
     inputs={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     normalized={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in files}
     image=subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
@@ -70,7 +73,10 @@ def main():
             members={p.name.removeprefix('./'):p for p in bundle.getmembers() if p.isfile()}
             checks=json.loads(bundle.extractfile(members['checks.json']).read())
             runtime=json.loads(bundle.extractfile(members['runtime.json']).read())
-        if 'identity_overlay' in runtime:
+        if 'mailbox_overlay' in runtime:
+            from ipc_mailbox_provenance import qualification_identity as mailbox_identity
+            mailbox_identity(runtime, inputs, normalized)
+        elif 'identity_overlay' in runtime:
             recipes=runtime['identity_overlay']['recipes']
             for name,path in [('checkpoint_identity_patches.py','source_port/checkpoint_identity_patches.py'),
                 ('checkpoint_error_patches.py','source_port/checkpoint_error_patches.py'),
