@@ -43,12 +43,14 @@ def main():
             '--entrypoint','python',image,'-u','/workspace/proc_metadata_controller.py'],check=True,capture_output=True)
         created=True
         archive=io.BytesIO()
+        generated={}
         with tarfile.open(fileobj=archive,mode='w') as bundle:
             for source in ('proc_metadata_cases.py','proc_metadata_controller.py','installed_provenance.py','proc_dictionary_provenance.py'):
                 content=(ROOT/'conformance'/source).read_bytes()
                 if source=='proc_metadata_controller.py':
                     assert content.count(b'from installed_provenance import capture')==1
                     content=content.replace(b'from installed_provenance import capture',b'from proc_dictionary_provenance import capture')
+                generated[source]=hashlib.sha256(content).hexdigest()
                 item=tarfile.TarInfo(source)
                 item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
                 bundle.addfile(item,io.BytesIO(content))
@@ -64,6 +66,7 @@ def main():
         (output/'controller.log').write_bytes(logs.stdout+logs.stderr)
         subprocess.run(['docker','cp',name+':/workspace/.',str(output/'workspace')],check=True,capture_output=True)
         checks=json.loads((output/'workspace/checks.json').read_bytes())
+        assert all(sha(output/'workspace'/name)==digest for name,digest in generated.items())
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
         identity=qualification_identity(runtime,inputs)
@@ -71,7 +74,7 @@ def main():
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())
         report=dict(passed=exit_code==0 and set(checks)==set(CASES) and all(r['passed'] for r in checks.values()),
-            runtime_image=image,inputs=inputs,checks=checks,runtime_sources=runtime,qualification_identity=identity,diagnostic_overlay=True,
+            runtime_image=image,inputs=inputs,checks=checks,runtime_sources=runtime,qualification_identity=identity,diagnostic_overlay=True,generated_sources=generated,
             host_inputs=host,controller_exit_code=exit_code,timed_out=timed_out,
             full_v05_accepted=False,full_v06_accepted=False)
         (output/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
