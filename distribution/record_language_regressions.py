@@ -119,6 +119,8 @@ def main():
     run('prompt_timeout_report.py', raw['prompt-timeout'],
         '--native-pair', args.native_gate_dir.resolve().parents[1] / 'result.json')
     run('child_arguments_report.py', raw['child-arguments'])
+    run('predefined_containers_report.py', '--dta', raw['dta'], '--ipc', raw['dta-ipc'],
+        '--child', raw['child-arguments'], '--image', image)
     run('child_start_report.py', raw['child-start'], '--image', image)
     run('child_return_report.py', '--start', raw['child-start'],
         '--modes', proofs['modes'], '--image', image)
