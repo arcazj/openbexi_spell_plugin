@@ -49,4 +49,6 @@ def test_incomplete_or_changed_native_controls_are_rejected(evidence,alteration)
     elif alteration=='failed': raw['checks']['close-none-0']['passed']=False
     elif alteration=='wrong-source': raw['generated_sources']['child_lifecycle_controller.py']='0'*64
     else: raw['workspace_sha256']='0'*64
-    with pytest.raises(AssertionError): verify_run(path,raw,'early')
+    import subprocess
+    revision=subprocess.check_output(['git','rev-parse','a4011ed^{commit}'],cwd=ROOT,text=True).strip()
+    with pytest.raises(AssertionError): verify_run(path,raw,'early',source_revision=revision)

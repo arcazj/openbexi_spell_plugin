@@ -40,7 +40,7 @@ def qualify(path, image):
     assert native['recipes'][recipe]['sha256'] == donor['recipes'][recipe]
     inputs = dict(raw['inputs'])
     for name in ('conformance/prompt_startup_composed_report.py',
-                 'conformance/prompt_startup_report.py', 'tests/test_prompt_startup_composed_report.py'):
+                 'conformance/prompt_startup_report.py', 'conformance/frozen_prompt_sources.py', 'tests/test_prompt_startup_composed_report.py'):
         inputs[name] = sha(ROOT / name)
     return dict(passed=True, runtime_image=image, inputs=inputs, checks=raw['checks'],
         qualified_contracts=[], native_stage=stage, native_source=native['sources'][donor['source']],

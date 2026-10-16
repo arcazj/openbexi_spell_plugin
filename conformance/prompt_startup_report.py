@@ -16,6 +16,8 @@ from child_modes_cases import CASES as MODES
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'source_port'))
+sys.path.insert(0, str(ROOT / 'distribution'))
+from frozen_prompt_sources import generated_sources, cases as frozen_cases
 import native_patches
 import child_lifecycle_patches
 import prompt_timeout_patches
@@ -80,12 +82,19 @@ def verify_export(directory, runtime):
     return overlay
 
 
-def verify_run(path, raw, suite):
+def verify_run(path, raw, suite, source_revision=None):
     assert raw['passed'] and raw['controller_exit_code'] == 0 and raw['suite'] == suite
     assert not any(key.endswith('error') for key in raw)
     archive_path = path.parent / 'workspace.tar'
     assert sha(archive_path) == raw['workspace_sha256']
-    _, sources, _ = sources_for(suite, composed=raw.get('composed', False))
+    if source_revision is None:
+        _, sources, _ = sources_for(suite, composed=raw.get('composed', False))
+        prompts,modes=PROMPTS,MODES
+    else:
+        assert not raw.get('composed',False)
+        _, sources, _ = generated_sources(ROOT,source_revision,suite)
+        prompts=frozen_cases(ROOT,source_revision,'prompt_timeout_cases.py')
+        modes=frozen_cases(ROOT,source_revision,'child_modes_cases.py')
     assert raw['generated_sources'] == {name:digest(data) for name,data in sources.items()}
     if suite == 'early':
         expected = {f'close-none-{n}' for n in range(40)}
@@ -93,10 +102,10 @@ def verify_run(path, raw, suite):
         expected = {action+'-'+phase for action in ('close','kill')
                     for phase in (('prompt','finished','none') if suite=='lifecycle' else ('prompt','finished'))}
     elif suite in ('modes','abort'):
-        cases = MODES if suite=='modes' else {f'blocking-abort-{n}':MODES['blocking-abort'] for n in range(12)}
+        cases = modes if suite=='modes' else {f'blocking-abort-{n}':modes['blocking-abort'] for n in range(12)}
         expected = set(cases)
     else:
-        cases = PROMPTS if suite=='timeout' else {f'duplicate-{n}:boundary':PROMPTS['duplicate:boundary'] for n in range(24)}
+        cases = prompts if suite=='timeout' else {f'duplicate-{n}:boundary':prompts['duplicate:boundary'] for n in range(24)}
         expected = set(cases)
     assert set(raw['checks']) == expected
     with tarfile.open(archive_path) as archive:
@@ -173,6 +182,8 @@ def verify_run(path, raw, suite):
 
 
 def qualify(candidate_path, directory, failure_path, debug_directory, source_revision=None):
+    if source_revision is not None:
+        source_revision=subprocess.check_output(['git','rev-parse',source_revision+'^{commit}'],cwd=ROOT,text=True).strip()
     candidate = json.loads(candidate_path.read_bytes())
     assert candidate['passed'] and candidate['state']=='completed' and set(candidate['stages'])==set(SUITES)
     image = candidate['image']
@@ -195,7 +206,7 @@ def qualify(candidate_path, directory, failure_path, debug_directory, source_rev
             assert name not in inputs or inputs[name]==expected
             inputs[name]=expected
         qualification_identity(runtime, raw['inputs'])
-        counts[suite]=verify_run(path,raw,suite)
+        counts[suite]=verify_run(path,raw,suite,source_revision)
         raw_refs[suite]={**reference(path),'workspace_sha256':sha(path.parent/'workspace.tar')}
     assert sum(counts.values())==109
     overlay=verify_export(directory,runtime)
@@ -215,6 +226,7 @@ def qualify(candidate_path, directory, failure_path, debug_directory, source_rev
                    'SPELLserverCif::waitAcknowledge','SPELLserverCif::startPrompt','std::mutex::lock'):
         assert symbol in text
     inputs['conformance/prompt_startup_report.py']=sha(Path(__file__))
+    inputs['conformance/frozen_prompt_sources.py']=sha(ROOT/'conformance/frozen_prompt_sources.py')
     inputs['tests/test_prompt_startup_report.py']=sha(ROOT/'tests/test_prompt_startup_report.py')
     return dict(passed=True, runtime_image=image, source=overlay['source'],
         original_sha256=overlay['original_sha256'],preimage_sha256=overlay['preimage_sha256'],
