@@ -59,10 +59,13 @@ class UplinkGroups:
             if (group is None or self.binding(body)!=current['binding'] or group['id']!=current['id']
                     or group['count']!=current['count'] or group['timeout_seconds']!=current['timeout_seconds']):
                 raise ValueError('Uplink group binding changed')
-            next_index=current['index']+(body.get('stage')=='TRANSPORT')
-            repeated_transport=(body.get('stage')=='TRANSPORT' and group['index']==current['index']
-                and hashlib.sha256(canonical(body)).hexdigest()==current['transport_sha256'])
-            if group['index']!=next_index and not repeated_transport:
+            if body.get('stage')=='TRANSPORT':
+                repeated=(group['index']<=current['index'] and
+                    hashlib.sha256(canonical(body)).hexdigest()==current['transports'][group['index']])
+                valid_index=group['index']==current['index']+1 or repeated
+            else:
+                valid_index=group['index']==current['index'] if control else group['index']<=current['index']
+            if not valid_index:
                 raise ValueError('Uplink group member order changed')
             if control:
                 if body['stage']=='GROUP_END' and current['index']!=current['count']-1:
@@ -83,9 +86,10 @@ class UplinkGroups:
                 self.group=dict(id=group['id'],count=group['count'],index=0,
                     timeout_seconds=group['timeout_seconds'],binding=self.binding(body),
                     deadline=time.monotonic()+group['timeout_seconds'],heartbeats=0,
-                    frame_chain='0'*64,frames=0)
-            else:self.group['index']=group['index']
-            self.group['transport_sha256']=hashlib.sha256(canonical(body)).hexdigest()
+                    frame_chain='0'*64,frames=0,transports=[])
+            else:self.group['index']=max(self.group['index'],group['index'])
+            if len(self.group['transports'])==group['index']:
+                self.group['transports'].append(hashlib.sha256(canonical(body)).hexdigest())
         if self.owner is owner:
             self.group['frame_chain']=hashlib.sha256(bytes.fromhex(self.group['frame_chain'])+canonical(body)).hexdigest()
             self.group['frames']+=1
