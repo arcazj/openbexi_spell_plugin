@@ -25,6 +25,13 @@ def sources():
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application = capture_application()
+        recipes = application['integrated']['manifest']['composition']['native']['recipes']
+        if not {'limit_feature_patches.py','telemetry_feature_patches.py'} <= set(recipes):
+            raise ValueError('Composed limit candidate lacks its required recipes')
+        return dict(application,profile='fresh-composed-limit-telemetry-wheel/1')
     base = json.loads((EVIDENCE/'base.json').read_bytes())
     if base['profile'] != 'fresh-composed-display-command-wheel/1':
         raise ValueError('Limit overlay requires a fresh composed base')

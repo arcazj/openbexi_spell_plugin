@@ -32,6 +32,8 @@ SUITES = [
     ('dta-ipc', 'run_dta_edit.py', [], 64),
     ('time', 'run_native.py', [], 168),
     ('limit', 'limit_run.py', [], 79),
+    ('limit-features', 'run_limit_features.py', [], 64),
+    ('telemetry-features', 'run_telemetry_features.py', [], 32),
     ('notification', 'notification_run.py', [], 16),
     ('obs', 'run_obs.py', [], 189),
     ('cmd', 'run_cmd.py', [], 54),

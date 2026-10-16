@@ -117,13 +117,13 @@ for suffix, call, error in (
     ('set-nan', "SetLimits('TMparam',LoRed=float('nan'),HandleError=False)", 'DriverException'),
     ('set-infinity', "SetLimits('TMparam',HiRed=float('inf'),HandleError=False)", 'DriverException'),
     ('set-raw-unsupported', "SetLimits('TMparam',LoRed=9,ValueFormat=RAW,HandleError=False)", 'DriverException'),
-    ('set-status-unsupported', "SetLimits('TMparam',Definition={Nominal:['NORMAL']},HandleError=False)", 'DriverException'),
-    ('set-spike-unsupported', "SetLimits('TMparam',Type=SPIKE,Definition={Delta:2},HandleError=False)", 'DriverException'),
-    ('set-inactive-unsupported', "SetLimits('TMparam',Definition={LoRed:9,Active:False},HandleError=False)", 'DriverException'),
-    ('set-multiple-unsupported', "SetLimits('TMparam',Limits={'GENERIC':{LoRed:9},'OTHER':{LoRed:1}},HandleError=False)", 'DriverException'),
+    ('set-status-type-conflict', "SetLimits('TMparam',Definition={Nominal:['NORMAL']},HandleError=False)", 'DriverException'),
+    ('set-spike-type-conflict', "SetLimits('TMparam',Type=SPIKE,Definition={Delta:2},HandleError=False)", 'DriverException'),
+    ('set-invalid-active', "SetLimits('TMparam',Definition={LoRed:9,Active:'False'},HandleError=False)", 'DriverException'),
+    ('set-incomplete-second-definition', "SetLimits('TMparam',Limits={'GENERIC':{LoRed:9},'OTHER':{LoRed:1}},HandleError=False)", 'DriverException'),
 ):
     add('reject.' + suffix, f"seed()\nunchanged(lambda: {call}, {error})", (), 'failure',
-        oracle='Rejected request leaves both persistent ground state and effect journal unchanged; unsupported feature remains open.')
+        oracle='Rejected malformed, conflicting or unsupported request leaves both persistent ground state and effect journal unchanged.')
 add('set.partial-needs-initial-definition', """
 assert RestoreNormalLimits(HandleError=False)
 unchanged(lambda: SetLimits('TMparam', LoRed=10, HandleError=False), DriverException)

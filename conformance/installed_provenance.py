@@ -110,6 +110,7 @@ def input_paths(root):
             'source_port/legacy_compare_syntax.py',
             *[path.relative_to(root).as_posix() for path in sorted((root/'source_port').glob('*patches.py'))],
             'driver_plugin/pyproject.toml',
+            *[path.relative_to(root).as_posix() for path in sorted((root/'driver_plugin/src/openbexi_spell_dss/limit_files').glob('*.json'))],
             *[path.relative_to(root).as_posix() for path in sorted((root/'driver_plugin/src').rglob('*.py'))
               if '__pycache__' not in path.parts]]
 
@@ -119,7 +120,8 @@ def capture_application():
     import base64
     from importlib.metadata import distribution
 
-    for name in ('display-patch', 'command-patch', 'command-catalog-patch', 'command-group-patch'):
+    for name in ('display-patch', 'command-patch', 'command-catalog-patch', 'command-group-patch',
+                 'limit-features-patch', 'telemetry-features-patch'):
         if (Path('/opt')/name).exists():
             raise ValueError('Composed application image contains a diagnostic overlay: '+name)
     integrated = capture()
@@ -129,7 +131,7 @@ def capture_application():
     expected = {}
     prefixes = ('spell/', 'spell_native/', 'openbexi_dss_proxy/', 'openbexi_spell_dss/')
     def included(name):
-        return name.startswith(prefixes) and (Path(name).suffix in ('.py', '.so') or Path(name).parent.name == 'bin')
+        return name.startswith(prefixes) and (Path(name).suffix in ('.py', '.so') or Path(name).parent.name in ('bin','limit_files'))
     for package in ('openbexi-spell-source', 'openbexi-spell-dss'):
         files = distribution(package).files
         if files is None:

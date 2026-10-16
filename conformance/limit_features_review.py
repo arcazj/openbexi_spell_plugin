@@ -153,7 +153,7 @@ def verify_case(name, spec, row, project, normal_digest):
         oracle='Literal native expectations, original protobuf responses and independently retained SQLite ground/effect records')
 
 
-def review(path, directory, revision, image, selected):
+def review(path, directory, revision, image, selected, native_wheel=None, driver_wheel=None):
     raw = read(path)
     cases = frozen('conformance/limit_features_cases.py', revision).CASES
     assert selected and set(selected) <= set(cases)
@@ -173,12 +173,22 @@ def review(path, directory, revision, image, selected):
     assert read(workspace/'host-inputs.json') == raw['host_inputs']
     assert raw['host_inputs'] == {Path(name).name: value for name, value in raw['inputs'].items()
                                   if name.startswith('host_runtime/python/')}
-    overlay_proof(raw, directory, revision)
+    composed = None
+    if raw['runtime_sources']['profile'] == 'fresh-composed-limit-telemetry-wheel/1':
+        from limit_telemetry_sources import verify
+        assert native_wheel is not None and driver_wheel is not None
+        composed = verify(raw,native_wheel,driver_wheel)
+    else:
+        assert native_wheel is None and driver_wheel is None
+        overlay_proof(raw, directory, revision)
     normal = raw['inputs']['driver_plugin/src/openbexi_spell_dss/limit_files/normal.json']
     checks = {name: verify_case(name, cases[name], row, workspace/name.replace(':', '__'), normal)
               for name, row in raw['checks'].items()}
-    return dict(passed=True, runtime_image=image, source_revision=revision, raw=ref(path), overlay=str(directory.resolve()),
+    return dict(passed=True, runtime_image=image, source_revision=revision, raw=ref(path), overlay=str(directory.resolve()) if directory else None,
+        composed_wheels=composed,
         checks=checks, source_inputs=raw['inputs'], artifacts=raw['artifacts'], qualified_contracts=[],
+        review_inputs={name:sha(ROOT/name) for name in ('conformance/limit_features_review.py',
+            'conformance/limit_telemetry_sources.py','tests/test_limit_telemetry_sources.py')},
         full_v05_accepted=False, scope='Independent limit diagnostic review; composed runtime and requirement mapping pending')
 
 
@@ -186,14 +196,16 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--raw', type=Path, required=True)
-    parser.add_argument('--overlay', type=Path, required=True)
+    parser.add_argument('--overlay', type=Path)
+    parser.add_argument('--native-wheel', type=Path)
+    parser.add_argument('--driver-wheel', type=Path)
     parser.add_argument('--revision', required=True)
     parser.add_argument('--image', required=True)
     parser.add_argument('--case', action='append')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     selected = args.case or list(frozen('conformance/limit_features_cases.py', args.revision).CASES)
-    result = review(args.raw, args.overlay, args.revision, args.image, selected)
+    result = review(args.raw, args.overlay, args.revision, args.image, selected,args.native_wheel,args.driver_wheel)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
     print(json.dumps(dict(passed=True, cases=len(result['checks']), output=str(args.output))))

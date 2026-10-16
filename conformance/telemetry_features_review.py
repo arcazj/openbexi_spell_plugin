@@ -183,7 +183,7 @@ def case_proof(name, spec, row, project):
         observations=observed['observations'], oracle='Original native calls and emitted messages agree with immutable DSS packets, epochs and original protobuf responses')
 
 
-def review(path, directory, limit_directory, revision, image):
+def review(path, directory, limit_directory, revision, image, native_wheel=None, driver_wheel=None):
     raw = read(path)
     cases = frozen('conformance/telemetry_features_cases.py', revision).CASES
     validate_report(path, image, 32, source_revision=revision)
@@ -199,12 +199,21 @@ def review(path, directory, limit_directory, revision, image):
     for name in ('telemetry_surface_cases.py','telemetry_features_cases.py','telemetry_features_controller.py','telemetry_features_provenance.py','installed_provenance.py'):
         assert sha(workspace/name) == raw['inputs']['conformance/'+name]
     assert read(workspace/'host-inputs.json') == raw['host_inputs']
-    provenance(raw, directory, limit_directory, revision)
+    composed = None
+    if raw['runtime_sources']['profile'] == 'fresh-composed-limit-telemetry-wheel/1':
+        from limit_telemetry_sources import verify
+        assert native_wheel is not None and driver_wheel is not None
+        composed = verify(raw,native_wheel,driver_wheel)
+    else:
+        assert native_wheel is None and driver_wheel is None
+        provenance(raw, directory, limit_directory, revision)
     checks = {name:case_proof(name,cases[name],row,workspace/name.replace(':','__')) for name,row in raw['checks'].items()}
     return dict(passed=True, runtime_image=image, source_revision=revision, raw=ref(path), checks=checks,
-        overlay=str(directory.resolve()), limit_overlay=str(limit_directory.resolve()),
+        overlay=str(directory.resolve()) if directory else None, limit_overlay=str(limit_directory.resolve()) if limit_directory else None,
+        composed_wheels=composed,
         inputs={name:sha(ROOT/name) for name in ('conformance/telemetry_features_review.py','conformance/limit_features_review.py',
-                                               'tests/test_telemetry_features_review.py')},
+                                               'tests/test_telemetry_features_review.py','conformance/limit_telemetry_sources.py',
+                                               'tests/test_limit_telemetry_sources.py')},
         source_inputs=raw['inputs'], artifacts=raw['artifacts'], qualified_contracts=[], full_v05_accepted=False,
         scope='Independent telemetry diagnostic review; composed regressions and requirement mapping remain pending')
 
@@ -212,10 +221,11 @@ def review(path, directory, limit_directory, revision, image):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    for name in ('raw','overlay','limit-overlay','output'):parser.add_argument('--'+name,type=Path,required=True)
+    for name in ('raw','output'):parser.add_argument('--'+name,type=Path,required=True)
+    for name in ('overlay','limit-overlay','native-wheel','driver-wheel'):parser.add_argument('--'+name,type=Path)
     for name in ('revision','image'):parser.add_argument('--'+name,required=True)
     args = parser.parse_args()
-    result = review(args.raw,args.overlay,args.limit_overlay,args.revision,args.image)
+    result = review(args.raw,args.overlay,args.limit_overlay,args.revision,args.image,args.native_wheel,args.driver_wheel)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(dict(passed=True,cases=len(result['checks']),output=str(args.output))))
