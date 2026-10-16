@@ -100,11 +100,11 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-In progress: [the full inventory](conformance/README.md) has **523 qualified /
-240 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
-binds all 44 native suites to identical offline rebuilds. Wait controls, interval
-progress, PROC dictionaries and predefined containers add 24 requirements;
-all prior 499 requirements pass on the same runtime. Full v0.5/v0.6 acceptance
+In progress: [the full inventory](conformance/README.md) has **573 qualified /
+190 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
+binds all 48 native suites to identical offline rebuilds. Command scheduling,
+catalogue sequences, Group/Block execution and displays add 50 requirements;
+all prior 523 requirements pass on the same runtime. Full v0.5/v0.6 acceptance
 and final host workflows remain open.
 
 ## v0.6 — distribution and compatibility

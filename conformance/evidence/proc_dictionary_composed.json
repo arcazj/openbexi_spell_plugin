@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
+  "runtime_image": "sha256:abdd4fcde9b4dc7e21eca1424f53707d178cf1c09785e39a480c6ec751c92802",
   "inputs": {
     "conformance/proc_metadata_cases.py": "764988e5bb43d6e311231bc765d4dd27e9131fe5044ea2f6f7345f820deb07de",
     "conformance/proc_metadata_controller.py": "6a52d4e98b08f38a1b1fec77e59ff4839a7f2b21e0f8527f12e9864a7e34bb99",
@@ -8,7 +8,7 @@
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
+    "conformance/installed_provenance.py": "5872fd23deea57300645c32db8cd753107d051d69ec746b9b1de3998bedef670",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
     "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -16,16 +16,20 @@
     "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
     "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
+    "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
+    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
     "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
     "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+    "source_port/display_patches.py": "18a18be006ab12279df7aa49693b8a956e9ae25a5660f937ae5961fba5c3f610",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
+    "source_port/integrated_patches.py": "c59588162a27b31c700cb3d4c1c98089210c510ef9ef10f65bb602f8b041db1a",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -49,8 +53,11 @@
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
     "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
-    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
+    "driver_plugin/pyproject.toml": "f41a887babca86d43efe98f1b802bb1c77673963e7908e20f3d01860537baf1a",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
+    "driver_plugin/src/openbexi_dss_proxy/command_group.py": "a69012b3a59670ad1dcb67fbe5264ba52b7400356172e2c7ce95d6475441333d",
+    "driver_plugin/src/openbexi_dss_proxy/command_settings.py": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
     "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
     "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
@@ -68,6 +75,16 @@
     "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
     "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
     "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/command_blocks.py": "6bb03cca63283bf244010c74b037960367493144d8879818897ad387ce9a5767",
+    "driver_plugin/src/openbexi_spell_dss/command_budget.py": "08d6858bec5f168ff96c7a12b95a111f2a4391a22f0d929a7f788bf230f675da",
+    "driver_plugin/src/openbexi_spell_dss/command_catalog.py": "5674d07c2dcf62782dd4fc8e05a9ef7084c04a57b982b22a75325941ff496764",
+    "driver_plugin/src/openbexi_spell_dss/command_execution.py": "3c7d048327ae4338ae9d4c72597acdb6d468ec63f19ae96fef1c7882d580e477",
+    "driver_plugin/src/openbexi_spell_dss/command_group_rpc.py": "9c6443989c617efdaaaeb45b7bf241cfb05ae1b2868a93f391a38e145c8f78ac",
+    "driver_plugin/src/openbexi_spell_dss/command_groups.py": "f54ed3eac7d3bdb231f3b5513941224e8228f51864205b1c7dc34551764ac023",
+    "driver_plugin/src/openbexi_spell_dss/command_results.py": "5eebfd3c44893d6fb1ce5eab55099c85f016fb72b5dc3cce11c97d4a6851270f",
+    "driver_plugin/src/openbexi_spell_dss/command_rpc.py": "387ac050ebeb69ed6e862e6f4f39051d85db7b0925feacf4aebd7b422553dc99",
+    "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "6d189fa3a54ba4b80a7ce484dd1288031c98e203bce6207705c46f253a6b42d2",
+    "driver_plugin/src/openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
     "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
     "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
     "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
@@ -88,7 +105,7 @@
     "conformance/proc_dictionary_report.py": "d634e9110968f0d4fa677824483bd58536cfa5ed2bca35c82b552f7b23b21133",
     "conformance/composed_diagnostic_proof.py": "6f2541d4e764fd3fec50b999c4da3006441bea16457da48045265d4c2f447a5a",
     "tests/test_proc_dictionary_composed_report.py": "6cdf89777f86321791859f2021cb221d9223f02cdce09702352946ca9b9d6171",
-    "distribution/run_language_regressions.py": "e2c95c07b0f8e335cc35d0eeddd5553320a6d4e0138498a5a82467fff78a08c1",
+    "distribution/run_language_regressions.py": "44801e1299014a2a6f983edd89bc7141de8d92f8df1b3dd46fc7a16390567788",
     "distribution/evidence_sources.py": "6180feac10bd66c2481a8e789758e12ca88f1fc9e1b1a2382a2c2543377a29ec"
   },
   "checks": {
@@ -99,15 +116,15 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08388320000085514
+          "elapsed": 0.08485149999614805
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.1931999000007636
+          "elapsed": 0.19384929999068845
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.0898892000041087
+          "elapsed": 1.04887709999457
         }
       ],
       "status": "FINISHED",
@@ -118,8 +135,8 @@
             "A": 1,
             "B": 2
           },
-          "OUTPUT_DATA": "/tmp/spell-host-kx4znkcz/session/data",
-          "INPUT_DATA": "/tmp/spell-host-kx4znkcz/session/data",
+          "OUTPUT_DATA": "/tmp/spell-host-oamruixe/session/data",
+          "INPUT_DATA": "/tmp/spell-host-oamruixe/session/data",
           "PARENT": "",
           "STEP": null,
           "PREV_STEP": null
@@ -158,8 +175,8 @@
       "result": {
         "metadata": true
       },
-      "native_log_sha256": "923b5b635d46c3f8951e2a48ed1420c5a02878266e8b3259d27c1ac1bff9efe1",
-      "events_sha256": "a54cc2652fa96298824ef4726afc7eda321b2bb15494d0b46be631dbeb1cf571",
+      "native_log_sha256": "973b91cb630120b7f5d6e28ba99646921a6890bb61d89938140f0072f91a42e2",
+      "events_sha256": "9237d02a7aaa952de67d5413fcb5306cad5d54d1ad1803fc0dbea1f7c45a4bfb",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -169,16 +186,12 @@
       "dimension": "boundary",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08380459999898449
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.1919043000016245
+          "elapsed": 0.08454539999365807
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.3008495999965817
+          "elapsed": 1.372572799999034
         }
       ],
       "status": "FINISHED",
@@ -190,8 +203,8 @@
             "false": false,
             "text": ""
           },
-          "OUTPUT_DATA": "/tmp/spell-host-oge8ajil/session/data",
-          "INPUT_DATA": "/tmp/spell-host-oge8ajil/session/data",
+          "OUTPUT_DATA": "/tmp/spell-host-tc2od_xo/session/data",
+          "INPUT_DATA": "/tmp/spell-host-tc2od_xo/session/data",
           "PARENT": "",
           "STEP": null,
           "PREV_STEP": null
@@ -230,8 +243,8 @@
       "result": {
         "metadata": true
       },
-      "native_log_sha256": "fdf68be2a1bf6952b10b2230f3a47ffa007a3c1ac893438cdf15e19d36ffd270",
-      "events_sha256": "dd65284cd7e5b7b0b9aa3562befc595ecbe12711012db712b31dcbfa26422130",
+      "native_log_sha256": "50de1e8e610edfacf2a36fa40264303509fa404dcd7fdb0b1b2072d28586b4f8",
+      "events_sha256": "99ba208a2085c47d8f3607fe9937953e7585967ec955428b4157d3f1b297757d",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -241,16 +254,12 @@
       "dimension": "failure",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08386040000186767
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.19473290000314591
+          "elapsed": 0.08477499999571592
         },
         {
           "status": "FINISHED",
-          "elapsed": 0.6374329000027501
+          "elapsed": 0.632765099988319
         }
       ],
       "status": "FINISHED",
@@ -258,8 +267,8 @@
         "initial": {
           "NAME": "main#1",
           "ARGS": {},
-          "OUTPUT_DATA": "/tmp/spell-host-pa61cvgm/session/data",
-          "INPUT_DATA": "/tmp/spell-host-pa61cvgm/session/data",
+          "OUTPUT_DATA": "/tmp/spell-host-u3ol1qbk/session/data",
+          "INPUT_DATA": "/tmp/spell-host-u3ol1qbk/session/data",
           "PARENT": "",
           "STEP": null,
           "PREV_STEP": null
@@ -298,8 +307,8 @@
       "result": {
         "metadata": true
       },
-      "native_log_sha256": "e6ddd3daf7ad390c44d2446694d0ca093800f6b23ebde60144d6cd7b659b0c67",
-      "events_sha256": "5cc23f34924ac7db88b52890b7770b2fbb548d7936b904e732e727ce8af96e29",
+      "native_log_sha256": "98c1b5d6a0e1a7e389646f86f070049533857d4bfb09b40ac909306558407745",
+      "events_sha256": "201d23041ad75c4a649432aaa1332776e54b2ee8dee44e7228440b4fcbed22da",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -309,12 +318,16 @@
       "dimension": "recovery",
       "states": [
         {
+          "status": "PAUSED",
+          "elapsed": 0.08383970000431873
+        },
+        {
           "status": "RUNNING",
-          "elapsed": 0.08387699999730103
+          "elapsed": 0.19253179999941494
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.0497522999939974
+          "elapsed": 1.087815100006992
         }
       ],
       "status": "FINISHED",
@@ -325,8 +338,8 @@
             "text": "caf\u00e9 \u03bb",
             "negative": -7
           },
-          "OUTPUT_DATA": "/tmp/spell-host-a8d3svm9/session/data",
-          "INPUT_DATA": "/tmp/spell-host-a8d3svm9/session/data",
+          "OUTPUT_DATA": "/tmp/spell-host-v1f61hed/session/data",
+          "INPUT_DATA": "/tmp/spell-host-v1f61hed/session/data",
           "PARENT": "",
           "STEP": null,
           "PREV_STEP": null
@@ -365,8 +378,8 @@
       "result": {
         "metadata": true
       },
-      "native_log_sha256": "1e63823b31e6e3064745faa9c2bddbd9b1651ff664daad216b119ef2b351813a",
-      "events_sha256": "da2be4efe22be95c4e9a5cac5cb321cfc6e7e6b92a0f6eacb00970e8a0bdc2d1",
+      "native_log_sha256": "f7f64cdca94388be292b22750e4dfdff250cfa7158df1c956620bc2c01585b12",
+      "events_sha256": "18f64b6c43b4389966af7e37c82a18442124250aef2752cee2c2b54d13575a0f",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -395,127 +408,127 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52785.4892795
+          "monotonic": 77074.0055698
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52785.6136568
+          "monotonic": 77074.1307159
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52785.6829824
+          "monotonic": 77074.1994415
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52785.832712
+          "monotonic": 77074.3496052
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52785.902328
+          "monotonic": 77074.4180876
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52786.0255752
+          "monotonic": 77074.5416486
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52786.1096044
+          "monotonic": 77074.6665987
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52786.2345713
+          "monotonic": 77074.7506426
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52786.3586023
+          "monotonic": 77074.8746571
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52786.4236071
+          "monotonic": 77074.9659525
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52786.5735117
+          "monotonic": 77075.1156719
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52786.6576238
+          "monotonic": 77075.1995686
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52786.7416581
+          "monotonic": 77075.2835901
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52786.8666172
+          "monotonic": 77075.4086637
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52786.9916081
-        },
-        {
-          "status": "PAUSED",
-          "procedure": "main#1",
-          "monotonic": 52787.0755303
+          "monotonic": 77075.532637
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.145229
+          "monotonic": 77075.616659
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.2946689
+          "monotonic": 77075.6848821
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.3629611
+          "monotonic": 77075.8336484
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.4866957
+          "monotonic": 77075.9020455
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.6105452
+          "monotonic": 77076.0515983
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.6946285
+          "monotonic": 77076.1346419
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.8196087
+          "monotonic": 77076.2596748
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52787.9035864
+          "monotonic": 77076.3846109
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 77076.4435032
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52788.0546276
+          "monotonic": 77076.5925912
         }
       ],
       "phases": [
@@ -592,8 +605,8 @@
       "output_files": {
         "main-1.txt": "procedure input"
       },
-      "native_log_sha256": "39cc10e27206ccd3a42dd8312f8c38d9c479afc770a2b06545f5435a7edd3215",
-      "events_sha256": "bac399fc8e23d5f5593374556e1fc82c38bd13ad9a422d876943dd6b42841881",
+      "native_log_sha256": "2d5ada3dcc8e6a75713dc1c59d704b32e1a43a2da61880dfd10b17f790118170",
+      "events_sha256": "1d930791b7ab9d71408776de1bff44d06be11e788b26db8658f99e4bdf59e634",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -636,132 +649,132 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52795.9366038
+          "monotonic": 77084.4895908
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52796.0626143
+          "monotonic": 77084.6136809
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.1328194
+          "monotonic": 77084.6828063
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.2847034
+          "monotonic": 77084.7675246
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.3530761
+          "monotonic": 77084.8760497
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.478588
+          "monotonic": 77084.9995492
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.6035693
+          "monotonic": 77085.1245905
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.6876764
+          "monotonic": 77085.2085365
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.8116774
+          "monotonic": 77085.3326349
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52796.9012075
+          "monotonic": 77085.4014594
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52797.0505792
+          "monotonic": 77085.5506341
         },
         {
           "status": "UNINIT",
           "procedure": "main#1",
-          "monotonic": 52798.0989848
+          "monotonic": 77086.6200432
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52798.2386568
+          "monotonic": 77086.7535845
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52798.3478535
+          "monotonic": 77086.8620817
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52798.471532
+          "monotonic": 77086.986612
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52798.5556082
+          "monotonic": 77087.0705951
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52798.6805825
+          "monotonic": 77087.1946067
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52798.7499206
+          "monotonic": 77087.2639448
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52798.8995887
+          "monotonic": 77087.3889252
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52798.9696937
+          "monotonic": 77087.4980317
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52799.0936318
+          "monotonic": 77087.6215851
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52799.2176375
+          "monotonic": 77087.7465735
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52799.3015882
+          "monotonic": 77087.8305933
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52799.4256812
+          "monotonic": 77087.954603
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52799.5171017
+          "monotonic": 77088.0461798
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52799.6673397
+          "monotonic": 77088.1956732
         }
       ],
       "phases": [
@@ -838,8 +851,8 @@
       "output_files": {
         "main-1.txt": "procedure input"
       },
-      "native_log_sha256": "04a1b2b7f097c83b80db35de17d1cafb61906424976e867e14408b3abb84cc4d",
-      "events_sha256": "323eb386cf82f185d719e0eb6fb235226838aeb340f50ef12e1b15ac8398b494",
+      "native_log_sha256": "1760d5c5d76f2c4658d2c746a3f8ecbfd49353a12be6fc5b5ea9a52fb88cac0f",
+      "events_sha256": "f5ff8eb1b19603cb7fecd8fabba93cea7117418192e39a7e49dca5b32e3b4dd5",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -858,147 +871,147 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52806.4515072
+          "monotonic": 77094.9475628
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52806.5758436
+          "monotonic": 77095.0716294
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52806.6448351
+          "monotonic": 77095.1392889
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52806.7295556
+          "monotonic": 77095.22961
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52806.8796705
+          "monotonic": 77095.3785818
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52806.9885603
+          "monotonic": 77095.4875223
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52807.0975378
+          "monotonic": 77095.5955852
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52807.2075382
+          "monotonic": 77095.703525
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52807.3165524
+          "monotonic": 77095.8116184
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52807.424581
+          "monotonic": 77095.919684
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52807.6483556
+          "monotonic": 77096.071395
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52807.8342856
+          "monotonic": 77096.1850413
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.0128787
+          "monotonic": 77096.3365678
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.1221809
+          "monotonic": 77096.4093236
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.2306904
+          "monotonic": 77096.5195393
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.3645934
+          "monotonic": 77096.6616008
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.4735984
+          "monotonic": 77096.7706123
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.6006076
+          "monotonic": 77096.8785935
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.7086021
+          "monotonic": 77097.0016031
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.8008795
+          "monotonic": 77097.1029053
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52808.95161
+          "monotonic": 77097.2115674
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52809.0599751
+          "monotonic": 77097.2883732
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52809.1846195
+          "monotonic": 77097.42461
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52809.2925892
+          "monotonic": 77097.5686031
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52809.4186055
+          "monotonic": 77097.6786427
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52809.5586482
+          "monotonic": 77097.803651
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52809.6432923
+          "monotonic": 77097.8876023
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52809.77133
+          "monotonic": 77098.0125867
         },
         {
           "status": "FINISHED",
           "procedure": "child#0",
-          "monotonic": 52809.8165557
+          "monotonic": 77098.0965774
         }
       ],
       "phases": [],
@@ -1082,8 +1095,8 @@
         "child-0.txt": "procedure input",
         "main-1.txt": "procedure input"
       },
-      "native_log_sha256": "a5bb61c57a6d63a6874ba8dc20c57fb31fa03d68b3d3b2754aac12c09b6ea314",
-      "events_sha256": "5e917ab36bd30b731164e57db240643fd2908d86a5ee66b80d65b544ce7a467b",
+      "native_log_sha256": "1dae41d1f41881d8486735605106dec42d65796eb3f1cc94d3468e30b6f52a62",
+      "events_sha256": "e2705d446bc1de977147153c0d27a88f0cf388679d85d2ae308ca672935db812",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -1112,87 +1125,87 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52820.9229238
+          "monotonic": 77109.3375189
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52821.0496744
+          "monotonic": 77109.4617246
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52821.1187737
+          "monotonic": 77109.5302438
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52821.2041278
+          "monotonic": 77109.6798127
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52821.3130503
+          "monotonic": 77109.748076
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52821.4183236
+          "monotonic": 77109.8499932
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52821.5675375
+          "monotonic": 77109.999622
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52821.6526012
+          "monotonic": 77110.0836554
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52821.7367014
+          "monotonic": 77110.1676716
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52821.8605633
+          "monotonic": 77110.2915878
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52821.9846135
-        },
-        {
-          "status": "PAUSED",
-          "procedure": "main#1",
-          "monotonic": 52822.0686016
+          "monotonic": 77110.4155164
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52822.1376014
+          "monotonic": 77110.499592
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52822.2869663
+          "monotonic": 77110.5698814
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52822.3569504
+          "monotonic": 77110.6434892
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52822.457735
+          "monotonic": 77110.7530484
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 77110.8735102
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52822.6097759
+          "monotonic": 77111.0226433
         }
       ],
       "phases": [
@@ -1260,8 +1273,8 @@
       "output_files": {
         "main-1.txt": ""
       },
-      "native_log_sha256": "c88476dd249fab3e8cf5fca312f3c3bbfa515af9f3b3f7fd060dfa803ca8afa2",
-      "events_sha256": "0a4c5b8d4c7f69dfabf0369664854f5cd8ffd83a6414c05a178d7dea9fc83c8b",
+      "native_log_sha256": "c0753220a2d0e85791f3d3819d789eb84b3aee496c7be470dbea33d99a2ac3f8",
+      "events_sha256": "92a1f118c484f8a88608f649dce4db475f99af8c76f46e0918c35c93cdcf50b6",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -1304,92 +1317,92 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52831.4056045
+          "monotonic": 77119.8996281
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52831.5295865
+          "monotonic": 77120.0236928
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52831.5995843
+          "monotonic": 77120.093116
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52831.6829122
+          "monotonic": 77120.2426248
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52831.7921071
+          "monotonic": 77120.3119803
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52831.8991268
+          "monotonic": 77120.4137155
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52832.0486396
+          "monotonic": 77120.5625817
         },
         {
           "status": "UNINIT",
           "procedure": "main#1",
-          "monotonic": 52833.5320879
+          "monotonic": 77122.1161334
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52833.6666366
+          "monotonic": 77122.2535231
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52833.7768885
+          "monotonic": 77122.3618729
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52833.9016859
+          "monotonic": 77122.4856267
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52833.9856295
+          "monotonic": 77122.5696122
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52834.1107423
+          "monotonic": 77122.6935801
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52834.1803175
+          "monotonic": 77122.7638832
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52834.3295548
+          "monotonic": 77122.9136036
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52834.4010679
+          "monotonic": 77122.9831862
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52834.5007959
+          "monotonic": 77123.0900398
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52834.6506485
+          "monotonic": 77123.2215559
         }
       ],
       "phases": [
@@ -1457,8 +1470,8 @@
       "output_files": {
         "main-1.txt": ""
       },
-      "native_log_sha256": "e6f82b85b8af9c7706fb07fcf1476aa02c7a6f71641e4ab362f36c8b1f6b5de2",
-      "events_sha256": "fb8aecb056e53efe57232f83f3add21599ea2397ef32e90b7504e5c185bffb40",
+      "native_log_sha256": "5d1357054b81bfed1033ff7148b8ad1625e21e649d4e3a11ee10a523ed374077",
+      "events_sha256": "8efd9f8e81416d1b9af356dd0b0aca858d317d79ceb661ea28829e797fd7c10e",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -1477,112 +1490,112 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52841.8647396
+          "monotonic": 77130.211697
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52841.9892381
+          "monotonic": 77130.3365875
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.0569222
+          "monotonic": 77130.406304
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.1468611
+          "monotonic": 77130.5556261
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.2975573
+          "monotonic": 77130.6656695
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.4065044
+          "monotonic": 77130.774569
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.5145817
+          "monotonic": 77130.8896198
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.6225653
+          "monotonic": 77130.9985609
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.7315203
+          "monotonic": 77131.1066293
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.8405472
+          "monotonic": 77131.2145847
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52842.9917829
+          "monotonic": 77131.2918328
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 77131.4981693
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.1050833
+          "monotonic": 77131.7316166
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.2567985
+          "monotonic": 77131.8868485
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.3699124
+          "monotonic": 77131.9985489
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.495789
+          "monotonic": 77132.1486537
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.6034043
+          "monotonic": 77132.2578893
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52843.6499534
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52843.7997011
+          "monotonic": 77132.3456605
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52843.9248525
+          "monotonic": 77132.4705882
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52844.0085798
+          "monotonic": 77132.5946113
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52844.1340853
+          "monotonic": 77132.6794978
         },
         {
           "status": "FINISHED",
           "procedure": "child#0",
-          "monotonic": 52844.1776117
+          "monotonic": 77132.8035858
         }
       ],
       "phases": [],
@@ -1660,8 +1673,8 @@
         "child-0.txt": "",
         "main-1.txt": ""
       },
-      "native_log_sha256": "221c71f5abc30567696c9de10b9e1064a00ca13dc197eef4e302628cb9a35db2",
-      "events_sha256": "b816cff87c6a3e5c0a3bc6992dd8cf58873f5789b1cda19c051db7c07fe7fd86",
+      "native_log_sha256": "e124759b62abff316ca40ef946c0b371ed281c5d6c49e5f61bde7461e97f5dd1",
+      "events_sha256": "5a1a5b4d325b667d4f5aded13a4b0f6b94adb0fb8196524966387e023fb5773d",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -1690,147 +1703,147 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52854.3135471
+          "monotonic": 77142.7865527
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52854.4387248
+          "monotonic": 77142.9115933
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52854.5060249
+          "monotonic": 77142.9810581
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52854.6556264
+          "monotonic": 77143.1306507
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52854.7250408
+          "monotonic": 77143.1990667
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52854.8486328
+          "monotonic": 77143.3225849
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52854.9725706
+          "monotonic": 77143.4465919
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52855.0565371
+          "monotonic": 77143.5306165
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52855.1806419
+          "monotonic": 77143.6556516
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52855.3045927
+          "monotonic": 77143.7806681
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52855.3886362
+          "monotonic": 77143.8646346
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52855.4940522
+          "monotonic": 77143.9701075
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52855.6452624
+          "monotonic": 77144.1196527
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52855.7320356
+          "monotonic": 77144.2036842
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52855.817638
+          "monotonic": 77144.2876461
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52855.9455023
+          "monotonic": 77144.4126065
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52856.0695615
+          "monotonic": 77144.5375736
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52856.1549359
+          "monotonic": 77144.621556
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.2316465
+          "monotonic": 77144.6907179
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.3808476
+          "monotonic": 77144.8406299
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.4492805
+          "monotonic": 77144.9093182
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.5726524
+          "monotonic": 77145.0326153
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.6565824
+          "monotonic": 77145.1166673
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.7806048
+          "monotonic": 77145.2405834
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.9056441
+          "monotonic": 77145.3656493
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52856.9896052
+          "monotonic": 77145.4496312
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52857.1146242
+          "monotonic": 77145.5746466
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52857.2064871
+          "monotonic": 77145.6647914
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52857.3569304
+          "monotonic": 77145.8146696
         }
       ],
       "phases": [
@@ -1910,8 +1923,8 @@
       "output_files": {
         "main-1.txt": "after missing input"
       },
-      "native_log_sha256": "21c76342db0ea7acca9c5d4841c7f582705e4896ed94ec1060926ed59c12e287",
-      "events_sha256": "bd09d261a5f3fabd8ae4f85f33e9cbeb4f028436b402dd6a00b98577724ae43a",
+      "native_log_sha256": "176d7b7726927651b81018ccb0f7c9ccabfa374a1d0840b646d4aef1ec8bba7f",
+      "events_sha256": "c331cebe3ca261e26ec757d9cc24f29008135383da1dee9f0c59217b62dde45e",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -1954,152 +1967,152 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52864.8076184
+          "monotonic": 77153.1186209
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52864.9316765
+          "monotonic": 77153.2425986
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52864.9997874
+          "monotonic": 77153.3121588
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.0835473
+          "monotonic": 77153.4616226
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.1920572
+          "monotonic": 77153.5300326
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.3168651
+          "monotonic": 77153.6535669
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.4425294
+          "monotonic": 77153.7785894
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.5255901
+          "monotonic": 77153.8626206
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.649795
+          "monotonic": 77153.9876331
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.7766419
+          "monotonic": 77154.1116087
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.8618531
+          "monotonic": 77154.1956232
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52865.9866069
+          "monotonic": 77154.3004459
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52866.0848248
+          "monotonic": 77154.4495978
         },
         {
           "status": "UNINIT",
           "procedure": "main#1",
-          "monotonic": 52868.9390917
+          "monotonic": 77157.3521007
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52869.0731114
+          "monotonic": 77157.487542
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52869.1828098
+          "monotonic": 77157.5958507
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52869.3066607
+          "monotonic": 77157.7205683
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52869.4305673
+          "monotonic": 77157.8045425
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52869.5146058
+          "monotonic": 77157.928675
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52869.5845195
+          "monotonic": 77157.9989055
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52869.6545912
+          "monotonic": 77158.1079693
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52869.7649937
+          "monotonic": 77158.2171006
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52869.888632
+          "monotonic": 77158.3406252
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.0135895
+          "monotonic": 77158.4656137
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.0976165
+          "monotonic": 77158.5495354
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.2216491
+          "monotonic": 77158.6736874
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.3456371
+          "monotonic": 77158.7986018
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.4295706
+          "monotonic": 77158.8825713
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52870.5317724
+          "monotonic": 77158.9855782
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52870.6806221
+          "monotonic": 77159.1355807
         }
       ],
       "phases": [
@@ -2179,8 +2192,8 @@
       "output_files": {
         "main-1.txt": "after missing input"
       },
-      "native_log_sha256": "4dedc3c43c7a29b58893d5a12102fbfc7eeb07f17d66b5b6c60720e9ebcbfb92",
-      "events_sha256": "3750ea24ffd4c9a0a6b1d8c118dc5c0c163c2c530905b5d2cde8e045be738045",
+      "native_log_sha256": "669c330c4b90ea9114a237b1a0cecd69da3004bd6f207e5f49433eb8de424a48",
+      "events_sha256": "e2c44aaf5a4456b130b85adfbff2162dde764a579364fa6f1ee3f1214c04a1ec",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -2199,167 +2212,172 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52879.2925518
+          "monotonic": 77167.6285744
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52879.4175995
+          "monotonic": 77167.75262
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52879.487131
+          "monotonic": 77167.8217858
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52879.6366247
+          "monotonic": 77167.9095254
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52879.7464115
+          "monotonic": 77168.0586368
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52879.8556309
+          "monotonic": 77168.1675967
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52879.9635383
+          "monotonic": 77168.2755736
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52880.0726282
+          "monotonic": 77168.384551
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52880.1805836
+          "monotonic": 77168.4935383
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52880.2887055
+          "monotonic": 77168.6026234
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52880.4428373
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52880.5976254
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52880.7886351
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52880.899451
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.0255735
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.1367239
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.2446809
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.3685966
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.477574
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.5859163
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.7096252
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.8117666
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52881.9196344
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.0536471
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.162595
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.2865692
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.3945895
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.5176087
-        },
-        {
-          "status": "WAITING",
-          "procedure": "main#1",
-          "monotonic": 52882.6266024
+          "monotonic": 77168.7491324
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52882.7506217
+          "monotonic": 77168.8617534
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.0037449
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.1707467
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.2791865
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.3845963
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.4744751
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.6235754
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.7646496
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.8726402
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77169.9975183
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.1065907
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.2082899
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.316598
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.3868
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.5296087
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.6706348
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.7786887
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77170.9045653
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77171.0156195
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52882.8346636
+          "monotonic": 77171.099609
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 77171.2236222
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52882.9596242
+          "monotonic": 77171.3485904
         },
         {
           "status": "FINISHED",
           "procedure": "child#0",
-          "monotonic": 52883.0436327
+          "monotonic": 77171.4326091
         }
       ],
       "phases": [],
@@ -2445,8 +2463,8 @@
         "child-0.txt": "after missing input",
         "main-1.txt": "after missing input"
       },
-      "native_log_sha256": "bf0448f6369c73735401221bee600fe98cd96ec942e3972992ca43759a8f5de4",
-      "events_sha256": "6e4dd57b2321e43341c3af21d2ad0c4fbd9ea7ce76051d30dc42004f86b4b00a",
+      "native_log_sha256": "6448b585563f4ec3438f822188a0f6e3ce73705d5ec99ba16344c2789c6723ba",
+      "events_sha256": "ef0383c214b08c352015c00cc1cff0e1b28a4df3f5c788c07df1dba889618347",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -2485,197 +2503,197 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52893.7544976
+          "monotonic": 77181.9855784
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52893.8786394
+          "monotonic": 77182.1096003
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52893.9478334
+          "monotonic": 77182.1784844
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.0976248
+          "monotonic": 77182.2635365
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.1660368
+          "monotonic": 77182.3741887
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.2906054
+          "monotonic": 77182.497585
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.4145569
+          "monotonic": 77182.6215976
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.4986305
+          "monotonic": 77182.7056125
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.6227731
+          "monotonic": 77182.8296141
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52894.7131009
+          "monotonic": 77182.9231342
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52894.8636901
+          "monotonic": 77183.0725824
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52894.9887431
+          "monotonic": 77183.1567078
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52895.0678405
+          "monotonic": 77183.2406423
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52895.1937684
+          "monotonic": 77183.364512
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52895.3185886
+          "monotonic": 77183.4885889
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52895.4025821
+          "monotonic": 77183.5726682
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52895.4701332
+          "monotonic": 77183.6415118
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52895.6196081
+          "monotonic": 77183.7907512
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52895.6918991
+          "monotonic": 77183.8590724
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52895.8155967
+          "monotonic": 77183.9678734
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52895.9406456
+          "monotonic": 77184.0925678
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52896.0245967
+          "monotonic": 77184.1766768
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52896.1486014
+          "monotonic": 77184.3005288
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52896.2426557
+          "monotonic": 77184.3923754
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52896.392656
+          "monotonic": 77184.4658119
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52896.4767091
+          "monotonic": 77184.5907758
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52896.5606012
+          "monotonic": 77184.6658191
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52896.669879
+          "monotonic": 77184.7895571
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52896.7945606
+          "monotonic": 77184.873582
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52896.8797687
+          "monotonic": 77184.9976519
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52896.94754
+          "monotonic": 77185.0661365
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.0966436
+          "monotonic": 77185.2156141
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.1661786
+          "monotonic": 77185.2843358
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.289675
+          "monotonic": 77185.4086086
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.4146368
+          "monotonic": 77185.532653
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.4988813
+          "monotonic": 77185.6165893
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.6235479
+          "monotonic": 77185.7406594
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52897.7179614
+          "monotonic": 77185.8313287
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52897.8685954
+          "monotonic": 77185.9808326
         }
       ],
       "phases": [
@@ -2777,8 +2795,8 @@
       "output_files": {
         "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
       },
-      "native_log_sha256": "f52ecbb94cdc71bc5e09ce8644f4c75f14578c46cbf77d7868060e3d868a45b8",
-      "events_sha256": "8e5a43c8fcb21a3aa5b42850afd872c4fa780db0609669aa2f64bfa8e6d4cb6b",
+      "native_log_sha256": "2c859d8b6b5ccd0db4e81895568cf28c9074bfbb4621108bb805b57d78ae63c5",
+      "events_sha256": "0a19f1d7a59301f8e766a722a2d4c0bf9a14c927c262c762d659983731626d6c",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -2845,207 +2863,207 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52906.2647972
+          "monotonic": 77194.3415895
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52906.3910936
+          "monotonic": 77194.4665626
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.4599109
+          "monotonic": 77194.5356666
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.5420749
+          "monotonic": 77194.6846614
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.6533152
+          "monotonic": 77194.7540424
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.7767427
+          "monotonic": 77194.8786003
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.9016215
+          "monotonic": 77195.0036493
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52906.9856139
+          "monotonic": 77195.087581
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52907.1107014
+          "monotonic": 77195.2115949
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52907.2011296
+          "monotonic": 77195.3049741
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52907.3507133
+          "monotonic": 77195.4546863
         },
         {
           "status": "UNINIT",
           "procedure": "main#1",
-          "monotonic": 52910.4378912
+          "monotonic": 77198.5516717
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52910.5876326
+          "monotonic": 77198.7005977
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52910.6966156
+          "monotonic": 77198.7696328
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52910.7812799
+          "monotonic": 77198.8925621
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52910.9066895
+          "monotonic": 77198.9769951
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52910.9907035
+          "monotonic": 77199.1026209
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.0596481
+          "monotonic": 77199.1716272
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.1525526
+          "monotonic": 77199.2665957
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.2609905
+          "monotonic": 77199.3760771
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.3846223
+          "monotonic": 77199.5005668
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.5086357
+          "monotonic": 77199.6257864
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.5936128
+          "monotonic": 77199.7096222
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.7185778
+          "monotonic": 77199.8336288
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52911.8088923
+          "monotonic": 77199.9242865
         },
         {
           "status": "ERROR",
           "procedure": "main#1",
-          "monotonic": 52911.9597342
+          "monotonic": 77200.0745838
         },
         {
           "status": "UNINIT",
           "procedure": "main#1",
-          "monotonic": 52915.0553719
+          "monotonic": 77203.2120413
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52915.1896171
+          "monotonic": 77203.3456175
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52915.3007744
+          "monotonic": 77203.4538828
         },
         {
           "status": "LOADED",
           "procedure": "main#1",
-          "monotonic": 52915.4246453
+          "monotonic": 77203.5775738
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52915.5085655
+          "monotonic": 77203.6616223
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52915.6325832
+          "monotonic": 77203.7865734
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52915.7028317
+          "monotonic": 77203.8562384
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52915.8118587
+          "monotonic": 77203.927563
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52915.9210668
+          "monotonic": 77204.0360947
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52916.0456177
+          "monotonic": 77204.1595587
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52916.1706342
+          "monotonic": 77204.283634
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52916.2545638
+          "monotonic": 77204.3676088
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52916.378637
+          "monotonic": 77204.4926816
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52916.4699946
+          "monotonic": 77204.5845871
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52916.6195851
+          "monotonic": 77204.7335924
         }
       ],
       "phases": [
@@ -3147,8 +3165,8 @@
       "output_files": {
         "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
       },
-      "native_log_sha256": "0cf9b8530e502d8c26742d2e5ae9b3f8c110b84dd70a38fd00bf46b927548e08",
-      "events_sha256": "5237c92a97f87504b15e2db672e6718a678dafe41020335af35a61e571ef460f",
+      "native_log_sha256": "1d57d7dbac5e28f2816bee65ba567739b957322f4c18f6b614cde6edbd7fc2e3",
+      "events_sha256": "15a83f854d33b0c089a675bdf5515af30a7cc579f1dfb3e8a819c160e280c07e",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -3167,147 +3185,152 @@
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52922.7725474
+          "monotonic": 77210.8365845
         },
         {
           "status": "PAUSED",
           "procedure": "main#1",
-          "monotonic": 52922.8975547
+          "monotonic": 77210.9615287
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52922.972914
+          "monotonic": 77211.0291859
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.0785954
+          "monotonic": 77211.1195094
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.2285559
+          "monotonic": 77211.2685776
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.3375604
+          "monotonic": 77211.3775543
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.4455315
+          "monotonic": 77211.4866065
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.553607
+          "monotonic": 77211.5955675
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.6615511
+          "monotonic": 77211.7035897
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.7696843
+          "monotonic": 77211.8127239
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52923.9220225
+          "monotonic": 77211.9648242
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.0349969
+          "monotonic": 77212.2036879
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.1866633
+          "monotonic": 77212.3618214
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.2591571
+          "monotonic": 77212.4706673
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.3688514
+          "monotonic": 77212.5735063
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.5127449
+          "monotonic": 77212.6633898
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.6218569
+          "monotonic": 77212.8125833
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.7456348
+          "monotonic": 77212.954631
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.8549713
+          "monotonic": 77213.0626041
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52924.9560619
+          "monotonic": 77213.1674685
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52925.0665598
+          "monotonic": 77213.275621
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52925.1388814
+          "monotonic": 77213.3747235
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52925.2790952
+          "monotonic": 77213.49864
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52925.4205905
+          "monotonic": 77213.6065783
         },
         {
           "status": "WAITING",
           "procedure": "main#1",
-          "monotonic": 52925.5295986
+          "monotonic": 77213.7318582
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 77213.840579
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52925.6546236
+          "monotonic": 77213.9655971
         },
         {
           "status": "RUNNING",
           "procedure": "main#1",
-          "monotonic": 52925.7385952
+          "monotonic": 77214.0495442
         },
         {
           "status": "FINISHED",
           "procedure": "main#1",
-          "monotonic": 52925.8642426
+          "monotonic": 77214.1746102
         },
         {
           "status": "FINISHED",
           "procedure": "child#0",
-          "monotonic": 52925.9496438
+          "monotonic": 77214.21758
         }
       ],
       "phases": [],
@@ -3391,8 +3414,8 @@
         "child-0.txt": "caf\u00e9 \u03bb\nsecond line",
         "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
       },
-      "native_log_sha256": "e685a3c5cd40d81af930c4d062f764b9895de107be818f68f239549a6e050fd5",
-      "events_sha256": "9c74044a369cf5795b8969b1ba913b9b762e1e813f06255d12a39ff5cce9cb7e",
+      "native_log_sha256": "ad447b159ce70cf5318e09a0cb4729ebb41ddb2d2235cc72dc20cde8ee180c51",
+      "events_sha256": "613ea40756bad206a0f3623fc3cc99d071e76402d0cdccd488329febe40dcb67",
       "contracts": [],
       "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
     },
@@ -3528,12 +3551,12 @@
   },
   "raw": {
     "baseline": {
-      "path": "C:\\obwait_proc_composed\\.qualification\\proc-metadata\\04c0baa2b4054234aceae525e0a94d22\\result.json",
-      "sha256": "3b27b9bee2ee9899c55ffb6f8ebbf503ffb99349eab2ab21472599b3e6e2a0de"
+      "path": "C:\\obcommand_composed\\.qualification\\proc-metadata\\4cf5768427ab45a5afbfdf52e68a3d67\\result.json",
+      "sha256": "f2d770345fcf5c0e865cf80278d211a38a31bc765d3746b62232581e37bb3043"
     },
     "lifecycle": {
-      "path": "C:\\obwait_proc_composed\\.qualification\\proc-lifecycle\\8ad81bd54f7a402ba42b9177d335d3ca\\result.json",
-      "sha256": "2ac6d4b8699ab64f7d2d454b22488447e1b58e4843373803fbd33222096e0993"
+      "path": "C:\\obcommand_composed\\.qualification\\proc-lifecycle\\87955e62d5d345f9b4aeb9437609497f\\result.json",
+      "sha256": "04b0f0f136afe3a84c03300b62e98055495a7c091cc731b1e57faa85289652c9"
     }
   },
   "scope": "LRM p81 PROC dictionary, root/child metadata and lifetime; p90 input/output paths",

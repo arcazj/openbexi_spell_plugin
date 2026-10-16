@@ -111,5 +111,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     result = review(args.raw, args.image, args.revision)
     target = ROOT/'conformance/evidence/command_routing_validation.json'
-    target.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+    target.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8', newline='\n')
     print(json.dumps(dict(passed=True, output=str(target))))

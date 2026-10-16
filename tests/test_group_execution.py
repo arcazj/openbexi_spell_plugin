@@ -1,5 +1,6 @@
 """Grouped driver commands observed at actual TCP/engine boundaries."""
 import time
+import threading
 
 import pytest
 
@@ -33,12 +34,22 @@ def test_group_preserves_members_and_actual_stage_receipts(bridge):
 
 def test_competing_source_cannot_enter_between_group_members(bridge):
     rows=plans(bridge,('CMD1',{'LoadOnly':True}),('CMD3',{'SendDelay':2}))
-    future=launch(bridge,rows)
+    # The first loading receipt can be observed before the worker has computed
+    # the second member's relative deadline. Advance time only after that real
+    # scheduling boundary; otherwise the test itself moves the delay's origin.
+    prepared=threading.Event()
+    class ObservedGroup(GroupExecution):
+        def prepare_member(self,*args,**kwargs):
+            member=super().prepare_member(*args,**kwargs)
+            if member.index==1:prepared.set()
+            return member
+    future=launch(bridge,rows,ObservedGroup(bridge.transport))
     until(lambda:len(packets(bridge))==2)
     success,receipts=bridge.transport.command('CMD2',[],bridge.identity,'competing-source',bridge.check)
     assert not success and receipts[0]['detail']['reason']=='UPLINK_GROUP_BUSY'
     assert bridge.engine.state()['core']['loaded_commands_count']==1
     assert bridge.engine.state()['core']['commands_executed']==0
+    assert prepared.wait(5)
     steps(bridge,21)
     assert future.result(timeout=5)[0]
     accepted=[row for row in bridge.engine.evidence(bridge.engine.state()['scenario_id'])['operations']

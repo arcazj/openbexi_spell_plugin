@@ -256,5 +256,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, default=ROOT/'conformance/evidence/command_features.json')
     args = parser.parse_args()
     result = qualify(read(args.manifest))
-    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8', newline='\n')
     print(json.dumps(dict(passed=True, candidates=len(result['candidate_contracts']), output=str(args.output))))
