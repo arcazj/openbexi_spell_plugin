@@ -364,6 +364,10 @@ def main():
             if name in previous and name not in changed and previous[name] != installed[name]:
                 raise ValueError('Command/display donor changes an unrelated qualified source: '+name)
             previous[name] = installed[name]
+    if composition.limit_feature_patches in composition.DRIVER_RECIPES:
+        from feature_source_donors import apply
+        source_identities=json.loads((ROOT/'distribution/evidence/limit-telemetry-source-donors.json').read_bytes())
+        donors.update(apply(python,driver,composition,source_identities))
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     startup = reports['context_startup']
