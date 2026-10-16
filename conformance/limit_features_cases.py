@@ -31,7 +31,8 @@ def ground():
         return json.loads(db.execute('SELECT state FROM ground').fetchone()[0])
 def snapshot():
     with sqlite3.connect('driver.sqlite') as db:
-        return ground(),db.execute('SELECT * FROM effects ORDER BY request_id').fetchall()
+        rows=db.execute('SELECT * FROM effects ORDER BY request_id').fetchall()
+        return ground(),[[{'binary_hex':value.hex()} if type(value) is bytes else value for value in row] for row in rows]
 def unchanged(function,error=DriverException):
     before=snapshot()
     try:function()

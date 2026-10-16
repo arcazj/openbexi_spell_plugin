@@ -1,7 +1,10 @@
 """Actual original-schema dispatcher, DSS catalog and SQLite limit transactions."""
 from copy import deepcopy
+import ast
 from datetime import datetime, timedelta, timezone
 import hashlib
+import json
+import sqlite3
 import types
 import uuid
 
@@ -238,6 +241,24 @@ def test_monitoring_and_revocation_have_no_effect(env):
     env.allowed = False
     with pytest.raises(PermissionError):set_limits(env, Definition=HARD)
     assert snapshot(env) == before
+
+
+def test_native_recorder_preserves_binary_receipt_bytes_as_json(env):
+    assert set_limits(env, Definition=HARD)
+    sys_path = base.ROOT/'conformance'
+    tree = ast.parse((sys_path/'limit_features_cases.py').read_text(encoding='utf-8'))
+    header = ast.literal_eval(next(node.value for node in tree.body
+        if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'HEADER' for target in node.targets)))
+    functions = [node for node in ast.parse(header).body if isinstance(node, ast.FunctionDef) and node.name in ('ground', 'snapshot')]
+    path = env.journal.db.execute('PRAGMA database_list').fetchone()[2]
+    namespace = dict(json=json, sqlite3=types.SimpleNamespace(connect=lambda ignored: sqlite3.connect(path)))
+    exec(compile(ast.Module(body=functions, type_ignores=[]), 'native-recorder', 'exec'), namespace)
+    value = namespace['snapshot']()
+    encoded = json.dumps(value)
+    assert json.loads(encoded)[0] == env.dispatcher.ground.state()
+    binary = [item['binary_hex'] for row in value[1] for item in row if type(item) is dict]
+    expected = [item.hex() for row in env.journal.db.execute('SELECT * FROM effects ORDER BY request_id') for item in row if type(item) is bytes]
+    assert binary == expected and binary
 
 
 @pytest.mark.parametrize('settings', [
