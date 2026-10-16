@@ -30,7 +30,7 @@ assert (1 <> 2) is True
     'nested-functions': "def outer():\n    def inner(value):\n        return value <> 2\n    return inner(1) and not inner(2)\nassert outer() is True\n",
     'mixed-modern': "assert (1 <> 2) and (2 != 3) and (2 >= 2) and (1 <= 1)\nassert f'{1 <> 2} <>' == 'True <>'\n",
     'chain': "assert (1 <> 2 <> 1) is True\nassert (1 <> 1 <> 2) is False\n",
-    'goto': "from spell.lang.functions import Step, Goto\nStep('INIT', 'start')\nif 1 <> 2:\n    Goto('END')\nraise AssertionError('Native goto did not skip the false path')\nStep('END', 'finish')\nassert (2 <> 2) is False\n",
+    'goto': "from spell.lang.functions import Step, Goto\nvisited = []\nStep('INIT', 'start')\nif 1 <> 2:\n    Goto('END')\nvisited.append('unexpected fallthrough')\nStep('END', 'finish')\nassert visited == []\nassert (2 <> 2) is False\n",
     'modern-control': "assert (1 != 2) is True\nassert '<>' == chr(60) + chr(62)\n",
 }
 
