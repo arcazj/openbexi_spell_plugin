@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:628190dec8544577b2e8aef97afd70032870eb12d1ef91da97e9fc50e62ccdf4",
+  "runtime_image": "sha256:03e52c84157460e5b90261e390d4a4b8af0ff75e886e58b6a7075ac22fff113d",
   "inputs": {
     "conformance/rng_state_cases.py": "536deefa7aabbea4e7609b2e6c4ba6edc75850101ddb43af51ca15c25091151b",
     "conformance/rng_state_controller.py": "d8f72948d6ca7013f398a4f323ed5e81ac06f7b1b580fb75460ed9019d3a8d52",
@@ -23,13 +23,15 @@
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
     "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
-    "conformance/installed_provenance.py": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
+    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
     "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
     "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
     "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
@@ -38,14 +40,16 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
     "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
     "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
@@ -118,13 +122,15 @@
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "34405081c08fa37fdab4ba1ae9484a6455962fcccc510b5d6b93df5da27ccc1b",
     "docs/reference/SPELL2.6.10-src.zip": "1001553997ed0a0b8d9fab7328b3e3d68b742f66dd031a82be01dc0821ec4baa",
     "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
-    "conformance/installed_provenance.py": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
+    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
     "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
     "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
     "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
@@ -133,14 +139,16 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
     "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
     "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
     "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
@@ -187,7 +195,7 @@
   "checks": {
     "enable:positive": {
       "passed": true,
-      "seconds": 7.978758300000663,
+      "seconds": 7.84088519999932,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert EnableRanging(config=CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')],'RANGING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -197,7 +205,7 @@
     },
     "enable:boundary": {
       "passed": true,
-      "seconds": 10.229384199999913,
+      "seconds": 10.042406699998537,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert EnableRanging(CFG) is True\nassert EnableRanging(**CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')]*2,'CALIBRATING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -207,7 +215,7 @@
     },
     "enable:failure": {
       "passed": true,
-      "seconds": 7.843891299999996,
+      "seconds": 7.705204300000332,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:EnableRanging(BBE,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'RANGING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -217,7 +225,7 @@
     },
     "enable:recovery": {
       "passed": true,
-      "seconds": 8.603461800000332,
+      "seconds": 8.469345699995756,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nassert EnableRanging(config=CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')],'CALIBRATING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -227,7 +235,7 @@
     },
     "disable:positive": {
       "passed": true,
-      "seconds": 7.889968200000112,
+      "seconds": 7.819911399994453,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert DisableRanging(config=CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')],'RANGING',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -237,7 +245,7 @@
     },
     "disable:boundary": {
       "passed": true,
-      "seconds": 10.088992599999983,
+      "seconds": 10.041034599998966,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert DisableRanging(CFG) is True\nassert DisableRanging(**CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')]*2,'CALIBRATING',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -247,7 +255,7 @@
     },
     "disable:failure": {
       "passed": true,
-      "seconds": 7.789312200000495,
+      "seconds": 7.743519299998297,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:DisableRanging(ANT,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'CALIBRATING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -257,7 +265,7 @@
     },
     "disable:recovery": {
       "passed": true,
-      "seconds": 8.404324000000088,
+      "seconds": 8.11909210000158,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nassert DisableRanging(config=CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')],'RANGING',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -267,7 +275,7 @@
     },
     "on-demand:positive": {
       "passed": true,
-      "seconds": 7.581280099999276,
+      "seconds": 7.5003515999997035,
       "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -277,7 +285,7 @@
     },
     "on-demand:boundary": {
       "passed": true,
-      "seconds": 8.549718200000825,
+      "seconds": 8.643706199996814,
       "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartCalibration',True,BBE,ANT)],'CALIBRATING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'CALIBRATING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\nequal(GetAntennaNames(config=CFG),[ANT])\n",
       "expected_prompts": [],
       "contracts": [],
@@ -287,7 +295,7 @@
     },
     "on-demand:failure": {
       "passed": true,
-      "seconds": 6.744002699999328,
+      "seconds": 6.618373899997096,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging('MISSING',ANT,config=CFG))\nrejects(DriverException,lambda:StartRangingCalibration(BBE,'MISSING',config=CFG))\nstate_effects(before,[],'READY',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -297,7 +305,7 @@
     },
     "on-demand:recovery": {
       "passed": true,
-      "seconds": 8.823773000000074,
+      "seconds": 8.684030299998994,
       "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging(BBE,'MISSING',config=CFG))\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'RANGING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\n",
       "expected_prompts": [],
       "contracts": [],
@@ -307,7 +315,7 @@
     },
     "abort:positive": {
       "passed": true,
-      "seconds": 8.140463300000192,
+      "seconds": 7.99473990000115,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')],'READY',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -317,7 +325,7 @@
     },
     "abort:boundary": {
       "passed": true,
-      "seconds": 9.824656000000687,
+      "seconds": 9.650471599998127,
       "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')]*2,'READY',False)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -327,7 +335,7 @@
     },
     "abort:failure": {
       "passed": true,
-      "seconds": 7.93847900000037,
+      "seconds": 7.70576820000133,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:AbortRanging(BBE,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'CALIBRATING',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -337,7 +345,7 @@
     },
     "abort:recovery": {
       "passed": true,
-      "seconds": 8.301208799999586,
+      "seconds": 8.123989400002756,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')],'READY',True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -347,7 +355,7 @@
     },
     "migration:positive": {
       "passed": true,
-      "seconds": 6.414671999999882,
+      "seconds": 6.072371000002022,
       "source": "\nfor legacy in ('RANGING','CALIBRATING'):\n    check_legacy_reopen(legacy,legacy,True)\n",
       "expected_prompts": [],
       "contracts": [],
@@ -357,7 +365,7 @@
     },
     "migration:boundary": {
       "passed": true,
-      "seconds": 10.444994899999983,
+      "seconds": 10.56661609999719,
       "source": "\ncheck_legacy_reopen('DISABLED','READY',False)\ncheck_legacy_reopen('READY','READY',True)\nfor active in ('RANGING','CALIBRATING'):\n    state=mark()['ground']\n    state.update(ranging=active,ranging_schedule_enabled=False)\n    encoded=json.dumps(state,indent=1)\n    first=fixture('legacy_reopen',encoded=encoded)\n    assert first['migration_error'] is None\n    equal(first['ground_encoded'],encoded)\n    second=fixture('reopen')\n    equal(second['ground_encoded'],encoded)\n    equal(second['ground'],state)\n    equal(GetBasebandNames(config=CFG),[BBE])\n",
       "expected_prompts": [],
       "contracts": [],
@@ -367,7 +375,7 @@
     },
     "migration:failure": {
       "passed": true,
-      "seconds": 3.978684599999724,
+      "seconds": 3.82135019999987,
       "source": "\nvalid=mark()['ground']\nfor invalid in ({'ranging':'UNKNOWN'},{'ranging':[]},{'ranging':'RANGING','ranging_schedule_enabled':0}):\n    encoded=json.dumps(invalid)\n    failed=fixture('legacy_reopen',encoded=encoded)\n    try:\n        assert failed['migration_error'] and failed['migration_error'].startswith('ValueError:')\n        equal(failed['ground_encoded'],encoded)\n        equal(failed['other_namespaces']['rng-unused'],' { \"retain\" : [0, false, 42] } ')\n    finally:\n        restored=fixture('legacy_reopen',encoded=json.dumps(valid))\n        assert restored['migration_error'] is None\n",
       "expected_prompts": [],
       "contracts": [],
@@ -377,7 +385,7 @@
     },
     "migration:recovery": {
       "passed": true,
-      "seconds": 11.017366800000673,
+      "seconds": 10.967989799995848,
       "source": "\ncheck_legacy_reopen('DISABLED','READY',False)\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'RANGING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\n",
       "expected_prompts": [],
       "contracts": [],
@@ -387,7 +395,7 @@
     },
     "uncertain-receipt:failure": {
       "passed": true,
-      "seconds": 6.950943499999994,
+      "seconds": 6.720582699999795,
       "source": "\nassert EnableRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nfixture('arm_receipt_failure')\nrejects(DriverException,lambda:StartRanging(BBE,ANT,config=CFG))\nafter=mark()\nequal(after['ground']['ranging'],'RANGING')\nassert after['ground']['ranging_schedule_enabled'] is False\ndelta=after['effects'][len(before['effects']):]\nequal(len(delta),1)\nequal(delta[0]['state'],'PENDING')\nequal(delta[0]['receipt'],None)\ncalls=after['rpc'][len(before['rpc']):]\nequal(len(calls),1)\nassert calls[0]['path'].endswith('/StartRanging') and 'Controlled receipt loss' in calls[0]['error']\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['effects'],after['effects'])\nrejects(DriverException,lambda:StartRanging(BBE,ANT,config=CFG))\nrejects(DriverException,lambda:AbortRanging(config=CFG))\nfenced=mark()\nequal(fenced['ground'],after['ground'])\nequal(fenced['effects'],after['effects'])\nattempts=fenced['rpc'][len(after['rpc']):]\nequal(len(attempts),2)\nassert all('UncertainEffect' in r['error'] and 'response' not in r for r in attempts)\nequal(GetBasebandNames(config=CFG),[BBE])\n",
       "expected_prompts": [],
       "contracts": [],
@@ -402,660 +410,660 @@
     "rpc": [
       {
         "path": "/spell.driver.SPELLDriverInterface_EV/RaiseEvent",
-        "request": "0a3050726f63656475726520737461727465643a206d61696e233120617420323032362d31302d31362030313a34353a35311295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
-        "started": 6208.7805187,
+        "request": "0a3050726f63656475726520737461727465643a206d61696e233120617420323032362d31302d31362031313a30363a32381295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
+        "started": 39845.2902354,
         "check": null,
-        "request_id": "078ae37671534acb8c3828f129559813",
+        "request_id": "9e0d46d82f0346bdb420b911d37494b6",
         "response": "",
-        "seconds": 0.01742539999941073
+        "seconds": 0.01021779999427963
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6209.6221323,
+        "started": 39846.1789811,
         "check": "enable:positive",
-        "request_id": "2dff9328ba744e9ca71b3782b19450e3",
+        "request_id": "30490a2b238a4269b10752a437d57c7b",
         "response": "0801",
-        "seconds": 0.015684300000430085
+        "seconds": 0.010627800002112053
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6209.8679223,
+        "started": 39846.3967204,
         "check": "enable:positive",
-        "request_id": "78993cdfd8764e34abd40f1442dd196e",
+        "request_id": "5cd5115f7d4d4a8dad41dc69b50e0d9f",
         "response": "0801",
-        "seconds": 0.010880400000132795
+        "seconds": 0.010622299996612128
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6210.6602413,
+        "started": 39847.1783267,
         "check": "enable:positive",
-        "request_id": "ead0be3eff034bf08824dee4b87cea27",
+        "request_id": "a1f0a84f8d1b406898e8476da5f69db3",
         "response": "0801",
-        "seconds": 0.00687980000020616
+        "seconds": 0.006797300004109275
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6217.5701799,
+        "started": 39853.949087,
         "check": "enable:boundary",
-        "request_id": "97982b584e55438394491d8abc5cd4c1",
+        "request_id": "e5f041ae78cc42e28c0e14992885b167",
         "response": "0801",
-        "seconds": 0.007755900000120164
+        "seconds": 0.006302299996605143
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6217.7691685,
+        "started": 39854.2029603,
         "check": "enable:boundary",
-        "request_id": "fca44e07618c43f886cf3c6bce7e0499",
+        "request_id": "3f472faadc254f769240a0d28e5c69b4",
         "response": "0801",
-        "seconds": 0.009764999999788415
+        "seconds": 0.010203500001807697
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6218.5186324,
+        "started": 39854.9184431,
         "check": "enable:boundary",
-        "request_id": "9d689a2a0723448bb356fd9654ab54f2",
+        "request_id": "8da5c2ca8b634fa6ba8645f1ceb96d73",
         "response": "0801",
-        "seconds": 0.005509100000381295
+        "seconds": 0.0057626999987405725
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6218.7308365,
+        "started": 39855.1312202,
         "check": "enable:boundary",
-        "request_id": "faab22e9c1e540f68bd82393b070ef3f",
+        "request_id": "0626b28d5413440a9a72d22d2f1ae97d",
         "response": "0801",
-        "seconds": 0.006233099999917613
+        "seconds": 0.008049000003666151
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6227.8273059,
+        "started": 39863.9518375,
         "check": "enable:failure",
-        "request_id": "a8f09da49bcd4d7391097ce67dd6f20f",
+        "request_id": "cd6b38a778b441c3b72cbb23cb8f14a3",
         "response": "0801",
-        "seconds": 0.008483699999487726
+        "seconds": 0.008112000003166031
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6228.099536,
+        "started": 39864.1867541,
         "check": "enable:failure",
-        "request_id": "7bd5d5a44d4b464ebb2c59522ac4797d",
+        "request_id": "35243b7b452140ee946e639188b718e3",
         "response": "0801",
-        "seconds": 0.015413400000397814
+        "seconds": 0.01017159999901196
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6230.7113048,
+        "started": 39866.767727,
         "check": "enable:failure",
-        "request_id": "808ce98c450d4454b2cb30ab9abbf7a8",
+        "request_id": "ec8f0671f4d44e9aaa45752a244cc814",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.0001878000002761837
+        "seconds": 0.0002275000006193295
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6235.6599366,
+        "started": 39871.7683987,
         "check": "enable:recovery",
-        "request_id": "825f8956ff18404993d595f598f9e1e4",
+        "request_id": "68b7196dc80846cea6a9667f3bf6e825",
         "response": "0801",
-        "seconds": 0.010653299999830779
+        "seconds": 0.007965800003148615
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6235.9046789,
+        "started": 39871.9834572,
         "check": "enable:recovery",
-        "request_id": "31aef8a862814f99b9ca73da7d771ff5",
+        "request_id": "3e4931285c874664be2cdc2b14b7f394",
         "response": "0801",
-        "seconds": 0.011531999999533582
+        "seconds": 0.007604999998875428
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6236.1283681,
+        "started": 39872.1992449,
         "check": "enable:recovery",
-        "request_id": "d9f78180b30149698a50f67cfd5f9480",
+        "request_id": "d0e666f3bb874631af7362dd4caa2e96",
         "response": "0801",
-        "seconds": 0.011131099999147409
+        "seconds": 0.00958379999792669
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6237.0444889,
+        "started": 39873.0732061,
         "check": "enable:recovery",
-        "request_id": "b8baa40617dd4b6ca75dc5fcc41fa281",
+        "request_id": "a5766895f6624626ba215bf10cd6b9a8",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.0002040999997916515
+        "seconds": 0.00017949999892152846
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6237.3805859,
+        "started": 39873.4014915,
         "check": "enable:recovery",
-        "request_id": "412cb121f70540ed8c6b8f4df6e6620b",
+        "request_id": "6032c2d214a64602af00fb71a76cc88c",
         "response": "0801",
-        "seconds": 0.010677499999474094
+        "seconds": 0.009354000001621898
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6244.2849245,
+        "started": 39880.2543488,
         "check": "disable:positive",
-        "request_id": "2252c8e6077647509779e9a92af41916",
+        "request_id": "cc2ee3a1a32843a7a91c4d230e406974",
         "response": "0801",
-        "seconds": 0.006610800000089512
+        "seconds": 0.007558099998277612
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6244.5495288,
+        "started": 39880.4688643,
         "check": "disable:positive",
-        "request_id": "be9209066f7a44bea7a38523a25d1327",
+        "request_id": "c786565029b74353bcbb3e997fd2c2b9",
         "response": "0801",
-        "seconds": 0.0165419999993901
+        "seconds": 0.007755400001769885
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6245.2734643,
+        "started": 39881.2600887,
         "check": "disable:positive",
-        "request_id": "0e1b0ecead374868bd8e268792a3769a",
+        "request_id": "192ef8dc1e8246929f2aea2bfbffa496",
         "response": "0801",
-        "seconds": 0.010345400000005611
+        "seconds": 0.007831199996871874
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6252.1753194,
+        "started": 39888.0057158,
         "check": "disable:boundary",
-        "request_id": "b75953b05d384f2495d747a8bca2675b",
+        "request_id": "f6ec3e69bf484d6f90f26fbc54ddf781",
         "response": "0801",
-        "seconds": 0.015041999999994005
+        "seconds": 0.010559200003626756
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6252.4239466,
+        "started": 39888.2434219,
         "check": "disable:boundary",
-        "request_id": "7c0015adfde54688bdd8e839b053dba8",
+        "request_id": "389d4e2fe2ac4735a69a93a3b6bc3000",
         "response": "0801",
-        "seconds": 0.011743400000341353
+        "seconds": 0.009995799999160226
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6253.1535971,
+        "started": 39888.9673192,
         "check": "disable:boundary",
-        "request_id": "418d4786585d4c0a8054064281f2bc3d",
+        "request_id": "1a647cd7b86847adb6804e60bc448a03",
         "response": "0801",
-        "seconds": 0.011426600000049802
+        "seconds": 0.008416500000748783
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6253.3540834,
+        "started": 39889.1822659,
         "check": "disable:boundary",
-        "request_id": "ea820e66f7c543c697ffee988defc618",
+        "request_id": "1ef9d0524bdb46078c5dee2febe549cd",
         "response": "0801",
-        "seconds": 0.009971800000130315
+        "seconds": 0.007669999999052379
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6262.2700474,
+        "started": 39897.9991968,
         "check": "disable:failure",
-        "request_id": "0290d731188e4023aa531e5c20068d38",
+        "request_id": "9aac7d80dd3f4db6b103dbdb65495c37",
         "response": "0801",
-        "seconds": 0.010844800000086252
+        "seconds": 0.010032399994088337
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6262.5184073,
+        "started": 39898.2368397,
         "check": "disable:failure",
-        "request_id": "279fb35ed7ff436daa19b8dff97806ff",
+        "request_id": "e85e7e95fdf94d5c8a3bd62b3931879d",
         "response": "0801",
-        "seconds": 0.014900799999850278
+        "seconds": 0.007407599994621705
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6265.1328919,
+        "started": 39900.7820897,
         "check": "disable:failure",
-        "request_id": "14b96120613d4dfcb2ceceafa3a0a672",
+        "request_id": "4f0a4b4b4d974f4fa62c794b3640707f",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.0006382000001394772
+        "seconds": 0.00019500000053085387
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6270.1419154,
+        "started": 39905.7568529,
         "check": "disable:recovery",
-        "request_id": "772aa79af0464ad18367d09af5299a85",
+        "request_id": "a79fd864dbfa4f7dbee495d31aa19b71",
         "response": "0801",
-        "seconds": 0.008695600000464765
+        "seconds": 0.007269599998835474
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6270.358924,
+        "started": 39905.9913113,
         "check": "disable:recovery",
-        "request_id": "e0ee74b2aa24460c88e11b2755165e3e",
+        "request_id": "502eff4b4400411b898cf13e0802d8f7",
         "response": "0801",
-        "seconds": 0.010892199999943841
+        "seconds": 0.009380099996633362
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6271.2302003,
+        "started": 39906.8347029,
         "check": "disable:recovery",
-        "request_id": "8b45948fdece49d5814cc06ed3a7b98e",
+        "request_id": "50e4f2bee7c643498bfd8f17d76f7ae5",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.00018819999968400225
+        "seconds": 0.00017880000086734071
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6271.5418283,
+        "started": 39907.1433484,
         "check": "disable:recovery",
-        "request_id": "b75164a53a3c43878a4535c130153fd1",
+        "request_id": "e07ffd7c7dd4459bab55811c660b4e79",
         "response": "0801",
-        "seconds": 0.010920700000497163
+        "seconds": 0.009103600001253653
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6278.4536162,
+        "started": 39913.8900251,
         "check": "on-demand:positive",
-        "request_id": "a0804537ad774edaa26fc3ab0b5b475a",
+        "request_id": "6e1b1d369cb54d04a807901a3667fbbf",
         "response": "0801",
-        "seconds": 0.007000599999628321
+        "seconds": 0.005522100000234786
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6279.2096116,
+        "started": 39914.6289551,
         "check": "on-demand:positive",
-        "request_id": "e801ef4f9c7443ed8a0dec9d6389feaa",
+        "request_id": "9ec33d6789124514a04ad241662b881e",
         "response": "0801",
-        "seconds": 0.011332199999742443
+        "seconds": 0.0077133000013418496
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6286.058443,
+        "started": 39921.4892606,
         "check": "on-demand:boundary",
-        "request_id": "90b1aa75d60746f5bc07d926ea4adcf3",
+        "request_id": "5717ae4cfad54709a36e8b1546bc4fa1",
         "response": "0801",
-        "seconds": 0.008222100000239152
+        "seconds": 0.008085000001301523
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6286.7928789,
+        "started": 39922.2351302,
         "check": "on-demand:boundary",
-        "request_id": "626a7d33b6664062816f626ad23d028a",
+        "request_id": "bff7fce326354b40a73cde3f99a8bcae",
         "response": "0801",
-        "seconds": 0.009457199999815202
+        "seconds": 0.00789950000034878
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6293.8654591,
+        "started": 39929.3198858,
         "check": "on-demand:boundary",
-        "request_id": "784fd162f53f478a9c873ad9954eb1f6",
+        "request_id": "1efb7bcfeb894beea0462ac393baac34",
         "response": "0a0d4453532d414e54454e4e412d31",
-        "seconds": 0.0013627999996970175
+        "seconds": 0.0012275999979465269
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6294.6865272,
+        "started": 39930.0183194,
         "check": "on-demand:failure",
-        "request_id": "10678c29dc694ac2bce462ddf2e983a7",
+        "request_id": "e968b2a3d3aa47a1b8b6913152f2bf1b",
         "response": "0801",
-        "seconds": 0.0178025000004709
+        "seconds": 0.010851800005184487
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6294.9123705,
+        "started": 39930.2562909,
         "check": "on-demand:failure",
-        "request_id": "e79918f44f83420d88b983055fcc5544",
+        "request_id": "fb4d0cea0ee34ae6b348a026e3f3fe1d",
         "response": "0801",
-        "seconds": 0.010757999999441381
+        "seconds": 0.009403300005942583
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6295.1114045,
+        "started": 39930.4723017,
         "check": "on-demand:failure",
-        "request_id": "f5ef01a995e749b684a12ea9e99ca5e5",
+        "request_id": "aac7b428beca47a586c26b207dfe7546",
         "response": "0801",
-        "seconds": 0.009562599999298982
+        "seconds": 0.009245799999916926
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a074d495353494e47120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6295.9409618,
+        "started": 39931.3708572,
         "check": "on-demand:failure",
-        "request_id": "36f865f433ab452480bb2c82169251f0",
+        "request_id": "a3e31c7b776541cbae30bbcc2843710d",
         "error": "ValueError: Unknown virtual ranging path",
-        "seconds": 0.00036699999964184826
+        "seconds": 0.0001981999957934022
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d3112074d495353494e471a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6296.3873924,
+        "started": 39931.8112565,
         "check": "on-demand:failure",
-        "request_id": "cebb53a1166e4937a7af07ed3accbd5c",
+        "request_id": "7b83ae4880544e32a35a9fbc48d448a5",
         "error": "ValueError: Unknown virtual ranging path",
-        "seconds": 0.0001940000001923181
+        "seconds": 0.0001841000048443675
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6301.3533074,
+        "started": 39936.7904827,
         "check": "on-demand:recovery",
-        "request_id": "3aba8846d2cf43bd953462c6e1c897f7",
+        "request_id": "75703c235362496390b41320d51c8fe4",
         "response": "0801",
-        "seconds": 0.010099800000716641
+        "seconds": 0.007564599996840116
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d3112074d495353494e471a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6302.2311849,
+        "started": 39937.6386491,
         "check": "on-demand:recovery",
-        "request_id": "d7bb90f0099a41508e4f9b0a8d10d21f",
+        "request_id": "d302b0027529480db73582c981231d63",
         "error": "ValueError: Unknown virtual ranging path",
-        "seconds": 0.0004426000004968955
+        "seconds": 0.0001677999971434474
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6302.5432165,
+        "started": 39937.9672206,
         "check": "on-demand:recovery",
-        "request_id": "2ddd2a2be78c4751abfa79976e10566e",
+        "request_id": "1d66f430422a486c813f5b9a585a713f",
         "response": "0801",
-        "seconds": 0.011690899999848625
+        "seconds": 0.009708499994303565
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6310.2781179,
+        "started": 39945.3603852,
         "check": "abort:positive",
-        "request_id": "98c3038ef082454d816770ded0062340",
+        "request_id": "bd80849349a044ac8d4bdd08b768cd87",
         "response": "0801",
-        "seconds": 0.013283299999784504
+        "seconds": 0.011670899999444373
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6310.4879949,
+        "started": 39945.5987,
         "check": "abort:positive",
-        "request_id": "8a873bd9b41840c0b22b8f2df5d0ceed",
+        "request_id": "dc8cf55cff0a41b2892191b89c2bb061",
         "response": "0801",
-        "seconds": 0.01695190000009461
+        "seconds": 0.0074248999953852035
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6310.7362428,
+        "started": 39945.8127849,
         "check": "abort:positive",
-        "request_id": "aa987953c8cd4beb93186e3b27f304d6",
+        "request_id": "d00c5906caa243a08a0ffe31f441b2d9",
         "response": "0801",
-        "seconds": 0.01174780000019382
+        "seconds": 0.009408400001120754
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6311.5304773,
+        "started": 39946.6054632,
         "check": "abort:positive",
-        "request_id": "5d5e9adca979491cbdd27cc0e8c05fa8",
+        "request_id": "7b5e637f484f46a5b2c8763b9781c8ec",
         "response": "0801",
-        "seconds": 0.014841500000329688
+        "seconds": 0.00783660000161035
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6318.2859716,
+        "started": 39953.3258963,
         "check": "abort:boundary",
-        "request_id": "d406805911f1437c95a8255bc6c4d46b",
+        "request_id": "38ced7104f2943df9f458cd96a57f7ee",
         "response": "0801",
-        "seconds": 0.007749100000182807
+        "seconds": 0.005837800003064331
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6319.0219048,
+        "started": 39954.0631237,
         "check": "abort:boundary",
-        "request_id": "23c42dabcb254e1481dd6b3df32769f3",
+        "request_id": "7718bd705df54d60b31f50675680956a",
         "response": "0801",
-        "seconds": 0.007071500000165543
+        "seconds": 0.007427500000630971
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6319.2355072,
+        "started": 39954.2772526,
         "check": "abort:boundary",
-        "request_id": "308b9c66b3f9416fb5a21b05f1ce85fc",
+        "request_id": "7040588e619e494893dc5e50f9a9abc3",
         "response": "0801",
-        "seconds": 0.00747140000021318
+        "seconds": 0.007395500004349742
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6328.2281785,
+        "started": 39963.0215085,
         "check": "abort:failure",
-        "request_id": "0c60dd44ea4c4c1dad0beb7b1cb0418d",
+        "request_id": "46e009910fc44508aa886920bd3a1a3f",
         "response": "0801",
-        "seconds": 0.023615100000824896
+        "seconds": 0.008865499999956228
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6328.4488449,
+        "started": 39963.2572037,
         "check": "abort:failure",
-        "request_id": "452179e16bbc44ae8707b0192457b264",
+        "request_id": "f1c883a48afd4de9a68fb296788467fd",
         "response": "0801",
-        "seconds": 0.016848600000230363
+        "seconds": 0.010531400002946611
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6331.0440635,
+        "started": 39965.8356335,
         "check": "abort:failure",
-        "request_id": "74b269cb4c614a01bf1f7b2507c83e7d",
+        "request_id": "699475c891734fbba373f176bb0a6665",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.0001840999993873993
+        "seconds": 0.00018310000450583175
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6336.0641998,
+        "started": 39970.701134,
         "check": "abort:recovery",
-        "request_id": "4ef633b69a984b73a643bc08c2d2e5ab",
+        "request_id": "aa4a1deaeb4a43449c7d8f0a16e42b86",
         "response": "0801",
-        "seconds": 0.008681899999828602
+        "seconds": 0.008383499996853061
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartCalibration",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6336.3268846,
+        "started": 39970.9362014,
         "check": "abort:recovery",
-        "request_id": "ebba8a6f289d4c168f52f5ec785832a9",
+        "request_id": "96188d99a84c4824931badd33a9d5bb8",
         "response": "0801",
-        "seconds": 0.008411400000113645
+        "seconds": 0.007896199997048825
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a9e010a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6337.1448207,
+        "started": 39971.7987909,
         "check": "abort:recovery",
-        "request_id": "0f1370a3fdac41afa1cdbab55ce185cd",
+        "request_id": "96c0419fa025454b90e98d1c1e9f516a",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.0002077999997709412
+        "seconds": 0.00018670000281417742
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6337.4779123,
+        "started": 39972.107106,
         "check": "abort:recovery",
-        "request_id": "728b13144a174421923763ee0e63dbe6",
+        "request_id": "ead7dd670fc0463e8d1b4fd2a4e294a5",
         "response": "0801",
-        "seconds": 0.011700900000505499
+        "seconds": 0.00963709999632556
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6346.9620663,
+        "started": 39981.1628004,
         "check": "migration:positive",
-        "request_id": "74a9a2a982a34c109e5e43bd040ee0bb",
+        "request_id": "57820e2391794e96a8e69ae439268e2d",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.002233900000646827
+        "seconds": 0.0012778999953297898
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6349.9650992,
+        "started": 39984.0351033,
         "check": "migration:positive",
-        "request_id": "4794d55fdfff4a3a8151e808378578a9",
+        "request_id": "e79f6da148fb4ccca3ec518a517c8c56",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0010853000003407942
+        "seconds": 0.0015246000039041974
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6353.0892355,
+        "started": 39987.2447599,
         "check": "migration:boundary",
-        "request_id": "4a69c66a63744a899580f35480aec08d",
+        "request_id": "b2207bef05164b019051b58b35aa8596",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0010800000000017462
+        "seconds": 0.0011073999994550832
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6356.0061957,
+        "started": 39990.1865755,
         "check": "migration:boundary",
-        "request_id": "d5d1061e6c5e4e7cb948a31001000fc1",
+        "request_id": "35535f8c0e46432581f0772bf6cb949a",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0011125999999421765
+        "seconds": 0.001262099998712074
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6358.3401542,
+        "started": 39992.4862026,
         "check": "migration:boundary",
-        "request_id": "dbe38daeed004d31bcae463fe9296aca",
+        "request_id": "d99481ebea2043f4a4576aef7b9ea4f4",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0024527999994461425
+        "seconds": 0.0010862000053748488
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6360.5295036,
+        "started": 39994.7653638,
         "check": "migration:boundary",
-        "request_id": "2710c496e5c74ff880bc653bebf1ad27",
+        "request_id": "bb3afe7daa184e45bc003faf18245a28",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.003145800000311283
+        "seconds": 0.001553599999169819
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6367.5474235,
+        "started": 40001.5678106,
         "check": "migration:recovery",
-        "request_id": "86421fae6a494b828db3fe4b1215439f",
+        "request_id": "57c1503fafc747b1a1066681cc20eef3",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0011094999999841093
+        "seconds": 0.0011491000041132793
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6368.6155383,
+        "started": 40002.7026743,
         "check": "migration:recovery",
-        "request_id": "b93bb5c35f154c259d15cd5877cbcd18",
+        "request_id": "5639c39291ba487a8acafb4f68c6b48c",
         "response": "0801",
-        "seconds": 0.011328700000376557
+        "seconds": 0.013904299994464964
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/EnableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6376.2752793,
+        "started": 40010.3101923,
         "check": "uncertain-receipt:failure",
-        "request_id": "1691d0e839244a9eadb4b0537ef2c888",
+        "request_id": "dbfaf998340b445dbfcf1d6a1011e7dd",
         "response": "0801",
-        "seconds": 0.01387590000013006
+        "seconds": 0.012244400000781752
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6376.5207323,
+        "started": 40010.5493312,
         "check": "uncertain-receipt:failure",
-        "request_id": "2b65578865fa4facbd458cf3d770c703",
+        "request_id": "4063e3bd87ef42f9a7f22189d564d113",
         "response": "0801",
-        "seconds": 0.010552099999586062
+        "seconds": 0.009714699997857679
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/DisableRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6376.742868,
+        "started": 40010.7660368,
         "check": "uncertain-receipt:failure",
-        "request_id": "d8ec05fef0c5425c90c19d527aab1be3",
+        "request_id": "65450c5f6359479090d87620c4797335",
         "response": "0801",
-        "seconds": 0.013886899999306479
+        "seconds": 0.01016420000087237
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6377.9891596,
+        "started": 40011.8291621,
         "check": "uncertain-receipt:failure",
-        "request_id": "3c0ba67646064ddf8e0173efaf2578fc",
+        "request_id": "55cf2ca7d3b14923b9667128e7a89536",
         "error": "ConnectionError: Controlled receipt loss after actual Ground transition",
-        "seconds": 0.00920959999984916
+        "seconds": 0.006454199996369425
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/StartRanging",
         "request": "0a094453532d4242452d31120d4453532d414e54454e4e412d311a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6380.5464251,
+        "started": 40014.4169668,
         "check": "uncertain-receipt:failure",
-        "request_id": "245944d96e464fb1bc4f6d7f5db7880f",
+        "request_id": "06df01f5223c47cbad29c45607638639",
         "error": "UncertainEffect: This run has an unresolved driver effect",
-        "seconds": 0.0009178000000247266
+        "seconds": 0.0004721000004792586
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/AbortRanging",
         "request": "1a270a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6380.9897685,
+        "started": 40014.8391157,
         "check": "uncertain-receipt:failure",
-        "request_id": "0836607accfb4d8dae604395d4d26f47",
+        "request_id": "098ca20ef80149c09573f2d909768244",
         "error": "UncertainEffect: This run has an unresolved driver effect",
-        "seconds": 0.0003344000006109127
+        "seconds": 0.0002765000026556663
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6382.5145511,
+        "started": 40016.2862373,
         "check": "uncertain-receipt:failure",
-        "request_id": "b9ce04ba99084191978a3ce4f5c36143",
+        "request_id": "465547af1e664fbeb1784f564ec9be76",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0017981999999392428
+        "seconds": 0.0011974999943049625
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_EV/RaiseEvent",
-        "request": "0a4350726f6365647572652066696e69736865643a206d61696e233120617420323032362d31302d31362030313a34383a343620287374617475732046494e4953484544291295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
-        "started": 6383.0598168,
+        "request": "0a4350726f6365647572652066696e69736865643a206d61696e233120617420323032362d31302d31362031313a30393a323020287374617475732046494e4953484544291295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
+        "started": 40016.8284573,
         "check": "uncertain-receipt:failure",
-        "request_id": "05da7f13fabb446d82632c7ac0a2e57b",
+        "request_id": "97bd3b0da4a6471eadd43adbd4ed8ef6",
         "error": "UncertainEffect: This run has an unresolved driver effect",
-        "seconds": 0.00031519999993179226
+        "seconds": 0.00032949999877018854
       }
     ],
     "prompts": [],
@@ -1064,7 +1072,7 @@
       "bus": {
         "battery_mwh": 80215,
         "bus_voltage_mv": 28000,
-        "energy_remainder_mw_ticks": 35000,
+        "energy_remainder_mw_ticks": 10000,
         "generated_mw": 45000,
         "heater": false,
         "load_mw": 20000,
@@ -1072,7 +1080,7 @@
         "safe_mode": false,
         "thermal_mode": "OFF"
       },
-      "clock_epoch_unix_ns": 1792115150061422500,
+      "clock_epoch_unix_ns": 1792148786997320300,
       "core": {
         "commands_executed": 0,
         "last_command_arguments": [],
@@ -1080,13 +1088,13 @@
         "last_operation_id": "",
         "loaded_commands_count": 0,
         "mode": "NOMINAL",
-        "sim_time_ns": 31100000000,
-        "tick": 311
+        "sim_time_ns": 31000000000,
+        "tick": 310
       },
       "database_digest": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
       "database_revision": "GENERIC-r1",
       "dynamics_engine_version": "0.1.0",
-      "epoch": "epoch-c76f55ad076b84daf282d4a7b126b2d48bdd0be91d7bfd87069a43b6cb11d150",
+      "epoch": "epoch-4cc538910a07fca4c3b86bc9143b2fde9969cfb8f8f82bd888b43644864d1860",
       "payload": {
         "enabled": false,
         "generated_data_bytes": 0,
@@ -1099,19 +1107,19 @@
         "verification_milli": 10000,
         "zero": 0
       },
-      "revision": 311,
+      "revision": 310,
       "running": false,
       "satellite_id": "GENERIC",
-      "scenario_id": "boot-6d770bb4161d4814870a476421d22a6e",
+      "scenario_id": "boot-3cde5757eea54affa7f0153bfccb0cd0",
       "schema_version": "openbexi.dss.state/1",
-      "sequence": 312,
+      "sequence": 311,
       "simulator_version": "0.1.0"
     }
   },
   "runtime_sources": {
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "0edc29e0362055eb2eae2920b372d8b62b3e7b704810f0183b54383cb795ee39",
+      "manifest_sha256": "9c7fdc8bcfd08c486ea1ba2f748865b80d9b3602a92168cda7ece8b78fbdf939",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -1120,9 +1128,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "fef7cfaf9aa1bf09e66480e706bbe054b84be0d4bd54c8c2416a6e1e61d1f93f"
+              "integrated_identity": "3d847a01857ad143812e6854393dec7d85c629f20ab88756d2f57b48932bc6a3"
             },
-            "manifest_sha256": "31c84195840cb40505748fe86a665b167f53880e2bcb3a0172e35f7e4eb8e494",
+            "manifest_sha256": "f791823fcbc06c0aae3f1b9e9c7505e45ce7d955c15faddfea7e97a3240194f7",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1143,6 +1151,10 @@
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+              },
+              "context_snapshot_patches.py": {
+                "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+                "sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0"
               },
               "data_files_native_patches.py": {
                 "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
@@ -1181,12 +1193,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
-                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+                "lf_sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+                "sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377"
               },
               "ipc_mailbox_patches.py": {
                 "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
                 "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
+              },
+              "legacy_compare_patches.py": {
+                "lf_sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+                "sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33"
+              },
+              "legacy_compare_syntax.py": {
+                "lf_sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+                "sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -1211,6 +1231,10 @@
               "prompt_control_patches.py": {
                 "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
                 "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
+              "prompt_startup_patches.py": {
+                "lf_sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
+                "sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3"
               },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
@@ -1269,7 +1293,7 @@
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
+                "patched_sha256": "dccaefca6c34a1b9d8b8df75126516ca007dfc0586cb9d9229e0290fca0628d7",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -1289,7 +1313,7 @@
               },
               "lib/SPELL_CIFS/src/SPELLserverCif.C": {
                 "original_sha256": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-                "patched_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d",
+                "patched_sha256": "66d071d4d6ed272b60fdc43cdd23bd429046921100ee3a7eb198f6eba3daf468",
                 "ported_sha256": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
               },
               "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -1306,6 +1330,11 @@
                 "original_sha256": "1fc250c12a0e5dce65471c8a9fa4b4a31fc377bb77e8dce8aeddeebb0b60913e",
                 "patched_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
                 "ported_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+              },
+              "lib/SPELL_EXC/src/SPELLastAnalyzer.C": {
+                "original_sha256": "5f5ab545c54e182c5b4b74feaae7ee386bb5d926f85b066dfe38b5ad73de59af",
+                "patched_sha256": "a7ec5596aab44456fc922d3fc801fa2ec6b9ae87a62f95f98ad12ebcbf60d459",
+                "ported_sha256": "57c83b92019fb31adfa1e81c670fda3f883b25d0fc6371c0ef7abda063814519"
               },
               "lib/SPELL_EXC/src/SPELLchildManager.C": {
                 "original_sha256": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
@@ -1357,9 +1386,14 @@
                 "patched_sha256": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
                 "ported_sha256": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
               },
+              "lib/SPELL_LST/src/SPELLlistenerContext.C": {
+                "original_sha256": "ce7c6b3e16847584ad0a6e0e677ed5f9c16de4b560c3a29f7b08f1e8d72c1e2f",
+                "patched_sha256": "b6e567e8cf6e598025e62c8fa9774da174a980906c80dbac9366102f75d30c25",
+                "ported_sha256": "aac1c7e223a52622670a836464d55e6ad54b7f96fd1250ab4f755867c012d5ac"
+              },
               "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                 "original_sha256": "2610cab71f4d339ff33ffaa90486deaa060cf3060435a433b8f888c72824d837",
-                "patched_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
+                "patched_sha256": "977ffceeb2b93732240965407dc16bfe48edf3272433692cdf867e82eb86874e",
                 "ported_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
               },
               "lib/SPELL_UTIL/src/SPELLtime.C": {
@@ -1433,6 +1467,15 @@
                 }
               },
               {
+                "recipe": "prompt_startup_patches.py",
+                "sources": {
+                  "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+                    "after_sha256": "66d071d4d6ed272b60fdc43cdd23bd429046921100ee3a7eb198f6eba3daf468",
+                    "before_sha256": "383b113b7e2e568bea153c94ec23d4cf33c9a503677d8960647fc094a1446c6d"
+                  }
+                }
+              },
+              {
                 "recipe": "data_files_native_patches.py",
                 "sources": {
                   "lib/SPELL_CTX/src/SPELLcontext.C": {
@@ -1474,6 +1517,15 @@
                   "lib/SPELL_DTA/src/SPELLdtaVariable.C": {
                     "after_sha256": "ba110a0a7e98822761b4ad2fd7170e0fd7612a645e6b9c04c042bf457b669538",
                     "before_sha256": "28e8dcc1a1478438beade24dfbade95e6b29b24dcaca3dc0f65b998838950f3e"
+                  }
+                }
+              },
+              {
+                "recipe": "legacy_compare_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLastAnalyzer.C": {
+                    "after_sha256": "a7ec5596aab44456fc922d3fc801fa2ec6b9ae87a62f95f98ad12ebcbf60d459",
+                    "before_sha256": "57c83b92019fb31adfa1e81c670fda3f883b25d0fc6371c0ef7abda063814519"
                   }
                 }
               },
@@ -1559,11 +1611,29 @@
                 }
               },
               {
+                "recipe": "context_snapshot_patches.py",
+                "sources": {
+                  "lib/SPELL_LST/src/SPELLlistenerContext.C": {
+                    "after_sha256": "b6e567e8cf6e598025e62c8fa9774da174a980906c80dbac9366102f75d30c25",
+                    "before_sha256": "aac1c7e223a52622670a836464d55e6ad54b7f96fd1250ab4f755867c012d5ac"
+                  }
+                }
+              },
+              {
                 "recipe": "dta_time_patches.py",
                 "sources": {
                   "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
                     "after_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa",
                     "before_sha256": "408e67f082a8b9ccdf0b13d9d8d905f49bb7c4402ea1b50cdf16f571d1069d02"
+                  }
+                }
+              },
+              {
+                "recipe": "legacy_compare_patches.py",
+                "sources": {
+                  "lib/SPELL_UTIL/src/SPELLpythonHelper.C": {
+                    "after_sha256": "977ffceeb2b93732240965407dc16bfe48edf3272433692cdf867e82eb86874e",
+                    "before_sha256": "8ff8d0ad9f5059cdad300affb4e646437ec7ce47670184e63d6c0edc7c0547fa"
                   }
                 }
               },
@@ -1598,7 +1668,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
+                    "after_sha256": "dccaefca6c34a1b9d8b8df75126516ca007dfc0586cb9d9229e0290fca0628d7",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -1607,7 +1677,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "4fa7e8f7149e6f498d416f0015d00f34a93ee1fbc180449754f1e13c9b052605",
+            "manifest_sha256": "07ca5e6726413b50a679bfd63c5993cd841d2092a301ca25569dfba1338f33ba",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1628,6 +1698,10 @@
               "cmd_patches.py": {
                 "lf_sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
                 "sha256": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546"
+              },
+              "context_snapshot_patches.py": {
+                "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+                "sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0"
               },
               "data_files_native_patches.py": {
                 "lf_sha256": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
@@ -1666,12 +1740,20 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
-                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+                "lf_sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+                "sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377"
               },
               "ipc_mailbox_patches.py": {
                 "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
                 "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
+              },
+              "legacy_compare_patches.py": {
+                "lf_sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+                "sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33"
+              },
+              "legacy_compare_syntax.py": {
+                "lf_sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+                "sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -1696,6 +1778,10 @@
               "prompt_control_patches.py": {
                 "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
                 "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+              },
+              "prompt_startup_patches.py": {
+                "lf_sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
+                "sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3"
               },
               "prompt_timeout_patches.py": {
                 "lf_sha256": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
@@ -2073,6 +2159,7 @@
           "context-build.Dockerfile.dockerignore": "3d6691a9214b1e45d803751f64fb2e13decf07719d668a3806075e731f01cad5",
           "context_build.py": "631cae5e42b2f8015b811aef3a0c11a248db20e6640ccdf4e38c9a143a7b690f",
           "context_peer.cpp": "ba5f29f22c239ac6ae365f68eb9ff5bcc6c076420eb05bd7807ad891d6f47a94",
+          "context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
           "controller_fixtures.py": "57a3fc011d30aca341b71cddd55f0ba412db659ab155d2d83621b90daa0cbd0d",
           "controller_peer.cpp": "0b4d6477d0c7e6290e0f1093642efb90f8060b748d5e516a447116fd410a49e2",
           "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
@@ -2108,8 +2195,10 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+          "integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
           "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+          "legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+          "legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -2197,6 +2286,7 @@
           "package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
           "prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+          "prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
           "prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
           "qualify.py": "90b2d33ffad45954f9ab6bc2ab86d12b6229680e3b5163543d17edb46709c837",
           "qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
@@ -2228,14 +2318,14 @@
           "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
+          "SPELL-Context": "f516e74c0b744277a16acdc4abdf599aedabdefa091b4f0e9ecfc480587b2027",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-          "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
+          "SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
+          "libspell_executor313.so": "fd46d575638a728fc50df295a7905c717f9164f59ed78409f324a3dd3d439094"
         },
-        "native_gate_policy_sha256": "ff091ab326835a0fc0b4b02bc6e66659de270e1729ce980ac1bc3a28428514c8",
+        "native_gate_policy_sha256": "2b3e15af196b01ba2648adb962cc8c680a0f755e8e9659ab0e9500143d63e06c",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -2346,12 +2436,12 @@
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
+        "SPELL-Context": "f516e74c0b744277a16acdc4abdf599aedabdefa091b4f0e9ecfc480587b2027",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-        "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
+        "SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
+        "libspell_executor313.so": "fd46d575638a728fc50df295a7905c717f9164f59ed78409f324a3dd3d439094"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -2458,14 +2548,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "3b4d712509ad362eaa5b1d79b825070b3bfb99433ff43fbf10276a20780a29de",
+        "manifest_sha256": "16a4f10a165d04d768985e30e43b264c373199274c9e4ab7cb384db035cb585d",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
-              "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+              "sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+              "lf_sha256": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -2587,9 +2677,25 @@
               "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
               "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
             },
+            "prompt_startup_patches.py": {
+              "sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
+              "lf_sha256": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3"
+            },
             "ipc_mailbox_patches.py": {
               "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
               "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
+            },
+            "context_snapshot_patches.py": {
+              "sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+              "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0"
+            },
+            "legacy_compare_patches.py": {
+              "sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+              "lf_sha256": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33"
+            },
+            "legacy_compare_syntax.py": {
+              "sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+              "lf_sha256": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0"
             },
             "rng_patches.py": {
               "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
@@ -2695,7 +2801,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 79
+        "record_files_verified": 83
       }
     },
     "installed": {
@@ -2803,10 +2909,10 @@
       "spell_native/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
       "spell_native/__init__.py": "39c5cd3f08c3c9b5ad73100bd08845b4a88c12b1cfe31ba0520a4c28f6e96063",
       "spell_native/bin/SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "spell_native/bin/SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
+      "spell_native/bin/SPELL-Listener": "f41172401fa73fd9a6407bc92033c67c8f7fcb5e855f73070b3d8537e8133417",
       "spell_native/bin/SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-      "spell_native/bin/SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
-      "spell_native/bin/libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd",
+      "spell_native/bin/SPELL-Context": "f516e74c0b744277a16acdc4abdf599aedabdefa091b4f0e9ecfc480587b2027",
+      "spell_native/bin/libspell_executor313.so": "fd46d575638a728fc50df295a7905c717f9164f59ed78409f324a3dd3d439094",
       "spell_native/bin/SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
       "spell_native/example/drivers/example/constants.py": "516312482e0d89a6d5b2942c133fd7e238d9e476a82b4000727a755a6be95f83",
       "spell_native/example/drivers/example/task.py": "90e44ea6a3e686b70f69100a95829d769c89a025eaadfa7f75118ee7b5472bdd",
@@ -2829,7 +2935,8 @@
       "spell_native/provenance/source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
       "spell_native/provenance/source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+      "spell_native/provenance/source_port/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+      "spell_native/provenance/source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
       "spell_native/provenance/source_port/qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
       "spell_native/provenance/source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/source_port/executor_build.py": "b444a90bf17cd77f5e79d121d02e02e82430889a98150f759424b3f409bbc82a",
@@ -2841,6 +2948,7 @@
       "spell_native/provenance/source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
       "spell_native/provenance/source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
       "spell_native/provenance/source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+      "spell_native/provenance/source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
       "spell_native/provenance/source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
       "spell_native/provenance/source_port/context_build.py": "631cae5e42b2f8015b811aef3a0c11a248db20e6640ccdf4e38c9a143a7b690f",
       "spell_native/provenance/source_port/qualify_executor.py": "0370e95844a01184fa0530ec220ac0e2a0636851bd1f57ec447c6e5586872568",
@@ -2849,6 +2957,7 @@
       "spell_native/provenance/source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
       "spell_native/provenance/source_port/native_build.py": "86b11bac138d630d81ed222d8f2e87b3d5bfc490c94cd043d4a91969bc80e652",
       "spell_native/provenance/source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+      "spell_native/provenance/source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
       "spell_native/provenance/source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
       "spell_native/provenance/source_port/package_native.py": "bdce3a43023ffa7890be313dff4f2d64f1ec259758b6f79367bba141f38ccfad",
       "spell_native/provenance/source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
@@ -2862,6 +2971,7 @@
       "spell_native/provenance/source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
       "spell_native/provenance/source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
       "spell_native/provenance/source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+      "spell_native/provenance/source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
       "spell_native/provenance/source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
       "spell_native/provenance/source_port/build.py": "2ef82935062b54d5072468b2e8fb13e7e442936241f854d65a73e9c52f7ce905",
       "spell_native/provenance/source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
@@ -2873,12 +2983,12 @@
       "spell_native/provenance/distribution/openbexi_workflows.py": "eb746bd7b33c4b868eb34812874c776515642752ccb897a2c61c14e3e2feb203",
       "spell_native/provenance/distribution/prepare_pipe_dependencies.py": "4bf491b6d0910596660ac08074753b2dd6456a015da0aa396d83978304cd0c26",
       "spell_native/provenance/distribution/record_prerequisites.py": "bdd6cbfcceca07088dfdce75432a65041abfa2ca23059dd36c8759217a59d9b1",
-      "spell_native/provenance/distribution/run_language_regressions.py": "3bfcc9e55cbf4ea3e9fc7a34eb47a269cf938288a34a4c04682f0b50f32213fd",
+      "spell_native/provenance/distribution/run_language_regressions.py": "ceabfc8f3ad0722a2abb8cc209fea91512abd673641746903d9eed11f679e865",
       "spell_native/provenance/distribution/test_workflow_evidence.py": "176930f5a09309ada9446faddb643131f429ce3be95f5d6a990c6dacfb20198a",
       "spell_native/provenance/distribution/build_images.py": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
-      "spell_native/provenance/distribution/test_integrated_patches.py": "2e0dd4a8452680b5de7c26610f11ecac7e54f8960204b508b31311c46f62b151",
+      "spell_native/provenance/distribution/test_integrated_patches.py": "e02b33343ff8d93d472be4fb62426129367c5725621d3920ca7218b983c99665",
       "spell_native/provenance/distribution/qualify_driver_package.py": "598c913c4a7571f3f7c1d720711083769115511d4d719621d9fe169a9ca57972",
-      "spell_native/provenance/distribution/record_language_regressions.py": "118ac667f95e273a5d68bcfe743b3b24063372b014a1c667f770695099169d98",
+      "spell_native/provenance/distribution/record_language_regressions.py": "65f9af66d9d265b086ec492f121b596307d972c75953412c07858eae76479edf",
       "spell_native/provenance/distribution/workflow_evidence.py": "ecc38af982518dab393bc3c8db2a07b1798423e1bd2445ebfd07086883724a09",
       "spell_native/provenance/distribution/test_stable_wheel.py": "36b68ecbbe225106587aa81238c0123d9cb4e43d378fe6fb79f14538d84f77a1",
       "spell_native/provenance/distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
@@ -2890,7 +3000,7 @@
       "spell_native/provenance/distribution/qualify_sdk_http.py": "ff4a4002d861392e58d799049ec13a75670cd220baec2cd9891f19b1ae14b80a",
       "spell_native/provenance/distribution/stable_wheel.py": "8b381c723fc63ac3e28daba6b38a9d7bc88f4768b9580aa750f17d54f21ea954",
       "spell_native/provenance/distribution/run_child_regressions.py": "f637502a2f1cc36b6435ec81387bc6835d50498567e86845e2c9c565f0490bfe",
-      "spell_native/provenance/distribution/record_qualified_sources.py": "139c977e68aaf6b8172ee00c471e4a128e6adb9fab8c6dcea3b2bbbcc1d52cce",
+      "spell_native/provenance/distribution/record_qualified_sources.py": "a0af4ddfb125b6ff99412f59c02acaa2d0712f381ce553de81f55834d3ad3184",
       "spell_native/provenance/distribution/record_workflows.py": "31c4747cbbd8b72ed1b3cf05c7507da20ffec5065cee314adb766206a1742d91",
       "spell_native/provenance/distribution/build_host_candidate.py": "100ebf3b950563d5466decd8d2bc3bb99431849906f95026d39836b73e666f7d",
       "spell_native/provenance/distribution/test_installed_provenance.py": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f",
@@ -2902,7 +3012,8 @@
       "spell_native/provenance/integrated-python/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
       "spell_native/provenance/integrated-python/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/integrated-python/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/integrated-python/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+      "spell_native/provenance/integrated-python/recipes/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+      "spell_native/provenance/integrated-python/recipes/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
       "spell_native/provenance/integrated-python/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/integrated-python/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "spell_native/provenance/integrated-python/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -2911,9 +3022,11 @@
       "spell_native/provenance/integrated-python/recipes/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
       "spell_native/provenance/integrated-python/recipes/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
       "spell_native/provenance/integrated-python/recipes/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+      "spell_native/provenance/integrated-python/recipes/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
       "spell_native/provenance/integrated-python/recipes/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
       "spell_native/provenance/integrated-python/recipes/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
       "spell_native/provenance/integrated-python/recipes/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+      "spell_native/provenance/integrated-python/recipes/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
       "spell_native/provenance/integrated-python/recipes/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
       "spell_native/provenance/integrated-python/recipes/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
       "spell_native/provenance/integrated-python/recipes/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
@@ -2925,6 +3038,7 @@
       "spell_native/provenance/integrated-python/recipes/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
       "spell_native/provenance/integrated-python/recipes/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
       "spell_native/provenance/integrated-python/recipes/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+      "spell_native/provenance/integrated-python/recipes/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
       "spell_native/provenance/integrated-python/recipes/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
       "spell_native/provenance/integrated-python/recipes/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
       "spell_native/provenance/integrated-python/recipes/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
@@ -3002,7 +3116,8 @@
       "spell_native/provenance/integrated-native/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
       "spell_native/provenance/integrated-native/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/integrated-native/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/integrated-native/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+      "spell_native/provenance/integrated-native/recipes/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+      "spell_native/provenance/integrated-native/recipes/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
       "spell_native/provenance/integrated-native/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/integrated-native/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "spell_native/provenance/integrated-native/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -3011,9 +3126,11 @@
       "spell_native/provenance/integrated-native/recipes/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
       "spell_native/provenance/integrated-native/recipes/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
       "spell_native/provenance/integrated-native/recipes/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+      "spell_native/provenance/integrated-native/recipes/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
       "spell_native/provenance/integrated-native/recipes/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
       "spell_native/provenance/integrated-native/recipes/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
       "spell_native/provenance/integrated-native/recipes/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+      "spell_native/provenance/integrated-native/recipes/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
       "spell_native/provenance/integrated-native/recipes/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
       "spell_native/provenance/integrated-native/recipes/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
       "spell_native/provenance/integrated-native/recipes/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
@@ -3025,6 +3142,7 @@
       "spell_native/provenance/integrated-native/recipes/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
       "spell_native/provenance/integrated-native/recipes/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
       "spell_native/provenance/integrated-native/recipes/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+      "spell_native/provenance/integrated-native/recipes/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
       "spell_native/provenance/integrated-native/recipes/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
       "spell_native/provenance/integrated-native/recipes/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
       "spell_native/provenance/integrated-native/recipes/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
@@ -3073,7 +3191,8 @@
       "openbexi_dss_proxy/_composition/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
       "openbexi_dss_proxy/_composition/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "openbexi_dss_proxy/_composition/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "openbexi_dss_proxy/_composition/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+      "openbexi_dss_proxy/_composition/recipes/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+      "openbexi_dss_proxy/_composition/recipes/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
       "openbexi_dss_proxy/_composition/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "openbexi_dss_proxy/_composition/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "openbexi_dss_proxy/_composition/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -3082,9 +3201,11 @@
       "openbexi_dss_proxy/_composition/recipes/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
       "openbexi_dss_proxy/_composition/recipes/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
       "openbexi_dss_proxy/_composition/recipes/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+      "openbexi_dss_proxy/_composition/recipes/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
       "openbexi_dss_proxy/_composition/recipes/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
       "openbexi_dss_proxy/_composition/recipes/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
       "openbexi_dss_proxy/_composition/recipes/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+      "openbexi_dss_proxy/_composition/recipes/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
       "openbexi_dss_proxy/_composition/recipes/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
       "openbexi_dss_proxy/_composition/recipes/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
       "openbexi_dss_proxy/_composition/recipes/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
@@ -3096,6 +3217,7 @@
       "openbexi_dss_proxy/_composition/recipes/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
       "openbexi_dss_proxy/_composition/recipes/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
       "openbexi_dss_proxy/_composition/recipes/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+      "openbexi_dss_proxy/_composition/recipes/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
       "openbexi_dss_proxy/_composition/recipes/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
       "openbexi_dss_proxy/_composition/recipes/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
       "openbexi_dss_proxy/_composition/recipes/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
@@ -3139,12 +3261,12 @@
   },
   "retained_observation_arrays": {
     "events": {
-      "count": 5688,
-      "canonical_json_sha256": "ac496e4d8c7fffdb94b5371b252334ad7788256ad4728bd9af1ba4cfb5e1a7b4"
+      "count": 5652,
+      "canonical_json_sha256": "bb697bae02ec84020f44b1cdf5e63a73f6f8560f24517817a64cfc6e58e589ab"
     },
     "controls": {
       "count": 94,
-      "canonical_json_sha256": "df2abda24225c778ef5063c87385b3cd98d25fcbc3fbdbb509732c74b27294ff"
+      "canonical_json_sha256": "20870435a10d0d3f7df679d5b3e1ac3660bfd3c0747d9356d0d5ae5e48b00c44"
     }
   },
   "baseline": {
@@ -3175,8 +3297,8 @@
       "uncertain-receipt:failure": "AssertionError: ('DISABLED', 'RANGING')"
     }
   },
-  "raw_report_sha256": "9a472ecc0b40c183a720df64c1a095162b00f8c37648f5b630e8c384796beb5e",
-  "raw_report_path": "C:\\obdatabase_scope\\.qualification\\v0.5\\rng-state\\6a1fb3cf5ab7463d8584b7e2f4137a8d\\result.json",
+  "raw_report_sha256": "89614ead7a05a8779308c3f1faf456e75ed8f45478e18a9b5c21ce0ec739cf19",
+  "raw_report_path": "C:\\obprompt_composed\\.qualification\\v0.5\\rng-state\\c9c085c1bbea46668127014f1f74e135\\result.json",
   "regressions": {
     "separate-state": {
       "path": "C:\\obranging\\.qualification\\rng-state-driver\\3baad9f0bb774c0cbc935ef23a317f25\\result.json",
