@@ -24,6 +24,7 @@ from urllib.parse import parse_qs, urlsplit
 from .catalog import SatelliteDatabase, canonical, validate_command
 from .engine import DssConflict, DssEngine
 from .packets import decode_tc, decode_tm, encode_tc, encode_tm, recv_packet
+from .uplink import UplinkGroups, CONTROLS
 
 LOG = logging.getLogger("dss")
 MAX_BODY = 65_536
@@ -71,6 +72,7 @@ class DssRuntime:
         self.runtime_error: str | None = None
         # Reset must not overlap a TCP command; engine methods own state locking.
         self.admission_lock = threading.Lock()
+        self.uplink_groups = UplinkGroups()
         self.tc_address = ("127.0.0.1", 3080)
 
     def start(self) -> None:
@@ -292,24 +294,39 @@ class TcHandler(socketserver.BaseRequestHandler):
     def handle(self) -> None:
         self.request.settimeout(5)
         runtime = self.server.runtime
-        # Bounded session lifetime; clients may reconnect without resending a command.
-        for _ in range(64):
-            if runtime.stop_event.is_set():
-                return
-            try:
+        frames = 0
+        try:
+            # Groups may need all five stages of sixteen members. Control
+            # heartbeats are bounded by the group's finite monotonic deadline.
+            while frames < 96:
+                if runtime.stop_event.is_set():
+                    return
                 raw = recv_packet(self.request)
                 body = decode_tc(raw)
                 with runtime.admission_lock:
-                    answer = runtime.engine.process_tc(body, raw)
-                    fault = runtime.engine.consume_transport_fault(body, answer)
+                    admission = runtime.uplink_groups.before(self,body)
+                    if admission in CONTROLS:
+                        answer = runtime.uplink_groups.control(self,body)
+                        fault = dict(drop_ack=False,delay_ms=0)
+                    else:
+                        frames += 1
+                        answer = runtime.engine.process_tc(body,raw,
+                            admission_rejection='UPLINK_GROUP_BUSY' if admission=='BUSY' else None)
+                        if admission=='ADMIT':runtime.uplink_groups.accepted(self,body,answer)
+                        fault = runtime.engine.consume_transport_fault(body, answer)
                 if fault["drop_ack"]:
                     return
                 if fault["delay_ms"] and runtime.stop_event.wait(fault["delay_ms"] / 1000):
                     return
-                packet = encode_tm(answer, sequence=answer["ack_sequence"] & 0x3fff, ack=True)
+                packet = encode_tm(answer, sequence=answer.get("ack_sequence",0) & 0x3fff, ack=True)
                 self.request.sendall(packet)
-            except (OSError, ValueError, EOFError):
-                return
+                if frames>=64 and runtime.uplink_groups.owner is not self:
+                    return
+        except (OSError, ValueError, EOFError):
+            return
+        finally:
+            with runtime.admission_lock:
+                runtime.uplink_groups.close(self)
 
 
 class ApiServer(BoundedThreads, HTTPServer):
@@ -463,6 +480,7 @@ class ApiHandler(BaseHTTPRequestHandler):
                     raise ValueError("epoch required")
                 with runtime.admission_lock:
                     state = runtime.engine.reset(**body)
+                    runtime.uplink_groups.close(runtime.uplink_groups.owner,reason='SCENARIO_RESET')
             else:
                 self._error(404, "DSS_ROUTE_NOT_FOUND")
                 return

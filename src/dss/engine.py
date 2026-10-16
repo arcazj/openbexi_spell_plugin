@@ -339,7 +339,9 @@ class DssEngine:
         core["last_command_arguments"] = deepcopy(arguments)
         state["revision"] += 1
 
-    def process_tc(self, body: dict, raw: bytes) -> dict:
+    def process_tc(self, body: dict, raw: bytes, *, admission_rejection: str | None = None) -> dict:
+        if admission_rejection not in (None,'UPLINK_GROUP_BUSY'):
+            raise ValueError('Unknown service-owned admission rejection')
         if decode_tc(raw) != body: raise ValueError("TC bytes differ from supplied decoded command")
         required = {"database_revision","database_digest","satellite_id","scenario_id","satellite_epoch",
             "operation_id","procedure_id","execution_id","plan_id","element_id","stage","command_name","arguments","command_digest"}
@@ -370,7 +372,7 @@ class DssEngine:
                     raise DssConflict("TC displayed state revision is stale")
             scheduling=body.get("scheduling")
             not_due=False
-            if scheduling is not None:
+            if scheduling is not None and admission_rejection is None:
                 allowed={"target_sim_time_ns","anchor_sim_time_ns","clock_epoch_unix_ns","time","release_time","send_delay_ms","delay_ms"}
                 if type(scheduling) is not dict or set(scheduling)-allowed or "target_sim_time_ns" not in scheduling:
                     raise ValueError("simulator scheduling schema differs")
@@ -390,6 +392,10 @@ class DssEngine:
             command=self.db.execute("SELECT * FROM commands WHERE scenario_id=? AND plan_id=? AND element_id=?",identity).fetchone()
             command_definition={"command_name":body["command_name"],"arguments":body["arguments"],
                 "command_digest":body["command_digest"],"procedure_id":body["procedure_id"],"execution_id":body["execution_id"]}
+            if 'uplink_group' in body:
+                from .uplink import UplinkGroups
+                UplinkGroups.descriptor(body)
+                command_definition['uplink_group']=body['uplink_group']
             if "additional_info" in body:
                 if type(body["additional_info"]) is not dict or len(canonical(body["additional_info"])) > 8192:
                     raise ValueError("command additional information must be a bounded dictionary")
@@ -406,7 +412,10 @@ class DssEngine:
             if command and json.loads(command["definition"]) != command_definition: raise DssConflict("command element definition changed")
             results=json.loads(command["results"]) if command else {}
             stage=body["stage"]; outcome=OUTCOMES[stage]; detail={"provider":"generic-dss","database_digest":self.catalog.digest}
-            if not_due:
+            if admission_rejection is not None:
+                outcome='REJECTED'
+                detail['reason']=admission_rejection
+            elif not_due:
                 outcome="UNCERTAIN"
                 detail.update(reason="SIMULATION_TIME_NOT_DUE",target_sim_time_ns=scheduling["target_sim_time_ns"])
             elif stage == "TRANSPORT":
@@ -473,10 +482,10 @@ class DssEngine:
                     "SELECT 1 FROM onboard_schedule WHERE scenario_id=? AND plan_id=? AND element_id=?", identity).fetchone():
                 outcome = "PENDING"
             else: outcome=results.get(stage,{"ACKNOWLEDGEMENT":"UNCERTAIN","ONBOARD_EXECUTION":"UNCERTAIN","VERIFICATION":"INDETERMINATE"}.get(stage,"FAILED"))
-            if not not_due and stage == "VERIFICATION" and command and command["executed"]:
+            if admission_rejection is None and not not_due and stage == "VERIFICATION" and command and command["executed"]:
                 outcome, verification_detail=self._verify(state,faults,body.get("verification",[]),body.get("tolerance",0.0))
                 detail.update(verification_detail)
-            if stage == "TRANSPORT": self._tm(state,faults,body["operation_id"],body["command_name"])
+            if stage == "TRANSPORT" and admission_rejection is None: self._tm(state,faults,body["operation_id"],body["command_name"])
             ack_sequence=self._sequence(state,ack=True)
             ack={"schema_version":"openbexi.dss.ack/1","satellite_id":"GENERIC","database_revision":self.catalog.revision,
                 "database_digest":self.catalog.digest,"scenario_id":state["scenario_id"],"satellite_epoch":state["epoch"],
