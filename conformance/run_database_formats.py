@@ -39,7 +39,7 @@ def main():
     output.mkdir(parents=True)
     names=['conformance/database_format_cases.py','conformance/database_format_controller.py','conformance/run_database_formats.py','host_runtime/python/native.py','conformance/inventory.json','docs/reference/SPELL2.6.10-src.zip','docs/reference/SPELL - Language Reference - 2.4.4.pdf']
     names += ['conformance/'+controller,'source_port/database_format_patches.py','conformance/database_format_provenance.py','conformance/database_format.Dockerfile','conformance/database_format.Dockerfile.dockerignore','conformance/user_database_cases.py','conformance/user_database_prompts.py','conformance/database_values_cases.py','conformance/database_import_cases.py']
-    names += input_paths(ROOT)
+    names += ['driver_plugin/src/openbexi_spell_dss/limit_files/normal.json',*input_paths(ROOT)]
     inputs={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in names}
     normalized={name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in names}
     image=subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
