@@ -59,7 +59,4 @@ add('alarm-controls', BASE+"call('DisableAlarm','TMparam')\ncall('EnableAlarm','
 add('adjust-analog', BASE+"call('AdjustLimits',[['TMparam',eq,3.4,{Tolerance:0.1}]])\ncall('GetLimits','TMparam',Select='GENERIC')")
 add('adjust-status', "call('AdjustLimits',[['TM.CORE.MODE',eq,['NOMINAL']]])")
 add('load-file', "call('LoadLimits','limits://normal')")
-add('both-thresholds', BASE+"call('SetLimits','TMparam',LoBoth:10,HiBoth:40)")
-# Keyword spelling follows the public modifier strings; avoid hiding a parser
-# failure behind the API baseline for the paired-threshold extensions.
-CASES['both-thresholds']['source'] = CASES['both-thresholds']['source'].replace('LoBoth:10,HiBoth:40', 'LoBoth=10,HiBoth=40')
+add('both-thresholds', BASE+"call('SetLimits','TMparam',LoBoth=10,HiBoth=40)")
