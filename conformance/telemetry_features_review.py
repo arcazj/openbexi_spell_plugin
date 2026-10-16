@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
-import sqlite3
+from evidence_database import evidence_database
 import sys
 import types
 
@@ -88,7 +88,7 @@ def case_proof(name, spec, row, project):
     events = read(project/'events.json')
     assert not any(event.get('event') == 'connectionError' or event.get('message', {}).get('id') in ('MSG_ERROR','MSG_PROMPT') for event in events)
     assert row['receipts'] == []
-    with sqlite3.connect((project/'dss.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+    with evidence_database(project/'dss.sqlite') as db:
         scenarios = {key:dict(epoch=epoch, state=json.loads(state), faults=json.loads(faults))
                      for key, epoch, state, faults in db.execute('SELECT id,epoch,state,faults FROM scenarios')}
         packets = [packet for packet, in db.execute('SELECT packet FROM packets')]
@@ -116,7 +116,7 @@ def case_proof(name, spec, row, project):
             assert entry['before']['epoch'] != entry['after']['epoch']
             scenario = scenarios[entry['after']['scenario_id']]
             assert all(scenario['faults'][key] == value for key, value in command['faults'].items())
-    with sqlite3.connect((project/'driver.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+    with evidence_database(project/'driver.sqlite') as db:
         grounds = [json.loads(state) for state, in db.execute('SELECT state FROM ground')]
         journal = db.execute('SELECT digest,state,receipt FROM effects').fetchall()
     assert row['final_ground'] in grounds
