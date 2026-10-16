@@ -437,6 +437,6 @@ equal(definition()[LoRed],10)
 add('adjust-filter', 'recovery', '''
 seed()
 unchanged(lambda:call('AdjustLimits',[]),SyntaxException)
-assert call('AdjustLimits',[['TMparam',eq,25,{Tolerance:5}],['ABSENT',ne,0]])
+assert call('AdjustLimits',[['TMparam',eq,25,{Tolerance:5}],['ABSENT',neq,0]])
 equal(definition()[LoRed],20);equal(alarm(25),False)
 ''')
