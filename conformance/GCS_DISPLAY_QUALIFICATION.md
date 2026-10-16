@@ -24,7 +24,14 @@ The initial native run failed on unhandled wrapper/default options and two
 incorrect time strings in its probes. Its entire capture remains available at
 the path bound in `distribution/evidence/display-focused-review.json`.
 
+The viewer entry point was built into an isolated wheel and installed into a
+separate target directory. Its actual console launcher served a copied native
+journal, and both PS and VECTOR downloads matched the retained job bytes. The
+database hash remained unchanged. The exact wheel, launcher, source modules,
+downloads and probe are bound in `distribution/evidence/display-cli-review.json`.
+That viewer-only wheel is not a composed runtime release.
+
 No coverage is promoted here. Fresh composed native/Python and driver packages,
-the existing language regressions, packaged viewer entry-point validation, and
-the final coverage gate remain necessary before these requirements can be
-counted toward v0.5. This diagnostic makes no claim of physical printer output.
+the existing language regressions and the final coverage gate remain necessary
+before these requirements can be counted toward v0.5. This diagnostic makes no
+claim of physical printer output.
