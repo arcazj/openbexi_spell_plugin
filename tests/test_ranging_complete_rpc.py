@@ -17,7 +17,7 @@ from openbexi_spell_dss.ranging_complete import PATHS
 def composed(name):
     path='openbexi_spell_dss/'+name+'.py'
     raw=(base.ROOT/'driver_plugin/src'/path).read_bytes()
-    for recipe in (*base.integrated_patches.DRIVER_RECIPES,ranging_complete_patches):
+    for recipe in dict.fromkeys((*base.integrated_patches.DRIVER_RECIPES,ranging_complete_patches)):
         if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
     module=types.ModuleType('openbexi_spell_dss._ranging_complete_test_'+name)
     exec(compile(raw,path,'exec'),module.__dict__)
@@ -138,6 +138,19 @@ def test_status_validation_and_legacy_activity_migration(env):
     assert restored.state()['ranging']=='RANGING'
     assert restored.state()['ranging_paths']==[list(PATHS[0])]
     assert restored.state()['ranging_schedule_enabled'] is False
+
+
+def test_reopening_current_database_preserves_exact_persisted_bytes(env):
+    assert dual(env)
+    ground=env.dispatcher.ground
+    state=ground.state();encoded=json.dumps(state,indent=3,sort_keys=False)+'\n'
+    env.journal.db.execute('UPDATE ground SET state=? WHERE namespace=?',(encoded,ground.namespace))
+    effects=env.journal.db.execute('SELECT * FROM effects').fetchall()
+    for _ in range(2):
+        reopened=composed('ground').Ground(env.transport,env.journal)
+        assert reopened.state()==state
+        assert env.journal.db.execute('SELECT state FROM ground WHERE namespace=?',(ground.namespace,)).fetchone()[0]==encoded
+        assert env.journal.db.execute('SELECT * FROM effects').fetchall()==effects
 
 
 def proxy(env,monkeypatch):

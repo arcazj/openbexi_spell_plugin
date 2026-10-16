@@ -161,8 +161,8 @@ assert_effects(before,[('AbortRanging',True,'','')],'READY')
 """)
 
 for label,function,method,expected,contract in (
-    ('baseband-names','GetBasebandNames','GetBasebandNames','BBE','FUNCTION-GETBASEBANDNAMES'),
-    ('antenna-names','GetAntennaNames','GetAntennaNames','ANT','FUNCTION-GETANTENNANAMES')):
+    ('baseband-names','GetBasebandNames','GetBasebandNames',"BBE,'DSS-BBE-2'",'FUNCTION-GETBASEBANDNAMES'),
+    ('antenna-names','GetAntennaNames','GetAntennaNames',"ANT,'DSS-ANTENNA-2'",'FUNCTION-GETANTENNANAMES')):
     group(label,[contract,'EXAMPLE-174'],positive=f"""
 before=mark()
 actual={function}(config=CFG)

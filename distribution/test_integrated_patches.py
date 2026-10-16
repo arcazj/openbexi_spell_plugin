@@ -251,7 +251,10 @@ def test_driver_corrections_match_native_evidence_and_preserve_repository(tmp_pa
     shutil.copytree(ROOT/'driver_plugin/src',source,ignore=shutil.ignore_patterns('__pycache__','*.pyc'))
     originals = {name:(ROOT/'driver_plugin/src'/name).read_bytes() for name in composition.DRIVER_NAMES}
     report = composition.apply_driver_tree(source, source/'openbexi_dss_proxy/_composition')
-    qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())['driver']
+    expected = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
+    qualified = expected['driver']
+    for name,digest in expected['driver_additions'].items():
+        assert report['python_sources'][name]==digest
     assert set(qualified) == set(composition.DRIVER_NAMES)
     for name in composition.DRIVER_NAMES:
         assert report['sources'][name]['patched_sha256'] == qualified[name]

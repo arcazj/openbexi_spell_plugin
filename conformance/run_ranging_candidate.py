@@ -75,15 +75,16 @@ def main():
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
         verify_capture(runtime['integrated'],inputs)
-        assert runtime['profile']=='fresh-composed-wheel-plus-ranging-overlay/1'
-        overlay=runtime['overlay']['files']
-        for name,path in {'ranging_complete_patches.py':'source_port/ranging_complete_patches.py',
-                          'ranging_complete_provenance.py':'conformance/ranging_complete_provenance.py',
-                          'ranging_complete.Dockerfile':'conformance/ranging_complete.Dockerfile',
-                          'installed_provenance.py':'conformance/installed_provenance.py'}.items():
-            assert overlay[name]==inputs[path],name
-        for name in runtime['overlay']['added_sources']:
-            assert overlay['modules/'+name]==inputs['driver_plugin/src/'+name]
+        assert runtime['profile'] in ('fresh-composed-wheel-plus-ranging-overlay/1','fresh-composed-ranging-wheel/1')
+        if runtime['profile']=='fresh-composed-wheel-plus-ranging-overlay/1':
+            overlay=runtime['overlay']['files']
+            for name,path in {'ranging_complete_patches.py':'source_port/ranging_complete_patches.py',
+                              'ranging_complete_provenance.py':'conformance/ranging_complete_provenance.py',
+                              'ranging_complete.Dockerfile':'conformance/ranging_complete.Dockerfile',
+                              'installed_provenance.py':'conformance/installed_provenance.py'}.items():
+                assert overlay[name]==inputs[path],name
+            for name in runtime['overlay']['added_sources']:
+                assert overlay['modules/'+name]==inputs['driver_plugin/src/'+name]
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())

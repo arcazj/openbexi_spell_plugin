@@ -145,7 +145,7 @@ check_legacy_reopen('DISABLED','READY',False)
 check_legacy_reopen('READY','READY',True)
 for active in ('RANGING','CALIBRATING'):
     state=mark()['ground']
-    state.update(ranging=active,ranging_schedule_enabled=False)
+    state.update(ranging=active,ranging_schedule_enabled=False,ranging_paths=[[BBE,ANT]])
     encoded=json.dumps(state,indent=1)
     first=fixture('legacy_reopen',encoded=encoded)
     assert first['migration_error'] is None
@@ -153,7 +153,7 @@ for active in ('RANGING','CALIBRATING'):
     second=fixture('reopen')
     equal(second['ground_encoded'],encoded)
     equal(second['ground'],state)
-    equal(GetBasebandNames(config=CFG),[BBE])
+    equal(GetBasebandNames(config=CFG),[BBE,'DSS-BBE-2'])
 """,failure="""
 valid=mark()['ground']
 for invalid in ({'ranging':'UNKNOWN'},{'ranging':[]},{'ranging':'RANGING','ranging_schedule_enabled':0}):

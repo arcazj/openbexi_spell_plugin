@@ -48,7 +48,13 @@ def verify_composed(runtime, inputs, normalized):
         row=manifest['sources'][name]
         assert runtime['installed'][name]==installed[name]==row['patched_sha256'],name
         stages=[stage for stage in manifest['stages'] if name in stage['sources']]
-        assert stages and stages[-1]['recipe']==recipe,name
+        assert stages and any(stage['recipe']==recipe for stage in stages),name
+        if 'ranging_complete_patches.py' in manifest['recipes']:
+            final='ranging_complete_patches.py'
+            if name.endswith('/ground.py'):
+                final='memory_feature_patches.py' if 'memory_feature_patches.py' in manifest['recipes'] else 'ranging_reopen_patches.py'
+            assert stages[-1]['recipe']==final,name
+        else:assert stages[-1]['recipe']==recipe,name
         assert stages[-1]['sources'][name]['after_sha256']==row['patched_sha256'],name
     return driver['sources']['openbexi_spell_dss/ground.py']
 

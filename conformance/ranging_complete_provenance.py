@@ -9,6 +9,12 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application=capture_application()
+        recipes=application['integrated']['manifest']['composition']['native']['recipes']
+        if not {'ranging_complete_patches.py','ranging_reopen_patches.py'}<=set(recipes):raise ValueError('Composed ranging recipes are absent')
+        return dict(application,profile='fresh-composed-ranging-wheel/1')
     base=json.loads((EVIDENCE/'base.json').read_bytes())
     if base['profile']!='fresh-composed-display-command-wheel/1':raise ValueError('Ranging base differs')
     expected=dict(base['installed'])

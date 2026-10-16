@@ -46,6 +46,7 @@ DONORS = {
     'display_commands':('f602418','distribution/evidence/group-block-native-review.json'),
     'manoeuvre':('0f566ee','manoeuvre_database_review'),
     'procedure_library':('a8e2bcd','procedure_library_review'),
+    'ranging_complete':('4b59f752116135ebb6cb72a49c535efa5f2ea165','ranging_complete_review'),
 }
 
 
@@ -372,6 +373,8 @@ def main():
         donors.update(apply(python,driver,composition,source_identities))
     from library_source_donors import apply as apply_libraries
     native_distribution = apply_libraries(python,native,composition,reports)
+    from ranging_source_donor import apply as apply_ranging
+    driver_additions=apply_ranging(python,driver,composition,reports['ranging_complete'])
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     startup = reports['context_startup']
@@ -417,6 +420,7 @@ def main():
         'python':{name:python[name] for name in composition.PYTHON_NAMES},'driver':driver,
         'host':host, 'host_client':host_client, 'host_package':host_package,
         'native_distribution':native_distribution,
+        'driver_additions':driver_additions,
         'host_candidate':{'version':upgrade['version'],'wheel_sha256':upgrade['wheel']['sha256']},
         'full_v05_accepted':False,'full_v06_accepted':False}
     output = ROOT/'distribution/evidence/followup-qualified-sources.json'

@@ -22,9 +22,12 @@ PATHS=[['DSS-BBE-1','DSS-ANTENNA-1'],['DSS-BBE-2','DSS-ANTENNA-2']]
 DEFAULTS={'frequency_hz':'1000000','integration_ms':'1000'}
 MEANINGS={'READY':0,'RANGING':1,'CALIBRATING':3,'ERROR':2}
 ERRORS={'dual':[0,2,1,1],'baseband-batch':[0,1,1,1],
-        'baseband-format':[0,0,2,1],'status':[0,0,1,0],'schedule-dual':[0,0,1,1]}
+        'baseband-format':[0,0,2,1],'status':[0,0,1,0],'schedule-dual':[0,0,1,1],
+        'calibration':[0,1,1,1]}
 DIMENSIONS=['positive','boundary','failure','recovery']
 FINAL={
+ 'calibration:positive':('CALIBRATING',PATHS,False),'calibration:boundary':('READY',[],False),
+ 'calibration:failure':('READY',[],False),'calibration:recovery':('READY',[],False),
  'dual:positive':('RANGING',PATHS,False),'dual:boundary':('READY',[],False),
  'dual:failure':('READY',[],False),'dual:recovery':('RANGING',[PATHS[1]],False),
  'status:positive':('READY',[],False),'status:boundary':('ERROR',[],False),
@@ -177,11 +180,11 @@ def case_proof(name,spec,row,project):
         oracle='Native return types, unchanged DSS, original protobuf, exact journal receipts and independently calculated ranging state')
 
 
-def review(path,overlay,revision,image):
+def review(path,overlay,revision,image,*,native_wheel=None,driver_wheel=None):
     raw=read(path);workspace=path.parent/'workspace'
     assert raw['passed'] is True and raw['controller_exit_code']==0 and raw['timed_out'] is False and raw['runtime_image']==image
     specs=frozen('conformance/ranging_complete_cases.py',revision).CASES
-    assert len(specs)==20 and set(raw['checks'])==set(specs)
+    assert len(specs) in (20,24) and set(raw['checks'])==set(specs)
     for name,digest in raw['inputs'].items():
         assert hashlib.sha256(source_bytes(ROOT,name,revision)).hexdigest()==digest
         assert sha(path.parent/'inputs'/name)==digest
@@ -191,17 +194,24 @@ def review(path,overlay,revision,image):
     assert read(workspace/'host-inputs.json')==raw['host_inputs']
     for name in ('ranging_complete_cases.py','ranging_candidate_controller.py','installed_provenance.py','ranging_complete_provenance.py'):
         assert sha(workspace/name)==raw['inputs']['conformance/'+name]
-    overlay_proof(raw,overlay,revision)
+    wheels=None
+    if raw['runtime_sources']['profile']=='fresh-composed-ranging-wheel/1':
+        assert overlay is None and native_wheel is not None and driver_wheel is not None
+        from limit_telemetry_sources import verify
+        wheels=verify(raw,native_wheel,driver_wheel,profile='fresh-composed-ranging-wheel/1',required_recipes=('ranging_complete_patches.py','ranging_reopen_patches.py'))
+        assert len(specs)==24
+    else:overlay_proof(raw,overlay,revision)
     checks={name:case_proof(name,specs[name],row,workspace/name.replace(':','__')) for name,row in raw['checks'].items()}
-    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()),checks=checks,
+    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()) if overlay else None,checks=checks,composed_wheels=wheels,
         review_source=ref(Path(__file__)),source_inputs=raw['inputs'],qualified_contracts=[],full_v05_accepted=False)
 
 
 if __name__=='__main__':
     import argparse
     parser=argparse.ArgumentParser()
-    for key in ('raw','overlay','output'):parser.add_argument('--'+key,type=Path,required=True)
+    for key in ('raw','output'):parser.add_argument('--'+key,type=Path,required=True)
+    for key in ('overlay','native-wheel','driver-wheel'):parser.add_argument('--'+key,type=Path)
     for key in ('revision','image'):parser.add_argument('--'+key,required=True)
-    args=parser.parse_args();result=review(args.raw,args.overlay,args.revision,args.image)
+    args=parser.parse_args();result=review(args.raw,args.overlay,args.revision,args.image,native_wheel=args.native_wheel,driver_wheel=args.driver_wheel)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(dict(passed=True,checks=len(result['checks']),output=str(args.output))))
