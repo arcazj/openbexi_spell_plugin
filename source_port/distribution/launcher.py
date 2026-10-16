@@ -35,7 +35,13 @@ def validate():
 
 def environment():
     validate()
+    from .library import priorities
+    try:
+        ordering=priorities(os.environ.get('OPENBEXI_SPELL_PROJECT',os.getcwd()))
+    except (OSError,ValueError) as error:
+        raise SystemExit('Invalid spell-library.json: '+str(error)) from error
     return dict(os.environ, OPENBEXI_SPELL_PYTHON=sys.executable,
+                OPENBEXI_SPELL_LIBRARY_PRIORITIES=ordering,
                 ASAN_OPTIONS='detect_leaks=0:abort_on_error=1',
                 UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1', PYTHONMALLOC='malloc')
 
