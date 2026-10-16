@@ -9,6 +9,23 @@ VALUES = {
 }
 CASES = {}
 
+PATHS=textwrap.dedent('''\
+    from spell.lang.constants import INPUT_DATA,OUTPUT_DATA
+    input_path=Path(PROC[INPUT_DATA])
+    output_path=Path(PROC[OUTPUT_DATA])
+    assert str(input_path)==plan['input'] and str(output_path)==plan['output']
+    assert input_path!=output_path and input_path.is_dir() and output_path.is_dir()
+    path_errors=[]
+    try:
+        (input_path/'missing-input.txt').read_text()
+    except FileNotFoundError:
+        path_errors.append('missing-input')
+    assert path_errors==['missing-input']
+    assert (input_path/'input.txt').read_text()==plan['content']
+    (output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'])
+    assert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text()==plan['content']
+''')
+
 LIFETIME = textwrap.dedent('''\
     import json
     from pathlib import Path
@@ -17,6 +34,7 @@ LIFETIME = textwrap.dedent('''\
     previous=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []
     phase=len(previous)+1
     initial=json.loads(json.dumps(PROC))
+    __PATH_CHECKS__
     assert 'PRIVATE_VALUE' not in PROC,initial
     assert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial
     assert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())
@@ -47,7 +65,7 @@ LIFETIME = textwrap.dedent('''\
     if plan['dimension']=='recovery' and phase in (1,2):
         raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')
     Path('completed.txt').write_text(str(phase))
-''')
+''').replace('__PATH_CHECKS__',PATHS.rstrip())
 
 CHILD = textwrap.dedent('''\
     import json
@@ -56,6 +74,7 @@ CHILD = textwrap.dedent('''\
     from spell.lang.functions import DisplayStep
     plan=json.loads(Path('plan.json').read_text())
     initial=dict(PROC)
+    __PATH_CHECKS__
     assert 'PRIVATE_VALUE' not in PROC
     assert PROC['ARGS']==plan['arguments'] and isinstance(PROC['ARGS'],dict)
     assert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())
@@ -81,7 +100,7 @@ CHILD = textwrap.dedent('''\
     assert {key:ARGS[key] for key in ARGS.keys()}==plan['arguments']
     Path('child-result.json').write_text(json.dumps({'initial':initial,'first':first,
         'last':last,'custom':PROC['PRIVATE_VALUE'],'rejected':rejected}))
-''')
+''').replace('__PATH_CHECKS__',PATHS.rstrip())
 
 for dimension, arguments in VALUES.items():
     for operation in ('reload','reopen'):
@@ -93,6 +112,7 @@ for dimension, arguments in VALUES.items():
         from spell.runtime import PROC
         from spell.lang.functions import StartProc
         plan=json.loads(Path('plan.json').read_text())
+        __PATH_CHECKS__
         assert PROC['NAME']=='main#1' and PROC['PARENT']==''
         assert PROC['ARGS']=={} and isinstance(PROC['ARGS'],dict)
         PROC['PRIVATE_VALUE']={'owner':'parent'}
@@ -100,7 +120,7 @@ for dimension, arguments in VALUES.items():
         assert PROC['PRIVATE_VALUE']=={'owner':'parent'}
         assert PROC['ARGS']=={} and PROC['STEP'] is None and PROC['PREV_STEP'] is None
         Path('parent-result.json').write_text(json.dumps({'initial':dict(PROC),'returned':True}))
-    ''')
+    ''').replace('__PATH_CHECKS__',PATHS.rstrip())
     CASES['child:'+dimension]=dict(dimension=dimension,arguments=arguments,source=parent,
         child=CHILD,operation='child',rounds=1)
 

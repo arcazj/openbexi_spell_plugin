@@ -31,8 +31,11 @@ stops that sequence and prevents qualification.
 The page 81 `INPUT_DATA` description says "output directory" twice. Page 90
 explicitly assigns input files to `PROC[INPUT_DATA]` and output files to
 `PROC[OUTPUT_DATA]`; the original native initialization agrees with page 90.
-The initial baseline only observes these paths. Full path behavior needs its own
-checks before either constant is qualified.
+The initial baseline only observes these paths. The lifecycle suite configures
+distinct private input/output directories in the genuine generated context,
+then runs the unchanged host and native launcher. Procedures check those paths,
+read input, recover from a missing file, and write separate output. The
+configuration, fixture launcher and file contents are retained for inspection.
 
 The original executor represents each step as `[id, title]` and includes the
 instance suffix in the procedure name. Checks preserve these representations

@@ -1,6 +1,7 @@
 """Retain native child metadata, reload and interpreter-lifetime observations."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import queue
 import sys
@@ -19,11 +20,43 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 (ROOT/'host-inputs.json').write_text(json.dumps({p.name:sha(p) for p in Path('/opt/host').glob('*.py')}))
 checks={}
 
+# Configure only the private generated example before the unchanged host starts
+# its installed listener. Every other command execs the real native launcher.
+wrapper=ROOT/'configured-bin';wrapper.mkdir()
+launcher=wrapper/'spell-native'
+launcher.write_text('''#!/usr/local/bin/python
+import json,os,subprocess,sys
+from pathlib import Path
+import xml.etree.ElementTree as ET
+real='/usr/local/bin/spell-native'
+if sys.argv[1:2]==['init-example']:
+    raw=subprocess.check_output([real,*sys.argv[1:]])
+    config=Path(json.loads(raw)['example'])/'config/contexts/context_example.xml'
+    tree=ET.parse(config)
+    tree.find('input_dir').text='$PROC_METADATA_INPUT'
+    tree.find('output_dir').text='$PROC_METADATA_OUTPUT'
+    tree.write(config,encoding='utf-8')
+    sys.stdout.buffer.write(raw)
+else:
+    os.execv(real,[real,*sys.argv[1:]])
+''')
+launcher.chmod(0o755)
+os.environ['PATH']=str(wrapper)+os.pathsep+os.environ['PATH']
+
 for name,spec in CASES.items():
     project=ROOT/name.replace(':','-');project.mkdir()
     (project/'main.py').write_text(spec['source'])
     if 'child' in spec:(project/'child.py').write_text(spec['child'])
-    (project/'plan.json').write_text(json.dumps({k:spec[k] for k in ('arguments','dimension','operation','rounds')}))
+    input_path=project/'fixture-inputs';input_path.mkdir()
+    output_path=project/'fixture-outputs';output_path.mkdir()
+    content={'positive':'procedure input','boundary':'','failure':'after missing input',
+        'recovery':'caf\u00e9 \u03bb\nsecond line'}[spec['dimension']]
+    (input_path/'input.txt').write_text(content)
+    plan={k:spec[k] for k in ('arguments','dimension','operation','rounds')}
+    plan.update(input=str(input_path),output=str(output_path),content=content)
+    (project/'plan.json').write_text(json.dumps(plan))
+    os.environ['PROC_METADATA_INPUT']=str(input_path)
+    os.environ['PROC_METADATA_OUTPUT']=str(output_path)
     (project/'evaluations.txt').write_text('0')
     session=NativeSession(project,project/'main.py',{})
     expression=("(__import__('pathlib').Path('evaluations.txt').write_text(str(int("
@@ -33,7 +66,8 @@ for name,spec in CASES.items():
     events=[]
     row=dict(passed=False,dimension=spec['dimension'],operation=spec['operation'],
         commands=[],states=[],phases=[],source=spec['source'],expression=expression,
-        procedure_inputs={p.name:sha(p) for p in project.glob('*.py')})
+        procedure_inputs={p.name:sha(p) for p in project.glob('*.py')},
+        fixture_paths=plan,launcher_sha256=sha(launcher))
 
     def drain():
         while True:
@@ -66,6 +100,9 @@ for name,spec in CASES.items():
 
     try:
         session.start();session.pump=drain
+        configuration=Path(session.directory.name)/'session/config/contexts/context_example.xml'
+        (project/'context-configuration.xml').write_bytes(configuration.read_bytes())
+        row['configuration_sha256']=sha(project/'context-configuration.xml')
         for phase in range(1,spec['rounds']+1):
             wait_status({'PAUSED'},allow_old_terminal=phase>1)
             request('CMD_RUN',send=True)
@@ -107,6 +144,10 @@ for name,spec in CASES.items():
                     assert session.instance not in listing['ExecutorList'].split('\x03'),listing
                     request('REQ_OPEN_EXEC',context=True,fields=dict(GuiMode='CONTROL',
                         Arguments=expression,OpenMode='{Automatic:True,Visible:True,Blocking:False}'))
+        expected_files={'main-1.txt','child-1.txt'} if spec['operation']=='child' else {'main-1.txt'}
+        row['output_files']={p.name:p.read_text() for p in output_path.glob('*.txt')}
+        assert row['output_files']=={name:content for name in expected_files}
+        assert (input_path/'input.txt').read_text()==content
         row['passed']=True
     except Exception:row['error']=traceback.format_exc()
     finally:
