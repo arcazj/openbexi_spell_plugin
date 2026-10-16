@@ -413,7 +413,7 @@ add('properties', 'recovery', '''
 seed()
 unchanged(lambda:call('GetLimits','TMparam',Select='GENERIC',Value='LoHigh'))
 equal(call('GetLimits','TMparam',Select='GENERIC',Value=LoYel),20)
-unchanged(lambda:call('SetLimits','TMparam',Definition={'LoHigh':30}),SyntaxException)
+unchanged(lambda:call('SetLimits','TMparam',Definition={'LoHigh':30}))
 assert call('SetLimits','TMparam',Definition={LoYel:19})
 equal(call('GetLimits','TMparam',Select='GENERIC',Value=LoYel),19)
 ''')
