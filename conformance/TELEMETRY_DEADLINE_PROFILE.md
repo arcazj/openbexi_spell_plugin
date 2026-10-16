@@ -19,7 +19,7 @@ Fifteen focused backend cases passed. The strengthened timed test sends the
 original protobuf request over gRPC through the actual private relay and driver
 dispatcher to the real DSS transport. It observes the request still pending after
 36 seconds, advances DSS to produce a new sample, and checks the returned raw
-and engineering value. This tests behavior beyond both the old transport and
+value. This tests behavior beyond both the old transport and
 relay limits. The corrected no-update recovery test waits for acquisition to
 start before advancing the source, avoiding a scheduling race.
 
