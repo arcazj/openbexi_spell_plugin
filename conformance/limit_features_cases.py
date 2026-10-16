@@ -5,13 +5,13 @@ HEADER = '''##########
 # PYTHON VERSION: 3
 ##########
 import json,sqlite3
-from pathlib import Path
+from pathlib import Path as FilePath
 from spell.lang import functions as api
 from spell.lang.constants import *
 from spell.lang.modifiers import *
 from spell.lib.exception import DriverException,SyntaxException
 observed={'calls':[],'observations':[]}
-def save():Path('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
+def save():FilePath('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
 def call(name,*args,**options):
     row={'function':name,'args':repr(args),'options':repr(options)}
     observed['calls'].append(row)
@@ -55,7 +55,7 @@ CASES = {}
 
 def add(feature, dimension, body):
     CASES[feature+':'+dimension] = dict(feature=feature, dimension=dimension,
-        source=HEADER+body+"\nPath('result.json').write_text(json.dumps({'completed':True}))\n")
+        source=HEADER+body+"\nFilePath('result.json').write_text(json.dumps({'completed':True}))\n")
 
 
 add('named', 'positive', '''

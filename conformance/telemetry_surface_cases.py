@@ -5,20 +5,20 @@ HEADER = '''##########
 # PYTHON VERSION: 3
 ##########
 import json,time
-from pathlib import Path
+from pathlib import Path as FilePath
 from spell.lang import functions as api
 from spell.lang.constants import *
 from spell.lang.modifiers import *
 from spell.lib.adapter.utctime import MINUTE
 from spell.lib.exception import DriverException
 observed={'calls':[],'observations':[],'fixtures':[]}
-def save():Path('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
+def save():FilePath('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
 def fixture(action,**values):
     token=str(time.monotonic_ns())
     request=dict(token=token,action=action,**values)
-    temporary=Path('fixture-request.tmp');temporary.write_text(json.dumps(request))
+    temporary=FilePath('fixture-request.tmp');temporary.write_text(json.dumps(request))
     temporary.replace('fixture-request.json')
-    reply=Path('fixture-'+token+'.json');deadline=time.monotonic()+5
+    reply=FilePath('fixture-'+token+'.json');deadline=time.monotonic()+5
     while not reply.exists():
         assert time.monotonic()<deadline,'Fixture timeout'
         time.sleep(.01)
@@ -47,7 +47,7 @@ CASES = {}
 
 
 def add(name, body, **options):
-    CASES[name] = dict(source=HEADER+body+"\nPath('result.json').write_text(json.dumps({'completed':True}))\n",
+    CASES[name] = dict(source=HEADER+body+"\nFilePath('result.json').write_text(json.dumps({'completed':True}))\n",
         dimension='diagnostic', **options)
 
 

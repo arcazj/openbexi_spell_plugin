@@ -6,7 +6,7 @@ CASES = {}
 
 def add(feature, dimension, body, **options):
     CASES[feature+':'+dimension] = dict(feature=feature, dimension=dimension,
-        source=HEADER+body+"\nPath('result.json').write_text(json.dumps({'completed':True}))\n", **options)
+        source=HEADER+body+"\nFilePath('result.json').write_text(json.dumps({'completed':True}))\n", **options)
 
 
 GET = "call('GetTM','TM.POWER.BUS_VOLTAGE',Wait=False)"
