@@ -9,7 +9,7 @@ from pathlib import Path
 import spell.lang.functions as functions
 import spell.lang.constants as constants
 import spell.lang.modifiers as modifiers
-from spell.lang.modifiers import OnFailure,PromptUser,Host,Time,Format,Printer
+from spell.lang.modifiers import OnFailure,PromptUser,HandleError,Host,Time,Format,Printer
 from spell.lang.constants import CANCEL
 from spell.lib.adapter.utctime import TIME
 observed={'calls':[]}
@@ -17,7 +17,7 @@ def call(name,**options):
     row={'function':name,'options':{k:str(v) for k,v in options.items()}}
     observed['calls'].append(row)
     try:
-        value=getattr(functions,name)('DSS_TELEMETRY',**{OnFailure:CANCEL,PromptUser:False,**options})
+        value=getattr(functions,name)('DSS_TELEMETRY',**{OnFailure:CANCEL,PromptUser:False,HandleError:False,**options})
         row.update(returned=value,return_type=type(value).__name__)
     except Exception as error:
         row.update(error_type=type(error).__name__,error=str(error))
