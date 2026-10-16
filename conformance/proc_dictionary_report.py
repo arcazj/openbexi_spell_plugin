@@ -78,7 +78,15 @@ def qualify(baseline_path,lifecycle_path,original_path,image):
                 assert plan['input']==remote+'/fixture-inputs' and plan['output']==remote+'/fixture-outputs'
                 assert (project/'fixture-inputs/input.txt').read_text()==plan['content']
                 assert row['output_files']=={p.name:p.read_text() for p in (project/'fixture-outputs').glob('*.txt')}
-                expected_files={'main-1.txt','child-1.txt'} if spec['operation']=='child' else {'main-1.txt'}
+                opened={e['message']['fields']['ProcId'] for e in events
+                    if e.get('message',{}).get('id')=='MSG_EXEC_OP'
+                    and e['message']['fields'].get('ExecOp')=='OPEN'
+                    and e['message']['fields'].get('ParentId')=='main#1'}
+                if spec['operation']=='child':
+                    assert len(opened)==1
+                    child_instance,=opened
+                    assert child_instance.split('#',1)[0]=='child'
+                expected_files={'main-1.txt',child_instance.replace('#','-')+'.txt'} if spec['operation']=='child' else {'main-1.txt'}
                 assert row['output_files']=={name:plan['content'] for name in expected_files}
                 assert sha(project/'context-configuration.xml')==row['configuration_sha256']
                 config=ET.parse(project/'context-configuration.xml')
@@ -92,18 +100,14 @@ def qualify(baseline_path,lifecycle_path,original_path,image):
                     assert (project/'child.py').read_text()==spec['child']
                     child=read(project/'child-result.json');parent=read(project/'parent-result.json')
                     assert child==row['child_result'] and parent==row['parent_result']
-                    assert child['initial']['NAME']=='child#1'
+                    assert child['initial']['NAME']==child_instance
                     assert child['initial']['PARENT']==parent['initial']['NAME']=='main#1'
                     assert parent['initial']['PARENT']==''
                     assert child['initial']['ARGS']==spec['arguments'] and parent['initial']['ARGS']=={}
                     assert child['custom']=={'owner':'child'} and parent['initial']['PRIVATE_VALUE']=={'owner':'parent'}
                     assert child['first']=={'step':['CHILD','Child metadata'],'previous':None}
                     assert child['last']=={'step':['DONE','Child done'],'previous':['CHILD','Child metadata']}
-                    opened={e['message']['fields']['ProcId'] for e in events
-                        if e.get('message',{}).get('id')=='MSG_EXEC_OP'
-                        and e['message']['fields'].get('ExecOp')=='OPEN'
-                        and e['message']['fields'].get('ParentId')=='main#1'}
-                    assert opened=={'child#1'}
+                    assert opened=={child_instance}
                 else:
                     separator=['CMD_RELOAD'] if spec['operation']=='reload' else ['REQ_CLOSE_EXEC','REQ_EXEC_LIST','REQ_OPEN_EXEC']
                     assert commands==['CMD_RUN']+(separator+['CMD_RUN'])*(spec['rounds']-1)

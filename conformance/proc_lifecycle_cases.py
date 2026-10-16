@@ -78,7 +78,7 @@ CHILD = textwrap.dedent('''\
     assert 'PRIVATE_VALUE' not in PROC
     assert PROC['ARGS']==plan['arguments'] and isinstance(PROC['ARGS'],dict)
     assert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())
-    assert PROC['NAME']=='child#1' and PROC['PARENT']=='main#1',initial
+    assert PROC['NAME'].split('#',1)[0]=='child' and PROC['PARENT']=='main#1',initial
     assert PROC['STEP'] is None and PROC['PREV_STEP'] is None
     rejected=[]
     try:

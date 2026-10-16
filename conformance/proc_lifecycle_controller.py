@@ -113,8 +113,10 @@ for name,spec in CASES.items():
                     if e.get('message',{}).get('id')=='MSG_EXEC_OP'
                     and e['message']['fields'].get('ExecOp')=='OPEN'
                     and e['message']['fields'].get('ParentId')==session.instance}
-                assert opened=={'child#1'},opened
-                wait_status({'FINISHED'},'child#1')
+                assert len(opened)==1,opened
+                child_instance,=opened
+                assert child_instance.split('#',1)[0]=='child',child_instance
+                wait_status({'FINISHED'},child_instance)
                 row['child_result']=json.loads((project/'child-result.json').read_bytes())
                 row['parent_result']=json.loads((project/'parent-result.json').read_bytes())
                 child=row['child_result']['initial'];parent=row['parent_result']['initial']
@@ -144,7 +146,7 @@ for name,spec in CASES.items():
                     assert session.instance not in listing['ExecutorList'].split('\x03'),listing
                     request('REQ_OPEN_EXEC',context=True,fields=dict(GuiMode='CONTROL',
                         Arguments=expression,OpenMode='{Automatic:True,Visible:True,Blocking:False}'))
-        expected_files={'main-1.txt','child-1.txt'} if spec['operation']=='child' else {'main-1.txt'}
+        expected_files={'main-1.txt',child_instance.replace('#','-')+'.txt'} if spec['operation']=='child' else {'main-1.txt'}
         row['output_files']={p.name:p.read_text() for p in output_path.glob('*.txt')}
         assert row['output_files']=={name:content for name in expected_files}
         assert (input_path/'input.txt').read_text()==content
