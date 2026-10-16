@@ -4,7 +4,7 @@ from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
-import sqlite3
+from evidence_database import evidence_database
 import sys
 import types
 
@@ -124,7 +124,7 @@ def verify_cases(path, image, revision, kind):
         assert len(receipts) == spec['expected_stages']
         assert row['initial_dss']['core']['commands_executed'] == 0
         assert row['final_dss']['core']['commands_executed'] == spec['expected_executions']
-        with sqlite3.connect((project/'dss.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+        with evidence_database(project/'dss.sqlite') as db:
             actual = db.execute('SELECT request_hash,raw_tc,acknowledgement FROM operations ORDER BY rowid').fetchall()
         assert len(actual) == len(receipts)
         frames = []
