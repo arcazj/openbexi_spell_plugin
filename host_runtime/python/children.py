@@ -9,9 +9,10 @@ import re
 
 
 class ChildProcedures:
-    def __init__(self, root):
+    def __init__(self, root, present=None):
         self.root = root
         self.children = {}
+        self.present = present
 
     def observe(self, message):
         fields = message.get('fields', {})
@@ -39,6 +40,12 @@ class ChildProcedures:
                 r'\{Automatic:(True|False),Visible:(True|False),Blocking:(True|False)\}', mode)
             if not match:
                 raise RuntimeError('Invalid native child open mode: ' + mode)
+            if match.group(2) == 'True' and self.present and not child.get('presented'):
+                # Present only owned, visible procedures, once per OPEN lifetime.
+                # Do this before the initial RUN; repeated status polls must not
+                # reprint source, and hidden procedures must not read it at all.
+                child['presented'] = True
+                self.present(procedure)
             if match.groups()[:2] != ('True', 'True'):
                 child['pending'] = False
                 continue

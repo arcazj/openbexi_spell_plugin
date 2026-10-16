@@ -13,6 +13,7 @@ import selectors
 import sys
 import threading
 import time
+import tokenize
 import types
 
 # -I intentionally excludes cwd; only the installed adapter directory is added.
@@ -154,6 +155,28 @@ class Adapter:
         return {'name': relative.rsplit('/', 1)[-1],
                 'path': self.host_root.rstrip('/\\') + '/' + relative}
 
+    def present_child(self, instance):
+        """Show visible child source in the client console beside the parent."""
+        procedure = instance.rsplit('#', 1)[0]
+        project = self.session.project.resolve()
+        path = (project / (procedure + '.py')).resolve()
+        if not path.is_relative_to(project):
+            raise ValueError('Child source is outside the launched project')
+        try:
+            with tokenize.open(path) as stream:
+                content = stream.read()
+        except (OSError, UnicodeError, SyntaxError) as error:
+            self.event('output', category='stderr', output=f'Child source unavailable: {instance}: {error}\n')
+            return
+        self.event('output', category='console', source=self.source(procedure), line=1,
+                   output=f'=== SPELL child {instance} ===\n')
+        # Keep every protocol message bounded without truncating the source.
+        for offset in range(0, len(content), 16384):
+            self.event('output', category='console', source=self.source(procedure),
+                       output=content[offset:offset+16384])
+        self.event('output', category='console', source=self.source(procedure),
+                   output=('' if content.endswith('\n') else '\n')+'=== End child source ===\n')
+
     def relative(self, path):
         normalized = path.replace('\\', '/')
         root = self.host_root.replace('\\', '/').rstrip('/') + '/'
@@ -202,7 +225,7 @@ class Adapter:
                 session.close()
                 raise
             self.session.pump = self.drain_events
-            self.children = ChildProcedures(self.session.instance)
+            self.children = ChildProcedures(self.session.instance, self.present_child)
             self.prompts = PromptQueue(self.session.instance)
             self.response(request)
             self.event('initialized')

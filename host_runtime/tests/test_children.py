@@ -2,6 +2,7 @@
 from pathlib import Path
 import queue
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'python'))
@@ -30,6 +31,38 @@ class Peer:
 
 
 class ChildTests(unittest.TestCase):
+    def test_source_presentation_obeys_visibility_and_open_lifetime(self):
+        shown=[]
+        children=ChildProcedures('main#1',shown.append);peer=Peer()
+        children.observe(operation('unrelated#0','other#1'))
+        children.observe(operation());children.service(peer);children.service(peer)
+        self.assertEqual(shown,['child#0'])
+        children.observe(operation(operation='CLOSE'))
+        children.observe(operation());children.service(peer)
+        self.assertEqual(shown,['child#0','child#0'])
+        for visible in ('False','True'):
+            peer.mode='{Automatic:False,Visible:'+visible+',Blocking:False}'
+            children.observe(operation('manual-'+visible+'#0'));children.service(peer)
+        self.assertEqual(shown,['child#0','child#0','manual-True#0'])
+
+    def test_source_console_keeps_exact_content_and_rejects_project_escape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project=Path(directory);(project/'Bus').mkdir()
+            source='# Child source\n'+"value='é'\n"*3000
+            (project/'Bus/child.py').write_text(source,encoding='utf-8',newline='\n')
+            adapter=Adapter();adapter.session=type('Session',(),dict(project=project))()
+            adapter.host_root='C:/client/project';messages=[]
+            adapter.emit=messages.append
+            adapter.present_child('Bus/child#0')
+            outputs=[m['body'] for m in messages]
+            self.assertEqual(''.join(row['output'] for row in outputs[1:-1]),source)
+            self.assertTrue(all(row['category']=='console' for row in outputs))
+            self.assertTrue(all(row['source']['path']=='C:/client/project/Bus/child.py' for row in outputs))
+            self.assertTrue(all(len(row['output'])<=16384 for row in outputs))
+            with self.assertRaisesRegex(ValueError,'outside'):adapter.present_child('../escape#0')
+            adapter.present_child('missing#0')
+            self.assertEqual(messages[-1]['body']['category'],'stderr')
+
     def test_only_owned_children_and_grandchildren_start_once_after_loading(self):
         children = ChildProcedures('main#1')
         peer = Peer()
