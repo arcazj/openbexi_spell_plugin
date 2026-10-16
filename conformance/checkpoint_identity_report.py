@@ -48,7 +48,11 @@ def qualify_run(report,cases,kind):
     installed=report['runtime_sources'].get('profile') is not None
     from installed_provenance import input_paths
     expanded=set(REQUIRED_INPUTS)|set(input_paths(ROOT))|{'host_runtime/python/native.py'}
-    assert set(report['inputs'])==expanded if installed else set(report['inputs']) in (set(REQUIRED_INPUTS),expanded)
+    mailbox_inputs = {'conformance/ipc_mailbox_provenance.py', 'conformance/ipc_mailbox_build.py',
+        'conformance/ipc_mailbox_race.cpp', 'conformance/ipc_mailbox_install.py',
+        'conformance/ipc_mailbox.Dockerfile'}
+    allowed = (expanded, expanded | mailbox_inputs) if installed else (set(REQUIRED_INPUTS), expanded)
+    assert set(report['inputs']) in allowed
     for name,expected in report['inputs'].items():
         assert sha((ROOT/name).read_bytes())==expected,name
     runtime=report['runtime_sources']

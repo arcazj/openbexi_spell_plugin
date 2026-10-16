@@ -18,6 +18,9 @@ whole-container pause and recovery without replay. See
 [the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
 simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 
+Download the accepted [v0.4.0 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.4.0),
+published with the exact qualified wheels, installation instructions and checksums.
+
 The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **483 of 763**
 requirements; **280 remain open**. All 33 native suites pass (1,646 raw checks)
 on the installed runtime from identical offline rebuilds. Prompt ordering and

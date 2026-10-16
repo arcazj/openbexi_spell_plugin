@@ -1,0 +1,87 @@
+{
+  "schema": "openbexi.spell.ipc-mailbox/1",
+  "passed": true,
+  "runtime_image": "sha256:7210768d40b8b7ad79bda6a730a6a91ea8f8af4790b079cd3146c22328b1cc9e",
+  "source": "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C",
+  "preimage_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595",
+  "patched_sha256": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22",
+  "diagnostic_manifest": {
+    "path": "C:\\obipc_mailbox\\.qualification\\ipc-mailbox\\33850d131c0a4fb6a89237bddc74ca53\\manifest.json",
+    "sha256": "834bf11a0b3d15531c77d3be4532ad4ca9b17d8100f07a8052f7185b5d878885"
+  },
+  "retained_failure": {
+    "path": "C:\\obdatabase_scope\\.qualification\\v0.6\\checkpoint-identity\\f5c3d112a8114f16baf26a946216640d\\result.json",
+    "sha256": "da395b2c9debc6af29be3a64cff4db2b6caeb9421e6df7a54528563724ea70e4"
+  },
+  "native_artifacts": {
+    "libspell_executor313.so": "7ec5a4372f8ccbe34d4c1f241dba7d9db05d346eb7f4ce91f849a7ed0a46d4f6",
+    "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
+    "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04"
+  },
+  "probes": {
+    "original-place": {
+      "exit_code": 1,
+      "log_sha256": "3b070166f377baf57dc64ad2f8cb76dd6e1fe29a2f9eb39c691a09ca34e526e7",
+      "log": {
+        "path": "C:\\obipc_mailbox\\.qualification\\ipc-mailbox\\33850d131c0a4fb6a89237bddc74ca53\\original\\place.log",
+        "sha256": "3b070166f377baf57dc64ad2f8cb76dd6e1fe29a2f9eb39c691a09ca34e526e7"
+      }
+    },
+    "original-cancel": {
+      "exit_code": 1,
+      "log_sha256": "d8d08063ce208ff1f3ad0407530ae542286e987481f2e704841625c8c711245d",
+      "log": {
+        "path": "C:\\obipc_mailbox\\.qualification\\ipc-mailbox\\33850d131c0a4fb6a89237bddc74ca53\\original\\cancel.log",
+        "sha256": "d8d08063ce208ff1f3ad0407530ae542286e987481f2e704841625c8c711245d"
+      }
+    },
+    "patched-place": {
+      "exit_code": 0,
+      "log_sha256": "30554bb8dac96746a5a2e36aeb4c0eceb2183b219b4e35ac3ed418cd3d793061",
+      "log": {
+        "path": "C:\\obipc_mailbox\\.qualification\\ipc-mailbox\\33850d131c0a4fb6a89237bddc74ca53\\patched\\place.log",
+        "sha256": "30554bb8dac96746a5a2e36aeb4c0eceb2183b219b4e35ac3ed418cd3d793061"
+      }
+    },
+    "patched-cancel": {
+      "exit_code": 0,
+      "log_sha256": "30554bb8dac96746a5a2e36aeb4c0eceb2183b219b4e35ac3ed418cd3d793061",
+      "log": {
+        "path": "C:\\obipc_mailbox\\.qualification\\ipc-mailbox\\33850d131c0a4fb6a89237bddc74ca53\\patched\\cancel.log",
+        "sha256": "30554bb8dac96746a5a2e36aeb4c0eceb2183b219b4e35ac3ed418cd3d793061"
+      }
+    }
+  },
+  "error_controls": {
+    "checks": 8,
+    "raw": {
+      "path": "C:\\obipc_mailbox\\.qualification\\v0.6\\checkpoint-identity\\07c0f62a631d43dd90837d49f5a975f9\\result.json",
+      "sha256": "0414a00d6bb22919ba3da0aa08eac036b3984f8da194ed6a357655ee7a759dd2"
+    }
+  },
+  "recovery_controls": {
+    "checks": 22,
+    "raw": {
+      "path": "C:\\obipc_mailbox\\.qualification\\v0.6\\checkpoint-identity\\08ea8cf6ca76483aa9a89e79acfcde1f\\result.json",
+      "sha256": "6433154b82ffa2ace72f13fcb01c9d9aec6c64f6b09155552c957444117b0f00"
+    }
+  },
+  "recipes": {
+    "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "ipc_mailbox_build.py": "2ce768153dd0db35be5fa9ed592fc4e0b33a6c2d894d1d23db74748a0b1ab8c8",
+    "incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
+    "ipc_mailbox_race.cpp": "786ee78db0fd2d98a2a5495476ff19a8907617137f65ccda45162374db16e234"
+  },
+  "scope": [
+    "Producer and cancellation retain the queue until publication returns",
+    "A queued response wins over duplicates and cancellation",
+    "Late responses are rejected after removal",
+    "Original native error and checkpoint recovery controls pass"
+  ],
+  "limitations": [
+    "Diagnostic overlay; fresh composed wheels and complete regressions remain required"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "stable_v1_accepted": false
+}

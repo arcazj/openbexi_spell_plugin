@@ -12,8 +12,12 @@ import time
 import xml.etree.ElementTree as ET
 
 
+class BridgeConnectionError(RuntimeError):
+    """The initial IPC connection failed before any request was sent."""
+
+
 class Bridge:
-    def __init__(self, port, environment, log, events):
+    def __init__(self, port, environment, log, events, *, connect_timeout=10):
         self.process = subprocess.Popen(['/bridge/spell-host-ipc', str(port)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log,
             text=True, encoding='utf-8', env=environment)
@@ -24,13 +28,13 @@ class Bridge:
         self.thread = threading.Thread(target=self.read, name='native-ipc-reader')
         self.thread.start()
         try:
-            first = self.replies.get(timeout=10)
+            first = self.replies.get(timeout=connect_timeout)
         except queue.Empty:
             self.close()
-            raise RuntimeError('Native bridge connection timed out')
+            raise BridgeConnectionError('Native bridge connection timed out')
         if first.get('event') != 'connected':
             self.close()
-            raise RuntimeError('Native IPC could not connect: ' + str(first))
+            raise BridgeConnectionError('Native IPC could not connect: ' + str(first))
         self.events = events
 
     def read(self):
@@ -112,6 +116,21 @@ class NativeSession:
         self.pump = None
         self.directory = tempfile.TemporaryDirectory(prefix='spell-host-')
 
+    def connect_bridge(self, port, environment, deadline):
+        while True:
+            if self.process.poll() is not None:
+                raise RuntimeError('Native listener exited during startup')
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise BridgeConnectionError('Native IPC startup deadline expired')
+            try:
+                return Bridge(port, environment, self.log, self.events,
+                              connect_timeout=min(10, remaining))
+            except BridgeConnectionError:
+                if time.monotonic() >= deadline:
+                    raise
+                time.sleep(.05)
+
     def start(self):
         root = Path(self.directory.name)
         example = json.loads(subprocess.check_output(
@@ -144,16 +163,7 @@ class NativeSession:
             cwd=self.project, env=environment, stdout=self.log, stderr=subprocess.STDOUT,
             start_new_session=True)
         deadline = time.monotonic() + 10
-        while True:
-            if self.process.poll() is not None:
-                raise RuntimeError('Native listener exited during startup')
-            try:
-                self.listener = Bridge(9980, environment, self.log, self.events)
-                break
-            except RuntimeError:
-                if time.monotonic() >= deadline:
-                    raise
-                time.sleep(.1)
+        self.listener = self.connect_bridge(9980, environment, deadline)
         self.listener.exchange('REQ_GUI_LOGIN', 'LST',
             {'ContextName': 'example', 'Host': 'openbexi-host-v1', 'GuiMode': 'Development'})
         while time.monotonic() < deadline:
@@ -163,7 +173,9 @@ class NativeSession:
             time.sleep(.05)
         else:
             raise RuntimeError('Native context startup timed out')
-        self.context = Bridge(int(info['ContextPort']), environment, self.log, self.events)
+        # RUNNING is listener bookkeeping; the context IPC accept thread can
+        # still be starting. Retry only connection setup, never a sent request.
+        self.context = self.connect_bridge(int(info['ContextPort']), environment, deadline)
         self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'})
         self.request('REQ_OPEN_EXEC', context=True, fields={'GuiMode': 'CONTROL',
             'Arguments': self.arguments, 'OpenMode': '{Automatic:True,Visible:True,Blocking:False}'})

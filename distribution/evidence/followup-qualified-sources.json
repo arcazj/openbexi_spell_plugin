@@ -1,7 +1,7 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "033f8b3a1eae512f5d7a4fdc65b55a1eae507b26748f652493e7ddc58d75f8a1",
+  "generator_sha256": "139c977e68aaf6b8172ee00c471e4a128e6adb9fab8c6dcea3b2bbbcc1d52cce",
   "donors": {
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
@@ -132,6 +132,16 @@
       "commit": "669c1d794f26492c32b2e2031f4bb6b07fa6f136",
       "path": "conformance/evidence/rng_state.json",
       "sha256": "e20d7eb2940ace9ce106a9a99d6baa95eaa1bd4a5538022e72df154bf4cd63d5"
+    },
+    "context_startup": {
+      "commit": "f843cb8758d8827e277af870254d5651e987705c",
+      "path": "conformance/evidence/context_startup_review.json",
+      "sha256": "7c33cc2fd428e431d815a3dc83e220c60cf8dbf4a268c24d6e3554da85d49c30"
+    },
+    "ipc_mailbox": {
+      "commit": "463e34ffd2ce9213e93df5b1daa84eee29d713bb",
+      "path": "conformance/evidence/ipc_mailbox.json",
+      "sha256": "031528ee1c9d21222e6f05b75eefdd6a83c1c3997ae65daa40fd386cf553c45d"
     }
   },
   "native": {
@@ -229,6 +239,11 @@
       "original": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
       "patched": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
       "ported": "6c1f71a937499f041010b6cdcf395b7d95c16db0321985488c018ffca99d171f"
+    },
+    "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C": {
+      "original": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595",
+      "ported": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595",
+      "patched": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22"
     }
   },
   "python": {
@@ -264,7 +279,7 @@
   "host": {
     "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
     "host_runtime/python/children.py": "5b1702226c91b4de865a2a83a7e34e6d1c3418d0e17d530539031b749f493ea3",
-    "host_runtime/python/native.py": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
     "host_runtime/python/prompts.py": "6a1cda3019e8126842b637a227b2c02c3c1ac930c60269a5a3cdb2d0765db2cb"
   },
   "host_client": {

@@ -24,6 +24,7 @@ import dta_native_patches
 import dta_ipc_patches
 import dta_time_patches
 import flow_patches
+import ipc_mailbox_patches
 import obs_patches
 import limit_patches
 import notification_patches
@@ -60,12 +61,14 @@ RECIPE_NAMES = (
     'child_lifecycle_patches.py',
     'prompt_timeout_patches.py',
     'prompt_control_patches.py',
+    'ipc_mailbox_patches.py',
     'rng_patches.py', 'rng_state_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
+                            ipc_mailbox_patches.SOURCE,
                             shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES,
@@ -162,6 +165,9 @@ def apply_native_tree(source, archive, output):
         elif name == checkpoint_identity_patches.SOURCE:
             recipe = 'checkpoint_identity_patches.py'
             patched[name] = checkpoint_identity_patches.apply(name, original[name], ported[name])
+        elif name == ipc_mailbox_patches.SOURCE:
+            recipe = 'ipc_mailbox_patches.py'
+            patched[name] = ipc_mailbox_patches.apply(ported[name])
         elif name == shutdown_pause_patches.SOURCE:
             intermediate = stage('shutdown_pause_patches.py', name, ported[name],
                 shutdown_pause_patches.apply(name, original[name], ported[name]))
