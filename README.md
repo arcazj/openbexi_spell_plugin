@@ -21,17 +21,16 @@ simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
 Download the accepted [v0.4.0 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.4.0),
 published with the exact qualified wheels, installation instructions and checksums.
 
-The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **499 of 763**
-requirements; **264 remain open**. All 40 native suites pass (1,789 raw checks)
+The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **523 of 763**
+requirements; **240 remain open**. All 44 native suites pass (1,837 raw checks)
 on freshly installed packages from identical offline rebuilds. This increment
-supports the documented legacy `<>` comparison in native procedure compilation
-and AST analysis, preserving source positions, strings and comments. It also
-qualifies the two Python parent sections, child failure policies and positional
-relative/absolute waits. Prompt startup now avoids the confirmed answer/ACK
-deadlock; the combined package retains the coherent context snapshot fix. Prompt/child
-controls and install/removal checks pass. Imported Python modules and builtins
-`eval`/`compile` retain CPython syntax. Full release and final host gates remain
-open; see [the release plan](docs/STABLE_RELEASE_PLAN.md).
+qualifies interrupted time/telemetry waits, interval progress messages, PROC
+metadata and lifetime, and predefined ARGS/IVARS containers. Interrupting a wait
+holds pending callbacks; reloading after an error resets procedure metadata
+without evaluating calling arguments again. All previous 499 requirements,
+prompt/child controls and install/removal gates pass on the combined runtime.
+Full release and final host gates remain open; see
+[the release plan](docs/STABLE_RELEASE_PLAN.md).
 
 ## Native desktop and CLI
 

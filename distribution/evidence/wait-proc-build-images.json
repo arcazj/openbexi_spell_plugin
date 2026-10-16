@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "scope": "Composed wait controls and procedure dictionary checkpoint; release gates remain open",
+  "source_freeze_commit": "6e3f3c2a93d2ef2f20acfc01746e8d24faa74be3",
+  "pipeline": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-candidate\\9da0bb84746a4f78ac18e990852d619c\\result.json",
+    "sha256": "add79fa2f8bc1ca8ee9538644298af60004c5ad5603417f97c7f0d421dbac300"
+  },
+  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
+  "host_image": "sha256:38c16fa6483478b4d4c2fb9c5862f3048d9ab3bf4869ce52b8967d3bc56a2905",
+  "native_wheel_sha256": "d6d8749983e35bbb44771f7cb79c0ce718ab1fd53951d41d0134df40465b6428",
+  "driver_wheel_sha256": "6c1ac52ce2bd832cc2fa0b7f3e2f66c04799555dbbbf484f5989fc82b454f034",
+  "native_builds": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\native\\182686ad5ac447be84df3c96eb7bdfa7\\result.json",
+    "sha256": "a180202f5100ab7e42c3d9f129cfdddaae4a2b6f434f888b8fbf56651df18737"
+  },
+  "driver_builds": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\driver\\27fb45ceaf8448c0af43d4a4ed0dc7c0\\result.json",
+    "sha256": "6ee20dff73fadf619c1267200dd5ac3710f86fb8cfbe9bc09629bb839f21c290"
+  },
+  "fresh_images": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-proc-build\\images\\459582e9587e44d5983544439889d86b\\result.json",
+    "sha256": "2f18be0d365a1b786a7212c3b6d55a70a8bb2ef35c90d61a4625923b4e169ad1"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obwait_proc_composed\\.qualification\\child-regressions\\92d6d8915d0b421aa84b1cc712a133eb\\result.json",
+    "sha256": "ab7201be00a0eff1099a9d102f1e8ef488ba181c2fbe706481a7a2bfb6a13945"
+  },
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "60fa01fc0c0ff20f088c207b34d1862eee7b1ead1ad0503362205214deb8cbf2"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "prompt_controls_checks": {
+    "duplicate_answers": 24,
+    "abort_at_prompt": 12,
+    "child_modes": 9,
+    "timed_prompts": 10
+  },
+  "source_composition_tests": {
+    "checks": 43,
+    "junit": {
+      "path": ".qualification/wait-proc-composition-tests.xml",
+      "sha256": "d482d45bbdb1402f70fd95320119277dc3d2decb96329a15dae9ecac7bfae2bc"
+    }
+  },
+  "wait_diagnostic": {
+    "path": "C:\\obwait_proc_composed\\conformance\\evidence\\wait_interrupt.json",
+    "sha256": "94783e355aeb6876eb0a1970c8576657b6aee721191a94d3a1fb1b4abab06641"
+  },
+  "proc_diagnostic": {
+    "path": "C:\\obwait_proc_composed\\conformance\\evidence\\proc_dictionary.json",
+    "sha256": "6ee1a52503d2109de4fe0a9ebaf9713596bfd69f4e4042cec69e228c5968153f"
+  },
+  "context_observer_review": {
+    "path": "distribution/evidence/context-harness-review.json",
+    "sha256": "47422cfc3d44607c0561a9004314e0934d7416f2b47e7aa71ea6a20844f6d698"
+  },
+  "historical_evidence_tests": {
+    "checks": 23,
+    "junit": {
+      "path": ".qualification/wait-proc-historical-tests.xml",
+      "sha256": "a3f462205d475027518f82227aff3a53507c5ce134a0e7210d467210c19e8e4d"
+    }
+  },
+  "donor_evidence_tests": {
+    "checks": 21,
+    "junit": {
+      "path": ".qualification/wait-proc-donor-tests.xml",
+      "sha256": "e67c201c5427bdd08790c5107047881e616a08b50c902fb1767c894318e778cd"
+    }
+  },
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan profile; compiler installed and leak detection disabled",
+    "Final production packages, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm and platform/operational gates remain open",
+    "Legacy <> compatibility applies to native procedure compilation; imported Python modules and eval/compile retain CPython syntax"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

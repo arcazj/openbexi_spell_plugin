@@ -25,8 +25,8 @@ waiting for IPC acknowledgements; the original source records the next interval
 after sending the preceding message. The initial fixture assumed three updates
 without allowing for that overhead. The revised fixtures retain real clocks,
 require three scalar updates and all three staged rates, and leave more time
-for repeated updates in the shortest phase. They still need a complete passing
-native run; no requirement is qualified by this timing analysis.
+for repeated updates in the shortest phase. All eight revised cases pass on the fresh composed runtime, independently
+verified by the strict report.
 
-This diagnostic qualifies no inventory row yet.
+Four interval/message requirements qualify in the current checkpoint.
 Full telemetry WaitFor/modifier behavior remains separate.

@@ -54,6 +54,6 @@ alongside the four argument baseline cases and nine focused source and evidence
 tests. The retained build record is
 `distribution/evidence/proc-dictionary-diagnostic-build.json`.
 
-Fresh composed builds and all existing native regression suites are required
-before accepting the correction into a published checkpoint. Full v0.5 still
-requires all 763 inventory rows.
+Both fresh composed builds and all 44 native regression suites pass. The
+composed report qualifies ten PROC metadata/lifetime requirements and verifies
+the exact diagnostic source correction. Full v0.5 still requires all 763 rows.
