@@ -51,7 +51,7 @@ observed['elapsed']=elapsed
 ''', True)
 add('relative', 'failure', '''
 reject('+not-a-duration')
-reject({'seconds':1})
+reject('+00:00:not-seconds')
 assert len(observed['rejected'])==2
 ''', False)
 add('relative', 'recovery', '''

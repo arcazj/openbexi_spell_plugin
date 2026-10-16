@@ -15,3 +15,14 @@ Malformed values must raise a declared language exception, followed by a valid
 wait in the same procedure. The report covers Examples 78–79 and sections 4.6.1
 and 4.6.2 when all eight cases pass. Interrupt controls, telemetry waits and
 interval progression remain separate requirements.
+# Positional input oracle correction
+
+The first preflight passed seven cases. Its second relative-time rejection
+incorrectly passed a dictionary as if it were a time argument. The original
+`WrapperHelper.execute` removes a trailing dictionary as configuration before
+dispatching positional arguments. That call therefore entered a configuration
+only wait instead of testing malformed time parsing. The failure case now uses
+two malformed duration strings. The retained failed run is
+`.qualification/closure-preflight/3e74286d610540e0ab068ce3f8c43fb4/wait-time`.
+Configuration-only waits and unknown-modifier handling remain outside these
+four positional-time rows and must be reviewed for the full WaitFor contract.
