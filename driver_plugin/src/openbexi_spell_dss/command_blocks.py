@@ -1,12 +1,27 @@
 """One encoded TRANSPORT frame, with distinct member loading/execution receipts."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 import time
+from dss.packets import encode_tc
 
 from .command_groups import GroupExecution
 from .journal import UncertainEffect
 
 
 class BlockExecution(GroupExecution):
+    @staticmethod
+    def frame(members):
+        frame=dict(members[0].base,element_id='block-frame',stage='TRANSPORT')
+        for key in ('execution_time_unix_ns','additional_info','uplink_group'):frame.pop(key,None)
+        frame['elements']=[{key:value for key,value in member.base.items() if key in
+            {'element_id','command_name','arguments','command_digest','execution_time_unix_ns','additional_info'}}
+            for member in members]
+        return frame
+
+    def preflight(self,commands,identity,operation):
+        members=super().preflight(commands,identity,operation)
+        encode_tc(self.frame(members))
+        return members
+
     def wire(self,*args,**kwargs):
         # The one shared frame is admitted atomically by the simulator. Later
         # receipt queries can reconnect after any ground/onboard wait.
@@ -31,11 +46,8 @@ class BlockExecution(GroupExecution):
             member.base.pop('uplink_group')
             complete=max(due,member.execution if member.execution is not None and not member.load_only else due)
             member.deadline=min(outer,time.monotonic()+max(0,complete-now)/1e9+command.timeout)
-        frame=dict(members[0].base,element_id='block-frame',stage='TRANSPORT')
-        frame.pop('execution_time_unix_ns',None);frame.pop('additional_info',None)
-        frame['elements']=[{key:value for key,value in member.base.items() if key in
-            {'element_id','command_name','arguments','command_digest','execution_time_unix_ns','additional_info'}}
-            for member in members]
+        frame=self.frame(members)
+        encode_tc(frame)
         self.member_results=[dict(index=i,name=command.name,state='NOT_SENT',receipts=[]) for i,command in enumerate(commands)]
         pending=[]
 

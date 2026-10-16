@@ -21,6 +21,7 @@ class GroupExecution(CommandExecution):
         self.receipts=[]
         self.control_receipts=[]
         self.member_results=[]
+        self.attempted_elements=set()
 
     def wire(self,body,deadline,check,expected,*,control=False):
         check();self.state()
@@ -32,8 +33,11 @@ class GroupExecution(CommandExecution):
         remaining=deadline-time.monotonic()
         if remaining<=0:raise TimeoutError('Grouped command deadline expired')
         self.connection.settimeout(min(3,remaining))
+        encoded=encode_tc(body,(len(self.receipts)+len(self.control_receipts))&0x3fff)
+        if body['stage']=='TRANSPORT':
+            self.attempted_elements.update(element['element_id'] for element in body.get('elements',[body]))
         self.sent=True
-        self.connection.sendall(encode_tc(body,(len(self.receipts)+len(self.control_receipts))&0x3fff))
+        self.connection.sendall(encoded)
         raw=recv_packet(self.connection,timeout=min(3,max(.001,deadline-time.monotonic())))
         answer=decode_tm(raw)
         if decode_packet(raw).apid!=102:raise ValueError('Grouped ACK APID differs')
@@ -93,6 +97,18 @@ class GroupExecution(CommandExecution):
         if execution is not None:base['execution_time_unix_ns']=execution
         if command.additional_info is not None:base['additional_info']=command.additional_info
         return SimpleNamespace(base=base,due=due,execution=execution,deadline=deadline,load_only=command.load_only,index=index)
+
+    def preflight(self,commands,identity,operation):
+        self.validate(commands)
+        if not 1<=len(commands)<=16:raise ValueError('Group size outside bounds')
+        if any(type(identity[key]) is not str or not 1<=len(identity[key])<=256 for key in ('definition','procedure')):
+            raise ValueError('Binary command identity exceeds bounds')
+        budget=max(30,sum(command.timeout+command.send_delay+
+            (86400 if command.execution_time is not None or command.release_time is not None else 0) for command in commands))
+        members=[self.prepare_member(command,identity,operation,i,len(commands),budget,time.monotonic()+budget)
+                 for i,command in enumerate(commands)]
+        for member in members:encode_tc(dict(member.base,stage='TRANSPORT'))
+        return members
 
     def execute(self,commands,identity,operation,check):
         if self.sent or self.connection is not None:
