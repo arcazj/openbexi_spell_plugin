@@ -22,3 +22,13 @@ for mode in ('Group','Block'):
     add(mode+'Time:positive',f"from spell.lib.adapter.utctime import NOW,TIME\nsend(group=['CMD1','CMD3'],{mode}=True,Time=NOW+TIME('+00:00:00.35'))",
         2,count(2),2,['CMD1','CMD3'],clock='onboard')
     add(mode+'Sequence:positive',f"send(group=['SEQ.DUPLICATE','CMD3'],{mode}=True)",4,count(4),4,['CMD1','CMD1','CMD2','CMD3'])
+
+# A second controller really tries to uplink while the native Group call holds
+# its connection. Its rejected packet is retained separately from group frames.
+CASES['GroupTime:positive']['competitor']=True
+CASES['GroupTime:positive']['expected_stages']+=1
+add('GroupDelay:positive',"from spell.lib.adapter.utctime import TIME\nsend(group=['CMD1','CMD3'],Group=True,SendDelay=TIME('+00:00:00.15'))",
+    2,11,2,['CMD1','CMD3'],clock='ground')
+CASES['GroupDelay:positive']['competitor']=True
+add('ListDelay:positive',"from spell.lib.adapter.utctime import TIME\nsend(group=['CMD1','CMD3'],SendDelay=TIME('+00:00:00.15'))",
+    2,10,2,['CMD1','CMD3'],clock='ground')

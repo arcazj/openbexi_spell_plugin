@@ -36,7 +36,7 @@ for name,spec in CASES.items():
     journal=Journal(project/'driver.sqlite');dispatcher=Dispatcher(transport,journal)
     identity=dict(session=uuid.uuid4().hex,procedure=uuid.uuid4().hex,definition=name,
         version='command-group-candidate',controller_epoch=1,procedure_fence=1,mode='Development',release=None)
-    calls=[];events=[];clock_observations=[];last_tick=0
+    calls=[];events=[];clock_observations=[];last_tick=0;competitor=None
     row=dict(passed=False,dimension=spec['dimension'],source=spec['source'],states=[],
         initial_ground=dispatcher.ground.state(),initial_dss=runtime.engine.state())
     def dispatch(path,raw):
@@ -65,6 +65,15 @@ for name,spec in CASES.items():
                 state=runtime.engine.state()
                 operations=runtime.engine.evidence(state['scenario_id'])['operations']
                 acks=[r for r in operations if r['acknowledgement']['stage']=='ACKNOWLEDGEMENT']
+                if spec.get('competitor') and competitor is None and (
+                        spec['clock']=='onboard' and len(acks)==2 or spec['clock']=='ground' and len(operations)>=5):
+                    other=dict(identity,procedure=uuid.uuid4().hex,definition='independent-competing-controller')
+                    accepted,receipts=transport.command('CMD2',[],other,'competing-uplink',lambda:None)
+                    assert accepted is False and len(receipts)==1
+                    assert receipts[0]['outcome']=='REJECTED' and receipts[0]['detail']['reason']=='UPLINK_GROUP_BUSY'
+                    competitor=dict(accepted=accepted,receipts=receipts,before=state,after=runtime.engine.state())
+                    assert competitor['before']['core']==competitor['after']['core']
+                    operations=runtime.engine.evidence(state['scenario_id'])['operations']
                 ready=spec['clock']!='onboard' or len(acks)==len(spec['expected_members'])
                 if ready:
                     clock_observations.append(dict(before=state,stages=[r['acknowledgement']['stage'] for r in operations]))
@@ -84,7 +93,7 @@ for name,spec in CASES.items():
         assert len(operations)==spec['expected_stages'],operations
         assert state['core']['loaded_commands_count']==spec['expected_loaded']
         from dss.packets import decode_tc
-        frames=[decode_tc(bytes.fromhex(r['packet_hex'])) for r in operations if r['acknowledgement']['stage']=='TRANSPORT']
+        frames=[decode_tc(bytes.fromhex(r['packet_hex'])) for r in operations if r['acknowledgement']['stage']=='TRANSPORT' and r['acknowledgement']['outcome']=='ACCEPTED']
         names=[e['command_name'] for frame in frames for e in frame.get('elements',[frame])]
         assert names==spec['expected_members'],names
         if name.startswith('Block') and spec['expected_loaded']:
@@ -95,6 +104,12 @@ for name,spec in CASES.items():
             assert runtime.engine.state()['core']['commands_executed']==0
         if spec.get('clock')=='onboard':
             assert any(r['before']['core']['commands_executed']==0 and r['stages'].count('ACKNOWLEDGEMENT')==2 for r in clock_observations)
+        if spec.get('competitor'):assert competitor is not None
+        if spec.get('clock')=='ground':
+            assert any(r['stages']==[] for r in clock_observations)
+            uplinks=[r['acknowledgement'] for r in operations if r['acknowledgement']['stage']=='TRANSPORT' and r['acknowledgement']['outcome']=='ACCEPTED']
+            assert uplinks[0]['simulation_time_ns']>=150000000
+            assert uplinks[1]['simulation_time_ns']-uplinks[0]['simulation_time_ns']>=150000000
         row['passed']=True
     except Exception:row['error']=traceback.format_exc()
     finally:
@@ -111,6 +126,7 @@ for name,spec in CASES.items():
         for endpoint in (tcp,api):endpoint.shutdown();endpoint.server_close()
         transport.close()
         row['rpc']=calls;row['clock_observations']=clock_observations
+        row['competitor']=competitor
         row['uplink_groups']=list(runtime.uplink_groups.history)
         if journal.db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='command_results'").fetchone():
             row['member_results']=[json.loads(r[0]) for r in journal.db.execute('SELECT result FROM command_results ORDER BY rowid')]
