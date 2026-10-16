@@ -70,6 +70,10 @@ SUITES = [
     ('checkpoint-ipc', 'checkpoint_error_run.py', ['--ipc', '--mode', 'DISABLED'], 4),
     ('identity-errors', 'checkpoint_identity_run.py', [], 8),
     ('identity-recovery', 'checkpoint_identity_run.py', ['--recovery'], 22),
+    ('child-modes', 'run_child_modes.py', [], 9),
+    ('driver-extension', 'run_driver_extension.py', [], 4),
+    ('child-visibility', 'run_child_visibility.py', [], 4),
+    ('prompt-complete', 'run_prompt_complete.py', ['--require-timeout-metadata'], 12),
 ]
 
 

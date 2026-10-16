@@ -51,6 +51,36 @@ def dimensional_mapping(mapping, reviewed):
             checks[PREFIX+identifier+':'+dimension] = dict(passed=True, dimension=dimension,
                 contracts=[PREFIX+identifier], dependencies=selected,
                 oracle='Every specified native clause has independently checked actual results, failures and recovery on the same installed runtime.')
+    return link_components(checks, reviewed)
+
+
+def link_components(checks, reviewed):
+    """Give the release validator real local dependency keys, retaining provenance.
+
+    A source row was already independently reviewed before this assembler is
+    called. Its canonical digest binds the embedded leaf to that review; this
+    also lets the ordinary coverage validator propagate a failed leaf.
+    """
+    for identifier, check in list(checks.items()):
+        linked=[]
+        for dependency in check.get('dependencies', []):
+            if isinstance(dependency,str):
+                assert dependency in checks;linked.append(dependency);continue
+            assert set(dependency)=={'report','check'}
+            kind,name=dependency['report'],dependency['check']
+            source=reviewed[kind]['checks'][name]
+            assert source['passed'] is True
+            assert source.get('dimension',check['dimension'])==check['dimension']
+            assert source.get('legacy_spelling_supported') is not False
+            assert source.get('evidence_kind')!='migration-and-rejection'
+            key='component:'+kind+':'+name+':'+check['dimension']
+            leaf=dict(passed=True,dimension=check['dimension'],contracts=[],
+                oracle=source.get('oracle') or 'Independently verified native component result and retained artifacts.',
+                source_check=dependency,
+                source_row_sha256=hashlib.sha256(json.dumps(source,sort_keys=True).encode()).hexdigest())
+            assert key not in checks or checks[key]==leaf
+            checks[key]=leaf;linked.append(key)
+        if linked:check['dependencies']=linked
     return checks
 
 

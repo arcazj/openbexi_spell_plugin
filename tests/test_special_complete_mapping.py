@@ -33,7 +33,10 @@ def test_whole_memory_mapping_rejects_any_missing_reviewed_dimension(defect):
     reviewed={'memory':json.loads((ROOT/'conformance/evidence/memory_complete_review.json').read_bytes())}
     mapping={name:deps for name,deps in MAP.items() if all(suite=='memory' for suite,_ in deps)}
     accepted=dimensional_mapping(mapping,reviewed)
-    assert len(accepted)==len(mapping)*4
+    from check import supported_check
+    roots={key:row for key,row in accepted.items() if row['contracts']}
+    assert len(roots)==len(mapping)*4
+    assert all(supported_check({'checks':accepted},key,row['dimension']) for key,row in roots.items())
     for key in ('report:failure','compare:boundary','lookup:recovery','tmtc:positive'):
         changed=deepcopy(reviewed)
         if defect=='missing':del changed['memory']['checks'][key]

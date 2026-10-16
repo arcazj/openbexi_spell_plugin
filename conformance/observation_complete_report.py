@@ -1,5 +1,5 @@
 """Close whole acquisition, verification and wait clauses from all native components."""
-from aggregate_support import ROOT,PREFIX,DIMENSIONS,sha,read,ref,complete_sequence,merge_review_inputs
+from aggregate_support import ROOT,PREFIX,DIMENSIONS,sha,read,ref,complete_sequence,merge_review_inputs,link_components
 
 QUALITY=('quality','validity','freshness','availability','link')
 MAP={}
@@ -47,7 +47,7 @@ def component_checks(reviewed):
             checks[PREFIX+identifier+':'+dimension]=dict(passed=True,dimension=dimension,
                 contracts=[PREFIX+identifier],dependencies=dependencies,
                 oracle='All original native acquisition, condition, returned-detail, failure-policy and wait components required by this clause pass on the same installed image.')
-    return checks
+    return link_components(checks,reviewed)
 
 
 def qualify(sequence_path,native_wheel,driver_wheel):

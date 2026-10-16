@@ -72,5 +72,5 @@ for dimension,fail_at,allow,policy,expected,recover in (
     compile(source,'driver-extension:'+dimension,'exec')
     CASES['resume-extension:'+dimension]=dict(feature='resume-extension',dimension=dimension,source=source,
         expected_members=['CMD1','CMD2','CMD3'] if expected or recover else ['CMD1'],
-        expected_choices=['C','Z'] if dimension=='boundary' else ['Z'],
+        expected_choices=['Q','Z'] if dimension=='boundary' else ['Z'],
         scope='Original driver extension hooks with an explicit per-session fixture driver; no claim that GENERIC implements RESUME itself')

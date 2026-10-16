@@ -1,5 +1,5 @@
 """Qualify the whole database chapter only after all backends and formats pass."""
-from aggregate_support import ROOT,PREFIX,DIMENSIONS,read,ref,sha,complete_sequence,merge_review_inputs
+from aggregate_support import ROOT,PREFIX,DIMENSIONS,read,ref,sha,complete_sequence,merge_review_inputs,link_components
 
 ADDITIONAL = ('EXAMPLE-138','SECTION-4-15-2-097','SECTION-4-15-095',
               'SECTION-4-15-6-105','TYPE-DATABASEDICTIONARY')
@@ -33,7 +33,8 @@ def combined_checks(base,formats,values,procedure):
             checks[PREFIX+identifier+':'+dimension]=dict(passed=True,dimension=dimension,
                 contracts=[PREFIX+identifier],dependencies=deps,
                 oracle='Actual native database values, persistence, read-only enforcement, URI routing, typed key/value grammar and failure recovery are all independently checked.')
-    return checks
+    return link_components(checks,{'manoeuvre':base['manoeuvre_review'],'formats':formats,
+        'octal-and-values':values,'complete-operations':base,'procedure-dictionary':procedure})
 
 
 def qualify(sequence_path,native_wheel,driver_wheel):
