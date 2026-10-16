@@ -67,9 +67,11 @@ def qualify(paths, image, revision):
     # image. Native binaries change with the composed checkpoint identity and
     # are separately accepted by the two clean rebuilds.
     golden = read(Path(command_donor['manifest']['group']['path']))['runtime_sources']['installed']
+    def application_source(name):
+        return name.startswith(('spell/', 'spell_native/', 'openbexi_spell_dss/', 'openbexi_dss_proxy/')) and '/_composition/' not in name and '/provenance/' not in name
+    assert {n for n in runtime['installed'] if application_source(n)} == {n for n in golden if application_source(n)}
     selected = {name: value for name,value in golden.items()
-        if name.endswith('.py') and name.startswith(('spell/', 'openbexi_spell_dss/', 'openbexi_dss_proxy/'))
-        and '/_composition/' not in name}
+        if name.endswith('.py') and application_source(name)}
     for name, value in selected.items():
         assert runtime['installed'][name] == value, name
     recipes = ('display_patches.py', 'command_feature_patches.py', 'command_catalog_patches.py', 'command_group_patches.py')
@@ -89,6 +91,7 @@ def qualify(paths, image, revision):
                 checks[key] = item
     for name in ('conformance/command_display_composed_report.py', 'conformance/command_features_report.py',
                  'conformance/command_group_review.py', 'conformance/display_report.py',
+                 'tests/test_command_display_composed_report.py',
                  'conformance/evidence/command_feature_inputs.json', 'distribution/run_language_regressions.py'):
         inputs[name] = sha(ROOT/name)
     return dict(passed=True, runtime_image=image, source_revision=revision, inputs=inputs,
