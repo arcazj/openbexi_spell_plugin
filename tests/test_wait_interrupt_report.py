@@ -8,7 +8,10 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'conformance'))
-from wait_interrupt_report import qualify
+from wait_interrupt_report import qualify as _qualify
+
+def qualify(*args):
+    return _qualify(*args, source_revision='86f4de71a1f7ed12610c60462c72fae44387b353', baseline_revision='07973612ef970473492b22a98be8c7058c2f1263')
 
 
 @pytest.fixture(scope='module')

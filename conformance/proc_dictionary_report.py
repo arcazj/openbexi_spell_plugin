@@ -14,6 +14,8 @@ from proc_dictionary_provenance import qualification_identity
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'distribution'))
 from run_language_regressions import validate_report
+from evidence_sources import source_bytes
+from installed_provenance import verify_capture
 
 CANDIDATE_CONTRACTS=['CMP-LRM244-'+name for name in (
     'CONSTANT-PROC-KEY-ARGS','CONSTANT-PROC-KEY-INPUT-DATA','CONSTANT-PROC-KEY-NAME',
@@ -27,27 +29,33 @@ read=lambda p:json.loads(p.read_bytes())
 def reference(path):return dict(path=str(path.resolve()),sha256=sha(path))
 
 
-def qualify(baseline_path,lifecycle_path,original_path,image):
-    raw=read(baseline_path);lifecycle=read(lifecycle_path);original=read(original_path)
+def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
+    raw=read(baseline_path);lifecycle=read(lifecycle_path)
+    diagnostic=raw.get('diagnostic_overlay',False)
     inputs={};checks={}
     for path,report,cases,prefix in (
             (baseline_path,raw,BASELINE_CASES,'proc_metadata'),
             (lifecycle_path,lifecycle,LIFECYCLE_CASES,'proc_lifecycle')):
-        validate_report(path,image,len(cases))
-        assert report['passed'] and report['diagnostic_overlay'] and not report['timed_out']
+        validate_report(path,image,len(cases),source_revision=source_revision)
+        assert report['passed'] and report.get('diagnostic_overlay',False)==diagnostic and not report['timed_out']
         assert set(report['checks'])==set(cases)
-        identity=qualification_identity(report['runtime_sources'],report['inputs'])
-        assert identity==report['qualification_identity']
+        if diagnostic:
+            identity=qualification_identity(report['runtime_sources'],report['inputs'])
+            assert identity==report['qualification_identity']
+        else:
+            assert source_revision is None, 'Fresh qualification must use current source inputs'
+            verify_capture(report['runtime_sources']['integrated'],report['inputs'])
         assert report['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         for name,digest in report['inputs'].items():
             assert inputs.get(name,digest)==digest,name
             inputs[name]=digest
         workspace=path.parent/'workspace'
         assert read(workspace/'checks.json')==report['checks']
-        for name,digest in report['generated_sources'].items():assert sha(workspace/name)==digest,name
+        for name,digest in report.get('generated_sources',{}).items():assert sha(workspace/name)==digest,name
         assert sha(workspace/(prefix+'_cases.py'))==inputs['conformance/'+prefix+'_cases.py']
-        expected=(ROOT/'conformance'/ (prefix+'_controller.py')).read_bytes().replace(
-            b'from installed_provenance import capture',b'from proc_dictionary_provenance import capture')
+        expected=source_bytes(ROOT,'conformance/'+prefix+'_controller.py',source_revision)
+        if diagnostic:
+            expected=expected.replace(b'from installed_provenance import capture',b'from proc_dictionary_provenance import capture')
         assert (workspace/(prefix+'_controller.py')).read_bytes()==expected
         for name,spec in cases.items():
             row=deepcopy(report['checks'][name]);project=workspace/name.replace(':','-')
@@ -126,6 +134,19 @@ def qualify(baseline_path,lifecycle_path,original_path,image):
                     assert (project/'completed.txt').read_text()==str(spec['rounds'])
             row.update(contracts=[],oracle='LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter.')
             checks[name]=row
+    for dimension in ('positive','boundary','failure','recovery'):
+        dependencies=[key for key,row in checks.items() if row['dimension']==dimension]
+        assert len(dependencies)==4
+        checks['procedure-dictionary:'+dimension]=dict(passed=True,dimension=dimension,
+            contracts=[],dependencies=dependencies,
+            oracle='Root metadata, actual child metadata, reload and close/reopen must all pass independently.')
+    return inputs,checks,raw
+
+
+def qualify(baseline_path,lifecycle_path,original_path,image,source_revision=None):
+    inputs,checks,raw=verify_cases(baseline_path,lifecycle_path,image,source_revision)
+    assert raw['diagnostic_overlay']
+    original=read(original_path)
     # Preserve a directly observed counterexample from the unchanged runtime.
     assert not original['passed'] and not original['timed_out']
     assert set(original['checks'])==set(BASELINE_CASES)
@@ -137,12 +158,6 @@ def qualify(baseline_path,lifecycle_path,original_path,image):
         assert read(project/'observed.json')==row['observed']
         assert row['observed']['args_type']=='str' and isinstance(row['observed']['initial']['ARGS'],str)
         assert (project/'main.py').read_text()==spec['source']
-    for dimension in ('positive','boundary','failure','recovery'):
-        dependencies=[key for key,row in checks.items() if row['dimension']==dimension]
-        assert len(dependencies)==4
-        checks['procedure-dictionary:'+dimension]=dict(passed=True,dimension=dimension,
-            contracts=[],dependencies=dependencies,
-            oracle='Root metadata, actual child metadata, reload and close/reopen must all pass independently.')
     for name in ('conformance/proc_dictionary_report.py','tests/test_proc_dictionary_report.py'):
         inputs[name]=sha(ROOT/name)
     return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,

@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import uuid
+from evidence_sources import source_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITES = [
@@ -40,6 +41,10 @@ SUITES = [
     ('events', 'run_events.py', [], 8),
     ('scheduler', 'run_scheduler.py', [], 9),
     ('wait-time', 'run_wait_time.py', [], 8),
+    ('wait-controls', 'run_wait_control.py', [], 24),
+    ('wait-intervals', 'run_wait_interval.py', [], 8),
+    ('proc-metadata', 'run_proc_metadata.py', [], 4),
+    ('proc-lifecycle', 'run_proc_lifecycle.py', [], 12),
     ('value-units', 'run_value_units.py', [], 38),
     ('scdb', 'scdb_run.py', [], 26),
     ('timing', 'run_timing.py', [], 36),
@@ -58,7 +63,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def validate_report(path, image, minimum, root=ROOT):
+def validate_report(path, image, minimum, root=ROOT, source_revision=None):
     report = json.loads(path.read_bytes())
     if report.get('runtime_image') != image:
         raise ValueError('Raw report image differs from selected runtime')
@@ -72,8 +77,7 @@ def validate_report(path, image, minimum, root=ROOT):
     if not inputs:
         raise ValueError('Raw report lacks source bindings')
     for name, expected in inputs.items():
-        source = (root / name).resolve()
-        if not source.is_relative_to(root.resolve()) or sha(source) != expected:
+        if hashlib.sha256(source_bytes(root, name, source_revision)).hexdigest() != expected:
             raise ValueError('Raw report source changed: ' + name)
     return {'path': str(path), 'sha256': sha(path), 'checks': len(checks),
             'source_inputs_verified': len(inputs)}

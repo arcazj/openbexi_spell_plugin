@@ -138,6 +138,10 @@ def main():
     run('child_policy_report.py', '--policy', raw['child-policy'], '--start', raw['child-start'],
         '--modes', proofs['modes'], '--image', image)
     run('wait_time_report.py', raw['wait-time'], '--image', image)
+    run('wait_control_report.py', raw['wait-controls'], '--image', image)
+    run('wait_interval_report.py', raw['wait-intervals'], '--image', image)
+    run('proc_dictionary_composed_report.py', '--baseline', raw['proc-metadata'],
+        '--lifecycle', raw['proc-lifecycle'], '--image', image)
     run('rng_report.py', raw['rng-catalog'], '--baseline', args.rng_baseline)
     run('rng_state_report.py', raw['rng-state'], '--baseline', args.rng_state_baseline,
         '--driver', args.rng_driver, '--legacy-and-migration', args.rng_legacy_and_migration)

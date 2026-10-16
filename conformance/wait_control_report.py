@@ -12,6 +12,7 @@ from installed_provenance import verify_capture
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'distribution'))
 from run_language_regressions import validate_report
+from evidence_sources import source_bytes
 
 CONTRACTS=[
     'CMP-LRM244-CONTROL-WAITFOR-INTERRUPT', 'CMP-LRM244-CONTROL-WAITFOR-SKIP',
@@ -22,16 +23,19 @@ CONTRACTS=[
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def qualify(path,image):
+def qualify(path,image,source_revision=None):
     raw=json.loads(path.read_bytes())
-    validate_report(path,image,len(CASES))
+    validate_report(path,image,len(CASES),source_revision=source_revision)
     assert raw['passed'] and not raw['timed_out'] and set(raw['checks'])==set(CASES)
     diagnostic=raw.get('diagnostic_overlay',False)
     if diagnostic:
         from wait_interrupt_provenance import qualification_identity
         assert qualification_identity(raw['runtime_sources'],raw['inputs'])==raw['qualification_identity']
     else:
+        assert source_revision is None, 'Fresh qualification must use current source inputs'
         verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
+        from composed_diagnostic_proof import verify_donor
+        donor=verify_donor(raw['runtime_sources']['integrated'],'wait_interrupt')
     assert raw['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
     workspace=path.parent/'workspace'
     assert json.loads((workspace/'checks.json').read_bytes())==raw['checks']
@@ -40,7 +44,7 @@ def qualify(path,image):
             assert sha(workspace/'fixture'/name.removeprefix('src/'))==digest,name
     for name in ('wait_control_cases.py','wait_control_controller.py','installed_provenance.py'):
         if diagnostic and name=='wait_control_controller.py':
-            expected=(ROOT/'conformance'/name).read_bytes().replace(
+            expected=source_bytes(ROOT,'conformance/'+name,source_revision).replace(
                 b'from installed_provenance import capture',b'from wait_interrupt_provenance import capture')
             assert (workspace/name).read_bytes()==expected
         else:
@@ -110,7 +114,10 @@ def qualify(path,image):
     inputs=dict(raw['inputs'])
     for name in ('conformance/wait_control_report.py','tests/test_wait_control_report.py'):
         inputs[name]=sha(ROOT/name)
+    if not diagnostic:
+        inputs['conformance/composed_diagnostic_proof.py']=sha(ROOT/'conformance/composed_diagnostic_proof.py')
     return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,
+        diagnostic_donor=None if diagnostic else donor,
         qualified_contracts=[] if diagnostic else CONTRACTS,candidate_contracts=CONTRACTS if diagnostic else [],
         raw=dict(path=str(path.resolve()),sha256=sha(path)),
         scope='LRM pp57-58 interruption, resumption and cancellation of time and telemetry waits',

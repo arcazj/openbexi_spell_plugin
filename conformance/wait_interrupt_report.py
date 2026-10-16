@@ -4,19 +4,20 @@ import hashlib
 import json
 from pathlib import Path
 
-from wait_control_report import ROOT,qualify as qualify_controls
+from wait_control_report import ROOT,qualify as qualify_controls,source_bytes
 
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def qualify(path,baseline_path,image):
-    report=qualify_controls(path,image)
+def qualify(path,baseline_path,image,source_revision=None,baseline_revision=None):
+    report=qualify_controls(path,image,source_revision=source_revision)
     raw=json.loads(path.read_bytes());baseline=json.loads(baseline_path.read_bytes())
     assert raw['diagnostic_overlay'] and report['qualified_contracts']==[]
     assert baseline['runtime_sources']['integrated']==raw['runtime_sources']['baseline']
     assert not baseline['passed'] and not baseline['timed_out'] and len(baseline['checks'])==24
     assert {k for k,v in baseline['checks'].items() if not v['passed']}=={'telemetry:skip:recovery'}
-    for name,digest in baseline['inputs'].items():assert sha(ROOT/name)==digest,name
+    for name,digest in baseline['inputs'].items():
+        assert hashlib.sha256(source_bytes(ROOT,name,baseline_revision)).hexdigest()==digest,name
     failed=baseline['checks']['telemetry:skip:recovery']
     assert 'Telemetry continued while interrupted' in failed['error']
     first=next(r['monotonic'] for r in failed['states'] if r['status']=='INTERRUPTED')

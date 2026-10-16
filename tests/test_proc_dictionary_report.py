@@ -9,7 +9,10 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'conformance'))
-from proc_dictionary_report import qualify
+from proc_dictionary_report import qualify as _qualify
+
+def qualify(*args):
+    return _qualify(*args,source_revision='194f5925a7bb001eca957a653bd37203f2bf1638')
 
 
 @pytest.fixture(scope='module')
