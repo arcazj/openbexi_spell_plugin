@@ -34,7 +34,9 @@ for name in ('Time','ReleaseTime'):
     add(name,'boundary',f"send({name}=NOW-TIME('+00:00:01'))",1,5)
     add(name,'failure',f"send(False,{name}=TIME('+00:00:01'))",0,0)
     add(name,'recovery',f"send(False,{name}=TIME('+00:00:01'))\nsend({name}=NOW+TIME('+00:00:00.25'))",1,5)
-    add(name,'encoding',f"send({name}=str(NOW+TIME('+00:00:00.25')))",1,5)
+    # Original str(TIME) has whole-second display precision; keep the encoded
+    # target in the future despite that formatting truncation.
+    add(name,'encoding',f"send({name}=str(NOW+TIME('+00:00:02')))",1,5)
 add('SendDelay','positive',"send(SendDelay=TIME('+00:00:00.25'))",1,5)
 add('SendDelay','boundary',"send(SendDelay=0)",1,5)
 add('SendDelay','failure',"send(False,SendDelay=-1)",0,0)

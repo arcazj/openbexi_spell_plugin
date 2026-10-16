@@ -39,6 +39,7 @@ def main():
     image=subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     name='openbexi-command-scheduling-'+token
     created=False
+    exported=False
     try:
         subprocess.run(['docker','create','--init','--name',name,'--network','none',
             '--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256',
@@ -73,6 +74,7 @@ def main():
         logs=subprocess.run(['docker','logs',name],check=True,capture_output=True,timeout=20)
         (output/'controller.log').write_bytes(logs.stdout+logs.stderr)
         subprocess.run(['docker','cp',name+':/workspace/.',str(output/'workspace')],check=True,capture_output=True)
+        exported=True
         checks=json.loads((output/'workspace/checks.json').read_bytes())
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
@@ -90,8 +92,10 @@ def main():
             'failures':{k:v.get('error') for k,v in checks.items() if not v['passed']}}))
         return not report['passed']
     finally:
-        if created:
+        if created and exported:
             subprocess.run(['docker','rm','-f',name],capture_output=True,timeout=20)
+        elif created:
+            print('Retained container after incomplete export: '+name,flush=True)
 
 
 if __name__=='__main__':

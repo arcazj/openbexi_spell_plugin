@@ -50,7 +50,8 @@ def normalize(settings):
         if type(value) not in (int,float) or not math.isfinite(value) or not 0 <= value <= (1<<63)/1e9-1:
             raise DriverException('Invalid command '+key)
         result[key] = value
-    if 'SendDelay' in settings:
+    # The original language.xml uses None to mean no requested send delay.
+    if 'SendDelay' in settings and settings['SendDelay'] is not None:
         result['SendDelay'] = duration(settings['SendDelay'],'SendDelay',86400)
     if 'addInfo' in settings:
         if type(settings['addInfo']) is not dict:

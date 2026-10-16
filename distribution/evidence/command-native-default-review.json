@@ -1,0 +1,13 @@
+{
+  "state": "Native default counterexample retained; correction awaits native replay",
+  "source_commit": "42b6b3c",
+  "runtime_image": "sha256:7547c5f7ca38b79a4d4cfc33c711ff8c186c56d3afb591448483a7ed574e9a5e",
+  "counterexamples": {
+    "path": "C:\\obcommand_impl\\.qualification\\command-scheduling\\59d9764210184dc39faf178729f9b1c0\\result.json",
+    "sha256": "032f568a00169bcd3f13a598c72e4f612f3a8dc8bb082ad654cef0b94c93b20c"
+  },
+  "cause": "Original language.xml TC and BuildTC defaults use SendDelay=None. Proxy now omits that absent delay instead of passing it to numeric validation.",
+  "encoding_probe": "Whole-second str(TIME) probes now use a two-second future target to survive the original display precision.",
+  "qualified_contracts": [],
+  "full_v05_accepted": false
+}
