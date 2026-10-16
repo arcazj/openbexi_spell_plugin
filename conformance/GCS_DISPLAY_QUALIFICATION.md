@@ -14,9 +14,11 @@ native binaries remain identical to the qualified fresh-wheel base. Four native
 baseline probes retain the old missing API and incorrect behavior.
 
 The report has 35 native leaves and 96 contract/dimension checks for 24 candidate
-requirements. Nine acceptance/forgery tests reject changed results, return values,
+requirements. Ten acceptance/forgery tests reject changed results, return values,
 dimensions, native bytes, undeclared source files, print downloads, patch recipes
 and baseline evidence. The backend separately passed 45 real protobuf/HTTP tests.
+Historical replay reads the exact captured Git revisions, so later command or
+host changes cannot silently substitute new source bytes into this diagnostic.
 
 The initial native run failed on unhandled wrapper/default options and two
 incorrect time strings in its probes. Its entire capture remains available at

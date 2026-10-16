@@ -21,7 +21,7 @@ def canonical():
 def test_accepts_real_display_diagnostic_without_promoting_coverage():
     saved=canonical()
     actual=report.qualify(Path(saved['raw']['path']),Path(saved['baseline']['path']),saved['runtime_image'],
-                          Path(saved['overlay_manifest']['path']).parent,saved['baseline_revision'])
+                          Path(saved['overlay_manifest']['path']).parent,saved['baseline_revision'],saved['source_revision'])
     assert actual['passed'] and len(actual['candidate_contracts'])==24
     assert actual['qualified_contracts']==[] and not actual['full_v05_accepted']
     assert len(actual['checks'])==35+24*4
@@ -74,4 +74,20 @@ def test_rejects_forged_display_evidence(tmp_path,mutation):
         baseline=cloned/'result.json';baseline.write_text(json.dumps(value),encoding='utf-8')
     path=tmp_path/'result.json';path.write_text(json.dumps(raw),encoding='utf-8')
     with pytest.raises((AssertionError,ValueError,KeyError)):
-        report.qualify(path,baseline,saved['runtime_image'],overlay,saved['baseline_revision'])
+        report.qualify(path,baseline,saved['runtime_image'],overlay,saved['baseline_revision'],saved['source_revision'])
+
+
+def test_frozen_capture_does_not_read_later_working_source_bytes(monkeypatch):
+    import run_language_regressions
+    saved=canonical()
+    original=report.source_bytes
+    revisions=[]
+    def committed(root,name,revision=None):
+        assert revision is not None, 'Historical evidence read mutable current source: '+name
+        revisions.append(revision)
+        return original(root,name,revision)
+    monkeypatch.setattr(report,'source_bytes',committed)
+    monkeypatch.setattr(run_language_regressions,'source_bytes',committed)
+    actual=report.qualify(Path(saved['raw']['path']),Path(saved['baseline']['path']),saved['runtime_image'],
+                          Path(saved['overlay_manifest']['path']).parent,saved['baseline_revision'],saved['source_revision'])
+    assert actual['passed'] and set(revisions)=={saved['baseline_revision'],saved['source_revision']}

@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import types
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT/'conformance'), str(ROOT/'distribution'), str(ROOT/'source_port'), str(ROOT/'driver_plugin/src')]
@@ -89,22 +90,24 @@ def verify_observation(observation):
 
 def verify_cases(path,image,source_revision=None):
     raw=read(path)
-    validate_report(path,image,len(CASES),source_revision=source_revision)
+    cases = frozen_module('conformance/display_cases.py',source_revision).CASES if source_revision else CASES
+    validate_report(path,image,len(cases),source_revision=source_revision)
     assert raw['passed'] and raw['controller_exit_code']==0 and not raw.get('timed_out')
-    assert set(raw['checks'])==set(CASES) and len(CASES)==35
+    assert set(raw['checks'])==set(cases) and len(cases)==35
     assert not raw['qualified_contracts'] and raw['diagnostic_only']
     verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
     workspace=path.parent/'workspace'
     assert raw['artifacts']=={p.relative_to(workspace).as_posix():sha(p) for p in workspace.rglob('*') if p.is_file()}
     assert read(workspace/'procedure/checks.json')==raw['checks']
-    assert read(workspace/'procedure/cases.json')==CASES
+    assert read(workspace/'procedure/cases.json')==cases
     for name in ('display_controller.py','display_provenance.py','installed_provenance.py'):
         assert sha(workspace/name)==raw['inputs']['conformance/'+name]
     assert sha(workspace/'procedure/display_contracts.py')==raw['inputs']['conformance/display_contracts.py']
     assert (workspace/'procedure/main.py').read_bytes()==b'import display_contracts\ndisplay_contracts.run()\n'
     assert read(workspace/'runtime.json')==raw['runtime_sources']
     assert read(workspace/'host-inputs.json')==raw['host_inputs']
-    assert raw['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
+    assert raw['host_inputs']=={Path(name).name:hashlib.sha256(source_bytes(ROOT,name,source_revision)).hexdigest()
+                              for name in raw['inputs'] if name.startswith('host_runtime/python/') and name.endswith('.py')}
     controller=read(workspace/'controller-result.json');assert controller==raw['controller']
     assert controller['passed'] and controller['status']=='FINISHED'
     assert not any(key.endswith('_error') for key in controller)
@@ -120,7 +123,7 @@ def verify_cases(path,image,source_revision=None):
     counts={'timespan:positive':1,'printing:positive':2,'printing:boundary':64,'printing:failure':1,
             'printing:encoding':2,'printer:positive':1,'printer:boundary':2,'printer:failure':1,
             'printer:encoding':2,'printing:recovery':2,'printer:recovery':2}
-    for name,spec in CASES.items():
+    for name,spec in cases.items():
         row=raw['checks'][name]
         assert row['passed'] and all(row[key]==value for key,value in spec.items())
         observed=[item for item in observations if item['check']==name]
@@ -174,17 +177,25 @@ def verify_cases(path,image,source_revision=None):
     return raw,checks
 
 
-def qualify(path,baseline_path,image,overlay,baseline_revision):
-    raw,checks=verify_cases(path,image)
+def frozen_module(name, revision):
+    module = types.ModuleType('_display_' + Path(name).stem)
+    exec(compile(source_bytes(ROOT,name,revision),name,'exec'),module.__dict__)
+    return module
+
+
+def qualify(path,baseline_path,image,overlay,baseline_revision,source_revision=None):
+    raw,checks=verify_cases(path,image,source_revision)
+    recipe = frozen_module('source_port/display_patches.py',source_revision) if source_revision else display_patches
+    baseline_cases = frozen_module('conformance/display_baseline_cases.py',baseline_revision).CASES
     baseline=read(baseline_path)
     assert not baseline['passed'] and not baseline['timed_out'] and len(baseline['checks'])==4
-    assert set(baseline['checks'])==set(BASELINE_CASES)
+    assert set(baseline['checks'])==set(baseline_cases)
     assert baseline['runtime_sources']['integrated']==raw['runtime_sources']['integrated']
     assert read(baseline_path.parent/'workspace/checks.json')==baseline['checks']
     for name,digest in baseline['inputs'].items():
         assert hashlib.sha256(source_bytes(ROOT,name,baseline_revision)).hexdigest()==digest,name
     for name,row in baseline['checks'].items():
-        assert not row['passed'] and row['source']==BASELINE_CASES[name]['source']
+        assert not row['passed'] and row['source']==baseline_cases[name]['source']
         assert read(baseline_path.parent/'workspace'/name/'observed.json')==row['observed']
     surface=baseline['checks']['api-surface']['observed']
     assert surface['functions']=={'OpenWorkspace':False,'CloseWorkspace':False}
@@ -206,11 +217,11 @@ def qualify(path,baseline_path,image,overlay,baseline_revision):
     base=read(overlay/'base.json');assert base['integrated']==runtime['integrated']
     assert read(overlay/'manifest.json')==record['manifest']
     expected=dict(base['installed']);sources={}
-    assert set(record['manifest'])==set(display_patches.PREIMAGES)
+    assert set(record['manifest'])==set(recipe.PREIMAGES)
     for name,item in record['manifest'].items():
         original=overlay/'original'/name;patched=overlay/'patched'/name
         assert expected[name]==item['preimage_sha256']==sha(original)
-        assert display_patches.apply(name,original.read_bytes())==patched.read_bytes()
+        assert recipe.apply(name,original.read_bytes())==patched.read_bytes()
         expected[name]=sha(patched);assert item['sha256']==expected[name]
         sources[name]=dict(original=ref(original),patched=ref(patched))
     assert set(record['added_sources'])=={'openbexi_spell_dss/displays.py','openbexi_spell_dss/display_viewer.py'}
@@ -231,7 +242,7 @@ def qualify(path,baseline_path,image,overlay,baseline_revision):
             checks[contract+':'+dimension]=dict(passed=True,dimension=dimension,contracts=[contract],dependencies=dependencies,
                 encoding_checks=encoding_checks,oracle='All required native family leaves plus Unicode/format encoding checks')
     return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,raw=ref(path),baseline=ref(baseline_path),
-        baseline_revision=baseline_revision,source_files=sources,overlay_manifest=ref(overlay/'manifest.json'),
+        baseline_revision=baseline_revision,source_revision=source_revision,source_files=sources,overlay_manifest=ref(overlay/'manifest.json'),
         overlay_base=ref(overlay/'base.json'),runtime_sources=runtime,candidate_contracts=CANDIDATES,qualified_contracts=[],
         scope='Diagnostic GENERIC display application; fresh composed native/driver packages and complete regressions remain required',
         exclusions=['Physical workstation/printer completion','Broader Format modifier','Broader Time modifier'],
@@ -247,8 +258,9 @@ if __name__=='__main__':
     parser.add_argument('raw',type=Path);parser.add_argument('--baseline',type=Path,required=True)
     parser.add_argument('--image',required=True);parser.add_argument('--overlay',type=Path,required=True)
     parser.add_argument('--baseline-revision',required=True)
+    parser.add_argument('--source-revision')
     args=parser.parse_args()
-    result=qualify(args.raw,args.baseline,args.image,args.overlay,args.baseline_revision)
+    result=qualify(args.raw,args.baseline,args.image,args.overlay,args.baseline_revision,args.source_revision)
     target=ROOT/'conformance/evidence/display.json'
     target.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(dict(output=str(target),candidate_contracts=len(CANDIDATES),qualified_contracts=[])))
