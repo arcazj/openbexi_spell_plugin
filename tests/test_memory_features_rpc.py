@@ -9,6 +9,8 @@ from google.protobuf.message_factory import GetMessageClass
 
 import test_command_rpc as base
 import memory_feature_patches
+import limit_feature_patches
+import telemetry_feature_patches
 from openbexi_spell_dss.codec import pack,unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p
 from openbexi_spell_dss.memory_images import LOOKUP_PREFIX
@@ -17,7 +19,8 @@ from openbexi_spell_dss.memory_images import LOOKUP_PREFIX
 def composed(name):
     path='openbexi_spell_dss/'+name+'.py'
     raw=(base.ROOT/'driver_plugin/src'/path).read_bytes()
-    for recipe in (*base.integrated_patches.DRIVER_RECIPES,memory_feature_patches):
+    for recipe in dict.fromkeys((*base.integrated_patches.DRIVER_RECIPES,limit_feature_patches,
+                                 telemetry_feature_patches,memory_feature_patches)):
         if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
     module=types.ModuleType('openbexi_spell_dss._memory_test_'+name)
     exec(compile(raw,path,'exec'),module.__dict__)

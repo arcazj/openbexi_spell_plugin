@@ -29,6 +29,7 @@ def main():
            'conformance/run_memory_features.py','conformance/inventory.json',
            'conformance/memory_features_provenance.py','conformance/memory_features.Dockerfile',
            'conformance/memory_features.Dockerfile.dockerignore','conformance/MEMORY_PROFILE.md',
+           'driver_plugin/src/openbexi_spell_dss/limit_files/normal.json',
            'docs/reference/SPELL - Language Reference - 2.4.4.pdf',
            'docs/reference/SPELL2.6.10-src.zip','conformance/MEMORY_NATIVE_BASELINE.md',*input_paths(ROOT),
            *[p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'src/dss').rglob('*')) if p.is_file() and p.suffix in ('.py','.json')],
