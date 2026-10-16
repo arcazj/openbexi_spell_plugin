@@ -10,6 +10,7 @@ sys.path[:0] = [str(ROOT/'conformance'), str(ROOT/'distribution')]
 import command_features_report as commands
 import command_group_review as groups
 import display_report as displays
+import command_routing_review as routing
 from installed_provenance import verify_stages
 
 sha, read, ref = commands.sha, commands.read, commands.ref
@@ -72,6 +73,11 @@ def qualify(paths, image, revision):
     assert {n for n in runtime['installed'] if application_source(n)} == {n for n in golden if application_source(n)}
     selected = {name: value for name,value in golden.items()
         if name.endswith('.py') and application_source(name)}
+    correction = read(ROOT/'conformance/evidence/command_routing_validation.json')
+    assert correction == routing.review(Path(correction['candidate']['path']), image, revision)
+    corrected = correction['source'].removeprefix('driver_plugin/src/')
+    assert selected[corrected] == correction['before_sha256']
+    selected[corrected] = correction['after_sha256']
     for name, value in selected.items():
         assert runtime['installed'][name] == value, name
     recipes = ('display_patches.py', 'command_feature_patches.py', 'command_catalog_patches.py', 'command_group_patches.py')
@@ -92,11 +98,13 @@ def qualify(paths, image, revision):
     for name in ('conformance/command_display_composed_report.py', 'conformance/command_features_report.py',
                  'conformance/command_group_review.py', 'conformance/display_report.py',
                  'tests/test_command_display_composed_report.py',
+                 'conformance/command_routing_review.py', 'conformance/evidence/command_routing_validation.json',
                  'conformance/evidence/command_feature_inputs.json', 'distribution/run_language_regressions.py'):
         inputs[name] = sha(ROOT/name)
     return dict(passed=True, runtime_image=image, source_revision=revision, inputs=inputs,
         checks=checks, qualified_contracts=candidates, raw=raw, artifacts=artifacts,
         runtime_sources=runtime, diagnostic_sources=selected,
+        routing_validation=correction,
         scope='26 command and 24 virtual display requirements on newly composed native and driver wheels',
         exclusions=command_donor['exclusions']+display_donor['exclusions'],
         full_v05_accepted=False, full_v06_accepted=False)
