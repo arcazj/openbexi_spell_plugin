@@ -49,6 +49,9 @@ def main():
     files += [ROOT / name for name in ('conformance/ipc_mailbox_provenance.py',
         'conformance/ipc_mailbox_build.py', 'conformance/ipc_mailbox_race.cpp',
         'conformance/ipc_mailbox_install.py', 'conformance/ipc_mailbox.Dockerfile')]
+    files += [ROOT / name for name in ('conformance/context_snapshot_provenance.py',
+        'conformance/context_snapshot_build.py', 'conformance/context_snapshot_probe.py',
+        'conformance/context_snapshot_install.py', 'conformance/context_snapshot.Dockerfile')]
     inputs={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     normalized={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes().replace(b'\r\n',b'\n')).hexdigest() for p in files}
     image=subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
@@ -73,7 +76,10 @@ def main():
             members={p.name.removeprefix('./'):p for p in bundle.getmembers() if p.isfile()}
             checks=json.loads(bundle.extractfile(members['checks.json']).read())
             runtime=json.loads(bundle.extractfile(members['runtime.json']).read())
-        if 'mailbox_overlay' in runtime:
+        if 'context_snapshot_overlay' in runtime:
+            from context_snapshot_provenance import qualification_identity as snapshot_identity
+            snapshot_identity(runtime, inputs, normalized)
+        elif 'mailbox_overlay' in runtime:
             from ipc_mailbox_provenance import qualification_identity as mailbox_identity
             mailbox_identity(runtime, inputs, normalized)
         elif 'identity_overlay' in runtime:

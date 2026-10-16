@@ -11,7 +11,9 @@ ROOT=Path('/workspace')
 sys.path.insert(0,str(ROOT))
 sys.path.insert(0,'/opt/host')
 from native import NativeSession
-if Path('/opt/ipc-mailbox-patch').exists():
+if Path('/opt/context-snapshot-patch').exists():
+    from context_snapshot_provenance import capture
+elif Path('/opt/ipc-mailbox-patch').exists():
     from ipc_mailbox_provenance import capture
 elif Path('/opt/checkpoint-identity-patch').exists():
     from checkpoint_identity_provenance import capture
