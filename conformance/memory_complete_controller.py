@@ -29,7 +29,7 @@ ROOT=Path('/workspace');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 (ROOT/'host-inputs.json').write_text(json.dumps({p.name:sha(p) for p in Path('/opt/host').glob('*.py')}))
 checks={}
 for name,spec in CASES.items():
-    project=ROOT/name;project.mkdir()
+    project=ROOT/name.replace(':','__');project.mkdir()
     (project/'main.py').write_text(spec['source'])
     (project/'data/mem').mkdir(parents=True)
     runtime,tcp,api=create_servers(project/'dss.sqlite',0)
