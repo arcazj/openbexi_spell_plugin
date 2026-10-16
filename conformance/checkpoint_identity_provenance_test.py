@@ -11,8 +11,8 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'conformance'))
 from checkpoint_identity_provenance import EXPECTED_SOURCES,qualification_identity
-from checkpoint_identity_report import integrated_gates
-from installed_provenance import PROFILE
+from checkpoint_identity_report import ERRORS, MODES, REQUIRED_INPUTS, integrated_gates, qualify_run
+from installed_provenance import PROFILE, input_paths
 
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -44,6 +44,39 @@ class IdentityTests(unittest.TestCase):
         identity=qualification_identity(self.record,self.inputs)
         self.assertEqual(identity['kind'],'installed-composition')
         self.assertEqual(identity['native_artifacts'],self.record['native_artifacts'])
+
+    def current_runner_fixture(self):
+        names=set(REQUIRED_INPUTS)|set(input_paths(ROOT))|{'host_runtime/python/native.py'}
+        names.update('conformance/'+name for name in (
+            'ipc_mailbox_provenance.py','ipc_mailbox_build.py','ipc_mailbox_race.cpp',
+            'ipc_mailbox_install.py','ipc_mailbox.Dockerfile','context_snapshot.Dockerfile',
+            'context_snapshot_build.py','context_snapshot_install.py',
+            'context_snapshot_probe.py','context_snapshot_provenance.py'))
+        return dict(controller_exit_code=0,
+            options=dict(cases=list(ERRORS),modes=list(MODES),kind='error-ipc'),
+            checks={mode+':'+case:dict(passed=True,mode=mode,case=case)
+                for mode in MODES for case in ERRORS},
+            runtime_sources=copy.deepcopy(self.record),
+            inputs={name:sha(ROOT/name) for name in names})
+
+    def test_current_runner_context_snapshot_inputs_accepted(self):
+        identity=qualify_run(self.current_runner_fixture(),ERRORS,'error-ipc')
+        self.assertEqual(identity['kind'],'installed-composition')
+
+    def test_partial_context_snapshot_inputs_rejected(self):
+        report=self.current_runner_fixture()
+        del report['inputs']['conformance/context_snapshot_probe.py']
+        with self.assertRaises(AssertionError):qualify_run(report,ERRORS,'error-ipc')
+
+    def test_unknown_runner_input_rejected(self):
+        report=self.current_runner_fixture()
+        report['inputs']['conformance/unrecognized.py']='0'*64
+        with self.assertRaises(AssertionError):qualify_run(report,ERRORS,'error-ipc')
+
+    def test_changed_context_snapshot_input_rejected(self):
+        report=self.current_runner_fixture()
+        report['inputs']['conformance/context_snapshot_probe.py']='0'*64
+        with self.assertRaises(AssertionError):qualify_run(report,ERRORS,'error-ipc')
 
     def test_missing_or_changed_sources_and_recipes(self):
         for source in EXPECTED_SOURCES:
