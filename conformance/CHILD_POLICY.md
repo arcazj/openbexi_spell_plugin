@@ -19,3 +19,13 @@ events, native logs, result files and independent attempt counts. These establis
 the three child-state requirements, the Blocking modifier and section 4.16.1.2
 when all checks pass. GUI visibility, procedure-library priorities and the whole
 StartProc function retain separate acceptance gates.
+# Prompt observation correction
+
+The first diagnostic preflight retained four failed ERROR cases and four passed
+ABORTED cases. Its controller incorrectly required the child name in the prompt
+caption. The original `tskhelper.py` supplies the child identifier and Boolean
+return policy in the SKIP/CANCEL options; an ERROR caption can be empty. The
+corrected oracle checks those options and all four action codes. Terminal child
+state, three observations of the blocked parent, exact attempt counts, return
+values and independent recovery effects remain required. The failed run remains
+under `.qualification/closure-preflight/c58b9b4ea7d54cc29dcb7654219318e9`.

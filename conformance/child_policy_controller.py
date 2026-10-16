@@ -64,7 +64,12 @@ for name, spec in CASES.items():
                 assert fields['ProcId'] == session.instance, 'The parent must handle the child failure'
                 choices = [ACTION_NAMES.get(code, code) for code in fields['ExpectedValues'].split('\x04')]
                 assert choices == ['ABORT', 'REPEAT', 'SKIP', 'CANCEL'], choices
-                assert 'child' in fields['Text'].lower(), fields
+                # An ERROR policy prompt can have an empty caption. The original
+                # task helper identifies the child and return policy in its options.
+                options = dict(option.split(':', 1) for option in fields['OptionValues'].split('\x04'))
+                assert set(options) == set(ACTION_NAMES), options
+                assert "'child'" in options['K'] and '(True)' in options['K'], options
+                assert "'child'" in options['Q'] and '(False)' in options['Q'], options
                 child, = [identifier for identifier in children.children if identifier.startswith('child#')]
                 for _ in range(3):
                     held = dict(parent=session.request('REQ_EXEC_STATUS')['ExecutorStatus'],
