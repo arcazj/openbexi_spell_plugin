@@ -429,7 +429,9 @@ class DssEngine:
                     if len({e.get("element_id") for e in elements if type(e) is dict}) != len(elements):
                         raise ValueError("shared transport element identities are ambiguous")
                     for element in elements:
-                        if type(element) is not dict or set(element) != {"element_id","command_name","arguments","command_digest"}:
+                        required_element={"element_id","command_name","arguments","command_digest"}
+                        if (type(element) is not dict or not required_element<=set(element)
+                                or set(element)-required_element-{'execution_time_unix_ns','additional_info'}):
                             raise ValueError("shared transport element schema differs")
                         validate_command(element["command_name"],element["arguments"])
                         if type(element["element_id"]) is not str or not 1 <= len(element["element_id"]) <= 256:
@@ -439,6 +441,17 @@ class DssEngine:
                         child_identity=(state["scenario_id"],body["plan_id"],element["element_id"])
                         child_definition={**{k:element[k] for k in ("command_name","arguments","command_digest")},
                             "procedure_id":body["procedure_id"],"execution_id":body["execution_id"]}
+                        if 'execution_time_unix_ns' in element:
+                            tagged=element['execution_time_unix_ns']
+                            if (type(tagged) is not int or not 0<=tagged<(1<<63)
+                                    or tagged>state['clock_epoch_unix_ns']+state['core']['sim_time_ns']+86_400_000_000_000):
+                                raise ValueError('shared transport execution time exceeds bounds')
+                            child_definition['execution_time_unix_ns']=tagged
+                        if 'additional_info' in element:
+                            info=element['additional_info']
+                            if type(info) is not dict or len(canonical(info))>8192:
+                                raise ValueError('shared transport additional information exceeds bounds')
+                            child_definition['additional_info']=info
                         existing=self.db.execute("SELECT definition FROM commands WHERE scenario_id=? AND plan_id=? AND element_id=?",child_identity).fetchone()
                         if existing:
                             if json.loads(existing["definition"]) != child_definition: raise DssConflict("group command definition changed")

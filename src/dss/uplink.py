@@ -23,8 +23,8 @@ class UplinkGroups:
 
     @staticmethod
     def descriptor(body):
-        group=body.get('uplink_group')
-        if group is None:return None
+        if 'uplink_group' not in body:return None
+        group=body['uplink_group']
         if type(group) is not dict or set(group)!={'id','index','count','timeout_seconds'}:
             raise ValueError('Uplink group schema differs')
         if (type(group['id']) is not str or group['id']!=body.get('plan_id')

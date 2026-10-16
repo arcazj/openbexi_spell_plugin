@@ -56,7 +56,10 @@ def test_future_group_loads_and_releases_all_members_before_execution(bridge):
     assert steps(bridge,3)['core']['commands_executed']==0
     steps(bridge,1)
     assert future.result(timeout=5)[0]
-    assert [p['element_id'] for p in packets(bridge)[-2:]]==['command-0','command-1']
+    queries=packets(bridge)[-2:]
+    assert {p['element_id'] for p in queries}=={'command-0','command-1'}
+    assert all(p['stage']=='ONBOARD_EXECUTION' for p in queries)
+    assert [r['state'] for r in executor.member_results]==['SUCCEEDED','SUCCEEDED']
     assert bridge.engine.state()['core']['commands_executed']==2
 
 

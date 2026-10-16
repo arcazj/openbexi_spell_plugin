@@ -50,7 +50,7 @@ class GroupExecution(CommandExecution):
             if answer.get('schema_version')!='openbexi.dss.ack/1' or any(answer.get(k)!=body[k] for k in keys):
                 raise ValueError('Grouped command acknowledgement binding differs')
             self.receipts.append(answer)
-            if body['stage']=='TRANSPORT' and answer.get('outcome')=='ACCEPTED':
+            if body['stage']=='TRANSPORT' and answer.get('outcome')=='ACCEPTED' and 'uplink_group' in body:
                 self.control_body=dict(body)
         self.last_traffic=time.monotonic()
         if answer.get('outcome')!=expected:
