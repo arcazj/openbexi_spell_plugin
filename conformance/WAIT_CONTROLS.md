@@ -21,3 +21,8 @@ four dimensions. Preparation alone is not evidence of compatibility. The full
 WaitFor function, interval progression and other modifiers require separate
 qualification. No inventory status changes until all native observations and
 the independent report validator pass on the exact installed image.
+
+The native Executor_Wait binding returns True for SCH_ABORTED (the UI SKIP
+path); only SCH_TIMEOUT returns False. This is distinct from choosing CANCEL
+in a failure-policy prompt. The tests preserve that existing return behavior;
+the manual control requirement concerns cancellation and the final paused state.

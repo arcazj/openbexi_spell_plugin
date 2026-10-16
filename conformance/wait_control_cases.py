@@ -33,7 +33,7 @@ for kind in ('relative', 'absolute', 'telemetry'):
                 Path('ready.json').write_text(json.dumps({'target':target,'started':time.monotonic(),'rejected':rejected}))
                 outcome=WaitFor(argument,config=CFG)
                 Path('returned.json').write_text(json.dumps({'value':outcome,'finished':time.time(),'monotonic':time.monotonic()}))
-                assert outcome is (plan['action']=='step'),outcome
+                assert outcome is True,outcome
                 began=time.monotonic()
                 assert WaitFor(.35,HandleError=False,PromptUser=False) is True
                 elapsed=time.monotonic()-began

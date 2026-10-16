@@ -158,7 +158,7 @@ for name, spec in CASES.items():
         wait('FINISHED')
         row['returned']=json.loads((project/'returned.json').read_bytes())
         row['recovery']=json.loads((project/'finished.json').read_bytes())
-        assert row['returned']['value'] is (spec['action']=='step')
+        assert row['returned']['value'] is True
         assert .35<=row['recovery']['recovery_elapsed']<2
         if spec['kind']=='telemetry' and spec['action']=='step':
             assert len(tm_calls())>frozen_calls

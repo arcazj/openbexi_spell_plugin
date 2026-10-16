@@ -73,7 +73,7 @@ def qualify(path,image):
         assert row['paused_at']>=control['epoch']
         paused_states=[x['status'] for x in row['states'] if control['monotonic']<=x['monotonic']<actions[-1]['monotonic']]
         assert paused_states[-3:]==['PAUSED']*3
-        assert row['returned']['value'] is (spec['action']=='step')
+        assert row['returned']['value'] is True
         assert .35<=row['recovery']['recovery_elapsed']<2
         assert len(row['ready']['rejected'])==(1 if spec['dimension']=='failure' else 0)
         if spec['action']=='skip':assert row['paused_at']<control['epoch']+1
