@@ -12,6 +12,7 @@ import command_group_review as groups
 import display_report as displays
 import command_routing_review as routing
 from installed_provenance import verify_stages
+from driver_composition_review import verify_driver_stages
 
 sha, read, ref = commands.sha, commands.read, commands.ref
 
@@ -56,8 +57,9 @@ def qualify(paths, image, revision):
     python = integrated['manifest']['composition']['python']
     driver = integrated['driver_composition']['manifest']
     assert native['recipes'] == python['recipes'] == driver['recipes']
-    for kind, record in (('native', native), ('python', python), ('driver', driver)):
+    for kind, record in (('native', native), ('python', python)):
         verify_stages(kind, record)
+    verify_driver_stages(driver)
     for name, value in integrated['native_artifacts'].items():
         assert runtime['installed']['spell_native/bin/'+name] == value
     for name, value in integrated['python_sources'].items():
@@ -98,7 +100,7 @@ def qualify(paths, image, revision):
     for name in ('conformance/command_display_composed_report.py', 'conformance/command_features_report.py',
                  'conformance/command_group_review.py', 'conformance/display_report.py',
                  'tests/test_command_display_composed_report.py',
-                 'conformance/command_routing_review.py', 'conformance/evidence/command_routing_validation.json',
+                 'conformance/command_routing_review.py', 'conformance/driver_composition_review.py', 'conformance/evidence/command_routing_validation.json',
                  'tests/test_command_routing_review.py',
                  'conformance/evidence/command_feature_inputs.json', 'distribution/run_language_regressions.py'):
         inputs[name] = sha(ROOT/name)
