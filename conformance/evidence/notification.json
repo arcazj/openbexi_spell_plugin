@@ -20,11 +20,13 @@
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
@@ -93,11 +95,13 @@
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
@@ -144,7 +148,7 @@
     "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
     "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
   },
-  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "runtime_image": "sha256:628190dec8544577b2e8aef97afd70032870eb12d1ef91da97e9fc50e62ccdf4",
   "checks": {
     "notify:positive": {
       "dimension": "positive",
@@ -182,13 +186,13 @@
           "ItemName": "NOTIFY:notify:positive:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "6",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         {
           "Csp": "main:1/0",
@@ -197,13 +201,13 @@
           "ItemName": "NOTIFY:notify:positive:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "7",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         {
           "Csp": "main:1/0",
@@ -212,13 +216,13 @@
           "ItemName": "NOTIFY:notify:positive:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "8",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         }
       ],
       "controller_answers": [],
@@ -276,13 +280,13 @@
           "ItemName": "NOTIFY:notify:boundary:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "9",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         {
           "Csp": "main:1/0",
@@ -291,13 +295,13 @@
           "ItemName": "NOTIFY:notify:boundary:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "10",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         {
           "Csp": "main:1/0",
@@ -306,13 +310,13 @@
           "ItemName": "NOTIFY:notify:boundary:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "11",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:59"
         }
       ],
       "controller_answers": [],
@@ -402,13 +406,13 @@
           "ItemName": "NOTIFY:notify:recovery:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "12",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         {
           "Csp": "main:1/0",
@@ -417,13 +421,13 @@
           "ItemName": "NOTIFY:notify:recovery:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "13",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         {
           "Csp": "main:1/0",
@@ -432,13 +436,13 @@
           "ItemName": "NOTIFY:notify:recovery:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "14",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         }
       ],
       "controller_answers": [],
@@ -531,7 +535,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-            "Time": "1792042146383359"
+            "Time": "1792115579563725"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-keyword:answer"
         }
@@ -568,7 +572,7 @@
             "Scope": "1",
             "Sequence": "20",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-            "Time": "1792042146743618"
+            "Time": "1792115579882111"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-positional:answer"
         }
@@ -605,7 +609,7 @@
             "Scope": "1",
             "Sequence": "25",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-            "Time": "1792042147561200"
+            "Time": "1792115580200868"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-config:answer"
         }
@@ -642,7 +646,7 @@
             "Scope": "1",
             "Sequence": "30",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-            "Time": "1792042147369742"
+            "Time": "1792115580516438"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer"
         }
@@ -679,7 +683,7 @@
             "Scope": "1",
             "Sequence": "35",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-            "Time": "1792042147683052"
+            "Time": "1792115580838299"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-pickle:answer"
         }
@@ -716,7 +720,7 @@
             "Scope": "1",
             "Sequence": "40",
             "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-            "Time": "1792042147998292"
+            "Time": "1792115581153348"
           },
           "answer": "NOTIFY-PROMPT:modifier:enabled-recovery:answer"
         }
@@ -735,7 +739,7 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation."
@@ -763,13 +767,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "controller_answers": [],
@@ -783,8 +787,8 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-15_052915_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:17 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "02bc30c4845c69ce6eb0cee4b3e133e3030c8abdac2494a4f142e0ad9316c935",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-16_015308_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:09 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "28f2ef6fe7ec5ae15dd5ac62467d2de5fcfa6d76947b1e0e7e7c9d05f89c0c2b",
       "procedure_sha256": "06bf02498ecdeaac81a7e4e02ec651dfa8f7e46e2b9dba79a5a1b1e1c306e6ac",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation."
@@ -796,8 +800,8 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-15_052917_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:18 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "ed38d6cf024dc91c546ae299318456ef5f2ce9431c5bd00a860b4d1d51391f18",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-16_015310_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:11 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "7e3c24c7e63181a9ffa2d1b44d0fba319edc4f127162deab00fb8565b22c6a01",
       "procedure_sha256": "4db336f8d400625d54f3790523bbf5bb137117025b175ab1e1053a50801fe076",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation."
@@ -882,7 +886,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-            "Time": "1792042146383359"
+            "Time": "1792115579563725"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-keyword:answer"
         }
@@ -891,7 +895,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-keyword",
       "source_dimension": "positive",
-      "source_row_sha256": "c719c3d79c02b7b816fd42a927f3de28a6d219536f6daef9d30df5fa0890b090"
+      "source_row_sha256": "62a114827db5ae4bbd1ff42f8649bf465a1c100bbc7491313969f6a116fb96db"
     },
     "compatibility:positive:modifier:suppressed-positional": {
       "dimension": "positive",
@@ -922,7 +926,7 @@
             "Scope": "1",
             "Sequence": "20",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-            "Time": "1792042146743618"
+            "Time": "1792115579882111"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-positional:answer"
         }
@@ -931,7 +935,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-positional",
       "source_dimension": "positive",
-      "source_row_sha256": "7c181942c476493e94cf034ef81ff53e6fcab3704ac4e5456c9eddb6f59730c6"
+      "source_row_sha256": "3141141ea6a44463bd431e29a1f84f7b2d05fd3c34f46f5b87d5e476a12faa65"
     },
     "compatibility:positive:modifier:suppressed-config": {
       "dimension": "positive",
@@ -962,7 +966,7 @@
             "Scope": "1",
             "Sequence": "25",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-            "Time": "1792042147561200"
+            "Time": "1792115580200868"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-config:answer"
         }
@@ -971,7 +975,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-config",
       "source_dimension": "positive",
-      "source_row_sha256": "4eecada8a64157d026df410559bf8d18a3378e6c36c28b1f9f0025de65b8d9a8"
+      "source_row_sha256": "1c664bc9e511eb0e24aac010a528228e39c630e355820112d48150f26b3671eb"
     },
     "compatibility:positive:modifier:suppressed-deepcopy": {
       "dimension": "positive",
@@ -1002,7 +1006,7 @@
             "Scope": "1",
             "Sequence": "30",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-            "Time": "1792042147369742"
+            "Time": "1792115580516438"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer"
         }
@@ -1011,7 +1015,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-deepcopy",
       "source_dimension": "positive",
-      "source_row_sha256": "ddd435a8455775049deb0bc4d139ff3dd667f93fa7d939aa6afe9285f5fd6097"
+      "source_row_sha256": "776f699704861679dfa2ffe6c667e60d763eb2c209bb263f9a5cbdd72d161376"
     },
     "compatibility:positive:modifier:suppressed-pickle": {
       "dimension": "positive",
@@ -1042,7 +1046,7 @@
             "Scope": "1",
             "Sequence": "35",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-            "Time": "1792042147683052"
+            "Time": "1792115580838299"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-pickle:answer"
         }
@@ -1051,7 +1055,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-pickle",
       "source_dimension": "positive",
-      "source_row_sha256": "bb616c32f33dafadaea4fecbe5c8e7a4b08706210b04f105b834a241032cbabe"
+      "source_row_sha256": "db8ce732c1171a2c09d05a3d013bc27a73d5986aa3bae23ca56aa9f98cf56fb6"
     },
     "compatibility:positive:modifier:enabled-recovery": {
       "dimension": "positive",
@@ -1082,7 +1086,7 @@
             "Scope": "1",
             "Sequence": "40",
             "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-            "Time": "1792042147998292"
+            "Time": "1792115581153348"
           },
           "answer": "NOTIFY-PROMPT:modifier:enabled-recovery:answer"
         }
@@ -1101,13 +1105,13 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:enabled-recovery",
       "source_dimension": "recovery",
-      "source_row_sha256": "b6559d16e31d7a9b3c593b2f84850ac8a69abe2621a2405b5052ec86e2e8a84e"
+      "source_row_sha256": "53bede5975690bc2fee97f86237dfe56ca29c80ec1b18b92e97b842c81a51133"
     },
     "compatibility:positive:legacy:notification": {
       "dimension": "positive",
@@ -1132,13 +1136,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "controller_answers": [],
@@ -1146,7 +1150,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "legacy:notification",
       "source_dimension": "positive",
-      "source_row_sha256": "f1fbc683575d0faa57c9e0c6bc263f2d40d288b8896290343b02de2e36831509"
+      "source_row_sha256": "40b50e3316c8712ffb846b9eaf1e34b60b9974c2d9afea0169ec3241eefd6068"
     },
     "compatibility:positive:modifier:checkpoint-on_line": {
       "dimension": "positive",
@@ -1155,14 +1159,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-15_052915_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:17 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "02bc30c4845c69ce6eb0cee4b3e133e3030c8abdac2494a4f142e0ad9316c935",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-16_015308_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:09 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "28f2ef6fe7ec5ae15dd5ac62467d2de5fcfa6d76947b1e0e7e7c9d05f89c0c2b",
       "procedure_sha256": "06bf02498ecdeaac81a7e4e02ec651dfa8f7e46e2b9dba79a5a1b1e1c306e6ac",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_line",
       "source_dimension": "recovery",
-      "source_row_sha256": "f9ee42eebd849eca5d4444fc42280900a155fd0151d78879b94ebdd3bc3e7d59"
+      "source_row_sha256": "d4ca099991e137e7222c652b3edd44a16861b85e095c3726f5abe64c520f4644"
     },
     "compatibility:positive:modifier:checkpoint-on_step": {
       "dimension": "positive",
@@ -1171,14 +1175,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-15_052917_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:18 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "ed38d6cf024dc91c546ae299318456ef5f2ce9431c5bd00a860b4d1d51391f18",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-16_015310_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:11 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "7e3c24c7e63181a9ffa2d1b44d0fba319edc4f127162deab00fb8565b22c6a01",
       "procedure_sha256": "4db336f8d400625d54f3790523bbf5bb137117025b175ab1e1053a50801fe076",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_step",
       "source_dimension": "recovery",
-      "source_row_sha256": "135ddbe3d4180370453f181b4f88b84d5f82c8d85b1b8d997ae444bab469902d"
+      "source_row_sha256": "1a935b8bd6d31d8137548404735098982efeb490b1b2011c23ae565bc4be5fac"
     },
     "compatibility:boundary:modifier:identity": {
       "dimension": "boundary",
@@ -1260,7 +1264,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-            "Time": "1792042146383359"
+            "Time": "1792115579563725"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-keyword:answer"
         }
@@ -1269,7 +1273,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-keyword",
       "source_dimension": "positive",
-      "source_row_sha256": "c719c3d79c02b7b816fd42a927f3de28a6d219536f6daef9d30df5fa0890b090"
+      "source_row_sha256": "62a114827db5ae4bbd1ff42f8649bf465a1c100bbc7491313969f6a116fb96db"
     },
     "compatibility:boundary:modifier:suppressed-positional": {
       "dimension": "boundary",
@@ -1300,7 +1304,7 @@
             "Scope": "1",
             "Sequence": "20",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-            "Time": "1792042146743618"
+            "Time": "1792115579882111"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-positional:answer"
         }
@@ -1309,7 +1313,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-positional",
       "source_dimension": "positive",
-      "source_row_sha256": "7c181942c476493e94cf034ef81ff53e6fcab3704ac4e5456c9eddb6f59730c6"
+      "source_row_sha256": "3141141ea6a44463bd431e29a1f84f7b2d05fd3c34f46f5b87d5e476a12faa65"
     },
     "compatibility:boundary:modifier:suppressed-config": {
       "dimension": "boundary",
@@ -1340,7 +1344,7 @@
             "Scope": "1",
             "Sequence": "25",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-            "Time": "1792042147561200"
+            "Time": "1792115580200868"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-config:answer"
         }
@@ -1349,7 +1353,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-config",
       "source_dimension": "positive",
-      "source_row_sha256": "4eecada8a64157d026df410559bf8d18a3378e6c36c28b1f9f0025de65b8d9a8"
+      "source_row_sha256": "1c664bc9e511eb0e24aac010a528228e39c630e355820112d48150f26b3671eb"
     },
     "compatibility:boundary:modifier:suppressed-deepcopy": {
       "dimension": "boundary",
@@ -1380,7 +1384,7 @@
             "Scope": "1",
             "Sequence": "30",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-            "Time": "1792042147369742"
+            "Time": "1792115580516438"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer"
         }
@@ -1389,7 +1393,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-deepcopy",
       "source_dimension": "positive",
-      "source_row_sha256": "ddd435a8455775049deb0bc4d139ff3dd667f93fa7d939aa6afe9285f5fd6097"
+      "source_row_sha256": "776f699704861679dfa2ffe6c667e60d763eb2c209bb263f9a5cbdd72d161376"
     },
     "compatibility:boundary:modifier:suppressed-pickle": {
       "dimension": "boundary",
@@ -1420,7 +1424,7 @@
             "Scope": "1",
             "Sequence": "35",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-            "Time": "1792042147683052"
+            "Time": "1792115580838299"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-pickle:answer"
         }
@@ -1429,7 +1433,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-pickle",
       "source_dimension": "positive",
-      "source_row_sha256": "bb616c32f33dafadaea4fecbe5c8e7a4b08706210b04f105b834a241032cbabe"
+      "source_row_sha256": "db8ce732c1171a2c09d05a3d013bc27a73d5986aa3bae23ca56aa9f98cf56fb6"
     },
     "compatibility:boundary:modifier:enabled-recovery": {
       "dimension": "boundary",
@@ -1460,7 +1464,7 @@
             "Scope": "1",
             "Sequence": "40",
             "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-            "Time": "1792042147998292"
+            "Time": "1792115581153348"
           },
           "answer": "NOTIFY-PROMPT:modifier:enabled-recovery:answer"
         }
@@ -1479,13 +1483,13 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:enabled-recovery",
       "source_dimension": "recovery",
-      "source_row_sha256": "b6559d16e31d7a9b3c593b2f84850ac8a69abe2621a2405b5052ec86e2e8a84e"
+      "source_row_sha256": "53bede5975690bc2fee97f86237dfe56ca29c80ec1b18b92e97b842c81a51133"
     },
     "compatibility:boundary:legacy:notification": {
       "dimension": "boundary",
@@ -1510,13 +1514,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "controller_answers": [],
@@ -1524,7 +1528,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "legacy:notification",
       "source_dimension": "positive",
-      "source_row_sha256": "f1fbc683575d0faa57c9e0c6bc263f2d40d288b8896290343b02de2e36831509"
+      "source_row_sha256": "40b50e3316c8712ffb846b9eaf1e34b60b9974c2d9afea0169ec3241eefd6068"
     },
     "compatibility:boundary:modifier:checkpoint-on_line": {
       "dimension": "boundary",
@@ -1533,14 +1537,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-15_052915_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:17 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "02bc30c4845c69ce6eb0cee4b3e133e3030c8abdac2494a4f142e0ad9316c935",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-16_015308_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:09 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "28f2ef6fe7ec5ae15dd5ac62467d2de5fcfa6d76947b1e0e7e7c9d05f89c0c2b",
       "procedure_sha256": "06bf02498ecdeaac81a7e4e02ec651dfa8f7e46e2b9dba79a5a1b1e1c306e6ac",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_line",
       "source_dimension": "recovery",
-      "source_row_sha256": "f9ee42eebd849eca5d4444fc42280900a155fd0151d78879b94ebdd3bc3e7d59"
+      "source_row_sha256": "d4ca099991e137e7222c652b3edd44a16861b85e095c3726f5abe64c520f4644"
     },
     "compatibility:boundary:modifier:checkpoint-on_step": {
       "dimension": "boundary",
@@ -1549,14 +1553,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-15_052917_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:18 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "ed38d6cf024dc91c546ae299318456ef5f2ce9431c5bd00a860b4d1d51391f18",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-16_015310_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:11 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "7e3c24c7e63181a9ffa2d1b44d0fba319edc4f127162deab00fb8565b22c6a01",
       "procedure_sha256": "4db336f8d400625d54f3790523bbf5bb137117025b175ab1e1053a50801fe076",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_step",
       "source_dimension": "recovery",
-      "source_row_sha256": "135ddbe3d4180370453f181b4f88b84d5f82c8d85b1b8d997ae444bab469902d"
+      "source_row_sha256": "1a935b8bd6d31d8137548404735098982efeb490b1b2011c23ae565bc4be5fac"
     },
     "compatibility:failure:modifier:identity": {
       "dimension": "failure",
@@ -1638,7 +1642,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-            "Time": "1792042146383359"
+            "Time": "1792115579563725"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-keyword:answer"
         }
@@ -1647,7 +1651,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-keyword",
       "source_dimension": "positive",
-      "source_row_sha256": "c719c3d79c02b7b816fd42a927f3de28a6d219536f6daef9d30df5fa0890b090"
+      "source_row_sha256": "62a114827db5ae4bbd1ff42f8649bf465a1c100bbc7491313969f6a116fb96db"
     },
     "compatibility:failure:modifier:suppressed-positional": {
       "dimension": "failure",
@@ -1678,7 +1682,7 @@
             "Scope": "1",
             "Sequence": "20",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-            "Time": "1792042146743618"
+            "Time": "1792115579882111"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-positional:answer"
         }
@@ -1687,7 +1691,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-positional",
       "source_dimension": "positive",
-      "source_row_sha256": "7c181942c476493e94cf034ef81ff53e6fcab3704ac4e5456c9eddb6f59730c6"
+      "source_row_sha256": "3141141ea6a44463bd431e29a1f84f7b2d05fd3c34f46f5b87d5e476a12faa65"
     },
     "compatibility:failure:modifier:suppressed-config": {
       "dimension": "failure",
@@ -1718,7 +1722,7 @@
             "Scope": "1",
             "Sequence": "25",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-            "Time": "1792042147561200"
+            "Time": "1792115580200868"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-config:answer"
         }
@@ -1727,7 +1731,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-config",
       "source_dimension": "positive",
-      "source_row_sha256": "4eecada8a64157d026df410559bf8d18a3378e6c36c28b1f9f0025de65b8d9a8"
+      "source_row_sha256": "1c664bc9e511eb0e24aac010a528228e39c630e355820112d48150f26b3671eb"
     },
     "compatibility:failure:modifier:suppressed-deepcopy": {
       "dimension": "failure",
@@ -1758,7 +1762,7 @@
             "Scope": "1",
             "Sequence": "30",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-            "Time": "1792042147369742"
+            "Time": "1792115580516438"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer"
         }
@@ -1767,7 +1771,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-deepcopy",
       "source_dimension": "positive",
-      "source_row_sha256": "ddd435a8455775049deb0bc4d139ff3dd667f93fa7d939aa6afe9285f5fd6097"
+      "source_row_sha256": "776f699704861679dfa2ffe6c667e60d763eb2c209bb263f9a5cbdd72d161376"
     },
     "compatibility:failure:modifier:suppressed-pickle": {
       "dimension": "failure",
@@ -1798,7 +1802,7 @@
             "Scope": "1",
             "Sequence": "35",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-            "Time": "1792042147683052"
+            "Time": "1792115580838299"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-pickle:answer"
         }
@@ -1807,7 +1811,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-pickle",
       "source_dimension": "positive",
-      "source_row_sha256": "bb616c32f33dafadaea4fecbe5c8e7a4b08706210b04f105b834a241032cbabe"
+      "source_row_sha256": "db8ce732c1171a2c09d05a3d013bc27a73d5986aa3bae23ca56aa9f98cf56fb6"
     },
     "compatibility:failure:modifier:enabled-recovery": {
       "dimension": "failure",
@@ -1838,7 +1842,7 @@
             "Scope": "1",
             "Sequence": "40",
             "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-            "Time": "1792042147998292"
+            "Time": "1792115581153348"
           },
           "answer": "NOTIFY-PROMPT:modifier:enabled-recovery:answer"
         }
@@ -1857,13 +1861,13 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:enabled-recovery",
       "source_dimension": "recovery",
-      "source_row_sha256": "b6559d16e31d7a9b3c593b2f84850ac8a69abe2621a2405b5052ec86e2e8a84e"
+      "source_row_sha256": "53bede5975690bc2fee97f86237dfe56ca29c80ec1b18b92e97b842c81a51133"
     },
     "compatibility:failure:legacy:notification": {
       "dimension": "failure",
@@ -1888,13 +1892,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "controller_answers": [],
@@ -1902,7 +1906,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "legacy:notification",
       "source_dimension": "positive",
-      "source_row_sha256": "f1fbc683575d0faa57c9e0c6bc263f2d40d288b8896290343b02de2e36831509"
+      "source_row_sha256": "40b50e3316c8712ffb846b9eaf1e34b60b9974c2d9afea0169ec3241eefd6068"
     },
     "compatibility:failure:modifier:checkpoint-on_line": {
       "dimension": "failure",
@@ -1911,14 +1915,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-15_052915_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:17 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "02bc30c4845c69ce6eb0cee4b3e133e3030c8abdac2494a4f142e0ad9316c935",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-16_015308_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:09 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "28f2ef6fe7ec5ae15dd5ac62467d2de5fcfa6d76947b1e0e7e7c9d05f89c0c2b",
       "procedure_sha256": "06bf02498ecdeaac81a7e4e02ec651dfa8f7e46e2b9dba79a5a1b1e1c306e6ac",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_line",
       "source_dimension": "recovery",
-      "source_row_sha256": "f9ee42eebd849eca5d4444fc42280900a155fd0151d78879b94ebdd3bc3e7d59"
+      "source_row_sha256": "d4ca099991e137e7222c652b3edd44a16861b85e095c3726f5abe64c520f4644"
     },
     "compatibility:failure:modifier:checkpoint-on_step": {
       "dimension": "failure",
@@ -1927,14 +1931,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-15_052917_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:18 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "ed38d6cf024dc91c546ae299318456ef5f2ce9431c5bd00a860b4d1d51391f18",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-16_015310_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:11 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "7e3c24c7e63181a9ffa2d1b44d0fba319edc4f127162deab00fb8565b22c6a01",
       "procedure_sha256": "4db336f8d400625d54f3790523bbf5bb137117025b175ab1e1053a50801fe076",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_step",
       "source_dimension": "recovery",
-      "source_row_sha256": "135ddbe3d4180370453f181b4f88b84d5f82c8d85b1b8d997ae444bab469902d"
+      "source_row_sha256": "1a935b8bd6d31d8137548404735098982efeb490b1b2011c23ae565bc4be5fac"
     },
     "compatibility:recovery:modifier:identity": {
       "dimension": "recovery",
@@ -2016,7 +2020,7 @@
             "Scope": "1",
             "Sequence": "15",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-            "Time": "1792042146383359"
+            "Time": "1792115579563725"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-keyword:answer"
         }
@@ -2025,7 +2029,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-keyword",
       "source_dimension": "positive",
-      "source_row_sha256": "c719c3d79c02b7b816fd42a927f3de28a6d219536f6daef9d30df5fa0890b090"
+      "source_row_sha256": "62a114827db5ae4bbd1ff42f8649bf465a1c100bbc7491313969f6a116fb96db"
     },
     "compatibility:recovery:modifier:suppressed-positional": {
       "dimension": "recovery",
@@ -2056,7 +2060,7 @@
             "Scope": "1",
             "Sequence": "20",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-            "Time": "1792042146743618"
+            "Time": "1792115579882111"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-positional:answer"
         }
@@ -2065,7 +2069,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-positional",
       "source_dimension": "positive",
-      "source_row_sha256": "7c181942c476493e94cf034ef81ff53e6fcab3704ac4e5456c9eddb6f59730c6"
+      "source_row_sha256": "3141141ea6a44463bd431e29a1f84f7b2d05fd3c34f46f5b87d5e476a12faa65"
     },
     "compatibility:recovery:modifier:suppressed-config": {
       "dimension": "recovery",
@@ -2096,7 +2100,7 @@
             "Scope": "1",
             "Sequence": "25",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-            "Time": "1792042147561200"
+            "Time": "1792115580200868"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-config:answer"
         }
@@ -2105,7 +2109,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-config",
       "source_dimension": "positive",
-      "source_row_sha256": "4eecada8a64157d026df410559bf8d18a3378e6c36c28b1f9f0025de65b8d9a8"
+      "source_row_sha256": "1c664bc9e511eb0e24aac010a528228e39c630e355820112d48150f26b3671eb"
     },
     "compatibility:recovery:modifier:suppressed-deepcopy": {
       "dimension": "recovery",
@@ -2136,7 +2140,7 @@
             "Scope": "1",
             "Sequence": "30",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-            "Time": "1792042147369742"
+            "Time": "1792115580516438"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer"
         }
@@ -2145,7 +2149,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-deepcopy",
       "source_dimension": "positive",
-      "source_row_sha256": "ddd435a8455775049deb0bc4d139ff3dd667f93fa7d939aa6afe9285f5fd6097"
+      "source_row_sha256": "776f699704861679dfa2ffe6c667e60d763eb2c209bb263f9a5cbdd72d161376"
     },
     "compatibility:recovery:modifier:suppressed-pickle": {
       "dimension": "recovery",
@@ -2176,7 +2180,7 @@
             "Scope": "1",
             "Sequence": "35",
             "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-            "Time": "1792042147683052"
+            "Time": "1792115580838299"
           },
           "answer": "NOTIFY-PROMPT:modifier:suppressed-pickle:answer"
         }
@@ -2185,7 +2189,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:suppressed-pickle",
       "source_dimension": "positive",
-      "source_row_sha256": "bb616c32f33dafadaea4fecbe5c8e7a4b08706210b04f105b834a241032cbabe"
+      "source_row_sha256": "db8ce732c1171a2c09d05a3d013bc27a73d5986aa3bae23ca56aa9f98cf56fb6"
     },
     "compatibility:recovery:modifier:enabled-recovery": {
       "dimension": "recovery",
@@ -2216,7 +2220,7 @@
             "Scope": "1",
             "Sequence": "40",
             "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-            "Time": "1792042147998292"
+            "Time": "1792115581153348"
           },
           "answer": "NOTIFY-PROMPT:modifier:enabled-recovery:answer"
         }
@@ -2235,13 +2239,13 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:enabled-recovery",
       "source_dimension": "recovery",
-      "source_row_sha256": "b6559d16e31d7a9b3c593b2f84850ac8a69abe2621a2405b5052ec86e2e8a84e"
+      "source_row_sha256": "53bede5975690bc2fee97f86237dfe56ca29c80ec1b18b92e97b842c81a51133"
     },
     "compatibility:recovery:legacy:notification": {
       "dimension": "recovery",
@@ -2266,13 +2270,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         }
       ],
       "controller_answers": [],
@@ -2280,7 +2284,7 @@
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "legacy:notification",
       "source_dimension": "positive",
-      "source_row_sha256": "f1fbc683575d0faa57c9e0c6bc263f2d40d288b8896290343b02de2e36831509"
+      "source_row_sha256": "40b50e3316c8712ffb846b9eaf1e34b60b9974c2d9afea0169ec3241eefd6068"
     },
     "compatibility:recovery:modifier:checkpoint-on_line": {
       "dimension": "recovery",
@@ -2289,14 +2293,14 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-15_052915_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:17 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "02bc30c4845c69ce6eb0cee4b3e133e3030c8abdac2494a4f142e0ad9316c935",
+      "resume_log": "* Run script /workspace/checkpoint-on_line/procedure.py\n* Enable recovery with file 2026-10-16_015308_Executor___workspace__checkpoint-on_line__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:09 Count: 1\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_line/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_line/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_line/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_line/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_line/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "28f2ef6fe7ec5ae15dd5ac62467d2de5fcfa6d76947b1e0e7e7c9d05f89c0c2b",
       "procedure_sha256": "06bf02498ecdeaac81a7e4e02ec651dfa8f7e46e2b9dba79a5a1b1e1c306e6ac",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_line",
       "source_dimension": "recovery",
-      "source_row_sha256": "f9ee42eebd849eca5d4444fc42280900a155fd0151d78879b94ebdd3bc3e7d59"
+      "source_row_sha256": "d4ca099991e137e7222c652b3edd44a16861b85e095c3726f5abe64c520f4644"
     },
     "compatibility:recovery:modifier:checkpoint-on_step": {
       "dimension": "recovery",
@@ -2305,20 +2309,20 @@
       "capture_returncode": -9,
       "capture_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable warmstart\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:0\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:2\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:3\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:4\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:5\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:6\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:7\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:8\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:9\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:10\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:11\n[ DISPLAY ] Step notify-checkpoint: Preserve callable modifier (scope:8)\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
       "resume_returncode": 0,
-      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-15_052917_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-15 05:29:18 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
-      "checkpoint_sha256": "ed38d6cf024dc91c546ae299318456ef5f2ce9431c5bd00a860b4d1d51391f18",
+      "resume_log": "* Run script /workspace/checkpoint-on_step/procedure.py\n* Enable recovery with file 2026-10-16_015310_Executor___workspace__checkpoint-on_step__procedure\n[ STATUS  ] LOADED\n[ STATUS  ] RUNNING\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:12\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:12\nNOTIFY_CHECKPOINT_READY\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:13\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:14\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:15\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:16\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:17\n[  ITEM  ] CheckpointNotify<ITEM>: 'restored' (SUCCESS) Comment:  Time: 2026-10-16 01:53:11 Count: 1\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:18\n[ RETURN  ] /workspace/checkpoint-on_step/procedure.py:18\n[  CALL  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:19\n[  LINE  ] /workspace/checkpoint-on_step/procedure.py:20\n[ STATUS  ] FINISHED\n==============================================================================\n     SPELL environment configuration\n==============================================================================\n*      SPELL_HOME: /usr/local/lib/python3.13/site-packages/spell_native\n*      SPELL_COTS: (NOT DEFINED)\n*      SPELL_DATA: /workspace/checkpoint-on_step/example/data\n*    SPELL_CONFIG: /workspace/checkpoint-on_step/example/config\n*       SPELL_LOG: /workspace/checkpoint-on_step/example/logs\n==============================================================================\nlog4cplus:ERROR No appenders could be found for logger (root).\nlog4cplus:ERROR Please initialize the log4cplus system properly.\n",
+      "checkpoint_sha256": "7e3c24c7e63181a9ffa2d1b44d0fba319edc4f127162deab00fb8565b22c6a01",
       "procedure_sha256": "4db336f8d400625d54f3790523bbf5bb137117025b175ab1e1053a50801fe076",
       "passed": true,
       "oracle": "Independent native compatibility/regression oracle; no new clause allocation.",
       "source_scenario": "modifier:checkpoint-on_step",
       "source_dimension": "recovery",
-      "source_row_sha256": "135ddbe3d4180370453f181b4f88b84d5f82c8d85b1b8d997ae444bab469902d"
+      "source_row_sha256": "1a935b8bd6d31d8137548404735098982efeb490b1b2011c23ae565bc4be5fac"
     }
   },
   "runtime_sources": {
     "baseline": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "11e98c45431b73124710139fb1036b743e282cdef58de512b47fb973bcaa38d1",
+      "manifest_sha256": "0edc29e0362055eb2eae2920b372d8b62b3e7b704810f0183b54383cb795ee39",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -2327,9 +2331,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "9c8927aca41c08d75450d8467dba489050b8352260b34194628fecd3eb552013"
+              "integrated_identity": "fef7cfaf9aa1bf09e66480e706bbe054b84be0d4bd54c8c2416a6e1e61d1f93f"
             },
-            "manifest_sha256": "5f87675cc2338cfd808628875702b9ba53e107219fe0793badb94032aa4ac5f2",
+            "manifest_sha256": "31c84195840cb40505748fe86a665b167f53880e2bcb3a0172e35f7e4eb8e494",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -2363,6 +2367,10 @@
                 "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
                 "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
+              "database_values_patches.py": {
+                "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+                "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
                 "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
@@ -2384,8 +2392,12 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+              },
+              "ipc_mailbox_patches.py": {
+                "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+                "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -2468,7 +2480,7 @@
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
+                "patched_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -2545,6 +2557,11 @@
                 "original_sha256": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
                 "patched_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
                 "ported_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+              },
+              "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C": {
+                "original_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595",
+                "patched_sha256": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22",
+                "ported_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595"
               },
               "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
                 "original_sha256": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
@@ -2735,6 +2752,15 @@
                 }
               },
               {
+                "recipe": "ipc_mailbox_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C": {
+                    "after_sha256": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22",
+                    "before_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595"
+                  }
+                }
+              },
+              {
                 "recipe": "prompt_control_patches.py",
                 "sources": {
                   "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
@@ -2783,7 +2809,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
+                    "after_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -2792,7 +2818,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "1cc2e69c695e720a57091b4d320469bc8be4c18e9a8f125b0fa38a5685b26372",
+            "manifest_sha256": "4fa7e8f7149e6f498d416f0015d00f34a93ee1fbc180449754f1e13c9b052605",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -2826,6 +2852,10 @@
                 "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
                 "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
+              "database_values_patches.py": {
+                "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+                "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
                 "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
@@ -2847,8 +2877,12 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+              },
+              "ipc_mailbox_patches.py": {
+                "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+                "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -3032,7 +3066,7 @@
               },
               "spell/utils/vimport.py": {
                 "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
-                "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                "patched_sha256": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
                 "ported_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
               }
             },
@@ -3158,6 +3192,15 @@
                 }
               },
               {
+                "recipe": "database_values_patches.py",
+                "sources": {
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
+                    "before_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+                  }
+                }
+              },
+              {
                 "recipe": "notification_patches.py",
                 "sources": {
                   "spell/lang/modifiers.py": {
@@ -3246,6 +3289,7 @@
           "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
           "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
           "database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+          "database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
           "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
           "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
           "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
@@ -3275,7 +3319,8 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+          "integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+          "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -3394,14 +3439,14 @@
           "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
+          "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-          "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
+          "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
+          "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
         },
-        "native_gate_policy_sha256": "b9cf2d9a0d4c0b4c5046ca616877eba3841939007e5ec4fd0d987ee982e35bb2",
+        "native_gate_policy_sha256": "ff091ab326835a0fc0b4b02bc6e66659de270e1729ce980ac1bc3a28428514c8",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -3506,18 +3551,18 @@
           "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
           "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
           "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-          "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+          "spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9"
         },
         "release_scope": "Original native foundation; full language conformance remains separate",
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
+        "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-        "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
+        "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
+        "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -3620,18 +3665,18 @@
         "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
         "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
         "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-        "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+        "spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9"
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "2cb303ffcbacfe6c0048d7d078f647c5aebe25a99e8391cf256b68ea2f45b021",
+        "manifest_sha256": "3b4d712509ad362eaa5b1d79b825070b3bfb99433ff43fbf10276a20780a29de",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-              "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+              "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+              "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -3709,6 +3754,10 @@
               "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
               "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
             },
+            "database_values_patches.py": {
+              "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+              "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+            },
             "scdb_patches.py": {
               "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
               "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
@@ -3748,6 +3797,10 @@
             "prompt_control_patches.py": {
               "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
               "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+            },
+            "ipc_mailbox_patches.py": {
+              "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+              "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
             },
             "rng_patches.py": {
               "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
@@ -3853,7 +3906,7 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 77
+        "record_files_verified": 79
       }
     },
     "overlay": null
@@ -3893,7 +3946,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "5",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -3911,13 +3964,13 @@
           "ItemName": "NOTIFY:notify:positive:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "6",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -3935,13 +3988,13 @@
           "ItemName": "NOTIFY:notify:positive:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "7",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -3959,13 +4012,13 @@
           "ItemName": "NOTIFY:notify:positive:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "8",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -3983,13 +4036,13 @@
           "ItemName": "NOTIFY:notify:boundary:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "9",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4007,13 +4060,13 @@
           "ItemName": "NOTIFY:notify:boundary:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:58",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "10",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:58"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4031,13 +4084,13 @@
           "ItemName": "NOTIFY:notify:boundary:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:05",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "''",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "11",
-          "Time": "2026-10-15 05:29:05"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4055,13 +4108,13 @@
           "ItemName": "NOTIFY:notify:recovery:SUCCESS",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "12",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4079,13 +4132,13 @@
           "ItemName": "NOTIFY:notify:recovery:IN PROGRESS",
           "ItemReason": "",
           "ItemStatus": "IN PROGRESS",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "13",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4103,13 +4156,13 @@
           "ItemName": "NOTIFY:notify:recovery:FAILED",
           "ItemReason": "",
           "ItemStatus": "FAILED",
-          "ItemTime": "2026-10-15 05:29:06",
+          "ItemTime": "2026-10-16 01:52:59",
           "ItemType": "ITEM",
           "ItemValue": "'value / caf\u00e9'",
           "ProcId": "main#1",
           "SCount": "0",
           "Sequence": "14",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4129,7 +4182,7 @@
           "Scope": "16",
           "Sequence": "16",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword\n",
-          "Time": "1792042146383432"
+          "Time": "1792115579563789"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4171,7 +4224,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "17",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4192,7 +4245,7 @@
           "Scope": "1",
           "Sequence": "15",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-keyword",
-          "Time": "1792042146383359"
+          "Time": "1792115579563725"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4234,7 +4287,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "18",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4254,7 +4307,7 @@
           "Scope": "16",
           "Sequence": "19",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:suppressed-keyword:answer'",
-          "Time": "1792042146741548"
+          "Time": "1792115579879907"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4274,7 +4327,7 @@
           "Scope": "16",
           "Sequence": "21",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-positional\n",
-          "Time": "1792042146743663"
+          "Time": "1792115579882161"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4316,7 +4369,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "22",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:52:59"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4337,7 +4390,7 @@
           "Scope": "1",
           "Sequence": "20",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-positional",
-          "Time": "1792042146743618"
+          "Time": "1792115579882111"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4379,7 +4432,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "23",
-          "Time": "2026-10-15 05:29:06"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4399,7 +4452,7 @@
           "Scope": "16",
           "Sequence": "24",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:suppressed-positional:answer'",
-          "Time": "1792042147539990"
+          "Time": "1792115580197740"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4419,7 +4472,7 @@
           "Scope": "16",
           "Sequence": "26",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-config\n",
-          "Time": "1792042147561660"
+          "Time": "1792115580200938"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4461,7 +4514,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "27",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4482,7 +4535,7 @@
           "Scope": "1",
           "Sequence": "25",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-config",
-          "Time": "1792042147561200"
+          "Time": "1792115580200868"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4524,7 +4577,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "28",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4544,7 +4597,7 @@
           "Scope": "16",
           "Sequence": "29",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:suppressed-config:answer'",
-          "Time": "1792042147367576"
+          "Time": "1792115580514182"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4564,7 +4617,7 @@
           "Scope": "16",
           "Sequence": "31",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy\n",
-          "Time": "1792042147369798"
+          "Time": "1792115580516497"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4606,7 +4659,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "32",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4627,7 +4680,7 @@
           "Scope": "1",
           "Sequence": "30",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-deepcopy",
-          "Time": "1792042147369742"
+          "Time": "1792115580516438"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4669,7 +4722,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "33",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4689,7 +4742,7 @@
           "Scope": "16",
           "Sequence": "34",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:suppressed-deepcopy:answer'",
-          "Time": "1792042147680702"
+          "Time": "1792115580835139"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4709,7 +4762,7 @@
           "Scope": "16",
           "Sequence": "36",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle\n",
-          "Time": "1792042147683103"
+          "Time": "1792115580838365"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4751,7 +4804,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "37",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:00"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4772,7 +4825,7 @@
           "Scope": "1",
           "Sequence": "35",
           "Text": "NOTIFY-PROMPT:modifier:suppressed-pickle",
-          "Time": "1792042147683052"
+          "Time": "1792115580838299"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4814,7 +4867,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "38",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4834,7 +4887,7 @@
           "Scope": "16",
           "Sequence": "39",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:suppressed-pickle:answer'",
-          "Time": "1792042147996436"
+          "Time": "1792115581150974"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4854,7 +4907,7 @@
           "Scope": "16",
           "Sequence": "41",
           "Text": "NOTIFY-PROMPT:modifier:enabled-recovery\n",
-          "Time": "1792042147998343"
+          "Time": "1792115581153403"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -4896,7 +4949,7 @@
           "ExecutorStatus": "PROMPT",
           "ProcId": "main#1",
           "Sequence": "42",
-          "Time": "2026-10-15 05:29:07"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4917,7 +4970,7 @@
           "Scope": "1",
           "Sequence": "40",
           "Text": "NOTIFY-PROMPT:modifier:enabled-recovery",
-          "Time": "1792042147998292"
+          "Time": "1792115581153348"
         },
         "id": "MSG_PROMPT",
         "receiver": "GUI",
@@ -4959,7 +5012,7 @@
           "ExecutorStatus": "RUNNING",
           "ProcId": "main#1",
           "Sequence": "43",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -4979,7 +5032,7 @@
           "Scope": "16",
           "Sequence": "44",
           "Text": "Answer: 'NOTIFY-PROMPT:modifier:enabled-recovery:answer'",
-          "Time": "1792042148309037"
+          "Time": "1792115581465331"
         },
         "id": "MSG_WRITE",
         "receiver": "GUI",
@@ -5003,7 +5056,7 @@
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "45",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -5021,13 +5074,13 @@
           "ItemName": "NOTIFY:legacy:notification",
           "ItemReason": "",
           "ItemStatus": "SUCCESS",
-          "ItemTime": "2026-10-15 05:29:08",
+          "ItemTime": "2026-10-16 01:53:01",
           "ItemType": "ITEM",
           "ItemValue": "'legacy'",
           "ProcId": "main#1",
           "SCount": "1",
           "Sequence": "46",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -5047,7 +5100,7 @@
           "Sequence": "2",
           "StageId": "",
           "StageTl": "(none)",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -5089,7 +5142,7 @@
           "ExecutorStatus": "FINISHED",
           "ProcId": "main#1",
           "Sequence": "48",
-          "Time": "2026-10-15 05:29:08"
+          "Time": "2026-10-16 01:53:01"
         },
         "id": "MSG_NOTIFICATION",
         "receiver": "GUI",
@@ -5117,8 +5170,8 @@
     ]
   },
   "raw_result": {
-    "path": "C:\\obprompt_control\\.qualification\\v0.6\\notification\\9d2b59dc6a5b4e0e87a7c83aec86f72e\\result.json",
-    "sha256": "80c7214795fe065e9ecb0abfcd95a5d7babf480be503602d04211fe98c812e24"
+    "path": "C:\\obdatabase_scope\\.qualification\\v0.6\\notification\\6875555264df45519e6c5eda93dd7551\\result.json",
+    "sha256": "e2161da108da120a4a2a786dad3dd872f5704956bbd138fcd720e92c4626148f"
   },
   "baseline": {
     "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\user-action-worktree\\.qualification\\v0.6\\notification\\9adda9aecf8942c782a6e1eff624df33\\result.json",

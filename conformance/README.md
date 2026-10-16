@@ -17,21 +17,20 @@ python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
 Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **483 rows, with 280 open**. The
-[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 33 native suites
-(1,646 raw checks) to the same rebuilt DSS image. Three requirements are newly
-qualified since the published 480-row checkpoint: two bounded child return
-clauses and the page-79 SCDB existence method. Eight additional native startup
-controls pass. Full v0.5/v0.6 acceptance remains false.
+Current qualification totals **487 rows, with 276 open**. The
+[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 35 native suites
+(1,678 raw checks) to the same rebuilt DSS image. The four additions cover
+page-83 database octal values and three bounded [child-execution clauses](CHILD_EXECUTION.md).
+Full v0.5/v0.6 acceptance remains false.
 
 | Package | Qualified / inventory | Evidence |
 | --- | --- | --- |
 | TIME | 42 / 42 | 168 native checks |
 | COMMON | 47 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
-| PY | 118 / 122 | 488 Python checks plus the documented SCDB method |
+| PY | 119 / 122 | Python checks, documented SCDB method and database octal values |
 | DATA | 60 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
 | FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
-| FLOW | 28 / 51 | Native flow, explicit child arguments and return clauses |
+| FLOW | 31 / 51 | Native flow, child arguments, return and execution clauses |
 | UI | 29 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
 | OBS | 72 / 104 | Telemetry acquisition/comparison and actual binary DSS |
 | CMD | 21 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
@@ -39,7 +38,9 @@ controls pass. Full v0.5/v0.6 acceptance remains false.
 | SPECIAL | 3 / 43 | Baseband/antenna catalogs; remaining family contracts open |
 
 The [page-79 scope resolution](DATABASE_SCOPE.md) qualifies `SCDB.has_key`;
-Python built-in dictionary compatibility is not inferred.
+Python built-in dictionary compatibility is not inferred. The page-83 `035`
+requirement describes database input; Python procedure-source octal syntax is
+separate and remains unsupported.
 
 See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
 [FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).

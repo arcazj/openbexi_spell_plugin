@@ -1,5 +1,5 @@
 {
-  "runtime_image": "sha256:75f6c983f448c5309d87ffd74c32efd9d74b2005cc2d0ba234fcc5d26e5c427c",
+  "runtime_image": "sha256:628190dec8544577b2e8aef97afd70032870eb12d1ef91da97e9fc50e62ccdf4",
   "inputs": {
     "conformance/rng_cases.py": "36d59b73d7ae3727551886313c67f2387f934c20db733ce35bb8800a6569fdc7",
     "conformance/rng_controller.py": "937903e65a9d682e0c558259999cd85956f9ed75ebe86d36d13ee2feed255a60",
@@ -20,7 +20,7 @@
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
     "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-    "host_runtime/python/native.py": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
     "conformance/installed_provenance.py": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -31,11 +31,13 @@
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
@@ -109,7 +111,7 @@
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "34405081c08fa37fdab4ba1ae9484a6455962fcccc510b5d6b93df5da27ccc1b",
     "docs/reference/SPELL2.6.10-src.zip": "1001553997ed0a0b8d9fab7328b3e3d68b742f66dd031a82be01dc0821ec4baa",
-    "host_runtime/python/native.py": "2140b89279d6bb5411657219dbecfca064e778c5537a3d4653e6c931052d84a2",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
     "conformance/installed_provenance.py": "b1d1e43ca2c72ebf804314675857476b27ab6243a27e30829ac97eab987fbad1",
     "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
     "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -120,11 +122,13 @@
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
     "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+    "source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
     "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
@@ -177,7 +181,7 @@
   "checks": {
     "baseband-names:positive": {
       "passed": true,
-      "seconds": 3.2441344999997455,
+      "seconds": 3.1246201000003566,
       "source": "\nbefore=mark()\nactual=GetBasebandNames(config=CFG)\nassert type(actual) is list\nequal(actual,[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
       "expected_prompts": [],
       "contracts": [
@@ -189,7 +193,7 @@
     },
     "baseband-names:boundary": {
       "passed": true,
-      "seconds": 3.3064156000000366,
+      "seconds": 3.5739504000002853,
       "source": "\nfirst=GetBasebandNames(config=CFG)\nfirst.append('LOCAL-ONLY')\nbefore=mark()\nequal(GetBasebandNames(config=CFG),[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
       "expected_prompts": [],
       "contracts": [
@@ -201,7 +205,7 @@
     },
     "baseband-names:failure": {
       "passed": true,
-      "seconds": 5.092593000000306,
+      "seconds": 5.25188530000014,
       "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:GetBasebandNames('extra',config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:GetBasebandNames(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
       "expected_prompts": [],
       "contracts": [
@@ -213,7 +217,7 @@
     },
     "baseband-names:recovery": {
       "passed": true,
-      "seconds": 3.5303233000004184,
+      "seconds": 3.5999918999996225,
       "source": "\nrejects(DriverException,lambda:GetBasebandNames(config=dict(CFG,IsLocal=True)))\nbefore=mark()\nequal(GetBasebandNames(config=CFG),[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
       "expected_prompts": [],
       "contracts": [
@@ -225,7 +229,7 @@
     },
     "antenna-names:positive": {
       "passed": true,
-      "seconds": 3.190194299999348,
+      "seconds": 3.1748930000003384,
       "source": "\nbefore=mark()\nactual=GetAntennaNames(config=CFG)\nassert type(actual) is list\nequal(actual,[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
       "expected_prompts": [],
       "contracts": [
@@ -237,7 +241,7 @@
     },
     "antenna-names:boundary": {
       "passed": true,
-      "seconds": 3.3352733000001535,
+      "seconds": 3.352534900000137,
       "source": "\nfirst=GetAntennaNames(config=CFG)\nfirst.append('LOCAL-ONLY')\nbefore=mark()\nequal(GetAntennaNames(config=CFG),[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
       "expected_prompts": [],
       "contracts": [
@@ -249,7 +253,7 @@
     },
     "antenna-names:failure": {
       "passed": true,
-      "seconds": 5.015964199999871,
+      "seconds": 5.06123050000042,
       "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:GetAntennaNames('extra',config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:GetAntennaNames(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
       "expected_prompts": [],
       "contracts": [
@@ -261,7 +265,7 @@
     },
     "antenna-names:recovery": {
       "passed": true,
-      "seconds": 3.5643325999999433,
+      "seconds": 3.5836010000002716,
       "source": "\nrejects(DriverException,lambda:GetAntennaNames(config=dict(CFG,IsLocal=True)))\nbefore=mark()\nequal(GetAntennaNames(config=CFG),[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
       "expected_prompts": [],
       "contracts": [
@@ -326,138 +330,138 @@
     "rpc": [
       {
         "path": "/spell.driver.SPELLDriverInterface_EV/RaiseEvent",
-        "request": "0a3050726f63656475726520737461727465643a206d61696e233120617420323032362d31302d31352030353a32313a32331295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
-        "started": 6968.8856218,
+        "request": "0a3050726f63656475726520737461727465643a206d61696e233120617420323032362d31302d31362030313a34353a30381295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
+        "started": 6165.8510982,
         "check": null,
-        "request_id": "5190c1c1ee784a6bb0e65c352354a4dc",
+        "request_id": "0e3ce31b28ab4ce1a43f97d93ce3ba94",
         "response": "",
-        "seconds": 0.014002699999764445
+        "seconds": 0.013850800000000163
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6970.3100519,
+        "started": 6167.316041,
         "check": "baseband-names:positive",
-        "request_id": "e0cddbb5c7fd434c92f4e47f0a50e16a",
+        "request_id": "72b43141dd3349b1bc50841a92e7872c",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0012061999996149098
+        "seconds": 0.001229599999533093
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6972.9337927,
+        "started": 6169.9846842,
         "check": "baseband-names:boundary",
-        "request_id": "673d4781be424d2098c5f41f5fdedc73",
+        "request_id": "209c9c053f4044e2b462fb01f4c693f2",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0011730000005627517
+        "seconds": 0.0011639000003924593
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6973.6700937,
+        "started": 6170.7367427,
         "check": "baseband-names:boundary",
-        "request_id": "3b1a8717934944029afe66e7f503beb7",
+        "request_id": "f2c7be8ab82e4fe58c1952bea374c2fb",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0011671000002024812
+        "seconds": 0.0012809999998353305
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6978.6693422,
+        "started": 6175.9944285,
         "check": "baseband-names:failure",
-        "request_id": "9f9e9660e7e649128ee94526a07a30d4",
+        "request_id": "23e0cb6be23d4f6fae2494269b1b502d",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.00018939999972644728
+        "seconds": 0.00048460000016348204
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6981.4345172,
+        "started": 6178.8410347,
         "check": "baseband-names:recovery",
-        "request_id": "aa9b5e7a6d0344459babb783dacdc07b",
+        "request_id": "f9f6fe9ec7654fd4a7424e76fcfbc29d",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.00018629999976838008
+        "seconds": 0.00017860000025393674
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetBasebandNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6982.2940895,
+        "started": 6179.6702248,
         "check": "baseband-names:recovery",
-        "request_id": "ee85cfb0cebc49a59681b16bfd3ecf26",
+        "request_id": "1a8dd87de26d43d6ad464bcc756c111d",
         "response": "0a094453532d4242452d31",
-        "seconds": 0.0011589999994612299
+        "seconds": 0.0010944999994535465
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6985.4964542,
+        "started": 6182.9281751,
         "check": "antenna-names:positive",
-        "request_id": "dcfd0c0974d94ae885e01ebb9f6a7218",
+        "request_id": "efb1fb26b20a48188143a97b9e7f5d92",
         "response": "0a0d4453532d414e54454e4e412d31",
-        "seconds": 0.0010540000002947636
+        "seconds": 0.001122100000429782
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6988.0495346,
+        "started": 6185.5233335,
         "check": "antenna-names:boundary",
-        "request_id": "d6651b772a2d47b89e84ea5286a35b23",
+        "request_id": "8cd0d753495547dc9a34d6a8a06a9383",
         "response": "0a0d4453532d414e54454e4e412d31",
-        "seconds": 0.0013463000004776404
+        "seconds": 0.00252719999934925
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6988.7857028,
+        "started": 6186.2669543,
         "check": "antenna-names:boundary",
-        "request_id": "8625286aaf544c7692986d6a231a4cdd",
+        "request_id": "72b3adfee2324aeba08b007f6e8bd02d",
         "response": "0a0d4453532d414e54454e4e412d31",
-        "seconds": 0.001089000000320084
+        "seconds": 0.00118430000020453
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6993.7685447,
+        "started": 6191.270791,
         "check": "antenna-names:failure",
-        "request_id": "58fe639f022e43498d4244ff82e4152c",
+        "request_id": "e07899498e0d48b6bc189ab8cbb7c6b3",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.00017909999951370992
+        "seconds": 0.0003729999998540734
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412750a730a3c0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512090a0749734c6f63616c12330a2d747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e426f6f6c56616c756512020801",
-        "started": 6996.5834545,
+        "started": 6194.074731,
         "check": "antenna-names:recovery",
-        "request_id": "e80f74faa0024ec491a1e013d0efe4a4",
+        "request_id": "fdcd428d80fd46bf8690df0f8cb66724",
         "error": "ValueError: Unsupported virtual ranging modifier",
-        "seconds": 0.00021699999979318818
+        "seconds": 0.00017670000033831457
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_RNG/GetAntennaNames",
         "request": "0a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e44696374",
-        "started": 6997.4305361,
+        "started": 6194.9086011,
         "check": "antenna-names:recovery",
-        "request_id": "0135d30b828a4d8e982288a5ad706054",
+        "request_id": "b428422d67ed4425948d91ac59daa502",
         "response": "0a0d4453532d414e54454e4e412d31",
-        "seconds": 0.001131800000621297
+        "seconds": 0.0013730000000578002
       },
       {
         "path": "/spell.driver.SPELLDriverInterface_EV/RaiseEvent",
-        "request": "0a4350726f6365647572652066696e69736865643a206d61696e233120617420323032362d31302d31352030353a32313a353420287374617475732046494e4953484544291295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
-        "started": 6999.8803039,
+        "request": "0a4350726f6365647572652066696e69736865643a206d61696e233120617420323032362d31302d31362030313a34353a343020287374617475732046494e4953484544291295020a25747970652e676f6f676c65617069732e636f6d2f7370656c6c2e6472697665722e4469637412eb010a750a3d0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c7565120a0a08536576657269747912340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c7565120208080a720a3a0a2f747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e537472696e6756616c756512070a0553636f706512340a2e747970652e676f6f676c65617069732e636f6d2f676f6f676c652e70726f746f6275662e496e74363456616c756512020801",
+        "started": 6197.3490329,
         "check": "antenna-names:recovery",
-        "request_id": "7f10a1179b9540a1ab2bbed6246c74ec",
+        "request_id": "bdace30b42954fe48133172c8b224d24",
         "response": "",
-        "seconds": 0.010640199999215838
+        "seconds": 0.012235900000632682
       }
     ],
     "prompts": [],
     "state": {
       "ack_sequence": 0,
       "bus": {
-        "battery_mwh": 80038,
+        "battery_mwh": 80039,
         "bus_voltage_mv": 28000,
-        "energy_remainder_mw_ticks": 32000,
+        "energy_remainder_mw_ticks": 21000,
         "generated_mw": 45000,
         "heater": false,
         "load_mw": 20000,
@@ -465,7 +469,7 @@
         "safe_mode": false,
         "thermal_mode": "OFF"
       },
-      "clock_epoch_unix_ns": 1792041681724061300,
+      "clock_epoch_unix_ns": 1792115107111775900,
       "core": {
         "commands_executed": 0,
         "last_command_arguments": [],
@@ -473,13 +477,13 @@
         "last_operation_id": "",
         "loaded_commands_count": 0,
         "mode": "NOMINAL",
-        "sim_time_ns": 5600000000,
-        "tick": 56
+        "sim_time_ns": 5700000000,
+        "tick": 57
       },
       "database_digest": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
       "database_revision": "GENERIC-r1",
       "dynamics_engine_version": "0.1.0",
-      "epoch": "epoch-787559c7f2c29619a979f28709cd2a4de016547659d918849c82305d595253a0",
+      "epoch": "epoch-3b68d2cacfcf0f181a98729f261b86b1272bede32bc62582caaa6e9c2657d414",
       "payload": {
         "enabled": false,
         "generated_data_bytes": 0,
@@ -492,12 +496,12 @@
         "verification_milli": 10000,
         "zero": 0
       },
-      "revision": 56,
+      "revision": 57,
       "running": false,
       "satellite_id": "GENERIC",
-      "scenario_id": "boot-235eef1f7efb456f93e34cea5e2ce0e2",
+      "scenario_id": "boot-80671e0866b34bc98d832febbf46640d",
       "schema_version": "openbexi.dss.state/1",
-      "sequence": 57,
+      "sequence": 58,
       "simulator_version": "0.1.0"
     }
   },
@@ -505,7 +509,7 @@
   "runtime_sources": {
     "integrated": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "11e98c45431b73124710139fb1036b743e282cdef58de512b47fb973bcaa38d1",
+      "manifest_sha256": "0edc29e0362055eb2eae2920b372d8b62b3e7b704810f0183b54383cb795ee39",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -514,9 +518,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "9c8927aca41c08d75450d8467dba489050b8352260b34194628fecd3eb552013"
+              "integrated_identity": "fef7cfaf9aa1bf09e66480e706bbe054b84be0d4bd54c8c2416a6e1e61d1f93f"
             },
-            "manifest_sha256": "5f87675cc2338cfd808628875702b9ba53e107219fe0793badb94032aa4ac5f2",
+            "manifest_sha256": "31c84195840cb40505748fe86a665b167f53880e2bcb3a0172e35f7e4eb8e494",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -550,6 +554,10 @@
                 "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
                 "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
+              "database_values_patches.py": {
+                "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+                "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
                 "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
@@ -571,8 +579,12 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+              },
+              "ipc_mailbox_patches.py": {
+                "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+                "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -655,7 +667,7 @@
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
+                "patched_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -732,6 +744,11 @@
                 "original_sha256": "2a2cfe1befef43d44229e1438e7cd5925aa0699a8c2d18b501376b980e9334a5",
                 "patched_sha256": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
                 "ported_sha256": "454121f636ce13dfb469bc4912dd62a2267b16dc5547610e362240b173f84f8a"
+              },
+              "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C": {
+                "original_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595",
+                "patched_sha256": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22",
+                "ported_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595"
               },
               "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
                 "original_sha256": "9712a92efe49d1bc3b02281606e8ef36d336b5cbe54fc33e9c4a414022a893b5",
@@ -922,6 +939,15 @@
                 }
               },
               {
+                "recipe": "ipc_mailbox_patches.py",
+                "sources": {
+                  "lib/SPELL_IPC/src/SPELLipcMessageMailbox.C": {
+                    "after_sha256": "022a64710f3b0ba2bd97a568053420183c77dfbab33f8be7475d75142ca79f22",
+                    "before_sha256": "f5f7c43ee5206bdb4cfa8c95676cbfa98c96130231095b62e968fc9220c82595"
+                  }
+                }
+              },
+              {
                 "recipe": "prompt_control_patches.py",
                 "sources": {
                   "lib/SPELL_IPC/src/SPELLipcServerInterface.C": {
@@ -970,7 +996,7 @@
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "7a46aff3f324a6a4f6afb1826ad8fdced65c079b73a95ae9183db04752da5f89",
+                    "after_sha256": "ff4041d7a4829bef72eee1861d5aeecc5c0e11c2ae8a42ead831f2f6f880386c",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -979,7 +1005,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "1cc2e69c695e720a57091b4d320469bc8be4c18e9a8f125b0fa38a5685b26372",
+            "manifest_sha256": "4fa7e8f7149e6f498d416f0015d00f34a93ee1fbc180449754f1e13c9b052605",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -1013,6 +1039,10 @@
                 "lf_sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
                 "sha256": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf"
               },
+              "database_values_patches.py": {
+                "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+                "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+              },
               "dta_ipc_patches.py": {
                 "lf_sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
                 "sha256": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99"
@@ -1034,8 +1064,12 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-                "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+                "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+                "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
+              },
+              "ipc_mailbox_patches.py": {
+                "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+                "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
               },
               "limit_patches.py": {
                 "lf_sha256": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -1219,7 +1253,7 @@
               },
               "spell/utils/vimport.py": {
                 "original_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7",
-                "patched_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+                "patched_sha256": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
                 "ported_sha256": "f19bb2df486b8b5d9d2499b8175aaaf56233a9f669e19dfbca8235facf6f8ee7"
               }
             },
@@ -1345,6 +1379,15 @@
                 }
               },
               {
+                "recipe": "database_values_patches.py",
+                "sources": {
+                  "spell/utils/vimport.py": {
+                    "after_sha256": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
+                    "before_sha256": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+                  }
+                }
+              },
+              {
                 "recipe": "notification_patches.py",
                 "sources": {
                   "spell/lang/modifiers.py": {
@@ -1433,6 +1476,7 @@
           "data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
           "data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
           "database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+          "database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
           "distribution-build.Dockerfile": "086b68cd0834d216b9ec90d762dd052dbdec21e758da6b8d10e4fb9495008da9",
           "distribution-build.Dockerfile.dockerignore": "04fc878a0af592fc827d7c9b619997e033745d9679fea96c6a97bc3252c8968a",
           "distribution/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
@@ -1462,7 +1506,8 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+          "integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+          "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
           "limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
           "live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
           "live_reconnect_peer.cpp": "377116e019cf7ea5c6b4fffd738c066c595e89461bdd832747993216de553f9f",
@@ -1581,14 +1626,14 @@
           "value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484"
         },
         "native_artifacts": {
-          "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
+          "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
           "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
           "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-          "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
+          "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
           "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-          "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
+          "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
         },
-        "native_gate_policy_sha256": "b9cf2d9a0d4c0b4c5046ca616877eba3841939007e5ec4fd0d987ee982e35bb2",
+        "native_gate_policy_sha256": "ff091ab326835a0fc0b4b02bc6e66659de270e1729ce980ac1bc3a28428514c8",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1693,18 +1738,18 @@
           "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
           "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
           "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-          "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+          "spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9"
         },
         "release_scope": "Original native foundation; full language conformance remains separate",
         "version": "0.3.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
+        "SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
         "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
         "SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-        "SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
+        "SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
         "SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
-        "libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7"
+        "libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1807,18 +1852,18 @@
         "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
         "spell/utils/spell_service.py": "d1d9281763efb086b6bee662389df1b7daf3d20c1847eaffa9c3cc8155bd6d6c",
         "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
-        "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c"
+        "spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9"
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "2cb303ffcbacfe6c0048d7d078f647c5aebe25a99e8391cf256b68ea2f45b021",
+        "manifest_sha256": "3b4d712509ad362eaa5b1d79b825070b3bfb99433ff43fbf10276a20780a29de",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
-              "lf_sha256": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27"
+              "sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
+              "lf_sha256": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -1896,6 +1941,10 @@
               "sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
               "lf_sha256": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422"
             },
+            "database_values_patches.py": {
+              "sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+              "lf_sha256": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93"
+            },
             "scdb_patches.py": {
               "sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
               "lf_sha256": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593"
@@ -1935,6 +1984,10 @@
             "prompt_control_patches.py": {
               "sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
               "lf_sha256": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32"
+            },
+            "ipc_mailbox_patches.py": {
+              "sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+              "lf_sha256": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43"
             },
             "rng_patches.py": {
               "sha256": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
@@ -2040,13 +2093,13 @@
             "openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a"
           }
         },
-        "record_files_verified": 77
+        "record_files_verified": 79
       }
     },
     "installed": {
       "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
       "spell/utils/log.py": "77a44a6b36ad26753db2cfff29a82afbb24db1bd98990f4568d9888fe2a00a64",
-      "spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+      "spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
       "spell/utils/rijndael.py": "eb06a84215b03bf3427d887074a2042c4578d0da950a825124a95adc019634a3",
       "spell/utils/timing.py": "8a8a0c928cfdce91e2c22228c2e2a7784d0023e61b1a7c84bf490fc57b13bca7",
       "spell/utils/customlog.py": "066d05c568f207835b2d959591d75c693c8b226fb1c2b4c6cb6288c77df74bc5",
@@ -2148,10 +2201,10 @@
       "spell_native/launcher.py": "0e37d646ee8ff71738de0af6f278f694549104db74c51c2a4ec66ec88c7d9cc3",
       "spell_native/__init__.py": "39c5cd3f08c3c9b5ad73100bd08845b4a88c12b1cfe31ba0520a4c28f6e96063",
       "spell_native/bin/SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-      "spell_native/bin/SPELL-Listener": "849c9f5972ef351eb0a71c9e4e15e7d478a008954588bfc98ae2add72cdbfd7b",
+      "spell_native/bin/SPELL-Listener": "80f3ee702209be5f4d3cae96ccb51011cdc67f2a79f44e624998a0609f45cf04",
       "spell_native/bin/SPELL-Executor_v3": "da8b3dff7849dca5a9e9d46d1626334d7766bd4d26b84daaa7aaefeb617c7ecb",
-      "spell_native/bin/SPELL-Context": "885ac3d2768e72180705ba148aeddda1e3ce0f219de14b04fe62304c6cd66dfb",
-      "spell_native/bin/libspell_executor313.so": "beb77ef5f8e29b643275de071ff1ac2908a0965002adbd20368d27dd62d12bd7",
+      "spell_native/bin/SPELL-Context": "21d4fcf2a57de4a59ac942f346d3330cab09e181644598af6dff343a68a1a37d",
+      "spell_native/bin/libspell_executor313.so": "ce99ed98f5c38938f1b0f3b676b1e45242049f3661e07ea6835da3f4b278dddd",
       "spell_native/bin/SPELL-Service_v3": "458b456f987f3e4dde2e9276843afc32629eb42e6d07001c137709f5c13ba69c",
       "spell_native/example/drivers/example/constants.py": "516312482e0d89a6d5b2942c133fd7e238d9e476a82b4000727a755a6be95f83",
       "spell_native/example/drivers/example/task.py": "90e44ea6a3e686b70f69100a95829d769c89a025eaadfa7f75118ee7b5472bdd",
@@ -2167,12 +2220,14 @@
       "spell_native/provenance/source_port/service_recovery_fixtures.py": "bb7591fec4978600f2da7367d2a837794cb7e0a43c1c7a9a43f9dc7d38a6e5fc",
       "spell_native/provenance/source_port/live_reconnect_fixtures.py": "fcf1c903e6efe9517ffc9edf55b30bfc9b2e9e2f5a5f116b8056ddbfee962717",
       "spell_native/provenance/source_port/record_native.py": "3b65b36e741d706460f5f1a180fee25e988ee02daac1ddbc87b06e5949d15c89",
+      "spell_native/provenance/source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
       "spell_native/provenance/source_port/qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
       "spell_native/provenance/source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
       "spell_native/provenance/source_port/cif_fixtures.py": "f94a4afc5fbb5ae0d1095b897a9cbd78f1b4b4c18d9b742087377ab3b5d53239",
       "spell_native/provenance/source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+      "spell_native/provenance/source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/source_port/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+      "spell_native/provenance/source_port/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
       "spell_native/provenance/source_port/qualify_context.py": "1dce1561f9513946c46b352504ccf5ada931ecd8017bf84e86a226d00bf01d10",
       "spell_native/provenance/source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/source_port/executor_build.py": "b444a90bf17cd77f5e79d121d02e02e82430889a98150f759424b3f409bbc82a",
@@ -2216,12 +2271,12 @@
       "spell_native/provenance/distribution/openbexi_workflows.py": "eb746bd7b33c4b868eb34812874c776515642752ccb897a2c61c14e3e2feb203",
       "spell_native/provenance/distribution/prepare_pipe_dependencies.py": "4bf491b6d0910596660ac08074753b2dd6456a015da0aa396d83978304cd0c26",
       "spell_native/provenance/distribution/record_prerequisites.py": "bdd6cbfcceca07088dfdce75432a65041abfa2ca23059dd36c8759217a59d9b1",
-      "spell_native/provenance/distribution/run_language_regressions.py": "6a94b0c3b2619d1a7cd5898e102c19eef1511ddbfdac5d34c41bbb384d3ed867",
+      "spell_native/provenance/distribution/run_language_regressions.py": "3bfcc9e55cbf4ea3e9fc7a34eb47a269cf938288a34a4c04682f0b50f32213fd",
       "spell_native/provenance/distribution/test_workflow_evidence.py": "176930f5a09309ada9446faddb643131f429ce3be95f5d6a990c6dacfb20198a",
       "spell_native/provenance/distribution/build_images.py": "93675f9341faf233f95a96f35004dd6d70a5cdf6c105c5907c30539477ff6897",
-      "spell_native/provenance/distribution/test_integrated_patches.py": "55eadc2a876ced6d14a99e021baeebcf378a59389ee6a70fbf91040516677f88",
+      "spell_native/provenance/distribution/test_integrated_patches.py": "2e0dd4a8452680b5de7c26610f11ecac7e54f8960204b508b31311c46f62b151",
       "spell_native/provenance/distribution/qualify_driver_package.py": "598c913c4a7571f3f7c1d720711083769115511d4d719621d9fe169a9ca57972",
-      "spell_native/provenance/distribution/record_language_regressions.py": "44ead2cebdd152706497fac025a1bf77ed37e144192b719c22e4780aa158af3e",
+      "spell_native/provenance/distribution/record_language_regressions.py": "118ac667f95e273a5d68bcfe743b3b24063372b014a1c667f770695099169d98",
       "spell_native/provenance/distribution/workflow_evidence.py": "ecc38af982518dab393bc3c8db2a07b1798423e1bd2445ebfd07086883724a09",
       "spell_native/provenance/distribution/test_stable_wheel.py": "36b68ecbbe225106587aa81238c0123d9cb4e43d378fe6fb79f14538d84f77a1",
       "spell_native/provenance/distribution/incremental_native.py": "9514e17a00faa4059180d08d08d21e7b117300463a544570c6b662f3ebd9c7a0",
@@ -2233,17 +2288,19 @@
       "spell_native/provenance/distribution/qualify_sdk_http.py": "ff4a4002d861392e58d799049ec13a75670cd220baec2cd9891f19b1ae14b80a",
       "spell_native/provenance/distribution/stable_wheel.py": "8b381c723fc63ac3e28daba6b38a9d7bc88f4768b9580aa750f17d54f21ea954",
       "spell_native/provenance/distribution/run_child_regressions.py": "f637502a2f1cc36b6435ec81387bc6835d50498567e86845e2c9c565f0490bfe",
-      "spell_native/provenance/distribution/record_qualified_sources.py": "b6ea5f0105454497289683cbba7258c023a6ad75b0f45543c7e610d46041decb",
+      "spell_native/provenance/distribution/record_qualified_sources.py": "139c977e68aaf6b8172ee00c471e4a128e6adb9fab8c6dcea3b2bbbcc1d52cce",
       "spell_native/provenance/distribution/record_workflows.py": "31c4747cbbd8b72ed1b3cf05c7507da20ffec5065cee314adb766206a1742d91",
       "spell_native/provenance/distribution/build_host_candidate.py": "100ebf3b950563d5466decd8d2bc3bb99431849906f95026d39836b73e666f7d",
       "spell_native/provenance/distribution/test_installed_provenance.py": "deb9e0ab658801e90c76b0140ae234cf5f58df3c602159451e591bb0456f615f",
       "spell_native/provenance/distribution/test_language_regressions.py": "eb72bccc37e136bc5655f99d31fdacb64a5b8559dadb312bcc4230cb5e646ca6",
       "spell_native/provenance/distribution/host_workflows.py": "3f6d57389cf84bcbc1acd33e17a6f0faa5a4fb206a65b259ee05b9bc9791e8a9",
       "spell_native/provenance/distribution/qualify_plugin_verifier.py": "c577e3ff89eb75421cfaf7d46c366635f903b7cd5d1a893c247ba3d075af1d72",
+      "spell_native/provenance/integrated-python/recipes/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
       "spell_native/provenance/integrated-python/recipes/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
       "spell_native/provenance/integrated-python/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+      "spell_native/provenance/integrated-python/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/integrated-python/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/integrated-python/recipes/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+      "spell_native/provenance/integrated-python/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
       "spell_native/provenance/integrated-python/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/integrated-python/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "spell_native/provenance/integrated-python/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -2316,7 +2373,7 @@
       "spell_native/provenance/integrated-python/original/spell/lang/helpers/tchelper.py": "3475464cbdc955e0321f77c54d50cc6ba99d94fa8248e1ff2772828f3840e6dd",
       "spell_native/provenance/integrated-python/original/spell/lang/helpers/rschelper.py": "bfbbca7fa7c79dac1c8b3f702e3350c63d0168f63d5f540c67a012c10aad055d",
       "spell_native/provenance/integrated-python/original/spell/lang/helpers/limhelper.py": "b846e59244b2649dad12d4294ddfee8817528e2dcc5bfee8cdb3c9ee0d85b511",
-      "spell_native/provenance/integrated-python/patched/spell/utils/vimport.py": "7555ba779eb3927869e6efe67b0f09d370be28443326ba31b3782dd91909736c",
+      "spell_native/provenance/integrated-python/patched/spell/utils/vimport.py": "95f1ad13d5a58ccc6c5d41d526d605d35074410d95f6d4a799212fbe5474abc9",
       "spell_native/provenance/integrated-python/patched/spell/utils/grpc_utils.py": "67e3a35ddd5ae9e3355f1286b1dcc4fa7f3b2ca76fff03b0a5a2aa64675188a0",
       "spell_native/provenance/integrated-python/patched/spell/lang/modifiers.py": "d35442e9de8e967aca334566cf009ff559a0bda1a040154d3b9c661fa4665452",
       "spell_native/provenance/integrated-python/patched/spell/lib/adapter/tc_item.py": "cdef60d1d2a6ac8757b9143b87e19382225d2cf5791bfab1ef94c7fc1cfbf634",
@@ -2338,10 +2395,12 @@
       "spell_native/provenance/integrated-python/patched/spell/lang/helpers/tchelper.py": "551c3990be8393c8eead143ab4da509e368418b72425e573370d22f910630c58",
       "spell_native/provenance/integrated-python/patched/spell/lang/helpers/rschelper.py": "e0c019d74bdafc21f582e57dec5e821ba6d06368655c49a8059af3f7b5f721e7",
       "spell_native/provenance/integrated-python/patched/spell/lang/helpers/limhelper.py": "0285d403c30b2be282eaf01fc4966fc17e5c7508d8680a30be46367acd6f0922",
+      "spell_native/provenance/integrated-native/recipes/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
       "spell_native/provenance/integrated-native/recipes/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
       "spell_native/provenance/integrated-native/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+      "spell_native/provenance/integrated-native/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "spell_native/provenance/integrated-native/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "spell_native/provenance/integrated-native/recipes/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+      "spell_native/provenance/integrated-native/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
       "spell_native/provenance/integrated-native/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "spell_native/provenance/integrated-native/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "spell_native/provenance/integrated-native/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -2407,10 +2466,12 @@
       "openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
       "openbexi_dss_proxy/tm.py": "0f1488c410ba03869926be34acd1cbdf4e3cbc597646af0e01487ecc8b7e1203",
       "openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+      "openbexi_dss_proxy/_composition/recipes/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
       "openbexi_dss_proxy/_composition/recipes/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
       "openbexi_dss_proxy/_composition/recipes/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+      "openbexi_dss_proxy/_composition/recipes/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
       "openbexi_dss_proxy/_composition/recipes/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
-      "openbexi_dss_proxy/_composition/recipes/integrated_patches.py": "a9a4f8b3a8a56f1ca2759b46e7869587a90f819b639f170f658120b2b6907f27",
+      "openbexi_dss_proxy/_composition/recipes/integrated_patches.py": "8e16512cc7ce5395d687c10ce9e5c61b2eb517edc4811969010790aa88530aa4",
       "openbexi_dss_proxy/_composition/recipes/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
       "openbexi_dss_proxy/_composition/recipes/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
       "openbexi_dss_proxy/_composition/recipes/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -2487,12 +2548,12 @@
   },
   "retained_observation_arrays": {
     "events": {
-      "count": 1163,
-      "canonical_json_sha256": "7a115fac2fd8ea990e3105c0604783498be93132b7b01b00ae472c50086a27a1"
+      "count": 1166,
+      "canonical_json_sha256": "c6460518c1102b5d7fa902d146e0cf661dd539c53c441f914f87543dd7569f12"
     },
     "controls": {
       "count": 26,
-      "canonical_json_sha256": "a4c328a13cc0067753ed89fe73c50dcd8f24f722d04bcfe774c41123994b9300"
+      "canonical_json_sha256": "23d9a9657277ee4772126dbe27e99129c6d2867d8bd39ecd9587ab1e1b0e6151"
     }
   },
   "baseline": {
@@ -2622,6 +2683,6 @@
       }
     }
   },
-  "raw_report_sha256": "804226d8cc6581ecf5bbc36592e4b4410bbcb62c7dc039ecd3782c2d5717bc3f",
-  "raw_report_path": "C:\\obprompt_control\\.qualification\\v0.5\\rng\\f819e513464f4904ba5285f59990507a\\result.json"
+  "raw_report_sha256": "d9986060f8165b16be4554bb19465bbcd94479c071c0340d8bc5289f51a11537",
+  "raw_report_path": "C:\\obdatabase_scope\\.qualification\\v0.5\\rng\\e35677bd92474ba6bf3900fe0ad43897\\result.json"
 }

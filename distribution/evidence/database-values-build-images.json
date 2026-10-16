@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "scope": "Composed mailbox lifetime and database octal candidate; release gates remain open",
+  "source_freeze_commit": "49256248ae9852a11fe61e7eb09a38c7c513ae9d",
+  "pipeline": {
+    "path": "C:\\obdatabase_scope\\.qualification\\mailbox-candidate\\90ecab2057ea4e1f9be2acf83916a693\\result.json",
+    "sha256": "91d6df6bc70fa9716f62b721288cad098cac56b69c3f734d2ed7402e3323e97c"
+  },
+  "runtime_image": "sha256:628190dec8544577b2e8aef97afd70032870eb12d1ef91da97e9fc50e62ccdf4",
+  "host_image": "sha256:161e636648fab1dab6f929d29be3f715db2a7ee53ffe38ced2ad13a23d911f14",
+  "native_wheel_sha256": "41e18c516cd200756b22a105a0d726b214f54d648e920162527ae7ed4880ace2",
+  "driver_wheel_sha256": "bbbbdc87d35a946cac5fd6ed343f4555583fba185220880ae2b57a2099ac8ff9",
+  "native_builds": {
+    "path": "C:\\obdatabase_scope\\.qualification\\mailbox-build\\native\\2e6cc98e23c04d3698abcc258f574efb\\result.json",
+    "sha256": "fb71fb0aa9ef4588be13d61bab484168b3917975892b93965aa5997808dacda2"
+  },
+  "driver_builds": {
+    "path": "C:\\obdatabase_scope\\.qualification\\mailbox-build\\driver\\e10b6c383dac4afcbd6e183a5633bbe8\\result.json",
+    "sha256": "556e42142ae08c8efafb5f1a4ad838da63d7ebb5743f0517f3e2f338ab7c111b"
+  },
+  "fresh_images": {
+    "path": "C:\\obdatabase_scope\\.qualification\\mailbox-build\\images\\bd8d3c63dfb8424684c09f17c947cd7b\\result.json",
+    "sha256": "c847e9fff878512611c0a5417afb50970b69a1d906ac37db7807a530f1468559"
+  },
+  "child_lifecycle": {
+    "path": "C:\\obdatabase_scope\\.qualification\\child-regressions\\31a8ef8592244a3d833ffe5831d10ca8\\result.json",
+    "sha256": "ed3f0eba77a984f8fab3f8c8b2b28350963fa08afd2ab8a32a3832033772bb75"
+  },
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "828cd2669d9ad79c5e8a6b2fdbf8e6d73adab7c03845a1e91bd5b9bda1d996a3"
+  },
+  "native_checks_each_build": {
+    "executor": 23,
+    "context": 10,
+    "fresh_install_and_removal": 8
+  },
+  "child_lifecycle_checks": 14,
+  "prompt_controls_checks": {
+    "duplicate_answers": 24,
+    "abort_at_prompt": 12,
+    "child_modes": 9,
+    "timed_prompts": 10
+  },
+  "source_composition_tests": {
+    "checks": 56,
+    "subtests": 22,
+    "junit": {
+      "path": "C:\\obdatabase_scope\\.qualification\\ipc-mailbox-composition-tests.xml",
+      "sha256": "42a663b1c3b22dc239f122c8e50e06356eb1bfc470785374f382b8678c12a8c1"
+    }
+  },
+  "mailbox_diagnostic": {
+    "path": "C:\\obdatabase_scope\\conformance\\evidence\\ipc_mailbox.json",
+    "sha256": "031528ee1c9d21222e6f05b75eefdd6a83c1c3997ae65daa40fd386cf553c45d"
+  },
+  "retained_failed_identity": {
+    "path": "C:\\obdatabase_scope\\.qualification\\v0.6\\checkpoint-identity\\f5c3d112a8114f16baf26a946216640d\\result.json",
+    "sha256": "da395b2c9debc6af29be3a64cff4db2b6caeb9421e6df7a54528563724ea70e4"
+  },
+  "limitations": [
+    "Linux x86_64 CPython 3.13.15 diagnostic ASan/UBSan profile; compiler installed and leak detection disabled",
+    "Final production packages, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm and platform/operational gates remain open",
+    "Root SDK HTTP correction has separate installed-wheel evidence"
+  ],
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

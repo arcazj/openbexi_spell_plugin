@@ -13,14 +13,14 @@ remaining limits. Retain detailed machine-readable evidence separately.
 | v1.0.0 | Release-candidate defects resolved and affected gates repeated; exact artifact hashes and accepted scope recorded; stable tag on master. |
 
 Current accepted scope ends at the v0.4 GENERIC simulator profile. The
-[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **483 requirements with
-280 open**. All 33 native suites pass on the rebuilt runtime; final installed-host
-workflows remain open. Passing prerequisites do not accept their parent release.
+[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **487 requirements with
+276 open**. All 35 native suites pass on the rebuilt runtime. Final installed-host
+workflows remain open; passing prerequisites do not accept their parent release.
 
-Next language work: child startup and recovery, database/manual scope conflicts,
-then the remaining telemetry/command/limit, display, data and special-service
-contracts. Each increment needs independent positive, boundary, failure and
-recovery evidence. Preserve all 763 original requirements and retained failures.
+Next language work: legacy comparison compatibility, then remaining telemetry,
+command/limit, display, data and special-service contracts. Each increment needs
+independent positive, boundary, failure and recovery evidence. Preserve all 763
+original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to
 run the combined runtime sequence. It retains each raw report and rejects failed
