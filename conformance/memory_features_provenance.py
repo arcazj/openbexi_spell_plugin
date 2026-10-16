@@ -12,6 +12,12 @@ digest=lambda path:hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application=capture_application()
+        recipes=application['integrated']['manifest']['composition']['native']['recipes']
+        if not {'memory_feature_patches.py','memory_ranging_patches.py'}<=set(recipes):raise ValueError('Composed memory recipes are absent')
+        return dict(application,profile='fresh-composed-memory-wheel/1')
     base=json.loads((EVIDENCE/'base.json').read_bytes())
     if base['profile']!='fresh-composed-limit-telemetry-overlays/1':raise ValueError('Memory base must retain both diagnostic overlays')
     expected=dict(base['installed'])

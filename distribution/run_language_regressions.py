@@ -32,6 +32,7 @@ SUITES = [
     ('rng-catalog', 'run_rng.py', ['--catalog-only'], 8),
     ('rng-state', 'run_rng_state.py', [], 21),
     ('ranging-complete', 'run_ranging_candidate.py', [], 24),
+    ('memory-complete', 'run_memory_complete.py', [], 32),
     ('dta-ipc', 'run_dta_edit.py', [], 64),
     ('time', 'run_native.py', [], 168),
     ('limit', 'limit_run.py', [], 79),

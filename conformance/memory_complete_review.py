@@ -196,7 +196,7 @@ def case_proof(name,spec,row,project,catalog):
         oracle='Actual original-schema responses agree with retained binary packets, literal ASCII files, captured catalog definitions and exact durable receipts')
 
 
-def review(path,overlay,telemetry,limits,revision,image):
+def review(path,overlay,telemetry,limits,revision,image,*,native_wheel=None,driver_wheel=None):
     raw=read(path);workspace=path.parent/'workspace'
     assert raw['passed'] is True and raw['controller_exit_code']==0 and raw['timed_out'] is False and raw['runtime_image']==image
     specs=frozen('conformance/memory_complete_cases.py',revision).CASES
@@ -209,9 +209,14 @@ def review(path,overlay,telemetry,limits,revision,image):
     assert read(workspace/'host-inputs.json')==raw['host_inputs']
     for name in ('memory_native_cases.py','memory_complete_cases.py','memory_complete_controller.py','memory_features_provenance.py','installed_provenance.py'):
         assert sha(workspace/name)==raw['inputs']['conformance/'+name]
-    overlay_proof(raw,overlay,telemetry,limits,revision)
+    wheels=None
+    if raw['runtime_sources']['profile']=='fresh-composed-memory-wheel/1':
+        assert overlay is telemetry is limits is None and native_wheel is not None and driver_wheel is not None
+        from limit_telemetry_sources import verify
+        wheels=verify(raw,native_wheel,driver_wheel,profile='fresh-composed-memory-wheel/1',required_recipes=('memory_feature_patches.py','memory_ranging_patches.py'))
+    else:overlay_proof(raw,overlay,telemetry,limits,revision)
     catalog=read(workspace/'fixture/dss/data/satellite_database.json')
     checks={name:case_proof(name,specs[name],row,workspace/name.replace(':','__'),catalog) for name,row in raw['checks'].items()}
-    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()),
-        telemetry_overlay=str(telemetry.resolve()),limit_overlay=str(limits.resolve()),checks=checks,
+    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()) if overlay else None,composed_wheels=wheels,
+        telemetry_overlay=str(telemetry.resolve()) if telemetry else None,limit_overlay=str(limits.resolve()) if limits else None,checks=checks,
         review_source=ref(Path(__file__)),source_inputs=raw['inputs'],qualified_contracts=[],full_v05_accepted=False)

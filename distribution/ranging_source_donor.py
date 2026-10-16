@@ -24,13 +24,18 @@ def apply(python,driver,composition,report):
     # literal, independently reviewed guard. The combined native regression is
     # still required; these expectations alone never qualify a runtime.
     name='openbexi_spell_dss/ground.py'
-    raw=(Path(report['overlay'])/'patched'/name).read_bytes()
+    assert driver[name]==hashlib.sha256((Path(report['overlay'])/'patched'/name).read_bytes()).hexdigest()
+    driver[name]=hashlib.sha256(reopened_ground(Path(report['overlay']))).hexdigest()
+    return additions
+
+
+def reopened_ground(overlay):
+    name='openbexi_spell_dss/ground.py'
+    raw=(overlay/'patched'/name).read_bytes()
     lines=raw.splitlines(keepends=True)
     indices=[i for i,line in enumerate(lines) if line==b'            initialize(state)\n']
     assert len(indices)==1
     i=indices[0]+1
     assert lines[i]==b"            journal.db.execute('UPDATE ground SET state=? WHERE namespace=?',(canonical(state),self.namespace))\n"
     lines[i:i+1]=[b'            if state != json.loads(encoded):\n',b'    '+lines[i]]
-    assert driver[name]==hashlib.sha256(raw).hexdigest()
-    driver[name]=hashlib.sha256(b''.join(lines)).hexdigest()
-    return additions
+    return b''.join(lines)

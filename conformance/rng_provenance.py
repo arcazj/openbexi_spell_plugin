@@ -52,7 +52,7 @@ def verify_composed(runtime, inputs, normalized):
         if 'ranging_complete_patches.py' in manifest['recipes']:
             final='ranging_complete_patches.py'
             if name.endswith('/ground.py'):
-                final='memory_feature_patches.py' if 'memory_feature_patches.py' in manifest['recipes'] else 'ranging_reopen_patches.py'
+                final='memory_ranging_patches.py' if 'memory_ranging_patches.py' in manifest['recipes'] else 'ranging_reopen_patches.py'
             assert stages[-1]['recipe']==final,name
         else:assert stages[-1]['recipe']==recipe,name
         assert stages[-1]['sources'][name]['after_sha256']==row['patched_sha256'],name

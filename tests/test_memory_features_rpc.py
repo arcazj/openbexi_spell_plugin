@@ -19,8 +19,9 @@ from openbexi_spell_dss.memory_images import LOOKUP_PREFIX
 def composed(name):
     path='openbexi_spell_dss/'+name+'.py'
     raw=(base.ROOT/'driver_plugin/src'/path).read_bytes()
-    for recipe in dict.fromkeys((*base.integrated_patches.DRIVER_RECIPES,limit_feature_patches,
-                                 telemetry_feature_patches,memory_feature_patches)):
+    recipes=base.integrated_patches.DRIVER_RECIPES
+    memory=() if any(recipe.__name__=='memory_ranging_patches' for recipe in recipes) else (memory_feature_patches,)
+    for recipe in dict.fromkeys((*recipes,limit_feature_patches,telemetry_feature_patches,*memory)):
         if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
     module=types.ModuleType('openbexi_spell_dss._memory_test_'+name)
     exec(compile(raw,path,'exec'),module.__dict__)
