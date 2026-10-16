@@ -70,6 +70,9 @@ Path('completed.txt').write_text('renamed')
             record['status']=status
             data=Path(session.directory.name)/'session/data/User/MyData'
             record['files']={p.name:p.read_text(encoding='utf-8') for p in data.iterdir() if p.is_file()}
+            retained=root/'database-files';retained.mkdir()
+            for file in data.iterdir():
+                if file.is_file():(retained/file.name).write_bytes(file.read_bytes())
             assert record['files']['existing.IMP']=='SAVED 42\n'
             if mode=='rename':
                 assert status=='FINISHED' and len(prompts)==2
