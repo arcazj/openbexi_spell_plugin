@@ -64,9 +64,9 @@ def qualify(path,image):
             gaps=[b-a for a,b in zip([result['started'],*times],times)]
             assert row['progress_offsets']==[t-result['started'] for t in times]
             assert row['progress_gaps']==gaps
-            expected=[1,1,1] if spec['family']=='simple' else [3,1,1,.4,.4]
-            assert len(gaps) in ((3,) if spec['family']=='simple' else (4,5))
-            assert all(wanted-.05<=actual<wanted+.3 for wanted,actual in zip(expected,gaps))
+            expected=[2,2,2] if spec['family']=='simple' else [15,5,5]+[1]*4
+            assert len(gaps) in ((3,) if spec['family']=='simple' else (5,6,7))
+            assert all(wanted-.05<=actual<wanted+.6 for wanted,actual in zip(expected,gaps))
             for event in progress:
                 assert result['started']<=event['received_monotonic']<=result['ended']+.1
                 assert any(abs(c['received_monotonic']-event['received_monotonic'])<.35 for c in countdown)

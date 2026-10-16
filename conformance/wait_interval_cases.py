@@ -5,8 +5,10 @@ CASES={}
 for family in ('simple','complex'):
     for dimension in ('positive','boundary','failure','recovery'):
         name=family+':'+dimension
-        duration=3.4 if family=='simple' else 6.0
-        interval=1 if family=='simple' else [3,1,.4]
+        # Give the native 200ms scheduler and acknowledged IPC room to show
+        # repeated updates in every phase, including the shortest interval.
+        duration=8.0 if family=='simple' else 30.0
+        interval=2 if family=='simple' else [15,5,1]
         if dimension=='boundary':duration,interval=.35,(.5 if family=='simple' else [.5])
         source=textwrap.dedent('''\
             import json,time

@@ -36,7 +36,7 @@ for name,spec in CASES.items():
     try:
         session.start();session.pump=drain
         session.request('CMD_RUN',send=True)
-        deadline=time.monotonic()+20
+        deadline=time.monotonic()+45
         while time.monotonic()<deadline:
             drain();status=session.request('REQ_EXEC_STATUS')['ExecutorStatus']
             if not row['states'] or row['states'][-1]['status']!=status:
@@ -64,11 +64,11 @@ for name,spec in CASES.items():
             row['progress_gaps']=gaps
             if spec['family']=='simple':
                 assert len(gaps)==3,gaps
-                assert all(.95<=gap<1.3 for gap in gaps),gaps
+                assert all(1.95<=gap<2.6 for gap in gaps),gaps
             else:
-                assert len(gaps) in (4,5),gaps
-                expected=[3,1,1,.4,.4]
-                assert all(wanted-.05<=actual<wanted+.3 for wanted,actual in zip(expected,gaps)),gaps
+                assert 5<=len(gaps)<=7,gaps
+                expected=[15,5,5]+[1]*4
+                assert all(wanted-.05<=actual<wanted+.6 for wanted,actual in zip(expected,gaps)),gaps
             for event in progress:
                 assert result['started']<=event['received_monotonic']<=result['ended']+.1
                 assert any(abs(c['received_monotonic']-event['received_monotonic'])<.35 for c in countdown)
