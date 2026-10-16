@@ -63,7 +63,8 @@ def qualify(path, image):
         qualified_contracts=[name for group in CONTRACTS.values() for name in group],
         raw=dict(path=str(path.resolve()), sha256=sha(path)),
         scope='LRM p56 positional relative/absolute time waits and Examples 78–79',
-        exclusions=['Interrupted waits', 'Telemetry conditions', 'Full WaitFor function', 'Interval progression'],
+        exclusions=['Interrupted waits', 'Telemetry conditions', 'Full WaitFor function', 'Interval progression',
+                    'Configuration-only waits and unknown-modifier handling'],
         full_v05_accepted=False, full_v06_accepted=False)
 
 
