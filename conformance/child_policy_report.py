@@ -27,7 +27,8 @@ def verify_policy(path, image):
         assert row['sources'] == {key: spec[key] for key in ('parent', 'child', 'good')}
         assert row['parent_status'] == spec['expected_parent']
         assert row['answers'] == [spec['action']] and len(row['prompts']) == 1
-        assert row['prompts'][0]['ExpectedValues'].split('\x04') == ['ABORT', 'REPEAT', 'SKIP', 'CANCEL']
+        action_names = {'A': 'ABORT', 'R': 'REPEAT', 'K': 'SKIP', 'Q': 'CANCEL'}
+        assert [action_names.get(code, code) for code in row['prompts'][0]['ExpectedValues'].split('\x04')] == ['ABORT', 'REPEAT', 'SKIP', 'CANCEL']
         assert row['held'] == [dict(parent='PROMPT', child=spec['outcome'], attempts=1,
                                    parent_returned=False)] * 3
         assert row['attempts'] == spec['expected_attempts']

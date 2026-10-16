@@ -14,6 +14,7 @@ from installed_provenance import capture
 from child_policy_cases import CASES
 
 ROOT = Path('/workspace')
+ACTION_NAMES = {'A': 'ABORT', 'R': 'REPEAT', 'K': 'SKIP', 'Q': 'CANCEL'}
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 (ROOT / 'runtime.json').write_text(json.dumps(capture(), indent=2))
 (ROOT / 'host-inputs.json').write_text(json.dumps(
@@ -61,7 +62,7 @@ for name, spec in CASES.items():
                 fields = pending.pop(0)
                 assert not row['answers'], 'Unexpected repeated failure prompt'
                 assert fields['ProcId'] == session.instance, 'The parent must handle the child failure'
-                choices = fields['ExpectedValues'].split('\x04')
+                choices = [ACTION_NAMES.get(code, code) for code in fields['ExpectedValues'].split('\x04')]
                 assert choices == ['ABORT', 'REPEAT', 'SKIP', 'CANCEL'], choices
                 assert 'child' in fields['Text'].lower(), fields
                 child, = [identifier for identifier in children.children if identifier.startswith('child#')]
@@ -74,7 +75,7 @@ for name, spec in CASES.items():
                     assert held == dict(parent='PROMPT', child=spec['outcome'], attempts=1, parent_returned=False)
                     time.sleep(.075)
                 row['terminal_children'][child] = spec['outcome']
-                session.request('MSG_ANSWER', {'ReturnValue': spec['action']}, send=True)
+                session.request('MSG_ANSWER', {'ReturnValue': str(choices.index(spec['action']))}, send=True)
                 row['answers'].append(spec['action'])
             status = session.request('REQ_EXEC_STATUS')['ExecutorStatus']
             if status in {'FINISHED', 'ERROR', 'ABORTED'}:
