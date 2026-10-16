@@ -37,6 +37,7 @@ DONORS = {
     'rng':('922d578','rng'),
     'rng_state':('669c1d7','rng_state'),
     'context_startup':('f843cb8','context_startup_review'),
+    'ipc_mailbox':('463e34f','ipc_mailbox'),
 }
 
 
@@ -168,6 +169,25 @@ def main():
         if hashes['patched'] != stage['after_sha256']:
             raise ValueError('Prompt control output differs from its qualified stage')
         native[name] = hashes
+    mailbox = reports['ipc_mailbox']
+    recipe = 'ipc_mailbox_patches.py'
+    committed = subprocess.check_output(
+        ['git', 'show', donors['ipc_mailbox']['commit'] + ':source_port/' + recipe], cwd=ROOT)
+    if (mailbox['passed'] is not True or mailbox['source'] in native
+            or mailbox['error_controls']['checks'] != 8 or mailbox['recovery_controls']['checks'] != 22
+            or hashlib.sha256(committed).hexdigest() != mailbox['recipes'][recipe]
+            or mailbox['preimage_sha256'] != composition.ipc_mailbox_patches.PREIMAGE):
+        raise ValueError('Mailbox donor lacks independent race and native recovery evidence')
+    expected_probes = {label + '-' + operation for label in ('original', 'patched')
+                       for operation in ('place', 'cancel')}
+    if set(mailbox['probes']) != expected_probes or any(
+            (row['exit_code'] == 0) != name.startswith('patched-')
+            for name, row in mailbox['probes'].items()):
+        raise ValueError('Mailbox donor differential controls differ')
+    original = composition.archive_sources(ROOT / 'docs/reference/SPELL2.6.10-src.zip',
+                                           [mailbox['source']])[mailbox['source']]
+    native[mailbox['source']] = dict(original=hashlib.sha256(original).hexdigest(),
+        ported=mailbox['preimage_sha256'], patched=mailbox['patched_sha256'])
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]
