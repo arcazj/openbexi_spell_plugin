@@ -99,6 +99,7 @@ def qualify(paths, image, revision):
                  'conformance/command_group_review.py', 'conformance/display_report.py',
                  'tests/test_command_display_composed_report.py',
                  'conformance/command_routing_review.py', 'conformance/evidence/command_routing_validation.json',
+                 'tests/test_command_routing_review.py',
                  'conformance/evidence/command_feature_inputs.json', 'distribution/run_language_regressions.py'):
         inputs[name] = sha(ROOT/name)
     return dict(passed=True, runtime_image=image, source_revision=revision, inputs=inputs,
