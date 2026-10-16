@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import queue
+import shutil
 import sys
 import threading
 import time
@@ -73,7 +74,8 @@ for name,spec in CASES.items():
                 tree=ET.parse(context)
                 for item in list(tree.getroot().find('databases').findall("location[@name='mmd']")):
                     tree.getroot().find('databases').remove(item)
-                ET.SubElement(tree.getroot().find('databases'),'location',name='mmd',type='file',ext='IMP').text=str(project/'data/mmd')
+                ET.SubElement(tree.getroot().find('databases'),'location',name='mmd',type='file',ext='IMP').text='ManeuverDB'
+                (Path(command[2])/'data/ManeuverDB').mkdir()
                 tree.write(context,encoding='utf-8')
                 (project/'context-configured.xml').write_bytes(context.read_bytes())
             return result
@@ -132,6 +134,10 @@ for name,spec in CASES.items():
             session.log.flush();session.log.seek(0);log=session.log.read()
             (project/'native.log').write_text(log);row['native_log_sha256']=sha(project/'native.log')
             if 'AddressSanitizer:' in log or 'runtime error:' in log:row.update(passed=False,sanitizer_error=True)
+        try:
+            native_data=Path(session.directory.name)/'session/data/ManeuverDB'
+            if native_data.exists():shutil.copytree(native_data,project/'data/mmd',dirs_exist_ok=True)
+        except Exception:row.update(passed=False,artifact_copy_error=traceback.format_exc())
         try:session.close()
         except Exception:row.update(passed=False,cleanup_error=traceback.format_exc())
         server.close()

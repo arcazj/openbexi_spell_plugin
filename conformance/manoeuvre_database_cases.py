@@ -3,7 +3,8 @@ from memory_native_cases import HEADER
 
 PRELUDE='''
 from spell.lib.exception import SyntaxException
-target=FilePath('data/mmd/Man01/Part1.IMP')
+import os
+target=FilePath(os.environ['SPELL_DATA'])/'ManeuverDB/Man01/Part1.IMP'
 target.parent.mkdir(parents=True,exist_ok=True)
 uri='mmd://Man01/Part1'
 def seed(text="KEY 42\\nNESTED {'items':[0,False,'text']}\\n"):
