@@ -1,0 +1,3543 @@
+{
+  "passed": true,
+  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
+  "inputs": {
+    "conformance/proc_metadata_cases.py": "764988e5bb43d6e311231bc765d4dd27e9131fe5044ea2f6f7345f820deb07de",
+    "conformance/proc_metadata_controller.py": "6a52d4e98b08f38a1b1fec77e59ff4839a7f2b21e0f8527f12e9864a7e34bb99",
+    "conformance/run_proc_metadata.py": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c",
+    "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "docs/reference/SPELL - Language Reference - 2.4.4.pdf": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3",
+    "docs/reference/SPELL2.6.10-src.zip": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "conformance/installed_provenance.py": "b22eac1746a65f0134bff608fcd00003a8c324e00da56ea266ac0057d0a23851",
+    "source_port/flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
+    "source_port/legacy_compare_syntax.py": "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0",
+    "source_port/checkpoint_context_patches.py": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
+    "source_port/checkpoint_error_patches.py": "095b90b3f09af14b7c2fba52d90cecc1a27b7a5874f45b01a32412d678a2105e",
+    "source_port/checkpoint_identity_patches.py": "142c6f0630c112a819e9663e451adae8673679fb2e7f66684cdf770563fcb89d",
+    "source_port/child_lifecycle_patches.py": "1610053f6b24886753869c014c7f7e10d01662446aa1cf91e6713df732101879",
+    "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
+    "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
+    "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
+    "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
+    "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
+    "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
+    "source_port/dta_ipc_patches.py": "dfdf0d109ebf93ca92bc326bfd597ee3c55b8adcee3a5279d579bffe397eda99",
+    "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
+    "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
+    "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
+    "source_port/integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
+    "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
+    "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
+    "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
+    "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
+    "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/proc_dictionary_patches.py": "925aaefe4aef6fe5dad3887626f726adde659847654715d5b197f2507e5ddc45",
+    "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
+    "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
+    "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
+    "source_port/resource_patches.py": "5ae2743a819b44298a97de568c8de8989265762912ee570e9857ab372183aeb8",
+    "source_port/rng_patches.py": "59af225301b0caaee53a6630eb0316ef0e83453495f28ce1805b8d4b421914b6",
+    "source_port/rng_state_patches.py": "c9eeca8a7685b7bc3abc53385584f73b8b0c79a89b6d98a0011d147f4f333308",
+    "source_port/scdb_patches.py": "94cb5f8ba101148b1e4d13172d1221601769fd1f769d8fbaf4668f1bc321a593",
+    "source_port/scheduler_patches.py": "45a226b761a82c31a5cc2d724993b6adf367f7995136d636912a17efbd719ee2",
+    "source_port/send_verify_patches.py": "b02afdec68afd2296ada4dcde5679f58e6cee55c4478f497a6762f2d0052f16f",
+    "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
+    "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
+    "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
+    "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
+    "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
+    "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+    "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+    "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+    "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+    "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+    "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+    "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+    "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+    "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+    "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+    "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+    "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+    "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+    "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+    "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+    "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+    "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+    "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+    "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+    "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+    "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+    "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+    "driver_plugin/src/openbexi_spell_dss/server.py": "040a20cd87d7b593e46606712260b08a3d7fb434b6477dcef9626377b97d2eef",
+    "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+    "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+    "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+    "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
+    "host_runtime/python/children.py": "5b1702226c91b4de865a2a83a7e34e6d1c3418d0e17d530539031b749f493ea3",
+    "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
+    "host_runtime/python/prompts.py": "6a1cda3019e8126842b637a227b2c02c3c1ac930c60269a5a3cdb2d0765db2cb",
+    "conformance/proc_lifecycle_cases.py": "f1fc6082760823ee0e09424174598da3d49778283714d113de8061943f386d79",
+    "conformance/proc_lifecycle_controller.py": "9bad901d46511a9154eb10ac103895fe91ceae65296213ef5c92d9270c22a332",
+    "conformance/run_proc_lifecycle.py": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7",
+    "conformance/proc_dictionary_composed_report.py": "5592931d670b892327ac30ac855ba439c6647834263f1bba69d2209bb1560902",
+    "conformance/proc_dictionary_report.py": "d634e9110968f0d4fa677824483bd58536cfa5ed2bca35c82b552f7b23b21133",
+    "conformance/composed_diagnostic_proof.py": "6f2541d4e764fd3fec50b999c4da3006441bea16457da48045265d4c2f447a5a",
+    "tests/test_proc_dictionary_composed_report.py": "6cdf89777f86321791859f2021cb221d9223f02cdce09702352946ca9b9d6171",
+    "distribution/run_language_regressions.py": "e2c95c07b0f8e335cc35d0eeddd5553320a6d4e0138498a5a82467fff78a08c1",
+    "distribution/evidence_sources.py": "6180feac10bd66c2481a8e789758e12ca88f1fc9e1b1a2382a2c2543377a29ec"
+  },
+  "checks": {
+    "proc:positive": {
+      "passed": true,
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,Step\nfrom spell.lang.functions import DisplayStep\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\nplan=json.loads(Path('plan.json').read_text())\nobserved={'initial':dict(PROC),'args_type':type(PROC['ARGS']).__name__}\nPROC['VAR']={'A':[1,False,'caf\u00e9']}\nassert PROC['VAR']=={'A':[1,False,'caf\u00e9']}\nobserved['custom']=PROC['VAR']\nerrors=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    errors.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    errors.append('missing')\nassert errors==['unhashable','missing']\nStep('FIRST','Initial step')\nobserved['first']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nDisplayStep('SECOND','Displayed step')\nobserved['second']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nPROC['VAR']=42\nassert PROC['VAR']==42\nobserved['recovery']=PROC['VAR']\nobserved['errors']=errors\nPath('observed.json').write_text(json.dumps(observed))\nassert isinstance(PROC['ARGS'],dict),('LRM p81 requires a dictionary',type(PROC['ARGS']).__name__,repr(PROC['ARGS']))\nassert PROC['ARGS']==plan['arguments']\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1'\nassert PROC['PARENT']==''\nassert observed['initial']['STEP'] is None and observed['initial']['PREV_STEP'] is None\nassert observed['first']=={'step':['FIRST','Initial step'],'previous':None}\nassert observed['second']=={'step':['SECOND','Displayed step'],'previous':['FIRST','Initial step']}\nassert isinstance(PROC[INPUT_DATA],str) and PROC[INPUT_DATA]\nassert isinstance(PROC[OUTPUT_DATA],str) and PROC[OUTPUT_DATA]\nPath('result.json').write_text(json.dumps({'metadata':True}))\n",
+      "dimension": "positive",
+      "states": [
+        {
+          "status": "PAUSED",
+          "elapsed": 0.08388320000085514
+        },
+        {
+          "status": "RUNNING",
+          "elapsed": 0.1931999000007636
+        },
+        {
+          "status": "FINISHED",
+          "elapsed": 1.0898892000041087
+        }
+      ],
+      "status": "FINISHED",
+      "observed": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {
+            "A": 1,
+            "B": 2
+          },
+          "OUTPUT_DATA": "/tmp/spell-host-kx4znkcz/session/data",
+          "INPUT_DATA": "/tmp/spell-host-kx4znkcz/session/data",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "args_type": "dict",
+        "custom": {
+          "A": [
+            1,
+            false,
+            "caf\u00e9"
+          ]
+        },
+        "first": {
+          "step": [
+            "FIRST",
+            "Initial step"
+          ],
+          "previous": null
+        },
+        "second": {
+          "step": [
+            "SECOND",
+            "Displayed step"
+          ],
+          "previous": [
+            "FIRST",
+            "Initial step"
+          ]
+        },
+        "recovery": 42,
+        "errors": [
+          "unhashable",
+          "missing"
+        ]
+      },
+      "result": {
+        "metadata": true
+      },
+      "native_log_sha256": "923b5b635d46c3f8951e2a48ed1420c5a02878266e8b3259d27c1ac1bff9efe1",
+      "events_sha256": "a54cc2652fa96298824ef4726afc7eda321b2bb15494d0b46be631dbeb1cf571",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "proc:boundary": {
+      "passed": true,
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,Step\nfrom spell.lang.functions import DisplayStep\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\nplan=json.loads(Path('plan.json').read_text())\nobserved={'initial':dict(PROC),'args_type':type(PROC['ARGS']).__name__}\nPROC['VAR']={'A':[1,False,'caf\u00e9']}\nassert PROC['VAR']=={'A':[1,False,'caf\u00e9']}\nobserved['custom']=PROC['VAR']\nerrors=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    errors.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    errors.append('missing')\nassert errors==['unhashable','missing']\nStep('FIRST','Initial step')\nobserved['first']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nDisplayStep('SECOND','Displayed step')\nobserved['second']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nPROC['VAR']=42\nassert PROC['VAR']==42\nobserved['recovery']=PROC['VAR']\nobserved['errors']=errors\nPath('observed.json').write_text(json.dumps(observed))\nassert isinstance(PROC['ARGS'],dict),('LRM p81 requires a dictionary',type(PROC['ARGS']).__name__,repr(PROC['ARGS']))\nassert PROC['ARGS']==plan['arguments']\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1'\nassert PROC['PARENT']==''\nassert observed['initial']['STEP'] is None and observed['initial']['PREV_STEP'] is None\nassert observed['first']=={'step':['FIRST','Initial step'],'previous':None}\nassert observed['second']=={'step':['SECOND','Displayed step'],'previous':['FIRST','Initial step']}\nassert isinstance(PROC[INPUT_DATA],str) and PROC[INPUT_DATA]\nassert isinstance(PROC[OUTPUT_DATA],str) and PROC[OUTPUT_DATA]\nPath('result.json').write_text(json.dumps({'metadata':True}))\n",
+      "dimension": "boundary",
+      "states": [
+        {
+          "status": "PAUSED",
+          "elapsed": 0.08380459999898449
+        },
+        {
+          "status": "RUNNING",
+          "elapsed": 0.1919043000016245
+        },
+        {
+          "status": "FINISHED",
+          "elapsed": 1.3008495999965817
+        }
+      ],
+      "status": "FINISHED",
+      "observed": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {
+            "zero": 0,
+            "false": false,
+            "text": ""
+          },
+          "OUTPUT_DATA": "/tmp/spell-host-oge8ajil/session/data",
+          "INPUT_DATA": "/tmp/spell-host-oge8ajil/session/data",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "args_type": "dict",
+        "custom": {
+          "A": [
+            1,
+            false,
+            "caf\u00e9"
+          ]
+        },
+        "first": {
+          "step": [
+            "FIRST",
+            "Initial step"
+          ],
+          "previous": null
+        },
+        "second": {
+          "step": [
+            "SECOND",
+            "Displayed step"
+          ],
+          "previous": [
+            "FIRST",
+            "Initial step"
+          ]
+        },
+        "recovery": 42,
+        "errors": [
+          "unhashable",
+          "missing"
+        ]
+      },
+      "result": {
+        "metadata": true
+      },
+      "native_log_sha256": "fdf68be2a1bf6952b10b2230f3a47ffa007a3c1ac893438cdf15e19d36ffd270",
+      "events_sha256": "dd65284cd7e5b7b0b9aa3562befc595ecbe12711012db712b31dcbfa26422130",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "proc:failure": {
+      "passed": true,
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,Step\nfrom spell.lang.functions import DisplayStep\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\nplan=json.loads(Path('plan.json').read_text())\nobserved={'initial':dict(PROC),'args_type':type(PROC['ARGS']).__name__}\nPROC['VAR']={'A':[1,False,'caf\u00e9']}\nassert PROC['VAR']=={'A':[1,False,'caf\u00e9']}\nobserved['custom']=PROC['VAR']\nerrors=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    errors.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    errors.append('missing')\nassert errors==['unhashable','missing']\nStep('FIRST','Initial step')\nobserved['first']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nDisplayStep('SECOND','Displayed step')\nobserved['second']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nPROC['VAR']=42\nassert PROC['VAR']==42\nobserved['recovery']=PROC['VAR']\nobserved['errors']=errors\nPath('observed.json').write_text(json.dumps(observed))\nassert isinstance(PROC['ARGS'],dict),('LRM p81 requires a dictionary',type(PROC['ARGS']).__name__,repr(PROC['ARGS']))\nassert PROC['ARGS']==plan['arguments']\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1'\nassert PROC['PARENT']==''\nassert observed['initial']['STEP'] is None and observed['initial']['PREV_STEP'] is None\nassert observed['first']=={'step':['FIRST','Initial step'],'previous':None}\nassert observed['second']=={'step':['SECOND','Displayed step'],'previous':['FIRST','Initial step']}\nassert isinstance(PROC[INPUT_DATA],str) and PROC[INPUT_DATA]\nassert isinstance(PROC[OUTPUT_DATA],str) and PROC[OUTPUT_DATA]\nPath('result.json').write_text(json.dumps({'metadata':True}))\n",
+      "dimension": "failure",
+      "states": [
+        {
+          "status": "PAUSED",
+          "elapsed": 0.08386040000186767
+        },
+        {
+          "status": "RUNNING",
+          "elapsed": 0.19473290000314591
+        },
+        {
+          "status": "FINISHED",
+          "elapsed": 0.6374329000027501
+        }
+      ],
+      "status": "FINISHED",
+      "observed": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {},
+          "OUTPUT_DATA": "/tmp/spell-host-pa61cvgm/session/data",
+          "INPUT_DATA": "/tmp/spell-host-pa61cvgm/session/data",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "args_type": "dict",
+        "custom": {
+          "A": [
+            1,
+            false,
+            "caf\u00e9"
+          ]
+        },
+        "first": {
+          "step": [
+            "FIRST",
+            "Initial step"
+          ],
+          "previous": null
+        },
+        "second": {
+          "step": [
+            "SECOND",
+            "Displayed step"
+          ],
+          "previous": [
+            "FIRST",
+            "Initial step"
+          ]
+        },
+        "recovery": 42,
+        "errors": [
+          "unhashable",
+          "missing"
+        ]
+      },
+      "result": {
+        "metadata": true
+      },
+      "native_log_sha256": "e6ddd3daf7ad390c44d2446694d0ca093800f6b23ebde60144d6cd7b659b0c67",
+      "events_sha256": "5cc23f34924ac7db88b52890b7770b2fbb548d7936b904e732e727ce8af96e29",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "proc:recovery": {
+      "passed": true,
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,Step\nfrom spell.lang.functions import DisplayStep\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\nplan=json.loads(Path('plan.json').read_text())\nobserved={'initial':dict(PROC),'args_type':type(PROC['ARGS']).__name__}\nPROC['VAR']={'A':[1,False,'caf\u00e9']}\nassert PROC['VAR']=={'A':[1,False,'caf\u00e9']}\nobserved['custom']=PROC['VAR']\nerrors=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    errors.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    errors.append('missing')\nassert errors==['unhashable','missing']\nStep('FIRST','Initial step')\nobserved['first']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nDisplayStep('SECOND','Displayed step')\nobserved['second']={'step':PROC['STEP'],'previous':PROC['PREV_STEP']}\nPROC['VAR']=42\nassert PROC['VAR']==42\nobserved['recovery']=PROC['VAR']\nobserved['errors']=errors\nPath('observed.json').write_text(json.dumps(observed))\nassert isinstance(PROC['ARGS'],dict),('LRM p81 requires a dictionary',type(PROC['ARGS']).__name__,repr(PROC['ARGS']))\nassert PROC['ARGS']==plan['arguments']\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1'\nassert PROC['PARENT']==''\nassert observed['initial']['STEP'] is None and observed['initial']['PREV_STEP'] is None\nassert observed['first']=={'step':['FIRST','Initial step'],'previous':None}\nassert observed['second']=={'step':['SECOND','Displayed step'],'previous':['FIRST','Initial step']}\nassert isinstance(PROC[INPUT_DATA],str) and PROC[INPUT_DATA]\nassert isinstance(PROC[OUTPUT_DATA],str) and PROC[OUTPUT_DATA]\nPath('result.json').write_text(json.dumps({'metadata':True}))\n",
+      "dimension": "recovery",
+      "states": [
+        {
+          "status": "RUNNING",
+          "elapsed": 0.08387699999730103
+        },
+        {
+          "status": "FINISHED",
+          "elapsed": 1.0497522999939974
+        }
+      ],
+      "status": "FINISHED",
+      "observed": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {
+            "text": "caf\u00e9 \u03bb",
+            "negative": -7
+          },
+          "OUTPUT_DATA": "/tmp/spell-host-a8d3svm9/session/data",
+          "INPUT_DATA": "/tmp/spell-host-a8d3svm9/session/data",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "args_type": "dict",
+        "custom": {
+          "A": [
+            1,
+            false,
+            "caf\u00e9"
+          ]
+        },
+        "first": {
+          "step": [
+            "FIRST",
+            "Initial step"
+          ],
+          "previous": null
+        },
+        "second": {
+          "step": [
+            "SECOND",
+            "Displayed step"
+          ],
+          "previous": [
+            "FIRST",
+            "Initial step"
+          ]
+        },
+        "recovery": 42,
+        "errors": [
+          "unhashable",
+          "missing"
+        ]
+      },
+      "result": {
+        "metadata": true
+      },
+      "native_log_sha256": "1e63823b31e6e3064745faa9c2bddbd9b1651ff664daad216b119ef2b351813a",
+      "events_sha256": "da2be4efe22be95c4e9a5cac5cb321cfc6e7e6b92a0f6eacb00970e8a0bdc2d1",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reload:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "operation": "reload",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RELOAD",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52785.4892795
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52785.6136568
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52785.6829824
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52785.832712
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52785.902328
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52786.0255752
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52786.1096044
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52786.2345713
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52786.3586023
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52786.4236071
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52786.5735117
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52786.6576238
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52786.7416581
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52786.8666172
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52786.9916081
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52787.0755303
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.145229
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.2946689
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.3629611
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.4866957
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.6105452
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.6946285
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.8196087
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52787.9035864
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52788.0546276
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "A": 1,
+                "B": 2
+              },
+              "OUTPUT_DATA": "/workspace/reload-positive/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-positive/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "A": 1,
+                "B": 2
+              },
+              "OUTPUT_DATA": "/workspace/reload-positive/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-positive/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'A': 1, 'B': 2})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "A": 1,
+          "B": 2
+        },
+        "dimension": "positive",
+        "operation": "reload",
+        "rounds": 2,
+        "input": "/workspace/reload-positive/fixture-inputs",
+        "output": "/workspace/reload-positive/fixture-outputs",
+        "content": "procedure input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "procedure input"
+      },
+      "native_log_sha256": "39cc10e27206ccd3a42dd8312f8c38d9c479afc770a2b06545f5435a7edd3215",
+      "events_sha256": "bac399fc8e23d5f5593374556e1fc82c38bd13ad9a422d876943dd6b42841881",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reopen:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "operation": "reopen",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "REQ_CLOSE_EXEC",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_EXEC_LIST",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_OPEN_EXEC",
+          "fields": {
+            "GuiMode": "CONTROL",
+            "Arguments": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'A': 1, 'B': 2})[1]",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}"
+          },
+          "context": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52795.9366038
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52796.0626143
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.1328194
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.2847034
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.3530761
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.478588
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.6035693
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.6876764
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.8116774
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52796.9012075
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52797.0505792
+        },
+        {
+          "status": "UNINIT",
+          "procedure": "main#1",
+          "monotonic": 52798.0989848
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52798.2386568
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52798.3478535
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52798.471532
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52798.5556082
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52798.6805825
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52798.7499206
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52798.8995887
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52798.9696937
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52799.0936318
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52799.2176375
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52799.3015882
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52799.4256812
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52799.5171017
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52799.6673397
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "A": 1,
+                "B": 2
+              },
+              "OUTPUT_DATA": "/workspace/reopen-positive/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-positive/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 2,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "A": 1,
+                "B": 2
+              },
+              "OUTPUT_DATA": "/workspace/reopen-positive/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-positive/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 2
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'A': 1, 'B': 2})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "A": 1,
+          "B": 2
+        },
+        "dimension": "positive",
+        "operation": "reopen",
+        "rounds": 2,
+        "input": "/workspace/reopen-positive/fixture-inputs",
+        "output": "/workspace/reopen-positive/fixture-outputs",
+        "content": "procedure input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "procedure input"
+      },
+      "native_log_sha256": "04a1b2b7f097c83b80db35de17d1cafb61906424976e867e14408b3abb84cc4d",
+      "events_sha256": "323eb386cf82f185d719e0eb6fb235226838aeb340f50ef12e1b15ac8398b494",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "child:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "operation": "child",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52806.4515072
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52806.5758436
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52806.6448351
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52806.7295556
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52806.8796705
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52806.9885603
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52807.0975378
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52807.2075382
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52807.3165524
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52807.424581
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52807.6483556
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52807.8342856
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.0128787
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.1221809
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.2306904
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.3645934
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.4735984
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.6006076
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.7086021
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.8008795
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52808.95161
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52809.0599751
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52809.1846195
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52809.2925892
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52809.4186055
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52809.5586482
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52809.6432923
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52809.77133
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "child#0",
+          "monotonic": 52809.8165557
+        }
+      ],
+      "phases": [],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC\nfrom spell.lang.functions import StartProc\nplan=json.loads(Path('plan.json').read_text())\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['ARGS']=={} and isinstance(PROC['ARGS'],dict)\nPROC['PRIVATE_VALUE']={'owner':'parent'}\nassert StartProc('child',args=[[key,value] for key,value in plan['arguments'].items()],HandleError=False) is True\nassert PROC['PRIVATE_VALUE']=={'owner':'parent'}\nassert PROC['ARGS']=={} and PROC['STEP'] is None and PROC['PREV_STEP'] is None\nPath('parent-result.json').write_text(json.dumps({'initial':dict(PROC),'returned':True}))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'A': 1, 'B': 2})[1]",
+      "procedure_inputs": {
+        "child.py": "eaf6e4b1db43a65a0718f139369933fccd67dbf25789e82b020964483b90162b",
+        "main.py": "8fa3218eb3298ad68ed8a65f8afbb4b6664eecc8a77cb8340a5ddded337f9f81"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "A": 1,
+          "B": 2
+        },
+        "dimension": "positive",
+        "operation": "child",
+        "rounds": 1,
+        "input": "/workspace/child-positive/fixture-inputs",
+        "output": "/workspace/child-positive/fixture-outputs",
+        "content": "procedure input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "child_result": {
+        "initial": {
+          "NAME": "child#0",
+          "ARGS": {
+            "A": 1,
+            "B": 2
+          },
+          "OUTPUT_DATA": "/workspace/child-positive/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-positive/fixture-inputs",
+          "PARENT": "main#1",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "first": {
+          "step": [
+            "CHILD",
+            "Child metadata"
+          ],
+          "previous": null
+        },
+        "last": {
+          "step": [
+            "DONE",
+            "Child done"
+          ],
+          "previous": [
+            "CHILD",
+            "Child metadata"
+          ]
+        },
+        "custom": {
+          "owner": "child"
+        },
+        "rejected": [
+          "missing",
+          "unhashable"
+        ]
+      },
+      "parent_result": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {},
+          "OUTPUT_DATA": "/workspace/child-positive/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-positive/fixture-inputs",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null,
+          "PRIVATE_VALUE": {
+            "owner": "parent"
+          }
+        },
+        "returned": true
+      },
+      "inventory": {
+        "ExecutorList": "child#0\u0003main#1"
+      },
+      "output_files": {
+        "child-0.txt": "procedure input",
+        "main-1.txt": "procedure input"
+      },
+      "native_log_sha256": "a5bb61c57a6d63a6874ba8dc20c57fb31fa03d68b3d3b2754aac12c09b6ea314",
+      "events_sha256": "5e917ab36bd30b731164e57db240643fd2908d86a5ee66b80d65b544ce7a467b",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reload:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "operation": "reload",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RELOAD",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52820.9229238
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52821.0496744
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52821.1187737
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52821.2041278
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52821.3130503
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52821.4183236
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52821.5675375
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52821.6526012
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52821.7367014
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52821.8605633
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52821.9846135
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52822.0686016
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52822.1376014
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52822.2869663
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52822.3569504
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52822.457735
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52822.6097759
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {},
+              "OUTPUT_DATA": "/workspace/reload-boundary/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-boundary/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {},
+              "OUTPUT_DATA": "/workspace/reload-boundary/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-boundary/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {},
+        "dimension": "boundary",
+        "operation": "reload",
+        "rounds": 2,
+        "input": "/workspace/reload-boundary/fixture-inputs",
+        "output": "/workspace/reload-boundary/fixture-outputs",
+        "content": ""
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": ""
+      },
+      "native_log_sha256": "c88476dd249fab3e8cf5fca312f3c3bbfa515af9f3b3f7fd060dfa803ca8afa2",
+      "events_sha256": "0a4c5b8d4c7f69dfabf0369664854f5cd8ffd83a6414c05a178d7dea9fc83c8b",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reopen:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "operation": "reopen",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "REQ_CLOSE_EXEC",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_EXEC_LIST",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_OPEN_EXEC",
+          "fields": {
+            "GuiMode": "CONTROL",
+            "Arguments": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{})[1]",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}"
+          },
+          "context": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52831.4056045
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52831.5295865
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52831.5995843
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52831.6829122
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52831.7921071
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52831.8991268
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52832.0486396
+        },
+        {
+          "status": "UNINIT",
+          "procedure": "main#1",
+          "monotonic": 52833.5320879
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52833.6666366
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52833.7768885
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52833.9016859
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52833.9856295
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52834.1107423
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52834.1803175
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52834.3295548
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52834.4010679
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52834.5007959
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52834.6506485
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {},
+              "OUTPUT_DATA": "/workspace/reopen-boundary/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-boundary/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 2,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {},
+              "OUTPUT_DATA": "/workspace/reopen-boundary/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-boundary/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 2
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {},
+        "dimension": "boundary",
+        "operation": "reopen",
+        "rounds": 2,
+        "input": "/workspace/reopen-boundary/fixture-inputs",
+        "output": "/workspace/reopen-boundary/fixture-outputs",
+        "content": ""
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": ""
+      },
+      "native_log_sha256": "e6f82b85b8af9c7706fb07fcf1476aa02c7a6f71641e4ab362f36c8b1f6b5de2",
+      "events_sha256": "fb8aecb056e53efe57232f83f3add21599ea2397ef32e90b7504e5c185bffb40",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "child:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "operation": "child",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52841.8647396
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52841.9892381
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.0569222
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.1468611
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.2975573
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.4065044
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.5145817
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.6225653
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.7315203
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.8405472
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52842.9917829
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.1050833
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.2567985
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.3699124
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.495789
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.6034043
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.6499534
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52843.7997011
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52843.9248525
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52844.0085798
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52844.1340853
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "child#0",
+          "monotonic": 52844.1776117
+        }
+      ],
+      "phases": [],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC\nfrom spell.lang.functions import StartProc\nplan=json.loads(Path('plan.json').read_text())\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['ARGS']=={} and isinstance(PROC['ARGS'],dict)\nPROC['PRIVATE_VALUE']={'owner':'parent'}\nassert StartProc('child',args=[[key,value] for key,value in plan['arguments'].items()],HandleError=False) is True\nassert PROC['PRIVATE_VALUE']=={'owner':'parent'}\nassert PROC['ARGS']=={} and PROC['STEP'] is None and PROC['PREV_STEP'] is None\nPath('parent-result.json').write_text(json.dumps({'initial':dict(PROC),'returned':True}))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{})[1]",
+      "procedure_inputs": {
+        "child.py": "eaf6e4b1db43a65a0718f139369933fccd67dbf25789e82b020964483b90162b",
+        "main.py": "8fa3218eb3298ad68ed8a65f8afbb4b6664eecc8a77cb8340a5ddded337f9f81"
+      },
+      "fixture_paths": {
+        "arguments": {},
+        "dimension": "boundary",
+        "operation": "child",
+        "rounds": 1,
+        "input": "/workspace/child-boundary/fixture-inputs",
+        "output": "/workspace/child-boundary/fixture-outputs",
+        "content": ""
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "child_result": {
+        "initial": {
+          "NAME": "child#0",
+          "ARGS": {},
+          "OUTPUT_DATA": "/workspace/child-boundary/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-boundary/fixture-inputs",
+          "PARENT": "main#1",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "first": {
+          "step": [
+            "CHILD",
+            "Child metadata"
+          ],
+          "previous": null
+        },
+        "last": {
+          "step": [
+            "DONE",
+            "Child done"
+          ],
+          "previous": [
+            "CHILD",
+            "Child metadata"
+          ]
+        },
+        "custom": {
+          "owner": "child"
+        },
+        "rejected": [
+          "missing",
+          "unhashable"
+        ]
+      },
+      "parent_result": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {},
+          "OUTPUT_DATA": "/workspace/child-boundary/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-boundary/fixture-inputs",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null,
+          "PRIVATE_VALUE": {
+            "owner": "parent"
+          }
+        },
+        "returned": true
+      },
+      "inventory": {
+        "ExecutorList": "child#0\u0003main#1"
+      },
+      "output_files": {
+        "child-0.txt": "",
+        "main-1.txt": ""
+      },
+      "native_log_sha256": "221c71f5abc30567696c9de10b9e1064a00ca13dc197eef4e302628cb9a35db2",
+      "events_sha256": "b816cff87c6a3e5c0a3bc6992dd8cf58873f5789b1cda19c051db7c07fe7fd86",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reload:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "operation": "reload",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RELOAD",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52854.3135471
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52854.4387248
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52854.5060249
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52854.6556264
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52854.7250408
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52854.8486328
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52854.9725706
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52855.0565371
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52855.1806419
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52855.3045927
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52855.3886362
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52855.4940522
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52855.6452624
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52855.7320356
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52855.817638
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52855.9455023
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52856.0695615
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52856.1549359
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.2316465
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.3808476
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.4492805
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.5726524
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.6565824
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.7806048
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.9056441
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52856.9896052
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52857.1146242
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52857.2064871
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52857.3569304
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "ERROR",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "zero": 0,
+                "false": false,
+                "text": ""
+              },
+              "OUTPUT_DATA": "/workspace/reload-failure/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-failure/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "zero": 0,
+                "false": false,
+                "text": ""
+              },
+              "OUTPUT_DATA": "/workspace/reload-failure/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-failure/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'zero': 0, 'false': False, 'text': ''})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "zero": 0,
+          "false": false,
+          "text": ""
+        },
+        "dimension": "failure",
+        "operation": "reload",
+        "rounds": 2,
+        "input": "/workspace/reload-failure/fixture-inputs",
+        "output": "/workspace/reload-failure/fixture-outputs",
+        "content": "after missing input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "after missing input"
+      },
+      "native_log_sha256": "21c76342db0ea7acca9c5d4841c7f582705e4896ed94ec1060926ed59c12e287",
+      "events_sha256": "bd09d261a5f3fabd8ae4f85f33e9cbeb4f028436b402dd6a00b98577724ae43a",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reopen:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "operation": "reopen",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "REQ_CLOSE_EXEC",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_EXEC_LIST",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_OPEN_EXEC",
+          "fields": {
+            "GuiMode": "CONTROL",
+            "Arguments": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'zero': 0, 'false': False, 'text': ''})[1]",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}"
+          },
+          "context": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52864.8076184
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52864.9316765
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52864.9997874
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.0835473
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.1920572
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.3168651
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.4425294
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.5255901
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.649795
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.7766419
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.8618531
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52865.9866069
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52866.0848248
+        },
+        {
+          "status": "UNINIT",
+          "procedure": "main#1",
+          "monotonic": 52868.9390917
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52869.0731114
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52869.1828098
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52869.3066607
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52869.4305673
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52869.5146058
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52869.5845195
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52869.6545912
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52869.7649937
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52869.888632
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.0135895
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.0976165
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.2216491
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.3456371
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.4295706
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52870.5317724
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52870.6806221
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "ERROR",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "zero": 0,
+                "false": false,
+                "text": ""
+              },
+              "OUTPUT_DATA": "/workspace/reopen-failure/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-failure/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "FINISHED",
+          "evaluations": 2,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "zero": 0,
+                "false": false,
+                "text": ""
+              },
+              "OUTPUT_DATA": "/workspace/reopen-failure/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-failure/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 2
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'zero': 0, 'false': False, 'text': ''})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "zero": 0,
+          "false": false,
+          "text": ""
+        },
+        "dimension": "failure",
+        "operation": "reopen",
+        "rounds": 2,
+        "input": "/workspace/reopen-failure/fixture-inputs",
+        "output": "/workspace/reopen-failure/fixture-outputs",
+        "content": "after missing input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "after missing input"
+      },
+      "native_log_sha256": "4dedc3c43c7a29b58893d5a12102fbfc7eeb07f17d66b5b6c60720e9ebcbfb92",
+      "events_sha256": "3750ea24ffd4c9a0a6b1d8c118dc5c0c163c2c530905b5d2cde8e045be738045",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "child:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "operation": "child",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52879.2925518
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52879.4175995
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52879.487131
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52879.6366247
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52879.7464115
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52879.8556309
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52879.9635383
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52880.0726282
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52880.1805836
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52880.2887055
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52880.4428373
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52880.5976254
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52880.7886351
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52880.899451
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.0255735
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.1367239
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.2446809
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.3685966
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.477574
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.5859163
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.7096252
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.8117666
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52881.9196344
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.0536471
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.162595
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.2865692
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.3945895
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.5176087
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52882.6266024
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52882.7506217
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52882.8346636
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52882.9596242
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "child#0",
+          "monotonic": 52883.0436327
+        }
+      ],
+      "phases": [],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC\nfrom spell.lang.functions import StartProc\nplan=json.loads(Path('plan.json').read_text())\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['ARGS']=={} and isinstance(PROC['ARGS'],dict)\nPROC['PRIVATE_VALUE']={'owner':'parent'}\nassert StartProc('child',args=[[key,value] for key,value in plan['arguments'].items()],HandleError=False) is True\nassert PROC['PRIVATE_VALUE']=={'owner':'parent'}\nassert PROC['ARGS']=={} and PROC['STEP'] is None and PROC['PREV_STEP'] is None\nPath('parent-result.json').write_text(json.dumps({'initial':dict(PROC),'returned':True}))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'zero': 0, 'false': False, 'text': ''})[1]",
+      "procedure_inputs": {
+        "child.py": "eaf6e4b1db43a65a0718f139369933fccd67dbf25789e82b020964483b90162b",
+        "main.py": "8fa3218eb3298ad68ed8a65f8afbb4b6664eecc8a77cb8340a5ddded337f9f81"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "zero": 0,
+          "false": false,
+          "text": ""
+        },
+        "dimension": "failure",
+        "operation": "child",
+        "rounds": 1,
+        "input": "/workspace/child-failure/fixture-inputs",
+        "output": "/workspace/child-failure/fixture-outputs",
+        "content": "after missing input"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "child_result": {
+        "initial": {
+          "NAME": "child#0",
+          "ARGS": {
+            "zero": 0,
+            "false": false,
+            "text": ""
+          },
+          "OUTPUT_DATA": "/workspace/child-failure/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-failure/fixture-inputs",
+          "PARENT": "main#1",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "first": {
+          "step": [
+            "CHILD",
+            "Child metadata"
+          ],
+          "previous": null
+        },
+        "last": {
+          "step": [
+            "DONE",
+            "Child done"
+          ],
+          "previous": [
+            "CHILD",
+            "Child metadata"
+          ]
+        },
+        "custom": {
+          "owner": "child"
+        },
+        "rejected": [
+          "missing",
+          "unhashable"
+        ]
+      },
+      "parent_result": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {},
+          "OUTPUT_DATA": "/workspace/child-failure/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-failure/fixture-inputs",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null,
+          "PRIVATE_VALUE": {
+            "owner": "parent"
+          }
+        },
+        "returned": true
+      },
+      "inventory": {
+        "ExecutorList": "child#0\u0003main#1"
+      },
+      "output_files": {
+        "child-0.txt": "after missing input",
+        "main-1.txt": "after missing input"
+      },
+      "native_log_sha256": "bf0448f6369c73735401221bee600fe98cd96ec942e3972992ca43759a8f5de4",
+      "events_sha256": "6e4dd57b2321e43341c3af21d2ad0c4fbd9ea7ce76051d30dc42004f86b4b00a",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reload:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "operation": "reload",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RELOAD",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RELOAD",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52893.7544976
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52893.8786394
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52893.9478334
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.0976248
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.1660368
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.2906054
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.4145569
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.4986305
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.6227731
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52894.7131009
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52894.8636901
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52894.9887431
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52895.0678405
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52895.1937684
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52895.3185886
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52895.4025821
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52895.4701332
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52895.6196081
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52895.6918991
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52895.8155967
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52895.9406456
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52896.0245967
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52896.1486014
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52896.2426557
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52896.392656
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52896.4767091
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52896.5606012
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52896.669879
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52896.7945606
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52896.8797687
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52896.94754
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.0966436
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.1661786
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.289675
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.4146368
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.4988813
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.6235479
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52897.7179614
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52897.8685954
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "ERROR",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reload-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "ERROR",
+          "evaluations": 1,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reload-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 3,
+          "status": "FINISHED",
+          "evaluations": 1,
+          "observed": {
+            "phase": 3,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reload-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reload-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'text': 'caf\u00e9 \u03bb', 'negative': -7})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "text": "caf\u00e9 \u03bb",
+          "negative": -7
+        },
+        "dimension": "recovery",
+        "operation": "reload",
+        "rounds": 3,
+        "input": "/workspace/reload-recovery/fixture-inputs",
+        "output": "/workspace/reload-recovery/fixture-outputs",
+        "content": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "native_log_sha256": "f52ecbb94cdc71bc5e09ce8644f4c75f14578c46cbf77d7868060e3d868a45b8",
+      "events_sha256": "8e5a43c8fcb21a3aa5b42850afd872c4fa780db0609669aa2f64bfa8e6d4cb6b",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "reopen:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "operation": "reopen",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "REQ_CLOSE_EXEC",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_EXEC_LIST",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_OPEN_EXEC",
+          "fields": {
+            "GuiMode": "CONTROL",
+            "Arguments": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'text': 'caf\u00e9 \u03bb', 'negative': -7})[1]",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}"
+          },
+          "context": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        },
+        {
+          "command": "REQ_CLOSE_EXEC",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_EXEC_LIST",
+          "fields": {},
+          "context": true
+        },
+        {
+          "command": "REQ_OPEN_EXEC",
+          "fields": {
+            "GuiMode": "CONTROL",
+            "Arguments": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'text': 'caf\u00e9 \u03bb', 'negative': -7})[1]",
+            "OpenMode": "{Automatic:True,Visible:True,Blocking:False}"
+          },
+          "context": true
+        },
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52906.2647972
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52906.3910936
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.4599109
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.5420749
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.6533152
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.7767427
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.9016215
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52906.9856139
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52907.1107014
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52907.2011296
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52907.3507133
+        },
+        {
+          "status": "UNINIT",
+          "procedure": "main#1",
+          "monotonic": 52910.4378912
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52910.5876326
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52910.6966156
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52910.7812799
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52910.9066895
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52910.9907035
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.0596481
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.1525526
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.2609905
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.3846223
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.5086357
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.5936128
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.7185778
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52911.8088923
+        },
+        {
+          "status": "ERROR",
+          "procedure": "main#1",
+          "monotonic": 52911.9597342
+        },
+        {
+          "status": "UNINIT",
+          "procedure": "main#1",
+          "monotonic": 52915.0553719
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52915.1896171
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52915.3007744
+        },
+        {
+          "status": "LOADED",
+          "procedure": "main#1",
+          "monotonic": 52915.4246453
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52915.5085655
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52915.6325832
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52915.7028317
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52915.8118587
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52915.9210668
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52916.0456177
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52916.1706342
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52916.2545638
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52916.378637
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52916.4699946
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52916.6195851
+        }
+      ],
+      "phases": [
+        {
+          "phase": 1,
+          "status": "ERROR",
+          "evaluations": 1,
+          "observed": {
+            "phase": 1,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reopen-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 1
+          }
+        },
+        {
+          "phase": 2,
+          "status": "ERROR",
+          "evaluations": 2,
+          "observed": {
+            "phase": 2,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reopen-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 2
+          }
+        },
+        {
+          "phase": 3,
+          "status": "FINISHED",
+          "evaluations": 3,
+          "observed": {
+            "phase": 3,
+            "initial": {
+              "NAME": "main#1",
+              "ARGS": {
+                "text": "caf\u00e9 \u03bb",
+                "negative": -7
+              },
+              "OUTPUT_DATA": "/workspace/reopen-recovery/fixture-outputs",
+              "INPUT_DATA": "/workspace/reopen-recovery/fixture-inputs",
+              "PARENT": "",
+              "STEP": null,
+              "PREV_STEP": null
+            },
+            "rejected": [
+              "unhashable",
+              "missing"
+            ],
+            "evaluations": 3
+          }
+        }
+      ],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC,ARGS,Step\nplan=json.loads(Path('plan.json').read_text())\nprevious=json.loads(Path('runs.json').read_text()) if Path('runs.json').exists() else []\nphase=len(previous)+1\ninitial=json.loads(json.dumps(PROC))\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert 'PRIVATE_VALUE' not in PROC,initial\nassert isinstance(PROC['ARGS'],dict) and PROC['ARGS']==plan['arguments'],initial\nassert all(type(PROC['ARGS'][key]) is type(value) for key,value in plan['arguments'].items())\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['STEP'] is None and PROC['PREV_STEP'] is None\nrejected=[]\ntry:\n    PROC[[]]\nexcept TypeError:\n    rejected.append('unhashable')\ntry:\n    PROC['ABSENT-METADATA-KEY']\nexcept KeyError:\n    rejected.append('missing')\nassert rejected==['unhashable','missing']\nPROC['PRIVATE_VALUE']={'phase':phase}\nStep('LIFETIME','Procedure lifetime control')\n# Changing the public metadata dictionary must not change native ARGS, or\n# the initial-argument snapshot used by a later reload.\nPROC['ARGS']['PRIVATE_ARGUMENT']=phase\nassert 'PRIVATE_ARGUMENT' not in ARGS.keys()\nrow={'phase':phase,'initial':initial,'rejected':rejected,\n     'evaluations':int(Path('evaluations.txt').read_text())}\nprevious.append(row)\nPath('runs.json').write_text(json.dumps(previous))\nif plan['dimension']=='failure' and phase==1:\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nif plan['dimension']=='recovery' and phase in (1,2):\n    raise RuntimeError('EXPECTED_PROC_LIFETIME_FAILURE')\nPath('completed.txt').write_text(str(phase))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'text': 'caf\u00e9 \u03bb', 'negative': -7})[1]",
+      "procedure_inputs": {
+        "main.py": "fc708fb8cb49d328a539907265180797e9fd3926972d3f5253c66d338ac573eb"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "text": "caf\u00e9 \u03bb",
+          "negative": -7
+        },
+        "dimension": "recovery",
+        "operation": "reopen",
+        "rounds": 3,
+        "input": "/workspace/reopen-recovery/fixture-inputs",
+        "output": "/workspace/reopen-recovery/fixture-outputs",
+        "content": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "output_files": {
+        "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "native_log_sha256": "0cf9b8530e502d8c26742d2e5ae9b3f8c110b84dd70a38fd00bf46b927548e08",
+      "events_sha256": "5237c92a97f87504b15e2db672e6718a678dafe41020335af35a61e571ef460f",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "child:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "operation": "child",
+      "commands": [
+        {
+          "command": "CMD_RUN",
+          "fields": {},
+          "send": true
+        }
+      ],
+      "states": [
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52922.7725474
+        },
+        {
+          "status": "PAUSED",
+          "procedure": "main#1",
+          "monotonic": 52922.8975547
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52922.972914
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.0785954
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.2285559
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.3375604
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.4455315
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.553607
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.6615511
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.7696843
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52923.9220225
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.0349969
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.1866633
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.2591571
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.3688514
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.5127449
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.6218569
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.7456348
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.8549713
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52924.9560619
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52925.0665598
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52925.1388814
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52925.2790952
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52925.4205905
+        },
+        {
+          "status": "WAITING",
+          "procedure": "main#1",
+          "monotonic": 52925.5295986
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52925.6546236
+        },
+        {
+          "status": "RUNNING",
+          "procedure": "main#1",
+          "monotonic": 52925.7385952
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "main#1",
+          "monotonic": 52925.8642426
+        },
+        {
+          "status": "FINISHED",
+          "procedure": "child#0",
+          "monotonic": 52925.9496438
+        }
+      ],
+      "phases": [],
+      "source": "import json\nfrom pathlib import Path\nfrom spell.runtime import PROC\nfrom spell.lang.functions import StartProc\nplan=json.loads(Path('plan.json').read_text())\nfrom spell.lang.constants import INPUT_DATA,OUTPUT_DATA\ninput_path=Path(PROC[INPUT_DATA])\noutput_path=Path(PROC[OUTPUT_DATA])\nassert str(input_path)==plan['input'] and str(output_path)==plan['output']\nassert input_path!=output_path and input_path.is_dir() and output_path.is_dir()\npath_errors=[]\ntry:\n    (input_path/'missing-input.txt').read_text(encoding='utf-8')\nexcept FileNotFoundError:\n    path_errors.append('missing-input')\nassert path_errors==['missing-input']\nassert (input_path/'input.txt').read_text(encoding='utf-8')==plan['content']\n(output_path/(PROC['NAME'].replace('#','-')+'.txt')).write_text(plan['content'],encoding='utf-8')\nassert (output_path/(PROC['NAME'].replace('#','-')+'.txt')).read_text(encoding='utf-8')==plan['content']\nassert PROC['NAME']=='main#1' and PROC['PARENT']==''\nassert PROC['ARGS']=={} and isinstance(PROC['ARGS'],dict)\nPROC['PRIVATE_VALUE']={'owner':'parent'}\nassert StartProc('child',args=[[key,value] for key,value in plan['arguments'].items()],HandleError=False) is True\nassert PROC['PRIVATE_VALUE']=={'owner':'parent'}\nassert PROC['ARGS']=={} and PROC['STEP'] is None and PROC['PREV_STEP'] is None\nPath('parent-result.json').write_text(json.dumps({'initial':dict(PROC),'returned':True}))\n",
+      "expression": "(__import__('pathlib').Path('evaluations.txt').write_text(str(int(__import__('pathlib').Path('evaluations.txt').read_text())+1)),{'text': 'caf\u00e9 \u03bb', 'negative': -7})[1]",
+      "procedure_inputs": {
+        "child.py": "eaf6e4b1db43a65a0718f139369933fccd67dbf25789e82b020964483b90162b",
+        "main.py": "8fa3218eb3298ad68ed8a65f8afbb4b6664eecc8a77cb8340a5ddded337f9f81"
+      },
+      "fixture_paths": {
+        "arguments": {
+          "text": "caf\u00e9 \u03bb",
+          "negative": -7
+        },
+        "dimension": "recovery",
+        "operation": "child",
+        "rounds": 1,
+        "input": "/workspace/child-recovery/fixture-inputs",
+        "output": "/workspace/child-recovery/fixture-outputs",
+        "content": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "launcher_sha256": "3fd1dc19c9f0ef692f7784f4afab51553cd6581cf42c50ee0e8df39d8eb0d650",
+      "configuration_sha256": "9f1a8df93e090f4eaeb1d1901528cfafb577e2d67e92a191e7a18fe692325835",
+      "child_result": {
+        "initial": {
+          "NAME": "child#0",
+          "ARGS": {
+            "text": "caf\u00e9 \u03bb",
+            "negative": -7
+          },
+          "OUTPUT_DATA": "/workspace/child-recovery/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-recovery/fixture-inputs",
+          "PARENT": "main#1",
+          "STEP": null,
+          "PREV_STEP": null
+        },
+        "first": {
+          "step": [
+            "CHILD",
+            "Child metadata"
+          ],
+          "previous": null
+        },
+        "last": {
+          "step": [
+            "DONE",
+            "Child done"
+          ],
+          "previous": [
+            "CHILD",
+            "Child metadata"
+          ]
+        },
+        "custom": {
+          "owner": "child"
+        },
+        "rejected": [
+          "missing",
+          "unhashable"
+        ]
+      },
+      "parent_result": {
+        "initial": {
+          "NAME": "main#1",
+          "ARGS": {},
+          "OUTPUT_DATA": "/workspace/child-recovery/fixture-outputs",
+          "INPUT_DATA": "/workspace/child-recovery/fixture-inputs",
+          "PARENT": "",
+          "STEP": null,
+          "PREV_STEP": null,
+          "PRIVATE_VALUE": {
+            "owner": "parent"
+          }
+        },
+        "returned": true
+      },
+      "inventory": {
+        "ExecutorList": "child#0\u0003main#1"
+      },
+      "output_files": {
+        "child-0.txt": "caf\u00e9 \u03bb\nsecond line",
+        "main-1.txt": "caf\u00e9 \u03bb\nsecond line"
+      },
+      "native_log_sha256": "e685a3c5cd40d81af930c4d062f764b9895de107be818f68f239549a6e050fd5",
+      "events_sha256": "9c74044a369cf5795b8969b1ba913b9b762e1e813f06255d12a39ff5cce9cb7e",
+      "contracts": [],
+      "oracle": "LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter."
+    },
+    "procedure-dictionary:positive": {
+      "passed": true,
+      "dimension": "positive",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+        "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+        "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+        "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+        "CMP-LRM244-DATABASE-PROC",
+        "CMP-LRM244-EXAMPLE-142",
+        "CMP-LRM244-SECTION-4-15-4-099"
+      ],
+      "dependencies": [
+        "proc:positive",
+        "reload:positive",
+        "reopen:positive",
+        "child:positive"
+      ],
+      "oracle": "Root metadata, actual child metadata, reload and close/reopen must all pass independently."
+    },
+    "procedure-dictionary:boundary": {
+      "passed": true,
+      "dimension": "boundary",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+        "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+        "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+        "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+        "CMP-LRM244-DATABASE-PROC",
+        "CMP-LRM244-EXAMPLE-142",
+        "CMP-LRM244-SECTION-4-15-4-099"
+      ],
+      "dependencies": [
+        "proc:boundary",
+        "reload:boundary",
+        "reopen:boundary",
+        "child:boundary"
+      ],
+      "oracle": "Root metadata, actual child metadata, reload and close/reopen must all pass independently."
+    },
+    "procedure-dictionary:failure": {
+      "passed": true,
+      "dimension": "failure",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+        "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+        "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+        "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+        "CMP-LRM244-DATABASE-PROC",
+        "CMP-LRM244-EXAMPLE-142",
+        "CMP-LRM244-SECTION-4-15-4-099"
+      ],
+      "dependencies": [
+        "proc:failure",
+        "reload:failure",
+        "reopen:failure",
+        "child:failure"
+      ],
+      "oracle": "Root metadata, actual child metadata, reload and close/reopen must all pass independently."
+    },
+    "procedure-dictionary:recovery": {
+      "passed": true,
+      "dimension": "recovery",
+      "contracts": [
+        "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+        "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+        "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+        "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+        "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+        "CMP-LRM244-DATABASE-PROC",
+        "CMP-LRM244-EXAMPLE-142",
+        "CMP-LRM244-SECTION-4-15-4-099"
+      ],
+      "dependencies": [
+        "proc:recovery",
+        "reload:recovery",
+        "reopen:recovery",
+        "child:recovery"
+      ],
+      "oracle": "Root metadata, actual child metadata, reload and close/reopen must all pass independently."
+    }
+  },
+  "qualified_contracts": [
+    "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+    "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+    "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+    "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+    "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+    "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+    "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+    "CMP-LRM244-DATABASE-PROC",
+    "CMP-LRM244-EXAMPLE-142",
+    "CMP-LRM244-SECTION-4-15-4-099"
+  ],
+  "diagnostic_donor": {
+    "commit": "c22ba3d0f5e2362c2384f09036bfff30e83080b1",
+    "path": "conformance/evidence/proc_dictionary.json",
+    "sha256": "6ee1a52503d2109de4fe0a9ebaf9713596bfd69f4e4042cec69e228c5968153f",
+    "stages": [
+      {
+        "recipe": "proc_dictionary_patches.py",
+        "sources": {
+          "lib/SPELL_EXC/src/SPELLexecutorImpl.C": {
+            "after_sha256": "83ae4cc423fec11e8ad142b83069ca73a69977ee0ea2da841a0e60f93c360210",
+            "before_sha256": "6bcf61d299669fc28b713592acaea65a02ba21b33d751db47416ab88f5f0e450"
+          }
+        }
+      },
+      {
+        "recipe": "proc_dictionary_patches.py",
+        "sources": {
+          "lib/SPELL_EXC/src/SPELLserviceImpl.C": {
+            "after_sha256": "15fcaa56d2c09ee6fb7b447d9ae8b158efbdeb46799a71e879f39cf9fa1b12fe",
+            "before_sha256": "13153f3cc00a747a2eab5524eac12f47401d4f1ccf56a24f3de66ef28397728f"
+          }
+        }
+      }
+    ]
+  },
+  "raw": {
+    "baseline": {
+      "path": "C:\\obwait_proc_composed\\.qualification\\proc-metadata\\04c0baa2b4054234aceae525e0a94d22\\result.json",
+      "sha256": "3b27b9bee2ee9899c55ffb6f8ebbf503ffb99349eab2ab21472599b3e6e2a0de"
+    },
+    "lifecycle": {
+      "path": "C:\\obwait_proc_composed\\.qualification\\proc-lifecycle\\8ad81bd54f7a402ba42b9177d335d3ca\\result.json",
+      "sha256": "2ac6d4b8699ab64f7d2d454b22488447e1b58e4843373803fbd33222096e0993"
+    }
+  },
+  "scope": "LRM p81 PROC dictionary, root/child metadata and lifetime; p90 input/output paths",
+  "full_v05_accepted": false,
+  "full_v06_accepted": false,
+  "stable_v1_accepted": false
+}

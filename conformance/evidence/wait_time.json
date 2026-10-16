@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:03e52c84157460e5b90261e390d4a4b8af0ff75e886e58b6a7075ac22fff113d",
+  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
   "inputs": {
     "conformance/wait_time_cases.py": "f763407fc433cf602ddbbc5bb743424d2762b579a9bbf8d6280de5fc91022c5c",
     "conformance/wait_time_controller.py": "ca5fa2275b534d0b92aa050e4b1c880bf6f0bb063b67c724f42fc188181ccda5",
@@ -25,7 +25,7 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+    "source_port/integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -33,6 +33,7 @@
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/proc_dictionary_patches.py": "925aaefe4aef6fe5dad3887626f726adde659847654715d5b197f2507e5ddc45",
     "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
     "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
@@ -47,6 +48,7 @@
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
     "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
@@ -90,52 +92,48 @@
       "dimension": "positive",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08465050000086194
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.20963599999959115
+          "elapsed": 0.08471009999630041
         },
         {
           "status": "WAITING",
-          "elapsed": 0.26310600000579143
+          "elapsed": 0.3374536999981501
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.8299872999996296
+          "elapsed": 2.525474900001427
         },
         {
           "status": "WAITING",
-          "elapsed": 2.955683600004704
+          "elapsed": 2.651597899995977
         },
         {
           "status": "RUNNING",
-          "elapsed": 5.42490700000053
+          "elapsed": 4.934541700000409
         },
         {
           "status": "WAITING",
-          "elapsed": 5.549687600003381
+          "elapsed": 5.059666000001016
         },
         {
           "status": "RUNNING",
-          "elapsed": 7.621030599999358
+          "elapsed": 7.211040999995021
         },
         {
           "status": "FINISHED",
-          "elapsed": 8.752648200003023
+          "elapsed": 8.212507999996888
         }
       ],
       "status": "FINISHED",
       "result": {
         "elapsed": [
-          2.5995945999966352,
-          2.593622399996093,
-          2.3325594999987516
+          2.2986115999956382,
+          2.414380700000038,
+          2.2726518000054057
         ]
       },
-      "native_log_sha256": "3f83e728d5f616cb829e8ed8f775632949b00e6b3ec35bad0fc4c7900f043b57",
-      "events_sha256": "5be4fcf23c9a0dfae23bb583527549b5db74ccbc604156ab2bc41590f1cbc172",
+      "native_log_sha256": "b4e8deab7955b4f68ad1bc211c5d3641b068a038cfa63e38a9f502204b99e503",
+      "events_sha256": "6425d99d0a4654cdf71d3fbc558ae8fa31bcf566931e2c1a29d5e33d00f0ced8",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -149,51 +147,51 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08381490000465419
+          "elapsed": 0.08474220000061905
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.20869450000463985
+          "elapsed": 0.20909740000206511
         },
         {
           "status": "WAITING",
-          "elapsed": 0.3407957000017632
+          "elapsed": 0.33570550000149524
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.7088483000043198
+          "elapsed": 0.6786984000063967
         },
         {
           "status": "WAITING",
-          "elapsed": 0.8348931000000448
+          "elapsed": 0.8056612000000314
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.5245311000035144
+          "elapsed": 1.4967487000030815
         },
         {
           "status": "WAITING",
-          "elapsed": 1.6540548000048148
+          "elapsed": 1.6227687999999034
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.368783199999598
+          "elapsed": 2.303095300005225
         },
         {
           "status": "FINISHED",
-          "elapsed": 3.1588755000047968
+          "elapsed": 3.0986518999998225
         }
       ],
       "status": "FINISHED",
       "result": {
-        "zero_elapsed": 0.49295559999882244,
+        "zero_elapsed": 0.47046550000231946,
         "elapsed": [
-          0.8082211000000825,
-          0.8470646999994642
+          0.8080651999989641,
+          0.8192263000019011
         ]
       },
-      "native_log_sha256": "9ab083c2af1f024be6b3a6f341d2931c9942186c75d749d585ab3409da84f6f5",
-      "events_sha256": "59392669d33e3b4d1065e45b55f7c181a313bea89a14c148458332a737fec60c",
+      "native_log_sha256": "d73b7da0261560454719c1bb6d337876010ec92fae586c30e2f90cac19651228",
+      "events_sha256": "2f43778f7aba987088f8597b2e46c355152c85973190b556fea4eadcfbd82b1b",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -206,12 +204,16 @@
       "dimension": "failure",
       "states": [
         {
+          "status": "PAUSED",
+          "elapsed": 0.08392299999832176
+        },
+        {
           "status": "RUNNING",
-          "elapsed": 0.08678920000238577
+          "elapsed": 0.2091262000030838
         },
         {
           "status": "FINISHED",
-          "elapsed": 0.8035527000029106
+          "elapsed": 0.7568944000013289
         }
       ],
       "status": "FINISHED",
@@ -221,8 +223,8 @@
           "DriverException"
         ]
       },
-      "native_log_sha256": "a4872d179001290871754f06b106dd3c0850d62cbfbd6243b289b2aae0910a6c",
-      "events_sha256": "29275ba48d57e2180240b2917e6fa8a5e35633c71e5def7b7f930600225ccf39",
+      "native_log_sha256": "bc6701c5ce5ab617a1ef3f7f6f0d21e08bd069a603a35d18afde84ad4094b8de",
+      "events_sha256": "871fa77c4d34b45adce670df5a6eb96af7e4862cf2e9451816ed957f2df87838",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -236,23 +238,23 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08439219999854686
+          "elapsed": 0.08379209999839077
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.20842489999631653
+          "elapsed": 0.21180979999917326
         },
         {
           "status": "WAITING",
-          "elapsed": 0.5434833999970579
+          "elapsed": 0.5488648999962606
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.2674180999965756
+          "elapsed": 1.2977384999976493
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.3924285999964923
+          "elapsed": 1.4228162999934284
         }
       ],
       "status": "FINISHED",
@@ -260,10 +262,10 @@
         "rejected": [
           "DriverException"
         ],
-        "elapsed": 0.8464409000007436
+        "elapsed": 0.887686300004134
       },
-      "native_log_sha256": "25497c848fbab4691cf2a5f940b021a53a370813d88088afaa82bd5f210fa50c",
-      "events_sha256": "49487b327862dd5ecea54243afbe0c81b144b4159797fa71c9c5b84087098d8b",
+      "native_log_sha256": "1ff3c32100f8128f9f50efc8b506a823c2a8d7235150364717e760e35bd8f7c7",
+      "events_sha256": "5e4ef569c20d85311fe90b4027963f2cfdbe0d444964aa77b422d274bc91c6bd",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -277,58 +279,58 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08381660000304691
+          "elapsed": 0.08486310000444064
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.20793479999701958
+          "elapsed": 0.20874370000092313
         },
         {
           "status": "WAITING",
-          "elapsed": 0.3348238999969908
+          "elapsed": 0.33480120000604074
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.7317884000003687
+          "elapsed": 0.6779619000008097
         },
         {
           "status": "WAITING",
-          "elapsed": 1.2068450000006123
+          "elapsed": 1.0132248000008985
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.8318313999989186
+          "elapsed": 2.0687819000013405
         },
         {
           "status": "WAITING",
-          "elapsed": 3.1679870000007213
+          "elapsed": 2.4077670000042417
         },
         {
           "status": "RUNNING",
-          "elapsed": 5.012861800001701
+          "elapsed": 3.9851993000047514
         },
         {
           "status": "FINISHED",
-          "elapsed": 5.139842399999907
+          "elapsed": 4.111773700002232
         }
       ],
       "status": "FINISHED",
       "result": {
         "targets": [
           {
-            "target": 1792150147,
-            "finished": 1792150147.255697,
+            "target": 1792161189,
+            "finished": 1792161189.349953,
             "object": false
           },
           {
-            "target": 1792150149,
-            "finished": 1792150149.4794984,
+            "target": 1792161191,
+            "finished": 1792161191.2923465,
             "object": true
           }
         ]
       },
-      "native_log_sha256": "8442aa9bdd392d6ee3484532df4a5877af4f5fa70cba05aab64a76d886868190",
-      "events_sha256": "fe20f73a896185903e79a669bef150dba82a9475bd3ac7b4087325fbad54755d",
+      "native_log_sha256": "ec95942d9fc14c8f0299a8e5dde8032db2e2e6136d03ee19e8d3ecc72db3e5eb",
+      "events_sha256": "d285f2bde8013ffdbcc64c3217506a1da6db6b2c898de638bc9e3f8b0ec966b1",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -341,40 +343,36 @@
       "dimension": "boundary",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08410980000189738
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.20889870000246447
+          "elapsed": 0.08496569999988424
         },
         {
           "status": "WAITING",
-          "elapsed": 0.5525109000009252
+          "elapsed": 0.5476386999944225
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.9336955000035232
+          "elapsed": 1.0010758999997051
         },
         {
           "status": "WAITING",
-          "elapsed": 1.0590386999974726
+          "elapsed": 1.0859363999989
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.40819239999837
+          "elapsed": 1.5577161999972304
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.5360289000018383
+          "elapsed": 1.6837058999954024
         }
       ],
       "status": "FINISHED",
       "result": {
-        "elapsed": 1.1906042999980855
+        "elapsed": 1.3300182000020868
       },
-      "native_log_sha256": "1e7d1ef35cf5607e300c0cf01316d964567c6010aeca6a80446b4f23c869f2b5",
-      "events_sha256": "72934a3e8c9216c36270db270f8f51513072ff9ed47c85b86016b648b153c7c2",
+      "native_log_sha256": "39e22e5cd4489e49161f4d55dfbc1f75adb976e3c491511ccc6f5044533438d1",
+      "events_sha256": "2a8fb061f4041ae1f6965421207c634090bdc7e991d96bc0aed89451dccd9f3c",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -387,16 +385,12 @@
       "dimension": "failure",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08488510000461247
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.2107971000004909
+          "elapsed": 0.08485080000536982
         },
         {
           "status": "FINISHED",
-          "elapsed": 0.8909659000055399
+          "elapsed": 0.8917470000014873
         }
       ],
       "status": "FINISHED",
@@ -406,8 +400,8 @@
           "DriverException"
         ]
       },
-      "native_log_sha256": "781798d619a4cd5ea30be57a5e8d76d093c22e119eca77b02293d557e74b3d21",
-      "events_sha256": "eefe96d27fb79bae59f22faf19a517b87632bb90e2ab559f79c2537827c3ee87",
+      "native_log_sha256": "c594c7b7c494c675ac1599e962aafa91be75f02d41de21747aea9f1e5b47a34e",
+      "events_sha256": "d6e4d1995bfa192d1499813f87eb1d1b6cc4168c8989773c88e6fe6f8b3112b2",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -421,23 +415,23 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08383479999611154
+          "elapsed": 0.08412659999885364
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.20882869999331888
+          "elapsed": 0.20887030000449158
         },
         {
           "status": "WAITING",
-          "elapsed": 0.8937536999947042
+          "elapsed": 0.8867911000052118
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.8698421999943093
+          "elapsed": 2.8678560000043944
         },
         {
           "status": "FINISHED",
-          "elapsed": 2.9567125999965356
+          "elapsed": 2.9528585000007297
         }
       ],
       "status": "FINISHED",
@@ -445,11 +439,11 @@
         "rejected": [
           "DriverException"
         ],
-        "target": 1792150178,
-        "finished": 1792150178.4957643
+        "target": 1792161221,
+        "finished": 1792161221.4073787
       },
-      "native_log_sha256": "bdb17a8a501ce1d2aab711cfbbb906aa425c36b65852f2ba9b8dd8b86a55fe38",
-      "events_sha256": "8979fa09f626c184f6ded041c83ec6e63e1d82562ecff94968f27622f30260af",
+      "native_log_sha256": "68486dbf10000cd2955327da3e7c33789e139bd3f40473e92b3b7d338d1710ca",
+      "events_sha256": "4f412940d4196a1f5a521705a6024122033060d919d41bf46bf122196cf31c64",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -464,8 +458,8 @@
     "CMP-LRM244-SECTION-4-6-2-066"
   ],
   "raw": {
-    "path": "C:\\obprompt_composed\\.qualification\\wait-time\\ed562becf396489d8c7c2eededfe8a5d\\result.json",
-    "sha256": "a8df2e72bd25a4c2a288d0710d86d1eceecc90f3273ac3c0bfc1015edab094ea"
+    "path": "C:\\obwait_proc_composed\\.qualification\\wait-time\\32000c2a40bb4a5299244411b70f293f\\result.json",
+    "sha256": "9a14a58f3289bd6f84a459b60925d3bb5d766bf61146b6cc20e9e53e0b6ef140"
   },
   "scope": "LRM p56 positional relative/absolute time waits and Examples 78\u201379",
   "exclusions": [

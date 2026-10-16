@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:03e52c84157460e5b90261e390d4a4b8af0ff75e886e58b6a7075ac22fff113d",
+  "runtime_image": "sha256:ef6ed39a6477c62830c02b35c065cf6fc1772adf93686e2141c567889723158a",
   "inputs": {
     "conformance/child_start_cases.py": "298598642e5776538a153792b8ee6d5515a9bec98fa6d2e0d739f7dce051bedc",
     "conformance/child_start_controller.py": "ff821a03bf3259994b28d87945a426e8fbc4118d9ee1a9d48855c82b82ccc3e9",
@@ -26,7 +26,7 @@
     "source_port/dta_native_patches.py": "577ad9344c2dbe530b537a13b210a0e501ebdc6fc257a84d5c8199593b651bcd",
     "source_port/dta_time_patches.py": "0ae441a71e76a8edc1e357f547e324997370905b58735b15d6491cba5590ec9e",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "4b18150e5f694fecb8b71480776808639a2b1e5c4d2002bc6252f1ec75d80377",
+    "source_port/integrated_patches.py": "0dad80e2cc52b7fb70d880d0631abc072a88849326c209c9a47090bcdada551d",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
     "source_port/limit_patches.py": "238e9c91eac6b73c5450d2aa3d8e1e8684e4d1993c9904b543e9cc27ef9c0888",
@@ -34,6 +34,7 @@
     "source_port/notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
     "source_port/obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
     "source_port/patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
+    "source_port/proc_dictionary_patches.py": "925aaefe4aef6fe5dad3887626f726adde659847654715d5b197f2507e5ddc45",
     "source_port/prompt_control_patches.py": "d79446057f98e37fc876c847dbc736006c3ee7ccd2e9721d0bb1935c8f633d32",
     "source_port/prompt_startup_patches.py": "7df38cda45b2580e42c6032630520dafd8e8f681b2ad6b8da07295800c9c15f3",
     "source_port/prompt_timeout_patches.py": "2d018ad9d7e56cd6c2caf69322dfc9f75529468406c49aa5999b8e239e65e077",
@@ -48,6 +49,7 @@
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
+    "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
     "driver_plugin/pyproject.toml": "93ea8f9ef10af813aa28e7c6e4b7a3fa4da654039463ca0cf0bd8f8b9d5cbb9d",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
@@ -483,16 +485,16 @@
   "native_controls": 25,
   "raw": {
     "start": {
-      "path": "C:\\obprompt_composed\\.qualification\\child-start\\b23f326bf644428baea55e5504decbb6\\result.json",
-      "sha256": "900214b6b0191ecd68ba8a0ffe0866644379cba2e6d50abaaa54ef2dcd067e01"
+      "path": "C:\\obwait_proc_composed\\.qualification\\child-start\\b7e4d69b0bb743e6987a116a9db30e72\\result.json",
+      "sha256": "ae7afc9611c153bf38d12862ea3c0ee583893d742a972a85d8388e4f1cc838cc"
     },
     "modes": {
-      "path": "C:\\obprompt_composed\\.qualification\\child-modes\\e0e76f7715f749ad82aa9cc20e9f8dc6\\result.json",
-      "sha256": "7a6db48b8563685a7de720b61733bcce24d53dbdedfb15998868365a83a63095"
+      "path": "C:\\obwait_proc_composed\\.qualification\\child-modes\\90914c6a5d5d467d8f24ebc270175cc0\\result.json",
+      "sha256": "ece6f579442008976d8e25599694bbe01dee834c5eca3148bfe8cb465fb30552"
     },
     "policy": {
-      "path": "C:\\obprompt_composed\\.qualification\\child-policy\\28d8f98f464045f3a747d929283b3bef\\result.json",
-      "sha256": "d46d6ead44cf7a41c526fa1ae39c53c3e7ba1e1c15752d203892d12522c32cbf"
+      "path": "C:\\obwait_proc_composed\\.qualification\\child-policy\\1f18b4e104d4449c9b92aed3616a8350\\result.json",
+      "sha256": "7342bf83ffd4b95b2025a5888f84bb60735f150df3fb9d1e83b98628e2f1f168"
     }
   },
   "scope": "LRM p88 child terminal states, Blocking modifier and blocking/nonblocking section",
