@@ -25,6 +25,7 @@ import dta_ipc_patches
 import dta_time_patches
 import flow_patches
 import ipc_mailbox_patches
+import legacy_compare_patches
 import obs_patches
 import limit_patches
 import notification_patches
@@ -62,6 +63,7 @@ RECIPE_NAMES = (
     'prompt_timeout_patches.py',
     'prompt_control_patches.py',
     'ipc_mailbox_patches.py',
+    'legacy_compare_patches.py', 'legacy_compare_syntax.py',
     'rng_patches.py', 'rng_state_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
@@ -74,6 +76,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *flow_patches.PREIMAGES, *scheduler_patches.PREIMAGES,
                             *child_lifecycle_patches.PREIMAGES,
                             *prompt_timeout_patches.PREIMAGES,
+                            *legacy_compare_patches.PREIMAGES,
                             *prompt_control_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
@@ -203,6 +206,14 @@ def apply_native_tree(source, archive, output):
         elif name in dta_time_patches.PREIMAGES:
             recipe = 'dta_time_patches.py'
             patched[name] = dta_time_patches.apply(name, original[name], ported[name])
+            if name in legacy_compare_patches.PREIMAGES:
+                intermediate = stage(recipe, name, ported[name], patched[name])
+                patched[name] = stage('legacy_compare_patches.py', name, intermediate,
+                    legacy_compare_patches.apply(name, original[name], intermediate))
+                continue
+        elif name in legacy_compare_patches.PREIMAGES:
+            recipe = 'legacy_compare_patches.py'
+            patched[name] = legacy_compare_patches.apply(name, original[name], ported[name])
         elif name in scheduler_patches.PREIMAGES:
             recipe = 'scheduler_patches.py'
             patched[name] = scheduler_patches.apply(name, original[name], ported[name])

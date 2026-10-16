@@ -38,6 +38,7 @@ DONORS = {
     'rng_state':('669c1d7','rng_state'),
     'context_startup':('f843cb8','context_startup_review'),
     'ipc_mailbox':('463e34f','ipc_mailbox'),
+    'legacy_compare':('fc44409cd5493ca0ad6e924b2b45d01d34387b6d','legacy_compare'),
 }
 
 
@@ -188,6 +189,26 @@ def main():
                                            [mailbox['source']])[mailbox['source']]
     native[mailbox['source']] = dict(original=hashlib.sha256(original).hexdigest(),
         ported=mailbox['preimage_sha256'], patched=mailbox['patched_sha256'])
+    legacy = reports['legacy_compare']
+    if (legacy['passed'] is not True or legacy['qualified_contracts'] != []
+            or legacy['passed_checks'] != 15 or len(legacy['retained_baseline_failures']) != 11
+            or set(legacy['sources']) != set(composition.legacy_compare_patches.PREIMAGES)):
+        raise ValueError('Legacy comparison donor lacks differential native evidence')
+    for recipe in ('legacy_compare_patches.py', 'legacy_compare_syntax.py'):
+        committed = subprocess.check_output(
+            ['git', 'show', donors['legacy_compare']['commit'] + ':source_port/' + recipe], cwd=ROOT)
+        if hashlib.sha256(committed).hexdigest() != legacy['recipes'][recipe]:
+            raise ValueError('Legacy comparison recipe differs from its qualified donor')
+    for name, row in legacy['sources'].items():
+        hashes = {key.removesuffix('_sha256'): value for key, value in row.items()}
+        if (hashes['original'], hashes['ported']) != composition.legacy_compare_patches.PREIMAGES[name]:
+            raise ValueError('Legacy comparison donor preimage differs: ' + name)
+        if name in native:
+            if native[name]['original'] != hashes['original'] or native[name]['patched'] != hashes['ported']:
+                raise ValueError('Legacy comparison does not follow the qualified TIME correction')
+            native[name]['patched'] = hashes['patched']
+        else:
+            native[name] = hashes
     prefix = '/usr/local/lib/python3.13/site-packages/'
     python = {name.removeprefix(prefix):value for name,value in reports['baseline']['runtime_sources']['installed'].items()}
     python.update({name:reports['command']['runtime_sources']['installed'][prefix+name]

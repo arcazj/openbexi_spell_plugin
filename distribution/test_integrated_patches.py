@@ -67,6 +67,9 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     assert [row['recipe'] for row in context_stages] == ['data_files_native_patches.py','checkpoint_context_patches.py']
     child_context_stages = [row for row in report['stages'] if composition.shutdown_pause_patches.SOURCE in row['sources']]
     assert [row['recipe'] for row in child_context_stages] == ['shutdown_pause_patches.py','child_lifecycle_patches.py']
+    helper = 'lib/SPELL_UTIL/src/SPELLpythonHelper.C'
+    assert [row['recipe'] for row in report['stages'] if helper in row['sources']] == [
+        'dta_time_patches.py', 'legacy_compare_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
 
@@ -99,6 +102,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  *composition.prompt_timeout_patches.PREIMAGES,
                                  *composition.prompt_control_patches.PREIMAGES,
                                  composition.ipc_mailbox_patches.SOURCE,
+                                 *composition.legacy_compare_patches.PREIMAGES,
                                  composition.checkpoint_context_patches.SOURCE])
 def test_native_preimage_failure_preserves_tree_then_recovers(tmp_path, name):
     source = native_tree(tmp_path)
@@ -161,6 +165,17 @@ def test_complete_python_composition_reproduces_qualified_sources(tmp_path):
             assert state[name] == row['before_sha256']
             state[name] = row['after_sha256']
     assert state == {name: row['patched_sha256'] for name,row in report['sources'].items()}
+
+
+def test_legacy_comparison_requires_qualified_time_output(tmp_path):
+    source = native_tree(tmp_path)
+    name = 'lib/SPELL_UTIL/src/SPELLpythonHelper.C'
+    original = composition.archive_sources(ARCHIVE, [name])[name]
+    ported = (source / name).read_bytes()
+    with pytest.raises(ValueError, match='Legacy comparison preimage differs'):
+        composition.legacy_compare_patches.apply(name, original, ported)
+    timed = composition.dta_time_patches.apply(name, original, ported)
+    assert composition.legacy_compare_patches.apply(name, original, timed) != timed
 
 
 def test_octal_recipe_cannot_precede_user_database_stage(tmp_path, monkeypatch):

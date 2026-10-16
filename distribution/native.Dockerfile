@@ -15,6 +15,7 @@ COPY source_port/child_lifecycle_patches.py source_port/prompt_timeout_patches.p
 COPY source_port/prompt_control_patches.py /input/
 COPY source_port/database_values_patches.py /input/
 COPY source_port/ipc_mailbox_patches.py /input/
+COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /input/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /input/
 COPY source_port/native-build.Dockerfile source_port/native-build.Dockerfile.dockerignore /input/
 RUN python /input/native_build.py --integrated
@@ -31,6 +32,7 @@ COPY source_port/child_lifecycle_patches.py source_port/prompt_timeout_patches.p
 COPY source_port/prompt_control_patches.py /executor/
 COPY source_port/database_values_patches.py /executor/
 COPY source_port/ipc_mailbox_patches.py /executor/
+COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /executor/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /executor/
 COPY source_port/executor-build.Dockerfile source_port/executor-build.Dockerfile.dockerignore /executor/
 RUN python /executor/executor_build.py --integrated

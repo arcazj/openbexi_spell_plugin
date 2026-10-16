@@ -32,6 +32,7 @@ SUITES = [
     ('obs', 'run_obs.py', [], 189),
     ('cmd', 'run_cmd.py', [], 54),
     ('python', 'run_python.py', [], 488),
+    ('legacy-compare', 'run_legacy_compare.py', [], 15),
     ('common', 'run_common.py', [], 44),
     ('events', 'run_events.py', [], 8),
     ('scheduler', 'run_scheduler.py', [], 9),
