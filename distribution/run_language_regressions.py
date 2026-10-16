@@ -61,6 +61,7 @@ SUITES = [
     ('scdb', 'scdb_run.py', [], 26),
     ('timing', 'run_timing.py', [], 36),
     ('send-verify', 'run_send_verify.py', [], 18),
+    ('send-complete', 'run_send_complete.py', [], 12),
     ('checkpoint', 'checkpoint_error_run.py', [], 24),
     ('checkpoint-expanded', 'checkpoint_error_run.py',
      [part for case in ('nested-unwind', 'finally-unwind', 'replace-error',

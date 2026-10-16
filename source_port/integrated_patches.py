@@ -53,6 +53,7 @@ import memory_ranging_patches
 import scheduler_patches
 import scdb_patches
 import send_verify_patches
+import send_complete_patches
 import shutdown_pause_patches
 import timing_patches
 import ui_native_patches
@@ -74,7 +75,7 @@ RECIPE_NAMES = (
     'scdb_patches.py', 'timing_patches.py',
     'checkpoint_error_patches.py',
     'checkpoint_identity_patches.py', 'checkpoint_context_patches.py',
-    'send_verify_patches.py',
+    'send_verify_patches.py', 'send_complete_patches.py',
     'shutdown_pause_patches.py',
     'child_lifecycle_patches.py',
     'prompt_timeout_patches.py',
@@ -111,7 +112,7 @@ PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, manoeuvre_database_patches,
-                  ranging_complete_patches, memory_feature_patches, database_format_patches)
+                  ranging_complete_patches, memory_feature_patches, database_format_patches, send_complete_patches)
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, ranging_complete_patches,

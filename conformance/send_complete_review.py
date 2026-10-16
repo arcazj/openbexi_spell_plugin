@@ -185,7 +185,7 @@ def case_proof(name,spec,row,project):
         oracle='Literal limit transitions and return protocols agree with original-schema RPC, binary command/telemetry packets and immutable SQLite receipts')
 
 
-def review(path,overlay,telemetry,limits,revision,image):
+def review(path,overlay,telemetry,limits,revision,image,*,native_wheel=None,driver_wheel=None):
     raw=read(path);workspace=path.parent/'workspace'
     assert raw['passed'] is True and raw['controller_exit_code']==0 and raw['timed_out'] is False and raw['runtime_image']==image
     specs=frozen('conformance/send_complete_cases.py',revision).CASES
@@ -199,8 +199,13 @@ def review(path,overlay,telemetry,limits,revision,image):
     for name in ('memory_native_cases.py','send_complete_cases.py','send_complete_controller.py','send_complete_provenance.py','installed_provenance.py'):
         assert sha(workspace/name)==raw['inputs']['conformance/'+name]
     verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
-    overlay_proof(raw,overlay,telemetry,limits,revision)
+    wheels=None
+    if raw['runtime_sources']['profile']=='fresh-composed-send-complete-wheel/1':
+        assert overlay is telemetry is limits is None and native_wheel is not None and driver_wheel is not None
+        from limit_telemetry_sources import verify
+        wheels=verify(raw,native_wheel,driver_wheel,profile='fresh-composed-send-complete-wheel/1',required_recipes=('send_complete_patches.py',))
+    else:overlay_proof(raw,overlay,telemetry,limits,revision)
     checks={name:case_proof(name,specs[name],row,workspace/name.replace(':','__')) for name,row in raw['checks'].items()}
-    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()),
-        telemetry_overlay=str(telemetry.resolve()),limit_overlay=str(limits.resolve()),checks=checks,
+    return dict(passed=True,runtime_image=image,source_revision=revision,raw=ref(path),overlay=str(overlay.resolve()) if overlay else None,composed_wheels=wheels,
+        telemetry_overlay=str(telemetry.resolve()) if telemetry else None,limit_overlay=str(limits.resolve()) if limits else None,checks=checks,
         review_source=ref(Path(__file__)),source_inputs=raw['inputs'],qualified_contracts=[],full_v05_accepted=False)

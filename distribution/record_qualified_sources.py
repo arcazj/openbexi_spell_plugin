@@ -46,6 +46,7 @@ DONORS = {
     'display_commands':('f602418','distribution/evidence/group-block-native-review.json'),
     'manoeuvre':('0f566ee','manoeuvre_database_review'),
     'procedure_library':('a8e2bcd','procedure_library_review'),
+    'send_complete':('5f2ff9f6ddaa866b36ef4d1785fd424cc5278878','send_complete_review'),
     'database_formats':('3f361e3c547056cbed7aa7e7ea8071b4b690a970','database_format_review'),
     'memory_complete':('a6341664249fbc56669172a197d5d6f2fe89d157','memory_complete_review'),
     'ranging_complete':('4b59f752116135ebb6cb72a49c535efa5f2ea165','ranging_complete_review'),
@@ -383,6 +384,8 @@ def main():
     driver_additions.update(memory_additions)
     from database_source_donor import apply as apply_database
     apply_database(python,composition,reports['database_formats'])
+    from send_source_donor import apply as apply_send
+    apply_send(python,composition,reports['send_complete'])
     host = {name:value for name,value in reports['child_host']['inputs'].items()
             if name.startswith('host_runtime/python/')}
     startup = reports['context_startup']
