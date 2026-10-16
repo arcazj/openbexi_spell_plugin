@@ -36,6 +36,7 @@ def build(output, evidence, source, recipe, integrated=False):
     runtime.mkdir()
     (runtime / '__init__.py').write_text('# SPDX-License-Identifier: GPL-3.0-or-later\n')
     shutil.copyfile(recipe / 'distribution/launcher.py', runtime / 'launcher.py')
+    shutil.copyfile(recipe / 'distribution/library.py', runtime / 'library.py')
     shutil.copyfile(recipe / 'distribution/libSPELL_DTA_v3.py', package / 'libSPELL_DTA_v3.py')
     native = runtime / 'bin'
     native.mkdir()
