@@ -21,7 +21,9 @@ def sha(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image',required=True)
+    parser.add_argument('--case',action='append',choices=list(CASES))
     args=parser.parse_args()
+    cases={name:spec for name,spec in CASES.items() if args.case is None or name in args.case}
     token=uuid.uuid4().hex
     output=ROOT/'.qualification/command-scheduling'/token
     output.mkdir(parents=True)
@@ -44,6 +46,10 @@ def main():
         created=True
         archive=io.BytesIO()
         with tarfile.open(fileobj=archive,mode='w') as bundle:
+            content=json.dumps(list(cases)).encode()
+            item=tarfile.TarInfo('selected-cases.json')
+            item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
+            bundle.addfile(item,io.BytesIO(content))
             for source in ('command_scheduling_cases.py','command_scheduling_controller.py','installed_provenance.py','command_provenance.py'):
                 content=(ROOT/'conformance'/source).read_bytes()
                 item=tarfile.TarInfo(source)
@@ -75,7 +81,7 @@ def main():
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())
-        report=dict(passed=exit_code==0 and set(checks)==set(CASES) and all(r['passed'] for r in checks.values()),
+        report=dict(passed=exit_code==0 and set(checks)==set(cases) and all(r['passed'] for r in checks.values()),
             runtime_image=image,inputs=inputs,checks=checks,runtime_sources=runtime,
             host_inputs=host,controller_exit_code=exit_code,timed_out=timed_out,
             diagnostic_only=True,qualified_contracts=[],full_v05_accepted=False,full_v06_accepted=False)

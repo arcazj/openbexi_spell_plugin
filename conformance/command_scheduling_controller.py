@@ -25,8 +25,10 @@ ROOT=Path('/workspace');sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 (ROOT/'runtime.json').write_text(json.dumps(capture(),indent=2))
 (ROOT/'host-inputs.json').write_text(json.dumps({p.name:sha(p) for p in Path('/opt/host').glob('*.py')}))
 checks={}
+selected=json.loads((ROOT/'selected-cases.json').read_bytes())
+CASES={name:spec for name,spec in CASES.items() if name in selected}
 for name,spec in CASES.items():
-    project=ROOT/name;project.mkdir()
+    project=ROOT/name.replace(':','-');project.mkdir()
     (project/'main.py').write_text(spec['source'])
     runtime,tcp,api=create_servers(project/'dss.sqlite',0)
     for endpoint in (tcp,api):threading.Thread(target=endpoint.serve_forever,daemon=True).start()
