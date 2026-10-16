@@ -8,11 +8,12 @@ cases and pass only when every child passes that evidence dimension. These are
 488 checks, not 488 independent procedure processes. Twelve syntax rows repeat
 the applicable concrete example assertions, recording their own execution.
 
-Three legacy rows record migration and rejection, with an explicit false
-legacy_spelling_supported field. They do not establish support for the original
-Python 2 spelling. Keep these inventory rows open unless the release's accepted
-compatibility profile explicitly resolves them as migrations. Broader sections
-record their inclusion rather than hiding these unsupported original spellings.
+Three cases in this suite record CPython migration and rejection, with an explicit
+false legacy_spelling_supported field. They do not establish original-spelling
+support. Separate native evidence resolves the actual manual scopes: page-79
+`SCDB.has_key`, page-83 database octal values, and the page-21 native procedure
+`<>` comparison. Broader Python sections remain open; migration checks cannot
+qualify a parent section.
 
 The suite runs inside the original native SPELL executor on Linux x86_64 and
 GIL-enabled CPython 3.13. It imports the installed original spell.lib, retaining
@@ -27,16 +28,19 @@ service lifecycle have separate executor/FLOW acceptance requirements.
 
 ## Source decisions for CPython 3.13
 
-The required interpreter is CPython 3.13; Python 2 syntax is not enabled. LRM
-p.14 explicitly applies Python rules and directs readers to the Python reference.
-The inventory preserves legacy row identities with explicit migration evidence:
+The required interpreter is CPython 3.13. LRM p.14 explicitly applies Python
+rules and directs readers to the Python reference. Builtins and imported Python
+modules retain CPython syntax. The native procedure compiler and AST analyzer
+have a separately qualified, token-preserving `<>` compatibility bridge; see
+[the bounded comparison evidence](LEGACY_COMPARISON.md).
 
-- The legacy <> comparison: p.21 already warns that Python 3 removes it. It raises
-  SyntaxError; != implements the supported comparison. Rejection and subsequent
-  successful comparisons are tested.
-- The p.83 Python 2 octal spelling 035 raises SyntaxError. The supported 0o35
-  evaluates to decimal 29. Invalid digit 0o8, zero and negative octal are tested.
-- The dict.has_key method raises AttributeError; key membership uses the in
+- The legacy <> comparison: p.21 warns that Python 3 removes it. Builtin compile
+  rejects it with SyntaxError; != implements the supported comparison. Those
+  rejection checks remain valid independently of native procedure compatibility.
+- Python source spelling 035 raises SyntaxError. The supported 0o35 evaluates
+  to decimal 29. Invalid digit 0o8, zero and negative octal are tested. The p.83
+  requirement describes database input, qualified separately with original 035 text.
+- Builtin dict.has_key raises AttributeError; key membership uses the in
   operator. Empty mappings, missing keys, present keys with a None value, and
   unhashable lookup keys are exercised.
 - Division performs true division, including two integer operands; oct() uses
