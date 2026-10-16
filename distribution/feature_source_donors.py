@@ -75,7 +75,10 @@ def apply(python,driver,composition,identities):
             assert runtime['installed'][source]==row['sha256']
             mapping[source]=row['sha256']
         # Keep every source outside these changes bound to the preceding donor.
-        for mapping in (python,driver):
-            for source,digest in mapping.items():
-                assert runtime['installed'][source]==digest
+        # The generator carries older diagnostic paths in its scratch map too
+        # (including /opt/host). Compare the complete declared package sources;
+        # host files have a separate donor chain in record_qualified_sources.
+        for mapping,names in ((python,composition.PYTHON_NAMES),(driver,composition.DRIVER_NAMES)):
+            for source in names:
+                assert runtime['installed'][source]==mapping[source],source
     return identities
