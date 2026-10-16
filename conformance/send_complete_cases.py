@@ -7,6 +7,7 @@ SUPPORT='''
 import sqlite3
 from contextlib import closing
 from spell.lib.exception import SyntaxException
+from spell.lib.adapter.utctime import SECOND
 VOLTAGE='TM.POWER.BUS_VOLTAGE'
 MODE='TM.CORE.MODE'
 
@@ -29,6 +30,7 @@ def send_adjust(target=28,**config):
                 Timeout=2,Retries=0,AdjLimits=True,Tolerance=.5,**config)
 
 def complex_send(arg2=255,delay=10*SECOND,**config):
+    config.setdefault('PromptFailure',False)
     return call('Send',command='CMDNAME',args=[['ARG1',1.0],['ARG2',arg2,{Radix:HEX}]],
         verify=[[VOLTAGE,eq,28.0,{Tolerance:.1}],['TM.CORE.TICK',gt,0,{Timeout:20}]],
         Delay=delay,Tolerance=.5,Confirm=False,Wait=False,Retries=0,**config)
