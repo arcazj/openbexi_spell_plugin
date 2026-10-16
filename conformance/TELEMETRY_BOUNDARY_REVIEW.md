@@ -20,6 +20,13 @@ tests both explicit Strict settings. It does not change the comparison
 implementation to match an assumed complement rule. The original failed
 expectation remains retained as an oracle correction, not a product defect.
 
+The corrected four-comparison case then exposed a separate fixture lifetime
+problem: the initial sample exceeded the five-second freshness threshold before
+the third comparison. Its original RPC response correctly marked the parameter
+invalid. The case now enables the real DSS periodic feed before comparing the
+four endpoints. The dedicated freshness cases retain their stopped-feed setup;
+the production freshness threshold is unchanged.
+
 The one-minute acquisition baseline is a separate product limitation: the old
 driver rejects durations above 30 seconds. Its replacement must still complete
 a real acquisition delayed beyond that limit through the original RPC path.

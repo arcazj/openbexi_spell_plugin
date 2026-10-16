@@ -95,6 +95,7 @@ add('between-list', 'positive', '''
 equal(bool(call('Verify',['TM.POWER.BUS_VOLTAGE',bw,27,29],Wait=False,Retries=0,Tolerance=0,OnFalse=NOACTION)),True)
 ''')
 add('between-list', 'boundary', '''
+fixture('feed',enabled=True)
 for strict,wanted in [(False,True),(True,False)]:
     for operator in (bw,nbw):
         equal(bool(call('Verify',['TM.POWER.BUS_VOLTAGE',operator,28,28],Wait=False,Retries=0,Tolerance=0,Strict=strict,OnFalse=NOACTION)),wanted)
