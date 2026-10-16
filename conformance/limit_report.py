@@ -158,6 +158,15 @@ def main():
              'This overlay is a development qualification image. Final clean wheel construction, RECORD metadata, integrated composition and independent distribution rebuilds remain separate gates.'),
         ],
     }
+    integrated = report['runtime_sources'].get('integrated')
+    if integrated and 'limit_feature_patches.py' in integrated['manifest']['composition']['native']['recipes']:
+        report['scope']['definition'] = ('Named GENERIC limit definitions are authoritative; the historical flat HARDSOFT projection remains compatible. '
+            'This report verifies the original 79-check regression and its existing bounded claims.')
+        report['scope']['limitations'] = [
+            'Whole GetLimits/SetLimits, additional definition types, activation algorithms, hysteresis, alarm controls and registered files require the separate 64-case limit_full_report proof.',
+            'The original generic-value protobuf represents integers as signed Int64; out-of-range integers must reject before effects.',
+            'Complete v0.5 acceptance and release qualification remain separate gates.',
+        ]
     report['regressions'] = {
         'OBS': dict(path=str(args.obs_report.resolve()), sha256=digest(args.obs_report),
                     count=len(obs['checks']), runtime_image=obs['runtime_image'],
