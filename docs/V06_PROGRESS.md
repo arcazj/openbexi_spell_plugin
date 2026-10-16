@@ -1,7 +1,7 @@
 # v0.6 distribution prerequisites
 
-The [current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **499 of 763**
-requirements, with **264 open**. All 40 native suites (1,789 raw checks), focused
+The [current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **523 of 763**
+requirements, with **240 open**. All 44 native suites (1,837 raw checks), focused
 prompt/child controls, two identical offline builds and fresh install/removal
 checks pass. Final installed-host workflows, upgrades, production packaging and
 full v0.5/v0.6 acceptance remain open. The narratives below retain earlier artifacts.

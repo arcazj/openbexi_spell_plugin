@@ -100,12 +100,12 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-In progress: [the full inventory](conformance/README.md) has **499 qualified /
-264 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
-binds all 40 native suites to identical offline rebuilds. Native procedure `<>`
-comparison is newly qualified; all prior 487 requirements pass on the same
-runtime. The two Python sections, child failure policies and positional timed
-waits also qualify. Final host workflows and full v0.5/v0.6 acceptance remain open.
+In progress: [the full inventory](conformance/README.md) has **523 qualified /
+240 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
+binds all 44 native suites to identical offline rebuilds. Wait controls, interval
+progress, PROC dictionaries and predefined containers add 24 requirements;
+all prior 499 requirements pass on the same runtime. Full v0.5/v0.6 acceptance
+and final host workflows remain open.
 
 ## v0.6 — distribution and compatibility
 
