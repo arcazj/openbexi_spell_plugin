@@ -190,4 +190,6 @@ for name, spec in CASES.items():
         checks[name]=row
         (ROOT/'checks.json').write_text(json.dumps(checks,indent=2))
         print(json.dumps(dict(case=name,passed=row['passed'],error=row.get('error'))),flush=True)
+    if not row['passed']:
+        break  # Preserve the first failure before spending time on dependent cases.
 raise SystemExit(not all(x['passed'] for x in checks.values()))
