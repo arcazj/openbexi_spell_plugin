@@ -1,4 +1,4 @@
-"""Observe missing display behavior through real native helpers and binary DSS RPC."""
+"""Observe remaining command behavior through real native helpers and binary DSS RPC."""
 import hashlib
 import json
 from pathlib import Path
@@ -82,5 +82,5 @@ for name,spec in CASES.items():
         (project/'events.json').write_text(json.dumps(events,indent=2));row['events_sha256']=sha(project/'events.json')
         checks[name]=row;(ROOT/'checks.json').write_text(json.dumps(checks,indent=2))
         print(json.dumps(dict(case=name,passed=row['passed'],error=row.get('error'))),flush=True)
-    # Cases are independent baselines, so retain all four counterexamples.
+    # Independent baselines retain both successful calls and counterexamples.
 raise SystemExit(not all(row['passed'] for row in checks.values()))
