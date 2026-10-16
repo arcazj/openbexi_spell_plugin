@@ -26,9 +26,9 @@ BODIES={
 ok=all(observed['modifiers'].values())
 ''',
     'scheduling':'''outcomes=[]
-outcomes.append(send(command='CMD1',Time=NOW+TIME('00:00:00.25')))
-outcomes.append(send(command='CMD1',ReleaseTime=NOW+TIME('00:00:00.25')))
-outcomes.append(send(command='CMD1',SendDelay=TIME('00:00:00.25')))
+outcomes.append(send(command='CMD1',Time=NOW+TIME('+00:00:00.25')))
+outcomes.append(send(command='CMD1',ReleaseTime=NOW+TIME('+00:00:00.25')))
+outcomes.append(send(command='CMD1',SendDelay=TIME('+00:00:00.25')))
 ok=all(outcomes)
 ''',
     'load-only':'''ok=send(command='CMD1',LoadOnly=True)
