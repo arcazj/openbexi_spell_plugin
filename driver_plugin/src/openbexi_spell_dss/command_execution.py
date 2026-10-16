@@ -1,7 +1,6 @@
 """Individual GENERIC command stages, ground delays and onboard timetags.
 
-This candidate is not yet connected to the original-schema dispatcher. The
-caller owns request journaling and supplies a live authority check.
+The caller owns request journaling and supplies a live authority check.
 """
 # SPDX-License-Identifier: GPL-3.0-or-later
 from dataclasses import dataclass
@@ -80,6 +79,13 @@ class CommandExecution:
             if self.transport.stop.wait(min(.025,remaining)):
                 raise RuntimeError('DSS transport closed')
 
+    def validate(self, commands):
+        now = self.utc_ns(self.state())
+        for command in commands:
+            for target in (command.execution_time,command.release_time):
+                if target is not None and round(target*1e9)>now+86_400_000_000_000:
+                    raise ValueError('Scheduled command exceeds one-day horizon')
+
     def execute(self, command, identity, operation, check):
         state=self.state();now=self.utc_ns(state)
         execution_time=None if command.execution_time is None else round(command.execution_time*1e9)
@@ -88,7 +94,7 @@ class CommandExecution:
             if target is not None and target>now+86_400_000_000_000:
                 raise ValueError('Scheduled command exceeds one-day horizon')
         ground_due=max(now,release_time if release_time is not None else now)+round(command.send_delay*1e9)
-        completion_due=max(ground_due,execution_time if execution_time is not None else ground_due)
+        completion_due=max(ground_due,execution_time if execution_time is not None and not command.load_only else ground_due)
         deadline=time.monotonic()+max(0,completion_due-now)/1e9+command.timeout
         # A request is already in the caller's GCS journal while this delay runs.
         # No spacecraft command frame is sent before ground release becomes due.
