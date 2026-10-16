@@ -7,7 +7,7 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
-import sqlite3
+from evidence_database import evidence_database
 import sys
 import types
 
@@ -107,7 +107,7 @@ def verify_case(name, spec, row, project, normal_digest):
                    for event in read(project/'events.json'))
     assert row['receipts'] == []
     assert row['initial_dss']['core']['commands_executed'] == row['final_dss']['core']['commands_executed'] == 0
-    with sqlite3.connect((project/'driver.sqlite').resolve().as_uri()+'?mode=ro', uri=True) as db:
+    with evidence_database(project/'driver.sqlite') as db:
         ground, = db.execute('SELECT state FROM ground').fetchall()
         assert json.loads(ground[0]) == row['final_ground']
         journal = db.execute('SELECT digest,state,receipt,authority FROM effects').fetchall()
