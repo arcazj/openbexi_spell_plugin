@@ -320,3 +320,123 @@ assert call('SetLimits','TMparam',Midpoint=25,Tolerance=5)
 equal(call('GetLimits','TMparam',Select='GENERIC',Value=Midpoint),25)
 equal(alarm(25),False)
 ''')
+
+# Literal manual read/edit/write flows supplement the backend feature probes.
+add('round-trip', 'positive', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD)})
+ld=call('GetLimits','TMparam',Select=ACTIVE)
+ld['ID1'][LoRed]=0.5
+assert call('SetLimits','TMparam',Limits=ld)
+equal(call('GetLimits','TMparam',Select='ID1',Value=LoRed),0.5)
+mydef=call('GetLimits','TMparam',Select=ACTIVE)['ID1']
+mydef[LoRed]=0.25
+assert call('SetLimits','TMparam',Definition=mydef,Select='ID1')
+equal(call('GetLimits','TMparam',Select='ID1',Value=LoRed),0.25)
+equal(ld['ID1'][LoRed],0.5)
+''')
+add('round-trip', 'boundary', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD),'ID2':dict(HARD,Active=False)})
+ld=call('GetLimits','TMparam',Select=ALL)
+ld['ID1'][LoRed]=0;ld['ID2'][HiRed]=100
+assert call('SetLimits','TMparam',Limits=ld)
+equal(call('GetLimits','TMparam',Select=ALL),ld)
+equal(list(call('GetLimits','TMparam',Select=ACTIVE)),['ID1'])
+''')
+add('round-trip', 'failure', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD),'ID2':dict(HARD)})
+ld=call('GetLimits','TMparam',Select=ALL)
+ld['ID1'][LoRed]=0;ld['ID2'][HiRed]=1
+unchanged(lambda:call('SetLimits','TMparam',Limits=ld))
+equal(call('GetLimits','TMparam',Select='ID1',Value=LoRed),10)
+equal(call('GetLimits','TMparam',Select='ID2',Value=HiRed),40)
+''')
+add('round-trip', 'recovery', '''
+assert call('SetLimits','TM.CORE.MODE',Limits={'ID1':{Nominal:['NOMINAL'],Warning:['SAFE'],Error:['FAILED'],Ignore:[]}})
+ld=call('GetLimits','TM.CORE.MODE',Select=ACTIVE)
+mydef=ld['ID1'];mydef[Nominal]=['SAFE']
+unchanged(lambda:call('SetLimits','TM.CORE.MODE',Definition=mydef,Select='ID1'))
+mydef[Nominal]=['VALUE']
+assert call('SetLimits','TM.CORE.MODE',Definition=mydef,Select='ID1')
+equal(call('GetLimits','TM.CORE.MODE',Select='ID1',Value=Nominal),['VALUE'])
+equal(alarm('VALUE','TM.CORE.MODE'),False)
+''')
+
+add('selectors', 'positive', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD),'ID2':dict(HARD),'ID3':dict(HARD,Active=False)})
+assert call('SetLimits','TMparam',Definition={LoRed:5})
+equal([call('GetLimits','TMparam',Select=k,Value=LoRed) for k in ('ID1','ID2','ID3')],[5,5,10])
+assert call('SetLimits','TMparam',Definition={HiRed:45},Select=ALL)
+equal([call('GetLimits','TMparam',Select=k,Value=HiRed) for k in ('ID1','ID2','ID3')],[45,45,45])
+''')
+add('selectors', 'boundary', '''
+assert call('SetLimits','TMparam',Type=SPIKE,Limits={'ID1':{Delta:1},'ID2':{Delta:2,Active:False}})
+assert call('SetLimits','TMparam',Select=ALL,Delta=0.23)
+equal([call('GetLimits','TMparam',Select=k,Value=Delta) for k in ('ID1','ID2')],[0.23,0.23])
+assert call('SetLimits','TMparam',Select=ACTIVE,Delta=0.30)
+equal([call('GetLimits','TMparam',Select=k,Value=Delta) for k in ('ID1','ID2')],[0.30,0.23])
+''')
+add('selectors', 'failure', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD,Active=False)})
+unchanged(lambda:call('SetLimits','TMparam',Definition={LoRed:5}))
+unchanged(lambda:call('SetLimits','TMparam',Definition={LoRed:5},Select='UNKNOWN'))
+equal(call('GetLimits','TMparam',Select=ACTIVE),{})
+''')
+add('selectors', 'recovery', '''
+assert call('SetLimits','TMparam',Limits={'ID1':dict(HARD,Active=False)})
+unchanged(lambda:call('SetLimits','TMparam',LoRed=5))
+assert call('SetLimits','TMparam',Definition={Active:True},Select='ID1')
+assert call('SetLimits','TMparam',LoRed=5)
+equal(call('GetLimits','TMparam',Select='ID1',Value=LoRed),5)
+''')
+
+add('properties', 'positive', '''
+values={Nominal:['NOMINAL'],Warning:['SAFE'],Error:['FAILED','UNKNOWN'],Ignore:[],Hysteresis:1,Active:True,Name:'ID1 Status check',Type:STATUS}
+assert call('SetLimits','TM.CORE.MODE',Limits={'ID1':values})
+equal(call('GetLimits','TM.CORE.MODE',Select='ID1'),values)
+equal(call('GetLimits','TM.CORE.MODE',Select='ID1',Value=Error),['FAILED','UNKNOWN'])
+equal(call('GetLimits','TM.CORE.MODE',Select='ID1',Value=Ignore),[])
+equal(call('GetLimits','TM.CORE.MODE',Select='ID1',Value=Type),STATUS)
+''')
+add('properties', 'boundary', '''
+assert call('SetLimits','TM.CORE.MODE',Definition={Nominal:'NOMINAL',Warning:'SAFE',Error:'FAILED',Ignore:'OFF'})
+for field,value in ((Nominal,'NOMINAL'),(Warning,'SAFE'),(Error,'FAILED'),(Ignore,'OFF')):
+    equal(call('GetLimits','TM.CORE.MODE',Select='GENERIC',Value=field),[value])
+seed();equal(call('GetLimits','TMparam',Select='GENERIC',Value=LoRed),10)
+''')
+add('properties', 'failure', '''
+seed()
+unchanged(lambda:call('GetLimits','TMparam',Value=Type))
+unchanged(lambda:call('GetLimits','TMparam',Select=ACTIVE,Value=LoRed))
+unchanged(lambda:call('GetLimits','TMparam',Select='GENERIC',Value=Error))
+''')
+add('properties', 'recovery', '''
+seed()
+unchanged(lambda:call('GetLimits','TMparam',Select='GENERIC',Value='LoHigh'))
+equal(call('GetLimits','TMparam',Select='GENERIC',Value=LoYel),20)
+unchanged(lambda:call('SetLimits','TMparam',Definition={'LoHigh':30}))
+assert call('SetLimits','TMparam',Definition={LoYel:19})
+equal(call('GetLimits','TMparam',Select='GENERIC',Value=LoYel),19)
+''')
+
+add('adjust-filter', 'positive', '''
+seed()
+assert call('AdjustLimits',[['TMparam',eq,25,{Tolerance:5}],['TMparam1',gt,99]])
+equal(definition()[LoRed],20);equal(definition()[HiRed],30)
+equal('TMparam1' in ground()['limit_definitions'],False)
+''')
+add('adjust-filter', 'boundary', '''
+before=snapshot()
+equal(call('AdjustLimits',[['TMparam',gt,99]]),False)
+equal(snapshot(),before)
+''')
+add('adjust-filter', 'failure', '''
+seed()
+unchanged(lambda:call('AdjustLimits',[['TMparam',eq,25,{Tolerance:5}],['TMparam1',eq,10,'bad']]))
+equal(definition()[LoRed],10)
+''')
+add('adjust-filter', 'recovery', '''
+seed()
+unchanged(lambda:call('AdjustLimits',[]),SyntaxException)
+assert call('AdjustLimits',[['TMparam',eq,25,{Tolerance:5}],['ABSENT',ne,0]])
+equal(definition()[LoRed],20);equal(alarm(25),False)
+''')
