@@ -11,10 +11,10 @@ def add(group, dimension, code, contracts):
 
 
 EVENT=['EXAMPLE-110']
-add('event','positive',"before=mark(); assert Event('EV:info',config=CFG) is True; assert Event('EV:warning',WARNING,config=CFG) is True; assert Event('EV:error',config=dict(CFG,Severity=ERROR)) is True; verify_events(before,[('EV:info',8),('EV:warning',1),('EV:error',2)])",EVENT)
-add('event','boundary',"before=mark(); text='EV:boundary:'+('caf\u00e9\\n'*1636)+'!'; equal(len(text),8193); text=text[:-1]; assert Event(text,WARNING,config=CFG) is True; verify_events(before,[(text,1)])",EVENT)
-add('event','failure',"before=mark(); rejects(SyntaxException,lambda:Event(123,config=CFG)); rejects(SyntaxException,lambda:Event(config=CFG)); rejects(DriverException,lambda:Event('',config=CFG)); rejects(DriverException,lambda:Event('x'*8193,config=CFG)); verify_events(before,[])",EVENT)
-add('event','recovery',"before=mark(); assert Event('EV:recovery',config=CFG) is True; verify_events(before,[('EV:recovery',8)])",EVENT)
+add('event','positive',"before=mark(); assert Event('',config=CFG) is True; assert Event('EV:info',config=CFG) is True; assert Event('EV:warning',WARNING,config=CFG) is True; assert Event('EV:error',config=dict(CFG,Severity=ERROR)) is True; verify_events(before,[('',8),('EV:info',8),('EV:warning',1),('EV:error',2)])",EVENT)
+add('event','boundary',"before=mark(); text='EV:boundary:'+('caf\u00e9\\n'*3277); assert len(text)>16384; assert Event(text,WARNING,config=CFG) is True; verify_events(before,[(text,1)])",EVENT)
+add('event','failure',"before=mark(); rejects(SyntaxException,lambda:Event(123,config=CFG)); rejects(SyntaxException,lambda:Event(config=CFG)); rejects(DriverException,lambda:Event('INVALID_SEVERITY',config=dict(CFG,Severity=19))); rejects(DriverException,lambda:Event('INVALID_SCOPE',config=dict(CFG,Scope=19))); verify_events(before,[])",EVENT)
+add('event','recovery',"before=mark(); rejects(DriverException,lambda:Event('INVALID_SEVERITY',config=dict(CFG,Severity=19))); assert Event('',config=CFG) is True; assert Event('EV:recovery',config=CFG) is True; verify_events(before,[('',8),('EV:recovery',8)])",EVENT)
 
 RESEND=['CONSTANT-ACTION-RESEND']
 add('resend','positive',"assert Send(command='TC.SIMULATOR.SET_MODE',args=[['MODE','SAFE']],config=CFG); before=mark(); plan_resend('RESEND','NOMINAL'); assert Send(command='CMD1',config=dict(CFG,HandleError=True,PromptFailure=True,PromptUser=True,OnFalse=NOACTION)) is True; resend_receipts(before,1,True,True)",RESEND)

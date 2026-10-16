@@ -14,6 +14,8 @@ sys.path.insert(0, '/opt/host')
 from native import NativeSession
 sys.path.insert(0, '/workspace')
 from installed_provenance import capture
+if Path('/opt/event-text-patch').exists():
+    from event_text_provenance import capture
 integrated = capture()
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
