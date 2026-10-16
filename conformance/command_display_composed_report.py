@@ -4,6 +4,7 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import sys
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT/'conformance'), str(ROOT/'distribution')]
@@ -72,7 +73,7 @@ def qualify(paths, image, revision):
     golden = read(Path(command_donor['manifest']['group']['path']))['runtime_sources']['installed']
     def application_source(name):
         return name.startswith(('spell/', 'spell_native/', 'openbexi_spell_dss/', 'openbexi_dss_proxy/')) and '/_composition/' not in name and '/provenance/' not in name
-    assert {n for n in runtime['installed'] if application_source(n)} == {n for n in golden if application_source(n)}
+    expected_names = {n for n in golden if application_source(n)}
     selected = {name: value for name,value in golden.items()
         if name.endswith('.py') and application_source(name)}
     correction = read(ROOT/'conformance/evidence/command_routing_validation.json')
@@ -80,6 +81,26 @@ def qualify(paths, image, revision):
     corrected = correction['source'].removeprefix('driver_plugin/src/')
     assert selected[corrected] == correction['before_sha256']
     selected[corrected] = correction['after_sha256']
+    source_extension = None
+    if 'memory_ranging_patches.py' in driver['recipes']:
+        # These final bodies were independently replayed from the memory,
+        # ranging, database, Send, telemetry, limit and library donor reviews.
+        revision_id = '7d50a6393413595293b27384db9506cd4cd2efef'
+        name = 'distribution/evidence/followup-qualified-sources.json'
+        encoded = subprocess.check_output(['git','show',revision_id+':'+name],cwd=ROOT)
+        expected = json.loads(encoded)
+        assert read(ROOT/name) == expected
+        assert expected['generator_sha256'] == sha(ROOT/'distribution/record_qualified_sources.py')
+        assert {key:value['patched_sha256'] for key,value in python['sources'].items()} == expected['python']
+        assert {key:value['patched_sha256'] for key,value in native['sources'].items()} == expected['native']
+        for key,value in expected['driver'].items():assert driver['python_sources'][key] == value
+        selected.update(expected['python']); selected.update(expected['driver'])
+        selected.update(expected['driver_additions'])
+        modules={'spell_native/'+Path(key).name:value for key,value in expected['native_distribution'].items()}
+        selected.update(modules)
+        expected_names.update(expected['driver_additions']); expected_names.update(modules)
+        source_extension = dict(commit=revision_id, path=name, sha256=commands.sha(ROOT/name))
+    assert {n for n in runtime['installed'] if application_source(n)} == expected_names
     for name, value in selected.items():
         assert runtime['installed'][name] == value, name
     recipes = ('display_patches.py', 'command_feature_patches.py', 'command_catalog_patches.py', 'command_group_patches.py')
@@ -107,7 +128,7 @@ def qualify(paths, image, revision):
     return dict(passed=True, runtime_image=image, source_revision=revision, inputs=inputs,
         checks=checks, qualified_contracts=candidates, raw=raw, artifacts=artifacts,
         runtime_sources=runtime, diagnostic_sources=selected,
-        routing_validation=correction,
+        routing_validation=correction, source_extension=source_extension,
         scope='26 command and 24 virtual display requirements on newly composed native and driver wheels',
         exclusions=command_donor['exclusions']+display_donor['exclusions'],
         full_v05_accepted=False, full_v06_accepted=False)

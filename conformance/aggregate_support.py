@@ -56,7 +56,8 @@ def dimensional_mapping(mapping, reviewed):
 
 def merge_review_inputs(inputs, reports):
     for report in reports:
-        for name, digest in report.get('source_inputs', report.get('inputs', {})).items():
-            assert name not in inputs or inputs[name] == digest, name
-            inputs[name] = digest
+        for group in ('source_inputs', 'inputs'):
+            for name, digest in report.get(group, {}).items():
+                assert name not in inputs or inputs[name] == digest, name
+                inputs[name] = digest
     return inputs

@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +19,11 @@ SOURCE = 'driver_plugin/src/openbexi_dss_proxy/command_group.py'
 BEFORE = '377231c7a9136d94b1e8c7290b0326ddaeb4d4c3'
 AFTER = 'd9ad9f08a8502388cc0723825ec64f68cfe8e6ae'
 CASE = 'invalid-block:failure'
-BASELINE = ROOT/'.qualification/v0.5/cmd/7701bee94ed34fa5aad0c202a544ecf7/result.json'
+# Resolve the retained counterexample from an immutable published proof, so a
+# fresh worktree does not silently depend on another worktree's relative paths.
+_PUBLISHED = json.loads(subprocess.check_output(['git','show',
+    'ffc6d660a111e9478f8a1d0280651f37d2dfb10d:conformance/evidence/command_routing_validation.json'],cwd=ROOT))
+BASELINE = Path(_PUBLISHED['baseline']['path'])
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 read = lambda path: json.loads(path.read_bytes())
 ref = lambda path: dict(path=str(path.resolve()), sha256=sha(path))
