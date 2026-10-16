@@ -3,6 +3,11 @@ from memory_native_cases import HEADER
 
 HEADER=HEADER.replace("value=getattr(api,name)(*args,HandleError=False,PromptUser=False,**options)",
     "options.setdefault('HandleError',False);options.setdefault('PromptUser',False)\n        value=getattr(api,name)(*args,**options)")
+# Preserve native return types and compare the original Result protocol.
+HEADER=HEADER.replace('from spell.lib.exception import DriverException',
+    'from spell.lib.exception import DriverException\nfrom spell.lib.adapter.result import TmResult')
+HEADER=HEADER.replace('dict(actual=actual,expected=expected)',
+    "dict(actual=bool(actual) if isinstance(actual,TmResult) else actual,expected=expected,actual_type=type(actual).__name__,details={key:bool(actual[key]) for key in actual.keys()} if isinstance(actual,TmResult) else None)")
 SUPPORT='''
 import sqlite3
 from contextlib import closing

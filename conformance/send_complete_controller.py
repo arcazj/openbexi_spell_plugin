@@ -11,7 +11,7 @@ import uuid
 
 sys.path[:0]=['/opt/host','/workspace/fixture','/workspace']
 from native import NativeSession
-from telemetry_features_provenance import capture
+from send_complete_provenance import capture
 from send_complete_cases import CASES
 from google.protobuf.message_factory import GetMessageClass
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p

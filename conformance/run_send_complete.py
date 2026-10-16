@@ -27,7 +27,7 @@ def main():
     token=uuid.uuid4().hex
     output=ROOT/'.qualification/send-complete'/token
     output.mkdir(parents=True)
-    names=['conformance/memory_native_cases.py','conformance/send_complete_cases.py','conformance/send_complete_controller.py',
+    names=['conformance/send_complete_provenance.py','source_port/send_complete_patches.py','conformance/send_complete.Dockerfile','conformance/send_complete.Dockerfile.dockerignore','conformance/memory_native_cases.py','conformance/send_complete_cases.py','conformance/send_complete_controller.py',
            'conformance/run_send_complete.py','conformance/inventory.json',
            'conformance/telemetry_surface_cases.py','conformance/telemetry_features_provenance.py',
            'conformance/telemetry_features.Dockerfile','conformance/telemetry_features.Dockerfile.dockerignore',
@@ -55,7 +55,7 @@ def main():
             item=tarfile.TarInfo('selected-cases.json')
             item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
             bundle.addfile(item,io.BytesIO(content))
-            for source in ('memory_native_cases.py','send_complete_cases.py','send_complete_controller.py','installed_provenance.py','telemetry_surface_cases.py','telemetry_features_provenance.py'):
+            for source in ('send_complete_provenance.py','memory_native_cases.py','send_complete_cases.py','send_complete_controller.py','installed_provenance.py','telemetry_surface_cases.py','telemetry_features_provenance.py'):
                 content=(ROOT/'conformance'/source).read_bytes()
                 item=tarfile.TarInfo(source)
                 item.size,item.mode,item.uid,item.gid=len(content),0o644,10003,10003
@@ -83,7 +83,7 @@ def main():
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
         verify_capture(runtime['integrated'],inputs)
-        assert runtime['profile'] in ('fresh-composed-limit-telemetry-overlays/1','fresh-composed-limit-telemetry-wheel/1')
+        assert runtime['profile'] in ('fresh-composed-limit-telemetry-send-complete-overlays/1',)
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())
