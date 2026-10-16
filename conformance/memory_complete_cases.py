@@ -18,7 +18,7 @@ def unchanged(operation):
 def skip(name,**options):
     row={'function':name,'policy':'SKIP','options':repr(options)}
     observed['calls'].append(row);save()
-    value=getattr(api,name)(HandleError=True,PromptUser=False,OnFailure=SKIP,**options)
+    value=getattr(api,name)(HandleError=True,PromptUser=False,PromptFailure=False,OnFailure=SKIP,**options)
     row.update(returned=repr(value),return_type=type(value).__name__);save()
     return value
 def report(image='reference',destination='mem://voltage.txt',**options):
