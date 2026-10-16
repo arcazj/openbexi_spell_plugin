@@ -121,7 +121,8 @@ def capture_application():
     from importlib.metadata import distribution
 
     for name in ('display-patch', 'command-patch', 'command-catalog-patch', 'command-group-patch',
-                 'limit-features-patch', 'telemetry-features-patch'):
+                 'limit-features-patch', 'telemetry-features-patch', 'memory-features-patch',
+                 'ranging-complete-patch', 'manoeuvre-database-patch', 'procedure-library-patch'):
         if (Path('/opt')/name).exists():
             raise ValueError('Composed application image contains a diagnostic overlay: '+name)
     integrated = capture()

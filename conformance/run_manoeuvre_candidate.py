@@ -76,7 +76,7 @@ def main():
         runtime=json.loads((output/'workspace/runtime.json').read_bytes())
         assert runtime is not None
         verify_capture(runtime['integrated'],inputs)
-        assert runtime['profile']=='fresh-composed-wheel-plus-manoeuvre-overlay/1'
+        assert runtime['profile'] in ('fresh-composed-wheel-plus-manoeuvre-overlay/1','fresh-composed-manoeuvre-wheel/1')
         host=json.loads((output/'workspace/host-inputs.json').read_bytes())
         assert host=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
         assert all(sha(ROOT/n)==v for n,v in inputs.items())

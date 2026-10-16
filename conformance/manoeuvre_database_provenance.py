@@ -11,6 +11,12 @@ sha=lambda path:hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application=capture_application()
+        recipes=application['integrated']['manifest']['composition']['native']['recipes']
+        if 'manoeuvre_database_patches.py' not in recipes:raise ValueError('Composed manoeuvre recipe missing')
+        return dict(application,profile='fresh-composed-manoeuvre-wheel/1')
     base=json.loads((EVIDENCE/'base.json').read_bytes())
     if base['profile']!='fresh-composed-display-command-wheel/1':raise ValueError('Manoeuvre diagnostic base differs')
     expected=dict(base['installed'])

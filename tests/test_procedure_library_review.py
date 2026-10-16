@@ -22,7 +22,7 @@ def test_all_twelve_original_child_results_and_native_modes_are_required(proof):
 
 @pytest.mark.parametrize('mutation',[
     'wrong-selected-child','wrong-native-instance','wrong-mode','early-child-start',
-    'early-blocking-parent','changed-arguments','changed-priority-config','missing-case','missing-recovery',
+    'early-blocking-parent','changed-arguments','changed-priority-config','missing-case','missing-recovery','false-composed-profile',
 ])
 def test_rebound_artifacts_still_require_independent_behavior(proof,tmp_path,mutation):
     original,overlay,revision,image=proof;raw=json.loads(original.read_bytes())
@@ -42,6 +42,10 @@ def test_rebound_artifacts_still_require_independent_behavior(proof,tmp_path,mut
         row['configuration']['priorities']=['Bus','Payload','Validation']
         (project/'spell-library.json').write_text(json.dumps(row['configuration']))
     elif mutation=='missing-case':del raw['checks']['header-name']
+    elif mutation=='false-composed-profile':
+        raw['runtime_sources']['profile']='fresh-composed-procedure-library-wheel/1'
+        (workspace/'runtime.json').write_text(json.dumps(raw['runtime_sources']))
+        overlay=None
     else:del row['rejected']
     (project/'child-result.json').write_text(json.dumps(row['child_result']))
     (workspace/'checks.json').write_text(json.dumps(raw['checks']))

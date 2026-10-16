@@ -51,7 +51,7 @@ def overlay_proof(raw,directory,revision):
     assert runtime['installed']==expected
 
 
-def review(raw_path,overlay,revision,image):
+def review(raw_path,overlay,revision,image,*,native_wheel=None,driver_wheel=None):
     raw=read(raw_path);workspace=raw_path.parent/'workspace'
     assert raw['passed'] is True and raw['controller_exit_code']==0 and raw['timed_out'] is False
     assert raw['runtime_image']==image and set(raw['checks'])==set(EXPECTED)
@@ -61,7 +61,13 @@ def review(raw_path,overlay,revision,image):
     assert artifacts==raw['artifacts']
     assert read(workspace/'checks.json')==raw['checks']
     assert read(workspace/'runtime.json')==raw['runtime_sources']
-    overlay_proof(raw,overlay,revision)
+    wheels=None
+    if raw['runtime_sources']['profile']=='fresh-composed-manoeuvre-wheel/1':
+        assert overlay is None and native_wheel is not None and driver_wheel is not None
+        from limit_telemetry_sources import verify
+        wheels=verify(raw,native_wheel,driver_wheel,profile='fresh-composed-manoeuvre-wheel/1',
+            required_recipes=('limit_feature_patches.py','telemetry_feature_patches.py','manoeuvre_database_patches.py'))
+    else:overlay_proof(raw,overlay,revision)
     old=sys.modules.get('memory_native_cases')
     try:
         sys.modules['memory_native_cases']=frozen('conformance/memory_native_cases.py',revision)
@@ -105,14 +111,15 @@ def review(raw_path,overlay,revision,image):
         checks[name]=dict(passed=True,contracts=CONTRACTS,dimension=row['dimension'],observations=values,
             oracle='Original traced manoeuvre reads, rejected writes and reload recovery; literal file contents, detached nested values, native states and unchanged ground verified independently')
     inputs=dict(raw['inputs']);inputs['conformance/manoeuvre_database_review.py']=sha(ROOT/'conformance/manoeuvre_database_review.py')
-    return dict(passed=True,runtime_image=image,raw=ref(raw_path),source_revision=revision,overlay=str(overlay.resolve()),
-        inputs=inputs,checks=checks,qualified_contracts=CONTRACTS,full_v05_accepted=False,full_v06_accepted=False)
+    return dict(passed=True,runtime_image=image,raw=ref(raw_path),source_revision=revision,overlay=str(overlay.resolve()) if overlay else None,
+        inputs=inputs,checks=checks,qualified_contracts=CONTRACTS,composed_wheels=wheels,full_v05_accepted=False,full_v06_accepted=False)
 
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser();parser.add_argument('--raw',type=Path,required=True);parser.add_argument('--overlay',type=Path,required=True)
+    parser=argparse.ArgumentParser();parser.add_argument('--raw',type=Path,required=True);parser.add_argument('--overlay',type=Path)
+    parser.add_argument('--native-wheel',type=Path);parser.add_argument('--driver-wheel',type=Path)
     parser.add_argument('--revision',required=True);parser.add_argument('--image',required=True);parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args();result=review(args.raw,args.overlay,args.revision,args.image)
+    args=parser.parse_args();result=review(args.raw,args.overlay,args.revision,args.image,native_wheel=args.native_wheel,driver_wheel=args.driver_wheel)
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(dict(passed=True,checks=len(result['checks']),output=str(args.output))))

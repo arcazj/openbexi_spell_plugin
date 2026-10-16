@@ -32,9 +32,10 @@ def wheel_sources(path):
     return contents
 
 
-def verify(raw, native_wheel, driver_wheel):
+def verify(raw, native_wheel, driver_wheel, *, profile='fresh-composed-limit-telemetry-wheel/1',
+           required_recipes=('limit_feature_patches.py','telemetry_feature_patches.py')):
     runtime = raw['runtime_sources']
-    assert runtime['profile'] == 'fresh-composed-limit-telemetry-wheel/1'
+    assert runtime['profile'] == profile
     assert set(runtime) == {'profile','integrated','installed'}
     integrated = runtime['integrated']
     verify_capture(integrated,raw['inputs'])
@@ -44,7 +45,7 @@ def verify(raw, native_wheel, driver_wheel):
     assert sha(encoded) == integrated['manifest_sha256']
     assert json.loads(encoded) == integrated['manifest']
     recipes = integrated['manifest']['composition']['native']['recipes']
-    assert {'limit_feature_patches.py','telemetry_feature_patches.py'} <= set(recipes)
+    assert set(required_recipes) <= set(recipes)
     assert integrated['manifest']['composition']['python']['recipes'] == recipes
     assert verify_driver(driver.__getitem__, recipes) == integrated['driver_composition']
     assert not set(native) & set(driver)

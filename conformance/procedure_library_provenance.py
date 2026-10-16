@@ -8,6 +8,13 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def capture():
+    if not EVIDENCE.exists():
+        from installed_provenance import capture_application
+        application=capture_application()
+        recipes=application['integrated']['manifest']['composition']['native']['recipes']
+        if 'procedure_library_patches.py' not in recipes:raise ValueError('Composed library recipe missing')
+        if 'spell_native/library.py' not in application['installed']:raise ValueError('Installed library configuration missing')
+        return dict(application,profile='fresh-composed-procedure-library-wheel/1')
     base=json.loads((EVIDENCE/'base.json').read_bytes())
     assert base['profile']=='fresh-composed-display-command-wheel/1'
     record=json.loads((EVIDENCE/'build.json').read_bytes())

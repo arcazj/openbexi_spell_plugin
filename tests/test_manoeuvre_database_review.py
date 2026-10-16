@@ -22,7 +22,7 @@ def test_all_eight_native_results_qualify_only_the_two_manoeuvre_contracts(proof
 
 @pytest.mark.parametrize('mutation',[
     'missing-case','wrong-image','numeric-pass','changed-file','wrong-return-type',
-    'changed-detached-value','wrong-location','unexpected-rpc','changed-ground','numeric-completion',
+    'changed-detached-value','wrong-location','unexpected-rpc','changed-ground','numeric-completion','false-composed-profile',
 ])
 def test_rebound_but_contradicted_native_proof_is_rejected(proof,tmp_path,mutation):
     original,overlay,revision,image=proof
@@ -41,6 +41,10 @@ def test_rebound_but_contradicted_native_proof_is_rejected(proof,tmp_path,mutati
         p=project/'context-configured.xml';p.write_text(p.read_text().replace('ManeuverDB','OtherDB'))
     elif mutation=='unexpected-rpc':row['rpc'][0]['path']='/spell.driver.SPELLDriverInterface_MEM/CreateGoldenImage'
     elif mutation=='changed-ground':row['final_ground']['images']['unexpected']={}
+    elif mutation=='false-composed-profile':
+        raw['runtime_sources']['profile']='fresh-composed-manoeuvre-wheel/1'
+        (workspace/'runtime.json').write_text(json.dumps(raw['runtime_sources']))
+        overlay=None
     else:row['result']['completed']=1
     (project/'observed.json').write_text(json.dumps(row['observed']))
     (project/'result.json').write_text(json.dumps(row['result']))
