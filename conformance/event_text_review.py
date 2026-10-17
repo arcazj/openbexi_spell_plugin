@@ -51,5 +51,5 @@ def review(path,image,native_wheel,driver_wheel):
         event_journal=ref(workspace/'driver.sqlite'),native_events=ref(workspace/'observations.json'))
     report['inputs']['conformance/event_text_review.py']=sha(ROOT/'conformance/event_text_review.py')
     report['scope']['event']='Empty, Unicode/newline and messages over 16,384 characters reach the original native client and durable event journal exactly once; invalid argument types, severity and scope have no event effect; subsequent calls recover.'
-    report['scope'].pop('event_open')
+    report['scope'].pop('event_open', None)
     return report
