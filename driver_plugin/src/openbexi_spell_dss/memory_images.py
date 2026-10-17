@@ -146,7 +146,8 @@ def database_lookup(database,request,command_lookup):
     if request.source not in ('','GENERIC') or request.type not in ('TM','TC'):
         raise ValueError('Unsupported database lookup source/type')
     mnemonic=request.name;lo,hi=0,0xffffffff
-    if mnemonic.startswith(LOOKUP_PREFIX):
+    bounded=mnemonic.startswith(LOOKUP_PREFIX)
+    if bounded:
         text=mnemonic[len(LOOKUP_PREFIX):]
         if len(text)>4096:raise ValueError('Database query exceeds bounds')
         query=json.loads(text)
@@ -155,6 +156,10 @@ def database_lookup(database,request,command_lookup):
         mnemonic=query['Name'];lo,hi=bounds(query['Begin'],query['End'])
     if mnemonic:
         item=database.item(mnemonic) if request.type=='TM' else command_lookup(database,mnemonic)
+        # Native command expansion uses this original-schema endpoint too.
+        # A sequence has no address; only an unbounded catalog lookup selects it.
+        if request.type=='TC' and item.get('kind')=='SEQUENCE' and not bounded:
+            return item
         key='item_code' if request.type=='TM' else 'command_code'
         if key not in item:raise ValueError('Database query requires a concrete TM/TC entry')
         return item if lo<=item[key]<=hi else {}

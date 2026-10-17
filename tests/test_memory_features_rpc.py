@@ -135,6 +135,24 @@ def test_database_queries_apply_catalog_code_bounds_and_recover(env):
     assert env.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
 
 
+def test_sequence_catalog_and_address_queries_keep_distinct_semantics(env):
+    request=p.LookupRequest(name='SEQ.DUPLICATE',type='TC',source='GENERIC')
+    def read(request):return unpack(rpc(env,'DatabaseLookup',request,'TM').lookup)
+    sequence=read(request)
+    assert sequence['kind']=='SEQUENCE' and sequence['name']=='SEQ.DUPLICATE'
+    assert [member['command'] for member in sequence['members']]==['CMD1','CMD1','CMD2']
+    assert 'command_code' not in sequence
+    bounded=p.LookupRequest(name=LOOKUP_PREFIX+json.dumps(dict(Name='SEQ.DUPLICATE',Begin='',End='')),
+        type='TC',source='GENERIC')
+    with pytest.raises(ValueError,match='concrete TM/TC entry'):read(bounded)
+    with pytest.raises(ValueError):read(p.LookupRequest(name='MISSING',type='TC',source='GENERIC'))
+    env.allowed=False
+    with pytest.raises(PermissionError):read(request)
+    env.allowed=True
+    assert read(request)==sequence
+    assert env.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
+
+
 def proxy(env):
     # Exercise the unmodified proxy function bodies against the actual original
     # protobuf dispatcher. Native import/runtime validation is a separate gate.
