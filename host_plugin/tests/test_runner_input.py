@@ -105,7 +105,7 @@ class OwnedPeer:
         if self.process and self.process.poll() is None:
             self.process.terminate()
             self.process.wait(timeout=5)
-runner.Container=OwnedPeer
+runner.runtime=OwnedPeer
 def record_reminder():
     with (root/'reminders.txt').open('a',encoding='utf-8') as output:
         output.write('reminder\n')

@@ -10,6 +10,7 @@ from pathlib import Path
 import queue
 import re
 import selectors
+import signal
 import sys
 import threading
 import time
@@ -100,6 +101,8 @@ class Adapter:
         self.host_root = ''
         self.emit_lock = threading.Lock()
         self.driver_relay = None
+        self.demo_dss = None
+        self.runtime_root = Path(os.environ.get('OPENBEXI_SPELL_WORKSPACE', '/workspace')).resolve()
         self.watchdog_enabled = False
         self.last_heartbeat = time.monotonic()
         self.freeze_expected = False
@@ -213,9 +216,15 @@ class Adapter:
             if args.get('driverRelay'):
                 from openbexi_spell_dss.relay import Relay
                 self.driver_relay = Relay(self.event)
-            runtime_root = '/release' if args.get('immutableRelease') else '/workspace'
+            runtime_root = '/release' if args.get('immutableRelease') else str(self.runtime_root)
+            if os.environ.get('OPENBEXI_SPELL_DEMO_DSS') == '1':
+                if self.driver_relay or args.get('immutableRelease'):
+                    raise ValueError('The learning simulator is available only in local Development')
+                from demo_dss import DemoDss
+                self.demo_dss = DemoDss(runtime_root, relative, native_arguments.get('LAB_MODE', 'Development'))
             self.session = NativeSession(runtime_root, runtime_root + '/' + relative, native_arguments,
-                driver_port=self.driver_relay.port if self.driver_relay else None)
+                driver_port=(self.driver_relay.port if self.driver_relay else
+                             self.demo_dss.port if self.demo_dss else None))
             self.no_debug = bool(args.get('noDebug'))
             self.stop_on_entry = bool(args.get('stopOnEntry'))
             try:
@@ -251,9 +260,9 @@ class Adapter:
             lines = [item['line'] for item in entries]
             if any(type(line) is not int or line < 1 for line in lines):
                 raise ValueError('Breakpoint lines must be positive integers')
-            source = Path('/workspace') / (procedure + '.py')
+            source = self.session.project / (procedure + '.py')
             valid = set()
-            if source.is_file() and source.resolve().is_relative_to(Path('/workspace')):
+            if source.is_file() and source.resolve().is_relative_to(self.session.project):
                 def collect(code):
                     valid.update(line for _, line in dis.findlinestarts(code) if line > 0)
                     for value in code.co_consts:
@@ -459,12 +468,16 @@ class Adapter:
                 exit_code = 0 if status == 'FINISHED' else 1
                 self.session.close()
                 self.session = None
+                if self.demo_dss:
+                    demo, self.demo_dss = self.demo_dss, None
+                    demo.close()
                 self.event('exited', exitCode=exit_code)
                 self.event('terminated')
 
 
 def main():
     adapter = Adapter()
+    signal.signal(signal.SIGTERM, lambda *_: setattr(adapter, 'done', True))
     incoming = queue.Queue(maxsize=128)
     stop = threading.Event()
     reader = threading.Thread(target=read_messages, args=(sys.stdin.buffer, incoming, stop,adapter.control))
@@ -506,6 +519,8 @@ def main():
             adapter.session.close()
         if adapter.driver_relay:
             adapter.driver_relay.close()
+        if adapter.demo_dss:
+            adapter.demo_dss.close()
     return 0
 
 

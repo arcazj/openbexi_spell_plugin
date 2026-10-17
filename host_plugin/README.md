@@ -30,6 +30,22 @@ The optional argument is one JSON object, made available through native `ARGS`.
 Set `OPENBEXI_SPELL_IMAGE` to the locally qualified runtime image while developing.
 The default is `openbexi-spell-host:0.3.0`.
 
+The companion OpenBEXI learning desktop explicitly configures
+`OPENBEXI_SPELL_BACKEND=packaged-desktop`. In that Linux container, the host uses
+the separately installed `/opt/spell-native` runtime and the same private
+snapshot/output rules. It does not require a Docker daemon socket. An exclusive
+lock permits one native procedure tree at a time; each run owns a fresh synthetic
+DSS and original-schema driver. Its run manifest identifies the packaged runtime
+manifest by SHA-256. The default Docker backend remains available to Windows and
+JetBrains hosts.
+
+The teaching argument `{"LAB_MODE":"Monitoring"}` asks the real local driver
+dispatcher to reject effects while allowing telemetry reads. It is separate from
+an authenticated shared Monitoring session. Immutable Execution still requires
+the release service and its approval workflow. The packaged desktop runs trusted
+teaching procedures under its own user account; it is not an untrusted-code
+sandbox between desktop users.
+
 The current development host starts visible, automatic `StartProc` children
 through the original native protocol and routes each console answer to the
 procedure that requested it. Nested children and successive parent/child prompts
