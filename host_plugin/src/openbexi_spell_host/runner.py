@@ -9,7 +9,7 @@ import subprocess
 import sys
 import threading
 
-from .container import Container
+from .local import runtime
 from .protocol import read, write
 from .sound import reminder
 
@@ -25,7 +25,7 @@ def main(argv=None):
     project, program = Path(args.project).resolve(), Path(args.program).resolve()
     if not program.is_file() or not program.is_relative_to(project):
         parser.error('Program must be an existing file inside the selected project')
-    container = Container(project, args.image)
+    container = runtime(project, args.image)
     messages = queue.Queue(maxsize=256)
     stopped = threading.Event()
     process = None

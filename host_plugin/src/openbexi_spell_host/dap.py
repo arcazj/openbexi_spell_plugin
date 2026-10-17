@@ -3,7 +3,7 @@
 import argparse
 import sys
 
-from .container import Container
+from .local import runtime
 from .protocol import read, write
 from .sound import reminder
 
@@ -13,7 +13,7 @@ def main():
     parser.add_argument('--project', required=True)
     parser.add_argument('--image')
     args = parser.parse_args()
-    container = Container(args.project, args.image)
+    container = runtime(args.project, args.image)
     try:
         process = container.start(stdin=sys.stdin.buffer, stderr=sys.stderr.buffer)
         while (message := read(process.stdout)) is not None:

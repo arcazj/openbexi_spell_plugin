@@ -35,7 +35,7 @@ def test_dap_relay_sounds_and_forwards_same_prompt_notification(monkeypatch):
         def __init__(self,*args):pass
         def start(self,**kwargs):return process
         def close(self):closed.append(True)
-    monkeypatch.setattr(dap,'Container',Container)
+    monkeypatch.setattr(dap,'runtime',Container)
     monkeypatch.setattr(dap,'read',lambda stream:next(incoming))
     monkeypatch.setattr(dap,'write',lambda stream,message:sent.append(message))
     monkeypatch.setattr(dap,'reminder',lambda:sounds.append(True))
