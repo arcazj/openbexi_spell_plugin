@@ -10,7 +10,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 DONORS = {
-    'final_language':('593382f814a9af6302386035ba2a7334cc7df514','distribution/evidence/final-language-source-review.json'),
+    'final_language':('c82138d778d2377d0dd89952f6387f936a626f35','distribution/evidence/final-language-source-review.json'),
     'baseline':('fabeaf882966614314ebd799d54eea2b83f020ba','obs'),
     'command':('fabeaf882966614314ebd799d54eea2b83f020ba','cmd'),
     'time_verify':('85bc970ba1da1aa5dc830d70d0e43c786c1b6558','time_verify_review'),
