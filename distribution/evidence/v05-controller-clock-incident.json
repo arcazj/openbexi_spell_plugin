@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "status": "controller correction applied; complete native requalification required",
+  "runtime_image": "sha256:4e8f7d67787c6a65b402b7e98fb4c34e7be58c7252d9f0257009a2f94d3bb620",
+  "failed_source_commit": "32dfeb0785b10c77ba16169741244c5ea8f6d01d",
+  "failed_native_report": {
+    "path": "C:\\obmemory_command\\.qualification\\command-catalog\\b7438fa1879a43349bcd7869217db855\\result.json",
+    "sha256": "4a44684ce6c29bd34fa47c0fe41069cc2948767ac5a159707629f753842d8c78"
+  },
+  "failed_sequence": {
+    "path": "C:\\obmemory_command\\.qualification\\language-regressions\\c3499917beab4fe6ad8e40f4ca5c3382\\result.json",
+    "sha256": "932af8516a78baf38b7a55a384a8fcc8b6bf21ea997994aef52dd88225c90ce9"
+  },
+  "failed_full_orchestration": {
+    "path": "C:\\obmemory_command\\.qualification\\full-v05-validation\\bb63fc51c0dd497faa8ce80a02998307\\result.json",
+    "sha256": "d4d1ade12ece232f8a2d3cd62b0704176608525a15a6e3f26ad0fef3a44153d0"
+  },
+  "cause": "A native command receipt advanced the same DSS scenario revision from 3 to 4 between the qualification controller snapshot and STEP; the simulator correctly rejected stale control. The controller now re-observes only this known stale-revision race using the existing tested clock_step.try_step helper.",
+  "before": {
+    "ack_sequence": 7,
+    "bus": {
+      "battery_mwh": 80000,
+      "bus_voltage_mv": 28000,
+      "energy_remainder_mw_ticks": 0,
+      "generated_mw": 45000,
+      "heater": false,
+      "load_mw": 20000,
+      "nominal_bus_voltage_mv": 28000,
+      "safe_mode": false,
+      "thermal_mode": "OFF"
+    },
+    "clock_epoch_unix_ns": 1792211860024643800,
+    "core": {
+      "commands_executed": 1,
+      "last_command_arguments": [],
+      "last_command_name": "CMD1",
+      "last_operation_id": "114fe020c38b6f90da29c5eb375c3f0887daa082627623b6f5174118800f8308",
+      "loaded_commands_count": 2,
+      "mode": "NOMINAL",
+      "sim_time_ns": 0,
+      "tick": 0
+    },
+    "database_digest": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+    "database_revision": "GENERIC-r1",
+    "dynamics_engine_version": "0.1.0",
+    "epoch": "epoch-f56d4adbfe681f2d8f3e0af651ca59bab1076899b24b90e843307de6e5a090ec",
+    "payload": {
+      "enabled": true,
+      "generated_data_bytes": 0,
+      "setpoint_milli": 0,
+      "temperature_mc": 20000
+    },
+    "reference": {
+      "ground_parameter_milli": 28000,
+      "secondary_milli": 9000,
+      "verification_milli": 10000,
+      "zero": 0
+    },
+    "revision": 3,
+    "running": false,
+    "satellite_id": "GENERIC",
+    "scenario_id": "boot-dde382b2f59f4edcacdb46952dc1f787",
+    "schema_version": "openbexi.dss.state/1",
+    "sequence": 4,
+    "simulator_version": "0.1.0"
+  },
+  "after": {
+    "ack_sequence": 8,
+    "bus": {
+      "battery_mwh": 80000,
+      "bus_voltage_mv": 28000,
+      "energy_remainder_mw_ticks": 0,
+      "generated_mw": 45000,
+      "heater": false,
+      "load_mw": 20000,
+      "nominal_bus_voltage_mv": 28000,
+      "safe_mode": false,
+      "thermal_mode": "OFF"
+    },
+    "clock_epoch_unix_ns": 1792211860024643800,
+    "core": {
+      "commands_executed": 2,
+      "last_command_arguments": [],
+      "last_command_name": "CMD1",
+      "last_operation_id": "7c97b7bbd10ad755fdd23f4c1403b56f6b0bf8b06ac65eba0929066ea1005006",
+      "loaded_commands_count": 2,
+      "mode": "NOMINAL",
+      "sim_time_ns": 0,
+      "tick": 0
+    },
+    "database_digest": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+    "database_revision": "GENERIC-r1",
+    "dynamics_engine_version": "0.1.0",
+    "epoch": "epoch-f56d4adbfe681f2d8f3e0af651ca59bab1076899b24b90e843307de6e5a090ec",
+    "payload": {
+      "enabled": true,
+      "generated_data_bytes": 0,
+      "setpoint_milli": 0,
+      "temperature_mc": 20000
+    },
+    "reference": {
+      "ground_parameter_milli": 28000,
+      "secondary_milli": 9000,
+      "verification_milli": 10000,
+      "zero": 0
+    },
+    "revision": 4,
+    "running": false,
+    "satellite_id": "GENERIC",
+    "scenario_id": "boot-dde382b2f59f4edcacdb46952dc1f787",
+    "schema_version": "openbexi.dss.state/1",
+    "sequence": 5,
+    "simulator_version": "0.1.0"
+  },
+  "clock_helper": {
+    "path": "C:\\obspell_v05_composed\\conformance\\clock_step.py",
+    "sha256": "89038a3fb015eb4d1e8caf15ede0af3bb3b1ddc1bc5afd864f5c65aaf47425e6"
+  },
+  "clock_tests": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\catalog-clock-controls.xml",
+    "sha256": "26b776118cd051f510a124147185e566d993c08decefaa55b4f60f132d44776e"
+  },
+  "corrected_inputs": [
+    {
+      "path": "C:\\obspell_v05_composed\\conformance\\command_catalog_controller.py",
+      "sha256": "fea3c965851e5aee064c9b7ad1b678a39232ab2c5e3974d8d04b95f42854817e"
+    },
+    {
+      "path": "C:\\obspell_v05_composed\\conformance\\command_group_controller.py",
+      "sha256": "4e4c669449ad6564b5ecd7a5f3ed69af87b08ba9dc21dbabb7b81911435a7d49"
+    },
+    {
+      "path": "C:\\obspell_v05_composed\\conformance\\run_command_catalog.py",
+      "sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42"
+    },
+    {
+      "path": "C:\\obspell_v05_composed\\conformance\\run_command_group.py",
+      "sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3"
+    }
+  ],
+  "runtime_sources_changed": false,
+  "assertions_removed": false,
+  "full_v05_accepted": false
+}

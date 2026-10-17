@@ -18,6 +18,7 @@ if os.environ.get('OPENBEXI_CONFORMANCE_COMPOSED') == '1':
 from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p
 from command_group_cases import CASES
+from clock_step import try_step
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.journal import Journal
@@ -39,7 +40,7 @@ for name,spec in CASES.items():
     journal=Journal(project/'driver.sqlite');dispatcher=Dispatcher(transport,journal)
     identity=dict(session=uuid.uuid4().hex,procedure=uuid.uuid4().hex,definition=name,
         version='command-group-candidate',controller_epoch=1,procedure_fence=1,mode='Development',release=None)
-    calls=[];events=[];clock_observations=[];last_tick=0;competitor=None
+    calls=[];events=[];clock_observations=[];clock_conflicts=[];last_tick=0;competitor=None
     row=dict(passed=False,dimension=spec['dimension'],source=spec['source'],states=[],
         initial_ground=dispatcher.ground.state(),initial_dss=runtime.engine.state())
     def dispatch(path,raw):
@@ -79,9 +80,10 @@ for name,spec in CASES.items():
                     operations=runtime.engine.evidence(state['scenario_id'])['operations']
                 ready=spec['clock']!='onboard' or len(acks)==len(spec['expected_members'])
                 if ready:
-                    clock_observations.append(dict(before=state,stages=[r['acknowledgement']['stage'] for r in operations]))
-                    runtime.engine.control('STEP',state['epoch'],state['revision'],1)
-                    last_tick=time.monotonic()
+                    if try_step(runtime.engine,state,pending[-1]['request'],
+                                [r['acknowledgement']['stage'] for r in operations],
+                                clock_observations,clock_conflicts):
+                        last_tick=time.monotonic()
             if not row['states'] or row['states'][-1]['status']!=status:
                 row['states'].append(dict(status=status,monotonic=time.monotonic()))
             if status in ('FINISHED','ERROR','ABORTED'):break
@@ -128,7 +130,7 @@ for name,spec in CASES.items():
         server.close()
         for endpoint in (tcp,api):endpoint.shutdown();endpoint.server_close()
         transport.close()
-        row['rpc']=calls;row['clock_observations']=clock_observations
+        row['rpc']=calls;row['clock_observations']=clock_observations;row['clock_conflicts']=clock_conflicts
         row['competitor']=competitor
         row['uplink_groups']=list(runtime.uplink_groups.history)
         if journal.db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='command_results'").fetchone():

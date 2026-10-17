@@ -18,6 +18,7 @@ if os.environ.get('OPENBEXI_CONFORMANCE_COMPOSED') == '1':
 from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p
 from command_catalog_cases import CASES
+from clock_step import try_step
 from dss.local import create_servers
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.journal import Journal
@@ -39,7 +40,7 @@ for name,spec in CASES.items():
     journal=Journal(project/'driver.sqlite');dispatcher=Dispatcher(transport,journal)
     identity=dict(session=uuid.uuid4().hex,procedure=uuid.uuid4().hex,definition=name,
         version='command-catalog-candidate',controller_epoch=1,procedure_fence=1,mode='Development',release=None)
-    calls=[];events=[];clock_observations=[];last_tick=0;prompts=[];pending=[]
+    calls=[];events=[];clock_observations=[];clock_conflicts=[];last_tick=0;prompts=[];pending=[]
     row=dict(passed=False,dimension=spec['dimension'],source=spec['source'],states=[],
         initial_ground=dispatcher.ground.state(),initial_dss=runtime.engine.state())
     def dispatch(path,raw):
@@ -85,10 +86,10 @@ for name,spec in CASES.items():
                 # holds instead advance with no transmitted command packet.
                 ready='Time' not in options or len(operations)>=4
                 if ready:
-                    clock_observations.append(dict(rpc_request=active['request'],before=state,
-                        stages=[row['acknowledgement']['stage'] for row in operations]))
-                    runtime.engine.control('STEP',state['epoch'],state['revision'],1)
-                    last_tick=time.monotonic()
+                    if try_step(runtime.engine,state,active['request'],
+                                [row['acknowledgement']['stage'] for row in operations],
+                                clock_observations,clock_conflicts):
+                        last_tick=time.monotonic()
             if not row['states'] or row['states'][-1]['status']!=status:
                 row['states'].append(dict(status=status,monotonic=time.monotonic()))
             if status in ('FINISHED','ERROR','ABORTED'):break
@@ -131,7 +132,7 @@ for name,spec in CASES.items():
         server.close()
         for endpoint in (tcp,api):endpoint.shutdown();endpoint.server_close()
         transport.close();journal.close();runtime.engine.close()
-        row['rpc']=calls;row['clock_observations']=clock_observations;row['prompts']=prompts
+        row['rpc']=calls;row['clock_observations']=clock_observations;row['clock_conflicts']=clock_conflicts;row['prompts']=prompts
         (project/'events.json').write_text(json.dumps(events,indent=2));row['events_sha256']=sha(project/'events.json')
         checks[name]=row;(ROOT/'checks.json').write_text(json.dumps(checks,indent=2))
         print(json.dumps(dict(case=name,passed=row['passed'],error=row.get('error'))),flush=True)
