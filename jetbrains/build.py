@@ -42,7 +42,7 @@ def main():
                     for p in (ROOT / 'resources').rglob('*') if p.is_file()})
     entries['META-INF/LICENSE'] = (ROOT.parent / 'docs/UPSTREAM-GPL-3.0.txt').read_bytes()
     package = packed({'openbexi-spell/lib/openbexi-spell.jar': packed(entries)})
-    artifact = args.output / 'openbexi-spell-0.3.0.zip'
+    artifact = args.output / 'openbexi-spell-0.6.0.zip'
     artifact.write_bytes(package)
     report = {'artifact': artifact.name, 'sha256': hashlib.sha256(package).hexdigest(),
         'sdk': {key: product[key] for key in ('name', 'version', 'buildNumber')},

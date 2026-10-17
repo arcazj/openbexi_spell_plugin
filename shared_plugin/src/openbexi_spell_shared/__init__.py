@@ -18,6 +18,7 @@ from urllib.parse import urlsplit
 
 from openbexi_spell_host.protocol import read, write
 
+# Durable binding protocol version; retained across distribution upgrades.
 VERSION = '0.4.0'
 PROFILE = 'spell-native-shared-development/1'
 DSS_PROFILE = 'spell-native-shared-dss/1'
@@ -96,7 +97,7 @@ class Provider:
 
     @staticmethod
     def bind():
-        image = os.environ.get('OPENBEXI_SPELL_SHARED_IMAGE', 'openbexi-spell-host:0.3.0')
+        image = os.environ.get('OPENBEXI_SPELL_SHARED_IMAGE', 'openbexi-spell-dss:0.6.0')
         info = json.loads(docker('image', 'inspect', image))[0]
         if info['Os'] != 'linux' or info['Architecture'] != 'amd64':
             raise ValueError('Native shared runtime requires the Linux amd64 host image')

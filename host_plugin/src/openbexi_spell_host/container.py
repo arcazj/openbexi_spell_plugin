@@ -43,7 +43,7 @@ class Container:
             raise ValueError('Project must be a folder')
         self.id = uuid.uuid4().hex
         self.name = 'openbexi-spell-' + self.id
-        self.image = image or os.environ.get('OPENBEXI_SPELL_IMAGE', 'openbexi-spell-host:0.3.0')
+        self.image = image or os.environ.get('OPENBEXI_SPELL_IMAGE', 'openbexi-spell-dss:0.6.0')
         self.inputs = {}
         self.created = False
         self.process = None
