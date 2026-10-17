@@ -85,7 +85,7 @@ def qualify(paths, image, revision):
     if 'memory_ranging_patches.py' in driver['recipes']:
         # These final bodies were independently replayed from the memory,
         # ranging, database, Send, telemetry, limit and library donor reviews.
-        revision_id = '7d50a6393413595293b27384db9506cd4cd2efef'
+        revision_id = '70a4d1abeeb708a538aeb10d3e04637f4f24afff'
         name = 'distribution/evidence/followup-qualified-sources.json'
         encoded = subprocess.check_output(['git','show',revision_id+':'+name],cwd=ROOT)
         expected = json.loads(encoded)
