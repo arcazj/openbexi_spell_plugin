@@ -55,3 +55,35 @@ def test_unreviewed_or_changed_prompt_extension_is_rejected(example,change):
         golden.write_text(json.dumps(qualified))
     with pytest.raises((AssertionError,KeyError)):
         tail.extend(native,name,before)
+
+
+@pytest.mark.parametrize('defect',[None,'missing-review','broken-chain','changed-recipe','changed-terminal','missing-stage'])
+def test_final_donor_requires_both_reviewed_prompt_successors(tmp_path,monkeypatch,defect):
+    name='lib/helper.C';before='1'*64;middle='2'*64;after='3'*64
+    recipes=('prompt_complete_patches.py','prompt_empty_option_patches.py')
+    hashes={recipe:hashlib.sha256(recipe.encode()).hexdigest() for recipe in recipes}
+    changes=[dict(recipe=recipe,source=name,before_sha256=start,after_sha256=end)
+        for recipe,start,end in zip(recipes,(before,middle),(middle,after))]
+    source=dict(original='0'*64,ported=before,patched=after)
+    proof=dict(passed=True,independent_reviews={key:{} for key in
+        ('prompt','child','event','command-group','memory','driver-extension')},
+        native_changes=deepcopy(changes),native={name:source},recipes=hashes)
+    if defect=='missing-review':proof['independent_reviews'].pop('event')
+    encoded=json.dumps(proof).encode()
+    donor=dict(commit='a'*40,path='review.json',sha256=hashlib.sha256(encoded).hexdigest())
+    golden=tmp_path/'distribution/evidence/followup-qualified-sources.json'
+    golden.parent.mkdir(parents=True);golden.write_text(json.dumps(dict(donors={'final_language':donor})))
+    (tmp_path/'source_port').mkdir()
+    for recipe in recipes:(tmp_path/'source_port'/recipe).write_bytes(recipe.encode())
+    native=dict(recipes={recipe:dict(sha256=value) for recipe,value in hashes.items()},
+        stages=[dict(recipe=row['recipe'],sources={name:{key:row[key] for key in ('before_sha256','after_sha256')}}) for row in changes],
+        sources={name:{key+'_sha256':value for key,value in source.items()}})
+    if defect=='broken-chain':native['stages'][1]['sources'][name]['before_sha256']='9'*64
+    elif defect=='changed-recipe':(tmp_path/'source_port'/recipes[1]).write_bytes(b'unreviewed')
+    elif defect=='changed-terminal':native['sources'][name]['patched_sha256']='9'*64
+    elif defect=='missing-stage':native['stages'].pop()
+    monkeypatch.setattr(tail,'ROOT',tmp_path)
+    monkeypatch.setattr(tail.subprocess,'check_output',lambda *a,**k:encoded)
+    if defect is None:assert tail.extend(native,name,before)==after
+    else:
+        with pytest.raises(AssertionError):tail.extend(native,name,before)
