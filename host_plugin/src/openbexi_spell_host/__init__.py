@@ -6,4 +6,5 @@ __version__ = '0.6.0'
 def describe():
     return {'api': 1, 'id': 'spell', 'label': 'SPELL',
         'runner': 'openbexi_spell_host.runner', 'debugAdapter': 'openbexi_spell_host.dap',
-        'gracefulStopMilliseconds': 10000, 'supportsStepOut': False}
+        'gracefulStopMilliseconds': 10000, 'supportsStepOut': False,
+        'sourceModules': ['spell', 'libSPELL_DTA_v3']}
