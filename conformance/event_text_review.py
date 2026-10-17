@@ -1,13 +1,12 @@
 """Recheck native messages and the immutable durable event journal independently."""
 from collections import Counter
-import hashlib,json
+import hashlib,json,re
 from pathlib import Path
 from aggregate_support import ROOT,sha,read,ref
 from evidence_database import evidence_database
 from events_report import qualify as qualify_existing
 from installed_provenance import verify_capture
-from limit_telemetry_sources import wheel_sources
-from openbexi_dss_proxy.provenance import verify as verify_driver
+from limit_telemetry_sources import wheel_sources, verify_driver_capture
 from run_language_regressions import validate_report
 
 
@@ -32,13 +31,18 @@ def review(path,image,native_wheel,driver_wheel):
     assert captured['manifest_sha256']==hashlib.sha256(native['spell_native/manifest.json']).hexdigest()
     recipes=captured['manifest']['composition']['native']['recipes']
     assert 'event_text_patches.py' in recipes
-    assert verify_driver(driver.__getitem__,recipes)==captured['driver_composition']
+    verify_driver_capture(driver,recipes,captured['driver_composition'])
     for name,value in {**native,**driver}.items():
         installed='/usr/local/lib/python3.13/site-packages/'+name
         if installed in runtime['installed']:assert runtime['installed'][installed]==hashlib.sha256(value).hexdigest()
     with evidence_database(workspace/'driver.sqlite') as db:
         journal=db.execute('SELECT message,severity,scope FROM events ORDER BY created_ns').fetchall()
-    assert journal==expected_events()
+    # Original executor lifecycle events bracket the explicitly injected events.
+    assert len(journal)==len(expected_events())+2
+    assert journal[0][1:]==journal[-1][1:]==(8,1)
+    assert re.fullmatch(r'Procedure started: main#1 at \d{4}-\d\d-\d\d \d\d:\d\d:\d\d',journal[0][0])
+    assert re.fullmatch(r'Procedure finished: main#1 at \d{4}-\d\d-\d\d \d\d:\d\d:\d\d \(status FINISHED\)',journal[-1][0])
+    assert journal[1:-1]==expected_events()
     messages=[event['message']['fields'] for event in raw['observations']['events']
         if event.get('message',{}).get('id')=='MSG_WRITE']
     selected=[m for m in messages if m.get('Text')=='' or m.get('Text','').startswith('EV:')

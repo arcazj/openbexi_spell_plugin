@@ -8,8 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'distribution'))
 from run_language_regressions import validate_report
 from installed_provenance import verify_capture
-from limit_telemetry_sources import wheel_sources
-from openbexi_dss_proxy.provenance import verify as verify_driver
+from limit_telemetry_sources import wheel_sources, verify_driver_capture
 
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 read=lambda p:json.loads(p.read_bytes())
@@ -22,7 +21,6 @@ def evidence(path,image,count,native_wheel,driver_wheel):
     native=wheel_sources(native_wheel);driver=wheel_sources(driver_wheel)
     manifest=json.loads(native['spell_native/manifest.json'])
     recipes=manifest['composition']['native']['recipes']
-    driver_proof=verify_driver(driver.__getitem__,recipes)
     expected_host={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
     captured=None
     for name,row in raw['checks'].items():
@@ -34,7 +32,7 @@ def evidence(path,image,count,native_wheel,driver_wheel):
         integrated=runtime['integrated'];verify_capture(integrated,raw['inputs'])
         assert integrated['manifest']==manifest
         assert integrated['manifest_sha256']==hashlib.sha256(native['spell_native/manifest.json']).hexdigest()
-        assert integrated['driver_composition']==driver_proof
+        verify_driver_capture(driver,recipes,integrated['driver_composition'])
         if captured is not None:assert integrated==captured
         captured=integrated
         transcript=read(directory/'transcript.json')

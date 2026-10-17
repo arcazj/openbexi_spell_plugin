@@ -41,6 +41,7 @@ import procedure_library_patches
 import prompt_complete_patches
 import prompt_empty_option_patches
 import event_text_patches
+import event_empty_native_patches
 import memory_command_results_patches
 import notification_patches
 import prompt_control_patches
@@ -98,6 +99,7 @@ RECIPE_NAMES = (
     'ranging_reopen_patches.py', 'memory_feature_patches.py', 'memory_ranging_patches.py',
     'prompt_complete_patches.py', 'event_text_patches.py', 'memory_command_results_patches.py',
     'prompt_empty_option_patches.py',
+    'event_empty_native_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -112,7 +114,8 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             *prompt_timeout_patches.PREIMAGES,
                             *legacy_compare_patches.PREIMAGES,
                             *proc_dictionary_patches.PREIMAGES,
-                            *prompt_control_patches.PREIMAGES, *prompt_complete_patches.PREIMAGES))))
+                            *prompt_control_patches.PREIMAGES, *prompt_complete_patches.PREIMAGES,
+                            *event_empty_native_patches.PREIMAGES))))
 PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
                   user_database_patches, database_values_patches, notification_patches, value_units_patches,
                   scdb_patches, timing_patches, send_verify_patches, rng_patches,
@@ -300,6 +303,10 @@ def apply_native_tree(source, archive, output):
         before = patched[name]
         patched[name] = stage('prompt_empty_option_patches.py', name, before,
             prompt_empty_option_patches.apply(name, before))
+    for name in event_empty_native_patches.PREIMAGES:
+        before = patched.get(name, ported[name])
+        patched[name] = stage('event_empty_native_patches.py', name, before,
+            event_empty_native_patches.apply(name, before))
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'
