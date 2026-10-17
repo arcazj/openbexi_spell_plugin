@@ -1,56 +1,41 @@
 # Full v0.5 inventory
 
-The release remains open. `inventory.json` restores all 763 original LRM rows,
-including their identities, page references and historical 195 ADAPTED / 79
-PARTIAL / 489 GAP classifications. Its allocation source SHA-256 is
-`694a7a5de3a72622f7ca6c6bec3b4326577f0b832821f00b27b007b48ab23573`.
-These historical labels do not assert compatibility with the new native runtime.
+All **763 original LRM requirements are qualified; none remain open**.
+`inventory.json` preserves every original identity, page reference and historical
+classification. `coverage.json` binds each requirement to independent positive,
+boundary, failure and recovery evidence. Historical labels alone do not qualify
+behavior.
 
-`coverage.json` allocates every row to its original work package. Qualification
-requires positive, boundary, failure and recovery reports bound to exact input
-hashes and the native image. A report identifies its independent oracle and
-actual contract. Missing rows, duplicate allocations, stale inputs, missing
-dimensions and failing reports cannot pass the release gate.
+The [acceptance record](../docs/V05_CONFORMANCE_QUALIFICATION.json) binds all
+61 native suites (2,157 raw checks) to one installed runtime. Missing rows,
+changed inputs, incomplete dimensions or failing dependencies reject acceptance.
 
 ```powershell
 python conformance/check.py --output .qualification/v0.5/conformance-gate.json
 ```
 
-Exit 1 means the release is still open; it is currently the expected result.
-Current qualification totals **573 rows, with 190 open**. The
-[current checkpoint](../docs/LANGUAGE_CHECKPOINT.json) binds all 48 native suites
-(1,932 raw checks) to the same rebuilt DSS image. The
-[composed command/display evidence](evidence/command_display_composed.json)
-qualifies 50 additional requirements after independently replaying the source
-corrections and checking actual RPC, SQLite, notification and output artifacts.
-Full v0.5/v0.6 acceptance remains false.
+The accepted v0.5 gate exits 0. Final distribution and installed host workflows
+remain v0.6 work, with the declared GENERIC simulator and platform boundaries.
 
-| Package | Qualified / inventory | Evidence |
-| --- | --- | --- |
-| TIME | 42 / 42 | 168 native checks |
-| COMMON | 49 / 66 | Policy, IPC silence, scheduler, ValueType/Units, Wait and RESEND |
-| PY | 122 / 122 | Python sections, SCDB method, database octal and native legacy comparison |
-| DATA | 72 / 94 | Shared context/CAS, typed DTA, GDB, read-only SCDB and atomic user dictionaries |
-| FILES | 45 / 45 | Original filesystem and existing GENERIC shared resources |
-| FLOW | 36 / 51 | Native flow, child arguments, return and execution clauses |
-| UI | 51 / 60 | Prompt IPC/timed defaults, Event example and callable Notify |
-| OBS | 88 / 104 | Telemetry acquisition/comparison and actual binary DSS |
-| CMD | 47 / 66 | 54 native assertions; bounded construction, sequential Send and confirmation |
-| LIMIT | 18 / 70 | 79 native assertions through actual GENERIC ground limits |
-| SPECIAL | 3 / 43 | Baseband/antenna catalogs; remaining family contracts open |
+| Package | Qualified / inventory |
+| --- | --- |
+| CMD | 66 / 66 |
+| COMMON | 66 / 66 |
+| DATA | 94 / 94 |
+| FILES | 45 / 45 |
+| FLOW | 51 / 51 |
+| LIMIT | 70 / 70 |
+| OBS | 104 / 104 |
+| PY | 122 / 122 |
+| SPECIAL | 43 / 43 |
+| TIME | 42 / 42 |
+| UI | 60 / 60 |
 
-The [page-79 scope resolution](DATABASE_SCOPE.md) qualifies `SCDB.has_key`;
-Python built-in dictionary compatibility is not inferred. The page-83 `035`
-requirement describes database input; Python procedure-source octal syntax is
-separate and remains unsupported.
-
-See [PY](python.md), [DATA/FILES](DATA_FILES.md), [DTA](DTA.md), [OBS](OBS.md),
-[FLOW](FLOW.md), [UI](UI.md) and [CMD](CMD.md).
-The [previous combined checkpoint](../docs/V05_CONFORMANCE_QUALIFICATION.json)
-retains the historical 470-row artifact and baseline evidence.
-It explicitly leaves full v0.5 and dependent v0.6 acceptance false. Passing
-section evidence must recursively depend on supported child behavior; Python 2
-spelling rejection cannot qualify a parent section.
+Manual/source decisions remain in their family reports, including
+[page-79 SCDB scope](DATABASE_SCOPE.md), database input octal, native legacy
+comparison spelling and special-service extension contracts. The
+[historical qualification](../distribution/evidence/pre-v05-qualification.json)
+retains its original 470-row evidence and limitations.
 
 ## Reproduce the TIME milestone
 
@@ -101,8 +86,8 @@ oversized and boolean values before sending an RPC. The separate native driver
 acceptance test uses original models and actual binary DSS receipts across two
 fresh runs. This closes that defect, not the full cross-family Timeout modifier.
 
-v0.6 depends on the full v0.5 release gate. The current frozen composition passes
+The full v0.5 gate now passes. Its frozen composition also passes
 two independent offline native builds, identical complete wheel bytes, eight
 fresh-install/removal checks per build, and installed host/DSS image provenance.
-Versioned upgrades, final host workflows and the remaining language contracts
-still prevent release acceptance. See [distribution progress](../docs/V06_PROGRESS.md).
+Versioned upgrades, final host workflows and production packaging
+remain required for v0.6 acceptance. See [distribution progress](../docs/V06_PROGRESS.md).

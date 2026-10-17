@@ -1,327 +1,192 @@
 {
-  "schema": 3,
-  "v05_accepted": false,
+  "schema": 4,
+  "release": "v0.5",
+  "v05_accepted": true,
   "v06_accepted": false,
+  "stable_v1_accepted": false,
   "total": 763,
-  "qualified": 470,
-  "open": 293,
-  "scope": "Source-composed native/Python/driver wheel with all selected native language reports on one exact DSS image; imported PY evaluation excludes generic checkpoint semantics.",
-  "runtime_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
-  "dss_development_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
-  "integrated_checkpoint": {
-    "path": "distribution/evidence/next-integrated-conformance.json",
-    "sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
-    "lf_sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
-    "bytes": 37265
-  },
-  "build_checkpoint": {
-    "path": "distribution/evidence/next-integrated-rebuild.json",
-    "sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
-    "lf_sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
-    "bytes": 9587
-  },
-  "reports": {
-    "data": {
-      "path": "conformance/evidence/data.json",
-      "sha256": "d3b6ccc6b5a2759459a38bf9ce041a6ac44dae182b91e867a9a2a730ccfeaaa3",
-      "lf_sha256": "d3b6ccc6b5a2759459a38bf9ce041a6ac44dae182b91e867a9a2a730ccfeaaa3",
-      "bytes": 106395,
-      "checks": 24
-    },
-    "files": {
-      "path": "conformance/evidence/files.json",
-      "sha256": "2a49b1bfbb1069f99cb00d369ce7786ffb0cdf94368e36b4617c9d07261f7163",
-      "lf_sha256": "2a49b1bfbb1069f99cb00d369ce7786ffb0cdf94368e36b4617c9d07261f7163",
-      "bytes": 112192,
-      "checks": 36
-    },
-    "data-race": {
-      "path": "conformance/evidence/data-race.json",
-      "sha256": "a4b22fac21997c554cfd7dd4f236ef6c001617d40b28f8233a58f5a0338811db",
-      "lf_sha256": "a4b22fac21997c554cfd7dd4f236ef6c001617d40b28f8233a58f5a0338811db",
-      "bytes": 98243,
-      "checks": 4
-    },
-    "flow": {
-      "path": "conformance/evidence/flow.json",
-      "sha256": "0d7f70dfdc679cf24d2a71f93c5cec6df0ec833a14014217704c0c9b5e6a06c6",
-      "lf_sha256": "0d7f70dfdc679cf24d2a71f93c5cec6df0ec833a14014217704c0c9b5e6a06c6",
-      "bytes": 183849,
-      "checks": 36
-    },
-    "common-silence": {
-      "path": "conformance/evidence/common-silence.json",
-      "sha256": "002c67c842480ca2b8b9b25a1d3b35dd593b51e981b3834ca329f9a450a0d48f",
-      "lf_sha256": "002c67c842480ca2b8b9b25a1d3b35dd593b51e981b3834ca329f9a450a0d48f",
-      "bytes": 104663,
-      "checks": 4
-    },
-    "dta": {
-      "path": "conformance/evidence/dta.json",
-      "sha256": "1b222e45aae8505679c029d02b5f1ea91d151d8f3fc02a32cbdbc7e785559ffc",
-      "lf_sha256": "1b222e45aae8505679c029d02b5f1ea91d151d8f3fc02a32cbdbc7e785559ffc",
-      "bytes": 588004,
-      "checks": 68
-    },
-    "ui": {
-      "path": "conformance/evidence/ui.json",
-      "sha256": "bf3498ce48de41d8767ca0533460702505044b0f9cf4a432e6b9706437e8ce25",
-      "lf_sha256": "bf3498ce48de41d8767ca0533460702505044b0f9cf4a432e6b9706437e8ce25",
-      "bytes": 177876,
-      "checks": 62
-    },
-    "dta-ipc": {
-      "path": "conformance/evidence/dta-ipc.json",
-      "sha256": "976a8b296a85ff1244b465418291ebd5dfb02cef763cd63e5577547af5efb0c5",
-      "lf_sha256": "976a8b296a85ff1244b465418291ebd5dfb02cef763cd63e5577547af5efb0c5",
-      "bytes": 614892,
-      "checks": 64
-    },
-    "time": {
-      "path": "conformance/evidence/time.json",
-      "sha256": "3e9b9bd9f2ad173e159e1a25394a6590319e8c9722d02249dd844db459527cf2",
-      "lf_sha256": "3e9b9bd9f2ad173e159e1a25394a6590319e8c9722d02249dd844db459527cf2",
-      "bytes": 137784,
-      "checks": 168
-    },
-    "limit": {
-      "path": "conformance/evidence/limit.json",
-      "sha256": "cb9245ceb0fbb9c71dce3b63430c656346a434e4d92396ac45213a0b868e7b01",
-      "lf_sha256": "cb9245ceb0fbb9c71dce3b63430c656346a434e4d92396ac45213a0b868e7b01",
-      "bytes": 7648830,
-      "checks": 144
-    },
-    "notification": {
-      "path": "conformance/evidence/notification.json",
-      "sha256": "2643b38ea45f9ed150320a311b0d01dc2d7a9ded8bf6902bed4bb13e7e30a1f7",
-      "lf_sha256": "2643b38ea45f9ed150320a311b0d01dc2d7a9ded8bf6902bed4bb13e7e30a1f7",
-      "bytes": 256665,
-      "checks": 64
-    },
-    "resource": {
-      "path": "conformance/evidence/resource.json",
-      "sha256": "e054d024812e635c5cf52d0460a4c7c28ffb9e5c3aca299778c342bd573794cb",
-      "lf_sha256": "e054d024812e635c5cf52d0460a4c7c28ffb9e5c3aca299778c342bd573794cb",
-      "bytes": 1456529,
-      "checks": 12
-    },
-    "database_import": {
-      "path": "conformance/evidence/database_import.json",
-      "sha256": "89c6231ecaca442f43bf11db80f106517b84f8f38fae6e56879e6f55578e70d3",
-      "lf_sha256": "89c6231ecaca442f43bf11db80f106517b84f8f38fae6e56879e6f55578e70d3",
-      "bytes": 108625,
-      "checks": 16
-    },
-    "user_database": {
-      "path": "conformance/evidence/user_database.json",
-      "sha256": "7b3a825b55df7a85d05dd7b5effb832e898d5313fa2c26adba38fe1acc85674d",
-      "lf_sha256": "7b3a825b55df7a85d05dd7b5effb832e898d5313fa2c26adba38fe1acc85674d",
-      "bytes": 218178,
-      "checks": 22
-    },
-    "python": {
-      "path": "conformance/evidence/python.json",
-      "sha256": "a52db1f6ad433ed3b2d63f40c09ba86846e17200aed1d1780d07c66eeb7185a6",
-      "lf_sha256": "a52db1f6ad433ed3b2d63f40c09ba86846e17200aed1d1780d07c66eeb7185a6",
-      "bytes": 358933,
-      "checks": 488
-    },
-    "cmd": {
-      "path": "conformance/evidence/cmd.json",
-      "sha256": "f98b60e9e5dbaaf88d59b066975dcab8d57dbc5fda650c5ee7a005f28d7311bb",
-      "lf_sha256": "f98b60e9e5dbaaf88d59b066975dcab8d57dbc5fda650c5ee7a005f28d7311bb",
-      "bytes": 18122755,
-      "checks": 66
-    },
-    "common": {
-      "path": "conformance/evidence/common.json",
-      "sha256": "aba3ad89c77b425ec31d6cb3fc12321762f3be7274f6b6323e7778aa4f42a712",
-      "lf_sha256": "aba3ad89c77b425ec31d6cb3fc12321762f3be7274f6b6323e7778aa4f42a712",
-      "bytes": 124874,
-      "checks": 44
-    },
-    "events": {
-      "path": "conformance/evidence/events.json",
-      "sha256": "cb9ae60239366327b1c64c69a114e3c8ba4a613f8bc25f560c4043dcce9bfbc4",
-      "lf_sha256": "cb9ae60239366327b1c64c69a114e3c8ba4a613f8bc25f560c4043dcce9bfbc4",
-      "bytes": 3753595,
-      "checks": 8
-    },
-    "scheduler": {
-      "path": "conformance/evidence/scheduler.json",
-      "sha256": "48c5468645d220bfa42bc6c069eb6b82b24c13a7b3623fc9cf5ab04ba8a7480a",
-      "lf_sha256": "48c5468645d220bfa42bc6c069eb6b82b24c13a7b3623fc9cf5ab04ba8a7480a",
-      "bytes": 465042,
-      "checks": 9
-    },
-    "value_units": {
-      "path": "conformance/evidence/value_units.json",
-      "sha256": "f369ea976a762834c1e1872d0b8af9b400b812d70f124895aaad9e18debdefcd",
-      "lf_sha256": "f369ea976a762834c1e1872d0b8af9b400b812d70f124895aaad9e18debdefcd",
-      "bytes": 16901883,
-      "checks": 38
-    },
-    "obs": {
-      "path": "conformance/evidence/obs.json",
-      "sha256": "2296b76f98fa02c29306c9f894bb35588b220932834509a2728bf02263d1c2d4",
-      "lf_sha256": "2296b76f98fa02c29306c9f894bb35588b220932834509a2728bf02263d1c2d4",
-      "bytes": 11211445,
-      "checks": 253
-    }
-  },
-  "checks": {
-    "raw_native": 1439,
-    "host": 10
+  "qualified": 763,
+  "open": 0,
+  "scope": "All original 763 inventory requirements with independently reviewed positive, boundary, failure and recovery evidence on one installed GENERIC simulator runtime.",
+  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "host_image": "sha256:72323298d1afb863ea5779bf1f8c816d2c15060f6ab2ebd78d75f80721a4b7d1",
+  "source_commit": "28237b12cb43c453a3fc221b842b283ce9b482b5",
+  "inventory": {
+    "path": "conformance/inventory.json",
+    "sha256": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
+    "bytes": 157636
   },
   "coverage": {
     "path": "conformance/coverage.json",
-    "sha256": "24223c96787d1617b19e456e7a2386a9f9c8b6d4c0be367de7be94a68f539dc6",
-    "lf_sha256": "24223c96787d1617b19e456e7a2386a9f9c8b6d4c0be367de7be94a68f539dc6",
-    "bytes": 573174
+    "sha256": "c8f4708f2a0269b5f9450fc18f00d2e87adb188492129f42c6428cd11acc0258",
+    "bytes": 815752
   },
   "gate": {
-    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/gate.json",
-    "sha256": "25e12b63f3191ada786656725bb89aca0328aefb8b9f8d6914848fa936ba5cf2",
-    "lf_sha256": "25e12b63f3191ada786656725bb89aca0328aefb8b9f8d6914848fa936ba5cf2",
-    "bytes": 65101
+    "release": "v0.5",
+    "accepted": true,
+    "total": 763,
+    "counts": {
+      "QUALIFIED": 763
+    },
+    "open_rows": [],
+    "v0.6_dependency_satisfied": true
   },
-  "previous_checkpoint": {
-    "git_commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
-    "path": "distribution/evidence/integrated-rebuild.json",
-    "sha256": "ea8e09bf50aac4d8a9fe397d5f5c71a922b06bdfc42b0a5dd1fe0840e40aca93"
+  "final_validation": {
+    "path": ".qualification/v05-release-validation/6ecc3df04b8547c3bb5886c88f7c4e13/result.json",
+    "sha256": "3297b87a3a3bf3ea5fb2fc1f564cc2faa773bccaba65f504db42baed8f53915c",
+    "bytes": 7816
   },
-  "retained_failures": {
-    "scheduler_recorder_schema": {
-      "evidence": {
-        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/scheduler-recorder-rejection.json",
-        "sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
-        "lf_sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
-        "bytes": 794
-      },
-      "scope": "Strict gate rejected mislabelled self-referential observation links. Recorder correction separates and validates them; native raw observations are unchanged."
-    },
-    "time_startup": {
-      "evidence": {
-        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/time/4740896e84b047129b9c210495767387/time-contracts.json",
-        "sha256": "53aa0e351c61169a7cb7d12e4ae24f0382d8e09d4fb06aaba498b14f5d77d00e",
-        "lf_sha256": "677941b64f31e6667d921064aacea23096577c6bed3c4f3622c783c68be549f4",
-        "bytes": 1546
-      },
-      "scope": "Native bridge ended before language execution; cause unresolved. Unchanged subsequent direct startup control and TIME168 run passed. No source/deadline changes."
-    },
-    "value_type_setup": {
-      "evidence": {
-        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/value-units/d46c0fc4dfad413a8473afa2380264d9/result.json",
-        "sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
-        "lf_sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
-        "bytes": 16837475
-      },
-      "scope": "One read-only CreateTcItem ground.snapshot HTTP timeout; no send/effect. Other37 checks passed. The complete unchanged38-check rerun passed. Underlying timeout cause is unproven."
-    },
-    "race_harness_import": {
-      "evidence": {
-        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/data-race/46edea35088744788a6aae17a87b44be/failure.json",
-        "sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
-        "lf_sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
-        "bytes": 1254
-      },
-      "scope": "Generated inspect.py shadowed stdlib inspect during provenance startup; no behavior executed. Rename-only harness commit9b729d0 resolves collision; real race4 then passes."
-    },
-    "recorder_lambda": {
-      "evidence": {
-        "path": "distribution/evidence/recorder-lambda-incident.json",
-        "sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
-        "lf_sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
-        "bytes": 26687
-      },
-      "scope": "Unresolved old49667 fresh ON_LINE warmstart lambda exception/handler counterexample. Current PY imported-evaluation and FLOW live callback claims exclude generic recorder recovery."
-    }
+  "native_sequence": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\language-regressions\\a631a462f6c1405b9e5b785bef953946\\result.json",
+    "sha256": "248f36c45a7b830d0cb2339e7b2e80cf314993706fd4f30fc9d1fc8c654fa007"
   },
-  "remaining": [
-    "293 original requirements remain open; no release/version/tag promotion",
-    "Recorder lambda/exception-handler warmstart failure remains unresolved",
-    "Two initial transient startup/setup failures retained; underlying causes unresolved",
-    "Final installed desktop workflows, versioned upgrades and supported-platform matrix remain unqualified",
-    "Frozen compiler-bearing Linux x86_64 CPython3.13.15 ASan/UBSan image; leak sanitizer disabled",
-    "Retained toolchain is pinned; apt reconstruction is not snapshot locked"
-  ],
-  "usable_host_candidate": {
-    "result": {
-      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/result.json",
-      "sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
-      "lf_sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
-      "bytes": 48390
-    },
-    "inputs": {
-      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/inputs.json",
-      "sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
-      "lf_sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
-      "bytes": 9572
-    },
-    "installed_audit": {
-      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/installed-record.json",
-      "sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
-      "lf_sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
-      "bytes": 37493
-    },
-    "host": {
-      "tag": "openbexi-spell-host:v06-integrated-97bb64016332",
-      "image": "sha256:95209eb11db106163c1a2e90b8a5cb63c60e5c613f0b93c9dfb8ad4d17a13853"
-    },
-    "dss": {
-      "tag": "openbexi-spell-dss:v06-integrated-97bb64016332",
-      "image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342"
-    },
-    "native_wheel": {
-      "name": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
-      "sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
-      "record_files_verified": 442
-    },
-    "driver_wheel": {
-      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
-      "sha256": "6e491863da48d86daa7160a47f9b43870b7a272e90fda56d42f57262dc3069f5",
-      "record_files_verified": 58
-    },
-    "installed_distributions": {
-      "openbexi-spell-source": {
-        "version": "0.3.0",
-        "record_files_verified": 447
-      },
-      "openbexi-spell-dss": {
-        "version": "0.4.0",
-        "record_files_verified": 61
-      }
-    },
-    "bridge_sha256": "4ab8c8aeb824db1a8390a235108cc572c64b50fef71fb70c9630ce3b74041298",
-    "driver_manifest_sha256": "11e64ca4c39f4ce1873c07db0131f777ee57571b5b935837cb60ddbc926b079a",
-    "logs": {
-      "host_runtime": {
-        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/host_runtime-build.log",
-        "sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
-        "lf_sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
-        "bytes": 4764
-      },
-      "driver_plugin": {
-        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/driver_plugin-build.log",
-        "sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
-        "lf_sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
-        "bytes": 1912
-      }
-    }
+  "raw_native_checks": 2157,
+  "native_suites": 61,
+  "native_pair": {
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\result.json",
+    "sha256": "4a2108cf525651dd666b7624976c76da5030d03642d7c3f6989c05057babe5b3"
+  },
+  "driver_pair": {
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\driver\\1a45e14604f449be89c734d3b42bf6f2\\result.json",
+    "sha256": "1d7ee7fdc7030760d19e2cd187fe565b16956ad3efa85b1ef0fe5c0bc448ffdc"
+  },
+  "fresh_images": {
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\images\\2de3a8de056f42f9bfcccbe282d8deba\\result.json",
+    "sha256": "9215b2df01879a86c0f7b87d303d8e1abb3eb8a319e5145900c6481ca3b33c03"
+  },
+  "source_review": {
+    "path": "distribution/evidence/final-language-source-review.json",
+    "sha256": "406affc4aecba4b22170dd4daddeaa5de8d8558db71ee7fa43b1607da21e3db3",
+    "bytes": 21446
+  },
+  "qualified_sources": {
+    "path": "distribution/evidence/followup-qualified-sources.json",
+    "sha256": "d6a6b482b80e00f682881a23139a839549166d7b01b48d6e0a8bcd9e12b41118",
+    "bytes": 25791
+  },
+  "refreshed_baseline": {
+    "path": "C:\\obspell_v05_composed\\distribution\\evidence\\v05-refreshed-language.json",
+    "sha256": "ec871f07338bba8c78240027604c4b3a9f52e5e35aa0c07830c706fb94db3473"
+  },
+  "promotions": {
+    "path": "C:\\obspell_v05_composed\\distribution\\evidence\\v05-language-promotions.json",
+    "sha256": "56bc13fd6d01fd1bd2b42af9992b8f10ac12a937109d9c003d11febb2f53bbec"
   },
   "repository_tests": {
-    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/next-checkpoint-package.xml",
-    "sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
-    "lf_sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
-    "bytes": 28701,
-    "tests": 224,
-    "failures": 0,
-    "errors": 0
+    "cases": 1566,
+    "junit": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v05-release-validation\\6ecc3df04b8547c3bb5886c88f7c4e13\\all-tests.xml",
+      "sha256": "179fb99f17a1b92c9b937858928e60fc83e07ff9a8235f311cb3c3727a83a20d"
+    }
   },
-  "fresh_git_index_checkout_gate": {
-    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/index-check-8e27db74e90c4c85b8d53f46f3480fe1/result.json",
-    "sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
-    "lf_sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
-    "bytes": 524
+  "prompt_controls": {
+    "path": "conformance/evidence/prompt_controls.json",
+    "sha256": "bb7376ac9abd981c427ba6cf436e848051518eec9b0eee7390f98dda956c6666",
+    "bytes": 6160
+  },
+  "child_lifecycle": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\child-regressions\\348b4bb0e8294793834dc228228015e6\\result.json",
+    "sha256": "22b61dd35db957ec2a3845ff1ae74e217582aca4cf203efe3a3be70dc8556068"
+  },
+  "artifacts": {
+    "native_wheel": {
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\distribution\\wheels\\openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "cab6f5443be7924763cc329e0c9042c7f9891522b11922e8ad76a81946b0788c",
+      "bytes": 52076433
+    },
+    "driver_wheel": {
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\driver\\1a45e14604f449be89c734d3b42bf6f2\\a\\wheels\\openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "eacf4abe4989924168565549b3cfe5907a639c6e67a030fe50afa8a5334c4ffe",
+      "bytes": 316500
+    },
+    "evidence_archive": {
+      "path": ".qualification/v05-final-archive/7a1f7224be2b4d1f943855096a44e346/portable/openbexi-spell-v0.5-evidence.tar.gz",
+      "sha256": "8ea964d6662fb04b8c698182b5ff802509f3c201631bdf68bbc5340969a27fc9",
+      "bytes": 3568718001
+    },
+    "evidence_manifest": {
+      "path": ".qualification/v05-final-archive/7a1f7224be2b4d1f943855096a44e346/portable/MANIFEST.json",
+      "sha256": "671b7f960d8b6ca3a00d8d2b109a56c0817dc5aa6e227e98b98a7e52178298b0",
+      "bytes": 28988117
+    },
+    "runtime_image_archive": {
+      "path": ".qualification/v05-runtime-export/a788964729ef4173b461cc853552a0d1/openbexi-spell-v0.5-dss-runtime.tar.gz",
+      "sha256": "7a96f83797307ccef493b5277040a565e888689a8e3d0853a9cc3168804b6363",
+      "bytes": 364945918
+    },
+    "runtime_archive_verification": {
+      "path": ".qualification/v05-runtime-export/a788964729ef4173b461cc853552a0d1/archive-verification.json",
+      "sha256": "19fd886b0dd3107594d278ec3d03d97727c79db7f198b584bcb51f3f1f64a8d0",
+      "bytes": 468
+    }
+  },
+  "evidence_archive_verification": {
+    "path": ".qualification/v05-final-archive/7a1f7224be2b4d1f943855096a44e346/portable/result.json",
+    "sha256": "61ad485aad4ce4f1e895188e8f0d8505ba87a353a675a8a9576b440df51ad9f0",
+    "bytes": 17576
+  },
+  "limitations": [
+    "Linux x86_64 / Debian 13 / GIL-enabled CPython 3.13.15 diagnostic ASan/UBSan profile; compiler present and leak sanitizer disabled.",
+    "GENERIC simulator and explicitly installed extension fixtures; mission/vendor profiles require their own qualification.",
+    "Final production packaging, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm workflows and supported-platform matrix remain v0.6 work.",
+    "Operational security, capacity and recovery qualification remains v0.7 work; stable v1.0 is not accepted.",
+    "Legacy <> applies to native procedure compilation; imported modules and eval/compile retain CPython syntax.",
+    "Native service checkpoint resumption remains explicitly unsupported; service cold restart and live reconnection retain their declared scope.",
+    "Diagnostic wheels retain source 0.3.0 and driver 0.4.0 version labels; release v0.5 records language qualification. Distribution versioning is a v0.6 gate.",
+    "Offline rebuilds use the retained toolchain digest; reconstruction of its apt inputs is not snapshot locked.",
+    "The archive preserves older failed/partial diagnostic reports but 32 pre-commit source snapshots were unavailable. MANIFEST.json identifies each gap; current acceptance inputs are fully captured and verified."
+  ],
+  "controller_clock_correction": {
+    "passed": true,
+    "incident": {
+      "path": "C:\\obspell_v05_composed\\distribution\\evidence\\v05-controller-clock-incident.json",
+      "sha256": "9b9ec47b4fc413cfab95eadc60bc9fe2742d3ca9c1c04433c63b3798a8522b7e"
+    },
+    "native_requalification": {
+      "command-catalog": {
+        "path": "C:\\obspell_v05_composed\\.qualification\\command-catalog\\d345dc4eca46415a97d585746935539d\\result.json",
+        "sha256": "d1fd085ba15ee263237f9240b76f8b299272aaeb436c48da30dec150ece2c7f4",
+        "checks": 11,
+        "source_inputs_verified": 139
+      },
+      "command-group": {
+        "path": "C:\\obspell_v05_composed\\.qualification\\command-group\\3e6cdf3925bc48eb904e6448ba71833c\\result.json",
+        "sha256": "9b3fa90dd651041d772dc6b026b390e90b22c0eb2592ebdecef449012879612c",
+        "checks": 19,
+        "source_inputs_verified": 140
+      }
+    },
+    "qualified_runtime_source_commit": "28237b12cb43c453a3fc221b842b283ce9b482b5",
+    "fresh_sequence": true
+  },
+  "wait_type_oracle_correction": {
+    "passed": true,
+    "incident": {
+      "path": "C:\\obspell_v05_composed\\distribution\\evidence\\v05-wait-type-oracle-incident.json",
+      "sha256": "79c4333994eddb24d3a5ae0c0a7cdc5bddbd6c66efd73f2fbd597f14577f4101"
+    },
+    "native_requalification": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\timing\\d2282ddd6f044a2ea814249e9df9b20d\\result.json",
+      "sha256": "11329c364a6e84bc818eeb98a0de23e658ed254845391299afa88d99bb6da11a",
+      "checks": 36,
+      "source_inputs_verified": 138
+    }
+  },
+  "ipc_error_routing_correction": {
+    "passed": true,
+    "incident": {
+      "path": "C:\\obspell_v05_composed\\distribution\\evidence\\v05-ipc-error-routing-incident.json",
+      "sha256": "e9d15040f0ccbac8d3d368eaa25c8e43429f3e5f92bd3a06a1ecdc8f895ce2ec"
+    },
+    "installed_collision": {
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\installed-ipc-collision.json",
+      "sha256": "e7493a9ba8954ed0eb4ad7dd6f163045a770b59be4c50e7ed812a0cb519bcd4f"
+    },
+    "native_requalification": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\9b72992bd5234c3e90cca9d2a1983374\\result.json",
+      "sha256": "02297eafe6dbb8a86fa8681cd370fa9189d67a2373dfab4e853527027e272012",
+      "checks": 4,
+      "source_inputs_verified": 124
+    }
   }
 }

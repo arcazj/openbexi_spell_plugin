@@ -12,15 +12,13 @@ remaining limits. Retain detailed machine-readable evidence separately.
 | v1.0.0-rc1 | Frozen source/artifact set; end-to-end regression, operational and installation gates pass; concise installation/recovery documentation. |
 | v1.0.0 | Release-candidate defects resolved and affected gates repeated; exact artifact hashes and accepted scope recorded; stable tag on master. |
 
-Current accepted scope ends at the v0.4 GENERIC simulator profile. The
-[current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **573 requirements with
-190 open**. All 48 native suites pass on the rebuilt runtime. Final installed-host
-workflows remain open; passing prerequisites do not accept their parent release.
+The [v0.5 acceptance record](V05_CONFORMANCE_QUALIFICATION.json) qualifies all
+763 original language requirements with none open. All 61 native suites pass
+on one rebuilt runtime, with independent source and behavior reviews.
 
-Next language work covers full limit definitions, remaining telemetry/modifier
-combinations, broader command contracts, database, procedure and special-service
-contracts. Each increment requires independent positive, boundary, failure and
-recovery evidence. Preserve all 763 original requirements and retained failures.
+Next is v0.6: final reproducible packages, versioned upgrades, supported platforms
+and actual installed OpenBEXI, IntelliJ IDEA and PyCharm workflows. Preserve the
+GENERIC simulator scope, all 763 original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to
 run the combined runtime sequence. It retains each raw report and rejects failed

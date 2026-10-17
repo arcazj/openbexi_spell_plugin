@@ -1,10 +1,11 @@
 # v0.6 distribution prerequisites
 
-The [current checkpoint](LANGUAGE_CHECKPOINT.json) qualifies **573 of 763**
-requirements, with **190 open**. All 48 native suites (1,932 raw checks), focused
-prompt/child controls, two identical offline builds and fresh install/removal
-checks pass. Final installed-host workflows, upgrades, production packaging and
-full v0.5/v0.6 acceptance remain open. The narratives below retain earlier artifacts.
+The [v0.5 acceptance record](V05_CONFORMANCE_QUALIFICATION.json) qualifies all
+763 original requirements with none open. All 61 native suites (2,157 raw
+checks), focused prompt/child controls, identical offline builds and fresh
+installation/removal checks pass. Final installed-host workflows, versioned
+upgrades, production packaging and the supported-platform matrix remain v0.6
+work. The historical narratives below retain their original artifacts and limits.
 
 ## Historical 470-requirement checkpoint
 
@@ -12,7 +13,7 @@ v0.6 is not accepted. The earlier checkpoint has **470 qualified / 293 open**
 original requirements. It retains the preceding 422 qualified rows and adds 48
 bounded clauses after actual integrated native runs. Artifact versions and
 accepted Docker tags remain unchanged. Both release flags remain false in the
-[current conformance manifest](V05_CONFORMANCE_QUALIFICATION.json) and
+[historical conformance manifest](../distribution/evidence/pre-v05-qualification.json) and
 [distribution manifest](V06_QUALIFICATION.json).
 
 The checked composition now includes DATA, UI, FLOW, DTA, TIME, OBS, CMD,

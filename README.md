@@ -16,21 +16,15 @@ that runtime to durable Development and approved immutable Execution, with
 read-only Monitoring, fenced binary effects, optional Kafka telemetry,
 whole-container pause and recovery without replay. See
 [the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
-simulator scope. Full SPELL conformance and distribution remain v0.5 and v0.6.
+simulator scope.
 
-Download the accepted [v0.4.0 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.4.0),
-published with the exact qualified wheels, installation instructions and checksums.
-
-The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) qualifies **573 of 763**
-requirements; **190 remain open**. All 48 native suites pass (1,932 raw checks)
-on freshly installed packages from identical offline rebuilds. This increment
-qualifies command timing, load-only operation, delays, Unicode metadata,
-catalogue sequences, critical-command confirmation, Group/Block execution,
-and GENERIC displays/workspaces with PS and VECTOR output. Group and Block
-results preserve each member's actual execution state, including partial failure.
-All previous 523 requirements, prompt/child controls and install/removal gates
-pass on the same runtime. Full release and final host gates remain open; see
-[the release plan](docs/STABLE_RELEASE_PLAN.md).
+The [v0.5 language qualification](docs/V05_CONFORMANCE_QUALIFICATION.json)
+passes **all 763 requirements with none open**. All 61 native suites pass
+(2,157 raw checks) on freshly installed, reproducibly built packages. See the
+[release notes](docs/V05_RELEASE_NOTES.md) and
+[v0.5 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.5).
+Final distribution and installed host workflows remain v0.6 work; the
+[release plan](docs/STABLE_RELEASE_PLAN.md) records the remaining gates.
 
 ## Native desktop and CLI
 

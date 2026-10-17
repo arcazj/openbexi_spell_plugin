@@ -6,22 +6,24 @@ Read its `docs/RESUME_V04.md` before continuing. User requirement: preserve
 it is no longer needed. Preserve the external legacy archive and local
 qualification artifacts as well.
 
-Current state: the Apache bounded SDK/DSS remains the v0.1.0 desktop testing
-baseline. The separate original-source native foundation is qualified at v0.2.0
-on Linux x86_64 / GIL-enabled CPython 3.13.15, including DTA/UTIL/EXC/WS,
-ordinary procedure checkpoint recovery and context/service lifecycle. See
-docs/NATIVE_PACKAGE.md and its exact acceptance manifest. Native service
-checkpoint resumption is explicitly unsupported and rejected before startup;
-service cold restart and live reconnection are qualified. The local Development
-host integration v0.3.0 is accepted in OpenBEXI, IntelliJ IDEA and PyCharm, with
-exact artifacts and scope in docs/HOST_QUALIFICATION.json. Continue with durable
-shared services and original DSS drivers in v0.4, then full inventory conformance
-and distribution through v0.6, then operational qualification and stable v1.0
-as specified in docs/STABLE_RELEASE_PLAN.md. Commit and push each accepted
-release to GitHub master with concise documentation. Local host acceptance does not establish
-full language compatibility. The subsequent v0.4 GENERIC DSS profile and IDE
-v0.3 durable authority are accepted in docs/DRIVER_QUALIFICATION.json. Resume at
-v0.5 full conformance, preserving the declared simulator-only driver boundaries.
+Current state: full v0.5 language conformance is accepted for all 763 original
+requirements, with none open. See docs/V05_CONFORMANCE_QUALIFICATION.json for
+the exact runtime, independently reviewed evidence, reproducible artifacts and
+declared Linux x86_64 / GIL-enabled CPython 3.13.15 GENERIC simulator scope.
+
+The earlier original-source native v0.2.0, local host v0.3.0 and GENERIC DSS
+drivers/modes v0.4.0 retain their own accepted artifacts and scope in
+docs/NATIVE_PACKAGE.md, docs/HOST_QUALIFICATION.json and
+docs/DRIVER_QUALIFICATION.json. The Apache bounded SDK/DSS remains the v0.1.0
+desktop testing baseline. Native service checkpoint resumption remains
+unsupported; service cold restart and live reconnection retain their scope.
+
+Continue with v0.6 production distribution, versioned upgrades, supported
+platforms and final installed OpenBEXI, IntelliJ IDEA and PyCharm workflows,
+then operational qualification and stable v1.0 as specified in
+docs/STABLE_RELEASE_PLAN.md. Preserve simulator-only driver boundaries and
+the neutral IDE's independent versioning. Commit and push each accepted release
+to GitHub master with concise documentation.
 
 Build SPELL as an independently installable plugin/library for openbexi_ide,
 PyCharm and IntelliJ IDEA, with DSS testing. Do not mix satellite dependencies or

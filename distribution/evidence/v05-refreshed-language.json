@@ -1,0 +1,673 @@
+{
+  "passed": true,
+  "scope": "Existing conformance coverage requalified on the combined runtime",
+  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "baseline_commit": "ffc6d660a111e9478f8a1d0280651f37d2dfb10d",
+  "sessions": [
+    {
+      "path": "C:\\obspell_v05_composed\\.qualification\\language-regressions\\a631a462f6c1405b9e5b785bef953946\\result.json",
+      "sha256": "248f36c45a7b830d0cb2339e7b2e80cf314993706fd4f30fc9d1fc8c654fa007"
+    }
+  ],
+  "raw_reports": {
+    "context-startup": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\context-snapshot-startup\\727396085038460eb84d621bf4c6cc17\\result.json",
+      "sha256": "856ac09008a1504f07cf734c16c3fbe8b7fc08798ff14e7a7ab89db132468e95"
+    },
+    "prompt-startup": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\prompt-startup\\c6b7b2351f874fc38a2bbc7df53f27e5\\result.json",
+      "sha256": "99d72dc1fd26978f34f63849fd885a68d37a1322b2ae4c3b5c446d98b284408d"
+    },
+    "data": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\data\\3360a980be4f4124812cadba143d942e\\result.json",
+      "sha256": "8e02d5f8e9818ef9d9033cd9902e7fc6d7a604fa6f1cba0e23c39d5988408b4d"
+    },
+    "files": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\files\\a2a527a56c264ef6bc9f7594236a1e29\\result.json",
+      "sha256": "46a8b29a756c5eb5f41ccfed43cb351fddd8fc122e859d75c87ed7d58825959b"
+    },
+    "data-race": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\data-race\\5d0e39e399b64f41a8061941510cbbbb\\result.json",
+      "sha256": "ced7e9dd645fbdf3b5ec865b94a3a0ba8ca48d198ebb54eb5f8dace8f38308a6"
+    },
+    "flow": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\flow\\517222ddfd8e4fc2add730a858344049\\result.json",
+      "sha256": "b89251c3d8f0a49d22ae3628315801ae84195d79223935aa005d168a004d179c"
+    },
+    "common-silence": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\common-silence\\d4c25573d6374b63a415fa3f09bd23fe\\result.json",
+      "sha256": "95d3390bce30769437af344ce884afa6324bdf6c3cec09b7904e1c7c599bd74b"
+    },
+    "resource": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\resource\\0d535756a3674e5e82a9472ac2bfdfe4\\result.json",
+      "sha256": "9ffcfb101b93fe7e077245370be68197d24e2d4e7114d19412b475a98215466a"
+    },
+    "database-import": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\database-import\\e2ec9caa3194488697939799a233843e\\result.json",
+      "sha256": "ca33cefc898c81217809472bb20e398f1fb0ccde18c54e042261278ae76ba5a4"
+    },
+    "database-values": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\database-values\\bf8f59eba7d84cb1a4daff6b5ce90b22\\result.json",
+      "sha256": "e5b39f3e03ea8b9dd523d82cb8ad25b789998faf86ff892a1e0a3113086daa86"
+    },
+    "database-formats": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\database-formats\\formats\\660ebcc4749b4b7a82dd6d58a26c8ca3\\result.json",
+      "sha256": "ba9c0449441190643a369fb7cb20390d70ff245a1915f4e6c9b1a4bdffd1d85a"
+    },
+    "user-database": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\user-database\\549bd5ab1c9d494db29aff50c6470efb\\result.json",
+      "sha256": "569af0c4dbed7a185738748d9961aa5698b88cc4242bf7a52a0372e3045d86be"
+    },
+    "manoeuvre": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\manoeuvre-candidate\\0e401973196745e482ebf57e406e5e84\\result.json",
+      "sha256": "5ce293acb99d904a4ab1a919974b21fe325c7fc6d61bf14645537f5b93ab6631"
+    },
+    "dta": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta\\1ee16d85902e4c79bd024ffc7acab234\\result.json",
+      "sha256": "0abe61ca526f3c0867dec8447bbb0a7411ef5ca97801284d5e61e9b5873776f7"
+    },
+    "ui": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\ui\\4e784ce2465844daa50bc6c9f4a09265\\result.json",
+      "sha256": "fc91a4a873d31b2a33d0d0f1cdb59c96b68ff9d1233f3e27a594ac8058c68b32"
+    },
+    "prompt-timeout": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\prompt-timeout\\58667f7904a84edbb77d6c9512c79b12\\result.json",
+      "sha256": "30e3c7e257693bcd040c5deb5a47fe2059a3b2debce2fc05014fd39775b8f986"
+    },
+    "child-arguments": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\child-arguments\\016ce1df0fce49bca868b9c79858c82c\\result.json",
+      "sha256": "cb62a804fb458c714503877166f88ed76d8769d761803dc9b20ea42c07f6b974"
+    },
+    "child-start": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\child-start\\0532a38bf313485fa33120b444bf198c\\result.json",
+      "sha256": "006c21f48dc950035738ad7b9c1b618a1e140a696400384e4a8227f44928630f"
+    },
+    "child-policy": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\child-policy\\a40624e814064ffab33ed679aa2685e5\\result.json",
+      "sha256": "7b322b3eddad2f93ec8d50d4abdfe6103ce11e8a904b66008dd7c48ded19577d"
+    },
+    "procedure-library": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\procedure-features\\dd568f9d2ee1493585d1497c3c137367\\result.json",
+      "sha256": "d933fe016217c2e46540724946044fbfd2a8ec814aedb4922bbae2031b867e81"
+    },
+    "rng-catalog": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\rng\\3145d148597c42d7acd2de9ddc262d6d\\result.json",
+      "sha256": "e85b0de230c79cc699733792edab4636186d640241467946181074e7ee850640"
+    },
+    "rng-state": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\rng-state\\cdc1dbf5334048eabbc87f5545fab187\\result.json",
+      "sha256": "fbb08b28e0e1b9697a7ef41057883e9283278fdf400abe7cd39d417de73c6fa4"
+    },
+    "ranging-complete": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\ranging-candidate\\571b794718d547fb9377242cdf46fda8\\result.json",
+      "sha256": "976a0efab826bf4fe5f15aee00e57a6ac58c5e7f84d0ce550020cd1ca5cea64d"
+    },
+    "memory-complete": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\memory-complete\\6624fe794375493fbcca6140ecb9a7b1\\result.json",
+      "sha256": "a948d42b12ec025eb2c51160797327d08981f1b6f7f8c9c4408d28357a870516"
+    },
+    "dta-ipc": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta-edit\\0e57387e4a8e471a856d0d2e702eb79f\\result.json",
+      "sha256": "de040385c91e115def0ade2547009de14f6a04bcf6fce0bf377a01696afa4f5c"
+    },
+    "time": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\time\\3c021116bc2c4d478b67e51b9b8096f3\\result.json",
+      "sha256": "3ee71be8a8ab6d802f7f6db001114d39e05016d9e0e5326d9ff89b499df48e2d"
+    },
+    "limit": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\limit\\d937fd2a236a42ddae137bf46137992b\\result.json",
+      "sha256": "d3e5e1f9a3b7fb7d835a47c5ab3ab88d3afc62e38ad0f0133d42187e217f229c"
+    },
+    "limit-features": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\limit-features\\d81af74ea5774a30b1e941b44454044a\\result.json",
+      "sha256": "70f594f40647299c46d74b05633cc0ce5e3da98a04d5785d49d7881452546a48"
+    },
+    "telemetry-features": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\telemetry-features\\59b0cd8fe68a4bd7b1f06249e0538771\\result.json",
+      "sha256": "6e392bdb7c336c9b1505c2594f6dcfcab21127767d6c77603ca35d37cb0a606f"
+    },
+    "telemetry-policy": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\telemetry-policy\\4afefe29ce694274bcb8c5126c5d30ed\\result.json",
+      "sha256": "b624a148b8a81fd79a2caacb0cf47b0ccdd93eb3f4e2768118f5171836e5a90c"
+    },
+    "notification": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\notification\\85d864664b51498382b91087abf8caaf\\result.json",
+      "sha256": "d4797c48b1045bd11365b8c6f1758bc8e8b446dce85a43faf091692a8fd001b6"
+    },
+    "obs": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\obs\\3937c550942b49008c68c8e7f339db54\\result.json",
+      "sha256": "19b69200e0a54aa352208fc7f0c2018048dd1351869451e77350343be60e2c73"
+    },
+    "cmd": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\cmd\\052144ab20804ca090855a7908fce0f4\\result.json",
+      "sha256": "02ecac620f0c13f9649ddf6e753e2a96d1b156f95bffb5a842940d0e1532e53f"
+    },
+    "command-scheduling": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\command-scheduling\\5479aa9bd461416b833a84c002e9a399\\result.json",
+      "sha256": "571c0515b479d28fb470b6513a670c93a6920dd9c80d993977180c0e4276eced"
+    },
+    "command-catalog": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\command-catalog\\d345dc4eca46415a97d585746935539d\\result.json",
+      "sha256": "d1fd085ba15ee263237f9240b76f8b299272aaeb436c48da30dec150ece2c7f4"
+    },
+    "command-group": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\command-group\\3e6cdf3925bc48eb904e6448ba71833c\\result.json",
+      "sha256": "9b3fa90dd651041d772dc6b026b390e90b22c0eb2592ebdecef449012879612c"
+    },
+    "gcs-display": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\gcs-display\\c4eaef7014364320969e2c663a61da47\\result.json",
+      "sha256": "3ce1f3598d057d0a100c9f0d63a0b3cfcb51ce8f863a08a47f03000b05d5ffba"
+    },
+    "python": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\python\\6052f35ec72e47929d0cb0416ff9ea8f\\result.json",
+      "sha256": "d1771b0ebe099d04775efc07eeb475b89b69b1339b39523fd8e5782ac9b47f1a"
+    },
+    "legacy-compare": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\legacy-compare\\dd906c0350f64c138c9d292f97a1fcac\\result.json",
+      "sha256": "eb67d1886a9b068f04fefcc3bc55abd4e4be7be5fede8c81036695a215a9ed37"
+    },
+    "common": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\common\\2f8b9522abae4fe58cca01a8b79e555e\\result.json",
+      "sha256": "941261036d8f81ca509453b9e9960b9d76b5265598f0c4a12a96280f92941463"
+    },
+    "events": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\events\\a66c4d3a55b64311bdc163d0a2fee86e\\result.json",
+      "sha256": "7cd93a9666205b01aa903cf3ccce7cd7acf3a28ee1f3e37e9b6471f615f05166"
+    },
+    "scheduler": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\scheduler\\96f8b14a1d9a47a7b5c12df9e0a3a0a3\\result.json",
+      "sha256": "03e8f6ebf3dd8ddf4478ef6a87adf1ede98c00d529b8c4d3bf85158ff8e51477"
+    },
+    "wait-time": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\wait-time\\c8f56d7fc7124f168b3fe1423de919b7\\result.json",
+      "sha256": "69855e7d6cfb97cc4f6cb51ae1e1ca0af9a168369ae42daedfa4bd4550ad5060"
+    },
+    "wait-controls": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\wait-controls\\56e704f21d3f408d8f403ad70acaea30\\result.json",
+      "sha256": "b41f86df6ed017bdb216a124279c9866a69a7e212e7a4520c8a6c771be414bc3"
+    },
+    "wait-intervals": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\wait-interval\\503deb99a940444790c83df8d46f9a63\\result.json",
+      "sha256": "71adf86ea3cb9101476cc7816b98f255449b9543a9042b0809e053df37eb8ff4"
+    },
+    "proc-metadata": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\proc-metadata\\bd25e6ff38e443f19f2d0f2660d795b3\\result.json",
+      "sha256": "862e334ea65a241abcc129190015e6a55b0fa6dc16f010ec71295725dadedc79"
+    },
+    "proc-lifecycle": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\proc-lifecycle\\9e0acfbdfa734b33b6e8587783571223\\result.json",
+      "sha256": "7be3b9c784e988663465038baf50fcbbca234e660427fd09e19b4c90e8760134"
+    },
+    "value-units": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\value-units\\01357d4ceac348db9ae978bf6b2876ee\\result.json",
+      "sha256": "bea4d6ac8e0013db8fe1b0e65d630e1d423fb32aad3050bf8a9d70152a04ac0c"
+    },
+    "scdb": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\scdb\\1cf528ad221a46f18052931cc60dc0f8\\result.json",
+      "sha256": "2c79778732cb4007f59e6983e9b7d91a79985e2acdc11a94819d562a21d61c55"
+    },
+    "timing": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\timing\\d2282ddd6f044a2ea814249e9df9b20d\\result.json",
+      "sha256": "11329c364a6e84bc818eeb98a0de23e658ed254845391299afa88d99bb6da11a"
+    },
+    "send-verify": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\send-verify\\5e6fb1241bb247298c3040d49403c1dc\\result.json",
+      "sha256": "4dfe4cb912b5bd02f2a1720e405297bb1a8dbf26366fb914ce88571f5ffc9208"
+    },
+    "send-complete": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\send-complete\\255668eb27504724b37f3f5e2d3a3e87\\result.json",
+      "sha256": "169ceb441224c61a5113740cc4f98a784c6f6d2f15141041139499861c2ddddf"
+    },
+    "checkpoint": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\caf655a722a6462587b15f14349462b6\\result.json",
+      "sha256": "74d5e7c5e4ad7637863e6904fce531c915f52b55055cfb3d55b4f29348d9cfe1"
+    },
+    "checkpoint-expanded": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\478c2f0801d446e3aa49a480a969f4be\\result.json",
+      "sha256": "a10078d9a0610f3ba93595cd5a98fa6b5529581c362c5bd58fca711228c5c99a"
+    },
+    "checkpoint-ipc": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\9b72992bd5234c3e90cca9d2a1983374\\result.json",
+      "sha256": "02297eafe6dbb8a86fa8681cd370fa9189d67a2373dfab4e853527027e272012"
+    },
+    "identity-errors": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-identity\\aab7f48108454f749d617f67fd03fcf0\\result.json",
+      "sha256": "3bb20b0659ac13746ee07a6f5bf6deba943696e06d275a59ebf1d2196f956950"
+    },
+    "identity-recovery": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-identity\\16957764168343efa95153189a353138\\result.json",
+      "sha256": "997971b2598e318c4c336ee4aaba8a0041b38f96f9aba8b53e80769885f5c0bf"
+    },
+    "child-modes": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\child-modes\\3432617468234b41b8e48d68a6a3d86f\\result.json",
+      "sha256": "9f15cc0fb3a2fb6e31e674e4d6d04a8387b996f67d1026c5c1c74ae5ec37ad42"
+    },
+    "driver-extension": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\driver-extension\\e120c7debb0c4b9cb1769ee9841a42b1\\result.json",
+      "sha256": "730f014ed598d9d4d8ca79b9e27213e4d9ff26cf429e8b90384aca5bb92f2335"
+    },
+    "child-visibility": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\child-visibility\\66c43ab3e20446c1b3c74c9ad4f044c9\\result.json",
+      "sha256": "3742171f72c7867b044c935335fc46269afadd2c375ef5d6f682b1f82a26ef11"
+    },
+    "prompt-complete": {
+      "path": "C:\\obspell_v05_composed\\.qualification\\prompt-complete\\0cc20c9c46e448f1ad99952f977ede65\\result.json",
+      "sha256": "795e65ae581361f2ec79e678cdfed0a595b144b813a90d820d7e3be5876c738c"
+    }
+  },
+  "qualifier_commands": [
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\obs_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\obs\\3937c550942b49008c68c8e7f339db54\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\cmd_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\cmd\\052144ab20804ca090855a7908fce0f4\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\events_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\events\\a66c4d3a55b64311bdc163d0a2fee86e\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\scheduler_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\scheduler\\96f8b14a1d9a47a7b5c12df9e0a3a0a3\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\value_units_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\value-units\\01357d4ceac348db9ae978bf6b2876ee\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\timing_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\timing\\d2282ddd6f044a2ea814249e9df9b20d\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\send_verify_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\send-verify\\5e6fb1241bb247298c3040d49403c1dc\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\resource_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\resource\\0d535756a3674e5e82a9472ac2bfdfe4\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\limit_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\limit\\d937fd2a236a42ddae137bf46137992b\\result.json",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\obs\\3937c550942b49008c68c8e7f339db54\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\limit-worktree\\.qualification\\v0.6\\limit\\b2c9395fa36643759645540ab111dcc1\\result.json",
+      "--numeric_failure",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\limit-worktree\\.qualification\\v0.6\\limit\\917eb64b88954c7a98c9d62bad81a439\\result.json",
+      "--range_failure",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\limit-worktree\\.qualification\\v0.6\\limit\\c95b8510c5ad4905a97f2225a1bb54d2\\result.json",
+      "--retained_failure",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\limit-worktree\\.qualification\\v0.6\\limit\\01cf5df193d546e88e616a42746357c3\\result.json",
+      "--retained_failure",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\limit-worktree\\.qualification\\v0.6\\limit-obs-regression\\00b50bbd66fd4d79b1e6e364e72165f3\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\notification_report.py",
+      "--result",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\notification\\85d864664b51498382b91087abf8caaf\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\user-action-worktree\\.qualification\\v0.6\\notification\\9adda9aecf8942c782a6e1eff624df33\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\database_import_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\database-import\\e2ec9caa3194488697939799a233843e\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\database-import\\68d54e0a1b394ce5bb9079d7c08cb6ab\\result.json",
+      "--files",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\files\\a2a527a56c264ef6bc9f7594236a1e29\\result.json",
+      "--data",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\data\\3360a980be4f4124812cadba143d942e\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\user_database_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\user-database\\549bd5ab1c9d494db29aff50c6470efb\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.5\\dta-edit-worktree\\.qualification\\v0.5\\user-database\\f9fa7ae7a78e4dacbfefd590b4de758e\\result.json",
+      "--files",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\files\\a2a527a56c264ef6bc9f7594236a1e29\\result.json",
+      "--data",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\data\\3360a980be4f4124812cadba143d942e\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\scdb_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\scdb\\1cf528ad221a46f18052931cc60dc0f8\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\3d41d82db67748f091e350e534fcf929\\result.json",
+      "--database-import",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\database-import\\e2ec9caa3194488697939799a233843e\\result.json",
+      "--checkpoint-gap",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\db929575831a4a7f89732bcc3e8e87fd\\result.json",
+      "--policy-oracle-correction",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\scdb-worktree\\.qualification\\v0.6\\scdb\\7752529775534e2f9cbdfc551ee22d13\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\checkpoint_error_report.py",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\024874618e044ed1bd872b46dd79dad2\\result.json",
+      "--audit",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\bbf7c15326844804b313ebf332af3c23\\result.json",
+      "--ipc-baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\35cbef6bdb25414ebdc131d2fd637677\\result.json",
+      "--ipc-blocker",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\967d8e73a0e54f64b3e75ed29ce3fbad\\result.json",
+      "--candidate",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\caf655a722a6462587b15f14349462b6\\result.json",
+      "--expanded",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\478c2f0801d446e3aa49a480a969f4be\\result.json",
+      "--ipc-candidate",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\9b72992bd5234c3e90cca9d2a1983374\\result.json",
+      "--integrated-gate-dir",
+      "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native",
+      "--output",
+      "C:\\obspell_v05_composed\\conformance\\evidence\\checkpoint_error.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\checkpoint_identity_report.py",
+      "--baseline-source",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\967d8e73a0e54f64b3e75ed29ce3fbad\\result.json",
+      "--baseline-context",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-identity-worktree\\.qualification\\v0.6\\checkpoint-identity\\698dd68c27674ca99a90d7d67b29584d\\result.json",
+      "--errors",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-identity\\aab7f48108454f749d617f67fd03fcf0\\result.json",
+      "--recovery",
+      "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-identity\\16957764168343efa95153189a353138\\result.json",
+      "--integrated-gate-dir",
+      "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native",
+      "--output",
+      "C:\\obspell_v05_composed\\conformance\\evidence\\checkpoint_identity.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\prompt_timeout_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\prompt-timeout\\58667f7904a84edbb77d6c9512c79b12\\result.json",
+      "--native-pair",
+      "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\child_arguments_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\child-arguments\\016ce1df0fce49bca868b9c79858c82c\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\predefined_containers_report.py",
+      "--dta",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta\\1ee16d85902e4c79bd024ffc7acab234\\result.json",
+      "--ipc",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta-edit\\0e57387e4a8e471a856d0d2e702eb79f\\result.json",
+      "--child",
+      "C:\\obspell_v05_composed\\.qualification\\child-arguments\\016ce1df0fce49bca868b9c79858c82c\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\child_start_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\child-start\\0532a38bf313485fa33120b444bf198c\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\child_return_report.py",
+      "--start",
+      "C:\\obspell_v05_composed\\.qualification\\child-start\\0532a38bf313485fa33120b444bf198c\\result.json",
+      "--modes",
+      "C:\\obspell_v05_composed\\.qualification\\child-modes\\5bb4c3b4000340889180ac263ac74e51\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\child_execution_report.py",
+      "--start",
+      "C:\\obspell_v05_composed\\.qualification\\child-start\\0532a38bf313485fa33120b444bf198c\\result.json",
+      "--modes",
+      "C:\\obspell_v05_composed\\.qualification\\child-modes\\5bb4c3b4000340889180ac263ac74e51\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\database_scope_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\database-import\\e2ec9caa3194488697939799a233843e\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\database_values_composed_report.py",
+      "--values",
+      "C:\\obspell_v05_composed\\.qualification\\database-values\\bf8f59eba7d84cb1a4daff6b5ce90b22\\result.json",
+      "--user",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\user-database\\549bd5ab1c9d494db29aff50c6470efb\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\legacy_compare_composed_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\legacy-compare\\dd906c0350f64c138c9d292f97a1fcac\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\context_snapshot_composed_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\context-snapshot-startup\\727396085038460eb84d621bf4c6cc17\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\prompt_startup_composed_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\prompt-startup\\c6b7b2351f874fc38a2bbc7df53f27e5\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\python_sections_report.py",
+      "--python",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\python\\6052f35ec72e47929d0cb0416ff9ea8f\\result.json",
+      "--comparison",
+      "C:\\obspell_v05_composed\\.qualification\\legacy-compare\\dd906c0350f64c138c9d292f97a1fcac\\result.json",
+      "--database",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\database-import\\e2ec9caa3194488697939799a233843e\\result.json",
+      "--values",
+      "C:\\obspell_v05_composed\\.qualification\\database-values\\bf8f59eba7d84cb1a4daff6b5ce90b22\\result.json",
+      "--user",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\user-database\\549bd5ab1c9d494db29aff50c6470efb\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\child_policy_report.py",
+      "--policy",
+      "C:\\obspell_v05_composed\\.qualification\\child-policy\\a40624e814064ffab33ed679aa2685e5\\result.json",
+      "--start",
+      "C:\\obspell_v05_composed\\.qualification\\child-start\\0532a38bf313485fa33120b444bf198c\\result.json",
+      "--modes",
+      "C:\\obspell_v05_composed\\.qualification\\child-modes\\5bb4c3b4000340889180ac263ac74e51\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\wait_time_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\wait-time\\c8f56d7fc7124f168b3fe1423de919b7\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\wait_control_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\wait-controls\\56e704f21d3f408d8f403ad70acaea30\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\wait_interval_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\wait-interval\\503deb99a940444790c83df8d46f9a63\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\proc_dictionary_composed_report.py",
+      "--baseline",
+      "C:\\obspell_v05_composed\\.qualification\\proc-metadata\\bd25e6ff38e443f19f2d0f2660d795b3\\result.json",
+      "--lifecycle",
+      "C:\\obspell_v05_composed\\.qualification\\proc-lifecycle\\9e0acfbdfa734b33b6e8587783571223\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\rng_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\rng\\3145d148597c42d7acd2de9ddc262d6d\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\rng-worktree\\.qualification\\v0.5\\rng\\7fec8c89a3824b278f48a07a80731635\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\rng_state_report.py",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\rng-state\\cdc1dbf5334048eabbc87f5545fab187\\result.json",
+      "--baseline",
+      "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\rng-state-worktree\\.qualification\\v0.5\\rng-state\\70c8a6be8f634af4aef621174afff859\\result.json",
+      "--driver",
+      "C:\\obcommand_composed\\.qualification\\rng-state-driver\\296cee736c38472f8e27e90545d22204\\result.json",
+      "--legacy-and-migration",
+      "C:\\obcommand_composed\\.qualification\\rng-state-local\\c6720ae16cf84fcfa7e58a6a30109a47\\result.json"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\command_routing_review.py",
+      "--raw",
+      "C:\\obspell_v05_composed\\.qualification\\v0.5\\cmd\\052144ab20804ca090855a7908fce0f4\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+      "--revision",
+      "9869ce77ea6693e1363adb12a57af5cad8b5ece9"
+    ],
+    [
+      "C:\\projects\\openbexi_spell_plugin\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "C:\\obspell_v05_composed\\conformance\\command_display_composed_report.py",
+      "--scheduling",
+      "C:\\obspell_v05_composed\\.qualification\\command-scheduling\\5479aa9bd461416b833a84c002e9a399\\result.json",
+      "--catalog",
+      "C:\\obspell_v05_composed\\.qualification\\command-catalog\\d345dc4eca46415a97d585746935539d\\result.json",
+      "--group",
+      "C:\\obspell_v05_composed\\.qualification\\command-group\\3e6cdf3925bc48eb904e6448ba71833c\\result.json",
+      "--display",
+      "C:\\obspell_v05_composed\\.qualification\\gcs-display\\c4eaef7014364320969e2c663a61da47\\result.json",
+      "--image",
+      "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+      "--revision",
+      "9869ce77ea6693e1363adb12a57af5cad8b5ece9"
+    ]
+  ],
+  "counts": {
+    "QUALIFIED": 573,
+    "OPEN": 190
+  },
+  "total": 763,
+  "coverage_sha256": "775263667cf64b6f832a0dc56813a94dd9b1e99da05db5284b8429ff589819c9",
+  "prompt_controls": {
+    "path": "C:\\obspell_v05_composed\\conformance\\evidence\\prompt_controls.json",
+    "sha256": "bb7376ac9abd981c427ba6cf436e848051518eec9b0eee7390f98dda956c6666"
+  },
+  "full_v05_accepted": false,
+  "full_v06_accepted": false
+}

@@ -87,9 +87,9 @@ factory/models and all ten RPC families, actual binary TC/Kafka TM, immutable
 approved Execution, Monitoring rejection, controller fencing, alias admission,
 lost-acknowledgement holds, watchdog, pause, revocation and installed wheels are
 qualified in [driver runtime](docs/DRIVER_RUNTIME.md) and
-[its exact evidence](docs/DRIVER_QUALIFICATION.json). Critical/scheduled commands,
-full mission semantics and unsupported vendor contracts remain explicit v0.5
-requirements; no real-mission approval is inferred from simulator acceptance.
+[its exact evidence](docs/DRIVER_QUALIFICATION.json). The later v0.5 acceptance
+qualifies language and command contracts within the GENERIC simulator profile. Real mission semantics and vendor profiles
+require their own qualification.
 
 ## v0.5 — full SPELL conformance
 
@@ -100,12 +100,11 @@ Require independent positive, boundary, failure and recovery evidence for every
 supported contract. Unsupported requirements stay open and prevent full release
 acceptance; import checks and generated stubs do not establish conformance.
 
-In progress: [the full inventory](conformance/README.md) has **573 qualified /
-190 open** requirements. The [current record](docs/LANGUAGE_CHECKPOINT.json)
-binds all 48 native suites to identical offline rebuilds. Command scheduling,
-catalogue sequences, Group/Block execution and displays add 50 requirements;
-all prior 523 requirements pass on the same runtime. Full v0.5/v0.6 acceptance
-and final host workflows remain open.
+Complete: [all 763 original requirements](conformance/README.md) are qualified
+with none open. The [acceptance record](docs/V05_CONFORMANCE_QUALIFICATION.json)
+binds 61 native suites (2,157 raw checks), independent source reviews and
+reproducible builds to one installed runtime. Final distribution and installed
+host workflows continue in v0.6.
 
 ## v0.6 — distribution and compatibility
 
@@ -118,9 +117,9 @@ neutral IDE's independent release numbers and required shared-service features.
 
 The [current checkpoint](docs/LANGUAGE_CHECKPOINT.json) passes two independent
 offline native builds with identical wheel bytes and eight install/removal tests
-per build. Fresh host/DSS images pass installed provenance checks. Full language
-conformance, versioned upgrades, production packaging and final installed
-OpenBEXI/IntelliJ/PyCharm workflows remain open.
+per build. Fresh host/DSS images pass installed provenance checks. Versioned
+upgrades, production packaging and final installed OpenBEXI/IntelliJ/PyCharm
+workflows remain open.
 
 ## v0.7 — operational qualification
 
@@ -136,7 +135,7 @@ and recovery instructions, supported platforms and exact artifact identities.
 The execution target now includes stable v1.0.0; see the
 [release acceptance plan](docs/STABLE_RELEASE_PLAN.md).
 
-The remaining sequence is v0.5, v0.6, v0.7, v1.0.0-rc1 and v1.0.0. Update concise
+The remaining sequence is v0.6, v0.7, v1.0.0-rc1 and v1.0.0. Update concise
 documentation and commit/push each accepted release to GitHub master in order.
 A partial milestone may be committed, but
 its parent release remains open until every release gate has passed.
