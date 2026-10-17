@@ -118,6 +118,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  *composition.prompt_timeout_patches.PREIMAGES,
                                  *composition.prompt_control_patches.PREIMAGES,
                                  composition.prompt_complete_patches.HEADER,
+                                 composition.event_empty_native_patches.SOURCE,
                                  composition.ipc_mailbox_patches.SOURCE,
                                  composition.context_snapshot_patches.SOURCE,
                                  *composition.legacy_compare_patches.PREIMAGES,

@@ -422,6 +422,9 @@ def main():
         if hashlib.sha256(raw).hexdigest() != value:
             raise ValueError('Host upgrade donor source differs from its exact commit: '+name)
     host_client = upgraded_client
+    if 'final_language' in reports:
+        from final_source_donors import apply_final
+        apply_final(native, driver, host, host_client, reports)
     if set(native) != set(composition.NATIVE_NAMES):
         raise ValueError('Qualified native source set differs from composition')
     result = {'schema':'openbexi.spell.qualified-source-donors/1',
