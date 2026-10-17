@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "raw": {
+    "path": "C:\\obevent_text\\.qualification\\v0.5\\events\\739e99b982fc4abeaad64cd3319fc3a5\\result.json",
+    "sha256": "c1e6d5f59791f905093b210a150275890ea9e879ce977b09b49076445471ae46"
+  },
+  "failed_checks": {
+    "event:positive": "DriverException: DSS driver RPC failed ( StatusCode.INVALID_ARGUMENT )",
+    "event:boundary": "DriverException: DSS driver RPC failed ( StatusCode.INVALID_ARGUMENT )",
+    "event:failure": "RuntimeError: Failed to get Severity value: Wrong severity code: 19 (error code 23) (fatal:false)",
+    "event:recovery": "RuntimeError: Failed to get Severity value: Wrong severity code: 19 (error code 23) (fatal:false)"
+  },
+  "reason": "Original SPELLpyArgs severity/scope converters reject invalid codes before driver dispatch; the native binding reports RuntimeError. Preserve exact native exception expectations, then separately verify no client or journal event effect and valid-call recovery.",
+  "original_source": {
+    "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "member": "lib/SPELL_UTIL/src/SPELLpyArgs.C",
+    "sha256": "f7ecf5c93b31a18a2b7edafeee1bba0ca7edc323e09dfe4decea4facc69b0785"
+  },
+  "production_change": false,
+  "full_v05_accepted": false
+}

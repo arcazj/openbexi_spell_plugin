@@ -39,8 +39,7 @@ def qualify(raw):
     report['inputs']['conformance/events_report.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     report['scope'] = {
         'manual':'SPELL Language Reference 2.4.4 pp28,68-69,110-111,116-117',
-        'event':'Example110 default INFORMATION, positional WARNING and keyword ERROR reach both original native client MSG_WRITE and durable event journal exactly once. UTF-8/newline payload at the 8192-character adapter limit is preserved.',
-        'event_open':'FUNCTION-EVENT and SECTION-4-10-083 remain open: the adapter accepts 1..8192 characters while the related Display text permits any string. Rejection of empty/oversize events is a declared adapter limitation, not qualification of unrestricted Event semantics. Desktop rendering is not tested.',
+        'event':'Example110 default INFORMATION, positional WARNING and keyword ERROR reach both original native client MSG_WRITE and durable event journal exactly once. Empty strings and UTF-8/newline payloads longer than 16384 characters are preserved. Invalid severity and scope codes raise the original native RuntimeError before journal delivery.',
         'resend':'Actual SAFE-mode CMD1 RELEASE/FAILED followed by a native OnFailure prompt. Every new attempt requires an explicit RESEND answer. Two failures then repair/success, or failure then CANCEL, have exact independent operation IDs and receipt counts.',
         'repair':'Controller recovery uses an independently identified real original-schema SET_MODE command, whose five DSS receipts are distinguished from procedure command attempts. No language function, registry entry or driver result is replaced.',
         'uncertain_effects':'Only definitive RELEASE/FAILED is resent. Unknown outcomes and stale authority are not treated as safe retries; existing CMD/native-driver regressions remain separate evidence.',
