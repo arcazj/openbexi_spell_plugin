@@ -94,7 +94,7 @@ def main():
         return not report['passed']
     finally:
         if created and exported:
-            subprocess.run(['docker','rm','-f',name],capture_output=True,timeout=20)
+            subprocess.run(['docker','stop',name],capture_output=True,timeout=20)
         elif created:
             print('Retained container after incomplete export: '+name,flush=True)
 

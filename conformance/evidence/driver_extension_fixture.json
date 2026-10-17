@@ -1,0 +1,123 @@
+{
+  "passed": false,
+  "raw": {
+    "path": "C:\\obdriver_extension\\.qualification\\driver-extension\\69219680adae4e25bcc3c6141b8b6522\\result.json",
+    "sha256": "5ac974036a4b79011304c1f72d9fb2b075beb9baa7a6bbbddefcf1d0e05a5f86"
+  },
+  "runtime_image": "sha256:adf074628cd29c8748b708886ddc37dfc523385e817f75f3489d4ae42e322817",
+  "observations": {
+    "failure": {
+      "raw": {
+        "path": "C:\\obdriver_extension\\.qualification\\driver-extension\\69219680adae4e25bcc3c6141b8b6522\\workspace\\resume-extension__failure\\observed.json",
+        "sha256": "3fd3fde27959d17d7c32114ec5e6a4cfb0233617ab3e215090f1622f53f79888"
+      },
+      "calls": [
+        {
+          "function": "Send",
+          "args": "()",
+          "options": "{'group': ['CMD1', 'CMD2', 'CMD3'], 'Confirm': False, 'Wait': False, 'HandleError': True, 'PromptFailure': True, 'OnFailure': 512}",
+          "error_type": "SyntaxException",
+          "error": "Automatic result action must have one value ( unknown )"
+        }
+      ],
+      "hooks": [
+        {
+          "action": "injection",
+          "cursor": 0,
+          "members": [
+            "CMD1",
+            "CMD2",
+            "CMD3"
+          ]
+        },
+        {
+          "action": "command-completed",
+          "cursor": 0,
+          "name": "CMD1"
+        },
+        {
+          "action": "driver-interruption",
+          "cursor": 1
+        },
+        {
+          "action": "choices",
+          "cursor": 1,
+          "standard": []
+        },
+        {
+          "action": "before",
+          "cursor": 1,
+          "code": "Z"
+        },
+        {
+          "action": "perform",
+          "cursor": 1,
+          "code": "Z"
+        },
+        {
+          "action": "after",
+          "cursor": 1,
+          "code": "Z"
+        }
+      ]
+    },
+    "recovery": {
+      "raw": {
+        "path": "C:\\obdriver_extension\\.qualification\\driver-extension\\69219680adae4e25bcc3c6141b8b6522\\workspace\\resume-extension__recovery\\observed.json",
+        "sha256": "2d075e27ff35d84718b3f8474e095cc4332225b682dc6bbeaca918d468592809"
+      },
+      "calls": [
+        {
+          "function": "Send",
+          "args": "()",
+          "options": "{'group': ['CMD1', 'CMD2', 'CMD3'], 'Confirm': False, 'Wait': False, 'HandleError': True, 'PromptFailure': True, 'OnFailure': 512}",
+          "error_type": "SyntaxException",
+          "error": "Automatic result action must have one value ( unknown )"
+        }
+      ],
+      "hooks": [
+        {
+          "action": "injection",
+          "cursor": 0,
+          "members": [
+            "CMD1",
+            "CMD2",
+            "CMD3"
+          ]
+        },
+        {
+          "action": "command-completed",
+          "cursor": 0,
+          "name": "CMD1"
+        },
+        {
+          "action": "driver-interruption",
+          "cursor": 1
+        },
+        {
+          "action": "choices",
+          "cursor": 1,
+          "standard": []
+        },
+        {
+          "action": "before",
+          "cursor": 1,
+          "code": "Z"
+        },
+        {
+          "action": "perform",
+          "cursor": 1,
+          "code": "Z"
+        },
+        {
+          "action": "after",
+          "cursor": 1,
+          "code": "Z"
+        }
+      ]
+    }
+  },
+  "reason": "The extension before/perform/after hooks ran correctly. The earlier fixture left the default multi-action OnFalse policy with PromptUser=False, causing the original automatic-action SyntaxException after the extension returned False. Explicit OnTrue/OnFalse=NOACTION isolates the extension result and permits same-session recovery. CANCEL key is Q, not RECHECK C.",
+  "production_change": false,
+  "full_v05_accepted": false
+}

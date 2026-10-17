@@ -64,7 +64,7 @@ for dimension,fail_at,allow,policy,expected,recover in (
     ('recovery',1,False,'RESUME',False,True),
 ):
     extension=EXTENSION.replace('FAIL_AT',str(fail_at)).replace('ALLOW_RESUME',repr(allow))
-    invocation="call('Send',group=['CMD1','CMD2','CMD3'],Confirm=False,Wait=False,HandleError=True,PromptFailure=True,OnFailure="+policy+")"
+    invocation="call('Send',group=['CMD1','CMD2','CMD3'],Confirm=False,Wait=False,HandleError=True,PromptFailure=True,OnTrue=NOACTION,OnFalse=NOACTION,OnFailure="+policy+")"
     body='\ntry:\n    equal('+invocation+','+repr(expected)+')\n'
     if recover:body+="    state['allow_resume']=True\n    equal("+invocation+",True)\n"
     body+="    equal(state['cursor'],"+str(3 if expected or recover else 1)+")\nfinally:\n    for name,method in original.items():setattr(interface,name,method)\n"
