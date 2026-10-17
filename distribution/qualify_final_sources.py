@@ -61,10 +61,23 @@ def replay(baseline, old_native, old_driver, native, driver):
             changes.append(dict(recipe=recipe_name+'.py', source=name, **stage))
             state[name] = after
             native_sources[name]['patched'] = digest(after)
-    assert set(native_sources) == set(final['sources']) == set(composition.NATIVE_NAMES)
+    assert set(native_sources) == set(final['sources']) - {composition.IDENTITY_HEADER} == set(composition.NATIVE_NAMES)
     for name, row in native_sources.items():
         assert final['sources'][name] == {key+'_sha256': value for key, value in row.items()}
         assert native[prefix+'patched/'+name] == state[name]
+    # The continuation header is generated from all recipes, rather than a
+    # donor body. Bind its unchanged central preimage and exact derived value.
+    header = composition.IDENTITY_HEADER
+    before_header = old_native[prefix+'ported/'+header]
+    assert native[prefix+'ported/'+header] == before_header
+    assert final['recipes'] == composition.recipe_hashes()
+    checkpoint = final['checkpoint']
+    identity = composition.checkpoint_identity(checkpoint['central_identity'], final['recipes'])
+    assert identity == checkpoint['integrated_identity']
+    before_token = ('continuationSourceIdentity[] = "'+checkpoint['central_identity']+'"').encode()
+    after_token = ('continuationSourceIdentity[] = "'+identity+'"').encode()
+    assert before_header.count(before_token) == 1
+    assert native[prefix+'patched/'+header] == before_header.replace(before_token, after_token)
     driver_sources = dict(baseline['driver'])
     driver_state = {name: old_driver[name] for name in driver_sources}
     assert all(digest(driver_state[name]) == expected for name, expected in driver_sources.items())
