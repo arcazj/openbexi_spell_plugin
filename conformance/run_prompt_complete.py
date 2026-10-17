@@ -53,7 +53,9 @@ def main():
                 assert not any(m.get('event')=='exited' for m in client.transcript)
                 assert sum(m.get('event')=='openbexi/promptReminder' for m in client.transcript)==spec['reminders']
                 client.request('openbexi/input',promptId=prompt['promptId'],text='operator')
-            row['exit']=client.event('exited',timeout=8);client.event('terminated')
+            # DAP exit follows bounded native context/listener shutdown as well
+            # as the procedure; three typed defaults can exceed eight seconds.
+            row['exit']=client.event('exited',timeout=20);client.event('terminated')
             assert row['exit']=={'exitCode':0},row['exit']
             data=client.read_file('result.json');(project/'procedure-result.json').write_text(data,encoding='utf-8',newline='\n')
             row['results']=json.loads(data)

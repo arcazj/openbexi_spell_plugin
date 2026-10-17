@@ -1,0 +1,87 @@
+{
+  "raw": {
+    "path": "C:\\obprompt_complete\\.qualification\\prompt-complete\\b84c6adea89245618a0584fe9f0e73d3\\result.json",
+    "sha256": "51ce0b41af58c840fb6fc39c5c14d0d0b97b12445e3950a5995d460bce3fe2e0"
+  },
+  "observations": {
+    "typed-default:positive": {
+      "container": "openbexi-host-test-00630151e7b14bb49d191ab0c9b6294c",
+      "path": "C:\\obprompt_complete\\.qualification\\prompt-complete\\b84c6adea89245618a0584fe9f0e73d3\\typed-default-positive-retained-result.json",
+      "sha256": "796b47549956f8c24dc8b6338249597c77f5ed7f5c5b7e31354ff28e8704045f",
+      "result": [
+        {
+          "label": "INTEGER",
+          "value": "42",
+          "type": "int",
+          "elapsed": 0.6002604000095744
+        },
+        {
+          "label": "DATE",
+          "value": "03-Apr-2006 09:52:34",
+          "type": "TIME",
+          "elapsed": 0.5753343000105815
+        },
+        {
+          "label": "YES",
+          "value": "True",
+          "type": "bool",
+          "elapsed": 0.5949379999947269
+        }
+      ]
+    },
+    "typed-default:boundary": {
+      "container": "openbexi-host-test-a3431dbc848e4dee9310ae7852ec3b06",
+      "path": "C:\\obprompt_complete\\.qualification\\prompt-complete\\b84c6adea89245618a0584fe9f0e73d3\\typed-default-boundary-retained-result.json",
+      "sha256": "ccdfa3085fc31fb7e929528603b9bfbb499429c6c9153961f34f171bf9730486",
+      "result": [
+        {
+          "label": "ZERO",
+          "value": "0",
+          "type": "int",
+          "elapsed": 0.6020569999964209
+        },
+        {
+          "label": "FRACTION",
+          "value": "-0.25",
+          "type": "float",
+          "elapsed": 0.6553359999961685
+        },
+        {
+          "label": "NO",
+          "value": "False",
+          "type": "bool",
+          "elapsed": 0.6549720999901183
+        }
+      ]
+    },
+    "typed-default:recovery": {
+      "container": "openbexi-host-test-7dc416188b054c77abb165f017cafdae",
+      "path": "C:\\obprompt_complete\\.qualification\\prompt-complete\\b84c6adea89245618a0584fe9f0e73d3\\typed-default-recovery-retained-result.json",
+      "sha256": "2c95712a79761e7795d7752ecba4c025d62fc811ec9991fbbbd90f7887d9e77b",
+      "result": [
+        {
+          "rejected": "invalid"
+        },
+        {
+          "label": "RECOVER_NUM",
+          "value": "1",
+          "type": "int",
+          "elapsed": 0.6352800000022398
+        },
+        {
+          "label": "LEAP_DAY",
+          "value": "29-Feb-2024 00:00:00",
+          "type": "TIME",
+          "elapsed": 0.5753762999956962
+        }
+      ]
+    }
+  },
+  "conclusion": "All three typed procedures completed and wrote their expected results before cleanup; eight-second DAP exit deadline expired while shutdown was pending. Retain failed report and rerun with bounded20second exit budget.",
+  "accepted": false,
+  "diagnostic": {
+    "path": "C:\\obprompt_complete\\.qualification\\prompt-complete\\b84c6adea89245618a0584fe9f0e73d3\\typed-completion-diagnostic.json",
+    "sha256": "5ae52cc1451b848ee3121ca81d1311dadfa69ce79ddf0b262b24753e76d8e436"
+  },
+  "scope": "Retained harness deadline failure;20second DAP completion still requires actual fresh native validation."
+}
