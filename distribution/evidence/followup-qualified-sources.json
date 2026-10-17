@@ -1,8 +1,13 @@
 {
   "schema": "openbexi.spell.qualified-source-donors/1",
   "scope": "Independent tranche source expectations only; combined runtime behavior remains unqualified.",
-  "generator_sha256": "b1fcf3ac9c21a9eaec0faa974eeee9387b98c4bddb6cb2578c755d0d5bd3ebdc",
+  "generator_sha256": "486106038a26de7c6da23a3d68823870c3aae97e75417296efa480da2b660675",
   "donors": {
+    "final_language": {
+      "commit": "593382f814a9af6302386035ba2a7334cc7df514",
+      "path": "distribution/evidence/final-language-source-review.json",
+      "sha256": "45e32e83c222956847d7c063a253473bc52bdf5105c471e96ee2ba7185de3775"
+    },
     "baseline": {
       "commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
       "path": "conformance/evidence/obs.json",
@@ -228,7 +233,7 @@
     "lib/SPELL_CIF/src/SPELLcifHelper.C": {
       "original": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
       "ported": "a70ddb9c485ce730b9adc62b952a1f89ed31fac491ebcbb2ef8e602c70c5579c",
-      "patched": "6c04bd6a5bfcfeee50d6e51f910b56a1d27f238534398e4a2dfbe07a99a31724"
+      "patched": "39ff8475aabce6c87c95a0da920af473c3acefafe29a5780e53f6210d8623da0"
     },
     "lib/SPELL_CTX/src/SPELLcontext.C": {
       "original": "cf4576a8a95c543cddd53b8cb4f136a53e0114c1fc5bf3ebd6e39b1c0ff9129c",
@@ -258,7 +263,7 @@
     "lib/SPELL_CIFS/src/SPELLrequestProcessor.C": {
       "original": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
       "ported": "f0363fc5174c2000c18c76fc5ea1d99a11678dd3baf4ca54ad4349d4ed669b4f",
-      "patched": "25ee34bf236f671f6b6329c12368e2162032638d09208ddf7fdad6da0b28ad9b"
+      "patched": "364a9f3bcebf914476c2edc1bf231c939ddc746ed6344ddb7114a1f6daf1a3da"
     },
     "lib/SPELL_EXC/src/SPELLexecutorUtils.C": {
       "original": "490f2df621ba492c7a92f479e8669cdb6a6183d96ad71b2d48e2404265dd850d",
@@ -297,7 +302,7 @@
     },
     "lib/SPELL_CIFS/src/SPELLserverCif.C": {
       "original": "9d37476b9f14a41945f2a5afee1e5b6d3f659bd3fd8236aff4f0d2a2106005a7",
-      "patched": "66d071d4d6ed272b60fdc43cdd23bd429046921100ee3a7eb198f6eba3daf468",
+      "patched": "eec7fe278f95e4f9fd1e2feb671f8e1ae04a7f575b40ea55b7728b24bcb46985",
       "ported": "46e57ce597b42ca80c2d4f27ec065aaf2d676ad55d8f9b5fcb7ba07c04f7fe82"
     },
     "include/SPELL_CIFS/SPELLserverCif.H": {
@@ -339,6 +344,16 @@
       "original": "9e56ddfa666429777f37ab7bedb76de9a539145050123096554339bb1ea40382",
       "ported": "13153f3cc00a747a2eab5524eac12f47401d4f1ccf56a24f3de66ef28397728f",
       "patched": "15fcaa56d2c09ee6fb7b447d9ae8b158efbdeb46799a71e879f39cf9fa1b12fe"
+    },
+    "include/SPELL_CIF/SPELLpromptDefinition.H": {
+      "original": "98266eda57b7c0d47178e8c972c6d8258dcd3f2863f196d573810b3ca6ad1f93",
+      "ported": "98266eda57b7c0d47178e8c972c6d8258dcd3f2863f196d573810b3ca6ad1f93",
+      "patched": "7bb4139be5f25367abf819ea752622086a3575610a4623b01745036a89c6e27d"
+    },
+    "lib/SPELL_CIFS/src/SPELLdisplayBuffer.C": {
+      "original": "c57d8ca1bbd784bd40da5e4e60544300bc0c242678d89dbba2caad1636720850",
+      "ported": "fae984f867c8d76df6fa90c8ce004ce7412b3f8d97b9c84fb684fbb8f3694403",
+      "patched": "9f09481dac0c360831ab74ebd2649fd7271f508c5eccf121b33853060dac9cd8"
     }
   },
   "python": {
@@ -385,21 +400,22 @@
     "openbexi_spell_dss/command_budget.py": "0657bdbe98d5e4340396be5a5234495ba6244a5a2cf4ed673c6f0431db76eca6",
     "openbexi_spell_dss/journal.py": "87c6ba1a10858d225fd7041f3cbabaf489612410457a6699ae2777eb97c4b8df",
     "openbexi_spell_dss/relay.py": "fea5ca7fd37c1cf9da336cef3e93d101c509f9f9eb76b3a576283fbd67ad755a",
-    "openbexi_spell_dss/rpc.py": "8254841864b829f8f1ded002bd75ba0ac541f41c8bd6c0f3e77f5428bdf89a27",
+    "openbexi_spell_dss/rpc.py": "b7757d5eb415d80b65204c6eaa562e72722ca97189702eece80141d78a5f47fd",
     "openbexi_spell_dss/transport.py": "cd5a2720b3219b7afd9222bea795b80bc849bacdafe384ee3e8c73131cd1e126"
   },
   "host": {
-    "host_runtime/python/adapter.py": "2291777eb82861e575bdfe58b0e85354834a96a0118c015cdb946e25faa0c26f",
-    "host_runtime/python/children.py": "5b1702226c91b4de865a2a83a7e34e6d1c3418d0e17d530539031b749f493ea3",
+    "host_runtime/python/adapter.py": "6684fa77d1e8b43c1fa3d7f890b994364e22496adba12549799c03553f6cfd4a",
+    "host_runtime/python/children.py": "9d8828d6ea9de3ab655365e38336be015e8ae5757b7a020e58d06dafa79c7c45",
     "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
-    "host_runtime/python/prompts.py": "6a1cda3019e8126842b637a227b2c02c3c1ac930c60269a5a3cdb2d0765db2cb"
+    "host_runtime/python/prompts.py": "224ee43dd0cd4371cd565ed20f641237868ed3c19de1fe058dca7a258b0a9176"
   },
   "host_client": {
     "host_plugin/src/openbexi_spell_host/__init__.py": "a32d1f55538b95af6564e5ca45fbaa7a5b4816651ecd44a34480ac0d31f2f000",
     "host_plugin/src/openbexi_spell_host/container.py": "2203d4536660ca0a104ab2404245fa2ee9227cba64033404667e1dbd2b633e39",
-    "host_plugin/src/openbexi_spell_host/dap.py": "28c8ae9ea8b9047514e9d0f1d6c6c5f199c58dd11d4d3e3d1bfd42fb791afef0",
+    "host_plugin/src/openbexi_spell_host/dap.py": "6b8ccdf7c853dd88b3c4194a253c78f754cd031d004207614280be322df55731",
     "host_plugin/src/openbexi_spell_host/protocol.py": "c4ff6c86c2fe859397e117896ac227481a7d7f6c7aab08d74fc07733181eb8a2",
-    "host_plugin/src/openbexi_spell_host/runner.py": "8f20136cc9d7c29d7285a126054de58d881e54bcad53848cca0e8390f5c14c9d"
+    "host_plugin/src/openbexi_spell_host/runner.py": "3458ab7ffdc6b3ec2a73f1f94c2390ae6d8234e4d4cfc3d3374cbc247e863a99",
+    "host_plugin/src/openbexi_spell_host/sound.py": "842d6344abb05f7e0cb00c9aa57d0e64944ff76f0d1e2b08bda17a8f58b737a9"
   },
   "host_package": {
     "host_plugin/LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
@@ -413,7 +429,7 @@
   "driver_additions": {
     "openbexi_spell_dss/ranging_complete.py": "e4c60c535e6abc6fe4cf86f4a56b96edaba9434913bbf4406899f54408420f35",
     "openbexi_dss_proxy/ranging_complete.py": "0159fb94bdb51a149c0cfa328e9476d1e29ba20f134243354ddaff8383abbf42",
-    "openbexi_spell_dss/memory_images.py": "588ebd0a759ee0bd68d7492dc22920f590097c16a57f620e5801931eb4d90f82",
+    "openbexi_spell_dss/memory_images.py": "0abfe2253fa0e14da18810c7eddd63a2e8615216f72d6dbf62cd9a98bc8c4867",
     "openbexi_dss_proxy/memory_support.py": "114aad2a8af11e2b29742d14e3bcd0fa13b4b34c44395809197bfb7ba77416ab"
   },
   "host_candidate": {
