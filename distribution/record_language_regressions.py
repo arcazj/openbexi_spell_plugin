@@ -146,6 +146,16 @@ def main():
     run('rng_state_report.py', raw['rng-state'], '--baseline', args.rng_state_baseline,
         '--driver', args.rng_driver, '--legacy-and-migration', args.rng_legacy_and_migration)
 
+    # A checkpoint after the command/display promotion includes these fifty
+    # requirements. Refresh their actual source/artifact review before checking
+    # that every previously qualified row still passes on this runtime.
+    revision = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    run('command_routing_review.py','--raw',raw['cmd'],'--image',image,'--revision',revision)
+    run('command_display_composed_report.py',
+        '--scheduling',raw['command-scheduling'],'--catalog',raw['command-catalog'],
+        '--group',raw['command-group'],'--display',raw['gcs-display'],
+        '--image',image,'--revision',revision)
+
     sys.path.insert(0, str(ROOT / 'conformance'))
     from check import supported_check, validate
     coverage = json.loads(subprocess.check_output(
