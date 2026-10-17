@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT/'conformance'), str(ROOT/'source_port'), str(ROOT/'driver_plugin/src')]
@@ -16,7 +17,8 @@ import sequence_memory_successor as sequence_memory
 
 BASELINE = '7d50a6393413595293b27384db9506cd4cd2efef'
 BASE_PATH = 'distribution/evidence/followup-qualified-sources.json'
-NATIVE_RECIPES = ('prompt_complete_patches', 'prompt_empty_option_patches', 'event_empty_native_patches')
+NATIVE_RECIPES = ('prompt_complete_patches', 'prompt_empty_option_patches', 'event_empty_native_patches',
+                  'ipc_error_notification_patches')
 DRIVER_RECIPES = ('event_text_patches', 'memory_command_results_patches')
 COUNTS = {'prompt': 12, 'child': 4, 'event': 8, 'command-group': 19, 'memory': 32, 'driver-extension': 4}
 digest = lambda data: hashlib.sha256(data).hexdigest()
@@ -50,6 +52,9 @@ def replay(baseline, old_native, old_driver, native, driver):
         for name, before_hash in recipe.PREIMAGES.items():
             if name not in state:
                 state[name] = native[prefix+'ported/'+name]
+                if name == composition.ipc_error_notification_patches.SOURCE:
+                    with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as archive:
+                        assert native[prefix+'original/'+name] == state[name] == archive.read(name)
                 original = digest(native[prefix+'original/'+name])
                 ported = digest(state[name])
                 native_sources[name] = dict(original=original, ported=ported, patched=ported)
@@ -123,6 +128,21 @@ def qualify(candidate_path, baseline_native, baseline_driver, host_junit, source
     assert pair['packages'][0]['sha256'] == pair['packages'][1]['sha256'] == sha(native_wheel) == images['native_wheel']['sha256']
     assert driver_pair['wheels'][0]['sha256'] == driver_pair['wheels'][1]['sha256'] == sha(driver_wheel) == images['driver_wheel']['sha256']
     assert images['driver_plugin']['image'] == image
+    collision_proofs = {}
+    probe_name = 'source_port/qualify_ipc_error_routing.cpp'
+    probe_hash = sha(ROOT/probe_name)
+    assert digest(committed(source_commit, probe_name)) == probe_hash
+    for label in ('a', 'b'):
+        folder = pair_path.parent/label/'native'
+        context_path = folder/'context-build.json'; context = read(context_path)
+        assert context['input_sources']['qualify_ipc_error_routing.cpp'] == probe_hash
+        assert context['ipc_error_routing_build_exit_code'] == context['ipc_error_routing_runtime_exit_code'] == 0
+        diagnostic = folder/'ipc-error-routing-runtime.log'
+        text = diagnostic.read_text()
+        for marker in ('CORRELATED_STATUS_RESPONSES 16/16', 'ASYNC_ERROR_NOTIFICATIONS 16/16',
+                       'SYNCHRONOUS_ERROR_RESPONSE 1', 'UNEXPECTED_NOTIFICATIONS 0'):
+            assert marker in text
+        collision_proofs[label] = dict(context=ref(context_path), diagnostic=ref(diagnostic), probe_sha256=probe_hash)
     assert set(candidate['independent_reviews']) == set(COUNTS)
     for name, count in COUNTS.items():
         stage = candidate['stages'][name]
@@ -170,7 +190,8 @@ def qualify(candidate_path, baseline_native, baseline_driver, host_junit, source
             native_wheel=ref(baseline_native), driver_wheel=ref(baseline_driver)),
         candidate=ref(candidate_path), native_pair=ref(pair_path), driver_pair=ref(driver_path),
         fresh_images=ref(images_path), native_wheel=ref(native_wheel), driver_wheel=ref(driver_wheel),
-        recipes=recipes, independent_reviews=candidate['independent_reviews'], host=host, host_client=client,
+        recipes=recipes, independent_reviews=candidate['independent_reviews'], ipc_error_routing=collision_proofs,
+        host=host, host_client=client,
         host_client_validation=dict(source_commit=source_commit, junit=ref(host_junit)),
         bridge_inputs=bridge_inputs, bridge=ref(exact(candidate['bridge'])), **results,
         full_v05_accepted=False, scope='Independently replayed final source successors and installed native behavior; full language sequence still required.')

@@ -16,7 +16,7 @@ COPY source_port/prompt_control_patches.py /input/
 COPY source_port/prompt_startup_patches.py /input/
 COPY source_port/proc_dictionary_patches.py source_port/wait_interrupt_patches.py /input/
 COPY source_port/database_values_patches.py /input/
-COPY source_port/ipc_mailbox_patches.py /input/
+COPY source_port/ipc_mailbox_patches.py source_port/ipc_error_notification_patches.py /input/
 COPY source_port/context_snapshot_patches.py /input/
 COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /input/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /input/
@@ -40,7 +40,7 @@ COPY source_port/prompt_control_patches.py /executor/
 COPY source_port/prompt_startup_patches.py /executor/
 COPY source_port/proc_dictionary_patches.py source_port/wait_interrupt_patches.py /executor/
 COPY source_port/database_values_patches.py /executor/
-COPY source_port/ipc_mailbox_patches.py /executor/
+COPY source_port/ipc_mailbox_patches.py source_port/ipc_error_notification_patches.py /executor/
 COPY source_port/context_snapshot_patches.py /executor/
 COPY source_port/legacy_compare_patches.py source_port/legacy_compare_syntax.py /executor/
 COPY source_port/rng_patches.py source_port/rng_state_patches.py /executor/
@@ -50,7 +50,7 @@ COPY source_port/database_format_patches.py source_port/limit_feature_patches.py
 COPY source_port/prompt_complete_patches.py source_port/event_text_patches.py source_port/memory_command_results_patches.py /executor/
 COPY source_port/prompt_empty_option_patches.py source_port/event_empty_native_patches.py /executor/
 RUN python /executor/executor_build.py --integrated
-COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
+COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_ipc_error_routing.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
 COPY source_port/context-build.Dockerfile source_port/context-build.Dockerfile.dockerignore /context/
 RUN python /context/context_build.py
 COPY source_port /recipe/source_port

@@ -28,6 +28,16 @@ def build(output, evidence, source, recipe, integrated=False):
     if integrated and (not report['build'].get('composition')
                        or not report['executor_build'].get('composition')):
         raise ValueError('Integrated wheel requires both composed native and Python qualification')
+    if integrated:
+        context = report['context_build']
+        if (context.get('ipc_error_routing_build_exit_code') != 0
+                or context.get('ipc_error_routing_runtime_exit_code') != 0):
+            raise ValueError('Integrated wheel requires the native IPC error collision probe')
+        diagnostic = (evidence/'ipc-error-routing-runtime.log').read_text()
+        for marker in ('CORRELATED_STATUS_RESPONSES 16/16', 'ASYNC_ERROR_NOTIFICATIONS 16/16',
+                       'SYNCHRONOUS_ERROR_RESPONSE 1', 'UNEXPECTED_NOTIFICATIONS 0'):
+            if marker not in diagnostic:
+                raise ValueError('Missing native IPC error routing evidence: '+marker)
     package = output / 'src'
     package.mkdir()
     site = Path(sysconfig.get_path('purelib'))

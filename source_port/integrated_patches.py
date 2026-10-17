@@ -31,6 +31,7 @@ import dta_ipc_patches
 import dta_time_patches
 import flow_patches
 import ipc_mailbox_patches
+import ipc_error_notification_patches
 import legacy_compare_patches
 import obs_patches
 import limit_patches
@@ -88,6 +89,7 @@ RECIPE_NAMES = (
     'prompt_startup_patches.py',
     'proc_dictionary_patches.py', 'wait_interrupt_patches.py',
     'ipc_mailbox_patches.py',
+    'ipc_error_notification_patches.py',
     'context_snapshot_patches.py',
     'legacy_compare_patches.py', 'legacy_compare_syntax.py',
     'rng_patches.py', 'rng_state_patches.py',
@@ -106,6 +108,7 @@ NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patc
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
                             ipc_mailbox_patches.SOURCE,
+                            ipc_error_notification_patches.SOURCE,
                             context_snapshot_patches.SOURCE,
                             shutdown_pause_patches.SOURCE,
                             ui_native_patches.SOURCE, *dta_time_patches.PREIMAGES,
@@ -216,6 +219,9 @@ def apply_native_tree(source, archive, output):
         elif name == ipc_mailbox_patches.SOURCE:
             recipe = 'ipc_mailbox_patches.py'
             patched[name] = ipc_mailbox_patches.apply(ported[name])
+        elif name == ipc_error_notification_patches.SOURCE:
+            recipe = 'ipc_error_notification_patches.py'
+            patched[name] = ipc_error_notification_patches.apply(name, ported[name])
         elif name == context_snapshot_patches.SOURCE:
             recipe = 'context_snapshot_patches.py'
             patched[name] = context_snapshot_patches.apply(name, original[name], ported[name])

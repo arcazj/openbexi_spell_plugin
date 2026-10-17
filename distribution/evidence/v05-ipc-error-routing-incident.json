@@ -1,0 +1,26 @@
+{
+  "status": "Native correction awaiting independent rebuild and complete validation",
+  "original_failure": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\4816a88fa2ac4f3d88d36e85f29dd355\\result.json",
+    "sha256": "5712a6107022ad2cee04108a820cf3161f27906d8f55b7c8e2d9148db6a4fe48"
+  },
+  "baseline_collision": {
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-baseline\\captured\\result.json",
+    "sha256": "3f1bcd7ee961a8a9f330a69d0f5b11e1a5025faad6cfa099df79c6579b6bb350"
+  },
+  "baseline_diagnostic": {
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-baseline\\captured\\runtime.log",
+    "sha256": "14ad52863ea121657746b07d9b7fba21e0bd8f10d5d844e96ac6ab5f58dff5dd"
+  },
+  "probe": {
+    "path": "C:\\obspell_v05_ipc_errors\\source_port\\qualify_ipc_error_routing.cpp",
+    "sha256": "212fb47affa655abc2ac26cfee1e496cea6b721f110966ef8e193332e25b4233"
+  },
+  "recipe": {
+    "path": "C:\\obspell_v05_ipc_errors\\source_port\\ipc_error_notification_patches.py",
+    "sha256": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850"
+  },
+  "cause": "Asynchronous MSG_ERROR/STATUS entered the response mailbox and stole an unrelated status response with matching correlation headers.",
+  "correction": "Route original executor error notifications through incomingMessage before correlation; preserve synchronous error replies.",
+  "full_v05_accepted": false
+}

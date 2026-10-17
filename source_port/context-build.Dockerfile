@@ -20,7 +20,7 @@ RUN python /executor/executor_build.py
 # after a failed lifecycle assertion. It is not part of the runtime wheel.
 RUN apt-get update && apt-get install -y --no-install-recommends gdb
 
-COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
+COPY source_port/context_build.py source_port/context_peer.cpp source_port/qualify_context.py source_port/qualify_process.cpp source_port/server_peer.cpp source_port/qualify_service_bindings.cpp source_port/qualify_service_bindings.py source_port/controller_peer.cpp source_port/controller_fixtures.py source_port/service_recovery_peer.cpp source_port/service_recovery_fixtures.py source_port/cif_fixtures.py source_port/qualify_ipc_ownership.cpp source_port/qualify_ipc_error_routing.cpp source_port/qualify_context_ownership.cpp source_port/live_reconnect_peer.cpp source_port/live_reconnect_fixtures.py /context/
 COPY source_port/context-build.Dockerfile source_port/context-build.Dockerfile.dockerignore /context/
 ARG CONTEXT_QUALIFICATION=all
 RUN OPENBEXI_CONTEXT_TEST_FILTER=${CONTEXT_QUALIFICATION} python /context/context_build.py
