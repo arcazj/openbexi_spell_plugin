@@ -1,7 +1,7 @@
 {
   "passed": true,
-  "runtime_image": "sha256:4e8f7d67787c6a65b402b7e98fb4c34e7be58c7252d9f0257009a2f94d3bb620",
-  "source_commit": "32dfeb0785b10c77ba16169741244c5ea8f6d01d",
+  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "source_commit": "28237b12cb43c453a3fc221b842b283ce9b482b5",
   "baseline": {
     "commit": "7d50a6393413595293b27384db9506cd4cd2efef",
     "path": "distribution/evidence/followup-qualified-sources.json",
@@ -16,60 +16,85 @@
     }
   },
   "candidate": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\result.json",
-    "sha256": "6586f2da1cbcff365b986059175fb35a472244a1ddcac854af878c249facd472"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\result.json",
+    "sha256": "1283fddee18edae60ab6b4cfe2ea6d7b0c8ebe1897057a7a025d86c2f2f6489d"
   },
   "native_pair": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-build\\native\\88e0d4a9ca44412592db3dc97a8bd67e\\result.json",
-    "sha256": "f71395518ad3c036ed6bd1ed260142467d1448f4c60893a846a88a50ee0842b1"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\result.json",
+    "sha256": "4a2108cf525651dd666b7624976c76da5030d03642d7c3f6989c05057babe5b3"
   },
   "driver_pair": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-build\\driver\\91bdafee596d4c388bce04c4c04d40f1\\result.json",
-    "sha256": "13f5b5f6ab9389492c1417ee2fdb1ddfd1eaf5c0f8f6be317e8941dbd36e62d0"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\driver\\1a45e14604f449be89c734d3b42bf6f2\\result.json",
+    "sha256": "1d7ee7fdc7030760d19e2cd187fe565b16956ad3efa85b1ef0fe5c0bc448ffdc"
   },
   "fresh_images": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-build\\images\\653cf6aa90a24407a59159fcb84afe02\\result.json",
-    "sha256": "58e1996c3f1b963216d367d098c29a32ffc4d4475b515930db238e6beaaedcd4"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\images\\2de3a8de056f42f9bfcccbe282d8deba\\result.json",
+    "sha256": "9215b2df01879a86c0f7b87d303d8e1abb3eb8a319e5145900c6481ca3b33c03"
   },
   "native_wheel": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-build\\native\\88e0d4a9ca44412592db3dc97a8bd67e\\a\\distribution\\wheels\\openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
-    "sha256": "fdedb48b3601a5b129037bdc17742607815b903b791badef674da5806bdb405e"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\distribution\\wheels\\openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+    "sha256": "cab6f5443be7924763cc329e0c9042c7f9891522b11922e8ad76a81946b0788c"
   },
   "driver_wheel": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-build\\driver\\91bdafee596d4c388bce04c4c04d40f1\\a\\wheels\\openbexi_spell_dss-0.4.0-py3-none-any.whl",
-    "sha256": "351ffa29acac2827f7196ec2f29ae63146994c1352b20f21eb2953847f9d0dc4"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\driver\\1a45e14604f449be89c734d3b42bf6f2\\a\\wheels\\openbexi_spell_dss-0.4.0-py3-none-any.whl",
+    "sha256": "eacf4abe4989924168565549b3cfe5907a639c6e67a030fe50afa8a5334c4ffe"
   },
   "recipes": {
     "prompt_complete_patches.py": "34f1436e595446af56e20a802b0e280b3f69c99d8a43a23b97dada4f36ceff57",
     "prompt_empty_option_patches.py": "0c77904683b3d0709a776d73c1f3114fde0f08dfbc1d726bfb82cc74d42b777f",
     "event_empty_native_patches.py": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88",
+    "ipc_error_notification_patches.py": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
     "event_text_patches.py": "7b9d8576199338ea38d27e2851928f78a8fb653b43e1e5d5aade43aa6823ff59",
     "memory_command_results_patches.py": "2c206dfbf94ee54dbb4f4a7b57e05a213030a638eb93d26bdd71b8ffd3e04bce"
   },
   "independent_reviews": {
     "prompt": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\prompt-review.json",
-      "sha256": "6c4acb11616a6f9de1dd91efe73c8606ad20493a21cc057bc8d012bd54882cdc"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\prompt-review.json",
+      "sha256": "ac42044d0c14a2c52a0f731977d6af4c2b6c55b600662fc6e3cf5419bc37f681"
     },
     "child": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\child-review.json",
-      "sha256": "ca135c34207c17f763e6a040501e17117e78ba3916bc5d16f9d711f59aa92ce2"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\child-review.json",
+      "sha256": "137d76349706397c713574ec8f8cf5be72dd80d89dda770d68bb146a485821fb"
     },
     "event": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\event-review.json",
-      "sha256": "dc6cc81e59357f12e1828a7256090f70852532b6cf2a1aabcafd2d7a09c1f2c1"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\event-review.json",
+      "sha256": "48e68fe18a1ce53b964b8fef5136aa4f5e4477c45b1eaf0b4c795a5e2f29e580"
     },
     "driver-extension": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\driver-extension-review.json",
-      "sha256": "d19d681c9f980065ed8599ad3a828b00697c133229e7a0c702d7fa66f79e9a45"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\driver-extension-review.json",
+      "sha256": "8c080a38df1a447f25f1120f9d332054baab79aaa2d6228497d9d7d10f193ca2"
     },
     "command-group": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\command-group-review.json",
-      "sha256": "8c6c3f149ecceda93b4b47838f1bbdbbfb8b35e6ca2df1ceb32730406223be34"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\command-group-review.json",
+      "sha256": "e8c526959e00deacc05eb55d3c7184b6d91afce2eb3f9efe9b892f13bad5d4d8"
     },
     "memory": {
-      "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\memory-review.json",
-      "sha256": "b6775ca3dd158308e47bf6f701241d361bef97f1359a894e3a205c542bac7973"
+      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\memory-review.json",
+      "sha256": "4ee27f56fec94960a017ca642b767e7ef31e3ab4022db7b0a75a54405bccc3bb"
+    }
+  },
+  "ipc_error_routing": {
+    "a": {
+      "context": {
+        "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native\\context-build.json",
+        "sha256": "e89359b11319d57b4321b0b8614348d379b454c487e7c65f699cccf79693fa3b"
+      },
+      "diagnostic": {
+        "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native\\ipc-error-routing-runtime.log",
+        "sha256": "e756a6825af693dd63bfe185e0b7cf9996d35f224191f70833046a39abae1a73"
+      },
+      "probe_sha256": "212fb47affa655abc2ac26cfee1e496cea6b721f110966ef8e193332e25b4233"
+    },
+    "b": {
+      "context": {
+        "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\b\\native\\context-build.json",
+        "sha256": "e89359b11319d57b4321b0b8614348d379b454c487e7c65f699cccf79693fa3b"
+      },
+      "diagnostic": {
+        "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\b\\native\\ipc-error-routing-runtime.log",
+        "sha256": "e756a6825af693dd63bfe185e0b7cf9996d35f224191f70833046a39abae1a73"
+      },
+      "probe_sha256": "212fb47affa655abc2ac26cfee1e496cea6b721f110966ef8e193332e25b4233"
     }
   },
   "host": {
@@ -87,7 +112,7 @@
     "host_plugin/src/openbexi_spell_host/__init__.py": "a32d1f55538b95af6564e5ca45fbaa7a5b4816651ecd44a34480ac0d31f2f000"
   },
   "host_client_validation": {
-    "source_commit": "32dfeb0785b10c77ba16169741244c5ea8f6d01d",
+    "source_commit": "28237b12cb43c453a3fc221b842b283ce9b482b5",
     "junit": {
       "path": "C:\\obspell_v05_composed\\.qualification\\final-host-tests.xml",
       "sha256": "bcc6ffb19d5eab8d28bce98f202e905ef152c25a25042b8afd00876be82983b2"
@@ -98,8 +123,8 @@
     "host_runtime/native_bridge.cpp": "f575bcfc080413e601b79b35d8c4ea5131724b43d22cd5de61650d3d858b5fb5"
   },
   "bridge": {
-    "path": "C:\\obmemory_command\\.qualification\\event-buffer-candidate\\ad67ab21fdc7460d9e0aa8b8a4fab4cf\\bridge-build.json",
-    "sha256": "06492260050afb7b7810643b8eab4a3d739b041ed05727b01e75e63d1e3f15d9"
+    "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-candidate\\391a3e2e145c4390be0211b0412b1724\\bridge-build.json",
+    "sha256": "a45024a9c9bc1e3be0234c7df1fce9e064866d5423676f3a3eec8c9d8375e562"
   },
   "native": {
     "lib/SPELL_CIF/src/SPELLasRun.C": {
@@ -231,6 +256,11 @@
       "original": "c57d8ca1bbd784bd40da5e4e60544300bc0c242678d89dbba2caad1636720850",
       "ported": "fae984f867c8d76df6fa90c8ce004ce7412b3f8d97b9c84fb684fbb8f3694403",
       "patched": "9f09481dac0c360831ab74ebd2649fd7271f508c5eccf121b33853060dac9cd8"
+    },
+    "lib/SPELL_IPC/src/SPELLipcInput.C": {
+      "original": "91c045628cf34f8e8782295cc9dbe62fe38dc3545381300b9032edb2503929a0",
+      "ported": "91c045628cf34f8e8782295cc9dbe62fe38dc3545381300b9032edb2503929a0",
+      "patched": "fe0ee70bfeb33103c707365e408623aad86f89b8ced309459009cd64b90a8283"
     }
   },
   "driver": {
@@ -291,6 +321,12 @@
       "source": "lib/SPELL_CIFS/src/SPELLdisplayBuffer.C",
       "before_sha256": "fae984f867c8d76df6fa90c8ce004ce7412b3f8d97b9c84fb684fbb8f3694403",
       "after_sha256": "9f09481dac0c360831ab74ebd2649fd7271f508c5eccf121b33853060dac9cd8"
+    },
+    {
+      "recipe": "ipc_error_notification_patches.py",
+      "source": "lib/SPELL_IPC/src/SPELLipcInput.C",
+      "before_sha256": "91c045628cf34f8e8782295cc9dbe62fe38dc3545381300b9032edb2503929a0",
+      "after_sha256": "fe0ee70bfeb33103c707365e408623aad86f89b8ced309459009cd64b90a8283"
     }
   ],
   "driver_changes": [
