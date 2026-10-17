@@ -39,6 +39,7 @@ import telemetry_feature_patches
 import manoeuvre_database_patches
 import procedure_library_patches
 import prompt_complete_patches
+import prompt_empty_option_patches
 import event_text_patches
 import memory_command_results_patches
 import notification_patches
@@ -96,6 +97,7 @@ RECIPE_NAMES = (
     'ranging_complete_patches.py',
     'ranging_reopen_patches.py', 'memory_feature_patches.py', 'memory_ranging_patches.py',
     'prompt_complete_patches.py', 'event_text_patches.py', 'memory_command_results_patches.py',
+    'prompt_empty_option_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -294,6 +296,10 @@ def apply_native_tree(source, archive, output):
         before = patched.get(name, ported[name])
         patched[name] = stage('prompt_complete_patches.py', name, before,
             prompt_complete_patches.apply(name, before))
+    for name in prompt_empty_option_patches.PREIMAGES:
+        before = patched[name]
+        patched[name] = stage('prompt_empty_option_patches.py', name, before,
+            prompt_empty_option_patches.apply(name, before))
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'

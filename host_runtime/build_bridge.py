@@ -38,6 +38,9 @@ fields = set()
 for header in (source / 'include/SPELL_IPC').glob('*.H'):
     fields.update(re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', header.read_text()))
 assert {'Csp', 'ExecutorStatus', 'VarName', 'VarValue', 'ContextPort'} <= fields
+# These checked native prompt extensions are emitted outside the upstream
+# FIELD_* declarations and must survive the JSON bridge unchanged.
+fields.update({'DefaultProvided', 'TimeoutMicroseconds'})
 Path('/bridge/fields.inc').write_text('static const char* fieldNames[] = {\n' +
     ',\n'.join(json.dumps(field) for field in sorted(fields)) + '\n};\n')
 subprocess.run(['c++', '-std=c++17', '-g', '-O1', '-pthread',
