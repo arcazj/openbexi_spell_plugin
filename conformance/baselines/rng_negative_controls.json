@@ -1,0 +1,263 @@
+{
+  "origin": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\rng-worktree\\.qualification\\v0.5\\rng\\7fec8c89a3824b278f48a07a80731635\\result.json",
+    "sha256": "661f83e534acb4707529db8ff8699d20b1815d6cc7b8ee2d45cfe3351fc2c3b9"
+  },
+  "inputs": {
+    "conformance/rng_cases.py": "36d59b73d7ae3727551886313c67f2387f934c20db733ce35bb8800a6569fdc7"
+  },
+  "checks": {
+    "enable:positive": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert EnableRanging(config=CFG) is True\nassert_effects(before,[('EnableRanging',True,'','')],'READY')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ENABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "positive"
+    },
+    "enable:boundary": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert EnableRanging(CFG) is True\nassert EnableRanging(**CFG) is True\nassert_effects(before,[('EnableRanging',True,'','')]*2,'READY')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ENABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "boundary"
+    },
+    "enable:failure": {
+      "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:EnableRanging(BBE,config=CFG))\nrejects(SyntaxException,lambda:EnableRanging(BBE,ANT,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ENABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "failure"
+    },
+    "enable:recovery": {
+      "source": "\nbefore=mark()\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nassert EnableRanging(config=CFG) is True\nassert_effects(before,[('EnableRanging',True,'','')],'READY')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-ENABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "recovery"
+    },
+    "disable:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert DisableRanging(config=CFG) is True\nassert_effects(before,[('DisableRanging',True,'','')],'DISABLED')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "positive"
+    },
+    "disable:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert DisableRanging(CFG) is True\nassert DisableRanging(**CFG) is True\nassert_effects(before,[('DisableRanging',True,'','')]*2,'DISABLED')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "boundary"
+    },
+    "disable:failure": {
+      "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:DisableRanging(BBE,config=CFG))\nrejects(SyntaxException,lambda:DisableRanging(BBE,ANT,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "failure"
+    },
+    "disable:recovery": {
+      "source": "\nbefore=mark()\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nassert DisableRanging(config=CFG) is True\nassert_effects(before,[('DisableRanging',True,'','')],'DISABLED')\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-DISABLERANGING",
+        "CMP-LRM244-EXAMPLE-169"
+      ],
+      "dimension": "recovery"
+    },
+    "start-single:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-170"
+      ],
+      "dimension": "positive"
+    },
+    "start-single:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is False\nassert_effects(before,[('StartRanging',False,BBE,ANT)],'DISABLED')\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartRanging',True,BBE,ANT)]*2,'RANGING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-170"
+      ],
+      "dimension": "boundary"
+    },
+    "start-single:failure": {
+      "source": "\nbefore=mark()\nfor args in ((),(BBE,),(BBE,ANT,'extra'),(1,ANT),(BBE,1)):\n    rejects(SyntaxException,lambda:StartRanging(*args,config=CFG))\nassert_no_call(before)\nfor pair in (('MISSING',ANT),(BBE,'MISSING'),('',ANT),(BBE,'')):\n    rejects(DriverException,lambda:StartRanging(*pair,config=CFG))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-170"
+      ],
+      "dimension": "failure"
+    },
+    "start-single:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging('MISSING',ANT,config=CFG))\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-170"
+      ],
+      "dimension": "recovery"
+    },
+    "calibration-single:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartCalibration',True,BBE,ANT)],'CALIBRATING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-175"
+      ],
+      "dimension": "positive"
+    },
+    "calibration-single:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRangingCalibration(BBE,ANT,config=CFG) is False\nassert_effects(before,[('StartCalibration',False,BBE,ANT)],'DISABLED')\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartCalibration',True,BBE,ANT)]*2,'CALIBRATING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-175"
+      ],
+      "dimension": "boundary"
+    },
+    "calibration-single:failure": {
+      "source": "\nbefore=mark()\nfor args in ((),(BBE,),(BBE,ANT,'extra'),(1,ANT),(BBE,1)):\n    rejects(SyntaxException,lambda:StartRangingCalibration(*args,config=CFG))\nassert_no_call(before)\nfor pair in (('MISSING',ANT),(BBE,'MISSING'),('',ANT),(BBE,'')):\n    rejects(DriverException,lambda:StartRangingCalibration(*pair,config=CFG))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-175"
+      ],
+      "dimension": "failure"
+    },
+    "calibration-single:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRangingCalibration('MISSING',ANT,config=CFG))\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert_effects(before,[('StartCalibration',True,BBE,ANT)],'CALIBRATING')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-175"
+      ],
+      "dimension": "recovery"
+    },
+    "abort-single:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nassert_effects(before,[('AbortRanging',True,'','')],'READY')\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nassert_effects(before,[('AbortRanging',True,'','')],'READY')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-172"
+      ],
+      "dimension": "positive"
+    },
+    "abort-single:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is False\nassert_effects(before,[('AbortRanging',False,'','')],'DISABLED')\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert_effects(before,[('AbortRanging',True,'','')]*2,'READY')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-172"
+      ],
+      "dimension": "boundary"
+    },
+    "abort-single:failure": {
+      "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:AbortRanging(BBE,config=CFG))\nrejects(SyntaxException,lambda:AbortRanging(BBE,ANT,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-172"
+      ],
+      "dimension": "failure"
+    },
+    "abort-single:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nassert AbortRanging(config=CFG) is True\nassert_effects(before,[('AbortRanging',True,'','')],'READY')\n",
+      "contracts": [
+        "CMP-LRM244-EXAMPLE-172"
+      ],
+      "dimension": "recovery"
+    },
+    "baseband-names:positive": {
+      "source": "\nbefore=mark()\nactual=GetBasebandNames(config=CFG)\nassert type(actual) is list\nequal(actual,[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "positive"
+    },
+    "baseband-names:boundary": {
+      "source": "\nfirst=GetBasebandNames(config=CFG)\nfirst.append('LOCAL-ONLY')\nbefore=mark()\nequal(GetBasebandNames(config=CFG),[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "boundary"
+    },
+    "baseband-names:failure": {
+      "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:GetBasebandNames('extra',config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:GetBasebandNames(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "failure"
+    },
+    "baseband-names:recovery": {
+      "source": "\nrejects(DriverException,lambda:GetBasebandNames(config=dict(CFG,IsLocal=True)))\nbefore=mark()\nequal(GetBasebandNames(config=CFG),[BBE])\nassert_read(before,'GetBasebandNames',[BBE])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "recovery"
+    },
+    "antenna-names:positive": {
+      "source": "\nbefore=mark()\nactual=GetAntennaNames(config=CFG)\nassert type(actual) is list\nequal(actual,[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETANTENNANAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "positive"
+    },
+    "antenna-names:boundary": {
+      "source": "\nfirst=GetAntennaNames(config=CFG)\nfirst.append('LOCAL-ONLY')\nbefore=mark()\nequal(GetAntennaNames(config=CFG),[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETANTENNANAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "boundary"
+    },
+    "antenna-names:failure": {
+      "source": "\nbefore=mark()\nrejects(SyntaxException,lambda:GetAntennaNames('extra',config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:GetAntennaNames(config=dict(CFG,IsLocal=True)))\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETANTENNANAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "failure"
+    },
+    "antenna-names:recovery": {
+      "source": "\nrejects(DriverException,lambda:GetAntennaNames(config=dict(CFG,IsLocal=True)))\nbefore=mark()\nequal(GetAntennaNames(config=CFG),[ANT])\nassert_read(before,'GetAntennaNames',[ANT])\n",
+      "contracts": [
+        "CMP-LRM244-FUNCTION-GETANTENNANAMES",
+        "CMP-LRM244-EXAMPLE-174"
+      ],
+      "dimension": "recovery"
+    },
+    "policy:positive": {
+      "source": "\nbefore=mark()\nplan_prompt(['SKIP','REPEAT','CANCEL','ABORT'],'CANCEL')\nassert StartRanging('MISSING',ANT,OnFailure=SKIP|REPEAT|CANCEL|ABORT,PromptFailure=True) is False\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "policy:boundary": {
+      "source": "\nbefore=mark()\nplan_prompt(['SKIP','REPEAT','CANCEL','ABORT'],'REPEAT')\nplan_prompt(['SKIP','REPEAT','CANCEL','ABORT'],'CANCEL')\nassert StartRanging('MISSING',ANT,OnFailure=SKIP|REPEAT|CANCEL|ABORT,PromptFailure=True) is False\nafter=assert_effects(before,[],before['ground']['ranging'])\nrows=after['rpc'][len(before['rpc']):]\nequal(len(rows),2)\nassert all(r['path'].endswith('/StartRanging') and 'error' in r for r in rows)\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "policy:failure": {
+      "source": "\nbefore=mark()\nplan_prompt(['SKIP','REPEAT','CANCEL','ABORT'],'CANCEL')\nassert StartRangingCalibration('MISSING',ANT,OnFailure=SKIP|REPEAT|CANCEL|ABORT,PromptFailure=True) is False\nassert_effects(before,[],before['ground']['ranging'])\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "policy:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging('MISSING',ANT,config=CFG))\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert_effects(before,[('StartRanging',True,BBE,ANT),('AbortRanging',True,'','')],'READY')\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "interrupt-policy:positive": {
+      "source": "\nbefore=mark()\nassert EnableRanging(config=dict(CFG,AllowInterrupt=True)) is True\nassert_effects(before,[('EnableRanging',True,'','')],'READY')\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "interrupt-policy:boundary": {
+      "source": "\nfor value in (False,True):\n    before=mark()\n    assert DisableRanging(config=dict(CFG,AllowInterrupt=value)) is True\n    assert_effects(before,[('DisableRanging',True,'','')],'DISABLED')\n    before=mark()\n    equal(GetBasebandNames(config=dict(CFG,AllowInterrupt=value)),[BBE])\n    assert_read(before,'GetBasebandNames',[BBE])\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "interrupt-policy:failure": {
+      "source": "\nbefore=mark()\nfor value in (0,1,'False',None,[],{}):\n    rejects(DriverException,lambda:EnableRanging(config=dict(CFG,AllowInterrupt=value)))\nassert_no_call(before)\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "interrupt-policy:recovery": {
+      "source": "\nbefore=mark()\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,AllowInterrupt='False')))\nassert EnableRanging(config=dict(CFG,AllowInterrupt=False)) is True\nassert_effects(before,[('EnableRanging',True,'','')],'READY')\n",
+      "contracts": [],
+      "dimension": "recovery"
+    }
+  }
+}

@@ -8,6 +8,7 @@ from pathlib import Path
 from rng_cases import CASES, METADATA
 from installed_provenance import verify_capture
 from rng_composed_review import verify_composed
+from rng_baseline_review import verify_baseline
 
 ROOT=Path(__file__).resolve().parents[1]
 DIMENSIONS={'positive','boundary','failure','recovery'}
@@ -105,16 +106,17 @@ def main():
     encoded=args.raw.read_bytes()
     report=qualify(json.loads(encoded))
     baseline=json.loads(args.baseline.read_bytes())
-    assert set(baseline['checks'])==set(CASES)
-    for key in CASES:
-        assert baseline['checks'][key]['source']==CASES[key],key
+    baseline_source=verify_baseline(baseline,'rng')
     assert all(not baseline['checks'][key]['passed'] for key in (
         'enable:failure','disable:failure','calibration-single:positive'))
     report['baseline']=dict(path=str(args.baseline.resolve()),
         sha256=hashlib.sha256(args.baseline.read_bytes()).hexdigest(),
+        case_source=baseline_source,
         runtime_image=baseline['runtime_image'],
         failed={key:dict(error=row['error'][:300],full_error_sha256=hashlib.sha256(row['error'].encode()).hexdigest())
                 for key,row in baseline['checks'].items() if not row['passed']})
+    for name in ('conformance/rng_baseline_review.py',baseline_source['path']):
+        report['inputs'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
     report['raw_report_sha256']=hashlib.sha256(encoded).hexdigest()
     report['raw_report_path']=str(args.raw.resolve())
     output=ROOT/'conformance/evidence/rng.json'

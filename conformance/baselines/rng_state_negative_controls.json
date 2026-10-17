@@ -1,0 +1,116 @@
+{
+  "origin": {
+    "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\rng-state-worktree\\.qualification\\v0.5\\rng-state\\70c8a6be8f634af4aef621174afff859\\result.json",
+    "sha256": "869fa9d672a8ce1827d267d1a1e58e4a65058460683fcc77bb3595424f2489ef"
+  },
+  "inputs": {
+    "conformance/rng_state_cases.py": "536deefa7aabbea4e7609b2e6c4ba6edc75850101ddb43af51ca15c25091151b"
+  },
+  "checks": {
+    "enable:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert EnableRanging(config=CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')],'RANGING',True)\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "enable:boundary": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert EnableRanging(CFG) is True\nassert EnableRanging(**CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')]*2,'CALIBRATING',True)\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "enable:failure": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:EnableRanging(BBE,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'RANGING',True)\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "enable:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:EnableRanging(config=dict(CFG,IsLocal=True)))\nassert EnableRanging(config=CFG) is True\nstate_effects(before,[('EnableRanging',True,'','')],'CALIBRATING',True)\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "disable:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert DisableRanging(config=CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')],'RANGING',False)\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "disable:boundary": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nassert DisableRanging(CFG) is True\nassert DisableRanging(**CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')]*2,'CALIBRATING',False)\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "disable:failure": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:DisableRanging(ANT,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'CALIBRATING',True)\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "disable:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:DisableRanging(config=dict(CFG,IsLocal=True)))\nassert DisableRanging(config=CFG) is True\nstate_effects(before,[('DisableRanging',True,'','')],'RANGING',False)\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "on-demand:positive": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "on-demand:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartCalibration',True,BBE,ANT)],'CALIBRATING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'CALIBRATING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\nequal(GetAntennaNames(config=CFG),[ANT])\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "on-demand:failure": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging('MISSING',ANT,config=CFG))\nrejects(DriverException,lambda:StartRangingCalibration(BBE,'MISSING',config=CFG))\nstate_effects(before,[],'READY',False)\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "on-demand:recovery": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:StartRanging(BBE,'MISSING',config=CFG))\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'RANGING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "abort:positive": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRanging(BBE,ANT,config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')],'READY',False)\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "abort:boundary": {
+      "source": "\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nassert AbortRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')]*2,'READY',False)\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "abort:failure": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(SyntaxException,lambda:AbortRanging(BBE,config=CFG))\nassert_no_call(before)\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nstate_effects(before,[],'CALIBRATING',True)\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "abort:recovery": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert StartRangingCalibration(BBE,ANT,config=CFG) is True\nbefore=mark()\nrejects(DriverException,lambda:AbortRanging(config=dict(CFG,IsLocal=True)))\nassert AbortRanging(config=CFG) is True\nstate_effects(before,[('AbortRanging',True,'','')],'READY',True)\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "migration:positive": {
+      "source": "\nfor legacy in ('RANGING','CALIBRATING'):\n    check_legacy_reopen(legacy,legacy,True)\n",
+      "contracts": [],
+      "dimension": "positive"
+    },
+    "migration:boundary": {
+      "source": "\ncheck_legacy_reopen('DISABLED','READY',False)\ncheck_legacy_reopen('READY','READY',True)\nfor active in ('RANGING','CALIBRATING'):\n    state=mark()['ground']\n    state.update(ranging=active,ranging_schedule_enabled=False)\n    encoded=json.dumps(state,indent=1)\n    first=fixture('legacy_reopen',encoded=encoded)\n    assert first['migration_error'] is None\n    equal(first['ground_encoded'],encoded)\n    second=fixture('reopen')\n    equal(second['ground_encoded'],encoded)\n    equal(second['ground'],state)\n    equal(GetBasebandNames(config=CFG),[BBE])\n",
+      "contracts": [],
+      "dimension": "boundary"
+    },
+    "migration:failure": {
+      "source": "\nvalid=mark()['ground']\nfor invalid in ({'ranging':'UNKNOWN'},{'ranging':[]},{'ranging':'RANGING','ranging_schedule_enabled':0}):\n    encoded=json.dumps(invalid)\n    failed=fixture('legacy_reopen',encoded=encoded)\n    try:\n        assert failed['migration_error'] and failed['migration_error'].startswith('ValueError:')\n        equal(failed['ground_encoded'],encoded)\n        equal(failed['other_namespaces']['rng-unused'],' { \"retain\" : [0, false, 42] } ')\n    finally:\n        restored=fixture('legacy_reopen',encoded=json.dumps(valid))\n        assert restored['migration_error'] is None\n",
+      "contracts": [],
+      "dimension": "failure"
+    },
+    "migration:recovery": {
+      "source": "\ncheck_legacy_reopen('DISABLED','READY',False)\nbefore=mark()\nassert StartRanging(BBE,ANT,config=CFG) is True\nstate_effects(before,[('StartRanging',True,BBE,ANT)],'RANGING',False)\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['ground']['ranging'],'RANGING')\nassert reopened['ground']['ranging_schedule_enabled'] is False\n",
+      "contracts": [],
+      "dimension": "recovery"
+    },
+    "uncertain-receipt:failure": {
+      "source": "\nassert EnableRanging(config=CFG) is True\nassert AbortRanging(config=CFG) is True\nassert DisableRanging(config=CFG) is True\nbefore=mark()\nfixture('arm_receipt_failure')\nrejects(DriverException,lambda:StartRanging(BBE,ANT,config=CFG))\nafter=mark()\nequal(after['ground']['ranging'],'RANGING')\nassert after['ground']['ranging_schedule_enabled'] is False\ndelta=after['effects'][len(before['effects']):]\nequal(len(delta),1)\nequal(delta[0]['state'],'PENDING')\nequal(delta[0]['receipt'],None)\ncalls=after['rpc'][len(before['rpc']):]\nequal(len(calls),1)\nassert calls[0]['path'].endswith('/StartRanging') and 'Controlled receipt loss' in calls[0]['error']\nreopened=fixture('reopen')\nassert reopened['migration_error'] is None\nequal(reopened['effects'],after['effects'])\nrejects(DriverException,lambda:StartRanging(BBE,ANT,config=CFG))\nrejects(DriverException,lambda:AbortRanging(config=CFG))\nfenced=mark()\nequal(fenced['ground'],after['ground'])\nequal(fenced['effects'],after['effects'])\nattempts=fenced['rpc'][len(after['rpc']):]\nequal(len(attempts),2)\nassert all('UncertainEffect' in r['error'] and 'response' not in r for r in attempts)\nequal(GetBasebandNames(config=CFG),[BBE])\n",
+      "contracts": [],
+      "dimension": "failure"
+    }
+  }
+}
