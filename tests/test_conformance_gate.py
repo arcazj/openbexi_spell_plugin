@@ -20,8 +20,13 @@ def inputs():
 def test_historical_adapted_rows_do_not_promote_release():
     inventory, coverage = inputs()
     assert inventory['historical_counts'] == {'GAP':489,'PARTIAL':79,'ADAPTED':195}
+    # Historical inventory labels cannot replace current native evidence,
+    # including after the live coverage file eventually reaches acceptance.
+    for row in coverage['rows']:
+        row.update(status='OPEN', evidence={})
     result = validate(inventory, coverage, ROOT)
     assert not result['accepted'] and not result['v0.6_dependency_satisfied']
+    assert result['counts'] == {'OPEN': 763}
 
 
 @pytest.mark.parametrize('change', ['drop', 'duplicate', 'import_only', 'stale_inventory'])
