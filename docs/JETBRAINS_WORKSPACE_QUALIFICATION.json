@@ -1,0 +1,62 @@
+{
+  "candidate": "0.3.1-workspace.1",
+  "date": "2026-10-17",
+  "scope": "Local Development workspace and native editor definitions on IntelliJ IDEA 2026.2.3 / Windows x64",
+  "release_accepted": false,
+  "v0_6_status": "paused at user request",
+  "artifact": {
+    "path": "dist/workspace-candidate/openbexi-spell-0.3.1-workspace.1.zip",
+    "sha256": "1f1ad591bf86cc14375cc666896d888b794bb165f2e2585244410c69f7ace15e"
+  },
+  "native_image": "sha256:59f68bec1a9d6d487e6736eafc8f8cd4ef7a132c00d97c1f27b9a7cc64238662",
+  "evidence": {
+    "full_ide_workflows": ".qualification/modern-gui/idea-06/result.json",
+    "final_presentation_and_run": ".qualification/modern-gui/idea-07/result.json",
+    "native_runtime": ".qualification/workspace-host-20261017/evidence/result.json",
+    "native_notifications_and_prompts": ".qualification/workspace-host-20261017/evidence/native-workspace.json",
+    "live_editor_repair": ".qualification/modern-gui/editor-current-project.json",
+    "final_full_ide_workflows": "docs/evidence/workspace/result.json",
+    "final_build": "docs/evidence/workspace/build.json",
+    "installed_plugin": "docs/evidence/workspace/installed-plugin.json",
+    "workspace_tests": "docs/evidence/workspace/workspace-tests.xml",
+    "historical_report_guard": "docs/evidence/workspace/historical-report-guard.xml"
+  },
+  "validation": [
+    "Full private IntelliJ workflows passed 10 checks on ZIP 44c94d48614e693ce919c112cf2024f5cb54b0889e80207736ed2e53be12814c",
+    "Final ZIP differs only by resetting unselected table-cell background; five targeted private IDE checks and visual review passed",
+    "Native runtime: 49 tests plus 23 subtests and an actual Docker notification/prompt smoke passed",
+    "Editor exporter: 11 tests passed, including Windows junction boundaries",
+    "Live user project: valid Python 3.13.15 interpreter, zero errors in spell_menu.py, and an intentionally invalid SPELL import still reports an error",
+    "Mixed native/browser menu: existing real-DSS browser SDK test passed",
+    "Final retained ZIP rebuilt identically from current source and passed all nine actual IntelliJ checks against updated source-snapshot runtime.",
+    "Installed user JAR is identical to the candidate and was confirmed loaded in the running IntelliJ startup log.",
+    "87 workspace tests plus 33 subtests passed; final standalone IDE native Windows and Linux X11 workflows also passed."
+  ],
+  "limitations": [
+    "History is scoped to the IDE session; run artifacts are retained separately",
+    "Python editor-only definitions do not install a Windows native SPELL runtime",
+    "Wider host/platform distribution and v0.6 release acceptance remain open",
+    "Historic language conformance tests reject changed adapter identity; original evidence was not rewritten. Full requalification is outside this GUI delivery.",
+    "Standalone GUI delivery and screenshots: ../openbexi_ide/docs/PROCEDURE_WORKSPACE_QUALIFICATION.json"
+  ],
+  "latest_tested_native_image": "sha256:0518192b4748bd4f5fa2cef5daa4ebe5b884735f559636bce5ba0b4119355c79",
+  "installed_user_plugin": {
+    "checked_on": "2026-10-17",
+    "candidate_zip_sha256": "1f1ad591bf86cc14375cc666896d888b794bb165f2e2585244410c69f7ace15e",
+    "installed_jar": "C:\\Users\\arcaz\\AppData\\Roaming\\JetBrains\\IntelliJIdea2026.2\\plugins\\openbexi-spell\\lib\\openbexi-spell.jar",
+    "installed_jar_sha256": "86a07c436a3f260de8f5f12f84c268035fe147e253742dc2525b3995ec9a279d",
+    "jar_identical_to_candidate": true,
+    "running_ide_log": "C:\\Users\\arcaz\\AppData\\Local\\JetBrains\\IntelliJIdea2026.2\\log\\idea.log",
+    "loaded_plugin_record": "2026-10-17 16:38:04,636 [   1962]   INFO - #c.i.p.i.b.AppStarter - Loaded custom plugins: Ant (262.8665.176), Big Data Tools AWS Base (262.10968.211), Big Data Tools Azure (262.10968.211), Big Data Tools Core (262.10968.63), Big Data Tools Core UI (262.10315.19), Big Data Tools Google Cloud (262.10968.211), Dev Containers (262.10968.148), Docker (262.10968.76), Kubernetes (262.10968.75), Codex Chat (1.0.16), EditorConfig (262.10968.63), Flyway (262.10968.63), Full Line Code Completion (262.10968.63), Gradle for Java (262.10968.63), Natural Languages (262.10968.63), Kubernetes Runtime Configuration (1.5.0), Kubernetes by Red Hat (1.7.0.11), PDF Viewer (0.18.6), Telemetry by Red Hat (1.2.2.8), Java (262.10968.63), Jakarta EE Platform (262.10968.63), JavaScript and TypeScript (262.10968.63), JFrog (2.9.2), Jakarta EE: Persistence (JPA) (262.10968.63), Jupyter (262.10968.63), Kotlin Notebook (262.10968.63), Ktor (262.10968.63), Liquibase (262.10968.63), Markdown (262.10968.63), Maven (262.10968.63), MCP Server (262.10968.92), JetBrains AI Assistant (262.10968.223), Node.js (262.10968.67), Notebook Files (262.10315.19), OpenBEXI SPELL (0.3.1-workspace.1), Package Checker (262.10968.63), Performance Testing (262.10968.63), Protocol Buffers (262.10968.75), Python (262.10968.63), Python Community Edition (262.10968.63), Python DAP Debugger (262.10968.63), Quarkus (262.10968.63), React (262.10968.63), Reactive Streams (262.8665.176), Scala (2026.2.20), Space (262.8665.173), Spring Boot (262.10968.63), Spring Data (262.10968.63), OpenAPI Specifications (262.10968.75), Task Management (262.8665.173), Time Tracking (262.8665.173), Toml (262.10968.63), GitHub (262.10968.63), Mercurial (262.8665.173), Perforce P4 (Helix Core) (262.8665.176), Subversion (262.10968.211), Vue.js (262.10968.67), YAML (262.10968.63)"
+  },
+  "evidence_sha256": {
+    "docs/evidence/workspace/build.json": "fe237a40046b4a2fe96cc8959f5b68ac9ba1b6ae3369ab007cbae98a8fd98a31",
+    "docs/evidence/workspace/historical-report-guard.xml": "aa8687dad3f2c4c11d7a89fc8d54e7ffd1e776e688512964c7c9c2cfedbb0d64",
+    "docs/evidence/workspace/installed-plugin.json": "f0dba75904beab6a5b75a7a65e862c702a0f415528a3921226d00dd286215eba",
+    "docs/evidence/workspace/result.json": "d13d4d759cd6c84e6984900619b8b4b00102f69cb8cd0239a5d64c1d5ae33892",
+    "docs/evidence/workspace/workspace-prompt.png": "8f8c10b3d5e89fb2ccfd0c461445b7ffac5323139539b0fb7636dd81e97c35bc",
+    "docs/evidence/workspace/workspace-results.png": "101213e5a6232d064271bc9f28e619c71fb3b088c87a499bc24f5853b538685a",
+    "docs/evidence/workspace/workspace-tests.xml": "5a886151d1ddfa4fe8b4b709a2850269d0c57a8a39e0329e3b3b2f8625877b78",
+    "docs/evidence/workspace/workspace-text-prompt.png": "f773197f805f324820a141571443dbc8a7c2f826af42a7c601ce65d81bf5dffb"
+  }
+}

@@ -186,6 +186,33 @@ class PromptTests(unittest.TestCase):
         self.assertEqual([call[0] for call in peer.calls],['REQ_EXEC_STATUS'])
         self.assertEqual(adapter.prompts.active.identifier,'2')
 
+    def test_expired_prompt_closes_once_before_replacement_is_exposed(self):
+        adapter, peer, output = self.setup_adapter()
+        self.publish(adapter, peer, message('child#0', 'Expired'))
+        self.publish(adapter, peer, {'id': 'MSG_NOTIFICATION', 'fields': {
+            'ProcId': 'child#0', 'DataType': 'STATUS', 'ExecutorStatus': 'RUNNING'}},
+            message('child#0', 'Next', '2'))
+        closed = [row for row in output if row[:2] == ('event', 'spell/promptClosed')]
+        self.assertEqual(closed, [('event', 'spell/promptClosed',
+                                  {'promptId': '1', 'procedureId': 'child#0'})])
+        replacement = next(row for row in output if row[:2] == ('event', 'spell/prompt')
+                           and row[2]['promptId'] == '2')
+        self.assertLess(output.index(closed[0]), output.index(replacement))
+        self.answer(adapter, promptId='1')
+        self.assertEqual(peer.calls, [])
+        self.assertEqual(sum(row[:2] == ('event', 'spell/promptClosed') for row in output), 1)
+
+    def test_successful_answer_response_precedes_close_and_next_prompt(self):
+        adapter, peer, output = self.setup_adapter()
+        self.publish(adapter, peer, message('child#0'), message('sibling#0'))
+        self.answer(adapter, promptId='1')
+        response = next(i for i, row in enumerate(output) if row[0] == 'response')
+        close = next(i for i, row in enumerate(output) if row[:2] == ('event', 'spell/promptClosed'))
+        next_prompt = next(i for i, row in enumerate(output) if row[:2] == ('event', 'spell/prompt')
+                           and row[2]['promptId'] == '2')
+        self.assertLess(response, close)
+        self.assertLess(close, next_prompt)
+
 
 if __name__=='__main__':
     unittest.main()

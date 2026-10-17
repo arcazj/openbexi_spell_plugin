@@ -108,6 +108,10 @@ host workflows continue in v0.6.
 
 ## v0.6 — distribution and compatibility
 
+Paused at the user's request on 2026-10-17 while the JetBrains SPELL workspace
+and Python editor integration are improved. The work below remains open;
+interface candidates do not promote or complete v0.6.
+
 Qualify reproducible installable artifacts, clean installation/removal, upgrades
 from supported earlier releases, and complete Python/SPELL workflows in
 openbexi_ide, IntelliJ IDEA and PyCharm. Publish an explicit supported platform

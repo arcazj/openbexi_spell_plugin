@@ -7,5 +7,6 @@
 *.zip binary
 # Evidence hashes bind exact report bytes across platforms.
 conformance/evidence/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/evidence/workspace/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 # Retain the original schema's comment indentation in generated RPC docstrings.
 driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py whitespace=-space-before-tab

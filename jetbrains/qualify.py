@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import zipfile
+import shutil
 from build import packed
 
 ROOT = Path(__file__).resolve().parent
@@ -16,6 +17,9 @@ def main():
     parser.add_argument('--sdk', type=Path, required=True)
     parser.add_argument('--plugin', type=Path, required=True)
     parser.add_argument('--interpreter', type=Path, required=True)
+    parser.add_argument('--image', help='Candidate runtime image for this isolated qualification')
+    parser.add_argument('--editor-fixture', type=Path, help='Real generated editor definitions to test the synthetic library provider')
+    parser.add_argument('--ui-only', action='store_true', help='Verify native result table and capture after a presentation-only change')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--remove-from', type=Path, help='Previously successful private instance to uninstall and restart')
     options = parser.parse_args()
@@ -74,6 +78,8 @@ def main():
     else:
         project.mkdir()
         (project / 'README.txt').write_text('Private OpenBEXI SPELL host qualification project.\n')
+        if options.editor_fixture:
+            shutil.copytree(options.editor_fixture, project / '.openbexi/editor/current')
     # A recognized, independent config prevents automatic migration from the
     # user's normal IDE and its restart into the normal launcher.
     config = evidence / 'config/options'
@@ -92,6 +98,10 @@ def main():
         '-Didea.trust.all.projects=true', '-Didea.auto.reload.plugins=false', '-Dsplash=false',
         '-Dopenbexi.qualification=' + evidence.as_posix(),
         '-Dopenbexi.interpreter=' + options.interpreter.resolve().as_posix()]
+    if options.image:
+        arguments.append('-Dopenbexi.image=' + options.image)
+    if options.ui_only:
+        arguments.append('-Dopenbexi.uiOnly=true')
     for name in ['config', 'system', 'log', 'plugins']:
         location = plugins if name == 'plugins' else (previous / name if previous and name == 'config' else evidence / name)
         arguments.append('-Didea.' + name + '.path=' + location.as_posix())

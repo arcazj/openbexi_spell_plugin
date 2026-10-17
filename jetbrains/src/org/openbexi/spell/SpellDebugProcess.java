@@ -24,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 public final class SpellDebugProcess extends XDebugProcess {
     private final DapClient client;
     private final VirtualFile program;
+    private final SpellWorkspace workspace;
+    private final SpellWorkspace.Session execution;
     private final Set<XLineBreakpoint<SpellBreakpointType.Properties>> breakpoints = new LinkedHashSet<>();
     private volatile boolean configured;
     private final XBreakpointHandler<XLineBreakpoint<SpellBreakpointType.Properties>> breakpointHandler = new XBreakpointHandler<>(SpellBreakpointType.class) {
@@ -38,11 +40,12 @@ public final class SpellDebugProcess extends XDebugProcess {
     };
     public SpellDebugProcess(XDebugSession session, GeneralCommandLine command, VirtualFile program) throws ExecutionException {
         super(session); this.program = program; client = new DapClient(command);
+        workspace = SpellWorkspace.get(session.getProject()); execution = workspace.start(program, "Debug", client);
     }
     private void ui(Runnable work) {
         ApplicationManager.getApplication().invokeLater(() -> { if (!getSession().getProject().isDisposed()) work.run(); });
     }
-    private void fail(Throwable error) { client.report(error); ui(() -> getSession().stop()); }
+    private void fail(Throwable error) { client.fail(error); ui(() -> getSession().stop()); }
     @Override public XDebuggerEditorsProvider getEditorsProvider() {
         return new XDebuggerEditorsProvider() {
             @Override public FileType getFileType() { return FileTypes.PLAIN_TEXT; }
@@ -66,11 +69,11 @@ public final class SpellDebugProcess extends XDebugProcess {
     private void event(JsonObject message) {
         String event = message.get("event").getAsString();
         JsonObject body = message.has("body") ? message.getAsJsonObject("body") : new JsonObject();
+        workspace.event(execution, event, body);
         switch (event) {
             case "initialized" -> ui(this::configure);
             case "output" -> client.output(body.get("output").getAsString(), body.has("category") && body.get("category").getAsString().equals("stderr"));
             case "openbexi/inputRequest" -> {
-                client.inputPending = true;
                 client.output(body.get("text").getAsString() + "\nChoices: " + body.get("choices").getAsString() + "\nEnter the native option index:\n", false);
             }
             case "stopped" -> client.request("stackTrace", DapClient.object("threadId", 1))

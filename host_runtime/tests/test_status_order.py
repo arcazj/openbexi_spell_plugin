@@ -57,15 +57,17 @@ class StatusOrderTests(unittest.TestCase):
                 return {'ExecutorStatus': 'PAUSED'}
         adapter.session = Peer()
         adapter.poll()
-        self.assertEqual(messages, [])
+        self.assertEqual([message['event'] for message in messages], ['spell/status'])
+        self.assertEqual(messages[0]['body']['ExecutorStatus'], 'RUNNING')
         self.assertFalse(adapter.await_running)
         adapter.session.request = lambda command: {'ExecutorStatus': 'RUNNING'}
         adapter.poll()
-        self.assertEqual(messages, [])
+        self.assertEqual([message['event'] for message in messages], ['spell/status'])
         adapter.session.events.put({'message': {'fields': {'ProcId':'main#1', 'DataType': 'STATUS', 'ExecutorStatus': 'PAUSED'}}})
         adapter.session.request = lambda command: {'ExecutorStatus': 'PAUSED'}
         adapter.poll()
-        self.assertEqual([message['event'] for message in messages], ['stopped'])
+        self.assertEqual([message['event'] for message in messages], ['spell/status', 'spell/status', 'stopped'])
+        self.assertEqual(messages[1]['body']['ExecutorStatus'], 'PAUSED')
 
 
 if __name__ == '__main__':

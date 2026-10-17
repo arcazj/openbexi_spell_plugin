@@ -43,4 +43,7 @@ def test_dap_relay_sounds_and_forwards_same_prompt_notification(monkeypatch):
     for name in ('stdin','stdout','stderr'):
         monkeypatch.setattr(dap.sys,name,SimpleNamespace(buffer=io.BytesIO()))
     assert dap.main()==0
-    assert sounds==[True] and sent==frames and closed==[True]
+    assert sounds==[True] and closed==[True]
+    assert [frame for frame in sent if frame['event'] != 'openbexi/procedure'] == frames
+    assert [frame['seq'] for frame in sent] == [1, 2, 3]
+    assert sent[1]['body'] == dict(kind='reminder', promptId='3', procedureId='child#1', rootProcedureId='')

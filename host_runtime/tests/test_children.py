@@ -50,11 +50,16 @@ class ChildTests(unittest.TestCase):
             project=Path(directory);(project/'Bus').mkdir()
             source='# Child source\n'+"value='é'\n"*3000
             (project/'Bus/child.py').write_text(source,encoding='utf-8',newline='\n')
-            adapter=Adapter();adapter.session=type('Session',(),dict(project=project))()
+            adapter=Adapter();adapter.session=type('Session',(),dict(project=project, instance='main#0'))()
             adapter.host_root='C:/client/project';messages=[]
             adapter.emit=messages.append
             adapter.present_child('Bus/child#0')
-            outputs=[m['body'] for m in messages]
+            outputs=[m['body'] for m in messages if m.get('event') == 'output']
+            snapshots=[m['body'] for m in messages if m.get('event') == 'spell/source']
+            self.assertEqual(''.join(row['text'] for row in snapshots), source)
+            self.assertEqual(snapshots[0]['offset'], 0)
+            self.assertTrue(snapshots[-1]['complete'])
+            self.assertTrue(all(row['procedureId'] == 'Bus/child#0' and row['rootProcedureId'] == 'main#0' for row in snapshots))
             self.assertEqual(''.join(row['output'] for row in outputs[1:-1]),source)
             self.assertTrue(all(row['category']=='console' for row in outputs))
             self.assertTrue(all(row['source']['path']=='C:/client/project/Bus/child.py' for row in outputs))
@@ -136,6 +141,8 @@ class ChildTests(unittest.TestCase):
 
     def test_child_status_cannot_release_parent_startup_or_terminal_barrier(self):
         adapter, peer = Adapter(), Peer()
+        messages = []
+        adapter.emit = messages.append
         adapter.session = peer
         adapter.children = ChildProcedures(peer.instance)
         adapter.await_running = True
@@ -147,6 +154,8 @@ class ChildTests(unittest.TestCase):
         self.assertTrue(adapter.await_running)
         self.assertEqual(adapter.notified_status, 'WAITING')
         self.assertEqual(adapter.status_revision, 0)
+        self.assertEqual([message['body']['ExecutorStatus'] for message in messages],
+                         ['RUNNING', 'PAUSED', 'FINISHED', 'ERROR', 'ABORTED'])
 
     def test_native_requests_route_context_and_executor_to_explicit_child(self):
         session = object.__new__(NativeSession)

@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import uuid
 import zipfile
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
 
@@ -41,14 +42,18 @@ def main():
     entries.update({p.relative_to(ROOT / 'resources').as_posix(): p.read_bytes()
                     for p in (ROOT / 'resources').rglob('*') if p.is_file()})
     entries['META-INF/LICENSE'] = (ROOT.parent / 'docs/UPSTREAM-GPL-3.0.txt').read_bytes()
+    editor_exporter = ROOT.parent / 'scripts/export_spell_editor.py'
+    entries['editor/export_spell_editor.py'] = editor_exporter.read_bytes()
     package = packed({'openbexi-spell/lib/openbexi-spell.jar': packed(entries)})
-    artifact = args.output / 'openbexi-spell-0.3.0.zip'
+    version = ET.parse(ROOT / 'resources/META-INF/plugin.xml').getroot().findtext('version')
+    artifact = args.output / ('openbexi-spell-' + version + '.zip')
     artifact.write_bytes(package)
     report = {'artifact': artifact.name, 'sha256': hashlib.sha256(package).hexdigest(),
         'sdk': {key: product[key] for key in ('name', 'version', 'buildNumber')},
         'inputs': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                    for p in [*sources, *(ROOT / 'resources').rglob('*.xml'), Path(__file__)]},
         'status': 'Compiled candidate; verifier and actual host acceptance are separate gates'}
+    report['editor_exporter_sha256'] = hashlib.sha256(editor_exporter.read_bytes()).hexdigest()
     (args.output / 'build.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 

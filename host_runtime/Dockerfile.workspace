@@ -1,0 +1,4 @@
+# Local GUI development candidate; production v0.6 qualification remains paused.
+ARG NATIVE_IMAGE
+FROM ${NATIVE_IMAGE}
+COPY host_runtime/python/ /opt/host/

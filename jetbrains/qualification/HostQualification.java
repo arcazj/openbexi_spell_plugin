@@ -18,6 +18,11 @@ import com.intellij.xdebugger.frame.*;
 import com.intellij.xdebugger.evaluation.EvaluationMode;
 import com.intellij.execution.process.*;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import javax.swing.*;
+import java.awt.Component;
+import java.awt.Container;
 import org.openbexi.spell.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -60,6 +65,51 @@ public final class HostQualification implements StartupActivity.DumbAware {
             @Override public void onTextAvailable(ProcessEvent event, Key type) { output.append(event.getText()); }
         };
     }
+    private static <T extends Component> List<T> components(Component root, Class<T> type) {
+        List<T> values = new ArrayList<>();
+        if (type.isInstance(root)) values.add(type.cast(root));
+        if (root instanceof Container parent) for (Component child : parent.getComponents()) values.addAll(components(child, type));
+        return values;
+    }
+    private static JComponent workspace(Project project) {
+        return ToolWindowManager.getInstance(project).getToolWindow("SPELL").getContentManager().getContent(0).getComponent();
+    }
+    private static void button(Project project, String label) {
+        components(workspace(project), JButton.class).stream().filter(value -> label.equals(value.getText())).findFirst().orElseThrow().doClick();
+    }
+    private static void layout(Component value) {
+        if (value instanceof Container parent) { parent.doLayout(); for (Component child : parent.getComponents()) layout(child); }
+    }
+    private static void captureWorkspace(Project project, Path target) throws Exception {
+        ui(() -> {
+            JComponent content = workspace(project);
+            // JTable.removeNotify detaches its header when the private frame is hidden.
+            // Restore the normal showing lifecycle before printing the hidden workspace.
+            for (JTable table : components(content, JTable.class)) {
+                var scroll = (JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class, table);
+                if (scroll != null) scroll.setColumnHeaderView(table.getTableHeader());
+            }
+            content.setSize(1320, 800); layout(content);
+            for (JTable table : components(content, JTable.class))
+                require(table.getTableHeader() != null && table.getTableHeader().getParent() != null && table.getTableHeader().getHeight() > 0, "Table header is detached or has zero height in workspace");
+            StringBuilder diagnostics = new StringBuilder();
+            for (JTable table : components(content, JTable.class)) {
+                var header = table.getTableHeader();
+                diagnostics.append("header=").append(header.getBounds()).append(" visible=").append(header.isVisible()).append(" parent=").append(header.getParent() == null ? "null" : header.getParent().getBounds()).append(" parentVisible=").append(header.getParent() != null && header.getParent().isVisible()).append(" value=").append(table.getColumnModel().getColumn(0).getHeaderValue()).append("\n");
+            }
+            Files.writeString(Path.of(target.toString() + ".layout.txt"), diagnostics);
+            var image = new BufferedImage(1320, 800, BufferedImage.TYPE_INT_RGB);
+            var graphics = image.createGraphics(); content.printAll(graphics); graphics.dispose();
+            ImageIO.write(image, "png", target.toFile()); return null;
+        });
+    }
+    private static void awaitPrompt(Project project, String label) throws Exception {
+        waitFor(() -> {
+            try { return ui(() -> { var current = SpellWorkspace.get(project).selected();
+                return current != null && current.prompt != null && current.prompt.get("Text").getAsString().equals(label); }); }
+            catch (Exception error) { throw new RuntimeException(error); }
+        }, "Prompt panel missing: " + label);
+    }
     private static XValue variable(XDebugSession session, String name) throws Exception {
         CompletableFuture<XValue> result = new CompletableFuture<>();
         ui(() -> {
@@ -92,6 +142,7 @@ public final class HostQualification implements StartupActivity.DumbAware {
             ui(() -> {
                 var settings = SpellSettings.get(project).getState();
                 settings.interpreter = System.getProperty("openbexi.interpreter");
+                if (System.getProperty("openbexi.image") != null) settings.image = System.getProperty("openbexi.image");
                 var tool = ToolWindowManager.getInstance(project).getToolWindow("SPELL");
                 require(tool != null, "SPELL tool window was not registered"); tool.show();
                 // Keep this private qualification instance out of the user's way.
@@ -100,12 +151,77 @@ public final class HostQualification implements StartupActivity.DumbAware {
                 return null;
             });
             checks.add("Installed plugin settings and tool window in actual IDE");
-            VirtualFile run = source(project, "run.py", "from spell.lang.functions import Display\nfrom pathlib import Path\nDisplay('JETBRAINS_NATIVE_RUN')\nPath('answer.txt').write_text('42')\n");
-            OSProcessHandler handler = ui(() -> { var process = SpellLaunch.run(project, run); process.addProcessListener(collect(output)); return process; });
+            Path editorManifest = Path.of(project.getBasePath(), ".openbexi/editor/current/manifest.json");
+            if (Files.isRegularFile(editorManifest)) {
+                String fixtureImage = com.google.gson.JsonParser.parseString(Files.readString(editorManifest)).getAsJsonObject().get("image_id").getAsString();
+                ui(() -> {
+                    var settings = SpellSettings.get(project).getState(); String originalImage = settings.image; settings.image = fixtureImage;
+                    var root = LocalFileSystem.getInstance().refreshAndFindFileByPath(editorManifest.getParent().toString().replace('\\', '/'));
+                    require(root != null, "Editor fixture not visible in VFS"); root.refresh(false, true);
+                    var libraries = new SpellEditorLibrary().getAdditionalProjectLibraries(project);
+                    require(libraries.size() == 1 && libraries.iterator().next().getSourceRoots().contains(root), "Generated editor definitions not exposed as synthetic library");
+                    for (var module : com.intellij.openapi.module.ModuleManager.getInstance(project).getModules())
+                        for (var sourceRoot : com.intellij.openapi.roots.ModuleRootManager.getInstance(module).getSourceRoots())
+                            require(!sourceRoot.equals(root), "Editor definitions unexpectedly changed module runtime source roots");
+                    project.getMessageBus().syncPublisher(com.intellij.openapi.roots.AdditionalLibraryRootsListener.TOPIC).libraryRootsChanged("OpenBEXI SPELL", List.of(), List.of(root), "qualification");
+                    settings.image = "different-image";
+                    require(new SpellEditorLibrary().getAdditionalProjectLibraries(project).isEmpty(), "Mismatched editor definitions remained active");
+                    settings.image = originalImage; return null;
+                });
+                checks.add("Generated editor library is image-scoped and leaves module runtime source roots unchanged");
+            }
+            VirtualFile run = source(project, "run.py", "from spell.lang.functions import Display, Notify\nfrom pathlib import Path\nNotify('Voltage', '28.0', 'SUCCESS')\nDisplay('JETBRAINS_NATIVE_RUN')\nPath('answer.txt').write_text('42')\n");
+            ui(() -> {
+                var context = SimpleDataContext.getProjectContext(project);
+                var action = ActionManager.getInstance().getAction("OpenBEXI.Spell.Run");
+                var event = AnActionEvent.createFromDataContext("SPELL qualification", new Presentation(), context);
+                action.update(event);
+                require(event.getPresentation().isEnabled(), "Run disabled when editor selection exists outside editor focus");
+                return null;
+            });
+            checks.add("Run action uses the selected editor when a tool window has focus");
+            ProcessHandler handler = ui(() -> { var process = SpellLaunch.run(project, run); process.addProcessListener(collect(output)); return process; });
             owned.add(handler);
             waitFor(handler::isProcessTerminated, "Run did not finish");
             require(handler.getExitCode() == 0 && output.toString().contains("JETBRAINS_NATIVE_RUN"), "Native Run failed: " + output);
             checks.add("Native Run through IDE process handler and console");
+            require(ui(() -> SpellWorkspace.get(project).selected().status.equals("Finished")), "Workspace result did not record native finish");
+            if (System.getProperty("openbexi.image") != null) {
+                require(ui(() -> !SpellWorkspace.get(project).selected().lines.isEmpty()), "No native code notifications reached table");
+                require(ui(() -> SpellWorkspace.get(project).selected().lines.values().stream().anyMatch(row -> row.item.equals("Voltage") && row.result.equals("SUCCESS"))), "Native ITEM result missing");
+                captureWorkspace(project, evidence.resolve("workspace-results.png"));
+            }
+            if (Boolean.getBoolean("openbexi.uiOnly")) {
+                VirtualFile preview = source(project, "workspace_preview.py", "from spell.lang.functions import Notify, Prompt, Display\nfrom spell.lang.constants import YES_NO\nNotify('Voltage', '28.0', 'SUCCESS')\nPrompt('Ready to execute?', Type=YES_NO)\nDisplay('Complete')\n");
+                ProcessHandler previewProcess = ui(() -> SpellLaunch.run(project, preview)); owned.add(previewProcess);
+                awaitPrompt(project, "Ready to execute?");
+                captureWorkspace(project, evidence.resolve("workspace-prompt.png"));
+                ui(() -> { SpellWorkspace.get(project).stop(SpellWorkspace.get(project).selected()); return null; });
+                waitFor(previewProcess::isProcessTerminated, "Preview prompt did not stop");
+                checks.add("Presentation-only review captures real native prompt and current line highlight");
+                report.put("passed", true); return;
+            }
+            // Controlled event ordering verifies parent/child isolation independently of scheduler timing.
+            ui(() -> {
+                var model = SpellWorkspace.get(project); var sessionState = model.selected(); String originalStatus = sessionState.status;
+                var eventMethod = SpellWorkspace.class.getDeclaredMethod("event", SpellWorkspace.Session.class, String.class, com.google.gson.JsonObject.class);
+                eventMethod.setAccessible(true); sessionState.status = "Paused";
+                var child = new com.google.gson.JsonObject(); child.addProperty("ProcId", "child#2"); child.addProperty("promptId", "test-child"); child.addProperty("Text", "Controlled child prompt");
+                eventMethod.invoke(model, sessionState, "spell/prompt", child);
+                eventMethod.invoke(model, sessionState, "stopped", new com.google.gson.JsonObject());
+                require(sessionState.status.equals("Paused") && sessionState.prompt != null, "Child prompt changed paused parent status or parent pause hid the prompt");
+                var finishedChild = new com.google.gson.JsonObject(); finishedChild.addProperty("ProcId", "child#2"); finishedChild.addProperty("ExecutorStatus", "FINISHED"); finishedChild.addProperty("rootProcedureId", sessionState.rootProcedureId);
+                eventMethod.invoke(model, sessionState, "spell/status", finishedChild);
+                require(sessionState.status.equals("Paused") && sessionState.prompt == null, "Child FINISHED overwrote parent or left stale child prompt");
+                sessionState.status = originalStatus; model.select(sessionState); return null;
+            });
+            checks.add("Controlled child prompt/status ordering preserves paused parent and scopes invalidation");
+            ui(() -> { SpellSettings.get(project).getState().arguments = "invalid JSON"; return null; });
+            ProcessHandler rejected = ui(() -> { var process = SpellLaunch.run(project, run); process.addProcessListener(collect(output)); return process; }); owned.add(rejected);
+            waitFor(rejected::isProcessTerminated, "Rejected launch did not stop");
+            require(rejected.getExitCode() != 0 && ui(() -> SpellWorkspace.get(project).selected().status.equals("Failed")), "Rejected launch was incorrectly marked Finished");
+            ui(() -> { SpellSettings.get(project).getState().arguments = "{}"; return null; });
+            checks.add("Native launch rejection remains Failed despite successful relay disconnect");
             VirtualFile control = source(project, "control.py", "from spell.lang.functions import Display\nvalue = 21\nanswer = value + 2\nDisplay('JETBRAINS_DEBUG_' + str(answer))\nassert answer == 42\n");
             XLineBreakpoint<?> breakpoint = ui(() -> WriteAction.compute(() ->
                 XDebuggerManager.getInstance(project).getBreakpointManager().addLineBreakpoint(
@@ -164,8 +280,33 @@ public final class HostQualification implements StartupActivity.DumbAware {
             waitFor(promptHandler::isProcessTerminated, "Prompt session did not stop");
             require(output.toString().contains("JETBRAINS_PROMPT_COMPLETE"), "Prompt answer failed");
             checks.add("Native prompt and answer through IDE console input");
+            VirtualFile richPrompt = source(project, "workspace_prompt.py", "from spell.lang.functions import Prompt, Display\nfrom spell.lang.constants import YES_NO, ALPHA, NUM, LIST\nassert Prompt('Ready to execute?', Type=YES_NO) is True\nassert Prompt('Operator name', Type=ALPHA) == 'Ada'\nassert Prompt('Target count', Type=NUM) == 42\nassert Prompt('Choose a mode', ['Safe', 'Nominal'], Type=LIST|ALPHA) == 'Nominal'\nDisplay('JETBRAINS_WORKSPACE_PROMPTS_COMPLETE')\n");
+            ProcessHandler rich = ui(() -> { var process = SpellLaunch.run(project, richPrompt); process.addProcessListener(collect(output)); return process; });
+            owned.add(rich);
+            awaitPrompt(project, "Ready to execute?");
+            captureWorkspace(project, evidence.resolve("workspace-prompt.png"));
+            ui(() -> {
+                var choices = components(workspace(project), JRadioButton.class);
+                require(choices.size() == 2, "Yes/No did not render two choices"); choices.getFirst().doClick();
+                button(project, "Reset"); require(choices.stream().noneMatch(JRadioButton::isSelected), "Reset did not clear selection");
+                choices.getFirst().doClick(); button(project, "Commit"); return null;
+            });
+            awaitPrompt(project, "Operator name");
+            captureWorkspace(project, evidence.resolve("workspace-text-prompt.png"));
+            ui(() -> { components(workspace(project), JTextField.class).stream().filter(field -> "SPELL prompt answer".equals(field.getName())).findFirst().orElseThrow().setText("Ada"); button(project, "Commit"); return null; });
+            awaitPrompt(project, "Target count");
+            ui(() -> {
+                components(workspace(project), JTextField.class).stream().filter(field -> "SPELL prompt answer".equals(field.getName())).findFirst().orElseThrow().setText("not a number"); button(project, "Commit");
+                require(SpellWorkspace.get(project).selected().prompt != null && !SpellWorkspace.get(project).selected().answering, "Invalid numeric input was submitted"); return null;
+            });
+            ui(() -> { components(workspace(project), JTextField.class).stream().filter(field -> "SPELL prompt answer".equals(field.getName())).findFirst().orElseThrow().setText("42"); button(project, "Commit"); return null; });
+            awaitPrompt(project, "Choose a mode");
+            ui(() -> { components(workspace(project), JRadioButton.class).get(1).doClick(); button(project, "Commit"); return null; });
+            waitFor(rich::isProcessTerminated, "Workspace prompt procedure did not finish");
+            require(rich.getExitCode() == 0 && output.toString().contains("JETBRAINS_WORKSPACE_PROMPTS_COMPLETE"), "Workspace prompt answers failed: " + output);
+            checks.add("Embedded Yes/No, text, numeric and list prompts: native scoped answers, Commit and Reset");
             VirtualFile loop = source(project, "stop.py", "import time\nfrom spell.lang.functions import Display\nDisplay('JETBRAINS_STOP_READY')\nwhile True:\n    time.sleep(0.02)\n");
-            OSProcessHandler looping = ui(() -> { var process = SpellLaunch.run(project, loop); process.addProcessListener(collect(output)); return process; });
+            ProcessHandler looping = ui(() -> { var process = SpellLaunch.run(project, loop); process.addProcessListener(collect(output)); return process; });
             owned.add(looping);
             waitFor(() -> output.toString().contains("JETBRAINS_STOP_READY"), "Loop did not start");
             ui(() -> { looping.destroyProcess(); return null; });

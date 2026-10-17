@@ -6,6 +6,7 @@ The container owns one Development session; no IPC ports are published.
 import json
 import os
 import dis
+from datetime import datetime, timezone
 from pathlib import Path
 import queue
 import re
@@ -108,6 +109,7 @@ class Adapter:
         self.freeze_expected = False
         self.children = None
         self.prompts = None
+        self.exposed_prompt = None
 
     def control(self,message):
         if message.get('type') == 'event' and message.get('event') == 'openbexi/heartbeat':
@@ -158,6 +160,20 @@ class Adapter:
         return {'name': relative.rsplit('/', 1)[-1],
                 'path': self.host_root.rstrip('/\\') + '/' + relative}
 
+    def notification_body(self, fields):
+        """Retain native fields and add a safe host location when available."""
+        body = dict(fields, rootProcedureId=self.session.instance,
+                    receivedAt=datetime.now(timezone.utc).isoformat(timespec='milliseconds'))
+        # Notification Csp appends /<execution-count> to the colon-delimited
+        # stack. Slashes inside procedure names remain part of their path.
+        position = re.fullmatch(r'(?:[^:]+:\d+:)*([^:]+):([1-9]\d*)(?:/\d+)?', fields.get('Csp', ''))
+        if position and self.host_root:
+            procedure, line = position.groups()
+            normalized = procedure.replace('\\', '/')
+            if not normalized.startswith('/') and all(part not in ('', '.', '..') for part in normalized.split('/')):
+                body.update(source=self.source(normalized), line=int(line))
+        return body
+
     def present_child(self, instance):
         """Show visible child source in the client console beside the parent."""
         procedure = instance.rsplit('#', 1)[0]
@@ -171,6 +187,7 @@ class Adapter:
         except (OSError, UnicodeError, SyntaxError) as error:
             self.event('output', category='stderr', output=f'Child source unavailable: {instance}: {error}\n')
             return
+        self.present_source(instance, content)
         self.event('output', category='console', source=self.source(procedure), line=1,
                    output=f'=== SPELL child {instance} ===\n')
         # Keep every protocol message bounded without truncating the source.
@@ -179,6 +196,14 @@ class Adapter:
                        output=content[offset:offset+16384])
         self.event('output', category='console', source=self.source(procedure),
                    output=('' if content.endswith('\n') else '\n')+'=== End child source ===\n')
+
+    def present_source(self, instance, content):
+        """Publish the executed snapshot, including children, in bounded chunks."""
+        procedure = instance.rsplit('#', 1)[0]
+        for offset in range(0, max(1, len(content)), 16384):
+            self.event('spell/source', procedureId=instance, rootProcedureId=self.session.instance,
+                       source=self.source(procedure), text=content[offset:offset + 16384],
+                       offset=offset, complete=offset + 16384 >= len(content))
 
     def relative(self, path):
         normalized = path.replace('\\', '/')
@@ -237,6 +262,8 @@ class Adapter:
             self.children = ChildProcedures(self.session.instance, self.present_child)
             self.prompts = PromptQueue(self.session.instance)
             self.response(request)
+            with tokenize.open(self.session.project / relative) as stream:
+                self.present_source(self.session.instance, stream.read())
             self.event('initialized')
             return
         elif command == 'openbexi/driverReply':
@@ -354,15 +381,23 @@ class Adapter:
     def expose_prompt(self, repeat=False):
         if not self.prompts:
             return
+        self.close_exposed_prompt()
         prompt = self.prompts.expose(repeat)
         if prompt is None:
             return
+        self.exposed_prompt = prompt
         fields = dict(prompt.fields, promptId=prompt.identifier, procedureId=prompt.procedure)
         self.event('spell/prompt', **fields)
         self.event('openbexi/inputRequest', text=fields.get('Text', ''),
                    choices=fields.get('ExpectedValues', ''), answerFormat='native option index',
                    promptId=prompt.identifier, procedureId=prompt.procedure)
         self.event('output', category='console', output='SPELL prompt: ' + fields.get('Text', '') + '\n')
+
+    def close_exposed_prompt(self):
+        prompt = self.exposed_prompt
+        if prompt and self.prompts.active is not prompt:
+            self.exposed_prompt = None
+            self.event('spell/promptClosed', promptId=prompt.identifier, procedureId=prompt.procedure)
 
     def answer_prompt(self, request, args):
         prompt = None
@@ -410,11 +445,18 @@ class Adapter:
                 self.children.observe(message)
             if self.prompts:
                 self.prompts.observe(message, self.children.children if self.children else ())
+                self.close_exposed_prompt()
             if fields.get('DataType') == 'STATUS' and fields.get('ProcId') == self.session.instance:
                 self.status_revision += 1
                 self.notified_status = fields.get('ExecutorStatus')
                 if self.notified_status == 'RUNNING':
                     self.await_running = False
+            # STATUS can also arrive as MSG_ERROR. Forward the ordered native
+            # stream, never status-query replies that may describe older state.
+            if fields.get('DataType') == 'STATUS':
+                self.event('spell/status', **self.notification_body(fields))
+            elif message.get('id') == 'MSG_NOTIFICATION':
+                self.event('spell/notification', **self.notification_body(fields))
             if message.get('id') == 'MSG_WRITE':
                 self.event('output', category='stdout', output=fields.get('Text', '') + '\n')
             elif item.get('event') == 'connectionError':

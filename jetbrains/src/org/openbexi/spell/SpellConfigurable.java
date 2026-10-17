@@ -19,11 +19,19 @@ public final class SpellConfigurable implements Configurable {
     @Override public String getDisplayName() { return "SPELL Runtime"; }
     @Override public JComponent createComponent() {
         reset();
+        var sync = new JButton("Sync SPELL editor definitions");
+        sync.addActionListener(event -> {
+            try { apply(); SpellEditorSupport.sync(project); }
+            catch (ConfigurationException error) { com.intellij.openapi.ui.Messages.showErrorDialog(project, error.getMessage(), "SPELL Runtime"); }
+        });
         return FormBuilder.createFormBuilder()
             .addLabeledComponent("CPython 3.13 executable:", interpreter)
             .addLabeledComponent("Native Docker image:", image)
             .addLabeledComponent("Procedure arguments (JSON object):", arguments)
             .addComponent(new JLabel("Install openbexi-spell-host in this interpreter first."))
+            .addComponent(new JLabel("Python imports and package installation use the project's Python SDK."))
+            .addComponent(new JLabel("Sync editor definitions from this native image to resolve SPELL imports and completion."))
+            .addComponent(sync)
             .addComponentFillVertically(new JPanel(), 0).getPanel();
     }
     @Override public boolean isModified() {

@@ -21,6 +21,9 @@ final class DapClient extends ProcessHandler {
     private Consumer<JsonObject> events;
     private final ByteArrayOutputStream inputLine = new ByteArrayOutputStream();
     volatile boolean inputPending;
+    private volatile String promptId;
+    private volatile Integer nativeExitCode;
+    private volatile boolean failed;
 
     DapClient(GeneralCommandLine command) throws ExecutionException { process = command.createProcess(); }
     void begin(Consumer<JsonObject> listener) {
@@ -83,24 +86,54 @@ final class DapClient extends ProcessHandler {
                         if (message.get("success").getAsBoolean()) future.complete(message.getAsJsonObject("body"));
                         else future.completeExceptionally(new IOException(message.has("message") ? message.get("message").getAsString() : "Native request failed"));
                     }
-                } else if (message.get("type").getAsString().equals("event")) events.accept(message);
+                } else if (message.get("type").getAsString().equals("event")) {
+                    String event = message.get("event").getAsString();
+                    JsonObject values = message.has("body") ? message.getAsJsonObject("body") : new JsonObject();
+                    if (event.equals("spell/prompt")) {
+                        synchronized (inputLine) {
+                            inputLine.reset(); promptId = SpellWorkspace.string(values, "promptId"); inputPending = true;
+                        }
+                    } else if (event.equals("spell/promptClosed") && SpellWorkspace.string(values, "promptId").equals(promptId)) {
+                        synchronized (inputLine) { inputPending = false; promptId = null; inputLine.reset(); }
+                    } else if (event.equals("exited")) {
+                        nativeExitCode = values.get("exitCode").getAsInt();
+                        synchronized (inputLine) { inputPending = false; inputLine.reset(); }
+                    }
+                    events.accept(message);
+                }
             }
-        } catch (Exception error) { if (!closing.get()) report(error); }
+        } catch (Exception error) { if (!closing.get()) { failed = true; report(error); } }
         finally {
+            boolean requestedStop = closing.get();
             closing.set(true);
             pending.values().forEach(value -> value.completeExceptionally(new EOFException("SPELL host ended")));
             pending.clear();
             try {
                 if (!process.waitFor(10, TimeUnit.SECONDS)) killOwnedProcess();
-                notifyProcessTerminated(process.waitFor());
+                int code = process.waitFor();
+                // A successful relay shutdown is not proof that the procedure ran successfully.
+                notifyProcessTerminated(failed ? (code == 0 ? 1 : code) : code != 0 ? code :
+                    nativeExitCode != null ? nativeExitCode : !requestedStop ? 1 : 130);
             } catch (InterruptedException error) { Thread.currentThread().interrupt(); killOwnedProcess(); notifyProcessTerminated(1); }
         }
     }
     void report(Throwable error) { notifyTextAvailable("SPELL: " + error.getMessage() + "\n", ProcessOutputTypes.STDERR); }
+    void fail(Throwable error) { failed = true; report(error); destroyProcess(); }
     void output(String text, boolean error) { notifyTextAvailable(text, error ? ProcessOutputTypes.STDERR : ProcessOutputTypes.STDOUT); }
+    CompletableFuture<JsonObject> answerPrompt(String identifier, String answer) {
+        synchronized (inputLine) {
+            if (identifier == null || !identifier.equals(promptId) || !inputPending)
+                return CompletableFuture.failedFuture(new IOException("This SPELL prompt has already closed"));
+            inputPending = false; inputLine.reset();
+        }
+        return request("spell/promptAnswer", object("promptId", identifier, "value", answer))
+            .whenComplete((result, error) -> { synchronized (inputLine) {
+                if (error != null && identifier.equals(promptId) && !closing.get()) inputPending = true;
+            }});
+    }
     @Override protected void destroyProcessImpl() {
         if (!closing.compareAndSet(false, true)) return;
-        inputPending = false;
+        synchronized (inputLine) { inputPending = false; promptId = null; inputLine.reset(); }
         request("disconnect", object("terminateDebuggee", true));
         Thread.ofVirtual().start(() -> {
             try { if (!process.waitFor(10, TimeUnit.SECONDS)) killOwnedProcess(); }
@@ -116,13 +149,17 @@ final class DapClient extends ProcessHandler {
     @Override public OutputStream getProcessInput() {
         return new OutputStream() {
             @Override public synchronized void write(int value) throws IOException {
-                if (!inputPending) return;
-                if (inputLine.size() > 65536) throw new IOException("Prompt input exceeds 64 KiB");
-                if (value == '\n') {
-                    String answer = inputLine.toString(StandardCharsets.UTF_8).replaceFirst("\\r$", "");
-                    inputLine.reset(); inputPending = false;
-                    request("openbexi/input", object("text", answer)).exceptionally(error -> { report(error); return null; });
-                } else inputLine.write(value);
+                String answer = null, identifier = null;
+                synchronized (inputLine) {
+                    if (!inputPending) return;
+                    if (inputLine.size() > 65536) throw new IOException("Prompt input exceeds 64 KiB");
+                    if (value == '\n') {
+                        answer = inputLine.toString(StandardCharsets.UTF_8).replaceFirst("\\r$", "");
+                        identifier = promptId;
+                        inputLine.reset();
+                    } else inputLine.write(value);
+                }
+                if (answer != null) answerPrompt(identifier, answer).exceptionally(error -> { report(error); return null; });
             }
         };
     }

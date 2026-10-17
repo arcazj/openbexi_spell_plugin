@@ -6,6 +6,7 @@ import sys
 from .local import runtime
 from .protocol import read, write
 from .sound import reminder
+from .presentation import presentation
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
     container = runtime(args.project, args.image)
     try:
         process = container.start(stdin=sys.stdin.buffer, stderr=sys.stderr.buffer)
+        sequence = 0
         while (message := read(process.stdout)) is not None:
             if message.get('event') == 'openbexi/promptReminder':
                 reminder()
@@ -23,7 +25,14 @@ def main():
                 destination = container.export()
                 if destination:
                     print('SPELL run files: ' + str(destination), file=sys.stderr, flush=True)
+            sequence += 1
+            message['seq'] = sequence
             write(sys.stdout.buffer, message)
+            view = presentation(message)
+            if view is not None:
+                sequence += 1
+                view['seq'] = sequence
+                write(sys.stdout.buffer, view)
         return process.wait(timeout=10)
     except Exception as error:
         print('SPELL host: ' + str(error), file=sys.stderr, flush=True)
