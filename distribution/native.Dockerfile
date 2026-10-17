@@ -1,5 +1,6 @@
 # Each --no-cache invocation starts with no source, object, or native output tree.
 ARG TOOLCHAIN_IMAGE
+ARG RUNTIME_IMAGE=${TOOLCHAIN_IMAGE}
 FROM ${TOOLCHAIN_IMAGE} AS native
 ENV SOURCE_DATE_EPOCH=1791676800 PYTHONHASHSEED=0 TZ=UTC LC_ALL=C.UTF-8
 COPY docs/reference/SPELL2.6.10-src.zip /input/SPELL2.6.10-src.zip
@@ -60,7 +61,7 @@ RUN c++ -std=c++17 -g -pthread -fsanitize=address,undefined -I/source/include -I
 RUN python /recipe/source_port/package_native.py --integrated --output /package
 RUN python /recipe/distribution/stable_wheel.py --package /package --output /stable
 
-FROM ${TOOLCHAIN_IMAGE} AS installed
+FROM ${RUNTIME_IMAGE} AS installed
 COPY --from=native /stable/wheels /distribution
 COPY --from=native /out/installed_peer /qualification-input/installed_peer
 COPY source_port/qualify_package.py /qualification-input/qualify_package.py

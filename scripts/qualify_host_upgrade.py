@@ -1,5 +1,6 @@
 """Upgrade the installed host through the real IDE plugin manager and run child prompts."""
 import argparse
+from email.parser import BytesParser
 import hashlib
 import importlib.metadata
 import json
@@ -16,6 +17,12 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def wheel_version(path):
+    with zipfile.ZipFile(path) as archive:
+        name, = [n for n in archive.namelist() if n.endswith('.dist-info/METADATA')]
+        return BytesParser().parsebytes(archive.read(name))['Version']
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--ide', type=Path, required=True)
@@ -23,6 +30,7 @@ def main():
     parser.add_argument('--image', required=True)
     parser.add_argument('--previous-wheel', type=Path, required=True)
     args = parser.parse_args()
+    previous_version, target_version = wheel_version(args.previous_wheel), wheel_version(args.wheel)
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     os.environ['OPENBEXI_SPELL_IMAGE'] = image
     os.environ['QT_QPA_PLATFORM'] = 'offscreen'
@@ -77,16 +85,16 @@ def main():
     settings.setValue('qualification/preserved','unchanged')
     settings.sync()
     try:
-        assert metadata() == ['0.3.0','0.3.0']
+        assert metadata() == [previous_version,previous_version]
         manager = PluginManager(interpreter,view)
         manager.plugins_changed.connect(view.discover_backends)
         manager.show()
         wait(lambda: manager.operation is None and manager.packages.count() == 1)
-        assert manager.packages.item(0).data(Qt.UserRole)['version'] == '0.3.0'
+        assert manager.packages.item(0).data(Qt.UserRole)['version'] == previous_version
         assert manager.install_wheel(args.wheel)
         wait(lambda: manager.operation is None and manager.packages.count() == 1
-             and manager.packages.item(0).data(Qt.UserRole)['version'] == '0.3.1.dev1')
-        assert metadata() == ['0.3.1.dev1','0.3.1.dev1']
+             and manager.packages.item(0).data(Qt.UserRole)['version'] == target_version)
+        assert metadata() == [target_version,target_version]
         installed_root = Path(subprocess.check_output([str(interpreter),'-I','-c',
             "import sysconfig;print(sysconfig.get_path('purelib'))"],text=True).strip())
         installed = {}
@@ -100,7 +108,7 @@ def main():
         report['installed_wheel_members'] = installed
         (evidence/'upgrade-console.txt').write_text(manager.output.toPlainText(),encoding='utf-8')
         manager.hide()
-        report['checks'].append('Actual IDE plugin manager upgrades installed host 0.3.0 to 0.3.1.dev1; distribution and module versions agree')
+        report['checks'].append(f'Actual IDE plugin manager upgrades installed host {previous_version} to {target_version}; distribution and module versions agree')
         wait(lambda: view.language.findData('spell') >= 0)
         view.language.setCurrentIndex(view.language.findData('spell'))
         (project/'child.py').write_text('''from spell.lang.functions import Prompt, Display
