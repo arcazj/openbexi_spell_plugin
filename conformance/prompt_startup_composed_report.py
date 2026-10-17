@@ -8,6 +8,7 @@ import sys
 
 from prompt_startup_report import verify_run
 from installed_provenance import verify_capture
+from qualified_prompt_tail import extend
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'distribution'))
@@ -36,11 +37,14 @@ def qualify(path, image):
     assert stage['sources'] == {donor['source']: {
         'before_sha256': donor['preimage_sha256'], 'after_sha256': donor['patched_sha256']}}
     assert native['sources'][donor['source']]['original_sha256']==donor['original_sha256']
-    assert native['sources'][donor['source']]['patched_sha256']==donor['patched_sha256']
+    after = extend(native, donor['source'], donor['patched_sha256'])
+    assert native['sources'][donor['source']]['patched_sha256']==after
     assert native['recipes'][recipe]['sha256'] == donor['recipes'][recipe]
     inputs = dict(raw['inputs'])
     for name in ('conformance/prompt_startup_composed_report.py',
-                 'conformance/prompt_startup_report.py', 'conformance/frozen_prompt_sources.py', 'tests/test_prompt_startup_composed_report.py'):
+                 'conformance/prompt_startup_report.py', 'conformance/frozen_prompt_sources.py',
+                 'conformance/qualified_prompt_tail.py', 'distribution/evidence/followup-qualified-sources.json',
+                 'tests/test_prompt_startup_composed_report.py'):
         inputs[name] = sha(ROOT / name)
     return dict(passed=True, runtime_image=image, inputs=inputs, checks=raw['checks'],
         qualified_contracts=[], native_stage=stage, native_source=native['sources'][donor['source']],

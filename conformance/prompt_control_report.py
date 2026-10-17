@@ -7,6 +7,7 @@ import sys
 
 from child_modes_cases import CASES as MODES
 from installed_provenance import verify_capture
+from qualified_prompt_tail import extend
 from prompt_timeout_cases import CASES as PROMPTS
 from prompt_timeout_report import qualify as qualify_timed
 
@@ -70,6 +71,7 @@ def qualify(stress_path, modes_path, timed_path, pair_path, abort_stress_path):
                      if stage['recipe']=='prompt_startup_patches.py' and name in stage['sources']]
             assert len(later)==1 and later[0]['before_sha256']==after
             after = later[0]['after_sha256']
+        after = extend(native, name, after)
         assert after == native['sources'][name]['patched_sha256']
     retained = {}
     for name in ('prompt_order_baseline', 'prompt_order_stress_baseline', 'child_modes_baseline',
@@ -94,7 +96,8 @@ def qualify(stress_path, modes_path, timed_path, pair_path, abort_stress_path):
         native_stages=stages,
         recipe=native['recipes']['prompt_control_patches.py'], retained_failures=retained,
         inputs={name: sha(ROOT / name) for name in ('conformance/prompt_control_report.py',
-            'conformance/PROMPT_CONTROLS.md', 'source_port/prompt_control_patches.py')},
+            'conformance/PROMPT_CONTROLS.md', 'source_port/prompt_control_patches.py',
+            'conformance/qualified_prompt_tail.py', 'distribution/evidence/followup-qualified-sources.json')},
         full_v05_accepted=False, full_v06_accepted=False)
 
 
