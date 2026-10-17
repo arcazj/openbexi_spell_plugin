@@ -3,9 +3,11 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT/'conformance'))
 digest = lambda data: hashlib.sha256(data).hexdigest()
 
 
