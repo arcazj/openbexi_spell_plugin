@@ -78,7 +78,7 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     prompt = composition.prompt_startup_patches.SOURCE
     assert [row['recipe'] for row in report['stages'] if prompt in row['sources']] == [
         'child_lifecycle_patches.py', 'prompt_timeout_patches.py',
-        'prompt_control_patches.py', 'prompt_startup_patches.py']
+        'prompt_control_patches.py', 'prompt_startup_patches.py', 'prompt_complete_patches.py']
     verify_evidence(tmp_path/'evidence', report)
 
     scheduler = composition.wait_interrupt_patches.SOURCE
@@ -117,6 +117,7 @@ def test_each_composed_recipe_binds_checkpoint_identity():
                                  *composition.child_lifecycle_patches.PREIMAGES,
                                  *composition.prompt_timeout_patches.PREIMAGES,
                                  *composition.prompt_control_patches.PREIMAGES,
+                                 composition.prompt_complete_patches.HEADER,
                                  composition.ipc_mailbox_patches.SOURCE,
                                  composition.context_snapshot_patches.SOURCE,
                                  *composition.legacy_compare_patches.PREIMAGES,
