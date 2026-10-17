@@ -379,7 +379,7 @@ def main():
     from ranging_source_donor import apply as apply_ranging
     driver_additions=apply_ranging(python,driver,composition,reports['ranging_complete'])
     from memory_source_donor import apply as apply_memory
-    memory_additions=apply_memory(python,driver,composition,reports['memory_complete'],reports['ranging_complete'])
+    memory_additions=apply_memory(python,driver,composition,reports['memory_complete'],reports['ranging_complete'],reports.get('final_language'))
     assert not set(driver_additions) & set(memory_additions)
     driver_additions.update(memory_additions)
     from database_source_donor import apply as apply_database
@@ -424,7 +424,7 @@ def main():
     host_client = upgraded_client
     if 'final_language' in reports:
         from final_source_donors import apply_final
-        apply_final(native, driver, host, host_client, reports)
+        apply_final(native, driver, driver_additions, host, host_client, reports)
     if set(native) != set(composition.NATIVE_NAMES):
         raise ValueError('Qualified native source set differs from composition')
     result = {'schema':'openbexi.spell.qualified-source-donors/1',

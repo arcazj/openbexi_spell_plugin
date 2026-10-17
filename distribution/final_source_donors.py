@@ -21,7 +21,7 @@ def committed(revision, name):
     return subprocess.check_output(['git', 'show', revision+':'+name], cwd=ROOT)
 
 
-def apply_final(native, driver, host, host_client, reports):
+def apply_final(native, driver, additions, host, host_client, reports):
     """Reproduce the independently reviewed final donor before adopting hashes."""
     from qualify_final_sources import qualify, exact as exact_path
     proof = reports['final_language']
@@ -30,12 +30,14 @@ def apply_final(native, driver, host, host_client, reports):
     assert digest(frozen) == baseline['sha256']
     previous = json.loads(frozen)
     assert native == previous['native'] and driver == previous['driver']
+    assert additions == previous['driver_additions']
     assert host == previous['host'] and host_client == previous['host_client']
     reproduced = qualify(exact_path(proof['candidate']),
         exact_path(baseline['native_wheel']), exact_path(baseline['driver_wheel']),
         exact_path(proof['host_client_validation']['junit']), proof['source_commit'])
     assert reproduced == proof
     native.update(proof['native']); driver.update(proof['driver'])
+    additions.update(proof['driver_additions'])
     host.update(proof['host']); host_client.update(proof['host_client'])
 
 

@@ -24,7 +24,7 @@ def combined_ground(memory_overlay, ranging_overlay):
     return ranging.replace(anchor, anchor+insertion)
 
 
-def apply(python, driver, composition, report, ranging_report):
+def apply(python, driver, composition, report, ranging_report, final_report=None):
     path, raw = retained_raw(report)
     overlay = Path(report['overlay'])
     proof = review(path, overlay, Path(report['telemetry_overlay']), Path(report['limit_overlay']),
@@ -46,5 +46,21 @@ def apply(python, driver, composition, report, ranging_report):
             output[name] = row['sha256']
     additions = raw['runtime_sources']['overlay']['added_sources']
     for name in additions:
-        matching_recipe(report, raw, 'driver_plugin/src/'+name)
+        import sequence_memory_successor as successor
+        source = 'driver_plugin/src/'+name
+        if final_report is not None and name == successor.SOURCE:
+            from evidence_sources import source_bytes
+            from library_source_donors import ROOT
+            before = source_bytes(ROOT, source, report['source_revision'])
+            before_hash = hashlib.sha256(before).hexdigest()
+            assert before_hash == raw['inputs'][source] == additions[name]
+            after = successor.apply(before)
+            assert after == (ROOT/source).read_bytes()
+            after_hash = hashlib.sha256(after).hexdigest()
+            assert final_report['direct_source_changes'] == [dict(source=name,
+                before_sha256=before_hash, after_sha256=after_hash,
+                replay='distribution/sequence_memory_successor.py')]
+            assert final_report['driver_additions'][name] == after_hash
+        else:
+            matching_recipe(report, raw, source)
     return additions

@@ -12,6 +12,7 @@ sys.path[:0] = [str(ROOT/'conformance'), str(ROOT/'source_port'), str(ROOT/'driv
 from limit_telemetry_sources import wheel_sources
 from run_language_regressions import validate_report
 import integrated_patches as composition
+import sequence_memory_successor as sequence_memory
 
 BASELINE = '7d50a6393413595293b27384db9506cd4cd2efef'
 BASE_PATH = 'distribution/evidence/followup-qualified-sources.json'
@@ -93,12 +94,21 @@ def replay(baseline, old_native, old_driver, native, driver):
     assert set(driver_sources) == set(composition.DRIVER_NAMES)
     for name, expected in driver_sources.items():
         assert driver[name] == driver_state[name] and digest(driver[name]) == expected
-    for name, expected in baseline['driver_additions'].items():
-        assert digest(driver[name]) == expected
+    additions = dict(baseline['driver_additions'])
+    direct_changes = []
+    for name, expected in additions.items():
+        before = old_driver[name]
+        assert digest(before) == expected
+        after = sequence_memory.apply(before) if name == sequence_memory.SOURCE else before
+        assert driver[name] == after
+        additions[name] = digest(after)
+        if after != before:
+            direct_changes.append(dict(source=name, before_sha256=expected,
+                after_sha256=digest(after), replay='distribution/sequence_memory_successor.py'))
     for name, expected in baseline['python'].items():
         assert digest(native[name]) == expected
-    return dict(native=native_sources, driver=driver_sources,
-        native_changes=changes, driver_changes=driver_changes)
+    return dict(native=native_sources, driver=driver_sources, driver_additions=additions,
+        native_changes=changes, driver_changes=driver_changes, direct_source_changes=direct_changes)
 
 
 def qualify(candidate_path, baseline_native, baseline_driver, host_junit, source_commit):
@@ -128,6 +138,9 @@ def qualify(candidate_path, baseline_native, baseline_driver, host_junit, source
     frozen = committed(BASELINE, BASE_PATH); baseline = json.loads(frozen)
     native = wheel_sources(native_wheel); driver = wheel_sources(driver_wheel)
     results = replay(baseline, wheel_sources(baseline_native), wheel_sources(baseline_driver), native, driver)
+    for name, expected in results['driver_additions'].items():
+        path = 'driver_plugin/src/'+name
+        assert digest(committed(source_commit, path)) == sha(ROOT/path) == expected
     recipes = {name+'.py': sha(ROOT/'source_port'/(name+'.py')) for name in (*NATIVE_RECIPES, *DRIVER_RECIPES)}
     for name, expected in recipes.items():
         assert digest(committed(source_commit, 'source_port/'+name)) == expected
