@@ -59,9 +59,16 @@ def qualify(sequence_path,native_wheel,driver_wheel):
               'send-verify','send-complete','timing','child-arguments')
     sequence,paths,raws,inputs=complete_sequence(sequence_path,required)
     image,revision=sequence['image'],sequence['source_commit']
+    feature_path=ROOT/'conformance/evidence/command_display_composed.json'
+    recorded_features=read(feature_path)
+    # The refreshed 573-row report records its own source review revision.
+    # Revalidate the current sequence's exact captures at that revision and
+    # require the complete report to match, including all source/artifact hashes.
     features=feature_review({name:paths[suite] for name,suite in
         (('scheduling','command-scheduling'),('catalog','command-catalog'),
-         ('group','command-group'),('display','gcs-display'))},image,revision)
+         ('group','command-group'),('display','gcs-display'))},image,recorded_features['source_revision'])
+    assert features==recorded_features
+    inputs[feature_path.relative_to(ROOT).as_posix()]=sha(feature_path)
     reviewed=dict(command=command_review(raws['cmd']),features=features,
         verification=verification_review(raws['send-verify']),timing=timing_review(raws['timing']),
         complete=complete_review(paths['send-complete'],None,None,None,revision,image,
