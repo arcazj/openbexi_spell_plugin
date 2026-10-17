@@ -40,6 +40,7 @@ import manoeuvre_database_patches
 import procedure_library_patches
 import prompt_complete_patches
 import event_text_patches
+import memory_command_results_patches
 import notification_patches
 import prompt_control_patches
 import prompt_startup_patches
@@ -94,7 +95,7 @@ RECIPE_NAMES = (
     'manoeuvre_database_patches.py', 'procedure_library_patches.py',
     'ranging_complete_patches.py',
     'ranging_reopen_patches.py', 'memory_feature_patches.py', 'memory_ranging_patches.py',
-    'prompt_complete_patches.py', 'event_text_patches.py',
+    'prompt_complete_patches.py', 'event_text_patches.py', 'memory_command_results_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
@@ -119,7 +120,8 @@ PYTHON_RECIPES = (resource_patches, limit_patches, database_import_patches,
 DRIVER_RECIPES = (limit_patches, value_units_patches, timing_patches, rng_patches, rng_state_patches,
                   display_patches, command_feature_patches, command_catalog_patches, command_group_patches,
                   limit_feature_patches, telemetry_feature_patches, ranging_complete_patches,
-                  ranging_reopen_patches, memory_ranging_patches, event_text_patches)
+                  ranging_reopen_patches, memory_ranging_patches, event_text_patches,
+                  memory_command_results_patches)
 DRIVER_PREFIXES = ('openbexi_dss_proxy/', 'openbexi_spell_dss/')
 PYTHON_NAMES = tuple(sorted(set((*data_files_patches.PREIMAGES, *obs_patches.PREIMAGES,
     *cmd_patches.PREIMAGES, 'spell/lang/helpers/exechelper.py',

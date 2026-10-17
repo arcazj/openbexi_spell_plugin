@@ -141,3 +141,31 @@ def test_command_binary_encoding_is_validated_before_effect_intent(bridge):
     assert error.value.code()==grpc.StatusCode.INVALID_ARGUMENT
     assert packets(bridge)==[]
     assert bridge.journal.db.execute('SELECT count(*) FROM effects').fetchone()[0]==0
+
+
+@pytest.mark.parametrize('source,kind,message', [
+    (SOURCE,'TM','Command result lookup type differs'),
+    ('UNKNOWN','TC','Unsupported database lookup source/type'),
+])
+def test_result_route_keeps_type_and_catalog_source_boundaries(bridge,source,kind,message):
+    method,body,token=request()
+    assert getattr(bridge.stub,method)(body,timeout=8).value
+    before=packets(bridge)
+    raw=p.LookupRequest(name=token,type=kind,source=source).SerializeToString()
+    with pytest.raises(ValueError,match=message):
+        bridge.dispatch('/spell.driver.SPELLDriverInterface_TM/DatabaseLookup',raw)
+    assert result(bridge,token)['outcome']=='SUCCEEDED'
+    assert packets(bridge)==before
+
+
+def test_result_rpc_rejects_changed_authority_then_recovers_without_replay(bridge):
+    method,body,token=request()
+    assert getattr(bridge.stub,method)(body,timeout=8).value
+    before=packets(bridge)
+    bridge.identity['controller_epoch']=2
+    try:
+        with pytest.raises(PermissionError):result(bridge,token)
+    finally:
+        bridge.identity['controller_epoch']=1
+    assert result(bridge,token)['outcome']=='SUCCEEDED'
+    assert packets(bridge)==before
