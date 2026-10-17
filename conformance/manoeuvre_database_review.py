@@ -1,12 +1,15 @@
 """Independently bind native manoeuvre behavior to retained files and sources."""
 import hashlib,json,sys,types
+from datetime import datetime,timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'distribution'))
+sys.path[:0]=[str(ROOT/'distribution'),str(ROOT/'driver_plugin/src')]
 from evidence_sources import source_bytes
 from installed_provenance import verify_capture
+from google.protobuf.any_pb2 import Any
+from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p
 
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 read=lambda p:json.loads(p.read_bytes())
@@ -21,6 +24,26 @@ EXPECTED={
  'readonly-failure':[True,False],'readonly-recovery':[42,7,7],
 }
 SEED="KEY 42\nNESTED {'items':[0,False,'text']}\n"
+CLOCK_READS={'load-positive':2,'load-boundary':3,'load-failure':0,'load-recovery':1,
+             'readonly-positive':2,'readonly-boundary':2,'readonly-failure':2,'readonly-recovery':3}
+
+
+def verify_read_only_rpc(row, clock_reads):
+    """Typed bare keys use ImportValue's TIME/string fallback without effects."""
+    observed=0
+    for call in row['rpc']:
+        assert 'response' in call and 'error' not in call
+        if call['path']=='/spell.driver.SPELLDriverInterface_EV/RaiseEvent':
+            assert call['response']==''
+            continue
+        assert call['path']=='/spell.driver.SPELLDriverInterface_TIME/GetUTC'
+        assert bytes.fromhex(call['request'])==Any(type_url='type.googleapis.com/spell.driver.Dict').SerializeToString()
+        state=row['initial_dss']
+        nanos=state['clock_epoch_unix_ns']+state['core']['sim_time_ns']
+        stamp=datetime.fromtimestamp(nanos/1e9,timezone.utc).strftime('%Y-%m-%d %H:%M:%S.%f')
+        assert bytes.fromhex(call['response'])==p.Time(timeMsg=stamp).SerializeToString()
+        observed+=1
+    assert observed==clock_reads
 
 
 def frozen(name,revision):
@@ -100,7 +123,8 @@ def review(raw_path,overlay,revision,image,*,native_wheel=None,driver_wheel=None
         assert not any(e.get('event')=='connectionError' or e.get('message',{}).get('id') in ('MSG_ERROR','MSG_PROMPT') for e in read(project/'events.json'))
         assert row['initial_ground']==row['final_ground'] and row['initial_dss']==row['final_dss']
         assert row['initial_packet_hex']==row['final_packet_hex'] and row['receipts']==[] and row['fixture_controls']==[]
-        assert all(call['path']=='/spell.driver.SPELLDriverInterface_EV/RaiseEvent' and 'response' in call for call in row['rpc'])
+        recipes=raw['runtime_sources']['integrated']['manifest']['composition']['python']['recipes']
+        verify_read_only_rpc(row,CLOCK_READS[name] if 'database_format_patches.py' in recipes else 0)
         configured=ET.parse(project/'context-configured.xml').getroot().findall("databases/location[@name='mmd']")
         assert len(configured)==1 and configured[0].attrib=={'name':'mmd','type':'file','ext':'IMP'} and configured[0].text=='ManeuverDB'
         data=project/'data/mmd/Man01'
