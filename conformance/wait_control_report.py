@@ -12,7 +12,7 @@ from installed_provenance import verify_capture
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'distribution'))
 from run_language_regressions import validate_report
-from evidence_sources import source_bytes
+from evidence_sources import source_bytes, host_source_hashes
 
 CONTRACTS=[
     'CMP-LRM244-CONTROL-WAITFOR-INTERRUPT', 'CMP-LRM244-CONTROL-WAITFOR-SKIP',
@@ -36,7 +36,7 @@ def qualify(path,image,source_revision=None):
         verify_capture(raw['runtime_sources']['integrated'],raw['inputs'])
         from composed_diagnostic_proof import verify_donor
         donor=verify_donor(raw['runtime_sources']['integrated'],'wait_interrupt')
-    assert raw['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
+    assert raw['host_inputs']==host_source_hashes(ROOT,source_revision)
     workspace=path.parent/'workspace'
     assert json.loads((workspace/'checks.json').read_bytes())==raw['checks']
     for name,digest in raw['inputs'].items():

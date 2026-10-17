@@ -27,7 +27,7 @@ def test_native_dictionary_diagnostic_requires_all_sixteen_cases(proof):
     assert not report['qualified_contracts'] and not report['full_v05_accepted']
 
 
-@pytest.mark.parametrize('change',['missing','reevaluated','persistent','parent','output-path','step'])
+@pytest.mark.parametrize('change',['missing','reevaluated','persistent','parent','output-path','step','host'])
 def test_contradicted_proc_metadata_is_rejected(proof,tmp_path,change):
     baseline,lifecycle,original,image=proof
     raw=json.loads(lifecycle.read_bytes())
@@ -37,7 +37,8 @@ def test_contradicted_proc_metadata_is_rejected(proof,tmp_path,change):
     elif change=='persistent':raw['checks']['reopen:positive']['phases'][1]['observed']['initial']['PRIVATE_VALUE']=1
     elif change=='parent':raw['checks']['child:positive']['child_result']['initial']['PARENT']='wrong#1'
     elif change=='output-path':raw['checks']['child:boundary']['fixture_paths']['output']=raw['checks']['child:boundary']['fixture_paths']['input']
-    else:raw['checks']['child:recovery']['child_result']['last']['previous']=None
+    elif change=='step':raw['checks']['child:recovery']['child_result']['last']['previous']=None
+    else:raw['host_inputs']['adapter.py']='0'*64
     (tmp_path/'workspace/checks.json').write_text(json.dumps(raw['checks']))
     path=tmp_path/'result.json';path.write_text(json.dumps(raw))
     with pytest.raises((AssertionError,ValueError)):qualify(baseline,path,original,image)

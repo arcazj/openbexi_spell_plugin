@@ -26,7 +26,7 @@ def test_all_native_wait_controls_are_required(proof):
     assert not report['full_v05_accepted']
 
 
-@pytest.mark.parametrize('change',['missing','state','deadline','reacquisition','wrong-tm','wrong-command'])
+@pytest.mark.parametrize('change',['missing','state','deadline','reacquisition','wrong-tm','wrong-command','host'])
 def test_contradicted_wait_observations_cannot_qualify(proof,tmp_path,change):
     original,baseline,image=proof
     raw=json.loads(original.read_bytes())
@@ -41,7 +41,8 @@ def test_contradicted_wait_observations_cannot_qualify(proof,tmp_path,change):
         row=raw['checks']['telemetry:skip:boundary']
         row['rpc'].append(dict(path='/RefreshItem',started=(row['held']['since']+row['held']['until'])/2))
     elif change=='wrong-tm':raw['checks']['telemetry:step:positive']['last_tm_value']=-1
-    else:raw['checks']['relative:skip:positive']['actions'][-2]['command']='CMD_RUN'
+    elif change=='wrong-command':raw['checks']['relative:skip:positive']['actions'][-2]['command']='CMD_RUN'
+    else:raw['host_inputs']['adapter.py']='0'*64
     (tmp_path/'workspace/checks.json').write_text(json.dumps(raw['checks']))
     path=tmp_path/'result.json';path.write_text(json.dumps(raw))
     with pytest.raises((AssertionError,ValueError)):qualify(path,baseline,image)

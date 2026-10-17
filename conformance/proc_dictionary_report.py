@@ -14,7 +14,7 @@ from proc_dictionary_provenance import qualification_identity
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'distribution'))
 from run_language_regressions import validate_report
-from evidence_sources import source_bytes
+from evidence_sources import source_bytes, host_source_hashes
 from installed_provenance import verify_capture
 
 CANDIDATE_CONTRACTS=['CMP-LRM244-'+name for name in (
@@ -45,7 +45,7 @@ def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
         else:
             assert source_revision is None, 'Fresh qualification must use current source inputs'
             verify_capture(report['runtime_sources']['integrated'],report['inputs'])
-        assert report['host_inputs']=={p.name:sha(p) for p in (ROOT/'host_runtime/python').glob('*.py')}
+        assert report['host_inputs']==host_source_hashes(ROOT,source_revision)
         for name,digest in report['inputs'].items():
             assert inputs.get(name,digest)==digest,name
             inputs[name]=digest
@@ -158,7 +158,8 @@ def qualify(baseline_path,lifecycle_path,original_path,image,source_revision=Non
         assert read(project/'observed.json')==row['observed']
         assert row['observed']['args_type']=='str' and isinstance(row['observed']['initial']['ARGS'],str)
         assert (project/'main.py').read_text()==spec['source']
-    for name in ('conformance/proc_dictionary_report.py','tests/test_proc_dictionary_report.py'):
+    for name in ('conformance/proc_dictionary_report.py','tests/test_proc_dictionary_report.py',
+                 'distribution/evidence_sources.py'):
         inputs[name]=sha(ROOT/name)
     return dict(passed=True,runtime_image=image,inputs=inputs,checks=checks,
         qualification_identity=raw['qualification_identity'],
