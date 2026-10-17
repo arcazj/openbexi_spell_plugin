@@ -1,6 +1,7 @@
 """Qualify display and command candidates on freshly composed installed wheels."""
 import argparse
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -100,7 +101,22 @@ def qualify(paths, image, revision):
         modules={'spell_native/'+Path(key).name:value for key,value in expected['native_distribution'].items()}
         selected.update(modules)
         expected_names.update(expected['driver_additions']); expected_names.update(modules)
-        source_extension = dict(commit=revision_id, path=name, sha256=commands.sha(ROOT/name))
+        # Final limit/telemetry modules are direct package sources, not recipe
+        # successors. Bind their exact bytes to the same frozen adoption.
+        direct = {}
+        for member in ('openbexi_dss_proxy/limit_arguments.py', 'openbexi_dss_proxy/limit_profile.py',
+                       'openbexi_spell_dss/limit_algorithm.py', 'openbexi_spell_dss/limit_definitions.py',
+                       'openbexi_spell_dss/limit_files/normal.json', 'openbexi_spell_dss/limits.py',
+                       'openbexi_spell_dss/telemetry_budget.py'):
+            source = 'driver_plugin/src/'+member
+            body = subprocess.check_output(['git','show',revision_id+':'+source],cwd=ROOT)
+            digest = hashlib.sha256(body).hexdigest()
+            assert sha(ROOT/source) == runtime['installed'][member] == digest, member
+            if member.endswith('.py'):assert driver['python_sources'][member] == digest, member
+            direct[member] = selected[member] = inputs[source] = digest
+        expected_names.update(direct)
+        source_extension = dict(commit=revision_id, path=name, sha256=commands.sha(ROOT/name),
+                                direct_driver_sources=direct)
     assert {n for n in runtime['installed'] if application_source(n)} == expected_names
     for name, value in selected.items():
         assert runtime['installed'][name] == value, name

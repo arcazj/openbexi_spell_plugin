@@ -28,7 +28,8 @@ def test_composed_packages_independently_qualify_50_scoped_requirements():
         assert all(supported_check(actual, contract+':'+d, d) for d in ('positive', 'boundary', 'failure', 'recovery'))
 
 
-@pytest.mark.parametrize('mutation', ['profile', 'missing-case', 'native-byte'])
+@pytest.mark.parametrize('mutation', ['profile', 'missing-case', 'native-byte',
+                                    'added-driver-byte', 'added-data-byte', 'unknown-driver-file'])
 def test_composed_capture_cannot_be_replaced_with_unqualified_evidence(tmp_path, mutation):
     saved = canonical()
     paths = {kind: Path(row['path']) for kind,row in saved['raw'].items()}
@@ -37,8 +38,13 @@ def test_composed_capture_cannot_be_replaced_with_unqualified_evidence(tmp_path,
     shutil.copytree(paths['catalog'].parent/'inputs', tmp_path/'inputs')
     if mutation == 'profile':raw['composed'] = False
     elif mutation == 'missing-case':del raw['checks']['ConfirmCritical:failure']
-    else:
+    elif mutation == 'native-byte':
         name = next(n for n in raw['runtime_sources']['installed'] if n.endswith('/libspell_executor313.so'))
+        raw['runtime_sources']['installed'][name] = '0'*64
+    else:
+        name = {'added-driver-byte': 'openbexi_spell_dss/telemetry_budget.py',
+                'added-data-byte': 'openbexi_spell_dss/limit_files/normal.json',
+                'unknown-driver-file': 'openbexi_spell_dss/unqualified.py'}[mutation]
         raw['runtime_sources']['installed'][name] = '0'*64
     workspace = tmp_path/'workspace'
     (workspace/'checks.json').write_text(json.dumps(raw['checks']), encoding='utf-8')
