@@ -86,7 +86,7 @@ reopened=fixture('reopen')
 assert reopened['migration_error'] is None
 equal(reopened['ground']['ranging'],'CALIBRATING')
 assert reopened['ground']['ranging_schedule_enabled'] is False
-equal(GetAntennaNames(config=CFG),[ANT])
+equal(GetAntennaNames(config=CFG),[ANT,'DSS-ANTENNA-2'])
 """,failure="""
 assert EnableRanging(config=CFG) is True
 assert AbortRanging(config=CFG) is True
@@ -206,7 +206,7 @@ equal(fenced['effects'],after['effects'])
 attempts=fenced['rpc'][len(after['rpc']):]
 equal(len(attempts),2)
 assert all('UncertainEffect' in r['error'] and 'response' not in r for r in attempts)
-equal(GetBasebandNames(config=CFG),[BBE])
+equal(GetBasebandNames(config=CFG),[BBE,'DSS-BBE-2'])
 """
 METADATA['uncertain-receipt:failure']=dict(contracts=[],dimension='failure',
     oracle='Actual persisted Ground effect followed by injected receipt loss; persistent unresolved intent fences later actual RPC attempts across reopening, without replay.')

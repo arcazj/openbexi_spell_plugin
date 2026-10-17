@@ -1,0 +1,22 @@
+{
+  "passed": false,
+  "scope": "Retained stale single-path fixture expectations; corrected expectations still require a fresh native run",
+  "raw": {
+    "path": "C:\\obspell_v05_native\\.qualification\\v0.5\\rng-state\\d8bf5ad0fe1c41d9b571ee460038b28b\\result.json",
+    "sha256": "c61500d16f5bdbe7c1859c552e95795f9549b5a2ff596c0402f5f86b9983e04c"
+  },
+  "runtime_image": "sha256:adf074628cd29c8748b708886ddc37dfc523385e817f75f3489d4ae42e322817",
+  "failed_checks": {
+    "on-demand:boundary": "AssertionError: (['DSS-ANTENNA-1', 'DSS-ANTENNA-2'], ['DSS-ANTENNA-1'])",
+    "uncertain-receipt:failure": "AssertionError: (['DSS-BBE-1', 'DSS-BBE-2'], ['DSS-BBE-1'])"
+  },
+  "passed_checks": 19,
+  "reason": "The independently reviewed two-path GENERIC ranging catalog always lists both configured stations, including after reopen or receipt loss. These two remaining assertions still expected the earlier single-path catalog; activity and durable fencing assertions already pass.",
+  "source_inputs": {
+    "conformance/rng_state_cases.py": "2891aecf32017b747898267a117d5ece4cc4b5afc405b106864efe616ee93ccf",
+    "conformance/rng_state_contracts.py": "c918056feb21df0a337a11c2d43e1f4ac5bc7a4675910ee27f128ea5c08c3195",
+    "driver_plugin/src/openbexi_spell_dss/ranging_complete.py": "e4c60c535e6abc6fe4cf86f4a56b96edaba9434913bbf4406899f54408420f35"
+  },
+  "production_change": false,
+  "full_v05_accepted": false
+}
