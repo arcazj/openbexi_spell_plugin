@@ -70,9 +70,16 @@ def apply(native, driver, host, host_client, composition, reports, donors):
     validation = prompt['host_client_validation']
     xml = Path(validation['junit']['path']).read_bytes()
     assert digest(xml) == validation['junit']['sha256']
-    suites = ET.fromstring(xml).findall('.//testsuite')
+    test_tree = ET.fromstring(xml)
+    suites = test_tree.findall('.//testsuite')
     assert suites and sum(int(s.get('tests', 0)) for s in suites) >= 63
     assert all(int(s.get(key, 0)) == 0 for s in suites for key in ('failures', 'errors', 'skipped'))
+    sound_tests = {case.get('name') for case in test_tree.findall('.//testcase')
+                   if case.get('classname') == 'host_plugin.tests.test_prompt_sound'}
+    assert sound_tests == {'test_windows_reminder_uses_host_audio',
+        'test_terminal_fallback_keeps_session_available[linux]',
+        'test_terminal_fallback_keeps_session_available[win32]',
+        'test_dap_relay_sounds_and_forwards_same_prompt_notification'}
     for group in ('host', 'host_client'):
         for name, expected in prompt[group].items():
             assert digest(committed(validation['source_commit'], name)) == expected
