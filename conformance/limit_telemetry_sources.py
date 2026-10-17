@@ -32,6 +32,16 @@ def wheel_sources(path):
     return contents
 
 
+def verify_driver_capture(driver, recipes, captured):
+    expected = verify_driver(driver.__getitem__, recipes)
+    # capture() also checks the installed RECORD, including installer-created
+    # metadata and command launchers that are absent from the wheel archive.
+    assert set(captured) == set(expected) | {'record_files_verified'}
+    assert {name: captured[name] for name in expected} == expected
+    count = captured['record_files_verified']
+    assert type(count) is int and count >= len(driver) - 1
+
+
 def verify(raw, native_wheel, driver_wheel, *, profile='fresh-composed-limit-telemetry-wheel/1',
            required_recipes=('limit_feature_patches.py','telemetry_feature_patches.py')):
     runtime = raw['runtime_sources']
@@ -47,7 +57,7 @@ def verify(raw, native_wheel, driver_wheel, *, profile='fresh-composed-limit-tel
     recipes = integrated['manifest']['composition']['native']['recipes']
     assert set(required_recipes) <= set(recipes)
     assert integrated['manifest']['composition']['python']['recipes'] == recipes
-    assert verify_driver(driver.__getitem__, recipes) == integrated['driver_composition']
+    verify_driver_capture(driver, recipes, integrated['driver_composition'])
     assert not set(native) & set(driver)
     contents = {**native,**driver}
     prefixes = ('spell/','spell_native/','openbexi_dss_proxy/','openbexi_spell_dss/')
