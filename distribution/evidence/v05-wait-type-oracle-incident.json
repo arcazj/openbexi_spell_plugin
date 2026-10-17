@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "status": "focused failure and recovery passed; full native continuation required",
+  "failed_source_commit": "8901439ed229c92371e9fff8ed4649f391c1ad0a",
+  "runtime_image": "sha256:4e8f7d67787c6a65b402b7e98fb4c34e7be58c7252d9f0257009a2f94d3bb620",
+  "failed_native_report": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\timing\\cd2680c508854208b308bd892355c370\\result.json",
+    "sha256": "bb6c31009398f0a78ff9aa94c8454e87a7021c827ae2d3d08274757ec98eb51b"
+  },
+  "failed_sequence": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\language-regressions\\ddb179e2c0f243bfb7fb1c62618d1725\\result.json",
+    "sha256": "0f1a8a0f98be078db71e97ab1e25637ca8dd69450085c1cb3c6152308381b736"
+  },
+  "failed_full_orchestration": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\full-v05-validation\\9b40739ebdf744ca8036e7695b34f515\\result.json",
+    "sha256": "bc410a9853e46a180db549bb90d58b8b38faede290062ac70b4daf0e6d9e3991"
+  },
+  "focused_native_revalidation": {
+    "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\timing\\65428e0a1f4e46abb734e3e437dae0dc\\result.json",
+    "sha256": "f2eedcffc851c62233cf6c66e7b0dfde306217396844107d2129f0377fd8aaae"
+  },
+  "cause": "The old native oracle expected one rejected RefreshItem RPC. The installed telemetry envelope validates Boolean Wait locally before the RPC call. Native rejection occurred as required and sent zero acquisition requests; only the expected RPC count was stale.",
+  "correction": "Require DriverException containing Telemetry Wait must be Boolean, exactly zero acquisition RPCs, unchanged command effects, and successful subsequent Wait=False recovery with one recorded-value acquisition.",
+  "guard": {
+    "path": "C:\\obspell_v05_composed\\driver_plugin\\src\\openbexi_spell_dss\\telemetry_budget.py",
+    "sha256": "c314b4c3091222a7e0457d53946bb7bd2a2e81e4c4787508835fd75ae06fbf70"
+  },
+  "guard_recipe": {
+    "path": "C:\\obspell_v05_composed\\source_port\\telemetry_feature_patches.py",
+    "sha256": "9679a7dae81445dbc3fe821f38976f5eddc06a3eb245695d81222019fa0d4da5"
+  },
+  "corrected_oracle": {
+    "path": "C:\\obspell_v05_composed\\conformance\\timing_cases.py",
+    "sha256": "792eb8b8a4c64475d2a6606a3043fd555a891c041629b1ccb5541cb5a77bc848"
+  },
+  "runtime_sources_changed": false,
+  "full_v05_accepted": false
+}

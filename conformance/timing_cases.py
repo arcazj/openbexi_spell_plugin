@@ -168,8 +168,10 @@ effects(before,['CMD2']);equal(acquisition_waits(),[False])
 """)
 add('wait-type:failure', """
 before=mark()
-rejects(DriverException,lambda:WaitFor(['TM.POWER.BUS_VOLTAGE',eq,28.0],Wait='yes',Timeout=2,Delay=3,PromptUser=False,HandleError=False))
-effects(before,[]);equal(len(acquisitions()),1);assert 'error' in acquisitions()[0]
+error=rejects(DriverException,lambda:WaitFor(['TM.POWER.BUS_VOLTAGE',eq,28.0],Wait='yes',Timeout=2,Delay=3,PromptUser=False,HandleError=False))
+assert 'Telemetry Wait must be Boolean' in error,error
+# The installed telemetry-budget guard rejects malformed options before RPC.
+effects(before,[]);equal(acquisitions(),[])
 """)
 add('wait-type:recovery', """
 before=mark()
