@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project;
 public final class SpellSettings implements PersistentStateComponent<SpellSettings.Values> {
     public static final class Values {
         public String interpreter = "";
-        public String image = "openbexi-spell-host:0.3.0";
+        public String image = "openbexi-spell-host:0.3.1-dev3";
         public String arguments = "{}";
     }
     private Values values = new Values();

@@ -16,8 +16,9 @@ public final class SpellWorkspaceActions {
         @Override public ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.EDT; }
         @Override public void update(AnActionEvent event) {
             var session = event.getProject() == null ? null : SpellWorkspace.get(event.getProject()).selected();
-            boolean active = session != null && session.active();
-            boolean paused = active && "Paused".equalsIgnoreCase(session.status), running = active && "Running".equalsIgnoreCase(session.status);
+            boolean active = session != null && session.active() && session.controlling && session.connection.equals("Connected") && session.pending.isBlank();
+            boolean paused = active && ("Paused".equalsIgnoreCase(session.status) || "Interrupted".equalsIgnoreCase(session.status));
+            boolean running = active && java.util.Set.of("RUNNING", "WAITING", "PROMPT").contains(session.status.toUpperCase(java.util.Locale.ROOT));
             event.getPresentation().setEnabled(active && (command.equals("stop") || command.equals("pause") && running || !command.equals("pause") && paused));
         }
         @Override public void actionPerformed(AnActionEvent event) {

@@ -1,12 +1,16 @@
 # JetBrains SPELL host
 
-The `0.3.1-workspace.1` development candidate adds the procedure workspace
+The `0.3.1-workspace.2` development candidate adds the procedure workspace
 described below. It is separate from the paused v0.6 release qualification.
 
 The installable ZIP adds **Tools → SPELL**, project runtime settings, a SPELL
 tool window and a native XDebugger implementation. It requires a CPython 3.13
-interpreter with `openbexi-spell-host` installed and a running Docker Desktop
-Linux engine with the qualified `openbexi-spell-host:0.3.0` image.
+interpreter with `openbexi-spell-host==0.3.1.dev3` and the OpenBEXI IDE core
+`1.1.0` candidate wheel installed, plus a running Docker Desktop Linux engine with
+the qualified `openbexi-spell-host:0.3.1-dev3` image. The core wheel supplies the
+shared procedure service and does not require Qt. This candidate supports IDE
+builds 261 through 262; qualification used IntelliJ 262.10968.63 and PyCharm
+261.24374.152. Existing explicitly configured image settings are preserved.
 
 Install the ZIP through **Settings → Plugins → gear → Install Plugin from Disk**
 and restart. In **Settings → SPELL Runtime**, select the host interpreter and
@@ -42,20 +46,34 @@ The candidate follows the original GUI manual's procedure view and embedded
 prompt workflow (sections 3.2.1, 3.2.6 and 5.4), using IntelliJ's light/dark theme,
 clear spacing and native controls. **Tools → SPELL → Procedures** contains Run
 and Debug; **Execution** contains the supported controls. **Procedure Workspace**
-opens the bottom tool window. Run and Debug can use the selected editor even
-when a tool window has focus.
+opens the tool window. Starting execution hides other tool windows and maximizes
+the SPELL workspace, including its instance/history strip. **Return to editor**
+restores the prior layout. Run and Debug use the selected editor even when a tool
+window has focus. The generic Python Run/Debug panel is not opened.
 
 The workspace shows session history with procedure, start date/time, mode and
 result. **Code & results** pairs the captured procedure source with line number,
 native timestamp, item, value and status. Results come from native notifications;
-an unreported result stays blank. Double-click a row to navigate to its source.
-The **Output** tab retains the session's console text. History is limited to the
-current IDE session; exported native run files remain under `.openbexi/runs`.
+an unreported result stays blank. Procedure-state backgrounds, the blue current
+line and item-result colors follow the manual independently. Double-click a row
+for **Latest information**, **History** and **Full** item records, including EX,
+stack and comments. The **Output** tab retains console text. Authoritative history
+and captured source live in the per-project service under the user's profile;
+native run artifacts also remain under `.openbexi/runs`.
+
+Closing the view detaches its client. The service requests a native pause when a
+controller disappears; monitoring does not abort the procedure. Reopening the
+workspace restores live and completed instances. Selecting history does not take
+control. **Take control** and **Release control** make ownership explicit; **CTRL**
+is green and **MON** is blue. **Web workspace** connects a browser to the same
+executor and saved record. One procedure may run at a time, with up to eight live
+container instances. The packaged Linux desktop backend permits one live instance.
 
 Prompts appear within the selected procedure: choice buttons for Yes/No and
 lists, text/number/date fields, and masked password input when requested by the
 native prompt. **Commit** submits once to that exact prompt, **Reset** clears the
-entry, and **Abort procedure** stops the owning run. Native validation, defaults,
+entry, and **Abort procedure** stops the owning run. Monitor inputs are disabled;
+the service also rejects stale answers and unauthorized commands. Native validation, defaults,
 timeouts and reminders remain authoritative. The ordinary console input path is
 also available. This local Development interface does not add the manual's
 remote operational authority, mission monitoring or unsupported debugger actions.

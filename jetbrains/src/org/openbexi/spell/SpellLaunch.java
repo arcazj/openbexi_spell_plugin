@@ -31,7 +31,7 @@ public final class SpellLaunch {
                 throw new IllegalArgumentException("Select CPython 3.13 in SPELL Runtime Settings first");
             FileDocumentManager.getInstance().saveAllDocuments();
             var command = new GeneralCommandLine(settings.interpreter, "-I", "-B", "-u", "-X", "utf8", "-m",
-                "openbexi_spell_host.dap", "--project", root.toString(), "--image", settings.image)
+                "openbexi_runtime.procedure_bridge", "--project", root.toString(), "--image", settings.image)
                 .withWorkDirectory(root.toFile()).withCharset(StandardCharsets.UTF_8).withEnvironment("OPENBEXI_HOST_MANAGED", "1");
             return command;
         } catch (Exception error) { throw new ExecutionException(error.getMessage(), error); }
@@ -43,7 +43,8 @@ public final class SpellLaunch {
         var console = TextConsoleBuilderFactory.getInstance().createBuilder(project).getConsole();
         console.attachToProcess(handler);
         var descriptor = new RunContentDescriptor(console, handler, console.getComponent(), "SPELL: " + file.getName());
-        RunContentManager.getInstance(project).showRunContent(DefaultRunExecutor.getRunExecutorInstance(), descriptor);
+        // SPELL owns the execution presentation. Keep Python Run/Console hidden.
+        com.intellij.openapi.util.Disposer.register(project, console);
         ProcessTerminatedListener.attach(handler);
         handler.startNotify();
         handler.begin(message -> {
@@ -67,11 +68,24 @@ public final class SpellLaunch {
     }
     public static XDebugSession debug(Project project, VirtualFile file) throws ExecutionException {
         GeneralCommandLine command = command(project, file, true);
+        var profile = new com.intellij.execution.configurations.RunProfile() {
+            @Override public String getName() { return "SPELL: " + file.getName(); }
+            @Override public javax.swing.Icon getIcon() { return com.intellij.icons.AllIcons.Actions.StartDebugger; }
+            @Override public com.intellij.execution.configurations.RunProfileState getState(com.intellij.execution.Executor executor, com.intellij.execution.runners.ExecutionEnvironment environment) { return null; }
+        };
+        var runner = new com.intellij.execution.runners.ProgramRunner<com.intellij.execution.configurations.RunnerSettings>() {
+            @Override public String getRunnerId() { return "OpenBEXI.SPELL.Workspace"; }
+            @Override public boolean canRun(String executor, com.intellij.execution.configurations.RunProfile candidate) { return candidate == profile; }
+            @Override public void execute(com.intellij.execution.runners.ExecutionEnvironment environment) throws ExecutionException { debug(project, file); }
+        };
+        var environment = new com.intellij.execution.runners.ExecutionEnvironmentBuilder(project,
+            com.intellij.execution.executors.DefaultDebugExecutor.getDebugExecutorInstance())
+            .runProfile(profile).runner(runner).build();
         return XDebuggerManager.getInstance(project).newSessionBuilder(
             new XDebugProcessStarter() {
                 @Override public XDebugProcess start(XDebugSession session) throws ExecutionException {
                     return new SpellDebugProcess(session, command, file);
                 }
-            }).sessionName("SPELL: " + file.getName()).showTab(true).startSession().getSession();
+            }).sessionName("SPELL: " + file.getName()).environment(environment).showTab(false).startSession().getSession();
     }
 }

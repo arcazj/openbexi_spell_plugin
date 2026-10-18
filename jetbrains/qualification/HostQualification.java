@@ -77,6 +77,34 @@ public final class HostQualification implements StartupActivity.DumbAware {
     private static void button(Project project, String label) {
         components(workspace(project), JButton.class).stream().filter(value -> label.equals(value.getText())).findFirst().orElseThrow().doClick();
     }
+    private static void itemInformation(Project project, int line) throws Exception {
+        AtomicBoolean verified = new AtomicBoolean();
+        ui(() -> {
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(15);
+            int[] phase = {0};
+            javax.swing.Timer timer = new javax.swing.Timer(100, null);
+            timer.addActionListener(event -> {
+                for (var window : java.awt.Window.getWindows()) if (window instanceof JDialog dialog && dialog.getTitle().startsWith("Item information")) {
+                    var tables = components(dialog, JTable.class);
+                    var modes = components(dialog, JComboBox.class);
+                    boolean loaded = tables.stream().anyMatch(table -> table.getColumnCount() == 7 && table.getRowCount() > 0
+                        && "SUCCESS".equals(String.valueOf(table.getValueAt(0, 3))));
+                    if (phase[0] < 2 && loaded) { modes.getFirst().setSelectedIndex(++phase[0]); }
+                    else if (phase[0] == 2 && components(dialog, JTextArea.class).stream().anyMatch(text -> text.getText().contains("ItemName"))) {
+                        verified.set(true); timer.stop(); dialog.dispose();
+                    } else if (System.nanoTime() > deadline) { timer.stop(); dialog.dispose(); }
+                }
+            });
+            timer.start();
+            try {
+                var view = workspace(project);
+                var method = view.getClass().getDeclaredMethod("showInformation", SpellWorkspace.Session.class, int.class);
+                method.setAccessible(true); method.invoke(view, SpellWorkspace.get(project).selected(), line);
+            } finally { timer.stop(); }
+            return null;
+        });
+        require(verified.get(), "Native item-information Latest/History/Full did not load persisted notifications");
+    }
     private static void layout(Component value) {
         if (value instanceof Container parent) { parent.doLayout(); for (Component child : parent.getComponents()) layout(child); }
     }
@@ -185,11 +213,24 @@ public final class HostQualification implements StartupActivity.DumbAware {
             waitFor(handler::isProcessTerminated, "Run did not finish");
             require(handler.getExitCode() == 0 && output.toString().contains("JETBRAINS_NATIVE_RUN"), "Native Run failed: " + output);
             checks.add("Native Run through IDE process handler and console");
-            require(ui(() -> SpellWorkspace.get(project).selected().status.equals("Finished")), "Workspace result did not record native finish");
+            require(ui(() -> SpellWorkspace.get(project).selected().status.equalsIgnoreCase("Finished")), "Workspace result did not record native finish");
             if (System.getProperty("openbexi.image") != null) {
                 require(ui(() -> !SpellWorkspace.get(project).selected().lines.isEmpty()), "No native code notifications reached table");
                 require(ui(() -> SpellWorkspace.get(project).selected().lines.values().stream().anyMatch(row -> row.item.equals("Voltage") && row.result.equals("SUCCESS"))), "Native ITEM result missing");
                 captureWorkspace(project, evidence.resolve("workspace-results.png"));
+            }
+            {
+                String recordedId = ui(() -> SpellWorkspace.get(project).selected().serviceId);
+                ui(() -> { WriteAction.run(() -> run.rename(HostQualification.class, "run-moved.py")); return null; });
+                SpellWorkspace records = ui(() -> new SpellWorkspace(project));
+                try {
+                    waitFor(() -> { try { return ui(() -> records.sessions().stream().anyMatch(item -> item.serviceId.equals(recordedId)
+                        && String.join("\n", item.shownSource()).contains("JETBRAINS_NATIVE_RUN"))); }
+                        catch (Exception error) { throw new RuntimeException(error); } }, "Captured source was lost when the original file moved");
+                    checks.add("Completed history restores captured source when the original file no longer exists");
+                } finally {
+                    ui(() -> { records.dispose(); WriteAction.run(() -> run.rename(HostQualification.class, "run.py")); return null; });
+                }
             }
             if (Boolean.getBoolean("openbexi.uiOnly")) {
                 VirtualFile preview = source(project, "workspace_preview.py", "from spell.lang.functions import Notify, Prompt, Display\nfrom spell.lang.constants import YES_NO\nNotify('Voltage', '28.0', 'SUCCESS')\nPrompt('Ready to execute?', Type=YES_NO)\nDisplay('Complete')\n");
@@ -228,6 +269,7 @@ public final class HostQualification implements StartupActivity.DumbAware {
                     XBreakpointType.EXTENSION_POINT_NAME.findExtension(SpellBreakpointType.class), control.getUrl(), 2, new SpellBreakpointType.Properties())));
             debug = ui(() -> SpellLaunch.debug(project, control));
             XDebugSession session = debug;
+            report.put("debug_handler_start_notified", session.getDebugProcess().getProcessHandler().isStartNotified());
             owned.add(session.getDebugProcess().getProcessHandler());
             session.getDebugProcess().getProcessHandler().addProcessListener(collect(output));
             CountDownLatch paused = new CountDownLatch(1), stopped = new CountDownLatch(1);
@@ -305,6 +347,30 @@ public final class HostQualification implements StartupActivity.DumbAware {
             waitFor(rich::isProcessTerminated, "Workspace prompt procedure did not finish");
             require(rich.getExitCode() == 0 && output.toString().contains("JETBRAINS_WORKSPACE_PROMPTS_COMPLETE"), "Workspace prompt answers failed: " + output);
             checks.add("Embedded Yes/No, text, numeric and list prompts: native scoped answers, Commit and Reset");
+            VirtualFile restoredPrompt = source(project, "reconnect.py", "from spell.lang.functions import Notify, Prompt, Display\nfrom spell.lang.constants import YES_NO\nNotify('TEMP', '20', 'SUCCESS')\nassert Prompt('RECONNECT_NATIVE?', Type=YES_NO) is True\nDisplay('JETBRAINS_RECONNECT_COMPLETE')\n");
+            ProcessHandler leaving = ui(() -> SpellLaunch.run(project, restoredPrompt)); owned.add(leaving);
+            awaitPrompt(project, "RECONNECT_NATIVE?");
+            String originalId = ui(() -> SpellWorkspace.get(project).selected().serviceId);
+            itemInformation(project, 3);
+            checks.add("Native item-information dialog loads Latest, History and Full persisted notifications");
+            ui(() -> { leaving.detachProcess(); return null; });
+            waitFor(leaving::isProcessTerminated, "Workspace detach did not finish");
+            SpellWorkspace reopened = ui(() -> new SpellWorkspace(project));
+            try {
+                waitFor(() -> {
+                    try { return ui(() -> reopened.sessions().stream().anyMatch(candidate -> candidate.serviceId.equals(originalId) && candidate.active() && candidate.controller.isBlank())); }
+                    catch (Exception error) { throw new RuntimeException(error); }
+                }, "Reconnected workspace did not restore the original live instance");
+                ui(() -> {
+                    var restoredSession = reopened.sessions().stream().filter(item -> item.serviceId.equals(originalId)).findFirst().orElseThrow();
+                    require(!restoredSession.controlling, "Reconnect silently took control"); reopened.select(restoredSession); reopened.control("openbexi/claim"); return null;
+                });
+                waitFor(() -> { try { return ui(() -> reopened.selected().controlling); } catch (Exception error) { throw new RuntimeException(error); } }, "Explicit claim was not acknowledged");
+                ui(() -> { var restoredSession = reopened.selected(); reopened.answer(restoredSession, restoredSession.prompt.get("promptId").getAsString(), "0"); return null; });
+                waitFor(() -> { try { return ui(() -> !reopened.selected().active()); } catch (Exception error) { throw new RuntimeException(error); } }, "Reconnected native prompt did not complete");
+                require(ui(() -> reopened.selected().output.toString().contains("JETBRAINS_RECONNECT_COMPLETE")), "Reconnected result missing");
+                checks.add("Detached native instance restored with source/history, monitored, explicitly claimed and answered without restarting");
+            } finally { ui(() -> { reopened.dispose(); return null; }); }
             VirtualFile loop = source(project, "stop.py", "import time\nfrom spell.lang.functions import Display\nDisplay('JETBRAINS_STOP_READY')\nwhile True:\n    time.sleep(0.02)\n");
             ProcessHandler looping = ui(() -> { var process = SpellLaunch.run(project, loop); process.addProcessListener(collect(output)); return process; });
             owned.add(looping);

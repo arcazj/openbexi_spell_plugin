@@ -134,6 +134,7 @@ public final class SpellDebugProcess extends XDebugProcess {
             @Override public XExecutionStack getActiveExecutionStack() { return execution; }
             @Override public XExecutionStack[] getExecutionStacks() { return new XExecutionStack[]{execution}; }
         });
+        ui(workspace::show);
     }
     private final class Frame extends XStackFrame {
         private final JsonObject value;

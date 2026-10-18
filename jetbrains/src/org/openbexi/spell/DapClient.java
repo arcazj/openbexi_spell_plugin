@@ -28,7 +28,9 @@ final class DapClient extends ProcessHandler {
     DapClient(GeneralCommandLine command) throws ExecutionException { process = command.createProcess(); }
     void begin(Consumer<JsonObject> listener) {
         events = listener;
-        // XDebuggerManager owns startNotify for this debug process handler.
+        // Hidden workspace sessions have no RunContentManager to start the
+        // handler. Without this, destroyProcess stays queued indefinitely.
+        if (!isStartNotified()) startNotify();
         Thread.ofVirtual().name("spell-dap-output").start(this::readMessages);
         Thread.ofVirtual().name("spell-dap-errors").start(() -> {
             try (var reader = new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8)) {
@@ -41,7 +43,7 @@ final class DapClient extends ProcessHandler {
         int id = ++sequence;
         var future = new CompletableFuture<JsonObject>();
         pending.put(id, future);
-        future.orTimeout(30, TimeUnit.SECONDS).whenComplete((value, error) -> pending.remove(id));
+        future.orTimeout(command.equals("launch") ? 120 : command.equals("disconnect") ? 60 : 30, TimeUnit.SECONDS).whenComplete((value, error) -> pending.remove(id));
         JsonObject message = new JsonObject();
         message.addProperty("seq", id); message.addProperty("type", "request"); message.addProperty("command", command);
         message.add("arguments", arguments);
@@ -136,7 +138,7 @@ final class DapClient extends ProcessHandler {
         synchronized (inputLine) { inputPending = false; promptId = null; inputLine.reset(); }
         request("disconnect", object("terminateDebuggee", true));
         Thread.ofVirtual().start(() -> {
-            try { if (!process.waitFor(10, TimeUnit.SECONDS)) killOwnedProcess(); }
+            try { if (!process.waitFor(60, TimeUnit.SECONDS)) killOwnedProcess(); }
             catch (InterruptedException error) { Thread.currentThread().interrupt(); killOwnedProcess(); }
         });
     }
@@ -144,7 +146,14 @@ final class DapClient extends ProcessHandler {
         process.descendants().forEach(ProcessHandle::destroyForcibly);
         process.destroyForcibly();
     }
-    @Override protected void detachProcessImpl() { destroyProcessImpl(); }
+    @Override protected void detachProcessImpl() {
+        if (!closing.compareAndSet(false, true)) return;
+        try { process.getOutputStream().close(); } catch (IOException ignored) { }
+        Thread.ofVirtual().start(() -> {
+            try { if (!process.waitFor(10, TimeUnit.SECONDS)) killOwnedProcess(); }
+            catch (InterruptedException error) { Thread.currentThread().interrupt(); killOwnedProcess(); }
+        });
+    }
     @Override public boolean detachIsDefault() { return false; }
     @Override public OutputStream getProcessInput() {
         return new OutputStream() {

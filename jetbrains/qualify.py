@@ -30,6 +30,19 @@ def main():
     plugins.mkdir()
     previous = options.remove_from.resolve() if options.remove_from else None
     test_class = 'RemovalQualification' if previous else 'HostQualification'
+    harness = evidence / 'harness' / (test_class + '.java')
+    harness.parent.mkdir()
+    shutil.copy2(ROOT / ('qualification/' + test_class + '.java'), harness)
+    shutil.copy2(Path(__file__), harness.parent / 'qualify.py')
+    input_hashes = {
+        'qualify.py': hashlib.sha256((harness.parent / 'qualify.py').read_bytes()).hexdigest(),
+        'qualification/' + test_class + '.java': hashlib.sha256(harness.read_bytes()).hexdigest(),
+    }
+    plugin_hash = hashlib.sha256(options.plugin.read_bytes()).hexdigest()
+    runtime_packages = json.loads(subprocess.check_output([
+        str(options.interpreter.resolve()), '-I', '-c',
+        "import json; from importlib.metadata import version; print(json.dumps({name:version(name) for name in ['openbexi-ide','openbexi-spell-host']}))"
+    ], text=True, timeout=30))
     if previous:
         boundary = (ROOT.parent / '.qualification/v0.3').resolve()
         if not previous.is_relative_to(boundary) or not json.loads((previous / 'result.json').read_text())['passed']:
@@ -57,7 +70,7 @@ def main():
     classes.mkdir()
     compiled = subprocess.run([str(sdk / 'jbr/bin/javac.exe'), '--release', '21', '-encoding', 'UTF-8',
         '-classpath', os.pathsep.join([str(sdk / 'lib/*'), str(library)]), '-d', str(classes),
-        str(ROOT / ('qualification/' + test_class + '.java'))], capture_output=True, text=True, timeout=60)
+        str(harness)], capture_output=True, text=True, timeout=60)
     (evidence / 'test-compile.log').write_text(compiled.stdout + compiled.stderr)
     compiled.check_returncode()
     descriptor = '''<idea-plugin><id>org.openbexi.spell.qualification</id><name>SPELL Private Qualification</name>
@@ -129,9 +142,8 @@ def main():
     if 'Plugin to blame: OpenBEXI SPELL' in (evidence / 'launcher.log').read_text(encoding='utf-8', errors='replace'):
         report.update(passed=False, error='IDE reported an OpenBEXI SPELL plugin error; inspect launcher.log')
     report.update({'sdk': {key: info[key] for key in ('name', 'version', 'buildNumber')},
-        'plugin_sha256': hashlib.sha256(options.plugin.read_bytes()).hexdigest(),
-        'inputs': {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
-                   for path in [Path(__file__), ROOT / ('qualification/' + test_class + '.java')]}})
+        'plugin_sha256': plugin_hash, 'runtime_packages': runtime_packages,
+        'inputs': input_hashes})
     (evidence / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
     if not report['passed']:
         raise RuntimeError(report.get('error', 'Host qualification failed'))
