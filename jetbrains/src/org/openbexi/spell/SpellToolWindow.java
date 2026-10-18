@@ -73,7 +73,8 @@ public final class SpellToolWindow implements ToolWindowFactory {
             var toolbar = ActionManager.getInstance().createActionToolbar("OpenBEXI.Spell.ToolWindow", group, true);
             toolbar.setTargetComponent(this); controls.add(toolbar.getComponent(), BorderLayout.CENTER);
             JPanel ownership = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
-            ownership.add(role); ownership.add(claim); ownership.add(release); ownership.add(browser); controls.add(ownership, BorderLayout.SOUTH);
+            JCheckBox showHistory = new JCheckBox("Procedure list", false);
+            ownership.add(role); ownership.add(claim); ownership.add(release); ownership.add(browser); ownership.add(showHistory); controls.add(ownership, BorderLayout.SOUTH);
             claim.addActionListener(event -> workspace.control("openbexi/claim")); release.addActionListener(event -> workspace.control("openbexi/release"));
             browser.addActionListener(event -> {
                 var current = workspace.selected(); if (current == null || current.endpoint.isBlank()) return;
@@ -145,7 +146,16 @@ public final class SpellToolWindow implements ToolWindowFactory {
             tabs.addTab("Code & results", codePage); tabs.addTab("Output", new JBScrollPane(output));
             var historyScroll = new JScrollPane(history); historyScroll.setColumnHeaderView(history.getTableHeader());
             JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, historyScroll, tabs);
-            split.setBorder(JBUI.Borders.empty()); split.setResizeWeight(.25); split.setDividerLocation(JBUI.scale(140)); add(split, BorderLayout.CENTER);
+            split.setBorder(JBUI.Borders.empty()); split.setResizeWeight(.25);
+            int dividerSize = split.getDividerSize();
+            historyScroll.setVisible(false); split.setDividerSize(0); split.setDividerLocation(0);
+            showHistory.addActionListener(event -> {
+                historyScroll.setVisible(showHistory.isSelected());
+                split.setDividerSize(showHistory.isSelected() ? dividerSize : 0);
+                split.setDividerLocation(showHistory.isSelected() ? JBUI.scale(140) : 0);
+                split.revalidate();
+            });
+            add(split, BorderLayout.CENTER);
             promptPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(JBColor.border()), JBUI.Borders.empty(12)));
             JPanel footer = new JPanel(new BorderLayout(8, 8)), buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
             buttons.add(commit); buttons.add(reset); buttons.add(abort); footer.add(buttons, BorderLayout.NORTH); footer.add(promptMessage, BorderLayout.SOUTH);

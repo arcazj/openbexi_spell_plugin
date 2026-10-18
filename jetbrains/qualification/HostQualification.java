@@ -118,8 +118,13 @@ public final class HostQualification implements StartupActivity.DumbAware {
                 if (scroll != null) scroll.setColumnHeaderView(table.getTableHeader());
             }
             content.setSize(1320, 800); layout(content);
-            for (JTable table : components(content, JTable.class))
-                require(table.getTableHeader() != null && table.getTableHeader().getParent() != null && table.getTableHeader().getHeight() > 0, "Table header is detached or has zero height in workspace");
+            for (JTable table : components(content, JTable.class)) {
+                var scroll = (JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class, table);
+                if (scroll != null && scroll.isVisible())
+                    require(table.getTableHeader() != null && table.getTableHeader().getParent() != null && table.getTableHeader().getHeight() > 0, "Table header is detached or has zero height in workspace");
+            }
+            var list = components(content, JCheckBox.class).stream().filter(item -> "Procedure list".equals(item.getText())).findFirst().orElseThrow();
+            require(!list.isSelected(), "Procedure history must be collapsed while the instance strip remains available");
             StringBuilder diagnostics = new StringBuilder();
             for (JTable table : components(content, JTable.class)) {
                 var header = table.getTableHeader();
@@ -200,6 +205,9 @@ public final class HostQualification implements StartupActivity.DumbAware {
             }
             VirtualFile run = source(project, "run.py", "from spell.lang.functions import Display, Notify\nfrom pathlib import Path\nNotify('Voltage', '28.0', 'SUCCESS')\nDisplay('JETBRAINS_NATIVE_RUN')\nPath('answer.txt').write_text('42')\n");
             ui(() -> {
+                // A first-start What's New tab can arrive after source() returns.
+                // Select the real procedure immediately before exercising the action.
+                FileEditorManager.getInstance(project).openFile(run, true);
                 var context = SimpleDataContext.getProjectContext(project);
                 var action = ActionManager.getInstance().getAction("OpenBEXI.Spell.Run");
                 var event = AnActionEvent.createFromDataContext("SPELL qualification", new Presentation(), context);
