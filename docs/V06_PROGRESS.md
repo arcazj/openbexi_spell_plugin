@@ -34,6 +34,20 @@ Fresh native/driver artifacts, images, installed workflows and the complete
 language sequence must pass before acceptance. The earlier image-specific
 results below are historical, not acceptance of this replacement.
 
+The replacement passes all focused controls: 14 host-adapter cases, 10 child
+argument cases, two nine-case child-mode runs, 24 duplicate answers, 12 prompt
+aborts and 49 installed DSS integration tests. The final documented wheels also
+pass all 49 installed DSS tests, Linux native/driver upgrade and removal, host
+lifecycle, installed OpenBEXI workflows and actual plugin-manager upgrade/removal.
+
+The first complete sequence attempt passed all 40 startup behavior cases but its
+provenance verifier still expected the checkpoint patch to be the final
+frame-manager modification. The corrected verifier requires both exact patch
+stages and the final source hash; 28 tests plus 34 rejection subtests pass.
+[The failed gate remains retained](evidence/v06-trace-read/checkpoint-provenance.json).
+The full sequence restarts at
+`.qualification/v06/snapshot-language/8e099058e5714330a460073483bc07c3`.
+
 ## Earlier candidate verification 2026-10-20
 
 The corrected native pair at

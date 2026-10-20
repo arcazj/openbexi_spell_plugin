@@ -1,0 +1,24 @@
+{
+  "finding": "All 40 startup behavior cases passed, but the checkpoint verifier rejected the new final frame-manager hash after the atomic trace correction.",
+  "correction": "Require exact checkpoint and trace stages plus exact final source hash; verify compiled source units against the validated final composition.",
+  "tests": "28 tests and 34 rejection subtests passed",
+  "release_accepted": false,
+  "evidence": [
+    {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\snapshot-language\\b546ddda7d7c47fc8362d36fb486613a\\result.json",
+      "sha256": "87e70d487cb9e0ee8ab538ef288d3a26a7d7b77ddc64235ecfee777ea29e125a"
+    },
+    {
+      "path": "C:\\obspell_v06_resume\\.qualification\\context-snapshot-startup\\5d0c274e0f884f928f9f39308ee1707b\\workspace.tar",
+      "sha256": "2cb8df949778b526064ff3c5c90e71236895e6f125d1bcdc4ad7b00f56f99ffa"
+    },
+    {
+      "path": "C:\\obspell_v06_resume\\.qualification\\context-snapshot-startup\\5d0c274e0f884f928f9f39308ee1707b\\controller.log",
+      "sha256": "60233b501996aea03286e48fbb902a1f34813dab68d223e491783a99755b522e"
+    },
+    {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\checkpoint-stage-tests.xml",
+      "sha256": "3a5444af0d5a5f222efb3399447f4fc182c19ec1fd02ba8d3ba0624e9adb7caf"
+    }
+  ]
+}
