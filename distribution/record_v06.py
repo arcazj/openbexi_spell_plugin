@@ -161,6 +161,10 @@ def main():
             'Desktop host qualification covers only the exact Windows OpenBEXI, IntelliJ and PyCharm versions in the matrix.',
             'Native service checkpoint resumption remains unsupported.',
             'Operational security, capacity and mission-specific qualification remain v0.7 work; stable v1.0 is not accepted.'])
+    historical_gaps=portable.get('historical_source_gaps',[])
+    if historical_gaps:
+        manifest['limitations'].append(
+            f'The portable manifest lists {len(historical_gaps)} unavailable source snapshots from older failed or partial diagnostics; current acceptance inputs must have no gaps.')
     target=ROOT/'docs/V06_QUALIFICATION.json'
     if not read(target).get('v06_accepted'):
         (ROOT/'distribution/evidence/pre-v06-qualification.json').write_bytes(target.read_bytes())
