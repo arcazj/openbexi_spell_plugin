@@ -27,5 +27,22 @@
     "native-asan.log": "c5704c6b712d9a620363d9b512bec8c05457232b05dd5914f6f78926182cea7c",
     "patch-tests.xml": "d497bbee0a672f26e944cdb078ae4d312c35d8342f65253ae4e865b52f50c688"
   },
-  "patch_tests_passed": 6
+  "patch_tests_passed": 6,
+  "gil_candidate_rejected": {
+    "image": "sha256:7dfbca0d2e0d5859cc13f8dda5ad721594e9cf09cb04dba3e238797e1ce203f4",
+    "finding": "Display buffer worker holds m_lock while completeMessage/getNumExecutions waits for GIL. Interpreter holds GIL while ClientIF_Write waits for that same display m_lock. Native debugger stacks confirm lock inversion.",
+    "stacks_sha256": "8f7362e63e9d05d26e0f3b0ece90de0ef26a4f416bc8684d4846b6ed28da15c3",
+    "attempts": [
+      {
+        "path": "C:\\obspell_v06_resume\\.qualification\\v06\\host-adapter\\result.json",
+        "sha256": "04d656acb310a68ee030d9f54a9d43efe0e174645f54f8fd265a5b533ece8ec5"
+      },
+      {
+        "path": "C:\\obspell_v06_resume\\.qualification\\v06\\host-adapter-complete\\result.json",
+        "sha256": "357ab7f28d20d915d63195f1f38500bf555ad179c99af1df49120ebad9600639"
+      }
+    ]
+  },
+  "replacement_candidate": "Evaluator publishes execution count to an atomic scalar after trace mutations, selection and reset. CIF readers load the scalar without borrowing map entries or acquiring the GIL.",
+  "release_accepted": false
 }

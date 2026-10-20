@@ -245,9 +245,20 @@ def driver(paths,image,ide):
     import_proof(data['imported_modules'],{'openbexi_runtime':'openbexi-ide','openbexi_spell_host':'openbexi-spell-host',
         'openbexi_spell_shared':'openbexi-spell-shared','openbexi_spell_dss':'openbexi-spell-dss','dss':'openbexi-spell-plugin'},
         data['installed_wheels'])
-    expected_tests = {name:proof.sha(repository/'tests'/name) for repository,names in (
+    source_tests = {name:repository/'tests'/name for repository,names in (
         (ide,['native_driver_acceptance.py','test_shared_backends.py','test_sessions.py','test_durable_sessions.py','test_execution_sessions.py']),
         (ROOT,['test_original_driver.py','kafka_driver_acceptance.py'])) for name in names}
+    from installed_driver_oracles import adapt
+    import hashlib
+    expected_tests = {name:hashlib.sha256(adapt(name,path.read_text(encoding='utf-8')).encode()).hexdigest()
+                      if name in ('native_driver_acceptance.py','test_original_driver.py') else proof.sha(path)
+                      for name,path in source_tests.items()}
+    require(data['installed_oracle_sha256']==proof.sha(ROOT/'distribution/installed_driver_oracles.py'),
+            'Installed contract adapter changed')
+    for name in ('native_driver_acceptance.py','test_original_driver.py'):
+        require(data['original_tests'][name]==proof.sha(source_tests[name]),'Original integration test changed')
+        require(proof.sha(paths['driver_installed'].parent/'original-tests'/name)==proof.sha(source_tests[name]),
+                'Retained original integration test changed')
     require(data['test_inputs']==expected_tests,'Installed driver copied tests differ')
     for name,digest in expected_tests.items():
         require(proof.sha(paths['driver_installed'].parent/'tests'/name)==digest,'Copied driver oracle changed')

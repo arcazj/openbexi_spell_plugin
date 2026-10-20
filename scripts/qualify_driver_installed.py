@@ -49,6 +49,17 @@ def main():
     for repository,names in ((args.ide,ide_tests),(args.plugin,plugin_tests)):
         for name in names:
             shutil.copy2(repository/'tests'/name,tests/name)
+    oracle = Path(__file__).resolve().parents[1]/'distribution/installed_driver_oracles.py'
+    oracle_spec = importlib.util.spec_from_file_location('installed_driver_oracles', oracle)
+    oracle_module = importlib.util.module_from_spec(oracle_spec)
+    oracle_spec.loader.exec_module(oracle_module)
+    assert importlib.metadata.version('openbexi-spell-dss') == '0.6.0'
+    original_tests = root/'original-tests'
+    original_tests.mkdir()
+    for name in ('native_driver_acceptance.py','test_original_driver.py'):
+        shutil.copy2(tests/name, original_tests/name)
+        (tests/name).write_text(oracle_module.adapt(name,(tests/name).read_text(encoding='utf-8')),
+                               encoding='utf-8',newline='\n')
     test_inputs = {name:evidence.sha(tests/name) for name in ide_tests+plugin_tests}
     source_inputs = {str((repository/'tests'/name).resolve()):evidence.sha(repository/'tests'/name)
         for repository,names in ((args.ide,ide_tests),(args.plugin,plugin_tests)) for name in names}
@@ -67,6 +78,9 @@ def main():
         image=image,platform=platform.platform(),prefix=sys.prefix,
         installed_wheels=installed,imported_modules=imports,test_inputs=test_inputs,source_inputs=source_inputs,
         harness_sha256=evidence.sha(Path(__file__)),auditor_sha256=evidence.sha(helper),
+        installed_oracle_sha256=evidence.sha(oracle),
+        original_tests={name:evidence.sha(original_tests/name) for name in
+                        ('native_driver_acceptance.py','test_original_driver.py')},
         wheel_inputs=evidence.reference(args.wheels),full_v06_accepted=False,
         packages=sorted([dict(name=d.metadata['Name'],version=d.version) for d in importlib.metadata.distributions()],key=lambda r:r['name']),
         old_development_binding_accepted=True)

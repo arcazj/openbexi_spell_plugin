@@ -107,7 +107,7 @@ RECIPE_NAMES = (
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
-                            trace_read_patches.SOURCE,
+                            *trace_read_patches.PREIMAGES,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
                             ipc_mailbox_patches.SOURCE,
@@ -207,9 +207,6 @@ def apply_native_tree(source, archive, output):
             patched[name] = stage('checkpoint_context_patches.py', name, intermediate,
                 checkpoint_context_patches.apply(name, original[name], intermediate))
             continue
-        elif name == trace_read_patches.SOURCE:
-            recipe = 'trace_read_patches.py'
-            patched[name] = trace_read_patches.apply(name, original[name], ported[name])
         elif name == dta_native_patches.SOURCE:
             recipe = 'dta_native_patches.py'
             patched[name] = dta_native_patches.apply(name, original[name], ported[name])
@@ -319,6 +316,10 @@ def apply_native_tree(source, archive, output):
         before = patched.get(name, ported[name])
         patched[name] = stage('event_empty_native_patches.py', name, before,
             event_empty_native_patches.apply(name, before))
+    for name in trace_read_patches.PREIMAGES:
+        before = patched.get(name, ported[name])
+        patched[name] = stage('trace_read_patches.py', name, before,
+            trace_read_patches.apply(name, original[name], before))
     recipes = recipe_hashes()
     header = (source/IDENTITY_HEADER).read_bytes()
     pattern = rb'(static const char continuationSourceIdentity\[\] = ")([0-9a-f]{64})(";)'

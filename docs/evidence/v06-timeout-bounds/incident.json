@@ -1,0 +1,26 @@
+{
+  "accepted": false,
+  "candidate_image": "sha256:7dfbca0d2e0d5859cc13f8dda5ad721594e9cf09cb04dba3e238797e1ce203f4",
+  "finding": "Huge command timeout integer raises OverflowError during math.isfinite conversion, instead of DriverException before RPC.",
+  "correction": "Check numeric bounds before math.isfinite in composed command settings, including duration and absolute time fields.",
+  "oracle_correction": "Both composed TC and TM support 3600-second budgets. Initial adaptation incorrectly retained the old TC 30-second limit; final oracle retains upper-bound rejection, huge integer cases and exact command effects.",
+  "evidence": {
+    "result.json": {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\installed-driver\\workflow-current-contracts\\result.json",
+      "sha256": "9ee9507a5d5d45e62c07c9eb216c0a44018269c75dc3a489cb4b6951bff0b269"
+    },
+    "native_driver_acceptance.py": {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\installed-driver\\workflow-current-contracts\\tests\\native_driver_acceptance.py",
+      "sha256": "e905c9c41c87bf427ed3589162fb04651143a7985b63d0e6c51b0f8206976eff"
+    },
+    "test_original_driver.py": {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\installed-driver\\workflow-current-contracts\\tests\\test_original_driver.py",
+      "sha256": "d69b08c090ff173f84e3da36e9dfa820cc3b2834df31d5e897fe40f9846694b8"
+    },
+    "current-contracts.log": {
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\installed-driver\\current-contracts.log",
+      "sha256": "ef4d7157cbd50286ab37085ef6bb06fc0c0cf8000d458a34abedb2d99db00b95"
+    }
+  },
+  "required": "New native composition build pair, driver pair and runtime images; rerun full native sequence and installed workflows on corrected bytes."
+}

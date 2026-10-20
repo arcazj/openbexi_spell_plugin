@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="49" time="163.822" timestamp="2026-10-20T03:51:51.082765-04:00" hostname="ARCAZJ"><testcase classname="tests.native_driver_acceptance" name="test_original_native_driver_manager_rpc_binary_command" time="13.301" /><testcase classname="tests.native_driver_acceptance" name="test_original_time_timeouts_reject_invalid_values_and_recover" time="13.126"><failure message="AssertionError: ({'backend': {'driver': {'host': '127.0.0.1', 'port': 57073, 'url': 'http://127.0.0.1:57074'}, 'image': 'sha256:7dfbca...al/lib/python3.13/site-packages/openbexi_dss_proxy/command_settings.py', line 16&#10;  int too large to convert to float&#10;  &quot;)&#10;assert 'RECOVERY_REQUIRED' == 'COMPLETED'&#10;  &#10;  - COMPLETED&#10;  + RECOVERY_REQUIRED">live_dss = &lt;dss.local.LocalRuntime object at 0x00000220175E9BD0&gt;
+tmp_path = WindowsPath('C:/Users/arcaz/AppData/Local/Temp/pytest-of-arcaz/pytest-541/test_original_time_timeouts_re0')
+
+    def test_original_time_timeouts_reject_invalid_values_and_recover(live_dss,tmp_path):
+        """Native TIME travels through original models, RPC and actual binary DSS."""
+        dss = live_dss
+        project = tmp_path/'project'
+        project.mkdir()
+        git(project,'init','-q')
+        name = dss.database.telemetry[0]['item_id']
+        source = '''from spell.lib.registry import REGISTRY
+    from spell.lib.adapter.utctime import TIME
+    from spell.lib.exception import DriverException
+    from spell.lang.functions import Display, Send, GetTM
+    from spell.lang.modifiers import Timeout, Wait, Confirm, PromptUser
+    from openbexi_dss_proxy.tc import descriptor
+    from spell.utils.grpc_utils import UnpackValue
+    tm,tc = REGISTRY['TM'],REGISTRY['TC']
+    item = tm._createTmItem(TM_NAME)
+    command = tc._createTcItem('CMD1')
+    for value in (TIME(.000001), TIME(30), .5, 30):
+        wire = UnpackValue(descriptor(command,{Timeout:value}).config)
+        expected = value.rel() if isinstance(value,TIME) else value
+        assert wire['Timeout'] == expected
+    for invalid in (TIME('2026-01-01'),TIME(0),TIME(-1),TIME(3601),True,float('nan'),float('inf'),2**4096):
+        for operation in (lambda: tc._sendCommand(command,{Timeout:invalid}),
+                          lambda: tm._refreshItem(item,{Timeout:invalid,Wait:False})):
+            try: operation()
+            except DriverException: pass
+            else: raise AssertionError('Invalid timeout reached the service')
+    # LRM telemetry permits a one-hour budget; TC remains bounded to 30s.
+    for value in (TIME(31), TIME(3600)):
+        assert tm._refreshItem(item,{Timeout:value,Wait:False})[1]
+        try: tc._sendCommand(command,{Timeout:value})
+        except DriverException: pass
+        else: raise AssertionError('TC timeout above 30 seconds reached the service')
+    assert Send(command='CMD1',config={Timeout:TIME(2),Confirm:False,PromptUser:False})
+    assert GetTM(TM_NAME,{Timeout:TIME(.25),Wait:False}) is not None
+    assert tm._refreshItem(item,{Timeout:TIME(30),Wait:False})[1]
+    Display('NATIVE_TIME_TIMEOUT_PASS')
+    '''.replace('TM_NAME',repr(name))
+        (project/'main.py').write_text(source)
+        commit(project)
+        with durable(project,tmp_path/'authority',lease_seconds=120) as (session,url):
+            actor = connect(session,url)
+            epoch = claim(url,actor)
+            # Fresh second executor proves the rejected requests leave no recovery
+            # hold or lingering original driver state; each run has exactly one TC.
+            for expected_commands in (1,2):
+                result = request(url,'/run',dict(epoch=epoch,script='main.py',language='spell'),actor['token'])
+                procedure = session.procedures[result['id']]
+                wait_for(lambda:procedure.status in {'COMPLETED','RECOVERY_REQUIRED','FAILED'},timeout=80)
+                output = ''.join(e.get('text','') for e in session.events if e.get('procedure') == procedure.id)
+&gt;               assert procedure.status == 'COMPLETED',(procedure.public(),output)
+E               AssertionError: ({'backend': {'driver': {'host': '127.0.0.1', 'port': 57073, 'url': 'http://127.0.0.1:57074'}, 'image': 'sha256:7dfbca...al/lib/python3.13/site-packages/openbexi_dss_proxy/command_settings.py', line 16
+E                 int too large to convert to float
+E                 ")
+E               assert 'RECOVERY_REQUIRED' == 'COMPLETED'
+E                 
+E                 - COMPLETED
+E                 + RECOVERY_REQUIRED
+
+.qualification\v06\installed-driver\workflow-current-contracts\tests\native_driver_acceptance.py:142: AssertionError</failure></testcase><testcase classname="tests.native_driver_acceptance" name="test_native_release_authority_and_alias_admission[handoff]" time="24.902" /><testcase classname="tests.native_driver_acceptance" name="test_native_release_authority_and_alias_admission[revoke]" time="11.768" /><testcase classname="tests.native_driver_acceptance" name="test_approved_native_execution_uses_readonly_image_and_real_dss" time="19.826" /><testcase classname="tests.native_driver_acceptance" name="test_native_driver_failure_and_freeze_boundaries[lost_ack]" time="16.396" /><testcase classname="tests.native_driver_acceptance" name="test_native_driver_failure_and_freeze_boundaries[watchdog]" time="10.300" /><testcase classname="tests.native_driver_acceptance" name="test_native_driver_failure_and_freeze_boundaries[pause]" time="13.265" /><testcase classname="tests.native_driver_acceptance" name="test_original_factory_instantiates_every_family_and_uses_native_models" time="13.808" /><testcase classname="tests.test_shared_backends" name="test_missing_duplicate_and_incompatible_providers_fail_closed" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_runtime_binding_is_bounded_detached_json" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_superseded_launch_attempt_cannot_close_current_worker" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[closed]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[controller]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[lease]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[slot]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[intent]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[state]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[fence]" time="0.001" /><testcase classname="tests.test_shared_backends" name="test_private_request_rechecks_authority_before_each_effect[revocation]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[None]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[True]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[False]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[0]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[-2]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[9223372036854775807]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[1.25]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[text]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[bytes]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[value9]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[value10]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_original_any_shapes_round_trip[value11]" time="0.001" /><testcase classname="tests.test_original_driver" name="test_codec_rejects_ambiguous_and_nonfinite_values" time="0.001" /><testcase classname="tests.test_original_driver" name="test_real_rpc_tc_changes_dss_once_and_has_five_binary_receipts" time="0.868" /><testcase classname="tests.test_original_driver" name="test_real_rpc_tm_value_validity_and_time" time="1.109" /><testcase classname="tests.test_original_driver" name="test_monitoring_rejects_command_before_any_network_effect" time="1.132" /><testcase classname="tests.test_original_driver" name="test_deduplicated_receipt_and_stale_fence_rejection" time="1.696" /><testcase classname="tests.test_original_driver" name="test_lost_release_ack_holds_run_across_journal_reopen" time="1.421" /><testcase classname="tests.test_original_driver" name="test_telemetry_duplicates_conflicts_and_freshness_timeout" time="1.172" /><testcase classname="tests.test_original_driver" name="test_pending_effect_recovered_without_callback" time="0.088" /><testcase classname="tests.test_original_driver" name="test_all_service_families_have_truthful_simulator_behavior" time="2.035" /><testcase classname="tests.test_original_driver" name="test_ground_failures_do_not_turn_into_success_or_effects" time="1.123" /><testcase classname="tests.test_original_driver" name="test_numeric_limits_injection_and_monitoring_mutation_rejection" time="1.156" /><testcase classname="tests.test_original_driver" name="test_typed_radix_arguments_and_invalid_catalog_values" time="0.903" /><testcase classname="tests.test_original_driver" name="test_stale_gapped_or_bad_telemetry_cannot_be_valid[fault0]" time="1.146" /><testcase classname="tests.test_original_driver" name="test_stale_gapped_or_bad_telemetry_cannot_be_valid[fault1]" time="1.138" /><testcase classname="tests.test_original_driver" name="test_stale_gapped_or_bad_telemetry_cannot_be_valid[fault2]" time="1.069" /><testcase classname="tests.test_original_driver" name="test_driver_ground_state_survives_restart_without_replaying_effects" time="1.146" /><testcase classname="tests.kafka_driver_acceptance" name="test_binary_outbox_kafka_freshness_duplicates_and_clock_task" time="9.143" /></testsuite></testsuites>

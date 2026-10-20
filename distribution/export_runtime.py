@@ -22,13 +22,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--image', action='append', required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--archive-name', default='openbexi-spell-v0.6-runtime.tar.gz')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     images = [subprocess.check_output(
         ['docker', 'image', 'inspect', name, '--format', '{{.Id}}'], text=True).strip()
         for name in args.image]
-    archive_path = output / 'openbexi-spell-v0.6-runtime.tar.gz'
+    if Path(args.archive_name).name != args.archive_name or not args.archive_name.endswith('.tar.gz'):
+        raise ValueError('Expected a .tar.gz archive basename')
+    archive_path = output / args.archive_name
     with (output / 'docker-save.log').open('wb') as log, archive_path.open('wb') as dest:
         process = subprocess.Popen(['docker', 'image', 'save', *args.image],
                                    stdout=subprocess.PIPE, stderr=log)

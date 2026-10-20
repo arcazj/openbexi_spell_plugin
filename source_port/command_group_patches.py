@@ -25,6 +25,14 @@ def apply(name,raw):
     elif name=='openbexi_dss_proxy/command_settings.py':
         source=replace(source,"                    raise DriverException('Grouped command protocol is not qualified yet')",
             '                    result[key] = True')
+        # Reject unbounded Python integers before math.isfinite converts them
+        # to C doubles. Validation must raise DriverException without sending.
+        source=replace(source,
+            'not math.isfinite(value) or not 0 <= value <= maximum',
+            'not 0 <= value <= maximum or not math.isfinite(value)')
+        source=replace(source,
+            'not math.isfinite(value) or not 0 <= value <= (1<<63)/1e9-1',
+            'not 0 <= value <= (1<<63)/1e9-1 or not math.isfinite(value)')
     elif name=='openbexi_spell_dss/rpc.py':
         source=replace(source,'            from .command_rpc import prepare','            from .command_group_rpc import prepare')
         source=replace(source,"        if family == 'TM' and method == 'DatabaseLookup':",'''        if family == 'TM' and method == 'DatabaseLookup':

@@ -56,10 +56,16 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     expected_sources = qualified['native']
     for name,digest in qualified['native_distribution'].items():
         assert composition.digest(source_bytes(ROOT, name, DONOR_RELEASE)) == digest
-    assert set(expected_sources) | {composition.trace_read_patches.SOURCE} == set(composition.NATIVE_NAMES)
+    assert set(expected_sources) | set(composition.trace_read_patches.PREIMAGES) == set(composition.NATIVE_NAMES)
     for name, row in expected_sources.items():
-        assert report['sources'][name] == {label+'_sha256':value for label,value in row.items()}
-        assert composition.digest((source/name).read_bytes()) == row['patched']
+        expected = {label+'_sha256':value for label,value in row.items()}
+        if name in composition.trace_read_patches.PREIMAGES:
+            final, = [stage['sources'][name] for stage in report['stages']
+                      if stage['recipe']=='trace_read_patches.py' and name in stage['sources']]
+            assert final['before_sha256'] == row['patched']
+            expected['patched_sha256'] = final['after_sha256']
+        assert report['sources'][name] == expected
+        assert composition.digest((source/name).read_bytes()) == expected['patched_sha256']
     checkpoint = report['checkpoint']
     assert checkpoint['central_identity'] != checkpoint['integrated_identity']
     assert checkpoint['integrated_identity'] in (source/composition.IDENTITY_HEADER).read_text()
@@ -260,6 +266,10 @@ def test_driver_corrections_match_native_evidence_and_preserve_repository(tmp_pa
     report = composition.apply_driver_tree(source, source/'openbexi_dss_proxy/_composition')
     expected = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
     qualified = expected['driver']
+    # The v0.6 oversized-integer rejection is independently exercised by
+    # test_command_setting_bounds and the installed native integration test.
+    qualified = dict(qualified, **{'openbexi_dss_proxy/command_settings.py':
+        'fc7bfd945db25de615431bafeee8b3cb5af602d884445553d764699330fca3f3'})
     for name,digest in expected['driver_additions'].items():
         assert report['python_sources'][name]==digest
     assert set(qualified) == set(composition.DRIVER_NAMES)

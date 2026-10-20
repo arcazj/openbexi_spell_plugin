@@ -18,12 +18,14 @@ def inputs():
     return original, native_patches.apply(patch.SOURCE, original)
 
 
-def test_candidate_is_in_composition_and_preserves_native_count_read():
+def test_candidate_reads_only_the_published_scalar_without_gil_or_borrow():
     original, ported = inputs()
     result = patch.apply(patch.SOURCE, original, ported)
     assert patch.SOURCE in integrated_patches.NATIVE_NAMES
     assert 'trace_read_patches.py' in integrated_patches.recipe_hashes()
-    assert b'getCurrentTraceModel().getCurrentLineExecutions()' in result
+    assert b'getPublishedTraceExecutions()' in result
+    assert b'getCurrentTraceModel()' not in result
+    assert b'SPELLpython313::GIL' not in result
     assert result != ported
 
 
