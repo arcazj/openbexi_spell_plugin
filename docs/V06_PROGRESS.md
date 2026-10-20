@@ -45,8 +45,13 @@ provenance verifier still expected the checkpoint patch to be the final
 frame-manager modification. The corrected verifier requires both exact patch
 stages and the final source hash; 28 tests plus 34 rejection subtests pass.
 [The failed gate remains retained](evidence/v06-trace-read/checkpoint-provenance.json).
+The per-source trace stages are selected explicitly; the verifier also passes
+against the actual installed manifest and independent compiled artifacts.
 The full sequence restarts at
-`.qualification/v06/snapshot-language/8e099058e5714330a460073483bc07c3`.
+`.qualification/v06/snapshot-language/6d28bc97c53f4c53b0787bfc96e64bc0`.
+IntelliJ and PyCharm installed upgrade/removal workflows now pass too. Both final
+runtime images export with all descriptor and blob hashes verified. An independent
+audit verifies 743 final host evidence file bindings with no missing sources.
 
 ## Earlier candidate verification 2026-10-20
 
