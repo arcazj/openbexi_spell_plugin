@@ -61,6 +61,17 @@ class IdentityTests(unittest.TestCase):
         native['sources'][name]['patched_sha256']=final
         native['stages'].append(dict(recipe='trace_read_patches.py',sources={name:dict(
             before_sha256=hashlib.sha256(checkpoint).hexdigest(),after_sha256=final)}))
+        # The real composer emits one stage per source, including other files.
+        with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as bundle:
+            for other in trace_read_patches.PREIMAGES:
+                if other==name:continue
+                raw=bundle.read(other);ported=native_patches.apply(other,raw)
+                patched=trace_read_patches.apply(other,raw,ported)
+                hashes={label+'_sha256':hashlib.sha256(body).hexdigest()
+                        for label,body in [('original',raw),('ported',ported),('patched',patched)]}
+                native['sources'][other]=hashes
+                native['stages'].insert(0,dict(recipe='trace_read_patches.py',sources={other:dict(
+                    before_sha256=hashes['ported_sha256'],after_sha256=hashes['patched_sha256'])}))
         return name,final
 
     def test_exact_checkpoint_then_snapshot_chain(self):

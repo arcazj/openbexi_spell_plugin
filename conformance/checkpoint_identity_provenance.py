@@ -72,7 +72,7 @@ def qualification_identity(record, inputs, normalized=None):
         if name=='lib/SPELL_EXC/src/SPELLframeManager.C' and 'trace_read_patches.py' in native['recipes']:
             final='d1e46bf91b8997a79b5cfd4bc24eb5f49a9db14a9e9b94df13c38cf16d397d05'
             trace=[stage['sources'].get(name) for stage in native['stages']
-                   if stage['recipe']=='trace_read_patches.py']
+                   if stage['recipe']=='trace_read_patches.py' and name in stage['sources']]
             if trace!=[dict(before_sha256=expected['patched_sha256'],after_sha256=final)]:
                 raise ValueError('Installed trace snapshot stage differs: '+name)
         if actual.get('original_sha256')!=expected['original_sha256'] or actual.get('patched_sha256')!=final:
