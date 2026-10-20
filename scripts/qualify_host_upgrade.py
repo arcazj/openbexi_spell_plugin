@@ -29,12 +29,26 @@ def main():
     parser.add_argument('--wheel', type=Path, required=True)
     parser.add_argument('--image', required=True)
     parser.add_argument('--previous-wheel', type=Path, required=True)
+    parser.add_argument('--installed-ide-wheel', type=Path,
+                        help='Audit and exercise this installed IDE instead of importing the source checkout')
     args = parser.parse_args()
     previous_version, target_version = wheel_version(args.previous_wheel), wheel_version(args.wheel)
     image = subprocess.check_output(['docker','image','inspect',args.image,'--format','{{.Id}}'],text=True).strip()
     os.environ['OPENBEXI_SPELL_IMAGE'] = image
     os.environ['QT_QPA_PLATFORM'] = 'offscreen'
-    sys.path.insert(0, str(args.ide.resolve()/'src'))
+    installed_ide = None
+    if args.installed_ide_wheel:
+        import runpy
+        auditor = ROOT/'distribution/workflow_evidence.py'
+        proof = runpy.run_path(str(auditor))
+        bindings = {'openbexi-ide': {'path': str(args.installed_ide_wheel.resolve()),
+                    'sha256': hashlib.sha256(args.installed_ide_wheel.read_bytes()).hexdigest()}}
+        installed_ide = {'wheels': proof['installed_wheels'](bindings, '.'),
+                        'imports': proof['imported_modules'](bindings,
+                            {'openbexi_ide':'openbexi-ide','openbexi_runtime':'openbexi-ide'}, '.'),
+                        'auditor_sha256': hashlib.sha256(auditor.read_bytes()).hexdigest()}
+    else:
+        sys.path.insert(0, str(args.ide.resolve()/'src'))
     from PySide6.QtCore import QSettings, Qt
     from PySide6.QtTest import QTest
     from PySide6.QtWidgets import QApplication
@@ -51,7 +65,8 @@ def main():
     (evidence/'installation.log').write_bytes(installation.stdout+installation.stderr)
     installation.check_returncode()
     report = {'passed':False,'image':image,'checks':[],
-              'scope':'Actual Qt Run/Debug console keyboard routing in a private project; browser interaction and fresh-Windows installation are not asserted.',
+              'scope':'Actual Qt plugin manager upgrade/removal and workspace Run/Debug child prompt widgets in a private project.',
+              'installed_ide': installed_ide,
               'wheel_sha256':hashlib.sha256(args.wheel.read_bytes()).hexdigest(),
               'previous_wheel_sha256':hashlib.sha256(args.previous_wheel.read_bytes()).hexdigest(),
               'harness_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -67,12 +82,15 @@ def main():
     view.discover_backends()
     view.show()
 
+    def output():
+        return view.console.toPlainText() + '\n' + view.procedure_workspace.output.toPlainText()
+
     def wait(predicate, timeout=60):
         deadline = time.monotonic()+timeout
         while not predicate() and time.monotonic()<deadline:
             application.processEvents()
             QTest.qWait(10)
-        assert predicate(), 'Desktop deadline exceeded: '+view.console.toPlainText()
+        assert predicate(), 'Desktop deadline exceeded: '+output()
 
     def metadata():
         code = "import importlib.metadata as m,openbexi_spell_host as h,json;print(json.dumps([m.version('openbexi-spell-host'),h.__version__]))"
@@ -126,17 +144,17 @@ Display('CHILD_CHOICES_COMPLETE')
             source.write_text("from spell.lang.functions import StartProc, Display\nassert StartProc('child', HandleError=False) is True\nDisplay("+repr(marker)+")\n",encoding='utf-8',newline='\n')
             view.open_file(source)
             action = view.run_action if mode == 'run' else view.debug_action
-            controller = view.run_controller if mode == 'run' else view.debug_controller
             action.trigger()
-            for prompt,answer in (('CHILD_FIRST_CHOICE','0'),('CHILD_SECOND_CHOICE','1')):
-                wait(lambda: prompt in view.console.toPlainText() and view.input.isEnabled()
-                     and (mode == 'run' or view.debug_controller.input_pending))
-                view.console.setFocus()
-                QTest.keyClicks(view.console,answer)
-                assert view.input.text() == answer, 'Console typing did not reach the enabled input field'
-                QTest.keyClick(view.input,Qt.Key_Return)
-            wait(lambda: not controller.running)
-            console = view.console.toPlainText()
+            workspace = view.procedure_workspace
+            for prompt,answer in (('CHILD_FIRST_CHOICE',0),('CHILD_SECOND_CHOICE',1)):
+                wait(lambda: workspace.selected is not None and workspace.selected.prompt
+                     and prompt in workspace.question.text() and workspace.prompt_body.isEnabled()
+                     and workspace.choices is not None)
+                workspace.choices.buttons()[answer].click()
+                wait(workspace.commit.isEnabled)
+                workspace.commit.click()
+            wait(lambda: not view.is_busy())
+            console = output()
             assert marker in console and 'CHILD_CHOICES_COMPLETE' in console, console
             assert 'exit 0' in console, console
             new_manifests = set(project.glob('.openbexi/runs/*/manifest.json'))-previous_manifests
@@ -147,7 +165,7 @@ Display('CHILD_CHOICES_COMPLETE')
             assert (manifest_path.parent/'artifacts/child-result.txt').read_text() == 'yes/no'
             assert not (project/'child-result.txt').exists()
             (evidence/(mode+'-console.txt')).write_text(console,encoding='utf-8',newline='\n')
-            report['checks'].append(mode+': two child menu answers typed through the readonly console and delivered to the child; parent finishes successfully')
+            report['checks'].append(mode+': two child menu answers selected and committed through workspace widgets; parent finishes successfully')
         manager.show()
         manager.packages.setCurrentRow(0)
         assert manager.remove_selected()
@@ -162,7 +180,7 @@ Display('CHILD_CHOICES_COMPLETE')
         ordinary.write_text("print('ORDINARY_PYTHON_AFTER_PLUGIN_REMOVAL')\n",encoding='utf-8')
         view.open_file(ordinary)
         view.run_action.trigger()
-        wait(lambda: not view.run_controller.running)
+        wait(lambda: not view.is_busy())
         assert 'ORDINARY_PYTHON_AFTER_PLUGIN_REMOVAL' in view.console.toPlainText()
         assert 'exit 0' in view.console.toPlainText()
         assert sentinel.read_text(encoding='utf-8') == 'preserve through plugin upgrade and removal'
@@ -171,12 +189,16 @@ Display('CHILD_CHOICES_COMPLETE')
         report['checks'].append('Plugin manager removes the upgraded host; ordinary Python still runs and project/preferences survive')
         assert report['ide_source_inputs']=={p.relative_to(args.ide.resolve()).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
             for p in (args.ide.resolve()/'src').rglob('*.py')}
+        if installed_ide:
+            assert installed_ide['wheels'] == proof['installed_wheels'](bindings, '.')
         report['passed'] = True
     except Exception:
         report['error'] = traceback.format_exc()
         raise
     finally:
-        (evidence/'console.txt').write_text(view.console.toPlainText(),encoding='utf-8',newline='\n')
+        (evidence/'console.txt').write_text(output(),encoding='utf-8',newline='\n')
+        for controller in view.procedure_workspace.controllers:
+            controller.stop()
         view.run_controller.stop()
         view.debug_controller.stop()
         try:

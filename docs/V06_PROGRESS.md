@@ -1,5 +1,38 @@
 # v0.6 distribution prerequisites
 
+## Final candidate verification 2026-10-20
+
+The corrected native pair at
+`.qualification/v06/trace-read-native-pair/fd3fba2eb0c14024869be32d2a0c41f2`
+passes all six independent build, byte identity and installation/removal gates.
+The final candidate DSS image is
+`sha256:7dfbca0d2e0d5859cc13f8dda5ad721594e9cf09cb04dba3e238797e1ce203f4`.
+Its host-only companion is
+`sha256:e1eca1f10e5dbc265bb8924d93e064eb766d53b39176771d4b20c4965d05da63`.
+Both exported image descriptor graphs and content blobs verify.
+
+Host, shared and driver wheel pairs and the two JetBrains ZIP builds are
+byte-identical. Windows and Linux Python-package upgrade/removal and Linux
+native/driver upgrade/removal pass. OpenBEXI IDE 1.1.0 runs the installed host
+wheel, including Debug, variables, Step/Continue, prompts, Abort and artifact
+export. Its actual plugin manager also upgrades the published 0.3.1.dev3 host
+to 0.6.0 and removes it while preserving project files and preferences.
+
+Installed IntelliJ IDEA 2026.2.3 and PyCharm 2026.1.2 workflows pass, including
+upgrade from the published 0.3.1-workspace.2 ZIP and removal in the same private
+project/profile. Both compatibility verifiers pass. Harness corrections preserve
+the original preference sentinel, save preferences synchronously and use the
+IDE application exit API after removal; earlier failed captures remain retained.
+
+Repeated child modes (twice), duplicate prompt answers and prompt aborts pass on
+the corrected DSS image. The complete 61-suite native sequence is still running
+at `.qualification/v06/trace-read-language/3985fb23a3b34bec8a7eb09edb6f321a`.
+It adopts only the validated prefix on this identical image after a retained
+Docker provenance timeout. It does not reuse the earlier faulty image's prefix.
+All 763 requirements still need their final fresh evidence review. Installed DSS
+integration, the complete repository regression and portable release evidence
+remain gates. **v0.6 is not yet accepted or published.**
+
 ## Native startup race found 2026-10-20
 
 The workspace-enabled image `sha256:f4b35c563abc4c184b1ce7267c11216284653dd2797bd58e1c99c9eb14920ba7`

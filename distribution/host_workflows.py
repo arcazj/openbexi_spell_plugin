@@ -2,12 +2,15 @@
 
 The existing harness remains unchanged. A retained, hash-bound copy sets the
 actual plugin's image setting before its Run/Debug/prompt/Stop checks. The same
-private project is reopened after plugin removal. No user IDE profile is touched.
+private project is reopened after plugin removal. An optional older ZIP first
+runs in that same private profile, then is replaced and restarted for versioned
+upgrade and preference-preservation qualification. No user IDE profile is touched.
 """
 import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -25,6 +28,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sdk', type=Path, required=True)
     parser.add_argument('--plugin', type=Path, required=True)
+    parser.add_argument('--previous-plugin', type=Path, help='Qualify an installed older ZIP before upgrading to --plugin')
     parser.add_argument('--interpreter', type=Path, required=True)
     parser.add_argument('--image', required=True)
     parser.add_argument('--host-wheel', type=Path, required=True)
@@ -56,6 +60,8 @@ def main():
                   for p in sorted(snapshot.rglob('*')) if p.is_file()},
               'v06_release_accepted': False,
               'scope': 'Private installed actual host workflows; not noVNC visual interaction'}
+    if options.previous_plugin:
+        report['previous_plugin_sha256'] = sha(options.previous_plugin)
     env = dict(os.environ, OPENBEXI_SPELL_QUALIFICATION_IMAGE=image)
     baseline = snapshot.parent / '.qualification/v0.3'
     try:
@@ -65,13 +71,17 @@ def main():
             str(options.host_wheel.resolve()),options.host_wheel_sha256]
         report['installed_auditor_sha256'] = sha(auditor)
         report['installed_host'] = json.loads(subprocess.check_output(audit_command,text=True))
-        for phase in ('installed', 'removed'):
+        phases = ('previous', 'upgraded', 'removed') if options.previous_plugin else ('installed', 'removed')
+        for phase in phases:
             output = baseline / phase
+            selected_plugin = options.previous_plugin if phase == 'previous' else options.plugin
             command = [sys.executable, str(snapshot / 'qualify.py'), '--sdk', str(options.sdk.resolve()),
-                       '--plugin', str(options.plugin.resolve()), '--interpreter', str(options.interpreter.resolve()),
+                       '--plugin', str(selected_plugin.resolve()), '--interpreter', str(options.interpreter.resolve()),
                        '--output', str(output)]
+            if phase == 'upgraded':
+                command += ['--upgrade-from', str(baseline / 'previous')]
             if phase == 'removed':
-                command += ['--remove-from', str(baseline / 'installed')]
+                command += ['--remove-from', str(baseline / ('upgraded' if options.previous_plugin else 'installed'))]
             print('Starting private ' + phase + ' workflow: ' + str(output), flush=True)
             with (evidence / (phase + '.log')).open('w', encoding='utf-8') as log:
                 subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
@@ -79,7 +89,27 @@ def main():
             result = json.loads(result_path.read_text())
             assert result['passed'] and result['runtime_images'] == [image], result
             report[phase] = {'result': result_path.relative_to(evidence).as_posix(),
-                             'sha256': sha(result_path), 'checks': result['checks'], 'sdk': result['sdk']}
+                             'sha256': sha(result_path), 'checks': result['checks'], 'sdk': result['sdk'],
+                             'plugin_identity': result['plugin_identity'], 'private': result['private']}
+            if 'configured_preferences' in result:
+                report[phase]['configured_preferences'] = result['configured_preferences']
+            if phase == 'upgraded':
+                assert result['preferences_preserved'] and result['project_preservation']['before'] == result['project_preservation']['after']
+                assert result['preferences_preserved'] == report['previous']['configured_preferences']
+                assert report['previous']['private'] == result['private'], 'Upgrade changed the private project/profile'
+                def release_version(value):
+                    match = re.fullmatch(r'(\d+)\.(\d+)\.(\d+)(?:-workspace\.\d+)?', value)
+                    if not match:
+                        raise ValueError('Unsupported qualification plugin version: ' + value)
+                    return tuple(map(int, match.groups()))
+                previous_version = release_version(report['previous']['plugin_identity']['version'])
+                upgraded_version = release_version(result['loaded_plugin_version'])
+                assert previous_version < upgraded_version, 'Expected an actual version increase'
+                report[phase]['preferences_preserved'] = result['preferences_preserved']
+                report[phase]['project_preservation'] = result['project_preservation']
+        assert sha(options.plugin) == report['plugin_sha256']
+        if options.previous_plugin:
+            assert sha(options.previous_plugin) == report['previous_plugin_sha256']
         assert report['installed_host']==json.loads(subprocess.check_output(audit_command,text=True))
         assert sha(sdk_metadata)==report['sdk_metadata_sha256']
         assert all(sha(ROOT/'jetbrains'/name)==digest for name,digest in original_sources.items())

@@ -57,6 +57,9 @@ def main():
         view.open_file(path)
         return path
 
+    def output():
+        return view.console.toPlainText() + '\n' + view.procedure_workspace.output.toPlainText()
+
     def select_spell():
         view.language.setCurrentIndex(view.language.findData('spell'))
         assert view.language.currentData() == 'spell'
@@ -72,8 +75,8 @@ def main():
         select_spell()
         source('run.py', "from spell.lang.functions import Display\nfrom pathlib import Path\nDisplay('DESKTOP_NATIVE_RUN')\nPath('answer.txt').write_text('42')\n")
         view.run_action.trigger()
-        wait(lambda: not view.run_controller.running)
-        assert 'DESKTOP_NATIVE_RUN' in view.console.toPlainText(), view.console.toPlainText()
+        wait(lambda: not view.is_busy())
+        assert 'DESKTOP_NATIVE_RUN' in output(), output()
         manifests = list(project.glob('.openbexi/runs/*/manifest.json'))
         assert len(manifests) == 1
         assert (manifests[0].parent / 'artifacts/answer.txt').read_text() == '42'
@@ -84,41 +87,49 @@ def main():
         editor = view.current_editor()
         editor.toggle_breakpoint(3)
         view.debug_action.trigger()
-        wait(lambda: view.debug_controller.paused and view.stack_list.count() > 0)
-        assert editor.execution_line == 3
+        controller = view.procedure_workspace.run_controller(view.procedure_workspace.selected)
+        stacks = []
+        controller.stack_changed.connect(stacks.append)
+        wait(lambda: controller.paused and bool(stacks))
+        assert stacks[-1][0]['line'] == 3
         assert not view.out_action.isEnabled()
         values = []
-        view.debug_controller.view_request('variables', {'variablesReference': 1}, values.append)
+        controller.view_request('variables', {'variablesReference': 1}, values.append)
         wait(lambda: bool(values))
         assert any(value['name'] == 'value' and value['value'] == '21' for value in values[0]['variables'])
         edited = []
-        view.debug_controller.view_request('setVariable', {'variablesReference': 1, 'name': 'value', 'value': '40'}, edited.append)
+        controller.view_request('setVariable', {'variablesReference': 1, 'name': 'value', 'value': '40'}, edited.append)
         wait(lambda: bool(edited))
         assert edited[0]['value'] == '40'
         assert view.grab().save(str(evidence / 'native-debugger.png'))
         editor.toggle_breakpoint(3)
-        view.into_action.trigger()
-        wait(lambda: view.debug_controller.paused and editor.execution_line == 4)
-        view.continue_action.trigger()
-        wait(lambda: not view.debug_controller.running)
-        assert 'DESKTOP_DEBUG_42' in view.console.toPlainText(), view.console.toPlainText()
-        report['checks'].append('Actual debugger widgets, breakpoint, stack, variable edit, Step and Continue')
+        controller.set_breakpoints(path, [])
+        wait(lambda: view.procedure_workspace.control_buttons['stepIn'].isEnabled())
+        view.procedure_workspace.control_buttons['stepIn'].click()
+        wait(lambda: controller.paused and stacks[-1][0]['line'] == 4)
+        wait(lambda: view.procedure_workspace.control_buttons['continue'].isEnabled())
+        view.procedure_workspace.control_buttons['continue'].click()
+        wait(lambda: not view.is_busy())
+        assert 'DESKTOP_DEBUG_42' in output(), output()
+        report['checks'].append('Actual workspace Debug, breakpoint, DAP stack/variables/edit, workspace Step and Continue')
 
         source('prompt.py', "from spell.lang.functions import Prompt, Display\nfrom spell.lang.constants import YES_NO\nfrom spell.lang.modifiers import Type\nassert Prompt('Desktop native prompt?', {Type:YES_NO}) is True\nDisplay('DESKTOP_PROMPT_COMPLETE')\n")
         view.debug_action.trigger()
-        wait(lambda: view.debug_controller.input_pending)
-        assert view.input.isEnabled()
-        view.input.setText('0')
-        QTest.keyClick(view.input, Qt.Key_Return)
-        wait(lambda: not view.debug_controller.running)
-        assert 'DESKTOP_PROMPT_COMPLETE' in view.console.toPlainText(), view.console.toPlainText()
-        report['checks'].append('Native prompt answered through the desktop input widget')
+        workspace = view.procedure_workspace
+        wait(lambda: workspace.selected is not None and workspace.selected.prompt and workspace.choices is not None)
+        workspace.choices.buttons()[0].click()
+        assert workspace.commit.isEnabled()
+        workspace.commit.click()
+        wait(lambda: not view.is_busy())
+        assert 'DESKTOP_PROMPT_COMPLETE' in output(), output()
+        report['checks'].append('Native prompt answered through workspace choice and Commit widgets')
 
         source('stop.py', "import time\nfrom spell.lang.functions import Display\nDisplay('DESKTOP_STOP_READY')\nwhile True:\n    time.sleep(0.02)\n")
         view.run_action.trigger()
-        wait(lambda: 'DESKTOP_STOP_READY' in view.console.toPlainText())
-        view.stop_action.trigger()
-        wait(lambda: not view.run_controller.running)
+        wait(lambda: 'DESKTOP_STOP_READY' in output())
+        wait(lambda: view.procedure_workspace.control_buttons['abort'].isEnabled())
+        view.procedure_workspace.control_buttons['abort'].click()
+        wait(lambda: not view.is_busy())
         report['checks'].append('Desktop Stop closes its owned native runtime')
 
         pip('uninstall', '-y', 'openbexi-spell-host')
@@ -127,8 +138,8 @@ def main():
         assert interpreter_info(args.interpreter)['backends'] == []
         source('plain.py', "print('PYTHON_AFTER_PLUGIN_REMOVAL')\n")
         view.run_action.trigger()
-        wait(lambda: not view.run_controller.running)
-        assert 'PYTHON_AFTER_PLUGIN_REMOVAL' in view.console.toPlainText(), view.console.toPlainText()
+        wait(lambda: not view.is_busy())
+        assert 'PYTHON_AFTER_PLUGIN_REMOVAL' in output(), output()
         report['checks'].append('Uninstall removes backend; ordinary Python Run still works')
         report['passed'] = True
     except Exception:
@@ -137,6 +148,8 @@ def main():
     finally:
         if view is not None:
             (evidence / 'console.txt').write_text(view.console.toPlainText(), encoding='utf-8')
+            for controller in view.procedure_workspace.controllers:
+                controller.stop()
             view.run_controller.stop()
             view.debug_controller.stop()
             wait(lambda: not view.is_busy())

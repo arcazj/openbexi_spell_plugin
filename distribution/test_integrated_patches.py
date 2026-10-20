@@ -13,6 +13,11 @@ sys.path.insert(0, str(ROOT/'source_port'))
 import integrated_patches as composition
 import native_patches
 import patches
+from evidence_sources import source_bytes
+
+# Published v0.5 donor expectations remain immutable. Distribution metadata and
+# host presentation changed for v0.6 and have their own installed-artifact gates.
+DONOR_RELEASE = 'ca1fefe3fec941305e6f2f88ea3c3a53db3a8975'
 
 ARCHIVE = ROOT/'docs/reference/SPELL2.6.10-src.zip'
 
@@ -50,8 +55,8 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
     qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
     expected_sources = qualified['native']
     for name,digest in qualified['native_distribution'].items():
-        assert composition.digest((ROOT/name).read_bytes()) == digest
-    assert set(expected_sources) == set(composition.NATIVE_NAMES)
+        assert composition.digest(source_bytes(ROOT, name, DONOR_RELEASE)) == digest
+    assert set(expected_sources) | {composition.trace_read_patches.SOURCE} == set(composition.NATIVE_NAMES)
     for name, row in expected_sources.items():
         assert report['sources'][name] == {label+'_sha256':value for label,value in row.items()}
         assert composition.digest((source/name).read_bytes()) == row['patched']
@@ -89,12 +94,12 @@ def test_complete_native_composition_reproduces_qualified_sources(tmp_path):
             'proc_dictionary_patches.py']
 
 
-def test_host_inputs_match_their_separate_qualified_donors():
+def test_published_host_inputs_match_their_separate_qualified_donors():
     qualified = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
     for group in ('host', 'host_client', 'host_package'):
         assert qualified[group]
         for name, expected in qualified[group].items():
-            assert composition.digest((ROOT/name).read_bytes()) == expected, name
+            assert composition.digest(source_bytes(ROOT, name, DONOR_RELEASE)) == expected, name
 
 
 def test_each_composed_recipe_binds_checkpoint_identity():

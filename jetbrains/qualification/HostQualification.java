@@ -3,6 +3,9 @@
 package org.openbexi.spell.qualification;
 
 import com.google.gson.GsonBuilder;
+import com.intellij.ide.plugins.PluginManagerCore;
+import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -53,6 +56,12 @@ public final class HostQualification implements StartupActivity.DumbAware {
         VirtualFile file = ui(() -> WriteAction.compute(() -> {
             VirtualFile root = LocalFileSystem.getInstance().findFileByPath(project.getBasePath());
             require(root != null, "Project root not visible to IDE");
+            VirtualFile existing = root.findChild(name);
+            if (existing != null) {
+                require(Arrays.equals(existing.contentsToByteArray(), text.getBytes(java.nio.charset.StandardCharsets.UTF_8)),
+                    "Existing qualification source changed: " + name);
+                return existing;
+            }
             VirtualFile created = root.createChildData(HostQualification.class, name);
             created.setBinaryContent(text.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return created;
@@ -173,9 +182,33 @@ public final class HostQualification implements StartupActivity.DumbAware {
         try {
             Files.writeString(evidence.resolve("startup.txt"), project.getBasePath());
             ui(() -> {
+                var plugin = PluginManagerCore.getPlugin(PluginId.getId("org.openbexi.spell"));
+                require(plugin != null && plugin.isEnabled(), "SPELL plugin was not loaded");
+                require(Objects.equals(plugin.getVersion(), System.getProperty("openbexi.plugin.version")),
+                    "Actual loaded plugin version differs from selected ZIP");
+                report.put("loaded_plugin_version", plugin.getVersion());
                 var settings = SpellSettings.get(project).getState();
+                String token = System.getProperty("openbexi.preservation.token");
+                String arguments = "{\"qualification\":\"" + token + "\"}";
+                if (Boolean.getBoolean("openbexi.upgrade")) {
+                    require(Objects.equals(settings.interpreter, System.getProperty("openbexi.interpreter")),
+                        "Upgrade lost project interpreter preference");
+                    require(Objects.equals(settings.image, System.getenv("OPENBEXI_SPELL_QUALIFICATION_IMAGE")),
+                        "Upgrade lost project runtime image preference");
+                    require(Objects.equals(settings.arguments, arguments), "Upgrade lost project arguments preference");
+                    require(Objects.equals(PropertiesComponent.getInstance().getValue("openbexi.qualification.preserved"), token),
+                        "Upgrade lost application preference");
+                    report.put("preferences_preserved", Map.of("interpreter", settings.interpreter,
+                        "image", settings.image, "arguments", settings.arguments, "application_token", token));
+                    checks.add("Versioned upgrade preserves loaded project settings and application preference");
+                } else {
+                    settings.arguments = arguments;
+                    PropertiesComponent.getInstance().setValue("openbexi.qualification.preserved", token);
+                }
                 settings.interpreter = System.getProperty("openbexi.interpreter");
                 if (System.getProperty("openbexi.image") != null) settings.image = System.getProperty("openbexi.image");
+                report.put("configured_preferences", Map.of("interpreter", settings.interpreter,
+                    "image", settings.image, "arguments", settings.arguments, "application_token", token));
                 var tool = ToolWindowManager.getInstance(project).getToolWindow("SPELL");
                 require(tool != null, "SPELL tool window was not registered"); tool.show();
                 // Keep this private qualification instance out of the user's way.
@@ -265,11 +298,12 @@ public final class HostQualification implements StartupActivity.DumbAware {
                 sessionState.status = originalStatus; model.select(sessionState); return null;
             });
             checks.add("Controlled child prompt/status ordering preserves paused parent and scopes invalidation");
+            String preservedArguments = ui(() -> SpellSettings.get(project).getState().arguments);
             ui(() -> { SpellSettings.get(project).getState().arguments = "invalid JSON"; return null; });
             ProcessHandler rejected = ui(() -> { var process = SpellLaunch.run(project, run); process.addProcessListener(collect(output)); return process; }); owned.add(rejected);
             waitFor(rejected::isProcessTerminated, "Rejected launch did not stop");
             require(rejected.getExitCode() != 0 && ui(() -> SpellWorkspace.get(project).selected().status.equals("Failed")), "Rejected launch was incorrectly marked Finished");
-            ui(() -> { SpellSettings.get(project).getState().arguments = "{}"; return null; });
+            ui(() -> { SpellSettings.get(project).getState().arguments = preservedArguments; return null; });
             checks.add("Native launch rejection remains Failed despite successful relay disconnect");
             VirtualFile control = source(project, "control.py", "from spell.lang.functions import Display\nvalue = 21\nanswer = value + 2\nDisplay('JETBRAINS_DEBUG_' + str(answer))\nassert answer == 42\n");
             XLineBreakpoint<?> breakpoint = ui(() -> WriteAction.compute(() ->
@@ -386,6 +420,12 @@ public final class HostQualification implements StartupActivity.DumbAware {
             ui(() -> { looping.destroyProcess(); return null; });
             waitFor(looping::isProcessTerminated, "IDE Stop did not reap the native runner");
             checks.add("IDE Stop gracefully closes its owned native run");
+            ui(() -> {
+                project.save();
+                require(com.intellij.ide.SaveAndSyncHandler.getInstance().saveSettingsUnderModalProgress(
+                    ApplicationManager.getApplication()), "Private application settings were not saved");
+                return null;
+            });
             report.put("passed", true);
         } catch (Throwable error) {
             var trace = new java.io.StringWriter(); error.printStackTrace(new java.io.PrintWriter(trace)); report.put("error", trace.toString());

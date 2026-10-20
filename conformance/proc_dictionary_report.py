@@ -61,9 +61,9 @@ def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
             row=deepcopy(report['checks'][name]);project=workspace/name.replace(':','-')
             assert row['passed'] and not any(k.endswith('_error') for k in row)
             assert row['dimension']==spec['dimension'] and row['source']==spec['source']
-            assert (project/'main.py').read_text()==spec['source']
+            assert (project/'main.py').read_text(encoding='utf-8')==spec['source']
             assert sha(project/'native.log')==row['native_log_sha256']
-            log=(project/'native.log').read_text()
+            log=(project/'native.log').read_text(encoding='utf-8')
             assert 'AddressSanitizer:' not in log and 'runtime error:' not in log
             assert sha(project/'events.json')==row['events_sha256']
             events=read(project/'events.json')
@@ -84,8 +84,8 @@ def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
                 for key in ('arguments','dimension','operation','rounds'):assert plan[key]==spec[key]
                 remote='/workspace/'+name.replace(':','-')
                 assert plan['input']==remote+'/fixture-inputs' and plan['output']==remote+'/fixture-outputs'
-                assert (project/'fixture-inputs/input.txt').read_text()==plan['content']
-                assert row['output_files']=={p.name:p.read_text() for p in (project/'fixture-outputs').glob('*.txt')}
+                assert (project/'fixture-inputs/input.txt').read_text(encoding='utf-8')==plan['content']
+                assert row['output_files']=={p.name:p.read_text(encoding='utf-8') for p in (project/'fixture-outputs').glob('*.txt')}
                 opened={e['message']['fields']['ProcId'] for e in events
                     if e.get('message',{}).get('id')=='MSG_EXEC_OP'
                     and e['message']['fields'].get('ExecOp')=='OPEN'
@@ -105,7 +105,7 @@ def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
                 commands=[r['command'] for r in row['commands']]
                 if spec['operation']=='child':
                     assert commands==['CMD_RUN']
-                    assert (project/'child.py').read_text()==spec['child']
+                    assert (project/'child.py').read_text(encoding='utf-8')==spec['child']
                     child=read(project/'child-result.json');parent=read(project/'parent-result.json')
                     assert child==row['child_result'] and parent==row['parent_result']
                     assert child['initial']['NAME']==child_instance
@@ -130,8 +130,8 @@ def verify_cases(baseline_path,lifecycle_path,image,source_revision=None):
                         assert 'PRIVATE_VALUE' not in observed['initial']
                         assert observed['initial']['STEP'] is None and observed['initial']['PREV_STEP'] is None
                         assert observed['initial']['NAME']=='main#1' and observed['initial']['PARENT']==''
-                    assert int((project/'evaluations.txt').read_text())==row['phases'][-1]['evaluations']
-                    assert (project/'completed.txt').read_text()==str(spec['rounds'])
+                    assert int((project/'evaluations.txt').read_text(encoding='utf-8'))==row['phases'][-1]['evaluations']
+                    assert (project/'completed.txt').read_text(encoding='utf-8')==str(spec['rounds'])
             row.update(contracts=[],oracle='LRM p81 procedure metadata and p90 input/output paths; native events, retained files and independent expression counter.')
             checks[name]=row
     for dimension in ('positive','boundary','failure','recovery'):
@@ -157,7 +157,7 @@ def qualify(baseline_path,lifecycle_path,original_path,image,source_revision=Non
         assert row['source']==spec['source'] and not row['passed'] and row['status']=='ERROR'
         assert read(project/'observed.json')==row['observed']
         assert row['observed']['args_type']=='str' and isinstance(row['observed']['initial']['ARGS'],str)
-        assert (project/'main.py').read_text()==spec['source']
+        assert (project/'main.py').read_text(encoding='utf-8')==spec['source']
     for name in ('conformance/proc_dictionary_report.py','tests/test_proc_dictionary_report.py',
                  'distribution/evidence_sources.py'):
         inputs[name]=sha(ROOT/name)

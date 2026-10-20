@@ -79,7 +79,10 @@ public final class RemovalQualification implements StartupActivity.DumbAware {
                     Files.writeString(evidence.resolve("console.txt"), output.toString());
                     Files.writeString(evidence.resolve("result.json"), new GsonBuilder().setPrettyPrinting().create().toJson(report));
                 } catch (Exception error) { error.printStackTrace(); }
-                System.exit(Boolean.TRUE.equals(report.get("passed")) ? 0 : 1);
+                int exitCode = Boolean.TRUE.equals(report.get("passed")) ? 0 : 1;
+                ApplicationManager.getApplication().invokeLater(() ->
+                    ((com.intellij.openapi.application.ex.ApplicationEx) ApplicationManager.getApplication())
+                        .exit(true, true, exitCode));
             }
         });
     }
