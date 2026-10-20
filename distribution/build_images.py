@@ -104,6 +104,8 @@ def main():
     parser.add_argument('--native-wheel',type=Path,required=True)
     parser.add_argument('--toolchain-image',required=True)
     parser.add_argument('--toolchain-id',required=True,help='Expected sha256 identity of the retained complete toolchain')
+    parser.add_argument('--runtime-image',help='Compiler-free final runtime base')
+    parser.add_argument('--runtime-id',help='Expected immutable runtime base identity')
     parser.add_argument('--output',type=Path,default=ROOT/'.qualification/v0.6/images')
     options = parser.parse_args()
     run_id = uuid.uuid4().hex
@@ -117,6 +119,10 @@ def main():
         if toolchain != options.toolchain_id:
             raise ValueError('Frozen toolchain image differs from the requested identity')
         report['toolchain'] = toolchain
+        runtime = options.runtime_image or options.toolchain_image
+        report['runtime_base'] = inspect(runtime)
+        if options.runtime_image and report['runtime_base'] != options.runtime_id:
+            raise ValueError('Runtime base differs from requested identity')
         for name in ('host_runtime','driver_plugin'):
             shutil.copytree(ROOT/name,snapshot/name,ignore=shutil.ignore_patterns('__pycache__','*.pyc','build','*.egg-info'))
         driver_source = snapshot/'driver_plugin/src'
@@ -158,7 +164,8 @@ def main():
             if inspect(options.toolchain_image) != toolchain:
                 raise ValueError('Frozen toolchain changed during image construction')
             run(['docker','build','--no-cache','--network=none','--progress=plain',
-                 '--build-arg',argument,'-f',snapshot/component/'Dockerfile','-t',tag,snapshot],
+                 '--build-arg',argument,'--build-arg','RUNTIME_IMAGE='+runtime,
+                 '-f',snapshot/component/'Dockerfile','-t',tag,snapshot],
                 evidence/(component+'-build.log'))
             report[component] = {'tag':tag,'image':inspect(tag)}
         if inputs != {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}:

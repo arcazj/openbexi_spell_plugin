@@ -64,6 +64,8 @@ def main():
     parser.add_argument('--output', type=Path, default=ROOT / '.qualification/v0.6/rebuild')
     parser.add_argument('--toolchain-image', help='Use an existing frozen toolchain instead of apt reconstruction')
     parser.add_argument('--toolchain-id', help='Require this exact retained toolchain sha256 identity')
+    parser.add_argument('--runtime-image', help='Compiler-free image for fresh installation/removal')
+    parser.add_argument('--runtime-id', help='Required immutable runtime identity when selected')
     parser.add_argument('--export-toolchain', action='store_true', help='Retain a hash-bound docker image save archive')
     args = parser.parse_args()
     run_id = uuid.uuid4().hex
@@ -99,6 +101,10 @@ def main():
         if args.toolchain_id and report['toolchain_image'] != args.toolchain_id:
             raise ValueError('Frozen toolchain differs from the requested identity')
         report['toolchain_tag'] = toolchain_tag
+        runtime_tag = args.runtime_image or toolchain_tag
+        report['installed_base_image'] = image_id(runtime_tag)
+        if args.runtime_image and report['installed_base_image'] != args.runtime_id:
+            raise ValueError('Selected installation runtime identity differs')
         if args.export_toolchain:
             archive = evidence / 'toolchain-image.tar'
             invoke(['docker', 'image', 'save', '--output', archive, toolchain_tag],
@@ -110,6 +116,7 @@ def main():
                 raise ValueError('Frozen toolchain image changed during qualification')
             invoke(['docker', 'build', '--no-cache', '--network=none', '--progress=plain',
                     '--build-arg', 'TOOLCHAIN_IMAGE=' + toolchain_tag,
+                    '--build-arg', 'RUNTIME_IMAGE=' + runtime_tag,
                     '-f', snapshot / 'distribution/native.Dockerfile',
                     '--output', 'type=local,dest=' + str(evidence / label), snapshot],
                    evidence / (label + '-build.log'))

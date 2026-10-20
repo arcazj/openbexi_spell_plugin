@@ -1,5 +1,36 @@
 # v0.6 distribution prerequisites
 
+## Resumed 2026-10-19
+
+The user explicitly resumed v0.6. Work continues in
+`C:/obspell_v06_resume` on `release/v06-resumed`, integrating the committed
+shared procedure workspace (`6a00c5c`) with the distribution branch (`baad5f4`).
+Package versions and default runtime references use 0.6.0; the workspace UI,
+editor exporter, presentation protocol and descriptor-derived ZIP name remain.
+The original checkouts and their uncommitted edits are preserved.
+
+The integrated source passes 67 focused host, notification, prompt, status,
+child and editor-export tests plus 33 subtests. The JetBrains ZIP compiles against
+IntelliJ IDEA 2026.2.3. Local evidence is `.qualification/resume-integration.xml`
+and `.qualification/resume-jetbrains/build.json`. These checks do not qualify
+installation or the final release.
+
+The earlier distribution checkout retains passing native reproducibility,
+native/driver and Python upgrade/removal, shared-wheel and verifier evidence
+under `C:/obspell_v06/.qualification/v06`. A fresh pre-workspace host/DSS image
+build passes installed integrity checks at
+`images/06ca583417074f278e30b801f5144bb2/result.json`. Its full native sequence
+was started at `language-regressions/94855f8f73f44edcac84ed5ad9dc665d`; it is
+not final workspace-enabled release evidence.
+
+Remaining work includes porting and validating the retained uncommitted upgrade
+harnesses, rebuilding host artifacts with the workspace changes, the full native
+sequence on final images, installed OpenBEXI/IntelliJ/PyCharm upgrade workflows,
+and the supported-platform/release dossier. The earlier repository run has
+60 failures and 8 errors, including stale source bindings after version changes;
+retain and resolve these without weakening evidence validation. No v0.6 release
+is accepted or published by this checkpoint.
+
 The [v0.5 acceptance record](V05_CONFORMANCE_QUALIFICATION.json) qualifies all
 763 original requirements with none open. All 61 native suites (2,157 raw
 checks), focused prompt/child controls, identical offline builds and fresh

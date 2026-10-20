@@ -1,6 +1,6 @@
 """Host-only extension; the original SPELL library lives in the native image."""
 # SPDX-License-Identifier: GPL-3.0-or-later
-__version__ = '0.3.1.dev3'
+__version__ = '0.6.0'
 
 
 def describe():
