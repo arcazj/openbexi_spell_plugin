@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'conformance'))
@@ -44,6 +45,52 @@ class IdentityTests(unittest.TestCase):
         identity=qualification_identity(self.record,self.inputs)
         self.assertEqual(identity['kind'],'installed-composition')
         self.assertEqual(identity['native_artifacts'],self.record['native_artifacts'])
+
+    def snapshot_fixture(self):
+        sys.path.insert(0,str(ROOT/'source_port'))
+        import native_patches,checkpoint_error_patches,trace_read_patches
+        name='lib/SPELL_EXC/src/SPELLframeManager.C'
+        with zipfile.ZipFile(ROOT/'docs/reference/SPELL2.6.10-src.zip') as bundle:
+            original=bundle.read(name)
+        checkpoint=checkpoint_error_patches.apply(name,original,native_patches.apply(name,original),fix=True)
+        final=hashlib.sha256(trace_read_patches.apply(name,original,checkpoint)).hexdigest()
+        native=self.record['manifest']['composition']['native']
+        digest=sha(ROOT/'source_port/trace_read_patches.py')
+        self.inputs['source_port/trace_read_patches.py']=digest
+        native['recipes']['trace_read_patches.py']=dict(sha256=digest,lf_sha256=digest)
+        native['sources'][name]['patched_sha256']=final
+        native['stages'].append(dict(recipe='trace_read_patches.py',sources={name:dict(
+            before_sha256=hashlib.sha256(checkpoint).hexdigest(),after_sha256=final)}))
+        return name,final
+
+    def test_exact_checkpoint_then_snapshot_chain(self):
+        from checkpoint_error_provenance import qualification_identity as error_identity
+        name,final=self.snapshot_fixture()
+        for verify in (qualification_identity,error_identity):
+            self.assertEqual(verify(self.record,self.inputs)['kind'],'installed-composition')
+            for mutation in ('missing','before','after','unbound','checkpoint'):
+                with self.subTest(verifier=verify.__module__,mutation=mutation):
+                    record=copy.deepcopy(self.record)
+                    native=record['manifest']['composition']['native']
+                    if mutation=='missing':native['stages'].pop()
+                    elif mutation=='before':native['stages'][-1]['sources'][name]['before_sha256']='wrong'
+                    elif mutation=='after':
+                        native['stages'][-1]['sources'][name]['after_sha256']='wrong'
+                        native['sources'][name]['patched_sha256']='wrong'
+                    elif mutation=='unbound':del native['recipes']['trace_read_patches.py']
+                    else:
+                        next(stage for stage in native['stages']
+                             if stage['recipe']=='checkpoint_error_patches.py')['recipe']='trace_read_patches.py'
+                    with self.assertRaises(ValueError):verify(record,self.inputs)
+        identity=qualification_identity(self.record,self.inputs)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory=Path(temporary);self.gate_fixture(directory)
+            path=directory/'executor-build.json';build=json.loads(path.read_bytes())
+            next(row for row in build['units'] if row['unit']==name)['sha256']=final
+            path.write_text(json.dumps(build))
+            context_path=directory/'context-build.json';context=json.loads(context_path.read_bytes())
+            context['executor_build_sha256']=sha(path);context_path.write_text(json.dumps(context))
+            integrated_gates(directory,identity)
 
     def current_runner_fixture(self):
         names=set(REQUIRED_INPUTS)|set(input_paths(ROOT))|{'host_runtime/python/native.py'}

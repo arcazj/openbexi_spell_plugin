@@ -92,7 +92,8 @@ def integrated_gates(directory,identity):
         rows=cb['programs']['SPELL_Context']['units'] if '/SPELL_CTX/' in name else eb['units']
         matching=[row for row in rows if row['unit']==name]
         assert len(matching)==1 and matching[0]['exit_code']==0
-        assert matching[0]['sha256']==expected['patched_sha256'],name
+        final=identity['evidence']['manifest']['composition']['native']['sources'][name]['patched_sha256']
+        assert matching[0]['sha256']==final,name
     assert context['service_checkpoint_rejections']==2 and context['selection']=='all'
     executor_ref['build']=eb_ref;context_ref['build']=cb_ref
     return (executor,executor_ref),(context,context_ref)

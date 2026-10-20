@@ -39,7 +39,7 @@ def qualification_identity(record, inputs, normalized=None):
                 raise ValueError('Overlay recipe differs from qualification input: '+name)
         return dict(kind='diagnostic-overlay',runtime_sha256=overlay['artifacts']['libspell_executor313.so'],
             evidence=overlay,limitation=overlay['limitation'])
-    from installed_provenance import PROFILE, verify_capture
+    from installed_provenance import PROFILE, verify_capture, verify_stages
     if record.get('profile')!=PROFILE:
         raise ValueError('Missing checked runtime provenance')
     verify_capture(record,inputs,normalized)
@@ -48,6 +48,17 @@ def qualification_identity(record, inputs, normalized=None):
     expected=dict(original_sha256='ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402',
         ported_sha256='31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf',
         patched_sha256='b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7')
+    if 'trace_read_patches.py' in native['recipes']:
+        verify_stages('native',native)
+        final='d1e46bf91b8997a79b5cfd4bc24eb5f49a9db14a9e9b94df13c38cf16d397d05'
+        stages=[(stage['recipe'],stage['sources'][source]) for stage in native['stages']
+                if source in stage['sources']]
+        if stages!=[
+                ('checkpoint_error_patches.py',dict(before_sha256=expected['ported_sha256'],
+                    after_sha256=expected['patched_sha256'])),
+                ('trace_read_patches.py',dict(before_sha256=expected['patched_sha256'],after_sha256=final))]:
+            raise ValueError('Installed frame-manager checkpoint/trace stages differ')
+        expected=dict(expected,patched_sha256=final)
     if native['sources'].get(source)!=expected:
         raise ValueError('Installed frame-manager correction differs')
     if 'checkpoint_error_patches.py' not in native['recipes']:
