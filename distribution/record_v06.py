@@ -100,6 +100,16 @@ def main():
     assert not reports['host_adapter']['failures'] and not reports['host_adapter']['errors']
     assert all(sha(ROOT/name)==digest for name,digest in reports['host_adapter']['inputs'].items())
     installed=reports['installed_driver']['installed_wheels']
+    driver_report=reports['installed_driver']
+    assert driver_report['harness_sha256']==sha(ROOT/'scripts/qualify_driver_installed.py')
+    assert driver_report['auditor_sha256']==sha(ROOT/'distribution/workflow_evidence.py')
+    assert driver_report['installed_oracle_sha256']==sha(ROOT/'distribution/installed_driver_oracles.py')
+    driver_tests=ET.parse(paths['installed_driver'].parent/'tests.xml')
+    driver_totals={key:sum(int(s.get(key,'0')) for s in driver_tests.iter('testsuite'))
+                   for key in ('tests','failures','errors','skipped')}
+    assert driver_totals==dict(tests=49,failures=0,errors=0,skipped=0)
+    for name,digest in driver_report['test_inputs'].items():
+        assert sha(paths['installed_driver'].parent/'tests'/name)==digest
     for distribution,artifact in [('openbexi-spell-dss','driver_wheel'),('openbexi-spell-host','host_wheel'),
                                  ('openbexi-spell-shared','shared_wheel'),('openbexi-spell-plugin','sdk_wheel')]:
         assert installed[distribution]['sha256']==sha(paths[artifact])
