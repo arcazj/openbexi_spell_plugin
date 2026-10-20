@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT/'conformance'))
 from aggregate_support import complete_sequence
 from check import validate
 from build_images import inspect_wheel
+from run_language_regressions import validate_report
 
 
 def sha(path):
@@ -76,6 +77,7 @@ def main():
     for name in ('intellij','pycharm'):
         report=reports[name]
         assert report['image']==image
+        assert report['installed_host']['wheel_sha256']==sha(paths['host_wheel'])
         for phase in ('previous','upgraded','removed'):
             raw=read(paths[name].parent/report[phase]['result'])
             assert raw['passed'] and raw['runtime_images']==[image]
@@ -85,10 +87,18 @@ def main():
         assert preservation['before']==preservation['after']
     for name in ('openbexi','openbexi_upgrade','installed_driver','controls'):
         assert reports[name]['image']==image,name
+    for name,count in [('child-arguments',10),('child-modes',9),('child-modes-repeat',9),
+                       ('duplicate-answers',24),('abort-prompts',12)]:
+        row=reports['controls']['stages'][name]
+        assert row['exit_code']==0
+        assert validate_report(Path(row['raw']['path']),image,count)==row['raw']
+    assert reports['openbexi']['host_wheel_sha256']==sha(paths['host_wheel'])
+    assert reports['openbexi_upgrade']['wheel_sha256']==sha(paths['host_wheel'])
     for name in ('host_adapter','host_lifecycle'):
         assert reports[name]['image']==host,name
     assert reports['host_adapter']['tests']==14
     assert not reports['host_adapter']['failures'] and not reports['host_adapter']['errors']
+    assert all(sha(ROOT/name)==digest for name,digest in reports['host_adapter']['inputs'].items())
     installed=reports['installed_driver']['installed_wheels']
     for distribution,artifact in [('openbexi-spell-dss','driver_wheel'),('openbexi-spell-host','host_wheel'),
                                  ('openbexi-spell-shared','shared_wheel'),('openbexi-spell-plugin','sdk_wheel')]:
@@ -99,6 +109,10 @@ def main():
     for row in reports['python_upgrade_windows']['inputs']['target']:
         artifact={'openbexi-spell-host':'host_wheel','openbexi-spell-shared':'shared_wheel'}[row['name']]
         assert row['version']=='0.6.0' and row['sha256']==sha(paths[artifact])
+    linux=reports['python_upgrade_linux']
+    assert sha(linux['result'])==linux['result_sha256']
+    for label,artifact in [('host','host_wheel'),('shared','shared_wheel')]:
+        assert linux['inputs'][label]['sha256']==sha(paths[artifact])
     sequence,_,_,_=complete_sequence(paths['sequence'],('context-startup','prompt-complete'))
     assert sequence['image']==image and len(sequence['suites'])==61
     assert sum(row['raw']['checks'] for row in sequence['suites'])==2157

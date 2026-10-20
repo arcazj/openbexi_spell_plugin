@@ -12,8 +12,14 @@ child argument recovery. These failed reports remain retained.
 The replacement publishes execution counts into an atomic scalar after
 evaluator-owned trace changes. Background CIF workers load that scalar without
 borrowing trace objects or acquiring the GIL. The burst test's original 30-second
-deadline is restored. An independent native pair is running at
-`.qualification/v06/snapshot-native-pair/31bb22dba4a7497182f9259dc2b0bdb3`.
+deadline is restored. Both independent native builds passed at
+`.qualification/v06/snapshot-native-pair/31bb22dba4a7497182f9259dc2b0bdb3`,
+including all byte identity and installation/removal gates. The resulting
+host runtime passed all 14 adapter tests, including the original burst deadline.
+The replacement DSS image is
+`sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100`;
+its host companion is
+`sha256:65aa34c7c98a544d86f43e993928b1bf18e88258bdea319752b9574bab7d1d70`.
 
 Installed DSS integration also exposed a huge-integer timeout conversion error.
 The checked command recipe now validates bounds before converting to a C double.

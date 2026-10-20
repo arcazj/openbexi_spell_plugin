@@ -23,8 +23,8 @@ assign the package defaults to the exact included images:
 
 ```text
 docker load --input openbexi-spell-v0.6-runtime.tar.gz
-docker tag sha256:e1eca1f10e5dbc265bb8924d93e064eb766d53b39176771d4b20c4965d05da63 openbexi-spell-host:0.6.0
-docker tag sha256:7dfbca0d2e0d5859cc13f8dda5ad721594e9cf09cb04dba3e238797e1ce203f4 openbexi-spell-dss:0.6.0
+docker tag sha256:65aa34c7c98a544d86f43e993928b1bf18e88258bdea319752b9574bab7d1d70 openbexi-spell-host:0.6.0
+docker tag sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100 openbexi-spell-dss:0.6.0
 ```
 
 The host image supports local procedure execution. The DSS image adds the
