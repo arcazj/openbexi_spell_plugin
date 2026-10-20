@@ -1,10 +1,10 @@
-# SPELL host extension 0.3.1.dev1
+# SPELL host extension 0.6.0
 
-This development candidate includes the console input correction. Its distinct
-version lets a local wheel installation upgrade an existing 0.3.0 host. It does
-not accept the full plugin v0.5/v0.6 release gates. Native child execution also
-requires the corresponding corrected runtime image; select its exact identity
-with `OPENBEXI_SPELL_IMAGE` as recorded in the qualification report.
+This package connects OpenBEXI and JetBrains hosts to the original native
+SPELL runtime. Version 0.6.0 includes the shared procedure workspace, child
+procedure controls and prompts. The release acceptance manifest and supported
+platform matrix in `docs/V06_QUALIFICATION.json` and `docs/V06_INSTALLATION.md`
+identify the tested artifact set.
 
 This optional package connects a host's CPython interpreter to the original
 SPELL native runtime in an owned Docker container. It does not install a
@@ -28,7 +28,7 @@ overwrite the host's working files. A manifest records input and output hashes.
 Run with `openbexi-spell-host --project FOLDER --program FILE -- '{"value":21}'`.
 The optional argument is one JSON object, made available through native `ARGS`.
 Set `OPENBEXI_SPELL_IMAGE` to the locally qualified runtime image while developing.
-The default is `openbexi-spell-host:0.3.0`.
+The default is `openbexi-spell-host:0.6.0`.
 
 The companion OpenBEXI learning desktop explicitly configures
 `OPENBEXI_SPELL_BACKEND=packaged-desktop`. In that Linux container, the host uses

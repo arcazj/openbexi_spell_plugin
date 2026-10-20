@@ -23,13 +23,16 @@ passes **all 763 requirements with none open**. All 61 native suites pass
 (2,157 raw checks) on freshly installed, reproducibly built packages. See the
 [release notes](docs/V05_RELEASE_NOTES.md) and
 [v0.5 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.5).
-Final distribution and installed host workflows remain v0.6 work; the
-[release plan](docs/STABLE_RELEASE_PLAN.md) records the remaining gates.
+The v0.6 distribution set uses version 0.6.0 for the native, DSS, host and shared
+packages and JetBrains ZIP. See [installation and supported platforms](docs/V06_INSTALLATION.md)
+and the [acceptance manifest](docs/V06_QUALIFICATION.json) for the exact qualified
+artifact set. Operational security and capacity remain v0.7 work in the
+[release plan](docs/STABLE_RELEASE_PLAN.md).
 
 ## Native desktop and CLI
 
-Install `openbexi_spell_host-0.3.0-py3-none-any.whl` in the CPython 3.13 environment
-selected by your IDE. The runtime image is `openbexi-spell-host:0.3.0` and needs
+Install `openbexi_spell_host-0.6.0-py3-none-any.whl` in the CPython 3.13 environment
+selected by your IDE. The runtime image is `openbexi-spell-host:0.6.0` and needs
 Docker Desktop's Linux engine. No host-folder sharing or published IPC port is
 required. The host wheel supplies the OpenBEXI extension and shared DAP bridge;
 the original SPELL library runs inside the image.
@@ -51,7 +54,7 @@ continues to use its own runtime/debugger.
 openbexi run procedure.py --project C:/path/to/project --language spell
 ```
 
-For JetBrains, install `openbexi-spell-0.3.0.zip` through **Plugins ? Install
+For JetBrains, install `openbexi-spell-0.6.0.zip` through **Plugins ? Install
 Plugin from Disk**, restart, configure **SPELL Runtime**, and use **Tools ? SPELL**.
 See [JetBrains installation and compatibility](docs/JETBRAINS_HOST.md).
 

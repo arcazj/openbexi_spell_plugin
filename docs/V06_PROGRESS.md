@@ -1,6 +1,34 @@
 # v0.6 distribution prerequisites
 
-## Final candidate verification 2026-10-20
+## Replacement candidate 2026-10-20
+
+The GIL-based trace correction was rejected. The 1,200-message burst stalled
+even with a 600-second diagnostic deadline. Native debugger
+[stacks](evidence/v06-trace-read/deadlock-stacks.txt) show a display worker holding
+the display mutex while waiting for the GIL, and the interpreter holding the GIL
+while waiting for that display mutex. The full sequence also stalled during
+child argument recovery. These failed reports remain retained.
+
+The replacement publishes execution counts into an atomic scalar after
+evaluator-owned trace changes. Background CIF workers load that scalar without
+borrowing trace objects or acquiring the GIL. The burst test's original 30-second
+deadline is restored. An independent native pair is running at
+`.qualification/v06/snapshot-native-pair/31bb22dba4a7497182f9259dc2b0bdb3`.
+
+Installed DSS integration also exposed a huge-integer timeout conversion error.
+The checked command recipe now validates bounds before converting to a C double.
+The installed integration oracle explicitly follows the qualified 3,600-second
+TC/TM budgets, numeric native ranging statuses and two-baseband catalog. All
+original invalid-input, recovery, exact effect and binary receipt assertions
+remain. [The incident](evidence/v06-timeout-bounds/incident.json) retains the
+failed original and initial adapted oracles. The corrected source composition
+and boundary suite passes 68 tests.
+
+Fresh native/driver artifacts, images, installed workflows and the complete
+language sequence must pass before acceptance. The earlier image-specific
+results below are historical, not acceptance of this replacement.
+
+## Earlier candidate verification 2026-10-20
 
 The corrected native pair at
 `.qualification/v06/trace-read-native-pair/fd3fba2eb0c14024869be32d2a0c41f2`

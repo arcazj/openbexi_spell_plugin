@@ -14,6 +14,8 @@ parser.add_argument('--seed',action='append',type=Path,required=True)
 parser.add_argument('--output',type=Path,required=True)
 parser.add_argument('--audit-only',action='store_true')
 parser.add_argument('--historical-gaps',type=Path)
+parser.add_argument('--capture',action='append',type=Path,default=[],
+                    help='Additional task-owned capture tree; environment and IDE caches are excluded')
 args=parser.parse_args();output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
 pending=collections.deque((str(p.resolve()),None,None,'seed') for p in args.seed)
 seen=set();files={};blobs={};issues=[];runtime_paths=set();source_cache={};history_cache={};expanded=set();commits=set();deferred_sources={}
@@ -106,6 +108,15 @@ def walk(value,origin,commit=None):
   for child in value:walk(child,origin,commit)
 
 with (contextlib.nullcontext(None) if args.audit_only else tarfile.open(archive_path,'w:gz',compresslevel=5)) as archive:
+ for directory in args.capture:
+  directory=directory.resolve(strict=True)
+  if '.qualification' not in directory.parts:
+   raise ValueError('Additional captures must be explicit qualification directories')
+  excluded={'__pycache__','.pytest_cache','.git','environment','interpreter','private',
+            'system','site-packages','node_modules'}
+  for capture in sorted(directory.rglob('*')):
+   if capture.is_file() and not set(capture.relative_to(directory).parts)&excluded and capture.suffix!='.pyc':
+    store(str(capture),None,path=capture,kind='additional-capture')
  while pending:
   name,expected,commit,origin=pending.popleft()
   identity=(name,expected,commit)
