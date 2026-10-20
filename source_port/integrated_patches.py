@@ -62,6 +62,7 @@ import send_verify_patches
 import send_complete_patches
 import shutdown_pause_patches
 import timing_patches
+import trace_read_patches
 import ui_native_patches
 import user_database_patches
 import value_units_patches
@@ -102,9 +103,11 @@ RECIPE_NAMES = (
     'prompt_complete_patches.py', 'event_text_patches.py', 'memory_command_results_patches.py',
     'prompt_empty_option_patches.py',
     'event_empty_native_patches.py',
+    'trace_read_patches.py',
 )
 IDENTITY_HEADER = 'include/SPELL_WS/SPELLcontinuationSource.H'
 NATIVE_NAMES = tuple(sorted(set((data_files_native_patches.NAME, dta_native_patches.SOURCE,
+                            trace_read_patches.SOURCE,
                             dta_ipc_patches.SOURCE, checkpoint_error_patches.SOURCE,
                             checkpoint_identity_patches.SOURCE,
                             ipc_mailbox_patches.SOURCE,
@@ -204,6 +207,9 @@ def apply_native_tree(source, archive, output):
             patched[name] = stage('checkpoint_context_patches.py', name, intermediate,
                 checkpoint_context_patches.apply(name, original[name], intermediate))
             continue
+        elif name == trace_read_patches.SOURCE:
+            recipe = 'trace_read_patches.py'
+            patched[name] = trace_read_patches.apply(name, original[name], ported[name])
         elif name == dta_native_patches.SOURCE:
             recipe = 'dta_native_patches.py'
             patched[name] = dta_native_patches.apply(name, original[name], ported[name])

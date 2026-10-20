@@ -1,5 +1,28 @@
 # v0.6 distribution prerequisites
 
+## Native startup race found 2026-10-20
+
+The workspace-enabled image `sha256:f4b35c563abc4c184b1ce7267c11216284653dd2797bd58e1c99c9eb14920ba7`
+passed 57 native suites, then failed `child-modes/nonblocking-late-error`.
+The retained [incident](evidence/v06-trace-read/incident.json) and ASan log show
+an IPC worker reading a freed execution trace while the interpreter clears its
+trace map during startup. This is a release-blocking native memory error.
+
+`trace_read_patches.py` is a candidate correction: the CIF count reader holds
+the existing CPython GIL until the borrowed trace's count has been copied.
+The central port remains unchanged; composition records the additional patch,
+checks exact original/ported preimages and updates the continuation identity.
+Six patch/composition/provenance checks pass. These are not runtime acceptance evidence.
+
+An independent offline native build pair is running under
+`.qualification/v06/trace-read-native-pair/fd3fba2eb0c14024869be32d2a0c41f2`.
+The first attempt omitted the new recipe from the Docker COPY list; its failed
+log is retained at `eec8779500dc4d88a9c3b73b3b4c7cd9`. Both recipe-copy stages
+are now corrected. Next: finish build/install verification, build new runtime
+images, stress startup and child modes under ASan, then repeat the full native
+sequence. Do not reuse the passing prefix from a different image or treat this
+candidate patch as a qualified fix.
+
 ## Resumed 2026-10-19
 
 The user explicitly resumed v0.6. Work continues in
