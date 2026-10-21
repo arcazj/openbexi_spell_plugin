@@ -147,6 +147,8 @@ flowchart TB
 
 *Compose is a deployment proposal, not a claim of a currently qualified, multi-container v0.8 release. Enforce non-root users, read-only filesystems, memory/CPU/PID limits, health checks, loopback/public port policy, explicit secrets and fail-closed ownership recovery.*
 
+[Original Docker Compose architecture diagram (PNG)](diagrams/v08_docker_compose.png)
+
 ### Kubernetes — detailed target deployment
 
 ```mermaid
