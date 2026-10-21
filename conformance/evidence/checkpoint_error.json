@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "scope": "Synchronous original procedure exception-unwind bookkeeping",
-  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
   "runtime_provenance": {
     "kind": "installed-composition",
-    "runtime_sha256": "d05d4eb717df0b18d6592db3d37dbd9caa24b511daa21ed328e4df7f74943f56",
+    "runtime_sha256": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a",
     "evidence": {
       "profile": "original-spell-integrated-wheel/1",
-      "manifest_sha256": "fbca97ccabf1639f682552d1ff3c3b363890c5fa2fb854eb6f4649513a7033d7",
+      "manifest_sha256": "b91e5c162e578b4e8eb189e217e4816f1e5b1ea92dc0d854369fdf5906d6ae6a",
       "manifest": {
         "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
         "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
@@ -16,9 +16,9 @@
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
             "checkpoint": {
               "central_identity": "0a54637a9f262aa3fca37dfbb112b590afd55f772326a9939f28f0852aeab60b",
-              "integrated_identity": "853ee1e84dbad8cccd64c758e52b5f7df93531fd491b7566542a36073739c72e"
+              "integrated_identity": "96ef2d6a94590fcca7dd798915083e69bc87ab2796452665ac23492786666aac"
             },
-            "manifest_sha256": "c46e1c3093d934c0518d705031a314ed24f47a05d076b72eff5ae48cc477c78f",
+            "manifest_sha256": "2979c48959de3a842a0be3aff51f28bc070e33d9f287a5876700d8e79eb2de2a",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -49,8 +49,8 @@
                 "sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0"
               },
               "command_group_patches.py": {
-                "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
-                "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
+                "lf_sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
+                "sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea"
               },
               "context_snapshot_patches.py": {
                 "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
@@ -109,8 +109,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
-                "sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0"
+                "lf_sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
+                "sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c"
               },
               "ipc_error_notification_patches.py": {
                 "lf_sha256": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
@@ -244,6 +244,10 @@
                 "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
                 "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
               },
+              "trace_read_patches.py": {
+                "lf_sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
+                "sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd"
+              },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
                 "sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706"
@@ -273,14 +277,24 @@
                 "patched_sha256": "b93acc7e7d8c54f0c8e6825db20fe5fdc91dde01266f24df2f16923d7d10a006",
                 "ported_sha256": "ffb8d02b1858c2dc75ce4acb80e27910817b11d03c8db57cbeadd311bf6e1453"
               },
+              "include/SPELL_EXC/SPELLframeManager.H": {
+                "original_sha256": "4c265b25b8e311bef3ff2bf08374e023160346c97d27883b086882daac3602b5",
+                "patched_sha256": "95c7c41b32cf55b23572d8a96e3abe4cc6805e7183f33d674bd19136cae9a980",
+                "ported_sha256": "2b256af6396a1aaad6bb7e3ab3c1253205b1bde673d3dceba98d9253548dc4a4"
+              },
               "include/SPELL_WS/SPELLcontinuationSource.H": {
-                "patched_sha256": "cdfb17f35a810f5837b763bf1ae9095a9e18e74f8ce6d6a6e31cb91b5803058a",
+                "patched_sha256": "bc59c65d474e5f6eafe759b0dad59c5a09d19c7401f873d0915b55fcdc630c4f",
                 "ported_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
               },
               "lib/SPELL_CIF/src/SPELLasRun.C": {
                 "original_sha256": "b7b43f0cc3b6704af6a20f75be2dbd17481786388e880b32eb27fc4d057fcea3",
                 "patched_sha256": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
                 "ported_sha256": "1ecc3fd84a1d68131eed7f22e521f5494488a4e534787e16eefd0461e89c734a"
+              },
+              "lib/SPELL_CIF/src/SPELLcif.C": {
+                "original_sha256": "203bf8e38160e92770791a90bdf2339cb774ecdaf6bbe77ec3037f5162e3560f",
+                "patched_sha256": "4c33fc01daed34bc706da13dd96d5aab1d54c5dad0c9ad4ae496081c88891cf2",
+                "ported_sha256": "660c14966413249167ce24c650cd3fea6f99e15302e3b2de1860574631ed8f21"
               },
               "lib/SPELL_CIF/src/SPELLcifHelper.C": {
                 "original_sha256": "7316ec1d703e4aa883adbb07301ea7428b3fb111460bf4cfe3b3e7c974018a24",
@@ -322,6 +336,11 @@
                 "patched_sha256": "a7ec5596aab44456fc922d3fc801fa2ec6b9ae87a62f95f98ad12ebcbf60d459",
                 "ported_sha256": "57c83b92019fb31adfa1e81c670fda3f883b25d0fc6371c0ef7abda063814519"
               },
+              "lib/SPELL_EXC/src/SPELLcallstack.C": {
+                "original_sha256": "8ceb19ddd2af71c4780042d0fcc1dfcfd107c2cbcda5a8fbe76cfa038227a931",
+                "patched_sha256": "3ac976f3e8b5badd6d6c4b97937de4b18cd9e460162ed9d4f8858d9a1674956b",
+                "ported_sha256": "8ceb19ddd2af71c4780042d0fcc1dfcfd107c2cbcda5a8fbe76cfa038227a931"
+              },
               "lib/SPELL_EXC/src/SPELLchildManager.C": {
                 "original_sha256": "d026e3b74f02cf5a588c44e3e6d1012f378feabb0300b657ca5167c8b2bb6169",
                 "patched_sha256": "3599d6a86a83db5e3193b41500e121639f7687878bcd49d63de76cddf11451ba",
@@ -344,7 +363,7 @@
               },
               "lib/SPELL_EXC/src/SPELLframeManager.C": {
                 "original_sha256": "ae618d8e3239377b76d5e6e37782efc893e723dfc9c3daa8d89bb998cb6e1402",
-                "patched_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7",
+                "patched_sha256": "d1e46bf91b8997a79b5cfd4bc24eb5f49a9db14a9e9b94df13c38cf16d397d05",
                 "ported_sha256": "31e1b73109a6266817f26ea0d1ad67935d81854c9e34c314aab75b33bda41fcf"
               },
               "lib/SPELL_EXC/src/SPELLgoto.C": {
@@ -765,10 +784,46 @@
                 }
               },
               {
+                "recipe": "trace_read_patches.py",
+                "sources": {
+                  "lib/SPELL_CIF/src/SPELLcif.C": {
+                    "after_sha256": "4c33fc01daed34bc706da13dd96d5aab1d54c5dad0c9ad4ae496081c88891cf2",
+                    "before_sha256": "660c14966413249167ce24c650cd3fea6f99e15302e3b2de1860574631ed8f21"
+                  }
+                }
+              },
+              {
+                "recipe": "trace_read_patches.py",
+                "sources": {
+                  "include/SPELL_EXC/SPELLframeManager.H": {
+                    "after_sha256": "95c7c41b32cf55b23572d8a96e3abe4cc6805e7183f33d674bd19136cae9a980",
+                    "before_sha256": "2b256af6396a1aaad6bb7e3ab3c1253205b1bde673d3dceba98d9253548dc4a4"
+                  }
+                }
+              },
+              {
+                "recipe": "trace_read_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLframeManager.C": {
+                    "after_sha256": "d1e46bf91b8997a79b5cfd4bc24eb5f49a9db14a9e9b94df13c38cf16d397d05",
+                    "before_sha256": "b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7"
+                  }
+                }
+              },
+              {
+                "recipe": "trace_read_patches.py",
+                "sources": {
+                  "lib/SPELL_EXC/src/SPELLcallstack.C": {
+                    "after_sha256": "3ac976f3e8b5badd6d6c4b97937de4b18cd9e460162ed9d4f8858d9a1674956b",
+                    "before_sha256": "8ceb19ddd2af71c4780042d0fcc1dfcfd107c2cbcda5a8fbe76cfa038227a931"
+                  }
+                }
+              },
+              {
                 "recipe": "integrated_patches.py",
                 "sources": {
                   "include/SPELL_WS/SPELLcontinuationSource.H": {
-                    "after_sha256": "cdfb17f35a810f5837b763bf1ae9095a9e18e74f8ce6d6a6e31cb91b5803058a",
+                    "after_sha256": "bc59c65d474e5f6eafe759b0dad59c5a09d19c7401f873d0915b55fcdc630c4f",
                     "before_sha256": "f17f0ed403846796574160716e54e807ba655fce7ff65c3f2a7ed41f2b64110d"
                   }
                 }
@@ -777,7 +832,7 @@
           },
           "python": {
             "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
-            "manifest_sha256": "f41dfd541f012ac5f5a92a3d729d15f6bf6855810cd4e0da4cbf18366ce1cf8f",
+            "manifest_sha256": "b02390cf4f5696404bd7fc3baef5b78438f54d3c78d0cfe65fabb14c2dd8740c",
             "recipes": {
               "checkpoint_context_patches.py": {
                 "lf_sha256": "f6da7b910b4cb65e55627d3777d00f6d80cdfbf24c4790bbda619d4b14aaf62a",
@@ -808,8 +863,8 @@
                 "sha256": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0"
               },
               "command_group_patches.py": {
-                "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
-                "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
+                "lf_sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
+                "sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea"
               },
               "context_snapshot_patches.py": {
                 "lf_sha256": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
@@ -868,8 +923,8 @@
                 "sha256": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a"
               },
               "integrated_patches.py": {
-                "lf_sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
-                "sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0"
+                "lf_sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
+                "sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c"
               },
               "ipc_error_notification_patches.py": {
                 "lf_sha256": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
@@ -1002,6 +1057,10 @@
               "timing_patches.py": {
                 "lf_sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
                 "sha256": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f"
+              },
+              "trace_read_patches.py": {
+                "lf_sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
+                "sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd"
               },
               "ui_native_patches.py": {
                 "lf_sha256": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
@@ -1513,7 +1572,7 @@
           "cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
           "command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
           "command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
-          "command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+          "command_group_patches.py": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
           "context-build.Dockerfile": "93b208760ad7cced410107de6eb2550cb02db5314a7e384d4790ab69f1556caa",
           "context-build.Dockerfile.dockerignore": "3c4bc6b96038e400b49a6509d4102998cae1f9f3b6ccaacfc4da0627a7624181",
           "context_build.py": "1fdde3e73d7446ed902baf4094cee22e8a10f5c763d8ab29a46f15acef967df4",
@@ -1559,7 +1618,7 @@
           "flow_analyze.py": "cb51ddb7e9b74a77c15ad3a77a14622c23fbee0a2fdb11bf4731450d2bd5acbf",
           "flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
           "installed_peer.cpp": "351d586e157a3f2e951f9afb06691a7772442b94b323e3f22e4b5211a4b2cdcc",
-          "integrated_patches.py": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
+          "integrated_patches.py": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
           "ipc_error_notification_patches.py": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
           "ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
           "legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
@@ -1653,7 +1712,7 @@
           "native_probe.py": "3aeac34e80cfb00a0033e87e05e9a4282c2781bc734f58b6f58d8bea2892adf6",
           "notification_patches.py": "2c873046e2202a6ea438d86056a557a5a24d51b4a458d4f7b0f83a6d1ed6c483",
           "obs_patches.py": "de444f94d120f16f9e08f2715fb48f73d799e6daada179d541057838faf0a9a3",
-          "package_native.py": "bb535e59ba0abc91f6a159c8a6c8b58c534f18cc6c16ad5927dddd0b81d5cb6c",
+          "package_native.py": "d7619526ecc4f9ca0648cb0b9194ab5337118aa92b8729fa9a059bead162d325",
           "patches.py": "e89e5001f1431bf5cfcd0d1905b28b7866695dbc2ecd8267f8d21011c018fd27",
           "proc_dictionary_patches.py": "925aaefe4aef6fe5dad3887626f726adde659847654715d5b197f2507e5ddc45",
           "procedure_library_patches.py": "5b7471650dba3a6c10c5e06753c5ed66e2a46bd0a7be6c69db8faaabead5ea0c",
@@ -1668,7 +1727,7 @@
           "qualify_executor.py": "0370e95844a01184fa0530ec220ac0e2a0636851bd1f57ec447c6e5586872568",
           "qualify_ipc_error_routing.cpp": "212fb47affa655abc2ac26cfee1e496cea6b721f110966ef8e193332e25b4233",
           "qualify_ipc_ownership.cpp": "4533942d0067d25ee258206b470dfc0a9d5fb1d7ee3ec7f8828c619e1ca8621f",
-          "qualify_package.py": "12107e90724c5c8c1860ccc5401af84f8284413a834c2b319a94e763f5b55ba1",
+          "qualify_package.py": "f250c77fceae770c240e35ab1e934b3150b36c36544c1cddae1c072c179bd7a3",
           "qualify_process.cpp": "5e6aa65b81a02d015a73ef1d0be028d2a685d4f5743dea27cbcb6d6524277bf6",
           "qualify_service_bindings.cpp": "771d4701f695d6285ddd7d55aa50b65deac77f5a747733a7338162c7db79cfcb",
           "qualify_service_bindings.py": "8b7044cece8434baa249dde72301016126e3d6df4247d825821ade07b031997a",
@@ -1691,6 +1750,7 @@
           "timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
           "trace-unwind.Dockerfile": "e1c96eb52127facbf9c205d7210207d6e973e9c2f675aeaf4f505135d7d51fa3",
           "trace-unwind.Dockerfile.dockerignore": "75c9178c954dcdb2c0f4449c622859eaeee9b23c4996112b4664a18630e87e8e",
+          "trace_read_patches.py": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
           "trace_unwind_probe.cpp": "4270b43411bc70dd67a602800a3afa2cf10f464cd44ac616dde5038b0b09c9cc",
           "ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
           "user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
@@ -1698,14 +1758,14 @@
           "wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e"
         },
         "native_artifacts": {
-          "SPELL-Context": "c4175d23b0d9f8f5ba746f1a9bff9d1dc3ea81c1bed38b5e486d25c8e1db0c70",
-          "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-          "SPELL-Executor_v3": "5bf1ebf8f5f8e7e10ff372764ebc02d67b33e8e4834076edca659be6c954568f",
-          "SPELL-Listener": "fad9f87f0bbbedc5dc81d303d97d47ac56b0c2aba2b057efaf2326614e1c2347",
-          "SPELL-Service_v3": "3ea75e120c070793888b31786a5e8c083e7095754595e6eb427d1fb9c17cc1be",
-          "libspell_executor313.so": "d05d4eb717df0b18d6592db3d37dbd9caa24b511daa21ed328e4df7f74943f56"
+          "SPELL-Context": "0c58b8c85aec63c4cb3bfefc4c4792d4a1ea71257dab0208431e715e689dc9d8",
+          "SPELL-ExecutorCmd_v3": "407a4774d4036fbd2add732beadf0935e7e67586db0154f26343ef8e0e187134",
+          "SPELL-Executor_v3": "0698c322ff6abd440f9419d36345d2fdc2718957aa75da20180b714be33abdd5",
+          "SPELL-Listener": "ce65885f99cdcfa2da712eca7267fcf5211b91325c11299d4024911e234ec509",
+          "SPELL-Service_v3": "69c942c446959199a8013c55c0f76f6a81d8d5355ffcfa0a6848e1c9ae317f8f",
+          "libspell_executor313.so": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a"
         },
-        "native_gate_policy_sha256": "1979b1fe4137cfcc2b1716d0375c2d44c60f505e4cd893fc8e837f89d5cbeaeb",
+        "native_gate_policy_sha256": "09f938cc90748a8dd69ce098d7581a1a137c924c1521880e1d9c306c4f51f43f",
         "packages": "g++\t4:14.2.0-1\nliblog4cplus-dev:amd64\t2.0.8-1.1+b2\nlibncurses-dev:amd64\t6.5+20250216-2\nlibxerces-c-dev:amd64\t3.2.4+debian-1.3+b2\nzlib1g-dev:amd64\t1:1.3.dfsg+really1.3.1-1+b1\n",
         "platform": "Linux x86_64; pinned Debian Python image; GIL CPython 3.13.15",
         "profile": "ASan/UBSan diagnostic native foundation",
@@ -1813,15 +1873,15 @@
           "spell/utils/vimport.py": "76e9e2cc85a6987e84834294a7c29b0f2afb53cac7093911d4f96ce0a9065f7e"
         },
         "release_scope": "Original native foundation; full language conformance remains separate",
-        "version": "0.3.0"
+        "version": "0.6.0"
       },
       "native_artifacts": {
-        "SPELL-Context": "c4175d23b0d9f8f5ba746f1a9bff9d1dc3ea81c1bed38b5e486d25c8e1db0c70",
-        "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
-        "SPELL-Executor_v3": "5bf1ebf8f5f8e7e10ff372764ebc02d67b33e8e4834076edca659be6c954568f",
-        "SPELL-Listener": "fad9f87f0bbbedc5dc81d303d97d47ac56b0c2aba2b057efaf2326614e1c2347",
-        "SPELL-Service_v3": "3ea75e120c070793888b31786a5e8c083e7095754595e6eb427d1fb9c17cc1be",
-        "libspell_executor313.so": "d05d4eb717df0b18d6592db3d37dbd9caa24b511daa21ed328e4df7f74943f56"
+        "SPELL-Context": "0c58b8c85aec63c4cb3bfefc4c4792d4a1ea71257dab0208431e715e689dc9d8",
+        "SPELL-ExecutorCmd_v3": "407a4774d4036fbd2add732beadf0935e7e67586db0154f26343ef8e0e187134",
+        "SPELL-Executor_v3": "0698c322ff6abd440f9419d36345d2fdc2718957aa75da20180b714be33abdd5",
+        "SPELL-Listener": "ce65885f99cdcfa2da712eca7267fcf5211b91325c11299d4024911e234ec509",
+        "SPELL-Service_v3": "69c942c446959199a8013c55c0f76f6a81d8d5355ffcfa0a6848e1c9ae317f8f",
+        "libspell_executor313.so": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a"
       },
       "python_sources": {
         "spell/__init__.py": "cd399ee4cf6a425a383521c603d58db0ec9c9f58734a831be9d767460706bbf1",
@@ -1928,14 +1988,14 @@
       },
       "driver_composition": {
         "profile": "repository-dss-integrated-wheel/1",
-        "manifest_sha256": "14270454ef65624108570c4af4c25f5c5c387ce786fd9b1882b70b407501794c",
+        "manifest_sha256": "3f5bc54749057fcf74ffd93ce5d9036065bf5f2739dcf7912d5df9418ad95282",
         "manifest": {
           "schema": "openbexi.spell.integrated-driver/1",
           "source_profile": "repository-dss-driver-with-checked-corrections",
           "recipes": {
             "integrated_patches.py": {
-              "sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
-              "lf_sha256": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0"
+              "sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
+              "lf_sha256": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c"
             },
             "native_patches.py": {
               "sha256": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
@@ -2118,8 +2178,8 @@
               "lf_sha256": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502"
             },
             "command_group_patches.py": {
-              "sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
-              "lf_sha256": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d"
+              "sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
+              "lf_sha256": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea"
             },
             "limit_feature_patches.py": {
               "sha256": "e442327f5bdc24d4bdab027bfe539e8091cc0434c1cffc0e40f76a11577d0174",
@@ -2172,12 +2232,16 @@
             "event_empty_native_patches.py": {
               "sha256": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88",
               "lf_sha256": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88"
+            },
+            "trace_read_patches.py": {
+              "sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
+              "lf_sha256": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd"
             }
           },
           "sources": {
             "openbexi_dss_proxy/command_settings.py": {
               "original_sha256": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
-              "patched_sha256": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3"
+              "patched_sha256": "fc7bfd945db25de615431bafeee8b3cb5af602d884445553d764699330fca3f3"
             },
             "openbexi_dss_proxy/common.py": {
               "original_sha256": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
@@ -2346,7 +2410,7 @@
                 },
                 "openbexi_dss_proxy/command_settings.py": {
                   "before_sha256": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
-                  "after_sha256": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3"
+                  "after_sha256": "fc7bfd945db25de615431bafeee8b3cb5af602d884445553d764699330fca3f3"
                 }
               }
             },
@@ -2454,7 +2518,7 @@
             "openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
             "openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
             "openbexi_dss_proxy/command_group.py": "a69012b3a59670ad1dcb67fbe5264ba52b7400356172e2c7ce95d6475441333d",
-            "openbexi_dss_proxy/command_settings.py": "0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3",
+            "openbexi_dss_proxy/command_settings.py": "fc7bfd945db25de615431bafeee8b3cb5af602d884445553d764699330fca3f3",
             "openbexi_dss_proxy/common.py": "16f7b85224eb9927898256e27ad4a2f1dd41a5157abd343464ee29c1521269d1",
             "openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
             "openbexi_dss_proxy/connection.py": "33d9d6296cd86ec83aaf79c1a2cfb3a0d329a961b134421f710ed39e8a7cbb26",
@@ -2503,7 +2567,7 @@
             "openbexi_spell_dss/transport.py": "cd5a2720b3219b7afd9222bea795b80bc849bacdafe384ee3e8c73131cd1e126"
           }
         },
-        "record_files_verified": 151
+        "record_files_verified": 152
       }
     },
     "limitation": "Fresh installed composition; behavior claims remain limited to the executed controls."
@@ -2516,7 +2580,7 @@
     "conformance/checkpoint_error_gate.py": "2f0ce813607d420d069947e276dd43693238f007ac94b7c8b2ab5a69af686d47",
     "conformance/checkpoint_error_install.py": "2729786f799e9d8d78fb600aa5769a5ec1d530275b5e266c37e9f8b7dca4683e",
     "conformance/checkpoint_error_ipc.py": "604a079c6a52684ea24467d799c7db629e15704a7c6a65dd17cf72486ab274e0",
-    "conformance/checkpoint_error_provenance.py": "99a61d0e4478781e65fc04fa64502a53f3693f438e35fbd72a062c255bda6439",
+    "conformance/checkpoint_error_provenance.py": "a6ce647d787dd21ecdde2cc8097851d1eea7def62ba919adfb1de55f6e896dc3",
     "conformance/checkpoint_error_provenance_test.py": "54fda1c681723e86243b1db2e7336b992ae801e0ce58cdfc33195b4a6682d204",
     "conformance/checkpoint_error_report.py": "a73bb530fc301c901e25a67e97bc00b6504fe041d6178fffcb503b02468579ec",
     "conformance/checkpoint_error_run.py": "a6fd99b05624808c58b77d1c6dbe57ec488cd6eaa3fdf4caa3af89182589e558",
@@ -2534,31 +2598,31 @@
       "sha256": "2895e4a4094e06bf7f4c410d385d79af68ab44424ad3c0fd78b70ce1e2bab06e"
     },
     "candidate": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\caf655a722a6462587b15f14349462b6\\result.json",
-      "sha256": "74d5e7c5e4ad7637863e6904fce531c915f52b55055cfb3d55b4f29348d9cfe1"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.6\\checkpoint-error\\a39c5a1721b7478797b3fbf3cf3df18b\\result.json",
+      "sha256": "4c90739cf51ca43c7c39a145890cde4e8a2d71888df3101ce608233884395970"
     },
     "expanded": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\478c2f0801d446e3aa49a480a969f4be\\result.json",
-      "sha256": "a10078d9a0610f3ba93595cd5a98fa6b5529581c362c5bd58fca711228c5c99a"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.6\\checkpoint-error\\c1536c6583f841dcb879da724b3c8fb0\\result.json",
+      "sha256": "7aa0f449c0b20a55e52dbce000c2ff76bd756d45a945717d8d50057edc510878"
     },
     "ipc_baseline": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\35cbef6bdb25414ebdc131d2fd637677\\result.json",
       "sha256": "c9bb89cb5387b1ca4707d564a31c8b968ddae336cd8a5b516c2c69bbe4a9f96c"
     },
     "ipc_candidate": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.6\\checkpoint-error\\9b72992bd5234c3e90cca9d2a1983374\\result.json",
-      "sha256": "02297eafe6dbb8a86fa8681cd370fa9189d67a2373dfab4e853527027e272012"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.6\\checkpoint-error\\9a1f7361ab374f5a8c64a9dc132e40c8\\result.json",
+      "sha256": "6c3874c27309549ec22debc86f0a7850eb713219fb3d4d529a6a48292c6ab25f"
     },
     "ipc_blocker": {
       "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.6\\checkpoint-error-worktree\\.qualification\\v0.6\\checkpoint-error\\967d8e73a0e54f64b3e75ed29ce3fbad\\result.json",
       "sha256": "96eb73fc220dcc6b6615fe3bd8723d2456d726ab8265358e216c891319220543"
     },
     "gate": {
-      "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native\\executor-runtime.json",
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\snapshot-native-pair\\31bb22dba4a7497182f9259dc2b0bdb3\\a\\native\\executor-runtime.json",
       "sha256": "2bb48dbd420197e5bb76ea2f847f29590f3dd9f186c065773a37b8559ec3177c",
       "build": {
-        "path": "C:\\obspell_v05_ipc_errors\\.qualification\\ipc-error-build\\native\\215ff46f157546c488d89dee38b595e6\\a\\native\\executor-build.json",
-        "sha256": "8f5623eeea031ea934925e16cce4dc2bc49c104909b7e1d32e2fcc01814a9115"
+        "path": "C:\\obspell_v06_resume\\.qualification\\v06\\snapshot-native-pair\\31bb22dba4a7497182f9259dc2b0bdb3\\a\\native\\executor-build.json",
+        "sha256": "ec14c079f49c42b1350ccb22720129b205a5eed58124cfaa8e7f8c60eff8444b"
       }
     }
   },

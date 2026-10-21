@@ -1,7 +1,7 @@
 # v0.6 installation and supported platforms
 
-This document describes the candidate package set. Release acceptance is recorded
-only by `v06_accepted: true` in `V06_QUALIFICATION.json`.
+Release acceptance and exact artifact identities are recorded in
+`V06_QUALIFICATION.json`; acceptance requires `v06_accepted: true`.
 
 | Component | Qualified platform |
 | --- | --- |

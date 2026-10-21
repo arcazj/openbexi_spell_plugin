@@ -7,7 +7,7 @@ changes and qualification in the sibling openbexi_ide.
 The working IDE v0.2 / bounded plugin v0.1 remains the desktop testing baseline.
 The original-source native foundation v0.2 is now qualified in its separate Linux
 environment. Local host v0.3 and GENERIC DSS drivers/modes v0.4 are accepted;
-IDE v0.3 supplies the neutral durable authority. Full v0.5 language conformance is accepted; final v0.6 distribution is next.
+IDE v0.3 supplies the neutral durable authority. Full v0.5 language conformance and v0.6 distribution are accepted.
 
 | Release | State | Required evidence |
 | --- | --- | --- |
@@ -15,12 +15,12 @@ IDE v0.3 supplies the neutral durable authority. Full v0.5 language conformance 
 | v0.3 | Complete; installed artifacts and all three actual hosts qualified | Installed OpenBEXI extension and actual IntelliJ/PyCharm plugin ZIP, verifier and host Run/Debug/removal |
 | v0.4 | Complete for the declared GENERIC simulator profile; see DRIVER_QUALIFICATION.json | Original driver RPC families through DSS, three operating modes, controller fencing and uncertain-effect recovery |
 | v0.5 | Complete: 763 qualified, none open | All 763 inventory requirements independently qualified; source/manual conflicts resolved |
-| v0.6 | Pending final distribution; independent rebuild prerequisite passed | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
+| v0.6 | Complete on the declared platform matrix; see V06_QUALIFICATION.json | Supported platform matrix, versioned upgrades, final installed host and DSS workflows |
 
 The [v0.5 record](V05_CONFORMANCE_QUALIFICATION.json) binds all 61 native suites
 (2,157 raw checks) to the qualified installed image and identical offline builds.
-Final installed-host workflows remain open. Historical records retain their
-original artifact scope.
+Final installed-host workflows and distribution gates pass in the
+[v0.6 record](V06_QUALIFICATION.json). Historical records retain their original artifact scope.
 
 ## Native foundation
 

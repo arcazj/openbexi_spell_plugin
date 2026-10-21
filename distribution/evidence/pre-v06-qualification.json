@@ -1,0 +1,269 @@
+{
+  "schema": 3,
+  "prerequisites_passed": true,
+  "v05_accepted": false,
+  "v06_accepted": false,
+  "scope": "Two independent no-cache/offline native builds, complete installed native/Python/driver RECORD and source composition, bounded native language and host qualification. Full release remains open.",
+  "integrated_checkpoint": {
+    "path": "distribution/evidence/next-integrated-conformance.json",
+    "sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
+    "lf_sha256": "b47f72c112cb5bdf19334fc3564fa7b2450052a63094d3ce7e27a62be3dde8f2",
+    "bytes": 37265
+  },
+  "build_checkpoint": {
+    "path": "distribution/evidence/next-integrated-rebuild.json",
+    "sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
+    "lf_sha256": "ce043b23f8e2bcdabeb527d5b14ada44febfd350b92889bed94a867099a836e3",
+    "bytes": 9587
+  },
+  "native_rebuild": {
+    "result": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/result.json",
+      "sha256": "32386b94b22a4b2882208177ef58882f822b26d62f9080024ecd15c6c2ee8718",
+      "lf_sha256": "b7bb980aa9e71c34f82d7369205b01b93ef25fa1746ada310f795e6b7e879630",
+      "bytes": 88625
+    },
+    "git_binding": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/source-git.json",
+      "sha256": "f23d44b270ee07a5c697e53885d2c7cb9d7b18a07643fb343e8d580b07bb04d9",
+      "lf_sha256": "f23d44b270ee07a5c697e53885d2c7cb9d7b18a07643fb343e8d580b07bb04d9",
+      "bytes": 208
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/inputs.json",
+      "sha256": "9e08af0e11c963b1a09e4469ffb8deba521e8babe7981af99a9b6750d631175e",
+      "lf_sha256": "984121f11fa82d3f8d2d0129bac035d4e3a8921364073a0372c9b89055d10cef",
+      "bytes": 19829
+    },
+    "checks": {
+      "independent_native_rebuilds": true,
+      "native_artifacts_identical": true,
+      "python_sources_identical": true,
+      "composition_identical": true,
+      "wheel_bytes_identical": true,
+      "fresh_install_and_removal": true
+    },
+    "native_artifacts": {
+      "libspell_executor313.so": "1630c9c6e2c3330124d9251274a15d6b94f722f48acf859aa2343227ffd85b7d",
+      "SPELL-ExecutorCmd_v3": "3c1e338c8140620e986fb36a0d0761d547d73da0c4e0e4f7b79a2c9e4f22ed1a",
+      "SPELL-Context": "3230193b3969f80ff5f9d751a89262b4a467fb6aeb470b4bcc2b0f355af2034a",
+      "SPELL-Listener": "f22800b2e1415ec7365688e3de0f86c1e60eee311849096f21298e80636fb375",
+      "SPELL-Executor_v3": "a00b25be481793f1a9f59a62ab1e7bffe8847a627e83afd0c601ee00e0bda39e",
+      "SPELL-Service_v3": "46e255ff9335baceb8a3969050217955956249ef8f599ee637cc1b9d20d3206b"
+    },
+    "wheel_sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
+    "builds": {
+      "a": {
+        "log": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a-build.log",
+          "sha256": "7bdb7096153c409f5c3ab191a88ce37234855512458ae81750bd7ffab83c3323",
+          "lf_sha256": "7bdb7096153c409f5c3ab191a88ce37234855512458ae81750bd7ffab83c3323",
+          "bytes": 57669
+        },
+        "package_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/distribution/package-result.json",
+          "sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "lf_sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "bytes": 39939
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/native-qualification.json",
+          "sha256": "629868df431b36f391712fa593b289c8e3344350ce4f7a4cb9b35a729d9f589f",
+          "lf_sha256": "629868df431b36f391712fa593b289c8e3344350ce4f7a4cb9b35a729d9f589f",
+          "bytes": 520533
+        },
+        "installed_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/a/installed/installed-runtime.json",
+          "sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "lf_sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "bytes": 640
+        },
+        "native_runtime_tests": 23,
+        "context_lifecycle_tests": 10,
+        "installed_tests": 8
+      },
+      "b": {
+        "log": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b-build.log",
+          "sha256": "98cec7fddb73f00dafa9fcf7f75c49fa716cbcd9281bb2c7689560de4d2c8ed0",
+          "lf_sha256": "98cec7fddb73f00dafa9fcf7f75c49fa716cbcd9281bb2c7689560de4d2c8ed0",
+          "bytes": 57753
+        },
+        "package_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/distribution/package-result.json",
+          "sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "lf_sha256": "27975905c477369aa1aa99fd9af373842ee6d942420d6eeff1cacf7981c0ba23",
+          "bytes": 39939
+        },
+        "native_gate": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/native-qualification.json",
+          "sha256": "eec558bd9692f499ced893a240726df134edecef56b75a8787f368c6c13b03e3",
+          "lf_sha256": "eec558bd9692f499ced893a240726df134edecef56b75a8787f368c6c13b03e3",
+          "bytes": 520535
+        },
+        "installed_result": {
+          "path": ".qualification/v0.6/rebuild/0593956147924d2da8ba0ba6601e2a7f/b/installed/installed-runtime.json",
+          "sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "lf_sha256": "13f6a17142c9bd8b70930b0978d33a7f1b133cb907fd2b9510d1fe9fb00de686",
+          "bytes": 640
+        },
+        "native_runtime_tests": 23,
+        "context_lifecycle_tests": 10,
+        "installed_tests": 8
+      }
+    }
+  },
+  "private_build_evidence_root": ".qualification/v0.6/next-integrated-worktree",
+  "images": {
+    "result": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/result.json",
+      "sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "lf_sha256": "a8dfa6b89aa7517c0a153839fe7cb6c600dfd03a171857691f9b0a516bc72ee0",
+      "bytes": 48390
+    },
+    "inputs": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/inputs.json",
+      "sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "lf_sha256": "1784f7ac816ba85bac4d5b36c7791a29caea6c6ee9b35b58a091b3f082e60827",
+      "bytes": 9572
+    },
+    "installed_audit": {
+      "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/installed-record.json",
+      "sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "lf_sha256": "14517b95f50370b3092966952d59fd85110d1c9a23ca0b4864d03e8cf0dd0668",
+      "bytes": 37493
+    },
+    "host": {
+      "tag": "openbexi-spell-host:v06-integrated-97bb64016332",
+      "image": "sha256:95209eb11db106163c1a2e90b8a5cb63c60e5c613f0b93c9dfb8ad4d17a13853"
+    },
+    "dss": {
+      "tag": "openbexi-spell-dss:v06-integrated-97bb64016332",
+      "image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342"
+    },
+    "native_wheel": {
+      "name": "openbexi_spell_source-0.3.0-cp313-cp313-linux_x86_64.whl",
+      "sha256": "ac1c259cd85f9e4993264061f6a4372af2f08bfbedc31a5b929941cdc1b637db",
+      "record_files_verified": 442
+    },
+    "driver_wheel": {
+      "name": "openbexi_spell_dss-0.4.0-py3-none-any.whl",
+      "sha256": "6e491863da48d86daa7160a47f9b43870b7a272e90fda56d42f57262dc3069f5",
+      "record_files_verified": 58
+    },
+    "installed_distributions": {
+      "openbexi-spell-source": {
+        "version": "0.3.0",
+        "record_files_verified": 447
+      },
+      "openbexi-spell-dss": {
+        "version": "0.4.0",
+        "record_files_verified": 61
+      }
+    },
+    "bridge_sha256": "4ab8c8aeb824db1a8390a235108cc572c64b50fef71fb70c9630ce3b74041298",
+    "driver_manifest_sha256": "11e64ca4c39f4ce1873c07db0131f777ee57571b5b935837cb60ddbc926b079a",
+    "logs": {
+      "host_runtime": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/host_runtime-build.log",
+        "sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "lf_sha256": "6ee333ff381b221ff6c501ab4a5f782296068391123e6061e869e9595e8f1eeb",
+        "bytes": 4764
+      },
+      "driver_plugin": {
+        "path": ".qualification/v0.6/images/97bb640163324f7bb40f74e1f88d2020/driver_plugin-build.log",
+        "sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "lf_sha256": "fa8ecbaa277660c97575f0dbfc8755ed67f67565c7fedb4110cac4701294201f",
+        "bytes": 1912
+      }
+    }
+  },
+  "toolchain": {
+    "tag": "openbexi-spell-toolchain:v06-a1f60eb52594",
+    "image": "sha256:b02799b7bf8715a8b7933999189c751a7407455beab6cd6d387b08d57b50a4f2",
+    "origin": "Explicit existing frozen image",
+    "bootstrap_limitation": "Retained complete toolchain image is pinned; apt reconstruction is not independently snapshot-locked."
+  },
+  "language_image": "sha256:1fef3e691d8590079898a01cb7bddad9dbce8d9b4c4c29046a790e16af2a3342",
+  "host_result": {
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/next-host-1fef3e69/result.json",
+    "sha256": "63eea28371eb271483a42ff38f47d1acda80d644a80b18fd30258dd508973088",
+    "lf_sha256": "6d53237685ccc6492f35bfd83ddff362f170e3ba288c5d16ac7814311f10ee93",
+    "bytes": 1026
+  },
+  "retained_failures": {
+    "scheduler_recorder_schema": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/scheduler-recorder-rejection.json",
+        "sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
+        "lf_sha256": "d43e2a9d78bfbc23254a66d834d4fc27b2577407e508a84fc1e58bdf1eb38366",
+        "bytes": 794
+      },
+      "scope": "Strict gate rejected mislabelled self-referential observation links. Recorder correction separates and validates them; native raw observations are unchanged."
+    },
+    "time_startup": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/time/4740896e84b047129b9c210495767387/time-contracts.json",
+        "sha256": "53aa0e351c61169a7cb7d12e4ae24f0382d8e09d4fb06aaba498b14f5d77d00e",
+        "lf_sha256": "677941b64f31e6667d921064aacea23096577c6bed3c4f3622c783c68be549f4",
+        "bytes": 1546
+      },
+      "scope": "Native bridge ended before language execution; cause unresolved. Unchanged subsequent direct startup control and TIME168 run passed. No source/deadline changes."
+    },
+    "value_type_setup": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/value-units/d46c0fc4dfad413a8473afa2380264d9/result.json",
+        "sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
+        "lf_sha256": "8afbe5956b64b8c87de1ad30e354e3771afa88094418325b88015282890e9743",
+        "bytes": 16837475
+      },
+      "scope": "One read-only CreateTcItem ground.snapshot HTTP timeout; no send/effect. Other37 checks passed. The complete unchanged38-check rerun passed. Underlying timeout cause is unproven."
+    },
+    "race_harness_import": {
+      "evidence": {
+        "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.5/data-race/46edea35088744788a6aae17a87b44be/failure.json",
+        "sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
+        "lf_sha256": "dbaef1c6295e6f0fb5b8e8d823e7791cd67fa9ee482e3dd051d8c44b56b26606",
+        "bytes": 1254
+      },
+      "scope": "Generated inspect.py shadowed stdlib inspect during provenance startup; no behavior executed. Rename-only harness commit9b729d0 resolves collision; real race4 then passes."
+    },
+    "recorder_lambda": {
+      "evidence": {
+        "path": "distribution/evidence/recorder-lambda-incident.json",
+        "sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
+        "lf_sha256": "22d7252dbbf0b7b0ae98f06d9ee5f5ba54f4c4f5a9776ac72a8e65609afa18e5",
+        "bytes": 26687
+      },
+      "scope": "Unresolved old49667 fresh ON_LINE warmstart lambda exception/handler counterexample. Current PY imported-evaluation and FLOW live callback claims exclude generic recorder recovery."
+    }
+  },
+  "historical_prerequisites": {
+    "git_commit": "fabeaf882966614314ebd799d54eea2b83f020ba",
+    "path": "docs/V06_QUALIFICATION.json",
+    "sha256": "2c353e9091f48532fef78ebf4390069ac839d170a2c82af9ece5cdb0541e60e1"
+  },
+  "remaining": [
+    "293 original requirements remain open; no release/version/tag promotion",
+    "Recorder lambda/exception-handler warmstart failure remains unresolved",
+    "Two initial transient startup/setup failures retained; underlying causes unresolved",
+    "Final installed desktop workflows, versioned upgrades and supported-platform matrix remain unqualified",
+    "Frozen compiler-bearing Linux x86_64 CPython3.13.15 ASan/UBSan image; leak sanitizer disabled",
+    "Retained toolchain is pinned; apt reconstruction is not snapshot locked"
+  ],
+  "repository_tests": {
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/next-checkpoint-package.xml",
+    "sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
+    "lf_sha256": "4fbdd17cbad7afb8a45e3f53628d5c843379613afdff3ba1e726204d8c385a8b",
+    "bytes": 28701,
+    "tests": 224,
+    "failures": 0,
+    "errors": 0
+  },
+  "fresh_git_index_checkout_gate": {
+    "path": ".qualification/v0.6/next-integrated-worktree/.qualification/v0.6/index-check-8e27db74e90c4c85b8d53f46f3480fe1/result.json",
+    "sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
+    "lf_sha256": "580015246a802ca90c0590cabbdadd7a9ca8a6a3de5b942d11ac1446618b6bed",
+    "bytes": 524
+  }
+}

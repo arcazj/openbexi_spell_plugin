@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
   "inputs": {
     "conformance/data_contracts.py": "23a60a8730e0fb3ba52763acbcb95c19f7d984f374c1074beec5a6cc3154ab41",
     "conformance/run_data_files.py": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f",
@@ -24,7 +24,7 @@
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
     "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
     "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
-    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+    "source_port/command_group_patches.py": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
     "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/database_format_patches.py": "bb309e287ef6c010b05a620e8616c2d1e18282090de538acd8c8369895699950",
     "source_port/database_import_patches.py": "ea2e286266a5b81338a478030aba4ba1a6bb943a58800efde5e88ffd0793aacf",
@@ -36,7 +36,7 @@
     "source_port/event_empty_native_patches.py": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88",
     "source_port/event_text_patches.py": "7b9d8576199338ea38d27e2851928f78a8fb653b43e1e5d5aade43aa6823ff59",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
+    "source_port/integrated_patches.py": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
     "source_port/ipc_error_notification_patches.py": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
@@ -69,11 +69,12 @@
     "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
     "source_port/telemetry_feature_patches.py": "9679a7dae81445dbc3fe821f38976f5eddc06a3eb245695d81222019fa0d4da5",
     "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/trace_read_patches.py": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
     "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
-    "driver_plugin/pyproject.toml": "288903757f27da4d9b777a699f8da2ca1edb7970c4717fa0bb7d16506357b235",
+    "driver_plugin/pyproject.toml": "5dbafa695299cae9a9511180418919f50aa5dbb27d977042afd942aec88bd54c",
     "driver_plugin/src/openbexi_spell_dss/limit_files/normal.json": "3410facc072f888c4620e129d5fd27261659e45baef51442178a45193b6b0783",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
@@ -143,25 +144,25 @@
   },
   "raw": {
     "data": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\data\\3360a980be4f4124812cadba143d942e\\result.json",
-      "sha256": "8e02d5f8e9818ef9d9033cd9902e7fc6d7a604fa6f1cba0e23c39d5988408b4d"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.5\\data\\9d07b2ec17d8486e90f4e758402f95d8\\result.json",
+      "sha256": "d7898acc84d2e25f70915f836093f4e64c3e3691508823e4adeba94979baae3c"
     },
     "data-race": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\data-race\\5d0e39e399b64f41a8061941510cbbbb\\result.json",
-      "sha256": "ced7e9dd645fbdf3b5ec865b94a3a0ba8ca48d198ebb54eb5f8dace8f38308a6"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.5\\data-race\\b5d60391dc6440bab7f99bcc206a9f68\\result.json",
+      "sha256": "10b09b44a67c575a61f76c76a77afb64210e4441cb09f35ffe900a7be5908e0b"
     },
     "dta": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta\\1ee16d85902e4c79bd024ffc7acab234\\result.json",
-      "sha256": "0abe61ca526f3c0867dec8447bbb0a7411ef5ca97801284d5e61e9b5873776f7"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.5\\dta\\6b3af0d28a41418eb9e0501b92cd5ece\\result.json",
+      "sha256": "95479ae89bb05a4bdf5d741593d1d376549b18a5bd335ab6c8d2e3d00c49bbc1"
     },
     "dta-ipc": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\dta-edit\\0e57387e4a8e471a856d0d2e702eb79f\\result.json",
-      "sha256": "de040385c91e115def0ade2547009de14f6a04bcf6fce0bf377a01696afa4f5c"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.5\\dta-edit\\1394b7933f1048c08f9fa3d1f39f7ae0\\result.json",
+      "sha256": "25ee876fe6183f13b9acc16c18107ff8f8ddcb0216ccda347445a6f23f096f2b"
     }
   },
   "sequence": {
-    "path": "C:\\obspell_v05_composed\\.qualification\\language-regressions\\a631a462f6c1405b9e5b785bef953946\\result.json",
-    "sha256": "248f36c45a7b830d0cb2339e7b2e80cf314993706fd4f30fc9d1fc8c654fa007"
+    "path": "C:\\obspell_v06_resume\\.qualification\\v06\\snapshot-language\\b3d1a5e5429b4af1ab7d66c29c68f7ba\\result.json",
+    "sha256": "e7eb1dce58b2a08d017784dbadea0e037fe3afef8c7384b6db009e85f531a5c7"
   },
   "checks": {
     "CMP-LRM244-TYPE-VAR:positive": {
@@ -879,11 +880,11 @@
   ],
   "scope_spelling": {
     "manual": {
-      "path": "C:\\obspell_v05_composed\\docs\\reference\\SPELL - Language Reference - 2.4.4.pdf",
+      "path": "C:\\obspell_v06_resume\\docs\\reference\\SPELL - Language Reference - 2.4.4.pdf",
       "sha256": "ed13fae748997a48d6930ac40a30fb31f8b54119be0005a0431a1920613801c3"
     },
     "archive": {
-      "path": "C:\\obspell_v05_composed\\docs\\reference\\SPELL2.6.10-src.zip",
+      "path": "C:\\obspell_v06_resume\\docs\\reference\\SPELL2.6.10-src.zip",
       "sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed"
     },
     "pages": [

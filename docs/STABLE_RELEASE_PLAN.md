@@ -16,9 +16,11 @@ The [v0.5 acceptance record](V05_CONFORMANCE_QUALIFICATION.json) qualifies all
 763 original language requirements with none open. All 61 native suites pass
 on one rebuilt runtime, with independent source and behavior reviews.
 
-Next is v0.6: final reproducible packages, versioned upgrades, supported platforms
-and actual installed OpenBEXI, IntelliJ IDEA and PyCharm workflows. Preserve the
-GENERIC simulator scope, all 763 original requirements and retained failures.
+The [v0.6 acceptance record](V06_QUALIFICATION.json) also accepts reproducible
+packages, versioned upgrades and installed OpenBEXI, IntelliJ IDEA and PyCharm
+workflows on the supported platform matrix. Next is v0.7 operational security,
+capacity and recovery qualification. Preserve the GENERIC simulator scope, all
+763 original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to
 run the combined runtime sequence. It retains each raw report and rejects failed

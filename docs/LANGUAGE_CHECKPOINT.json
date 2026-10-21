@@ -1,50 +1,52 @@
 {
   "passed": true,
-  "scope": "All original 763 inventory requirements with independently reviewed positive, boundary, failure and recovery evidence on one installed GENERIC simulator runtime.",
-  "release": "v0.5",
+  "scope": "Reproducible 0.6.0 native/driver/host/shared packages and JetBrains ZIP; installed Windows hosts; Linux x86_64 GENERIC simulator runtime.",
+  "release": "v0.6",
   "total": 763,
   "counts": {
     "QUALIFIED": 763,
     "OPEN": 0
   },
-  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
-  "host_image": "sha256:72323298d1afb863ea5779bf1f8c816d2c15060f6ab2ebd78d75f80721a4b7d1",
+  "runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+  "host_image": "sha256:65aa34c7c98a544d86f43e993928b1bf18e88258bdea319752b9574bab7d1d70",
   "coverage": {
-    "path": "conformance/coverage.json",
-    "sha256": "c8f4708f2a0269b5f9450fc18f00d2e87adb188492129f42c6428cd11acc0258",
+    "path": "C:\\obspell_v06_resume\\conformance\\coverage.json",
+    "sha256": "38ccda0de4bb82efb1b5579b40bde0edce6e2871bed18f05d59929ff555d710d",
     "bytes": 815752
   },
   "qualification": {
-    "path": "docs/V05_CONFORMANCE_QUALIFICATION.json",
-    "sha256": "294ac091ca0cfcd7893616caf530e2cbffb0db93a3ced3d05d717f9a54b28d85",
-    "bytes": 9530
+    "path": "docs/V06_QUALIFICATION.json",
+    "sha256": "1a1871a96c8827faf306eef178ce1f850aed76e78ae9148b7bc22f13bad65811",
+    "bytes": 15072
   },
   "previous_published_checkpoint": {
-    "commit": "ffc6d660a111e9478f8a1d0280651f37d2dfb10d",
-    "qualified": 573,
-    "open": 190
+    "commit": "ca1fefe3fec941305e6f2f88ea3c3a53db3a8975",
+    "release": "v0.5",
+    "qualified": 763,
+    "open": 0
   },
   "native_suites": 61,
   "raw_native_checks": 2157,
   "local_verification": {
-    "cases": 1566,
+    "tests": 1530,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
     "junit": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v05-release-validation\\6ecc3df04b8547c3bb5886c88f7c4e13\\all-tests.xml",
-      "sha256": "179fb99f17a1b92c9b937858928e60fc83e07ff9a8235f311cb3c3727a83a20d"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v06\\snapshot-language-review\\3d56a415897a493bb663d971f10ce32f\\repository.xml",
+      "sha256": "3d99a98d7468f6741b0488980737bee8a9d980226b927681dce69807a74cce77",
+      "bytes": 222469
     }
   },
   "limitations": [
-    "Linux x86_64 / Debian 13 / GIL-enabled CPython 3.13.15 diagnostic ASan/UBSan profile; compiler present and leak sanitizer disabled.",
-    "GENERIC simulator and explicitly installed extension fixtures; mission/vendor profiles require their own qualification.",
-    "Final production packaging, versioned upgrades, installed OpenBEXI/IntelliJ/PyCharm workflows and supported-platform matrix remain v0.6 work.",
-    "Operational security, capacity and recovery qualification remains v0.7 work; stable v1.0 is not accepted.",
-    "Legacy <> applies to native procedure compilation; imported modules and eval/compile retain CPython syntax.",
-    "Native service checkpoint resumption remains explicitly unsupported; service cold restart and live reconnection retain their declared scope.",
-    "Diagnostic wheels retain source 0.3.0 and driver 0.4.0 version labels; release v0.5 records language qualification. Distribution versioning is a v0.6 gate.",
-    "Offline rebuilds use the retained toolchain digest; reconstruction of its apt inputs is not snapshot locked.",
-    "The archive preserves older failed/partial diagnostic reports but 32 pre-commit source snapshots were unavailable. MANIFEST.json identifies each gap; current acceptance inputs are fully captured and verified."
+    "ASan/UBSan diagnostic runtime; leak sanitizer disabled.",
+    "No native Windows/macOS, ARM or free-threaded CPython qualification.",
+    "Desktop host qualification covers only the exact Windows OpenBEXI, IntelliJ and PyCharm versions in the matrix.",
+    "Native service checkpoint resumption remains unsupported.",
+    "Operational security, capacity and mission-specific qualification remain v0.7 work; stable v1.0 is not accepted.",
+    "The portable manifest lists 38 unavailable source snapshots from older failed or partial diagnostics; current acceptance inputs must have no gaps."
   ],
   "full_v05_accepted": true,
-  "full_v06_accepted": false,
+  "full_v06_accepted": true,
   "stable_v1_accepted": false
 }

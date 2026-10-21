@@ -1,4 +1,11 @@
-# v0.6 distribution prerequisites
+# v0.6 qualification history
+
+## Accepted v0.6
+
+All release gates pass. The [acceptance manifest](V06_QUALIFICATION.json) binds
+the exact artifacts, 763 qualified requirements, installed host workflows,
+upgrade/removal results and portable evidence. The diagnostic history below
+retains earlier candidates and failures; it does not supersede that manifest.
 
 ## Replacement candidate 2026-10-20
 

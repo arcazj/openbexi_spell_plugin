@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
   "inputs": {
     "conformance/wait_time_cases.py": "f763407fc433cf602ddbbc5bb743424d2762b579a9bbf8d6280de5fc91022c5c",
     "conformance/wait_time_controller.py": "ca5fa2275b534d0b92aa050e4b1c880bf6f0bb063b67c724f42fc188181ccda5",
@@ -18,7 +18,7 @@
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
     "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
     "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
-    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+    "source_port/command_group_patches.py": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
     "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/data_files_native_patches.py": "ec700e25ce7a989418c14f4f82e2a32a80bc90292a10c7298236f0af6adf1df4",
     "source_port/data_files_patches.py": "304817b972a8ca87045b056af4b8fdca69f143e10176866a108e9281c43d813c",
@@ -32,7 +32,7 @@
     "source_port/event_empty_native_patches.py": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88",
     "source_port/event_text_patches.py": "7b9d8576199338ea38d27e2851928f78a8fb653b43e1e5d5aade43aa6823ff59",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
+    "source_port/integrated_patches.py": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
     "source_port/ipc_error_notification_patches.py": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
@@ -65,11 +65,12 @@
     "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
     "source_port/telemetry_feature_patches.py": "9679a7dae81445dbc3fe821f38976f5eddc06a3eb245695d81222019fa0d4da5",
     "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/trace_read_patches.py": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
     "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
-    "driver_plugin/pyproject.toml": "288903757f27da4d9b777a699f8da2ca1edb7970c4717fa0bb7d16506357b235",
+    "driver_plugin/pyproject.toml": "5dbafa695299cae9a9511180418919f50aa5dbb27d977042afd942aec88bd54c",
     "driver_plugin/src/openbexi_spell_dss/limit_files/normal.json": "3410facc072f888c4620e129d5fd27261659e45baef51442178a45193b6b0783",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
@@ -121,8 +122,9 @@
     "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
     "driver_plugin/src/openbexi_spell_dss/telemetry_budget.py": "c314b4c3091222a7e0457d53946bb7bd2a2e81e4c4787508835fd75ae06fbf70",
     "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
-    "host_runtime/python/adapter.py": "6684fa77d1e8b43c1fa3d7f890b994364e22496adba12549799c03553f6cfd4a",
+    "host_runtime/python/adapter.py": "61e9fee9d41df8fe2ff4b6a72787b256c040dcf94914f264d1af6bf2ac6a676b",
     "host_runtime/python/children.py": "9d8828d6ea9de3ab655365e38336be015e8ae5757b7a020e58d06dafa79c7c45",
+    "host_runtime/python/demo_dss.py": "be2bd9e81a34013010c3b88c72b9ec1ee9b0034dc02b31232d17e87f9197e5ad",
     "host_runtime/python/native.py": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
     "host_runtime/python/prompts.py": "224ee43dd0cd4371cd565ed20f641237868ed3c19de1fe058dca7a258b0a9176",
     "conformance/wait_time_report.py": "1b669c4180e2a210cba1e87cb2fe26935ad3197736deba1a838f21f123c59981",
@@ -137,47 +139,47 @@
       "states": [
         {
           "status": "RUNNING",
-          "elapsed": 0.084707799993339
+          "elapsed": 0.09229359996970743
         },
         {
           "status": "WAITING",
-          "elapsed": 0.33766089999699034
+          "elapsed": 0.3502969999681227
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.516799999997602
+          "elapsed": 2.575924300006591
         },
         {
           "status": "WAITING",
-          "elapsed": 2.64268789999187
+          "elapsed": 2.705353599973023
         },
         {
           "status": "RUNNING",
-          "elapsed": 4.921680100000231
+          "elapsed": 4.981557000020985
         },
         {
           "status": "WAITING",
-          "elapsed": 5.046721099992283
+          "elapsed": 5.1214695000089705
         },
         {
           "status": "RUNNING",
-          "elapsed": 7.329777999999351
+          "elapsed": 7.483585299982224
         },
         {
           "status": "FINISHED",
-          "elapsed": 8.333625500003109
+          "elapsed": 8.516413000004832
         }
       ],
       "status": "FINISHED",
       "result": {
         "elapsed": [
-          2.297853500000201,
-          2.3922102999931667,
-          2.412464299995918
+          2.333501699962653,
+          2.406305600015912,
+          2.510536400019191
         ]
       },
-      "native_log_sha256": "3747c1c9aa4cc7596bbd553f500425858ca993e9bc3494bb552df312e5a57c4a",
-      "events_sha256": "09f3a262c9695203c54178b907fab4e28525f47bec09100568b5652f84dab6a2",
+      "native_log_sha256": "4649cab68a8cd45080128b76a8487020f2ad955ed09f374b4ef111912a8e8ed8",
+      "events_sha256": "e811e40268aee004ab2f820ff738fc6824cb37cd6cf74fa19fd5eb2fcd255bda",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -190,52 +192,48 @@
       "dimension": "boundary",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08872099999280181
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.21647980000125244
+          "elapsed": 0.0885124999913387
         },
         {
           "status": "WAITING",
-          "elapsed": 0.34372150000126567
+          "elapsed": 0.34716979996301234
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.7219930999999633
+          "elapsed": 0.7048273999826051
         },
         {
           "status": "WAITING",
-          "elapsed": 0.8068045999971218
+          "elapsed": 0.835191699967254
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.5187565999949584
+          "elapsed": 1.5443776000174694
         },
         {
           "status": "WAITING",
-          "elapsed": 1.643822199999704
+          "elapsed": 1.6796907999669202
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.4477989000006346
+          "elapsed": 2.3823849000036716
         },
         {
           "status": "FINISHED",
-          "elapsed": 3.200865699996939
+          "elapsed": 3.1996639000135474
         }
       ],
       "status": "FINISHED",
       "result": {
-        "zero_elapsed": 0.4522912000102224,
+        "zero_elapsed": 0.4803821000386961,
         "elapsed": [
-          0.8459250000014435,
-          0.8866337999934331
+          0.8310296999989077,
+          0.8340423000045121
         ]
       },
-      "native_log_sha256": "882544076d6a327d9d8701671743822f1fb26b744c49d12717e9b274a5562d00",
-      "events_sha256": "7887c804ed0f90cfbd9ea12a585e87ac7fd23fcb03bd93ebe8c2f24debfbd2be",
+      "native_log_sha256": "0ed772a3454e280308925444df742d57819790c06c55275cc855ebe94c272d46",
+      "events_sha256": "c654dcf6ff2ab4c1eb82366e47d8442f80eed6bcddf795b64686d1cf261bf256",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -249,15 +247,15 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08474760000535753
+          "elapsed": 0.08725460001733154
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.2097595000086585
+          "elapsed": 0.21874510002089664
         },
         {
           "status": "FINISHED",
-          "elapsed": 0.7997078000043985
+          "elapsed": 0.8225831000017934
         }
       ],
       "status": "FINISHED",
@@ -267,8 +265,8 @@
           "DriverException"
         ]
       },
-      "native_log_sha256": "2153507f75faf8e06d671dc90235a679961977dd2ee16e6286b166126d31b29c",
-      "events_sha256": "34831d9b8b3b69ea8810711bddea1911a918c4f771582249b56361a6eaae3785",
+      "native_log_sha256": "391ca36668afb63d36244d2594d4f1782a08ffe38687b6e2409d6ec0130e0a79",
+      "events_sha256": "d45636cb8fc0e195bc82cce1f93f3e0d2314b9b932021636442b0f88df9ad126",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -282,19 +280,19 @@
       "states": [
         {
           "status": "RUNNING",
-          "elapsed": 0.08576760000141803
+          "elapsed": 0.08731839997926727
         },
         {
           "status": "WAITING",
-          "elapsed": 0.5468321000080323
+          "elapsed": 0.5631637999904342
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.6608605000074022
+          "elapsed": 1.321066599979531
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.746846900001401
+          "elapsed": 1.4497633000137284
         }
       ],
       "status": "FINISHED",
@@ -302,10 +300,10 @@
         "rejected": [
           "DriverException"
         ],
-        "elapsed": 1.2088906999997562
+        "elapsed": 0.8965827000210993
       },
-      "native_log_sha256": "33eb60719e32aee18774ed0015c7af2966bb9895db4fa52ae0c83558be80f335",
-      "events_sha256": "4133930e5ba0effe8547510dca10f131609bc6084a24dccbd013aa9c66dce730",
+      "native_log_sha256": "e298e3670a1ee717d4b204394353bb98b1dfb999d8f4441c80b40da7d25905dd",
+      "events_sha256": "b7f7e94021d31b84f55fdab734c7e03a70e0fc527a8a7f4c7e3c8db629a3bbe4",
       "contracts": [
         "CMP-LRM244-EXAMPLE-078",
         "CMP-LRM244-SECTION-4-6-1-065"
@@ -318,55 +316,59 @@
       "dimension": "positive",
       "states": [
         {
+          "status": "PAUSED",
+          "elapsed": 0.08494810003321618
+        },
+        {
           "status": "RUNNING",
-          "elapsed": 0.1687692999985302
+          "elapsed": 0.21686939999926835
         },
         {
           "status": "WAITING",
-          "elapsed": 0.265587100002449
+          "elapsed": 0.3475827000220306
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.7980832000030205
+          "elapsed": 0.6729798000305891
         },
         {
           "status": "WAITING",
-          "elapsed": 1.142797000007704
+          "elapsed": 1.1458351000328548
         },
         {
           "status": "RUNNING",
-          "elapsed": 2.407454600004712
+          "elapsed": 3.1318867000518367
         },
         {
           "status": "WAITING",
-          "elapsed": 2.7449027000111528
+          "elapsed": 3.4746753000072204
         },
         {
           "status": "RUNNING",
-          "elapsed": 4.68887340000947
+          "elapsed": 5.132992400031071
         },
         {
           "status": "FINISHED",
-          "elapsed": 4.815735600001062
+          "elapsed": 5.262770800036378
         }
       ],
       "status": "FINISHED",
       "result": {
         "targets": [
           {
-            "target": 1792225809,
-            "finished": 1792225809.1976664,
+            "target": 1792494066,
+            "finished": 1792494066.4455252,
             "object": false
           },
           {
-            "target": 1792225811,
-            "finished": 1792225811.481029,
+            "target": 1792494068,
+            "finished": 1792494068.446546,
             "object": true
           }
         ]
       },
-      "native_log_sha256": "d577b7241341931110cad6633ccf73e78ff15fde4710d3f250d937d0bbafc493",
-      "events_sha256": "bddc4bc53bd9d7de5980da72d2fd8c56b6477cdf756c1d26148013aeb46154a2",
+      "native_log_sha256": "a66740f4d7f6cdc199c9a86d5da29b0902a8658f0811ec70a8fdab9d1fa21901",
+      "events_sha256": "604e8a7c70b9df528c8178955edc0662257592087b01d8b891107bd9d01ba79a",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -379,40 +381,36 @@
       "dimension": "boundary",
       "states": [
         {
-          "status": "PAUSED",
-          "elapsed": 0.08477220000349917
-        },
-        {
           "status": "RUNNING",
-          "elapsed": 0.20977180000045337
+          "elapsed": 0.09379489999264479
         },
         {
           "status": "WAITING",
-          "elapsed": 0.5447890999930678
+          "elapsed": 0.5537150999880396
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.926789999997709
+          "elapsed": 1.0216426000115462
         },
         {
           "status": "WAITING",
-          "elapsed": 1.0517514999955893
+          "elapsed": 1.1171363000175916
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.4032413999957498
+          "elapsed": 1.5036410000175238
         },
         {
           "status": "FINISHED",
-          "elapsed": 1.5317675999976927
+          "elapsed": 1.6382500000181608
         }
       ],
       "status": "FINISHED",
       "result": {
-        "elapsed": 1.1908002999989549
+        "elapsed": 1.2769646000233479
       },
-      "native_log_sha256": "2f8f59667a3de002a2d30c1fde75905d00a7f23087e23c033bc68ca34b2c77c6",
-      "events_sha256": "db5e07be1e1dd8a6aec6dcbdb3f505c8bf159d7b4f849e400a66d809526a3eb1",
+      "native_log_sha256": "6fb31f40352e233d04e05ae9f4f11106a6562cffe0ac0e7c9b2b94be72022b0f",
+      "events_sha256": "f132d141ae4d39cf682e56cc9c5d5c9c96031aec0de20f7d1127748bfabc7bea",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -426,15 +424,15 @@
       "states": [
         {
           "status": "PAUSED",
-          "elapsed": 0.08480449998751283
+          "elapsed": 0.08835049998015165
         },
         {
           "status": "RUNNING",
-          "elapsed": 0.20867929999076296
+          "elapsed": 0.2168082999996841
         },
         {
           "status": "FINISHED",
-          "elapsed": 0.8607450999988941
+          "elapsed": 0.9305846999632195
         }
       ],
       "status": "FINISHED",
@@ -444,8 +442,8 @@
           "DriverException"
         ]
       },
-      "native_log_sha256": "adab64d64fcabdeaccc7c106f8fccfa05c93043c50b112e50fb8c9ca9a97349e",
-      "events_sha256": "8f343441e0d08205b24ecbf669d928a4a76d57545fde33a09e5f0e6a85301600",
+      "native_log_sha256": "b5a9906819794aa6eee2073517ff07e184078f2fb24ece1ebf4a853864ef65b5",
+      "events_sha256": "a541e520ee60163c908bd229a780fd22df364d08b5e71c87cebef8ea9871d5e3",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -458,20 +456,24 @@
       "dimension": "recovery",
       "states": [
         {
+          "status": "PAUSED",
+          "elapsed": 0.08478159998776391
+        },
+        {
           "status": "RUNNING",
-          "elapsed": 0.08548130000417586
+          "elapsed": 0.20876279997173697
         },
         {
           "status": "WAITING",
-          "elapsed": 0.8934550999983912
+          "elapsed": 0.8599599999724887
         },
         {
           "status": "RUNNING",
-          "elapsed": 1.808100900001591
+          "elapsed": 2.8187730999779887
         },
         {
           "status": "FINISHED",
-          "elapsed": 2.0584622000023955
+          "elapsed": 2.950646899989806
         }
       ],
       "status": "FINISHED",
@@ -479,11 +481,11 @@
         "rejected": [
           "DriverException"
         ],
-        "target": 1792225840,
-        "finished": 1792225840.2283182
+        "target": 1792494097,
+        "finished": 1792494097.3850763
       },
-      "native_log_sha256": "3b27e5cdfc20097c0a4e81f47889e5a19424efd3adbb4f5bd7098c40829198fe",
-      "events_sha256": "46c32e4f63e0099fec6eb8bb81a9121a036ac84ab85ac44202c1c2e1e6b06b58",
+      "native_log_sha256": "e826e7079134f838e98497e80d6d44df7a45e868f254e8f7e50afd79333165b3",
+      "events_sha256": "329f9c3c62eb30909a561ab0d4d159b0837da1ed3a2ffc52c2e8b0e3cdb5c045",
       "contracts": [
         "CMP-LRM244-EXAMPLE-079",
         "CMP-LRM244-SECTION-4-6-2-066"
@@ -498,8 +500,8 @@
     "CMP-LRM244-SECTION-4-6-2-066"
   ],
   "raw": {
-    "path": "C:\\obspell_v05_composed\\.qualification\\wait-time\\c8f56d7fc7124f168b3fe1423de919b7\\result.json",
-    "sha256": "69855e7d6cfb97cc4f6cb51ae1e1ca0af9a168369ae42daedfa4bd4550ad5060"
+    "path": "C:\\obspell_v06_resume\\.qualification\\wait-time\\c2c86ea608a44382995b488c13b72af3\\result.json",
+    "sha256": "e060415a3b42d25d7ccfa359926b234c1928d7611fe7c65c6213993e245f9dbc"
   },
   "scope": "LRM p56 positional relative/absolute time waits and Examples 78\u201379",
   "exclusions": [

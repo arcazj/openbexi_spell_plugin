@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "runtime_image": "sha256:1e8dd6cafc8968a4fe36dc16a7bac804ba345dbd3d15da9a220fd3b909e4751b",
+  "runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
   "inputs": {
     "conformance/database_values_cases.py": "47f6018cfe8f3c5501ab47ab5500b5ce56e0ea3790066061ecc6bd8261702128",
     "conformance/database_import_cases.py": "a8238e09dbac03ee640788c3c2b2dcdc0f329a69d1f5ba43375af80a11986475",
@@ -27,7 +27,7 @@
     "source_port/cmd_patches.py": "04bf1dc2ec28e57ea8411046401149b5c191749709116056e14a71d287cec546",
     "source_port/command_catalog_patches.py": "a3d7a2aa0200bf6bea18638d0b2e6ffe296df529df3e4f6495adcb03e3d01502",
     "source_port/command_feature_patches.py": "503e405d2f71a11982da78c9a3d276bc864233a38850019f3decc7f3cf0d07b0",
-    "source_port/command_group_patches.py": "5b04b160a651281de6cbfa6afe61cd17f00389c7880403c450b62b7859de7a6d",
+    "source_port/command_group_patches.py": "b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea",
     "source_port/context_snapshot_patches.py": "447f6f00035d582ecd320be29a3ed6d465a6ac2d544791ec65f6a70cb57b76b0",
     "source_port/database_format_patches.py": "bb309e287ef6c010b05a620e8616c2d1e18282090de538acd8c8369895699950",
     "source_port/database_values_patches.py": "c770e96b8ab877d0e365dfff76f65c181b24d23c808040e95c2167c2eaf03d93",
@@ -38,7 +38,7 @@
     "source_port/event_empty_native_patches.py": "94340068b605348d91606473a348ea84eebde777c47f37ff4e1387ebaadcee88",
     "source_port/event_text_patches.py": "7b9d8576199338ea38d27e2851928f78a8fb653b43e1e5d5aade43aa6823ff59",
     "source_port/flow_patches.py": "577fc4a9db29f86a345e35c853a995736cc9a273cfb1d57b95cde403c3ae232a",
-    "source_port/integrated_patches.py": "9c7878a5c3600aecd0eeb1fd2ea87172e67d7406f0ff082eff20d30d65e8d4a0",
+    "source_port/integrated_patches.py": "a845a06866ad685807678314968e0ad90dd169eb4f83d282fc0f34392fdd458c",
     "source_port/ipc_error_notification_patches.py": "05e6f2928036a3a76de902567372ed853cc608f488cbac0eb19997981be61850",
     "source_port/ipc_mailbox_patches.py": "3c81c4010615ad6e143660770e38a6668b41969e8bcd4c0af56caf678dd40e43",
     "source_port/legacy_compare_patches.py": "ed9e5f0a3d5fe77b90e7a4b6bed1df2cc464fa7723f1fac1afdb007c865add33",
@@ -69,11 +69,12 @@
     "source_port/shutdown_pause_patches.py": "881d4269721d73525a36194f36bbb0a58bd07379b522a0e375b9d537844ad628",
     "source_port/telemetry_feature_patches.py": "9679a7dae81445dbc3fe821f38976f5eddc06a3eb245695d81222019fa0d4da5",
     "source_port/timing_patches.py": "4018bde7819f13fb5459af0741ee2ff1f4328fd75b4211ca302ed9e50ade204f",
+    "source_port/trace_read_patches.py": "d2a6687fa178808adc869758e7ba0431a3a862c5c017f98ac2e65f30d4a332fd",
     "source_port/ui_native_patches.py": "ce2c3f41b2df775fd911be7e5c2ecd2ea485fd3c5425cf99a3ae1557c9233706",
     "source_port/user_database_patches.py": "06c6c280a016d8d19f5cf2e970f678211ad6bcce2cfe1afebc1531156a342422",
     "source_port/value_units_patches.py": "8630d813355a0ac060516dd24259d9e6ba7df9c87bb8c3b3757c8d425c1b7484",
     "source_port/wait_interrupt_patches.py": "cb82f9aa774dff6e13b8977f15d8a6e9d72f2d2b15103117402c19c51ce9d64e",
-    "driver_plugin/pyproject.toml": "288903757f27da4d9b777a699f8da2ca1edb7970c4717fa0bb7d16506357b235",
+    "driver_plugin/pyproject.toml": "5dbafa695299cae9a9511180418919f50aa5dbb27d977042afd942aec88bd54c",
     "driver_plugin/src/openbexi_spell_dss/limit_files/normal.json": "3410facc072f888c4620e129d5fd27261659e45baef51442178a45193b6b0783",
     "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
     "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
@@ -226,14 +227,14 @@
   },
   "raw": {
     "values": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\database-values\\bf8f59eba7d84cb1a4daff6b5ce90b22\\result.json",
-      "sha256": "e5b39f3e03ea8b9dd523d82cb8ad25b789998faf86ff892a1e0a3113086daa86",
-      "workspace_sha256": "b5aff91609c01e2473edbdf124b36ca8e87d4f7593bc8d80d7374d54965ca8e4"
+      "path": "C:\\obspell_v06_resume\\.qualification\\database-values\\9823c5ba9bfa4f6985af8a5fd22019b1\\result.json",
+      "sha256": "f417046c0698fbbba976e74abd4d4028482d492329f53bf62fcc38e6aba2e828",
+      "workspace_sha256": "602ab101e8cc1d0f1229e1e97d5875d547d437ff7116761e5b44195e63a980c5"
     },
     "user": {
-      "path": "C:\\obspell_v05_composed\\.qualification\\v0.5\\user-database\\549bd5ab1c9d494db29aff50c6470efb\\result.json",
-      "sha256": "569af0c4dbed7a185738748d9961aa5698b88cc4242bf7a52a0372e3045d86be",
-      "workspace_sha256": "13fdb7a27be2160d5fa7724d742fff2789b1763e58e1f9544d50d33b680ea11f"
+      "path": "C:\\obspell_v06_resume\\.qualification\\v0.5\\user-database\\81c3757607644d49bc860ab39d7c4e54\\result.json",
+      "sha256": "22b6f9c52daca386cb6cc816ec19451b3e9b429304f4c1f6b7d3fd1ad7a3a14f",
+      "workspace_sha256": "3997828d88d03ef11633720f658c32a44edbdd86aa72bf6ec69912c13cf1a1b7"
     }
   },
   "regressions": {
