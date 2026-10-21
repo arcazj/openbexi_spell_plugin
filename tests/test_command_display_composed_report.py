@@ -18,6 +18,56 @@ def canonical():
     return json.loads((ROOT/'conformance/evidence/command_display_composed.json').read_bytes())
 
 
+def successor_fixture():
+    runtime = canonical()['runtime_sources']['integrated']
+    native = deepcopy(runtime['manifest']['composition']['native'])
+    driver = deepcopy(runtime['driver_composition']['manifest'])
+    expected = json.loads((ROOT/'distribution/evidence/followup-qualified-sources.json').read_bytes())
+    return native,driver,expected
+
+
+def test_v06_successors_retain_frozen_donors_and_exact_final_identities():
+    native,driver,expected = successor_fixture()
+    before = deepcopy(expected)
+    native_sources,driver_sources,corrections = report.review_successors(native,driver,expected)
+    assert expected == before
+    assert set(corrections) == {'lib/SPELL_EXC/src/SPELLframeManager.C',
+                                'openbexi_dss_proxy/command_settings.py'}
+    assert all(native['sources'][name] == row for name,row in native_sources.items())
+    assert all(driver['python_sources'][name] == digest for name,digest in driver_sources.items())
+
+
+@pytest.mark.parametrize('mutation', ['native-output','native-original','native-preimage',
+    'native-recipe','native-unknown','native-stage','driver-output','driver-original',
+    'driver-stage','driver-recipe','driver-unknown','frozen-native','frozen-driver'])
+def test_v06_successors_reject_changed_or_unreviewed_source_chains(mutation):
+    native,driver,expected = successor_fixture()
+    frame = 'lib/SPELL_EXC/src/SPELLframeManager.C'
+    settings = 'openbexi_dss_proxy/command_settings.py'
+    if mutation == 'native-output':native['sources'][frame]['patched_sha256'] = '0'*64
+    elif mutation == 'native-original':native['sources'][frame]['original_sha256'] = '0'*64
+    elif mutation == 'native-preimage':native['sources'][frame]['ported_sha256'] = '0'*64
+    elif mutation == 'native-recipe':native['recipes']['trace_read_patches.py']['sha256'] = '0'*64
+    elif mutation == 'native-stage':
+        native['stages'] = [row for row in native['stages']
+                            if not (row['recipe']=='trace_read_patches.py' and frame in row['sources'])]
+    elif mutation == 'native-unknown':
+        name = next(name for name in expected['native'] if name!=frame)
+        native['sources'][name]['patched_sha256'] = '0'*64
+    elif mutation == 'driver-output':driver['python_sources'][settings] = '0'*64
+    elif mutation == 'driver-original':driver['sources'][settings]['original_sha256'] = '0'*64
+    elif mutation == 'driver-stage':
+        next(row for row in driver['stages'] if settings in row['sources'])['sources'][settings]['before_sha256'] = '0'*64
+    elif mutation == 'driver-recipe':driver['recipes']['command_group_patches.py']['sha256'] = '0'*64
+    elif mutation == 'driver-unknown':
+        name = next(name for name in expected['driver'] if name!=settings)
+        driver['python_sources'][name] = '0'*64
+    elif mutation == 'frozen-native':expected['native'][frame]['patched'] = '0'*64
+    else:expected['driver'][settings] = '0'*64
+    with pytest.raises((AssertionError,ValueError,KeyError)):
+        report.review_successors(native,driver,expected)
+
+
 def test_composed_packages_independently_qualify_50_scoped_requirements():
     saved = canonical()
     actual = report.qualify({kind: Path(row['path']) for kind,row in saved['raw'].items()},

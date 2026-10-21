@@ -19,6 +19,51 @@ from driver_composition_review import verify_driver_stages
 sha, read, ref = commands.sha, commands.read, commands.ref
 
 
+def review_successors(native, driver, expected):
+    """Keep frozen donor identities, allowing only the two exact v0.6 fixes."""
+    native_sources = {name: {label+'_sha256':digest for label,digest in row.items()}
+                      for name,row in expected['native'].items()}
+    driver_sources = dict(expected['driver'])
+    corrections = {}
+    for name, donor in native_sources.items():
+        if native['sources'][name] == donor:
+            continue
+        assert name == 'lib/SPELL_EXC/src/SPELLframeManager.C'
+        assert donor['patched_sha256'] == 'b0e8757c78d15479ec88d22497bbbef7706a70b41954211d44cebde6c6a4d9a7'
+        final = 'd1e46bf91b8997a79b5cfd4bc24eb5f49a9db14a9e9b94df13c38cf16d397d05'
+        stages = [(stage['recipe'], stage['sources'][name]) for stage in native['stages']
+                  if name in stage['sources']]
+        assert stages == [
+            ('checkpoint_error_patches.py', dict(before_sha256=donor['ported_sha256'],
+                                                after_sha256=donor['patched_sha256'])),
+            ('trace_read_patches.py', dict(before_sha256=donor['patched_sha256'],after_sha256=final))]
+        recipe = native['recipes']['trace_read_patches.py']['sha256']
+        assert recipe == sha(ROOT/'source_port/trace_read_patches.py')
+        corrections[name] = dict(before_sha256=donor['patched_sha256'],after_sha256=final,
+                                recipe='trace_read_patches.py',recipe_sha256=recipe)
+        donor['patched_sha256'] = final
+        assert native['sources'][name] == donor
+    for name, donor in driver_sources.items():
+        if driver['python_sources'][name] == donor:
+            continue
+        assert name == 'openbexi_dss_proxy/command_settings.py'
+        assert donor == '0e82f233f8894b8a8c2fd26bff06a063095a40a1592b2fa2339977b3988080b3'
+        original = 'a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb'
+        final = 'fc7bfd945db25de615431bafeee8b3cb5af602d884445553d764699330fca3f3'
+        assert driver['sources'][name] == dict(original_sha256=original,patched_sha256=final)
+        stages = [(stage['recipe'],stage['sources'][name]) for stage in driver['stages']
+                  if name in stage['sources']]
+        assert stages == [('command_group_patches.py',dict(before_sha256=original,after_sha256=final))]
+        recipe = driver['recipes']['command_group_patches.py']['sha256']
+        assert recipe == 'b3d33fa1b07c00424db50484ff526ff4caff2e7c115930666623ca11231906ea'
+        assert recipe == sha(ROOT/'source_port/command_group_patches.py')
+        assert driver['python_sources'][name] == final
+        corrections[name] = dict(before_sha256=donor,after_sha256=final,
+                                recipe='command_group_patches.py',recipe_sha256=recipe)
+        driver_sources[name] = final
+    return native_sources,driver_sources,corrections
+
+
 def qualify(paths, image, revision):
     assert set(paths) == {'scheduling', 'catalog', 'group', 'display'}
     command_donor = commands.qualify(read(ROOT/'conformance/evidence/command_feature_inputs.json'))
@@ -93,10 +138,10 @@ def qualify(paths, image, revision):
         assert read(ROOT/name) == expected
         assert expected['generator_sha256'] == sha(ROOT/'distribution/record_qualified_sources.py')
         assert {key:value['patched_sha256'] for key,value in python['sources'].items()} == expected['python']
-        for key,value in expected['native'].items():
-            assert native['sources'][key] == {label+'_sha256':digest for label,digest in value.items()}
-        for key,value in expected['driver'].items():assert driver['python_sources'][key] == value
-        selected.update(expected['python']); selected.update(expected['driver'])
+        native_sources,driver_sources,successors = review_successors(native,driver,expected)
+        for key,value in native_sources.items():assert native['sources'][key] == value
+        for key,value in driver_sources.items():assert driver['python_sources'][key] == value
+        selected.update(expected['python']); selected.update(driver_sources)
         selected.update(expected['driver_additions'])
         modules={'spell_native/'+Path(key).name:value for key,value in expected['native_distribution'].items()}
         selected.update(modules)
@@ -116,13 +161,15 @@ def qualify(paths, image, revision):
             direct[member] = selected[member] = inputs[source] = digest
         expected_names.update(direct)
         source_extension = dict(commit=revision_id, path=name, sha256=commands.sha(ROOT/name),
-                                direct_driver_sources=direct)
+                                direct_driver_sources=direct,successors=successors)
     assert {n for n in runtime['installed'] if application_source(n)} == expected_names
     for name, value in selected.items():
         assert runtime['installed'][name] == value, name
     recipes = ('display_patches.py', 'command_feature_patches.py', 'command_catalog_patches.py', 'command_group_patches.py')
     for recipe in recipes:
         expected = read(Path(command_donor['manifest']['group']['path']))['inputs']['source_port/'+recipe]
+        if recipe=='command_group_patches.py' and source_extension and 'openbexi_dss_proxy/command_settings.py' in source_extension['successors']:
+            expected=source_extension['successors']['openbexi_dss_proxy/command_settings.py']['recipe_sha256']
         assert native['recipes'][recipe]['sha256'] == expected
     candidates = []
     for donor in (command_donor, display_donor):
@@ -160,5 +207,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, default=ROOT/'conformance/evidence/command_display_composed.json')
     args = parser.parse_args()
     result = qualify({kind: getattr(args, kind) for kind in ('scheduling', 'catalog', 'group', 'display')}, args.image, args.revision)
-    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+    args.output.write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8', newline='\n')
     print(json.dumps(dict(passed=True, contracts=len(result['qualified_contracts']), output=str(args.output))))
