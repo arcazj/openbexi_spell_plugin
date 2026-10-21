@@ -11,7 +11,7 @@ from kafka.admin import KafkaAdminClient
 from dss.engine import DssEngine
 from dss.server import DssRuntime,ApiServer,TcServer
 from openbexi_spell_dss.codec import pack
-from openbexi_spell_dss.journal import Journal
+from openbexi_spell_dss.operational_journal import Journal
 from openbexi_spell_dss.rpc import Dispatcher,PREFIX
 from openbexi_spell_dss.transport import Transport
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p

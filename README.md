@@ -4,6 +4,15 @@ SPELL is an optional runtime for [openbexi_ide](https://github.com/arcazj/openbe
 PyCharm and IntelliJ IDEA. Procedures use explicit imports from the original
 SPELL library. The neutral IDE stays independent of SPELL.
 
+**Current release: SPELL v0.7**, paired with OpenBEXI IDE 1.2.0 and the
+`openbexi-ide-spell-v07` Docker desktop. The operational release adds durable
+driver admission limits and qualifies controller fencing, uncertain effects,
+overload and offline backup/restore. See [installation and recovery](docs/V07_INSTALLATION.md),
+[release notes](docs/V07_RELEASE_NOTES.md) and the [acceptance record](docs/V07_QUALIFICATION.json).
+Host, shared provider, DSS bridge and JetBrains packages use 0.7.0. The native
+SPELL source wheel stays at its byte-identical accepted 0.6.0 baseline; the
+independent bounded simulator SDK stays at 0.1.0.
+
 The v0.3 host release is accepted for local Development workflows; see
 [the exact host qualification](docs/HOST_QUALIFICATION.json). It supplies a host wheel, an
 IntelliJ Platform plugin ZIP and a private native Docker runtime. The native
@@ -26,13 +35,13 @@ passes **all 763 requirements with none open**. All 61 native suites pass
 The v0.6 distribution set uses version 0.6.0 for the native, DSS, host and shared
 packages and JetBrains ZIP. See [installation and supported platforms](docs/V06_INSTALLATION.md)
 and the [acceptance manifest](docs/V06_QUALIFICATION.json) for the exact qualified
-artifact set. Operational security and capacity remain v0.7 work in the
-[release plan](docs/STABLE_RELEASE_PLAN.md).
+artifact set. The v0.7 operational qualification builds on that frozen
+distribution; see the [release plan](docs/STABLE_RELEASE_PLAN.md).
 
 ## Native desktop and CLI
 
-Install `openbexi_spell_host-0.6.0-py3-none-any.whl` in the CPython 3.13 environment
-selected by your IDE. The runtime image is `openbexi-spell-host:0.6.0` and needs
+Install `openbexi_spell_host-0.7.0-py3-none-any.whl` in the CPython 3.13 environment
+selected by your IDE. The runtime image is `openbexi-spell-dss:0.7.0` and needs
 Docker Desktop's Linux engine. No host-folder sharing or published IPC port is
 required. The host wheel supplies the OpenBEXI extension and shared DAP bridge;
 the original SPELL library runs inside the image.
@@ -54,15 +63,16 @@ continues to use its own runtime/debugger.
 openbexi run procedure.py --project C:/path/to/project --language spell
 ```
 
-For JetBrains, install `openbexi-spell-0.6.0.zip` through **Plugins ? Install
+For JetBrains, install `openbexi-spell-0.7.0.zip` through **Plugins ? Install
 Plugin from Disk**, restart, configure **SPELL Runtime**, and use **Tools ? SPELL**.
 See [JetBrains installation and compatibility](docs/JETBRAINS_HOST.md).
 
 Each run uses a bounded project snapshot. Changed/new files are saved under
 `.openbexi/runs/RUN_ID/artifacts` with a hash manifest; source files in the editor
 are not overwritten. The host supports local Development. Step Out, arbitrary
-expression evaluation, conditional breakpoints and operational DSS integration
-are later capabilities. See [host runtime and qualification](docs/HOST_RUNTIME.md).
+expression evaluation and conditional breakpoints remain outside this host
+workflow. Durable shared operation uses the separately installed shared provider.
+See [host runtime and qualification](docs/HOST_RUNTIME.md).
 
 ## DSS testing baseline
 

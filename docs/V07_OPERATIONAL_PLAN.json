@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "release": "v0.7",
+  "accepted": true,
+  "baseline": "v0.6 / 1c8679c64e1ee25d2441b0c10f35678c36367e6c",
+  "scope": "Installed Linux x86_64 GENERIC simulator artifacts; trusted Docker host and operator OS account",
+  "required_gates": [
+    "monitor, stale controller, revoked certificate and unapproved release rejection before effects",
+    "controller handoff, lease loss, per-write fencing and container ownership checks",
+    "lost acknowledgement, crash after intent, crash after effect and duplicate receipt without replay",
+    "bounded RPC admission, journal entries/bytes, queued work, event/output retention and overload recovery",
+    "offline consistent backup, corruption/path rejection, exact restore audit and retained uncertainty holds",
+    "installed native Development, Monitoring and approved Execution, crash and reconnect recovery",
+    "repository regressions and installed-driver regressions; preserve all 763 accepted language requirements",
+    "versioned packages, new openbexi-ide-spell-v07 Docker desktop, preserved projects/preferences",
+    "immutable artifact hashes, source commits, GitHub tags/releases and verified public downloads"
+  ],
+  "excluded_claims": [
+    "real spacecraft, RF station or vendor mission approval",
+    "native service checkpoint resumption or automatic replay after uncertain effects",
+    "untrusted operator OS or Docker daemon",
+    "stable SPELL v1.0 acceptance"
+  ]
+}

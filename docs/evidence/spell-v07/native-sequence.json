@@ -1,0 +1,1441 @@
+{
+  "passed": true,
+  "complete_sequence": true,
+  "state": "complete",
+  "image": "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283",
+  "source_commit": "1c8679c64e1ee25d2441b0c10f35678c36367e6c",
+  "runner_sha256": "60065a4a8bfa9391b9164415450306a40c0451dc8d81fc4d4933155cb839fffe",
+  "workers": 1,
+  "suites": [
+    {
+      "suite": "context-startup",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_context_snapshot.py",
+        "--repeat",
+        "40",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-language\\b342e0fee4a341f1b032e4d709ccb944\\context-startup.log",
+        "sha256": "af9308263cbef9787a6e706a9341473390cba5302447af7cbf1174d4238a590a"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\context-snapshot-startup\\c6fb2738d01642f8ba0885e4c75676c0\\result.json",
+        "sha256": "d727fe5d1d7aae0433f60536d12acf536baf409596941f628751a78f07903463",
+        "checks": 40,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "prompt-startup",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_prompt_startup.py",
+        "--suite",
+        "early",
+        "--composed",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-language\\b342e0fee4a341f1b032e4d709ccb944\\prompt-startup.log",
+        "sha256": "e18e3f30249d11e7a497b7d16e5838d2f0b2f7c46b6dfbf0670218a85f7ef8c4"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\prompt-startup\\74401762f08c4c019cca4b866d4b11d0\\result.json",
+        "sha256": "fa1e38b9f8f2c0accd145fe07e2c71586f34bc71c169a4a0d7173dec035827a9",
+        "checks": 40,
+        "source_inputs_verified": 130
+      }
+    },
+    {
+      "suite": "data",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_data_files.py",
+        "data",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\data.log",
+        "sha256": "19be0e8e0a831b84dd18a06310aeab97dec07511bc6204c6bb53155371115853"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\data\\68106c6897d44027b4bd39101dc47fe8\\result.json",
+        "sha256": "a9fdc9704ce0d443dbefbee59c59222db3fe5e950863eb6d87fbe5746e9dc842",
+        "checks": 24,
+        "source_inputs_verified": 125
+      }
+    },
+    {
+      "suite": "files",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_data_files.py",
+        "files",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\files.log",
+        "sha256": "2d350806576669cbc80a944466fadc1be78f6c36418ed36b445e3940a4499705"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\files\\13c8fddda9564f63b8ff84dcd3058537\\result.json",
+        "sha256": "e88b9cfa7cc8792ccb172f339d411464a14ebaf63ca3bc5fd1779e81723ef7c7",
+        "checks": 36,
+        "source_inputs_verified": 125
+      }
+    },
+    {
+      "suite": "data-race",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_data_race.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\data-race.log",
+        "sha256": "f18f792308bec1c7b9a490a12dc1534639d62a317443d45a571d2869d7b82ca4"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\data-race\\4d4f6047d78b4fd6b16080da72721190\\result.json",
+        "sha256": "6a8e9674813ee83a3358a1be18e5aff08d9a1f211fe005dc9d700525da9f71bc",
+        "checks": 4,
+        "source_inputs_verified": 120
+      }
+    },
+    {
+      "suite": "flow",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_flow.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\flow.log",
+        "sha256": "9e0fc9f3a6131ab4285a8952998788cfe3c61fd00f917d54223c879f816f7c66"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\flow\\967df515c2d04c87b83ab0999deee41c\\result.json",
+        "sha256": "db26b29bbcdb297320f6afdc6301bc4838217b49cb4db8a3ad315895fce5376d",
+        "checks": 36,
+        "source_inputs_verified": 124
+      }
+    },
+    {
+      "suite": "common-silence",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_silence.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\common-silence.log",
+        "sha256": "8cb0c6cec4e555a288c515f0dcdeb09d57dea7fa504c02e8f52349ba61c755ec"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\common-silence\\99069770ca394af58763d4dac4b6b051\\result.json",
+        "sha256": "3e039adbb543088fcc968d4c16aa3d1d23ebdcaffec058c08c6eaa0ab08fa5f1",
+        "checks": 4,
+        "source_inputs_verified": 122
+      }
+    },
+    {
+      "suite": "resource",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_resource.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\resource.log",
+        "sha256": "70ffced23cbf13d66bca2877395b850ffef347655cd89a94d0cf0e28c76e7f0c"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\resource\\ff0de7d146b242239e3c9214bd3210d1\\result.json",
+        "sha256": "b0235b070b6dc001063e2342a2fbe1e50d3dc8d9ada170667f2457c5166885b5",
+        "checks": 12,
+        "source_inputs_verified": 139
+      }
+    },
+    {
+      "suite": "database-import",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_database_import.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\database-import.log",
+        "sha256": "259c7b0dafd93c1fa29be475d255fefff3e791f60e7d68cd86f9823af399c9f3"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\database-import\\53d95f2a4bee4ae9ae60c9849104cc3d\\result.json",
+        "sha256": "49333916cedf27f43ec9697d637b02086aa144c22b1eec0350f12e83fae270bc",
+        "checks": 16,
+        "source_inputs_verified": 123
+      }
+    },
+    {
+      "suite": "database-values",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_database_values.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\database-values.log",
+        "sha256": "1e12bedb49d8c6eab1ccc21f1bc59d4f955470fdbd61da6c009d65213dbe5b76"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\database-values\\b83d73761d9d452dab8d6892a3585e4b\\result.json",
+        "sha256": "b80836a030461b44ad98d09946232dffd1d08b0ded89fdd3925fa42a8c0db405",
+        "checks": 24,
+        "source_inputs_verified": 128
+      }
+    },
+    {
+      "suite": "database-formats",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_database_formats.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\database-formats.log",
+        "sha256": "bb8e0935c573399c27474584a4e47c1ddda313f9134c72649b75808a5ee85341"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\database-formats\\formats\\29429b77a57b4857a964b7ab8e31083c\\result.json",
+        "sha256": "f4beb3bd699b91ec466d05213bbd9582d29b76236f8641d518985191267b89f1",
+        "checks": 8,
+        "source_inputs_verified": 129
+      }
+    },
+    {
+      "suite": "user-database",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_user_database.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\user-database.log",
+        "sha256": "4f0805569b71c891a68af7d1af742838cc02ace312ea0f7a8b434f6b69524062"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\user-database\\bd655a5da12344679bf45cb82bf071b6\\result.json",
+        "sha256": "d9f3b87d17df05e06723e896de3d8d73fcc9044bc9e00f4ae66b5e76b204150f",
+        "checks": 20,
+        "source_inputs_verified": 125
+      }
+    },
+    {
+      "suite": "manoeuvre",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_manoeuvre_candidate.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\manoeuvre.log",
+        "sha256": "ca1fa22d06dbc234fdb090c85f72577ac616d76f0a601e9bc3d0cab0c05330bb"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\manoeuvre-candidate\\1ca5d936ecd948b68ab4cea0ffd5c5c2\\result.json",
+        "sha256": "367340a8ad43e31ed904720e3933a2558b39d3e2b1ea709984c7d38bf1428602",
+        "checks": 8,
+        "source_inputs_verified": 143
+      }
+    },
+    {
+      "suite": "dta",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_dta.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\dta.log",
+        "sha256": "0f4c569e53260e58095a43b2fb92bb4c99658ab2493d0253c09096dac8c4b504"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\dta\\9e662b6aa2e543e79c485ff98b0ec171\\result.json",
+        "sha256": "1e4c4c428ebc3e4afc62c446705acb7d166f5b891d79be326e9312076bca1d04",
+        "checks": 68,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "ui",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_ui.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\ui.log",
+        "sha256": "887931ffd33c1cfc286c8c349ec79fa9cd723009d5cdbeeeb931ab6098bf028b"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\ui\\0d5d3c26c41b4073b818e660b346e6ff\\result.json",
+        "sha256": "414d90998eaead36f49cbaebbe25ee8c5105a7195c84970dcc1d7f4000b2d413",
+        "checks": 62,
+        "source_inputs_verified": 134
+      }
+    },
+    {
+      "suite": "prompt-timeout",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_prompt_timeout.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\prompt-timeout.log",
+        "sha256": "8cd9063306c857413b7313d70ac3b9e5dfb94590114dab6a9f6705c2b1d477b5"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\prompt-timeout\\b2f629df120243f39b28c2454f7e681e\\result.json",
+        "sha256": "9a79c028ea2298f4315ec9fea99c183264f1a52ed702c8d4d571f4cb3d5158d4",
+        "checks": 10,
+        "source_inputs_verified": 121
+      }
+    },
+    {
+      "suite": "child-arguments",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_child_arguments.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\child-arguments.log",
+        "sha256": "6e21077ec2ba074b171053a9c156d37627dd19190129fc2d3871a25a32a14685"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\child-arguments\\13faaa2daa0648c98665ee356a6ed2c1\\result.json",
+        "sha256": "a8ddf23473729780dc661f052138ea6d89baf1854a5b9525591362291142d8fe",
+        "checks": 10,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "child-start",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_child_start.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\child-start.log",
+        "sha256": "11357bdf171e0f9f02a120e1d3dfa747c5e6d4a1ad959ddeaaa6a6f954d08d38"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\child-start\\b045ba0b71cb45e1ad0cd83d76a8ece8\\result.json",
+        "sha256": "93ca1d8e1141396f646b75669974e42bfb54628c65e573b7e90bb3149c3184b8",
+        "checks": 8,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "child-policy",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_child_policy.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\child-policy.log",
+        "sha256": "d20097a34474a22411da35367db87d4d032a5042594bbb106f8c200e737bbb80"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\child-policy\\b260a46955a44af29349a49a585f4675\\result.json",
+        "sha256": "d80bc359205aba5b19b000e2c2e8db6945e64a6dd08e597217c8769300ec4328",
+        "checks": 8,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "procedure-library",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_procedure_candidate.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\procedure-library.log",
+        "sha256": "1717aaea69b448d3d710c075dedc4b9565bbb8290a41deba32134e97dafcfb9d"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\procedure-features\\d5646db0ebc64a018c3d8f283306d620\\result.json",
+        "sha256": "b3c38b44719b1b9075733e4ecf944799d3028bf8b7071e5dc40f3e5b90a18eb9",
+        "checks": 12,
+        "source_inputs_verified": 133
+      }
+    },
+    {
+      "suite": "rng-catalog",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_rng.py",
+        "--catalog-only",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\rng-catalog.log",
+        "sha256": "cd96abe16ec6cd560614342ffc8f2bbb7753041227c12b7b9d07245b976fbfbc"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\rng\\7b71e469f3d742bb993766ddd572dc7d\\result.json",
+        "sha256": "3bf0308f22355e9a2cdefb54ae769fdcecd95312600205e38502a9ca62ec279e",
+        "checks": 8,
+        "source_inputs_verified": 138
+      }
+    },
+    {
+      "suite": "rng-state",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_rng_state.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-final\\3dd09c68265945d69234b9102f659ab5\\rng-state.log",
+        "sha256": "27a76667f6a81df2c082bd5842683108b0da50bbd9e8a267d709162f28fab42d"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\rng-state\\9ec687edf5be4b04a9b951c7d49e1dcb\\result.json",
+        "sha256": "25b4f87c4dd0b4b2250bc8d42cd5f130fa7abc0487c99cfb9357e0b25ac3c364",
+        "checks": 21,
+        "source_inputs_verified": 140
+      }
+    },
+    {
+      "suite": "ranging-complete",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_ranging_candidate.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\ranging-complete.log",
+        "sha256": "5d9a375e78f48c97dc4e3c8872ed5d69e196162556e9a08433d274d32789173b"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\ranging-candidate\\7435772d35854f63a5717a92b4a324b2\\result.json",
+        "sha256": "b4baf9d0b538c061535cc33c0a4f9c3e5945861df5296838da529523b5ac2a3c",
+        "checks": 24,
+        "source_inputs_verified": 140
+      }
+    },
+    {
+      "suite": "memory-complete",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_memory_complete.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\memory-complete.log",
+        "sha256": "f6fe923a58e7c686705add4f5e6f9ddfdefbf093c829c232cf7aa58e9f33532e"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\memory-complete\\df6f42856869405b97e424beed8a8676\\result.json",
+        "sha256": "dee8f35882c598630ac55d3a4185f37d393ed29c024b338885764795d8adbef9",
+        "checks": 32,
+        "source_inputs_verified": 143
+      }
+    },
+    {
+      "suite": "dta-ipc",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_dta_edit.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\dta-ipc.log",
+        "sha256": "6b4d9ac9f131ab027a04a015ce6337db3625815468a3a709d6e39c394ebb9a59"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\dta-edit\\7a891b2c12ce41cb92dd7b2cdd72aac3\\result.json",
+        "sha256": "a727a75f9880e4d195d36e458de73ab779135a24c35f01e492c274725e577b07",
+        "checks": 64,
+        "source_inputs_verified": 123
+      }
+    },
+    {
+      "suite": "time",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_native.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\time.log",
+        "sha256": "16a85fd73a116c4bd5acea48ed3fe890a1144f2494ea092ccaba02b04fb17598"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\time\\ad5096cb7f754734bb223bb96ff75999\\result.json",
+        "sha256": "45f7e53172b76eb2a5803a18ff1bb979ba5d1e8023236147265947cc308a1ffa",
+        "checks": 168,
+        "source_inputs_verified": 119
+      }
+    },
+    {
+      "suite": "limit",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\limit_run.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\limit.log",
+        "sha256": "68d8a9fefa62fd3cf935059a4d0f42d42d6a3e063763cb18cf8dafb7cb362ad4"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\limit\\119be643127a4208877815452b3283d5\\result.json",
+        "sha256": "dfb5b3323474ee48fff21bc01a27be0b8e7486ce0c386774e313caa1a4e433cd",
+        "checks": 79,
+        "source_inputs_verified": 136
+      }
+    },
+    {
+      "suite": "limit-features",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_limit_features.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\limit-features.log",
+        "sha256": "a3e60dedd5002dfe4be7dde29290d7a5fc9e7902052f62c42dfab8dc6c8263c7"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\limit-features\\4af41ee557db4005a7a4172d7381cc60\\result.json",
+        "sha256": "50ba7a77fc7e7a5b07d8009c57ccfaa3fc7bf63887bbc81981e152d16c117a02",
+        "checks": 64,
+        "source_inputs_verified": 142
+      }
+    },
+    {
+      "suite": "telemetry-features",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_telemetry_features.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\telemetry-features.log",
+        "sha256": "642fefa56774254177d7eb90e4baa2c95ba09c054aa6fb779dcb804291cb4e83"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\telemetry-features\\6f49a79656c24bb78a2ed1a2e328561e\\result.json",
+        "sha256": "4c5350865dccd63b8d86a58d2b6090c1878f53852925dedba15fc4cb243632ff",
+        "checks": 32,
+        "source_inputs_verified": 145
+      }
+    },
+    {
+      "suite": "telemetry-policy",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_telemetry_policy.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\telemetry-policy.log",
+        "sha256": "79f866d5332554e0fe383dbbed0dd5b76371dcfcec74e4eda80472fb5231ab9b"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\telemetry-policy\\41d5f5b35edd4ed09084fa75942c0fc4\\result.json",
+        "sha256": "079894aea425996c47f1cefbe5c9f81d4687caa998e99780dc0d85181c1a1d9f",
+        "checks": 4,
+        "source_inputs_verified": 144
+      }
+    },
+    {
+      "suite": "notification",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\notification_run.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\notification.log",
+        "sha256": "40df8bcad5168321498502bc7e8b246d347cfa7842ccf86bfea62e8d5b40516f"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\notification\\6fa596c56af74cb09b5ae2615286f03c\\result.json",
+        "sha256": "7d3dafc079d8a05b9f4cf3de90ccf9cc24e5cc63124f3bdd804f853261a911d7",
+        "checks": 16,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "obs",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_obs.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\obs.log",
+        "sha256": "ae9937377f844d71aebf9fafe7e9bf179fde3ff082690d3c29241214f5a1bfeb"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\obs\\c08aa507815e48bf88b2b7c0cd5a1172\\result.json",
+        "sha256": "3f4ee4ef7d770b07a31b82a8d96820da1bd2642bb02253dab34aa8f4701ae1d0",
+        "checks": 189,
+        "source_inputs_verified": 137
+      }
+    },
+    {
+      "suite": "cmd",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_cmd.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\cmd.log",
+        "sha256": "e35ffe93838d8e266c46331022a367e23cee188c1af0aebd8989475049d4ba8d"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\cmd\\9f087cfa082748648fb065aa27ffa511\\result.json",
+        "sha256": "4d00cb4a15082ade863d4edb3b51b56328ee8a01e2954d5b58e3de7128b3d175",
+        "checks": 54,
+        "source_inputs_verified": 136
+      }
+    },
+    {
+      "suite": "command-scheduling",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_command_scheduling.py",
+        "--composed",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\command-scheduling.log",
+        "sha256": "3cde81b6acd57aea83d5fab458a9734adc343adca87a3519d96af347cb324b5f"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\command-scheduling\\7e5677932e8e40f2b8a8e9a251ee280d\\result.json",
+        "sha256": "8eb65fd1624a27a6f1bda2c81668d0634b41fe6f4bb346ee04a0ece948daeac7",
+        "checks": 30,
+        "source_inputs_verified": 142
+      }
+    },
+    {
+      "suite": "command-catalog",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_command_catalog.py",
+        "--composed",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\command-catalog.log",
+        "sha256": "4a2f4303500e0e805de77c5e34d11aaf95d060588c3a98f30ec5a2f8bce58c64"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\command-catalog\\36bd116bd3824dce847254bc3bac21a5\\result.json",
+        "sha256": "7b7c6736d2b7f14862d89a2bd49f8a61d5b564da96044b71eb36cca80e064dc4",
+        "checks": 11,
+        "source_inputs_verified": 142
+      }
+    },
+    {
+      "suite": "command-group",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_command_group.py",
+        "--composed",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\command-group.log",
+        "sha256": "84421c837297f04bb90db6d303d0dcf3ee397f67fc377649f75b9fd58c71d53e"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\command-group\\964e9d6fa4784e08a7fa918fd53875cb\\result.json",
+        "sha256": "8b49602e08e7e2040f3f5b7d8d28684c613b578655fa16a87f50c33a233959d6",
+        "checks": 19,
+        "source_inputs_verified": 143
+      }
+    },
+    {
+      "suite": "gcs-display",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_display.py",
+        "--composed",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\gcs-display.log",
+        "sha256": "627a1e70e2ea81b5d6eafcbbe9a721497ff23ced89de88ade33926d59b642711"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\gcs-display\\4750c339860c4728846b5ee76989741b\\result.json",
+        "sha256": "3b49f74583b4e3d48fbf978f487d27e451936ce86e1a1166eca9e562bd55d811",
+        "checks": 35,
+        "source_inputs_verified": 142
+      }
+    },
+    {
+      "suite": "python",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_python.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\python.log",
+        "sha256": "65ac42cf0ca612d0f167b9e8037ffe55966fbe692948d985e742d7153d42cacb"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\python\\677ecd94158943dfb7cbf893e4591513\\result.json",
+        "sha256": "c5f4607cdbc4a610b2db3d068dcfe64ec4464b360411067d5235a34546ad018d",
+        "checks": 488,
+        "source_inputs_verified": 122
+      }
+    },
+    {
+      "suite": "legacy-compare",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_legacy_compare.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\legacy-compare.log",
+        "sha256": "dec5e395aedb73ef8b67effb5c6702604da3f5943d618c3f16f23e4537b06476"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\legacy-compare\\f797a698d24047ceb4d809457fe14435\\result.json",
+        "sha256": "36f08b1f7dd413b767d174413c9646ce475d0bee24f0bf0eb5d9bed9e321a97c",
+        "checks": 15,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "common",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_common.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\common.log",
+        "sha256": "fc623fbedb5ca0cd2c521bbc82d0dcc1316cd73dc712097f24ab80462d15d2cf"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\common\\410303d3c89d43ff9057c6b1b716fd4c\\result.json",
+        "sha256": "2530df6be51ce515be1fa668490df4858568c5fa0921e304855d7f4916b27d5d",
+        "checks": 44,
+        "source_inputs_verified": 123
+      }
+    },
+    {
+      "suite": "events",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_events.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\events.log",
+        "sha256": "e0110c671ba6f878ec3f413403eb88b917d99584e358dbef4468512adcbcbf0b"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\events\\2b02f87b7fb74a8dae2dcde9d3e1068a\\result.json",
+        "sha256": "c3287c0b9f781f8672f10c197c9f6d4fb7fc3201ad73aa5c5ce695208a7e79a5",
+        "checks": 8,
+        "source_inputs_verified": 138
+      }
+    },
+    {
+      "suite": "scheduler",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_scheduler.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\scheduler.log",
+        "sha256": "dcff89d3832d3a069f3971116ab407cd87eb1cd53303e1a21fd7051bb5145c35"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\scheduler\\27f6e16096c4402bb88f1b3e7f6a7630\\result.json",
+        "sha256": "a97fe3d755f4b7445388459ccb2765b278beed82f021bc5245a2ab8a1a38df30",
+        "checks": 9,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "wait-time",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_wait_time.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\wait-time.log",
+        "sha256": "a1985ab8fab2f7523503e369783f3e53d3fa534115901e9ff3e68a99d0125d60"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\wait-time\\96436f055945460a8d2520cf3e3f3b98\\result.json",
+        "sha256": "bd4dba95eb0dd6e02a770c2e236ff0eb5e2defa0e3d6eb2da483775f446051a1",
+        "checks": 8,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "wait-controls",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_wait_control.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\wait-controls.log",
+        "sha256": "c160508f258a2a24e72e292ececb0be44d2cc571c9cea6449848b32bce632b90"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\wait-controls\\25a37d4fa0194481aa4be1e5eb12be8b\\result.json",
+        "sha256": "ef9fac21188bad09c55f97834778e262602f61c64c9683cde4f1c1241383fadb",
+        "checks": 24,
+        "source_inputs_verified": 138
+      }
+    },
+    {
+      "suite": "wait-intervals",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_wait_interval.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\wait-intervals.log",
+        "sha256": "766268e47eda31480089f38ddcbd7089d99cf9853de1228d843c6807ad008988"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\wait-interval\\7803c00c75834e808e2fc6ff07053bcd\\result.json",
+        "sha256": "8140e1b3c904ce1492470714d4354d72099f731566a492e43ec81bf540ca7b29",
+        "checks": 8,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "proc-metadata",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_proc_metadata.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\proc-metadata.log",
+        "sha256": "a3fb8d4cb0962ad4837d0ba09b86319f77410777cde9f5abbc7d8b2621d60edf"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\proc-metadata\\5494e0bb7f0744e3a2fe28a5d3e6f2e1\\result.json",
+        "sha256": "e634957e5d637020bb78e98b658e63d361bcd5cd31ecc8232ef25458c2fa6cf6",
+        "checks": 4,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "proc-lifecycle",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_proc_lifecycle.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\proc-lifecycle.log",
+        "sha256": "0657c1be6ee5b9f59c585e969bc3aeb1953f2bf5758b204a093833d822ee4924"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\proc-lifecycle\\4ee70b5dba4a45fcb87dd86b6d943ca1\\result.json",
+        "sha256": "57506521a516097d5d57e41c382d23c17217d28b24efd26912148b2edec7d06b",
+        "checks": 12,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "value-units",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_value_units.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\value-units.log",
+        "sha256": "3c4afc34439d4c4243cbe9c1e7e1b57c0b82270b24e763ad7263b535188e6652"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\value-units\\284ea19d70304003b205357bb129c20f\\result.json",
+        "sha256": "c89a30567c2936af7273efe766f4a80061491216c95d81790515d64a02fcfec1",
+        "checks": 38,
+        "source_inputs_verified": 140
+      }
+    },
+    {
+      "suite": "scdb",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\scdb_run.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\scdb.log",
+        "sha256": "390bf9c15f862bf8ce154e632152f589fc4621fb87f6341b05cdd3bc5fe8ca3c"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\scdb\\c0c92e8fa2f145e0a601a2f24d4a62dd\\result.json",
+        "sha256": "c1ec7e494d67d3a825162b03596175ca14492f311cea310ea710364868160f5a",
+        "checks": 26,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "timing",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_timing.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\timing.log",
+        "sha256": "56f31c104443bb6a1b98ca5bfe06867519d59367552203bf1e5672a34035d51b"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\timing\\2922c7674287464da4e92e291bac4a7b\\result.json",
+        "sha256": "f6bfe18bdb83a2b735d5cfbd89df593c20ed68072f4bf9fbd5e6fb54dc0c4b99",
+        "checks": 36,
+        "source_inputs_verified": 140
+      }
+    },
+    {
+      "suite": "send-verify",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_send_verify.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\send-verify.log",
+        "sha256": "6e11f8c05a42f6143f6af27e7101c727e3d81a6795d0f56a837af9c4ec96cfaa"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.5\\send-verify\\39a681ac5c984e128206aec9e5c506fa\\result.json",
+        "sha256": "de408fb73162112d21d353a3ee72403486d30f5fff4cc5228da5992652ca76de",
+        "checks": 18,
+        "source_inputs_verified": 144
+      }
+    },
+    {
+      "suite": "send-complete",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_send_complete.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\send-complete.log",
+        "sha256": "b9201ddbdae84d908ca8ff3d81d56e143013490ab4f9bac969241af53acd2e02"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\send-complete\\65473f23f7aa436babdc658fe9a3ed5e\\result.json",
+        "sha256": "e857519fffa2672edd30987fdb58243f93bc73c489d7c43a8a1c5c3d87a4b30b",
+        "checks": 12,
+        "source_inputs_verified": 149
+      }
+    },
+    {
+      "suite": "checkpoint",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\checkpoint_error_run.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\checkpoint.log",
+        "sha256": "b3a21b845c9a066a22ef6240bfcdd456cdb5a10394884cf2946e10e7cad0fdf1"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\checkpoint-error\\6b891126a5024da2866a9e4fc40d2ddf\\result.json",
+        "sha256": "410ae94d4201b961632782055b1b560f127ad293f2f3e911f8691181bff68cab",
+        "checks": 24,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "checkpoint-expanded",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\checkpoint_error_run.py",
+        "--case",
+        "nested-unwind",
+        "--case",
+        "finally-unwind",
+        "--case",
+        "replace-error",
+        "--case",
+        "recursive-unwind",
+        "--case",
+        "repeated-catch",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\checkpoint-expanded.log",
+        "sha256": "09dcc2e161dd948997996db007aef30648a166a931931d3594010a3e425b3daf"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\checkpoint-error\\6b72997003d2443b8b64536354b67407\\result.json",
+        "sha256": "a4f5b1be3991f26ef758aaeb4816c37d97fdabe582ad89d7db1cd048987d9816",
+        "checks": 20,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "checkpoint-ipc",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\checkpoint_error_run.py",
+        "--ipc",
+        "--mode",
+        "DISABLED",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\checkpoint-ipc.log",
+        "sha256": "67e54dc2db48a428b7f133b7e4be5dfaa0d7ed29cce391b28044d2d1c6519dcf"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\checkpoint-error\\1ccce88e291a47079c91c35875cbe47e\\result.json",
+        "sha256": "4379b427f5566c7ecfa2f2614723ae70c88f60eec612e453641c2c815be04e3d",
+        "checks": 4,
+        "source_inputs_verified": 126
+      }
+    },
+    {
+      "suite": "identity-errors",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\checkpoint_identity_run.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\identity-errors.log",
+        "sha256": "96f02068b002c912ae13605d8fd39e930713e9a2c833fe484e33b3128027c69d"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\checkpoint-identity\\e9d2f37a3dfe4c5d9cf83d4c203c863b\\result.json",
+        "sha256": "96c4f31ebdbd367ac0acad7244e5774c60300fa2e4e1ed859b4d87534ed97f5e",
+        "checks": 8,
+        "source_inputs_verified": 136
+      }
+    },
+    {
+      "suite": "identity-recovery",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\checkpoint_identity_run.py",
+        "--recovery",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\identity-recovery.log",
+        "sha256": "0533b9a1964d671eb1df35d6aba4f7320d2efa360c46389598af5ad6c0bf878e"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\v0.6\\checkpoint-identity\\51edcb6189054e7493f79de6e7343b87\\result.json",
+        "sha256": "2c65a167b3c41da1f1767e492ff72de2298b58cb957849f55c3cdc59930c38c4",
+        "checks": 22,
+        "source_inputs_verified": 136
+      }
+    },
+    {
+      "suite": "child-modes",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_child_modes.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\child-modes.log",
+        "sha256": "d963cf955333d9d0a1ac274e5b1caad12af46ddec6431dfbc72f4961a11befc2"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\child-modes\\7568ff65c1a74a0f970461809e313430\\result.json",
+        "sha256": "2ac30181f0e056f7f43cf196b1938f44620d63a90866273574072642f2ced696",
+        "checks": 9,
+        "source_inputs_verified": 127
+      }
+    },
+    {
+      "suite": "driver-extension",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_driver_extension.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\driver-extension.log",
+        "sha256": "0b9c3d3833b495dd1e57425a09b3bcd5e253d9a5d5d9c751af196720235d507c"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\driver-extension\\aec545e2ac884ee9a0d09b11bb7da8e5\\result.json",
+        "sha256": "9c2f6882ada5755694dca0b08dbd7128e649b84c7fe53d0dc9a1520ab24d353f",
+        "checks": 4,
+        "source_inputs_verified": 138
+      }
+    },
+    {
+      "suite": "child-visibility",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_child_visibility.py",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\child-visibility.log",
+        "sha256": "c3ba939c1dd71be115fe558ed03b8e87d75a80cb3839644153701fbcae4b48a6"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\child-visibility\\8397a34f2ce446649022abc4a42230ac\\result.json",
+        "sha256": "a07a54a198129b19fb5edec34d6d52d32ad88b20884e2fc72155ca2f1e27d3ac",
+        "checks": 4,
+        "source_inputs_verified": 123
+      }
+    },
+    {
+      "suite": "prompt-complete",
+      "command": [
+        "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\obspell_v07\\conformance\\run_prompt_complete.py",
+        "--require-timeout-metadata",
+        "--image",
+        "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\obspell_v07\\.qualification\\v07-native-parallel\\d021bc924a3c49408cd700f66eb29436\\prompt-complete.log",
+        "sha256": "1bb5502686ce1a22679ef91f46b50d890846ff0f788043e88e6dfeb9eba08944"
+      },
+      "passed": true,
+      "raw": {
+        "path": "C:\\obspell_v07\\.qualification\\prompt-complete\\8527bc258dc44d5ea4c31305c9f7c0d0\\result.json",
+        "sha256": "3113e65a5da46d2bf9332a0d7ca6bc50762698b1b830b2783e25b4226ec21c99",
+        "checks": 12,
+        "source_inputs_verified": 125
+      }
+    }
+  ]
+}

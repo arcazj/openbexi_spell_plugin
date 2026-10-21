@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "plugin_sha256": "7f5e506b6762993cbd4fa930abe2b96d00f88c9fb907b76d9fd1ad4174b7fdf1",
+  "sdk": {
+    "name": "IntelliJ IDEA",
+    "version": "2026.2.3",
+    "buildNumber": "262.10968.63",
+    "productCode": "IU"
+  },
+  "sdk_metadata_sha256": "789a25502451140b044838bbff67704edf9f9cc92798c9a07b9722723d2a2fa7",
+  "sdk_path": "C:\\Users\\arcaz\\AppData\\Local\\Programs\\IntelliJ IDEA 2026.2.1",
+  "inputs": {
+    "java": {
+      "path": "C:\\Users\\arcaz\\AppData\\Local\\Programs\\IntelliJ IDEA 2026.2.1\\jbr\\bin\\java.exe",
+      "sha256": "b92c103456881317af7ac5a87acaa4f90cb8278380dc6ec6b7af15c91c664ea3"
+    },
+    "verifier": {
+      "path": "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.3\\tools\\verifier-cli-1.410-all.jar",
+      "sha256": "59a5ef05cbdf0584cbfd6cb6ca802c74ecf340fdeadc5a73eac24af622c22010"
+    },
+    "plugin": {
+      "path": "C:\\obspell_v07\\.qualification\\v07-jetbrains-final\\openbexi-spell-0.7.0.zip",
+      "sha256": "7f5e506b6762993cbd4fa930abe2b96d00f88c9fb907b76d9fd1ad4174b7fdf1"
+    }
+  },
+  "verifier_version": "1.410",
+  "harness_sha256": "c577e3ff89eb75421cfaf7d46c366635f903b7cd5d1a893c247ba3d075af1d72",
+  "full_v06_accepted": false,
+  "command": [
+    "C:\\Users\\arcaz\\AppData\\Local\\Programs\\IntelliJ IDEA 2026.2.1\\jbr\\bin\\java.exe",
+    "-jar",
+    "C:\\projects\\openbexi_spell_plugin\\.qualification\\v0.3\\tools\\verifier-cli-1.410-all.jar",
+    "check-plugin",
+    "C:\\obspell_v07\\.qualification\\v07-jetbrains-final\\openbexi-spell-0.7.0.zip",
+    "C:\\Users\\arcaz\\AppData\\Local\\Programs\\IntelliJ IDEA 2026.2.1",
+    "-verification-reports-dir",
+    "C:\\obspell_v07\\.qualification\\v07-verifier-layout-intellij\\reports"
+  ],
+  "exit_code": 0,
+  "verdict": {
+    "path": "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/verification-verdict.txt",
+    "sha256": "49379b8e074539fb7d4783a5e0c223990ae8e1744d8c9ef317ecf0222cf0fb6c"
+  },
+  "evidence_files": {
+    "java-version.log": "1f661d031d17e226225c26ea459f98e0d5852570417765133fe0afe01b441051",
+    "verifier.log": "125a179ce04f28942ca80792a3296fbdefb06bb4a2daee1cb9fa90c7677ad598",
+    "reports/IU-262.10968.63/report.html": "9f35b0ac60b07668bc560d29742fb8453c98bc89f5733ef84c96b5476f0e21e6",
+    "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/dependencies.txt": "6449730e9bf389e85b1c976ecf5cc3a2e6cfa9c2f0a400ba4e2f33d2c77e117f",
+    "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/deprecated-usages.txt": "23d9a5c0643aadf7d2fe50997f535f809fb77d5be99ec94815f17ee752a71891",
+    "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/experimental-api-usages.txt": "901e0aa2b047140c208867d3cf01295084cf7072c01e6ede372188c796cf61a0",
+    "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/telemetry.txt": "776d7ff17b0ab3aeadc616494a6d3ce8e9e4b9f0d032cd3a52cc632cf3adf670",
+    "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.7.0/verification-verdict.txt": "49379b8e074539fb7d4783a5e0c223990ae8e1744d8c9ef317ecf0222cf0fb6c"
+  }
+}

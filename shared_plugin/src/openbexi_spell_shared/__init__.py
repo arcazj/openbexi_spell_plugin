@@ -97,7 +97,7 @@ class Provider:
 
     @staticmethod
     def bind():
-        image = os.environ.get('OPENBEXI_SPELL_SHARED_IMAGE', 'openbexi-spell-dss:0.6.0')
+        image = os.environ.get('OPENBEXI_SPELL_SHARED_IMAGE', 'openbexi-spell-dss:0.7.0')
         info = json.loads(docker('image', 'inspect', image))[0]
         if info['Os'] != 'linux' or info['Architecture'] != 'amd64':
             raise ValueError('Native shared runtime requires the Linux amd64 host image')
@@ -263,7 +263,7 @@ class Worker:
                 raise ValueError('Native shared container already exists; recovery required')
             if self.binding['profile'] in {DSS_PROFILE,EXECUTION_PROFILE}:
                 from openbexi_spell_dss.transport import Transport
-                from openbexi_spell_dss.journal import Journal
+                from openbexi_spell_dss.operational_journal import Journal
                 from openbexi_spell_dss.rpc import Dispatcher
                 settings = self.binding['driver']
                 self.driver_transport = Transport.from_binding(settings)

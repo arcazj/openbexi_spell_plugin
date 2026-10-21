@@ -1,14 +1,18 @@
 # JetBrains SPELL host
 
-The `0.3.1-workspace.2` development candidate adds the procedure workspace
-described below. It is separate from the paused v0.6 release qualification.
+The `0.7.0` plugin includes the procedure workspace described below and the
+operational release's matching host runtime. See [v0.7 installation](V07_INSTALLATION.md).
+
+This revision fixes **Return to editor** after the workspace is resized,
+restored or reopened. It waits for the tool window to appear before maximizing
+and restores its size only while IntelliJ still records it as maximized.
 
 The installable ZIP adds **Tools → SPELL**, project runtime settings, a SPELL
 tool window and a native XDebugger implementation. It requires a CPython 3.13
-interpreter with `openbexi-spell-host==0.3.1.dev3` and the OpenBEXI IDE core
-`1.1.0` candidate wheel installed, plus a running Docker Desktop Linux engine with
-the qualified `openbexi-spell-host:0.3.1-dev3` image. The core wheel supplies the
-shared procedure service and does not require Qt. This candidate supports IDE
+interpreter with `openbexi-spell-host==0.7.0` and the OpenBEXI IDE core
+`1.2.0` wheel installed, plus a running Docker Desktop Linux engine with
+the qualified `openbexi-spell-dss:0.7.0` image. The core wheel supplies the
+shared procedure service and does not require Qt. This release supports IDE
 builds 261 through 262; qualification used IntelliJ 262.10968.63 and PyCharm
 261.24374.152. Existing explicitly configured image settings are preserved.
 

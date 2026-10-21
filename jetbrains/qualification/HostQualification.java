@@ -217,6 +217,33 @@ public final class HostQualification implements StartupActivity.DumbAware {
                 return null;
             });
             checks.add("Installed plugin settings and tool window in actual IDE");
+            ui(() -> {
+                var manager = ToolWindowManager.getInstance(project);
+                var tool = manager.getToolWindow("SPELL");
+                if (manager.isMaximized(tool)) manager.setMaximized(tool, false);
+                button(project, "Return to editor");
+                require(!tool.isVisible(), "Return to editor did not hide an unmaximized workspace");
+                SpellWorkspace.get(project).restoreLayout();
+                SpellWorkspace.get(project).show();
+                return null;
+            });
+            waitFor(() -> {
+                try { return ui(() -> {
+                    var manager = ToolWindowManager.getInstance(project);
+                    var tool = manager.getToolWindow("SPELL");
+                    return tool.isVisible() && manager.isMaximized(tool);
+                }); } catch (Exception error) { throw new RuntimeException(error); }
+            }, "Reopened workspace was not maximized after showing");
+            ui(() -> {
+                var manager = ToolWindowManager.getInstance(project);
+                var tool = manager.getToolWindow("SPELL");
+                // Simulate the user restoring the tool-window size before returning.
+                manager.setMaximized(tool, false);
+                button(project, "Return to editor");
+                require(!tool.isVisible(), "Resized workspace did not return to the editor");
+                return null;
+            });
+            checks.add("Return to editor tolerates an unmaximized, reopened or manually restored workspace");
             Path editorManifest = Path.of(project.getBasePath(), ".openbexi/editor/current/manifest.json");
             if (Files.isRegularFile(editorManifest)) {
                 String fixtureImage = com.google.gson.JsonParser.parseString(Files.readString(editorManifest)).getAsJsonObject().get("image_id").getAsString();

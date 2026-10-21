@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openbexi-spell-shared"
-version = "0.6.0"
+version = "0.7.0"
 description = "Native SPELL durable Development and approved Execution provider"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-dependencies = ["openbexi-spell-host==0.6.0"]
+dependencies = ["openbexi-spell-host==0.7.0"]
 
 [project.optional-dependencies]
-dss = ["openbexi-spell-dss[service]==0.6.0"]
+dss = ["openbexi-spell-dss[service]==0.7.0"]
 
 [project.entry-points."openbexi.shared_backends.v1"]
 spell = "openbexi_spell_shared:provider"

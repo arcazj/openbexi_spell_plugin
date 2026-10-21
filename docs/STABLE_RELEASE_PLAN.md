@@ -18,9 +18,11 @@ on one rebuilt runtime, with independent source and behavior reviews.
 
 The [v0.6 acceptance record](V06_QUALIFICATION.json) also accepts reproducible
 packages, versioned upgrades and installed OpenBEXI, IntelliJ IDEA and PyCharm
-workflows on the supported platform matrix. Next is v0.7 operational security,
-capacity and recovery qualification. Preserve the GENERIC simulator scope, all
-763 original requirements and retained failures.
+workflows on the supported platform matrix. The [v0.7 acceptance record](V07_QUALIFICATION.json)
+adds operational security, capacity and recovery qualification against installed
+artifacts. Next is v1.0.0-rc1: freeze the accepted source/artifact set and complete
+the release-candidate gates. Preserve the GENERIC simulator scope, all 763
+original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to
 run the combined runtime sequence. It retains each raw report and rejects failed

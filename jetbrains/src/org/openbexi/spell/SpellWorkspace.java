@@ -187,13 +187,25 @@ public final class SpellWorkspace implements Disposable {
                 other.hide();
             }
         }
-        focused = true; window.show(); manager.setMaximized(window, true);
+        focused = true;
+        // Showing a tool window can be deferred. Maximize only once its pane
+        // exists, and preserve the original size when focus is requested again.
+        window.show(() -> {
+            if (!project.isDisposed() && focused && window.isVisible() && !manager.isMaximized(window))
+                manager.setMaximized(window, true);
+        });
     }
     public void restoreLayout() {
         var manager = ToolWindowManager.getInstance(project); var window = manager.getToolWindow("SPELL");
-        if (window != null) { manager.setMaximized(window, false); window.hide(); }
+        focused = false;
+        if (window != null) {
+            // IntelliJ clears the saved maximized size after a manual restore
+            // or layout change; restoring it again asserts and then throws.
+            if (manager.isMaximized(window)) manager.setMaximized(window, false);
+            window.hide();
+        }
         for (String id : previousWindows) { var other = manager.getToolWindow(id); if (other != null) other.show(); }
-        previousWindows.clear(); focused = false; manager.activateEditorComponent();
+        previousWindows.clear(); manager.activateEditorComponent();
     }
     void event(Session session, String event, JsonObject body) {
         ui(() -> {

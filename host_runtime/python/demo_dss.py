@@ -7,7 +7,7 @@ import uuid
 from dss.local import create_servers
 from dss.engine import DssConflict
 from openbexi_spell_dss.transport import Transport
-from openbexi_spell_dss.journal import Journal
+from openbexi_spell_dss.operational_journal import Journal
 from openbexi_spell_dss.rpc import Dispatcher
 from openbexi_spell_dss.server import Server
 

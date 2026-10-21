@@ -12,7 +12,7 @@ from google.protobuf.wrappers_pb2 import DoubleValue
 from dss.local import create_servers
 from dss.packets import encode_tm
 from openbexi_spell_dss.codec import pack, unpack, Time
-from openbexi_spell_dss.journal import Journal, UncertainEffect
+from openbexi_spell_dss.operational_journal import Journal, UncertainEffect
 from openbexi_spell_dss.rpc import Dispatcher, PREFIX
 from openbexi_spell_dss.server import Server
 from openbexi_spell_dss.transport import Transport

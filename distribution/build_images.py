@@ -106,6 +106,7 @@ def main():
     parser.add_argument('--toolchain-id',required=True,help='Expected sha256 identity of the retained complete toolchain')
     parser.add_argument('--runtime-image',help='Compiler-free final runtime base')
     parser.add_argument('--runtime-id',help='Expected immutable runtime base identity')
+    parser.add_argument('--release-version', choices=['0.6.0', '0.7.0'], default='0.6.0')
     parser.add_argument('--output',type=Path,default=ROOT/'.qualification/v0.6/images')
     options = parser.parse_args()
     run_id = uuid.uuid4().hex
@@ -114,6 +115,7 @@ def main():
     snapshot.mkdir(parents=True,exist_ok=False)
     report = {'passed':False,'run_id':run_id,'v06_release_accepted':False,
               'network':'none','build_cache_enabled':False}
+    report['candidate_version'] = options.release_version
     try:
         toolchain = inspect(options.toolchain_image)
         if toolchain != options.toolchain_id:
@@ -156,8 +158,9 @@ def main():
         inputs = {p.relative_to(snapshot).as_posix():sha(p) for p in sorted(snapshot.rglob('*')) if p.is_file()}
         (evidence/'inputs.json').write_text(json.dumps(inputs,indent=2)+'\n',encoding='utf-8',newline='\n')
         report['inputs_sha256'] = sha(evidence/'inputs.json')
-        host_tag = 'openbexi-spell-host:v06-integrated-'+run_id[:12]
-        dss_tag = 'openbexi-spell-dss:v06-integrated-'+run_id[:12]
+        marker = options.release_version.replace('.', '')
+        host_tag = 'openbexi-spell-host:v'+marker+'-integrated-'+run_id[:12]
+        dss_tag = 'openbexi-spell-dss:v'+marker+'-integrated-'+run_id[:12]
         for component, tag, argument in (
             ('host_runtime',host_tag,'TOOLCHAIN_IMAGE='+options.toolchain_image),
             ('driver_plugin',dss_tag,'HOST_IMAGE='+host_tag)):

@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 import grpc
 from google.protobuf import message_factory
 from .stubs import SPELLDriver_pb2 as p
+from .operational_journal import CapacityExceeded
 
 
 class Server:
@@ -22,6 +23,8 @@ class Server:
                         return dispatch(path, request.SerializeToString(deterministic=True))
                     except PermissionError:
                         context.abort(grpc.StatusCode.PERMISSION_DENIED, 'Driver authority rejected')
+                    except CapacityExceeded:
+                        context.abort(grpc.StatusCode.RESOURCE_EXHAUSTED, 'Driver journal capacity reached')
                     except NotImplementedError:
                         context.abort(grpc.StatusCode.UNIMPLEMENTED, 'Driver capability not qualified')
                     except (ValueError, TypeError):
