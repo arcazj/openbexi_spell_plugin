@@ -1,0 +1,42 @@
+{
+  "finding": "Initial portable collection could not resolve two report-relative verifier verdicts and a temporary rejected-candidate harness source.",
+  "failed_archive_filename": "openbexi-spell-v0.6-evidence.tar.gz",
+  "failed_archive_sha256": "ec29489604b8d92b80dfdae8b95abd827c1f8dc5d3d3e6765c570a0fee024600",
+  "failed_archive_bytes": 2287499982,
+  "issues": [
+    {
+      "path": "reports/IU-262.10968.63/plugins/org.openbexi.spell/0.6.0/verification-verdict.txt",
+      "expected": "49379b8e074539fb7d4783a5e0c223990ae8e1744d8c9ef317ecf0222cf0fb6c",
+      "commit": null,
+      "origin": "C:\\obspell_v06_resume\\.qualification\\v06\\verifier-intellij\\result.json",
+      "error": "Missing or changed referenced file: C:\\obspell_v06_resume\\reports\\IU-262.10968.63\\plugins\\org.openbexi.spell\\0.6.0\\verification-verdict.txt"
+    },
+    {
+      "path": "reports/PY-261.24374.152/plugins/org.openbexi.spell/0.6.0/verification-verdict.txt",
+      "expected": "5b68633a0063cae77246d875e2c17353b9df31ffa2838e0e93a28513574e6d8d",
+      "commit": null,
+      "origin": "C:\\obspell_v06_resume\\.qualification\\v06\\verifier-pycharm\\result.json",
+      "error": "Missing or changed referenced file: C:\\obspell_v06_resume\\reports\\PY-261.24374.152\\plugins\\org.openbexi.spell\\0.6.0\\verification-verdict.txt"
+    },
+    {
+      "path": "scripts/qualify_host_adapter.py",
+      "expected": "4a43f425277034fca2d5fe4989d14e965cdeff7175b2468395892adb303d1d1b",
+      "commit": null,
+      "origin": "C:\\obspell_v06_resume\\.qualification\\v06\\host-adapter-complete\\result.json",
+      "error": "Source input unavailable after complete capture traversal"
+    }
+  ],
+  "correction": "Resolve report-relative paths with exact hash checks. Recover the historical harness from its recorded edit and require its original SHA-256. No added historical gaps.",
+  "recovered_source": {
+    "path": "C:\\obspell_v06_resume\\.qualification\\recovered-historical-sources\\4a43f425277034fca2d5fe4989d14e965cdeff7175b2468395892adb303d1d1b",
+    "sha256": "4a43f425277034fca2d5fe4989d14e965cdeff7175b2468395892adb303d1d1b"
+  },
+  "tests": {
+    "path": "C:\\obspell_v06_resume\\.qualification\\v06\\evidence-path-tests.xml",
+    "sha256": "1880cb3c321b5d55cf7f11231c8064f4ca7fc890ff5b2f27d328f33f9628a689"
+  },
+  "source_inputs": {
+    "distribution/package_evidence.py": "3b44adb12a121d7297a501dffeade93e07dc6c4c5c546ecc36b4b250c0fd2329",
+    "distribution/test_package_evidence_paths.py": "bc080a4c355313038b3c1182e558d6486b3dbdae724b5e924305df03484a2394"
+  }
+}

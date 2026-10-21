@@ -126,6 +126,10 @@ with (contextlib.nullcontext(None) if args.audit_only else tarfile.open(archive_
    runtime_paths.add(name);continue
   path=Path(name);actual_path=(ROOT/path).resolve();body=None;use_git=False
   try:
+   if not path.is_absolute() and origin!='seed' and (not actual_path.is_file() or (expected is not None and file_sha(actual_path)!=expected)):
+    relative_to_report=(Path(origin).parent/path).resolve()
+    if relative_to_report.is_file() and (expected is None or file_sha(relative_to_report)==expected):
+     actual_path=relative_to_report
    if not path.is_absolute() and '.qualification' in path.parts and (not actual_path.is_file() or (expected is not None and file_sha(actual_path)!=expected)):
     options=[base/path for base in worktrees]
     actual_path=next((p.resolve() for p in options if p.is_file() and (expected is None or file_sha(p)==expected)),actual_path)
