@@ -6,7 +6,7 @@
 
 ### Legacy SPELL 2.4.4 — reference architecture and protocols
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
   subgraph DEV["Offline SPELL development"]
     SDE["SPELL SDE / Eclipse RCP"]
@@ -43,7 +43,7 @@ flowchart TB
   GUI <-->|"Proprietary SPELL TCP/IP — discovery"| LIST
   GUI <-->|"Proprietary SPELL TCP/IP — control and observation"| CMA
   GUI <-->|"Proprietary SPELL TCP/IP"| CMB
-  REPO -. "Procedure files" .-> CMA
+  REPO -.->|"Procedure files"| CMA
   EA1 --> RTL
   EA2 --> RTL
   EB1 --> RTL
@@ -51,13 +51,13 @@ flowchart TB
   DRIVER <-->|"GCS-specific vendor protocol / TCP/IP"| GCS
   GCS <-->|"TC uplink / TM downlink"| SAT
   GCS <-->|"Simulation interface — deployment-dependent"| DSS
-\`\`\`
+```
 
 *Legacy protocol names are architectural categories; verify original versions, message framing and routing against the applicable manuals and source.*
 
 ### OpenBEXI SPELL v0.8 — target server architecture and protocols
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
   subgraph CLIENT["Browser / developer clients"]
     CTRL["Controller U1<br/>Controls Executors A1, A2, B1"]
@@ -103,7 +103,7 @@ flowchart TB
   ADP -.->|"Vendor-specific / optional GCS adapter"| GCS
   GCS -.->|"TC / TM external mission link"| SAT
   GCS -.->|"Optional simulation route, verify"| DSS
-\`\`\`
+```
 
 *Architecture target only; v0.7 already qualifies a native Listener–Context–Executor chain and DSS/driver transport. Do not treat the proposed browser entry and consent-transfer protocol as implemented.*
 
@@ -111,7 +111,7 @@ flowchart TB
 
 ### Docker Compose — detailed target deployment
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
   CLIENT["Browser / CLI / IDE"]
   subgraph COMPOSE["Docker Compose host — proposed v0.8 topology"]
@@ -138,18 +138,18 @@ flowchart TB
     DRV <-->|"Private gRPC + simulator HTTP/TCP as qualified"| SIM
     CTX1 <-->|"Durable state / locks"| STATE
     CTX2 <-->|"Durable state / locks"| STATE
-    NET -. "Network isolation / health checks" .-> DRV
+    NET -.->|"Network isolation / health checks"| DRV
   end
   CLIENT <-->|"HTTPS REST/JSON; WSS events"| PROXY
   GCS["External GCS / other adapter — optional"]
   DRV -.->|"Vendor-specific protocol"| GCS
-\`\`\`
+```
 
 *Compose is a deployment proposal, not a claim of a currently qualified, multi-container v0.8 release. Enforce non-root users, read-only filesystems, memory/CPU/PID limits, health checks, loopback/public port policy, explicit secrets and fail-closed ownership recovery.*
 
 ### Kubernetes — detailed target deployment
 
-\`\`\`mermaid
+```mermaid
 flowchart TB
   USERS["Browsers / IDEs"]
   subgraph CLUSTER["Kubernetes cluster — proposed v0.8"]
@@ -179,7 +179,7 @@ flowchart TB
     EB1 -->|"Private gRPC or bounded IPC"| DRIVER
     CA <-->|"Atomic ownership transitions"| STORE
     CB <-->|"Atomic ownership transitions"| STORE
-    POLICY -. "Applies to Pods / namespaces" .-> DRIVER
+    POLICY -.->|"Applies to Pods / namespaces"| DRIVER
     OBS -.-> LS
     OBS -.-> CA
     OBS -.-> CB
@@ -189,7 +189,7 @@ flowchart TB
   GCS["GCS adapter / vendor network, optional"]
   DRIVER <-->|"Explicit simulator protocol"| DSS
   DRIVER -.->|"Qualified vendor API"| GCS
-\`\`\`
+```
 
 *Executor Pod lifecycle, fencing, lease persistence, reconnect, affinity, privileged Docker access, Kubernetes network policy and resource admission are design gates—not proven features. No assumption of HA or automatic replay.*
 
