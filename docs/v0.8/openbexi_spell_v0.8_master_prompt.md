@@ -4,15 +4,194 @@
 
 ## Architecture figures
 
-![Legacy server](diagrams/legacy_server.png)
+### Legacy SPELL 2.4.4 — reference architecture and protocols
 
-![v0.8 server](diagrams/v08_server.png)
+\`\`\`mermaid
+flowchart TB
+  subgraph DEV["Offline SPELL development"]
+    SDE["SPELL SDE / Eclipse RCP"]
+    REPO["Procedure repository"]
+    SDE <-->|"Local / network files"| REPO
+  end
+  subgraph USERS["Operators"]
+    GUI["SPELL GUI / Eclipse RCP<br/>Control, debugging, monitoring"]
+  end
+  subgraph SERVER["Legacy SPELL execution server"]
+    LIST["SPELL Listener — separate process<br/>Client registration, Context discovery and lifecycle"]
+    subgraph CA["Context A — process, spacecraft A"]
+      CMA["Context Manager<br/>Blackboard, session, driver binding"]
+      EA1["Executor A1 — process"]
+      EA2["Executor A2 — process"]
+      CMA --> EA1
+      CMA --> EA2
+    end
+    subgraph CB["Context B — process, spacecraft B"]
+      CMB["Context Manager"]
+      EB1["Executor B1 — process"]
+      CMB --> EB1
+    end
+    LIST <-->|"Legacy IPC / TCP/IP — exact messages to verify"| CMA
+    LIST <-->|"Legacy IPC / TCP/IP — exact messages to verify"| CMB
+    RTL["SPELL Python language library / execution semantics"]
+  end
+  subgraph GROUND["External ground segment"]
+    DRIVER["Standard SPELL Driver API<br/>GCS-specific driver"]
+    GCS["Ground Control System"]
+    SAT["Operational spacecraft"]
+    DSS["DSS satellite simulator<br/>External process / simulated mission"]
+  end
+  GUI <-->|"Proprietary SPELL TCP/IP — discovery"| LIST
+  GUI <-->|"Proprietary SPELL TCP/IP — control and observation"| CMA
+  GUI <-->|"Proprietary SPELL TCP/IP"| CMB
+  REPO -. "Procedure files" .-> CMA
+  EA1 --> RTL
+  EA2 --> RTL
+  EB1 --> RTL
+  RTL <-->|"In-process SPELL library calls"| DRIVER
+  DRIVER <-->|"GCS-specific vendor protocol / TCP/IP"| GCS
+  GCS <-->|"TC uplink / TM downlink"| SAT
+  GCS <-->|"Simulation interface — deployment-dependent"| DSS
+\`\`\`
 
-![Docker Compose](diagrams/v08_docker_compose.png)
+*Legacy protocol names are architectural categories; verify original versions, message framing and routing against the applicable manuals and source.*
 
-![Kubernetes](diagrams/v08_kubernetes.png)
+### OpenBEXI SPELL v0.8 — target server architecture and protocols
 
-![Prior comparison image — historical, non-normative](diagrams/previous_comparison.png)
+\`\`\`mermaid
+flowchart TB
+  subgraph CLIENT["Browser / developer clients"]
+    CTRL["Controller U1<br/>Controls Executors A1, A2, B1"]
+    OBS["Observers U2, U3 ...<br/>Read-only per Executor"]
+    DEV["Development<br/>Git workspaces"]
+    WEB["OpenBEXI web UI"]
+    CTRL --> WEB
+    OBS --> WEB
+    DEV --> WEB
+  end
+  subgraph SERVER["OpenBEXI SPELL v0.8 — target processes"]
+    LIST["SPELL Listener — process<br/>Authentication, sessions,<br/>Context discovery and routing"]
+    subgraph CTA["Context A — separate process"]
+      CM["Context internal coordination<br/>Execution registry + procedure locks<br/>Per-Executor controller ownership<br/>Claim/accept/reject, observer fanout<br/>Blackboard + driver binding"]
+      A1["Executor A1 — isolated process<br/>CPython 3.13 + SPELL"]
+      A2["Executor A2 — isolated process<br/>CPython 3.13 + SPELL"]
+      CM -->|"Versioned private IPC"| A1
+      CM -->|"Versioned private IPC"| A2
+    end
+    subgraph CTB["Context B — separate process"]
+      CBM["Context internal coordination<br/>Independent locks, owners, observers"]
+      B1["Executor B1 — isolated process"]
+      CBM -->|"Versioned private IPC"| B1
+    end
+  end
+  subgraph DOMAIN["Legacy-compatible integration layer"]
+    API["SPELL 2.4.4 behavior contract / facade"]
+    ADP["Typed context-bound driver adapter"]
+    GCS["GCS: vendor interface"]
+    DSS["Independent GENERIC DSS simulator"]
+    SAT["Real spacecraft — not qualified by this release"]
+  end
+  GIT["Git revision / immutable approved procedure"]
+  WEB <-->|"HTTPS REST/JSON + WSS JSON event fanout"| LIST
+  LIST <-->|"Authenticated private RPC / gRPC or TCP — ADR"| CM
+  LIST <-->|"Authenticated private RPC / gRPC or TCP — ADR"| CBM
+  GIT -.->|"Immutable SHA / approved release"| A1
+  A1 --> API
+  A2 --> API
+  B1 --> API
+  API -->|"In-process SPELL / legacy API"| ADP
+  ADP <-->|"Private gRPC relay; framed DAP/IPC where applicable"| DSS
+  ADP -.->|"Vendor-specific / optional GCS adapter"| GCS
+  GCS -.->|"TC / TM external mission link"| SAT
+  GCS -.->|"Optional simulation route, verify"| DSS
+\`\`\`
+
+*Architecture target only; v0.7 already qualifies a native Listener–Context–Executor chain and DSS/driver transport. Do not treat the proposed browser entry and consent-transfer protocol as implemented.*
+
+**Control invariant:** An Executor has at most one controller, but one user may control many Executors. Observers cannot mutate execution state; control claims require explicit acceptance from the active controller. Administration and management functions remain inside Listener and Context; there is **no separate Management Service**.
+
+### Docker Compose — detailed target deployment
+
+\`\`\`mermaid
+flowchart TB
+  CLIENT["Browser / CLI / IDE"]
+  subgraph COMPOSE["Docker Compose host — proposed v0.8 topology"]
+    PROXY["TLS termination / web UI<br/>Host-published HTTPS/WSS"]
+    LIST["Listener container<br/>Context discovery / routing"]
+    CTX1["Context A container<br/>Blackboard, authorization, claims"]
+    CTX2["Context B container<br/>Independent shared state"]
+    EX1["Executor A1 container<br/>CPython 3.13"]
+    EX2["Executor A2 container<br/>CPython 3.13"]
+    EX3["Executor B1 container<br/>CPython 3.13"]
+    DRV["Private legacy Driver facade / relay<br/>Authenticated adapter"]
+    SIM["DSS simulator container<br/>Independent lifecycle and endpoint"]
+    STATE[("Persistent authority / audit / Git snapshots<br/>Protected volumes; backend selected after audit")]
+    NET["Internal private Docker network<br/>No public Executor/driver ports"]
+    PROXY -->|"Internal HTTP routing"| LIST
+    LIST -->|"Private authenticated RPC"| CTX1
+    LIST -->|"Private authenticated RPC"| CTX2
+    CTX1 -->|"Versioned private IPC"| EX1
+    CTX1 -->|"Versioned private IPC"| EX2
+    CTX2 -->|"Versioned private IPC"| EX3
+    EX1 --> DRV
+    EX2 --> DRV
+    EX3 --> DRV
+    DRV <-->|"Private gRPC + simulator HTTP/TCP as qualified"| SIM
+    CTX1 <-->|"Durable state / locks"| STATE
+    CTX2 <-->|"Durable state / locks"| STATE
+    NET -. "Network isolation / health checks" .-> DRV
+  end
+  CLIENT <-->|"HTTPS REST/JSON; WSS events"| PROXY
+  GCS["External GCS / other adapter — optional"]
+  DRV -.->|"Vendor-specific protocol"| GCS
+\`\`\`
+
+*Compose is a deployment proposal, not a claim of a currently qualified, multi-container v0.8 release. Enforce non-root users, read-only filesystems, memory/CPU/PID limits, health checks, loopback/public port policy, explicit secrets and fail-closed ownership recovery.*
+
+### Kubernetes — detailed target deployment
+
+\`\`\`mermaid
+flowchart TB
+  USERS["Browsers / IDEs"]
+  subgraph CLUSTER["Kubernetes cluster — proposed v0.8"]
+    INGRESS["TLS Ingress / Gateway<br/>HTTPS REST and WSS"]
+    LS["Listener Deployment / Service<br/>Client identity and Context routing"]
+    subgraph CTXA["Context A workload"]
+      CA["Context Pod + Service<br/>Controller lease / observer fanout"]
+      EA1["Executor Pod A1<br/>Isolated CPython"]
+      EA2["Executor Pod A2<br/>Isolated CPython"]
+      CA -->|"Authenticated private RPC"| EA1
+      CA -->|"Authenticated private RPC"| EA2
+    end
+    subgraph CTXB["Context B workload"]
+      CB["Context Pod + Service<br/>Independent Context state"]
+      EB1["Executor Pod B1"]
+      CB -->|"Authenticated private RPC"| EB1
+    end
+    DRIVER["Legacy-compatible Driver adapter<br/>Private relay / service if qualified"]
+    STORE[("Durable execution state, controller epochs,<br/>audit evidence, immutable Git SHA")]
+    POLICY["Namespace RBAC + NetworkPolicy<br/>Secrets, quotas, run-as-nonroot"]
+    OBS["Health probes / bounded event replay / audit"]
+    INGRESS -->|"Internal HTTPS/HTTP"| LS
+    LS -->|"Authenticated service routing"| CA
+    LS -->|"Authenticated service routing"| CB
+    EA1 -->|"Private gRPC or bounded IPC"| DRIVER
+    EA2 -->|"Private gRPC or bounded IPC"| DRIVER
+    EB1 -->|"Private gRPC or bounded IPC"| DRIVER
+    CA <-->|"Atomic ownership transitions"| STORE
+    CB <-->|"Atomic ownership transitions"| STORE
+    POLICY -. "Applies to Pods / namespaces" .-> DRIVER
+    OBS -.-> LS
+    OBS -.-> CA
+    OBS -.-> CB
+  end
+  USERS <-->|"HTTPS and secure WebSocket"| INGRESS
+  DSS["DSS independent external simulator / workload"]
+  GCS["GCS adapter / vendor network, optional"]
+  DRIVER <-->|"Explicit simulator protocol"| DSS
+  DRIVER -.->|"Qualified vendor API"| GCS
+\`\`\`
+
+*Executor Pod lifecycle, fencing, lease persistence, reconnect, affinity, privileged Docker access, Kubernetes network policy and resource admission are design gates—not proven features. No assumption of HA or automatic replay.*
 
 ## Reasoning scale
 
@@ -160,11 +339,11 @@ flowchart TB
 
 ### Legacy SPELL 2.4.4 reference — verify exact internal protocols
 
-![Legacy architecture with communication protocols](openbexi_legacy_architecture.png)
+See [Legacy SPELL 2.4.4 — reference architecture](#legacy-spell-244--reference-architecture-and-protocols), above.
 
 ### OpenBEXI SPELL v0.8 approved target — protocol labels and no management service
 
-![v0.8 architecture with communication protocols](openbexi_v08_architecture.png)
+See [OpenBEXI SPELL v0.8 — target server architecture](#openbexi-spell-v08--target-server-architecture-and-protocols), above.
 
 The diagrams are part of the architecture contract, **not proof that v0.7 currently implements any shown v0.8 component**. Copy both PNGs into `docs/v0.8/diagrams/`, retain editable Graphviz DOT sources, and update any protocol labeled "select", "verify", or "optional" only after collecting code/configuration evidence. Regenerate diagrams from source, not by editing pixels.
 
