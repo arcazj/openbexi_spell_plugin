@@ -16,7 +16,8 @@ Review these documents in order:
    [process/port map](PROCESS_AND_PORT_MAP.md), and [gaps](GAP_ANALYSIS.md).
 2. [Architecture and migration](ARCHITECTURE.md),
    [decisions ADR-01 through ADR-12](ARCHITECTURE_DECISIONS.md), and
-   [protocol register](PROTOCOL_REGISTER.md).
+   [protocol register](PROTOCOL_REGISTER.md), with
+   [authority/lifecycle sequences](SEQUENCE_DIAGRAMS.md).
 3. [Ownership protocol](CONTROL_OWNERSHIP_PROTOCOL.md),
    [concurrency](EXECUTION_CONCURRENCY.md), and [security/recovery](SECURITY_AND_RECOVERY.md).
 4. [Acceptance plan](ACCEPTANCE_PLAN.md), [review findings](ARCHITECTURE_REVIEW.md),
