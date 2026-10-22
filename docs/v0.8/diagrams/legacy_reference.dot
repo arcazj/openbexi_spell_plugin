@@ -1,0 +1,40 @@
+digraph legacy {
+  graph [rankdir=LR, bgcolor="white", fontname="Arial", fontsize=22, pad=.35, nodesep=.5, ranksep=.7, dpi=150,
+    labelloc=t, label="Legacy SPELL 2.4.4 — documented behavioral reference\nManual-backed roles; exact wire framing and vendor routes not established"];
+  node [shape=box, style="rounded,filled", fillcolor="#f3f6fb", color="#718096", fontname="Arial", fontsize=16, margin=".2,.15"];
+  edge [color="#52637b", fontname="Arial", fontsize=13];
+  gui [label="SPELL GUI\nControl / monitoring"];
+  sde [label="Offline SDE / repository"];
+  listener [label="Listener process\nInitial client connection\nConfigured ListenerPort"];
+  subgraph cluster_a {
+    label="Context A"; color="#99aec9"; fontname="Arial"; fontsize=18;
+    ca [label="Context process\nDriver / spacecraft / GCS binding"];
+    a1 [label="Executor A1 process"];
+    a2 [label="Executor A2 process"];
+    ca -> a1 [label="Runtime lifecycle / IPC\nExact framing to verify"];
+    ca -> a2;
+  }
+  subgraph cluster_b {
+    label="Context B"; color="#99aec9"; fontname="Arial"; fontsize=18;
+    cb [label="Context process"];
+    b1 [label="Executor B1 process"];
+    cb -> b1;
+  }
+  api [label="SPELL language / Driver facade\nIn-process calls"];
+  gcs [label="GCS-specific adapter / GCS\nVendor protocol: site-dependent", fillcolor="#eaf1e7"];
+  sat [label="Operational spacecraft", fillcolor="#eaf1e7"];
+  dss [label="Independent DSS simulator\nOptional site route: UNKNOWN", style="rounded,dashed", fillcolor="white"];
+  gui -> listener [dir=both, label="SPELL-specific TCP/IP\nSchema/framing to verify"];
+  listener -> ca [dir=both, label="Configured internal port"];
+  listener -> cb [dir=both];
+  gui -> ca [dir=both, label="Control / observation\nExact route to verify"];
+  sde -> a1 [style=dashed, label="Procedure files"];
+  a1 -> api;
+  a2 -> api;
+  b1 -> api;
+  api -> gcs [dir=both, label="Configured vendor integration"];
+  gcs -> sat [dir=both, label="External mission link"];
+  gcs -> dss [dir=both, style=dashed, label="Only when verified"];
+  note [shape=note, fillcolor="#fff1d9", label="Sources: 2.4.4 Server / GUI / Driver manuals\nAvailable source archive is 2.6.10\nNot a claim of wire compatibility\nNot a plan to restore Python 2 or Eclipse"];
+  listener -> note [style=invis];
+}

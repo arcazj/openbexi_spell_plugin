@@ -1,0 +1,43 @@
+digraph v07 {
+  graph [rankdir=LR, bgcolor="white", fontname="Arial", fontsize=22, pad=.35, nodesep=.4, ranksep=.7, dpi=150,
+    labelloc=t, label="OpenBEXI SPELL v0.7 — verified baseline\nTwo service paths; private native chain per run"];
+  node [shape=box, style="rounded,filled", fillcolor="#f4f7fc", color="#718096", fontname="Arial", fontsize=15, margin=".2,.15"];
+  edge [color="#52637b", fontname="Arial", fontsize=12];
+  ui [label="Qt desktop / browser\nExecution • Monitoring • Development"];
+  subgraph cluster_local {
+    label="Local workspace path"; color="#b9c9e0"; fontname="Arial"; fontsize=17;
+    local [label="ProcedureService process\nPer-run owners; REST polling\nParallel-run restrictions"];
+    desktop [label="Packaged native desktop\nOne live instance lock"];
+    teaching [label="Teaching DSS\nThreads in adapter process", fillcolor="#fff3dd"];
+    local -> desktop [label="Private DAP"];
+    desktop -> teaching [label="Loopback gRPC / HTTP / TCP"];
+  }
+  subgraph cluster_durable {
+    label="Durable service path"; color="#b9c9e0"; fontname="Arial"; fontsize=17;
+    session [label="SessionServer + Session process\nOne session-wide controller / epoch\nParallel slots; immutable snapshots"];
+    store [shape=cylinder, label="OS-locked SQLite authority\nReservations • audit • recovery"];
+    provider [label="Installed shared provider\nService-side driver authority\nIntent / receipt journal"];
+    session -> store [dir=both, label="Atomic durable state"];
+    session -> provider [label="Provider contract"];
+  }
+  subgraph cluster_native {
+    label="Per-run isolated native container (verified PIDs)"; color="#94b9ae"; fontname="Arial"; fontsize=17;
+    adapter [label="Native adapter + IPC bridge"];
+    listener [label="Native Listener process"];
+    context [label="Native Context process"];
+    executor [label="Native Executor process\nCPython 3.13 + SPELL"];
+    driver [label="Original Driver facade\nLoopback protobuf gRPC"];
+    adapter -> listener [label="REQ_GUI_LOGIN / REQ_CTX_INFO"];
+    listener -> context [label="Native lifecycle"];
+    context -> executor [label="REQ_OPEN_EXEC / native IPC"];
+    executor -> driver [label="In-process SPELL API"];
+  }
+  dss [label="External GENERIC DSS\nConfigured HTTP + binary TCP\nOptional Kafka TM", fillcolor="#e8f3e9"];
+  ui -> local [label="Authenticated REST / polling"];
+  ui -> session [label="CLI / session client\nHTTP loopback or mTLS"];
+  provider -> adapter [label="Private framed DAP"];
+  driver -> provider [label="Bounded private DAP relay\nService attaches epoch/fence"];
+  provider -> dss [label="Correlated TC/TM; no uncertain replay", dir=both];
+  note [shape=note, fillcolor="#fff3dd", label="Not present in v0.7:\nPer-execution durable consent transfer\nModern browser WSS gateway\nQualified multi-service Compose / K8s"];
+  store -> note [style=invis];
+}
