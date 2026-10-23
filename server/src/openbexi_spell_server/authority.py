@@ -55,6 +55,7 @@ class ExecutionAuthority:
         self.reservation_validator = None
         self.start_guard = None
         self.native_pause = None
+        self.native_children = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})

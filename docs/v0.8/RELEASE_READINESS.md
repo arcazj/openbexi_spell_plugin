@@ -1,0 +1,59 @@
+# Full v0.8 publication qualification
+
+Latest owner request: **"Qualify and release full v0.8"**. This authorizes
+implementation/qualification, merge, tag and GitHub publication when all
+mandatory criteria pass. It supersedes the separate-confirmation hold; another
+routine publication confirmation is not required. It does not authorize
+production migration or weaken G1 F1–F10 or acceptance requirements.
+
+The full release is **not qualified**. Package `0.8.0.dev16` remains development
+code. Existing native receipts qualify named retained audit, TC/TM, negative
+main-pause and observed background-Python components. They do not qualify full
+family handoff/resume, native children, joint IDE/browser or deployed recovery.
+
+## Publication preflight
+
+`RELEASE_GATES.json` records eleven mandatory gate groups and their blockers.
+`python scripts/check_v08_release.py --output <report.json>` exits nonzero unless
+all have complete, source-bound, checksummed receipts and server version `0.8.0`.
+Partial/component schemas, missing checks, altered evidence, stale SPELL/IDE
+commits and uncommitted runtime changes cannot qualify publication. The
+preflight validates records; it does not execute missing qualification or create
+a release. Actual hosted/cluster results and source artifact verification remain
+mandatory; hand-edited flags are not executed tests.
+
+Receipts use `openbexi.v08.acceptance-gate/1`, the gate name, exact executable
+candidate_commit, paired ide_commit, passed true, every required check true and
+executed-evidence references. The manifest pins relative path and SHA-256.
+`--candidate <exact-code-SHA>` permits later evidence-only commits, avoiding a
+self-referential commit hash inside its own receipt. Runtime/workflow/IDE-pin
+changes require new qualification; evidence commits cannot hide them.
+
+## Confirmed inherited-suite issue
+
+The broad inherited diagnostic was interrupted after repeated failures/errors;
+it is not a completed suite. A bounded reproduction stopped after **three
+failures and sixteen passes**, first failures in
+`tests/test_child_arguments_report.py`. They reference missing captures at
+historical Windows path `C:\\obspell_v06_resume\\.qualification\\...`. The
+original v0.7 raw archive SHA-256 is
+`9db68109972848d7dd38634c421c1aad94bb75103df9e65432e0e58e99dd9357`.
+Captures must be verified against original immutable sources. Current files
+cannot replace captured sources or relabel old reports as v0.8 proof. The
+historical/current split is in `scripts/qualify_repository_v07.py`. New behavior
+needs fresh native qualification. The 241 portable tests remain a named subset,
+not all-763 requirement coverage.
+
+## Work required before publication
+
+First implement the mandatory native before-RUN child gate and full participant,
+control/prompt/effect settlement. [Child admission](NATIVE_CHILD_ADMISSION.md) is
+preparatory and keeps native_start_qualified false. Then prove owner/epoch CAS
+and explicit new-owner resume with old requests fenced. Complete compatibility,
+driver faults/recovery, joint SPELL/IDE browser Run/Debug/WSS/Git, actual
+Compose/Kubernetes qualification, independent security/SBOM/license/vulnerability
+review and stable installed artifacts. No full deployment environment or full
+gate receipt is present here; hosted component jobs do not satisfy those gates.
+
+Publication remains authorized conditional on these results. Release is blocked
+by qualification, not missing user approval.

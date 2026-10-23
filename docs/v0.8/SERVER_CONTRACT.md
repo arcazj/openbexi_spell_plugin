@@ -139,3 +139,14 @@ worker-local 127.0.0.1:36991 helper accepts only bounded one-shot `pause` and
 `snapshot` diagnostics. It has no resume, effect or ownership authority and is
 not exposed through Listener, Context or the IDE. Its observation scope cannot
 qualify native children or control/prompt queues.
+
+## Optional child admission authority (no native start)
+
+`native_children: admission-only` requires retained launch and the approved
+catalog. Protocol-2 `/v1/worker/child-admit` and `/child-consume` require original
+worker identity, single-consumption proof and live parent authority; neither has
+the revoked-controller safety exception. Schema 10 records single-use grants
+and canonical reservations shared with top-level starts. Replay cannot redeliver
+tokens or release holds. Replies keep native_start_qualified false. These routes
+do not expose launch through Listener/IDE or implement the native before-RUN
+hook. NATIVE_CHILD_ADMISSION.md defines fields, binding and outstanding gates.

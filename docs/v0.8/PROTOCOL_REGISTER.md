@@ -75,3 +75,9 @@ grant, driver or ownership action. It is not a Listener/Context/IDE route or an
 authentication service; it can only hold observed cooperative Python threads.
 See [NATIVE_THREAD_BARRIER.md](NATIVE_THREAD_BARRIER.md) for its explicit scope,
 limits and candidate-SHA qualification. Whole-family proof remains unavailable.
+
+Dev16 `native_children: admission-only` adds private protocol-2
+child-admit/child-consume authority routes and schema-10 retained grants. Live
+original parent authority and the single winner's memory proof remain required.
+No native execution or quiescence proof is inferred. NATIVE_CHILD_ADMISSION.md
+defines the protocol and the mandatory native before-RUN hook still required.

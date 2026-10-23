@@ -9,6 +9,13 @@ routine implementation, checks and draft-PR updates continue under that
 standing authorization. Final merge/publication remains held for a reviewable
 qualified result, as stated in the implementation conversation.
 
+**Latest owner instruction:** "Qualify and release full v0.8" now authorizes
+completion, merge/tag/GitHub publication once all full mandatory criteria pass,
+superseding the earlier separate-confirmation hold above. No new routine
+publication confirmation is required. Production migration is not authorized.
+All binding contracts below remain mandatory; partial qualification cannot
+satisfy the full-release condition. See RELEASE_READINESS.md/RELEASE_GATES.json.
+
 Reviewed proposal: `2d02bb1f030eebca61374dbbba34938b30c29e5d`.
 The independent review identified six P1 architecture issues and four P2
 contract issues. The binding decisions below resolve the design questions;

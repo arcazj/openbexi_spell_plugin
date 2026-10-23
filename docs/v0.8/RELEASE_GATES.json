@@ -1,0 +1,22 @@
+{
+  "schema": "openbexi.release-gates/1",
+  "version": "0.8.0",
+  "publication_authorization": {
+    "request": "Qualify and release full v0.8",
+    "condition": "Full mandatory acceptance criteria pass at the exact SPELL and companion IDE source identities; no further routine publication confirmation required",
+    "production_migration_authorized": false
+  },
+  "gates": {
+    "services": {"qualified": false, "receipt": null, "reason": "Foundation passed; full Listener restart while native workers survive and deployed Context isolation are pending"},
+    "native_family": {"qualified": false, "receipt": null, "reason": "Observed Python-thread component passed; native before-RUN child gate, whole-family pause, queue/effect settlement and effective handoff/resume are unfinished"},
+    "compatibility": {"qualified": false, "receipt": null, "reason": "241 portable tests passed; all-763 requirements/native compatibility unqualified; inherited archival checks reference missing original Windows captures"},
+    "driver_faults": {"qualified": false, "receipt": null, "reason": "Positive retained TC/TM profile passed; complete native driver lifecycle/reconnect/reset/partition qualification remains pending"},
+    "ide_browser": {"qualified": false, "receipt": null, "reason": "Paired prelaunch Qt foundation passed; joint native Run/Debug and three-user browser/WSS/Git E2E remain unfinished"},
+    "compose": {"qualified": false, "receipt": null, "reason": "No full production Compose boot/fault/storage/restore qualification receipt"},
+    "kubernetes": {"qualified": false, "receipt": null, "reason": "No kind/minikube plus production-like cluster workload admission/Pod identity/partition/storage qualification receipt"},
+    "recovery": {"qualified": false, "receipt": null, "reason": "Fenced retained holds tested; descendant shutdown, safe reclamation and deployed restore/upgrade/rollback remain unqualified"},
+    "security": {"qualified": false, "receipt": null, "reason": "Full implemented-system independent review, bounded load, SBOM/license/vulnerability disposition remains pending"},
+    "ci": {"qualified": false, "receipt": null, "reason": "Scoped/native component workflows passed; complete browser/deployment/full-runtime candidate workflows do not yet exist"},
+    "packaging": {"qualified": false, "receipt": null, "reason": "Development wheels pass; stable v0.8 joint release artifacts, checksums, installed acceptance and final runbooks remain pending"}
+  }
+}

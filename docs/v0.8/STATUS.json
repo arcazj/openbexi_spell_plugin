@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev15 observed snapshot background-Python barrier qualified at 41a2fb2 with native stable counter; whole-family pause/live handoff/full v0.8 remain unfinished and unqualified",
+  "phase": "Full v0.8 release requested and conditionally authorized; dev16 retained child-admission authority implemented; mandatory native/deployment/browser/security gates still unqualified",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -66,13 +66,15 @@
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
     "K_native_subset": "41a2fb2 PR services/native run 40015231877 and portable run 40015231748 passed: 304 scoped tests, six services/native jobs including four native cohorts, 241 portable compatibility tests. Full K and all-763 remain pending.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
-    "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified."
+    "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
+    "G3_child_admission_authority": "Opt-in schema-10 child-admit/child-consume authority: canonical Context-wide reservations, immutable original family/arguments/mode binding, one-time token consumption, no token replay and retained restart holds. Native before-RUN integration remains unimplemented; not native-child qualification.",
+    "G4_full_diagnostic": "Bounded current inherited diagnostic: 16 passed, 3 failed on missing historical Windows child-arguments captures. Broad diagnostic interrupted after repeated failures/errors. Historical evidence requires its original immutable sources; no full compatibility qualification."
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Implement native child admission and per-family prompt/control/effect queue settlement with acknowledgment of every supported participant; prove safe owner/epoch CAS and explicitly admitted new-owner resume without grant restamping; then recovery/UI/full compatibility/deployment/security/release gates",
-  "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
-  "owner_authorization": "Finish and qualify v0.8; all steps approved until finished/deeply tested, commit to GitHub and integrate openbexi_ide with openbexi_spell_plugin (conversation)",
+  "next_step": "Implement the mandatory native before-RUN child gate and complete family participant/control/prompt/effect settlement, then effective handoff and explicit resume. Restore historical qualification on immutable sources and complete full native/IDE/browser/deployment/recovery/security/stable-package gates before publication.",
+  "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
+  "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
   "runtime_enabled": false,
   "ide_pair": "IDE_PAIR.json",
@@ -83,5 +85,7 @@
   "native_pause_profile": "Optional native_pause:fenced-probe; schema 9; original worker grant plus consumption-winner proof; status-only provider never authorizes transfer; NATIVE_PAUSE.md",
   "native_pause_qualification_receipt": "evidence/native-pause-probe/qualification-summary.json",
   "native_thread_barrier_profile": "Private --native-thread-barrier; explicit read-only operator library, CPython monitoring alongside original native trace; only observed snapshot background threads; no resume or positive family proof; NATIVE_THREAD_BARRIER.md",
-  "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification"
+  "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
+  "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
+  "native_child_profile": "Optional native_children:admission-only; worker protocol 2, schema 10, no native agent integration or positive native start proof; NATIVE_CHILD_ADMISSION.md"
 }

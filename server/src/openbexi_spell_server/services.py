@@ -39,6 +39,7 @@ class Context:
         worker_launch=None,
         native_driver_factory=None,
         native_pause=None,
+        native_children=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -74,6 +75,14 @@ class Context:
             from .pause import NativePauseBarrier
 
             NativePauseBarrier(self.authority)
+        if native_children not in (None, "admission-only"):
+            raise ValueError("Unsupported native child profile")
+        if native_children is not None:
+            if self.launch is None:
+                raise ValueError("Child admission requires the explicit retained launch profile")
+            from .family import FamilyAdmission
+
+            FamilyAdmission(self.authority, self.catalog)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -108,6 +117,8 @@ class Context:
                     "/v1/worker/driver",
                     "/v1/worker/pause-poll",
                     "/v1/worker/pause-report",
+                    "/v1/worker/child-admit",
+                    "/v1/worker/child-consume",
                 )
                 else self.preflight
             )

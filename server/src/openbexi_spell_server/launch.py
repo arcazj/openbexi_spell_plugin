@@ -55,9 +55,13 @@ class WorkerLaunch:
         }
         if pause is not None:
             allowed.update({"/v1/worker/pause-poll", "/v1/worker/pause-report"})
+        children = self.authority.native_children
+        if children is not None:
+            allowed.update({"/v1/worker/child-admit", "/v1/worker/child-consume"})
         if path not in allowed:
             raise Fault(404, "route_not_available")
-        if not path.endswith("consume"):
+        root_consume = path == "/v1/worker/consume"
+        if not root_consume:
             if type(body) is not dict or "runtime_capability" not in body:
                 raise Fault(403, "worker_consumption_proof_required")
         extra = set()
@@ -67,7 +71,11 @@ class WorkerLaunch:
             extra = {"request_id", "path", "payload"}
         elif path.endswith("pause-report"):
             extra = {"barrier_id", "provider", "native_status", "quiescence_proven", "reason"}
-        if not path.endswith("consume"):
+        elif path.endswith("child-admit"):
+            extra = {"request_id", "parent_admission_id", "entrypoint", "arguments_sha256", "mode"}
+        elif path.endswith("child-consume"):
+            extra = {"child_grant"}
+        if not root_consume:
             extra.add("runtime_capability")
         exact(
             body,
@@ -81,12 +89,16 @@ class WorkerLaunch:
         grant = start_grant(body["grant"])
         if grant.worker_slot != peer.slot or grant.worker_incarnation != peer.incarnation:
             raise Fault(403, "worker_assignment_mismatch")
-        if not path.endswith("consume"):
+        if not root_consume:
             self._runtime(grant, body["runtime_capability"], safety_only=safety_only)
         if path.endswith("pause-poll"):
             return pause.poll(grant)
         if path.endswith("pause-report"):
             return pause.report(grant, body)
+        if path.endswith("child-admit"):
+            return children.admit(grant, body)
+        if path.endswith("child-consume"):
+            return children.consume(grant, body["child_grant"])
         if path.endswith("event"):
             return self.record_event(grant, body)
         if path.endswith("driver"):
@@ -113,7 +125,7 @@ class WorkerLaunch:
                 execution_id=grant.execution_id,
                 payload=base64.b64encode(result).decode("ascii"),
             )
-        if path.endswith("consume"):
+        if root_consume:
             capability = secrets.token_hex(32)
             self.authority.consume_start(
                 grant, peer.slot, peer.incarnation, consumption_hash=secret_hash(capability)
@@ -121,7 +133,7 @@ class WorkerLaunch:
         # Only the single consume winner receives a new memory-only runtime
         # proof. No original grant, new epoch or retry permission is returned.
         answer = dict(
-            consumed=path.endswith("consume"),
+            consumed=root_consume,
             checked=path.endswith("check"),
             execution_id=grant.execution_id,
             request_id=grant.request_id,
@@ -129,7 +141,7 @@ class WorkerLaunch:
             hold_retained=True,
             runtime_enabled=False,
         )
-        if path.endswith("consume"):
+        if root_consume:
             answer["runtime_capability"] = capability
         return answer
 

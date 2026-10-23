@@ -830,3 +830,45 @@ whole-family/runtime/full-v0.8 flag stays false. Next implementation is native
 child admission plus family queue/effect settlement before any ownership CAS
 and explicitly admitted new-owner resume. The PR remains draft and unmerged;
 no tag, release or production deployment is authorized by these test results.
+
+
+## dev16 full-release request, child authority and publication preflight
+
+The latest owner request, **Qualify and release full v0.8**, supplies conditional
+merge/tag/GitHub publication authorization once all mandatory gates pass. It does
+not waive qualification or authorize production migration. RELEASE_READINESS.md
+and RELEASE_GATES.json record the active request and exact pending groups.
+
+The new optional child-admission authority uses original live parent identity,
+consumption-winner proof, immutable arguments/mode/source binding and the same
+canonical reservation namespace as top-level runs. Grant delivery/consumption is
+single use, with no token recovery, replay authority or hold release. Schema 10
+fences restart and older binaries. Native before-RUN integration remains absent;
+all replies keep native_start_qualified false. The first focused attempt found
+root-consume suffix classification incorrectly applying to child-consume and a
+test using an integer file descriptor as a path (12 failed/13 passed). Exact
+root-route matching and the fixture were corrected; 25 checks then passed. The
+expanded checks include missing winner proof and parent-catalog rebinding.
+Publication preflight cases reject partial native receipts, stale paired sources,
+missing gates, tampering, development/dirty checkouts and hidden runtime changes.
+
+Final local CPython **3.13.16** qualification passed **344 scoped tests**, zero
+failures/errors/skips, lint/format/mypy and warnings-as-errors. Evidence:
+`v08-server/run-20261023T202621Z-c7777e70`; all recorded source hashes matched the
+candidate working tree. Earlier intermediate full run passed 341 before final
+source/guard regressions. Offline dev16 wheel build, isolated installed family
+module import/version and both service/preflight CLI smokes passed.
+
+The requested full inherited diagnostic was interrupted after repeated failures
+and errors. A bounded reproduction (`v08-full-release/inherited-bounded.xml`)
+passed 16 and failed 3, first failures caused by missing historical Windows
+child-arguments captures. This is not a completed full compatibility run or a
+proved application regression. Historical proof needs the original immutable
+sources and retained raw archive; current native changes need fresh qualification.
+The 241-test portable subset remains separately scoped.
+
+The publication preflight rejected the current development checkout with all
+**eleven full mandatory gate groups unqualified**, development version and
+uncommitted-source notices. It did not publish. Hosted exact-candidate scoped,
+package/native component and compatibility outcomes are recorded when verified.
+The child RPC suite is not native child execution or full v0.8 qualification.
