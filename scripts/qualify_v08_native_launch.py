@@ -830,7 +830,7 @@ def main():
                         "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload='')\n"
                         "try:r.call(b,path='/v1/worker/driver',schema='openbexi.worker/2')\n"
                         "except Fault as e:\n"
-                        " if e.code!='context_request_denied' or getattr(e.__cause__,'code',None)!=403:raise\n"
+                        " if e.code!='context_request_denied' or e.status!=403:raise\n"
                         "else:raise RuntimeError('Copied original config gained driver authority')\n"
                         "print('copied-original-driver-config-denied',flush=True)\n"
                     )

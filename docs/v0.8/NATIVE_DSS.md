@@ -1,6 +1,6 @@
 # Context-owned native DSS subset (development)
 
-`0.8.0.dev10` connects the original protobuf driver request to the private Context
+`0.8.0.dev11` connects the original protobuf driver request to the private Context
 effect gate. This is an optional retained, single-use qualification profile.
 Default gateway, Listener and IDE execution remain disabled. It is not a full
 v0.8 release or a claim of complete legacy driver compatibility.
@@ -108,7 +108,11 @@ original RefreshItem calls and fifty ACKED stage receipts in a separate isolated
 DSS container, while retaining all original reservations and spent slots.
 The dev9 hosted DSS cohort failed because the fixture omitted the SPELL SDK
 import; all ten workers reported `NameError: Send`. dev10 adds that import and
-a separate physical copied-original-configuration driver-denial probe.
+a separate physical copied-original-configuration driver-denial probe. Its hosted
+audit and DSS cohorts then exposed a client allowlist mismatch before native
+startup. dev11 updates the real client to the exact protocol-2 routes, including
+the new driver route, and tests that client over mTLS; version-1 launch
+downgrade remains rejected.
 Until that candidate-SHA workflow succeeds, this boundary is **not native
 qualified**. Adding or passing unit/RPC tests is insufficient.
 

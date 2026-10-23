@@ -484,3 +484,32 @@ Full v0.8 remains **unqualified**, with public runtime disabled. Native
 quiescence/live transfer, children, recovery/reclamation, full compatibility,
 IDE/browser execution, deployment and independent security/release acceptance
 remain open. No merge, tag or release is authorized by these subset results.
+
+
+## dev11 native-client route integration
+
+The dev10 hosted PR run 40001929895 passed foundation (254 tests) and
+native-boundary. Both actual launch cohorts failed before native-ready:
+`Route.call` rejected the protocol-2 launch as an unconfigured route. Direct
+HTTP tests had covered the new server protocol but not the agent's real
+client allowlist. Artifacts 12523245135 (audit) and 12522007581 (DSS) retain
+the original failures. This is not an application procedure failure or a pass
+for the corrected dev9 fixture.
+
+Dev11 updates the explicit client allowlist to protocol 2 for consume/check/
+event/driver, leaving challenge/verify at version 1. The physical clone probe
+now asserts the transport's actual `Fault.status`, not an HTTPError cause. A
+new real-client mTLS regression sends checks, events and an actual command,
+proves direct driver use without the winner proof is denied, and rejects both
+client-route and server-body launch downgrade. Its initial certificate-fixture
+key error is retained in `client-v2-fix.xml`; the corrected focused test passed
+in `client-v2-corrected.xml`. Full local and hosted qualification follow below.
+
+
+Fresh dev11 CPython **3.13.16** qualification passed **255 scoped tests**, zero
+failures/errors/skips and warnings as errors, with lint/format/mypy all passing.
+Evidence: `v08-server/run-20261023T181847Z-b34d7eb0`; exact tested code hashes are
+retained under prior head 2ba8743 plus local changes. Offline wheel build and
+clean isolated installed **0.8.0.dev11** version/import and both CLI smokes
+passed. The dev10 hosted 241-test compatibility job also passed. Native dev11
+candidate-SHA results remain pending; full v0.8 stays unqualified.

@@ -13,10 +13,11 @@ import time
 import pytest
 from google.protobuf.wrappers_pb2 import BoolValue
 
-from openbexi_spell_server.contracts import policy
+from openbexi_spell_server.contracts import Fault, policy
 from openbexi_spell_server.launch import WorkerLaunch
 from openbexi_spell_server.services import Context
 from openbexi_spell_server.store import ContextStore
+from openbexi_spell_server.transport import Route
 from test_effects import dss as dss_process_fixture
 from test_launch import call, event_body, grant
 import test_preflight as helpers
@@ -98,6 +99,58 @@ def test_original_tc_over_worker_mtls_has_five_durable_receipts(driver_setup, pk
     assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
     assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
     assert setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 8
+
+
+def test_real_worker_client_uses_protocol_two_and_cannot_downgrade(driver_setup, pki):
+    setup = driver_setup
+    route = Route(
+        f"https://localhost:{setup['server'].server_port}",
+        pki["context-a"]["pin"],
+        pki["worker"]["client"],
+    )
+    original = dict(schema="openbexi.worker/2", context_id="A", grant=asdict(setup["grant"]))
+    proof = setup["runtime_capabilities"][setup["grant"].execution_id]
+    with pytest.raises(Fault) as denied:
+        route.call(original, path="/v1/worker/driver", schema="openbexi.worker/2")
+    assert denied.value.status == 403
+    with pytest.raises(Fault) as spent:
+        route.call(original, path="/v1/worker/consume", schema="openbexi.worker/2")
+    assert spent.value.status == 403
+    check = route.call(
+        {**original, "runtime_capability": proof},
+        path="/v1/worker/check",
+        schema="openbexi.worker/2",
+    )
+    assert check["checked"] is True
+    event = route.call(
+        {**original, "runtime_capability": proof, **event_body()},
+        path="/v1/worker/event",
+        schema="openbexi.worker/2",
+    )
+    assert event["recorded"] is True
+    reply = route.call(
+        {
+            **original,
+            "runtime_capability": proof,
+            "request_id": str(uuid.uuid4()),
+            "path": PREFIX + "TC/SendCommand",
+            "payload": base64.b64encode(command().SerializeToString()).decode("ascii"),
+        },
+        path="/v1/worker/driver",
+        schema="openbexi.worker/2",
+    )
+    assert BoolValue.FromString(base64.b64decode(reply["payload"])).value
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 1
+    for action in ("consume", "check", "event", "driver"):
+        with pytest.raises(ValueError, match="Unconfigured RPC route"):
+            route.call(original, path="/v1/worker/" + action, schema="openbexi.worker/1")
+    with pytest.raises(Fault) as old_body:
+        route.call(
+            {**original, "schema": "openbexi.worker/1", "runtime_capability": proof},
+            path="/v1/worker/check",
+            schema="openbexi.worker/2",
+        )
+    assert old_body.value.status == 403
 
 
 def test_twenty_duplicate_rpc_calls_produce_one_real_command(driver_setup, pki):
