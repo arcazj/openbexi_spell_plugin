@@ -32,3 +32,10 @@ v0.8 tag, release, production replacement, or completed runtime qualification ye
 
 Diagrams are generated from editable DOT files in [diagrams](diagrams/).
 Every target component in the v0.8 diagram is labeled proposed.
+
+## Initial implementation
+
+The [server foundation](../../server/README.md) provides internal TLS routing
+and durable Context blackboards with 50 local CPython 3.13 tests. Execution,
+ownership transfer and browser/WSS remain disabled. See TEST_REPORT.md and
+KNOWN_LIMITATIONS.md for exact scope and pending gates.

@@ -11,3 +11,13 @@
 * Add editable as-is/target/legacy diagrams and a reviewable architecture package.
 
 No v0.8 production implementation, release or schema migration yet.
+
+## Approved G1 resolutions and initial C/D foundation
+
+- Record independent findings F1-F10 and owner authorization; bind worker
+  incarnations, transfer barriers, actual-send ordering, single-use workers,
+  mandatory admission and the supported authority storage profile.
+- Add separate internal Listener/Context package with TLS 1.3, certificate pins,
+  scoped RPC, Context ACLs and durable blackboard CAS. Execution is disabled.
+- Add 50 local Python 3.13 foundation tests, failure evidence, package smoke and
+  hosted foundation CI. Full runtime/deployment/release gates remain pending.

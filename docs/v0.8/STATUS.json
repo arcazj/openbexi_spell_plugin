@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 reviewed and owner-authorized; staged C/D implementation next",
+  "phase": "G1 approved; initial C/D internal Listener/Context foundation implemented and locally tested",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -12,7 +12,10 @@
     "Local workspace and durable session have different control scopes",
     "37 baseline regressions passed and one installed native/DSS test passed",
     "Distinct native Listener, Context and Executor processes observed",
-    "No baseline GitHub Actions runs or check runs; aggregate status pending"
+    "No baseline GitHub Actions runs or check runs; aggregate status pending",
+    "CPython 3.13.16: 50 new foundation tests passed, warnings as errors",
+    "Real TLS role/scope denial, CAS races and independent Listener/Context process crash/restart tested",
+    "New server wheel/sdist built; isolated installed wheel CLI smoke passed"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -20,18 +23,21 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "TEST_REPORT.md and evidence/*.xml",
+  "test_commands_and_outcomes": "TEST_REPORT.md and evidence/server-foundation; 50/50 local foundation tests",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md",
   "gates": {
     "G0": "Baseline identified and focused reproduction passed; absent hosted CI documented",
     "A": "Evidence ready; independent review pending",
     "B_G1": "Owner-authorized for staged implementation under binding F1-F10 contracts; no runtime qualification inferred",
-    "C_through_L": "Not started; no v0.8 acceptance claimed"
+    "C": "Foundation routing/TLS/process lifecycle tests pass; full Executor-survival integration gate pending",
+    "D": "Foundation Context state/ACL/isolation/CAS tests pass; execution registry/driver/fanout completion pending",
+    "E_through_L": "Not qualified; native workers, ownership, driver, UI, deployments and release gates remain pending",
+    "K_foundation": "Hosted foundation workflow added; local success is not a claim of green candidate CI"
   },
-  "implementation_started": false,
+  "implementation_started": true,
   "release_published": false,
-  "next_step": "Implement and qualify the internal TLS Listener/Context foundation; no merge/tag/publication",
+  "next_step": "Complete native worker/execution authority integration under F1-F10 and qualify the remaining C-L gates; no merge/tag/publication",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Approved , move forward (review conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10"

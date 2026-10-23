@@ -41,3 +41,47 @@ were reclassified and no v0.8 acceptance result is inferred from them.
 
 Phase A/G0 evidence is ready for review. Phase B/G1 is pending explicit review
 and owner approval. Phase C implementation has not started.
+
+# Initial C/D foundation qualification
+
+The owner authorized the G1 review resolutions and staged implementation with
+"Approved , move forward". The original Phase A/B evidence above remains
+historical evidence at its stated identities.
+
+New implementation: standalone `server/`, version `0.8.0.dev1`; no change to
+published v0.7 runtime packages or entry points. The service has no execution,
+worker, driver, ownership transfer, browser session or WSS route.
+
+Local CPython **3.13.16**, OpenSSL **3.5.9**: **50 passed**, zero errors, failures
+or skips, with warnings as errors. Lint, formatting and mypy pass. Real TLS
+sockets cover pinned service roles, forged identity/Origin/Host, independent
+Context permissions, authorization before idempotency replay, malformed input,
+Context isolation and concurrent writes. Separate real processes cover Listener
+crash/restart, Context crash/restart, durable data and new incarnation.
+A 100-request CAS race produces one revision winner and 99 conflicts.
+
+`uv build server --python .venv/bin/python` built wheel and source distribution.
+The wheel was installed without dependencies and its CLI executed successfully
+with `python -I -m openbexi_spell_server --help`. Nothing was published.
+
+Evidence: [result](evidence/server-foundation/result.json),
+[JUnit](evidence/server-foundation/tests.xml),
+[process trace](evidence/server-foundation/process-trace.json),
+[development attempts](evidence/server-foundation/development-attempts.json) and
+[package hashes](evidence/server-foundation/package-build.json). Four failed
+development attempts are retained as compressed original JUnit files; they
+were fixed/retested and are not relabeled as passes. The final report records
+input hashes and a dirty working tree; it is local source-hash evidence, not an
+assertion that the preexisting HEAD was the tested implementation commit.
+
+Reproduce with `.venv/bin/python scripts/qualify_v08_server.py`; each invocation
+retains a fresh output directory. The new pinned-action GitHub workflow runs
+these foundation checks and package smoke on the candidate SHA and uploads
+evidence, including failures. Hosted results must be read from the actual PR
+checks; a local pass does not establish a hosted pass.
+
+G1: approved for staged implementation under F1-F10. Initial C/D foundation
+checks: PASS within the scope above. Full C/D integration: PENDING. E-L native
+execution/ownership/driver/browser/Compose/Kubernetes/security/release gates:
+PENDING, not inferred from 50 foundation tests. No native Executor test, Docker
+deployment or Kubernetes cluster test was performed in this implementation run.
