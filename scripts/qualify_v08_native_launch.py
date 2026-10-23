@@ -64,6 +64,8 @@ def pki(directory):
         "/CN=native-test-ca",
         "-addext",
         "basicConstraints=critical,CA:TRUE",
+        "-addext",
+        "keyUsage=critical,keyCertSign,cRLSign",
         "-keyout",
         directory / "ca.key",
         "-out",
@@ -405,7 +407,15 @@ def main():
 
                 def controller(method, payload, subject="alice"):
                     return route.call(
-                        envelope("A", subject, method, payload, str(uuid.uuid4()))
+                        envelope(
+                            "A",
+                            subject,
+                            method,
+                            payload,
+                            str(uuid.uuid4())
+                            if method not in {"execution.list", "source.catalog"}
+                            else None,
+                        )
                     )
 
                 deadline = time.monotonic() + 20
@@ -413,8 +423,17 @@ def main():
                     try:
                         route.call(envelope("A", "alice", "execution.list", {}))
                         break
-                    except Exception:
+                    except Exception as startup_error:
+                        report["context_startup_error"] = dict(
+                            type=type(startup_error).__name__,
+                            code=str(startup_error)[:160],
+                            cause_type=type(startup_error.__cause__).__name__,
+                            cause=str(startup_error.__cause__)[:200],
+                        )
                         if time.monotonic() >= deadline:
+                            report["context_port_mapping"] = command(
+                                "docker", "port", context_name
+                            )
                             raise RuntimeError("Isolated Context startup failed")
                         time.sleep(0.1)
                 procedures = route.call(envelope("A", "alice", "source.catalog", {}))

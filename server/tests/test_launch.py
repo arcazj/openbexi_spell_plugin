@@ -251,3 +251,30 @@ def test_native_agent_never_launches_or_retries_without_a_definitive_consumption
         )
     assert not native_calls
     assert requests == ([] if failure == "source_mismatch" else ["/v1/worker/consume"])
+
+
+def test_native_harness_ca_passes_strict_real_tls_verification(tmp_path, monkeypatch):
+    from pathlib import Path
+    from openbexi_spell_server.contracts import envelope
+    from openbexi_spell_server.store import ContextStore
+    from openbexi_spell_server.transport import Route, tls_context
+    from test_services import serving
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts"))
+    import qualify_v08_native_launch as harness
+
+    ca, peers = harness.pki(tmp_path / "native-pki")
+    store = ContextStore(tmp_path / "context", "A")
+    try:
+        app = Context(store, peers["listener"]["pin"], {"alice": ["execution:read"]})
+        with serving(
+            app, tls_context(ca, peers["context"]["cert"], peers["context"]["key"], server=True)
+        ) as server:
+            route = Route(
+                f"https://localhost:{server.server_port}",
+                peers["context"]["pin"],
+                tls_context(ca, peers["listener"]["cert"], peers["listener"]["key"]),
+            )
+            assert route.call(envelope("A", "alice", "execution.list", {}))["executions"] == []
+    finally:
+        store.close()
