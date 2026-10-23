@@ -771,3 +771,19 @@ A regression now runs with the native snapshot working directory and excludes
 frozen, synthetic and relative code while requiring a real background thread to
 acknowledge. It does not remove unknown participants by liveness or weaken the
 barrier. Candidate-SHA native requalification is required below.
+
+
+The corrected focused native-pause/component suite passed **40 checks**. The
+full local run `v08-server/run-20261023T195114Z-0ba5a66d` passed **304 scoped tests**,
+zero failures/errors/skips, lint/format/mypy and warnings-as-errors. The next
+hosted thread cohort at **795874d** recorded exactly one observed background
+thread, one acknowledgment, no expiry and original main PAUSED; it then failed
+the host socket-inventory command. Its retained artifact **12527836953** has ZIP
+SHA-256 `b54819b341eb07fb68ff95cc5a0abdc3d319064a71c3de194669a21b23e940f2`
+(CRC/digest checked). The socket assertion was narrowed to LISTEN entries,
+rather than including established/closing TCP records. CI path filters now cover
+the new component and candidate host session. Neither failed attempt is claimed
+as successful native integration; complete stable-counter/other-worker results
+remain gated on the final candidate. The local 304-test evidence precedes that
+small inventory assertion/CI-filter refinement; final exact-source qualification
+is recorded separately.

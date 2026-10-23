@@ -11,7 +11,9 @@ published v0.7 image and the original native patch preimages are preserved.
 The component uses CPython 3.13 `sys.monitoring` LINE callbacks in tool slot 3.
 It does not replace the native debugger's existing trace. An occupied tool slot
 fails startup. Only code filenames inside the approved immutable snapshot are
-observed. The entrypoint module identifies the main procedure thread, which
+observed. Filenames must originally be absolute: synthetic/frozen and relative
+code is excluded before path resolution, including when native cwd is the
+snapshot. The entrypoint module identifies the main procedure thread, which
 remains the responsibility of the original native pause controller. Other
 observed Python threads acquire a retained identity and acknowledge a one-shot
 barrier before executing their next monitored line. A thread first entering
@@ -62,6 +64,8 @@ requires main B PAUSED **and a stable background counter**, one observed thread
 acknowledged, nine unrelated native completions, unchanged owner/epoch, retained
 holds and bounded unrelated-controller latency. The original negative probe
 must still demonstrate that main pause alone leaves the counter advancing.
+CI path filters include both the thread component and candidate host session;
+changing either triggers the scoped/native qualification workflow.
 
 Local component checks do not qualify native integration. A passing native
 thread cohort qualifies only this observed Python-thread component. Successful
