@@ -198,6 +198,8 @@ def main():
         git_head=command("git", "rev-parse", "HEAD"),
         source_sha256={},
         workers=[],
+        host_cpu_count=os.cpu_count(),
+        host_memory_bytes=os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES"),
     )
     inputs = list((ROOT / "server/src/openbexi_spell_server").glob("*.py")) + [
         ROOT / "host_runtime/python/v08_worker.py",
@@ -552,9 +554,9 @@ def main():
                         "--pids-limit",
                         "256",
                         "--memory",
-                        "512m",
+                        "768m",
                         "--cpus",
-                        "0.5",
+                        "2",
                         "--user",
                         "10003:10003",
                         "--tmpfs",
@@ -586,6 +588,7 @@ def main():
                     container = command(*args)
                     worker_names.append(name)
                     containers.append(container)
+                    await_event([name], "native-ready", seconds=40)
                 await_event(worker_names, "native-ready")
                 report["paused_cohort"] = [
                     {"container": container, "processes": host_processes(name)}
@@ -750,6 +753,19 @@ def main():
             finally:
                 for name in names:
                     try:
+                        info = json.loads(command("docker", "inspect", name))[0]
+                        (output / (name + ".state.json")).write_text(
+                            json.dumps(
+                                dict(
+                                    state=info["State"],
+                                    image=info["Image"],
+                                    memory_limit=info["HostConfig"]["Memory"],
+                                    readonly_root=info["HostConfig"]["ReadonlyRootfs"],
+                                ),
+                                indent=2,
+                            )
+                            + "\n"
+                        )
                         (output / (name + ".stdout.jsonl")).write_text(
                             command("docker", "logs", name) + "\n"
                         )

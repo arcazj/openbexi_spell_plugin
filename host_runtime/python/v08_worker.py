@@ -143,7 +143,7 @@ def run(config):
             native_status="PAUSED",
             quiescence_proven=False,
         )
-        deadline = time.monotonic() + 90
+        deadline = time.monotonic() + 180
         barrier = Path(config["start_barrier"])
         while not barrier.is_file():
             if time.monotonic() >= deadline:
@@ -189,11 +189,34 @@ def main():
     try:
         run(decode(args.config.read_bytes()))
     except Exception as error:
+        causes = []
+        current = error
+        for _ in range(3):
+            if current is None:
+                break
+            causes.append(
+                dict(
+                    type=type(current).__name__,
+                    message=current.code
+                    if isinstance(current, Fault)
+                    else str(current)[:512],
+                    stack=[
+                        dict(
+                            file=Path(frame.filename).name,
+                            line=frame.lineno,
+                            function=frame.name,
+                        )
+                        for frame in traceback.extract_tb(current.__traceback__)
+                    ][-8:],
+                )
+            )
+            current = current.__context__ or current.__cause__
         emit(
             "native-worker-failed",
             error=error.code if isinstance(error, Fault) else type(error).__name__,
             hold_retained=True,
             runtime_enabled=False,
+            causes=causes,
             stack=[
                 dict(
                     file=Path(frame.filename).name,
