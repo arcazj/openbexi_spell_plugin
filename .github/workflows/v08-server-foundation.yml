@@ -13,6 +13,9 @@ on:
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
+      - 'host_runtime/python/child_gate.py'
+      - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
   push:
@@ -28,6 +31,9 @@ on:
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
+      - 'host_runtime/python/child_gate.py'
+      - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
 
@@ -104,7 +110,7 @@ jobs:
 
   native-launch:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -117,6 +123,8 @@ jobs:
             flags: '--native-pause-probe'
           - profile: thread-barrier
             flags: '--native-thread-barrier'
+          - profile: child-gate
+            flags: '--native-child-gate'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065

@@ -216,6 +216,8 @@ def main():
             (
                 "server/src/",
                 "host_runtime/python/",
+                "host_runtime/native/",
+                "host_runtime/build_admission_context.py",
                 "driver_plugin/src/",
                 "src/dss/",
                 "shared_plugin/src/",

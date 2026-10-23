@@ -107,11 +107,13 @@ def run(config):
     fields = {"preflight", "grant", "start_barrier"}
     probe_enabled = type(config) is dict and "pause_probe" in config
     thread_probe = type(config) is dict and "thread_barrier_probe" in config
+    child_profile = type(config) is dict and "native_child_gate" in config
     exact(
         config,
         fields
         | ({"pause_probe"} if probe_enabled else set())
-        | ({"thread_barrier_probe"} if thread_probe else set()),
+        | ({"thread_barrier_probe"} if thread_probe else set())
+        | ({"native_child_gate"} if child_profile else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -119,6 +121,10 @@ def run(config):
         config["thread_barrier_probe"] is not True or not probe_enabled
     ):
         raise ValueError("Thread barrier requires the explicit fenced pause probe")
+    if child_profile and (
+        config["native_child_gate"] is not True or probe_enabled or thread_probe
+    ):
+        raise ValueError("Native children require their separate explicit profile")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -242,7 +248,7 @@ def run(config):
 
     relay = Relay(dispatch)
     session_type, options = NativeSession, {}
-    if thread_probe:
+    if thread_probe or child_profile:
         # The published v0.7 image and its default host session stay intact.
         # Only this explicit profile loads the candidate read-only session and
         # the fixed operator library, never procedure-selected startup code.
@@ -253,7 +259,13 @@ def run(config):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         session_type = module.NativeSession
-        options["user_library"] = "/v08/native-userlib"
+        if thread_probe:
+            options["user_library"] = "/v08/native-userlib"
+        if child_profile:
+            options.update(
+                native_home="/opt/v08-native-home",
+                admission_socket="/tmp/native-admission.sock",
+            )
     session = session_type(
         root,
         root / challenge["manifest"]["entrypoint"],
@@ -262,6 +274,29 @@ def run(config):
         **options,
     )
     count = 0
+    admission = None
+    child_gate = None
+    children = None
+    if child_profile:
+        sys.path.insert(0, "/v08")
+        from child_gate import NativeAdmissionServer, NativeChildGate
+        from children import ChildProcedures
+
+        child_gate = NativeChildGate(
+            request,
+            route,
+            challenge["manifest"]["entrypoint"],
+            session.instance,
+            session.arguments,
+            lambda: rpc("check"),
+        )
+        children = ChildProcedures(session.instance)
+        admission = NativeAdmissionServer(
+            options["admission_socket"],
+            "/opt/v08-native-home/bin/SPELL-Context",
+            lambda: session.process,
+            child_gate,
+        )
 
     def pump():
         nonlocal count
@@ -280,11 +315,17 @@ def run(config):
                 and fields.get("ExecOp") == "OPEN"
                 and fields.get("ProcId") != session.instance
             ):
-                raise RuntimeError("Native child admission is not qualified")
+                if child_gate is None or fields.get("ProcId") not in child_gate.started:
+                    raise RuntimeError("Native child admission is not qualified")
+                emit("native-child-open", execution_id=grant.execution_id)
+            if children is not None:
+                children.observe(message)
 
     session.pump = pump
     try:
         session.start()
+        if child_gate is not None and session.instance not in child_gate.started:
+            raise RuntimeError("Native before-spawn root hook was bypassed")
         emit(
             "native-ready",
             execution_id=grant.execution_id,
@@ -304,8 +345,21 @@ def run(config):
         attempted_pause = {}
         pause_channel_failed = False
         next_poll = 0
+        child_running = set()
         while time.monotonic() < deadline:
             pump()
+            if children is not None:
+                children.service(session)
+                for instance in list(children.children):
+                    info = session.request(
+                        "REQ_EXEC_INFO", context=True, procedure=instance
+                    )
+                    if (
+                        info.get("ExecutorStatus") == "RUNNING"
+                        and instance not in child_running
+                    ):
+                        child_running.add(instance)
+                        emit("native-child-running", execution_id=grant.execution_id)
             state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
             if state == "RUNNING" and not running:
                 running = True
@@ -395,6 +449,10 @@ def run(config):
             native_driver_methods=sorted(driver_methods),
             context_audit_events_enabled=True,
             runtime_enabled=False,
+            native_children_admitted=0
+            if child_gate is None
+            else len(child_gate.started) - 1,
+            full_family_qualified=False,
         )
     finally:
         # This is best-effort native cleanup, never a quiescence/hold-release
@@ -402,7 +460,11 @@ def run(config):
         try:
             session.close()
         finally:
-            relay.close()
+            try:
+                if admission is not None:
+                    admission.close()
+            finally:
+                relay.close()
 
 
 def main():

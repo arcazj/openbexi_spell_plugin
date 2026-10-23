@@ -904,3 +904,16 @@ The latest verified published release remains v0.7. Full v0.8 publication is
 conditionally authorized, but the requested qualification has failed and
 substantial native/UI/deployment/recovery/security work remains. No v0.8 release
 was created.
+
+### dev17 native before-spawn child provider candidate
+
+Adds a checked-source compiled Context launch gate, exact native peer process
+identity, original-family admission/consumption and a separate hosted native
+child cohort. The 22 new locally executable provider/RPC cases pass, including
+all mode bindings, nested provenance, races, revocation and committed-but-lost
+replies. An additional real Unix SO_PEERCRED/pidfd case is retained unchanged;
+this managed local host rejects creation of AF_UNIX sockets with EPERM, so its
+local result is a failure, not a pass or a skip. Hosted Ubuntu qualification is
+required. No native child result or full release qualification is inferred from
+these component checks. Prior dev16 hosted results remain historical exact-source
+evidence, not verification of changed dev17 runtime code.

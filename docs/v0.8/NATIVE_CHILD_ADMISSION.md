@@ -72,3 +72,38 @@ passed. The downloaded foundation artifact passed ZIP digest/CRC checks and all
 111 recorded source hashes matched. The [receipt](evidence/child-admission/qualification-summary.json)
 qualifies only this authority/RPC component. Native child execution and full
 v0.8 remain unqualified. Full publication preflight still exits nonzero.
+
+## Candidate before-spawn native provider (dev17, qualification pending)
+
+The separate `--native-child-gate` profile builds a new native Context executable
+from the frozen v0.7 image's own source archive and recipe provenance. It requires
+exact reproduction of that composition and checked original translation-unit
+hashes before adding a gate at the beginning of `SPELLexecutor::start()`. The
+check precedes IPC setup, process replacement and physical spawn, covering the
+supported visible/hidden and automatic/manual child paths. Services, reconnect,
+warm recovery and conditional starts are explicitly denied in this profile.
+Published v0.7 binaries and source recipes remain unchanged.
+
+An agent-owned Unix endpoint authenticates the exact Context executable, its
+owned Listener parent and its original process incarnation using Linux
+`SO_PEERCRED` and `pidfd`. Native Context authenticates the agent's PID and UID.
+The initial root must match the consumed root source, arguments and mode. Each
+child must have an admitted parent; original-family mTLS admission and one-time
+consumption both complete before the native callback can proceed. Native
+arguments bind by SHA-256 of their exact UTF-8 representation; they are not
+executed or logged by the provider. Lost replies, changed identity, duplicate
+native instances and failed live authorization deny launch and retain holds.
+The approved catalog now admits up to 64 entries to include children, while the
+worker pool remains bounded at ten and child admissions at 64 retained records.
+
+The existing OPEN observer is retained as an additional consistency check, and
+the original visible-child client sends its initial RUN once. It is not the
+admission boundary. The new native cohort requests ten roots and ten children,
+checks simultaneous physical processes and consumed authority rows, and retains
+all twenty logical holds. Its hosted result must be inspected before this
+component is called verified. Manual mode, nested native execution, denied
+native starts, child prompts/returns/repeat, native driver attribution and
+whole-family settlement still need their own native qualification. The RPC
+mode/nested tests alone do not establish those native behaviors. Public runtime,
+effective transfer/resume, recovery and full release gates remain disabled or
+unqualified.

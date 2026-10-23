@@ -97,8 +97,18 @@ class Bridge:
 
 
 class NativeSession:
-    def __init__(self, project, script, arguments, *, driver_port=None, user_library=None):
+    def __init__(self, project, script, arguments, *, driver_port=None, user_library=None,
+                 native_home=None, admission_socket=None):
         self.driver_port = driver_port
+        self.native_home = None
+        self.admission_socket = admission_socket
+        if native_home is not None:
+            home = Path(native_home).resolve(strict=True)
+            if not home.is_dir() or not os.statvfs(home).f_flag & os.ST_RDONLY or not admission_socket:
+                raise ValueError('Native admission home must be an operator read-only mount')
+            self.native_home = home
+        elif admission_socket is not None:
+            raise ValueError('Native admission socket requires the checked native home')
         self.user_library = None
         if user_library is not None:
             library = Path(user_library).resolve(strict=True)
@@ -164,6 +174,10 @@ class NativeSession:
             tree.find('libpath').text = '$OPENBEXI_SPELL_USER_LIBRARY'
         tree.write(config, encoding='utf-8')
         environment = dict(os.environ, **example['environment'], OPENBEXI_SPELL_PROJECT=str(self.project))
+        if self.native_home is not None:
+            environment.update(SPELL_HOME=str(self.native_home),
+                OPENBEXI_V08_ADMISSION_SOCKET=str(self.admission_socket),
+                OPENBEXI_V08_AGENT_PID=str(os.getpid()))
         if self.user_library is not None:
             environment['OPENBEXI_SPELL_USER_LIBRARY'] = str(self.user_library)
             environment['OPENBEXI_SPELL_ENTRYPOINT'] = str(self.script)

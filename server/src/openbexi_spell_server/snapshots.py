@@ -311,7 +311,7 @@ def verify_directory(directory, manifest):
 
 class SnapshotCatalog:
     def __init__(self, config):
-        if type(config) is not dict or not 1 <= len(config) <= 10:
+        if type(config) is not dict or not 1 <= len(config) <= 64:
             raise ValueError("At most ten approved procedures")
         self.entries: dict = {}
         self.aliases: dict[str, str] = {}

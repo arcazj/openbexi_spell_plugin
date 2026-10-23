@@ -171,14 +171,17 @@ def await_event(names, event, seconds=90):
     raise TimeoutError("Native cohort did not reach " + event)
 
 
-def host_processes(name):
+def host_processes(name, *, executors=1):
     lines = command("docker", "top", name, "-eo", "pid,comm").splitlines()[1:]
     rows = []
     for line in lines:
         pid, executable = line.split(maxsplit=1)
         if executable.startswith("SPELL-"):
             rows.append(dict(host_pid=int(pid), executable=executable))
-    if len(rows) != 3 or not any("Executor" in p["executable"] for p in rows):
+    if (
+        len(rows) != 2 + executors
+        or sum("Executor" in p["executable"] for p in rows) != executors
+    ):
         raise RuntimeError("Expected distinct real native Listener/Context/Executor")
     return rows
 
@@ -402,6 +405,7 @@ def main():
     parser.add_argument("--native-dss", action="store_true")
     parser.add_argument("--native-pause-probe", action="store_true")
     parser.add_argument("--native-thread-barrier", action="store_true")
+    parser.add_argument("--native-child-gate", action="store_true")
     profile = parser.parse_args()
     if (
         sum(
@@ -409,6 +413,7 @@ def main():
                 profile.native_pause_probe,
                 profile.native_thread_barrier,
                 profile.native_dss,
+                profile.native_child_gate,
             )
         )
         > 1
@@ -443,6 +448,9 @@ def main():
         ROOT / "host_runtime/python/v08_worker.py",
         ROOT / "host_runtime/python/thread_barrier.py",
         ROOT / "host_runtime/python/native.py",
+        ROOT / "host_runtime/python/child_gate.py",
+        ROOT / "host_runtime/build_admission_context.py",
+        ROOT / "host_runtime/native/admission_gate.H",
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
     ]
@@ -474,11 +482,17 @@ def main():
                 shutil.copy2(
                     ROOT / "host_runtime/python/v08_worker.py", code / "agent.py"
                 )
-                if profile.native_thread_barrier:
+                if profile.native_thread_barrier or profile.native_child_gate:
                     shutil.copy2(
                         ROOT / "host_runtime/python/native.py",
                         code / "native_candidate.py",
                     )
+                if profile.native_child_gate:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/child_gate.py",
+                        code / "child_gate.py",
+                    )
+                if profile.native_thread_barrier:
                     shutil.copy2(
                         ROOT / "host_runtime/python/thread_barrier.py",
                         code / "thread_barrier.py",
@@ -540,6 +554,62 @@ def main():
                     context_image,
                     "--version",
                 )
+                worker_image = IMAGE
+                if profile.native_child_gate:
+                    native_build = temporary / "native-build"
+                    native_build.mkdir()
+                    shutil.copy2(
+                        ROOT / "host_runtime/native/admission_gate.H",
+                        native_build / "admission_gate.H",
+                    )
+                    shutil.copy2(
+                        ROOT / "host_runtime/build_admission_context.py",
+                        native_build / "build.py",
+                    )
+                    (native_build / "Dockerfile").write_text(
+                        "FROM " + base + "\nUSER root\n"
+                        "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
+                        "COPY admission_gate.H build.py /candidate/\n"
+                        "RUN python /candidate/build.py\nUSER 10003:10003\n"
+                    )
+                    built = subprocess.run(
+                        [
+                            "docker",
+                            "build",
+                            "-t",
+                            prefix + "-native-child",
+                            str(native_build),
+                        ],
+                        capture_output=True,
+                        timeout=600,
+                    )
+                    (output / "native-context-build.log").write_bytes(
+                        built.stdout + built.stderr
+                    )
+                    if built.returncode:
+                        raise RuntimeError("Native before-spawn Context build failed")
+                    worker_image = command(
+                        "docker",
+                        "image",
+                        "inspect",
+                        "--format",
+                        "{{.Id}}",
+                        prefix + "-native-child",
+                    )
+                    report["candidate_worker_image"] = worker_image
+                    report["native_context_build"] = json.loads(
+                        command(
+                            "docker",
+                            "run",
+                            "--rm",
+                            "--network",
+                            "none",
+                            "--entrypoint",
+                            "cat",
+                            worker_image,
+                            "/opt/v08-native-home/build.json",
+                        )
+                    )
                 sources, snapshot = temporary / "git", temporary / "snapshot"
                 sources.mkdir()
                 command("git", "init", "-q", sources)
@@ -562,6 +632,20 @@ def main():
                         "assert Send(command='CMD1',Timeout=2,HandleError=False,PromptUser=False,Confirm=False) is True\n"
                         "assert GetTM('TM.POWER.BUS_VOLTAGE',Wait=False,Timeout=2,HandleError=False) == 28.0\n"
                     )
+                if profile.native_child_gate:
+                    fixture += (
+                        "from spell.lang.functions import StartProc\n"
+                        "assert StartProc('child_{index}',args=[['INDEX',{index}]],Automatic=True,Visible=({index}%2==0),Blocking=True,HandleError=False) is True\n"
+                    )
+                    for n in range(10):
+                        (sources / ("child_" + str(n) + ".py")).write_text(
+                            "import os,time\n"
+                            "assert ARGS['INDEX'] == " + str(n) + "\n"
+                            "deadline=time.monotonic()+75\n"
+                            "while not os.path.exists('/control/child-finish'):\n"
+                            "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
+                            "    time.sleep(0.05)\n"
+                        )
                 for n in range(10):
                     selected = fixture
                     if profile.native_pause_probe and n == 1:
@@ -598,7 +682,7 @@ def main():
                         repository="/catalog",
                         revision=revision,
                         entrypoint="procedure_" + str(n) + ".py",
-                        runtime_image=IMAGE,
+                        runtime_image=worker_image,
                         driver_binding="simulator"
                         if profile.native_dss
                         else "context-audit",
@@ -606,6 +690,12 @@ def main():
                     )
                     for n in range(10)
                 }
+                if profile.native_child_gate:
+                    for n in range(10):
+                        catalog["child-" + str(n)] = dict(
+                            catalog["procedure-" + str(n)],
+                            entrypoint="child_" + str(n) + ".py",
+                        )
                 credentials = dict(
                     profile="single-host-preflight",
                     identities={
@@ -651,6 +741,8 @@ def main():
                 )
                 if profile.native_pause_probe:
                     config["native_pause"] = "fenced-probe"
+                if profile.native_child_gate:
+                    config["native_children"] = "admission-only"
                 dss_name = None
                 driver_network = None
                 if profile.native_dss:
@@ -937,6 +1029,11 @@ def main():
                                     if profile.native_thread_barrier
                                     else {}
                                 ),
+                                **(
+                                    {"native_child_gate": True}
+                                    if profile.native_child_gate
+                                    else {}
+                                ),
                             )
                         )
                     )
@@ -981,7 +1078,7 @@ def main():
                         [
                             "--entrypoint",
                             "python",
-                            IMAGE,
+                            worker_image,
                             "-I",
                             "/v08/agent.py",
                             "--config",
@@ -1049,6 +1146,22 @@ def main():
                     )
                 else:
                     (control / "finish").write_text("finish fixture\n")
+                    if profile.native_child_gate:
+                        await_event(worker_names, "native-child-running", seconds=70)
+                        processes = [
+                            host_processes(name, executors=2) for name in worker_names
+                        ]
+                        if (
+                            len({p["host_pid"] for group in processes for p in group})
+                            != 40
+                        ):
+                            raise RuntimeError(
+                                "Native child cohort lacks forty distinct PIDs"
+                            )
+                        report["native_child_cohort_pids"] = 40
+                        (control / "child-finish").write_text(
+                            "finish native children\n"
+                        )
                     with ThreadPoolExecutor(max_workers=10) as pool:
                         exits = list(
                             pool.map(
@@ -1072,7 +1185,7 @@ def main():
                             or info["State"]["OOMKilled"]
                             or info["HostConfig"]["Privileged"]
                             or not info["HostConfig"]["ReadonlyRootfs"]
-                            or info["Image"] != IMAGE
+                            or info["Image"] != worker_image
                         ):
                             raise RuntimeError("Worker isolation/termination differs")
                         report["workers"].append(
@@ -1186,16 +1299,11 @@ def main():
                             uri=True,
                         )
                     ) as audit:
-                        if (
-                            audit.execute("SELECT SUM(spent) FROM workers").fetchone()[
-                                0
-                            ]
-                            != 10
-                            or audit.execute(
-                                "SELECT COUNT(*) FROM reservations"
-                            ).fetchone()[0]
-                            != 10
-                        ):
+                        if audit.execute("SELECT SUM(spent) FROM workers").fetchone()[
+                            0
+                        ] != 10 or audit.execute(
+                            "SELECT COUNT(*) FROM reservations"
+                        ).fetchone()[0] != (20 if profile.native_child_gate else 10):
                             raise RuntimeError(
                                 "Native completion released a hold or worker slot"
                             )
@@ -1220,18 +1328,13 @@ def main():
                                 for body in bodies
                                 if body["execution_id"] == execution["id"]
                             ]
-                            if (
-                                sum(
-                                    message.startswith("Procedure started:")
-                                    for message in messages
-                                )
-                                != 1
-                                or sum(
-                                    message.startswith("Procedure finished:")
-                                    for message in messages
-                                )
-                                != 1
-                            ):
+                            if sum(
+                                message.startswith("Procedure started:")
+                                for message in messages
+                            ) != (2 if profile.native_child_gate else 1) or sum(
+                                message.startswith("Procedure finished:")
+                                for message in messages
+                            ) != (2 if profile.native_child_gate else 1):
                                 raise RuntimeError(
                                     "Native lifecycle events lack unique durable receipts"
                                 )
@@ -1240,6 +1343,37 @@ def main():
                                 "Native lifecycle events lack durable receipts"
                             )
                     report["native_driver_events_persisted"] = event_count
+                    if profile.native_child_gate:
+                        with closing(
+                            sqlite3.connect(
+                                "file:" + str(state / "context.sqlite3") + "?mode=ro",
+                                uri=True,
+                            )
+                        ) as audit:
+                            child_states = audit.execute(
+                                "SELECT state,COUNT(*) FROM child_admissions GROUP BY state"
+                            ).fetchall()
+                            if child_states != [("CONSUMED", 10)]:
+                                raise RuntimeError(
+                                    "Native children lack ten consumed Context admissions"
+                                )
+                        if any(
+                            next(
+                                e
+                                for e in worker["events"]
+                                if e["event"] == "native-finished"
+                            )["native_children_admitted"]
+                            != 1
+                            for worker in report["workers"]
+                        ):
+                            raise RuntimeError(
+                                "Native child provider did not observe one admission per worker"
+                            )
+                        report.update(
+                            native_child_before_spawn_component_tested=True,
+                            native_child_admissions_consumed=10,
+                            full_family_qualified=False,
+                        )
                     if profile.native_dss:
                         state_probe = (
                             "import json,urllib.request;"
@@ -1352,7 +1486,7 @@ def main():
                     passed=True,
                     native_launch_path_tested=True,
                     native_concurrency_verified=True,
-                    logical_holds_retained=10,
+                    logical_holds_retained=20 if profile.native_child_gate else 10,
                     single_use_workers_spent=10,
                     context_isolated_from_host_manager=True,
                 )
