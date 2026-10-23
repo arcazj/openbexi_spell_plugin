@@ -821,13 +821,15 @@ def main():
                     probe_command = list(launch_commands[1])
                     probe_command[probe_command.index("--name") + 1] = attacker
                     probe = (
-                        "import json,sys,uuid\n"
+                        "import base64,json,sys,uuid\n"
                         "sys.path.insert(0,'/v08/server/src')\n"
                         "from openbexi_spell_server.transport import Route,tls_context\n"
                         "from openbexi_spell_server.contracts import Fault\n"
+                        "from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p\n"
                         "c=json.load(open('/credentials/config.json'));w=c['preflight']\n"
                         "r=Route(w['context_url'],w['context_fingerprint'],tls_context(w['ca'],w['certificate'],w['key']))\n"
-                        "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload='')\n"
+                        "payload=base64.b64encode(p.CommandDesc(command=p.TcItemDesc(mnemonic='CMD1')).SerializeToString()).decode('ascii')\n"
+                        "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload=payload)\n"
                         "try:r.call(b,path='/v1/worker/driver',schema='openbexi.worker/2')\n"
                         "except Fault as e:\n"
                         " if e.code!='context_request_denied' or e.status!=403:raise\n"

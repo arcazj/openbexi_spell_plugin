@@ -553,3 +553,18 @@ prior head e20357a plus changed code. An offline **0.8.0.dev12** wheel build,
 clean isolated version/import and both CLI smokes passed. The native candidate
 must independently prove the corrected catalog contract through real Send;
 full v0.8 remains unqualified and public runtime stays disabled.
+
+
+### Physical copied-configuration probe validity
+
+Review of the new physical probe found that its empty SendCommand payload
+could independently receive resource-denied HTTP 403 if proof enforcement
+regressed. The probe now serializes a valid original CMD1 CommandDesc with
+the same original credential/configuration. CMD1 is explicitly permitted and
+already used by the positive cohort, so a missing-consumer-proof denial can no
+longer be confused with an unlisted command. A successful bypass would also
+execute an eleventh command and violate the exact ten-command/fifty-stage
+oracle. This is a qualification-strength correction; server logic is unchanged.
+The unit/RPC copied-configuration regression already used a valid CMD1 and
+retains its pre-fix HTTP-200 failure. The stronger physical probe still requires
+its own hosted candidate-SHA result.
