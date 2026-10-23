@@ -29,6 +29,7 @@ METHODS = {
     "session.open": "execution:control",
     "session.close": "execution:control",
     "execution.list": "execution:read",
+    "source.catalog": "execution:read",
     "execution.reserve": "execution:start",
     "execution.rebind": "execution:control",
     "execution.claim": "execution:request_control",

@@ -1,4 +1,4 @@
-name: v0.8 internal services and prelaunch authority
+name: v0.8 services, authority and worker preflight
 
 on:
   pull_request:
@@ -33,13 +33,14 @@ jobs:
           python-version: '3.13'
       - name: Install test tools
         run: python -m pip install -r server/requirements-test.lock
-      - name: Qualify services and prelaunch authority
+      - name: Qualify services, source inventories and worker preflight
         run: python scripts/qualify_v08_server.py
       - name: Build and smoke the isolated development package
         run: |
           python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-server/wheels
           python -m pip install --no-deps .qualification/v08-server/wheels/*.whl
           python -I -m openbexi_spell_server --help
+          python -I -m openbexi_spell_server.worker --help
       - name: Retain qualification evidence including failed attempts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

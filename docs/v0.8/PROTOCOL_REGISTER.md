@@ -54,3 +54,9 @@ edge identity, Context-local ACL, strict RPC envelope and route matrix for C/D.
 EXECUTION_AUTHORITY.md adds the explicit internal prelaunch reservation and
 controller route matrix. Worker network/native launch, effects and WSS/browser
 sessions remain disabled. F1-F10 bind the remaining worker/driver integrations.
+
+
+The dev3 single-host worker preflight uses pinned mTLS JSON challenge/verify
+routes defined in WORKER_PREFLIGHT.md. It authenticates an assigned credential
+and source digest, never a start/driver operation. The full target worker
+protocol and Kubernetes Pod identity remain pending.

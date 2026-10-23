@@ -1,6 +1,8 @@
 """Context-local ACLs, prelaunch authority and fixed Listener routing. No native launch."""
 
 from .authority import ExecutionAuthority
+from .preflight import WorkerPeer, WorkerPreflight
+from .snapshots import SnapshotCatalog
 from .contracts import (
     AUTHORITY_MUTATIONS,
     METHODS,
@@ -22,19 +24,56 @@ def one_header(headers, name):
 
 
 class Context:
-    def __init__(self, store, listener_fingerprint, subjects, *, worker_slots=None):
+    def __init__(
+        self,
+        store,
+        listener_fingerprint,
+        subjects,
+        *,
+        worker_slots=None,
+        approved_sources=None,
+        worker_credentials=None,
+    ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
         self.subjects = policy(subjects)
+        self.catalog = SnapshotCatalog(approved_sources) if approved_sources is not None else None
         self.authority = ExecutionAuthority(store, self.subjects, worker_slots=worker_slots)
+        self.preflight = None
+        if self.catalog is not None:
+            self.authority.reservation_validator = self.catalog.approve
+        if worker_credentials is not None:
+            if self.catalog is None:
+                raise ValueError("Worker preflight requires approved source catalog")
+            self.preflight = WorkerPreflight(
+                self.authority, self.catalog, worker_credentials, self.listener_fingerprint
+            )
+        self.authority.start_guard = self._require_preflight
+
+    def _require_preflight(self, row):
+        if self.preflight is None:
+            raise Fault(403, "worker_preflight_required")
+        self.preflight.require_ready(row)
 
     def authenticate(self, peer, headers):
-        if peer != self.listener_fingerprint:
-            raise Fault(403, "listener_identity_required")
         if headers.get_all("X-OpenBEXI-Client-Fingerprint"):
             raise Fault(403, "unexpected_client_identity")
+        if self.preflight is not None and peer in self.preflight.peers:
+            return self.preflight.peers[peer]
+        if peer != self.listener_fingerprint:
+            raise Fault(403, "listener_identity_required")
+        return "listener"
 
-    def handle(self, method, path, headers, body):
+    def handle(self, method, path, headers, body, *, identity=None):
+        if isinstance(identity, WorkerPeer):
+            if method != "POST" or self.preflight is None:
+                raise Fault(404, "route_not_available")
+            return {
+                "schema": "openbexi.worker/1",
+                "result": self.preflight.handle(identity, path, body),
+            }
+        if identity != "listener":
+            raise Fault(403, "listener_identity_required")
         if method != "POST" or path != "/v1/rpc":
             raise Fault(404, "route_not_available")
         request = validate_envelope(body, self.store.context_id)
@@ -52,6 +91,10 @@ class Context:
             result = self.store.snapshot(values=False)
         elif action == "blackboard.get":
             result = self.store.snapshot()
+        elif action == "source.catalog":
+            if self.catalog is None:
+                raise Fault(404, "source_catalog_unconfigured")
+            result = self.catalog.metadata()
         elif action == "execution.list":
             result = self.authority.list_executions(actor.subject)
         elif action in AUTHORITY_MUTATIONS:
@@ -84,7 +127,7 @@ class Listener:
         if client not in self.identities:
             raise Fault(403, "user_identity_denied")
 
-    def handle(self, method, path, headers, body):
+    def handle(self, method, path, headers, body, *, identity=None):
         subject = self.identities[one_header(headers, "X-OpenBEXI-Client-Fingerprint")]
         allowed = self.scopes.get(subject, frozenset())
         if method == "GET" and path == "/v1/health":
@@ -107,6 +150,8 @@ class Listener:
         if method == "GET" and resource in ("health", "snapshot", "blackboard"):
             action = "blackboard.get" if resource == "blackboard" else resource
             payload = {}
+        elif method == "GET" and resource == "procedures":
+            action, payload = "source.catalog", {}
         elif method == "GET" and resource == "executions":
             action, payload = "execution.list", {}
         elif method == "POST" and resource == "authority":

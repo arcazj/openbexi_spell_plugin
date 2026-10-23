@@ -1,0 +1,13 @@
+{
+  "failed_junit": {
+    "file": "development-attempt1.xml.gz",
+    "sha256": "ccbc5eb106ca48d1998f33b64ccce9172a67f0dcb18c362a1456303f48032b7a",
+    "original_sha256": "910ee38009d6aaedf398a95c523ef293ea52fc33684b6fc76757215a3eefc717",
+    "result": "1 failed,126 passed",
+    "reason": "The source-test fixture removed an absent staged gitlink with git add before committing. It now commits the staged gitlink directly, preserving the rejection oracle.",
+    "source_identity": "Uncommitted intermediate development source; not an exact-SHA qualification"
+  },
+  "lint_findings": "Unused and shadowed imported fixtures were moved to shared conftest and corrected; final strict lint passed.",
+  "review_hardening": "Snapshot root ancestors are opened without following symlinks; parent traversal rejected; worker receipts strictly validated.",
+  "final": "result.json"
+}

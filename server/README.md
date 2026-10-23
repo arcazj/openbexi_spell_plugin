@@ -3,7 +3,8 @@
 The `openbexi-spell-server` package provides independent internal Listener and
 Context processes, authenticated routing and durable Context blackboards.
 It also provides durable prelaunch reservations and consent-based ownership
-transfer. Native execution, authenticated worker launch, driver effects, browser
+transfer. An optional approved Git catalog and pinned single-host worker
+preflight verify the source binding. Native execution, worker launch, driver effects, browser
 sessions and WSS remain disabled. This is staged implementation, not a v0.8 release.
 Published v0.7 packages and entry points remain unchanged.
 
@@ -13,7 +14,8 @@ configured edge certificate plus a registered client fingerprint. The edge
 must validate client certificates and strip client-selected identity headers.
 Do not place this internal service directly on a public browser endpoint.
 
-See [the prelaunch authority contract](../docs/v0.8/EXECUTION_AUTHORITY.md),
+See [worker/source preflight](../docs/v0.8/WORKER_PREFLIGHT.md),
+[the prelaunch authority contract](../docs/v0.8/EXECUTION_AUTHORITY.md),
 [the wire/ACL contract](../docs/v0.8/SERVER_CONTRACT.md) and
 [approved G1 resolutions](../docs/v0.8/G1_REVIEW_RESOLUTION.md).
 
@@ -87,3 +89,24 @@ require restart in this first implementation. Only Listener's outbound client
 uses its certificate to delegate to a configured Context. It never starts,
 signals or stops Contexts or workers. Health always reports
 `runtime_enabled: false`.
+
+
+## Approved sources and worker preflight
+
+Development package `0.8.0.dev3` accepts optional Context `approved_sources` and
+`worker_credentials` fields. See WORKER_PREFLIGHT.md for the exact schema and
+bounds. Only operator-approved aliases/revisions/images/driver bindings can be
+reserved when a catalog is configured. Without one, earlier metadata-only
+reservations remain available but cannot pass Context's private start guard.
+
+Run the non-executing worker check with:
+
+```bash
+openbexi-spell-worker-preflight --config /secure/worker-preflight.json
+```
+
+It verifies a mounted source directory, authenticates to the pinned Context
+with its individual certificate, and prints a preflight receipt. It never
+imports procedure code, starts native processes, consumes a worker slot or
+sends driver effects. Native launch still has no network route. A receipt does
+not establish read-only mounts, runtime-image attestation or Kubernetes Pod UID.

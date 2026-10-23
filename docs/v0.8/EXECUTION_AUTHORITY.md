@@ -1,5 +1,10 @@
 # Durable prelaunch execution authority
 
+The original dev2 subset below is extended by dev3
+[WORKER_PREFLIGHT.md](WORKER_PREFLIGHT.md): configured approved source catalogs
+and pinned single-host worker preflight. Metadata-only reservations stay
+unverified and cannot pass the Context start guard. Native launch remains absent.
+
 Implementation: `server/`, development package `0.8.0.dev2`. This implements a
 bounded prelaunch registry and controller protocol. `runtime_enabled` remains
 **false**. No native procedure, driver effect or worker network endpoint is
@@ -100,7 +105,7 @@ private integration API is tested independently:
 3. `validate_start_grant` checks original provenance and current fencing. It
    does not authorize a driver effect or prove that native code has started.
 
-The current tests call this private seam directly. They **do not authenticate
+The original dev2 protocol tests call this private seam directly. They **do not authenticate
 a worker certificate or Kubernetes Pod UID**. The future network adapter must
 provide that authentication; labels, worker-supplied UID and shared ServiceAccount
 are insufficient. No code outside the tests currently calls this seam.

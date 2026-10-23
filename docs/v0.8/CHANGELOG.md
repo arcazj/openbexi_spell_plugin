@@ -33,3 +33,16 @@ No v0.8 production implementation, release or schema migration yet.
 - Add concurrency, denial, response-loss, audit/storage and process-death tests.
   Source/image declarations are not verified inventories. Native/driver/browser/
   Compose/Kubernetes and full compatibility gates remain pending.
+
+
+## Development package 0.8.0.dev3: approved sources and worker preflight
+
+- Build bounded canonical source manifests from exact verified Git objects;
+  bind aliases, revision, image and driver metadata to operator-approved policy.
+- Add registered single-host worker certificate roles and durable challenge/verify
+  preflight, with original-binding, expiry, replay, capacity and restart fencing.
+- Add a non-executing worker CLI that verifies its actual source directory using
+  no-follow descriptors; reject changed/extra/missing/link/special source files.
+- Guard private Context start admission and consumption on verified preflight.
+  Native launch/consume/driver routes remain absent; Kubernetes identity, image
+  and mount attestation, native/driver/browser/deployment gates remain pending.

@@ -24,12 +24,17 @@ def main():
         if args.role == "context"
         else {"edge_fingerprint", "identities", "scopes", "contexts"}
     )
-    # Optional explicit prelaunch slots; no worker RPC or launcher is enabled.
-    optional = {"worker_slots"} if args.role == "context" else set()
-    if type(config) is dict and set(config) == common | specific | optional:
-        exact(config, common | specific | optional)
-    else:
-        exact(config, common | specific)
+    optional = (
+        {"worker_slots", "approved_sources", "worker_credentials"}
+        if args.role == "context"
+        else set()
+    )
+    if (
+        type(config) is not dict
+        or not common | specific <= set(config)
+        or not set(config) <= common | specific | optional
+    ):
+        parser.error("Invalid configuration fields")
     if (
         not isinstance(config["bind"], str)
         or type(config["port"]) is not int
@@ -49,6 +54,8 @@ def main():
                 config["listener_fingerprint"],
                 config["subjects"],
                 worker_slots=config.get("worker_slots"),
+                approved_sources=config.get("approved_sources"),
+                worker_credentials=config.get("worker_credentials"),
             )
         else:
             client_tls = tls_context(config["ca"], config["certificate"], config["key"])

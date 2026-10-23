@@ -39,7 +39,13 @@ class Route:
         self.host, self.port = target.hostname, target.port or 443
         self.peer_fingerprint, self.tls = fingerprint(peer_fingerprint), tls
 
-    def call(self, request):
+    def call(self, request, *, path="/v1/rpc", schema="openbexi.context/1"):
+        if (path, schema) not in (
+            ("/v1/rpc", "openbexi.context/1"),
+            ("/v1/worker/challenge", "openbexi.worker/1"),
+            ("/v1/worker/verify", "openbexi.worker/1"),
+        ):
+            raise ValueError("Unconfigured RPC route")
         connection = http.client.HTTPSConnection(self.host, self.port, context=self.tls, timeout=2)
         watchdog = None
         try:
@@ -62,7 +68,7 @@ class Route:
             if peer != self.peer_fingerprint:
                 raise Fault(503, "context_identity_unavailable")
             connection.request(
-                "POST", "/v1/rpc", canonical(request), {"Content-Type": "application/json"}
+                "POST", path, canonical(request), {"Content-Type": "application/json"}
             )
             response = connection.getresponse()
             raw = response.read(MAX_BODY + 1)
@@ -74,7 +80,7 @@ class Route:
                 raise Fault(503, "context_unavailable")
             if type(body) is not dict or set(body) != {"schema", "result"}:
                 raise Fault(503, "context_protocol_error")
-            if body["schema"] != "openbexi.context/1":
+            if body["schema"] != schema:
                 raise Fault(503, "context_protocol_error")
             return body["result"]
         except (OSError, http.client.HTTPException) as error:
@@ -195,7 +201,7 @@ class Handler(BaseHTTPRequestHandler):
             if "?" in self.path or "#" in self.path or "%" in self.path:
                 raise Fault(400, "noncanonical_path")
             peer = hashlib.sha256(self.connection.getpeercert(binary_form=True)).hexdigest()
-            self.server.application.authenticate(peer, self.headers)
+            identity = self.server.application.authenticate(peer, self.headers)
             lengths = self.headers.get_all("Content-Length", [])
             if self.headers.get_all("Transfer-Encoding") or len(lengths) > 1:
                 raise Fault(400, "invalid_framing")
@@ -215,7 +221,9 @@ class Handler(BaseHTTPRequestHandler):
                 if len(raw) != int(lengths[0]):
                     raise Fault(400, "truncated_body")
                 body = decode(raw)
-            result = self.server.application.handle(self.command, self.path, self.headers, body)
+            result = self.server.application.handle(
+                self.command, self.path, self.headers, body, identity=identity
+            )
             self.reply(200, result)
         except Fault as error:
             # Consume only an explicitly bounded rejected body. Closing TLS

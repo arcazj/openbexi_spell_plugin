@@ -87,7 +87,7 @@ PENDING, not inferred from 51 foundation tests. No native Executor test, Docker
 deployment or Kubernetes cluster test was performed in this implementation run.
 
 
-# Current services and prelaunch authority qualification
+# Historical dev2 services and prelaunch authority qualification
 
 Package `0.8.0.dev2` adds the bounded registry and ownership protocol described
 in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md). Native execution remains
@@ -145,3 +145,40 @@ certificate/Pod UID, verify actual source inventory/aliases, pause descendants,
 settle driver writes, exercise browser/WSS or deploy Compose/Kubernetes. No
 native pause, external-effect recovery, production storage fencing, automatic
 reuse, full security scan or release gate is inferred from these passes.
+
+
+# Current dev3 source and worker-preflight qualification
+
+Package `0.8.0.dev3`: **143 local CPython 3.13.16 tests pass**, zero failures,
+errors or skips, warnings as errors. Ruff lint/format and mypy pass.
+WORKER_PREFLIGHT.md defines the exact configured profile and limits.
+
+New tests verify exact Git commit/tree/blob hashes, ignore working-tree changes
+and replace refs, normalize approved aliases, reject unapproved metadata, and
+reject unsafe or mismatched source inventories. Actual mTLS sockets and a
+separate worker-preflight CLI process test role/scope/assignment checks and
+source digest verification without importing or executing procedure code.
+Expiry, forged receipts, rebind/transfer, Context restart, replay, capacity and
+audit rollback are covered. Expired preflight at consumption rolls back the
+spent flag and preserves the hold. Unsupported Kubernetes identity and
+ambiguous worker/Listener roles fail startup.
+
+Evidence: `evidence/worker-preflight/result.json`, `tests.xml`, service and
+worker-preflight traces, package/source hashes and the retained failed development
+attempt. The initial new-source run had one fixture failure because `git add .`
+removed a staged, absent submodule before the test commit. The fixture now
+commits the staged gitlink directly; the source rejection remains enforced.
+Intermediate lint findings about unused/imported fixtures were corrected.
+
+The source-hash result records the parent HEAD plus dirty local state; candidate
+hosted checks must independently run on the resulting pushed SHA. The scoped
+workflow also builds the wheel and smokes both service and preflight CLIs.
+
+**Runtime remains disabled.** The worker reports a digest using a registered
+credential; it is not binary/image/hardware attestation. Read-only mounts,
+Kubernetes Pod UID/admission, native execution/pause/descendants, final source
+immutability at launch, driver actual-send/settlement, browsers and deployments
+remain unqualified. Docker is unavailable on this local execution host. No
+native Executor or deployment result is inferred from the preflight PID.
+Original v0.7 runtime files remain unchanged; its historical baseline/native
+evidence is retained and was not rerun in this increment. No merge or release.

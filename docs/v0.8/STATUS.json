@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; internal services and durable prelaunch authority implemented; native integration pending",
+  "phase": "G1 approved; services, durable prelaunch authority, configured Git source validation and single-host worker preflight implemented; native integration pending",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -17,7 +17,9 @@
     "Real TLS role/scope denial, CAS races and independent Listener/Context process crash/restart tested",
     "New server wheel/sdist built; isolated installed wheel CLI smoke passed",
     "106 local service/prelaunch tests passed with warnings as errors; exact current evidence in TEST_REPORT.md",
-    "Prelaunch transfer, original-grant fencing, response loss and restart holds tested; no native launch/effects claimed"
+    "Prelaunch transfer, original-grant fencing, response loss and restart holds tested; no native launch/effects claimed",
+    "143 local service/source/preflight tests pass; actual mTLS and separate worker-preflight process tested",
+    "Approved Git inventory and alias enforcement implemented for configured catalogs only; preflight is not runtime/image/mount/Pod attestation"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -25,7 +27,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "TEST_REPORT.md; evidence/server-foundation historical 51/51 and evidence/execution-authority current service/prelaunch result",
+  "test_commands_and_outcomes": "TEST_REPORT.md; worker-preflight evidence is current; server-foundation and execution-authority evidence are historical checkpoints",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md",
   "gates": {
@@ -33,13 +35,13 @@
     "A": "Independent review completed; historical baseline evidence retained",
     "B_G1": "Owner-authorized for staged implementation under binding F1-F10 contracts; no runtime qualification inferred",
     "C": "Foundation routing/TLS/process lifecycle tests pass; full Executor-survival integration gate pending",
-    "D": "State/ACL/blackboard and prelaunch execution registry tested; native driver/fanout integration pending",
+    "D": "Context state/ACL/registry, configured source policy and worker preflight tested; native driver/fanout integration pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
-    "K_foundation": "Scoped service/prelaunch workflow present; check exact candidate SHA in PR checks. Prior 925ad0d push/PR runs passed; full K remains pending"
+    "K_foundation": "Scoped services/source/preflight workflow; verify exact candidate SHA in PR checks. Prior 87db0ce scoped push/PR workflows passed; full K remains pending"
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify native worker identity/source inventory/descendant controls and effect settlement; preserve pending gates and draft review",
+  "next_step": "Qualify actual native worker launch/image/read-only source mounts, descendants and effect settlement; keep runtime/deployment gates pending",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Approved , move forward (review conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",

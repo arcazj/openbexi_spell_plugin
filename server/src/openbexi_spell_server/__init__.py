@@ -1,3 +1,3 @@
-"""Internal services and durable prelaunch authority; native execution disabled."""
+"""Internal authority, approved source inventories and worker preflight; no native launch."""
 
-__version__ = "0.8.0.dev2"
+__version__ = "0.8.0.dev3"

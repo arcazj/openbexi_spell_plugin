@@ -71,3 +71,9 @@ are not ten native Executor PIDs; private grant tests are not authenticated
 worker/Pod tests; prelaunch acceptance is not native pause or actual-send
 settlement. Keep G2/E, G3/F and their dependent gates pending until those real
 boundaries are implemented and qualified.
+
+
+WORKER_PREFLIGHT.md defines the dev3 configured-source and single-host worker
+preflight subset. Real mTLS and source bytes are tested; this does not qualify
+Pod identity, runtime-image/read-only-mount attestation, native descendants or
+driver effects. No native/deployment gate changes to PASS.

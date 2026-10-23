@@ -38,5 +38,6 @@ Every target component in the v0.8 diagram is labeled proposed.
 The [server foundation](../../server/README.md) provides internal TLS routing
 and durable Context blackboards. The [prelaunch execution authority](EXECUTION_AUTHORITY.md)
 adds reservations, claims, consent transfer, rebind and one-time grant protocol
-tests. Native execution, driver effects and browser/WSS remain disabled. See
+tests. The [source/worker preflight](WORKER_PREFLIGHT.md) adds approved Git
+inventories, canonical aliases and pinned single-host worker checks. Native execution, driver effects and browser/WSS remain disabled. See
 TEST_REPORT.md and KNOWN_LIMITATIONS.md for exact evidence and pending gates.

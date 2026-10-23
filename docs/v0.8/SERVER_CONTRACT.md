@@ -3,7 +3,9 @@
 Status: internal services and prelaunch authority contract. Browser sessions/WSS,
 native procedure execution, worker network launch and driver effects remain
 separate qualification gates. The bounded reservation/claim/handoff extension is
-specified in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md).
+specified in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md). Optional approved
+source catalogs and single-host worker preflight are specified in
+[WORKER_PREFLIGHT.md](WORKER_PREFLIGHT.md).
 
 ## Trust profile
 
@@ -26,7 +28,9 @@ Listener calls only configured HTTPS Context addresses. It checks the Context
 certificate pin before transmitting a delegation. Context accepts only its
 configured Listener fingerprint and looks up the delegated subject in its own
 Context-local ACL; a Listener body cannot assign permissions. Worker/edge/user
-certificates cannot call Context RPC, even under the same CA.
+certificates cannot call user-delegation Context RPC, even under the same CA.
+Explicitly registered worker pins may call only the separate challenge/verify
+preflight routes; that role cannot claim a user identity or consume a start grant.
 
 ## RPC envelope
 
@@ -57,6 +61,7 @@ request logs or public health/snapshot responses.
 | GET /v1/contexts/{id}/snapshot | snapshot | context:read |
 | GET /v1/contexts/{id}/blackboard | blackboard.get | blackboard:read |
 | POST /v1/contexts/{id}/blackboard | blackboard.cas | blackboard:admin |
+| GET /v1/contexts/{id}/procedures | source.catalog | execution:read, configured catalog only |
 | GET /v1/contexts/{id}/executions | execution.list | execution:read |
 | POST /v1/contexts/{id}/authority | explicit session/execution methods only | EXECUTION_AUTHORITY.md matrix |
 

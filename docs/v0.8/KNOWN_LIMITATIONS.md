@@ -6,9 +6,12 @@ checks, scoped routing, Context-local ACLs, durable blackboard CAS, prelaunch
 reservations and ownership claims/acceptance/rebind. It
 explicitly reports `runtime_enabled: false`.
 
-The private one-time start-grant ledger has protocol tests, but no authenticated
-worker network adapter or native launch path. Source/image fields are declared
-metadata, not verified inventories. Acceptance succeeds only before consumption;
+The private one-time start-grant ledger has protocol tests. Optional approved
+Git inventories and a pinned single-host mTLS worker preflight are implemented;
+see WORKER_PREFLIGHT.md. There is no native launch network path. Source is
+verified only for configured catalogs; metadata-only reservations cannot pass
+Context's start guard. Runtime-image and read-only-mount attestation remain
+unqualified, and a trusted worker's digest report is not hardware attestation. Acceptance succeeds only before consumption;
 a post-consumption transfer is blocked and retains recovery holds. Native pause,
 actual-send/effect settlement, source/alias/child admission, driver adaptation,
 browser sessions/WSS, UI, Compose and Kubernetes remain unimplemented or

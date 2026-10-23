@@ -24,10 +24,15 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = dict(
         schema=1,
-        scope="internal Listener/Context services and durable prelaunch authority only",
-        worker_identity_authenticated=False,
+        scope="internal services, prelaunch authority, approved Git inventories and single-host worker preflight",
+        worker_identity_authenticated=True,
+        worker_identity_scope="operator-provisioned certificate pins; preflight only",
+        kubernetes_worker_identity_tested=False,
+        runtime_image_attested=False,
+        readonly_mount_attested=False,
         native_pause_tested=False,
-        source_inventory_verified=False,
+        source_inventory_verified=True,
+        source_inventory_scope="bounded approved Git objects and worker directory; configured catalog only",
         passed=False,
         runtime_enabled=False,
         native_executor_tested=False,

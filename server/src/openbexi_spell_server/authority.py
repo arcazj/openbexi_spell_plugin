@@ -52,6 +52,8 @@ class ExecutionAuthority:
         self.mutexes = {}  # Bounded by the retained execution ledger (64).
         self.mutex_guard = threading.Lock()
         self.capacity = 64
+        self.reservation_validator = None
+        self.start_guard = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})
@@ -89,7 +91,8 @@ class ExecutionAuthority:
                 "hash TEXT NOT NULL,result TEXT NOT NULL,PRIMARY KEY(subject,scope,method,key))",
             ):
                 store.db.execute(statement)
-            store.db.execute("PRAGMA user_version=2")
+            if store.db.execute("PRAGMA user_version").fetchone()[0] < 2:
+                store.db.execute("PRAGMA user_version=2")
             # Startup never clears logical/worker holds or restores any capability.
             affected = store.db.execute("SELECT id FROM executions").fetchall()
             if affected:
@@ -336,6 +339,8 @@ class ExecutionAuthority:
         return self._record(subject, method, key, payload, result)
 
     def _reserve(self, subject, payload):
+        if self.reservation_validator is not None:
+            payload = self.reservation_validator(payload)
         self._session(subject, payload["connection_id"])
         if self.store.db.execute("SELECT COUNT(*) FROM executions").fetchone()[0] >= self.capacity:
             raise Fault(503, "execution_capacity_reached")
@@ -544,6 +549,8 @@ class ExecutionAuthority:
                     raise Fault(403, "worker_start_fenced")
                 if self.worker_slots.get(row["worker_slot"]) != row["worker_incarnation"]:
                     raise Fault(403, "worker_start_fenced")
+                if self.start_guard is not None:
+                    self.start_guard(row)
                 grant = StartGrant(
                     self.store.incarnation,
                     row["id"],
@@ -625,6 +632,8 @@ class ExecutionAuthority:
                 ).rowcount
                 if changed != 1:
                     raise Fault(409, "worker_already_spent")
+                if self.start_guard is not None:
+                    self.start_guard(row)
                 self.store.db.execute(
                     "UPDATE executions SET lifecycle='STARTING' WHERE id=?",
                     (row["id"],),
