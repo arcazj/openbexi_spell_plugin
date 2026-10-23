@@ -391,3 +391,42 @@ def test_driver_gate_preserves_native_event_schema_version(audit_setup, pki, tmp
         assert audit_setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 6
     finally:
         gate.close()
+
+
+def test_native_event_and_post_start_handoff_share_one_linearization_lock(audit_setup, pki):
+    import threading
+
+    setup = audit_setup
+    admitted = ready_audit(setup, pki)
+    bob = setup["controller"]("session.open", {}, subject="bob")["connection_id"]
+    execution = setup["execution"]
+    claim = setup["controller"](
+        "execution.claim",
+        dict(execution_id=execution["id"], connection_id=bob, expected_epoch=execution["epoch"]),
+        subject="bob",
+    )
+    decision = {**helpers.proof(execution), "claim_id": claim["claim_id"], "decision": "accept"}
+    barrier = threading.Barrier(2)
+
+    def event():
+        barrier.wait(timeout=2)
+        return call(setup, pki, admitted, "event", **event_body())[0]
+
+    def transfer():
+        barrier.wait(timeout=2)
+        return setup["controller"]("execution.decide", decision)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        written, changed = pool.submit(event), pool.submit(transfer)
+        status, result = written.result(timeout=5), changed.result(timeout=5)
+    assert result["state"] == "BLOCKED" and status in (200, 403)
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == (
+        1 if status == 200 else 0
+    )
+    assert call(setup, pki, admitted, "event", **event_body())[0] == 403
+    row = setup["app"].authority.list_executions("alice")["executions"][0]
+    assert (
+        row["owner"] == "alice"
+        and row["epoch"] == execution["epoch"]
+        and row["control_state"] == "RECOVERY_REQUIRED"
+    )

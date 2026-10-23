@@ -341,3 +341,47 @@ quiescence and handoff, all-763 compatibility, browser/WSS, real Compose and
 Kubernetes admission/network/storage/failure recovery, independent security
 review and release acceptance remain pending. No tag/release/merge follows from
 these results.
+
+## Retained native compute and Context event driver, 0.8.0.dev8
+
+Hosted push **d962268** and its PR workflow passed the first actual v0.8 retained
+native launch cohort. Ten distinct approved procedures consumed their original
+grants over real mTLS and ran simultaneously in ten separate read-only,
+non-root, single-use containers. Host Docker inventory verified thirty distinct
+live native Listener/Context/Executor PIDs. All ten procedures finished and all
+containers terminated. Twenty real EV lifecycle calls were committed to Context
+before driver acknowledgement. Ten spent slots and ten logical reservations
+remained held. Worker-to-worker native-port and external TCP denial passed;
+Context had no Docker socket or host manager. The positive handoff check occurred
+after container termination and remained BLOCKED with old ownership/epoch.
+
+The server/source/IDE/driver/launch suite passed **217 tests** locally and hosted
+at this code checkpoint, with zero failures/errors/skips and warnings as errors;
+lint/format/mypy and installed development-wheel checks passed. The **241-test**
+portable compatibility PR workflow passed on the same candidate. The redacted counts, public source hashes and workflow references are in
+`evidence/native-retained-launch/qualification-summary.json`. Detailed logs,
+process observations and original failures remain in their existing CI runs.
+
+Earlier completion tests correctly failed on real EV calls. Original native
+controller code emits start/finish events even for arithmetic-only procedures;
+removing printing alone was insufficient. The final implementation parses the
+original event protobuf in the GPL agent, forwards it over pinned mTLS, and
+acknowledges only after Context's atomic, original-grant-authorized journal
+commit. Non-procedure scopes, changed replays, fenced owners, unknown bindings
+and full audit storage are denied. Other native driver calls remain denied.
+Schema 6 prevents old-binary downgrade and is preserved by the socket driver
+gate. Audit text never serves as a quiescence or release proof.
+
+A later check adds a physical worker clone using the same certificate,
+incarnation and spent original grant; final candidate CI must verify rejection
+before native startup. The final suite also adds a concurrent native event vs
+handoff regression and a per-execution event bound. These additions do not
+retroactively change the d962268 artifact's scope.
+
+**Full v0.8 is still unfinished and unqualified.** This is retained compute plus
+scoped audit logging, not native TC/TM, safe cooperative pause/handoff, child
+admission, worker reclamation/recovery, native IDE Run/Debug, browser/WSS, all 763
+requirements, production Compose/Kubernetes or independent security/release
+acceptance. The companion IDE remains pinned to a1ec00f and its existing
+prelaunch control/panel integration is exercised by the service suite. No
+release/tag/merge is authorized by these subset results.

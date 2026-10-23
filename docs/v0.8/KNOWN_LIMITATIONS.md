@@ -8,12 +8,12 @@ explicitly reports `runtime_enabled: false`.
 
 The private one-time start-grant ledger has protocol tests. Optional approved
 Git inventories and a pinned single-host mTLS worker preflight are implemented;
-see WORKER_PREFLIGHT.md. There is no native launch network path. Source is
+see WORKER_PREFLIGHT.md. Default services expose no native launch path; the opt-in retained profile is described in NATIVE_LAUNCH.md. Source is
 verified only for configured catalogs; metadata-only reservations cannot pass
 Context's start guard. Runtime-image and read-only-mount attestation remain
 unqualified, and a trusted worker's digest report is not hardware attestation. Acceptance succeeds only before consumption;
 a post-consumption transfer is blocked and retains recovery holds. Native pause,
-native effect settlement, source/alias/child admission, full driver adaptation,
+external native effect settlement, complete child admission, full driver adaptation,
 browser sessions/WSS, UI, Compose and Kubernetes remain unimplemented or
 unqualified. No release/recovery/capacity-reclamation operation is exposed.
 See EXECUTION_AUTHORITY.md for exact limits. Full C/D and E-L gates remain pending.

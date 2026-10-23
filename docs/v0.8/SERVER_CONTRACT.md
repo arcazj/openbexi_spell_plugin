@@ -98,3 +98,14 @@ fail closed when capacity/storage is unavailable. Credentials and private state
 never appear in snapshot responses. HTTPS framing and policy tests use actual
 TLS sockets, independent service processes, private test certificates and
 concurrent requests. These tests cannot satisfy native SPELL/Compose/K8s gates.
+
+## Explicit retained native profile
+
+NATIVE_LAUNCH.md defines the opt-in Context-only `execution.start` admission and
+worker-only `/v1/worker/consume`, `/check`, `/event` routes. They are disabled by
+default; the normal gateway/Listener does not route a general native start.
+Admission requires live owner/start/control proof. Consumption/checking require
+the registered assigned worker certificate and original grant. Native audit
+writes additionally require current live control and the `context-audit`
+binding; scope is procedure-only. No driver response is acknowledged before the
+Context transaction commits. Native external TC/TM methods remain unavailable.

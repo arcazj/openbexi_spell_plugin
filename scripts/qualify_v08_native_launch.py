@@ -190,7 +190,8 @@ def main():
         native_launch_path_tested=False,
         native_concurrency_verified=False,
         native_pause_qualified=False,
-        driver_effects_enabled=False,
+        external_driver_effects_enabled=False,
+        context_audit_events_enabled=True,
         runtime_enabled=False,
         full_v08_qualified=False,
         image=IMAGE,
@@ -449,7 +450,7 @@ def main():
                 connection = controller("session.open", {})["connection_id"]
                 control = temporary / "control"
                 control.mkdir(mode=0o755)
-                executions, worker_names, containers = [], [], []
+                executions, worker_names, containers, launch_commands = [], [], [], []
                 for n in range(10):
                     name = prefix + "-" + str(n)
                     network = name + "-net"
@@ -586,6 +587,7 @@ def main():
                             "/credentials/config.json",
                         ]
                     )
+                    launch_commands.append(list(args))
                     names.append(name)
                     container = command(*args)
                     worker_names.append(name)
@@ -668,6 +670,29 @@ def main():
                             readonly_root=True,
                         )
                     )
+                # A physical clone with the same certificate, incarnation and
+                # original grant must fail before opening any native session.
+                clone = prefix + "-clone"
+                clone_command = list(launch_commands[1])
+                clone_command[clone_command.index("--name") + 1] = clone
+                names.append(clone)
+                command(*clone_command)
+                if command("docker", "wait", clone, timeout=15) != "1":
+                    raise RuntimeError("Cloned spent worker was not rejected")
+                clone_events = events(clone)
+                if any(
+                    item["event"]
+                    in {"native-ready", "native-running", "native-finished"}
+                    for item in clone_events
+                ) or not any(
+                    item["event"] == "native-worker-failed"
+                    and item.get("error") == "context_request_denied"
+                    for item in clone_events
+                ):
+                    raise RuntimeError(
+                        "Cloned worker denial did not precede native launch"
+                    )
+                report["physical_worker_clone_denied"] = True
                 bob = controller("session.open", {}, "bob")["connection_id"]
                 first = executions[0]
                 claim = controller(

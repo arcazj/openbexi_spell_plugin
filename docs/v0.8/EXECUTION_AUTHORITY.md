@@ -1,3 +1,9 @@
+The default prelaunch contract below remains applicable. The explicitly enabled
+retained native profile adds the admission/consume/check/event routes described
+in [NATIVE_LAUNCH.md](NATIVE_LAUNCH.md). It does not enable general public runtime,
+prove native quiescence or release any hold. Historical dev2 claims below refer
+to that original subset.
+
 # Durable prelaunch execution authority
 
 The original dev2 subset below is extended by dev3

@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "qualified_code_commit": "d962268f28e45062a9ace25a11c1e5f5929bd97f",
+  "passed": true,
+  "scope": "retained native compute and Context-owned procedure audit events",
+  "native_procedures_concurrent": 10,
+  "distinct_native_processes_verified": 30,
+  "native_process_roles": [
+    "Listener",
+    "Context",
+    "Executor"
+  ],
+  "context_audit_events_committed": 20,
+  "single_use_containers_terminated": 10,
+  "logical_holds_retained": 10,
+  "spent_worker_slots_retained": 10,
+  "cross_worker_native_port_denied": true,
+  "external_tcp_denied": true,
+  "context_without_docker_socket_or_host_manager": true,
+  "handoff": {
+    "state": "BLOCKED",
+    "phase": "after_container_termination",
+    "owner_epoch_preserved": true,
+    "quiescence_proven": false
+  },
+  "public_runtime_enabled": false,
+  "full_v08_qualified": false,
+  "push_workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/39975584888",
+  "pr_workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/39975591079",
+  "compatibility_workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/39975591165",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+    "server/src/openbexi_spell_server/authority.py": "0a48dafe2a0ebeb8fb043896314d392dc4d161f87389ebec5a86bbf06301e245",
+    "server/src/openbexi_spell_server/__main__.py": "73ed46584c2d3a553aa767c9ebf7336de29ab276ed65fa14104d2fb462da75c6",
+    "server/src/openbexi_spell_server/snapshots.py": "7d33e3ad4f49d781b986f99798cab8ec8e935fd6f32c4fc50989556e0f086c74",
+    "server/src/openbexi_spell_server/transport.py": "06d3cc4525770d568861663eaab1a73fe932616865cfb99c6ddcd1825eb3f185",
+    "server/src/openbexi_spell_server/launch.py": "4ce93f361e254938a9f7ace6d9d769f6972d884c3d0966e9367f98b4a016da5a",
+    "server/src/openbexi_spell_server/worker.py": "cb1cdb0e99bf77bee4efb4a3c52949214f9ffefb739edd2a0fe81b67f2c30dfe",
+    "server/src/openbexi_spell_server/services.py": "12a9590c7cd54812bbdc9912e5b3c766a069c9a3a934dd7d00851291b6660f77",
+    "server/src/openbexi_spell_server/contracts.py": "a9b7924100bc1ac0ac9705ae1a486437779a595cada4c940d6650f35bc604fdb",
+    "server/src/openbexi_spell_server/gateway.py": "b13b7bf18120e797c0c4137ded65ac4ee3ccd4d130419e568b373865e640d5bf",
+    "server/src/openbexi_spell_server/effects.py": "824b06b41e61cd2dbc61bfb7f8cd68d9cedc9a5e2d48f8b2de88789114e5e5e0",
+    "server/src/openbexi_spell_server/store.py": "84b4241e5590cf6a82a87fac343d69c37c2fa1d5df1cc7be8ce6af9c2803d592",
+    "server/src/openbexi_spell_server/__init__.py": "9e2082addff439dc55b5cd3d50841c60b437614dbd11450ab8c5bda79c136687",
+    "host_runtime/python/v08_worker.py": "85b0b6a8ab2cf988c78a57487fb125880bf1c1b5609b563584b45170aac4c8ac",
+    "scripts/qualify_v08_native_launch.py": "ba2bc8c53c0493700972220d98531b9146b2a7b3fd849bca5715c985ed7acf74",
+    "scripts/qualify_v08_native_boundary.py": "0192ec86f9a4597ad5eaa1d2fec701ea0c67e1ecb4a91820711285fe53f1098e"
+  },
+  "redaction": "No raw logs, hostnames, addresses, ports, process IDs, execution IDs, private paths, keys or grant tokens are republished."
+}

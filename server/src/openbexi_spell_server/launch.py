@@ -103,6 +103,11 @@ class WorkerLaunch:
                     if (
                         store.db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
                         >= 8192
+                        or store.db.execute(
+                            "SELECT COUNT(*) FROM native_driver_events WHERE execution_id=?",
+                            (grant.execution_id,),
+                        ).fetchone()[0]
+                        >= 512
                     ):
                         raise Fault(503, "native_event_capacity_reached")
                     store.db.execute(
