@@ -259,7 +259,7 @@ def qualify_pause_probe(
             "python",
             "-I",
             "-c",
-            "from pathlib import Path;rows=[r.split()[1] for r in Path('/proc/net/tcp').read_text().splitlines()[1:] if r.split()[1].endswith(':'+format(36991,'04X'))];assert rows==['0100007F:'+format(36991,'04X')];print('loopback-only')",
+            "from pathlib import Path;rows=[r.split()[1] for r in Path('/proc/net/tcp').read_text().splitlines()[1:] if r.split()[3]=='0A' and r.split()[1].endswith(':'+format(36991,'04X'))];assert rows==['0100007F:'+format(36991,'04X')];print('loopback-only')",
         )
         if binding != "loopback-only":
             raise RuntimeError("Cooperative helper is not private loopback")

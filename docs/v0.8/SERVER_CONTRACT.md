@@ -132,3 +132,10 @@ controller fencing/revocation; they grant no driver/control/recovery permission.
 Every driver/event/check route retains live original-grant checks. No supplied
 PAUSED status/Boolean can authorize transfer. This profile always retains old
 ownership and holds when thread/child/queue quiescence is unproven.
+
+The optional dev15 [background Python component](NATIVE_THREAD_BARRIER.md)
+does not change those Context routes or their proof requirements. Its private
+worker-local 127.0.0.1:36991 helper accepts only bounded one-shot `pause` and
+`snapshot` diagnostics. It has no resume, effect or ownership authority and is
+not exposed through Listener, Context or the IDE. Its observation scope cannot
+qualify native children or control/prompt queues.

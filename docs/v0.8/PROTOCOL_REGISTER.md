@@ -67,3 +67,11 @@ pause-report routes (NATIVE_PAUSE.md). They preserve original binding and the
 single consumer's memory-only proof after controller fencing, solely to report
 safety state. They can never admit effects, mint authority or prove quiescence.
 Schema 9 adds the bounded durable barrier; positive native handoff is pending.
+
+The separate private dev15 background-thread qualification component adds
+one worker-local JSON-line helper at **127.0.0.1:36991**, with bounded `pause`
+and `snapshot` actions bound to a single barrier UUID. It accepts no resume,
+grant, driver or ownership action. It is not a Listener/Context/IDE route or an
+authentication service; it can only hold observed cooperative Python threads.
+See [NATIVE_THREAD_BARRIER.md](NATIVE_THREAD_BARRIER.md) for its explicit scope,
+limits and candidate-SHA qualification. Whole-family proof remains unavailable.
