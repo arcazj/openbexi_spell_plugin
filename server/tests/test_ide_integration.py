@@ -242,3 +242,150 @@ def test_actual_desktop_panel_connects_observer_and_disables_mutations(
     finally:
         panel.close_connection()
         panel.close()
+
+
+def test_hundred_actual_ide_reservations_have_one_winner(desktop_cluster, pki):
+    setup = desktop_cluster
+    connection = mutate(setup["clients"]["alice"], "session.open", {})["connection_id"]
+    procedure = setup["clients"]["alice"].read("A", "procedures")["procedures"][0]
+    payload = {
+        k: procedure[k]
+        for k in (
+            "procedure_id",
+            "source_revision",
+            "source_sha256",
+            "runtime_image",
+            "driver_binding",
+        )
+    }
+
+    # Independent client locks and TLS connections; eight concurrent callers,
+    # 100 distinct idempotency keys, one logical procedure reservation.
+    def attempt(_):
+        client = SpellServerClient(
+            url=f"https://localhost:{setup['gateway'].server_port}",
+            fingerprint=pki["edge"]["pin"],
+            ca=pki["ca"],
+            certificate=pki["alice"]["cert"],
+            key=pki["alice"]["key"],
+        )
+        try:
+            return mutate(client, "execution.reserve", {**payload, "connection_id": connection})
+        except SpellServerError as error:
+            return error.status
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(attempt, range(100)))
+    assert sum(isinstance(result, dict) for result in results) == 1
+    assert results.count(409) == 99
+    with setup["store"].transaction(write=False):
+        assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+        assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 0
+
+
+def test_three_actual_desktop_panels_reserve_request_accept_and_rebind(
+    desktop_cluster, pki, tmp_path
+):
+    import os
+    import time
+
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+    from PySide6.QtWidgets import QApplication, QVBoxLayout, QWidget
+    from openbexi_ide.spell_server_panel import SpellServerPanel
+
+    app = QApplication.instance() or QApplication([])
+    panels = {}
+    window = QWidget()
+    layout = QVBoxLayout(window)
+    window.resize(1100, 850)
+
+    def wait(predicate):
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            app.processEvents()
+            if predicate():
+                return
+            time.sleep(0.01)
+        raise AssertionError("Desktop condition did not arrive")
+
+    def settled(panel):
+        wait(lambda: not panel.busy and bool(panel.state.get("health")))
+
+    def refresh_select(panel):
+        panel.refresh()
+        settled(panel)
+        assert panel.executions.topLevelItemCount() == 1
+        panel.executions.setCurrentItem(panel.executions.topLevelItem(0))
+        app.processEvents()
+
+    try:
+        for role in ("alice", "bob", "observer"):
+            panel = SpellServerPanel()
+            panels[role] = panel
+            layout.addWidget(panel)
+            config = tmp_path / (role + ".json")
+            config.write_text(
+                json.dumps(
+                    dict(
+                        url=f"https://localhost:{desktop_cluster['gateway'].server_port}",
+                        fingerprint=pki["edge"]["pin"],
+                        ca=str(pki["ca"]),
+                        certificate=str(pki[role]["cert"]),
+                        key=str(pki[role]["key"]),
+                    )
+                )
+            )
+            panel.connect_config(config)
+            settled(panel)
+        window.show()
+        app.processEvents()
+        alice, bob, observer = (panels[r] for r in ("alice", "bob", "observer"))
+        assert alice.reserve_button.isEnabled()
+        alice.reserve_button.click()
+        settled(alice)
+        refresh_select(bob)
+        assert bob.claim_button.isEnabled()
+        bob.claim_button.click()
+        settled(bob)
+        refresh_select(alice)
+        assert alice.accept_button.isEnabled() and alice.reject_button.isEnabled()
+        alice.accept_button.click()
+        settled(alice)
+        refresh_select(bob)
+        assert bob.rebind_button.isEnabled()
+        bob.rebind_button.click()
+        settled(bob)
+        refresh_select(observer)
+        assert observer.selected()["owner"] == "bob" and observer.selected()["epoch"] == 2
+        assert observer.selected()["control_state"] == "OWNED"
+        assert not any(
+            button.isEnabled()
+            for button in (
+                observer.reserve_button,
+                observer.rebind_button,
+                observer.claim_button,
+                observer.accept_button,
+                observer.reject_button,
+            )
+        )
+        if output := os.environ.get("OPENBEXI_SERVER_EVIDENCE_DIR"):
+            from pathlib import Path
+
+            app.processEvents()
+            assert window.grab().save(str(Path(output) / "ide-three-panels.png"))
+        # Capability data never enters the tree's public row model.
+        assert "capability" not in json.dumps(observer.selected())
+        for panel in (alice, bob, observer):
+            panel.disconnect_button.click()
+            wait(lambda: panel.client is None)
+        assert (
+            desktop_cluster["context"].authority.list_executions("alice")["executions"][0][
+                "control_state"
+            ]
+            == "CONTROLLER_DISCONNECTED"
+        )
+    finally:
+        for panel in panels.values():
+            panel.close_connection()
+            panel.close()
+        window.close()

@@ -224,3 +224,30 @@ native process startup/execution in an isolated non-root container. Its actual
 outcome must be read from CI; it is not v0.8 native launch, effect settlement,
 descendant pause or Compose/Kubernetes qualification. All full runtime gates
 remain pending and `runtime_enabled` remains false.
+
+## Final paired GUI/concurrency increment
+
+**154 local tests pass**, zero failures/errors/skips, with lint/format/mypy
+passing. `IDE_PAIR.json` pins the final companion source including GUI shutdown
+and local-execution-fallback guards. `evidence/ide-pair-final/` retains exact
+source hashes, installed IDE module hashes, JUnit and process traces. A real
+100-request TLS reservation race across eight independent clients produces one
+winner and 99 conflicts. Three actual Qt panels (captured in `evidence/ide-pair-final/ide-three-panels.png`) complete reserve → request →
+accept → rebind → observer refresh → disconnect. Fourteen companion IDE client
+and GUI tests pass locally, including nonblocking shutdown and rejection of
+local Run/Debug while connected to the server.
+
+The expanded IDE hosted run at `74335a1` passed **232 tests**, with one explicit
+Windows-only Job ownership skip on Linux: SDK and DSS examples were installed,
+and all eight existing immutable-image Docker execution tests ran. Both PR and
+push workflows passed (`39908884967`, `39908880908`). Earlier `ab44417` hosted
+results had 218 passes and 15 skips; those skips are not counted as passes.
+The latest GUI guard candidate must run its own hosted checks.
+
+The frozen native boundary diagnostic passed in hosted PR run `39908551614`.
+The verified downloaded artifact and origin metadata are retained under
+`evidence/native-boundary/`. It observed SPELL-Listener PID 9, SPELL-Context PID
+26 and SPELL-Executor_v3 PID 74 in the container, with PAUSED → FINISHED.
+These are real native PIDs, independently observed from registry/preflight PIDs.
+The original v0.7 image is identified by its exact archive/image hashes.
+No v0.8 native worker launch or driver settlement is inferred from that result.

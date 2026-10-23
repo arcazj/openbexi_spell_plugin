@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "scope": "internal services, prelaunch authority, approved Git inventories and single-host worker preflight",
+  "worker_identity_authenticated": true,
+  "worker_identity_scope": "operator-provisioned certificate pins; preflight only",
+  "kubernetes_worker_identity_tested": false,
+  "runtime_image_attested": false,
+  "readonly_mount_attested": false,
+  "native_pause_tested": false,
+  "source_inventory_verified": true,
+  "source_inventory_scope": "bounded approved Git objects and worker directory; configured catalog only",
+  "passed": true,
+  "runtime_enabled": false,
+  "native_executor_tested": false,
+  "python": "3.13.16",
+  "openssl": "OpenSSL 3.5.9 29 Sep 2026",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/__init__.py": "f8a595d755a9c34f17f15913f5e419b5251f96dd3b1d5f6ed2893ba95f5d9128",
+    "server/src/openbexi_spell_server/__main__.py": "955243dcdb96ec30641ef0aa92e97883032b972314dbf620090c1636cf0b3e9f",
+    "server/src/openbexi_spell_server/authority.py": "7799d9d873241e53b59ab9b877376f232cd3f6f03fc605280c4abcb8018d6783",
+    "server/src/openbexi_spell_server/contracts.py": "9c7230ab7481179dbcc8447adbf1620ee72e4c4ee206ff6094d7af0e7c18c99c",
+    "server/src/openbexi_spell_server/gateway.py": "b13b7bf18120e797c0c4137ded65ac4ee3ccd4d130419e568b373865e640d5bf",
+    "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+    "server/src/openbexi_spell_server/services.py": "8b522f4b12411089b635139fc17289a3c6d3e861e254c1a7fa7045537b5c3b1b",
+    "server/src/openbexi_spell_server/snapshots.py": "7d33e3ad4f49d781b986f99798cab8ec8e935fd6f32c4fc50989556e0f086c74",
+    "server/src/openbexi_spell_server/store.py": "478a4089441ec1458a00da2afa33ba11f88708cc102c6a2050996154d55777aa",
+    "server/src/openbexi_spell_server/transport.py": "92b4176f01aa544af4cf41ad967fe469bd831413965ce846a410549c3f09f0b8",
+    "server/src/openbexi_spell_server/worker.py": "a35eed36745817e560d9148bfbe91fba766816f11a9128551e7db6adaee28362",
+    "server/tests/conftest.py": "ae5abc96e9ef251b1d9bd2fe1459231e96a7f2c8ab726eb4fe0661448c528b3c",
+    "server/tests/test_authority.py": "549fbab99b3c86abf82b20136df69fc47e829f2635eac71e4327fa740f16ceb0",
+    "server/tests/test_authority_contracts.py": "5ab00d510c66c08fa1c6dba22e3a7afc792008ea1e463e7fa4634bb30408b8eb",
+    "server/tests/test_contracts.py": "215bb20ab607172c4a414bc9d54407b2efe41024ef7ec1cafc562af243e66634",
+    "server/tests/test_ide_integration.py": "88025c7814b65c18e73eb02e802c1eb2b7f9f1a951e9b13bf0c3780e49604da2",
+    "server/tests/test_preflight.py": "a4286e2bb7139ff1dcbaa04835b7453cf506cadacb24f87fc9f73857cbbfc8b6",
+    "server/tests/test_process_lifecycle.py": "e5ca6a1648b7473875b7195e27483417643c9ea55aa71cf8fd7c92b42c1e2c5d",
+    "server/tests/test_services.py": "e4822857d43b400fd4dee4deb32947836512f55f84fe02784637e0783ccde59b",
+    "server/tests/test_snapshots.py": "fd5ec976edb3d2e52af260c54aa9e0dce121ad3b51f3fc79f71ef2eef21c8b82",
+    "server/tests/test_store.py": "17d13ad48ecb56afd8d818a3a50962584205150760c424244730026070d0809b",
+    "server/pyproject.toml": "8f9b881865677a1b09a5d05be642be46d9ec3adf0df2e6dcec1fa89884120f0f",
+    "server/requirements-test.lock": "48d3141ea5dcce58ebc15534f34d1a9fa159704c62351a4589b65236c238f217",
+    "server/README.md": "c80e77771dd4ba43c3dc2cbfd586bb78aceb8b641751116b5d6979d00edad1a6",
+    "server/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "server/MANIFEST.in": "e96e6e445125d0b4d905b204281d57d2688f9241ffd28710a39c250bd4099456",
+    ".github/workflows/v08-server-foundation.yml": "f5df553242724217fa05176b74053272885504ecd92fc0b9183f9bdcf1a32ce7",
+    "scripts/qualify_v08_server.py": "5a591c4f9b1a76f9ebc178b8b22db9509a4f6be331c08cc21722ce7d47fe07f5",
+    "docs/v0.8/IDE_PAIR.json": "aabb6ba834108c4f5b89a3e9c99f2dc28dbfb8f83c6a71fd6615bb53164269fe"
+  },
+  "ide_client_inputs": {
+    "openbexi_runtime.spell_server_client": "cbb79bfb3fd3efa389198a1b33f691d99993ea4ad3a009cd3f61a6ec994fb9e3",
+    "openbexi_ide.spell_server_panel": "25a89faf807fd36f0d5ab13951ef860bc74cd7666a23e99ae0314481d0c9c8a2",
+    "openbexi_ide.app": "27f59dc75ed2d434b547beb2b7a1b460c6e3d1379e6a58dba7c175acd7b10ccb"
+  },
+  "checks": [
+    {
+      "name": "lint",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "format",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "types",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "server/pyproject.toml",
+        "server/src"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "pytest",
+        "server/tests",
+        "-q",
+        "-W",
+        "error",
+        "--tb=short",
+        "--junitxml=/workspace/scratch/ad640084ab56/spell-v08-next/.qualification/v08-server/run-20261023T060746Z-03e97a3a/tests.xml"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "git_head": "08ee0045635131d60be06a8a31e0ae8b90d7df65",
+  "working_tree_dirty": true,
+  "ide_commit": "a1ec00f742594208fd7c84001b6950d8e11aeb3d",
+  "junit": {
+    "tests": 154,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  }
+}
