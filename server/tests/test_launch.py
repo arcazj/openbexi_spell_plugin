@@ -25,15 +25,24 @@ def grant(setup):
 
 
 def call(setup, pki, admitted, action="consume", *, certificate="worker", **updates):
-    body = dict(schema="openbexi.worker/1", context_id="A", grant=asdict(admitted))
+    body = dict(schema="openbexi.worker/2", context_id="A", grant=asdict(admitted))
+    if action != "consume":
+        body["runtime_capability"] = setup.get("runtime_capabilities", {}).get(
+            admitted.execution_id, "0" * 64
+        )
     body.update(updates)
-    return request(
+    response = request(
         setup["server"],
         pki[certificate]["client"],
         "/v1/worker/" + action,
         subject=None,
         payload=body,
     )
+    if action == "consume" and response[0] == 200:
+        setup.setdefault("runtime_capabilities", {})[admitted.execution_id] = response[1]["result"][
+            "runtime_capability"
+        ]
+    return response
 
 
 def enable(setup):
@@ -66,6 +75,19 @@ def test_one_of_100_duplicate_authenticated_consumptions_wins(setup, pki):
         statuses = list(pool.map(lambda _: call(setup, pki, admitted)[0], range(100)))
     assert statuses.count(200) == 1 and statuses.count(403) == 99
     assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_consumption_proof_and_spent_slot_roll_back_when_audit_commit_fails(setup, pki):
+    enable(setup)
+    admitted = grant(setup)
+    store = setup["store"]
+    store.max_events = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    assert call(setup, pki, admitted)[0] == 503
+    assert not setup.get("runtime_capabilities")
+    assert store.db.execute("SELECT COUNT(*) FROM worker_runtime_receipts").fetchone()[0] == 0
+    assert store.db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 0
+    assert store.db.execute("SELECT lifecycle FROM executions").fetchone()[0] == "RESERVED"
+    assert store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
 
 
 @pytest.mark.parametrize("certificate", ["alice", "bob", "listener", "observer"])
@@ -388,7 +410,7 @@ def test_driver_gate_preserves_native_event_schema_version(audit_setup, pki, tmp
         audit_setup["app"].authority, tmp_path / "driver", {"context-audit": ("127.0.0.1", 1)}
     )
     try:
-        assert audit_setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert audit_setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 8
     finally:
         gate.close()
 

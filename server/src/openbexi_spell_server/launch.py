@@ -4,8 +4,10 @@ from dataclasses import fields
 import base64
 import binascii
 import json
+import hmac
+import secrets
 
-from .authority import StartGrant
+from .authority import StartGrant, secret_hash
 from .contracts import Fault, digest, exact, fingerprint, identifier
 from .preflight import canonical_uuid
 
@@ -33,8 +35,12 @@ class WorkerLaunch:
             self.authority.store.db.execute(
                 "CREATE TABLE IF NOT EXISTS native_driver_events(request_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,body_hash TEXT NOT NULL)"
             )
-            if self.authority.store.db.execute("PRAGMA user_version").fetchone()[0] < 6:
-                self.authority.store.db.execute("PRAGMA user_version=6")
+            self.authority.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS worker_runtime_receipts("
+                "execution_id TEXT PRIMARY KEY,request_id TEXT NOT NULL,capability_hash TEXT NOT NULL)"
+            )
+            if self.authority.store.db.execute("PRAGMA user_version").fetchone()[0] < 8:
+                self.authority.store.db.execute("PRAGMA user_version=8")
 
     def handle(self, peer, path, body):
         if self.preflight.peers.get(peer.fingerprint) != peer:
@@ -44,23 +50,30 @@ class WorkerLaunch:
             allowed.add("/v1/worker/driver")
         if path not in allowed:
             raise Fault(404, "route_not_available")
+        if not path.endswith("consume"):
+            if type(body) is not dict or "runtime_capability" not in body:
+                raise Fault(403, "worker_consumption_proof_required")
         extra = set()
         if path.endswith("event"):
             extra = {"request_id", "message", "severity", "scope"}
         elif path.endswith("driver"):
             extra = {"request_id", "path", "payload"}
+        if not path.endswith("consume"):
+            extra.add("runtime_capability")
         exact(
             body,
             {"schema", "context_id", "grant"} | extra,
         )
         if (
-            body["schema"] != "openbexi.worker/1"
+            body["schema"] != "openbexi.worker/2"
             or body["context_id"] != self.authority.store.context_id
         ):
             raise Fault(403, "worker_scope_denied")
         grant = start_grant(body["grant"])
         if grant.worker_slot != peer.slot or grant.worker_incarnation != peer.incarnation:
             raise Fault(403, "worker_assignment_mismatch")
+        if not path.endswith("consume"):
+            self._runtime(grant, body["runtime_capability"])
         if path.endswith("event"):
             return self.record_event(grant, body)
         if path.endswith("driver"):
@@ -88,11 +101,13 @@ class WorkerLaunch:
                 payload=base64.b64encode(result).decode("ascii"),
             )
         if path.endswith("consume"):
-            self.authority.consume_start(grant, peer.slot, peer.incarnation)
-        else:
-            self.authority.validate_start_grant(grant)
-        # No grant token, capability, new epoch or retry permission is returned.
-        return dict(
+            capability = secrets.token_hex(32)
+            self.authority.consume_start(
+                grant, peer.slot, peer.incarnation, consumption_hash=secret_hash(capability)
+            )
+        # Only the single consume winner receives a new memory-only runtime
+        # proof. No original grant, new epoch or retry permission is returned.
+        answer = dict(
             consumed=path.endswith("consume"),
             checked=path.endswith("check"),
             execution_id=grant.execution_id,
@@ -101,6 +116,29 @@ class WorkerLaunch:
             hold_retained=True,
             runtime_enabled=False,
         )
+        if path.endswith("consume"):
+            answer["runtime_capability"] = capability
+        return answer
+
+    def _runtime(self, grant, capability):
+        try:
+            fingerprint(capability)
+        except Fault as error:
+            raise Fault(403, "worker_consumption_proof_required") from error
+        with self.authority._execution_lock(grant.execution_id):
+            with self.authority.store.transaction(write=False):
+                row = self.authority._grant(grant)
+                receipt = self.authority.store.db.execute(
+                    "SELECT request_id,capability_hash FROM worker_runtime_receipts WHERE execution_id=?",
+                    (grant.execution_id,),
+                ).fetchone()
+                if (
+                    row["lifecycle"] != "STARTING"
+                    or receipt is None
+                    or receipt["request_id"] != grant.request_id
+                    or not hmac.compare_digest(receipt["capability_hash"], secret_hash(capability))
+                ):
+                    raise Fault(403, "worker_consumption_proof_required")
 
     def record_event(self, grant, body):
         canonical_uuid(body["request_id"])

@@ -95,7 +95,8 @@ class ContextDriver:
                 self.store.db.execute(
                     "UPDATE native_driver_calls SET state='UNCERTAIN' WHERE state='ADMITTED'"
                 )
-                self.store.db.execute("PRAGMA user_version=7")
+                if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 7:
+                    self.store.db.execute("PRAGMA user_version=7")
         except BaseException:
             self.close()
             raise

@@ -58,9 +58,10 @@ def driver_setup(tmp_path, pki, source, independent_dss):
 
 def native_call(setup, pki, path, message, *, key=None, certificate="worker", **updates):
     body = dict(
-        schema="openbexi.worker/1",
+        schema="openbexi.worker/2",
         context_id="A",
         grant=asdict(setup["grant"]),
+        runtime_capability=setup["runtime_capabilities"][setup["grant"].execution_id],
         request_id=key or str(uuid.uuid4()),
         path=path,
         payload=base64.b64encode(message.SerializeToString(deterministic=True)).decode("ascii"),
@@ -91,9 +92,12 @@ def test_original_tc_over_worker_mtls_has_five_durable_receipts(driver_setup, pk
         rows = db.execute("SELECT state FROM effect_intents").fetchall()
         assert [r[0] for r in rows] == ["ACKED"] * 5
         assert setup["grant"].token not in "\n".join(db.iterdump())
+        assert setup["runtime_capabilities"][setup["grant"].execution_id] not in "\n".join(
+            db.iterdump()
+        )
     assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
     assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
-    assert setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 7
+    assert setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 8
 
 
 def test_twenty_duplicate_rpc_calls_produce_one_real_command(driver_setup, pki):
@@ -109,6 +113,47 @@ def test_twenty_duplicate_rpc_calls_produce_one_real_command(driver_setup, pki):
         )
     assert results.count(200) == 1 and results.count(409) == 19
     assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 1
+
+
+def test_copied_original_config_cannot_bypass_consumption_and_dispatch(driver_setup, pki):
+    # A second process can possess the original certificate/configuration but
+    # must not obtain the winner's memory-only consumption receipt.
+    setup = driver_setup
+    copied = dict(
+        schema="openbexi.worker/2",
+        context_id="A",
+        grant=asdict(setup["grant"]),
+        request_id=str(uuid.uuid4()),
+        path=PREFIX + "TC/SendCommand",
+        payload=base64.b64encode(command().SerializeToString()).decode("ascii"),
+    )
+    status, _ = request(
+        setup["server"], pki["worker"]["client"], "/v1/worker/driver", subject=None, payload=copied
+    )
+    assert status == 403
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 0
+
+
+@pytest.mark.parametrize("receipt", [None, True, 123, "bad", "0" * 64])
+def test_invalid_or_guessed_consumption_proof_cannot_dispatch(driver_setup, pki, receipt):
+    assert (
+        native_call(
+            driver_setup, pki, PREFIX + "TC/SendCommand", command(), runtime_capability=receipt
+        )[0]
+        == 403
+    )
+    assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
+
+
+def test_lost_consumption_proof_cannot_be_refreshed_from_original_config(driver_setup, pki):
+    setup = driver_setup
+    setup["runtime_capabilities"].clear()
+    assert call(setup, pki, setup["grant"])[0] == 403
+    assert call(setup, pki, setup["grant"], "check")[0] == 403
+    assert call(setup, pki, setup["grant"], "event", **event_body())[0] == 403
+    assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 0
 
 
 def test_permitted_original_telemetry_is_correlated_and_replay_denied(driver_setup, pki):

@@ -191,5 +191,7 @@ adds five bounded original TC/TM methods through the real effect gate, with
 fixed endpoints and explicit resource permissions. The Apache server and public
 gateway/Listener/IDE retain their defaults. Local original-protobuf/mTLS/DSS
 checks are distinct from the mandatory native Docker matrix and full v0.8
-qualification. Authority schema 7 prevents opening the new RPC ledger with older
+qualification. The single consumption winner receives a separate memory-only
+runtime proof; copied original configuration alone cannot call the driver.
+Authority schema 8 prevents opening the runtime-proof and RPC ledgers with older
 binaries; no automatic state downgrade or recovery is supported.

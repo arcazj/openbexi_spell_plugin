@@ -15,7 +15,7 @@ implemented or qualified endpoint. No illustrated port is silently assigned.
 | Browser → edge/Listener | TARGET-v0.8 | HTTPS JSON `/v1`; WSS JSON events; registered certificate identity, secure session; exact Origin allowlist | Bounded request size/deadline; reconnect with cursor; snapshot on gap |
 | Edge → Listener | TARGET-v0.8 | mTLS; strip external identity headers; bind client identity/session to trusted edge | Fixed upstream identity; unavailable edge does not stop Contexts |
 | Listener → Context | TARGET-v0.8 | mTLS HTTP/JSON RPC, schema `openbexi.context/1`; authenticated short-lived delegation, Context scope | 5s ordinary request deadline, explicit longer launch receipt polling; no blind mutation retry |
-| Context → worker | TARGET-v0.8 | mTLS versioned JSON RPC `openbexi.worker/1`; Context/ExecutionID, worker generation, correlation IDs; bounded DAP/driver payloads | Heartbeat/health; ambiguous start/command holds reservation; no lease-based replacement |
+| Context → worker | TARGET-v0.8 | mTLS versioned JSON RPC: preflight `openbexi.worker/1`, retained launch `openbexi.worker/2`; immutable original grant plus memory-only proof from the single consumption winner; bounded driver payloads | Heartbeat/health; ambiguous start/command holds reservation; no lease-based replacement |
 | Development → Git | TARGET-v0.8 | Local isolated worktrees; configured HTTPS/SSH remote, credentials outside snapshots | Expected-base compare, explicit conflicts; no force push |
 
 ## Proposed common envelope

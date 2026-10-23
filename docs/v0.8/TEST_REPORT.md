@@ -433,3 +433,54 @@ this workspace. Its candidate-SHA CI result must pass before claiming native
 TC/TM qualification. It does not close native quiescence/live transfer, children,
 recovery, IDE execution, full historical compatibility, browser/WSS, production
 Compose/Kubernetes or independent security/release acceptance.
+
+
+## dev10 single-consumer proof and native fixture correction
+
+The dev9 PR services/native run 39999917882 completed: foundation,
+native-boundary and audit-only launch passed, but the new native DSS job failed.
+Artifact 12520924294 retained all ten worker failures, each `NameError: name
+'Send' is not defined`; the procedure fixture lacked `from spell.lang import *`.
+The dev10 fixture adds the SDK import. This is a corrected cause, not yet a
+native pass.
+
+A separate adversarial probe against dev9 confirmed a more serious defect:
+a second process holding a copied ORIGINAL certificate and start configuration
+could skip consumption and call the newly added driver route successfully
+(HTTP 200 where 403 was required). The pre-fix failing JUnit is retained as
+`original-config-probe-before-fix.xml` in local qualification evidence. The
+honest clone's failed consumption was insufficient proof against direct RPC.
+
+Dev10 atomically commits a hash of a new random 256-bit runtime proof with the
+single successful consumption. Only that consumer receives the plaintext;
+the native agent retains it in memory, never in the original configuration,
+logs or a replayable response. All check/event/driver requests now require
+this proof plus the unchanged original grant, certificate assignment and live
+authority. A lost receipt cannot be refreshed; slots and reservations remain
+retained. Schema 8 rejects unsafe old-binary access. Retained launch uses
+`openbexi.worker/2`; preflight stays on version 1. This does not attest worker
+memory or admit untrusted procedure code.
+
+Fresh CPython **3.13.16** qualification passed **254 scoped tests**, zero
+failures/errors/skips, warnings as errors; lint/format/mypy passed. New checks
+cover copied configuration, missing/malformed/guessed proofs, lost-proof denial
+and retention, atomic rollback on failed audit commit, and absence of plaintext
+proofs in both effect databases. The first focused run exposed one stale
+schema-6 expectation (now schema 8); that failure is retained separately.
+Evidence: local `v08-server/run-20261023T181302Z-64733ab3`, with exact changed
+code hashes. The README/protocol documentation was updated during that run;
+no tested code changed after capture. Candidate-SHA CI must independently
+qualify the committed source and documentation.
+
+An offline **0.8.0.dev10** wheel build and clean isolated installed-wheel
+version/import plus both service/worker CLI smokes passed. The existing dev9
+**241-test portable compatibility** pass still applies to the unchanged legacy
+code; it is not all-763 qualification. Hosted dev10 audit/DSS cohorts are
+pending. The DSS cohort additionally requires a separate physical process with
+only copied original credentials/configuration to receive HTTP 403 on direct
+driver RPC. It must still prove ten commands, telemetry and fifty ACKED stages.
+
+Full v0.8 remains **unqualified**, with public runtime disabled. Native
+quiescence/live transfer, children, recovery/reclamation, full compatibility,
+IDE/browser execution, deployment and independent security/release acceptance
+remain open. No merge, tag or release is authorized by these subset results.

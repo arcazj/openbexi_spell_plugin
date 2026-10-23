@@ -102,7 +102,10 @@ class Context:
             )
             if handler is None:
                 raise Fault(404, "route_not_available")
-            return {"schema": "openbexi.worker/1", "result": handler.handle(identity, path, body)}
+            return {
+                "schema": "openbexi.worker/2" if handler is self.launch else "openbexi.worker/1",
+                "result": handler.handle(identity, path, body),
+            }
         if identity != "listener":
             raise Fault(403, "listener_identity_required")
         if method != "POST" or path != "/v1/rpc":

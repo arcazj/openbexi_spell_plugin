@@ -34,11 +34,16 @@ The actual proxy driver is mandatory. Procedure-scoped EV/RaiseEvent calls are
 forwarded over mTLS to Context and acknowledged only after a durable atomic
 journal commit under the original grant and execution mutex. Scope/system and
 configuration writes are denied. Idempotent receipts are checked only after
-live authorization; schema 6 prevents old-binary downgrade. The native controller
+live authorization. The retained launch protocol is `openbexi.worker/2`;
+preflight remains `openbexi.worker/1`. Only the single consumption winner
+receives a separate memory-only runtime proof, required on check/event/driver
+calls in addition to its unchanged original grant. Only its hash is committed,
+atomically with consumption. Lost replies retain holds and cannot refresh this
+proof. Schema 8 prevents old-binary downgrade. The native controller
 itself emits lifecycle events even for arithmetic-only procedures. All other
 native driver methods remain denied; no ExampleDriver or fabricated success is
-allowed. The external-socket driver seam is not yet integrated with native RPC
-dispatch. Native child
+allowed. The optional Context-owned TC/TM integration is described in NATIVE_DSS.md;
+it has its own mandatory native cohort. Native child
 notifications cause failure; full pre-run child reservation still needs native
 bridge work. Unknown/uncooperative Python descendants are not a qualified
 sandbox or handoff protocol. Only approved trusted qualification fixtures run.

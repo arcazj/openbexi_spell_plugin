@@ -658,7 +658,9 @@ class ExecutionAuthority:
             raise Fault(403, "worker_grant_fenced")
         return row
 
-    def consume_start(self, grant, authenticated_slot, authenticated_incarnation):
+    def consume_start(
+        self, grant, authenticated_slot, authenticated_incarnation, *, consumption_hash=None
+    ):
         """Trusted adapter only: authenticate worker incarnation BEFORE calling.
 
         Consume exactly the previously admitted immutable grant. Response loss
@@ -666,6 +668,8 @@ class ExecutionAuthority:
         """
         if type(grant) is not StartGrant:
             raise Fault(403, "worker_grant_fenced")
+        if consumption_hash is not None:
+            fingerprint(consumption_hash)
         with self._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self._grant(grant)
@@ -688,6 +692,11 @@ class ExecutionAuthority:
                     "UPDATE executions SET lifecycle='STARTING' WHERE id=?",
                     (row["id"],),
                 )
+                if consumption_hash is not None:
+                    self.store.db.execute(
+                        "INSERT INTO worker_runtime_receipts VALUES(?,?,?)",
+                        (grant.execution_id, grant.request_id, consumption_hash),
+                    )
                 self.store._event(
                     "WORKER_START_CONSUMED",
                     {

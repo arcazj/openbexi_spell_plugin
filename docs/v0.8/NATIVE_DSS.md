@@ -1,6 +1,6 @@
 # Context-owned native DSS subset (development)
 
-`0.8.0.dev9` connects the original protobuf driver request to the private Context
+`0.8.0.dev10` connects the original protobuf driver request to the private Context
 effect gate. This is an optional retained, single-use qualification profile.
 Default gateway, Listener and IDE execution remain disabled. It is not a full
 v0.8 release or a claim of complete legacy driver compatibility.
@@ -48,10 +48,23 @@ command groups, scheduling and every other original method remain denied.
 
 Only a registered certificate-bound worker may POST `/v1/worker/driver`. This
 route exists only when the retained profile and adapter are both configured.
-The body has exactly `schema`, `context_id`, the ORIGINAL `grant`, a canonical
-`request_id` UUID, the original `path`, and a base64 `payload`. Decoded request
+The body has exactly `schema` (`openbexi.worker/2`), `context_id`, the
+ORIGINAL `grant`, a separate `runtime_capability`, a canonical `request_id`
+UUID, the original `path`, and a base64 `payload`. Decoded request
 and response protobufs are at most 32 KiB, within the existing 64 KiB JSON bound.
 The reply binds `request_id`, `execution_id` and base64 response bytes.
+
+The single successful start consumer receives a separate random 256-bit runtime
+proof. Context commits only its hash in the same transaction as spending the
+worker slot and recording consumption. The native agent keeps the plaintext
+proof in memory; it is absent from the original start configuration and from
+persisted receipts or logs. Checks, events and driver calls require both this
+proof and the unchanged live original grant/certificate assignment. A second
+process with only a copied original certificate/configuration cannot skip
+consumption and dispatch an effect. A lost response loses the proof: it cannot
+be refreshed or replayed, and the spent slot and logical hold remain retained.
+This is not protection against compromise of the legitimate worker's memory or
+an attestation of untrusted procedures.
 
 The supported original methods are:
 
@@ -75,7 +88,7 @@ execution; request and response hashes are retained without plaintext grants.
 The same UUID cannot be replayed, even after a lost reply or with changed bytes.
 Live authorization is checked before replay disclosure. Uncertain sends retain
 the worker and logical holds and fence control; no automatic resend, capacity
-reclamation or ownership transfer follows. Schema 7 prevents older binaries
+reclamation or ownership transfer follows. Schema 8 prevents older binaries
 opening this new state. Restoration/downgrade requires the existing manual
 fencing/recovery process, not copying an older database.
 
@@ -83,7 +96,8 @@ fencing/recovery process, not copying an older database.
 
 The local tests use original serialized protobuf requests over real mTLS to a
 Context and a separate DSS process. They cover all other original method paths,
-certificate/provenance/resource denial, duplicate calls, between-stage handoff,
+certificate/provenance/resource and copied-configuration denial, duplicate calls,
+between-stage handoff,
 lost release receipts and bounded capacity. They do not instantiate a native
 Executor. Failed development attempts are retained separately from passes.
 
@@ -92,6 +106,9 @@ The hosted native matrix retains the audit-only cohort and adds
 ten distinct native Executors, ten successful original SendCommand calls,
 original RefreshItem calls and fifty ACKED stage receipts in a separate isolated
 DSS container, while retaining all original reservations and spent slots.
+The dev9 hosted DSS cohort failed because the fixture omitted the SPELL SDK
+import; all ten workers reported `NameError: Send`. dev10 adds that import and
+a separate physical copied-original-configuration driver-denial probe.
 Until that candidate-SHA workflow succeeds, this boundary is **not native
 qualified**. Adding or passing unit/RPC tests is insufficient.
 

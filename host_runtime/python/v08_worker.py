@@ -27,7 +27,7 @@ from native import NativeSession
 from openbexi_spell_dss.relay import Relay
 from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as driver_proto
-from openbexi_spell_server.contracts import Fault, decode, exact
+from openbexi_spell_server.contracts import Fault, decode, exact, fingerprint
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
 from openbexi_spell_server.transport import Route, tls_context
@@ -78,13 +78,16 @@ def run(config):
         tls_context(worker["ca"], worker["certificate"], worker["key"]),
     )
     request = dict(
-        schema="openbexi.worker/1", context_id=worker["context_id"], grant=asdict(grant)
+        schema="openbexi.worker/2", context_id=worker["context_id"], grant=asdict(grant)
     )
 
     def rpc(action):
         reply = route.call(
-            request, path="/v1/worker/" + action, schema="openbexi.worker/1"
+            request, path="/v1/worker/" + action, schema="openbexi.worker/2"
         )
+        capability = None
+        if action == "consume":
+            capability = fingerprint(reply.pop("runtime_capability", None))
         expected = dict(
             consumed=action == "consume",
             checked=action == "check",
@@ -96,6 +99,10 @@ def run(config):
         )
         if reply != expected:
             raise RuntimeError("Worker launch receipt mismatch")
+        if capability is not None:
+            # The sole winner retains this proof only in memory, never in the
+            # original configuration, logs or a replayable receipt response.
+            request["runtime_capability"] = capability
 
     # Exactly ONE consumption attempt. A lost reply must prevent native launch.
     rpc("consume")
@@ -122,7 +129,7 @@ def run(config):
                         "payload": body["payload"],
                     },
                     path="/v1/worker/driver",
-                    schema="openbexi.worker/1",
+                    schema="openbexi.worker/2",
                 )
                 exact(answer, {"request_id", "execution_id", "payload"})
                 if (
@@ -149,7 +156,7 @@ def run(config):
                     "scope": settings.get("Scope", 1),
                 },
                 path="/v1/worker/event",
-                schema="openbexi.worker/1",
+                schema="openbexi.worker/2",
             )
             if answer != dict(
                 recorded=True, request_id=request_id, execution_id=grant.execution_id

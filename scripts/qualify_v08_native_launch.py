@@ -294,6 +294,7 @@ def main():
                 fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
                 if profile.native_dss:
                     fixture += (
+                        "from spell.lang import *\n"
                         "assert Send(command='CMD1',Timeout=2,HandleError=False,PromptUser=False,Confirm=False) is True\n"
                         "assert GetTM('TM.POWER.BUS_VOLTAGE',Wait=False,Timeout=2,HandleError=False) == 28.0\n"
                     )
@@ -812,6 +813,35 @@ def main():
                         "Cloned worker denial did not precede native launch"
                     )
                 report["physical_worker_clone_denied"] = True
+                if profile.native_dss:
+                    # A copied ORIGINAL config must not be enough to skip
+                    # consumption and use the driver's effect route directly.
+                    # The single winner's consumption proof is memory-only.
+                    attacker = prefix + "-driver-clone"
+                    probe_command = list(launch_commands[1])
+                    probe_command[probe_command.index("--name") + 1] = attacker
+                    probe = (
+                        "import json,sys,uuid\n"
+                        "sys.path.insert(0,'/v08/server/src')\n"
+                        "from openbexi_spell_server.transport import Route,tls_context\n"
+                        "from openbexi_spell_server.contracts import Fault\n"
+                        "c=json.load(open('/credentials/config.json'));w=c['preflight']\n"
+                        "r=Route(w['context_url'],w['context_fingerprint'],tls_context(w['ca'],w['certificate'],w['key']))\n"
+                        "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload='')\n"
+                        "try:r.call(b,path='/v1/worker/driver',schema='openbexi.worker/2')\n"
+                        "except Fault as e:\n"
+                        " if e.code!='context_request_denied' or getattr(e.__cause__,'code',None)!=403:raise\n"
+                        "else:raise RuntimeError('Copied original config gained driver authority')\n"
+                        "print('copied-original-driver-config-denied',flush=True)\n"
+                    )
+                    probe_command[probe_command.index("-I") :] = ["-I", "-c", probe]
+                    names.append(attacker)
+                    command(*probe_command)
+                    if command("docker", "wait", attacker, timeout=15) != "0":
+                        raise RuntimeError(
+                            "Copied original config bypassed consumption proof"
+                        )
+                    report["copied_original_driver_config_denied"] = True
                 bob = controller("session.open", {}, "bob")["connection_id"]
                 first = executions[0]
                 claim = controller(
