@@ -297,3 +297,47 @@ runs this explicit subset; it must not be presented as all 763 requirements,
 a native worker/DSS-process test or v0.8 actual-send fencing qualification.
 Published v0.7 artifacts remain unchanged; source fixes are unreleased and need
 their own future wheel/image build and native acceptance before publication.
+
+## Private actual-send boundary, development candidate 0.8.0.dev6
+
+The current local service/paired-IDE suite passes **179 tests**, zero failures,
+errors or skips, with warnings as errors. Ruff formatting/lint and mypy pass.
+The 25 new boundary cases use the actual GPL fenced transport and independent
+DSS processes. Five-stage receipts, ten concurrent driver operations, another
+execution's progress during receipt waiting, stale/forged provenance, wire
+identity binding, role revocation, capacity/endpoint denial, handoff while a
+receipt is pending, real backpressured writes, lost release receipts and process
+death between an actual TCP write and the SENT commit are covered.
+
+`DRIVER_WRITE_GATE.md` defines this private trusted-Context seam. Final live
+admission and the bounded actual socket write share the execution mutex used by
+controller changes. Short authority and separate driver ledger commits precede
+the write. Receipt waits hold neither execution nor database mutex. Missing or
+uncertain effects retain recovery holds; no replay or synthetic receipt exists.
+Start admission and consumption now both require live `execution:start` as well
+as control permission. Creating the gate upgrades authority storage to schema 5;
+older binaries reject that state.
+
+The first compatibility attempt caught three strict telemetry-preimage errors
+when the original transport source was edited (238 passed, 3 setup errors).
+Those diagnostics are retained. The fix preserves the original `transport.py`
+byte-for-byte and implements the mandatory-admission variant in the separate
+GPL `fenced_transport.py`; no immutable patch recipe hash was changed. Final
+portable compatibility rerun: **241 passed**, zero failures/errors/skips, with
+warnings as errors. It still does not cover the full historical root suite.
+
+The server development wheel builds and passes isolated installed import,
+package-version consistency and CLI checks. Evidence, source hashes, commands,
+JUnit, DSS PIDs, failed compatibility diagnostic and wheel digest are retained
+in `evidence/driver-write-gate/`. Local reports identify the prior Git head plus
+exact changed source hashes; hosted candidate-SHA checks must be assessed
+separately. The companion IDE remains pinned to `a1ec00f` by IDE_PAIR.json and
+its actual three-panel integration is included in the 179 tests.
+
+**Full v0.8 remains unqualified and `runtime_enabled: false`.** No native worker
+or service route invokes this seam yet. Ten driver operations are not ten native
+Executors. Full native driver lifecycle/TM/resource ACLs, native child admission,
+quiescence and handoff, all-763 compatibility, browser/WSS, real Compose and
+Kubernetes admission/network/storage/failure recovery, independent security
+review and release acceptance remain pending. No tag/release/merge follows from
+these results.

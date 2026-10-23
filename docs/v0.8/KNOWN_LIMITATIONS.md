@@ -13,7 +13,7 @@ verified only for configured catalogs; metadata-only reservations cannot pass
 Context's start guard. Runtime-image and read-only-mount attestation remain
 unqualified, and a trusted worker's digest report is not hardware attestation. Acceptance succeeds only before consumption;
 a post-consumption transfer is blocked and retains recovery holds. Native pause,
-actual-send/effect settlement, source/alias/child admission, driver adaptation,
+native effect settlement, source/alias/child admission, full driver adaptation,
 browser sessions/WSS, UI, Compose and Kubernetes remain unimplemented or
 unqualified. No release/recovery/capacity-reclamation operation is exposed.
 See EXECUTION_AUTHORITY.md for exact limits. Full C/D and E-L gates remain pending.
@@ -48,3 +48,9 @@ references. Fresh complete native compatibility evidence on the correct
 immutable source, plus driver settlement and deployment/recovery tests, remain
 release blockers. Preparatory syntax and resource-lifetime source fixes do not
 qualify a rebuilt native image or approve a release.
+
+The private driver seam now serializes the final live check and bounded binary
+TCP write with controller fencing and reserves separate authority/driver intent
+ledgers. See DRIVER_WRITE_GATE.md for the exact tests and trust boundary. It is
+not a native or network-accessible runtime path. Post-start handoff continues to
+block without proven native quiescence; no release gate is waived.

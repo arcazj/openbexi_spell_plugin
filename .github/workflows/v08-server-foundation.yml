@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'server/**'
+      - 'src/dss/**'
+      - 'driver_plugin/src/**'
       - 'docs/v0.8/**'
       - 'scripts/qualify_v08_server.py'
       - 'scripts/qualify_v08_native_boundary.py'
@@ -12,6 +14,8 @@ on:
     branches: ['feature/v0.8-server-architecture']
     paths:
       - 'server/**'
+      - 'src/dss/**'
+      - 'driver_plugin/src/**'
       - 'docs/v0.8/**'
       - 'scripts/qualify_v08_server.py'
       - 'scripts/qualify_v08_native_boundary.py'
@@ -55,6 +59,7 @@ jobs:
         run: |
           python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-server/wheels
           python -m pip install --no-deps .qualification/v08-server/wheels/*.whl
+          python -I -c 'import importlib.metadata as m, openbexi_spell_server as s; assert s.__version__ == m.version("openbexi-spell-server")'
           python -I -m openbexi_spell_server --help
           python -I -m openbexi_spell_server.worker --help
       - name: Retain qualification evidence including failed attempts

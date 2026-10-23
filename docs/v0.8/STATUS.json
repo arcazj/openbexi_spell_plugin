@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; authenticated IDE/gateway pair and prelaunch authority implemented; full native integration pending",
+  "phase": "G1 approved; authenticated IDE pair, prelaunch authority and private driver write seam implemented; full native integration pending",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -26,7 +26,9 @@
     "Hosted native baseline diagnostic observed distinct actual Listener/Context/Executor PIDs and PAUSED to FINISHED in frozen v0.7 image",
     "Expanded hosted IDE run 74335a1 passed 232 tests with one Windows-only skip, including installed SDK/DSS examples and eight Docker execution tests; latest guard candidate checks tracked in PR",
     "Latest IDE a1ec00f hosted suite: 235 passed, one Windows-only skip; pinned SDK/DSS examples and eight real offline Python Docker tests included",
-    "241 local portable syntax/preparation and original protobuf/DSS TCP tests passed with warnings as errors; exact source hashes retained"
+    "241 local portable syntax/preparation and original protobuf/DSS TCP tests passed with warnings as errors; exact source hashes retained",
+    "179 local service/IDE/driver seam tests pass with warnings as errors, including 25 new boundary cases, independent DSS subprocesses, actual bounded binary sends and write-before-commit process death; full native runtime remains disabled",
+    "Final unchanged-legacy transport compatibility rerun: 241 passed, zero failures/errors/skips; new mandatory-admission adapter is a separate GPL module, with original patch preimages preserved"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -45,11 +47,12 @@
     "D": "Context state/ACL/registry, configured source policy and worker preflight tested; native driver/fanout integration pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
     "K_foundation": "Scoped services/source/preflight workflow; verify exact candidate SHA in PR checks. Prior 87db0ce scoped push/PR workflows passed; full K remains pending",
-    "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending"
+    "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
+    "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending"
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete native v0.8 launch/control and final write/receipt fencing; regenerate correct-source compatibility evidence and qualify browser/Compose/Kubernetes recovery",
+  "next_step": "Integrate native one-shot launch, child admission and proven quiescence with the fenced driver; complete native compatibility, browser/WSS and deployed Compose/Kubernetes recovery before qualification",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Approved , move forward (review conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",

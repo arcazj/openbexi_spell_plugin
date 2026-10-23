@@ -18,6 +18,9 @@ See [worker/source preflight](../docs/v0.8/WORKER_PREFLIGHT.md),
 [the prelaunch authority contract](../docs/v0.8/EXECUTION_AUTHORITY.md),
 [the wire/ACL contract](../docs/v0.8/SERVER_CONTRACT.md) and
 [approved G1 resolutions](../docs/v0.8/G1_REVIEW_RESOLUTION.md).
+The private [driver write boundary](../docs/v0.8/DRIVER_WRITE_GATE.md) adds
+actual-send fencing and separate receipt ledgers for trusted Context adapter
+code. It is not exposed by any service or connected to native workers.
 
 ## Development checks
 
@@ -36,7 +39,8 @@ temporary directory; no credentials belong in Git or retained evidence.
 Each qualification invocation creates a new `.qualification/v08-server/run-*`
 directory, preserves failures, and records exact source hashes, Python/OpenSSL
 versions, tool commands, JUnit and a credential-free process trace. These checks
-do not qualify native SPELL, driver effects, worker pause/reuse, browser UI,
+qualify the private driver seam only; they do not qualify native SPELL,
+worker/driver integration, worker pause/reuse, browser UI,
 Compose, Kubernetes or production storage fencing.
 
 ## Run an internal process

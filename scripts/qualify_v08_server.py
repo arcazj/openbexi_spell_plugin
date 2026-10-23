@@ -26,13 +26,15 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = dict(
         schema=1,
-        scope="internal services, prelaunch authority, approved Git inventories and single-host worker preflight",
+        scope="services, prelaunch authority, source preflight and private actual-send driver seam with independent DSS process",
         worker_identity_authenticated=True,
         worker_identity_scope="operator-provisioned certificate pins; preflight only",
         kubernetes_worker_identity_tested=False,
         runtime_image_attested=False,
         readonly_mount_attested=False,
         native_pause_tested=False,
+        driver_effect_seam_tested=False,
+        independent_dss_process_tested=False,
         source_inventory_verified=True,
         source_inventory_scope="bounded approved Git objects and worker directory; configured catalog only",
         passed=False,
@@ -55,6 +57,9 @@ def main():
     inputs = (
         sorted((root / "server/src").rglob("*.py"))
         + sorted((root / "server/tests").rglob("*.py"))
+        + sorted((root / "src/dss").rglob("*.py"))
+        + sorted((root / "src/dss/data").glob("*.json"))
+        + sorted((root / "driver_plugin/src").rglob("*.py"))
         + [
             root / "server/pyproject.toml",
             root / "server/requirements-test.lock",
@@ -100,6 +105,7 @@ def main():
                 "ruff",
                 "check",
                 "server",
+                "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
                 str(Path(__file__).relative_to(root)),
             ],
         ),
@@ -112,6 +118,7 @@ def main():
                 "format",
                 "--check",
                 "server",
+                "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
                 str(Path(__file__).relative_to(root)),
             ],
         ),
@@ -159,6 +166,8 @@ def main():
     report["passed"] = len(report["checks"]) == len(commands) and all(
         c["exit_code"] == 0 for c in report["checks"]
     )
+    report["driver_effect_seam_tested"] = report["passed"]
+    report["independent_dss_process_tested"] = report["passed"]
     if (output / "tests.xml").exists():
         suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))
         report["junit"] = {

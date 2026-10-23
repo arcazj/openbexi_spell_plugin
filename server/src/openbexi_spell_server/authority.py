@@ -590,10 +590,10 @@ class ExecutionAuthority:
         before any worker request. The worker never selects a new current epoch.
         """
         validate_authority_payload("execution.start", payload)
-        self._require(subject, "execution:control")
+        self._require(subject, "execution:start", "execution:control")
         with self._execution_lock(payload["execution_id"]):
             with self.store.transaction():
-                self._require(subject, "execution:control")
+                self._require(subject, "execution:start", "execution:control")
                 row = self._owner(subject, payload)
                 if row["lifecycle"] != "RESERVED" or row["start_hash"]:
                     raise Fault(403, "worker_start_fenced")
@@ -641,7 +641,7 @@ class ExecutionAuthority:
         row = self._execution(grant.execution_id)
         fields = asdict(grant)
         token = fields.pop("token")
-        self._require(row["owner"], "execution:control")
+        self._require(row["owner"], "execution:start", "execution:control")
         self._session(row["owner"], row["connection_id"])
         if (
             row["authority_incarnation"] != self.store.incarnation
