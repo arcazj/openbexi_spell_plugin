@@ -164,8 +164,17 @@ def run(config):
                 raise RuntimeError("Driver event receipt mismatch")
             # Original RaiseEvent returns Empty, only after durable Context commit.
             relay.reply({"id": body["id"], "payload": ""})
-        except Exception:
+        except Exception as error:
             denied.add(body["path"])
+            emit(
+                "native-driver-denied",
+                path=body["path"],
+                error_type=type(error).__name__,
+                status=error.status if isinstance(error, Fault) else None,
+                code=error.code
+                if isinstance(error, Fault)
+                else "driver_response_invalid",
+            )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
     relay = Relay(dispatch)

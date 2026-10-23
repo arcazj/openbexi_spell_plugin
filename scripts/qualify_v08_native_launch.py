@@ -963,6 +963,9 @@ def main():
                             raise RuntimeError(
                                 "Native TC lacks fifty correlated durable stage receipts"
                             )
+                        authority_rows = audit.execute(
+                            "SELECT * FROM effect_intents ORDER BY operation,stage"
+                        ).fetchall()
                         methods = dict(
                             audit.execute(
                                 "SELECT path,COUNT(*) FROM native_driver_calls WHERE state='COMPLETED' GROUP BY path"
@@ -981,6 +984,21 @@ def main():
                             raise RuntimeError(
                                 "Native original TC/TM method evidence absent"
                             )
+                    with closing(
+                        sqlite3.connect(
+                            "file:" + str(state / "driver/driver.sqlite3") + "?mode=ro",
+                            uri=True,
+                        )
+                    ) as driver_audit:
+                        driver_rows = driver_audit.execute(
+                            "SELECT * FROM effect_intents ORDER BY operation,stage"
+                        ).fetchall()
+                    if driver_rows != authority_rows or any(
+                        not row[6] for row in driver_rows
+                    ):
+                        raise RuntimeError(
+                            "Native authority and driver receipts differ"
+                        )
                     for worker in report["workers"]:
                         finished = next(
                             e
@@ -995,6 +1013,11 @@ def main():
                         native_dss_qualified=True,
                         native_dss_commands=10,
                         native_dss_stage_receipts=50,
+                        native_dss_driver_stage_receipts=50,
+                        native_dss_cross_ledger_match=True,
+                        native_dss_receipt_digest=hashlib.sha256(
+                            canonical(driver_rows)
+                        ).hexdigest(),
                         native_driver_methods=methods,
                     )
                 first_row = next(row for row in retained if row["id"] == first["id"])

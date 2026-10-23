@@ -568,3 +568,35 @@ oracle. This is a qualification-strength correction; server logic is unchanged.
 The unit/RPC copied-configuration regression already used a valid CMD1 and
 retains its pre-fix HTTP-200 failure. The stronger physical probe still requires
 its own hosted candidate-SHA result.
+
+
+## dev13 neutral options from the composed native proxy
+
+The 8887833 hosted PR run 40003950252 passed audit-only launch and native-
+boundary, but the real SendCommand request was denied (artifact 12522339194).
+Review of the frozen proxy composition in command_feature_patches.py and
+command_catalog_patches.py confirms it always adds `ConfirmCritical: false`
+after the native confirmation hook. Context's earlier timeout-only schema
+rejected this legitimate native wire option.
+
+Dev13 accepts only the neutral composed forms: ConfirmCritical/LoadOnly exactly
+false, SendDelay numerically zero, and addInfo an empty dictionary, alongside
+the existing positive timeout of at most three seconds. Actual critical commands
+are still rejected at adapter startup; nonneutral options, delayed/scheduled or
+load-only operations, nonempty metadata, unknown resources and other methods
+remain denied before any effect intent. Tests require a real five-stage command
+with these defaults and reject seven attempts to expand or mis-type them.
+The native agent now logs only method/status/fixed error code on driver denial,
+never a payload, grant or runtime proof. The valid physical clone probe remains
+mandatory. Local and hosted results follow; full v0.8 remains unqualified.
+
+
+Fresh dev13 CPython **3.13.16** qualification passed **264 scoped tests**, zero
+failures/errors/skips and warnings as errors; lint/format/mypy passed. Evidence:
+`v08-server/run-20261023T183448Z-9047e8b2`, with exact changed code hashes under
+prior head 2aa20a1. Offline wheel build and clean isolated installed dev13
+version/import and both CLI smokes passed. The native harness was subsequently
+strengthened to compare all fifty ordered receipt rows across the independent
+Context and driver databases, require nonempty receipt hashes, and report only
+a digest/count and equality result. This harness change still needs hosted
+validation; no additional native pass is claimed from the local suite.

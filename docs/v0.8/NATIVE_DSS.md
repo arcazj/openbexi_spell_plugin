@@ -1,6 +1,6 @@
 # Context-owned native DSS subset (development)
 
-`0.8.0.dev12` connects the original protobuf driver request to the private Context
+`0.8.0.dev13` connects the original protobuf driver request to the private Context
 effect gate. This is an optional retained, single-use qualification profile.
 Default gateway, Listener and IDE execution remain disabled. It is not a full
 v0.8 release or a claim of complete legacy driver compatibility.
@@ -84,7 +84,10 @@ Every command stage still uses `DriverGate`'s original-grant final check and
 bounded actual TCP write, two durable intent ledgers and correlated receipts.
 Receipt waits and the one-second shared DSS resource admission wait hold no
 execution mutex or authority database transaction. TC and fresh-TM timeouts in
-this initial profile are capped at three seconds.
+this initial profile are capped at three seconds. The composed native TC proxy
+may send neutral defaults: `ConfirmCritical: false`, `LoadOnly: false`,
+`SendDelay: 0`, and `addInfo: {}`. Their types and neutral values are checked
+explicitly; nonneutral/scheduled/load-only options remain denied before intent.
 
 All RPCs reserve one of 512 durable, non-replayable call identities before
 execution; request and response hashes are retained without plaintext grants.

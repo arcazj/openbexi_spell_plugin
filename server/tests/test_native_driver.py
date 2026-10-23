@@ -24,7 +24,7 @@ import test_preflight as helpers
 from test_services import request
 
 from openbexi_spell_dss.context_driver import ContextDriver, METHODS, PREFIX
-from openbexi_spell_dss.codec import unpack
+from openbexi_spell_dss.codec import pack, unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as proto
 
 
@@ -187,6 +187,44 @@ def test_native_send_catalog_contract_retains_resource_permission(driver_setup, 
             assert definition["kind"] == "COMMAND"
             assert definition["critical"] is False
             assert definition["arguments"] == []
+    assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
+
+
+def test_composed_native_send_options_keep_full_five_stage_command(driver_setup, pki):
+    message = command()
+    # The frozen composed proxy always stamps ConfirmCritical=False after its
+    # native hook, and can preserve the original neutral language defaults.
+    message.config.CopyFrom(
+        pack(dict(Timeout=2, ConfirmCritical=False, LoadOnly=False, SendDelay=0, addInfo={}))
+    )
+    code, answer = native_call(driver_setup, pki, PREFIX + "TC/SendCommand", message)
+    assert code == 200, answer
+    assert BoolValue.FromString(base64.b64decode(answer["result"]["payload"])).value
+    assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 1
+    assert [r[0] for r in driver_setup["store"].db.execute("SELECT state FROM effect_intents")] == [
+        "ACKED"
+    ] * 5
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        {"ConfirmCritical": True},
+        {"ConfirmCritical": 0},
+        {"LoadOnly": True},
+        {"SendDelay": 0.1},
+        {"SendDelay": False},
+        {"addInfo": {"note": "unqualified"}},
+        {"Time": 0},
+    ],
+)
+def test_native_command_options_cannot_expand_effect_semantics(driver_setup, pki, options):
+    message = command()
+    message.config.CopyFrom(pack(dict(Timeout=2, **options)))
+    assert native_call(driver_setup, pki, PREFIX + "TC/SendCommand", message)[0] == 400
+    assert (
+        driver_setup["store"].db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0
+    )
     assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
 
 

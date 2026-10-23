@@ -237,12 +237,31 @@ class ContextDriver:
             settings = modifiers(request.config)
             timeout = settings.get("Timeout", 3)
             if (
-                set(settings) - {"Timeout"}
+                set(settings)
+                - {"Timeout", "ConfirmCritical", "LoadOnly", "SendDelay", "addInfo"}
+                or any(
+                    key in settings
+                    and (type(settings[key]) is not bool or settings[key])
+                    for key in ("ConfirmCritical", "LoadOnly")
+                )
+                or (
+                    "SendDelay" in settings
+                    and (
+                        type(settings["SendDelay"]) not in {int, float}
+                        or settings["SendDelay"] != 0
+                    )
+                )
+                or (
+                    "addInfo" in settings
+                    and (type(settings["addInfo"]) is not dict or settings["addInfo"])
+                )
                 or type(timeout) not in {int, float}
                 or not math.isfinite(timeout)
                 or not 0 < timeout <= 3
             ):
-                raise ValueError("Command timeout must be bounded by three seconds")
+                raise ValueError(
+                    "Only bounded timeout and neutral native command options are supported"
+                )
             arguments = unpack(request.args) if request.args.type_url else []
             self.transport.arguments(request.command.mnemonic, arguments)
             bound = EffectAdmission(self.gate, grant, self.binding, request_id)
