@@ -85,6 +85,25 @@ identities, failed attempts and redacted evidence. Local RPC/unit tests do not
 satisfy it. `native_pause_qualified` and full v0.8 stay false even if this negative
 probe passes.
 
+## Confirmed hosted result
+
+At code **34f201d**, [PR run 40010794562](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40010794562)
+passed all five jobs: 290 scoped tests/package checks, native-boundary, audit,
+DSS, and the new pause probe. The [241-test portable compatibility run](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40010794672)
+also passed. This remains a named subset, not all-763 or full release coverage.
+
+The native probe observed main B **PAUSED** while its background counter advanced
+**89 to 99**. The barrier reported UNPROVEN/BLOCKED, preserved owner/epoch and
+ten holds/spent slots, and the other nine native procedures completed. Maximum
+observed unrelated-controller latency in ten reads was **12.8 ms**. Independent
+host teardown then ended B; it was not a native completion or quiescence proof.
+Thirty distinct running native PIDs were observed before the barrier. All 17
+captured runtime hashes matched the candidate. The downloaded artifact was
+CRC/digest checked. See the [redacted receipt](evidence/native-pause-probe/qualification-summary.json).
+
+This confirms the provider gap and the safe barrier behavior. It does **not**
+qualify positive native family pause, transfer/resume, children or recovery.
+
 ## Work still required
 
 A supported native provider must acknowledge all participating threads/children,

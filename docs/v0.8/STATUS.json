@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev14 fenced native pause barrier implemented; 290 scoped local tests and package smokes pass; hosted negative-thread probe pending; effective live handoff and full v0.8 remain unqualified",
+  "phase": "dev14 fenced native pause safety boundary qualified at 34f201d; main PAUSED/background-running provider gap confirmed; effective live handoff and full v0.8 remain unfinished/unqualified",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -40,7 +40,8 @@
     "dev13: 264 local scoped tests, lint/format/mypy and isolated wheel smokes passed; neutral native TC options accepted with exact types/values, effect-changing options denied; valid physical clone and dual-ledger native oracles await hosted result",
     "14ddf3d hosted PR services/native run 40004938954 passed: 264 scoped tests; audit and native DSS cohorts; ten original commands and telemetry refreshes; fifty identical ACKED receipts in both ledgers; thirty PIDs; valid copied-original-config command denied; ten holds/spent slots retained; all 81 native source hashes matched candidate",
     "14ddf3d hosted PR compatibility run 40004938969 passed 241 portable tests; services/native and compatibility workflows completed successfully; full all-763/native/deployment/release qualification remains false",
-    "dev14: 290 local scoped tests, lint/format/mypy and isolated package smokes passed; safety-only pause reports preserve original binding and single-consumer proof; forged family proofs and retries of admitted pause are denied; real native negative-thread probe pending hosted execution"
+    "dev14: 290 local scoped tests, lint/format/mypy and isolated package smokes passed; safety-only pause reports preserve original binding and single-consumer proof; forged family proofs and retries of admitted pause are denied; real native negative-thread probe pending hosted execution",
+    "34f201d hosted all five services/native jobs and compatibility passed: 290 scoped tests, 241 portable tests, native-boundary/audit/DSS/pause-probe. Main B PAUSED while background counter advanced 89 to 99; transfer blocked, old owner/epoch and ten holds retained; other nine procedures finished; max unrelated read latency 12.8ms; all 17 pause runtime hashes matched candidate."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -62,13 +63,13 @@
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
-    "G3_native_subset": "Prior retained positive cohorts passed. New explicit pause barrier fences old effects and always retains ownership on status-only/unproven reports; candidate native background-thread counter probe awaits hosted qualification. No successful live transfer/resumption is implemented.",
-    "K_native_subset": "14ddf3d PR services/native run 40004938954 and compatibility run 40004938969 completed successfully: 264 scoped tests, both real native cohorts and 241 portable compatibility tests. Full K remains pending.",
+    "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
+    "K_native_subset": "34f201d PR services/native run 40010794562 and compatibility run 40010794672 completed successfully: 290 scoped tests, all three native cohorts, native-boundary and 241 portable tests. Full K remains pending.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending."
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify dev14 fenced native pause and background-thread negative probe; then implement an execution-family provider with full thread/child/prompt/control queue acknowledgment and explicit new-owner resume grants, preserving original operation provenance",
+  "next_step": "Implement a native execution-family provider acknowledging all participating threads/children and draining prompt/control queues; prove safe owner/epoch CAS and explicit new-owner resume without grant restamping; then remaining recovery/UI/full compatibility/deployment/security/release gates",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Finish and qualify v0.8; all steps approved until finished/deeply tested, commit to GitHub and integrate openbexi_ide with openbexi_spell_plugin (conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -78,5 +79,6 @@
   "native_qualification_receipt": "evidence/native-retained-launch/qualification-summary.json",
   "native_dss_profile": "Optional GPL Context driver; five explicit original TC/TM methods, fixed endpoint/resource ACLs, no replay; retained worker protocol 2 and schema 8; see NATIVE_DSS.md",
   "native_dss_qualification_receipt": "evidence/native-context-dss/qualification-summary.json",
-  "native_pause_profile": "Optional native_pause:fenced-probe; schema 9; original worker grant plus consumption-winner proof; status-only provider never authorizes transfer; NATIVE_PAUSE.md"
+  "native_pause_profile": "Optional native_pause:fenced-probe; schema 9; original worker grant plus consumption-winner proof; status-only provider never authorizes transfer; NATIVE_PAUSE.md",
+  "native_pause_qualification_receipt": "evidence/native-pause-probe/qualification-summary.json"
 }

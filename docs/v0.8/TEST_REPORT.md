@@ -684,3 +684,38 @@ Offline wheel build and clean isolated installed **0.8.0.dev14** import/version
 and both service/preflight CLI smokes passed. Hosted candidate-SHA audit, DSS and
 new pause-probe outcomes remain pending; native family quiescence/live handoff
 and full v0.8 remain unqualified.
+
+
+## Confirmed hosted dev14 native pause negative boundary
+
+Code **34f201da11318850e8fbe3aac5ee17e6ff403371**, PR merge checkout
+**854955fcb447e4a59484bc4a5fe39ffa2208d9d4**:
+[services/native run 40010794562](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40010794562)
+passed all five jobs, including **290 scoped tests**, native-boundary, audit,
+DSS and the new pause-probe cohort. The same code's
+[portable compatibility run 40010794672](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40010794672)
+passed **241 tests**, zero failures/errors/skips. Package build/install/CLI
+smokes passed. All test attempts remain retained separately.
+
+Artifact **12527050416**, ZIP SHA-256
+`c02788c03babaf9a728a96da10bf4f2df774b2f849f2a59285654f40a6261bc3`,
+was downloaded, CRC-checked and inspected. All **17 runtime source hashes**
+matched the candidate. Ten real native procedures reached RUNNING, with thirty
+distinct native Listener/Context/Executor PIDs. B's main Executor became
+**PAUSED**, yet its background counter advanced **89 to 99**. The transfer
+remained **UNPROVEN/BLOCKED**, preserving owner/epoch and all ten logical holds
+and spent slots. Ten unrelated-controller reads had maximum observed latency
+**0.01278221 seconds**. The other nine procedures finished and persisted their
+start/finish lifecycle events; B persisted a start only (19 events total).
+Independent host cleanup terminated B after evidence capture; it was neither
+native completion nor runtime quiescence/reclamation.
+
+The durable redacted receipt is
+`evidence/native-pause-probe/qualification-summary.json`. This confirms that
+main-status-only pause cannot authorize a live handoff and that the new Context
+barrier fails closed without blocking other procedures. It does not fix the
+native provider's missing whole-family barrier. The required correction is
+native acknowledgment of participating threads/children plus control/prompt
+queue draining, followed by explicit separately admitted new-owner resume
+provenance. Positive native pause/handoff/resume, children, recovery and full
+v0.8 remain unfinished/unqualified. Public runtime remains disabled.
