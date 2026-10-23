@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; dev13 composed-native neutral TC options corrected and 264 scoped tests passed; hosted native DSS and full v0.8 qualification pending",
+  "phase": "G1 approved; dev13 retained native TC/TM positive cohort and copied-original-config denial qualified at 14ddf3d; full v0.8 remains unfinished and unqualified",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -37,7 +37,9 @@
     "dev10: 254 local scoped tests, lint/format/mypy and isolated installed wheel smoke passed; copied-original-config driver bypass reproduced before fix and denied by atomic memory-only single-consumer proof",
     "dev11: 255 local scoped tests, lint/format/mypy and isolated wheel smokes passed; real client protocol-2 mTLS regression covers check/event/command and downgrade denial; dev10 hosted compatibility passed 241 tests",
     "dev12: 256 local scoped tests, lint/format/mypy and isolated wheel smokes passed; native TC catalog response now includes original COMMAND discriminator while unlisted commands and sequences stay denied",
-    "dev13: 264 local scoped tests, lint/format/mypy and isolated wheel smokes passed; neutral native TC options accepted with exact types/values, effect-changing options denied; valid physical clone and dual-ledger native oracles await hosted result"
+    "dev13: 264 local scoped tests, lint/format/mypy and isolated wheel smokes passed; neutral native TC options accepted with exact types/values, effect-changing options denied; valid physical clone and dual-ledger native oracles await hosted result",
+    "14ddf3d hosted PR services/native run 40004938954 passed: 264 scoped tests; audit and native DSS cohorts; ten original commands and telemetry refreshes; fifty identical ACKED receipts in both ledgers; thirty PIDs; valid copied-original-config command denied; ten holds/spent slots retained; all 81 native source hashes matched candidate",
+    "14ddf3d hosted PR compatibility run 40004938969 passed 241 portable tests; services/native and compatibility workflows completed successfully; full all-763/native/deployment/release qualification remains false"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -53,19 +55,19 @@
     "A": "Independent review completed; historical baseline evidence retained",
     "B_G1": "Owner-authorized for staged implementation under binding F1-F10 contracts; no runtime qualification inferred",
     "C": "Foundation routing/TLS/process lifecycle tests pass; full Executor-survival integration gate pending",
-    "D": "Context ACL/catalog/state and scoped native EV event journalling tested; native TC/TM and full driver lifecycle remain pending",
+    "D": "Context ACL/catalog/state and native EV plus retained positive TC/TM dispatch tested; full driver lifecycle/fault qualification remains pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
     "K_foundation": "Scoped services/source/preflight workflow; verify exact candidate SHA in PR checks. Prior 87db0ce scoped push/PR workflows passed; full K remains pending",
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "Actual while-running handoff was BLOCKED in earlier failed completion evidence; positive cohort checks post-termination BLOCKED handoff. No native quiescence/owner-CAS pass is claimed",
-    "K_native_subset": "c8b286c scoped PR/push service/native/wheel checks and PR compatibility passed; full K remains pending",
-    "G5_native_dss_rpc": "dev13: 264 local scoped tests pass. Frozen native proxy ConfirmCritical:false and neutral defaults now supported without enabling critical/scheduled/load-only effects. Valid-command physical clone and matching fifty-receipt dual-ledger checks await candidate-SHA native qualification."
+    "K_native_subset": "14ddf3d PR services/native run 40004938954 and compatibility run 40004938969 completed successfully: 264 scoped tests, both real native cohorts and 241 portable compatibility tests. Full K remains pending.",
+    "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending."
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Validate dev10 single-consumer proof and corrected native audit/DSS matrix at candidate SHA; then native pause/quiescence, child admission and recovery, IDE native Run/Debug, full compatibility, browser/WSS, production Compose/Kubernetes and independent security/release gates",
+  "next_step": "Implement and prove native pause/quiescence and explicit live control transfer without grant restamping; then native child admission/recovery, IDE Run/Debug/browser/WSS/Git, full compatibility, production deployment and independent security/release gates",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Finish and qualify v0.8; all steps approved until finished/deeply tested, commit to GitHub and integrate openbexi_ide with openbexi_spell_plugin (conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -73,5 +75,6 @@
   "ide_pair": "IDE_PAIR.json",
   "native_launch_profile": "Explicit retained-single-use; default public execution remains disabled",
   "native_qualification_receipt": "evidence/native-retained-launch/qualification-summary.json",
-  "native_dss_profile": "Optional GPL Context driver; five explicit original TC/TM methods, fixed endpoint/resource ACLs, no replay; retained worker protocol 2 and schema 8; see NATIVE_DSS.md"
+  "native_dss_profile": "Optional GPL Context driver; five explicit original TC/TM methods, fixed endpoint/resource ACLs, no replay; retained worker protocol 2 and schema 8; see NATIVE_DSS.md",
+  "native_dss_qualification_receipt": "evidence/native-context-dss/qualification-summary.json"
 }

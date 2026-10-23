@@ -108,21 +108,24 @@ lost release receipts and bounded capacity. They do not instantiate a native
 Executor. Failed development attempts are retained separately from passes.
 
 The hosted native matrix retains the audit-only cohort and adds
-`scripts/qualify_v08_native_launch.py --native-dss`. The new variant must prove
-ten distinct native Executors, ten successful original SendCommand calls,
-original RefreshItem calls and fifty ACKED stage receipts in a separate isolated
-DSS container, while retaining all original reservations and spent slots.
-The dev9 hosted DSS cohort failed because the fixture omitted the SPELL SDK
-import; all ten workers reported `NameError: Send`. dev10 added a facade import and
-a separate physical copied-original-configuration driver-denial probe. The facade
-did not export the native functions; the follow-up now explicitly imports
-`Send,GetTM` from `spell.lang.functions`, matching native conformance fixtures. Its hosted
-audit and DSS cohorts then exposed a client allowlist mismatch before native
-startup. dev11 updates the real client to the exact protocol-2 routes, including
-the new driver route, and tests that client over mTLS; version-1 launch
-downgrade remains rejected.
-Until that candidate-SHA workflow succeeds, this boundary is **not native
-qualified**. Adding or passing unit/RPC tests is insufficient.
+`scripts/qualify_v08_native_launch.py --native-dss`. At code commit **14ddf3d**,
+[PR run 40004938954](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40004938954)
+passed foundation (264 scoped tests), native-boundary and both native cohorts.
+The DSS artifact proves ten completed/terminated native Executors, thirty
+native PIDs, ten original commands, original telemetry refreshes, and fifty
+identical ACKED receipt rows in each independent Context/driver ledger. A
+separate process using copied ORIGINAL configuration and a valid permitted
+CMD1 request received HTTP 403. Ten spent worker slots and logical holds
+remained retained. Cross-worker/native-port and external TCP denial passed.
+
+The [redacted qualification receipt](evidence/native-context-dss/qualification-summary.json)
+pins the code/CI merge SHA, all 81 tested source hashes, image/archive identities,
+artifact digest and counters. Every tested source hash matched the candidate.
+Failed fixture, native-contract and adversarial attempts are retained and
+explained in TEST_REPORT.md; they are not counted as passes. This qualifies
+only the retained positive TC/TM subset and clone denial. The handoff check
+remained BLOCKED **after container termination**; no native quiescence or
+successful live transfer is claimed. Default public execution remains disabled.
 
 Native quiescence/live handoff, child admission, recovery/reclamation, IDE
 Run/Debug, browser/WSS, all-763 compatibility, production Compose/Kubernetes,

@@ -600,3 +600,42 @@ strengthened to compare all fifty ordered receipt rows across the independent
 Context and driver databases, require nonempty receipt hashes, and report only
 a digest/count and equality result. This harness change still needs hosted
 validation; no additional native pass is claimed from the local suite.
+
+
+## Confirmed hosted dev13 retained native TC/TM subset
+
+Code **14ddf3df7956f2462a915072f5341488789b6842**, PR checkout merge
+**21b409e469f8353fab8abf1ebe890382f161d58d**:
+[services/native run 40004938954](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40004938954)
+passed all four jobs. Foundation passed **264 scoped tests**, zero failures,
+errors or skips, and built/installed/smoked the dev13 package. Native-boundary
+and the audit-only cohort passed separately.
+
+Native DSS artifact **12524290803**, ZIP SHA-256
+`5e53a10d80b8b993ab4da84765d7d8175a8f2b7129de9b86a3e55ef5b95c3a3e`,
+was downloaded, CRC-checked and inspected. All **81 source hashes** matched the
+candidate checkout. It proves ten completed and terminated native workers,
+thirty distinct running native Listener/Context/Executor PIDs, ten original
+SendCommand and ten RefreshItem calls, twenty durable native lifecycle events,
+and **fifty identical ACKED effect rows in each separate database**, including
+nonempty receipt hashes. The valid-command copied-original-configuration probe
+was denied, as was the honest spent-grant clone. Command count stayed exactly
+ten, with ten logical holds and spent slots retained. Worker cross-peer native
+port and external TCP denial passed; Context had no host manager/Docker socket.
+
+The durable redacted receipt is
+`evidence/native-context-dss/qualification-summary.json`. Raw operational
+archives and credentials are not republished. This closes the retained positive
+native TC/TM and direct copied-config subset only. Handoff remained BLOCKED
+**after termination** with the original owner preserved; quiescence/live
+handoff is NOT qualified. Full native fault/reconnect/child/recovery semantics,
+all-763 compatibility, IDE/browser execution, production deployment, independent
+security/SBOM/vulnerability and release acceptance remain open. Full v0.8 is
+unfinished/unqualified and public runtime remains disabled.
+
+
+The same code commit's
+[portable compatibility run 40004938969](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40004938969)
+also passed **241 tests**, zero failures/errors/skips and warnings as errors.
+Both PR workflows completed successfully. This is the named portable subset,
+not qualification of all 763 inherited requirements.
