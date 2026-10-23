@@ -101,6 +101,22 @@ def test_catalog_aliases_share_one_logical_identity_and_bind_approved_metadata(s
         SnapshotCatalog(conflicting)
 
 
+def test_approved_child_catalog_can_exceed_worker_count_but_has_a_retained_bound(source):
+    for index in range(11):
+        (source["root"] / f"child{index}.py").write_text("RESULT=42\n")
+    revision = commit(source["root"])
+    template = source["config"]["procedure"]
+    config = {
+        f"child-{index}": dict(
+            template, revision=revision, entrypoint=f"child{index}.py", aliases=[]
+        )
+        for index in range(11)
+    }
+    assert len(SnapshotCatalog(config).entries) == 11
+    with pytest.raises(ValueError):
+        SnapshotCatalog({f"procedure-{index}": config["child-0"] for index in range(65)})
+
+
 @pytest.mark.parametrize("object_kind", ["symlink", "submodule", "large", "many"])
 def test_git_inventory_rejects_unsupported_objects_and_limits(source, object_kind):
     root = source["root"]

@@ -28,7 +28,7 @@ from native import NativeSession
 from openbexi_spell_dss.relay import Relay
 from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as driver_proto
-from openbexi_spell_server.contracts import Fault, decode, exact, fingerprint
+from openbexi_spell_server.contracts import Fault, canonical, decode, exact, fingerprint
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
 from openbexi_spell_server.transport import Route, tls_context
@@ -166,7 +166,7 @@ def run(config):
             hold_retained=True,
             runtime_enabled=False,
         )
-        if reply != expected:
+        if canonical(reply) != canonical(expected):
             raise RuntimeError("Worker launch receipt mismatch")
         if capability is not None:
             # The sole winner retains this proof only in memory, never in the
@@ -291,6 +291,14 @@ def run(config):
             lambda: rpc("check"),
         )
         children = ChildProcedures(session.instance)
+        original_request = session.request
+
+        def admitted_request(identifier, *args, **kwargs):
+            if identifier == "CMD_RUN":
+                rpc("check")
+            return original_request(identifier, *args, **kwargs)
+
+        session.request = admitted_request
         admission = NativeAdmissionServer(
             options["admission_socket"],
             "/opt/v08-native-home/bin/SPELL-Context",
@@ -346,6 +354,7 @@ def run(config):
         pause_channel_failed = False
         next_poll = 0
         child_running = set()
+        previous_state = None
         while time.monotonic() < deadline:
             pump()
             if children is not None:
@@ -361,6 +370,9 @@ def run(config):
                         child_running.add(instance)
                         emit("native-child-running", execution_id=grant.execution_id)
             state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+            if child_profile and state != previous_state:
+                emit("native-child-parent-status", native_status=state)
+                previous_state = state
             if state == "RUNNING" and not running:
                 running = True
                 emit("native-running", execution_id=grant.execution_id)

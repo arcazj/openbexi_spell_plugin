@@ -186,6 +186,45 @@ def host_processes(name, *, executors=1):
     return rows
 
 
+def qualify_native_child_denial(name, report):
+    """Independent local clients cannot impersonate the gate or start a root."""
+    program = """import os,queue,socket,sys,tempfile
+sys.path.insert(0,'/opt/host')
+from native import Bridge
+with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as stream:
+    stream.settimeout(2)
+    stream.connect('/tmp/native-admission.sock')
+    assert stream.recv(16) != b'ALLOW\\n'
+with tempfile.TemporaryFile(mode='w+') as log:
+    listener=Bridge(9980,dict(os.environ),log,queue.Queue())
+    context=None
+    try:
+        info=listener.exchange('REQ_CTX_INFO','LST',{'ContextName':'example'})
+        context=Bridge(int(info['ContextPort']),dict(os.environ),log,queue.Queue())
+        context.exchange('REQ_GUI_LOGIN','CTX',{'Host':'native-child-denial-probe'})
+        try:
+            context.exchange('REQ_OPEN_EXEC','CTX',{
+                'ProcId':'child_0#999999999','GuiMode':'CONTROL','Arguments':'{}',
+                'OpenMode':'{Automatic:True,Visible:False,Blocking:False}'})
+        except RuntimeError as error:
+            assert 'Native start denied' in str(error),str(error)
+        else:
+            raise AssertionError('Unadmitted native root opened')
+    finally:
+        if context is not None:
+            context.exchange('REQ_GUI_LOGOUT','CTX')
+            context.close()
+        listener.close()
+print('native-unadmitted-start-and-peer-denied',flush=True)
+"""
+    answer = command("docker", "exec", name, "python", "-I", "-c", program)
+    if answer.splitlines()[-1] != "native-unadmitted-start-and-peer-denied":
+        raise RuntimeError("Native denial probe did not complete")
+    host_processes(name)
+    report["native_unadmitted_root_denied_before_spawn"] = True
+    report["native_same_uid_peer_impersonation_denied"] = True
+
+
 def qualify_pause_probe(
     controller,
     executions,
@@ -464,6 +503,7 @@ def main():
         ).hexdigest()
     prefix = "spell-v08-launch-" + uuid.uuid4().hex[:12]
     names, networks = [], []
+    worker_names = []
     try:
         with tempfile.TemporaryDirectory(prefix="spell-native-launch-") as temporary:
             temporary = Path(temporary)
@@ -640,7 +680,9 @@ def main():
                     for n in range(10):
                         (sources / ("child_" + str(n) + ".py")).write_text(
                             "import os,time\n"
-                            "assert ARGS['INDEX'] == " + str(n) + "\n"
+                            "from spell.runtime import ARGS\nassert ARGS['INDEX'] == "
+                            + str(n)
+                            + "\n"
                             "deadline=time.monotonic()+75\n"
                             "while not os.path.exists('/control/child-finish'):\n"
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
@@ -1092,6 +1134,8 @@ def main():
                     containers.append(container)
                     await_event([name], "native-ready", seconds=40)
                 await_event(worker_names, "native-ready")
+                if profile.native_child_gate:
+                    qualify_native_child_denial(worker_names[0], report)
                 report["paused_cohort"] = [
                     {"container": container, "processes": host_processes(name)}
                     for name, container in zip(worker_names, containers, strict=True)
@@ -1509,6 +1553,26 @@ def main():
                         (output / (name + ".stdout.jsonl")).write_text(
                             command("docker", "logs", name) + "\n"
                         )
+                        if (
+                            profile.native_child_gate
+                            and info["State"]["Running"]
+                            and name in worker_names
+                        ):
+                            native_logs = command(
+                                "docker",
+                                "exec",
+                                name,
+                                "python",
+                                "-I",
+                                "-c",
+                                "from pathlib import Path\n"
+                                "for p in list(Path('/tmp').glob('spell-host-*/native.log'))[:2]:\n"
+                                " with p.open('rb') as f:\n"
+                                "  f.seek(0,2);end=f.tell();f.seek(max(0,end-65536));print(f.read().decode(errors='replace'))\n",
+                            )
+                            (output / (name + ".native-tail.log")).write_text(
+                                native_logs
+                            )
                     except Exception:
                         pass
                 for name in reversed(names):

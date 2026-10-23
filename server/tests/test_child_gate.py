@@ -169,6 +169,25 @@ def test_copied_original_configuration_has_no_consumer_proof(provider, family):
     assert family["store"].db.execute("SELECT COUNT(*) FROM child_admissions").fetchone()[0] == 0
 
 
+@pytest.mark.parametrize("field", ["admission_id", "execution_id", "consumed"])
+def test_changed_or_type_substituted_receipt_never_authorizes_native_start(provider, family, field):
+    real = provider.route
+
+    def substitute(payload, **kwargs):
+        reply = real.call(payload, **kwargs)
+        if kwargs["path"].endswith("child-consume"):
+            reply[field] = 1 if field == "consumed" else "00000000-0000-0000-0000-000000000000"
+        return reply
+
+    provider.route = SimpleNamespace(call=substitute)
+    with pytest.raises(ValueError, match="consumption receipt differs"):
+        provider.admit(body())
+    assert "child#1" not in provider.started
+    assert (
+        family["store"].db.execute("SELECT state FROM child_admissions").fetchone()[0] == "CONSUMED"
+    )
+
+
 def test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation(tmp_path):
     # Exercise real Linux SO_PEERCRED/pidfd, without claiming this Python helper
     # is a native Context or bypassing the production readonly-image check.

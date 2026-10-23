@@ -15,9 +15,10 @@ import select
 import socket
 import struct
 import threading
+import time
 import uuid
 
-from openbexi_spell_server.contracts import decode, exact
+from openbexi_spell_server.contracts import canonical, decode, exact
 from openbexi_spell_server.family import child_grant, FamilyAdmission
 from openbexi_spell_server.snapshots import source_path
 
@@ -139,13 +140,15 @@ class NativeChildGate:
                 path="/v1/worker/child-consume",
                 schema="openbexi.worker/2",
             )
-            if receipt != dict(
-                consumed=True,
-                admission_id=grant.admission_id,
-                execution_id=original.execution_id,
-                hold_retained=True,
-                native_start_qualified=False,
-                runtime_enabled=False,
+            if canonical(receipt) != canonical(
+                dict(
+                    consumed=True,
+                    admission_id=grant.admission_id,
+                    execution_id=original.execution_id,
+                    hold_retained=True,
+                    native_start_qualified=False,
+                    runtime_enabled=False,
+                )
             ):
                 raise ValueError("Native child consumption receipt differs")
             self.started[instance] = grant.admission_id
@@ -209,7 +212,14 @@ class NativeAdmissionServer:
                     stream.settimeout(0.5)
                     self.authenticate(stream)
                     raw = bytearray()
+                    deadline = time.monotonic() + 1.0
                     while b"\n" not in raw:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            raise TimeoutError(
+                                "Native admission frame deadline expired"
+                            )
+                        stream.settimeout(min(0.5, remaining))
                         part = stream.recv(32769 - len(raw))
                         if not part or len(raw) + len(part) > 32768:
                             raise ValueError("Native start request exceeds bound")

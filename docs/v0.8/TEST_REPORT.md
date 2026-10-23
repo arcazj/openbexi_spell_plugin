@@ -917,3 +917,15 @@ local result is a failure, not a pass or a skip. Hosted Ubuntu qualification is
 required. No native child result or full release qualification is inferred from
 these component checks. Prior dev16 hosted results remain historical exact-source
 evidence, not verification of changed dev17 runtime code.
+
+First dev17 hosted attempt at `08ec573` (PR run 40038718571) passed the
+367 scoped checks, package smoke and the five existing baseline/native profiles.
+The new child profile compiled all 74 Context translation units, reproduced the
+frozen native composition and started ten roots through the checked native gate,
+but timed out before observing children RUNNING. That job is failed, with its
+original CI artifact retained (12537798253; ZIP SHA-256
+`0cdb260c05bfba78ea5defe91663767504330e702e11232583fea1fe1831e546`).
+It is not a positive child-start qualification. Follow-up adds direct native
+start/peer-denial probes, strict receipt types, current authority checks before
+visible-child RUN, bounded native log diagnostics and the required explicit
+`spell.runtime.ARGS` import in the child fixture.
