@@ -1,6 +1,6 @@
 # Retained native qualification summary
 
-qualification-summary.json records the verified d962268 native compute result,
+qualification-summary.json records the verified c8b286c native compute result,
 public source hashes and workflow references. It intentionally omits raw logs,
 host/endpoint/process/execution identities, private paths and credentials.
 Original detailed artifacts remain in their existing GitHub Actions runs.
@@ -21,9 +21,10 @@ resolved that issue without fabricated acknowledgements or ignored errors. The
 separate metadata overload failure led to bounded v0.8 client admission, with no
 legacy transport/preimage edits or effect retries.
 
-The branch adds a physical cloned-worker denial check and event quota/race
-regressions. Their final candidate CI must be assessed separately from this
-d962268 summary. Full v0.8 remains unqualified: external native TC/TM, safe
+The c8b286c candidate also passed the physical cloned-worker denial check and
+218 scoped tests, including event quota/race regressions. A new container using
+the original certificate, incarnation and spent grant failed before native
+startup. The same-candidate portable compatibility PR passed 241 tests. Full v0.8 remains unqualified: external native TC/TM, safe
 pause/child/handoff/recovery, IDE native execution/browser/WSS, complete
 compatibility, production deployments and independent release/security gates
 remain pending.

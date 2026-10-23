@@ -32,7 +32,8 @@
     "217 scoped tests passed locally and hosted at d962268; 241 portable compatibility tests passed in hosted PR CI",
     "Ten real native procedures ran simultaneously in separate single-use containers through certificate-bound Context consumption; thirty distinct host PIDs verified",
     "Twenty actual native lifecycle driver calls were durably journalled in Context; all ten workers completed and terminated with ten spent slots and ten logical holds retained",
-    "Native cohort verified worker-to-worker and external TCP denial; Context had no Docker socket/host manager; post-termination handoff remained BLOCKED with original owner/epoch retained"
+    "Native cohort verified worker-to-worker and external TCP denial; Context had no Docker socket/host manager; post-termination handoff remained BLOCKED with original owner/epoch retained",
+    "c8b286c hosted PR/push checks passed: 218 scoped tests, ten native compute executions, twenty durable events, thirty native PIDs and physical same-certificate/spent-grant clone rejection before native startup; 241-test compatibility PR passed"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -54,7 +55,8 @@
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
-    "G3_native_subset": "Actual while-running handoff was BLOCKED in earlier failed completion evidence; positive cohort checks post-termination BLOCKED handoff. No native quiescence/owner-CAS pass is claimed"
+    "G3_native_subset": "Actual while-running handoff was BLOCKED in earlier failed completion evidence; positive cohort checks post-termination BLOCKED handoff. No native quiescence/owner-CAS pass is claimed",
+    "K_native_subset": "c8b286c scoped PR/push service/native/wheel checks and PR compatibility passed; full K remains pending"
   },
   "implementation_started": true,
   "release_published": false,

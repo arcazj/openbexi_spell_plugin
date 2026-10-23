@@ -385,3 +385,12 @@ requirements, production Compose/Kubernetes or independent security/release
 acceptance. The companion IDE remains pinned to a1ec00f and its existing
 prelaunch control/panel integration is exercised by the service suite. No
 release/tag/merge is authorized by these subset results.
+
+Final native-code checkpoint **c8b286c** passed hosted PR and push services/native
+workflows, including **218 scoped tests** and wheel smoke. Its native cohort
+also started a physical clone with an original worker certificate, incarnation
+and spent grant; it was rejected before opening a native session. Ten positive
+workers, thirty native PIDs, twenty durable lifecycle events and all retained
+holds were verified again. The same-code PR compatibility subset passed **241
+tests**. The redacted summary now identifies this checkpoint; detailed CI
+artifacts are not republished in the repository. Full qualification remains false.
