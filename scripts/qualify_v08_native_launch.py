@@ -298,6 +298,7 @@ def main():
                         entrypoint="procedure_" + str(n) + ".py",
                         runtime_image=IMAGE,
                         driver_binding="disabled",
+                        aliases=[],
                     )
                     for n in range(10)
                 }
