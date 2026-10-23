@@ -54,8 +54,48 @@ def emit(event, **values):
     print(json.dumps(dict(event=event, **values)), flush=True)
 
 
+def native_pause_probe(session, pump, status, *, timeout=3, prior=None):
+    """Observe main-Executor pause; never synthesize family quiescence.
+
+    The frozen provider cannot acknowledge all threads/children or drain all
+    prompt/control queues. In particular, Python background threads can run
+    while the main native execution model reports PAUSED.
+    """
+    if prior is not None:
+        return prior  # Receipt loss is not permission to repeat a native command.
+    result = dict(
+        provider="legacy-status-only/1",
+        native_status=status,
+        quiescence_proven=False,
+        reason="non_running_state_unqualified",
+    )
+    if status != "RUNNING":
+        return result
+    try:
+        session.request("CMD_PAUSE", send=True)
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            pump()
+            state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+            result["native_status"] = state
+            if state == "PAUSED":
+                result["reason"] = "thread_child_queue_proof_unavailable"
+                return result
+            if state != "RUNNING":
+                return result
+            time.sleep(0.02)
+        result["reason"] = "pause_timeout"
+    except Exception:
+        result.update(native_status="UNKNOWN", reason="native_channel_failure")
+    return result
+
+
 def run(config):
-    exact(config, {"preflight", "grant", "start_barrier"})
+    fields = {"preflight", "grant", "start_barrier"}
+    probe_enabled = type(config) is dict and "pause_probe" in config
+    exact(config, fields | ({"pause_probe"} if probe_enabled else set()))
+    if probe_enabled and config["pause_probe"] is not True:
+        raise ValueError("Native pause probe requires explicit true")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -221,12 +261,70 @@ def run(config):
         rpc("check")
         session.request("CMD_RUN", send=True)
         running = False
+        attempted_pause = {}
+        pause_channel_failed = False
+        next_poll = 0
         while time.monotonic() < deadline:
             pump()
             state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
             if state == "RUNNING" and not running:
                 running = True
                 emit("native-running", execution_id=grant.execution_id)
+            if probe_enabled and time.monotonic() >= next_poll:
+                next_poll = time.monotonic() + 0.2
+                try:
+                    action = route.call(
+                        request,
+                        path="/v1/worker/pause-poll",
+                        schema="openbexi.worker/2",
+                    )
+                    if action.get("execution_id") != grant.execution_id:
+                        raise RuntimeError("Native pause command assignment differs")
+                    if action.get("action") == "pause":
+                        barrier = str(uuid.UUID(action["barrier_id"]))
+                        if barrier not in attempted_pause:
+                            attempted_pause[barrier] = native_pause_probe(
+                                session, pump, state
+                            )
+                        diagnostic = attempted_pause[barrier]
+                        # Repeating this exact diagnostic after response loss is
+                        # harmless. Never repeat consumption, pause, or a TC.
+                        answer = route.call(
+                            {**request, "barrier_id": barrier, **diagnostic},
+                            path="/v1/worker/pause-report",
+                            schema="openbexi.worker/2",
+                        )
+                        if (
+                            answer.get("barrier_id") != barrier
+                            or answer.get("quiescence_proven") is not False
+                            or answer.get("effective_transfer") is not False
+                        ):
+                            raise RuntimeError("Native pause receipt differs")
+                        emit(
+                            "native-pause-unproven",
+                            execution_id=grant.execution_id,
+                            barrier_id=barrier,
+                            **diagnostic,
+                        )
+                    elif action.get("action") not in {"none", "hold"}:
+                        raise RuntimeError("Native pause action differs")
+                except Exception:
+                    if not pause_channel_failed:
+                        # An unavailable/restarted authority is not permission
+                        # to kill or resume a procedure. Attempt a local pause,
+                        # retain the family, and await independent host recovery.
+                        diagnostic = native_pause_probe(
+                            session,
+                            pump,
+                            state,
+                            prior=next(iter(attempted_pause.values()), None),
+                        )
+                        emit(
+                            "native-pause-channel-unavailable",
+                            execution_id=grant.execution_id,
+                            **diagnostic,
+                        )
+                        pause_channel_failed = True
             if state in {"FINISHED", "ERROR", "ABORTED"}:
                 break
             time.sleep(0.05)

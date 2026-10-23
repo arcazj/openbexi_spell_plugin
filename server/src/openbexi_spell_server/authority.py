@@ -54,6 +54,7 @@ class ExecutionAuthority:
         self.capacity = 64
         self.reservation_validator = None
         self.start_guard = None
+        self.native_pause = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})
@@ -231,6 +232,8 @@ class ExecutionAuthority:
 
     def list_executions(self, subject):
         self._require(subject, "execution:read")
+        if self.native_pause is not None:
+            self.native_pause.expire()
         with self.store.transaction(write=False):
             executions = []
             for row in self.store.db.execute("SELECT * FROM executions ORDER BY id"):
@@ -242,6 +245,8 @@ class ExecutionAuthority:
                 item["pending_claim"] = (
                     dict(claim) if claim and claim["expires_at"] > self.clock() else None
                 )
+                if self.native_pause is not None:
+                    item["pause_barrier"] = self.native_pause.snapshot(row["id"])
                 executions.append(item)
             return {"executions": executions, "runtime_enabled": False}
 
@@ -538,6 +543,8 @@ class ExecutionAuthority:
         self._require(claim["requester"], "execution:request_control", "execution:control")
         self._session(claim["requester"], claim["connection_id"])
         if row["lifecycle"] != "RESERVED":
+            if self.native_pause is not None and row["lifecycle"] == "STARTING":
+                return self.native_pause.begin(row, claim)
             # A start grant is a possible external effect. No fake native pause proof.
             self.store.db.execute(
                 "UPDATE executions SET control_state='RECOVERY_REQUIRED',cap_hash=NULL WHERE id=?",
@@ -631,7 +638,12 @@ class ExecutionAuthority:
                 )
                 return grant
 
-    def _grant(self, grant):
+    def _original_grant(self, grant):
+        """Immutable consumed identity, never permission for a new effect.
+
+        Only the fenced pause/report safety route may use this without live
+        controller authority. Driver/control paths must continue using _grant.
+        """
         if type(grant) is not StartGrant:
             raise Fault(403, "worker_grant_fenced")
         try:
@@ -641,22 +653,34 @@ class ExecutionAuthority:
         row = self._execution(grant.execution_id)
         fields = asdict(grant)
         token = fields.pop("token")
-        self._require(row["owner"], "execution:start", "execution:control")
-        self._session(row["owner"], row["connection_id"])
         if (
             row["authority_incarnation"] != self.store.incarnation
             or grant.authority_incarnation != self.store.incarnation
-            or row["control_state"] != "OWNED"
             or row["epoch"] != grant.control_epoch
             or row["connection_id"] != grant.connection_id
             or row["connection_generation"] != grant.connection_generation
-            or not row["cap_hash"]
             or not row["start_hash"]
             or not hmac.compare_digest(row["start_hash"], secret_hash(token))
             or row["start_binding"] != canonical(fields).decode()
         ):
             raise Fault(403, "worker_grant_fenced")
         return row
+
+    def _grant(self, grant):
+        # Preserve the existing effect path's live-policy/session precedence.
+        # The safety-only reporter deliberately does not enter this path.
+        if type(grant) is not StartGrant:
+            raise Fault(403, "worker_grant_fenced")
+        try:
+            fingerprint(grant.token)
+        except Fault as error:
+            raise Fault(403, "worker_grant_fenced") from error
+        row = self._execution(grant.execution_id)
+        self._require(row["owner"], "execution:start", "execution:control")
+        self._session(row["owner"], row["connection_id"])
+        if row["control_state"] != "OWNED" or not row["cap_hash"]:
+            raise Fault(403, "worker_grant_fenced")
+        return self._original_grant(grant)
 
     def consume_start(
         self, grant, authenticated_slot, authenticated_incarnation, *, consumption_hash=None

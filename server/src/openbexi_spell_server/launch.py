@@ -48,6 +48,13 @@ class WorkerLaunch:
         allowed = {"/v1/worker/consume", "/v1/worker/check", "/v1/worker/event"}
         if self.driver is not None:
             allowed.add("/v1/worker/driver")
+        pause = self.authority.native_pause
+        safety_only = pause is not None and path in {
+            "/v1/worker/pause-poll",
+            "/v1/worker/pause-report",
+        }
+        if pause is not None:
+            allowed.update({"/v1/worker/pause-poll", "/v1/worker/pause-report"})
         if path not in allowed:
             raise Fault(404, "route_not_available")
         if not path.endswith("consume"):
@@ -58,6 +65,8 @@ class WorkerLaunch:
             extra = {"request_id", "message", "severity", "scope"}
         elif path.endswith("driver"):
             extra = {"request_id", "path", "payload"}
+        elif path.endswith("pause-report"):
+            extra = {"barrier_id", "provider", "native_status", "quiescence_proven", "reason"}
         if not path.endswith("consume"):
             extra.add("runtime_capability")
         exact(
@@ -73,7 +82,11 @@ class WorkerLaunch:
         if grant.worker_slot != peer.slot or grant.worker_incarnation != peer.incarnation:
             raise Fault(403, "worker_assignment_mismatch")
         if not path.endswith("consume"):
-            self._runtime(grant, body["runtime_capability"])
+            self._runtime(grant, body["runtime_capability"], safety_only=safety_only)
+        if path.endswith("pause-poll"):
+            return pause.poll(grant)
+        if path.endswith("pause-report"):
+            return pause.report(grant, body)
         if path.endswith("event"):
             return self.record_event(grant, body)
         if path.endswith("driver"):
@@ -120,14 +133,18 @@ class WorkerLaunch:
             answer["runtime_capability"] = capability
         return answer
 
-    def _runtime(self, grant, capability):
+    def _runtime(self, grant, capability, *, safety_only=False):
         try:
             fingerprint(capability)
         except Fault as error:
             raise Fault(403, "worker_consumption_proof_required") from error
         with self.authority._execution_lock(grant.execution_id):
             with self.authority.store.transaction(write=False):
-                row = self.authority._grant(grant)
+                row = (
+                    self.authority._original_grant(grant)
+                    if safety_only
+                    else self.authority._grant(grant)
+                )
                 receipt = self.authority.store.db.execute(
                     "SELECT request_id,capability_hash FROM worker_runtime_receipts WHERE execution_id=?",
                     (grant.execution_id,),

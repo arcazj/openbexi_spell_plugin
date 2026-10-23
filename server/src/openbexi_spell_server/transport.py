@@ -48,6 +48,8 @@ class Route:
             ("/v1/worker/check", "openbexi.worker/2"),
             ("/v1/worker/event", "openbexi.worker/2"),
             ("/v1/worker/driver", "openbexi.worker/2"),
+            ("/v1/worker/pause-poll", "openbexi.worker/2"),
+            ("/v1/worker/pause-report", "openbexi.worker/2"),
         ):
             raise ValueError("Unconfigured RPC route")
         connection = http.client.HTTPSConnection(self.host, self.port, context=self.tls, timeout=2)

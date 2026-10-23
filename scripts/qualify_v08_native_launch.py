@@ -183,10 +183,186 @@ def host_processes(name):
     return rows
 
 
+def qualify_pause_probe(
+    controller, executions, connection, control, worker_names, containers, state, report
+):
+    """Negative native oracle: PAUSED main plus a still-running background thread."""
+    target = executions[1]
+    counter = "from pathlib import Path;p=Path('/tmp/v08-pause-counter');print(p.read_text() if p.exists() else '0')"
+    ready_deadline = time.monotonic() + 5
+    while (
+        int(command("docker", "exec", worker_names[1], "python", "-I", "-c", counter))
+        == 0
+    ):
+        if time.monotonic() >= ready_deadline:
+            raise RuntimeError("Background-thread fixture did not start before pause")
+        time.sleep(0.05)
+    bob = controller("session.open", {}, "bob")["connection_id"]
+    claim = controller(
+        "execution.claim",
+        dict(execution_id=target["id"], connection_id=bob, expected_epoch=1),
+        "bob",
+    )
+    started = time.monotonic()
+    decision = controller(
+        "execution.decide",
+        dict(
+            execution_id=target["id"],
+            connection_id=connection,
+            expected_epoch=1,
+            connection_generation=target["connection_generation"],
+            capability=target["capability"],
+            claim_id=claim["claim_id"],
+            decision="accept",
+        ),
+    )
+    if decision["state"] != "PAUSING" or time.monotonic() - started > 0.75:
+        raise RuntimeError("Native pause acceptance did not fence and return promptly")
+    deadline = time.monotonic() + 15
+    while True:
+        rows = controller("execution.list", {})["executions"]
+        row = next(r for r in rows if r["id"] == target["id"])
+        barrier = row["pause_barrier"]
+        if barrier and barrier["state"] != "REQUESTED":
+            break
+        if time.monotonic() >= deadline:
+            raise RuntimeError("Native pause diagnostic did not settle")
+        time.sleep(0.05)
+    await_event([worker_names[1]], "native-pause-unproven", seconds=5)
+    if (
+        barrier["state"] != "UNPROVEN"
+        or barrier["report"]["native_status"] != "PAUSED"
+        or barrier["quiescence_proven"]
+        or barrier["effective_transfer"]
+        or row["owner"] != "alice"
+        or row["epoch"] != 1
+        or row["control_state"] != "RECOVERY_REQUIRED"
+    ):
+        raise RuntimeError(
+            "Native main status was mistaken for safe ownership transfer"
+        )
+    before = int(
+        command("docker", "exec", worker_names[1], "python", "-I", "-c", counter)
+    )
+    latencies = []
+    for _ in range(10):
+        started = time.monotonic()
+        rows = controller("execution.list", {})["executions"]
+        latencies.append(time.monotonic() - started)
+        if any(
+            r["owner"] != "alice" or r["control_state"] != "OWNED"
+            for r in rows
+            if r["id"] != target["id"]
+        ):
+            raise RuntimeError("B's pause barrier changed an unrelated execution")
+    after = int(
+        command("docker", "exec", worker_names[1], "python", "-I", "-c", counter)
+    )
+    if after <= before or max(latencies) > 0.75:
+        raise RuntimeError(
+            "Background-thread or unrelated-controller oracle did not hold"
+        )
+    report["native_pause_probe"] = dict(
+        state="UNPROVEN",
+        native_main_status="PAUSED",
+        background_counter_before=before,
+        background_counter_after=after,
+        background_thread_survives_main_pause=True,
+        unrelated_controller_max_latency_seconds=max(latencies),
+        owner_preserved=True,
+        epoch_preserved=True,
+        quiescence_proven=False,
+        effective_transfer=False,
+    )
+    # Authorized independent host teardown for qualification, never controller
+    # disconnect, inferred pause proof, hold release, or production recovery.
+    command("docker", "stop", "--time", "3", worker_names[1], timeout=12)
+    (control / "finish").write_text("finish unaffected fixtures\n")
+    with ThreadPoolExecutor(max_workers=9) as pool:
+        exits = list(
+            pool.map(
+                lambda n: command("docker", "wait", n, timeout=90),
+                [n for i, n in enumerate(worker_names) if i != 1],
+            )
+        )
+    if exits != ["0"] * 9:
+        raise RuntimeError("An unaffected native procedure did not finish")
+    for index, (name, container, execution) in enumerate(
+        zip(worker_names, containers, executions, strict=True)
+    ):
+        info = json.loads(command("docker", "inspect", name))[0]
+        records = events(name)
+        if (
+            info["State"]["Running"]
+            or info["State"]["OOMKilled"]
+            or info["HostConfig"]["Privileged"]
+            or not info["HostConfig"]["ReadonlyRootfs"]
+            or info["Image"] != IMAGE
+        ):
+            raise RuntimeError(
+                "Native pause probe worker isolation/termination differs"
+            )
+        if index != 1 and not any(e["event"] == "native-finished" for e in records):
+            raise RuntimeError("An unrelated worker lacks a real completion")
+        report["workers"].append(
+            dict(
+                container=container,
+                execution_id=execution["id"],
+                events=records,
+                whole_container_terminated=True,
+                host_teardown_only=index == 1,
+                image=info["Image"],
+                privileged=False,
+                readonly_root=True,
+            )
+        )
+    with closing(
+        sqlite3.connect("file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True)
+    ) as db:
+        if (
+            db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 10
+            or db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 10
+        ):
+            raise RuntimeError("Native pause/host cleanup released a hold")
+        event_count = db.execute(
+            "SELECT COUNT(*) FROM native_driver_events"
+        ).fetchone()[0]
+        lifecycle = [
+            json.loads(r[0])
+            for r in db.execute(
+                "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
+            )
+        ]
+        for index, execution in enumerate(executions):
+            messages = [
+                r["message"] for r in lifecycle if r["execution_id"] == execution["id"]
+            ]
+            if sum(m.startswith("Procedure started:") for m in messages) != 1 or sum(
+                m.startswith("Procedure finished:") for m in messages
+            ) != (0 if index == 1 else 1):
+                raise RuntimeError(
+                    "Native pause changed a procedure's lifecycle receipts"
+                )
+    report.update(
+        native_pause_probe_passed=True,
+        native_pause_qualified=False,
+        native_driver_events_persisted=event_count,
+        native_handoff=dict(
+            state="BLOCKED",
+            owner_preserved=True,
+            quiescence_proven=False,
+            phase="while_running_pause_attempt",
+        ),
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--native-dss", action="store_true")
+    parser.add_argument("--native-pause-probe", action="store_true")
     profile = parser.parse_args()
+    if profile.native_pause_probe and profile.native_dss:
+        parser.error("Native pause and native DSS qualify separate profiles")
     output = ROOT / ".qualification/v08-native-launch" / ("run-" + uuid.uuid4().hex)
     output.mkdir(parents=True)
     report = dict(
@@ -292,6 +468,18 @@ def main():
                 sources.mkdir()
                 command("git", "init", "-q", sources)
                 fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
+                if profile.native_pause_probe:
+                    background = (
+                        "import threading\n"
+                        "def background():\n"
+                        "    counter=0\n"
+                        "    while not os.path.exists('/control/finish'):\n"
+                        "        counter+=1\n"
+                        "        with open('/tmp/v08-pause-counter.next','w') as f:f.write(str(counter))\n"
+                        "        os.replace('/tmp/v08-pause-counter.next','/tmp/v08-pause-counter')\n"
+                        "        time.sleep(0.02)\n"
+                        "threading.Thread(target=background,daemon=True).start()\n"
+                    )
                 if profile.native_dss:
                     fixture += (
                         "from spell.lang.functions import Send,GetTM\n"
@@ -299,8 +487,13 @@ def main():
                         "assert GetTM('TM.POWER.BUS_VOLTAGE',Wait=False,Timeout=2,HandleError=False) == 28.0\n"
                     )
                 for n in range(10):
+                    selected = fixture
+                    if profile.native_pause_probe and n == 1:
+                        selected = selected.replace(
+                            "import os,time\n", "import os,time\n" + background
+                        )
                     (sources / ("procedure_" + str(n) + ".py")).write_text(
-                        fixture.replace("{index}", str(n)).replace(
+                        selected.replace("{index}", str(n)).replace(
                             "{square}", str(n * n)
                         )
                     )
@@ -380,6 +573,8 @@ def main():
                     worker_credentials=credentials,
                     worker_launch="retained-single-use",
                 )
+                if profile.native_pause_probe:
+                    config["native_pause"] = "fenced-probe"
                 dss_name = None
                 driver_network = None
                 if profile.native_dss:
@@ -656,6 +851,11 @@ def main():
                                 preflight=inside,
                                 grant=admitted,
                                 start_barrier="/control/start",
+                                **(
+                                    {"pause_probe": True}
+                                    if profile.native_pause_probe
+                                    else {}
+                                ),
                             )
                         )
                     )
@@ -754,285 +954,310 @@ def main():
                 report["network_denials"] = dict(
                     cross_worker_native_port=True, external_tcp=True
                 )
-                (control / "finish").write_text("finish fixture\n")
-                with ThreadPoolExecutor(max_workers=10) as pool:
-                    exits = list(
-                        pool.map(
-                            lambda name: command("docker", "wait", name, timeout=90),
-                            worker_names,
-                        )
+                if profile.native_pause_probe:
+                    qualify_pause_probe(
+                        controller,
+                        executions,
+                        connection,
+                        control,
+                        worker_names,
+                        containers,
+                        state,
+                        report,
                     )
-                if exits != ["0"] * 10:
-                    raise RuntimeError("Native cohort did not exit successfully")
-                for name, container, execution in zip(
-                    worker_names, containers, executions, strict=True
-                ):
-                    records = events(name)
-                    if not any(r["event"] == "native-finished" for r in records):
-                        raise RuntimeError("Native completion evidence absent")
-                    info = json.loads(command("docker", "inspect", name))[0]
-                    if (
-                        info["State"]["Running"]
-                        or info["State"]["OOMKilled"]
-                        or info["HostConfig"]["Privileged"]
-                        or not info["HostConfig"]["ReadonlyRootfs"]
-                        or info["Image"] != IMAGE
+                else:
+                    (control / "finish").write_text("finish fixture\n")
+                    with ThreadPoolExecutor(max_workers=10) as pool:
+                        exits = list(
+                            pool.map(
+                                lambda name: command(
+                                    "docker", "wait", name, timeout=90
+                                ),
+                                worker_names,
+                            )
+                        )
+                    if exits != ["0"] * 10:
+                        raise RuntimeError("Native cohort did not exit successfully")
+                    for name, container, execution in zip(
+                        worker_names, containers, executions, strict=True
                     ):
-                        raise RuntimeError("Worker isolation/termination differs")
-                    report["workers"].append(
-                        dict(
-                            container=container,
-                            execution_id=execution["id"],
-                            events=records,
-                            whole_container_terminated=True,
-                            image=info["Image"],
-                            privileged=False,
-                            readonly_root=True,
-                        )
-                    )
-                # A physical clone with the same certificate, incarnation and
-                # original grant must fail before opening any native session.
-                clone = prefix + "-clone"
-                clone_command = list(launch_commands[1])
-                clone_command[clone_command.index("--name") + 1] = clone
-                names.append(clone)
-                command(*clone_command)
-                if command("docker", "wait", clone, timeout=15) != "1":
-                    raise RuntimeError("Cloned spent worker was not rejected")
-                clone_events = events(clone)
-                if any(
-                    item["event"]
-                    in {"native-ready", "native-running", "native-finished"}
-                    for item in clone_events
-                ) or not any(
-                    item["event"] == "native-worker-failed"
-                    and item.get("error") == "context_request_denied"
-                    for item in clone_events
-                ):
-                    raise RuntimeError(
-                        "Cloned worker denial did not precede native launch"
-                    )
-                report["physical_worker_clone_denied"] = True
-                if profile.native_dss:
-                    # A copied ORIGINAL config must not be enough to skip
-                    # consumption and use the driver's effect route directly.
-                    # The single winner's consumption proof is memory-only.
-                    attacker = prefix + "-driver-clone"
-                    probe_command = list(launch_commands[1])
-                    probe_command[probe_command.index("--name") + 1] = attacker
-                    probe = (
-                        "import base64,json,sys,uuid\n"
-                        "sys.path.insert(0,'/v08/server/src')\n"
-                        "from openbexi_spell_server.transport import Route,tls_context\n"
-                        "from openbexi_spell_server.contracts import Fault\n"
-                        "from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p\n"
-                        "c=json.load(open('/credentials/config.json'));w=c['preflight']\n"
-                        "r=Route(w['context_url'],w['context_fingerprint'],tls_context(w['ca'],w['certificate'],w['key']))\n"
-                        "payload=base64.b64encode(p.CommandDesc(command=p.TcItemDesc(mnemonic='CMD1')).SerializeToString()).decode('ascii')\n"
-                        "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload=payload)\n"
-                        "try:r.call(b,path='/v1/worker/driver',schema='openbexi.worker/2')\n"
-                        "except Fault as e:\n"
-                        " if e.code!='context_request_denied' or e.status!=403:raise\n"
-                        "else:raise RuntimeError('Copied original config gained driver authority')\n"
-                        "print('copied-original-driver-config-denied',flush=True)\n"
-                    )
-                    probe_command[probe_command.index("-I") :] = ["-I", "-c", probe]
-                    names.append(attacker)
-                    command(*probe_command)
-                    if command("docker", "wait", attacker, timeout=15) != "0":
-                        raise RuntimeError(
-                            "Copied original config bypassed consumption proof"
-                        )
-                    report["copied_original_driver_config_denied"] = True
-                bob = controller("session.open", {}, "bob")["connection_id"]
-                first = executions[0]
-                claim = controller(
-                    "execution.claim",
-                    dict(
-                        execution_id=first["id"],
-                        connection_id=bob,
-                        expected_epoch=first["epoch"],
-                    ),
-                    "bob",
-                )
-                decision = controller(
-                    "execution.decide",
-                    dict(
-                        execution_id=first["id"],
-                        connection_id=connection,
-                        expected_epoch=first["epoch"],
-                        connection_generation=first["connection_generation"],
-                        capability=first["capability"],
-                        claim_id=claim["claim_id"],
-                        decision="accept",
-                    ),
-                )
-                if decision["state"] != "BLOCKED":
-                    raise RuntimeError(
-                        "Unproved native quiescence allowed ownership transfer"
-                    )
-                report["native_handoff"] = dict(
-                    state=decision["state"],
-                    owner_preserved=True,
-                    quiescence_proven=False,
-                    phase="after_container_termination",
-                )
-                retained = controller("execution.list", {})["executions"]
-                if len(retained) != 10 or any(
-                    row["owner"] != "alice" for row in retained
-                ):
-                    raise RuntimeError(
-                        "Native completion changed ownership/reservation"
-                    )
-                with closing(
-                    sqlite3.connect(
-                        "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
-                    )
-                ) as audit:
-                    if (
-                        audit.execute("SELECT SUM(spent) FROM workers").fetchone()[0]
-                        != 10
-                        or audit.execute(
-                            "SELECT COUNT(*) FROM reservations"
-                        ).fetchone()[0]
-                        != 10
-                    ):
-                        raise RuntimeError(
-                            "Native completion released a hold or worker slot"
-                        )
-                with closing(
-                    sqlite3.connect(
-                        "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
-                    )
-                ) as audit:
-                    event_count = audit.execute(
-                        "SELECT COUNT(*) FROM native_driver_events"
-                    ).fetchone()[0]
-                    bodies = [
-                        json.loads(row[0])
-                        for row in audit.execute(
-                            "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
-                        )
-                    ]
-                    for execution in executions:
-                        messages = [
-                            body["message"]
-                            for body in bodies
-                            if body["execution_id"] == execution["id"]
-                        ]
+                        records = events(name)
+                        if not any(r["event"] == "native-finished" for r in records):
+                            raise RuntimeError("Native completion evidence absent")
+                        info = json.loads(command("docker", "inspect", name))[0]
                         if (
-                            sum(
-                                message.startswith("Procedure started:")
-                                for message in messages
-                            )
-                            != 1
-                            or sum(
-                                message.startswith("Procedure finished:")
-                                for message in messages
-                            )
-                            != 1
+                            info["State"]["Running"]
+                            or info["State"]["OOMKilled"]
+                            or info["HostConfig"]["Privileged"]
+                            or not info["HostConfig"]["ReadonlyRootfs"]
+                            or info["Image"] != IMAGE
                         ):
-                            raise RuntimeError(
-                                "Native lifecycle events lack unique durable receipts"
+                            raise RuntimeError("Worker isolation/termination differs")
+                        report["workers"].append(
+                            dict(
+                                container=container,
+                                execution_id=execution["id"],
+                                events=records,
+                                whole_container_terminated=True,
+                                image=info["Image"],
+                                privileged=False,
+                                readonly_root=True,
                             )
-                    if event_count < 20:
-                        raise RuntimeError(
-                            "Native lifecycle events lack durable receipts"
                         )
-                report["native_driver_events_persisted"] = event_count
-                if profile.native_dss:
-                    state_probe = (
-                        "import json,urllib.request;"
-                        "print(json.dumps(json.load(urllib.request.urlopen('http://127.0.0.1:8085/api/v1/state'))['core']))"
+                    # A physical clone with the same certificate, incarnation and
+                    # original grant must fail before opening any native session.
+                    clone = prefix + "-clone"
+                    clone_command = list(launch_commands[1])
+                    clone_command[clone_command.index("--name") + 1] = clone
+                    names.append(clone)
+                    command(*clone_command)
+                    if command("docker", "wait", clone, timeout=15) != "1":
+                        raise RuntimeError("Cloned spent worker was not rejected")
+                    clone_events = events(clone)
+                    if any(
+                        item["event"]
+                        in {"native-ready", "native-running", "native-finished"}
+                        for item in clone_events
+                    ) or not any(
+                        item["event"] == "native-worker-failed"
+                        and item.get("error") == "context_request_denied"
+                        for item in clone_events
+                    ):
+                        raise RuntimeError(
+                            "Cloned worker denial did not precede native launch"
+                        )
+                    report["physical_worker_clone_denied"] = True
+                    if profile.native_dss:
+                        # A copied ORIGINAL config must not be enough to skip
+                        # consumption and use the driver's effect route directly.
+                        # The single winner's consumption proof is memory-only.
+                        attacker = prefix + "-driver-clone"
+                        probe_command = list(launch_commands[1])
+                        probe_command[probe_command.index("--name") + 1] = attacker
+                        probe = (
+                            "import base64,json,sys,uuid\n"
+                            "sys.path.insert(0,'/v08/server/src')\n"
+                            "from openbexi_spell_server.transport import Route,tls_context\n"
+                            "from openbexi_spell_server.contracts import Fault\n"
+                            "from openbexi_spell_dss.stubs import SPELLDriver_pb2 as p\n"
+                            "c=json.load(open('/credentials/config.json'));w=c['preflight']\n"
+                            "r=Route(w['context_url'],w['context_fingerprint'],tls_context(w['ca'],w['certificate'],w['key']))\n"
+                            "payload=base64.b64encode(p.CommandDesc(command=p.TcItemDesc(mnemonic='CMD1')).SerializeToString()).decode('ascii')\n"
+                            "b=dict(schema='openbexi.worker/2',context_id=w['context_id'],grant=c['grant'],request_id=str(uuid.uuid4()),path='/spell.driver.SPELLDriverInterface_TC/SendCommand',payload=payload)\n"
+                            "try:r.call(b,path='/v1/worker/driver',schema='openbexi.worker/2')\n"
+                            "except Fault as e:\n"
+                            " if e.code!='context_request_denied' or e.status!=403:raise\n"
+                            "else:raise RuntimeError('Copied original config gained driver authority')\n"
+                            "print('copied-original-driver-config-denied',flush=True)\n"
+                        )
+                        probe_command[probe_command.index("-I") :] = ["-I", "-c", probe]
+                        names.append(attacker)
+                        command(*probe_command)
+                        if command("docker", "wait", attacker, timeout=15) != "0":
+                            raise RuntimeError(
+                                "Copied original config bypassed consumption proof"
+                            )
+                        report["copied_original_driver_config_denied"] = True
+                    bob = controller("session.open", {}, "bob")["connection_id"]
+                    first = executions[0]
+                    claim = controller(
+                        "execution.claim",
+                        dict(
+                            execution_id=first["id"],
+                            connection_id=bob,
+                            expected_epoch=first["epoch"],
+                        ),
+                        "bob",
                     )
-                    actual = json.loads(
-                        command("docker", "exec", dss_name, "python", "-c", state_probe)
+                    decision = controller(
+                        "execution.decide",
+                        dict(
+                            execution_id=first["id"],
+                            connection_id=connection,
+                            expected_epoch=first["epoch"],
+                            connection_generation=first["connection_generation"],
+                            capability=first["capability"],
+                            claim_id=claim["claim_id"],
+                            decision="accept",
+                        ),
                     )
-                    if actual["commands_executed"] != 10:
-                        raise RuntimeError("Native DSS command count differs")
+                    if decision["state"] != "BLOCKED":
+                        raise RuntimeError(
+                            "Unproved native quiescence allowed ownership transfer"
+                        )
+                    report["native_handoff"] = dict(
+                        state=decision["state"],
+                        owner_preserved=True,
+                        quiescence_proven=False,
+                        phase="after_container_termination",
+                    )
+                    retained = controller("execution.list", {})["executions"]
+                    if len(retained) != 10 or any(
+                        row["owner"] != "alice" for row in retained
+                    ):
+                        raise RuntimeError(
+                            "Native completion changed ownership/reservation"
+                        )
                     with closing(
                         sqlite3.connect(
                             "file:" + str(state / "context.sqlite3") + "?mode=ro",
                             uri=True,
                         )
                     ) as audit:
-                        stages = audit.execute(
-                            "SELECT state,COUNT(*) FROM effect_intents GROUP BY state"
-                        ).fetchall()
-                        if stages != [("ACKED", 50)]:
-                            raise RuntimeError(
-                                "Native TC lacks fifty correlated durable stage receipts"
-                            )
-                        authority_rows = audit.execute(
-                            "SELECT * FROM effect_intents ORDER BY operation,stage"
-                        ).fetchall()
-                        methods = dict(
-                            audit.execute(
-                                "SELECT path,COUNT(*) FROM native_driver_calls WHERE state='COMPLETED' GROUP BY path"
-                            )
-                        )
                         if (
-                            methods.get(
-                                "/spell.driver.SPELLDriverInterface_TC/SendCommand"
-                            )
+                            audit.execute("SELECT SUM(spent) FROM workers").fetchone()[
+                                0
+                            ]
                             != 10
-                            or methods.get(
-                                "/spell.driver.SPELLDriverInterface_TM/RefreshItem", 0
-                            )
-                            < 10
+                            or audit.execute(
+                                "SELECT COUNT(*) FROM reservations"
+                            ).fetchone()[0]
+                            != 10
                         ):
                             raise RuntimeError(
-                                "Native original TC/TM method evidence absent"
+                                "Native completion released a hold or worker slot"
                             )
                     with closing(
                         sqlite3.connect(
-                            "file:" + str(state / "driver/driver.sqlite3") + "?mode=ro",
+                            "file:" + str(state / "context.sqlite3") + "?mode=ro",
                             uri=True,
                         )
-                    ) as driver_audit:
-                        driver_rows = driver_audit.execute(
-                            "SELECT * FROM effect_intents ORDER BY operation,stage"
-                        ).fetchall()
-                    if driver_rows != authority_rows or any(
-                        not row[6] for row in driver_rows
+                    ) as audit:
+                        event_count = audit.execute(
+                            "SELECT COUNT(*) FROM native_driver_events"
+                        ).fetchone()[0]
+                        bodies = [
+                            json.loads(row[0])
+                            for row in audit.execute(
+                                "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
+                            )
+                        ]
+                        for execution in executions:
+                            messages = [
+                                body["message"]
+                                for body in bodies
+                                if body["execution_id"] == execution["id"]
+                            ]
+                            if (
+                                sum(
+                                    message.startswith("Procedure started:")
+                                    for message in messages
+                                )
+                                != 1
+                                or sum(
+                                    message.startswith("Procedure finished:")
+                                    for message in messages
+                                )
+                                != 1
+                            ):
+                                raise RuntimeError(
+                                    "Native lifecycle events lack unique durable receipts"
+                                )
+                        if event_count < 20:
+                            raise RuntimeError(
+                                "Native lifecycle events lack durable receipts"
+                            )
+                    report["native_driver_events_persisted"] = event_count
+                    if profile.native_dss:
+                        state_probe = (
+                            "import json,urllib.request;"
+                            "print(json.dumps(json.load(urllib.request.urlopen('http://127.0.0.1:8085/api/v1/state'))['core']))"
+                        )
+                        actual = json.loads(
+                            command(
+                                "docker", "exec", dss_name, "python", "-c", state_probe
+                            )
+                        )
+                        if actual["commands_executed"] != 10:
+                            raise RuntimeError("Native DSS command count differs")
+                        with closing(
+                            sqlite3.connect(
+                                "file:" + str(state / "context.sqlite3") + "?mode=ro",
+                                uri=True,
+                            )
+                        ) as audit:
+                            stages = audit.execute(
+                                "SELECT state,COUNT(*) FROM effect_intents GROUP BY state"
+                            ).fetchall()
+                            if stages != [("ACKED", 50)]:
+                                raise RuntimeError(
+                                    "Native TC lacks fifty correlated durable stage receipts"
+                                )
+                            authority_rows = audit.execute(
+                                "SELECT * FROM effect_intents ORDER BY operation,stage"
+                            ).fetchall()
+                            methods = dict(
+                                audit.execute(
+                                    "SELECT path,COUNT(*) FROM native_driver_calls WHERE state='COMPLETED' GROUP BY path"
+                                )
+                            )
+                            if (
+                                methods.get(
+                                    "/spell.driver.SPELLDriverInterface_TC/SendCommand"
+                                )
+                                != 10
+                                or methods.get(
+                                    "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+                                    0,
+                                )
+                                < 10
+                            ):
+                                raise RuntimeError(
+                                    "Native original TC/TM method evidence absent"
+                                )
+                        with closing(
+                            sqlite3.connect(
+                                "file:"
+                                + str(state / "driver/driver.sqlite3")
+                                + "?mode=ro",
+                                uri=True,
+                            )
+                        ) as driver_audit:
+                            driver_rows = driver_audit.execute(
+                                "SELECT * FROM effect_intents ORDER BY operation,stage"
+                            ).fetchall()
+                        if driver_rows != authority_rows or any(
+                            not row[6] for row in driver_rows
+                        ):
+                            raise RuntimeError(
+                                "Native authority and driver receipts differ"
+                            )
+                        for worker in report["workers"]:
+                            finished = next(
+                                e
+                                for e in worker["events"]
+                                if e["event"] == "native-finished"
+                            )
+                            if not finished["external_driver_effects_enabled"]:
+                                raise RuntimeError(
+                                    "Worker lacks original command dispatch evidence"
+                                )
+                        report.update(
+                            native_dss_qualified=True,
+                            native_dss_commands=10,
+                            native_dss_stage_receipts=50,
+                            native_dss_driver_stage_receipts=50,
+                            native_dss_cross_ledger_match=True,
+                            native_dss_receipt_digest=hashlib.sha256(
+                                canonical(driver_rows)
+                            ).hexdigest(),
+                            native_driver_methods=methods,
+                        )
+                    first_row = next(
+                        row for row in retained if row["id"] == first["id"]
+                    )
+                    if (
+                        first_row["epoch"] != first["epoch"]
+                        or first_row["control_state"] != "RECOVERY_REQUIRED"
+                        or any(
+                            row["control_state"] != "OWNED"
+                            for row in retained
+                            if row["id"] != first["id"]
+                        )
                     ):
                         raise RuntimeError(
-                            "Native authority and driver receipts differ"
+                            "Blocked native handoff changed another execution"
                         )
-                    for worker in report["workers"]:
-                        finished = next(
-                            e
-                            for e in worker["events"]
-                            if e["event"] == "native-finished"
-                        )
-                        if not finished["external_driver_effects_enabled"]:
-                            raise RuntimeError(
-                                "Worker lacks original command dispatch evidence"
-                            )
-                    report.update(
-                        native_dss_qualified=True,
-                        native_dss_commands=10,
-                        native_dss_stage_receipts=50,
-                        native_dss_driver_stage_receipts=50,
-                        native_dss_cross_ledger_match=True,
-                        native_dss_receipt_digest=hashlib.sha256(
-                            canonical(driver_rows)
-                        ).hexdigest(),
-                        native_driver_methods=methods,
-                    )
-                first_row = next(row for row in retained if row["id"] == first["id"])
-                if (
-                    first_row["epoch"] != first["epoch"]
-                    or first_row["control_state"] != "RECOVERY_REQUIRED"
-                    or any(
-                        row["control_state"] != "OWNED"
-                        for row in retained
-                        if row["id"] != first["id"]
-                    )
-                ):
-                    raise RuntimeError(
-                        "Blocked native handoff changed another execution"
-                    )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

@@ -195,3 +195,11 @@ qualification. The single consumption winner receives a separate memory-only
 runtime proof; copied original configuration alone cannot call the driver.
 Authority schema 8 prevents opening the runtime-proof and RPC ledgers with older
 binaries; no automatic state downgrade or recovery is supported.
+
+
+The separate opt-in [fenced native pause probe](../docs/v0.8/NATIVE_PAUSE.md)
+fences old command admission before requesting native pause, without waiting in
+an authority transaction. Main-Executor PAUSED status never proves family
+quiescence: unproved/expired barriers retain the original owner and every hold.
+This profile uses schema 9 and never enables successful live handoff/resumption.
+The native negative-thread probe must pass independently in hosted CI.

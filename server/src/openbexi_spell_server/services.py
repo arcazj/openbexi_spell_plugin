@@ -38,6 +38,7 @@ class Context:
         worker_credentials=None,
         worker_launch=None,
         native_driver_factory=None,
+        native_pause=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -65,6 +66,14 @@ class Context:
         self.launch = (
             WorkerLaunch(self.preflight, self.native_driver) if worker_launch is not None else None
         )
+        if native_pause not in (None, "fenced-probe"):
+            raise ValueError("Unsupported native pause profile")
+        if native_pause is not None:
+            if self.launch is None:
+                raise ValueError("Native pause requires the explicit retained launch profile")
+            from .pause import NativePauseBarrier
+
+            NativePauseBarrier(self.authority)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -97,6 +106,8 @@ class Context:
                     "/v1/worker/check",
                     "/v1/worker/event",
                     "/v1/worker/driver",
+                    "/v1/worker/pause-poll",
+                    "/v1/worker/pause-report",
                 )
                 else self.preflight
             )

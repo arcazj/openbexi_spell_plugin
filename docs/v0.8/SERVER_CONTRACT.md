@@ -120,3 +120,15 @@ explicit resource allowlists are accepted; all other methods/identities are
 denied. Payloads are bounded original protobuf bytes, never endpoints or new
 authority. This route does not enter the gateway/Listener/IDE matrix or enable
 the public runtime. Native/deployment qualification remains separately gated.
+
+
+## Optional fenced native pause safety routes
+
+[NATIVE_PAUSE.md](NATIVE_PAUSE.md) defines the explicit `native_pause: fenced-probe`
+profile, its protocol-2 `/v1/worker/pause-poll` and `/pause-report` routes and
+schema-9 ledger. Original assigned worker identity and the single consumer's
+memory-only proof are required. These two safety-only calls can report after
+controller fencing/revocation; they grant no driver/control/recovery permission.
+Every driver/event/check route retains live original-grant checks. No supplied
+PAUSED status/Boolean can authorize transfer. This profile always retains old
+ownership and holds when thread/child/queue quiescence is unproven.

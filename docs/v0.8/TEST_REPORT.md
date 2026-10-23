@@ -639,3 +639,48 @@ The same code commit's
 also passed **241 tests**, zero failures/errors/skips and warnings as errors.
 Both PR workflows completed successfully. This is the named portable subset,
 not qualification of all 763 inherited requirements.
+
+
+## dev14 durable fenced native pause probe
+
+The next increment implements NATIVE_PAUSE.md: explicit opt-in Context-owned
+barriers fence original-grant effect admission under the existing per-execution
+mutex and commit a PAUSING decision without waiting for a worker. Only the
+certificate-bound consumption winner can poll/report under the unchanged
+original grant and memory-only proof. This safety channel can report after
+controller revocation but cannot admit effects or grant authority. Unknown,
+expired, restarted and status-only barriers preserve owner/epoch and every hold.
+No report can assert qualified family quiescence; effective native handoff and
+resumption remain unavailable.
+
+The new real-mTLS/independent-DSS checks exercise fencing, a between-stage pause,
+forged/invalid proofs, original binding and worker identity, role revocation,
+expiry/dead worker, late report, concurrent accepts, lost/changed report replies,
+audit rollback, restart and plaintext-secret absence. Agent checks reject family
+proof inferred from main PAUSED and prevent repeating an admitted pause after
+lost diagnostic delivery. The first focused attempt exposed the Context worker
+route classifier still treating the new routes as preflight (404); the classifier
+was fixed. One restart fixture used a nonexistent path attribute and was fixed.
+The first full 289-test run also detected changed live-session error precedence
+from grant-validation refactoring; existing effect-path precedence was restored.
+Those failed JUnit records remain in local qualification evidence. The corrected
+289-test run passed with zero failures/errors/skips; the final lost-reply case
+is included in the subsequent candidate run below.
+
+The separate hosted `--native-pause-probe` cohort must demonstrate the actual
+native boundary: main B paused while its background thread counter still
+advances, nine unrelated procedures complete, no owner/epoch changes, all holds
+retained, bounded controller latency and explicit independent host teardown of B.
+It is a negative safety qualification and never marks native_pause_qualified or
+full_v08_qualified true. No native outcome is claimed before candidate-SHA CI.
+
+
+Final local CPython **3.13.16** candidate qualification passed **290 scoped
+tests**, zero failures/errors/skips, warnings as errors, with lint/format/mypy
+passing. Evidence: `v08-server/run-20261023T191649Z-51403d96`, prior head ead1a5d
+plus exact changed source hashes. This includes the lost-pause-report regression:
+response loss reuses the recorded diagnostic without another native pause.
+Offline wheel build and clean isolated installed **0.8.0.dev14** import/version
+and both service/preflight CLI smokes passed. Hosted candidate-SHA audit, DSS and
+new pause-probe outcomes remain pending; native family quiescence/live handoff
+and full v0.8 remain unqualified.

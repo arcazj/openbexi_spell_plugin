@@ -33,6 +33,7 @@ def main():
         runtime_image_attested=False,
         readonly_mount_attested=False,
         native_pause_tested=False,
+        native_pause_barrier_rpc_tested=False,
         driver_effect_seam_tested=False,
         native_context_driver_rpc_tested=False,
         independent_dss_process_tested=False,
@@ -179,6 +180,7 @@ def main():
     )
     report["driver_effect_seam_tested"] = report["passed"]
     report["native_context_driver_rpc_tested"] = report["passed"]
+    report["native_pause_barrier_rpc_tested"] = report["passed"]
     report["independent_dss_process_tested"] = report["passed"]
     if (output / "tests.xml").exists():
         suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))

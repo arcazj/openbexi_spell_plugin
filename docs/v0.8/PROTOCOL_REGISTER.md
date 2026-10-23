@@ -60,3 +60,10 @@ The dev3 single-host worker preflight uses pinned mTLS JSON challenge/verify
 routes defined in WORKER_PREFLIGHT.md. It authenticates an assigned credential
 and source digest, never a start/driver operation. The full target worker
 protocol and Kubernetes Pod identity remain pending.
+
+
+The optional private fenced-pause profile adds protocol-2 worker pause-poll and
+pause-report routes (NATIVE_PAUSE.md). They preserve original binding and the
+single consumer's memory-only proof after controller fencing, solely to report
+safety state. They can never admit effects, mint authority or prove quiescence.
+Schema 9 adds the bounded durable barrier; positive native handoff is pending.

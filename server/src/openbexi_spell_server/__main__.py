@@ -30,7 +30,7 @@ def main(*, driver_factory=None):
         )
     )
     optional = (
-        {"worker_slots", "approved_sources", "worker_credentials", "worker_launch"}
+        {"worker_slots", "approved_sources", "worker_credentials", "worker_launch", "native_pause"}
         if args.role == "context"
         else set()
     )
@@ -64,6 +64,7 @@ def main(*, driver_factory=None):
                 approved_sources=config.get("approved_sources"),
                 worker_credentials=config.get("worker_credentials"),
                 worker_launch=config.get("worker_launch"),
+                native_pause=config.get("native_pause"),
                 native_driver_factory=(
                     lambda authority: driver_factory(authority, config["native_driver"])
                 )
