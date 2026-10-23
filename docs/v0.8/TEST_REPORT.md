@@ -787,3 +787,46 @@ as successful native integration; complete stable-counter/other-worker results
 remain gated on the final candidate. The local 304-test evidence precedes that
 small inventory assertion/CI-filter refinement; final exact-source qualification
 is recorded separately.
+
+
+## Confirmed hosted dev15 observed Python-thread component
+
+Final exact-source local qualification
+`v08-server/run-20261023T195458Z-9ebc93b4` passed **304 scoped tests**, zero
+failures/errors/skips, lint/format/mypy and warnings-as-errors. Every recorded
+source hash matched executable code **41a2fb2409f147b6b9bd018f1fe6f089f0eb71e2**.
+The offline dev15 build and isolated import/version/CLI smokes passed.
+
+At the same code, merge checkout **d32d9eb5676645548ae2d7110c8cd4cf47ef8b53**,
+[services/native run 40015231877](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40015231877)
+passed all **six jobs**: foundation (304 tests plus package checks),
+native-boundary and audit/DSS/original pause-probe/new thread-barrier cohorts.
+[Portable compatibility 40015231748](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40015231748)
+passed **241 tests**, zero failures/errors/skips; full all-763 remains unqualified.
+
+The component artifact **12527589091** (ZIP SHA-256
+`b96c0324093d195d5d4d6b25d1b4da9601cbde580f17f9ea0a71e7f83acc557c`)
+proved main PAUSED with the real background counter stable at **72 to 72**, one
+observed thread/one acknowledgment and no expiry/failure. The original negative
+control artifact **12528820448** (ZIP SHA-256
+`2032617b5bf553ae92161973b08ec20c2d1ef93f3a19f76ce9d789b476716550`)
+proved main PAUSED still leaves the counter advancing **62 to 81** without the
+component. Both downloaded artifacts passed ZIP CRC/digest checks and all
+**19 runtime source hashes** matched the candidate.
+
+The component cohort had ten native Executors/thirty distinct native PIDs,
+nine unrelated normal completions, nineteen durable lifecycle events, actual
+loopback-only helper binding, unchanged owner/epoch and all ten logical
+holds/spent slots retained. Maximum observed unrelated-controller read latency
+was **0.014496056 seconds**. Independent host cleanup ended B after collecting
+evidence; this is not native completion, reclamation or whole-family proof.
+The durable redacted receipt is
+`evidence/native-thread-barrier/qualification-summary.json`.
+
+This qualifies the **observed snapshot background-Python component only**.
+Native extensions/unknown participants, children and prompt/control/effect queue
+settlement remain unqualified. Context refuses effective transfer and every
+whole-family/runtime/full-v0.8 flag stays false. Next implementation is native
+child admission plus family queue/effect settlement before any ownership CAS
+and explicitly admitted new-owner resume. The PR remains draft and unmerged;
+no tag, release or production deployment is authorized by these test results.

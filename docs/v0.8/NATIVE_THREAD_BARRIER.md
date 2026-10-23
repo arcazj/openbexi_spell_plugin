@@ -75,3 +75,33 @@ an explicitly admitted new-owner resume remain unfinished. Public runtime and
 [NATIVE_PAUSE.md](NATIVE_PAUSE.md) and [TEST_REPORT.md](TEST_REPORT.md).
 
 Reference: [CPython 3.13 execution monitoring](https://docs.python.org/3.13/library/sys.monitoring.html).
+
+
+## Confirmed native component result
+
+At executable code **41a2fb2409f147b6b9bd018f1fe6f089f0eb71e2**, merge checkout
+**d32d9eb5676645548ae2d7110c8cd4cf47ef8b53**, all six jobs in
+[services/native run 40015231877](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40015231877)
+passed: 304 scoped tests/package checks, native boundary and audit/DSS/original
+negative pause/new thread cohorts. The
+[portable subset 40015231748](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40015231748)
+passed 241 tests, zero failures/errors/skips. This is not full all-763 coverage.
+
+| Native profile at the same candidate | Main status | Background counter | Effective transfer |
+|---|---|---|---|
+| Original negative pause control | PAUSED | 62 to 81 | Refused |
+| Cooperative background component | PAUSED | 72 to 72 | Refused |
+
+The component recorded exactly one observed/acknowledged background thread, no
+expiry/failure, actual helper loopback binding, thirty native PIDs and nine
+unrelated completions. Maximum observed unrelated-controller latency was
+**14.5 ms**. Nineteen durable lifecycle events were retained. Independent host
+cleanup ended B after evidence capture; all ten holds/spent slots remained.
+This cleanup is not a native completion or whole-family quiescence proof.
+
+The downloaded component and negative-control artifacts passed ZIP digest/CRC
+checks and **all 19 runtime source hashes** matched the candidate. The
+[redacted receipt](evidence/native-thread-barrier/qualification-summary.json)
+records source/image identities, run/artifact IDs, comparison and precise flags.
+The observed Python-thread component is qualified for this private cohort;
+whole-family native pause, children, handoff/resume and full v0.8 remain false.
