@@ -97,13 +97,13 @@ def run(config):
     rpc("consume")
     # Force the real proxy driver. Every driver request is denied in this narrow
     # launch profile; the baseline ExampleDriver can never fabricate success.
-    denied = []
+    denied = set()
     relay = None
 
     def deny(event, **body):
         if event != "openbexi/driverRequest":
             raise RuntimeError("Unexpected driver relay event")
-        denied[:] = [True]
+        denied.add(body["path"])
         relay.reply(
             {"id": body["id"], "error": "native_driver_integration_unqualified"}
         )
@@ -164,6 +164,14 @@ def run(config):
         else:
             raise TimeoutError("Native execution deadline expired")
         if state != "FINISHED" or denied:
+            terminal = session.request("REQ_EXEC_STATUS")
+            emit(
+                "native-terminal-failure",
+                native_status=state,
+                denied_driver_methods=sorted(denied)[:16],
+                error_message=str(terminal.get("ErrorMsg", ""))[:1024],
+                error_reason=str(terminal.get("ErrorReason", ""))[:1024],
+            )
             raise RuntimeError("Native execution/driver profile failed")
         emit(
             "native-finished",
