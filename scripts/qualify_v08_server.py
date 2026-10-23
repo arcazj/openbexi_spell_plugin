@@ -26,7 +26,7 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = dict(
         schema=1,
-        scope="services, prelaunch authority, source preflight and private actual-send driver seam with independent DSS process",
+        scope="services, prelaunch authority, opt-in retained launch RPC, source preflight and private driver seam with independent DSS process",
         worker_identity_authenticated=True,
         worker_identity_scope="operator-provisioned certificate pins; preflight only",
         kubernetes_worker_identity_tested=False,
@@ -69,6 +69,8 @@ def main():
             root / ".github/workflows/v08-server-foundation.yml",
             Path(__file__),
             root / "docs/v0.8/IDE_PAIR.json",
+            root / "host_runtime/python/v08_worker.py",
+            root / "scripts/qualify_v08_native_launch.py",
         ]
     )
     for path in inputs:
@@ -106,6 +108,8 @@ def main():
                 "check",
                 "server",
                 "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+                "host_runtime/python/v08_worker.py",
+                "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
             ],
         ),
@@ -119,6 +123,8 @@ def main():
                 "--check",
                 "server",
                 "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+                "host_runtime/python/v08_worker.py",
+                "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
             ],
         ),

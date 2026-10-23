@@ -1,6 +1,9 @@
 """Context-local ACLs, prelaunch authority and fixed Listener routing. No native launch."""
 
+from dataclasses import asdict
+
 from .authority import ExecutionAuthority
+from .launch import WorkerLaunch
 from .preflight import WorkerPeer, WorkerPreflight
 from .snapshots import SnapshotCatalog
 from .contracts import (
@@ -33,6 +36,7 @@ class Context:
         worker_slots=None,
         approved_sources=None,
         worker_credentials=None,
+        worker_launch=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -48,6 +52,11 @@ class Context:
             self.preflight = WorkerPreflight(
                 self.authority, self.catalog, worker_credentials, self.listener_fingerprint
             )
+        if worker_launch not in (None, "retained-single-use"):
+            raise ValueError("Unsupported worker launch profile")
+        if worker_launch is not None and self.preflight is None:
+            raise ValueError("Worker launch requires source preflight and unique identities")
+        self.launch = WorkerLaunch(self.preflight) if worker_launch is not None else None
         self.authority.start_guard = self._require_preflight
 
     def _require_preflight(self, row):
@@ -68,21 +77,27 @@ class Context:
         if isinstance(identity, WorkerPeer):
             if method != "POST" or self.preflight is None:
                 raise Fault(404, "route_not_available")
-            return {
-                "schema": "openbexi.worker/1",
-                "result": self.preflight.handle(identity, path, body),
-            }
+            handler = (
+                self.launch
+                if path in ("/v1/worker/consume", "/v1/worker/check")
+                else self.preflight
+            )
+            if handler is None:
+                raise Fault(404, "route_not_available")
+            return {"schema": "openbexi.worker/1", "result": handler.handle(identity, path, body)}
         if identity != "listener":
             raise Fault(403, "listener_identity_required")
         if method != "POST" or path != "/v1/rpc":
             raise Fault(404, "route_not_available")
-        request = validate_envelope(body, self.store.context_id)
+        request = validate_envelope(
+            body, self.store.context_id, allow_launch=self.launch is not None
+        )
         actor = self.subjects.get(request["subject"])
         if actor is None:
             raise Fault(403, "subject_denied")
         action = request["method"]
         # This always precedes replay lookup, including for an identical request.
-        actor.require(METHODS[action])
+        actor.require("execution:start" if action == "execution.start" else METHODS[action])
         if action == "health":
             state = self.store.snapshot(values=False)
             result = {k: state[k] for k in ("context_id", "incarnation", "runtime_enabled")}
@@ -99,6 +114,15 @@ class Context:
             result = self.catalog.metadata()
         elif action == "execution.list":
             result = self.authority.list_executions(actor.subject)
+        elif action == "execution.start":
+            # Explicit retained profile only; the normal Listener/gateway still
+            # cannot route this operator-to-Context admission. Token delivery is
+            # one-shot; a lost response never replays a plaintext grant.
+            result = {
+                "grant": asdict(self.authority.admit_start(actor.subject, request["payload"])),
+                "hold_retained": True,
+                "runtime_enabled": False,
+            }
         elif action in AUTHORITY_MUTATIONS:
             result = self.authority.mutate(
                 actor.subject, action, request["idempotency_key"], request["payload"]

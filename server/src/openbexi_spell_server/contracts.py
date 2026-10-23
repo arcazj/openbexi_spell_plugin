@@ -149,7 +149,7 @@ def envelope(context, subject, method, payload, key=None):
     )
 
 
-def validate_envelope(value, context, *, now=None):
+def validate_envelope(value, context, *, now=None, allow_launch=False):
     exact(
         value,
         {
@@ -189,7 +189,9 @@ def validate_envelope(value, context, *, now=None):
     ):
         raise Fault(403, "delegation_expired")
     method = value["method"]
-    if not isinstance(method, str) or method not in METHODS:
+    if not isinstance(method, str) or (
+        method not in METHODS and not (allow_launch and method == "execution.start")
+    ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
         raise Fault(400, "payload_digest_mismatch")
@@ -201,7 +203,7 @@ def validate_envelope(value, context, *, now=None):
             raise Fault(400, "invalid_revision")
         if len(canonical(body["value"])) > 16384:
             raise Fault(413, "value_too_large")
-    elif method in AUTHORITY_MUTATIONS:
+    elif method in AUTHORITY_MUTATIONS or (allow_launch and method == "execution.start"):
         identifier(value["idempotency_key"])
         validate_authority_payload(method, value["payload"])
     else:

@@ -1,4 +1,4 @@
-"""Explicit Context, Listener and certificate gateway entry points. No native launch."""
+"""Explicit internal services and an opt-in retained worker launch profile."""
 
 import argparse
 import json
@@ -30,7 +30,7 @@ def main():
         )
     )
     optional = (
-        {"worker_slots", "approved_sources", "worker_credentials"}
+        {"worker_slots", "approved_sources", "worker_credentials", "worker_launch"}
         if args.role == "context"
         else set()
     )
@@ -61,6 +61,7 @@ def main():
                 worker_slots=config.get("worker_slots"),
                 approved_sources=config.get("approved_sources"),
                 worker_credentials=config.get("worker_credentials"),
+                worker_launch=config.get("worker_launch"),
             )
         elif args.role == "gateway":
             app = Gateway(

@@ -10,7 +10,7 @@ from .snapshots import verify_directory
 from .transport import Route, tls_context
 
 
-def preflight(config):
+def preflight(config, *, details=False):
     exact(
         config,
         {
@@ -67,7 +67,7 @@ def preflight(config):
         or receipt["source_sha256"] != observed
     ):
         raise Fault(403, "worker_receipt_mismatch")
-    return receipt
+    return (receipt, challenge) if details else receipt
 
 
 def main():

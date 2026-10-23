@@ -54,3 +54,12 @@ TCP write with controller fencing and reserves separate authority/driver intent
 ledgers. See DRIVER_WRITE_GATE.md for the exact tests and trust boundary. It is
 not a native or network-accessible runtime path. Post-start handoff continues to
 block without proven native quiescence; no release gate is waived.
+
+An opt-in retained native launch profile is now implemented; see NATIVE_LAUNCH.md.
+It is separate from the default public/IDE path and requires original
+controller admission plus certificate-bound consumption. Its native worker
+forces the real proxy and denies driver operations, retains every hold, and
+fails on observed children. It does not qualify general native control,
+quiescence, descendant containment or native driver integration. The ten-worker
+Docker harness must actually pass before any native concurrency result is
+claimed.
