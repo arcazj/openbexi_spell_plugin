@@ -19,7 +19,8 @@
     "106 local service/prelaunch tests passed with warnings as errors; exact current evidence in TEST_REPORT.md",
     "Prelaunch transfer, original-grant fencing, response loss and restart holds tested; no native launch/effects claimed",
     "143 local service/source/preflight tests pass; actual mTLS and separate worker-preflight process tested",
-    "Approved Git inventory and alias enforcement implemented for configured catalogs only; preflight is not runtime/image/mount/Pod attestation"
+    "Approved Git inventory and alias enforcement implemented for configured catalogs only; preflight is not runtime/image/mount/Pod attestation",
+    "148 scoped tests pass; durable disconnect admission barrier serializes final fencing with execution mutexes; schema 4 prevents unsafe binary downgrade"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -27,7 +28,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "TEST_REPORT.md; worker-preflight evidence is current; server-foundation and execution-authority evidence are historical checkpoints",
+  "test_commands_and_outcomes": "TEST_REPORT.md; disconnect-barrier evidence is current; earlier evidence directories retain historical source identities",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md",
   "gates": {

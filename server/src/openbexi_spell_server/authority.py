@@ -11,7 +11,7 @@ import secrets
 import threading
 import time
 import uuid
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from dataclasses import asdict, dataclass
 
 from .contracts import (
@@ -69,6 +69,8 @@ class ExecutionAuthority:
             for statement in (
                 "CREATE TABLE IF NOT EXISTS sessions("
                 "id TEXT PRIMARY KEY,subject TEXT NOT NULL,active INTEGER NOT NULL)",
+                "CREATE TABLE IF NOT EXISTS session_closures("
+                "connection_id TEXT PRIMARY KEY,subject TEXT NOT NULL,key TEXT NOT NULL,hash TEXT NOT NULL)",
                 "CREATE TABLE IF NOT EXISTS workers("
                 "slot TEXT PRIMARY KEY,incarnation TEXT UNIQUE NOT NULL,spent INTEGER NOT NULL)",
                 "CREATE TABLE IF NOT EXISTS executions("
@@ -91,8 +93,8 @@ class ExecutionAuthority:
                 "hash TEXT NOT NULL,result TEXT NOT NULL,PRIMARY KEY(subject,scope,method,key))",
             ):
                 store.db.execute(statement)
-            if store.db.execute("PRAGMA user_version").fetchone()[0] < 2:
-                store.db.execute("PRAGMA user_version=2")
+            if store.db.execute("PRAGMA user_version").fetchone()[0] < 4:
+                store.db.execute("PRAGMA user_version=4")
             # Startup never clears logical/worker holds or restores any capability.
             affected = store.db.execute("SELECT id FROM executions").fetchall()
             if affected:
@@ -155,7 +157,7 @@ class ExecutionAuthority:
         row = self.store.db.execute(
             "SELECT * FROM sessions WHERE id=?", (connection_id,)
         ).fetchone()
-        if row is None or row["subject"] != subject or not row["active"]:
+        if row is None or row["subject"] != subject or row["active"] != 1:
             raise Fault(403, "connection_denied")
 
     def _owner(self, subject, payload):
@@ -274,7 +276,9 @@ class ExecutionAuthority:
             "execution.cancel": ("execution:request_control",),
         }
         self._require(subject, *permissions[method])
-        if method in ("session.open", "session.close", "execution.reserve"):
+        if method == "session.close":
+            return self._close_session(subject, key, payload)
+        if method in ("session.open", "execution.reserve"):
             with self.store.transaction():
                 self._require(subject, *permissions[method])
                 return self._mutate(subject, method, key, payload)
@@ -282,6 +286,72 @@ class ExecutionAuthority:
             with self.store.transaction():
                 self._require(subject, *permissions[method])
                 return self._mutate(subject, method, key, payload)
+
+    def _close_session(self, subject, key, payload):
+        """Close admission before serializing final fencing with execution writes.
+
+        CLOSING (active=2) survives timeout/crash and never admits new work. No
+        SQLite transaction is held while waiting for any execution mutex. Only
+        the original close request may finish a partially completed close.
+        """
+        connection = payload["connection_id"]
+        with self.store.transaction():
+            self._require(subject, "execution:control")
+            replay = self._replay(subject, "session.close", key, payload)
+            if replay is not None:
+                return replay
+            pending = self.store.db.execute(
+                "SELECT * FROM session_closures WHERE connection_id=?", (connection,)
+            ).fetchone()
+            if pending is None:
+                self._session(subject, connection)
+                self.store.db.execute(
+                    "INSERT INTO session_closures VALUES(?,?,?,?)",
+                    (connection, subject, key, digest(payload)),
+                )
+                self.store.db.execute("UPDATE sessions SET active=2 WHERE id=?", (connection,))
+                self.store._event(
+                    "CONTROL_CONNECTION_CLOSING", {"connection_id": connection, "subject": subject}
+                )
+            elif (
+                pending["subject"] != subject
+                or pending["key"] != key
+                or pending["hash"] != digest(payload)
+            ):
+                raise Fault(409, "connection_close_pending")
+            executions = self.store.db.execute(
+                "SELECT id FROM executions WHERE owner=? AND connection_id=? ORDER BY id",
+                (subject, connection),
+            ).fetchall()
+        with ExitStack() as locks:
+            for execution in executions:
+                locks.enter_context(self._execution_lock(execution["id"]))
+            with self.store.transaction():
+                self._require(subject, "execution:control")
+                replay = self._replay(subject, "session.close", key, payload)
+                if replay is not None:
+                    return replay
+                self.store.db.execute("UPDATE sessions SET active=0 WHERE id=?", (connection,))
+                # A concurrent rebind away from this closing connection wins.
+                rows = self.store.db.execute(
+                    "SELECT id FROM executions WHERE owner=? AND connection_id=? AND control_state='OWNED'",
+                    (subject, connection),
+                ).fetchall()
+                for row in rows:
+                    self.store.db.execute(
+                        "UPDATE executions SET control_state='CONTROLLER_DISCONNECTED',cap_hash=NULL WHERE id=?",
+                        (row["id"],),
+                    )
+                    self._invalidate_claims(row["id"])
+                self.store._event(
+                    "CONTROL_CONNECTION_CLOSED",
+                    {
+                        "connection_id": connection,
+                        "subject": subject,
+                        "fenced_executions": len(rows),
+                    },
+                )
+                return self._record(subject, "session.close", key, payload, {"closed": True})
 
     def _mutate(self, subject, method, key, payload):
         # A close/accept replay can be returned after its connection was invalidated;
@@ -306,26 +376,6 @@ class ExecutionAuthority:
                 "CONTROL_CONNECTION_OPENED", {"connection_id": connection, "subject": subject}
             )
             result = {"connection_id": connection}
-        elif method == "session.close":
-            connection = payload["connection_id"]
-            self._session(subject, connection)
-            self.store.db.execute("UPDATE sessions SET active=0 WHERE id=?", (connection,))
-            # One short transaction; no worker pause/termination is inferred.
-            rows = self.store.db.execute(
-                "SELECT id FROM executions WHERE owner=? AND connection_id=? AND control_state='OWNED'",
-                (subject, connection),
-            ).fetchall()
-            for row in rows:
-                self.store.db.execute(
-                    "UPDATE executions SET control_state='CONTROLLER_DISCONNECTED',cap_hash=NULL WHERE id=?",
-                    (row[0],),
-                )
-                self._invalidate_claims(row[0])
-            self.store._event(
-                "CONTROL_CONNECTION_CLOSED",
-                {"connection_id": connection, "subject": subject, "fenced_executions": len(rows)},
-            )
-            result = {"closed": True}
         elif method == "execution.reserve":
             result = self._reserve(subject, payload)
         elif method == "execution.rebind":

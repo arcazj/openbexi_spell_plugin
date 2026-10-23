@@ -7,6 +7,7 @@ import sys
 import threading
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
 
@@ -644,3 +645,88 @@ def test_expired_cancel_and_session_quotas_do_not_grant_control(authority):
         alice.call("session.open", {})
     assert bob.call("session.open", {})["connection_id"]
     assert public(authority, execution)["owner"] == "alice"
+
+
+def test_close_waits_outside_database_and_fences_admission(authority):
+    alice = Client(authority, "alice")
+    execution = alice.reserve()
+    key = str(uuid.uuid4())
+    payload = {"connection_id": alice.connection}
+    # Model an already admitted bounded write holding the execution mutex.
+    with authority._execution_lock(execution["id"]):
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            result = pool.submit(alice.call, "session.close", payload, key)
+            with pytest.raises(Fault) as error:
+                result.result(timeout=2)
+            assert error.value.code == "execution_busy"
+        # Timeout leaves a durable admission barrier, without final fencing.
+        with authority.store.transaction(write=False):
+            assert authority._execution(execution["id"])["control_state"] == "OWNED"
+            assert (
+                authority.store.db.execute(
+                    "SELECT active FROM sessions WHERE id=?", (alice.connection,)
+                ).fetchone()[0]
+                == 2
+            )
+        with pytest.raises(Fault) as error:
+            alice.reserve("another")
+        assert error.value.code == "connection_denied"
+        # Unrelated work still obtains the SQLite transaction immediately.
+        assert Client(authority, "bob").reserve("unrelated")["owner"] == "bob"
+    assert alice.call("session.close", payload, key) == {"closed": True}
+    assert alice.call("session.close", payload, key)["replayed"] is True
+    with authority.store.transaction(write=False):
+        assert authority._execution(execution["id"])["control_state"] == "CONTROLLER_DISCONNECTED"
+
+
+def test_pending_close_requires_original_request_and_live_permission(authority):
+    alice = Client(authority, "alice")
+    execution = alice.reserve()
+    payload = {"connection_id": alice.connection}
+    key = str(uuid.uuid4())
+    with authority._execution_lock(execution["id"]):
+        with pytest.raises(Fault, match="execution_busy"):
+            alice.call("session.close", payload, key)
+    with pytest.raises(Fault, match="connection_close_pending"):
+        alice.call("session.close", payload)
+    original = authority.subjects.pop("alice")
+    with pytest.raises(Fault, match="subject_denied"):
+        alice.call("session.close", payload, key)
+    authority.subjects["alice"] = original
+    assert alice.call("session.close", payload, key)["closed"]
+
+
+def test_rebind_away_from_pending_close_keeps_new_controller(authority):
+    alice = Client(authority, "alice")
+    execution = alice.reserve()
+    payload = {"connection_id": alice.connection}
+    key = str(uuid.uuid4())
+    with authority._execution_lock(execution["id"]):
+        with pytest.raises(Fault, match="execution_busy"):
+            alice.call("session.close", payload, key)
+    replacement = Client(authority, "alice")
+    rebound = replacement.rebind(execution["id"], execution["epoch"])
+    assert alice.call("session.close", payload, key)["closed"]
+    grant = admit_start(authority, rebound)
+    assert grant.connection_id == replacement.connection
+
+
+def test_closing_session_is_not_restored_after_authority_restart(tmp_path):
+    store = ContextStore(tmp_path, "A")
+    subjects = policy({"alice": PERMISSIONS})
+    authority = ExecutionAuthority(store, subjects, worker_slots=SLOTS)
+    alice = Client(authority, "alice")
+    execution = alice.reserve()
+    payload = {"connection_id": alice.connection}
+    key = str(uuid.uuid4())
+    with authority._execution_lock(execution["id"]):
+        with pytest.raises(Fault, match="execution_busy"):
+            alice.call("session.close", payload, key)
+    store.close()
+    with closing(ContextStore(tmp_path, "A")) as reopened:
+        recovered = ExecutionAuthority(reopened, subjects, worker_slots=SLOTS)
+        assert recovered.mutate("alice", "session.close", key, payload)["closed"]
+        with reopened.transaction(write=False):
+            assert recovered._execution(execution["id"])["control_state"] == "RECOVERY_REQUIRED"
+            with pytest.raises(Fault, match="connection_denied"):
+                recovered._session("alice", alice.connection)

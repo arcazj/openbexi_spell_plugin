@@ -57,7 +57,8 @@ class WorkerPreflight:
             self.store.db.execute(
                 "UPDATE worker_preflights SET state='INVALIDATED' WHERE state IN ('PENDING','VERIFIED')"
             )
-            self.store.db.execute("PRAGMA user_version=3")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 3:
+                self.store.db.execute("PRAGMA user_version=3")
 
     def _binding(self, peer, execution_id):
         row = self.authority._execution(execution_id)

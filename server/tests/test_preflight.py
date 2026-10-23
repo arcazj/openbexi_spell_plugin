@@ -460,3 +460,8 @@ def test_catalog_discovery_is_scoped_redacted_and_exposes_usable_approved_bindin
         )
         setup["app"].subjects["alice"] = Actor("alice", frozenset({"context:read"}))
         assert request(server, pki["edge"]["client"], "/v1/contexts/A/procedures")[0] == 403
+
+
+def test_preflight_preserves_disconnect_barrier_schema(worker_setup):
+    with worker_setup["store"].transaction(write=False):
+        assert worker_setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 4

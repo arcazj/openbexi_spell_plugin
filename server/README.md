@@ -93,7 +93,7 @@ signals or stops Contexts or workers. Health always reports
 
 ## Approved sources and worker preflight
 
-Development package `0.8.0.dev3` accepts optional Context `approved_sources` and
+Development package `0.8.0.dev4` accepts optional Context `approved_sources` and
 `worker_credentials` fields. See WORKER_PREFLIGHT.md for the exact schema and
 bounds. Only operator-approved aliases/revisions/images/driver bindings can be
 reserved when a catalog is configured. Without one, earlier metadata-only
@@ -110,3 +110,20 @@ with its individual certificate, and prints a preflight receipt. It never
 imports procedure code, starts native processes, consumes a worker slot or
 sends driver effects. Native launch still has no network route. A receipt does
 not establish read-only mounts, runtime-image attestation or Kubernetes Pod UID.
+
+## Disconnect barrier (development package 0.8.0.dev4)
+
+`session.close` durably changes the connection to CLOSING before waiting for the
+same execution mutexes used for controller transfer and private start admission.
+CLOSING rejects new reservations, grants and controller proofs. Final close
+fences executions still bound to that connection after all affected mutexes are
+held; a rebind to another active connection is preserved. SQLite transactions
+never include mutex waits. A busy execution returns `execution_busy`, retains
+the admission barrier, and requires a retry with the original idempotency key.
+Live permissions are checked again on completion and replay. Restart retains
+execution recovery holds and never restores a closing connection.
+
+Authority schema 4 prevents older dev3 binaries, which treat a nonzero session
+flag as active, from opening this state. Upgrades are one way; no automatic
+rollback or downgrade is supported. This barrier establishes ordering for future
+bounded driver writes but does not implement those writes or prove native pause.

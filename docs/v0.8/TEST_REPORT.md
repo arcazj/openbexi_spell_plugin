@@ -182,3 +182,22 @@ remain unqualified. Docker is unavailable on this local execution host. No
 native Executor or deployment result is inferred from the preflight PID.
 Original v0.7 runtime files remain unchanged; its historical baseline/native
 evidence is retained and was not rerun in this increment. No merge or release.
+
+# Disconnect barrier qualification — 2026-10-23
+
+Development package `0.8.0.dev4`: **148 tests passed**, zero failures/errors/skips,
+warnings as errors; lint, formatting and mypy passed. Exact source hashes,
+commands and JUnit are in `evidence/disconnect-barrier/`. Earlier checkpoints
+above retain their original scope and identities.
+
+The new tests exercise a held execution mutex during close, durable CLOSING
+after timeout, admission denial, unrelated database progress, original-key
+retry, live permission revocation, rebind preservation, restart recovery and
+schema-version preservation when worker preflight initializes. A development
+test initially used an unsupported ContextStore context manager; its fixture
+was corrected to use explicit closing before the final qualification.
+
+No actual driver write or native Executor was run by these checks. The barrier
+orders future bounded writes; native quiescence, effect settlement, deployment
+and full compatibility gates remain pending. Package schema 4 intentionally
+rejects downgrade to older binaries.
