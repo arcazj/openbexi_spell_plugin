@@ -127,3 +127,49 @@ Authority schema 4 prevents older dev3 binaries, which treat a nonzero session
 flag as active, from opening this state. Upgrades are one way; no automatic
 rollback or downgrade is supported. This barrier establishes ordering for future
 bounded driver writes but does not implement those writes or prove native pause.
+
+## IDE certificate gateway (0.8.0.dev5)
+
+Use the paired IDE commit and installed-source hashes in
+`docs/v0.8/IDE_PAIR.json`. The new IDE **SPELL server** tab and
+`openbexi-spell-client` CLI use a dedicated certificate gateway. They do not
+connect as the privileged edge or supply identity headers. The old IDE Session
+tab continues to speak v0.7. This integration supports metadata, reservations,
+observation and explicit prelaunch handoff; no native execution is enabled.
+
+`openbexi-spell-server gateway --config private-gateway.json` accepts the same
+required `ca`, `certificate`, `key`, `bind`, `port`, `allowed_hosts`,
+`max_handlers` fields as other roles, plus exactly:
+
+```json
+{
+  "listener_url": "https://listener.internal:9444",
+  "listener_fingerprint": "<Listener certificate SHA-256>",
+  "clients": ["<Alice certificate SHA-256>", "<Bob certificate SHA-256>"]
+}
+```
+
+Use the gateway's service certificate as the Listener's configured
+`edge_fingerprint`. Put each desktop certificate pin in both gateway `clients`
+and Listener `identities`, with its canonical subject and explicit Context scope.
+Do not give desktop users the gateway/Listener/Context private keys. The gateway
+extracts the actual TLS peer pin, rejects supplied identity headers, forwards only
+a fixed path/method allowlist and sends no user data before the Listener's CA,
+hostname and leaf pin are verified. Listener and Context reauthorize each call;
+Context health returns only that authenticated subject's effective permissions.
+
+The IDE connection file uses the gateway URL/leaf pin and the user's own CA,
+certificate and key paths. Full instructions are in the companion IDE's
+`docs/v0.8/SPELL_SERVER_INTEGRATION.md`. All connection files and credentials
+belong outside repositories. Qt network work runs in a bounded background queue.
+Use **Disconnect** for logical controller closure; window detachment alone is
+not a server close or native pause. Browser/WSS sessions remain unimplemented.
+
+Qualification now needs the paired IDE wheel and PySide6-Essentials 6.10.3 in
+the test environment; neither is a dependency of the installed server package.
+Hosted CI checks out the exact IDE commit, verifies installed source hashes and
+exercises three independently certified IDE clients plus the actual Qt panel.
+The separate native-boundary CI diagnostic downloads the frozen v0.7 archive,
+verifies its SHA-256 and image ID, then observes real native processes inside a
+read-only, non-root container with no external network. This diagnostic is not
+v0.8 native launch, descendant quiescence, driver or deployment qualification.

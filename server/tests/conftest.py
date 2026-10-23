@@ -51,7 +51,16 @@ def pki(tmp_path_factory):
         "keyUsage=critical,digitalSignature,keyEncipherment\n"
         "extendedKeyUsage=serverAuth,clientAuth\n"
     )
-    for name in ("edge", "listener", "context-a", "context-b", "worker"):
+    for name in (
+        "edge",
+        "listener",
+        "context-a",
+        "context-b",
+        "worker",
+        "alice",
+        "bob",
+        "observer",
+    ):
         key, cert = root / (name + ".key"), root / (name + ".pem")
         run(
             "req",

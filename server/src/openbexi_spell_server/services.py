@@ -87,6 +87,8 @@ class Context:
             state = self.store.snapshot(values=False)
             result = {k: state[k] for k in ("context_id", "incarnation", "runtime_enabled")}
             result["status"] = "ready"
+            result["subject"] = actor.subject
+            result["permissions"] = sorted(actor.permissions)
         elif action == "snapshot":
             result = self.store.snapshot(values=False)
         elif action == "blackboard.get":

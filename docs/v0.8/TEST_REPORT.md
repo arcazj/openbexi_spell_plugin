@@ -201,3 +201,26 @@ No actual driver write or native Executor was run by these checks. The barrier
 orders future bounded writes; native quiescence, effect settlement, deployment
 and full compatibility gates remain pending. Package schema 4 intentionally
 rejects downgrade to older binaries.
+
+# IDE/gateway pair qualification
+
+Server package `0.8.0.dev5`, paired IDE `1.2.1.dev1` at the exact commit in
+`IDE_PAIR.json`: **152 local tests pass**, zero failures/errors/skips, warnings
+as errors; lint/format/mypy pass. Source hashes and installed IDE source hashes
+are retained in `evidence/ide-pair/`. Four new real-boundary checks use actual
+IDE clients and the Qt panel over the certificate gateway, Listener and Context:
+three separate user certificates, 20 observer reads, denied observer mutations,
+explicit handoff, original-key replay, stale owner denial, rebind/late disconnect,
+forged headers, direct internal-role denial and live role revocation.
+
+The companion IDE retains its separate 11 passing client/Qt tests and the failed
+local legacy baseline (21 passed, 16 failed) caused by PID/procfs namespace
+mismatch. Hosted full-IDE checks must be read on their actual SHA; no local
+compatibility pass is inferred. First hosted setup failed on missing libEGL;
+the workflow now installs the Qt runtime and retains startup logs.
+
+A new hosted diagnostic verifies frozen v0.7 image/archive bytes and probes real
+native process startup/execution in an isolated non-root container. Its actual
+outcome must be read from CI; it is not v0.8 native launch, effect settlement,
+descendant pause or Compose/Kubernetes qualification. All full runtime gates
+remain pending and `runtime_enabled` remains false.

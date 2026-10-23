@@ -1,6 +1,8 @@
 """Preserve services and prelaunch authority checks; no native/deployment qualification."""
 
 import hashlib
+import importlib.metadata
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -39,6 +41,7 @@ def main():
         python=platform.python_version(),
         openssl=ssl.OPENSSL_VERSION,
         source_sha256={},
+        ide_client_inputs={},
         checks=[],
     )
     report["git_head"] = subprocess.check_output(
@@ -60,6 +63,7 @@ def main():
             root / "server/MANIFEST.in",
             root / ".github/workflows/v08-server-foundation.yml",
             Path(__file__),
+            root / "docs/v0.8/IDE_PAIR.json",
         ]
     )
     for path in inputs:
@@ -67,6 +71,21 @@ def main():
             report["source_sha256"][path.relative_to(root).as_posix()] = hashlib.sha256(
                 path.read_bytes()
             ).hexdigest()
+    pair = json.loads((root / "docs/v0.8/IDE_PAIR.json").read_text())
+    if importlib.metadata.version("openbexi-ide") != pair["ide_version"]:
+        raise RuntimeError("Installed IDE version differs from approved pair")
+    for relative, expected in pair["ide_source_sha256"].items():
+        module = relative.removeprefix("src/").removesuffix(".py").replace("/", ".")
+        spec = importlib.util.find_spec(module)
+        if spec is None or spec.origin is None:
+            raise RuntimeError("Required IDE module is missing")
+        actual = hashlib.sha256(Path(spec.origin).read_bytes()).hexdigest()
+        if actual != expected:
+            raise RuntimeError(
+                "Installed IDE source differs from approved pair: " + module
+            )
+        report["ide_client_inputs"][module] = actual
+    report["ide_commit"] = pair["ide_commit"]
     if sys.version_info[:2] != (3, 13):
         report["error"] = "CPython 3.13 required"
         (output / "result.json").write_text(json.dumps(report, indent=2) + "\n")

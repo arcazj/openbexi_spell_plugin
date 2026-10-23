@@ -1,4 +1,4 @@
-"""Explicit internal service entry points. No worker lifecycle or browser server."""
+"""Explicit Context, Listener and certificate gateway entry points. No native launch."""
 
 import argparse
 import json
@@ -8,13 +8,14 @@ from pathlib import Path
 
 from .contracts import MAX_BODY, decode, exact
 from .services import Context, Listener
+from .gateway import Gateway
 from .store import ContextStore
 from .transport import Route, Server, tls_context
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("role", choices=("listener", "context"))
+    parser.add_argument("role", choices=("listener", "context", "gateway"))
     parser.add_argument("--config", required=True, type=Path)
     args = parser.parse_args()
     config = decode(args.config.read_bytes())
@@ -22,7 +23,11 @@ def main():
     specific = (
         {"context_id", "state_directory", "listener_fingerprint", "subjects"}
         if args.role == "context"
-        else {"edge_fingerprint", "identities", "scopes", "contexts"}
+        else (
+            {"listener_url", "listener_fingerprint", "clients"}
+            if args.role == "gateway"
+            else {"edge_fingerprint", "identities", "scopes", "contexts"}
+        )
     )
     optional = (
         {"worker_slots", "approved_sources", "worker_credentials"}
@@ -45,7 +50,7 @@ def main():
         parser.error("Invalid bind/host configuration")
     server_tls = tls_context(config["ca"], config["certificate"], config["key"], server=True)
     store = None
-    app: Context | Listener
+    app: Context | Listener | Gateway
     try:
         if args.role == "context":
             store = ContextStore(config["state_directory"], config["context_id"])
@@ -56,6 +61,13 @@ def main():
                 worker_slots=config.get("worker_slots"),
                 approved_sources=config.get("approved_sources"),
                 worker_credentials=config.get("worker_credentials"),
+            )
+        elif args.role == "gateway":
+            app = Gateway(
+                config["listener_url"],
+                config["listener_fingerprint"],
+                tls_context(config["ca"], config["certificate"], config["key"]),
+                config["clients"],
             )
         else:
             client_tls = tls_context(config["ca"], config["certificate"], config["key"])

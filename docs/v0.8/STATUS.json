@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; services, durable prelaunch authority, configured Git source validation and single-host worker preflight implemented; native integration pending",
+  "phase": "G1 approved; authenticated IDE/gateway pair and prelaunch authority implemented; full native integration pending",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -20,7 +20,8 @@
     "Prelaunch transfer, original-grant fencing, response loss and restart holds tested; no native launch/effects claimed",
     "143 local service/source/preflight tests pass; actual mTLS and separate worker-preflight process tested",
     "Approved Git inventory and alias enforcement implemented for configured catalogs only; preflight is not runtime/image/mount/Pod attestation",
-    "148 scoped tests pass; durable disconnect admission barrier serializes final fencing with execution mutexes; schema 4 prevents unsafe binary downgrade"
+    "148 scoped tests pass; durable disconnect admission barrier serializes final fencing with execution mutexes; schema 4 prevents unsafe binary downgrade",
+    "152 local scoped tests pass with exact installed companion IDE hashes; three real certificate users and actual Qt panel verified through gateway, Listener and Context"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -28,7 +29,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "TEST_REPORT.md; disconnect-barrier evidence is current; earlier evidence directories retain historical source identities",
+  "test_commands_and_outcomes": "TEST_REPORT.md; ide-pair evidence is current; historical directories retain original scope and source identities",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md",
   "gates": {
@@ -42,9 +43,10 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify actual native worker launch/image/read-only source mounts, descendants and effect settlement; keep runtime/deployment gates pending",
+  "next_step": "Qualify real native startup diagnostic and full IDE suite, then integrate native workers and fenced driver settlement; full runtime/deployment gates remain pending",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Approved , move forward (review conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
-  "runtime_enabled": false
+  "runtime_enabled": false,
+  "ide_pair": "IDE_PAIR.json"
 }
