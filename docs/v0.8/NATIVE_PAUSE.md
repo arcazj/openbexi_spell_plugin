@@ -113,3 +113,8 @@ After proven transfer, the new owner must explicitly resume with a separately
 admitted immutable operation grant; old autonomous requests cannot be restamped.
 That provider, successful live handoff/resumption, native child admission and
 full recovery remain unfinished. G1 F2/F3/F4/F8 remain mandatory release gates.
+
+The next development increment adds an optional
+[cooperative background-Python component](NATIVE_THREAD_BARRIER.md). It cannot
+upgrade this Context contract into positive whole-family proof or authorize a
+handoff. Its candidate-SHA native results are recorded separately.

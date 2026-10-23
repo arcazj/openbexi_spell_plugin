@@ -72,6 +72,8 @@ def main():
             Path(__file__),
             root / "docs/v0.8/IDE_PAIR.json",
             root / "host_runtime/python/v08_worker.py",
+            root / "host_runtime/python/thread_barrier.py",
+            root / "host_runtime/python/native.py",
             root / "scripts/qualify_v08_native_launch.py",
         ]
     )
@@ -113,6 +115,7 @@ def main():
                 "driver_plugin/src/openbexi_spell_dss/context_driver.py",
                 "driver_plugin/src/openbexi_spell_dss/context_server.py",
                 "host_runtime/python/v08_worker.py",
+                "host_runtime/python/thread_barrier.py",
                 "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
             ],
@@ -130,6 +133,7 @@ def main():
                 "driver_plugin/src/openbexi_spell_dss/context_driver.py",
                 "driver_plugin/src/openbexi_spell_dss/context_server.py",
                 "host_runtime/python/v08_worker.py",
+                "host_runtime/python/thread_barrier.py",
                 "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
             ],

@@ -11,6 +11,7 @@ import argparse
 import base64
 import uuid
 from dataclasses import asdict
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -90,12 +91,34 @@ def native_pause_probe(session, pump, status, *, timeout=3, prior=None):
     return result
 
 
+def cooperative_thread_pause(session, pump, status, barrier_id):
+    """Hold observed background Python lines, retaining the unproved fence."""
+    from thread_barrier import provider_call
+
+    try:
+        answer = provider_call(36991, barrier_id)
+        emit("native-thread-barrier", **answer)
+    except Exception:
+        emit("native-thread-barrier-unavailable", barrier_id=barrier_id)
+    return native_pause_probe(session, pump, status)
+
+
 def run(config):
     fields = {"preflight", "grant", "start_barrier"}
     probe_enabled = type(config) is dict and "pause_probe" in config
-    exact(config, fields | ({"pause_probe"} if probe_enabled else set()))
+    thread_probe = type(config) is dict and "thread_barrier_probe" in config
+    exact(
+        config,
+        fields
+        | ({"pause_probe"} if probe_enabled else set())
+        | ({"thread_barrier_probe"} if thread_probe else set()),
+    )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
+    if thread_probe and (
+        config["thread_barrier_probe"] is not True or not probe_enabled
+    ):
+        raise ValueError("Thread barrier requires the explicit fenced pause probe")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -218,8 +241,25 @@ def run(config):
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
     relay = Relay(dispatch)
-    session = NativeSession(
-        root, root / challenge["manifest"]["entrypoint"], {}, driver_port=relay.port
+    session_type, options = NativeSession, {}
+    if thread_probe:
+        # The published v0.7 image and its default host session stay intact.
+        # Only this explicit profile loads the candidate read-only session and
+        # the fixed operator library, never procedure-selected startup code.
+        sys.path.insert(0, "/v08")
+        spec = importlib.util.spec_from_file_location(
+            "v08_native_candidate", "/v08/native_candidate.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        session_type = module.NativeSession
+        options["user_library"] = "/v08/native-userlib"
+    session = session_type(
+        root,
+        root / challenge["manifest"]["entrypoint"],
+        {},
+        driver_port=relay.port,
+        **options,
     )
     count = 0
 
@@ -283,8 +323,10 @@ def run(config):
                     if action.get("action") == "pause":
                         barrier = str(uuid.UUID(action["barrier_id"]))
                         if barrier not in attempted_pause:
-                            attempted_pause[barrier] = native_pause_probe(
-                                session, pump, state
+                            attempted_pause[barrier] = (
+                                cooperative_thread_pause(session, pump, state, barrier)
+                                if thread_probe
+                                else native_pause_probe(session, pump, state)
                             )
                         diagnostic = attempted_pause[barrier]
                         # Repeating this exact diagnostic after response loss is
@@ -313,11 +355,13 @@ def run(config):
                         # An unavailable/restarted authority is not permission
                         # to kill or resume a procedure. Attempt a local pause,
                         # retain the family, and await independent host recovery.
-                        diagnostic = native_pause_probe(
-                            session,
-                            pump,
-                            state,
-                            prior=next(iter(attempted_pause.values()), None),
+                        prior = next(iter(attempted_pause.values()), None)
+                        diagnostic = (
+                            cooperative_thread_pause(
+                                session, pump, state, str(uuid.uuid4())
+                            )
+                            if thread_probe and prior is None
+                            else native_pause_probe(session, pump, state, prior=prior)
                         )
                         emit(
                             "native-pause-channel-unavailable",

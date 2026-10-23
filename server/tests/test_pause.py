@@ -367,3 +367,23 @@ def test_lost_pause_report_reply_cannot_repeat_native_command(agent):
     prior = diagnostic(str(uuid.uuid4()))
     result = agent.native_pause_probe(Forbidden(), lambda: None, "RUNNING", prior=prior)
     assert result is prior and result["quiescence_proven"] is False
+
+
+@pytest.mark.parametrize("available", [True, False])
+def test_cooperative_thread_hold_cannot_promote_a_family_proof(agent, monkeypatch, available):
+    def provider(*args, **kwargs):
+        if not available:
+            raise OSError("private helper unavailable")
+        return dict(observed_threads_held=True, quiescence_proven=False, effective_transfer=False)
+
+    monkeypatch.setitem(
+        sys.modules, "thread_barrier", types.SimpleNamespace(provider_call=provider)
+    )
+
+    class Session:
+        def request(self, *_args, **_kwargs):
+            return {"ExecutorStatus": "PAUSED"}
+
+    answer = agent.cooperative_thread_pause(Session(), lambda: None, "RUNNING", str(uuid.uuid4()))
+    assert answer["quiescence_proven"] is False
+    assert answer["provider"] == "legacy-status-only/1"

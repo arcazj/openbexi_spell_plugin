@@ -184,7 +184,16 @@ def host_processes(name):
 
 
 def qualify_pause_probe(
-    controller, executions, connection, control, worker_names, containers, state, report
+    controller,
+    executions,
+    connection,
+    control,
+    worker_names,
+    containers,
+    state,
+    report,
+    *,
+    thread_barrier=False,
 ):
     """Negative native oracle: PAUSED main plus a still-running background thread."""
     target = executions[1]
@@ -229,6 +238,32 @@ def qualify_pause_probe(
             raise RuntimeError("Native pause diagnostic did not settle")
         time.sleep(0.05)
     await_event([worker_names[1]], "native-pause-unproven", seconds=5)
+    thread_evidence = None
+    if thread_barrier:
+        await_event([worker_names[1]], "native-thread-barrier", seconds=5)
+        thread_evidence = next(
+            e for e in events(worker_names[1]) if e["event"] == "native-thread-barrier"
+        )
+        if (
+            thread_evidence["observed_background_threads"] != 1
+            or thread_evidence["acknowledged_background_threads"] != 1
+            or thread_evidence["observed_threads_held"] is not True
+            or thread_evidence["quiescence_proven"] is not False
+            or thread_evidence["barrier_id"] != decision["barrier_id"]
+        ):
+            raise RuntimeError("Cooperative background thread acknowledgment differs")
+        binding = command(
+            "docker",
+            "exec",
+            worker_names[1],
+            "python",
+            "-I",
+            "-c",
+            "from pathlib import Path;rows=[r.split()[1] for r in Path('/proc/net/tcp').read_text().splitlines()[1:] if r.split()[1].endswith(':'+format(36991,'04X'))];assert rows==['0100007F:'+format(36991,'04X')];print('loopback-only')",
+        )
+        if binding != "loopback-only":
+            raise RuntimeError("Cooperative helper is not private loopback")
+        report["thread_barrier_loopback_only"] = True
     if (
         barrier["state"] != "UNPROVEN"
         or barrier["report"]["native_status"] != "PAUSED"
@@ -255,10 +290,13 @@ def qualify_pause_probe(
             if r["id"] != target["id"]
         ):
             raise RuntimeError("B's pause barrier changed an unrelated execution")
+    time.sleep(0.25)
     after = int(
         command("docker", "exec", worker_names[1], "python", "-I", "-c", counter)
     )
-    if after <= before or max(latencies) > 0.75:
+    if (after != before if thread_barrier else after <= before) or max(
+        latencies
+    ) > 0.75:
         raise RuntimeError(
             "Background-thread or unrelated-controller oracle did not hold"
         )
@@ -267,7 +305,9 @@ def qualify_pause_probe(
         native_main_status="PAUSED",
         background_counter_before=before,
         background_counter_after=after,
-        background_thread_survives_main_pause=True,
+        background_thread_survives_main_pause=not thread_barrier,
+        observed_background_thread_held=thread_barrier,
+        thread_barrier=thread_evidence,
         unrelated_controller_max_latency_seconds=max(latencies),
         owner_preserved=True,
         epoch_preserved=True,
@@ -345,6 +385,7 @@ def qualify_pause_probe(
                 )
     report.update(
         native_pause_probe_passed=True,
+        native_thread_barrier_tested=thread_barrier,
         native_pause_qualified=False,
         native_driver_events_persisted=event_count,
         native_handoff=dict(
@@ -360,9 +401,24 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--native-dss", action="store_true")
     parser.add_argument("--native-pause-probe", action="store_true")
+    parser.add_argument("--native-thread-barrier", action="store_true")
     profile = parser.parse_args()
-    if profile.native_pause_probe and profile.native_dss:
-        parser.error("Native pause and native DSS qualify separate profiles")
+    if (
+        sum(
+            (
+                profile.native_pause_probe,
+                profile.native_thread_barrier,
+                profile.native_dss,
+            )
+        )
+        > 1
+    ):
+        parser.error(
+            "Native pause, cooperative threads and DSS qualify separate profiles"
+        )
+    profile.native_pause_probe = (
+        profile.native_pause_probe or profile.native_thread_barrier
+    )
     output = ROOT / ".qualification/v08-native-launch" / ("run-" + uuid.uuid4().hex)
     output.mkdir(parents=True)
     report = dict(
@@ -385,6 +441,8 @@ def main():
     )
     inputs = list((ROOT / "server/src/openbexi_spell_server").glob("*.py")) + [
         ROOT / "host_runtime/python/v08_worker.py",
+        ROOT / "host_runtime/python/thread_barrier.py",
+        ROOT / "host_runtime/python/native.py",
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
     ]
@@ -416,6 +474,24 @@ def main():
                 shutil.copy2(
                     ROOT / "host_runtime/python/v08_worker.py", code / "agent.py"
                 )
+                if profile.native_thread_barrier:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/native.py",
+                        code / "native_candidate.py",
+                    )
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/thread_barrier.py",
+                        code / "thread_barrier.py",
+                    )
+                    library = code / "native-userlib"
+                    library.mkdir()
+                    (library / "v08_thread_bootstrap.py").write_text(
+                        "import os as _os,sys as _sys\n"
+                        "_sys.path.insert(0,'/v08')\n"
+                        "from thread_barrier import ThreadBarrier as _ThreadBarrier\n"
+                        "_v08_threads=_ThreadBarrier('/source',_os.environ['OPENBEXI_SPELL_ENTRYPOINT'])\n"
+                        "_v08_threads.serve(36991)\n"
+                    )
                 if profile.native_dss:
                     shutil.copytree(
                         ROOT / "src/dss",
@@ -856,6 +932,11 @@ def main():
                                     if profile.native_pause_probe
                                     else {}
                                 ),
+                                **(
+                                    {"thread_barrier_probe": True}
+                                    if profile.native_thread_barrier
+                                    else {}
+                                ),
                             )
                         )
                     )
@@ -964,6 +1045,7 @@ def main():
                         containers,
                         state,
                         report,
+                        thread_barrier=profile.native_thread_barrier,
                     )
                 else:
                     (control / "finish").write_text("finish fixture\n")

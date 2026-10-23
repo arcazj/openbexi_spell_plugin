@@ -719,3 +719,38 @@ native acknowledgment of participating threads/children plus control/prompt
 queue draining, followed by explicit separately admitted new-owner resume
 provenance. Positive native pause/handoff/resume, children, recovery and full
 v0.8 remain unfinished/unqualified. Public runtime remains disabled.
+
+
+## dev15 cooperative background Python component (candidate)
+
+The opt-in thread component uses CPython 3.13 monitoring alongside the original
+native debugger trace. It holds observed snapshot background threads at their
+next monitored line, including late entrants. Bounded waits, original one-shot
+identity/deadline, retained disappeared participants and monitoring failure do
+not authorize resume or positive family proof. The original Context pause
+contract stays unchanged. A new native matrix profile contrasts the original
+counter-still-running negative probe with an acknowledged, stable-counter
+component probe. Both must retain owner/epoch and all holds; nine unrelated
+native procedures must finish. The published v0.7 image stays byte-identical;
+only the explicit profile loads a candidate read-only host session/library.
+
+Development attempts are retained in `.qualification/native-pause/`: the first
+component run exposed test-snippet indentation (five failures/six passes), fixed
+without weakening its real-thread assertions. The next run passed ten checks
+and found this local environment denies AF_UNIX socket creation. The diagnostic
+wire was implemented on private loopback TCP, consistent with the native helper
+profile. All eleven real-CPython component checks then passed. Two worker-boundary
+cases also verify that success or loss of this helper cannot promote the worker
+report to whole-family quiescence. There is no helper resume action.
+
+Offline dev15 wheel build, clean isolated import/version and both service and
+preflight CLI smokes passed. Local scoped suite and candidate-SHA hosted outcomes
+are recorded below once verified. Until then native thread integration is
+pending; full family pause/handoff/resume and full v0.8 remain unqualified.
+
+The first full local candidate run passed **303 scoped tests**, zero failures,
+errors or skips, with lint/format/mypy and warnings-as-errors passing. Evidence:
+`v08-server/run-20261023T194207Z-60e2de45`. A final worker refinement extends the
+one-time local safety attempt to the cooperative helper on authority loss; the
+final exact-source run is retained separately. Hosted native outcomes remain
+pending.

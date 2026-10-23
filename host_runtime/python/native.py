@@ -97,8 +97,14 @@ class Bridge:
 
 
 class NativeSession:
-    def __init__(self, project, script, arguments, *, driver_port=None):
+    def __init__(self, project, script, arguments, *, driver_port=None, user_library=None):
         self.driver_port = driver_port
+        self.user_library = None
+        if user_library is not None:
+            library = Path(user_library).resolve(strict=True)
+            if not library.is_dir() or not os.statvfs(library).f_flag & os.ST_RDONLY:
+                raise ValueError('Native user library must be an operator read-only mount')
+            self.user_library = library
         self.project = Path(project).resolve()
         self.script = Path(script).resolve()
         if not self.project.is_dir() or not self.script.is_file() or self.script.suffix != '.py':
@@ -154,8 +160,13 @@ class NativeSession:
         # Keep the upstream UserLib directory separate. The original executor
         # auto-imports everything in libpath before procedure execution; using
         # the project there would run ordinary script bodies during startup.
+        if self.user_library is not None:
+            tree.find('libpath').text = '$OPENBEXI_SPELL_USER_LIBRARY'
         tree.write(config, encoding='utf-8')
         environment = dict(os.environ, **example['environment'], OPENBEXI_SPELL_PROJECT=str(self.project))
+        if self.user_library is not None:
+            environment['OPENBEXI_SPELL_USER_LIBRARY'] = str(self.user_library)
+            environment['OPENBEXI_SPELL_ENTRYPOINT'] = str(self.script)
         if self.driver_port:
             environment['OPENBEXI_DRIVER_RELAY_PORT'] = str(self.driver_port)
         self.log = (root / 'native.log').open('w+')
