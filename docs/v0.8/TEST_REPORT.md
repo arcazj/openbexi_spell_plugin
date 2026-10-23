@@ -754,3 +754,20 @@ errors or skips, with lint/format/mypy and warnings-as-errors passing. Evidence:
 one-time local safety attempt to the cooperative helper on authority loss; the
 final exact-source run is retained separately. Hosted native outcomes remain
 pending.
+
+
+The first hosted thread cohort at **6b178d0** failed its acknowledgment oracle
+in [run 40014006886](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40014006886),
+while native-boundary, audit, DSS and the original negative pause cohort passed.
+Its retained artifact **12526799005** (ZIP SHA-256
+`4e6ec00989849acfb5158ec49d34fe5159a0f1c519fb28c7106511291c4cb436`)
+was downloaded and CRC/digest checked. It recorded two observed background
+identities, one acknowledgment, deadline expiry and UNPROVEN main PAUSED; the
+owner/epoch was not transferred. Investigation reproduced the specific bug
+locally against the original candidate: resolving `<frozen os>` relative to a
+snapshot working directory wrongly admitted a synthetic participant. The fix
+requires an originally absolute filename before resolving the snapshot boundary.
+A regression now runs with the native snapshot working directory and excludes
+frozen, synthetic and relative code while requiring a real background thread to
+acknowledge. It does not remove unknown participants by liveness or weaken the
+barrier. Candidate-SHA native requalification is required below.

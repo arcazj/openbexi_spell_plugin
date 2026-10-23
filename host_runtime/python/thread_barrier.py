@@ -57,8 +57,13 @@ class ThreadBarrier:
             if len(self.code_paths) >= 2048:
                 self.failure = "code_inventory_capacity"
                 return
-            path = Path(code.co_filename).resolve()
-            selected = path.is_absolute() and path.is_relative_to(self.snapshot)
+            path = Path(code.co_filename)
+            # Synthetic/frozen and relative filenames are not source inventory.
+            # Resolving them first would misclassify e.g. <frozen os> whenever
+            # the native process cwd is the procedure snapshot.
+            selected = path.is_absolute() and path.resolve().is_relative_to(
+                self.snapshot
+            )
             if not selected:
                 return sys.monitoring.DISABLE
             self.code_paths[code] = selected

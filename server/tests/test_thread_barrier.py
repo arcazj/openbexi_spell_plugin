@@ -213,3 +213,25 @@ def test_occupied_monitoring_slot_is_not_replaced():
         print(json.dumps(dict(slot_preserved=True)))
     """)
     assert result["slot_preserved"]
+
+
+def test_native_snapshot_cwd_does_not_admit_frozen_synthetic_or_relative_code():
+    result = scenario('''
+        os.chdir(root)
+        for filename in ['<frozen os>','<string>','relative.py']:
+            exec(compile('synthetic=42\\n',filename,'exec'),{})
+        assert gate.main is None and not gate.participants
+        execute("""import threading,time
+        def background():
+            global counter
+            while True:
+                counter+=1
+                time.sleep(.002)
+        threading.Thread(target=background,daemon=True).start()
+        """)
+        until(lambda:scope['counter']>2)
+        answer=gate.pause(barrier)
+        assert answer['observed_background_threads']==1 and answer['observed_threads_held']
+        print(json.dumps(dict(native_cwd_safe=True,synthetic_excluded=True)))
+    ''')
+    assert result["native_cwd_safe"] and result["synthetic_excluded"]
