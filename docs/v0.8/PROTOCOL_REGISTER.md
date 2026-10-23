@@ -51,5 +51,6 @@ WSS reconnect. Viewer counts are observational, not execution authority.
 
 [SERVER_CONTRACT.md](SERVER_CONTRACT.md) fixes the internal TLS 1.3/leaf-pin,
 edge identity, Context-local ACL, strict RPC envelope and route matrix for C/D.
-WSS/browser sessions and every worker/control/effect route remain disabled in
-that foundation. F1-F10 in G1_REVIEW_RESOLUTION.md bind later worker protocols.
+EXECUTION_AUTHORITY.md adds the explicit internal prelaunch reservation and
+controller route matrix. Worker network/native launch, effects and WSS/browser
+sessions remain disabled. F1-F10 bind the remaining worker/driver integrations.

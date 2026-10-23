@@ -61,3 +61,13 @@ in for missing implementation deliverables.
 
 Wire foundation CI early. Its success cannot stand in for native, browser,
 Compose, Kubernetes, security-scan or candidate-publication gates.
+
+
+## Qualified prelaunch subset
+
+EXECUTION_AUTHORITY.md defines the bounded internal subset implemented in
+`0.8.0.dev2`. TEST_REPORT.md records its evidence. Ten distinct registry slots
+are not ten native Executor PIDs; private grant tests are not authenticated
+worker/Pod tests; prelaunch acceptance is not native pause or actual-send
+settlement. Keep G2/E, G3/F and their dependent gates pending until those real
+boundaries are implemented and qualified.

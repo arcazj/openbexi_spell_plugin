@@ -43,7 +43,7 @@ class ContextStore:
             self.db.execute("PRAGMA journal_mode=DELETE")
             self.db.execute("PRAGMA synchronous=FULL")
             version = self.db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1):
+            if version not in (0, 1, 2):
                 raise ValueError("Unsupported authority schema")
             self.db.executescript("""
                 CREATE TABLE IF NOT EXISTS meta(name TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -54,8 +54,10 @@ class ContextStore:
                 CREATE TABLE IF NOT EXISTS idempotency(
                     subject TEXT NOT NULL,key TEXT NOT NULL,hash TEXT NOT NULL,result TEXT NOT NULL,
                     PRIMARY KEY(subject,key));
-                PRAGMA user_version=1;
+
             """)
+            if version == 0:
+                self.db.execute("PRAGMA user_version=1")
             self.incarnation = str(uuid.uuid4())
             with self.transaction():
                 row = self.db.execute("SELECT value FROM meta WHERE name='context_id'").fetchone()

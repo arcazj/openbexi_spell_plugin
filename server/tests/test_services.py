@@ -3,6 +3,7 @@ import json
 import socket
 import ssl
 import threading
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 
@@ -14,7 +15,15 @@ from openbexi_spell_server.store import ContextStore
 from openbexi_spell_server.transport import Route, Server
 
 ALICE, BOB, CAROL = "a" * 64, "b" * 64, "c" * 64
-ALL = ["context:read", "blackboard:read", "blackboard:admin"]
+ALL = [
+    "context:read",
+    "blackboard:read",
+    "blackboard:admin",
+    "execution:read",
+    "execution:start",
+    "execution:control",
+    "execution:request_control",
+]
 
 
 @contextmanager
@@ -53,7 +62,12 @@ def request(server, tls, path, *, subject=ALICE, payload=None, method=None, head
 def cluster(tmp_path, pki):
     a, b = ContextStore(tmp_path / "A", "A"), ContextStore(tmp_path / "B", "B")
     apps = {
-        "A": Context(a, pki["listener"]["pin"], {"alice": ALL, "bob": ALL[:2]}),
+        "A": Context(
+            a,
+            pki["listener"]["pin"],
+            {"alice": ALL, "bob": ALL[:2]},
+            worker_slots={"one": "incarnation-A"},
+        ),
         "B": Context(b, pki["listener"]["pin"], {"alice": ALL, "carol": ALL[:2]}),
     }
     try:
@@ -158,7 +172,7 @@ def test_host_origin_session_and_forwarded_identity_denial(cluster, pki, headers
 @pytest.mark.parametrize(
     "path",
     [
-        "/v1/contexts/A/executions",
+        "/v1/contexts/A/authority",
         "/v1/worker/start",
         "/v1/dap",
         "/v1/contexts/A/snapshot?token=forged",
@@ -259,3 +273,103 @@ def test_slow_handshake_does_not_block_the_accept_loop(cluster, pki):
         assert request(cluster["listener"], pki["edge"]["client"], "/v1/health")[0] == 200
     finally:
         raw.close()
+
+
+def authority_rpc(cluster, pki, action, body, *, subject=ALICE, key=None, context="A"):
+    return request(
+        cluster["listener"],
+        pki["edge"]["client"],
+        f"/v1/contexts/{context}/authority",
+        subject=subject,
+        payload={"method": action, "payload": body},
+        headers={"Idempotency-Key": key or str(uuid.uuid4())},
+    )
+
+
+def test_internal_authority_routes_transfer_prelaunch_without_enabling_runtime(cluster, pki):
+    def call(action, body, subject=ALICE):
+        status, value = authority_rpc(cluster, pki, action, body, subject=subject)
+        assert status == 200, value
+        return value["result"]
+
+    # Existing ACLs gain no new authority implicitly.
+    assert authority_rpc(cluster, pki, "session.open", {}, subject=BOB)[0] == 403
+    cluster["apps"]["A"].subjects["bob"] = Actor("bob", frozenset(ALL))
+    a = call("session.open", {})["connection_id"]
+    b = call("session.open", {}, BOB)["connection_id"]
+    execution = call(
+        "execution.reserve",
+        dict(
+            procedure_id="proc",
+            connection_id=a,
+            source_revision="a" * 40,
+            source_sha256="b" * 64,
+            runtime_image="sha256:" + "c" * 64,
+            driver_binding="simulator",
+        ),
+    )
+    assert execution["runtime_enabled"] is False
+    claim = call(
+        "execution.claim",
+        dict(execution_id=execution["id"], connection_id=b, expected_epoch=1),
+        BOB,
+    )
+    status, listing = request(
+        cluster["listener"], pki["edge"]["client"], "/v1/contexts/A/executions"
+    )
+    assert status == 200 and "capability" not in json.dumps(listing)
+    assert listing["result"]["executions"][0]["pending_claim"]["id"] == claim["claim_id"]
+    decision = call(
+        "execution.decide",
+        dict(
+            execution_id=execution["id"],
+            connection_id=a,
+            connection_generation=1,
+            expected_epoch=1,
+            capability=execution["capability"],
+            claim_id=claim["claim_id"],
+            decision="accept",
+        ),
+    )
+    assert decision["state"] == "ACCEPTED" and "capability" not in decision
+    bound = call(
+        "execution.rebind",
+        dict(execution_id=execution["id"], connection_id=b, expected_epoch=2),
+        BOB,
+    )
+    assert bound["owner"] == "bob" and len(bound["capability"]) == 64
+    assert (
+        request(cluster["listener"], pki["edge"]["client"], "/v1/contexts/A/health")[1]["result"][
+            "runtime_enabled"
+        ]
+        is False
+    )
+    # These grants have no native launch, effect, recovery, or alternate API route.
+    for action in ("execution.start", "execution.resume", "execution.recover", "driver.send"):
+        assert authority_rpc(cluster, pki, action, {})[0] == 404
+    assert authority_rpc(cluster, pki, "session.open", {}, subject=BOB, context="B")[0] == 403
+
+
+def test_authority_replay_stays_redacted_and_checks_context_acl_over_real_tls(cluster, pki):
+    status, first = authority_rpc(cluster, pki, "session.open", {}, key="stable")
+    assert status == 200
+    assert (
+        authority_rpc(cluster, pki, "session.open", {}, key="stable")[1]["result"]["connection_id"]
+        == first["result"]["connection_id"]
+    )
+    cluster["apps"]["A"].subjects["alice"] = Actor("alice", frozenset({"context:read"}))
+    assert authority_rpc(cluster, pki, "session.open", {}, key="stable")[0] == 403
+    assert (
+        request(cluster["listener"], pki["edge"]["client"], "/v1/contexts/A/executions")[0] == 403
+    )
+    # Even a CA-valid worker cannot invoke the prelaunch controller route.
+    assert (
+        request(
+            cluster["A"],
+            pki["worker"]["client"],
+            "/v1/rpc",
+            subject=None,
+            payload=envelope("A", "alice", "session.open", {}, "worker-attempt"),
+        )[0]
+        == 403
+    )

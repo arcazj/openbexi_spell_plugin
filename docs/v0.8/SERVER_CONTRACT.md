@@ -1,8 +1,9 @@
 # Internal Listener and Context foundation contract
 
-Status: implementation contract for initial C/D work. Browser sessions/WSS,
-procedure execution, ownership transfer, worker launch and driver effects are
-not provided by this foundation. They remain separate qualification gates.
+Status: internal services and prelaunch authority contract. Browser sessions/WSS,
+native procedure execution, worker network launch and driver effects remain
+separate qualification gates. The bounded reservation/claim/handoff extension is
+specified in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md).
 
 ## Trust profile
 
@@ -56,6 +57,8 @@ request logs or public health/snapshot responses.
 | GET /v1/contexts/{id}/snapshot | snapshot | context:read |
 | GET /v1/contexts/{id}/blackboard | blackboard.get | blackboard:read |
 | POST /v1/contexts/{id}/blackboard | blackboard.cas | blackboard:admin |
+| GET /v1/contexts/{id}/executions | execution.list | execution:read |
+| POST /v1/contexts/{id}/authority | explicit session/execution methods only | EXECUTION_AUTHORITY.md matrix |
 
 Context discovery reports configured scope, not cached claims of live health.
 Every forwarded request re-establishes TLS/pin verification; unavailable/stale
@@ -82,7 +85,8 @@ and appends a durable service event; blackboard revisions/sequences persist.
 The service owns only its HTTP handlers/state connection. Listener shutdown or
 restart never signals, launches or terminates Contexts/workers. Context shutdown
 does not control Listener. Health advertises `runtime_enabled: false`.
-There is no execution-reservation or effect path hidden behind this API.
+Prelaunch reservations and ownership are explicit routes above; there is no
+native launch or effect path hidden behind this API.
 
 The audit and idempotency limits are explicit startup limits. New operations
 fail closed when capacity/storage is unavailable. Credentials and private state

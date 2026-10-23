@@ -10,12 +10,30 @@ from dataclasses import dataclass
 
 MAX_BODY = 65536
 MAX_DEPTH = 16
-PERMISSIONS = frozenset({"context:read", "blackboard:read", "blackboard:admin"})
+PERMISSIONS = frozenset(
+    {
+        "context:read",
+        "blackboard:read",
+        "blackboard:admin",
+        "execution:read",
+        "execution:start",
+        "execution:control",
+        "execution:request_control",
+    }
+)
 METHODS = {
     "health": "context:read",
     "snapshot": "context:read",
     "blackboard.get": "blackboard:read",
     "blackboard.cas": "blackboard:admin",
+    "session.open": "execution:control",
+    "session.close": "execution:control",
+    "execution.list": "execution:read",
+    "execution.reserve": "execution:start",
+    "execution.rebind": "execution:control",
+    "execution.claim": "execution:request_control",
+    "execution.decide": "execution:control",
+    "execution.cancel": "execution:request_control",
 }
 
 
@@ -182,8 +200,87 @@ def validate_envelope(value, context, *, now=None):
             raise Fault(400, "invalid_revision")
         if len(canonical(body["value"])) > 16384:
             raise Fault(413, "value_too_large")
+    elif method in AUTHORITY_MUTATIONS:
+        identifier(value["idempotency_key"])
+        validate_authority_payload(method, value["payload"])
     else:
         exact(value["payload"], set())
         if value["idempotency_key"] is not None:
             raise Fault(400, "unexpected_idempotency_key")
     return value
+
+
+AUTHORITY_MUTATIONS = frozenset(
+    {
+        "session.open",
+        "session.close",
+        "execution.reserve",
+        "execution.rebind",
+        "execution.claim",
+        "execution.decide",
+        "execution.cancel",
+    }
+)
+AUTHORITY_FIELDS = {
+    # Deliberately absent from METHODS/AUTHORITY_MUTATIONS: trusted adapter only.
+    "execution.start": {
+        "execution_id",
+        "connection_id",
+        "expected_epoch",
+        "connection_generation",
+        "capability",
+    },
+    "session.open": set(),
+    "session.close": {"connection_id"},
+    "execution.reserve": {
+        "procedure_id",
+        "connection_id",
+        "source_revision",
+        "source_sha256",
+        "runtime_image",
+        "driver_binding",
+    },
+    "execution.rebind": {"execution_id", "connection_id", "expected_epoch"},
+    "execution.claim": {"execution_id", "connection_id", "expected_epoch"},
+    "execution.decide": {
+        "execution_id",
+        "connection_id",
+        "expected_epoch",
+        "connection_generation",
+        "capability",
+        "claim_id",
+        "decision",
+    },
+    "execution.cancel": {"execution_id", "connection_id", "claim_id"},
+}
+
+
+def validate_authority_payload(method, body):
+    exact(body, AUTHORITY_FIELDS[method])
+    for key in ("execution_id", "connection_id", "claim_id"):
+        if key in body:
+            try:
+                if str(uuid.UUID(body[key])) != body[key]:
+                    raise ValueError("noncanonical_uuid")
+            except (ValueError, TypeError, AttributeError) as error:
+                raise Fault(400, "invalid_authority_id") from error
+    for key in ("expected_epoch", "connection_generation"):
+        if key in body and (type(body[key]) is not int or not 1 <= body[key] < 2**63 - 1):
+            raise Fault(400, "invalid_authority_generation")
+    if "capability" in body:
+        fingerprint(body["capability"])
+    if "decision" in body and body["decision"] not in ("accept", "reject"):
+        raise Fault(400, "invalid_claim_decision")
+    if method == "execution.reserve":
+        identifier(body["procedure_id"])
+        identifier(body["driver_binding"])
+        fingerprint(body["source_sha256"])
+        if not isinstance(body["source_revision"], str) or not re.fullmatch(
+            "[0-9a-f]{40}", body["source_revision"]
+        ):
+            raise Fault(400, "invalid_source_revision")
+        if not isinstance(body["runtime_image"], str) or not re.fullmatch(
+            "sha256:[0-9a-f]{64}", body["runtime_image"]
+        ):
+            raise Fault(400, "invalid_runtime_image")
+    return body

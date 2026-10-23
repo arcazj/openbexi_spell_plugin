@@ -1,4 +1,4 @@
-"""Preserve independent C/D foundation checks; never claim native/deployment qualification."""
+"""Preserve services and prelaunch authority checks; no native/deployment qualification."""
 
 import hashlib
 import json
@@ -24,7 +24,10 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = dict(
         schema=1,
-        scope="internal Listener/Context foundation only",
+        scope="internal Listener/Context services and durable prelaunch authority only",
+        worker_identity_authenticated=False,
+        native_pause_tested=False,
+        source_inventory_verified=False,
         passed=False,
         runtime_enabled=False,
         native_executor_tested=False,
@@ -41,15 +44,19 @@ def main():
             ["git", "status", "--porcelain"], cwd=root, text=True
         ).strip()
     )
-    inputs = sorted((root / "server").rglob("*.py")) + [
-        root / "server/pyproject.toml",
-        root / "server/requirements-test.lock",
-        root / "server/README.md",
-        root / "server/LICENSE",
-        root / "server/MANIFEST.in",
-        root / ".github/workflows/v08-server-foundation.yml",
-        Path(__file__),
-    ]
+    inputs = (
+        sorted((root / "server/src").rglob("*.py"))
+        + sorted((root / "server/tests").rglob("*.py"))
+        + [
+            root / "server/pyproject.toml",
+            root / "server/requirements-test.lock",
+            root / "server/README.md",
+            root / "server/LICENSE",
+            root / "server/MANIFEST.in",
+            root / ".github/workflows/v08-server-foundation.yml",
+            Path(__file__),
+        ]
+    )
     for path in inputs:
         if "__pycache__" not in path.parts:
             report["source_sha256"][path.relative_to(root).as_posix()] = hashlib.sha256(

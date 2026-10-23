@@ -1,6 +1,8 @@
-"""Context-local ACLs and fixed Listener routing. Execution APIs intentionally absent."""
+"""Context-local ACLs, prelaunch authority and fixed Listener routing. No native launch."""
 
+from .authority import ExecutionAuthority
 from .contracts import (
+    AUTHORITY_MUTATIONS,
     METHODS,
     Fault,
     envelope,
@@ -20,10 +22,11 @@ def one_header(headers, name):
 
 
 class Context:
-    def __init__(self, store, listener_fingerprint, subjects):
+    def __init__(self, store, listener_fingerprint, subjects, *, worker_slots=None):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
         self.subjects = policy(subjects)
+        self.authority = ExecutionAuthority(store, self.subjects, worker_slots=worker_slots)
 
     def authenticate(self, peer, headers):
         if peer != self.listener_fingerprint:
@@ -49,6 +52,12 @@ class Context:
             result = self.store.snapshot(values=False)
         elif action == "blackboard.get":
             result = self.store.snapshot()
+        elif action == "execution.list":
+            result = self.authority.list_executions(actor.subject)
+        elif action in AUTHORITY_MUTATIONS:
+            result = self.authority.mutate(
+                actor.subject, action, request["idempotency_key"], request["payload"]
+            )
         else:
             result = self.store.cas(actor.subject, request["idempotency_key"], request["payload"])
         return {"schema": "openbexi.context/1", "result": result}
@@ -94,9 +103,18 @@ class Listener:
         if context_id not in allowed:
             raise Fault(403, "context_scope_denied")
         key = None
+        payload: dict
         if method == "GET" and resource in ("health", "snapshot", "blackboard"):
             action = "blackboard.get" if resource == "blackboard" else resource
             payload = {}
+        elif method == "GET" and resource == "executions":
+            action, payload = "execution.list", {}
+        elif method == "POST" and resource == "authority":
+            exact(body, {"method", "payload"})
+            if not isinstance(body["method"], str) or body["method"] not in AUTHORITY_MUTATIONS:
+                raise Fault(404, "method_not_available")
+            action, payload = body["method"], body["payload"]
+            key = identifier(one_header(headers, "Idempotency-Key"))
         elif method == "POST" and resource == "blackboard":
             exact(body, {"key", "expected_revision", "value"})
             payload, action = body, "blackboard.cas"

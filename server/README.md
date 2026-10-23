@@ -2,8 +2,9 @@
 
 The `openbexi-spell-server` package provides independent internal Listener and
 Context processes, authenticated routing and durable Context blackboards.
-It has **no procedure execution, worker, driver, control-transfer, browser
-session or WSS route**. This is initial C/D implementation, not a v0.8 release.
+It also provides durable prelaunch reservations and consent-based ownership
+transfer. Native execution, authenticated worker launch, driver effects, browser
+sessions and WSS remain disabled. This is staged implementation, not a v0.8 release.
 Published v0.7 packages and entry points remain unchanged.
 
 Use Linux and CPython 3.13. TLS 1.3, an operator-provisioned CA and registered
@@ -12,7 +13,8 @@ configured edge certificate plus a registered client fingerprint. The edge
 must validate client certificates and strip client-selected identity headers.
 Do not place this internal service directly on a public browser endpoint.
 
-See [the wire/ACL contract](../docs/v0.8/SERVER_CONTRACT.md) and
+See [the prelaunch authority contract](../docs/v0.8/EXECUTION_AUTHORITY.md),
+[the wire/ACL contract](../docs/v0.8/SERVER_CONTRACT.md) and
 [approved G1 resolutions](../docs/v0.8/G1_REVIEW_RESOLUTION.md).
 
 ## Development checks
@@ -74,7 +76,13 @@ Listener-specific fields replace the four Context-specific fields:
 - `contexts`: ContextID to exact `{"url": "https://...", "fingerprint": "..."}`.
 
 Each Context independently checks its local `subjects` ACL; Listener scopes
-alone cannot grant blackboard write permission. Configuration/identity changes
+alone cannot grant blackboard or execution permissions. Optional Context field
+`worker_slots` maps up to ten slot identifiers to unique operator-provisioned
+incarnation identifiers for the prelaunch registry. It enables reservations,
+not a native worker or network launch endpoint. Existing slot incarnations
+cannot be replaced automatically. Controller ACL permissions are `execution:read`,
+`execution:start`, `execution:control` and `execution:request_control`; see the
+route matrix before assigning them. Configuration/identity changes
 require restart in this first implementation. Only Listener's outbound client
 uses its certificate to delegate to a configured Context. It never starts,
 signals or stops Contexts or workers. Health always reports

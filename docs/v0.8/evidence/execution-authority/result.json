@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "scope": "internal Listener/Context services and durable prelaunch authority only",
+  "worker_identity_authenticated": false,
+  "native_pause_tested": false,
+  "source_inventory_verified": false,
+  "passed": true,
+  "runtime_enabled": false,
+  "native_executor_tested": false,
+  "python": "3.13.16",
+  "openssl": "OpenSSL 3.5.9 29 Sep 2026",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/__init__.py": "9185fcc9a76695c567a44e62a32cc142fdfef38cd0793bfe4ad5d3c74e3cb950",
+    "server/src/openbexi_spell_server/__main__.py": "1a976e6e7d0457e53c4aeb3195c01e872ceba77b20c06ea133c5ae77fc40f44d",
+    "server/src/openbexi_spell_server/authority.py": "f8e25835371f3198546b1bddb288e2712bae8854db3605b1cb2d0886de416ebd",
+    "server/src/openbexi_spell_server/contracts.py": "329868668dfee614dd5046f72d5e1960a56a1a2fe9017c48f327d603f7f49756",
+    "server/src/openbexi_spell_server/services.py": "e2ba7b146b29f372280252dc4c8390010021fc8903b3a16b0950d7133a423584",
+    "server/src/openbexi_spell_server/store.py": "1bd43a875f98885c443436ad374c9ec627c11b89b37d06f7c7a76244a5fc06aa",
+    "server/src/openbexi_spell_server/transport.py": "acbabd77949bb680b26b784eebf52a3cb1be11db3880f2525d0aa57a43d1f00a",
+    "server/tests/conftest.py": "b9208c0637e7c428a00262d9b8e7d61c79d99df7da90889c555f7eee8093babf",
+    "server/tests/test_authority.py": "3c472550e6c7e43aef0ed0183416a272f0b753db13c85d23c899e6c620838dd2",
+    "server/tests/test_authority_contracts.py": "5ab00d510c66c08fa1c6dba22e3a7afc792008ea1e463e7fa4634bb30408b8eb",
+    "server/tests/test_contracts.py": "215bb20ab607172c4a414bc9d54407b2efe41024ef7ec1cafc562af243e66634",
+    "server/tests/test_process_lifecycle.py": "e5ca6a1648b7473875b7195e27483417643c9ea55aa71cf8fd7c92b42c1e2c5d",
+    "server/tests/test_services.py": "e4822857d43b400fd4dee4deb32947836512f55f84fe02784637e0783ccde59b",
+    "server/tests/test_store.py": "17d13ad48ecb56afd8d818a3a50962584205150760c424244730026070d0809b",
+    "server/pyproject.toml": "54630bbfe096853a0b216ea8b8c7f5434db7151bc4cd7e12dfda54a7685d4fc3",
+    "server/requirements-test.lock": "48d3141ea5dcce58ebc15534f34d1a9fa159704c62351a4589b65236c238f217",
+    "server/README.md": "2da110ac27a10135cf6505ab9d0336940e82374f84b15cd90998f5d5f141d722",
+    "server/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "server/MANIFEST.in": "e96e6e445125d0b4d905b204281d57d2688f9241ffd28710a39c250bd4099456",
+    ".github/workflows/v08-server-foundation.yml": "2b732fcd4a9f0774dec9393bc6663b7a5f1df82e1a2466953b79dcb6fe49fd8a",
+    "scripts/qualify_v08_server.py": "dfc8a9b4d073a9b9d649e271c9f576e2e4c8ec7bbf1994ffcdfdb4c7e4b52272"
+  },
+  "checks": [
+    {
+      "name": "lint",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "format",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "types",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "server/pyproject.toml",
+        "server/src"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "pytest",
+        "server/tests",
+        "-q",
+        "-W",
+        "error",
+        "--tb=short",
+        "--junitxml=/workspace/scratch/ad640084ab56/spell-v08-next/.qualification/v08-server/run-20261023T041307Z-646758ea/tests.xml"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "git_head": "925ad0d8a7d66f5b55980cbd1ca155aff8baca54",
+  "working_tree_dirty": true,
+  "junit": {
+    "tests": 106,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  }
+}

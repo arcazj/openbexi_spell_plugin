@@ -24,7 +24,12 @@ def main():
         if args.role == "context"
         else {"edge_fingerprint", "identities", "scopes", "contexts"}
     )
-    exact(config, common | specific)
+    # Optional explicit prelaunch slots; no worker RPC or launcher is enabled.
+    optional = {"worker_slots"} if args.role == "context" else set()
+    if type(config) is dict and set(config) == common | specific | optional:
+        exact(config, common | specific | optional)
+    else:
+        exact(config, common | specific)
     if (
         not isinstance(config["bind"], str)
         or type(config["port"]) is not int
@@ -39,7 +44,12 @@ def main():
     try:
         if args.role == "context":
             store = ContextStore(config["state_directory"], config["context_id"])
-            app = Context(store, config["listener_fingerprint"], config["subjects"])
+            app = Context(
+                store,
+                config["listener_fingerprint"],
+                config["subjects"],
+                worker_slots=config.get("worker_slots"),
+            )
         else:
             client_tls = tls_context(config["ca"], config["certificate"], config["key"])
             routes = {}

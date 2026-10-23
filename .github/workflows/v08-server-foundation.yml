@@ -1,4 +1,4 @@
-name: v0.8 internal server foundation
+name: v0.8 internal services and prelaunch authority
 
 on:
   pull_request:
@@ -33,7 +33,7 @@ jobs:
           python-version: '3.13'
       - name: Install test tools
         run: python -m pip install -r server/requirements-test.lock
-      - name: Qualify internal C/D foundation
+      - name: Qualify services and prelaunch authority
         run: python scripts/qualify_v08_server.py
       - name: Build and smoke the isolated development package
         run: |

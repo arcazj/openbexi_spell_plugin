@@ -4,6 +4,10 @@ Owner authorization: Jean-Christophe Arcaz, in the review conversation:
 **"Approved , move forward"**. This authorizes incorporating the independent
 review recommendations and proceeding with staged implementation. It does not
 authorize merge, tagging, release publication or production migration.
+The owner subsequently directed "Move forward , approve all next steps";
+routine implementation, checks and draft-PR updates continue under that
+standing authorization. Final merge/publication remains held for a reviewable
+qualified result, as stated in the implementation conversation.
 
 Reviewed proposal: `2d02bb1f030eebca61374dbbba34938b30c29e5d`.
 The independent review identified six P1 architecture issues and four P2

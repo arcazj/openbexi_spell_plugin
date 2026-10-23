@@ -1,6 +1,8 @@
 # Proposed per-execution ownership protocol
 
-`TARGET-v0.8`, Gate F not executed. Binding review resolutions F2/F3/F7 in
+Full native/browser Gate F remains pending. The bounded prelaunch subset is
+implemented as specified in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md);
+post-start acceptance fails closed. The full target below remains normative. Binding review resolutions F2/F3/F7 in
 [G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md) specify the transfer barrier,
 actual-send ordering and reconnect completion rules. Each execution stores owner user ID, owner
 connection binding, increasing control epoch, hashed capability, control state
@@ -28,7 +30,10 @@ a competing request returns conflict. There is no global owner-per-user limit.
    CAS owner+epoch; increment epoch; revoke old capability; create a fresh
    capability bound to requester's authenticated connection. Persist
    `CONTROL_CLAIM_ACCEPTED` then `CONTROL_OWNER_CHANGED` atomically. Only after
-   commit expose the new capability privately to its recipient. Failure before
+   commit expose the new capability privately to its recipient. The initial
+   prelaunch implementation instead commits with no active capability and
+   requires an authenticated new-owner rebind to create/deliver it privately;
+   the accepting former owner never receives that secret. Failure before
    commit grants nothing. Reconnect rotates capability and fences old sessions.
 5. Broadcast redacted claim/owner events to all viewers. Former controller
    remains connected as observer; no other execution's row or epoch changes.

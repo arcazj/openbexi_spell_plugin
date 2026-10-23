@@ -6,12 +6,21 @@ import os
 import select
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 
 from openbexi_spell_server.contracts import canonical
 
 ALICE = "a" * 64
-ALL = ["context:read", "blackboard:read", "blackboard:admin"]
+ALL = [
+    "context:read",
+    "blackboard:read",
+    "blackboard:admin",
+    "execution:read",
+    "execution:start",
+    "execution:control",
+    "execution:request_control",
+]
 
 
 def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki):
@@ -80,12 +89,14 @@ def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki)
         state_directory=str(tmp_path / "state-A"),
         listener_fingerprint=pki["listener"]["pin"],
         subjects={"alice": ALL},
+        worker_slots={"one": "incarnation-1"},
     )
     b_extra = dict(
         context_id="B",
         state_directory=str(tmp_path / "state-B"),
         listener_fingerprint=pki["listener"]["pin"],
         subjects={"alice": ALL},
+        worker_slots={"one": "incarnation-1"},
     )
     try:
         a, a_port = start("context", "context-a", a_extra)
@@ -111,6 +122,33 @@ def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki)
             "write-1",
         )
         assert status == 200
+
+        def authority_call(current_port, context, method, payload):
+            return call(
+                current_port,
+                f"/v1/contexts/{context}/authority",
+                {"method": method, "payload": payload},
+                str(uuid.uuid4()),
+            )
+
+        connections, reservations = {}, {}
+        for context in ("A", "B"):
+            code, opened = authority_call(port, context, "session.open", {})
+            assert code == 200
+            connections[context] = opened["result"]["connection_id"]
+            payload = dict(
+                procedure_id="same-procedure",
+                connection_id=connections[context],
+                source_revision="a" * 40,
+                source_sha256="b" * 64,
+                runtime_image="sha256:" + "c" * 64,
+                driver_binding="simulator",
+            )
+            code, reserved = authority_call(port, context, "execution.reserve", payload)
+            assert code == 200 and reserved["result"]["lifecycle"] == "RESERVED"
+            reservations[context] = reserved["result"]["id"]
+        _, before_b = call(port, "/v1/contexts/B/snapshot")
+        before_ownership = call(port, "/v1/contexts/A/executions")[1]
         stop(listener, crash=True)
         assert a.poll() is None and b.poll() is None
         listener2, port2 = start("listener", "listener", listener_extra)
@@ -118,6 +156,7 @@ def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki)
         assert status == 200 and same["result"]["incarnation"] == first["incarnation"]
         assert same["result"]["blackboard_revisions"] == {"durable": 1}
         assert call(port2, "/v1/contexts/B/snapshot")[1] == before_b
+        assert call(port2, "/v1/contexts/A/executions")[1] == before_ownership
         stop(a, crash=True)
         assert listener2.poll() is None and b.poll() is None
         assert call(port2, "/v1/contexts/A/health")[0] == 503
@@ -129,6 +168,34 @@ def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki)
         assert restored["incarnation"] != first["incarnation"]
         assert restored["blackboard"] == {"durable": {"revision": 1, "value": 42}}
         assert restored["sequence"] > changed["result"]["sequence"]
+        recovered_execution = call(port2, "/v1/contexts/A/executions")[1]["result"]["executions"][0]
+        assert recovered_execution["id"] == reservations["A"]
+        assert recovered_execution["owner"] == "alice" and recovered_execution["epoch"] == 2
+        assert recovered_execution["control_state"] == "RECOVERY_REQUIRED"
+        assert call(port2, "/v1/contexts/B/executions")[1]["result"]["executions"][0]["epoch"] == 1
+        code, opened = authority_call(port2, "A", "session.open", {})
+        assert code == 200
+        new_connection = opened["result"]["connection_id"]
+        assert (
+            authority_call(
+                port2,
+                "A",
+                "execution.rebind",
+                dict(
+                    execution_id=reservations["A"], connection_id=new_connection, expected_epoch=2
+                ),
+            )[0]
+            == 409
+        )
+        duplicate = dict(
+            procedure_id="same-procedure",
+            connection_id=new_connection,
+            source_revision="d" * 40,
+            source_sha256="e" * 64,
+            runtime_image="sha256:" + "f" * 64,
+            driver_binding="simulator",
+        )
+        assert authority_call(port2, "A", "execution.reserve", duplicate)[0] == 409
         trace.update(
             listener_pids=[listener.pid, listener2.pid],
             context_a_pids=[a.pid, a2.pid],
@@ -138,6 +205,10 @@ def test_independent_process_restart_and_durable_context_recovery(tmp_path, pki)
             recovered_sequence=restored["sequence"],
             listener_restart_preserves_contexts=True,
             context_restart_preserves_other=True,
+            listener_restart_preserves_execution_authority=True,
+            context_restart_fences_controller_and_keeps_reservation=True,
+            recovered_execution_epoch=2,
+            other_context_execution_epoch=1,
         )
         assert len({listener.pid, listener2.pid, a.pid, a2.pid, b.pid}) == 5
         if destination := os.environ.get("OPENBEXI_SERVER_EVIDENCE_DIR"):

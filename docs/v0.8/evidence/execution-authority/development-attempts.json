@@ -1,0 +1,15 @@
+{
+  "scope": "Prelaunch authority development; no native execution or worker authentication",
+  "attempts": [
+    {
+      "file": "development-attempt1.xml.gz",
+      "sha256": "f78800a9a1e80deee083c375677ff17e8f6f0e59e446b31b2cebb673e6bc74d4",
+      "original_xml_sha256": "91f7656842779435b1fb3eb9eb092a3cf7f62d65a6303503fab6985748c3fb2d",
+      "result": "1 failed, 33 passed",
+      "reason": "Test expected controller_fenced after an old connection closed; actual connection_denied was correct. Expectation corrected without weakening denial.",
+      "source_identity": "Uncommitted intermediate source; original JUnit retained, not an exact-SHA qualification"
+    }
+  ],
+  "review_correction": "Start grant issuance moved to the original controller admission; worker consumption cannot restamp current epoch. Delayed grant after transfer/rebind regression added and passed.",
+  "final_report": "result.json"
+}

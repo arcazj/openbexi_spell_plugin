@@ -2,16 +2,21 @@
 
 The branch includes the approved architecture resolutions and an initial
 internal Listener/Context foundation in `server/`. It provides TLS identity
-checks, scoped routing, Context-local ACLs and durable blackboard CAS. It
+checks, scoped routing, Context-local ACLs, durable blackboard CAS, prelaunch
+reservations and ownership claims/acceptance/rebind. It
 explicitly reports `runtime_enabled: false`.
 
-Native v0.8 procedure execution, execution reservations/worker start grants,
-per-execution ownership/claims, transfer barriers, driver adaptation, browser
-sessions/WSS, development UI, Compose and Kubernetes are not implemented or
-qualified by this foundation. Full C/D integration and E-L gates remain pending.
+The private one-time start-grant ledger has protocol tests, but no authenticated
+worker network adapter or native launch path. Source/image fields are declared
+metadata, not verified inventories. Acceptance succeeds only before consumption;
+a post-consumption transfer is blocked and retains recovery holds. Native pause,
+actual-send/effect settlement, source/alias/child admission, driver adaptation,
+browser sessions/WSS, UI, Compose and Kubernetes remain unimplemented or
+unqualified. No release/recovery/capacity-reclamation operation is exposed.
+See EXECUTION_AUTHORITY.md for exact limits. Full C/D and E-L gates remain pending.
 There is no v0.8 release candidate, release tag, production replacement or
-claim of full candidate-SHA hosted CI. The new foundation workflow covers its
-own subset only. Published v0.7 runtime source and entry points are unchanged.
+claim of full candidate-SHA runtime/deployment qualification. The hosted service
+and prelaunch workflow covers its own subset only. Published v0.7 runtime source and entry points are unchanged.
 
 Initial target Compose workers are single-use; automatic reuse is disabled.
 Supported target authority storage is single-node local ext4 with explicit

@@ -21,3 +21,15 @@ No v0.8 production implementation, release or schema migration yet.
   scoped RPC, Context ACLs and durable blackboard CAS. Execution is disabled.
 - Add 51 local Python 3.13 foundation tests, failure evidence, package smoke and
   hosted foundation CI. Full runtime/deployment/release gates remain pending.
+
+## Development package 0.8.0.dev2: durable prelaunch authority
+
+- Add bounded transactional logical reservations, explicit connection bindings,
+  per-execution claims/consent, owner-only rebind and secret-free replay.
+- Add immutable controller-origin start admission and one-time worker consumption
+  as private integration seams; no worker RPC or native launcher is exposed.
+- Serialize prelaunch transfer against consumption; block post-consumption
+  transfer/rebind, preserve holds and fence grants on restart.
+- Add concurrency, denial, response-loss, audit/storage and process-death tests.
+  Source/image declarations are not verified inventories. Native/driver/browser/
+  Compose/Kubernetes and full compatibility gates remain pending.

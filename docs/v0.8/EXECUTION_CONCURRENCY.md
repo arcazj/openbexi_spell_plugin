@@ -45,7 +45,9 @@ Qualification requires 10 concurrent distinct procedures and unique executor
 PIDs/Pod IDs, at least two Contexts, 100 concurrent duplicate starts producing
 one reservation, aliases/revisions/renames, worker crash, blocked-driver pause,
 abort, lease/owner transfer, Context/Listener restart and uncertain-effect holds.
-No v0.8 result has been collected yet.
+The prelaunch ledger subset has results in TEST_REPORT.md and
+EXECUTION_AUTHORITY.md; none of those tests runs a native Executor or qualifies
+this full concurrency gate.
 
 Native children reserve their logical identities in this same Context namespace
 before native RUN and inherit the execution-family grant; see F8.

@@ -1,4 +1,4 @@
-# Phase A/B test report
+# Historical Phase A/B test report
 
 Date: 2026-10-22. Plugin baseline `109a47af47951e2fa54b60cb408a543b117f7f15`;
 requirements base `76144fb704a8e3777209df04058c62d80bbc962f`;
@@ -39,10 +39,10 @@ The v0.7 browser/Qt evidence and source complete the as-is UI call-path audit.
 The fresh native test adds a current execution/driver trace. No failed tests
 were reclassified and no v0.8 acceptance result is inferred from them.
 
-Phase A/G0 evidence is ready for review. Phase B/G1 is pending explicit review
-and owner approval. Phase C implementation has not started.
+The original checkpoint above preceded G1 review and implementation. It is
+retained as historical evidence; G1 was subsequently reviewed and approved.
 
-# Initial C/D foundation qualification
+# Historical initial C/D foundation qualification
 
 The owner authorized the G1 review resolutions and staged implementation with
 "Approved , move forward". The original Phase A/B evidence above remains
@@ -85,3 +85,63 @@ checks: PASS within the scope above. Full C/D integration: PENDING. E-L native
 execution/ownership/driver/browser/Compose/Kubernetes/security/release gates:
 PENDING, not inferred from 51 foundation tests. No native Executor test, Docker
 deployment or Kubernetes cluster test was performed in this implementation run.
+
+
+# Current services and prelaunch authority qualification
+
+Package `0.8.0.dev2` adds the bounded registry and ownership protocol described
+in [EXECUTION_AUTHORITY.md](EXECUTION_AUTHORITY.md). Native execution remains
+explicitly disabled. This supersedes the earlier foundation-only description,
+while preserving that checkpoint's original results.
+
+Local CPython **3.13.16**, OpenSSL **3.5.9**: **106 passed**, zero errors,
+failures or skips, warnings as errors. Ruff lint/format and mypy pass. Exact
+SHA-256s of **21** qualification inputs match the tested local files. The report
+records parent HEAD `925ad0d` and a dirty working tree; these are source-hash
+results, not a claim that the parent commit contained the new implementation.
+Candidate hosted checks must independently run on the actual pushed SHA.
+
+Evidence: [result](evidence/execution-authority/result.json),
+[JUnit](evidence/execution-authority/tests.xml),
+[real process trace](evidence/execution-authority/process-trace.json),
+[development attempt](evidence/execution-authority/development-attempts.json),
+[package build](evidence/execution-authority/package-build.json) and
+[compatibility scope](evidence/execution-authority/compatibility-scope.json).
+
+The added tests cover 100 concurrent logical reservations with one winner,
+100 consumptions of one immutable start grant with one winner, ten distinct
+single-use registry slots, same logical ID in two Contexts, simultaneous claims
+and accepts, transfer of B while A/C remain unchanged, forged proofs, revocation,
+expiry/rejection/cancellation, response-loss replay, private capability delivery,
+rebind/late disconnect, bounded admission waits, audit rollback and SQLite failure.
+Start/accept races cannot produce an accepted new owner plus old-origin start.
+A deliberately delayed grant remains invalid after transfer and new-owner rebind.
+Post-consumption transfer returns BLOCKED and retains the old owner and holds.
+
+A real subprocess dies immediately after start-consumption commit; reopening
+state fences the original grant and refuses replacement. Separate real service
+processes demonstrate that Listener death/restart preserves Context ownership,
+while Context death/restart advances its epoch, retains its procedure hold and
+leaves the other Context's epoch unchanged. The credential-free trace records
+those service processes. It does **not** record native Executor processes.
+
+The initial 34-test authority development attempt retained one failure: a test
+expected `controller_fenced` after an already closed connection, while the
+correct denial was `connection_denied`. Its original compressed JUnit is retained;
+the denial remains enforced. Manual design review also caught an epoch-restamping
+hazard: issuance moved to original controller admission, and the new delayed-grant
+regression passed. Neither observation is reclassified as a passed original run.
+
+Wheel and sdist build passed; the isolated installed wheel CLI smoke passed.
+All seven wheel source members match the checked files, licensing and source
+tests are included, and no private keys are packaged. Nothing was published.
+Original v0.7 runtime paths remain unchanged from the requirements base; the
+37 historical baseline regressions and native/DSS test were not repeated here.
+That integrity check is not a new full compatibility qualification.
+
+**G2/E and G3/F remain pending.** These are authority protocol, actual TLS and
+service-process tests. They do not launch a native worker, authenticate a worker
+certificate/Pod UID, verify actual source inventory/aliases, pause descendants,
+settle driver writes, exercise browser/WSS or deploy Compose/Kubernetes. No
+native pause, external-effect recovery, production storage fencing, automatic
+reuse, full security scan or release gate is inferred from these passes.
