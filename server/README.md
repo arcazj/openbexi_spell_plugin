@@ -182,5 +182,6 @@ The explicitly configured `worker_launch: "retained-single-use"` profile adds
 original-grant admission directly at Context and certificate-bound one-time
 worker consumption/checking. Default Listener/gateway/IDE execution remains
 disabled. The separate GPL native agent and its ten-worker Docker test are
-specified in [NATIVE_LAUNCH.md](../docs/v0.8/NATIVE_LAUNCH.md). Driver calls in
-this narrow native profile are denied; no ExampleDriver fallback is permitted.
+specified in [NATIVE_LAUNCH.md](../docs/v0.8/NATIVE_LAUNCH.md). Procedure-scoped audit events in
+this narrow profile are acknowledged only after durable Context journalling;
+other native driver calls remain denied. No ExampleDriver fallback is permitted.

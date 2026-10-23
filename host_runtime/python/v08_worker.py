@@ -8,6 +8,8 @@ hold, reuses a container, accepts children or enables the example driver.
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import argparse
+import base64
+import uuid
 from dataclasses import asdict
 import json
 import os
@@ -23,6 +25,8 @@ sys.path.insert(0, "/opt/host")
 sys.path.insert(0, "/v08/server/src")
 from native import NativeSession
 from openbexi_spell_dss.relay import Relay
+from openbexi_spell_dss.codec import unpack
+from openbexi_spell_dss.stubs import SPELLDriver_pb2 as driver_proto
 from openbexi_spell_server.contracts import Fault, decode, exact
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
@@ -95,20 +99,47 @@ def run(config):
 
     # Exactly ONE consumption attempt. A lost reply must prevent native launch.
     rpc("consume")
-    # Force the real proxy driver. Every driver request is denied in this narrow
-    # launch profile; the baseline ExampleDriver can never fabricate success.
+    # Force the real proxy. Only procedure-scoped audit events are journalled
+    # by Context; unqualified methods never fall back to ExampleDriver.
     denied = set()
     relay = None
 
-    def deny(event, **body):
+    def dispatch(event, **body):
         if event != "openbexi/driverRequest":
             raise RuntimeError("Unexpected driver relay event")
-        denied.add(body["path"])
-        relay.reply(
-            {"id": body["id"], "error": "native_driver_integration_unqualified"}
-        )
+        try:
+            if body["path"] != "/spell.driver.SPELLDriverInterface_EV/RaiseEvent":
+                raise ValueError("Unqualified native driver method")
+            raw = base64.b64decode(body["payload"], validate=True)
+            if len(raw) > 65536:
+                raise ValueError("Driver event exceeds bounds")
+            original = driver_proto.Event.FromString(raw)
+            settings = unpack(original.config)
+            if type(settings) is not dict or set(settings) - {"Severity", "Scope"}:
+                raise ValueError("Driver event modifiers differ")
+            request_id = str(uuid.UUID(body["id"]))
+            answer = route.call(
+                {
+                    **request,
+                    "request_id": request_id,
+                    "message": original.message,
+                    "severity": settings.get("Severity", 8),
+                    "scope": settings.get("Scope", 1),
+                },
+                path="/v1/worker/event",
+                schema="openbexi.worker/1",
+            )
+            if answer != dict(
+                recorded=True, request_id=request_id, execution_id=grant.execution_id
+            ):
+                raise RuntimeError("Driver event receipt mismatch")
+            # Original RaiseEvent returns Empty, only after durable Context commit.
+            relay.reply({"id": body["id"], "payload": ""})
+        except Exception:
+            denied.add(body["path"])
+            relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
-    relay = Relay(deny)
+    relay = Relay(dispatch)
     session = NativeSession(
         root, root / challenge["manifest"]["entrypoint"], {}, driver_port=relay.port
     )
@@ -178,7 +209,8 @@ def run(config):
             execution_id=grant.execution_id,
             native_status=state,
             hold_retained=True,
-            driver_effects_enabled=False,
+            external_driver_effects_enabled=False,
+            context_audit_events_enabled=True,
             runtime_enabled=False,
         )
     finally:

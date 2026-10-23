@@ -79,7 +79,7 @@ class Context:
                 raise Fault(404, "route_not_available")
             handler = (
                 self.launch
-                if path in ("/v1/worker/consume", "/v1/worker/check")
+                if path in ("/v1/worker/consume", "/v1/worker/check", "/v1/worker/event")
                 else self.preflight
             )
             if handler is None:

@@ -303,7 +303,7 @@ def main():
                         revision=revision,
                         entrypoint="procedure_" + str(n) + ".py",
                         runtime_image=IMAGE,
-                        driver_binding="disabled",
+                        driver_binding="context-audit",
                         aliases=[],
                     )
                     for n in range(10)
@@ -611,33 +611,6 @@ def main():
                     raise RuntimeError(
                         "Native cohort does not have thirty distinct live PIDs"
                     )
-                bob = controller("session.open", {}, "bob")["connection_id"]
-                first = executions[0]
-                claim = controller(
-                    "execution.claim",
-                    dict(
-                        execution_id=first["id"],
-                        connection_id=bob,
-                        expected_epoch=first["epoch"],
-                    ),
-                    "bob",
-                )
-                decision = controller(
-                    "execution.decide",
-                    dict(
-                        execution_id=first["id"],
-                        connection_id=connection,
-                        expected_epoch=first["epoch"],
-                        connection_generation=first["connection_generation"],
-                        capability=first["capability"],
-                        claim_id=claim["claim_id"],
-                        decision="accept",
-                    ),
-                )
-                if decision["state"] != "BLOCKED":
-                    raise RuntimeError(
-                        "Unproved native quiescence allowed ownership transfer"
-                    )
                 # The host verifies network boundaries independently of the agent.
                 peer_info = json.loads(command("docker", "inspect", worker_names[1]))[0]
                 peer_ip = next(iter(peer_info["NetworkSettings"]["Networks"].values()))[
@@ -658,11 +631,6 @@ def main():
                     )
                 report["network_denials"] = dict(
                     cross_worker_native_port=True, external_tcp=True
-                )
-                report["native_handoff"] = dict(
-                    state=decision["state"],
-                    owner_preserved=True,
-                    quiescence_proven=False,
                 )
                 (control / "finish").write_text("finish fixture\n")
                 with ThreadPoolExecutor(max_workers=10) as pool:
@@ -700,6 +668,39 @@ def main():
                             readonly_root=True,
                         )
                     )
+                bob = controller("session.open", {}, "bob")["connection_id"]
+                first = executions[0]
+                claim = controller(
+                    "execution.claim",
+                    dict(
+                        execution_id=first["id"],
+                        connection_id=bob,
+                        expected_epoch=first["epoch"],
+                    ),
+                    "bob",
+                )
+                decision = controller(
+                    "execution.decide",
+                    dict(
+                        execution_id=first["id"],
+                        connection_id=connection,
+                        expected_epoch=first["epoch"],
+                        connection_generation=first["connection_generation"],
+                        capability=first["capability"],
+                        claim_id=claim["claim_id"],
+                        decision="accept",
+                    ),
+                )
+                if decision["state"] != "BLOCKED":
+                    raise RuntimeError(
+                        "Unproved native quiescence allowed ownership transfer"
+                    )
+                report["native_handoff"] = dict(
+                    state=decision["state"],
+                    owner_preserved=True,
+                    quiescence_proven=False,
+                    phase="after_container_termination",
+                )
                 retained = controller("execution.list", {})["executions"]
                 if len(retained) != 10 or any(
                     row["owner"] != "alice" for row in retained
@@ -723,6 +724,46 @@ def main():
                         raise RuntimeError(
                             "Native completion released a hold or worker slot"
                         )
+                with closing(
+                    sqlite3.connect(
+                        "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
+                    )
+                ) as audit:
+                    event_count = audit.execute(
+                        "SELECT COUNT(*) FROM native_driver_events"
+                    ).fetchone()[0]
+                    bodies = [
+                        json.loads(row[0])
+                        for row in audit.execute(
+                            "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
+                        )
+                    ]
+                    for execution in executions:
+                        messages = [
+                            body["message"]
+                            for body in bodies
+                            if body["execution_id"] == execution["id"]
+                        ]
+                        if (
+                            sum(
+                                message.startswith("Procedure started:")
+                                for message in messages
+                            )
+                            != 1
+                            or sum(
+                                message.startswith("Procedure finished:")
+                                for message in messages
+                            )
+                            != 1
+                        ):
+                            raise RuntimeError(
+                                "Native lifecycle events lack unique durable receipts"
+                            )
+                    if event_count < 20:
+                        raise RuntimeError(
+                            "Native lifecycle events lack durable receipts"
+                        )
+                report["native_driver_events_persisted"] = event_count
                 first_row = next(row for row in retained if row["id"] == first["id"])
                 if (
                     first_row["epoch"] != first["epoch"]

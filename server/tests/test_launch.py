@@ -204,6 +204,14 @@ def test_native_agent_never_launches_or_retries_without_a_definitive_consumption
     monkeypatch.setitem(
         sys.modules, "openbexi_spell_dss.relay", types.SimpleNamespace(Relay=forbidden)
     )
+    monkeypatch.setitem(
+        sys.modules, "openbexi_spell_dss.codec", types.SimpleNamespace(unpack=forbidden)
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "openbexi_spell_dss.stubs",
+        types.SimpleNamespace(SPELLDriver_pb2=types.SimpleNamespace()),
+    )
     path = Path(__file__).resolve().parents[2] / "host_runtime/python/v08_worker.py"
     spec = importlib.util.spec_from_file_location("v08_worker_failure_test", path)
     module = importlib.util.module_from_spec(spec)
@@ -278,3 +286,108 @@ def test_native_harness_ca_passes_strict_real_tls_verification(tmp_path, monkeyp
             assert route.call(envelope("A", "alice", "execution.list", {}))["executions"] == []
     finally:
         store.close()
+
+
+@pytest.fixture
+def audit_setup(tmp_path, pki, source):
+    source["config"]["procedure"]["driver_binding"] = "context-audit"
+    yield from helpers.worker_setup.__wrapped__(tmp_path, pki, source)
+
+
+def event_body():
+    return dict(
+        request_id=str(uuid.uuid4()),
+        message="Procedure started: approved fixture",
+        severity=8,
+        scope=1,
+    )
+
+
+def ready_audit(setup, pki):
+    enable(setup)
+    admitted = grant(setup)
+    assert call(setup, pki, admitted)[0] == 200
+    return admitted
+
+
+def test_actual_driver_event_has_durable_receipt_and_no_secret_storage(audit_setup, pki):
+    setup = audit_setup
+    admitted = ready_audit(setup, pki)
+    event = event_body()
+    status, reply = call(setup, pki, admitted, "event", **event)
+    assert status == 200 and reply["result"] == dict(
+        recorded=True, request_id=event["request_id"], execution_id=admitted.execution_id
+    )
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == 1
+    assert (
+        setup["store"]
+        .db.execute("SELECT COUNT(*) FROM events WHERE type='NATIVE_DRIVER_EVENT'")
+        .fetchone()[0]
+        == 1
+    )
+    assert admitted.token not in "\n".join(setup["store"].db.iterdump())
+    assert call(setup, pki, admitted, "event", **event)[0] == 200
+    assert call(setup, pki, admitted, "event", **dict(event, message="different"))[0] == 409
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == 1
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("scope", 2),
+        ("scope", 4),
+        ("scope", True),
+        ("severity", True),
+        ("severity", 0),
+        ("message", "x" * 8193),
+        ("request_id", "bad"),
+    ],
+)
+def test_native_event_cannot_write_global_scope_or_malformed_data(audit_setup, pki, field, value):
+    admitted = ready_audit(audit_setup, pki)
+    assert (
+        call(audit_setup, pki, admitted, "event", **dict(event_body(), **{field: value}))[0] == 400
+    )
+    assert (
+        audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
+        == 0
+    )
+
+
+def test_fenced_native_events_and_their_replays_are_denied(audit_setup, pki):
+    admitted = ready_audit(audit_setup, pki)
+    event = event_body()
+    assert call(audit_setup, pki, admitted, "event", **event)[0] == 200
+    audit_setup["controller"]("session.close", {"connection_id": audit_setup["connection"]})
+    assert call(audit_setup, pki, admitted, "event", **event)[0] == 403
+    assert call(audit_setup, pki, admitted, "event", **event_body())[0] == 403
+    assert (
+        audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
+        == 1
+    )
+
+
+def test_no_event_acknowledgement_when_audit_capacity_is_full(audit_setup, pki):
+    admitted = ready_audit(audit_setup, pki)
+    store = audit_setup["store"]
+    store.max_events = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    assert call(audit_setup, pki, admitted, "event", **event_body())[0] == 503
+    assert store.db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == 0
+
+
+def test_native_event_binding_must_be_explicit(setup, pki):
+    admitted = ready_audit(setup, pki)
+    assert call(setup, pki, admitted, "event", **event_body())[0] == 403
+
+
+def test_driver_gate_preserves_native_event_schema_version(audit_setup, pki, tmp_path):
+    from openbexi_spell_server.effects import DriverGate
+
+    ready_audit(audit_setup, pki)
+    gate = DriverGate(
+        audit_setup["app"].authority, tmp_path / "driver", {"context-audit": ("127.0.0.1", 1)}
+    )
+    try:
+        assert audit_setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 6
+    finally:
+        gate.close()

@@ -1,6 +1,6 @@
 # Retained one-shot native launch profile
 
-`0.8.0.dev7` adds an explicitly enabled `worker_launch: "retained-single-use"`
+`0.8.0.dev8` adds an explicitly enabled `worker_launch: "retained-single-use"`
 Context profile. Default services and the desktop gateway/Listener do not expose
 native execution. This profile is not a qualified v0.8 release or a general
 execution service. `runtime_enabled` remains false for the public product.
@@ -30,9 +30,15 @@ consumption or RUN, refreshes provenance, releases logical holds, reuses a worke
 or claims that best-effort native process cleanup proves whole-container
 quiescence. The independent host must confirm container termination.
 
-The actual proxy driver is mandatory. This narrow launch profile denies every
-driver RPC; it cannot silently select ExampleDriver or fabricate success. The
-fenced driver seam is not yet integrated with native RPC dispatch. Native child
+The actual proxy driver is mandatory. Procedure-scoped EV/RaiseEvent calls are
+forwarded over mTLS to Context and acknowledged only after a durable atomic
+journal commit under the original grant and execution mutex. Scope/system and
+configuration writes are denied. Idempotent receipts are checked only after
+live authorization; schema 6 prevents old-binary downgrade. The native controller
+itself emits lifecycle events even for arithmetic-only procedures. All other
+native driver methods remain denied; no ExampleDriver or fabricated success is
+allowed. The external-socket driver seam is not yet integrated with native RPC
+dispatch. Native child
 notifications cause failure; full pre-run child reservation still needs native
 bridge work. Unknown/uncooperative Python descendants are not a qualified
 sandbox or handoff protocol. Only approved trusted qualification fixtures run.
@@ -47,12 +53,15 @@ checks containment independently. A separate Context development image adds Git
 to the verified frozen base; its image ID/build log/Git version are retained.
 This image is not a release build or a claim of reproducible dependencies.
 
-The test requires ten distinct procedures to reach RUNNING together before its
+Startup is staggered with the verified baseline worker resource limits. The
+test requires ten distinct procedures to reach RUNNING together before its
 finish barrier. Docker's host PID inventory must identify thirty distinct real
 Listener/Context/Executor processes. It checks cross-worker native-port and
 external-network denial, blocked post-start handoff, unaffected other owners,
-actual completion, terminated containers, ten spent worker slots and ten retained
-reservations. Hashes, native event logs and container/PID evidence are retained,
+actual completion, unique durable start/finish events, terminated containers,
+ten spent worker slots and ten retained reservations. The passing cohort attempts
+handoff after container termination; earlier failed completion evidence retains
+its separate blocked handoff while all ten native workers were RUNNING. Hashes, native event logs and container/PID evidence are retained,
 including failures. A workflow success is required before claiming this test
 passed; adding a harness does not satisfy a qualification gate.
 

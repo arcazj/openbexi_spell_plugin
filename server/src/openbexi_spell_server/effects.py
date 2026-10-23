@@ -77,7 +77,8 @@ class DriverGate:
             )
             with self.store.transaction():
                 self.store.db.execute(statement)
-                self.store.db.execute("PRAGMA user_version=5")
+                if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 5:
+                    self.store.db.execute("PRAGMA user_version=5")
             self.db.execute(statement)
             # Never synthesize a missing receipt across a crash gap.
             self.db.execute(
