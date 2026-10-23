@@ -226,6 +226,11 @@ class ContextDriver:
             }:
                 raise ValueError("Unsupported database source/type")
             item = self._resource(request.name, command=request.type == "TC")
+            if request.type == "TC":
+                # The installed native proxy's critical-command check requires
+                # the original catalog discriminator, even for plain commands.
+                # Resource admission above still denies sequences/unknown TCs.
+                item = dict(item, kind="COMMAND")
             return lambda: proto.LookupAnswer(lookup=pack(item))
         if name == "SendCommand":
             self._resource(request.command.mnemonic, command=True)

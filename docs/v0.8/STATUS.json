@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; dev11 audit-only native cohort passed; native DSS fixture corrected to native function exports and awaits candidate-SHA validation; full v0.8 pending",
+  "phase": "G1 approved; dev12 original native TC catalog response corrected and 256 scoped tests passed; hosted native DSS and full v0.8 qualification pending",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -35,7 +35,8 @@
     "Native cohort verified worker-to-worker and external TCP denial; Context had no Docker socket/host manager; post-termination handoff remained BLOCKED with original owner/epoch retained",
     "c8b286c hosted PR/push checks passed: 218 scoped tests, ten native compute executions, twenty durable events, thirty native PIDs and physical same-certificate/spent-grant clone rejection before native startup; 241-test compatibility PR passed",
     "dev10: 254 local scoped tests, lint/format/mypy and isolated installed wheel smoke passed; copied-original-config driver bypass reproduced before fix and denied by atomic memory-only single-consumer proof",
-    "dev11: 255 local scoped tests, lint/format/mypy and isolated wheel smokes passed; real client protocol-2 mTLS regression covers check/event/command and downgrade denial; dev10 hosted compatibility passed 241 tests"
+    "dev11: 255 local scoped tests, lint/format/mypy and isolated wheel smokes passed; real client protocol-2 mTLS regression covers check/event/command and downgrade denial; dev10 hosted compatibility passed 241 tests",
+    "dev12: 256 local scoped tests, lint/format/mypy and isolated wheel smokes passed; native TC catalog response now includes original COMMAND discriminator while unlisted commands and sequences stay denied"
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -59,7 +60,7 @@
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "Actual while-running handoff was BLOCKED in earlier failed completion evidence; positive cohort checks post-termination BLOCKED handoff. No native quiescence/owner-CAS pass is claimed",
     "K_native_subset": "c8b286c scoped PR/push service/native/wheel checks and PR compatibility passed; full K remains pending",
-    "G5_native_dss_rpc": "255 local scoped tests passed; dev11 audit-only cohort passed hosted. Native DSS reached ten running Executors but failed because the facade import did not export Send; explicit spell.lang.functions import awaits hosted qualification."
+    "G5_native_dss_rpc": "dev12: 256 local scoped tests pass; native command-catalog response corrected after real Send exposed missing COMMAND discriminator. Prior audit-only native cohort passes; corrected native DSS cohort awaits candidate-SHA qualification."
   },
   "implementation_started": true,
   "release_published": false,

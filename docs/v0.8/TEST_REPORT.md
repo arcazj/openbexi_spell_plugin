@@ -527,3 +527,29 @@ changes the DSS procedure to `from spell.lang.functions import Send,GetTM`.
 Server package/runtime-proof logic is unchanged; the hosted native result is
 still mandatory. All failed artifacts remain retained; no native TC/TM pass is
 inferred from a syntactically valid fixture or from the audit-only cohort.
+
+
+## dev12 original native command-catalog response
+
+The e20357a hosted PR run 40003202950 passed the audit-only native cohort and
+native-boundary. The DSS cohort then reached the actual native Send path and
+failed `Invalid original command catalog response` in the installed proxy's
+critical-command check, with no denied RPC method. Artifact 12523221760 retains
+all ten original failures. Context's TC DatabaseLookup had omitted the original
+`kind: COMMAND` discriminator that the composed native proxy requires.
+
+Dev12 supplies this discriminator for an explicitly admitted single command.
+The existing resource permission check still runs first; unknown/unlisted
+commands and sequences remain denied. The new original-protobuf regression
+checks the native catalog response's name/kind/critical/arguments and denies
+CMD2 and SEQNAME. This is a response-contract correction, not expanded TC scope.
+Local and hosted candidate results follow; no native pass is inferred yet.
+
+
+Fresh dev12 CPython **3.13.16** qualification passed **256 scoped tests** with
+zero failures/errors/skips and warnings as errors; lint, format and mypy passed.
+Evidence: `v08-server/run-20261023T182835Z-2a5aba63` with source hashes under
+prior head e20357a plus changed code. An offline **0.8.0.dev12** wheel build,
+clean isolated version/import and both CLI smokes passed. The native candidate
+must independently prove the corrected catalog contract through real Send;
+full v0.8 remains unqualified and public runtime stays disabled.

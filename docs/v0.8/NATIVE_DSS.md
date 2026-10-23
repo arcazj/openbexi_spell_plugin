@@ -1,6 +1,6 @@
 # Context-owned native DSS subset (development)
 
-`0.8.0.dev11` connects the original protobuf driver request to the private Context
+`0.8.0.dev12` connects the original protobuf driver request to the private Context
 effect gate. This is an optional retained, single-use qualification profile.
 Default gateway, Listener and IDE execution remain disabled. It is not a full
 v0.8 release or a claim of complete legacy driver compatibility.
@@ -65,6 +65,9 @@ consumption and dispatch an effect. A lost response loses the proof: it cannot
 be refreshed or replayed, and the spent slot and logical hold remain retained.
 This is not protection against compromise of the legitimate worker's memory or
 an attestation of untrusted procedures.
+
+TC database lookup preserves the original `kind: COMMAND` discriminator needed
+by native critical-command checks. It does not admit sequences or unlisted TCs.
 
 The supported original methods are:
 

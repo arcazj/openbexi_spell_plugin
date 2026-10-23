@@ -24,6 +24,7 @@ import test_preflight as helpers
 from test_services import request
 
 from openbexi_spell_dss.context_driver import ContextDriver, METHODS, PREFIX
+from openbexi_spell_dss.codec import unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as proto
 
 
@@ -166,6 +167,27 @@ def test_twenty_duplicate_rpc_calls_produce_one_real_command(driver_setup, pki):
         )
     assert results.count(200) == 1 and results.count(409) == 19
     assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 1
+
+
+def test_native_send_catalog_contract_retains_resource_permission(driver_setup, pki):
+    # The installed native proxy validates this original LookupAnswer before
+    # every Send, including noncritical single commands.
+    for name, expected in (("CMD1", 200), ("CMD2", 403), ("SEQNAME", 403)):
+        code, answer = native_call(
+            driver_setup,
+            pki,
+            PREFIX + "TM/DatabaseLookup",
+            proto.LookupRequest(name=name, type="TC", source="GENERIC"),
+        )
+        assert code == expected, answer
+        if code == 200:
+            row = proto.LookupAnswer.FromString(base64.b64decode(answer["result"]["payload"]))
+            definition = unpack(row.lookup)
+            assert definition["name"] == name
+            assert definition["kind"] == "COMMAND"
+            assert definition["critical"] is False
+            assert definition["arguments"] == []
+    assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
 
 
 def test_copied_original_config_cannot_bypass_consumption_and_dispatch(driver_setup, pki):
