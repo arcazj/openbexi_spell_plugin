@@ -294,7 +294,7 @@ def main():
                 fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
                 if profile.native_dss:
                     fixture += (
-                        "from spell.lang import *\n"
+                        "from spell.lang.functions import Send,GetTM\n"
                         "assert Send(command='CMD1',Timeout=2,HandleError=False,PromptUser=False,Confirm=False) is True\n"
                         "assert GetTM('TM.POWER.BUS_VOLTAGE',Wait=False,Timeout=2,HandleError=False) == 28.0\n"
                     )

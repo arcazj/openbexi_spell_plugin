@@ -107,8 +107,10 @@ ten distinct native Executors, ten successful original SendCommand calls,
 original RefreshItem calls and fifty ACKED stage receipts in a separate isolated
 DSS container, while retaining all original reservations and spent slots.
 The dev9 hosted DSS cohort failed because the fixture omitted the SPELL SDK
-import; all ten workers reported `NameError: Send`. dev10 adds that import and
-a separate physical copied-original-configuration driver-denial probe. Its hosted
+import; all ten workers reported `NameError: Send`. dev10 added a facade import and
+a separate physical copied-original-configuration driver-denial probe. The facade
+did not export the native functions; the follow-up now explicitly imports
+`Send,GetTM` from `spell.lang.functions`, matching native conformance fixtures. Its hosted
 audit and DSS cohorts then exposed a client allowlist mismatch before native
 startup. dev11 updates the real client to the exact protocol-2 routes, including
 the new driver route, and tests that client over mTLS; version-1 launch

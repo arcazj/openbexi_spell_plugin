@@ -513,3 +513,17 @@ retained under prior head 2ba8743 plus local changes. Offline wheel build and
 clean isolated installed **0.8.0.dev11** version/import and both CLI smokes
 passed. The dev10 hosted 241-test compatibility job also passed. Native dev11
 candidate-SHA results remain pending; full v0.8 stays unqualified.
+
+
+### Native SDK fixture follow-up
+
+At dev11 head cbb2abd, hosted PR run 40002594765 passed the audit-only native
+cohort and native-boundary. The DSS cohort reached ten actual running native
+Executors but again failed `NameError: Send`, with no denied driver methods
+(artifact 12523475378). The earlier `from spell.lang import *` imported the
+compatibility facade rather than the native function exports. Existing native
+conformance fixtures explicitly use `spell.lang.functions`. The follow-up
+changes the DSS procedure to `from spell.lang.functions import Send,GetTM`.
+Server package/runtime-proof logic is unchanged; the hosted native result is
+still mandatory. All failed artifacts remain retained; no native TC/TM pass is
+inferred from a syntactically valid fixture or from the audit-only cohort.
