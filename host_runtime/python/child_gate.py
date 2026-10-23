@@ -62,7 +62,6 @@ class NativeChildGate:
             or not instance[len(procedure) + 1 :].isascii()
             or not instance[len(procedure) + 1 :].isdecimal()
             or not 1 <= len(instance[len(procedure) + 1 :]) <= 9
-            or int(instance[len(procedure) + 1 :]) < 1
             or str(int(instance[len(procedure) + 1 :]))
             != instance[len(procedure) + 1 :]
             or type(body["arguments"]) is not str

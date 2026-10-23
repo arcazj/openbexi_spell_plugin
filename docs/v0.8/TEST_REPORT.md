@@ -943,3 +943,19 @@ without child RUNNING. Its ZIP 12538438420 passed CRC/SHA verification
 (`e0e6a3cce648ac1c54c03ed77686e8650a5bdea1ba5b104d2fd2427610ac97a6`).
 Follow-up records bounded before-spawn admission stages and retained child-state
 counts to distinguish an authority rejection from native startup blockage.
+
+At `45d187f`, all existing native jobs and 372 scoped tests passed; the new child
+profile remained failed. Verified ZIP 12538728112
+(`6981fecc659cfdc83cb59fc63c4e273f6c3e3ba0f8f1d5d580192ebbb76812f6`)
+showed the original native before-spawn child request being rejected by the
+provider's positive-only instance-number check, with zero child authority rows.
+The original native `getInstanceId()` assigns `#0` to a first child. The validator
+now accepts canonical zero-based suffixes and tests exactly-one admission for
+that original format. No failed native run is relabeled as a pass.
+
+Agent-memory hardening also requires non-dumpability before config/launch. Its
+real subprocess flag test passes locally. This managed host denies even a
+positive-control `process_vm_readv` against a test child, so the additional
+before/after memory-read regression fails locally on the positive control and
+must pass in hosted Linux CI. It is not skipped, and denial without a working
+positive control is never counted as a security pass.

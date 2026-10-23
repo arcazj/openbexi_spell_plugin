@@ -1,13 +1,38 @@
 """Single-host worker source preflight client. Never imports or launches native code."""
 
 import argparse
+import ctypes
 import json
 from pathlib import Path
 import uuid
+import sys
 
 from .contracts import Fault, decode, exact
 from .snapshots import verify_directory
 from .transport import Route, tls_context
+
+
+def protect_runtime():
+    """Keep the consumption winner's memory private from same-UID procedures.
+
+    No ptrace-policy default is assumed. The worker deployment must also drop
+    CAP_SYS_PTRACE (and all other capabilities); a privileged host is trusted.
+    Call in the native agent before reading its configuration or spawning code.
+    """
+    if sys.platform != "linux":
+        raise RuntimeError("Native worker memory isolation requires Linux")
+    libc = ctypes.CDLL(None, use_errno=True)
+    control = libc.prctl
+    control.argtypes = [
+        ctypes.c_int,
+        ctypes.c_ulong,
+        ctypes.c_ulong,
+        ctypes.c_ulong,
+        ctypes.c_ulong,
+    ]
+    control.restype = ctypes.c_int
+    if control(4, 0, 0, 0, 0) != 0 or control(3, 0, 0, 0, 0) != 0:
+        raise RuntimeError("Native worker memory isolation unavailable")
 
 
 def preflight(config, *, details=False):

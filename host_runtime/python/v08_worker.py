@@ -32,7 +32,7 @@ from openbexi_spell_server.contracts import Fault, canonical, decode, exact, fin
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
 from openbexi_spell_server.transport import Route, tls_context
-from openbexi_spell_server.worker import preflight
+from openbexi_spell_server.worker import preflight, protect_runtime
 
 
 def readonly_tree(directory):
@@ -488,6 +488,7 @@ def main():
     parser.add_argument("--config", required=True, type=Path)
     args = parser.parse_args()
     try:
+        protect_runtime()
         run(decode(args.config.read_bytes()))
     except Exception as error:
         causes = []

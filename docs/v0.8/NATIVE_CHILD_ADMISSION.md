@@ -107,3 +107,18 @@ whole-family settlement still need their own native qualification. The RPC
 mode/nested tests alone do not establish those native behaviors. Public runtime,
 effective transfer/resume, recovery and full release gates remain disabled or
 unqualified.
+
+The original native manager assigns its first child instance suffix `#0`.
+The provider accepts canonical zero-based suffixes while retaining exact source,
+parent, grant, one-consumption and replay checks; negative/padded suffixes remain
+invalid. Native instance numbers are not authority epochs.
+
+The agent now requires `PR_SET_DUMPABLE=0`, verified by `PR_GET_DUMPABLE`, before
+reading configuration or spawning native processes. This protects its memory-only
+consumption proof independently of same-UID ptrace defaults. Workers must still
+drop all capabilities, including `CAP_SYS_PTRACE`. The kernel documents this
+boundary in [Yama](https://docs.kernel.org/admin-guide/LSM/Yama.html). A real parent
+memory-reader test includes a successful read before protection and denial after
+protection; unavailable positive controls fail rather than count as protection.
+This is agent-memory protection, not an arbitrary-procedure sandbox or full
+family-participant/recovery proof.

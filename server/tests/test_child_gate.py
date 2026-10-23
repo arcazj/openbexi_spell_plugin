@@ -171,7 +171,7 @@ def test_revocation_between_admission_and_consumption_keeps_hold_without_native_
     [
         dict(parent_instance_id="unknown#1"),
         dict(parent_instance_id=""),
-        dict(instance_id="child#0"),
+        dict(instance_id="child#-1"),
         dict(instance_id="child#01"),
         dict(instance_id="child#1/../../main"),
         dict(entrypoint="../child.py"),
@@ -190,6 +190,16 @@ def test_copied_original_configuration_has_no_consumer_proof(provider, family):
     with pytest.raises(Fault):
         provider.admit(body())
     assert family["store"].db.execute("SELECT COUNT(*) FROM child_admissions").fetchone()[0] == 0
+
+
+def test_original_native_zero_based_instance_gets_one_bound_admission(provider, family):
+    provider.admit(body(instance_id="child#0"))
+    assert "child#0" in provider.started
+    assert (
+        family["store"].db.execute("SELECT state FROM child_admissions").fetchone()[0] == "CONSUMED"
+    )
+    with pytest.raises(ValueError, match="already attempted"):
+        provider.admit(body(instance_id="child#0"))
 
 
 @pytest.mark.parametrize("field", ["admission_id", "execution_id", "consumed"])
