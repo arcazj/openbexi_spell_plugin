@@ -1366,23 +1366,45 @@ def main():
                                 "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
                             )
                         ]
-                        for execution in executions:
+                        report["native_lifecycle_counts"] = []
+                        for index, execution in enumerate(executions):
                             messages = [
                                 body["message"]
                                 for body in bodies
                                 if body["execution_id"] == execution["id"]
                             ]
-                            if sum(
+                            started = sum(
                                 message.startswith("Procedure started:")
                                 for message in messages
-                            ) != (2 if profile.native_child_gate else 1) or sum(
+                            )
+                            finished = sum(
                                 message.startswith("Procedure finished:")
                                 for message in messages
-                            ) != (2 if profile.native_child_gate else 1):
+                            )
+                            # The original callbackEventCall emits setStartTime
+                            # only from STATUS_LOADED. Hidden automatic children
+                            # skip that path. Never fabricate driver events.
+                            expected_started = 1 + int(
+                                profile.native_child_gate and index % 2 == 0
+                            )
+                            expected_finished = 2 if profile.native_child_gate else 1
+                            report["native_lifecycle_counts"].append(
+                                dict(
+                                    worker_index=index,
+                                    started=started,
+                                    finished=finished,
+                                    expected_started=expected_started,
+                                    expected_finished=expected_finished,
+                                )
+                            )
+                            if (
+                                started != expected_started
+                                or finished != expected_finished
+                            ):
                                 raise RuntimeError(
                                     "Native lifecycle events lack unique durable receipts"
                                 )
-                        if event_count < 20:
+                        if event_count < (35 if profile.native_child_gate else 20):
                             raise RuntimeError(
                                 "Native lifecycle events lack durable receipts"
                             )
@@ -1535,6 +1557,30 @@ def main():
                     context_isolated_from_host_manager=True,
                 )
             finally:
+                if (
+                    profile.native_dss
+                    and "state" in locals()
+                    and (state / "context.sqlite3").is_file()
+                ):
+                    try:
+                        with closing(
+                            sqlite3.connect(
+                                "file:" + str(state / "context.sqlite3") + "?mode=ro",
+                                uri=True,
+                            )
+                        ) as audit:
+                            report["native_driver_failure_categories"] = audit.execute(
+                                "SELECT json_extract(body,'$.error_type'),json_extract(body,'$.error_code'),COUNT(*) "
+                                "FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED' GROUP BY 1,2"
+                            ).fetchall()
+                            report["native_driver_call_states"] = audit.execute(
+                                "SELECT state,COUNT(*) FROM native_driver_calls GROUP BY state"
+                            ).fetchall()
+                            report["native_driver_stage_states"] = audit.execute(
+                                "SELECT state,COUNT(*) FROM effect_intents GROUP BY state"
+                            ).fetchall()
+                    except sqlite3.Error:
+                        report["native_driver_failure_categories_unavailable"] = True
                 if (
                     profile.native_child_gate
                     and "state" in locals()

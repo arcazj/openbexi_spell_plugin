@@ -5,6 +5,7 @@ cooperative quiescence, production deployment or the complete legacy driver.
 """
 
 import base64
+import json
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, replace
 import uuid
@@ -100,6 +101,29 @@ def test_original_tc_over_worker_mtls_has_five_durable_receipts(driver_setup, pk
     assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
     assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
     assert setup["store"].db.execute("PRAGMA user_version").fetchone()[0] == 8
+
+
+def test_busy_resource_denial_is_audited_without_effect_or_retry(driver_setup, pki):
+    setup = driver_setup
+    key = str(uuid.uuid4())
+    assert setup["driver"].resource_lock.acquire(timeout=0.1)
+    try:
+        code, _ = native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=key)
+        assert code == 503
+    finally:
+        setup["driver"].resource_lock.release()
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 0
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0
+    event = (
+        setup["store"]
+        .db.execute("SELECT body FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED'")
+        .fetchone()
+    )
+    assert event is not None
+    assert json.loads(event[0])["error_code"] == "native_driver_resource_busy"
+    assert setup["grant"].token not in event[0]
+    assert setup["runtime_capabilities"][setup["grant"].execution_id] not in event[0]
+    assert native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=key)[0] == 409
 
 
 def test_real_worker_client_uses_protocol_two_and_cannot_downgrade(driver_setup, pki):

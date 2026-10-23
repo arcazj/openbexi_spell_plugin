@@ -959,3 +959,23 @@ positive-control `process_vm_readv` against a test child, so the additional
 before/after memory-read regression fails locally on the positive control and
 must pass in hosted Linux CI. It is not skipped, and denial without a working
 positive control is never counted as a security pass.
+
+The `ed5c9de` child cohort completed all ten roots and ten admitted children,
+observed forty simultaneous native PIDs, retained ten consumed child rows and
+twenty logical holds, and denied both native GUI and same-UID peer bypasses.
+Its final audit assertion failed: hidden automatic children do not traverse
+original `callbackEventCall()`'s STATUS_LOADED branch and therefore do not emit
+the same start event as visible children. The next harness checks this original
+source behavior explicitly (root start/finish, visible-child start, every child
+finish) and retains observed per-worker counts; no start event is fabricated.
+The failed ZIP 12538963062 passed CRC and digest checks
+(`a3653cdf0b3b92c9fe9fd81d58ef4822a290dbb766b243b494ba58f75e2a2d07`).
+
+The same executable checkpoint's push DSS cohort failed on one original
+SendCommand HTTP 503 under the ten-worker burst. No command retry was performed.
+ZIP 12539241160 passed CRC and SHA-256 verification
+(`edf0fdb0b34bd73956c9c4dc735b0ac9d3bbbea6ba3de86ce42ab4cddfd1f660`).
+A follow-up adds durable bounded failure categories to the private Context
+ledger and a real mTLS held-resource regression: busy denial produces no binary
+intent/effect, records the reason and retains replay denial. Failure diagnostics
+must establish the bottleneck before any timeout/admission policy is changed.

@@ -193,13 +193,25 @@ class ContextDriver:
                         (hashlib.sha256(response).hexdigest(), request_id),
                     )
             return response
-        except BaseException:
+        except BaseException as error:
             # Command-stage uncertainty is already fenced by DriverGate. Keep
             # the original call as uncertain as well; no replay/recovery grant.
             with self.store.transaction():
                 self.store.db.execute(
                     "UPDATE native_driver_calls SET state='UNCERTAIN' WHERE request_id=?",
                     (request_id,),
+                )
+                self.store._event(
+                    "NATIVE_DRIVER_CALL_FAILED",
+                    dict(
+                        execution_id=grant.execution_id,
+                        request_id=request_id,
+                        path=path,
+                        error_type=type(error).__name__,
+                        error_code=error.code
+                        if isinstance(error, Fault)
+                        else "driver_operation_failed",
+                    ),
                 )
             raise
 
