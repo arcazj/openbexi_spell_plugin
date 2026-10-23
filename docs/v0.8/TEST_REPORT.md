@@ -872,3 +872,35 @@ The publication preflight rejected the current development checkout with all
 uncommitted-source notices. It did not publish. Hosted exact-candidate scoped,
 package/native component and compatibility outcomes are recorded when verified.
 The child RPC suite is not native child execution or full v0.8 qualification.
+
+
+## Confirmed hosted dev16 authority and failed full-publication qualification
+
+Executable code **7d2ab39951e3e250aa5bbb43633641fbd5254a3c**, PR merge checkout
+**39ad48dd59e48c2c1fb378da30a9b1d8cf1736a5**:
+[services/native run 40020149313](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40020149313)
+passed all six jobs. Foundation passed **344 scoped tests**, zero failures,
+errors or skips, including **28 child-authority cases** and **12 publication
+preflight cases**, plus package build/install/CLI checks. The audit, DSS,
+original negative pause, observed-thread and native-boundary jobs also passed.
+[Portable compatibility 40020147843](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40020147843)
+passed **241 tests**, zero failures/errors/skips. Those are named subsets.
+
+Foundation artifact **12529419483**, ZIP SHA-256
+`27311f95e897a2405c203ba2dd8437dbea5c2be5a1b7898322558adda7653c80`,
+was downloaded and ZIP CRC/digest checked. All **111 recorded source hashes**
+matched the candidate. The receipt is
+`evidence/child-admission/qualification-summary.json`. It explicitly keeps native
+before-RUN child execution, native pause and full-v0.8 qualification false.
+
+On the clean committed candidate, the publication preflight exited **1**:
+**full_v08_qualified=false, eligible_for_publication=false**. All eleven mandatory
+full gate groups remain unqualified and the package is a development version.
+No uncommitted-source blocker remains on that assessment. The executed report
+is `evidence/release-readiness/publication-preflight.json`; the bounded inherited
+failure is separately summarized beside it. No native child was launched by the
+new API tests and no mandatory gate was promoted by a green component workflow.
+The latest verified published release remains v0.7. Full v0.8 publication is
+conditionally authorized, but the requested qualification has failed and
+substantial native/UI/deployment/recovery/security work remains. No v0.8 release
+was created.

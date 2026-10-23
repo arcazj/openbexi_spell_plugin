@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "scope": "Bounded inherited diagnostic, not full compatibility qualification",
+  "legacy_reference_commit": "cbc53d13f942fcd3c57ecd813c6285254535bb6a",
+  "tests": {
+    "tests": 19,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0
+  },
+  "stopped_after_failures": 3,
+  "broad_diagnostic_interrupted": true,
+  "full_763_requirements_qualified": false,
+  "full_v08_qualified": false,
+  "failure": "Missing historical Windows child-arguments captures; original immutable-source/raw-archive verification required",
+  "failed_checks": [
+    "tests.test_child_arguments_report.test_native_arguments_qualify_only_the_declared_examples_and_syntax",
+    "tests.test_child_arguments_report.test_incomplete_or_altered_argument_evidence_is_rejected[failed]",
+    "tests.test_child_arguments_report.test_incomplete_or_altered_argument_evidence_is_rejected[missing]"
+  ],
+  "source_sha256": {
+    "tests/test_child_arguments_report.py": "27b6157088506d892de178beaa3f9ba48d2b2c56020795efd7932b5363acb0a2",
+    "conformance/child_arguments_report.py": "87babf2348f689a08544ded21783c0030dd747ef9f5c8ea7400440738198f82f",
+    "conformance/evidence/child_arguments.json": "fe85c5785c5616155ed2464ecbe332569d1a24f7ee4210c5a8f633580b29741a",
+    "conformance/installed_provenance.py": "d37a3cd3982d72e8d29ca68873b7657ffc88bb5df6f88e69132981507402c165",
+    "distribution/run_language_regressions.py": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+  }
+}

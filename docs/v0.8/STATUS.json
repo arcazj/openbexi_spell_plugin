@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "Full v0.8 release requested and conditionally authorized; dev16 retained child-admission authority implemented; mandatory native/deployment/browser/security gates still unqualified",
+  "phase": "Full v0.8 publication qualification failed on clean 7d2ab39; dev16 child-admission authority passed 344 scoped/241 portable checks and six hosted jobs, but native before-RUN/full family/UI/deployment/security work remains unfinished",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -41,7 +41,8 @@
     "14ddf3d hosted PR services/native run 40004938954 passed: 264 scoped tests; audit and native DSS cohorts; ten original commands and telemetry refreshes; fifty identical ACKED receipts in both ledgers; thirty PIDs; valid copied-original-config command denied; ten holds/spent slots retained; all 81 native source hashes matched candidate",
     "14ddf3d hosted PR compatibility run 40004938969 passed 241 portable tests; services/native and compatibility workflows completed successfully; full all-763/native/deployment/release qualification remains false",
     "dev14: 290 local scoped tests, lint/format/mypy and isolated package smokes passed; safety-only pause reports preserve original binding and single-consumer proof; forged family proofs and retries of admitted pause are denied; real native negative-thread probe pending hosted execution",
-    "34f201d hosted all five services/native jobs and compatibility passed: 290 scoped tests, 241 portable tests, native-boundary/audit/DSS/pause-probe. Main B PAUSED while background counter advanced 89 to 99; transfer blocked, old owner/epoch and ten holds retained; other nine procedures finished; max unrelated read latency 12.8ms; all 17 pause runtime hashes matched candidate."
+    "34f201d hosted all five services/native jobs and compatibility passed: 290 scoped tests, 241 portable tests, native-boundary/audit/DSS/pause-probe. Main B PAUSED while background counter advanced 89 to 99; transfer blocked, old owner/epoch and ten holds retained; other nine procedures finished; max unrelated read latency 12.8ms; all 17 pause runtime hashes matched candidate.",
+    "7d2ab39 hosted six services/native jobs and compatibility passed: 344 scoped tests including 28 child-authority/12 publication-preflight cases, 241 portable tests. Foundation ZIP CRC/digest and all 111 source hashes verified. Clean committed full-release preflight exited 1; eleven full gate groups unqualified; no v0.8 release created."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -64,10 +65,10 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
-    "K_native_subset": "41a2fb2 PR services/native run 40015231877 and portable run 40015231748 passed: 304 scoped tests, six services/native jobs including four native cohorts, 241 portable compatibility tests. Full K and all-763 remain pending.",
+    "K_native_subset": "7d2ab39 hosted services/native 40020149313 and portable 40020147843 passed: 344 scoped tests, six jobs including four native component cohorts, 241 portable tests; all 111 foundation source hashes matched. Full K remains pending.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
-    "G3_child_admission_authority": "Opt-in schema-10 child-admit/child-consume authority: canonical Context-wide reservations, immutable original family/arguments/mode binding, one-time token consumption, no token replay and retained restart holds. Native before-RUN integration remains unimplemented; not native-child qualification.",
+    "G3_child_admission_authority": "7d2ab39 hosted: 28 child authority/RPC cases and 12 publication-preflight cases included in 344 scoped tests. Schema 10, original-family/source binding, shared reservations, one-time tokens, proof/revocation/fence/restart/audit checks passed. Native before-RUN hook is unimplemented/unqualified.",
     "G4_full_diagnostic": "Bounded current inherited diagnostic: 16 passed, 3 failed on missing historical Windows child-arguments captures. Broad diagnostic interrupted after repeated failures/errors. Historical evidence requires its original immutable sources; no full compatibility qualification."
   },
   "implementation_started": true,
@@ -87,5 +88,7 @@
   "native_thread_barrier_profile": "Private --native-thread-barrier; explicit read-only operator library, CPython monitoring alongside original native trace; only observed snapshot background threads; no resume or positive family proof; NATIVE_THREAD_BARRIER.md",
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
-  "native_child_profile": "Optional native_children:admission-only; worker protocol 2, schema 10, no native agent integration or positive native start proof; NATIVE_CHILD_ADMISSION.md"
+  "native_child_profile": "Optional native_children:admission-only; worker protocol 2, schema 10, no native agent integration or positive native start proof; NATIVE_CHILD_ADMISSION.md",
+  "release_assessment": "evidence/release-readiness/publication-preflight.json: clean code 7d2ab39, exit 1, full_v08_qualified=false, eligible_for_publication=false, eleven mandatory full groups pending; package remains development version",
+  "native_child_qualification_receipt": "evidence/child-admission/qualification-summary.json; authority/RPC only, no native child start or full-v0.8 qualification"
 }

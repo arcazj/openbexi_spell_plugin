@@ -57,3 +57,15 @@ gate receipt is present here; hosted component jobs do not satisfy those gates.
 
 Publication remains authorized conditional on these results. Release is blocked
 by qualification, not missing user approval.
+
+
+## Executed assessment
+
+On clean code **7d2ab39951e3e250aa5bbb43633641fbd5254a3c**, the
+[publication preflight](evidence/release-readiness/publication-preflight.json)
+exited 1 with full_v08_qualified and eligible_for_publication both false. All
+11 mandatory full gate groups remain unqualified; server is 0.8.0.dev16. The
+[bounded inherited summary](evidence/release-readiness/inherited-bounded-summary.json)
+records 16 passes/3 failures and preserves the narrower scope. Hosted 344 scoped
+checks, 241 portable checks and all six services/native jobs passed at that code;
+they do not override this failed full-release assessment. See TEST_REPORT.md.

@@ -59,3 +59,16 @@ blocking/nonblocking child start, inherit immutable family identity, and qualify
 prompt/return/repeat/termination semantics. RPC checks do not promote that gate.
 Whole-family queue/effect settlement, handoff/resume and recovery remain release
 blockers.
+
+
+## Verified candidate
+
+At **7d2ab39951e3e250aa5bbb43633641fbd5254a3c**, hosted
+[services/native CI](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40020149313)
+passed all six jobs, including 344 scoped checks (28 child-authority and 12
+publication-preflight cases), package checks and the existing native cohorts.
+[241 portable checks](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40020147843)
+passed. The downloaded foundation artifact passed ZIP digest/CRC checks and all
+111 recorded source hashes matched. The [receipt](evidence/child-admission/qualification-summary.json)
+qualifies only this authority/RPC component. Native child execution and full
+v0.8 remain unqualified. Full publication preflight still exits nonzero.
