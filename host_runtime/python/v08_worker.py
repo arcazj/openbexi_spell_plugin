@@ -304,6 +304,7 @@ def run(config):
             "/opt/v08-native-home/bin/SPELL-Context",
             lambda: session.process,
             child_gate,
+            report=emit,
         )
 
     def pump():
@@ -329,9 +330,12 @@ def run(config):
             if children is not None:
                 children.observe(message)
 
-    session.pump = pump
     try:
         session.start()
+        # NativeSession.start owns its startup PAUSED notification. Installing
+        # the runtime consumer early can steal that notification during an
+        # info request and leave startup waiting despite a PAUSED Executor.
+        session.pump = pump
         if child_gate is not None and session.instance not in child_gate.started:
             raise RuntimeError("Native before-spawn root hook was bypassed")
         emit(

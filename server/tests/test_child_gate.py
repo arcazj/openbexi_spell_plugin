@@ -143,6 +143,29 @@ def test_revoked_parent_denies_before_native_callback(provider, family):
     assert family["store"].db.execute("SELECT COUNT(*) FROM child_admissions").fetchone()[0] == 0
 
 
+def test_revocation_between_admission_and_consumption_keeps_hold_without_native_permission(
+    provider, family
+):
+    real = provider.route
+
+    def revoke(payload, **kwargs):
+        reply = real.call(payload, **kwargs)
+        if kwargs["path"].endswith("child-admit"):
+            family["app"].authority.subjects["alice"] = policy({"alice": ["execution:read"]})[
+                "alice"
+            ]
+        return reply
+
+    provider.route = SimpleNamespace(call=revoke)
+    with pytest.raises(Fault):
+        provider.admit(body())
+    assert "child#1" not in provider.started
+    assert (
+        family["store"].db.execute("SELECT state FROM child_admissions").fetchone()[0] == "ADMITTED"
+    )
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 2
+
+
 @pytest.mark.parametrize(
     "changes",
     [

@@ -155,13 +155,16 @@ class NativeChildGate:
 
 
 class NativeAdmissionServer:
-    def __init__(self, path, executable, listener, gate):
+    def __init__(
+        self, path, executable, listener, gate, *, report=lambda *_args, **_kwargs: None
+    ):
         self.path = str(path)
         self.executable = Path(executable).resolve(strict=True)
         if not os.statvfs(self.executable).f_flag & os.ST_RDONLY:
             raise ValueError("Native Context must be immutable")
         self.listener = listener
         self.gate = gate
+        self.report = report
         self.context_pid = None
         self.pidfd = None
         self.stop = threading.Event()
@@ -224,9 +227,25 @@ class NativeAdmissionServer:
                         if not part or len(raw) + len(part) > 32768:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
-                    self.gate.admit(decode(bytes(raw)))
+                    body = decode(bytes(raw))
+                    self.report(
+                        "native-before-spawn-request",
+                        child=bool(body.get("parent_instance_id")),
+                    )
+                    self.gate.admit(body)
+                    self.report(
+                        "native-before-spawn-admitted",
+                        child=bool(body.get("parent_instance_id")),
+                    )
                     stream.sendall(b"ALLOW\n")
-                except Exception:
+                except Exception as error:
+                    self.report(
+                        "native-before-spawn-denied",
+                        error_type=type(error).__name__,
+                        reason=str(error)[:128]
+                        if isinstance(error, ValueError)
+                        else "admission_unavailable",
+                    )
                     # Never acknowledge after response loss, partial failure or
                     # an uncertain admission. No raw arguments or authority logs.
                     try:

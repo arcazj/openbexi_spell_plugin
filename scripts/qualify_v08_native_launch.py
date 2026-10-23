@@ -1535,6 +1535,23 @@ def main():
                     context_isolated_from_host_manager=True,
                 )
             finally:
+                if (
+                    profile.native_child_gate
+                    and "state" in locals()
+                    and (state / "context.sqlite3").is_file()
+                ):
+                    try:
+                        with closing(
+                            sqlite3.connect(
+                                "file:" + str(state / "context.sqlite3") + "?mode=ro",
+                                uri=True,
+                            )
+                        ) as audit:
+                            report["native_child_authority_states"] = audit.execute(
+                                "SELECT state,COUNT(*) FROM child_admissions GROUP BY state"
+                            ).fetchall()
+                    except sqlite3.Error:
+                        report["native_child_authority_states_unavailable"] = True
                 for name in names:
                     try:
                         info = json.loads(command("docker", "inspect", name))[0]

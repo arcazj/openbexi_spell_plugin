@@ -929,3 +929,17 @@ It is not a positive child-start qualification. Follow-up adds direct native
 start/peer-denial probes, strict receipt types, current authority checks before
 visible-child RUN, bounded native log diagnostics and the required explicit
 `spell.runtime.ARGS` import in the child fixture.
+
+The `c4fb768` push child job (40039300726) exposed a startup notification race:
+nine roots became ready; the tenth Executor was physically PAUSED but startup
+waited for a PAUSED notification consumed by the runtime pump during an info
+request. No child success is claimed. The follow-up installs that pump only
+after `NativeSession.start()` has completed its own handshake. The failed ZIP
+12537944717 was verified by CRC and SHA-256
+`e81dc53fb5e1ec1282914398af1859d217c68457c8b7610365b9649b8e2f5d02`.
+The same `c4fb768` PR native child run (40039305597) passed direct native GUI
+unadmitted-root and same-UID Unix peer denial, then reached WAITING in the parent
+without child RUNNING. Its ZIP 12538438420 passed CRC/SHA verification
+(`e0e6a3cce648ac1c54c03ed77686e8650a5bdea1ba5b104d2fd2427610ac97a6`).
+Follow-up records bounded before-spawn admission stages and retained child-state
+counts to distinguish an authority rejection from native startup blockage.

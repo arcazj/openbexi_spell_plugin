@@ -312,7 +312,7 @@ def verify_directory(directory, manifest):
 class SnapshotCatalog:
     def __init__(self, config):
         if type(config) is not dict or not 1 <= len(config) <= 64:
-            raise ValueError("At most ten approved procedures")
+            raise ValueError("One to 64 approved procedures required")
         self.entries: dict = {}
         self.aliases: dict[str, str] = {}
         seen = set()
