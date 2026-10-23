@@ -139,6 +139,7 @@ class Handler(BaseHTTPRequestHandler):
             super().setup()
         except BaseException:
             self.watchdog.cancel()
+            self.request.close()
             raise
 
     def expire(self):
@@ -186,6 +187,11 @@ class Handler(BaseHTTPRequestHandler):
                 raise Fault(403, "browser_session_not_available")
             if any(k.lower().startswith("x-forwarded-") for k in self.headers):
                 raise Fault(403, "forwarded_identity_denied")
+            if any(
+                k.lower().startswith("x-openbexi-") and k.lower() != "x-openbexi-client-fingerprint"
+                for k in self.headers
+            ):
+                raise Fault(403, "unknown_identity_header")
             if "?" in self.path or "#" in self.path or "%" in self.path:
                 raise Fault(400, "noncanonical_path")
             peer = hashlib.sha256(self.connection.getpeercert(binary_form=True)).hexdigest()

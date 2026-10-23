@@ -19,5 +19,5 @@ No v0.8 production implementation, release or schema migration yet.
   mandatory admission and the supported authority storage profile.
 - Add separate internal Listener/Context package with TLS 1.3, certificate pins,
   scoped RPC, Context ACLs and durable blackboard CAS. Execution is disabled.
-- Add 50 local Python 3.13 foundation tests, failure evidence, package smoke and
+- Add 51 local Python 3.13 foundation tests, failure evidence, package smoke and
   hosted foundation CI. Full runtime/deployment/release gates remain pending.

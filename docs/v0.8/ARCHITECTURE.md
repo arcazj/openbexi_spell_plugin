@@ -81,6 +81,6 @@ See [acceptance plan](ACCEPTANCE_PLAN.md) and
 ## Initial implementation scope
 
 `server/` implements the internal Listener/Context TLS/ACL/routing and durable
-blackboard subset specified in SERVER_CONTRACT.md. Its 50 local tests are
+blackboard subset specified in SERVER_CONTRACT.md. Its 51 local tests are
 foundation evidence; worker execution, ownership transfer, effects and WSS
 remain disabled. The full migration sequence above is not yet complete.

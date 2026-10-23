@@ -145,6 +145,7 @@ def test_snapshot_does_not_leak_values_and_context_data_is_separate(cluster, pki
         ({"Cookie": "session=forged"}, 403),
         ({"Authorization": "Bearer forged"}, 403),
         ({"X-Forwarded-User": "alice"}, 403),
+        ({"X-OpenBEXI-User": "alice"}, 403),
     ],
 )
 def test_host_origin_session_and_forwarded_identity_denial(cluster, pki, headers, status):
