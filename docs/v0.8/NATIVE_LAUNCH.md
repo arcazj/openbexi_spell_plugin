@@ -69,3 +69,9 @@ This test does not qualify production Compose, Kubernetes admission/identity,
 node fencing, safe native pause/resume/handoff, child semantics, native driver
 TC/TM dispatch, all 763 requirements, browser/WSS, or IDE Run/Debug. Those remain
 release blockers. Existing prelaunch IDE integration continues separately.
+
+The optional development DSS variant is specified in [NATIVE_DSS.md](NATIVE_DSS.md).
+It keeps this audit-only cohort and adds a separate native TC/TM CI cohort with
+Context-owned endpoints, explicit resource permissions and the actual-send
+gate. Its results must be tied to the exact candidate SHA; its presence does
+not turn an unexecuted native or deployment test into a pass.

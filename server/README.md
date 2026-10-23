@@ -185,3 +185,11 @@ disabled. The separate GPL native agent and its ten-worker Docker test are
 specified in [NATIVE_LAUNCH.md](../docs/v0.8/NATIVE_LAUNCH.md). Procedure-scoped audit events in
 this narrow profile are acknowledged only after durable Context journalling;
 other native driver calls remain denied. No ExampleDriver fallback is permitted.
+
+The separate optional GPL [Context-owned DSS profile](../docs/v0.8/NATIVE_DSS.md)
+adds five bounded original TC/TM methods through the real effect gate, with
+fixed endpoints and explicit resource permissions. The Apache server and public
+gateway/Listener/IDE retain their defaults. Local original-protobuf/mTLS/DSS
+checks are distinct from the mandatory native Docker matrix and full v0.8
+qualification. Authority schema 7 prevents opening the new RPC ledger with older
+binaries; no automatic state downgrade or recovery is supported.

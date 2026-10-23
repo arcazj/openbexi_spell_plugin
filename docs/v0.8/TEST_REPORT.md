@@ -394,3 +394,42 @@ workers, thirty native PIDs, twenty durable lifecycle events and all retained
 holds were verified again. The same-code PR compatibility subset passed **241
 tests**. The redacted summary now identifies this checkpoint; detailed CI
 artifacts are not republished in the repository. Full qualification remains false.
+
+# dev9 Context-owned original TC/TM boundary
+
+The optional GPL host and route contract are documented in NATIVE_DSS.md.
+The standalone Apache server and default gateway/Listener/IDE retain their
+execution-disabled defaults. The worker forwards original protobuf bytes under
+the original consumed grant; Context selects the endpoint, resource allowlist,
+wire identities and non-replayable operation UUID. Schema 7 protects the new
+bounded call ledger against older binaries.
+
+Fresh local CPython **3.13.16** qualification passed **246 scoped tests**, with
+zero failures, errors or skips and warnings as errors. Ruff lint/format and mypy
+passed. The real mTLS/original-protobuf/independent-DSS subset adds 28 tests:
+one real TC has five correlated ACKED receipts; twenty duplicate RPCs have one
+winner; other original driver methods and wrong certificates/grants/resources
+are denied; transfer between stages blocks the next write; a lost RELEASE
+receipt retains uncertainty and ownership holds and cannot be replayed; bounded
+call capacity is reserved before any wire effect. Telemetry uses original
+CreateTmItem/RefreshItem messages and the existing packet/catalog validation.
+
+The unchanged portable compatibility subset also passed **241 tests**, with
+zero failures/errors/skips and warnings as errors. An offline wheel build with
+the pinned build backend and clean isolated installed-wheel version/import
+check passed for **0.8.0.dev9**. No existing environment was modified to install
+the wheel. An initial test fixture used the wrong generated protobuf class and
+one fixture import triggered lint; both failed diagnostics are retained in the
+local development log and are not counted as passes. The first packaging
+command found no pip in the shared uv environment; the wheel was instead built
+from the offline uv cache and installed in a new isolated environment.
+
+The hosted native matrix now keeps audit-only compute and adds a separate
+`--native-dss` cohort. The latter requires ten real native SendCommand calls,
+original RefreshItem calls, ten retained native workers and fifty durable TC
+stage receipts, using a separate internal-network DSS container. **This new
+native profile is NOT RUN locally:** Docker/Kubernetes tools are unavailable in
+this workspace. Its candidate-SHA CI result must pass before claiming native
+TC/TM qualification. It does not close native quiescence/live transfer, children,
+recovery, IDE execution, full historical compatibility, browser/WSS, production
+Compose/Kubernetes or independent security/release acceptance.

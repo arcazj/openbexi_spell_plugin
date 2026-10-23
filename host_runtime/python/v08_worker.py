@@ -102,22 +102,44 @@ def run(config):
     # Force the real proxy. Only procedure-scoped audit events are journalled
     # by Context; unqualified methods never fall back to ExampleDriver.
     denied = set()
+    driver_methods = set()
     relay = None
 
     def dispatch(event, **body):
         if event != "openbexi/driverRequest":
             raise RuntimeError("Unexpected driver relay event")
         try:
-            if body["path"] != "/spell.driver.SPELLDriverInterface_EV/RaiseEvent":
-                raise ValueError("Unqualified native driver method")
             raw = base64.b64decode(body["payload"], validate=True)
-            if len(raw) > 65536:
-                raise ValueError("Driver event exceeds bounds")
+            if len(raw) > 32768:
+                raise ValueError("Native driver request exceeds bounds")
+            request_id = str(uuid.UUID(body["id"]))
+            if body["path"] != "/spell.driver.SPELLDriverInterface_EV/RaiseEvent":
+                answer = route.call(
+                    {
+                        **request,
+                        "request_id": request_id,
+                        "path": body["path"],
+                        "payload": body["payload"],
+                    },
+                    path="/v1/worker/driver",
+                    schema="openbexi.worker/1",
+                )
+                exact(answer, {"request_id", "execution_id", "payload"})
+                if (
+                    answer["request_id"] != request_id
+                    or answer["execution_id"] != grant.execution_id
+                    or type(answer["payload"]) is not str
+                    or len(answer["payload"]) > 43692
+                    or len(base64.b64decode(answer["payload"], validate=True)) > 32768
+                ):
+                    raise RuntimeError("Native driver response binding differs")
+                driver_methods.add(body["path"])
+                relay.reply({"id": body["id"], "payload": answer["payload"]})
+                return
             original = driver_proto.Event.FromString(raw)
             settings = unpack(original.config)
             if type(settings) is not dict or set(settings) - {"Severity", "Scope"}:
                 raise ValueError("Driver event modifiers differ")
-            request_id = str(uuid.UUID(body["id"]))
             answer = route.call(
                 {
                     **request,
@@ -209,7 +231,10 @@ def run(config):
             execution_id=grant.execution_id,
             native_status=state,
             hold_retained=True,
-            external_driver_effects_enabled=False,
+            external_driver_effects_enabled=(
+                "/spell.driver.SPELLDriverInterface_TC/SendCommand" in driver_methods
+            ),
+            native_driver_methods=sorted(driver_methods),
             context_audit_events_enabled=True,
             runtime_enabled=False,
         )

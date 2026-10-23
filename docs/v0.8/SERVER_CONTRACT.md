@@ -108,4 +108,15 @@ Admission requires live owner/start/control proof. Consumption/checking require
 the registered assigned worker certificate and original grant. Native audit
 writes additionally require current live control and the `context-audit`
 binding; scope is procedure-only. No driver response is acknowledged before the
-Context transaction commits. Native external TC/TM methods remain unavailable.
+Context transaction commits. Native external TC/TM methods remain unavailable
+in this default audit-only profile.
+
+The separate optional GPL host in [NATIVE_DSS.md](NATIVE_DSS.md) adds
+`POST /v1/worker/driver` only with an explicitly configured retained launch and
+Context-owned DSS adapter. Admission requires the registered assigned worker
+certificate, original consumed grant, live owner/start/control permission and
+fixed inventory binding. Only the five documented original TC/TM methods and
+explicit resource allowlists are accepted; all other methods/identities are
+denied. Payloads are bounded original protobuf bytes, never endpoints or new
+authority. This route does not enter the gateway/Listener/IDE matrix or enable
+the public runtime. Native/deployment qualification remains separately gated.

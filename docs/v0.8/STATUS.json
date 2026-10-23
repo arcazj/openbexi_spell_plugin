@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G1 approved; retained native compute and Context audit driver tested; general v0.8 runtime and full qualification pending",
+  "phase": "G1 approved; dev9 Context-owned original TC/TM RPC and actual-send integration locally tested; hosted native DSS and full v0.8 qualification pending",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -56,16 +56,18 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "Actual while-running handoff was BLOCKED in earlier failed completion evidence; positive cohort checks post-termination BLOCKED handoff. No native quiescence/owner-CAS pass is claimed",
-    "K_native_subset": "c8b286c scoped PR/push service/native/wheel checks and PR compatibility passed; full K remains pending"
+    "K_native_subset": "c8b286c scoped PR/push service/native/wheel checks and PR compatibility passed; full K remains pending",
+    "G5_native_dss_rpc": "246 scoped local tests pass, including original protobuf over real mTLS to an independent DSS process; native Docker cohort pending hosted execution"
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Finish native pause/quiescence and child admission, native external driver dispatch and IDE Run/Debug integration; complete all-763 compatibility, browser/WSS, Compose/Kubernetes failure recovery and independent security/release gates",
+  "next_step": "Run candidate-SHA native audit/DSS CI; finish proven native pause/quiescence, child admission and recovery, IDE native Run/Debug, full compatibility, browser/WSS, production Compose/Kubernetes and independent security/release gates",
   "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
   "owner_authorization": "Finish and qualify v0.8; all steps approved until finished/deeply tested, commit to GitHub and integrate openbexi_ide with openbexi_spell_plugin (conversation)",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
   "runtime_enabled": false,
   "ide_pair": "IDE_PAIR.json",
   "native_launch_profile": "Explicit retained-single-use; default public execution remains disabled",
-  "native_qualification_receipt": "evidence/native-retained-launch/qualification-summary.json"
+  "native_qualification_receipt": "evidence/native-retained-launch/qualification-summary.json",
+  "native_dss_profile": "Optional GPL Context driver; five explicit original TC/TM methods, fixed endpoint/resource ACLs, no replay, schema 7; see NATIVE_DSS.md"
 }

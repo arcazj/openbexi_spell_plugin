@@ -13,7 +13,7 @@ from .store import ContextStore
 from .transport import Route, Server, tls_context
 
 
-def main():
+def main(*, driver_factory=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("role", choices=("listener", "context", "gateway"))
     parser.add_argument("--config", required=True, type=Path)
@@ -34,6 +34,8 @@ def main():
         if args.role == "context"
         else set()
     )
+    if args.role == "context" and driver_factory is not None:
+        optional.add("native_driver")
     if (
         type(config) is not dict
         or not common | specific <= set(config)
@@ -50,7 +52,7 @@ def main():
         parser.error("Invalid bind/host configuration")
     server_tls = tls_context(config["ca"], config["certificate"], config["key"], server=True)
     store = None
-    app: Context | Listener | Gateway
+    app: Context | Listener | Gateway | None = None
     try:
         if args.role == "context":
             store = ContextStore(config["state_directory"], config["context_id"])
@@ -62,6 +64,11 @@ def main():
                 approved_sources=config.get("approved_sources"),
                 worker_credentials=config.get("worker_credentials"),
                 worker_launch=config.get("worker_launch"),
+                native_driver_factory=(
+                    lambda authority: driver_factory(authority, config["native_driver"])
+                )
+                if driver_factory is not None and "native_driver" in config
+                else None,
             )
         elif args.role == "gateway":
             app = Gateway(
@@ -106,8 +113,12 @@ def main():
         finally:
             server.server_close()
     finally:
-        if store:
-            store.close()
+        try:
+            if isinstance(app, Context):
+                app.close()
+        finally:
+            if store:
+                store.close()
 
 
 if __name__ == "__main__":

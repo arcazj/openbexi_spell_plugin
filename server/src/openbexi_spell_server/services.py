@@ -37,6 +37,7 @@ class Context:
         approved_sources=None,
         worker_credentials=None,
         worker_launch=None,
+        native_driver_factory=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -56,8 +57,19 @@ class Context:
             raise ValueError("Unsupported worker launch profile")
         if worker_launch is not None and self.preflight is None:
             raise ValueError("Worker launch requires source preflight and unique identities")
-        self.launch = WorkerLaunch(self.preflight) if worker_launch is not None else None
+        if native_driver_factory is not None and worker_launch is None:
+            raise ValueError("Native driver requires the explicit retained launch profile")
+        self.native_driver = (
+            native_driver_factory(self.authority) if native_driver_factory is not None else None
+        )
+        self.launch = (
+            WorkerLaunch(self.preflight, self.native_driver) if worker_launch is not None else None
+        )
         self.authority.start_guard = self._require_preflight
+
+    def close(self):
+        if self.native_driver is not None:
+            self.native_driver.close()
 
     def _require_preflight(self, row):
         if self.preflight is None:
@@ -79,7 +91,13 @@ class Context:
                 raise Fault(404, "route_not_available")
             handler = (
                 self.launch
-                if path in ("/v1/worker/consume", "/v1/worker/check", "/v1/worker/event")
+                if path
+                in (
+                    "/v1/worker/consume",
+                    "/v1/worker/check",
+                    "/v1/worker/event",
+                    "/v1/worker/driver",
+                )
                 else self.preflight
             )
             if handler is None:

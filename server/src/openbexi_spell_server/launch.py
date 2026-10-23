@@ -1,6 +1,8 @@
 """Opt-in retained single-use worker launch RPC, never a controller start route."""
 
 from dataclasses import fields
+import base64
+import binascii
 import json
 
 from .authority import StartGrant
@@ -23,9 +25,10 @@ def start_grant(value):
 
 
 class WorkerLaunch:
-    def __init__(self, preflight):
+    def __init__(self, preflight, driver=None):
         self.preflight = preflight
         self.authority = preflight.authority
+        self.driver = driver
         with self.authority.store.transaction():
             self.authority.store.db.execute(
                 "CREATE TABLE IF NOT EXISTS native_driver_events(request_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,body_hash TEXT NOT NULL)"
@@ -36,12 +39,19 @@ class WorkerLaunch:
     def handle(self, peer, path, body):
         if self.preflight.peers.get(peer.fingerprint) != peer:
             raise Fault(403, "worker_identity_required")
-        if path not in ("/v1/worker/consume", "/v1/worker/check", "/v1/worker/event"):
+        allowed = {"/v1/worker/consume", "/v1/worker/check", "/v1/worker/event"}
+        if self.driver is not None:
+            allowed.add("/v1/worker/driver")
+        if path not in allowed:
             raise Fault(404, "route_not_available")
+        extra = set()
+        if path.endswith("event"):
+            extra = {"request_id", "message", "severity", "scope"}
+        elif path.endswith("driver"):
+            extra = {"request_id", "path", "payload"}
         exact(
             body,
-            {"schema", "context_id", "grant"}
-            | ({"request_id", "message", "severity", "scope"} if path.endswith("event") else set()),
+            {"schema", "context_id", "grant"} | extra,
         )
         if (
             body["schema"] != "openbexi.worker/1"
@@ -53,6 +63,30 @@ class WorkerLaunch:
             raise Fault(403, "worker_assignment_mismatch")
         if path.endswith("event"):
             return self.record_event(grant, body)
+        if path.endswith("driver"):
+            canonical_uuid(body["request_id"])
+            if (
+                type(body["path"]) is not str
+                or not 1 <= len(body["path"]) <= 256
+                or type(body["payload"]) is not str
+                or len(body["payload"]) > 43692
+            ):
+                raise Fault(400, "native_driver_request_invalid")
+            try:
+                raw = base64.b64decode(body["payload"], validate=True)
+            except (ValueError, binascii.Error) as error:
+                raise Fault(400, "native_driver_request_invalid") from error
+            if len(raw) > 32768:
+                raise Fault(413, "native_driver_request_too_large")
+            self.authority.validate_start_grant(grant)
+            result = self.driver.dispatch(grant, body["request_id"], body["path"], raw)
+            if type(result) is not bytes or len(result) > 32768:
+                raise Fault(503, "native_driver_response_invalid")
+            return dict(
+                request_id=body["request_id"],
+                execution_id=grant.execution_id,
+                payload=base64.b64encode(result).decode("ascii"),
+            )
         if path.endswith("consume"):
             self.authority.consume_start(grant, peer.slot, peer.incarnation)
         else:
@@ -83,9 +117,12 @@ class WorkerLaunch:
         with authority._execution_lock(grant.execution_id):
             with store.transaction():
                 row = authority._grant(grant)
+                bindings = {"context-audit"}
+                if self.driver is not None:
+                    bindings.update(self.driver.bindings)
                 if (
                     row["lifecycle"] != "STARTING"
-                    or json.loads(row["inventory"])["driver_binding"] != "context-audit"
+                    or json.loads(row["inventory"])["driver_binding"] not in bindings
                 ):
                     raise Fault(403, "native_event_denied")
                 hashed = digest(body)

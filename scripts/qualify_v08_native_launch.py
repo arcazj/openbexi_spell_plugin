@@ -7,6 +7,7 @@ Context and Executor. No Docker socket/host manager enters a worker or Context.
 
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import closing
+import argparse
 import hashlib
 import json
 import os
@@ -183,6 +184,9 @@ def host_processes(name):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--native-dss", action="store_true")
+    profile = parser.parse_args()
     output = ROOT / ".qualification/v08-native-launch" / ("run-" + uuid.uuid4().hex)
     output.mkdir(parents=True)
     report = dict(
@@ -190,7 +194,8 @@ def main():
         native_launch_path_tested=False,
         native_concurrency_verified=False,
         native_pause_qualified=False,
-        external_driver_effects_enabled=False,
+        external_driver_effects_enabled=profile.native_dss,
+        native_dss_qualified=False,
         context_audit_events_enabled=True,
         runtime_enabled=False,
         full_v08_qualified=False,
@@ -207,6 +212,10 @@ def main():
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
     ]
+    if profile.native_dss:
+        inputs.extend((ROOT / "driver_plugin/src").rglob("*.py"))
+        inputs.extend((ROOT / "src/dss").rglob("*.py"))
+        inputs.extend((ROOT / "src/dss/data").glob("*.json"))
     for path in inputs:
         report["source_sha256"][str(path.relative_to(ROOT))] = hashlib.sha256(
             path.read_bytes()
@@ -231,6 +240,17 @@ def main():
                 shutil.copy2(
                     ROOT / "host_runtime/python/v08_worker.py", code / "agent.py"
                 )
+                if profile.native_dss:
+                    shutil.copytree(
+                        ROOT / "src/dss",
+                        code / "src/dss",
+                        ignore=shutil.ignore_patterns("__pycache__"),
+                    )
+                    shutil.copytree(
+                        ROOT / "driver_plugin/src",
+                        code / "driver_plugin/src",
+                        ignore=shutil.ignore_patterns("__pycache__"),
+                    )
                 # Context needs Git object readers; the frozen worker image has
                 # no Git. Record this separate development image, never call it
                 # the immutable native worker image or a release build.
@@ -272,6 +292,11 @@ def main():
                 sources.mkdir()
                 command("git", "init", "-q", sources)
                 fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
+                if profile.native_dss:
+                    fixture += (
+                        "assert Send(command='CMD1',Timeout=2,HandleError=False,PromptUser=False,Confirm=False) is True\n"
+                        "assert GetTM('TM.POWER.BUS_VOLTAGE',Wait=False,Timeout=2,HandleError=False) == 28.0\n"
+                    )
                 for n in range(10):
                     (sources / ("procedure_" + str(n) + ".py")).write_text(
                         fixture.replace("{index}", str(n)).replace(
@@ -304,7 +329,9 @@ def main():
                         revision=revision,
                         entrypoint="procedure_" + str(n) + ".py",
                         runtime_image=IMAGE,
-                        driver_binding="context-audit",
+                        driver_binding="simulator"
+                        if profile.native_dss
+                        else "context-audit",
                         aliases=[],
                     )
                     for n in range(10)
@@ -352,12 +379,95 @@ def main():
                     worker_credentials=credentials,
                     worker_launch="retained-single-use",
                 )
+                dss_name = None
+                driver_network = None
+                if profile.native_dss:
+                    driver_network = prefix + "-driver-net"
+                    command("docker", "network", "create", "--internal", driver_network)
+                    networks.append(driver_network)
+                    dss_name = prefix + "-dss"
+                    dss_program = (
+                        "import json,os,signal,threading,time\n"
+                        "from dss.engine import DssEngine\n"
+                        "from dss.local import LocalRuntime\n"
+                        "from dss.server import ApiServer,TcServer\n"
+                        "runtime=LocalRuntime(DssEngine('/state/dss.sqlite3'),bootstrap_servers='unused.local:9092')\n"
+                        "tcp=TcServer(('0.0.0.0',4545),runtime);runtime.tc_address=tcp.server_address\n"
+                        "api=ApiServer(('0.0.0.0',8085),runtime)\n"
+                        "for s in (tcp,api):threading.Thread(target=s.serve_forever,daemon=True).start()\n"
+                        "print(json.dumps({'ready':True,'pid':os.getpid()}),flush=True)\n"
+                        "while True:time.sleep(1);runtime.engine.advance()\n"
+                    )
+                    names.append(dss_name)
+                    command(
+                        "docker",
+                        "run",
+                        "-d",
+                        "--name",
+                        dss_name,
+                        "--init",
+                        "--read-only",
+                        "--network",
+                        driver_network,
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "--pids-limit",
+                        "64",
+                        "--memory",
+                        "256m",
+                        "--user",
+                        "10003:10003",
+                        "--tmpfs",
+                        "/state:rw,nosuid,nodev,size=32m,uid=10003,gid=10003",
+                        "--mount",
+                        f"type=bind,src={code},dst=/v08,readonly",
+                        "--env",
+                        "PYTHONPATH=/v08/src",
+                        "--entrypoint",
+                        "python",
+                        IMAGE,
+                        "-c",
+                        dss_program,
+                    )
+                    dss_info = json.loads(command("docker", "inspect", dss_name))[0]
+                    dss_ip = dss_info["NetworkSettings"]["Networks"][driver_network][
+                        "IPAddress"
+                    ]
+                    config["native_driver"] = dict(
+                        binding="simulator",
+                        url=f"http://{dss_ip}:8085",
+                        tcp=[dss_ip, 4545],
+                        directory="/state/driver",
+                        commands=["CMD1"],
+                        telemetry=["TM.POWER.BUS_VOLTAGE"],
+                    )
+                    report["dss_container"] = dss_info["Id"]
+                    report["dss_profile"] = (
+                        "isolated synthetic binary TCP and HTTP; no Kafka"
+                    )
+                    deadline = time.monotonic() + 15
+                    while True:
+                        try:
+                            command(
+                                "docker",
+                                "exec",
+                                dss_name,
+                                "python",
+                                "-c",
+                                "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8085/api/v1/state',timeout=1).read()",
+                            )
+                            break
+                        except RuntimeError:
+                            if time.monotonic() >= deadline:
+                                raise RuntimeError("Isolated DSS startup failed")
+                            time.sleep(0.1)
                 (secure / "config.json").write_bytes(canonical(config))
                 context_name = prefix + "-context"
                 args = [
                     "docker",
-                    "run",
-                    "-d",
+                    "create",
                     "--name",
                     context_name,
                     "--init",
@@ -389,12 +499,16 @@ def main():
                 args.extend(
                     [
                         "--env",
-                        "PYTHONPATH=/v08/server/src",
+                        "PYTHONPATH=/v08/server/src:/v08/driver_plugin/src:/v08/src"
+                        if profile.native_dss
+                        else "PYTHONPATH=/v08/server/src",
                         "--entrypoint",
                         "python",
                         context_image,
                         "-m",
-                        "openbexi_spell_server",
+                        "openbexi_spell_dss.context_server"
+                        if profile.native_dss
+                        else "openbexi_spell_server",
                         "context",
                         "--config",
                         "/credentials/config.json",
@@ -402,6 +516,11 @@ def main():
                 )
                 names.append(context_name)
                 command(*args)
+                if driver_network is not None:
+                    command(
+                        "docker", "network", "connect", driver_network, context_name
+                    )
+                command("docker", "start", context_name)
                 route = Route(
                     f"https://localhost:{port}",
                     peers["context"]["pin"],
@@ -789,6 +908,63 @@ def main():
                             "Native lifecycle events lack durable receipts"
                         )
                 report["native_driver_events_persisted"] = event_count
+                if profile.native_dss:
+                    state_probe = (
+                        "import json,urllib.request;"
+                        "print(json.dumps(json.load(urllib.request.urlopen('http://127.0.0.1:8085/api/v1/state'))['core']))"
+                    )
+                    actual = json.loads(
+                        command("docker", "exec", dss_name, "python", "-c", state_probe)
+                    )
+                    if actual["commands_executed"] != 10:
+                        raise RuntimeError("Native DSS command count differs")
+                    with closing(
+                        sqlite3.connect(
+                            "file:" + str(state / "context.sqlite3") + "?mode=ro",
+                            uri=True,
+                        )
+                    ) as audit:
+                        stages = audit.execute(
+                            "SELECT state,COUNT(*) FROM effect_intents GROUP BY state"
+                        ).fetchall()
+                        if stages != [("ACKED", 50)]:
+                            raise RuntimeError(
+                                "Native TC lacks fifty correlated durable stage receipts"
+                            )
+                        methods = dict(
+                            audit.execute(
+                                "SELECT path,COUNT(*) FROM native_driver_calls WHERE state='COMPLETED' GROUP BY path"
+                            )
+                        )
+                        if (
+                            methods.get(
+                                "/spell.driver.SPELLDriverInterface_TC/SendCommand"
+                            )
+                            != 10
+                            or methods.get(
+                                "/spell.driver.SPELLDriverInterface_TM/RefreshItem", 0
+                            )
+                            < 10
+                        ):
+                            raise RuntimeError(
+                                "Native original TC/TM method evidence absent"
+                            )
+                    for worker in report["workers"]:
+                        finished = next(
+                            e
+                            for e in worker["events"]
+                            if e["event"] == "native-finished"
+                        )
+                        if not finished["external_driver_effects_enabled"]:
+                            raise RuntimeError(
+                                "Worker lacks original command dispatch evidence"
+                            )
+                    report.update(
+                        native_dss_qualified=True,
+                        native_dss_commands=10,
+                        native_dss_stage_receipts=50,
+                        native_driver_methods=methods,
+                    )
                 first_row = next(row for row in retained if row["id"] == first["id"])
                 if (
                     first_row["epoch"] != first["epoch"]

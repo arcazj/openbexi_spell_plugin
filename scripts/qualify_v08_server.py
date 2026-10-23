@@ -34,6 +34,7 @@ def main():
         readonly_mount_attested=False,
         native_pause_tested=False,
         driver_effect_seam_tested=False,
+        native_context_driver_rpc_tested=False,
         independent_dss_process_tested=False,
         source_inventory_verified=True,
         source_inventory_scope="bounded approved Git objects and worker directory; configured catalog only",
@@ -108,6 +109,8 @@ def main():
                 "check",
                 "server",
                 "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+                "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+                "driver_plugin/src/openbexi_spell_dss/context_server.py",
                 "host_runtime/python/v08_worker.py",
                 "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
@@ -123,6 +126,8 @@ def main():
                 "--check",
                 "server",
                 "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+                "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+                "driver_plugin/src/openbexi_spell_dss/context_server.py",
                 "host_runtime/python/v08_worker.py",
                 "scripts/qualify_v08_native_launch.py",
                 str(Path(__file__).relative_to(root)),
@@ -173,6 +178,7 @@ def main():
         c["exit_code"] == 0 for c in report["checks"]
     )
     report["driver_effect_seam_tested"] = report["passed"]
+    report["native_context_driver_rpc_tested"] = report["passed"]
     report["independent_dss_process_tested"] = report["passed"]
     if (output / "tests.xml").exists():
         suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))
