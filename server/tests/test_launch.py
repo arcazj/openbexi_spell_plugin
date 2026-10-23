@@ -178,3 +178,76 @@ def test_worker_cannot_call_controller_admission(setup, pki):
         == 404
     )
     assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 0
+
+
+@pytest.mark.parametrize("failure", ["lost_reply", "wrong_receipt", "source_mismatch"])
+def test_native_agent_never_launches_or_retries_without_a_definitive_consumption_receipt(
+    setup, tmp_path, monkeypatch, failure
+):
+    import importlib.util
+    from pathlib import Path
+    import sys
+    import types
+
+    admitted = grant(setup)
+    native_calls, requests = [], []
+
+    def forbidden(*args, **kwargs):
+        native_calls.append(True)
+        raise AssertionError("Native process opened without a definitive consumption receipt")
+
+    monkeypatch.setitem(sys.modules, "native", types.SimpleNamespace(NativeSession=forbidden))
+    if "openbexi_spell_dss" not in sys.modules:
+        parent = types.ModuleType("openbexi_spell_dss")
+        parent.__path__ = []
+        monkeypatch.setitem(sys.modules, "openbexi_spell_dss", parent)
+    monkeypatch.setitem(
+        sys.modules, "openbexi_spell_dss.relay", types.SimpleNamespace(Relay=forbidden)
+    )
+    path = Path(__file__).resolve().parents[2] / "host_runtime/python/v08_worker.py"
+    spec = importlib.util.spec_from_file_location("v08_worker_failure_test", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    monkeypatch.setattr(module, "readonly_tree", lambda _: tmp_path)
+    monkeypatch.setattr(
+        module,
+        "os",
+        types.SimpleNamespace(statvfs=lambda _: types.SimpleNamespace(f_flag=1), ST_RDONLY=1),
+    )
+    monkeypatch.setattr(
+        module,
+        "preflight",
+        lambda *args, **kwargs: (
+            {"source_sha256": "a" * 64},
+            {"manifest": {"entrypoint": "main.py"}},
+        ),
+    )
+    monkeypatch.setattr(
+        module,
+        "verify_directory",
+        lambda *args: ("b" if failure == "source_mismatch" else "a") * 64,
+    )
+    monkeypatch.setattr(module, "tls_context", lambda *args: None)
+    monkeypatch.setattr(module, "Relay", forbidden)
+
+    class Route:
+        def __init__(self, *args):
+            pass
+
+        def call(self, request, **kwargs):
+            requests.append(kwargs["path"])
+            if failure == "lost_reply":
+                raise Fault(503, "context_unavailable")
+            return {"consumed": True, "request_id": "a different request"}
+
+    monkeypatch.setattr(module, "Route", Route)
+    with pytest.raises((Fault, RuntimeError)):
+        module.run(
+            dict(
+                preflight=setup["config"],
+                grant=asdict(admitted),
+                start_barrier=str(tmp_path / "start"),
+            )
+        )
+    assert not native_calls
+    assert requests == ([] if failure == "source_mismatch" else ["/v1/worker/consume"])

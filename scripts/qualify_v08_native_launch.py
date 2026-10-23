@@ -312,7 +312,7 @@ def main():
                     },
                 )
                 control_network = prefix + "-control"
-                command("docker", "network", "create", "--internal", control_network)
+                command("docker", "network", "create", control_network)
                 networks.append(control_network)
                 state = temporary / "authority"
                 state.mkdir(mode=0o700)

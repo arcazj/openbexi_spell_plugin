@@ -8,6 +8,7 @@ patch preimages remain unchanged. This adapter does not expose a worker route.
 import hashlib
 import socket
 import time
+import threading
 
 from dss.catalog import canonical
 from dss.packets import decode_packet, decode_tm, encode_tc, recv_packet
@@ -16,13 +17,27 @@ from .transport import Transport as LegacyTransport
 
 
 class Transport(LegacyTransport):
+    def __init__(self, *args, **kwargs):
+        # One Context-owned instance per binding. Do not overload the legacy
+        # four-handler metadata API when ten executions begin together.
+        self.metadata_admission = threading.BoundedSemaphore(1)
+        super().__init__(*args, **kwargs)
+
+    def current_state(self):
+        if not self.metadata_admission.acquire(timeout=0.25):
+            raise TimeoutError("DSS metadata admission busy; no effect attempted")
+        try:
+            return self.get("state")
+        finally:
+            self.metadata_admission.release()
+
     def command(
         self, name, arguments, identity, operation, check, *, admission, timeout=5
     ):
         identity = dict(identity)
         admission.validate(identity, operation)
         arguments = self.arguments(name, arguments)
-        state = self.get("state")
+        state = self.current_state()
         if state["epoch"] != self.epoch or state["scenario_id"] != self.scenario:
             raise ValueError("DSS epoch changed; explicit rebinding required")
         digest = hashlib.sha256(
