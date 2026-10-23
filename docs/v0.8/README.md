@@ -1,7 +1,8 @@
 # v0.8 architecture review
 
-Status: **baseline audited; architecture proposed; approval pending**. This is
-not a v0.8 implementation or release. The normative requirements are in the
+Status: **baseline audited; independent review completed; owner authorized
+staged implementation under the binding G1 resolutions**. No v0.8 release
+or full runtime qualification is established. The normative requirements are in the
 [master prompt](openbexi_spell_v0.8_master_prompt.md).
 
 The proposed implementation adds a separate authenticated Listener and isolated
@@ -23,10 +24,11 @@ Review these documents in order:
 4. [Acceptance plan](ACCEPTANCE_PLAN.md), [review findings](ARCHITECTURE_REVIEW.md),
    [test report](TEST_REPORT.md), and [remaining risks](RISKS.md).
 
-The review decision is whether to approve this architecture for implementation
-(Gate B / G1). Release approval is a separate later decision after all runtime,
+The review outcome and owner authorization are recorded in
+[G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md). The initial internal server
+contract is [SERVER_CONTRACT.md](SERVER_CONTRACT.md). Release approval is a separate later decision after all runtime,
 Compose, Kubernetes, browser, compatibility and CI gates pass. There is no
-v0.8 tag, release, production replacement, or approved architecture yet.
+v0.8 tag, release, production replacement, or completed runtime qualification yet.
 
 Diagrams are generated from editable DOT files in [diagrams](diagrams/).
 Every target component in the v0.8 diagram is labeled proposed.

@@ -1,6 +1,6 @@
 digraph v08 {
   graph [rankdir=LR, bgcolor="white", fontname="Arial", fontsize=22, pad=.35, nodesep=.4, ranksep=.75, dpi=150,
-    labelloc=t, label="OpenBEXI SPELL v0.8 — PROPOSED, approval pending\nNo separate Management Service; Context owns all execution management"];
+    labelloc=t, label="OpenBEXI SPELL v0.8 — G1 APPROVED DESIGN, runtime qualification pending\nNo separate Management Service; Context owns all execution management"];
   node [shape=box, style="rounded,filled", fillcolor="#f1f5fb", color="#718096", fontname="Arial", fontsize=15, margin=".2,.15"];
   edge [color="#52637b", fontname="Arial", fontsize=12];
   u1 [label="U1 controller\nOwns A1, A2 and B1"];
@@ -11,11 +11,11 @@ digraph v08 {
   subgraph cluster_a {
     label="Context A — separate authority process / container"; color="#83a9c4"; fontname="Arial"; fontsize=17;
     ca [label="Context A authority\nProcedure reservations + supervisor\nPer-execution owner / epoch / claims\nBlackboard • fanout • driver binding"];
-    sa [shape=cylinder, label="Context A SQLite volume\nAtomic intent / owner / audit"];
+    sa [shape=cylinder, label="Context A local ext4 / SQLite\nExclusive lock + fresh incarnation"];
     a1 [label="Worker A1 / Executor subprocess\nCPython 3.13 + qualified SPELL\nPrivate native helpers"];
     a2 [label="Worker A2 / Executor subprocess\nSame isolation contract"];
     ca -> sa [dir=both, label="Single-writer transactions"];
-    ca -> a1 [dir=both, label="Private versioned mTLS RPC\nGeneration / cancellation"];
+    ca -> a1 [dir=both, label="Private versioned mTLS RPC\nOriginal grant + worker incarnation"];
     ca -> a2 [dir=both, label="Private versioned mTLS RPC"];
   }
   subgraph cluster_b {
@@ -41,8 +41,8 @@ digraph v08 {
   b1 -> adapters [label="Private relay via Context"];
   adapters -> dss [dir=both, label="Verified v0.7 transport contract\nRequalification required"];
   adapters -> gcs [style=dashed, label="Optional, site-qualified"];
-  consent [shape=note, fillcolor="#fff1d9", label="Transfer A2 only:\nU2 requests → U1 accepts\nContext CAS owner + epoch\nU1 retains A1 and B1\nNo disconnect-based takeover"];
+  consent [shape=note, fillcolor="#fff1d9", label="Transfer A2 only:\nU2 requests → U1 accepts\nBarrier + settlement then CAS\nU1 retains A1 and B1\nNo disconnect-based takeover"];
   ca -> consent [style=dashed, label="Proposed invariant"];
-  deployment [shape=note, fillcolor="#fff1d9", label="Compose: static bounded worker pool\nK8s: one Job/Pod per execution\nNo Docker socket in Listener/Context\nAll v0.8 acceptance gates NOT RUN"];
+  deployment [shape=note, fillcolor="#fff1d9", label="Compose: static single-use workers\nK8s: one admitted incarnation per run\nNo Docker socket in Listener/Context\nG1 authorized; runtime gates pending\nMandatory K8s admission + worker namespace"];
   cb -> deployment [style=dashed];
 }

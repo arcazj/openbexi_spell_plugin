@@ -1,11 +1,13 @@
 # v0.8 proposed architecture and migration
 
-**TARGET-v0.8. Approval pending.**
+**TARGET-v0.8. G1 owner-authorized for staged implementation under
+[G1 review resolutions](G1_REVIEW_RESOLUTION.md); runtime qualification pending.**
 
 The Listener handles client authentication, sessions, configured Context
 discovery, routing and connection health. Each Context is a separate process
 with its own execution registry, reservations, blackboard, controller/claim
-state, event journal and driver binding. A worker owns an isolated procedure
+state, event journal and driver binding. Initial Compose worker containers are single-use per admitted execution family;
+there is no automatic reuse (F4). A worker owns an isolated procedure
 runtime and debugger. There is no separate Management Service or standalone
 execution-manager process.
 

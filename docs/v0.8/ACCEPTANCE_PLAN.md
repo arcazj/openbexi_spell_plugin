@@ -1,6 +1,8 @@
 # Mandatory acceptance plan
 
-All rows are **NOT RUN for v0.8**. Tests must exercise the real boundary
+Runtime rows are **NOT RUN until their own evidence is recorded**.
+G1 has owner authorization under G1_REVIEW_RESOLUTION.md; this is a design
+approval, not a runtime test result. Tests must exercise the real boundary
 identified below, retain failed attempts and attach source/image identities.
 Unit mocks alone cannot satisfy deployment, native, browser or partition gates.
 
@@ -36,3 +38,26 @@ docs, `SPELL_COMPATIBILITY_MATRIX.md`, `DRIVER_COMPATIBILITY.md`,
 changelog/release notes, known limitations, DOT/PNG/checksums, Compose/Kustomize
 sources and actual qualification evidence. These audit documents do not stand
 in for missing implementation deliverables.
+
+## Independent review oracles
+
+- F1: duplicate Pods/agents with the same ExecutionID cannot consume a second
+  start grant; include node partition, eviction and Job recreation.
+- F2/F3: delay an old-origin operation until after transfer; preserve its original
+  grant, instrument final check/send/receipt and every command stage, and prove
+  no epoch restamping. Block A's adapter while B/C meet bounded latency.
+- F4: child/double-fork/setsid/agent crash and late RPC tests; no automatic reuse
+  or PAUSED acknowledgement without proven quiescence.
+- F5: deny authority secret/PVC mounts in the same namespace, wrong ServiceAccount,
+  init/sidecar injection, arbitrary image/command, spoofed labels and policy outage.
+- F6: copied/old backup, failed node, stale authority/worker, fsync/disk failure;
+  replacement cannot gain effect authority before old-authority fencing.
+- F7: commit succeeds but capability delivery fails; two-tab reconnect, requester
+  revocation and late disconnect; no second transfer or revived capability.
+- F8: two parents/top-level collision/recursive child start, child prompt/transfer
+  and teardown; retain legacy child semantics or explicitly approve deviations.
+- F9/F10: complete route/role and read-scope matrix, live authorization before
+  idempotency replay, private helper reachability and shared-state/resource ACLs.
+
+Wire foundation CI early. Its success cannot stand in for native, browser,
+Compose, Kubernetes, security-scan or candidate-publication gates.

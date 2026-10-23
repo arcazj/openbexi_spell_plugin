@@ -1,6 +1,7 @@
 # Proposed execution admission and supervision
 
-`TARGET-v0.8`. Context owns the transaction, worker registry and reservations.
+`TARGET-v0.8`. Binding F1/F4/F6/F8 decisions are in
+[G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md). Context owns the transaction, worker registry and reservations.
 There is no independent execution-manager process.
 
 Identity is `(ContextID, ProcedureID)` for logical exclusion. ExecutionID is a
@@ -26,12 +27,13 @@ another copy. Restart creates a new ExecutionID only after safe reconciliation.
 
 Compose assigns one active execution to each static worker container. Each
 worker supervises the native adapter and all descendants using a private run
-directory and generation. A finished worker is reusable only after proven
-quiescence, source/result cleanup, capability rotation and a new generation;
-otherwise fence it until operator reconciliation. Container-level CPU/memory/
+directory and generation. The initial worker is single-use: automatic reuse is disabled. Only operator
+recreation after descendant shutdown and effect reconciliation replenishes its
+slot. A future reuse mechanism needs independent qualification. Container-level CPU/memory/
 PID/filesystem bounds apply per active execution. No unrestricted Docker socket
-is needed. Kubernetes uses idempotently named Jobs and API-verified terminal
-status; a node partition is not proof of termination.
+is needed. Kubernetes uses idempotently named Jobs plus one durable authenticated
+worker-incarnation start grant. Job/Pod status, names, labels and heartbeat
+timeouts never authorize replacement. A node partition is not proof of termination.
 
 Each Context owns a concurrency-safe blackboard, deliberately shared by its
 procedures. Reads/subscriptions and owner-authorized writes have a revision
@@ -44,3 +46,6 @@ PIDs/Pod IDs, at least two Contexts, 100 concurrent duplicate starts producing
 one reservation, aliases/revisions/renames, worker crash, blocked-driver pause,
 abort, lease/owner transfer, Context/Listener restart and uncertain-effect holds.
 No v0.8 result has been collected yet.
+
+Native children reserve their logical identities in this same Context namespace
+before native RUN and inherit the execution-family grant; see F8.

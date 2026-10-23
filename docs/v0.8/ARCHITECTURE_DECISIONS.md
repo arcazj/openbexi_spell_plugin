@@ -1,14 +1,16 @@
 # Proposed architecture decisions
 
-All ADRs are `TARGET-v0.8`, **pending owner and independent architecture/security
-review**. Recording a decision here is not approval or implementation evidence.
+All ADRs remain `TARGET-v0.8` implementation requirements. Independent review
+and owner authorization are recorded in [G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md),
+which supplies binding revisions F1-F10 and supersedes ambiguous wording here.
+Architecture approval is not implementation or qualification evidence.
 
 | ADR | Proposed decision | Rationale / rejected alternative | Gate |
 |---|---|---|---|
 | ADR-01 | One separate Listener process; Contexts have independent lifetimes | Gateway restart must not kill workers. Reusing a UI-owned service conflates lifetime and authority. | C |
 | ADR-02 | One authority process per ContextID; all management functions inside it | No standalone Management Service. Do not deploy concurrent authoritative replicas. | D |
 | ADR-03 | Isolated worker runtime per active execution; CPython 3.13 native SPELL provider | Retain accepted runtime behavior rather than rewrite the language or mechanically restore old source. Native helper processes remain private implementation details. | E/G |
-| ADR-04 | Compose static worker pool, one active Executor per worker container; K8s one Job/Pod per execution | Compose cannot create per-run containers itself. A fixed pool needs no Docker socket or new privileged management service. K8s Context has narrow Job RBAC. | E/G6/G7 |
+| ADR-04 | Compose static single-use workers; K8s one admitted worker incarnation per execution, even if a Job duplicates Pods | Compose cannot create per-run containers itself. A fixed pool needs no Docker socket or new privileged management service. K8s Context has narrow Job RBAC. | E/G6/G7 |
 | ADR-05 | SQLite per Context, OS-exclusive authority lock and FULL synchronous transactions | Reuse the audited single-authority pattern; no new database/broker service. Storage must support correct local locking/fsync. No shared multi-writer/HA claim. | D/J |
 | ADR-06 | Unique active `(ContextID, ProcedureID)` reservation; Git revision is metadata, not lock identity | Renaming/reversion must not bypass a reservation; aliases stay explicit. Same ID in a different Context is allowed by default. | E |
 | ADR-07 | Stable authenticated user identity, per-execution ownership and epoch; connection-bound control capability | A user's ownership of one run cannot affect another; stale sessions must not regain capability. | F |
@@ -31,16 +33,19 @@ supervised OS subprocesses in constrained worker services. Worker service code
 does not schedule across executions or own claims. Context capacity admission
 reserves a worker slot and logical procedure in one transaction; launch follows
 that durable intent. A lost or uncertain worker retains both reservations.
-Worker reuse requires proven descendant quiescence and cleared temporary state;
-failure fences the slot pending operator reconciliation. A heartbeat timeout
+Initial workers are single-use per container incarnation; automatic reuse is
+disabled. Replenishment requires operator shutdown/effect reconciliation and
+container recreation. Any later reuse needs separate qualification. A heartbeat timeout
 alone never proves termination. Trusted approved procedure code remains the
 operational scope; untrusted Python sandboxing is not established by `-I`.
 
 Kubernetes launch is part of the Context's existing supervision function,
 not a new manager service. Context's ServiceAccount can create/read/delete
-only labeled execution Jobs and read corresponding Pods in its namespace;
-an admission policy or separate namespace per Context is needed to prevent
-plain RBAC verbs from allowing arbitrary images, mounts or service accounts.
+execution Jobs and corresponding Pods in a dedicated worker namespace;
+labels are inventory, not an RBAC boundary. Mandatory fail-closed admission
+restrictions accompany namespace/RBAC separation and prevent arbitrary images,
+mounts and service accounts. Authority storage/credentials are in a separate
+namespace. Each worker consumes one authenticated incarnation-bound start grant.
 No workload receives cluster-admin or a Docker daemon socket.
 
 ## Consequences requiring validation

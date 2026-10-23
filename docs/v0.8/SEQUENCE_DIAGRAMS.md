@@ -1,6 +1,6 @@
 # Proposed authority and lifecycle sequences
 
-All sequences are `TARGET-v0.8`, pending Gate B review. They describe required
+All sequences are `TARGET-v0.8`, approved for staged implementation under G1 review resolutions. They describe required
 ordering and failure behavior; no v0.8 endpoint is implemented yet.
 
 ## Per-execution consent; A and C unchanged
@@ -21,6 +21,7 @@ sequenceDiagram
     L-->>U2: Pending; still read-only
     U1->>L: Accept claim B, epoch 7, current capability
     L->>X: Authenticated owner acceptance
+    X->>X: Close old admission; prove worker quiescence and effect settlement
     X->>DB: CAS (B, U1, 7) to (B, U2, 8); close claim; append events
     DB-->>X: Atomic commit; A and C unchanged
     X-->>L: Claim accepted and owner changed
@@ -88,8 +89,11 @@ sequenceDiagram
     end
 ```
 
-The Context attaches authority; worker payloads cannot select their own owner
-epoch. Every subsequent external write revalidates current authority. A transfer
+The Context issues an immutable original operation grant; workers return it
+for validation and cannot select or refresh their own owner epoch. Delayed
+requests are never stamped with the new current epoch. The per-execution
+admission mutex covers the final check and actual bounded socket write,
+not network receipt waits; SQLite write transactions remain short. Every subsequent external write revalidates current authority. A transfer
 does not reverse a command already sent under valid prior authority. An unknown
 outcome remains an uncertainty hold and is never converted into a successful
 receipt or a retry.
@@ -121,3 +125,7 @@ Listener outage does not waive controller grace/identity rules. Context restart
 cannot grant old browser capabilities authority or treat a partitioned worker
 as terminated. Final recovery tests must prove these properties with real
 process/Pod failures and retained audit ordering.
+
+The F2 transfer barrier leaves the runtime paused until the new owner explicitly
+resumes. An unproven barrier fences writes and requires recovery; it never
+implicitly grants the claimant. F3 specifies multi-stage effect settlement.

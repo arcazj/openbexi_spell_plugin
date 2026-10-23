@@ -1,6 +1,8 @@
 # Proposed per-execution ownership protocol
 
-`TARGET-v0.8`, Gate F not executed. Each execution stores owner user ID, owner
+`TARGET-v0.8`, Gate F not executed. Binding review resolutions F2/F3/F7 in
+[G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md) specify the transfer barrier,
+actual-send ordering and reconnect completion rules. Each execution stores owner user ID, owner
 connection binding, increasing control epoch, hashed capability, control state
 and grace deadline. Execution lifecycle and ownership state are separate.
 
@@ -22,7 +24,8 @@ a competing request returns conflict. There is no global owner-per-user limit.
    admission, check authenticated current owner, live connection binding,
    expected epoch, pending unexpired claim and requester eligibility. Expire
    using server time inside the transaction, not only a background timer.
-4. CAS owner+epoch; increment epoch; revoke old capability; create a fresh
+4. Prove the transfer barrier (F2) before acknowledging effective acceptance.
+   CAS owner+epoch; increment epoch; revoke old capability; create a fresh
    capability bound to requester's authenticated connection. Persist
    `CONTROL_CLAIM_ACCEPTED` then `CONTROL_OWNER_CHANGED` atomically. Only after
    commit expose the new capability privately to its recipient. Failure before
@@ -46,8 +49,10 @@ have a separate scoped permission; operational blackboard writes require
 execution authority or a separately defined administrative action.
 
 Driver effect admission rechecks the current execution epoch and procedure
-fence at each external write. Transfer and write admission linearize under
-the same execution authority lock/transaction. A command already admitted
+fence at each external write. Transfer and final check/actual write linearize under
+the same per-execution admission mutex; SQLite transactions remain short and
+never contain network waits. An immutable original grant is carried end to end;
+delayed requests are never stamped with the current epoch. A command already admitted
 before transfer may have an external effect; an epoch cannot undo it. Record
 its actual correlation/outcome and block any later write using old authority.
 Never resend an uncertain command to make UI state agree with the new owner.

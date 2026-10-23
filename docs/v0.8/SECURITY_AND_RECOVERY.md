@@ -52,3 +52,11 @@ its own compatible state. Never point v0.7 directly at a v0.8 database.
 Image provenance, SBOM, dependency/license review, vulnerability scans, secret
 scan, source/artifact integrity and exact-SHA hosted CI are mandatory release
 evidence. They have not been performed for a v0.8 candidate because none exists.
+
+## Binding review resolution
+
+F1-F10 in [G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md) are mandatory.
+Initial workers are single-use, authority storage is local ext4 with manual
+fencing/replacement, and worker namespaces never hold authority credentials.
+The internal TLS/ACL/RPC profile is [SERVER_CONTRACT.md](SERVER_CONTRACT.md).
+No browser cookie/WSS or worker/effect route is enabled by the initial C/D API.

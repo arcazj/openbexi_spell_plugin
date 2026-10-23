@@ -38,3 +38,8 @@ qualification; there are no v0.8 deployment manifests yet.
 The independent DSS container/process is reachable only through Context-owned
 adapters. Context/worker RPC addresses come from explicit configuration and
 service DNS. They never reuse DSS HTTP/TC addresses as executor endpoints.
+
+The approved initial worker profile is single-use per container incarnation.
+Automatic pool reuse is disabled; explicit host recreation follows shutdown
+and effect settlement. K8s worker namespaces are separate from authority data,
+with mandatory admission and one consumed worker-incarnation start grant.

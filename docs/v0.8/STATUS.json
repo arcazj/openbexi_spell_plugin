@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "A evidence collected; B proposal ready for review",
+  "phase": "G1 reviewed and owner-authorized; staged C/D implementation next",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -26,11 +26,13 @@
   "gates": {
     "G0": "Baseline identified and focused reproduction passed; absent hosted CI documented",
     "A": "Evidence ready; independent review pending",
-    "B_G1": "Owner approval and independent review pending",
+    "B_G1": "Owner-authorized for staged implementation under binding F1-F10 contracts; no runtime qualification inferred",
     "C_through_L": "Not started; no v0.8 acceptance claimed"
   },
   "implementation_started": false,
   "release_published": false,
-  "next_step": "Review and approve or revise the concrete architecture before Phase C implementation",
-  "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later"
+  "next_step": "Implement and qualify the internal TLS Listener/Context foundation; no merge/tag/publication",
+  "required_approval_source": "openbexi_spell_v0.8_master_prompt.md Phase B / Gate B and addendum G1; separate merge/tag/publication approval is required later",
+  "owner_authorization": "Approved , move forward (review conversation)",
+  "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10"
 }
