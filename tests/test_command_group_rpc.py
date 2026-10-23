@@ -23,6 +23,7 @@ def bridge(tmp_path,monkeypatch):
         for recipe in base.integrated_patches.DRIVER_RECIPES:
             if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
         module=types.ModuleType('openbexi_spell_dss._command_group_rpc_test')
+        module.__package__ = 'openbexi_spell_dss'
         exec(compile(raw,path,'exec'),module.__dict__);return module
     monkeypatch.setattr(base,'composed',composed)
     yield from base.bridge.__wrapped__(tmp_path,monkeypatch)

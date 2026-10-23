@@ -20,11 +20,22 @@ def normalize(source):
         return source
     lines = text.split('\n')
     changed = False
-    for token in tokens:
-        if token.type != tokenize.OP or token.string != '<>':
+    for index, token in enumerate(tokens):
+        if token.type != tokenize.OP:
             continue
+        end = token.end
+        if token.string != '<>':
+            # CPython can tokenize the legacy spelling as two adjacent modern
+            # operators. Whitespace or a line boundary must not form a token.
+            if token.string != '<' or index + 1 >= len(tokens):
+                continue
+            following = tokens[index + 1]
+            if (following.type != tokenize.OP or following.string != '>'
+                    or token.end != following.start):
+                continue
+            end = following.end
         row, column = token.start
-        assert token.end == (row, column + 2)
+        assert end == (row, column + 2)
         assert lines[row - 1][column:column + 2] == '<>'
         lines[row - 1] = lines[row - 1][:column] + '!=' + lines[row - 1][column + 2:]
         changed = True

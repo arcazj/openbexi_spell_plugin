@@ -1,6 +1,7 @@
 """Read-only local GCS display application and print spool viewer."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 import argparse
+from contextlib import closing
 from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -14,7 +15,7 @@ from .displays import document
 
 def journal_state(path, namespace=None):
     """Read an existing ground namespace without creating or migrating its data."""
-    with sqlite3.connect(Path(path).resolve().as_uri() + '?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect(Path(path).resolve().as_uri() + '?mode=ro', uri=True)) as db:
         if namespace is None:
             rows = db.execute('SELECT namespace,state FROM ground').fetchall()
             if len(rows) != 1:

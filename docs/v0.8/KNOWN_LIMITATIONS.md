@@ -31,3 +31,20 @@ server is internal Linux-only; it is not a public browser endpoint. The trusted
 approved-procedure/host scope remains in force. Vendor GCS, real spacecraft,
 untrusted Python sandboxing, automatic uncertain-effect replay and HA remain
 unqualified. See G1_REVIEW_RESOLUTION.md, SERVER_CONTRACT.md and RISKS.md.
+
+## Paired IDE and compatibility qualification
+
+The IDE's new SPELL server tab supports discovery, reservations, observers and
+explicit prelaunch handoff. Native Run/Debug are unavailable; local action
+fallback is rejected while connected. Browser/WSS and full deployed execution
+remain pending. See IDE_PAIR.json for the exact tested companion source.
+
+The current historical root test suite is not a portable full qualification:
+it references older absolute Windows capture paths and immutable source
+checkpoints that differ from current source. The failed broad diagnostic is
+retained, alongside the passing explicit portable subset. Restoring the
+published v0.7 capture archive alone does not satisfy all those older
+references. Fresh complete native compatibility evidence on the correct
+immutable source, plus driver settlement and deployment/recovery tests, remain
+release blockers. Preparatory syntax and resource-lifetime source fixes do not
+qualify a rebuilt native image or approve a release.

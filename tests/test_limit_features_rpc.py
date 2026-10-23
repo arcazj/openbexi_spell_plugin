@@ -1,5 +1,6 @@
 """Actual original-schema dispatcher, DSS catalog and SQLite limit transactions."""
 from copy import deepcopy
+from contextlib import closing
 import ast
 from datetime import datetime, timedelta, timezone
 import hashlib
@@ -28,6 +29,7 @@ def env(tmp_path, monkeypatch):
         for recipe in dict.fromkeys((*base.integrated_patches.DRIVER_RECIPES, limit_feature_patches)):
             if path in recipe.PREIMAGES:raw = recipe.apply(path, raw)
         module = types.ModuleType('openbexi_spell_dss._limit_rpc_test_'+name)
+        module.__package__ = 'openbexi_spell_dss'
         exec(compile(raw, path, 'exec'), module.__dict__)
         return module
     monkeypatch.setattr(base, 'composed', composed)
@@ -251,7 +253,7 @@ def test_native_recorder_preserves_binary_receipt_bytes_as_json(env):
         if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'HEADER' for target in node.targets)))
     functions = [node for node in ast.parse(header).body if isinstance(node, ast.FunctionDef) and node.name in ('ground', 'snapshot')]
     path = env.journal.db.execute('PRAGMA database_list').fetchone()[2]
-    namespace = dict(json=json, sqlite3=types.SimpleNamespace(connect=lambda ignored: sqlite3.connect(path)))
+    namespace = dict(json=json, closing=closing, sqlite3=types.SimpleNamespace(connect=lambda ignored: sqlite3.connect(path)))
     exec(compile(ast.Module(body=functions, type_ignores=[]), 'native-recorder', 'exec'), namespace)
     value = namespace['snapshot']()
     encoded = json.dumps(value)

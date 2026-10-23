@@ -23,6 +23,7 @@ def composed(name):
     for recipe in dict.fromkeys((*base.integrated_patches.DRIVER_RECIPES, limit_feature_patches, telemetry_feature_patches)):
         if path in recipe.PREIMAGES:raw = recipe.apply(path, raw)
     module = types.ModuleType('openbexi_spell_dss._telemetry_test_'+name)
+    module.__package__ = 'openbexi_spell_dss'
     exec(compile(raw, path, 'exec'), module.__dict__)
     return module
 

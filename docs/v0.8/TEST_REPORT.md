@@ -251,3 +251,49 @@ The verified downloaded artifact and origin metadata are retained under
 These are real native PIDs, independently observed from registry/preflight PIDs.
 The original v0.7 image is identified by its exact archive/image hashes.
 No v0.8 native worker launch or driver settlement is inferred from that result.
+
+# Portable legacy compatibility subset and full-suite diagnostic
+
+Latest companion IDE `a1ec00f`: **235 hosted tests pass**, with one Windows-only
+Job ownership test skipped on Linux; both PR `39909450551` and push
+`39909445313` pass. This includes all 14 new client/Qt tests, companion SDK/DSS
+examples and the eight existing offline Python Docker execution tests. The
+paired server candidate `3fd050f` passed both hosted workflows (`39909811358`,
+`39909806537`), including all 154 scoped checks and frozen native diagnostic.
+
+A broader local plugin diagnostic initially collected 916 cases with 23 import
+errors because grpc/protobuf were absent. After installing their pinned
+versions, the full historical root suite recorded **744 passed, 227 failed and
+271 errors**. This is a failed diagnostic, not a compatibility pass. Of those
+failures/errors, 336 were missing historical Windows capture files, 141 were
+composed test-module relative-import warnings, two were missing pypdf, 17
+concerned the legacy token-preparation helper and two rejected stale source
+identity assertions. Original compressed JUnit/logs are retained in
+`evidence/compatibility-diagnostics/`.
+
+The published v0.7 raw archive was downloaded and its exact 217,653,956-byte
+size and SHA-256 verified. Its manifest describes 7,838 files. Those are later
+v0.7 captures; this does not supply every earlier absolute Windows capture
+referenced by historical development tests. No report was rewritten, source
+hash restamped, missing capture fabricated or failure relabeled. The full root
+suite has not been qualified for the current candidate. G4 remains pending.
+
+Portable fixes: package-relative imports in composed fixture modules now have
+their actual package metadata; the GPL legacy `<>` helper also handles adjacent
+`<`/`>` operator tokens without changing whitespace, strings, comments, encoding
+or line positions. This helper is still preparation-only, not a newly integrated
+native compiler. Actual native grammar qualification remains separate.
+
+The first portable run had 191 passes and two resource-warning errors. Follow-up
+fixed real read-only viewer connection cleanup, closed recorder connections and
+released HTTP error responses. A direct regression proves the viewer closes
+SQLite on both success and failed namespace lookup. No warning filter was added.
+
+Final local portable subset: **241 tests passed**, zero failures/errors/skips,
+with warnings as errors, including actual original protobuf dispatch and binary
+DSS TCP exchanges. Exact commands, tool versions and source hashes are in
+`evidence/portable-compatibility/`. The separate hosted compatibility workflow
+runs this explicit subset; it must not be presented as all 763 requirements,
+a native worker/DSS-process test or v0.8 actual-send fencing qualification.
+Published v0.7 artifacts remain unchanged; source fixes are unreleased and need
+their own future wheel/image build and native acceptance before publication.

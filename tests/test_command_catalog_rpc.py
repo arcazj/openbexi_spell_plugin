@@ -24,6 +24,7 @@ def bridge(tmp_path,monkeypatch):
             if path in recipe.PREIMAGES:raw=recipe.apply(path,raw)
             if recipe is command_catalog_patches:break
         module=types.ModuleType('openbexi_spell_dss._catalog_rpc_test')
+        module.__package__ = 'openbexi_spell_dss'
         exec(compile(raw,path,'exec'),module.__dict__)
         return module
     monkeypatch.setattr(rpc_tests,'composed',composed)
