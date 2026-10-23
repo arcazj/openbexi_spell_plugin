@@ -270,10 +270,12 @@ def main():
                 sources, snapshot = temporary / "git", temporary / "snapshot"
                 sources.mkdir()
                 command("git", "init", "-q", sources)
-                fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nprint('native procedure completed', {index})\n"
+                fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
                 for n in range(10):
                     (sources / ("procedure_" + str(n) + ".py")).write_text(
-                        fixture.replace("{index}", str(n))
+                        fixture.replace("{index}", str(n)).replace(
+                            "{square}", str(n * n)
+                        )
                     )
                 command("git", "-C", sources, "add", ".")
                 command(
