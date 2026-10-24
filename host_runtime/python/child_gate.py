@@ -2,6 +2,7 @@
 
 The Unix endpoint is confined to one worker. SO_PEERCRED, immutable executable
 and the agent's owned Listener parent authenticate the native Context process.
+Its exact PID bindings authenticate only the original admitted Executor members.
 Context service RPC still uses the original certificate/grant/winner proof.
 This provider supplies no family pause, recovery, release or resume proof.
 """

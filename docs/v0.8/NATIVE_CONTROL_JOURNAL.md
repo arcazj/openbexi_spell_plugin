@@ -135,3 +135,19 @@ passed 424 checks without skips, with digest/CRC and 124 source hashes verified.
 [Native forward receipt](evidence/native-child-start/dev22-forward.json).
 Executor dequeue, other mutation paths, whole-family settlement, live transfer
 and new-owner resume remain unqualified.
+
+
+Dev23 `944ed1e` passed 434 hosted service/paired checks without skips, including
+all kernel identity controls, but the native family job failed at link time;
+no native consumption pass is claimed. The retained failure and exact source
+hashes are recorded in [TEST_REPORT.md](TEST_REPORT.md). Dev24 restores the
+frozen common-runtime graph and its two supplemental CPython support objects,
+registers the candidate DTA initializer before Python startup, and explicitly
+selects the candidate Executor. The real cohort checks one native singleton.
+
+Dev24 also requires a separate fresh-worker race probe: hold RUN before final
+admission, durably close its own controller, then require HTTP 403, no
+consumption row, no procedure-body marker and the same three live native PIDs.
+Termination still retains the probe's hold and spent worker. It adds no
+quiescence, queue-settlement, resume or release permission. Exact hosted
+validation is pending.

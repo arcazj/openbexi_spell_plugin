@@ -511,3 +511,25 @@ def test_consumption_cannot_use_copied_config_or_revoked_subject(journal, family
         family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
         == 0
     )
+
+
+def test_original_forwarded_run_is_denied_at_consumer_after_connection_close(agent, family):
+    agent.dispatch("CMD_RUN", send=True)
+    body = native_forward_body(agent)
+    agent.forward(body)
+    assert family["controller"]("session.close", {"connection_id": family["connection"]})["closed"]
+    packet = dict(body, schema="openbexi.native-consume/1")
+    with pytest.raises(Fault) as denied:
+        agent.consume(packet)
+    assert denied.value.status == 403
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.consume(packet)
+    assert not agent.consumed
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
+        == 0
+    )
+    assert tuple(
+        family["store"].db.execute("SELECT owner,epoch,control_state FROM executions").fetchone()
+    ) == ("alice", 1, "CONTROLLER_DISCONNECTED")
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1

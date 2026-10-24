@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 import queue
 import sys
+import threading
 import time
 import traceback
 
@@ -108,12 +109,14 @@ def run(config):
     probe_enabled = type(config) is dict and "pause_probe" in config
     thread_probe = type(config) is dict and "thread_barrier_probe" in config
     child_profile = type(config) is dict and "native_child_gate" in config
+    consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     exact(
         config,
         fields
         | ({"pause_probe"} if probe_enabled else set())
         | ({"thread_barrier_probe"} if thread_probe else set())
-        | ({"native_child_gate"} if child_profile else set()),
+        | ({"native_child_gate"} if child_profile else set())
+        | ({"native_consume_fence_probe"} if consumption_probe else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -125,6 +128,12 @@ def run(config):
         config["native_child_gate"] is not True or probe_enabled or thread_probe
     ):
         raise ValueError("Native children require their separate explicit profile")
+    if consumption_probe and (
+        config["native_consume_fence_probe"] is not True or not child_profile
+    ):
+        raise ValueError(
+            "Consumption probe requires the private native child candidate"
+        )
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -293,6 +302,31 @@ def run(config):
         )
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
+        if consumption_probe:
+            final_consume = controls.consume
+            consume_fenced = threading.Event()
+
+            def delayed_consume(body):
+                # Qualification-only delay before the final authority check.
+                # It supplies no ALLOW, new token, retry or post-check bypass.
+                emit(
+                    "native-consumption-awaiting-fence", execution_id=grant.execution_id
+                )
+                release = Path("/control/consume-continue")
+                until = time.monotonic() + 35
+                while not release.is_file():
+                    if time.monotonic() >= until:
+                        raise TimeoutError("Consumption fence probe deadline expired")
+                    time.sleep(0.02)
+                try:
+                    final_consume(body)
+                except Fault as error:
+                    if error.status == 403:
+                        consume_fenced.set()
+                        emit("native-consumption-authority-denied", status=403)
+                    raise
+
+            controls.consume = delayed_consume
         session.request = controls.dispatch
         admission = NativeAdmissionServer(
             options["admission_socket"],
@@ -364,6 +398,29 @@ def run(config):
             time.sleep(0.05)
         rpc("check")
         session.request("CMD_RUN", send=True)
+        if consumption_probe:
+            if not admission.consume_denials.wait(40) or not consume_fenced.is_set():
+                raise RuntimeError(
+                    "Stale native RUN did not reach final authority denial"
+                )
+            if (
+                session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+                != "PAUSED"
+                or controls.consumed
+                or Path("/workspace/consume-probe-ran").exists()
+            ):
+                raise RuntimeError("Stale native RUN advanced after controller fencing")
+            emit("native-stale-run-held", native_status="PAUSED", hold_retained=True)
+            until = time.monotonic() + 35
+            while not Path("/control/consume-probe-stop").is_file():
+                if time.monotonic() >= until:
+                    raise TimeoutError("Consumption probe host observation expired")
+                if Path("/workspace/consume-probe-ran").exists():
+                    raise RuntimeError(
+                        "Stale native RUN executed during host observation"
+                    )
+                time.sleep(0.02)
+            return  # Native cleanup/termination is never a reservation-release proof.
         running = False
         attempted_pause = {}
         pause_channel_failed = False

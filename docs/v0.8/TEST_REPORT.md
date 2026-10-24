@@ -1425,3 +1425,49 @@ rows and exact PID bindings**, including hidden children, and retain all 21 hold
 ten spent workers and the ten actual native unadmitted-RUN denials. Exact-source
 hosted results are pending. All eleven full release groups remain unqualified;
 no merge, version tag, release, or production migration is performed.
+
+### dev23 hosted service pass and retained native build failure
+
+At **944ed1e66431e71a5fc408d13115478960b3d580**, both PR 40128997839 and push
+40128993473 passed foundation and six existing native jobs, but the child-family
+job failed before executing the new native candidate. Foundation completed
+**434 tests, zero failures/errors/skips**, including all three Linux controls.
+PR portable workflow 40128997842 passed. Foundation artifact 12574466940 digest
+`95e859cef7ac4f24f50a9c43b54f6bffa702ba3ef8d64a1b1848ea9102907a74`,
+CRC and all **127** repository hashes were verified. Native failed artifact
+12574905892 digest `b51fd2e1aa6a47289164f32498421700bf6b8b1a95bd7c9af6673e7fd7824a58`,
+CRC and **29** hashes were verified. The direct Executor link lacked the frozen
+`ws_filter.cpp` and `continuation.cpp` support objects. No native consumption
+success is inferred from this failed build. Redacted receipts retain the
+[service pass](evidence/native-child-start/dev23-foundation.json) and
+[native failure](evidence/native-child-start/dev23-native-build-failure.json).
+
+## dev24 candidate: frozen common runtime and native stale-consumption probe
+
+The builder now reproduces the frozen 13-library common runtime with both
+manifest-verified supplemental support units. Context remains a separate native
+graph. Executor links the candidate common library; its main registers that
+library's DTA init function before Python startup, so the installed Python shim
+cannot load a second executor singleton. The private session explicitly selects
+the read-only candidate Executor. Native root fixtures require the DTA built-in
+origin and exactly the candidate shared library in their process maps.
+Source selection is 74 Context / 112 Executor units, 120 common-library units,
+and two supplemental units; there are **144 unique compilation units**.
+
+After the 21 legitimate family RUNs, a fresh eleventh worker/slot/certificate and
+independent controller connection tests the actual native consumption race.
+The agent delays only before the final live authority check; the host closes
+the controller durably and then permits that check to proceed. Passing requires
+exact HTTP 403, zero consumption receipts, a still-PAUSED Executor with the same
+three native PIDs, no procedure-body write marker, unchanged unrelated execution
+states, and retained owner/epoch. Host-observed termination must still leave
+**22 logical holds and 11 spent workers**. The first ten workers still prove ten
+concurrent procedures; the extra probe is a separate later execution.
+
+Local: **68 focused checks passed, two peer controls deselected**. The additional
+mTLS regression exercises the same forwarding/connection-close/consumption
+ordering. Ruff/format/mypy and isolated installed dev24 package import/version
+and both CLI checks passed. Full hosted suite now expects **435** checks, with
+all three Linux controls mandatory. Native compilation and the new actual race
+probe are pending exact-source hosted validation. All full release gates remain
+false; no handoff, queue settlement, release or recovery proof is synthesized.

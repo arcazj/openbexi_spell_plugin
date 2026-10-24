@@ -153,6 +153,9 @@ class NativeSession:
             ['spell-native', 'init-example', str(root / 'session')], text=True))
         server = ET.parse(example['config'])
         ET.SubElement(server.getroot().find('context'), 'property', name='CheckSpacecraft').text = 'false'
+        if self.native_home is not None:
+            server.find("./context/property[@name='ExecutorProgram']").text = str(
+                self.native_home / 'bin/SPELL-Executor')
         server.write(example['config'], encoding='utf-8')
         config = root / 'session/config/contexts/context_example.xml'
         tree = ET.parse(config)

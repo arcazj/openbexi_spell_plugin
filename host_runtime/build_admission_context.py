@@ -126,6 +126,22 @@ def patch_native_tree(source):
             + '    LOG_INFO("Native automatic RUN deferred to admitted command");\n    return;\n',
         )
     )
+    main = source / "src/executor/src/SPELLexecutorMain.C"
+    main_text = main.read_text()
+    entry = "int main( int argc, char** argv )\n{\n"
+    if main_text.count(entry) != 1:
+        raise ValueError("Ambiguous native Executor entry point")
+    # The installed Python DTA shim points at the original frozen shared graph.
+    # Register this graph's init function before Python startup, so that import
+    # uses the already linked candidate and cannot load a second singleton.
+    main.write_text(
+        main_text.replace(
+            entry,
+            'extern "C" PyObject* PyInit_libSPELL_DTA_v3();\n'
+            + entry
+            + '    if (PyImport_AppendInittab("libSPELL_DTA_v3", PyInit_libSPELL_DTA_v3) != 0) return 2;\n',
+        )
+    )
     service = source / "lib/SPELL_CTX/src/SPELLservice.C"
     if (
         sha(service)
@@ -148,7 +164,8 @@ def patch_native_tree(source):
 
 
 def native_graph(source, libraries, program):
-    makefile = source / ("src/" + program.lower() + "/Makefile.am")
+    folder = "executorcmd" if program == "ExecutorCmd_v3" else program.lower()
+    makefile = source / ("src/" + folder + "/Makefile.am")
     logical = makefile.read_text().replace("\\\n", " ")
     name = "SPELL_" + program
     dependencies = re.findall(r"^" + name + r"_LDADD\s*=\s*([^\n]+)", logical, re.M)
@@ -216,10 +233,31 @@ def main():
     graphs = {
         name: native_graph(source, libraries, name) for name in ("Context", "Executor")
     }
-    units = sorted(set(path for graph in graphs.values() for path in graph))
+    # Reproduce the frozen common runtime's 13-library graph, not only the
+    # server executable's dependency subset. These two port support sources are
+    # explicit supplemental units in the frozen native_build/executor_build.
+    runtime_graph = native_graph(source, libraries, "ExecutorCmd_v3")[:-1]
+    support = [
+        recipe / "native" / name for name in ("ws_filter.cpp", "continuation.cpp")
+    ]
+    for path in support:
+        if sha(path) != manifest["inputs"][path.relative_to(recipe).as_posix()]:
+            raise ValueError("Frozen native support source differs")
+    flags.append("-I" + str(recipe / "native"))
+    units = sorted(
+        set(
+            [path for graph in graphs.values() for path in graph]
+            + runtime_graph
+            + support
+        )
+    )
 
     def compile_unit(path):
-        name = path.relative_to(source).as_posix()
+        name = (
+            path.relative_to(source).as_posix()
+            if path.is_relative_to(source)
+            else "support/" + path.name
+        )
         obj = build / (name.replace("/", "_") + ".o")
         result = subprocess.run(
             flags + ["-c", str(path), "-o", str(obj)], capture_output=True, timeout=180
@@ -240,19 +278,58 @@ def main():
     binaries = home / "bin"
     binaries.mkdir()
     for child in (runtime / "bin").iterdir():
-        if child.name not in {"SPELL-Context", "SPELL-Executor", "SPELL-Executor_v3"}:
+        if child.name not in {
+            "SPELL-Context",
+            "SPELL-Executor",
+            "SPELL-Executor_v3",
+            "libspell_executor313.so",
+        }:
             (binaries / child.name).symlink_to(child)
     indexed = {row["unit"]: row["object"] for row in records}
+    shared = binaries / "libspell_executor313.so"
+    shared_objects = [
+        indexed[path.relative_to(source).as_posix()] for path in runtime_graph
+    ]
+    shared_objects += [indexed["support/" + path.name] for path in support]
+    subprocess.run(
+        [
+            "c++",
+            "-shared",
+            "-pthread",
+            "-fsanitize=address,undefined",
+            "-Wl,--no-undefined",
+            *shared_objects,
+            "-L" + sysconfig.get_config_var("LIBDIR"),
+            "-lpython3.13",
+            "-llog4cplus",
+            "-lxerces-c",
+            "-lz",
+            "-lmenu",
+            "-lncurses",
+            "-o",
+            str(shared),
+        ],
+        check=True,
+        timeout=120,
+    )
     programs = {}
     for name, graph in graphs.items():
         program = binaries / ("SPELL-" + name)
+        objects = [indexed[path.relative_to(source).as_posix()] for path in graph]
+        if name == "Executor":
+            objects = [
+                indexed[graph[-1].relative_to(source).as_posix()],
+                "-L" + str(binaries),
+                "-lspell_executor313",
+                "-Wl,-rpath,$ORIGIN",
+            ]
         subprocess.run(
             [
                 "c++",
                 "-pthread",
                 "-fsanitize=address,undefined",
                 "-Wl,--no-undefined",
-                *[indexed[path.relative_to(source).as_posix()] for path in graph],
+                *objects,
                 "-L" + sysconfig.get_config_var("LIBDIR"),
                 "-lpython3.13",
                 "-llog4cplus",
@@ -278,7 +355,11 @@ def main():
         gate_sha256=sha(Path("/candidate/admission_gate.H")),
         candidate_context_sha256=programs["Context"],
         candidate_executor_sha256=programs["Executor"],
-        original_executor_sha256=sha(runtime / "bin/SPELL-Executor"),
+        original_executor_sha256=sha(runtime / "bin/SPELL-Executor_v3"),
+        candidate_shared_runtime_sha256=sha(shared),
+        original_shared_runtime_sha256=sha(runtime / "bin/libspell_executor313.so"),
+        shared_runtime_library_units=len(runtime_graph),
+        supplemental_units={path.name: sha(path) for path in support},
         graph_units={name: len(graph) for name, graph in graphs.items()},
         admission_headers={
             path.name: sha(path) for path in Path("/candidate").glob("*.H")

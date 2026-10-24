@@ -498,6 +498,7 @@ def main():
         ROOT / "host_runtime/python/children.py",
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
+        ROOT / "scripts/v08_native_consumption.py",
     ]
     if profile.native_listener_survival:
         inputs.append(ROOT / "scripts/v08_listener_survival.py")
@@ -525,7 +526,7 @@ def main():
                     temporary / "pki",
                     extra_peers=("edge", "observer")
                     if profile.native_listener_survival
-                    else (),
+                    else (("worker-probe",) if profile.native_child_gate else ()),
                 )
                 code = temporary / "code"
                 package = code / "server/src/openbexi_spell_server"
@@ -704,6 +705,11 @@ def main():
                     )
                 if profile.native_child_gate:
                     fixture += (
+                        "import libSPELL_DTA_v3\n"
+                        "assert libSPELL_DTA_v3.__spec__.origin == 'built-in'\n"
+                        "with open('/proc/self/maps') as maps: native_maps=maps.read()\n"
+                        "assert '/opt/v08-native-home/bin/libspell_executor313.so' in native_maps\n"
+                        "assert not any('libspell_executor313.so' in line and '/opt/v08-native-home/bin/' not in line for line in native_maps.splitlines())\n"
                         "from spell.lang.functions import StartProc\n"
                         "assert StartProc('child_{index}',args=[['INDEX',{index}]],Automatic=True,Visible=({index}%2==0),Blocking=True,HandleError=False) is True\n"
                     )
@@ -728,6 +734,9 @@ def main():
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    (sources / "consume_probe.py").write_text(
+                        "with open('/workspace/consume-probe-ran','w') as marker:marker.write('UNSAFE')\n"
+                    )
                     (sources / "grandchild_0.py").write_text(
                         "import os,time\n"
                         "from spell.runtime import ARGS\nassert ARGS['INDEX'] == 100\n"
@@ -767,6 +776,8 @@ def main():
                 for source in sources.glob("*.py"):
                     shutil.copy2(source, snapshot / source.name)
                 slots = {"slot-" + str(n): "incarnation-" + str(n) for n in range(10)}
+                if profile.native_child_gate:
+                    slots["slot-probe"] = "incarnation-probe"
                 catalog = {
                     "procedure-" + str(n): dict(
                         repository="/catalog",
@@ -789,6 +800,9 @@ def main():
                     catalog["grandchild-0"] = dict(
                         catalog["procedure-0"], entrypoint="grandchild_0.py"
                     )
+                    catalog["consume-probe"] = dict(
+                        catalog["procedure-0"], entrypoint="consume_probe.py"
+                    )
                 credentials = dict(
                     profile="single-host-preflight",
                     identities={
@@ -798,6 +812,10 @@ def main():
                         for n in range(10)
                     },
                 )
+                if profile.native_child_gate:
+                    credentials["identities"][peers["worker-probe"]["pin"]] = dict(
+                        slot="slot-probe", incarnation="incarnation-probe"
+                    )
                 control_network = prefix + "-control"
                 command("docker", "network", "create", control_network)
                 networks.append(control_network)
@@ -1733,6 +1751,31 @@ def main():
                         raise RuntimeError(
                             "Blocked native handoff changed another execution"
                         )
+                if profile.native_child_gate:
+                    from v08_native_consumption import qualify_consumption_fence
+
+                    qualify_consumption_fence(
+                        temporary=temporary,
+                        prefix=prefix,
+                        context_name=context_name,
+                        worker_image=worker_image,
+                        code=code,
+                        snapshot=snapshot,
+                        ca=ca,
+                        peers=peers,
+                        port=port,
+                        entries=entries,
+                        controller=controller,
+                        control=control,
+                        state=state,
+                        names=names,
+                        networks=networks,
+                        report=report,
+                        command=command,
+                        await_event=await_event,
+                        host_processes=host_processes,
+                        events=events,
+                    )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]
@@ -1745,8 +1788,8 @@ def main():
                     passed=True,
                     native_launch_path_tested=True,
                     native_concurrency_verified=True,
-                    logical_holds_retained=21 if profile.native_child_gate else 10,
-                    single_use_workers_spent=10,
+                    logical_holds_retained=22 if profile.native_child_gate else 10,
+                    single_use_workers_spent=11 if profile.native_child_gate else 10,
                     context_isolated_from_host_manager=True,
                 )
             finally:
