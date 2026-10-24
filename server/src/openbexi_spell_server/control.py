@@ -152,7 +152,6 @@ class NativeControlJournal:
                     or not suffix.isascii()
                     or not suffix.isdecimal()
                     or str(int(suffix)) != suffix
-                    or int(suffix) < 1
                 ):
                     raise Fault(400, "native_member_instance_invalid")
                 if self.store.db.execute(

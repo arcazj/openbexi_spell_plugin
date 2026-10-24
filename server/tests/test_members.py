@@ -90,7 +90,6 @@ def test_registration_100_way_race_has_one_winner(journal, family, pki):
     "instance",
     [
         "other#1",
-        "main#0",
         "main#01",
         "main#1/..",
         "main#١",
@@ -134,6 +133,28 @@ def test_run_forward_and_consumption_require_durable_member(journal, family, pki
     assert controls.forward(family, pki, body)[0] == 200
     assert controls.consume(family, pki, body)[0] == 200
     assert rows(family)[0]["state"] == "REGISTERED_UNPROVEN"
+
+
+def test_canonical_zero_root_suffix_retains_one_immutable_target(journal, family, pki):
+    assert bind(family, pki, member(instance_id="main#0"))[0] == 200
+    assert bind(family, pki, member(instance_id="main#1", pid=1235))[0] == 409
+    assert len(rows(family)) == 1
+
+
+def test_native_zero_child_suffix_can_forward_and_consume_once(journal, family, pki):
+    # Frozen SPELLexecutorManager::getInstanceId starts a new procedure at #0.
+    assert bind(family, pki)[0] == 200
+    child = families.admit(family, pki)[1]["result"]["child_grant"]
+    assert families.consume(family, pki, child)[0] == 200
+    child_body = member(target_admission_id=child["admission_id"], instance_id="child#0", pid=1235)
+    assert bind(family, pki, child_body)[0] == 200
+    assert bind(family, pki, dict(child_body, instance_id="child#1", pid=1236))[0] == 409
+    operation = dict(controls.operation(), target_admission_id=child["admission_id"])
+    assert controls.admit(family, pki, operation)[0] == 200
+    assert controls.forward(family, pki, operation)[0] == 200
+    assert controls.consume(family, pki, operation)[0] == 200
+    assert controls.consume(family, pki, operation)[0] == 409
+    assert len(rows(family)) == 2
 
 
 def test_children_require_consumed_target_and_original_registered_parent(journal, family, pki):

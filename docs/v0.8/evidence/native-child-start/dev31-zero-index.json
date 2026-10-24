@@ -1,0 +1,36 @@
+{
+  "scope": "zero-index native instance compatibility; scoped mTLS, no native/full v0.8 qualification",
+  "base_commit": "88efd352054de499c6d8ed1c84066eabb7f8d398",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/control.py": "027621dcc1948ba7d9ae633adc5ebe69c1df9b13f242d0444841a55af85091bf",
+    "server/src/openbexi_spell_server/__init__.py": "206c6ff30e00c313ba7d5483c5409e5cee0281e21a04cb43c929072b545a13da",
+    "server/tests/test_members.py": "c27d0a802622672e5634c8aad7f48500ef161b4e5bf13fd55a1744bb9480e4a4",
+    "server/tests/test_control.py": "9d8a6ab9a0ebf4d68a0248b4b9b5b649d970f57ef1a69c2f9d67c5f62a6240f8",
+    "server/tests/test_child_gate.py": "01f697d00938578d9ff9dd1c8b8261da80b90ea0795bd75f2188ccb2cca22962",
+    "host_runtime/python/child_gate.py": "7907a6a332334edece5d1b85751145287fce66560f5fd9c8e1de3709de3f5e26",
+    "host_runtime/python/control_journal.py": "2f7a37e853b6458c30eda3022d086b31305fe1fb9abbb5b6a821a06a2b5dd332"
+  },
+  "before_zero_cases": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "member_cases": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "existing_control_cases": {
+    "tests": 68,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "legacy_allocator_source": "lib/SPELL_CTX/src/SPELLexecutorManager.C",
+  "legacy_allocator_sha256": "614d672b11f59e03759bedf726409b6f42e720773569468abf8781eef3997503",
+  "native_cpp_changed": false,
+  "hosted_required_tests": 490,
+  "full_v08_qualified": false
+}

@@ -1817,3 +1817,52 @@ isolated stale-controller probe retains its one member. All previous native
 counts, HTTP 403/no-body/unchanged-PID/hold checks remain mandatory. No full
 release gate, positive transfer, public native Run/Debug, Compose/Kubernetes
 qualification or release is inferred from this increment.
+
+
+## Dev30 native compatibility failure and dev31 zero-index correction
+
+At **88efd352054de499c6d8ed1c84066eabb7f8d398**, foundation passed **489 tests
+without failures/errors/skips** and six other native jobs passed in PR
+40139911934. Both PR/push family jobs timed out waiting for native-child-running.
+The workflow is failed evidence. Each of the ten roots registered/consumed RUN;
+ten child admissions were consumed, but every child registration was denied
+with a Fault. The original error category suppressed its precise HTTP code.
+
+The source and private retained traces identify a concrete compatibility
+mismatch: frozen `lib/SPELL_CTX/src/SPELLexecutorManager.C:getInstanceId` assigns
+**#0** to the first instance of a procedure. All ten child fixture instance
+mentions in native log tails used #0. The new roster incorrectly required a
+positive suffix even though the existing native child gate accepts canonical
+zero. Two targeted mTLS root/child tests reproduce **HTTP 400** before correction.
+
+Dev31 accepts the original canonical nonnegative decimal suffix, still bounded
+to nine ASCII digits and forbidding leading zeros except the single zero.
+It preserves the exact approved source prefix, original grant, parent, immutable
+target/PID binding, one-shot receipt, replay and incarnation checks. The child
+regression also forwards/consumes its admitted zero-index RUN exactly once and
+denies replacement/replay. The native allocator and C++ code are unchanged.
+Actual native confirmation remains mandatory; this unit result is not a pass
+for the complete family or full v0.8.
+
+During a temporary workspace outage, read-only diagnostic run **40140893578**
+(job 121012234067) independently verified the failure archive digest, CRC and
+30 input hashes, emitting only redacted counts/fixed public-source error
+categories. Its temporary workflow was removed after saving the diagnosis.
+Once the workspace returned, local checks repeated the CRC/source checks,
+verified all 144 compiled native sources and counted the zero suffixes without
+publishing raw operational traces.
+
+- Family artifact 12578346624 SHA-256
+  `2f1ff404f691a6d15e2b60f3b56322e3fc7feca9a1dec194090036c91dc3de51`;
+  [retained failure](evidence/native-child-start/dev30-family-failure.json).
+- Foundation artifact 12578196957 SHA-256
+  `fcc609f365a7f3004ddcf2d8e10cbabe69a1c3bb9fc78f74fd33f61542d32ffa`;
+  129 source hashes; [receipt](evidence/native-child-start/dev30-foundation.json).
+
+Dev31 local: **41 member tests and 68 existing control/child tests passed**,
+with two mandatory hosted peer controls excluded from the selected suite.
+The preceding full dev30 local run passed 486 tests with three hosted controls
+excluded. Ruff/format/mypy and isolated installed dev31 wheel/version/CLI pass.
+Hosted dev31 must pass **490 tests without skips** plus the unchanged native
+21-member/41-PID/42-event, durable roster and real stale-controller HTTP-403
+oracles. All eleven full release gate groups remain false.

@@ -224,3 +224,12 @@ to their exact original RUN targets/origins. The stale-consumption probe must
 retain its one original member through controller disconnection. Existing native
 counts, actual HTTP 403, no-body/receipt, unchanged-PID and retained-hold checks
 are preserved. Hosted qualification of this candidate is pending.
+
+
+Dev30's real family check found that the frozen native allocator begins a new
+procedure at **#0**. Dev31 therefore requires a canonical **nonnegative** decimal
+instance suffix, matching the existing before-spawn gate; single zero is valid,
+leading zeros and non-ASCII/signed values remain invalid. Logical admission,
+source prefix, original provenance, parent and immutable member constraints are
+unchanged. Before/after root and child mTLS cases cover registration, forwarding,
+consumption and replay denial. Native durable-roster requalification is pending.
