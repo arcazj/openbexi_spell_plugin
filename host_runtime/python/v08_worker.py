@@ -280,6 +280,7 @@ def run(config):
     if child_profile:
         sys.path.insert(0, "/v08")
         from child_gate import NativeAdmissionServer, NativeChildGate
+        from control_journal import NativeRunJournal
         from children import ChildProcedures
 
         child_gate = NativeChildGate(
@@ -291,14 +292,8 @@ def run(config):
             lambda: rpc("check"),
         )
         children = ChildProcedures(session.instance)
-        original_request = session.request
-
-        def admitted_request(identifier, *args, **kwargs):
-            if identifier == "CMD_RUN":
-                rpc("check")
-            return original_request(identifier, *args, **kwargs)
-
-        session.request = admitted_request
+        controls = NativeRunJournal(session, request, route, child_gate)
+        session.request = controls.dispatch
         admission = NativeAdmissionServer(
             options["admission_socket"],
             "/opt/v08-native-home/bin/SPELL-Context",

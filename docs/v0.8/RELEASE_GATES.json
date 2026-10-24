@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Automatic visible/hidden before-spawn children, one visible blocking grandchild and observed-thread barrier passed; manual/nonblocking/failure children, whole-family queues/effects and effective handoff/resume remain unqualified"
+      "reason": "Automatic visible/hidden before-spawn children, one visible blocking grandchild and observed-thread barrier passed. dev19 adds an unqualified private initial-RUN journal; native dequeue/direct-mutation fencing, manual/nonblocking/failure children and whole-family handoff/resume remain pending."
     },
     "compatibility": {
       "qualified": false,
@@ -25,7 +25,7 @@
     "driver_faults": {
       "qualified": false,
       "receipt": null,
-      "reason": "Positive native TC/TM and three ten-command bursts passed; retained native busy-burst and PR concurrent duplicate-denial mismatch require investigation; complete lifecycle/reset/partition/recovery/load remains unqualified"
+      "reason": "dev18 fixed the confirmed global command/receipt lock contention and passed exact-source hosted native/scoped/portable checks. Earlier duplicate-denial anomaly and full lifecycle/reset/partition/recovery/load remain unqualified."
     },
     "ide_browser": {
       "qualified": false,

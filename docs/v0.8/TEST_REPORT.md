@@ -1182,3 +1182,38 @@ errors, zero failures. Hosted CI retains both controls unskipped (384 total).
 Ruff format/lint, mypy over fifteen server files, dev18 wheel build, isolated
 installed version match and service CLI smoke passed. No hosted dev18 result is
 claimed yet.
+## dev18 exact-source hosted completion and dev19 native control work
+
+Runtime commit `14642765fb5642600d5525105f57d0a6b8bccb1d` passed all eight
+services/native jobs in PR run 40112024277 and push run 40112020263. Portable
+runs 40112024274 and 40112020176 passed. PR foundation completed **384 tests,
+zero failures/errors/skips**, plus lint/format/types and installed package smokes.
+Artifact 12567297002 SHA-256
+`233adecaf6f5ce60e72acfcf3b32e9a05d332e2cc9c376cfe91227fc036a680a`, its ZIP
+CRC and all 119 public source hashes were verified against that runtime commit.
+The redacted receipt is
+[evidence/native-child-start/dev18-final-foundation.json](evidence/native-child-start/dev18-final-foundation.json).
+This validates the bounded independent-command correction; full v0.8 is still
+unqualified, including all-763 compatibility and deployment qualification.
+
+The dev19 candidate adds the explicit private native RUN journal described in
+[NATIVE_CONTROL_JOURNAL.md](NATIVE_CONTROL_JOURNAL.md). Twenty-five focused tests
+pass over actual mTLS, including lost replies, competing admissions, a fence
+between admission and IPC, and restart retaining uncertainty/holds. Initial
+focused execution exposed missing fixed client routes and a restart-fixture
+error; both were corrected. The subsequent focused suite, lint/format and mypy
+passed. Hosted native and final full-suite results remain pending for dev19.
+
+The first dev19 full local run retained **406 passed, one failed, two deselected**:
+the existing 100-way child-admission test had one winner but only 91 of 99
+expected conflict responses. The other eight status/error pairs were not retained
+by the old assertion, so no cause is claimed. The assertion now records bounded
+status/error counts without changing one-winner/ninety-nine-conflict requirements.
+Ten isolated repetitions passed; the full confirmation run then passed **407
+tests, two deselected**, warnings as errors. The two managed-host-incompatible
+Linux positive controls remain mandatory and unskipped in hosted CI (expected
+409 tests). This intermittent original anomaly remains an open qualification risk.
+The final strengthened 25 journal tests passed again, including checking the
+committed uncertain row before the native send boundary. Ruff/format/mypy passed;
+the dev19 wheel built and its isolated installed import/version/CLI smoke passed.
+Hosted dev19 native execution and exact-source CI remain pending.

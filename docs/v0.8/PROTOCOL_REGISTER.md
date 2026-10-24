@@ -81,3 +81,11 @@ child-admit/child-consume authority routes and schema-10 retained grants. Live
 original parent authority and the single winner's memory proof remain required.
 No native execution or quiescence proof is inferred. NATIVE_CHILD_ADMISSION.md
 defines the protocol and the mandatory native before-RUN hook still required.
+The optional private `native_controls: run-journal` profile adds protocol-2
+`/v1/worker/control-admit` and `/v1/worker/control-report` routes. Both require the
+original StartGrant and single-consumer proof. Only first agent-issued RUN is
+admissible; no queued execution or settlement is inferred from IPC acknowledgment.
+Schema 11 retains per-member attempts across restart. Reports are safety-only
+diagnostics after fencing, never new control authority. See
+[NATIVE_CONTROL_JOURNAL.md](NATIVE_CONTROL_JOURNAL.md) for the native paths still
+requiring dequeue/direct-mutation fencing before positive handoff.

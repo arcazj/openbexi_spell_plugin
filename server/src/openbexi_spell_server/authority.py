@@ -56,6 +56,7 @@ class ExecutionAuthority:
         self.start_guard = None
         self.native_pause = None
         self.native_children = None
+        self.native_controls = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})
@@ -642,8 +643,8 @@ class ExecutionAuthority:
     def _original_grant(self, grant):
         """Immutable consumed identity, never permission for a new effect.
 
-        Only the fenced pause/report safety route may use this without live
-        controller authority. Driver/control paths must continue using _grant.
+        Fenced pause/control diagnostics may use this without live controller
+        authority. New driver/control admissions must continue using _grant.
         """
         if type(grant) is not StartGrant:
             raise Fault(403, "worker_grant_fenced")

@@ -40,6 +40,7 @@ class Context:
         native_driver_factory=None,
         native_pause=None,
         native_children=None,
+        native_controls=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -83,6 +84,14 @@ class Context:
             from .family import FamilyAdmission
 
             FamilyAdmission(self.authority, self.catalog)
+        if native_controls not in (None, "run-journal"):
+            raise ValueError("Unsupported native control profile")
+        if native_controls is not None:
+            if self.launch is None:
+                raise ValueError("Native controls require the explicit retained launch profile")
+            from .control import NativeControlJournal
+
+            NativeControlJournal(self.authority)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -119,6 +128,8 @@ class Context:
                     "/v1/worker/pause-report",
                     "/v1/worker/child-admit",
                     "/v1/worker/child-consume",
+                    "/v1/worker/control-admit",
+                    "/v1/worker/control-report",
                 )
                 else self.preflight
             )

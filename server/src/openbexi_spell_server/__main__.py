@@ -37,6 +37,7 @@ def main(*, driver_factory=None):
             "worker_launch",
             "native_pause",
             "native_children",
+            "native_controls",
         }
         if args.role == "context"
         else set()
@@ -73,6 +74,7 @@ def main(*, driver_factory=None):
                 worker_launch=config.get("worker_launch"),
                 native_pause=config.get("native_pause"),
                 native_children=config.get("native_children"),
+                native_controls=config.get("native_controls"),
                 native_driver_factory=(
                     lambda authority: driver_factory(authority, config["native_driver"])
                 )

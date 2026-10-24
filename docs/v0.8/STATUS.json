@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev18 bounded independent command admission implemented; 382 local scoped tests passed with two managed-host exclusions; mandatory 384-test hosted/native qualification pending",
+  "phase": "dev19 private native RUN journal: 407 local scoped tests passed, two managed-host exclusions; hosted 409-test/native qualification pending; initial child-admission response anomaly retained",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -46,7 +46,9 @@
     "b644d56: automatic before-spawn native child component passed with 40 native PIDs, 10 consumed child admissions, 35 original EV receipts and 20 retained holds. ZIP CRC/digest and all 23 source hashes verified. Foundation workflow timed out; no all-green workflow or full-v0.8 qualification inferred.",
     "56439d7 hosted push 40044575533 passed all eight services/native jobs: 382 scoped tests, package/lint/type smokes, child and Listener survival cohorts. Listener kill/recreate preserved thirty native PIDs, ten advancing procedures, Context incarnation and owner/epoch/generation values. Both push and PR Listener jobs passed. All 24 Listener and 119 foundation source hashes, archive digests and CRCs verified. PR foundation 40044579825 failed one duplicate-driver response assertion; failure retained and exact denial diagnostics added, not relabelled green.",
     "9bbae55 native push/PR cohorts passed including one nested child; foundation failed on a confirmed single-reader metadata-admission bottleneck. Three-of-four fixed DSS API handler admission correction and installed IDE native observer integration await hosted checks.",
-    "d523c96 all eight hosted services/native jobs passed in both push and PR with 382 scoped tests, zero failures/errors/skips; portable workflows succeeded. Final foundation CRC/digest and 119 repository source hashes verified. Exact installed IDE native observer, nested child and bounded metadata correction passed; prior failures retained."
+    "d523c96 all eight hosted services/native jobs passed in both push and PR with 382 scoped tests, zero failures/errors/skips; portable workflows succeeded. Final foundation CRC/digest and 119 repository source hashes verified. Exact installed IDE native observer, nested child and bounded metadata correction passed; prior failures retained.",
+    "1464276 dev18 passed all eight services/native jobs in both PR 40112024277 and push 40112020263, both portable workflows, and 384 scoped tests with zero failures/errors/skips. Foundation artifact digest/CRC and all 119 public source hashes verified.",
+    "dev19 local confirmation: 407 passed, two mandatory-hosted Linux controls deselected; 25 focused RUN journal tests passed, lint/format/mypy and isolated package smoke passed. Initial full-run child-admission conflict-count anomaly remains unexplained despite ten isolated passes."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -56,7 +58,7 @@
   ],
   "test_commands_and_outcomes": "TEST_REPORT.md; ide-pair-final and native-boundary evidence retain exact scope and source identities",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
-  "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md; full historical root diagnostic failed on older capture paths/source identities and remains unqualified",
+  "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md; full historical root diagnostic failed on older capture paths/source identities and remains unqualified; dev19 initial local 100-way child-admission race returned eight unclassified responses; strict diagnostic assertion added, ten targeted reruns and confirmation passed, cause not claimed.",
   "gates": {
     "G0": "Baseline identified and focused reproduction passed; absent hosted CI documented",
     "A": "Independent review completed; historical baseline evidence retained",
@@ -69,7 +71,7 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
-    "K_native_subset": "d523c96 push 40045966181 and PR 40045970114 all eight jobs passed, 382 scoped tests and isolated package checks; both portable workflows succeeded. Full K remains unqualified.",
+    "K_native_subset": "1464276 dev18: all eight services/native jobs passed in PR 40112024277 and push 40112020263, 384 scoped tests; both portable workflows passed. dev19 pending. Full K unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -78,7 +80,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete hosted dev18 validation, then implement whole-family participant and queue settlement before effective native handoff and explicitly admitted new-owner resume; continue paired IDE Run/Debug, recovery and deployment qualification.",
+  "next_step": "Qualify the dev19 private native RUN journal in hosted native child cohort, then implement native dequeue/direct-mutation fencing and whole-family participant/queue settlement before handoff and explicit new-owner resume. Paired IDE native Run/Debug, recovery and deployment qualification remain pending.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -99,5 +101,7 @@
   "native_listener_survival_receipt": "evidence/listener-survival/qualification-summary.json; 24 source hashes, CRC and digest verified; read-only observer only",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
-  "native_driver_concurrency": "Up to ten independent fixed-simulator command streams, immediate overload denial before effect; each actual stage retains original authorization mutex and dual-ledger receipts. Ten-pending-receipt success and fencing regressions pass locally; no vendor concurrency or full-load qualification implied."
+  "native_driver_concurrency": "1464276 hosted scoped/native/portable checks passed: ten independent fixed-simulator command streams and immediate overload denial before effect; actual stages retain authorization mutex and dual ledgers. No vendor concurrency or full-load qualification implied.",
+  "package_version": "0.8.0.dev19",
+  "native_control_profile": "Optional native_controls:run-journal; schema 11; original worker grant plus winner capability; one initial agent RUN per native member, no retry, IPC ACK never proves native execution or queue settlement; NATIVE_CONTROL_JOURNAL.md."
 }

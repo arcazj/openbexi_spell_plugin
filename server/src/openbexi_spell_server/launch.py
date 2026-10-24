@@ -58,6 +58,10 @@ class WorkerLaunch:
         children = self.authority.native_children
         if children is not None:
             allowed.update({"/v1/worker/child-admit", "/v1/worker/child-consume"})
+        controls = self.authority.native_controls
+        if controls is not None:
+            allowed.update({"/v1/worker/control-admit", "/v1/worker/control-report"})
+            safety_only = safety_only or path == "/v1/worker/control-report"
         if path not in allowed:
             raise Fault(404, "route_not_available")
         root_consume = path == "/v1/worker/consume"
@@ -75,6 +79,10 @@ class WorkerLaunch:
             extra = {"request_id", "parent_admission_id", "entrypoint", "arguments_sha256", "mode"}
         elif path.endswith("child-consume"):
             extra = {"child_grant"}
+        elif path.endswith(("control-admit", "control-report")):
+            extra = {"request_id", "target_admission_id", "command"}
+            if path.endswith("control-report"):
+                extra.add("outcome")
         if not root_consume:
             extra.add("runtime_capability")
         exact(
@@ -99,6 +107,10 @@ class WorkerLaunch:
             return children.admit(grant, body)
         if path.endswith("child-consume"):
             return children.consume(grant, body["child_grant"])
+        if path.endswith("control-admit"):
+            return controls.admit(grant, body)
+        if path.endswith("control-report"):
+            return controls.report(grant, body)
         if path.endswith("event"):
             return self.record_event(grant, body)
         if path.endswith("driver"):

@@ -492,6 +492,7 @@ def main():
         ROOT / "host_runtime/python/thread_barrier.py",
         ROOT / "host_runtime/python/native.py",
         ROOT / "host_runtime/python/child_gate.py",
+        ROOT / "host_runtime/python/control_journal.py",
         ROOT / "host_runtime/build_admission_context.py",
         ROOT / "host_runtime/native/admission_gate.H",
         Path(__file__),
@@ -539,6 +540,10 @@ def main():
                         code / "native_candidate.py",
                     )
                 if profile.native_child_gate:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/control_journal.py",
+                        code / "control_journal.py",
+                    )
                     shutil.copy2(
                         ROOT / "host_runtime/python/child_gate.py",
                         code / "child_gate.py",
@@ -829,6 +834,7 @@ def main():
                     config["native_pause"] = "fenced-probe"
                 if profile.native_child_gate:
                     config["native_children"] = "admission-only"
+                    config["native_controls"] = "run-journal"
                 if profile.native_listener_survival:
                     config["subjects"]["observer"] = ["context:read", "execution:read"]
                 dss_name = None
@@ -1518,6 +1524,30 @@ def main():
                                 raise RuntimeError(
                                     "Nested native admission lacks its original consumed parent"
                                 )
+                            controls = audit.execute(
+                                "SELECT state,outcome,COUNT(*) FROM native_control_attempts "
+                                "GROUP BY state,outcome"
+                            ).fetchall()
+                            # Ten roots, five visible children and one visible
+                            # grandchild. Five hidden children start internally
+                            # and are explicitly outside the agent RUN journal.
+                            if controls != [
+                                ("DISPATCH_UNCERTAIN", "IPC_SEND_ACKNOWLEDGED", 16)
+                            ]:
+                                raise RuntimeError(
+                                    "Native agent RUN attempts lack exact durable receipts"
+                                )
+                            if (
+                                audit.execute(
+                                    "SELECT COUNT(*) FROM native_control_attempts c "
+                                    "JOIN child_admissions a ON c.target_id=a.id "
+                                    "WHERE c.execution_id=a.execution_id AND c.origin_hash=a.origin_hash"
+                                ).fetchone()[0]
+                                != 6
+                            ):
+                                raise RuntimeError(
+                                    "Native child RUN attempt has a different family origin"
+                                )
                         if any(
                             next(
                                 e
@@ -1535,6 +1565,8 @@ def main():
                             native_child_admissions_consumed=11,
                             native_nested_child_admissions_consumed=1,
                             full_family_qualified=False,
+                            native_agent_run_attempts_journalled=16,
+                            native_control_queue_settlement_proven=False,
                         )
                     if profile.native_dss:
                         state_probe = (

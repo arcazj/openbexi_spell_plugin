@@ -1,6 +1,7 @@
 """Real mTLS child admission/consumption; native before-RUN hook is still gated."""
 
 from concurrent.futures import ThreadPoolExecutor
+from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 import shutil
@@ -114,8 +115,9 @@ def test_child_grant_is_single_use_original_bound_and_never_native_start_proof(f
 def test_100_child_admissions_have_one_winner_and_retained_logical_identity(family, pki):
     with ThreadPoolExecutor(max_workers=8) as pool:
         replies = list(pool.map(lambda _: admit(family, pki), range(100)))
-    assert sum(code == 200 for code, _ in replies) == 1
-    assert sum(code == 409 for code, _ in replies) == 99
+    diagnostics = dict(Counter((code, reply.get("error")) for code, reply in replies))
+    assert sum(code == 200 for code, _ in replies) == 1, diagnostics
+    assert sum(code == 409 for code, _ in replies) == 99, diagnostics
     assert family["store"].db.execute("SELECT COUNT(*) FROM child_admissions").fetchone()[0] == 1
 
 
