@@ -131,3 +131,15 @@ Native quiescence/live handoff, child admission, recovery/reclamation, IDE
 Run/Debug, browser/WSS, all-763 compatibility, production Compose/Kubernetes,
 independent security and final release acceptance remain separate mandatory
 gates. No merge, release or production promotion is implied by this subset.
+
+### Fixed metadata authority
+
+The private v0.8 transport reads only `state` and `telemetry` on the operator's
+configured endpoint. It disables environment proxies and rejects redirects
+before contacting another authority. HTTP error responses are closed. The
+existing response-size and timeout bounds remain in force. Real HTTP regressions
+check that a redirect target and an environment-selected proxy receive no
+request, an unlisted path makes no request, and a 503 response is closed without
+success. The published legacy transport and its patch preimages are unchanged.
+This does not establish production DSS mTLS, complete driver methods or full
+fault/recovery qualification.

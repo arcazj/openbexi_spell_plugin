@@ -126,6 +126,29 @@ def test_busy_resource_denial_is_audited_without_effect_or_retry(driver_setup, p
     assert native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=key)[0] == 409
 
 
+def test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(driver_setup, pki):
+    setup = driver_setup
+    for _ in range(3):
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            replies = list(
+                pool.map(
+                    lambda _index: native_call(setup, pki, PREFIX + "TC/SendCommand", command()),
+                    range(10),
+                )
+            )
+        failures = (
+            setup["store"]
+            .db.execute("SELECT body FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED'")
+            .fetchall()
+        )
+        categories = [json.loads(row[0])["error_code"] for row in failures]
+        assert [code for code, _reply in replies] == [200] * 10, categories
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 30
+    for db in (setup["store"].db, setup["driver"].gate.db):
+        assert [row[0] for row in db.execute("SELECT state FROM effect_intents")] == ["ACKED"] * 150
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
 def test_real_worker_client_uses_protocol_two_and_cannot_downgrade(driver_setup, pki):
     setup = driver_setup
     route = Route(

@@ -1,6 +1,6 @@
 # Retained child admission authority (development)
 
-Server `0.8.0.dev16` adds explicit Context option `native_children: admission-only`,
+Server `0.8.0.dev16` introduced explicit Context option `native_children: admission-only`,
 requiring the approved catalog, certificate-bound preflight and
 `worker_launch: retained-single-use`. Defaults have no child routes. This is
 **authority/RPC qualification only**, not native child start/family-pause,
@@ -51,9 +51,9 @@ revocation, transfer fencing, audit rollback and restart retention. Root
 `/consume` is distinguished exactly from `/child-consume`; suffix matching cannot
 bypass the consumption-winner proof.
 
-The mandatory native before-RUN hook remains **unimplemented**. The retained
-agent does not invoke these routes and continues rejecting unqualified child
-notifications. That observer is not a before-RUN gate. A native provider must
+The default retained profile continues rejecting child notifications. The
+separate dev17 native provider below now invokes these routes before physical
+spawn. An OPEN observer alone is not a before-RUN gate. A native provider must
 enforce admission before every visible/hidden, automatic/manual and
 blocking/nonblocking child start, inherit immutable family identity, and qualify
 prompt/return/repeat/termination semantics. RPC checks do not promote that gate.
@@ -73,7 +73,7 @@ passed. The downloaded foundation artifact passed ZIP digest/CRC checks and all
 qualifies only this authority/RPC component. Native child execution and full
 v0.8 remain unqualified. Full publication preflight still exits nonzero.
 
-## Candidate before-spawn native provider (dev17, qualification pending)
+## Qualified automatic before-spawn component (dev17)
 
 The separate `--native-child-gate` profile builds a new native Context executable
 from the frozen v0.7 image's own source archive and recipe provenance. It requires
@@ -100,8 +100,14 @@ The existing OPEN observer is retained as an additional consistency check, and
 the original visible-child client sends its initial RUN once. It is not the
 admission boundary. The new native cohort requests ten roots and ten children,
 checks simultaneous physical processes and consumed authority rows, and retains
-all twenty logical holds. Its hosted result must be inspected before this
-component is called verified. Manual mode, nested native execution, denied
+all twenty logical holds. At `b644d56223f0a859819c19afef0f5f5b1d18a06e`, the
+[hosted child job](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40041544143)
+passed: ten roots and ten automatic blocking children (five visible/five hidden),
+forty native PIDs, actual argument transfer, direct native GUI and same-UID peer
+denial, spent-grant physical clone denial, and thirty-five original lifecycle EV
+receipts. Hidden automatic children preserve the original absence of a start EV;
+none is fabricated. ZIP digest/CRC and all twenty-three repository source hashes
+were independently checked. See the [redacted receipt](evidence/native-child-start/qualification-summary.json). Manual mode, nested native execution, denied
 native starts, child prompts/returns/repeat, native driver attribution and
 whole-family settlement still need their own native qualification. The RPC
 mode/nested tests alone do not establish those native behaviors. Public runtime,

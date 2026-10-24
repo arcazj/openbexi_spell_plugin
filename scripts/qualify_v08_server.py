@@ -15,6 +15,28 @@ from datetime import datetime, timezone
 import xml.etree.ElementTree as ET
 
 
+def run_check(name, command, root, environment, output, timeout):
+    timed_out = False
+    try:
+        result = subprocess.run(
+            command, cwd=root, env=environment, capture_output=True, timeout=timeout
+        )
+        raw, exit_code = result.stdout + result.stderr, result.returncode
+    except subprocess.TimeoutExpired as error:
+        # A timed-out suite is failed evidence. Retain its progress and result
+        # instead of losing the report through an unhandled runner exception.
+        raw = (error.stdout or b"") + (error.stderr or b"")
+        exit_code, timed_out = 124, True
+    (output / (name + ".log")).write_bytes(raw)
+    return dict(
+        name=name,
+        command=command,
+        exit_code=exit_code,
+        timed_out=timed_out,
+        timeout_seconds=timeout,
+    )
+
+
 def main():
     root = Path(__file__).resolve().parents[1]
     suffix = (
@@ -167,10 +189,11 @@ def main():
                 "-m",
                 "pytest",
                 "server/tests",
-                "-q",
+                "-v",
                 "-W",
                 "error",
                 "--tb=short",
+                "--durations=15",
                 "--junitxml=" + str(output / "tests.xml"),
             ],
         ),
@@ -181,14 +204,16 @@ def main():
         OPENBEXI_SERVER_EVIDENCE_DIR=str(output),
     )
     for name, command in commands:
-        result = subprocess.run(
-            command, cwd=root, env=environment, capture_output=True, timeout=180
+        check = run_check(
+            name,
+            command,
+            root,
+            environment,
+            output,
+            timeout=300 if name == "tests" else 180,
         )
-        (output / (name + ".log")).write_bytes(result.stdout + result.stderr)
-        report["checks"].append(
-            dict(name=name, command=command, exit_code=result.returncode)
-        )
-        if result.returncode:
+        report["checks"].append(check)
+        if check["exit_code"]:
             break
     report["passed"] = len(report["checks"]) == len(commands) and all(
         c["exit_code"] == 0 for c in report["checks"]
@@ -198,11 +223,22 @@ def main():
     report["native_pause_barrier_rpc_tested"] = report["passed"]
     report["independent_dss_process_tested"] = report["passed"]
     if (output / "tests.xml").exists():
-        suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))
-        report["junit"] = {
-            key: sum(int(s.get(key, 0)) for s in suites)
-            for key in ("tests", "errors", "failures", "skipped")
-        }
+        try:
+            suites = list(ET.parse(output / "tests.xml").getroot().iter("testsuite"))
+            report["junit"] = {
+                key: sum(int(s.get(key, 0)) for s in suites)
+                for key in ("tests", "errors", "failures", "skipped")
+            }
+        except (ET.ParseError, OSError, ValueError):
+            report["passed"] = False
+            report["junit_error"] = "incomplete_or_invalid_junit"
+            for flag in (
+                "driver_effect_seam_tested",
+                "native_context_driver_rpc_tested",
+                "native_pause_barrier_rpc_tested",
+                "independent_dss_process_tested",
+            ):
+                report[flag] = False
     (output / "result.json").write_text(json.dumps(report, indent=2) + "\n")
     print(
         json.dumps(

@@ -979,3 +979,45 @@ A follow-up adds durable bounded failure categories to the private Context
 ledger and a real mTLS held-resource regression: busy denial produces no binary
 intent/effect, records the reason and retains replay denial. Failure diagnostics
 must establish the bottleneck before any timeout/admission policy is changed.
+
+At **b644d56223f0a859819c19afef0f5f5b1d18a06e**, all six native component jobs
+in push run [40041544143](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40041544143)
+passed, including the new before-spawn child cohort. It completed ten roots and
+ten automatic blocking children (five visible/five hidden), verified forty
+native PIDs, original argument transfer, native GUI/peer bypass denial and
+physical spent-grant clone denial, and retained ten consumed child admissions,
+ten spent workers and twenty logical holds. Thirty-five actual lifecycle EV
+receipts match the original visible/hidden distinction. The child ZIP digest
+`b656651a7970af562a23884fd58448e4e71548388c37ac19e42fc0a6792a0a8a`
+and CRC were verified, and all 23 source hashes matched that commit. The
+[redacted receipt](evidence/native-child-start/qualification-summary.json)
+contains counts, public source hashes and qualification limits only.
+
+The same push's foundation suite hit the runner's 180-second limit; the overall
+workflow is failed, not green. Artifact 12539822036 has ZIP digest
+`c064242a9921ed34109f8037d388e00d19a6876d7f29035a6498207c3ea4c63d`.
+The follow-up allows 300 seconds for the expanded suite, keeps lint/type budgets
+unchanged, retains partial logs and exit 124 on timeout, and never marks such an
+attempt passed. Service/effect/transport timeouts are unchanged. Two actual
+subprocess regressions verify timeout and nonzero-exit failure retention.
+A separate real mTLS/DSS regression runs three ten-request bursts, checks thirty
+commands and 150 ACKED stage rows in each independent ledger, and does not retry.
+These three new local regressions passed; hosted full-suite results remain
+required. All full release gates remain unqualified.
+
+Final local scoped run before the metadata-reader correction passed **377 tests**
+with warnings as errors and deliberately deselected the two Linux controls this
+managed host cannot execute (Unix peer/pidfd and positive-control cross-process
+memory read). Those two remain mandatory, unskipped in hosted CI. The new fixed
+metadata endpoint tests then passed **3/3**, and the driver/effect regression run
+passed **74 tests** before the final HTTP-error-close addition. These are explicit
+subsets, not a completed all-382 result.
+
+The security review found that inherited urllib metadata reads could follow a
+DSS redirect or environment proxy away from the operator-owned endpoint. The
+private v0.8 adapter now refuses both, limits metadata paths to state/telemetry,
+and closes HTTP-error responses. Actual HTTP peer tests confirm no request to
+the redirect target/proxy or unlisted path and no success for a closed 503
+response. Published v0.7 transport bytes remain unchanged. Hosted exact-source
+CI, including the new 300-second scoped-suite budget and these regressions,
+is required before treating the final candidate as verified.

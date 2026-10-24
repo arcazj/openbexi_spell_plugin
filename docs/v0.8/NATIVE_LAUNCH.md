@@ -1,6 +1,6 @@
 # Retained one-shot native launch profile
 
-`0.8.0.dev8` adds an explicitly enabled `worker_launch: "retained-single-use"`
+The retained profile, introduced in `0.8.0.dev8`, is an explicitly enabled `worker_launch: "retained-single-use"`
 Context profile. Default services and the desktop gateway/Listener do not expose
 native execution. This profile is not a qualified v0.8 release or a general
 execution service. `runtime_enabled` remains false for the public product.
@@ -39,13 +39,13 @@ preflight remains `openbexi.worker/1`. Only the single consumption winner
 receives a separate memory-only runtime proof, required on check/event/driver
 calls in addition to its unchanged original grant. Only its hash is committed,
 atomically with consumption. Lost replies retain holds and cannot refresh this
-proof. Schema 8 prevents old-binary downgrade. The native controller
+proof. Current child admission uses schema 10; unsupported older binaries fail closed. The native controller
 itself emits lifecycle events even for arithmetic-only procedures. All other
 native driver methods remain denied; no ExampleDriver or fabricated success is
 allowed. The optional Context-owned TC/TM integration is described in NATIVE_DSS.md;
-it has its own mandatory native cohort. Native child
-notifications cause failure; full pre-run child reservation still needs native
-bridge work. Unknown/uncooperative Python descendants are not a qualified
+it has its own mandatory native cohort. Default native profiles reject child
+notifications. The separate dev17 before-spawn child provider and its exact
+qualification scope are described in NATIVE_CHILD_ADMISSION.md. Unknown/uncooperative Python descendants are not a qualified
 sandbox or handoff protocol. Only approved trusted qualification fixtures run.
 
 ## Native concurrency test

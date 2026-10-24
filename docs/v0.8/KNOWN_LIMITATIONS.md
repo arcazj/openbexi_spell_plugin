@@ -1,66 +1,77 @@
 # Current limitations
 
-The branch includes the approved architecture resolutions and an initial
-internal Listener/Context foundation in `server/`. It provides TLS identity
-checks, scoped routing, Context-local ACLs, durable blackboard CAS, prelaunch
-reservations and ownership claims/acceptance/rebind. It
-explicitly reports `runtime_enabled: false`.
+SPELL v0.8 remains a development implementation. Public services report
+`runtime_enabled: false`; PR #2 is draft, and no stable v0.8 release is qualified.
+G1 authorized staged implementation under F1–F10. It did not establish that the
+runtime, recovery, deployment or release gates had passed. See STATUS.json,
+TEST_REPORT.md and RELEASE_GATES.json for exact candidate identities and results.
 
-The private one-time start-grant ledger has protocol tests. Optional approved
-Git inventories and a pinned single-host mTLS worker preflight are implemented;
-see WORKER_PREFLIGHT.md. Default services expose no native launch path; the opt-in retained profile is described in NATIVE_LAUNCH.md. Source is
-verified only for configured catalogs; metadata-only reservations cannot pass
-Context's start guard. Runtime-image and read-only-mount attestation remain
-unqualified, and a trusted worker's digest report is not hardware attestation. Acceptance succeeds only before consumption;
-a post-consumption transfer is blocked and retains recovery holds. Native pause,
-external native effect settlement, complete child admission, full driver adaptation,
-browser sessions/WSS, UI, Compose and Kubernetes remain unimplemented or
-unqualified. No release/recovery/capacity-reclamation operation is exposed.
-See EXECUTION_AUTHORITY.md for exact limits. Full C/D and E-L gates remain pending.
-There is no v0.8 release candidate, release tag, production replacement or
-claim of full candidate-SHA runtime/deployment qualification. The hosted service
-and prelaunch workflow covers its own subset only. Published v0.7 runtime source and entry points are unchanged.
+## Implemented private profiles
 
-Initial target Compose workers are single-use; automatic reuse is disabled.
-Supported target authority storage is single-node local ext4 with explicit
-manual fencing for replacement. Native child admission requires requalification.
-The local foundation tests do not prove production storage/fsync/node fencing.
+Internal services implement pinned mTLS identity, explicit route/role checks,
+Context ACLs, durable SQLite CAS, original-grant reservations, ownership
+claims/acceptance/rebind before launch, immutable approved Git inventories and
+worker preflight. The catalog can contain 64 approved entries, including children;
+there are ten retained worker slots. Source verification covers configured
+catalogs only. A worker report is not hardware, Pod or image attestation.
 
-Certificate/identity configuration changes require process restart. The new
-server is internal Linux-only; it is not a public browser endpoint. The trusted
-approved-procedure/host scope remains in force. Vendor GCS, real spacecraft,
-untrusted Python sandboxing, automatic uncertain-effect replay and HA remain
-unqualified. See G1_REVIEW_RESOLUTION.md, SERVER_CONTRACT.md and RISKS.md.
+The operator-provisioned retained profile adds one-time certificate-bound grant
+consumption, actual native Listener/Context/Executor launch, durable procedure EV
+audit and a separate Context-owned TC/TM subset with explicit resource allowlists.
+The actual-send gate repeats live authorization under the same execution mutex
+as fencing and records separate authority/driver intents and correlated receipts.
+It never retries an uncertain effect. Read DRIVER_WRITE_GATE.md and NATIVE_DSS.md
+for those component boundaries; they are no longer merely disconnected adapters.
+Complete driver methods, lifecycle, overload, reset, loss and recovery remain
+unqualified. A retained failing native DSS burst is documented in TEST_REPORT.md.
 
-## Paired IDE and compatibility qualification
+The dev17 child provider builds a new native Context from the frozen image's
+checked source/recipe provenance. It admits and consumes an approved child
+before physical spawn, preserving original zero-based native instance IDs. It
+authenticates the native Context process and original family over the separate
+local and mTLS boundaries. The agent disables dumpability before configuration
+or native startup to protect its memory-only consumption proof; deployment must
+also drop all capabilities. See NATIVE_CHILD_ADMISSION.md for candidate results.
+Default profiles still reject children. Native manual modes, nested execution,
+child prompt/return/repeat/failure semantics, per-child driver attribution and
+complete descendant containment require additional qualification. Admission
+and native status observations do not establish quiescence or release a hold.
 
-The IDE's new SPELL server tab supports discovery, reservations, observers and
-explicit prelaunch handoff. Native Run/Debug are unavailable; local action
-fallback is rejected while connected. Browser/WSS and full deployed execution
-remain pending. See IDE_PAIR.json for the exact tested companion source.
+## Ownership and recovery blockers
 
-The current historical root test suite is not a portable full qualification:
-it references older absolute Windows capture paths and immutable source
-checkpoints that differ from current source. The failed broad diagnostic is
-retained, alongside the passing explicit portable subset. Restoring the
-published v0.7 capture archive alone does not satisfy all those older
-references. Fresh complete native compatibility evidence on the correct
-immutable source, plus driver settlement and deployment/recovery tests, remain
-release blockers. Preparatory syntax and resource-lifetime source fixes do not
-qualify a rebuilt native image or approve a release.
+Post-consumption ownership transfer remains blocked without complete native
+quiescence proof. The main native PAUSED state alone leaves a background thread
+running. The optional cooperative barrier holds observed snapshot Python threads
+only; it does not prove that C/native/generated code, children, prompt/control
+queues and external effects are settled. Neither component authorizes effective
+handoff or resume. Unknown outcomes retain the owner/epoch and recovery holds.
 
-The private driver seam now serializes the final live check and bounded binary
-TCP write with controller fencing and reserves separate authority/driver intent
-ledgers. See DRIVER_WRITE_GATE.md for the exact tests and trust boundary. It is
-not a native or network-accessible runtime path. Post-start handoff continues to
-block without proven native quiescence; no release gate is waived.
+No automatic worker reuse, logical-hold release, capacity reclamation, uncertain
+command replay or authority relocation is exposed. Native FINISHED, process-group
+cleanup and container termination are distinct observations; none alone is a
+whole-family recovery protocol. Single-authority storage, node fencing,
+backup/restore and upgrade/rollback still need deployed fault qualification.
+Certificate and fixed identity configuration changes require process restart.
 
-An opt-in retained native launch profile is now implemented; see NATIVE_LAUNCH.md.
-It is separate from the default public/IDE path and requires original
-controller admission plus certificate-bound consumption. Its native worker
-forces the real proxy, journals scoped audit events in Context while denying
-other driver operations, retains every hold, and
-fails on observed children. It does not qualify general native control,
-quiescence, descendant containment or native driver integration. The ten-worker
-Docker harness must actually pass before any native concurrency result is
-claimed.
+## Joint product and full qualification
+
+The pinned IDE supports discovery, reservations, observers and explicit prelaunch
+handoff through real mTLS and Qt integration. Native IDE Run/Debug, browser/WSS,
+Git collaboration and the full joint deployed workflow remain unfinished or
+unqualified. No local fallback is authorized while connected to the server.
+
+The passing 241-test portable subset is not all-763 qualification. Inherited
+archival tests refer to older immutable source checkpoints and absolute Windows
+capture paths. Published v0.7 captures do not satisfy all those older references.
+Their failed diagnostics remain retained; no skip, restamped hash or fabricated
+capture is used to claim compatibility. Published v0.7 bytes and original legacy
+patch preimages remain unchanged.
+
+Production Compose and Kubernetes admission/RBAC/Pod identity/network/storage
+faults, a production-like cluster, independent implemented-system security
+review, bounded load, SBOM/license/vulnerability disposition and final stable
+installed artifacts remain mandatory. Vendor GCS/spacecraft integration,
+untrusted Python sandboxing and distributed HA are outside the qualified scope.
+The full-publication preflight rejects this candidate until every mandatory gate
+has valid exact-source evidence. Publication is blocked by incomplete work and
+qualification, not by a missing routine owner confirmation.

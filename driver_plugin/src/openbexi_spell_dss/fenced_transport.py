@@ -6,14 +6,23 @@ patch preimages remain unchanged. This adapter does not expose a worker route.
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 import hashlib
+import json
 import socket
 import time
 import threading
+from urllib.error import HTTPError
+from urllib.request import build_opener, HTTPRedirectHandler, ProxyHandler, Request
 
 from dss.catalog import canonical
 from dss.packets import decode_packet, decode_tm, encode_tc, recv_packet
 from .journal import UncertainEffect
 from .transport import Transport as LegacyTransport
+
+
+class NoRedirect(HTTPRedirectHandler):
+    def redirect_request(self, request, response, code, message, headers, url):
+        response.close()
+        raise ValueError("DSS metadata redirects are not permitted")
 
 
 class Transport(LegacyTransport):
@@ -22,6 +31,26 @@ class Transport(LegacyTransport):
         # four-handler metadata API when ten executions begin together.
         self.metadata_admission = threading.BoundedSemaphore(1)
         super().__init__(*args, **kwargs)
+
+    def get(self, path):
+        # Keep every read on the operator's fixed endpoint. Neither a DSS 3xx
+        # nor environment proxy settings may select another network authority.
+        if path not in {"state", "telemetry"}:
+            raise ValueError("DSS metadata path is not permitted")
+        opener = build_opener(ProxyHandler({}), NoRedirect())
+        request = Request(
+            self.url + "/api/v1/" + path, headers={"Accept": "application/json"}
+        )
+        try:
+            response = opener.open(request, timeout=3)
+        except HTTPError as error:
+            error.close()
+            raise
+        with response:
+            raw = response.read(16 * 1024 * 1024 + 1)
+            if len(raw) > 16 * 1024 * 1024:
+                raise ValueError("DSS response bound exceeded")
+            return json.loads(raw)
 
     def current_state(self):
         if not self.metadata_admission.acquire(timeout=0.25):

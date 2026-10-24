@@ -1,0 +1,142 @@
+{
+  "passed": true,
+  "native_child_before_spawn_component_tested": true,
+  "native_child_admissions_consumed": 10,
+  "native_child_cohort_pids": 40,
+  "logical_holds_retained": 20,
+  "single_use_workers_spent": 10,
+  "native_driver_events_persisted": 35,
+  "native_lifecycle_counts": [
+    {
+      "worker_index": 0,
+      "started": 2,
+      "finished": 2,
+      "expected_started": 2,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 1,
+      "started": 1,
+      "finished": 2,
+      "expected_started": 1,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 2,
+      "started": 2,
+      "finished": 2,
+      "expected_started": 2,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 3,
+      "started": 1,
+      "finished": 2,
+      "expected_started": 1,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 4,
+      "started": 2,
+      "finished": 2,
+      "expected_started": 2,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 5,
+      "started": 1,
+      "finished": 2,
+      "expected_started": 1,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 6,
+      "started": 2,
+      "finished": 2,
+      "expected_started": 2,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 7,
+      "started": 1,
+      "finished": 2,
+      "expected_started": 1,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 8,
+      "started": 2,
+      "finished": 2,
+      "expected_started": 2,
+      "expected_finished": 2
+    },
+    {
+      "worker_index": 9,
+      "started": 1,
+      "finished": 2,
+      "expected_started": 1,
+      "expected_finished": 2
+    }
+  ],
+  "native_unadmitted_root_denied_before_spawn": true,
+  "native_same_uid_peer_impersonation_denied": true,
+  "physical_worker_clone_denied": true,
+  "full_family_qualified": false,
+  "full_v08_qualified": false,
+  "runtime_enabled": false,
+  "native_handoff": {
+    "state": "BLOCKED",
+    "owner_preserved": true,
+    "quiescence_proven": false,
+    "phase": "after_container_termination"
+  },
+  "network_denials": {
+    "cross_worker_native_port": true,
+    "external_tcp": true
+  },
+  "context_isolated_from_host_manager": true,
+  "source_sha256": {
+    "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+    "server/src/openbexi_spell_server/authority.py": "c535d1ef195fb164f85e7695c33adaabd11bae4693a11cc6eb99c335c98dfb80",
+    "server/src/openbexi_spell_server/__main__.py": "b16fd1756bf0b8bff58809bbfcc5e3a4438fe2251877bee74bfe1ab0ac3df95f",
+    "server/src/openbexi_spell_server/snapshots.py": "d7267c50602b333ebd8034e1cf47319565dfc82fb42ddcd8ec7bc77c0b622f25",
+    "server/src/openbexi_spell_server/transport.py": "3d8835b409f22624bd00d18cf9eaeebf13b45724cf348ccde149ea9d0c689a72",
+    "server/src/openbexi_spell_server/launch.py": "e6af73c92f1613d5f8ef2ef7856eadced6f9197c071ec63ac2a43aa5403d4f53",
+    "server/src/openbexi_spell_server/worker.py": "0511757970f821bc3be79af32cebd5270275083b61ebbbfe9295b56882032ae9",
+    "server/src/openbexi_spell_server/services.py": "6872b984272f3fd0ea7eb5f54cf472a53a35231597c63fe4f6056e16c3c0128b",
+    "server/src/openbexi_spell_server/pause.py": "6f7101f800df90d9f845dc2e56d5867720246a7f32414ed93740476b5554e091",
+    "server/src/openbexi_spell_server/contracts.py": "a9b7924100bc1ac0ac9705ae1a486437779a595cada4c940d6650f35bc604fdb",
+    "server/src/openbexi_spell_server/family.py": "d9d7b68159bba010424bd06b8a185eec45328448612e57f7fe1165734a263d0c",
+    "server/src/openbexi_spell_server/gateway.py": "b13b7bf18120e797c0c4137ded65ac4ee3ccd4d130419e568b373865e640d5bf",
+    "server/src/openbexi_spell_server/effects.py": "824b06b41e61cd2dbc61bfb7f8cd68d9cedc9a5e2d48f8b2de88789114e5e5e0",
+    "server/src/openbexi_spell_server/store.py": "daad7574b74a4160581dbb63e1092a2f63ab3b3b96e9866381aee996106299eb",
+    "server/src/openbexi_spell_server/__init__.py": "14eda25d83c8820009a1bd93beba0b6b0879664e3647d80b44cf87757c2ae2b3",
+    "host_runtime/python/v08_worker.py": "a80f611fab67bf2acb8e1388d64122fa19b974d4982d2d4745dd5b0453abb28c",
+    "host_runtime/python/thread_barrier.py": "31bc9b2de2b78fcbc17d6213a4b9c20a96c689fa63b15a5f32e29e9491bec895",
+    "host_runtime/python/native.py": "51a8998174da79bb2dc70c6c657d709d57177097af951afe633b1f306b0ddc28",
+    "host_runtime/python/child_gate.py": "cf953ca11f687941d78ad136a122f18999c094c3c93d019c940dfba580223ef9",
+    "host_runtime/build_admission_context.py": "869e8a57bd2a8eb6513ad3d04b3697d40fe4a212bbf46a806988e996af6a4fd9",
+    "host_runtime/native/admission_gate.H": "7cf3f947af1d2e1da09145f04b7a8367cdf90e188466da890a996d2d9c5b7194",
+    "scripts/qualify_v08_native_launch.py": "4633f1003632d88b54c2e09d9b4515c49325eb6df22dfee538ad7bad54bb8504",
+    "scripts/qualify_v08_native_boundary.py": "0192ec86f9a4597ad5eaa1d2fec701ea0c67e1ecb4a91820711285fe53f1098e"
+  },
+  "source_hash_count": 23,
+  "code_commit": "b644d56223f0a859819c19afef0f5f5b1d18a06e",
+  "build": {
+    "original_context_sha256": "0c58b8c85aec63c4cb3bfefc4c4792d4a1ea71257dab0208431e715e689dc9d8",
+    "archive_sha256": "2176e198f04c3f2ec99ee6f740871d9368997e3fd1e33d6734cb8e163cb6a0ed",
+    "original_unit_sha256": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598",
+    "gate_sha256": "7cf3f947af1d2e1da09145f04b7a8367cdf90e188466da890a996d2d9c5b7194",
+    "candidate_context_sha256": "87f2a1b5b57d0bf0f6844963905e3a0ae503b04d455c99d944bf3eb6b31945a0",
+    "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+    "compiled_translation_units": 74
+  },
+  "scope": "Private before-spawn child component: ten roots, ten automatic blocking children, five visible and five hidden; not whole-family or full v0.8 qualification",
+  "workflow_run": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40041544143",
+  "artifact": {
+    "id": 12539212881,
+    "zip_sha256": "b656651a7970af562a23884fd58448e4e71548388c37ac19e42fc0a6792a0a8a",
+    "crc_verified": true,
+    "raw_archive_republished": false
+  }
+}
