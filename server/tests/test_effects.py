@@ -586,3 +586,150 @@ def test_wire_identity_must_match_original_context_binding(gate, dss, field):
         dss.command("CMD1", [], who, operation, lambda: None, admission=bound)
     assert states(gate) == []
     assert dss.get("state")["core"]["commands_executed"] == 0
+
+
+@pytest.mark.parametrize("phase", ["intent", "receipt"])
+def test_controller_fence_does_not_wait_for_non_effect_ledger_bookkeeping(
+    gate, dss, monkeypatch, phase
+):
+    from concurrent.futures import ThreadPoolExecutor
+
+    alice, execution, bound = admission(gate)
+    claim = Client(gate.authority, "bob").claim(execution)
+    entered, release = threading.Event(), threading.Event()
+    original = gate._transaction
+    calls = 0
+
+    @contextmanager
+    def delayed_commit():
+        nonlocal calls
+        calls += 1
+        current = calls
+        with original() as db:
+            yield db
+        # Driver INTENT commit precedes send; the third transaction is receipt
+        # ACKED. Hold outside the SQL transaction, but inside its driver method.
+        if current == (1 if phase == "intent" else 3):
+            entered.set()
+            assert release.wait(2), "Ledger observation barrier expired"
+
+    monkeypatch.setattr(gate, "_transaction", delayed_commit)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(command, dss, bound)
+        try:
+            assert entered.wait(2)
+            decision = alice.call("execution.decide", alice.decision(execution, claim))
+            assert decision["state"] == "BLOCKED"
+            assert not pending.done()
+        finally:
+            release.set()
+        with pytest.raises(UncertainEffect):
+            pending.result(timeout=3)
+    assert dss.get("state")["core"]["commands_executed"] == 0
+    expected = "UNCERTAIN" if phase == "intent" else "ACKED"
+    for db in (gate.store.db, gate.db):
+        assert [tuple(row) for row in db.execute("SELECT stage,state FROM effect_intents")] == [
+            ("TRANSPORT", expected)
+        ]
+    row = gate.authority.list_executions("alice")["executions"][0]
+    assert (row["owner"], row["epoch"], row["control_state"]) == ("alice", 1, "RECOVERY_REQUIRED")
+    assert gate.store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_concurrent_uncertainty_cannot_overwrite_a_receipt_committed_in_both_ledgers(
+    gate, dss, monkeypatch
+):
+    from concurrent.futures import ThreadPoolExecutor
+
+    _, _, bound = admission(gate)
+    entered, release = threading.Event(), threading.Event()
+    original = gate._transaction
+    calls = 0
+
+    @contextmanager
+    def delayed_ack():
+        nonlocal calls
+        calls += 1
+        current = calls
+        with original() as db:
+            yield db
+        if current == 3:
+            entered.set()
+            assert release.wait(2)
+
+    monkeypatch.setattr(gate, "_transaction", delayed_ack)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        pending = pool.submit(command, dss, bound)
+        try:
+            assert entered.wait(2)
+            unknown = pool.submit(gate.uncertain, bound.grant, bound.operation, "TRANSPORT")
+        finally:
+            release.set()
+        unknown.result(timeout=3)
+        assert pending.result(timeout=3)[0]
+    for db in (gate.store.db, gate.db):
+        assert [row[0] for row in db.execute("SELECT state FROM effect_intents")] == ["ACKED"] * 5
+    assert gate.authority.list_executions("alice")["executions"][0]["control_state"] == "OWNED"
+    assert dss.get("state")["core"]["commands_executed"] == 1
+
+
+def test_unresolved_receipt_fence_timeout_poison_keeps_authority_closed(gate, dss, monkeypatch):
+    _, _, bound = admission(gate)
+
+    @contextmanager
+    def cannot_fence(_execution):
+        raise Fault(503, "execution_busy")
+        yield
+
+    class LostReceipt:
+        validate = bound.validate
+        send = bound.send
+        uncertain = bound.uncertain
+
+        def settle(self, _stage, _receipt):
+            monkeypatch.setattr(gate.authority, "_execution_lock", cannot_fence)
+            raise TimeoutError("Injected receipt loss with unavailable fencing mutex")
+
+    with pytest.raises(UncertainEffect):
+        dss.command(
+            "CMD1", [], identity(bound), bound.operation, lambda: None, admission=LostReceipt()
+        )
+    assert gate.store.failed
+    for db in (gate.store.db, gate.db):
+        assert [tuple(row) for row in db.execute("SELECT stage,state FROM effect_intents")] == [
+            ("TRANSPORT", "SENT")
+        ]
+    with pytest.raises(Fault) as denied:
+        gate.authority.validate_start_grant(bound.grant)
+    assert denied.value.code == "state_unavailable"
+    assert dss.get("state")["core"]["commands_executed"] == 0
+    assert gate.store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_expired_operation_waiting_for_ledger_writer_cannot_send_late(gate, dss, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    import time
+
+    _, _, original = admission(gate)
+    bound = replace(original, deadline=time.monotonic() + 0.05)
+    entered = threading.Event()
+    send = gate.send
+
+    def waiting(*args, **options):
+        entered.set()
+        return send(*args, **options)
+
+    monkeypatch.setattr(gate, "send", waiting)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        with gate.lock:
+            pending = pool.submit(command, dss, bound)
+            assert entered.wait(2)
+            time.sleep(0.1)
+        with pytest.raises(UncertainEffect) as denied:
+            pending.result(timeout=3)
+    assert isinstance(denied.value.__cause__, Fault)
+    assert denied.value.__cause__.code == "effect_deadline_expired"
+    for db in (gate.store.db, gate.db):
+        assert db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0
+    assert gate.authority.list_executions("alice")["executions"][0]["control_state"] == "OWNED"
+    assert dss.get("state")["core"]["commands_executed"] == 0

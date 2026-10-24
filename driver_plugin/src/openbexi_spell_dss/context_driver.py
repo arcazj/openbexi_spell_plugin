@@ -152,13 +152,12 @@ class ContextDriver:
         canonical_uuid(request_id)
         if path not in METHODS or type(raw) is not bytes or len(raw) > 32768:
             raise Fault(403, "native_driver_method_denied")
-        with self.authority._execution_lock(grant.execution_id):
-            with self.store.transaction(write=False):
-                row = self._live(grant)
-                identity = {
-                    "definition": row["procedure_id"],
-                    "procedure": grant.execution_id,
-                }
+        with self.store.transaction(write=False):
+            row = self._live(grant)
+            identity = {
+                "definition": row["procedure_id"],
+                "procedure": grant.execution_id,
+            }
         method = method_descriptor(path)
         try:
             message = message_factory.GetMessageClass(method.input_type).FromString(raw)
@@ -169,32 +168,31 @@ class ContextDriver:
             raise Fault(400, "native_driver_request_invalid") from error
         # All calls, including reads, have one non-replayable durable identity.
         # No plaintext grant or protobuf response is stored in this ledger.
-        with self.authority._execution_lock(grant.execution_id):
-            with self.store.transaction():
-                self._live(grant)
-                if self.store.db.execute(
-                    "SELECT 1 FROM native_driver_calls WHERE request_id=?",
-                    (request_id,),
-                ).fetchone():
-                    raise Fault(409, "native_driver_replay_denied")
-                if (
-                    self.store.db.execute(
-                        "SELECT COUNT(*) FROM native_driver_calls"
-                    ).fetchone()[0]
-                    >= 512
-                ):
-                    raise Fault(503, "native_driver_capacity_reached")
+        with self.store.transaction():
+            self._live(grant)
+            if self.store.db.execute(
+                "SELECT 1 FROM native_driver_calls WHERE request_id=?",
+                (request_id,),
+            ).fetchone():
+                raise Fault(409, "native_driver_replay_denied")
+            if (
                 self.store.db.execute(
-                    "INSERT INTO native_driver_calls VALUES(?,?,?,?,?,?,'ADMITTED',NULL)",
-                    (
-                        request_id,
-                        grant.execution_id,
-                        provenance(grant),
-                        self.binding,
-                        path,
-                        hashlib.sha256(raw).hexdigest(),
-                    ),
-                )
+                    "SELECT COUNT(*) FROM native_driver_calls"
+                ).fetchone()[0]
+                >= 512
+            ):
+                raise Fault(503, "native_driver_capacity_reached")
+            self.store.db.execute(
+                "INSERT INTO native_driver_calls VALUES(?,?,?,?,?,?,'ADMITTED',NULL)",
+                (
+                    request_id,
+                    grant.execution_id,
+                    provenance(grant),
+                    self.binding,
+                    path,
+                    hashlib.sha256(raw).hexdigest(),
+                ),
+            )
         try:
             result = action()
             if result.DESCRIPTOR.full_name != method.output_type.full_name:
@@ -202,14 +200,13 @@ class ContextDriver:
             response = result.SerializeToString(deterministic=True)
             if len(response) > 32768:
                 raise RuntimeError("Original driver response exceeds bounds")
-            with self.authority._execution_lock(grant.execution_id):
-                with self.store.transaction():
-                    self._live(grant)  # No post-revocation result disclosure.
-                    self.store.db.execute(
-                        "UPDATE native_driver_calls SET state='COMPLETED',response_hash=? "
-                        "WHERE request_id=?",
-                        (hashlib.sha256(response).hexdigest(), request_id),
-                    )
+            with self.store.transaction():
+                self._live(grant)  # No post-revocation result disclosure.
+                self.store.db.execute(
+                    "UPDATE native_driver_calls SET state='COMPLETED',response_hash=? "
+                    "WHERE request_id=?",
+                    (hashlib.sha256(response).hexdigest(), request_id),
+                )
             return response
         except BaseException as error:
             # Command-stage uncertainty is already fenced by DriverGate. Keep
@@ -295,7 +292,13 @@ class ContextDriver:
                 )
             arguments = unpack(request.args) if request.args.type_url else []
             self.transport.arguments(request.command.mnemonic, arguments)
-            bound = EffectAdmission(self.gate, grant, self.binding, request_id)
+            bound = EffectAdmission(
+                self.gate,
+                grant,
+                self.binding,
+                request_id,
+                deadline=time.monotonic() + timeout,
+            )
 
             def send():
                 if not self.command_slots.acquire(blocking=False):

@@ -9,16 +9,18 @@ import fcntl
 import hashlib
 import ipaddress
 import json
+import math
 import os
 from pathlib import Path
 import socket
 import sqlite3
-import threading
+import time
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 
 from .authority import StartGrant
 from .contracts import Fault, canonical
+from .mutex import LedgerMutex
 
 STAGES = frozenset({"TRANSPORT", "LOADING", "RELEASE", "ACKNOWLEDGEMENT", "ONBOARD_EXECUTION"})
 
@@ -46,7 +48,7 @@ class DriverGate:
             if type(port) is not int or not 1 <= port <= 65535:
                 raise ValueError("Invalid driver endpoint")
             self.bindings[name] = (host, port)
-        self.lock, self.failed = threading.RLock(), False
+        self.lock, self.failed = LedgerMutex(), False
         self.db = None
         self.guard = None
         directory = Path(directory)
@@ -116,7 +118,7 @@ class DriverGate:
         ):
             raise Fault(403, "driver_binding_fenced")
 
-    def send(self, grant, binding, operation, stage, connection, packet):
+    def send(self, grant, binding, operation, stage, connection, packet, *, deadline=None):
         """Trusted adapter only: actual sendall shares the controller-change mutex."""
         import uuid
 
@@ -128,6 +130,8 @@ class DriverGate:
             raise Fault(400, "invalid_effect_identity")
         if type(packet) is not bytes or not 1 <= len(packet) <= 65536:
             raise Fault(400, "invalid_effect_packet")
+        if deadline is not None and (type(deadline) is not float or not math.isfinite(deadline)):
+            raise Fault(400, "invalid_effect_deadline")
         if (
             type(connection) is not socket.socket
             or connection.family != socket.AF_INET
@@ -143,31 +147,40 @@ class DriverGate:
             provenance(grant),
             hashlib.sha256(packet).hexdigest(),
         )
-        with self.authority._execution_lock(grant.execution_id):
-            with self.store.transaction():
-                self._live(grant, binding)
-                if self.store.db.execute(
-                    "SELECT 1 FROM effect_intents WHERE operation=? AND stage=?", (operation, stage)
-                ).fetchone():
-                    raise Fault(409, "effect_replay_denied")
-                if (
-                    self.store.db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0]
-                    >= self.capacity
-                ):
-                    raise Fault(503, "effect_capacity_reached")
-                previous = self.store.db.execute(
-                    "SELECT execution_id,provenance FROM effect_intents WHERE operation=? LIMIT 1",
-                    (operation,),
-                ).fetchone()
-                if previous and (
-                    previous["execution_id"] != grant.execution_id
-                    or previous["provenance"] != provenance(grant)
-                ):
-                    raise Fault(409, "effect_operation_binding_conflict")
-                self.store.db.execute(
-                    "INSERT INTO effect_intents VALUES(?,?,?,?,?,'INTENT',NULL)", values
-                )
-            # Each failure from here retains the original authority intent and fences.
+        # One ledger writer precedes the execution mutex. No thread may hold
+        # the execution mutex while waiting behind another ledger writer. The
+        # driver releases this lock before any receipt wait in the transport.
+        with self.lock:
+            if deadline is not None and time.monotonic() >= deadline:
+                raise Fault(503, "effect_deadline_expired")
+            # Both durable intents precede final write admission. Ledger work does
+            # not authorize effects and must not occupy the short actual-send mutex.
+            with self.lock:
+                with self.store.transaction():
+                    self._live(grant, binding)
+                    if self.store.db.execute(
+                        "SELECT 1 FROM effect_intents WHERE operation=? AND stage=?",
+                        (operation, stage),
+                    ).fetchone():
+                        raise Fault(409, "effect_replay_denied")
+                    if (
+                        self.store.db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0]
+                        >= self.capacity
+                    ):
+                        raise Fault(503, "effect_capacity_reached")
+                    previous = self.store.db.execute(
+                        "SELECT execution_id,provenance FROM effect_intents WHERE operation=? LIMIT 1",
+                        (operation,),
+                    ).fetchone()
+                    if previous and (
+                        previous["execution_id"] != grant.execution_id
+                        or previous["provenance"] != provenance(grant)
+                    ):
+                        raise Fault(409, "effect_operation_binding_conflict")
+                    self.store.db.execute(
+                        "INSERT INTO effect_intents VALUES(?,?,?,?,?,'INTENT',NULL)", values
+                    )
+            uncertainty_recorded = False
             try:
                 with self._transaction() as db:
                     if (
@@ -176,63 +189,84 @@ class DriverGate:
                     ):
                         raise Fault(503, "effect_capacity_reached")
                     db.execute("INSERT INTO effect_intents VALUES(?,?,?,?,?,'INTENT',NULL)", values)
-                with self.store.transaction(write=False):
-                    self._live(grant, binding)
-                previous_timeout = connection.gettimeout()
-                try:
-                    connection.settimeout(0.2)  # Bounded total sendall, never a receipt wait.
-                    connection.sendall(packet)
-                finally:
-                    connection.settimeout(previous_timeout)
-                with self._transaction() as db:
-                    db.execute(
-                        "UPDATE effect_intents SET state='SENT' WHERE operation=? AND stage=?",
-                        (operation, stage),
-                    )
-                with self.store.transaction():
-                    self.store.db.execute(
-                        "UPDATE effect_intents SET state='SENT' WHERE operation=? AND stage=?",
-                        (operation, stage),
-                    )
+                with self.authority._execution_lock(grant.execution_id):
+                    try:
+                        with self.store.transaction(write=False):
+                            self._live(grant, binding)
+                        remaining = (
+                            0.2 if deadline is None else min(0.2, deadline - time.monotonic())
+                        )
+                        if remaining <= 0:
+                            raise Fault(503, "effect_deadline_expired")
+                        previous_timeout = connection.gettimeout()
+                        try:
+                            connection.settimeout(remaining)  # Never exceed either deadline.
+                            connection.sendall(packet)
+                        finally:
+                            connection.settimeout(previous_timeout)
+                        # Preserve atomic send-to-SENT/error handling before unlocking.
+                        with self.lock:
+                            with self._transaction() as db:
+                                changed = db.execute(
+                                    "UPDATE effect_intents SET state='SENT' WHERE operation=? AND stage=? AND state='INTENT'",
+                                    (operation, stage),
+                                ).rowcount
+                                if changed != 1:
+                                    raise Fault(409, "effect_ledgers_disagree")
+                            with self.store.transaction():
+                                changed = self.store.db.execute(
+                                    "UPDATE effect_intents SET state='SENT' WHERE operation=? AND stage=? AND state='INTENT'",
+                                    (operation, stage),
+                                ).rowcount
+                                if changed != 1:
+                                    raise Fault(409, "effect_ledgers_disagree")
+                    except BaseException:
+                        # Fence a possible partial write before releasing its mutex.
+                        self._uncertain_locked(grant, operation, stage)
+                        uncertainty_recorded = True
+                        raise
             except BaseException:
-                self._uncertain_locked(grant, operation, stage)
+                if not uncertainty_recorded:
+                    self.uncertain(grant, operation, stage)
                 raise
 
     def _uncertain_locked(self, grant, operation, stage):
-        execution_id = grant.execution_id
-        with self.store.transaction(write=False):
-            original = self.store.db.execute(
-                "SELECT provenance,state FROM effect_intents WHERE operation=? AND stage=? AND execution_id=?",
-                (operation, stage, execution_id),
-            ).fetchone()
-            # A denied/forged attempt must not fence another live operation or
-            # overwrite a previously settled receipt when replay is rejected.
-            if (
-                original is None
-                or original["provenance"] != provenance(grant)
-                or original["state"] == "ACKED"
-            ):
-                return
-        # If persistence itself fails, poison the authority: no further admission.
-        try:
-            with self._transaction() as db:
-                db.execute(
-                    "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
+        # Caller owns the execution mutex; serialize both ledgers with settlement.
+        with self.lock:
+            execution_id = grant.execution_id
+            with self.store.transaction(write=False):
+                original = self.store.db.execute(
+                    "SELECT provenance,state FROM effect_intents WHERE operation=? AND stage=? AND execution_id=?",
                     (operation, stage, execution_id),
-                )
-            with self.store.transaction():
-                self.store.db.execute(
-                    "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
-                    (operation, stage, execution_id),
-                )
-                self.store.db.execute(
-                    "UPDATE executions SET control_state='RECOVERY_REQUIRED',cap_hash=NULL WHERE id=?",
-                    (execution_id,),
-                )
-                self.authority._invalidate_claims(execution_id)
-        except BaseException:
-            self.store.failed = True
-            raise
+                ).fetchone()
+                # A denied/forged attempt must not fence another live operation or
+                # overwrite a previously settled receipt when replay is rejected.
+                if (
+                    original is None
+                    or original["provenance"] != provenance(grant)
+                    or original["state"] == "ACKED"
+                ):
+                    return
+            # If persistence itself fails, poison the authority: no further admission.
+            try:
+                with self._transaction() as db:
+                    db.execute(
+                        "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
+                        (operation, stage, execution_id),
+                    )
+                with self.store.transaction():
+                    self.store.db.execute(
+                        "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
+                        (operation, stage, execution_id),
+                    )
+                    self.store.db.execute(
+                        "UPDATE executions SET control_state='RECOVERY_REQUIRED',cap_hash=NULL WHERE id=?",
+                        (execution_id,),
+                    )
+                    self.authority._invalidate_claims(execution_id)
+            except BaseException:
+                self.store.failed = True
+                raise
 
     def settle(self, grant, operation, stage, receipt):
         """Persist a fully decoded, correlated receipt; caller already waited outside locks.
@@ -247,8 +281,8 @@ class DriverGate:
         ):
             raise Fault(400, "invalid_effect_receipt")
         receipt_hash = hashlib.sha256(receipt).hexdigest()
-        with self.authority._execution_lock(grant.execution_id):
-            try:
+        try:
+            with self.lock:
                 with self.store.transaction(write=False):
                     row = self.store.db.execute(
                         "SELECT * FROM effect_intents WHERE operation=? AND stage=?",
@@ -280,13 +314,20 @@ class DriverGate:
                         "UPDATE effect_intents SET state='ACKED',receipt_hash=? WHERE operation=? AND stage=?",
                         (receipt_hash, operation, stage),
                     )
-            except BaseException:
-                self._uncertain_locked(grant, operation, stage)
-                raise
+        except BaseException:
+            self.uncertain(grant, operation, stage)
+            raise
 
     def uncertain(self, grant, operation, stage):
-        with self.authority._execution_lock(grant.execution_id):
-            self._uncertain_locked(grant, operation, stage)
+        try:
+            with self.lock:
+                with self.authority._execution_lock(grant.execution_id):
+                    self._uncertain_locked(grant, operation, stage)
+        except BaseException:
+            # If we cannot persist/fence an unresolved effect, keep every hold
+            # and deny further authority use. A timeout cannot imply safety.
+            self.store.failed = True
+            raise
 
     def close(self):
         if self.db is not None:
@@ -305,6 +346,7 @@ class EffectAdmission:
     grant: StartGrant
     binding: str
     operation: str
+    deadline: float | None = None
 
     def validate(self, identity, operation):
         if operation != self.operation or identity.get("procedure") != self.grant.execution_id:
@@ -316,7 +358,15 @@ class EffectAdmission:
                 raise Fault(403, "effect_identity_fenced")
 
     def send(self, stage, connection, packet):
-        return self.gate.send(self.grant, self.binding, self.operation, stage, connection, packet)
+        return self.gate.send(
+            self.grant,
+            self.binding,
+            self.operation,
+            stage,
+            connection,
+            packet,
+            deadline=self.deadline,
+        )
 
     def settle(self, stage, receipt):
         return self.gate.settle(self.grant, self.operation, stage, receipt)

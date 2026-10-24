@@ -1471,3 +1471,91 @@ and both CLI checks passed. Full hosted suite now expects **435** checks, with
 all three Linux controls mandatory. Native compilation and the new actual race
 probe are pending exact-source hosted validation. All full release gates remain
 false; no handoff, queue settlement, release or recovery proof is synthesized.
+
+### dev24 retained hosted outcomes
+
+At **c4973097baebf9aec6fdc21a319daebf36fc5c80**, push foundation passed **435
+checks with no failures/errors/skips**; PR foundation failed three driver
+concurrency assertions. Both native family jobs failed startup because the
+harness requested eleven slots and the authority correctly enforces ten.
+The candidate native Context, Executor and shared library did build, with 144
+units and both frozen support objects verified; no native execution pass follows.
+
+Push artifact 12574527246 digest
+`16a6013631f962f1a5975f760787059389b4828e93b68ee21f48a9a4fd78d74f`,
+PR failure artifact 12574397471 digest
+`622f8a59533bfa1efedcebd0700dc6570c9492e01fcd5c360adf79a742711845`,
+and native failure artifact 12574418449 digest
+`068f8d91daa55071f82b7c15389c087f6e2948b29cb1683ee269511bc5ca2e27`
+were checked with ZIP CRCs and respectively **128 / 128 / 30** repository source
+hashes. The native support hashes also matched the frozen v0.7 Git revision.
+[Push](evidence/native-child-start/dev24-push-foundation.json),
+[PR failure](evidence/native-child-start/dev24-pr-foundation-failure.json),
+[native pool failure](evidence/native-child-start/dev24-native-pool-failure.json).
+The original hosted failure includes nested execution_busy and subsequent grant
+fencing; its exact scheduler interleaving is not claimed.
+
+## dev25: final write boundary, response budget and isolated native race probe
+
+The driver uses a bounded FIFO reentrant ledger writer before the execution
+mutex. Durable pre-intent, identity/nonce bookkeeping and receipt settlement no
+longer occupy that mutex. Actual socket write, SENT transitions and partial-send
+failure fencing remain protected together. All final live-grant checks and the
+250 ms/200 ms limits remain. Concurrent settlement/uncertainty serializes both
+ledgers; a failed uncertainty fence poisons the Context and keeps all holds.
+A Context-owned absolute TC deadline prevents an expired queued operation from
+sending after its budget. See [DRIVER_WRITE_GATE.md](DRIVER_WRITE_GATE.md).
+
+The driver RPC's old two-second response socket contradicted its permitted
+three-second operation. That route now uses the documented five-second RPC
+response budget; two-second TCP/TLS connect, ordinary RPC sockets, server
+watchdog and TC operation limits are preserved. Driver test HTTP calls now use
+that same five-second budget. A controlled actual mTLS response held beyond two
+seconds demonstrates the mismatch; this does not establish every prior timeout's
+cause. No effect, command replay, receipt or fencing assertion was relaxed.
+
+Stress history is retained: an initial bookkeeping split failed 5/30 cases;
+writer ordering with the old unfair RLock hit an HTTP timeout at case 13; FIFO
+passed 30/30 (900 commands, 4500 ACKED stages per ledger). After adding absolute
+TC deadlines, the old three-second test response budget timed out at case 21.
+The final aligned-budget run passed **30/30**, again **900 commands / 4500 ACKED
+stages per ledger**, in 108.37 seconds. Both earlier timeouts remain failures.
+
+Three new fencing/poison regressions fail with the previous c497 effect module;
+the delayed-response regression fails with its previous transport client.
+The final deadline/driver focused suite passed 88 checks before adding the
+response-budget regression; both the new budget and expired-send checks passed.
+The latest complete local suite and exact-source hosted outcomes are pending.
+All three Linux kernel controls remain mandatory in hosted CI.
+
+The native stale-consumption probe now runs in its own **Context B** with two
+slots: a fresh worker and an unstarted reserved witness. The primary Context A
+keeps its original ten-slot limit, ten spent workers and 21 holds. B must retain
+two holds and one spent worker, preserve its witness and leave A unchanged.
+No slot limit is enlarged and no worker is reused.
+
+The C++ probe holds at actual Executor command consumption before opening its
+Unix channel. Host observation deliberately exceeds the ordinary four-second
+socket deadline before closing the controller and allowing the final check.
+Passing still requires an authenticated real native callback, HTTP 403, zero
+consumption receipts, unchanged three PIDs, PAUSED status and no body-write marker.
+The hold cannot authorize a write or bypass the final check. This closes the
+probe's timeout ambiguity; exact native execution validation remains pending.
+Public runtime, whole-family settlement/handoff/resume and all full release
+qualification groups remain false.
+
+
+Final dev25 local result: **441 passed, three mandatory-hosted Linux controls
+deselected**, warnings as errors, **197.29 seconds**. Full CI expects **444**
+checks without skips. Ruff/format/mypy and a fresh isolated installed wheel
+import/version, absolute-deadline API and both CLI checks passed. The controlled
+response-budget check fails with the previous two-second Route implementation;
+the final mTLS delayed-response and expired-queued-write checks both passed.
+[Final strict stress receipt](evidence/native-context-dss/dev25-driver-stress.json)
+retains exact source hashes, harness, final counts and earlier failed variants.
+Exact-source hosted native execution remains pending.
+
+The completed stale-RUN oracle is followed by independent host container teardown,
+matching the existing negative pause probes. A closed controller connection
+cannot authorize native close/resume. Host termination still cannot release B's
+holds or qualify family quiescence/recovery.

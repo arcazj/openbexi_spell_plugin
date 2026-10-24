@@ -52,3 +52,51 @@ class ExecutionMutex:
                 raise RuntimeError("Execution mutex released by a non-owner")
             self.owner = None
             self.condition.notify_all()
+
+
+class LedgerMutex:
+    """Reentrant FIFO writer; SQL/receipt waits never hold the execution mutex.
+
+    The previous RLock had no admission timeout; retain that behavior, with a
+    bounded queue and no barging between stages. RPC/write deadlines stay intact.
+    """
+
+    CAPACITY = 64
+
+    def __init__(self):
+        self.condition = threading.Condition()
+        self.waiters: deque[object] = deque()
+        self.owner: int | None = None
+        self.depth = 0
+
+    def __enter__(self):
+        from .contracts import Fault
+
+        actor = threading.get_ident()
+        with self.condition:
+            if self.owner == actor:
+                self.depth += 1
+                return self
+            if len(self.waiters) >= self.CAPACITY:
+                raise Fault(503, "driver_ledger_busy")
+            ticket = object()
+            self.waiters.append(ticket)
+            try:
+                while self.owner is not None or self.waiters[0] is not ticket:
+                    self.condition.wait()
+            except BaseException:
+                self.waiters.remove(ticket)
+                self.condition.notify_all()
+                raise
+            self.waiters.popleft()
+            self.owner, self.depth = actor, 1
+            return self
+
+    def __exit__(self, *_error):
+        with self.condition:
+            if self.owner != threading.get_ident() or self.depth < 1:
+                raise RuntimeError("Ledger mutex released by a non-owner")
+            self.depth -= 1
+            if not self.depth:
+                self.owner = None
+                self.condition.notify_all()

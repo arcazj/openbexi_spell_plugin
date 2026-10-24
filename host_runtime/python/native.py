@@ -98,7 +98,7 @@ class Bridge:
 
 class NativeSession:
     def __init__(self, project, script, arguments, *, driver_port=None, user_library=None,
-                 native_home=None, admission_socket=None):
+                 native_home=None, admission_socket=None, consume_fence_probe=False):
         self.driver_port = driver_port
         self.native_home = None
         self.admission_socket = admission_socket
@@ -109,6 +109,9 @@ class NativeSession:
             self.native_home = home
         elif admission_socket is not None:
             raise ValueError('Native admission socket requires the checked native home')
+        if type(consume_fence_probe) is not bool or (consume_fence_probe and self.native_home is None):
+            raise ValueError('Native consumption probe requires the checked candidate')
+        self.consume_fence_probe = consume_fence_probe
         self.user_library = None
         if user_library is not None:
             library = Path(user_library).resolve(strict=True)
@@ -181,6 +184,8 @@ class NativeSession:
             environment.update(SPELL_HOME=str(self.native_home),
                 OPENBEXI_V08_ADMISSION_SOCKET=str(self.admission_socket),
                 OPENBEXI_V08_AGENT_PID=str(os.getpid()))
+            if self.consume_fence_probe:
+                environment['OPENBEXI_V08_CONSUMPTION_PROBE'] = '1'
         if self.user_library is not None:
             environment['OPENBEXI_SPELL_USER_LIBRARY'] = str(self.user_library)
             environment['OPENBEXI_SPELL_ENTRYPOINT'] = str(self.script)

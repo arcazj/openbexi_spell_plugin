@@ -776,8 +776,6 @@ def main():
                 for source in sources.glob("*.py"):
                     shutil.copy2(source, snapshot / source.name)
                 slots = {"slot-" + str(n): "incarnation-" + str(n) for n in range(10)}
-                if profile.native_child_gate:
-                    slots["slot-probe"] = "incarnation-probe"
                 catalog = {
                     "procedure-" + str(n): dict(
                         repository="/catalog",
@@ -812,10 +810,6 @@ def main():
                         for n in range(10)
                     },
                 )
-                if profile.native_child_gate:
-                    credentials["identities"][peers["worker-probe"]["pin"]] = dict(
-                        slot="slot-probe", incarnation="incarnation-probe"
-                    )
                 control_network = prefix + "-control"
                 command("docker", "network", "create", control_network)
                 networks.append(control_network)
@@ -1757,17 +1751,17 @@ def main():
                     qualify_consumption_fence(
                         temporary=temporary,
                         prefix=prefix,
-                        context_name=context_name,
+                        context_image=context_image,
+                        config=config,
+                        sources=sources,
                         worker_image=worker_image,
                         code=code,
                         snapshot=snapshot,
                         ca=ca,
                         peers=peers,
-                        port=port,
-                        entries=entries,
-                        controller=controller,
+                        primary_controller=controller,
                         control=control,
-                        state=state,
+                        primary_state=state,
                         names=names,
                         networks=networks,
                         report=report,
@@ -1788,8 +1782,8 @@ def main():
                     passed=True,
                     native_launch_path_tested=True,
                     native_concurrency_verified=True,
-                    logical_holds_retained=22 if profile.native_child_gate else 10,
-                    single_use_workers_spent=11 if profile.native_child_gate else 10,
+                    logical_holds_retained=21 if profile.native_child_gate else 10,
+                    single_use_workers_spent=10,
                     context_isolated_from_host_manager=True,
                 )
             finally:

@@ -151,3 +151,15 @@ consumption row, no procedure-body marker and the same three live native PIDs.
 Termination still retains the probe's hold and spent worker. It adds no
 quiescence, queue-settlement, resume or release permission. Exact hosted
 validation is pending.
+
+
+Dev24's native programs built, but its eleven-slot harness was correctly denied.
+Dev25 keeps the primary ten-worker Context A unchanged. The actual stale-RUN
+probe uses independent Context B, one fresh worker and one unstarted reserved
+witness. B must retain two holds/one spent worker and preserve its witness; A
+must retain 21 holds/ten spent workers. No worker is reused or limit enlarged.
+The C++ hold is before opening the helper channel; five seconds of host delay
+exceeds its ordinary four-second network deadline without consuming that budget.
+The subsequent callback must receive HTTP 403 from the live authority. Status,
+marker absence and PID continuity alone cannot substitute for that check.
+Exact-source native validation remains pending.

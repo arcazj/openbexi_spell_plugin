@@ -113,3 +113,84 @@ def test_interrupted_wait_removes_its_ticket_without_releasing_the_owner(monkeyp
     mutex.release()
     assert mutex.acquire(blocking=False)
     mutex.release()
+
+
+def test_ledger_writer_is_reentrant_and_new_stages_cannot_barge():
+    from openbexi_spell_server.mutex import LedgerMutex
+
+    mutex, order = LedgerMutex(), []
+
+    def waiter(number):
+        with mutex:
+            order.append(number)
+            with mutex:
+                assert mutex.depth == 2
+
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        mutex.__enter__()
+        try:
+            pending = []
+            for number in range(10):
+                pending.append(pool.submit(waiter, number))
+                queued(mutex, number + 1)
+            with mutex:
+                assert mutex.depth == 2
+        finally:
+            mutex.__exit__()
+        with mutex:
+            order.append("next-stage")
+        for task in pending:
+            task.result(timeout=2)
+    assert order == [*range(10), "next-stage"]
+    assert mutex.owner is None and mutex.depth == 0
+
+
+def test_ledger_writer_capacity_never_displaces_original_waiter(monkeypatch):
+    from openbexi_spell_server.contracts import Fault
+    from openbexi_spell_server.mutex import LedgerMutex
+
+    mutex = LedgerMutex()
+    monkeypatch.setattr(mutex, "CAPACITY", 1)
+
+    def waiter():
+        with mutex:
+            return True
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        mutex.__enter__()
+        try:
+            original = pool.submit(waiter)
+            queued(mutex, 1)
+            with pytest.raises(Fault) as full:
+                pool.submit(waiter).result(timeout=1)
+            assert full.value.code == "driver_ledger_busy"
+        finally:
+            mutex.__exit__()
+        assert original.result(timeout=1)
+    assert not mutex.waiters
+
+
+def test_interrupted_ledger_wait_removes_ticket_without_unlocking_owner(monkeypatch):
+    from openbexi_spell_server.mutex import LedgerMutex
+
+    mutex = LedgerMutex()
+    original = mutex.condition.wait
+
+    def interrupted():
+        raise InterruptedError("Injected interrupted ledger waiter")
+
+    def contender():
+        with mutex:
+            raise AssertionError("Interrupted waiter entered")
+
+    with mutex:
+        monkeypatch.setattr(mutex.condition, "wait", interrupted)
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            with pytest.raises(InterruptedError):
+                pool.submit(contender).result(timeout=1)
+            with pytest.raises(RuntimeError, match="non-owner"):
+                pool.submit(mutex.__exit__).result(timeout=1)
+        assert not mutex.waiters and mutex.depth == 1
+        monkeypatch.setattr(mutex.condition, "wait", original)
+    with mutex:
+        assert mutex.depth == 1

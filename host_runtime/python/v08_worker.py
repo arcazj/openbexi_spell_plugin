@@ -274,6 +274,7 @@ def run(config):
             options.update(
                 native_home="/opt/v08-native-home",
                 admission_socket="/tmp/native-admission.sock",
+                consume_fence_probe=consumption_probe,
             )
     session = session_type(
         root,
@@ -306,18 +307,9 @@ def run(config):
             final_consume = controls.consume
             consume_fenced = threading.Event()
 
-            def delayed_consume(body):
-                # Qualification-only delay before the final authority check.
-                # It supplies no ALLOW, new token, retry or post-check bypass.
-                emit(
-                    "native-consumption-awaiting-fence", execution_id=grant.execution_id
-                )
-                release = Path("/control/consume-continue")
-                until = time.monotonic() + 35
-                while not release.is_file():
-                    if time.monotonic() >= until:
-                        raise TimeoutError("Consumption fence probe deadline expired")
-                    time.sleep(0.02)
+            def observe_consume(body):
+                # The C++ probe hold is before opening the Unix channel. This
+                # wrapper only records a real HTTP 403 from final admission.
                 try:
                     final_consume(body)
                 except Fault as error:
@@ -326,7 +318,7 @@ def run(config):
                         emit("native-consumption-authority-denied", status=403)
                     raise
 
-            controls.consume = delayed_consume
+            controls.consume = observe_consume
         session.request = controls.dispatch
         admission = NativeAdmissionServer(
             options["admission_socket"],
@@ -399,6 +391,14 @@ def run(config):
         rpc("check")
         session.request("CMD_RUN", send=True)
         if consumption_probe:
+            until = time.monotonic() + 10
+            while not Path("/workspace/consume-awaiting").is_file():
+                if time.monotonic() >= until:
+                    raise TimeoutError(
+                        "Native Executor did not reach its consumption hold"
+                    )
+                time.sleep(0.02)
+            emit("native-consumption-awaiting-fence", execution_id=grant.execution_id)
             if not admission.consume_denials.wait(40) or not consume_fenced.is_set():
                 raise RuntimeError(
                     "Stale native RUN did not reach final authority denial"

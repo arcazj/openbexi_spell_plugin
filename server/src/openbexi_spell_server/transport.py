@@ -58,11 +58,16 @@ class Route:
             ("/v1/worker/control-consume", "openbexi.worker/2"),
         ):
             raise ValueError("Unconfigured RPC route")
+        # A driver operation can use up to 3s before its bounded response is
+        # persisted. Use the documented 5s RPC budget for that route; the
+        # independent absolute TC deadline still prevents a late socket write.
+        timeout = 5 if path == "/v1/worker/driver" else 2
         connection = http.client.HTTPSConnection(self.host, self.port, context=self.tls, timeout=2)
         watchdog = None
         try:
             connection.connect()
             wire = connection.sock
+            wire.settimeout(timeout)
 
             def expire():
                 try:

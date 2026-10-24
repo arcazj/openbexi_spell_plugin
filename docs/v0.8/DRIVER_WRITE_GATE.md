@@ -1,75 +1,88 @@
 # Private Context driver write boundary
 
-This is a source implementation of the F3 write/receipt seam, not a public
-runtime service or a completed v0.8 execution path. `runtime_enabled` remains
-false. No worker, native bridge or IDE Run command can invoke it over RPC.
+This is the F3 write/receipt seam used by the optional retained native audit/DSS
+profiles. Public runtime and all full release gates remain disabled. The worker
+route requires its pinned mTLS identity, original consumed StartGrant and the
+winning agent's memory-only capability. No browser/Listener delegation can call
+it. Resource permissions and endpoints are fixed by the Context operator.
 
-`server/src/openbexi_spell_server/effects.py` belongs to the Apache-2.0 Context
-package. `driver_plugin/src/openbexi_spell_dss/fenced_transport.py` is a separate
-GPL-3.0-or-later adapter derived from the original DSS transport. The original
-`transport.py`, including its immutable telemetry patch preimage, is unchanged.
-The fenced adapter requires an explicit `EffectAdmission` argument; the legacy
-adapter remains for existing v0.7 source composition only. A future native
-Context integration must select the fenced adapter exclusively.
+The Apache Context package owns `effects.py`; `context_driver.py` and
+`fenced_transport.py` remain separate GPL adapters. The original v0.7 transport
+and immutable composition preimages are preserved. This component does not
+qualify native family quiescence, handoff/resume or production driver lifecycle.
 
 ## Admission and linearization
 
-Only trusted Context driver code constructs an admission using an original
-consumed `StartGrant`, fixed driver binding and UUID operation ID. Validation
-binds the original execution and logical procedure to the actual DSS packet's
-execution/procedure/operation fields. Workers cannot select another endpoint,
-replace an epoch, acquire a new grant or pass a replacement admission object.
-Those restrictions still require enforcement in the future native RPC adapter.
+Only trusted Context code constructs EffectAdmission from the original grant,
+configured binding and request UUID. Packet procedure/execution/operation fields
+are derived here. The worker cannot choose another endpoint, epoch or admission.
+TC options remain bounded and effect-changing options remain denied.
 
-Each binary command stage independently:
+The native RPC journal's identity reads, nonce admission and completion checks
+use atomic ContextStore transactions. Each checks current authority; these
+records cannot authorize a physical write. Removing them from the execution
+mutex does not remove the independent final send check.
 
-1. Acquires the same per-execution mutex used by start, handoff and final
-   disconnect fencing.
-2. Checks the original provenance, current owner/session, control and start
-   permissions, execution lifecycle and immutable configured driver binding.
-3. Reserves a non-replayable authority intent and separate driver intent.
-   Both ledgers retain operation ID, stage, original provenance including a
-   token hash, and packet hash. Capacity is bounded; no entries are evicted.
-4. Rechecks live authority, then performs the actual `socket.sendall` while
-   retaining the execution mutex. The total send timeout is 200 ms and the
-   packet bound is 64 KiB. SQLite transactions never span socket I/O.
-5. Records SENT in both ledgers and releases the execution mutex. The original
-   timeout is restored. Receipt waiting and full binary decoding happen outside
-   the execution mutex, driver ledger mutex and authority database transaction.
-6. Correlates the response and persists its hash under the original operation.
-   ACKED means a correlated definitive response, not necessarily command success.
-   Unknown/missing/indeterminate responses remain uncertain.
+For each binary stage:
 
-A failed or partial write, missing receipt or ledger commit gap retains the
-logical/worker holds and fences the execution for manual recovery. Persistence
-failure poisons the authority if uncertainty cannot be recorded. No automatic
-replay, synthesized receipt or capacity/worker reclamation exists. Denied forged
-requests cannot fence a legitimate operation. Rejected replays do not overwrite
-previously settled receipts. An operation UUID cannot cross execution/provenance
-bindings across its stages.
+1. Enter the bounded, reentrant FIFO driver ledger writer. The queue holds at
+   most 64 waiting handlers; a new stage cannot barge ahead of existing waiters.
+   Receipt waiting happens after this writer is released.
+2. Check live original authority and commit the authority INTENT, then the driver
+   INTENT. Both store original provenance, packet hash, operation and stage;
+   neither is replayable. No entry is evicted to reclaim capacity.
+3. While still owning the writer, acquire the same 250 ms execution mutex used
+   by final controller fencing. No holder waits behind another ledger writer.
+   Recheck live owner/session/policy/start permission and binding.
+4. Check the Context-owned absolute TC deadline immediately before send. The
+   actual socket timeout is the smaller of 200 ms and its remaining budget.
+   Perform sendall under the execution mutex. SQL transactions span no network
+   I/O. An expired queued operation cannot later write.
+5. Commit SENT in both ledgers before releasing the execution mutex. A partial
+   send or SENT transition error records uncertainty and fences under that same
+   mutex. Restore the socket's original timeout.
+6. Release the writer before receiving/decoding the binary receipt. Settlement
+   reacquires only the FIFO ledger writer and commits both ACKED records for the
+   original SENT operation. ACKED is a correlated definitive response, including
+   a definitive failure; it cannot restore control authority or release a hold.
 
-Authority schema 5 is installed when the driver gate is created. Old schema-4
-binaries reject that state. The driver SQLite database has its own exclusive
-process lock, DELETE journal and FULL synchronous mode. Startup marks unresolved
-driver INTENT/SENT records UNCERTAIN; authority startup independently fences all
-retained executions. A mismatch is preserved, never reconciled to success.
-Supported target storage remains operator-provisioned local Linux ext4; these
-tests do not qualify storage devices, backups or node fencing.
+The lock order is **ledger writer → execution mutex → store transaction**.
+Settlement needs no execution mutex. Concurrent uncertainty uses this same
+order and rechecks the original row under the writer, so it cannot downgrade a
+receipt already committed in both ledgers. If uncertainty cannot be persisted
+or fenced, the Context is poisoned and retains every hold. This conservative
+failure closes all authority admission in that Context; full fault/isolation
+qualification remains pending.
 
-## Test scope and remaining blockers
+TC operations retain the existing maximum three-second timeout. Their absolute
+budget begins in Context request preparation and includes subsequent queuing.
+The worker driver RPC now has the documented five-second response budget;
+previously its two-second client socket could abandon a still-permitted
+operation. TCP/TLS connection timeout remains two seconds, the server/watchdog
+budget remains five, and other RPC response sockets remain two seconds. The
+three-second test HTTP helper was likewise inconsistent with this driver
+budget; only driver tests select five seconds. This correction does not prove
+the cause of every earlier stress timeout.
 
-`server/tests/test_effects.py` uses the actual binary DSS transport against a
-separate DSS subprocess. It exercises five stages, ten independent driver
-operations, receipt-wait isolation, handoff between send and receipt, live role
-revocation, forged/stale provenance, endpoint/resource denial, capacity denial,
-wire-identity substitution, real socket backpressure, lost release receipt,
-restart and actual process death after a TCP write but before SENT commit.
-Ten driver operations are not ten native procedures or Executors.
+Any missing/uncertain response, crash gap or failed intent remains non-replayable.
+No automatic worker reuse, synthesized receipt or reservation reclamation exists.
+Authority restart fences old grants and retains state; ledger mismatches are
+preserved. Schema 5 established these effect tables; newer authority migrations
+retain their meaning and reject unsafe binary downgrade. SQLite uses exclusive
+process ownership, DELETE journaling and FULL synchronous mode.
 
-The test runner records hashes for the server, driver sources and DSS source/
-data, plus separate DSS process IDs. Full G5 remains pending: the original
-native bridge, Context driver lifecycle, TC/TM resource ACLs, driver journal
-integration, driver-process identity and recovery across deployed services are
-not qualified. The low-level seam trusts the Context driver to encode packets
-and decode receipts; it is not an untrusted-worker interface. Native quiescence,
-child admission and safe controller handoff after launch remain mandatory gates.
+## Qualification scope
+
+Real protobuf/mTLS tests call an independent DSS subprocess and compare both
+ledgers. Tests cover five stages, ten pending streams and overflow denial,
+original identity, grants/policy, endpoint/resource denial, real backpressure,
+late/missing receipt, concurrent uncertainty, and actual process death after
+write but before SENT commit. New regressions hold INTENT or receipt bookkeeping
+while a controller fences, deny an expired queued send, and keep authority
+closed if unresolved-effect fencing cannot be recorded. The old implementation
+fails the three fencing/poison regressions; its two-second client also fails the
+controlled delayed-response regression.
+
+Dev25's final exact-source hosted results are recorded in TEST_REPORT.md when
+available. Local scoped tests and stress do not qualify driver reset, deployed
+partitions/storage, full native family control, recovery or v0.8 publication.

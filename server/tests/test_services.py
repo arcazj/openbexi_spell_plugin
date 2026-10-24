@@ -40,9 +40,11 @@ def serving(app, tls):
         assert not thread.is_alive()
 
 
-def request(server, tls, path, *, subject=ALICE, payload=None, method=None, headers=None):
+def request(
+    server, tls, path, *, subject=ALICE, payload=None, method=None, headers=None, timeout=3
+):
     connection = http.client.HTTPSConnection(
-        "localhost", server.server_port, context=tls, timeout=3
+        "localhost", server.server_port, context=tls, timeout=timeout
     )
     values = {} if subject is None else {"X-OpenBEXI-Client-Fingerprint": subject}
     values.update(headers or {})

@@ -77,6 +77,7 @@ def native_call(setup, pki, path, message, *, key=None, certificate="worker", **
         "/v1/worker/driver",
         subject=None,
         payload=body,
+        timeout=5,
     )
 
 
@@ -203,8 +204,8 @@ def test_ten_pending_receipts_bound_eleventh_rpc_without_effect(
             subject="bob",
         )
 
-    def hold_after_actual_write(grant, binding, operation, stage, connection, packet):
-        original_send(grant, binding, operation, stage, connection, packet)
+    def hold_after_actual_write(grant, binding, operation, stage, connection, packet, **options):
+        original_send(grant, binding, operation, stage, connection, packet, **options)
         if stage == "TRANSPORT" and operation in keys:
             with condition:
                 entered.add(operation)
@@ -587,8 +588,8 @@ def test_lost_native_release_receipt_keeps_holds_and_never_replays(driver_setup,
     gate = setup["driver"].gate
     send = gate.send
 
-    def lose_receipt(original, binding, operation, stage, connection, packet):
-        send(original, binding, operation, stage, connection, packet)
+    def lose_receipt(original, binding, operation, stage, connection, packet, **options):
+        send(original, binding, operation, stage, connection, packet, **options)
         if stage == "RELEASE":
             connection.close()
 
@@ -640,3 +641,56 @@ def test_unbounded_or_nonfixed_operator_configuration_fails_closed(driver_setup,
     settings = dict(driver_setup["settings"], **changes)
     with pytest.raises((ValueError, TypeError)):
         ContextDriver(driver_setup["app"].authority, settings)
+
+
+def test_driver_client_response_budget_covers_a_permitted_three_second_operation(
+    driver_setup, pki, monkeypatch
+):
+    from google.protobuf.message_factory import GetMessageClass
+    from openbexi_spell_dss.rpc import method_descriptor
+
+    setup = driver_setup
+    original = setup["driver"]._prepare
+    entered, release = threading.Event(), threading.Event()
+
+    def delayed(*args):
+        action = original(*args)
+
+        def wait_for_observation():
+            entered.set()
+            assert release.wait(3), "Driver response observation expired"
+            return action()
+
+        return wait_for_observation
+
+    monkeypatch.setattr(setup["driver"], "_prepare", delayed)
+    path = PREFIX + "TC/CreateTcItem"
+    message = GetMessageClass(method_descriptor(path).input_type)(mnemonic="CMD1")
+    route = Route(
+        f"https://localhost:{setup['server'].server_port}",
+        pki["context-a"]["pin"],
+        pki["worker"]["client"],
+    )
+    body = dict(
+        schema="openbexi.worker/2",
+        context_id="A",
+        grant=asdict(setup["grant"]),
+        runtime_capability=setup["runtime_capabilities"][setup["grant"].execution_id],
+        request_id=str(uuid.uuid4()),
+        path=path,
+        payload=base64.b64encode(message.SerializeToString()).decode("ascii"),
+    )
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        pending = pool.submit(
+            route.call, body, path="/v1/worker/driver", schema="openbexi.worker/2"
+        )
+        try:
+            assert entered.wait(2)
+            threading.Event().wait(2.1)  # Greater than the old client socket deadline.
+            assert not pending.done(), "Client abandoned a still-permitted driver operation"
+        finally:
+            release.set()
+        reply = pending.result(timeout=2)
+    assert proto.TcItemDesc.FromString(base64.b64decode(reply["payload"])).mnemonic == "CMD1"
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 0
+    assert setup["store"].db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0

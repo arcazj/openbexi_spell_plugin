@@ -6,11 +6,15 @@ No authority/container introspection is delegated to the Context or worker.
 
 from contextlib import closing
 import json
+import os
+import socket
+import uuid
 import shutil
 import sqlite3
 import time
 
-from openbexi_spell_server.contracts import canonical
+from openbexi_spell_server.contracts import canonical, envelope
+from openbexi_spell_server.transport import Route, tls_context
 from openbexi_spell_server.worker import preflight
 
 
@@ -18,17 +22,17 @@ def qualify_consumption_fence(
     *,
     temporary,
     prefix,
-    context_name,
+    context_image,
+    config,
+    sources,
     worker_image,
     code,
     snapshot,
     ca,
     peers,
-    port,
-    entries,
-    controller,
+    primary_controller,
     control,
-    state,
+    primary_state,
     names,
     networks,
     report,
@@ -37,10 +41,132 @@ def qualify_consumption_fence(
     host_processes,
     events,
 ):
+    # A fresh Context keeps the primary ten-slot single-use bound intact.
+    # Its second, unstarted witness tests that close fences only one execution.
+    original_primary = primary_controller("execution.list", {})
     name, network = prefix + "-consume-probe", prefix + "-consume-net"
+    context_name = prefix + "-consume-context"
+    context_network = prefix + "-consume-control"
+    command("docker", "network", "create", context_network)
+    networks.append(context_network)
     command("docker", "network", "create", "--internal", network)
     networks.append(network)
+    with socket.socket() as reservation:
+        reservation.bind(("127.0.0.1", 0))
+        port = reservation.getsockname()[1]
+    state = temporary / "consume-probe-authority"
+    state.mkdir(mode=0o700)
+    secure = temporary / "consume-probe-context-credentials"
+    secure.mkdir(mode=0o755)
+    for original, target in (
+        (ca, "ca.pem"),
+        (peers["context"]["cert"], "context.pem"),
+        (peers["context"]["key"], "context.key"),
+    ):
+        shutil.copy2(original, secure / target)
+        (secure / target).chmod(0o444)
+    probe_config = dict(
+        config,
+        context_id="B",
+        allowed_hosts=[f"localhost:{port}", "context:9443"],
+        worker_slots={
+            "slot-probe": "incarnation-probe",
+            "slot-witness": "incarnation-witness",
+        },
+        worker_credentials=dict(
+            profile="single-host-preflight",
+            identities={
+                peers["worker-probe"]["pin"]: dict(
+                    slot="slot-probe", incarnation="incarnation-probe"
+                ),
+                peers["worker-0"]["pin"]: dict(
+                    slot="slot-witness", incarnation="incarnation-witness"
+                ),
+            },
+        ),
+        approved_sources={
+            "consume-probe": config["approved_sources"]["consume-probe"],
+            "witness": config["approved_sources"]["procedure-9"],
+        },
+    )
+    (secure / "config.json").write_bytes(canonical(probe_config))
+    args = [
+        "docker",
+        "create",
+        "--name",
+        context_name,
+        "--init",
+        "--read-only",
+        "--network",
+        context_network,
+        "--publish",
+        f"127.0.0.1:{port}:9443",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "512m",
+        "--user",
+        f"{os.getuid()}:{os.getgid()}",
+    ]
+    for source, destination, mode in (
+        (code, "/v08", ",readonly"),
+        (sources, "/catalog", ",readonly"),
+        (secure, "/credentials", ",readonly"),
+        (state, "/state", ""),
+    ):
+        args += ["--mount", f"type=bind,src={source},dst={destination}{mode}"]
+    args += [
+        "--env",
+        "PYTHONPATH=/v08/server/src",
+        "--entrypoint",
+        "python",
+        context_image,
+        "-m",
+        "openbexi_spell_server",
+        "context",
+        "--config",
+        "/credentials/config.json",
+    ]
+    names.append(context_name)
+    command(*args)
     command("docker", "network", "connect", "--alias", "context", network, context_name)
+    command("docker", "start", context_name)
+    route = Route(
+        f"https://localhost:{port}",
+        peers["context"]["pin"],
+        tls_context(ca, peers["listener"]["cert"], peers["listener"]["key"]),
+    )
+
+    def controller(method, payload):
+        return route.call(
+            envelope(
+                "B",
+                "alice",
+                method,
+                payload,
+                None
+                if method in {"execution.list", "source.catalog"}
+                else str(uuid.uuid4()),
+            )
+        )
+
+    until = time.monotonic() + 20
+    while True:
+        try:
+            controller("execution.list", {})
+            break
+        except Exception:
+            if time.monotonic() >= until:
+                raise RuntimeError("Isolated consumption-probe Context startup failed")
+            time.sleep(0.1)
+    entries = {
+        entry["procedure_id"]: entry
+        for entry in controller("source.catalog", {})["procedures"]
+    }
     connection = controller("session.open", {})["connection_id"]
     approved = entries["consume-probe"]
     execution = controller(
@@ -59,6 +185,24 @@ def qualify_consumption_fence(
             },
         ),
     )
+    witness_connection = controller("session.open", {})["connection_id"]
+    witness = entries["witness"]
+    controller(
+        "execution.reserve",
+        dict(
+            procedure_id="witness",
+            connection_id=witness_connection,
+            **{
+                key: witness[key]
+                for key in (
+                    "source_revision",
+                    "source_sha256",
+                    "runtime_image",
+                    "driver_binding",
+                )
+            },
+        ),
+    )
     peer = peers["worker-probe"]
     params = dict(
         ca=str(ca),
@@ -66,7 +210,7 @@ def qualify_consumption_fence(
         key=str(peer["key"]),
         context_url=f"https://localhost:{port}",
         context_fingerprint=peers["context"]["pin"],
-        context_id="A",
+        context_id="B",
         execution_id=execution["id"],
         worker_slot="slot-probe",
         worker_incarnation="incarnation-probe",
@@ -159,6 +303,9 @@ def qualify_consumption_fence(
     command(*args)
     await_event([name], "native-consumption-awaiting-fence", seconds=45)
     before = host_processes(name)
+    # Deliberately exceed the ordinary four-second native socket deadline. The
+    # C++ hold is before channel creation; a network timeout cannot pass this probe.
+    time.sleep(5)
     # Closing this independent connection must fence only the fresh probe.
     unrelated = {
         row["id"]: row
@@ -215,8 +362,8 @@ def qualify_consumption_fence(
                 "Stale native RUN obtained a consumption receipt or lost identity"
             )
         if (
-            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 22
-            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 11
+            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 2
+            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1
         ):
             raise RuntimeError("Native stale-RUN probe reclaimed a hold or worker")
     records = events(name)
@@ -235,11 +382,11 @@ def qualify_consumption_fence(
         for event in records
     ):
         raise RuntimeError("Native stale RUN advanced or was granted consumption")
-    (control / "consume-probe-stop").write_text(
-        "host completed retained-process observation\n"
-    )
-    if command("docker", "wait", name, timeout=30) != "0":
-        raise RuntimeError("Native stale-RUN probe failed cleanup")
+    # Independent host teardown follows the completed stale-controller oracle.
+    # No native close/resume operation is authorized by the fenced connection.
+    command("docker", "stop", "--time", "2", name)
+    if command("docker", "wait", name, timeout=15) not in {"0", "137", "143"}:
+        raise RuntimeError("Native stale-RUN probe host teardown differs")
     info = json.loads(command("docker", "inspect", name))[0]
     if (
         info["State"]["Running"]
@@ -251,14 +398,34 @@ def qualify_consumption_fence(
         sqlite3.connect("file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True)
     ) as db:
         if (
-            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 22
-            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 11
+            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 2
+            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1
         ):
             raise RuntimeError(
                 "Native stale-RUN teardown released a hold or spent slot"
             )
+    if primary_controller("execution.list", {}) != original_primary:
+        raise RuntimeError("Consumption probe changed primary Context executions")
+    with closing(
+        sqlite3.connect(
+            "file:" + str(primary_state / "context.sqlite3") + "?mode=ro", uri=True
+        )
+    ) as db:
+        if (
+            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 21
+            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 10
+        ):
+            raise RuntimeError(
+                "Consumption probe changed primary Context holds/workers"
+            )
     report["native_consumption_fence"] = dict(
         passed=True,
+        isolated_context_id="B",
+        primary_ten_slot_pool_preserved=True,
+        unrelated_reserved_witness_unchanged=True,
+        pre_channel_hold_seconds=5,
+        probe_context_holds_retained=2,
+        probe_context_workers_spent=1,
         actual_native_executor=True,
         final_authority_status=403,
         forwarded_before_disconnect=True,
@@ -269,6 +436,7 @@ def qualify_consumption_fence(
         unrelated_executions_unchanged=True,
         control_state="CONTROLLER_DISCONNECTED",
         consumption_receipts=0,
+        host_teardown_only=True,
         reservation_retained_after_termination=True,
         worker_spent=True,
         quiescence_proven=False,
