@@ -1537,6 +1537,25 @@ def main():
                                 raise RuntimeError(
                                     "Native agent RUN attempts lack exact durable receipts"
                                 )
+                            forwards = audit.execute(
+                                "SELECT state,COUNT(*) FROM native_control_forwards GROUP BY state"
+                            ).fetchall()
+                            if forwards != [("FORWARD_UNPROVEN", 16)]:
+                                raise RuntimeError(
+                                    "Native RUN bypassed one-shot before-forward admission"
+                                )
+                            if (
+                                audit.execute(
+                                    "SELECT COUNT(*) FROM native_control_forwards f "
+                                    "JOIN native_control_attempts a ON f.request_id=a.request_id "
+                                    "WHERE f.execution_id=a.execution_id AND f.origin_hash=a.origin_hash "
+                                    "AND f.operation_digest=a.operation_digest"
+                                ).fetchone()[0]
+                                != 16
+                            ):
+                                raise RuntimeError(
+                                    "Native RUN forward lost original journal identity"
+                                )
                             if (
                                 audit.execute(
                                     "SELECT COUNT(*) FROM native_control_attempts c "
@@ -1560,12 +1579,25 @@ def main():
                             raise RuntimeError(
                                 "Native child provider admission counts differ from the family tree"
                             )
+                        if (
+                            sum(
+                                event["event"] == "native-unadmitted-run-denied"
+                                for worker in report["workers"]
+                                for event in worker["events"]
+                            )
+                            != 10
+                        ):
+                            raise RuntimeError(
+                                "Native unadmitted RUN denial count differs"
+                            )
                         report.update(
                             native_child_before_spawn_component_tested=True,
                             native_child_admissions_consumed=11,
                             native_nested_child_admissions_consumed=1,
                             full_family_qualified=False,
                             native_agent_run_attempts_journalled=16,
+                            native_context_run_forwards_admitted=16,
+                            native_unadmitted_run_denials=10,
                             native_control_queue_settlement_proven=False,
                         )
                     if profile.native_dss:

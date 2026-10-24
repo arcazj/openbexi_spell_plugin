@@ -10,13 +10,8 @@
 #include <cstring>
 #include <stdexcept>
 
-static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
+static void v08_native_request(const nlohmann::json& body)
 {
-    // Recovery/reconnect is never a fresh admission. Check before IPC setup,
-    // process replacement/kill, spawning, or automatic hidden-child execution.
-    if (reconnecting || !model.getWsFilename().empty()
-        || !model.getCondition().empty())
-        throw std::runtime_error("Native recovery/conditional start is unqualified");
     const char* path = std::getenv("OPENBEXI_V08_ADMISSION_SOCKET");
     const char* agent = std::getenv("OPENBEXI_V08_AGENT_PID");
     if (!path || !agent || std::strlen(path) >= sizeof(sockaddr_un::sun_path))
@@ -50,19 +45,6 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
         || size != sizeof(peer) || peer.uid != getuid()
         || std::to_string(peer.pid) != expectedAgent)
         throw std::runtime_error("Native admission provider identity differs");
-    const int mode = static_cast<int>(model.getOpenMode());
-    const int supported = OPEN_MODE_AUTOMATIC | OPEN_MODE_BLOCKING | OPEN_MODE_VISIBLE;
-    if (mode & ~supported) throw std::runtime_error("Native open mode unqualified");
-    const nlohmann::json body = {
-        {"schema", "openbexi.native-start/1"},
-        {"instance_id", model.getInstanceId()},
-        {"parent_instance_id", model.getParentInstanceId()},
-        {"entrypoint", model.getProcId() + ".py"},
-        {"arguments", model.getArguments()},
-        {"mode", {{"automatic", bool(mode & OPEN_MODE_AUTOMATIC)},
-                  {"blocking", bool(mode & OPEN_MODE_BLOCKING)},
-                  {"visible", bool(mode & OPEN_MODE_VISIBLE)}}}
-    };
     const std::string packet = body.dump() + "\n";
     if (packet.size() > 32768) throw std::runtime_error("Native admission request too large");
     size_t sent = 0;
@@ -81,4 +63,41 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
         reply.append(buffer, static_cast<size_t>(count));
     }
     if (reply != "ALLOW\n") throw std::runtime_error("Native start admission denied");
+}
+
+static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
+{
+    // Recovery/reconnect is never a fresh admission. Check before IPC setup,
+    // process replacement/kill, spawning, or automatic hidden-child execution.
+    if (reconnecting || !model.getWsFilename().empty()
+        || !model.getCondition().empty())
+        throw std::runtime_error("Native recovery/conditional start is unqualified");
+    const int mode = static_cast<int>(model.getOpenMode());
+    const int supported = OPEN_MODE_AUTOMATIC | OPEN_MODE_BLOCKING | OPEN_MODE_VISIBLE;
+    if (mode & ~supported) throw std::runtime_error("Native open mode unqualified");
+    const nlohmann::json body = {
+        {"schema", "openbexi.native-start/1"},
+        {"instance_id", model.getInstanceId()},
+        {"parent_instance_id", model.getParentInstanceId()},
+        {"entrypoint", model.getProcId() + ".py"},
+        {"arguments", model.getArguments()},
+        {"mode", {{"automatic", bool(mode & OPEN_MODE_AUTOMATIC)},
+                  {"blocking", bool(mode & OPEN_MODE_BLOCKING)},
+                  {"visible", bool(mode & OPEN_MODE_VISIBLE)}}}
+    };
+    v08_native_request(body);
+}
+
+
+static void v08_admit_native_run(SPELLexecutorModel& model, const SPELLipcMessage& message)
+{
+    if (message.getId() != "CMD_RUN") return;
+    if (!message.hasField("V08ControlRequest"))
+        throw std::runtime_error("Native RUN has no immutable admission identity");
+    v08_native_request({
+        {"schema", "openbexi.native-control/1"},
+        {"instance_id", model.getInstanceId()},
+        {"request_id", message.get("V08ControlRequest")},
+        {"command", "CMD_RUN"}
+    });
 }

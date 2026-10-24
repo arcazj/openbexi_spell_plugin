@@ -1332,3 +1332,37 @@ wheel install/import/version/CLI passed. Tests cover non-owner release, cancelle
 head, interrupted wait, bounded queue, no barging and real mTLS identity checks
 while another action owns the stage lock, followed by post-disconnect rejection.
 Exact-source hosted dev21 results are pending; no full gate is promoted.
+
+## dev21 hosted completion; dev22 native before-forward candidate
+
+Runtime **0d31c4905be4b74702b95a566bb07d99cabc6b1a** passed all eight jobs in
+both PR 40119871531 and push 40119867008; both portable runs 40119871566 and
+40119867010 passed. Foundation completed **418 tests without failures/errors/skips**.
+Artifact 12571330675 SHA-256
+`e9867abee05118c9f725294802d751b4cb340936fac913d5daf52de7261b3f2d`,
+CRC and 124 source hashes were independently checked.
+[Receipt](evidence/native-context-dss/dev21-foundation.json).
+
+Dev22 adds a real native Context hook before Executor IPC forwarding. A RUN
+message carries the original journal UUID; the native Context authenticates
+the owned agent over the existing Unix helper and receives one-shot live
+admission through pinned worker-to-Context mTLS. Unknown/replayed IDs or changed
+targets never forward. Lost admission responses cannot retry; schema 12 retains
+FORWARD_UNPROVEN and fences it on restart. The authenticated helper remains
+bounded; no host socket, privilege or new grant is added. The original Executor
+queue and other mutation paths are not yet fenced by this component.
+
+The native child cohort must prove sixteen forward rows with identical original
+journal identities and ten actual unregistered-RUN probes. Each probe bypasses
+the Python wrapper, requires native callback denial and verifies that the
+Executor remains PAUSED before legitimate execution. This is an isolated
+audit/compute profile; it cannot dispatch satellite commands. Exact native
+Context source reproduction and the 74-unit build remain mandatory in CI.
+
+Local: **58 focused checks passed, one hosted-only peer control excluded**;
+full suite **422 passed, two deselected**, warnings as errors, 196.11 seconds.
+Both Linux controls remain mandatory in hosted CI, for 424 expected tests.
+Ruff/format/mypy and isolated dev22 package install/import/version/CLI passed.
+Hosted native compilation and before-forward positive/negative evidence are
+pending. Neither forwarding admission nor IPC acknowledgment qualifies native
+dequeue, family quiescence, handoff/resume or full v0.8 release.

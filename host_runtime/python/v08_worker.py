@@ -299,6 +299,7 @@ def run(config):
             "/opt/v08-native-home/bin/SPELL-Context",
             lambda: session.process,
             child_gate,
+            controls=controls,
             report=emit,
         )
 
@@ -333,6 +334,20 @@ def run(config):
         session.pump = pump
         if child_gate is not None and session.instance not in child_gate.started:
             raise RuntimeError("Native before-spawn root hook was bypassed")
+        if child_gate is not None:
+            # Deliberately bypass the Python wrapper with an unregistered ID.
+            # Only an actual native Context callback/denial satisfies this probe.
+            controls.original(
+                "CMD_RUN", {"V08ControlRequest": str(uuid.uuid4())}, send=True
+            )
+            if not admission.control_denials.wait(2):
+                raise RuntimeError("Native unadmitted RUN bypassed the forwarding hook")
+            if (
+                session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+                != "PAUSED"
+            ):
+                raise RuntimeError("Native unadmitted RUN advanced the Executor")
+            emit("native-unadmitted-run-denied", execution_id=grant.execution_id)
         emit(
             "native-ready",
             execution_id=grant.execution_id,

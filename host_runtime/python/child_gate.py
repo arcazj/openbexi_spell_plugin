@@ -155,7 +155,14 @@ class NativeChildGate:
 
 class NativeAdmissionServer:
     def __init__(
-        self, path, executable, listener, gate, *, report=lambda *_args, **_kwargs: None
+        self,
+        path,
+        executable,
+        listener,
+        gate,
+        *,
+        controls=None,
+        report=lambda *_args, **_kwargs: None,
     ):
         self.path = str(path)
         self.executable = Path(executable).resolve(strict=True)
@@ -164,6 +171,8 @@ class NativeAdmissionServer:
         self.listener = listener
         self.gate = gate
         self.report = report
+        self.controls = controls
+        self.control_denials = threading.Event()
         self.context_pid = None
         self.pidfd = None
         self.stop = threading.Event()
@@ -227,6 +236,18 @@ class NativeAdmissionServer:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
                     body = decode(bytes(raw))
+                    if body.get("schema") == "openbexi.native-control/1":
+                        try:
+                            if self.controls is None:
+                                raise ValueError("Native control provider unavailable")
+                            self.controls.forward(body)
+                        except Exception:
+                            self.control_denials.set()
+                            self.report("native-before-forward-denied")
+                            raise
+                        self.report("native-before-forward-admitted")
+                        stream.sendall(b"ALLOW\n")
+                        continue
                     self.report(
                         "native-before-spawn-request",
                         child=bool(body.get("parent_instance_id")),

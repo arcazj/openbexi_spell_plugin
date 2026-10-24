@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev21 FIFO execution admission and atomic identity reads: 416 local scoped tests passed, two managed-host exclusions; hosted 418-test/native validation pending",
+  "phase": "dev22 native Context before-forward RUN admission: 422 local scoped tests passed, two exclusions; hosted 424-test and actual native C++ boundary qualification pending",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -54,7 +54,8 @@
     "a9c9bb1: PR 40114793223 all eight jobs passed, foundation 411 tests with zero failures/errors/skips; both portable runs 40114793208/40114789291 passed. Native DSS: 50 completed calls, zero failures, ten commands/refreshes and 50 matching ACKED stages in both ledgers. Foundation/DSS digest, CRC and 122/90 source hashes verified.",
     "50 fresh-state repetitions of the original 100-way child race passed: 5000 attempts, 50 admissions, 4950 required conflicts. Earlier unclassified eight-response anomaly remains unexplained, not relabelled fixed.",
     "Final push run 40114789340 completed successfully at a9c9bb1; PR and push services/native workflows and both portable workflows are all green. No full-release gate was promoted.",
-    "6e5cecb PR foundation failed one ten-command burst (411 tests, one failure); all native jobs and the push run passed. Failed artifact digest/CRC and 122 source hashes verified. Diagnostic stress reproduced execution_busy; FIFO alone failed repetition 28. FIFO plus identity-only read snapshots passed 30 repetitions (900 commands, 4500 ACKED stages per ledger), 416 scoped tests, lint/format/types and installed dev21 wheel smoke."
+    "6e5cecb PR foundation failed one ten-command burst (411 tests, one failure); all native jobs and the push run passed. Failed artifact digest/CRC and 122 source hashes verified. Diagnostic stress reproduced execution_busy; FIFO alone failed repetition 28. FIFO plus identity-only read snapshots passed 30 repetitions (900 commands, 4500 ACKED stages per ledger), 416 scoped tests, lint/format/types and installed dev21 wheel smoke.",
+    "0d31c49 dev21 passed all eight PR and push services/native jobs plus both portable workflows; 418 scoped tests without failures/errors/skips. PR foundation artifact digest/CRC and all 124 source hashes verified. Atomic identity reads and bounded FIFO retained all actual-send authority checks/deadlines."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -77,7 +78,7 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
-    "K_native_subset": "a9c9bb1: PR 40114793223 and push 40114789340 both completed successfully with all eight services/native jobs; PR foundation 411 tests without skips; both portable workflows passed. Full K remains unqualified.",
+    "K_native_subset": "0d31c49 all eight jobs passed in PR 40119871531 and push 40119867008, 418 tests without skips; both portable runs passed. dev22 actual before-forward qualification pending; full K remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -86,7 +87,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete exact-source dev21 hosted validation, then native Context before-forward control admission followed by final native dequeue/direct-mutation fencing and full-family barrier/resume. Keep all full release gates false until actual boundary qualification.",
+  "next_step": "Finish dev22 exact-source native build/probes; then carry immutable IDs into native Executor command/deferred-trace queues and direct mutations, establish full-family barrier and explicit new-owner resume. Complete paired IDE Run/Debug and deployment/recovery acceptance.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -108,8 +109,8 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev21",
-  "native_control_profile": "Optional native_controls:run-journal; schema 11; original worker grant plus winner capability; one initial agent RUN per native member, no retry, IPC ACK never proves native execution or queue settlement; NATIVE_CONTROL_JOURNAL.md. ec9ad5d native push/PR child cohorts passed with exactly 16 agent RUN attempts; digest/CRC and 25 source hashes verified, no native queue-settlement proof.",
+  "package_version": "0.8.0.dev22",
+  "native_control_profile": "dev22 schema 12: one-shot initial RUN journal plus live before-forward admission through the authenticated native Context/agent helper. Unknown/replayed/missing markers denied before Executor IPC. FORWARD_UNPROVEN retains uncertainty; Executor dequeue/direct mutations/full-family transfer remain unqualified.",
   "remaining_effort_estimates": {
     "basis": "Active engineering effort, low confidence until native participant inventory is complete; not a wall-clock or background-execution promise",
     "native_family_control": "2-4 days",

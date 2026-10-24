@@ -30,6 +30,14 @@ class NativeControlJournal:
                 "UPDATE native_control_attempts SET state='RESTART_FENCED'"
                 " WHERE state!='RESTART_FENCED'"
             )
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_control_forwards("
+                "request_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,origin_hash TEXT NOT NULL,"
+                "operation_digest TEXT NOT NULL,state TEXT NOT NULL)"
+            )
+            self.store.db.execute("UPDATE native_control_forwards SET state='RESTART_FENCED'")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 12:
+                self.store.db.execute("PRAGMA user_version=12")
         authority.native_controls = self
 
     @staticmethod
@@ -104,6 +112,55 @@ class NativeControlJournal:
                     origin_hash=origin,
                     operation_digest=digest(operation),
                     state="DISPATCH_UNCERTAIN",
+                    quiescence_proven=False,
+                    effective_transfer=False,
+                    hold_retained=True,
+                    runtime_enabled=False,
+                )
+
+    def forward(self, grant, body):
+        """One live admission immediately before native Context forwards RUN.
+
+        This cannot prove Executor dequeue or close the post-admission interval.
+        An unknown IPC outcome remains held, never replayed or upgraded to proof.
+        """
+        operation = self.operation(body)
+        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        with self.authority._execution_lock(grant.execution_id):
+            with self.store.transaction():
+                self.authority._grant(grant)
+                row = self.store.db.execute(
+                    "SELECT * FROM native_control_attempts WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone()
+                if (
+                    row is None
+                    or row["execution_id"] != grant.execution_id
+                    or row["origin_hash"] != origin
+                    or row["operation_digest"] != hashed
+                    or row["state"] != "DISPATCH_UNCERTAIN"
+                ):
+                    raise Fault(403, "native_control_origin_fenced")
+                if self.store.db.execute(
+                    "SELECT 1 FROM native_control_forwards WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone():
+                    raise Fault(409, "native_control_forward_replay_denied")
+                self.store.db.execute(
+                    "INSERT INTO native_control_forwards VALUES(?,?,?,?,'FORWARD_UNPROVEN')",
+                    (body["request_id"], grant.execution_id, origin, hashed),
+                )
+                self.store._event(
+                    "NATIVE_CONTROL_FORWARD_ADMITTED",
+                    dict(execution_id=grant.execution_id, origin_hash=origin, **operation),
+                )
+                return dict(
+                    forward_admitted=True,
+                    execution_id=grant.execution_id,
+                    **operation,
+                    origin_hash=origin,
+                    operation_digest=hashed,
+                    state="FORWARD_UNPROVEN",
                     quiescence_proven=False,
                     effective_transfer=False,
                     hold_retained=True,

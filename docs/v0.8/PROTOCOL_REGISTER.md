@@ -90,3 +90,9 @@ Schema 11 retains per-member attempts across restart. Reports are safety-only
 diagnostics after fencing, never new control authority. See
 [NATIVE_CONTROL_JOURNAL.md](NATIVE_CONTROL_JOURNAL.md) for the native paths still
 requiring dequeue/direct-mutation fencing before positive handoff.
+
+Dev22 adds `/v1/worker/control-forward` (protocol 2, live original grant and
+consumption-winner proof), plus the authenticated worker-local native helper
+schema `openbexi.native-control/1`. `V08ControlRequest` carries the one-shot
+journal UUID through the native client message. Schema 12 records
+`FORWARD_UNPROVEN`; no queue settlement or new-owner authority is inferred.

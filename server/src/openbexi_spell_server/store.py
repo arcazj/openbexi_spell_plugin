@@ -43,7 +43,7 @@ class ContextStore:
             self.db.execute("PRAGMA journal_mode=DELETE")
             self.db.execute("PRAGMA synchronous=FULL")
             version = self.db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12):
                 raise ValueError("Unsupported authority schema")
             self.db.executescript("""
                 CREATE TABLE IF NOT EXISTS meta(name TEXT PRIMARY KEY,value TEXT NOT NULL);

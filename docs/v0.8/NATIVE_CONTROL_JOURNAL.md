@@ -1,7 +1,8 @@
 # Private native RUN journal
 
-This dev19 component records one agent-issued initial RUN per admitted native
-member. It does not implement native dequeue fencing, whole-family quiescence,
+Dev22 records one agent-issued initial RUN per admitted native member and adds
+one-shot admission immediately before the native Context forwards it to the
+Executor. It does not implement native dequeue fencing, whole-family quiescence,
 handoff or new-owner resume. Public execution and all full release gates remain
 disabled. Hosted native qualification must be tied to the exact candidate SHA.
 
@@ -23,14 +24,30 @@ There are at most 65 attempts per execution and 4096 per Context.
 The worker wrapper keeps its attempt before contacting Context. A lost admission
 response prevents IPC; an unknown IPC result or lost report response never
 repeats RUN. Invalid or type-substituted receipt fields prevent progression.
-The original native request implementation and wire bytes remain unchanged.
+The private profile now adds a `V08ControlRequest` UUID to the native message;
+the native Context sends that ID and its actual model instance to the owned
+agent over the existing authenticated Unix helper. The original v0.7 binaries,
+driver wire protocols and immutable patch preimages remain unchanged.
+
+`control-forward` independently rechecks live original authority and records a
+single `native_control_forwards` row before returning permission to the helper.
+The helper requires the exact journal request/member identity and a verified
+admission receipt. It records the attempt before the RPC: a lost receipt cannot
+retry or forward. Replay, unknown IDs and substituted targets fail closed. The
+native C++ hook denies missing or rejected IDs before `m_ipc.sendMessage`.
+Only RUN is covered; the other mutation paths listed below remain pending.
+
+Schema 12 retains `FORWARD_UNPROVEN` rows and fences them on restart. Forwarding
+admission and IPC acknowledgment both remain insufficient for Executor dequeue,
+execution, settlement or positive handoff. A fence after forwarding admission
+is still an in-flight interval requiring the future complete family barrier.
 
 `control-report` accepts only `IPC_SEND_ACKNOWLEDGED` or `UNCERTAIN`. It can record
 a diagnostic after controller fencing using the original immutable identity,
 but cannot issue a command. Exact diagnostic replay is read-only; conflicting
 reports fail. Both outcomes retain `DISPATCH_UNCERTAIN`: an IPC send acknowledgment
 does not prove mailbox acceptance, execution, completion or queue settlement.
-Neither report releases a reservation or spent worker. Schema 11 preserves the
+Neither report releases a reservation or spent worker. The journal preserves the
 rows and marks them `RESTART_FENCED` on startup, with original hashes/outcomes
 intact; the original worker proof becomes unusable after authority restart.
 
@@ -38,6 +55,10 @@ The private child cohort wraps ten root RUNs, five visible child RUNs and one
 visible grandchild RUN. Five hidden children run through native internal startup;
 their existing before-spawn admission remains in force, but their internal RUNs
 are explicitly outside this agent journal. Other private profiles are unchanged.
+Dev22 requires sixteen matching before-forward rows and ten real native denial
+probes. Each agent deliberately bypasses its Python wrapper with an unregistered
+RUN ID, requires a callback from its authenticated native Context, and verifies
+that the original Executor is still PAUSED before ordinary execution starts.
 
 ## Remaining native boundaries
 

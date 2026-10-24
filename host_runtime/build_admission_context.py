@@ -74,6 +74,21 @@ def main():
     )
     include = '#include "SPELL_CTX/SPELLexecutor.H"'
     text = text.replace(include, include + '\n#include "/candidate/admission_gate.H"')
+    forward_anchor = (
+        "void SPELLexecutor::sendMessageToExecutor( const SPELLipcMessage& msg )\n{\n"
+    )
+    if text.count(forward_anchor) != 1:
+        raise ValueError("Ambiguous native Executor forwarding boundary")
+    text = text.replace(
+        forward_anchor,
+        forward_anchor
+        + """    try { v08_admit_native_run(m_model, msg); }
+    catch (const std::exception&) {
+        LOG_ERROR("Native RUN forwarding denied by Context admission");
+        return;
+    }
+""",
+    )
     unit.write_text(text)
     service = source / "lib/SPELL_CTX/src/SPELLservice.C"
     if (

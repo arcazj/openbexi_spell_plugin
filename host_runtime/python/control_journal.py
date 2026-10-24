@@ -8,9 +8,10 @@ No failed call is retried, even with a newly generated request identifier.
 import threading
 import uuid
 
-from openbexi_spell_server.contracts import canonical, digest
+from openbexi_spell_server.contracts import canonical, digest, exact
 from openbexi_spell_server.family import FamilyAdmission
 from openbexi_spell_server.launch import start_grant
+from openbexi_spell_server.preflight import canonical_uuid
 
 
 class NativeRunJournal:
@@ -24,6 +25,9 @@ class NativeRunJournal:
         self.original = session.request
         self.grant = start_grant(request["grant"])
         self.attempted = set()
+        self.operations = {}
+        self.forward_attempted = set()
+        self.forwarded = set()
         self.lock = threading.Lock()
 
     def dispatch(
@@ -69,9 +73,15 @@ class NativeRunJournal:
         )
         if canonical(reply) != canonical(expected):
             raise ValueError("Native RUN admission receipt differs")
+        with self.lock:
+            self.operations[operation["request_id"]] = (target, operation)
         try:
             result = self.original(
-                identifier, fields, context=context, send=send, procedure=procedure
+                identifier,
+                {"V08ControlRequest": operation["request_id"]},
+                context=context,
+                send=send,
+                procedure=procedure,
             )
         except BaseException:
             try:
@@ -81,6 +91,49 @@ class NativeRunJournal:
             raise
         self.report(operation, "IPC_SEND_ACKNOWLEDGED")
         return result
+
+    def forward(self, body):
+        """Authenticated native Context callback, before its Executor IPC send."""
+        exact(body, {"schema", "request_id", "instance_id", "command"})
+        canonical_uuid(body["request_id"])
+        if (
+            body["schema"] != "openbexi.native-control/1"
+            or body["command"] != "CMD_RUN"
+        ):
+            raise ValueError("Native control schema/command differs")
+        with self.lock:
+            known = self.operations.get(body["request_id"])
+            if (
+                known is None
+                or type(body["instance_id"]) is not str
+                or known[0] != body["instance_id"]
+            ):
+                raise ValueError("Native RUN forwarding identity was not admitted")
+            if body["request_id"] in self.forward_attempted:
+                raise ValueError("Native RUN forwarding already attempted")
+            self.forward_attempted.add(body["request_id"])
+            operation = known[1]
+        reply = self.route.call(
+            {**self.request, **operation},
+            path="/v1/worker/control-forward",
+            schema="openbexi.worker/2",
+        )
+        expected = dict(
+            forward_admitted=True,
+            execution_id=self.grant.execution_id,
+            **operation,
+            origin_hash=FamilyAdmission.origin(self.grant),
+            operation_digest=digest(operation),
+            state="FORWARD_UNPROVEN",
+            quiescence_proven=False,
+            effective_transfer=False,
+            hold_retained=True,
+            runtime_enabled=False,
+        )
+        if canonical(reply) != canonical(expected):
+            raise ValueError("Native RUN forwarding receipt differs")
+        with self.lock:
+            self.forwarded.add(body["request_id"])
 
     def report(self, operation, outcome):
         reply = self.route.call(

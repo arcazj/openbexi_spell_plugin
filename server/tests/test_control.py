@@ -99,7 +99,7 @@ def test_one_of_100_run_admissions_wins_and_new_uuid_cannot_replay(journal, fami
     assert statuses.count(200) == 1 and statuses.count(409) == 99
     assert admit(family, pki)[0] == 409
     assert len(rows(family)) == 1
-    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 11
+    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 12
 
 
 def test_send_ack_is_not_execution_or_queue_settlement(journal, family, pki):
@@ -170,6 +170,7 @@ def test_restart_retains_uncertainty_original_binding_and_holds(journal, family,
     body = operation()
     assert admit(family, pki, body)[0] == 200
     assert report(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
     before = dict(rows(family)[0])
     old = family["store"]
     directory = Path(old.db.execute("PRAGMA database_list").fetchone()[2]).parent
@@ -180,6 +181,12 @@ def test_restart_retains_uncertainty_original_binding_and_holds(journal, family,
         restarted = NativeControlJournal(authority)
         after = dict(store.db.execute("SELECT * FROM native_control_attempts").fetchone())
         assert after == dict(before, state="RESTART_FENCED")
+        assert (
+            store.db.execute("SELECT state FROM native_control_forwards").fetchone()[0]
+            == "RESTART_FENCED"
+        )
+        with pytest.raises(Fault):
+            restarted.forward(family["grant"], body)
         with pytest.raises(Fault):
             restarted.admit(family["grant"], operation())
         with pytest.raises(Fault):
@@ -271,3 +278,102 @@ def test_concurrent_agent_duplicate_never_duplicates_native_send(agent, family):
     with ThreadPoolExecutor(max_workers=8) as pool:
         assert sum(pool.map(run, range(20))) == 1
     assert len(agent.sent) == 1 and len(rows(family)) == 1
+
+
+def forward(family, pki, body):
+    return call(family, pki, family["grant"], "control-forward", **body)
+
+
+def test_one_of_twenty_forward_admissions_wins_without_queue_proof(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        replies = list(pool.map(lambda _: forward(family, pki, body), range(20)))
+    assert sum(code == 200 for code, _ in replies) == 1
+    assert sum(code == 409 for code, _ in replies) == 19
+    result = next(reply["result"] for code, reply in replies if code == 200)
+    assert result["state"] == "FORWARD_UNPROVEN" and not result["quiescence_proven"]
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_forwards").fetchone()[0]
+        == 1
+    )
+
+
+def test_admitted_run_cannot_forward_after_owner_fence(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert accept(family)[0]["state"] == "BLOCKED"
+    assert forward(family, pki, body)[0] == 403
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_forwards").fetchone()[0]
+        == 0
+    )
+
+
+def test_forged_forward_target_does_not_consume_original_attempt(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, dict(body, target_admission_id=str(uuid.uuid4())))[0] == 403
+    assert forward(family, pki, body)[0] == 200
+
+
+def native_forward_body(agent, **updates):
+    identifier = agent.sent[0][1]["V08ControlRequest"]
+    return dict(
+        schema="openbexi.native-control/1",
+        command="CMD_RUN",
+        request_id=identifier,
+        instance_id="main#1",
+        **updates,
+    )
+
+
+def test_native_forward_callback_matches_actual_ipc_marker_once(agent, family):
+    agent.dispatch("CMD_RUN", send=True)
+    body = native_forward_body(agent)
+    agent.forward(body)
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.forward(body)
+    assert len(agent.forwarded) == 1
+    assert (
+        family["store"].db.execute("SELECT state FROM native_control_forwards").fetchone()[0]
+        == "FORWARD_UNPROVEN"
+    )
+
+
+def test_native_forward_denies_unregistered_and_cross_target_markers(agent, family):
+    body = dict(
+        schema="openbexi.native-control/1",
+        command="CMD_RUN",
+        request_id=str(uuid.uuid4()),
+        instance_id="main#1",
+    )
+    with pytest.raises(ValueError, match="not admitted"):
+        agent.forward(body)
+    agent.dispatch("CMD_RUN", send=True)
+    body = native_forward_body(agent)
+    with pytest.raises(ValueError, match="not admitted"):
+        agent.forward(dict(body, instance_id="child#1"))
+    agent.forward(body)
+    assert len(agent.forwarded) == 1
+
+
+def test_lost_forward_receipt_cannot_retry_the_native_callback(agent, family):
+    agent.dispatch("CMD_RUN", send=True)
+    real = agent.route
+
+    def lost(payload, **kwargs):
+        real.call(payload, **kwargs)
+        raise TimeoutError("Injected loss after durable forward admission")
+
+    agent.route = SimpleNamespace(call=lost)
+    body = native_forward_body(agent)
+    with pytest.raises(TimeoutError):
+        agent.forward(body)
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.forward(body)
+    assert not agent.forwarded
+    assert (
+        family["store"].db.execute("SELECT state FROM native_control_forwards").fetchone()[0]
+        == "FORWARD_UNPROVEN"
+    )
