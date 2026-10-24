@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev17 automatic native before-spawn child component passed at b644d56; full scoped rerun follows an expanded-suite runner timeout; full v0.8 remains unqualified",
+  "phase": "dev17 native child and read-only Listener survival components passed; 382 scoped push tests passed, PR duplicate-driver denial mismatch under investigation; full v0.8 unqualified",
   "reasoning_level": "R5 architecture, protocol safety and source audit",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -43,7 +43,8 @@
     "dev14: 290 local scoped tests, lint/format/mypy and isolated package smokes passed; safety-only pause reports preserve original binding and single-consumer proof; forged family proofs and retries of admitted pause are denied; real native negative-thread probe pending hosted execution",
     "34f201d hosted all five services/native jobs and compatibility passed: 290 scoped tests, 241 portable tests, native-boundary/audit/DSS/pause-probe. Main B PAUSED while background counter advanced 89 to 99; transfer blocked, old owner/epoch and ten holds retained; other nine procedures finished; max unrelated read latency 12.8ms; all 17 pause runtime hashes matched candidate.",
     "7d2ab39 hosted six services/native jobs and compatibility passed: 344 scoped tests including 28 child-authority/12 publication-preflight cases, 241 portable tests. Foundation ZIP CRC/digest and all 111 source hashes verified. Clean committed full-release preflight exited 1; eleven full gate groups unqualified; no v0.8 release created.",
-    "b644d56: automatic before-spawn native child component passed with 40 native PIDs, 10 consumed child admissions, 35 original EV receipts and 20 retained holds. ZIP CRC/digest and all 23 source hashes verified. Foundation workflow timed out; no all-green workflow or full-v0.8 qualification inferred."
+    "b644d56: automatic before-spawn native child component passed with 40 native PIDs, 10 consumed child admissions, 35 original EV receipts and 20 retained holds. ZIP CRC/digest and all 23 source hashes verified. Foundation workflow timed out; no all-green workflow or full-v0.8 qualification inferred.",
+    "56439d7 hosted push 40044575533 passed all eight services/native jobs: 382 scoped tests, package/lint/type smokes, child and Listener survival cohorts. Listener kill/recreate preserved thirty native PIDs, ten advancing procedures, Context incarnation and owner/epoch/generation values. Both push and PR Listener jobs passed. All 24 Listener and 119 foundation source hashes, archive digests and CRCs verified. PR foundation 40044579825 failed one duplicate-driver response assertion; failure retained and exact denial diagnostics added, not relabelled green."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -58,7 +59,7 @@
     "G0": "Baseline identified and focused reproduction passed; absent hosted CI documented",
     "A": "Independent review completed; historical baseline evidence retained",
     "B_G1": "Owner-authorized for staged implementation under binding F1-F10 contracts; no runtime qualification inferred",
-    "C": "Foundation routing/TLS/process lifecycle tests pass; full Executor-survival integration gate pending",
+    "C": "Native read-only observer Listener kill/recreate component passed at 56439d7; controller disconnect, production routing and complete deployed service faults remain pending",
     "D": "Context ACL/catalog/state and native EV plus retained positive TC/TM dispatch tested; full driver lifecycle/fault qualification remains pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
     "K_foundation": "Scoped services/source/preflight workflow; verify exact candidate SHA in PR checks. Prior 87db0ce scoped push/PR workflows passed; full K remains pending",
@@ -66,16 +67,16 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
-    "K_native_subset": "b644d56 six native component jobs passed, including child admission. Foundation hit its 180-second runner cutoff; the next candidate retains timeout logs and gives the expanded suite 300 seconds. Full K remains unqualified.",
+    "K_native_subset": "56439d7 all eight push services/native jobs passed; PR native jobs passed but foundation had one duplicate-driver response assertion failure. Full K remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
-    "G3_child_admission_authority": "7d2ab39 hosted: 28 child authority/RPC cases and 12 publication-preflight cases included in 344 scoped tests. Schema 10, original-family/source binding, shared reservations, one-time tokens, proof/revocation/fence/restart/audit checks passed. Native before-RUN hook is unimplemented/unqualified.",
+    "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
     "G4_full_diagnostic": "Bounded current inherited diagnostic: 16 passed, 3 failed on missing historical Windows child-arguments captures. Broad diagnostic interrupted after repeated failures/errors. Historical evidence requires its original immutable sources; no full compatibility qualification.",
     "G3_native_child_before_spawn_component": "b644d56 hosted push 40041544143: actual compiled Context hook before spawn, ten roots/ten children, forty PIDs, visible/hidden automatic blocking modes, real arguments, direct native GUI and same-UID peer denial, duplicate physical worker denial, 35 real lifecycle receipts, twenty holds retained. No full-family pause/transfer/resume/recovery proof."
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete the expanded scoped qualification, native manual/nested/failure child semantics and whole-family participant/control/prompt/effect settlement, then effective handoff and explicit new-owner resume; finish joint IDE, compatibility, deployment, driver-load/recovery and security gates.",
+  "next_step": "Resolve and qualify concurrent driver denial responses; complete native manual/nested/failure children and whole-family participant/control/prompt/effect settlement, effective handoff and explicit new-owner resume, joint IDE, compatibility, deployment, driver recovery and security gates.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -92,5 +93,6 @@
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional admission-only Context authority with a checked-source before-spawn native provider. At b644d56, ten automatic blocking children (five visible/five hidden), forty native PIDs, arguments, bypass denial, 35 EV receipts and twenty retained holds passed. Manual/nested/failure/full-family semantics remain unqualified.",
   "release_assessment": "evidence/release-readiness/publication-preflight.json: clean code 7d2ab39, exit 1, full_v08_qualified=false, eligible_for_publication=false, eleven mandatory full groups pending; package remains development version",
-  "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json; artifact CRC/digest and all 23 repository source hashes verified against b644d56223f0a859819c19afef0f5f5b1d18a06e; limited automatic native component only"
+  "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json; artifact CRC/digest and all 23 repository source hashes verified against b644d56223f0a859819c19afef0f5f5b1d18a06e; limited automatic native component only",
+  "native_listener_survival_receipt": "evidence/listener-survival/qualification-summary.json; 24 source hashes, CRC and digest verified; read-only observer only"
 }

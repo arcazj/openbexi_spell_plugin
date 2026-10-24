@@ -53,6 +53,15 @@ whole-family recovery protocol. Single-authority storage, node fencing,
 backup/restore and upgrade/rollback still need deployed fault qualification.
 Certificate and fixed identity configuration changes require process restart.
 
+At 56439d7, killing and recreating the separate v0.8 Listener preserved ten
+advancing native procedures, thirty PIDs, Context incarnation and original
+owners/epochs/generations. This read-only observer component does not establish
+active-controller disconnection behavior, browser/WSS or recovery. See
+`evidence/listener-survival/qualification-summary.json`. The push scoped suite
+passed 382 tests; the PR suite retained one concurrent duplicate-driver denial
+assertion failure. Exact status/error diagnostics are being added; its cause is
+not yet established, and that PR workflow is not qualified.
+
 ## Joint product and full qualification
 
 The pinned IDE supports discovery, reservations, observers and explicit prelaunch

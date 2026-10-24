@@ -204,15 +204,17 @@ def test_real_worker_client_uses_protocol_two_and_cannot_downgrade(driver_setup,
 def test_twenty_duplicate_rpc_calls_produce_one_real_command(driver_setup, pki):
     key = str(uuid.uuid4())
     with ThreadPoolExecutor(max_workers=4) as pool:
-        results = list(
+        replies = list(
             pool.map(
                 lambda _: native_call(
                     driver_setup, pki, PREFIX + "TC/SendCommand", command(), key=key
-                )[0],
+                ),
                 range(20),
             )
         )
-    assert results.count(200) == 1 and results.count(409) == 19
+    results = [status for status, _body in replies]
+    denials = [(status, body.get("error")) for status, body in replies if status != 200]
+    assert results.count(200) == 1 and results.count(409) == 19, denials
     assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 1
 
 

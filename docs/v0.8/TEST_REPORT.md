@@ -1041,3 +1041,36 @@ generations, holds and spent slots. The Listener has no host manager or authorit
 volume. This is a new test awaiting actual hosted execution, not a recorded pass;
 it does not qualify controller disconnection, recovery, browser/WSS or production
 deployment. Existing private native profiles remain separate.
+
+At **56439d763074e8e62be0457a57286c6b10639444**, push
+[40044575533](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40044575533)
+passed all eight services/native jobs and all **382 scoped tests** with zero
+failures/errors/skips. Foundation archive digest
+`267868148fa551f6bef8a9f2d3fd5522a1bd62abf01ead2c5c6ec3c655a365d8`,
+CRC and all **119** repository source hashes were verified. The
+[redacted foundation receipt](evidence/native-child-start/foundation-summary.json)
+also records the distinct failed PR attempt below.
+
+The new Listener cohort passed in both push and PR runs. It killed the actual
+Listener and recreated a distinct process/container while all ten native
+procedures advanced, thirty native PIDs stayed unchanged, and Context process,
+incarnation, owners, epochs and generations remained identical. Ten logical
+holds and ten spent workers remained. Worker-as-edge impersonation was denied.
+The Listener had no host manager or authority volume. The push Listener ZIP
+digest `b77d996210abad1f5d8b149a2daaca083df0f4298bf7632a014200a6797705e0`,
+CRC and all **24** source hashes were verified; the
+[redacted receipt](evidence/listener-survival/qualification-summary.json) contains
+counts, public source hashes and explicit limits. This is read-only observer
+survival, not active-controller disconnection, native recovery or full services
+qualification.
+
+PR [40044579825](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40044579825)
+passed all seven native jobs but its foundation suite had **381 passes and one
+failure**, `test_twenty_duplicate_rpc_calls_produce_one_real_command`: one 200
+and sixteen 409 responses were observed; the previous assertion discarded the
+remaining three denial statuses/error codes. Archive 12540783103 digest
+`0693f6a2a09c29a49d08c066b76cb6521511c2412e8a91fd9cdcba397c51fb02` and CRC
+were verified. No all-green PR result is inferred. The follow-up retains bounded
+status/error-code diagnostics while preserving its one-success/nineteen-replay
+assertion and no-retry behavior. A local focused rerun passed, but cannot explain
+or override the failed hosted attempt. The cause remains under investigation.
