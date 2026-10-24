@@ -1866,3 +1866,45 @@ excluded. Ruff/format/mypy and isolated installed dev31 wheel/version/CLI pass.
 Hosted dev31 must pass **490 tests without skips** plus the unchanged native
 21-member/41-PID/42-event, durable roster and real stale-controller HTTP-403
 oracles. All eleven full release gate groups remain false.
+
+
+## Dev31 exact-source native and hosted confirmation
+
+At **9de50ea9f9971aefcea0fffd6c306485bc2410e6**, PR **40141633927** and push
+**40141630301** passed all eight service/native jobs. Portable PR 40141633920
+passed. Foundation completed **490 tests with zero failures/errors/skips**.
+The final local suite completed **487 tests**, excluding the same three
+mandatory hosted Linux controls. No native C++ changes were needed for the
+zero-index compatibility correction.
+
+The actual family completed **21 final RUN consumptions, 21 exact local PID
+bindings, 21 original durable member rows, 11 children, 41 PIDs and 42 lifecycle
+events**. The isolated Context B probe again received real **HTTP 403** at
+Executor consumption after controller disconnection, with no consumption
+receipt/body execution, unchanged native PIDs and retained original owner,
+epoch and holds. Its one original durable member stayed recorded. Member rows
+remain REGISTERED_UNPROVEN; this does not establish independent host attestation,
+full family quiescence or positive transfer. Native DSS separately completed ten
+commands and fifty matching ACKED stages in each ledger.
+
+Verified ZIP digests, CRCs and exact public inputs:
+
+- Foundation 12578414448 SHA-256
+  `7da597549b544cb34f70cef67ac024bc862339462ad59a171920419d4aa7ee8f`;
+  129 source inputs; [receipt](evidence/native-child-start/dev31-foundation.json).
+- Family 12578584223 SHA-256
+  `a366158ad4ac689931b8c2ddc96edc90151d4a4732139b42269a084398f555ed`;
+  30 repository and all 144 compiled native source inputs;
+  [receipt](evidence/native-child-start/dev31-family.json).
+- DSS 12578229302 SHA-256
+  `d1dbafef8f02ee14ec14ee195f93c7b36eeefe581c7f45d0a4cde05d2707af03`;
+  95 source inputs; [receipt](evidence/native-context-dss/dev31-dss.json).
+
+The failed dev30 native result and before/after zero-instance tests remain
+retained. Interactive commands beyond initial RUN must obtain a fresh explicit
+owner-admitted grant; extending the worker's StartGrant into general controller
+permission would be a confused-deputy error. Complete native mutations,
+command/prompt queue settlement, all-participant pause and explicit new-owner
+resume remain prerequisites for full handoff and public Run/Debug. All eleven
+full release gate groups remain false; no merge, tag, release or production
+migration occurred.

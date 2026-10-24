@@ -233,3 +233,13 @@ leading zeros and non-ASCII/signed values remain invalid. Logical admission,
 source prefix, original provenance, parent and immutable member constraints are
 unchanged. Before/after root and child mTLS cases cover registration, forwarding,
 consumption and replay denial. Native durable-roster requalification is pending.
+
+
+**9de50ea** passed both actual family jobs, 490 hosted checks without skips,
+and all eight PR/push service/native jobs. The native oracle verified all 21
+original durable member joins and the isolated stale-consumption denial with
+its original member retained. Digests/CRCs, 30 family source hashes and all 144
+compiled native source hashes were verified.
+[Dev31 family receipt](evidence/native-child-start/dev31-family.json).
+This qualifies the scoped initial-RUN/member component. It grants no general
+interactive command, queue-settlement, quiescence or post-start transfer permission.
