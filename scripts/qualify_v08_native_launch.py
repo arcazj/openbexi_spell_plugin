@@ -1580,6 +1580,21 @@ def main():
                                 raise RuntimeError(
                                     "Native RUN bypassed Executor consumption admission"
                                 )
+                            members = audit.execute(
+                                "SELECT state,COUNT(*) FROM native_members GROUP BY state"
+                            ).fetchall()
+                            if (
+                                members != [("REGISTERED_UNPROVEN", 21)]
+                                or audit.execute(
+                                    "SELECT COUNT(*) FROM native_members m JOIN native_control_attempts a "
+                                    "ON m.execution_id=a.execution_id AND m.target_id=a.target_id "
+                                    "WHERE m.origin_hash=a.origin_hash"
+                                ).fetchone()[0]
+                                != 21
+                            ):
+                                raise RuntimeError(
+                                    "Native RUN lacks its original durable member binding"
+                                )
                             if (
                                 audit.execute(
                                     "SELECT COUNT(*) FROM native_control_consumptions c "
@@ -1646,6 +1661,8 @@ def main():
                             native_context_run_forwards_admitted=21,
                             native_executor_run_consumptions_admitted=21,
                             native_executor_pid_bindings=21,
+                            native_durable_member_bindings=21,
+                            native_members_host_attested=False,
                             native_unadmitted_run_denials=10,
                             native_control_queue_settlement_proven=False,
                         )

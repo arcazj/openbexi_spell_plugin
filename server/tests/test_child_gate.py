@@ -300,6 +300,8 @@ def test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incar
     server.context_pid, server.pidfd = None, None
     server.members, server.member_pids = {}, {}
     server.gate = SimpleNamespace(started={"main#1": None, "child#1": "admission"})
+    server.controls = SimpleNamespace(bind_member=lambda *_args: None)
+    server.executor_sha256 = "a" * 64
     endpoint = str(tmp_path / "member.sock")
     listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     listener.bind(endpoint)

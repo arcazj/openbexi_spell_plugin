@@ -184,6 +184,11 @@ class NativeAdmissionServer:
             raise ValueError("Native Executor must be immutable")
         self.members = {}
         self.member_pids = {}
+        self.executor_sha256 = (
+            None
+            if self.executor is None
+            else hashlib.sha256(self.executor.read_bytes()).hexdigest()
+        )
         self.control_denials = threading.Event()
         self.consume_denials = threading.Event()
         self.context_pid = None
@@ -215,11 +220,15 @@ class NativeAdmissionServer:
             ):
                 raise ValueError("Native Executor/Context incarnation differs")
             self.process_identity(pid, self.context_pid, self.executor)
+            if select.select([handle, self.pidfd], [], [], 0)[0]:
+                raise ValueError("Native Executor/Context incarnation differs")
             return "executor", instance
         if self.context_pid is not None:
             if pid != self.context_pid or select.select([self.pidfd], [], [], 0)[0]:
                 raise ValueError("Native Context incarnation differs")
             self.process_identity(pid, process.pid, self.executable)
+            if select.select([self.pidfd], [], [], 0)[0]:
+                raise ValueError("Native Context incarnation differs")
             return "context", None
         # Parse after the final ')' since Linux comm names may include spaces
         # and parentheses. Bind the exact owned parent, never a name-only scan.
@@ -271,6 +280,21 @@ class NativeAdmissionServer:
         ):
             raise ValueError("Native member already bound or capacity reached")
         handle = self.pin_process(pid, self.context_pid, self.executor)
+        try:
+            if self.controls is None:
+                raise ValueError("Native member registration provider unavailable")
+            self.controls.bind_member(
+                instance,
+                pid,
+                self.context_pid,
+                int(self.process_identity(pid, self.context_pid, self.executor)),
+                self.executor_sha256,
+            )
+            if select.select([handle, self.pidfd], [], [], 0)[0]:
+                raise ValueError("Native member exited during registration")
+        except BaseException:
+            os.close(handle)
+            raise
         self.members[instance] = (pid, handle)
         self.member_pids[pid] = instance
 

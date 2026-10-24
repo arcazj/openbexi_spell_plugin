@@ -365,6 +365,10 @@ def qualify_consumption_fence(
             raise RuntimeError(
                 "Stale native RUN obtained a consumption receipt or lost identity"
             )
+        if db.execute(
+            "SELECT state,COUNT(*) FROM native_members GROUP BY state"
+        ).fetchall() != [("REGISTERED_UNPROVEN", 1)]:
+            raise RuntimeError("Stale native RUN lost its durable original member")
         if (
             db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 2
             or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1
@@ -441,6 +445,8 @@ def qualify_consumption_fence(
         unrelated_executions_unchanged=True,
         control_state="CONTROLLER_DISCONNECTED",
         consumption_receipts=0,
+        durable_members_retained=1,
+        member_host_attested=False,
         host_teardown_only=True,
         reservation_retained_after_termination=True,
         worker_spent=True,

@@ -1753,3 +1753,67 @@ limits, all operation/write deadlines, full native counts and admission oracles
 remain unchanged. The default-weight failure is retained rather than relabelled
 fixed by this deployment candidate. Full production resource qualification is
 still required. No full release gate is promoted.
+
+
+## Dev29 exact-source hosted confirmation
+
+At **2c354255562bfcf1bafee16badc1255cbc44ed6f**, PR 40138571818 and push
+40138566510 passed all eight service/native jobs. Portable PR 40138571844 passed.
+Foundation completed **449 tests without failures/errors/skips**. Native DSS
+completed **ten commands and fifty matching ACKED stages in each ledger**.
+The family repeated **21 final consumptions/bindings, 11 children, 41 PIDs,
+42 lifecycle records and the actual isolated stale-controller HTTP-403 oracle**.
+Docker configuration verified Context/DSS CPU shares 2048 and worker shares 128.
+The earlier failure remains retained; this does not establish its exact cause.
+
+Verified artifact digests/CRCs and public source hashes:
+
+- Foundation 12577772598, SHA-256
+  `5a8aef70becc74e4457e544190284aa34f4bf25c3053525ca9c67c431bc61ddf`,
+  128 repository inputs; [receipt](evidence/native-child-start/dev29-foundation.json).
+- DSS 12578186871, SHA-256
+  `0f3fee28a46743d7bb6ff0516721da05fb2542e23f2d7d460cb6ecd78a23e593`,
+  95 repository inputs; [receipt](evidence/native-context-dss/dev29-dss.json).
+- Family 12577738973, SHA-256
+  `7ebe44c02424475dc65f9fe0b95a949ff325c02396819e7120defff5d77d9467`,
+  30 repository and all 144 compiled source inputs;
+  [receipt](evidence/native-child-start/dev29-family.json).
+
+## Dev30 candidate: durable members and incarnation continuity
+
+Context now retains an immutable original member roster before native local
+binding can return ALLOW. RUN forwarding/consumption require the target's row.
+Original grant, memory-only proof, source/parent, numeric/type and uniqueness
+checks precede registration. Reply loss cannot rebind; restart preserves/fences
+records. The roster is agent-observed worker-namespace metadata and explicitly
+REGISTERED_UNPROVEN, not independent host attestation or full family pause.
+NATIVE_CONTROL_JOURNAL.md records the exact protocol and limitations.
+
+Review also found a process-incarnation validation interval: authentication
+checked pidfd liveness before reading identity metadata, but did not recheck the
+pin afterward. Two deterministic tests hold a successful identity result, cause
+real kernel pidfd death, and resume authentication. Both fail with the exact
+2c35425 helper because it returns an authorized role after death. The candidate
+rechecks both Executor/Context pins after identity reads and before returning
+permission; member registration also rechecks both pins after its durable RPC.
+This closes the observed validation interval, not every possible later process
+failure or the unimplemented whole-family barrier.
+
+The new tests exercise real Context mTLS and kernel pidfds; their metadata/wire
+result at the death interval is deliberately injected. Actual SO_PEERCRED,
+/proc and read-only executable tests remain mandatory hosted positive controls.
+An initial direct /proc-read attempt could not resolve managed local child PIDs
+and is not counted as before/after security proof. Initial lost-reply tests also
+caught a missing client Route allow-list entry; that was corrected before the
+successful 36-case run. Two further source-integrity cases then passed in the
+484-test full run. Final local regression confirmation passed **486 tests**, with three mandatory
+hosted Linux controls excluded. All **40** new member/incarnation cases passed,
+including both process-death cases; hosted expects **489 tests without skips**.
+[Local original-member evidence](evidence/native-child-start/dev30-local-members.json).
+Ruff/format/mypy and isolated installed dev30 wheel/version/CLI checks passed.
+
+The hosted native oracle now requires 21 original durable member rows, and the
+isolated stale-controller probe retains its one member. All previous native
+counts, HTTP 403/no-body/unchanged-PID/hold checks remain mandatory. No full
+release gate, positive transfer, public native Run/Debug, Compose/Kubernetes
+qualification or release is inferred from this increment.

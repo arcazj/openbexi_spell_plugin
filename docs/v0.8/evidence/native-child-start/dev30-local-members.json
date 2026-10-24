@@ -1,0 +1,62 @@
+{
+  "scope": "local durable native member registration and post-read pidfd checks; no native/full-v0.8 qualification",
+  "base_commit": "2c354255562bfcf1bafee16badc1255cbc44ed6f",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/transport.py": "b85ae063110d3c67bf0f1232b490eded57d28e1c956813d8abaeabe7df60ded1",
+    "server/src/openbexi_spell_server/contracts.py": "a9b7924100bc1ac0ac9705ae1a486437779a595cada4c940d6650f35bc604fdb",
+    "server/src/openbexi_spell_server/store.py": "8954b12e1dbfcae706669f06a976aa36afe3c8859d8ca1e0a588afd506820f00",
+    "server/src/openbexi_spell_server/worker.py": "0511757970f821bc3be79af32cebd5270275083b61ebbbfe9295b56882032ae9",
+    "server/src/openbexi_spell_server/launch.py": "0e553ef79a0a5cf29ca2ec991427fdc3d7e968c4bf4506a308ffb5b703237a9f",
+    "server/src/openbexi_spell_server/control.py": "9bcdb0e0289052f3563bf8778457031d1c750692e3040bc5563c7c8c901583df",
+    "server/src/openbexi_spell_server/__init__.py": "3c63543492f61cb50e429e12a61b54955be3ae0ecd35f88070c11aa469462365",
+    "server/src/openbexi_spell_server/snapshots.py": "d7267c50602b333ebd8034e1cf47319565dfc82fb42ddcd8ec7bc77c0b622f25",
+    "server/src/openbexi_spell_server/effects.py": "3d6a47ab7cddca90aada9b9630ca106dc24e40fbf9bc90db68471a352b4daee3",
+    "server/src/openbexi_spell_server/services.py": "5c0794773b3d7388cdf4173655d0fc4f268df01227a810c6cf842844890db4da",
+    "server/src/openbexi_spell_server/pause.py": "6f7101f800df90d9f845dc2e56d5867720246a7f32414ed93740476b5554e091",
+    "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+    "server/src/openbexi_spell_server/authority.py": "706bb9a33a52d5b6d98915f083260c02909a6c9e80bb588ea38bee1903c955c1",
+    "server/src/openbexi_spell_server/__main__.py": "264c364822caab66d1a4c90d17a551d8eb16e7f8ffd594082faec9771c5bbae2",
+    "server/src/openbexi_spell_server/gateway.py": "b13b7bf18120e797c0c4137ded65ac4ee3ccd4d130419e568b373865e640d5bf",
+    "server/src/openbexi_spell_server/family.py": "d9d7b68159bba010424bd06b8a185eec45328448612e57f7fe1165734a263d0c",
+    "server/src/openbexi_spell_server/mutex.py": "b1fb7ef7891045c0188df53048a2378a17c81722cf94fe2ae664a74b0277a46a",
+    "server/tests/test_members.py": "d6bac347e6a008d7bb3da9e6aaff9734449ed633b29228829b2c1bf830fabc77",
+    "server/tests/test_control.py": "9d8a6ab9a0ebf4d68a0248b4b9b5b649d970f57ef1a69c2f9d67c5f62a6240f8",
+    "server/tests/test_child_gate.py": "01f697d00938578d9ff9dd1c8b8261da80b90ea0795bd75f2188ccb2cca22962",
+    "host_runtime/python/child_gate.py": "7907a6a332334edece5d1b85751145287fce66560f5fd9c8e1de3709de3f5e26",
+    "host_runtime/python/control_journal.py": "2f7a37e853b6458c30eda3022d086b31305fe1fb9abbb5b6a821a06a2b5dd332",
+    "scripts/qualify_v08_native_launch.py": "ec9ec5efd3c1af36e4cb9285d2973807ff8c9988c9ba57e9c59ef801eb356efc",
+    "scripts/v08_native_consumption.py": "c70fe50eb78751d51ef32ff56ab2ae7ea7c1495e593b9a15c2d84e57cb38a305"
+  },
+  "full_local": {
+    "tests": 486,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_member_and_incarnation_cases": 40,
+  "old_helper_sha256": "b15144cf5d331c6ddbf2cb2c686db420c078075eb3fab71a5672d42f2c5a312d",
+  "exact_old_helper_death_regressions": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "death_oracle": "controlled successful metadata result and real kernel pidfd death; actual SO_PEERCRED/proc checks mandatory hosted",
+  "hosted_required_tests": 489,
+  "mandatory_hosted_controls_excluded_locally": [
+    "test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation",
+    "test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incarnation",
+    "test_same_uid_parent_reads_positive_control_but_cannot_read_protected_winner_memory"
+  ],
+  "authority_schema": 14,
+  "member_state": "REGISTERED_UNPROVEN",
+  "host_attestation": false,
+  "quiescence_proven": false,
+  "effective_transfer": false,
+  "automatic_retry": false,
+  "full_v08_qualified": false,
+  "retained_intermediate_failures": [
+    "Initial lost/forged receipt cases failed because the new client Route was not allow-listed; corrected before successful runs",
+    "Initial direct child /proc lookup unavailable in managed local environment; not counted as before/after security proof"
+  ]
+}

@@ -31,7 +31,50 @@ class NativeRunJournal:
         self.forwarded = set()
         self.consume_attempted = set()
         self.consumed = set()
+        self.member_attempted = set()
+        self.bound_members = {}
         self.lock = threading.Lock()
+
+    def bind_member(self, instance, pid, parent_pid, start_ticks, executable_sha256):
+        with self.lock:
+            if instance in self.member_attempted or len(self.member_attempted) >= 65:
+                raise ValueError("Native member already attempted or capacity reached")
+            with self.children.lock:
+                if instance not in self.children.started:
+                    raise ValueError("Native member was not admitted")
+                target = self.children.started[instance]
+            # A lost registration reply cannot authorize a replacement binding.
+            self.member_attempted.add(instance)
+        fields = dict(
+            target_admission_id=target,
+            instance_id=instance,
+            pid=pid,
+            parent_pid=parent_pid,
+            start_ticks=start_ticks,
+            executable_sha256=executable_sha256,
+        )
+        reply = self.route.call(
+            {**self.request, **fields},
+            path="/v1/worker/member-bind",
+            schema="openbexi.worker/2",
+        )
+        expected = dict(
+            registered=True,
+            execution_id=self.grant.execution_id,
+            **fields,
+            origin_hash=FamilyAdmission.origin(self.grant),
+            binding_hash=digest(fields),
+            state="REGISTERED_UNPROVEN",
+            host_attested=False,
+            quiescence_proven=False,
+            effective_transfer=False,
+            hold_retained=True,
+            runtime_enabled=False,
+        )
+        if canonical(reply) != canonical(expected):
+            raise ValueError("Native member registration receipt differs")
+        with self.lock:
+            self.bound_members[instance] = digest(fields)
 
     def dispatch(
         self, identifier, fields=None, *, context=False, send=False, procedure=None

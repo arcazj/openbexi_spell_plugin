@@ -33,7 +33,19 @@ spec.loader.exec_module(module)
 
 @pytest.fixture
 def journal(family):
-    return NativeControlJournal(family["app"].authority)
+    journal = NativeControlJournal(family["app"].authority)
+    journal.bind_member(
+        family["grant"],
+        dict(
+            target_admission_id=None,
+            instance_id="main#1",
+            pid=1234,
+            parent_pid=1000,
+            start_ticks=99,
+            executable_sha256="a" * 64,
+        ),
+    )
+    return journal
 
 
 def operation():
@@ -103,7 +115,7 @@ def test_one_of_100_run_admissions_wins_and_new_uuid_cannot_replay(journal, fami
     assert statuses.count(200) == 1 and statuses.count(409) == 99
     assert admit(family, pki)[0] == 409
     assert len(rows(family)) == 1
-    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 13
+    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 14
 
 
 def test_send_ack_is_not_execution_or_queue_settlement(journal, family, pki):

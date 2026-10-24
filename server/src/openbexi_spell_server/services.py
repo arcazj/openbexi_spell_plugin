@@ -91,7 +91,7 @@ class Context:
                 raise ValueError("Native controls require the explicit retained launch profile")
             from .control import NativeControlJournal
 
-            NativeControlJournal(self.authority)
+            NativeControlJournal(self.authority, catalog=self.catalog)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -132,6 +132,7 @@ class Context:
                     "/v1/worker/control-report",
                     "/v1/worker/control-forward",
                     "/v1/worker/control-consume",
+                    "/v1/worker/member-bind",
                 )
                 else self.preflight
             )

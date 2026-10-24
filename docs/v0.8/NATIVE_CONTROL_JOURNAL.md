@@ -53,7 +53,7 @@ records `EXECUTION_UNPROVEN` plus an audit event. Admission requires the origina
 forwarded operation; it cannot be retried after response loss, even if no RUN
 happened. Consumption before a fence remains an unresolved in-flight interval;
 consumption after a fence is denied. Neither result proves completion or pause.
-Schema 13 fences attempts, forwards and consumptions on authority restart.
+Schema 14 fences attempts, forwards, consumptions and durable member records on authority restart.
 
 Hidden automatic startup previously called `setAutoRun` without an external
 command. The explicit private candidate defers that path to its normal initial
@@ -186,3 +186,41 @@ See [dev28 consumption](evidence/native-child-start/dev28-consumption.json).
 All remaining mutation, queue, full-family barrier and positive transfer
 requirements above remain unqualified. The PR workflow failed a separate DSS
 deadline check; only the push workflow was fully green.
+
+
+## Durable member registration (dev30 candidate)
+
+`member-bind` is a private protocol-2 worker operation available only with the
+RUN-journal profile. The pinned original worker identity, consumed grant and
+memory-only winner capability are required. Live authority is checked again
+under the execution mutex. Context persists the original target admission,
+native instance, worker-namespace PID/parent PID/start ticks, executable digest,
+origin and binding hashes before native registration is acknowledged. Numeric
+and instance forms are strict; root identity must match its immutable approved
+manifest. Children require consumed admissions, unchanged approved source,
+registered original parents and the same native Context parent/executable.
+
+A target, instance or PID cannot be replaced within the execution. Bounds are
+65 members per execution and 4096 per Context; rows are never recycled. Actual
+RUN forwarding and final consumption require the corresponding durable member.
+The helper pins and verifies the exact process first, commits one registration
+attempt, checks the exact receipt and rechecks the process pins before local
+registration/ALLOW. Reply loss, substitution, dead process or RPC failure leaves
+no local authorization and never retries. The local pin is closed on failure;
+any already committed row/hold remains retained. Subsequent authentication
+rechecks Executor/Context pidfds after identity reads to reject an incarnation
+that died during validation, including the PID-reuse interval.
+
+Records are **REGISTERED_UNPROVEN**, never host attestation or a quiescence
+acknowledgment. PIDs refer to the worker namespace and are agent-observed; a
+remote Context does not independently attest a Pod, image or mount from them.
+They cover registered Executor processes, not every native/user thread, prompt,
+queue, extension or autonomous I/O participant. No member count can authorize
+transfer, resume, recovery or release. Restart preserves all original metadata
+and changes state to RESTART_FENCED; older binaries reject schema 14.
+
+The native family oracle now additionally requires 21 durable member rows joined
+to their exact original RUN targets/origins. The stale-consumption probe must
+retain its one original member through controller disconnection. Existing native
+counts, actual HTTP 403, no-body/receipt, unchanged-PID and retained-hold checks
+are preserved. Hosted qualification of this candidate is pending.
