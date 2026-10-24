@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev20 shared state/telemetry HTTP admission: 409 local scoped tests passed, two managed-host exclusions; hosted 411-test/native qualification pending",
+  "phase": "dev20 a9c9bb1 PR all eight services/native jobs and both portable runs passed; 411 scoped tests without skips; push native DSS passed, final push foundation/child statuses pending",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -50,7 +50,9 @@
     "1464276 dev18 passed all eight services/native jobs in both PR 40112024277 and push 40112020263, both portable workflows, and 384 scoped tests with zero failures/errors/skips. Foundation artifact digest/CRC and all 119 public source hashes verified.",
     "dev19 local confirmation: 407 passed, two mandatory-hosted Linux controls deselected; 25 focused RUN journal tests passed, lint/format/mypy and isolated package smoke passed. Initial full-run child-admission conflict-count anomaly remains unexplained despite ten isolated passes.",
     "ec9ad5d dev19 push passed all eight jobs; PR foundation passed 409 tests without skips and seven of eight jobs passed, including the native child RUN journal. PR DSS failed one telemetry refresh (49 completed calls/one uncertain; 50 ACKED stages). Verified foundation/child/failure artifact digests, CRCs and respectively 122/25/90 source hashes.",
-    "dev20 local: 79 focused metadata/driver/effect checks and 409 full scoped checks passed, two mandatory-hosted Linux controls deselected; Ruff/format/mypy and isolated installed dev20 wheel import/version/CLI passed. Hosted exact-source validation pending."
+    "dev20 local: 79 focused metadata/driver/effect checks and 409 full scoped checks passed, two mandatory-hosted Linux controls deselected; Ruff/format/mypy and isolated installed dev20 wheel import/version/CLI passed. Hosted exact-source validation pending.",
+    "a9c9bb1: PR 40114793223 all eight jobs passed, foundation 411 tests with zero failures/errors/skips; both portable runs 40114793208/40114789291 passed. Native DSS: 50 completed calls, zero failures, ten commands/refreshes and 50 matching ACKED stages in both ledgers. Foundation/DSS digest, CRC and 122/90 source hashes verified.",
+    "50 fresh-state repetitions of the original 100-way child race passed: 5000 attempts, 50 admissions, 4950 required conflicts. Earlier unclassified eight-response anomaly remains unexplained, not relabelled fixed."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -73,7 +75,7 @@
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "34f201d real native negative pause probe passed: B main PAUSED with background counter still advancing, fenced UNPROVEN/BLOCKED owner preserved, nine unrelated native completions and retained holds. Positive whole-family quiescence/live transfer/resume remain unimplemented/unqualified.",
-    "K_native_subset": "ec9ad5d: push all eight jobs passed; PR seven passed and DSS failed on one telemetry response loss; both foundation suites passed 409 tests without skips. dev20 shared HTTP read budget correction pending. Full K unqualified.",
+    "K_native_subset": "a9c9bb1: PR all eight jobs passed, 411 tests without skips; both portable runs passed. Push native DSS passed; final push foundation/child status pending. Full K remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -82,7 +84,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify dev20 shared state/telemetry HTTP admission; continue native dequeue/direct-mutation fencing and whole-family settlement before effective handoff/resume, then paired native IDE and deployment/recovery qualification.",
+  "next_step": "Implement native command IDs carried through mailbox/deferred trace slots and authenticated final consumption; add explicit dispositions for drops/direct mutations/prompts, then full-family barrier and separately admitted new-owner resume. Preserve failed attempts and unknown outcomes. Complete paired native IDE Run/Debug, compatibility and deployed fault/recovery qualification.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -98,12 +100,19 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "evidence/release-readiness/publication-preflight-dev17.json: clean d523c96, exit 1, all eleven full groups unqualified, development version, publication not performed",
+  "release_assessment": "evidence/release-readiness/publication-preflight-dev20.json: clean a9c9bb1 executable candidate, exit 1, all eleven full groups unqualified, dev20 package; no publication performed.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/listener-survival/qualification-summary.json; 24 source hashes, CRC and digest verified; read-only observer only",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
-  "native_driver_concurrency": "1464276 hosted scoped/native/portable checks passed: ten independent fixed-simulator command streams and immediate overload denial before effect; actual stages retain authorization mutex and dual ledgers. No vendor concurrency or full-load qualification implied.",
+  "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
   "package_version": "0.8.0.dev20",
-  "native_control_profile": "Optional native_controls:run-journal; schema 11; original worker grant plus winner capability; one initial agent RUN per native member, no retry, IPC ACK never proves native execution or queue settlement; NATIVE_CONTROL_JOURNAL.md. ec9ad5d native push/PR child cohorts passed with exactly 16 agent RUN attempts; digest/CRC and 25 source hashes verified, no native queue-settlement proof."
+  "native_control_profile": "Optional native_controls:run-journal; schema 11; original worker grant plus winner capability; one initial agent RUN per native member, no retry, IPC ACK never proves native execution or queue settlement; NATIVE_CONTROL_JOURNAL.md. ec9ad5d native push/PR child cohorts passed with exactly 16 agent RUN attempts; digest/CRC and 25 source hashes verified, no native queue-settlement proof.",
+  "remaining_effort_estimates": {
+    "basis": "Active engineering effort, low confidence until native participant inventory is complete; not a wall-clock or background-execution promise",
+    "native_family_control": "2-4 days",
+    "native_ide_and_recovery": "2-3 days",
+    "compatibility_and_deployment": "3-5 days",
+    "security_and_release_packaging": "1-2 days"
+  }
 }

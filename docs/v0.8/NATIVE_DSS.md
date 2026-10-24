@@ -152,7 +152,9 @@ are not retried. Earlier admission in `current_state()` did not cover inherited
 The dev19 PR native DSS run failed one telemetry refresh with `RemoteDisconnected`
 while all fifty command-stage receipts were ACKED. Dev20's two regressions first
 failed against that source, then passed after moving admission into `get()`;
-exact-source hosted native qualification is still required. The
+exact-source hosted native qualification passed at a9c9bb1 in the PR and push
+DSS jobs: fifty completed calls, no recorded failures and fifty matching ACKED
+command-stage receipts in each ledger. The
 existing response-size and timeout bounds remain in force. Real HTTP regressions
 check that a redirect target and an environment-selected proxy receive no
 request, an unlisted path makes no request, and a 503 response is closed without

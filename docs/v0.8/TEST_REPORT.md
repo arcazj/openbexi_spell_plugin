@@ -1258,3 +1258,40 @@ The final dev20 local suite passed **409 tests, two deselected**, warnings as
 errors (166.68 seconds). Ruff/format/mypy and the built, isolated installed dev20
 wheel import/version/CLI smoke passed. Hosted CI must run all **411** checks,
 including the two Linux positive controls, and the real native DSS cohort.
+
+## Verified dev20 executable checkpoint
+
+Executable **a9c9bb17c4b68e9a53b79f6263ac93f44f0a6695** passed all eight
+services/native jobs in PR run 40114793223. The foundation suite passed **411
+tests, zero failures/errors/skips**, plus lint/format/types and installed package
+checks. Both portable runs 40114793208 and 40114789291 passed. The push native DSS
+job passed; final push foundation/child statuses were still in progress at this
+checkpoint, so no all-green push claim is made.
+
+PR foundation artifact 12568097164 digest
+`a16f1659bb3387905198cb406cba8adf62c24e48229bc3501dbaaf46453968cb`,
+CRC and all 122 source hashes were verified. Native DSS artifact 12568435398 digest
+`5cf9bc8043cbd9cd3bf4eb9dba5f9f63ff39778082421bf25449384d3e1b3305`,
+CRC and all 90 hashes were verified. Its 50 driver calls completed with no
+recorded failures: ten commands, ten refreshes and fifty matching ACKED stages
+in each authority/driver ledger. Ten workers terminated with ten logical holds
+and spent slots retained. Copied-original-config command denial remained active.
+See [foundation](evidence/native-context-dss/dev20-foundation.json) and
+[native DSS](evidence/native-context-dss/dev20-dss.json) receipts.
+
+The original strict 100-way child-admission race also passed fifty fresh-state
+repetitions (38.43 seconds): 5000 admission attempts, 50 winners, 4950 conflicts.
+The earlier eight unclassified responses remain unexplained. This stress result
+is not evidence that their cause was repaired.
+[Reproduction harness and counts](evidence/native-child-start/dev20-race-stress.json).
+
+Clean full-publication preflight still exited **1** with all eleven full gate
+groups false and development version 0.8.0.dev20. No merge, tag, release or
+production migration occurred.
+[Publication preflight](evidence/release-readiness/publication-preflight-dev20.json).
+
+These evidence-only changes preserve all 122 hashed foundation inputs and all
+90 native DSS inputs of a9c9bb1. They are saved on a separate qualification branch
+to preserve the still-active push validation. Full-family native handoff/resume,
+joint native IDE Run/Debug, all-763 compatibility, deployed Compose/Kubernetes
+faults/recovery and final security/release acceptance remain incomplete.
