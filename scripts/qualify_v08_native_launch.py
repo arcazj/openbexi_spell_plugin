@@ -50,7 +50,7 @@ def command(*args, timeout=30):
     )
 
 
-def pki(directory):
+def pki(directory, *, extra_peers=()):
     directory.mkdir()
     command(
         "openssl",
@@ -77,7 +77,9 @@ def pki(directory):
         "subjectAltName=DNS:localhost,DNS:context,IP:127.0.0.1\nbasicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth,clientAuth\n"
     )
     peers = {}
-    for name in ["context", "listener"] + ["worker-" + str(n) for n in range(10)]:
+    for name in ["context", "listener", *extra_peers] + [
+        "worker-" + str(n) for n in range(10)
+    ]:
         key, cert = directory / (name + ".key"), directory / (name + ".pem")
         command(
             "openssl",
@@ -445,6 +447,7 @@ def main():
     parser.add_argument("--native-pause-probe", action="store_true")
     parser.add_argument("--native-thread-barrier", action="store_true")
     parser.add_argument("--native-child-gate", action="store_true")
+    parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
         sum(
@@ -453,6 +456,7 @@ def main():
                 profile.native_thread_barrier,
                 profile.native_dss,
                 profile.native_child_gate,
+                profile.native_listener_survival,
             )
         )
         > 1
@@ -493,6 +497,8 @@ def main():
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
     ]
+    if profile.native_listener_survival:
+        inputs.append(ROOT / "scripts/v08_listener_survival.py")
     if profile.native_dss:
         inputs.extend((ROOT / "driver_plugin/src").rglob("*.py"))
         inputs.extend((ROOT / "src/dss").rglob("*.py"))
@@ -513,7 +519,10 @@ def main():
                         "Qualification must run as a non-root host operator"
                     )
                 load_runtime(temporary, output)
-                ca, peers = pki(temporary / "pki")
+                ca, peers = pki(
+                    temporary / "pki",
+                    extra_peers=("edge",) if profile.native_listener_survival else (),
+                )
                 code = temporary / "code"
                 package = code / "server/src/openbexi_spell_server"
                 package.mkdir(parents=True)
@@ -654,6 +663,18 @@ def main():
                 sources.mkdir()
                 command("git", "init", "-q", sources)
                 fixture = "import os,time\ndeadline=time.monotonic()+40\nwhile not os.path.exists('/control/finish'):\n    if time.monotonic()>deadline:raise RuntimeError('finish barrier expired')\n    time.sleep(0.05)\nRESULT={index}*{index}\nassert RESULT == {square}\n"
+                if profile.native_listener_survival:
+                    fixture = fixture.replace(
+                        "deadline=time.monotonic()+40",
+                        "counter=0\ndeadline=time.monotonic()+75",
+                    )
+                    fixture = fixture.replace(
+                        "    time.sleep(0.05)\n",
+                        "    counter+=1\n"
+                        "    with open('/tmp/listener-progress.next','w') as f:f.write(str(counter))\n"
+                        "    os.replace('/tmp/listener-progress.next','/tmp/listener-progress')\n"
+                        "    time.sleep(0.05)\n",
+                    )
                 if profile.native_pause_probe:
                     background = (
                         "import threading\n"
@@ -785,6 +806,8 @@ def main():
                     config["native_pause"] = "fenced-probe"
                 if profile.native_child_gate:
                     config["native_children"] = "admission-only"
+                if profile.native_listener_survival:
+                    config["subjects"]["observer"] = ["context:read", "execution:read"]
                 dss_name = None
                 driver_network = None
                 if profile.native_dss:
@@ -1176,6 +1199,24 @@ def main():
                 report["network_denials"] = dict(
                     cross_worker_native_port=True, external_tcp=True
                 )
+                if profile.native_listener_survival:
+                    from v08_listener_survival import qualify_listener_survival
+
+                    qualify_listener_survival(
+                        directory=temporary,
+                        code=code,
+                        ca=ca,
+                        peers=peers,
+                        context_name=context_name,
+                        context_image=context_image,
+                        control_network=control_network,
+                        state=state,
+                        worker_names=worker_names,
+                        names=names,
+                        report=report,
+                        command=command,
+                        host_processes=host_processes,
+                    )
                 if profile.native_pause_probe:
                     qualify_pause_probe(
                         controller,

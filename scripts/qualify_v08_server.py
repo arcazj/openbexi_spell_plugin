@@ -102,6 +102,7 @@ def main():
             root / "host_runtime/native/admission_gate.H",
             root / "host_runtime/python/native.py",
             root / "scripts/qualify_v08_native_launch.py",
+            root / "scripts/v08_listener_survival.py",
         ]
     )
     for path in inputs:
@@ -146,6 +147,7 @@ def main():
                 "host_runtime/python/child_gate.py",
                 "host_runtime/build_admission_context.py",
                 "scripts/qualify_v08_native_launch.py",
+                "scripts/v08_listener_survival.py",
                 "scripts/check_v08_release.py",
                 str(Path(__file__).relative_to(root)),
             ],
@@ -167,6 +169,7 @@ def main():
                 "host_runtime/python/child_gate.py",
                 "host_runtime/build_admission_context.py",
                 "scripts/qualify_v08_native_launch.py",
+                "scripts/v08_listener_survival.py",
                 "scripts/check_v08_release.py",
                 str(Path(__file__).relative_to(root)),
             ],

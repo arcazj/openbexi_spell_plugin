@@ -1021,3 +1021,23 @@ the redirect target/proxy or unlisted path and no success for a closed 503
 response. Published v0.7 transport bytes remain unchanged. Hosted exact-source
 CI, including the new 300-second scoped-suite budget and these regressions,
 is required before treating the final candidate as verified.
+
+At **39ce43c7f0b9d8ce90f4789e62f27fc26a4c0b3e**, hosted push
+[40043463719](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40043463719)
+and PR [40043468765](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40043468765)
+passed all seven services/native jobs. The expanded foundation suite completed
+**382 tests**, zero failures/errors/skips, lint/format/mypy, isolated dev17 wheel
+installation/version and service/preflight CLI smokes. This includes the actual
+same-UID memory-read positive control and subsequent protection denial, Unix
+peer/pidfd tests, metadata redirect/proxy denial, three ten-command mTLS bursts,
+all original driver/effect checks and the native child cohort. These are scoped
+component checks; no full v0.8 gate is promoted.
+
+The next candidate adds a separate native Listener-survival cohort. It uses a
+real read-only observer through an independently pinned edge/Listener/Context
+path, kills and recreates the Listener process, checks continuing native counters
+and unchanged thirty PIDs, and compares Context incarnation, owners, epochs,
+generations, holds and spent slots. The Listener has no host manager or authority
+volume. This is a new test awaiting actual hosted execution, not a recorded pass;
+it does not qualify controller disconnection, recovery, browser/WSS or production
+deployment. Existing private native profiles remain separate.

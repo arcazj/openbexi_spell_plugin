@@ -10,6 +10,7 @@ on:
       - 'scripts/qualify_v08_server.py'
       - 'scripts/qualify_v08_native_boundary.py'
       - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_listener_survival.py'
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
@@ -28,6 +29,7 @@ on:
       - 'scripts/qualify_v08_server.py'
       - 'scripts/qualify_v08_native_boundary.py'
       - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_listener_survival.py'
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
@@ -125,6 +127,8 @@ jobs:
             flags: '--native-thread-barrier'
           - profile: child-gate
             flags: '--native-child-gate'
+          - profile: listener-survival
+            flags: '--native-listener-survival'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
