@@ -1074,3 +1074,14 @@ were verified. No all-green PR result is inferred. The follow-up retains bounded
 status/error-code diagnostics while preserving its one-success/nineteen-replay
 assertion and no-retry behavior. A local focused rerun passed, but cannot explain
 or override the failed hosted attempt. The cause remains under investigation.
+
+The next native child candidate extends that existing cohort with one visible,
+automatic blocking grandchild under child 0. The trusted host opens a separate
+start barrier only after all first-level children are running, requires a second
+distinct child-running observation in that worker and **41** simultaneous native
+PIDs, then checks eleven consumed child admissions, one consumed same-family
+parent link, twenty-one logical holds and thirty-seven original EV receipts.
+Generated procedure sources compiled and 27 local provider tests passed (the
+managed host's Unix peer control was deliberately deselected, still mandatory
+unskipped in hosted CI). This new nested native cohort awaits hosted execution;
+no nested or full-family pass is claimed from source/provider checks.

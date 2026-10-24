@@ -154,7 +154,7 @@ def events(name):
     return result
 
 
-def await_event(names, event, seconds=90):
+def await_event(names, event, seconds=90, *, minimum=1):
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
         all_ready = True
@@ -162,7 +162,7 @@ def await_event(names, event, seconds=90):
             records = events(name)
             if any(r["event"] == "native-worker-failed" for r in records):
                 raise RuntimeError("Native worker failed before " + event)
-            if not any(r["event"] == event for r in records):
+            if sum(r["event"] == event for r in records) < minimum:
                 state = json.loads(command("docker", "inspect", name))[0]["State"]
                 if not state["Running"]:
                     raise RuntimeError("Native worker stopped before " + event)
@@ -704,11 +704,29 @@ def main():
                             "from spell.runtime import ARGS\nassert ARGS['INDEX'] == "
                             + str(n)
                             + "\n"
-                            "deadline=time.monotonic()+75\n"
+                            + (
+                                "deadline=time.monotonic()+75\n"
+                                "while not os.path.exists('/control/nested-start'):\n"
+                                "    if time.monotonic()>deadline:raise RuntimeError('nested barrier expired')\n"
+                                "    time.sleep(0.05)\n"
+                                "from spell.lang.functions import StartProc\n"
+                                "assert StartProc('grandchild_0',args=[['INDEX',100]],Automatic=True,Visible=True,Blocking=True,HandleError=False) is True\n"
+                                if n == 0
+                                else ""
+                            )
+                            + "deadline=time.monotonic()+75\n"
                             "while not os.path.exists('/control/child-finish'):\n"
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    (sources / "grandchild_0.py").write_text(
+                        "import os,time\n"
+                        "from spell.runtime import ARGS\nassert ARGS['INDEX'] == 100\n"
+                        "deadline=time.monotonic()+75\n"
+                        "while not os.path.exists('/control/child-finish'):\n"
+                        "    if time.monotonic()>deadline:raise RuntimeError('grandchild barrier expired')\n"
+                        "    time.sleep(0.05)\n"
+                    )
                 for n in range(10):
                     selected = fixture
                     if profile.native_pause_probe and n == 1:
@@ -759,6 +777,9 @@ def main():
                             catalog["procedure-" + str(n)],
                             entrypoint="child_" + str(n) + ".py",
                         )
+                    catalog["grandchild-0"] = dict(
+                        catalog["procedure-0"], entrypoint="grandchild_0.py"
+                    )
                 credentials = dict(
                     profile="single-host-preflight",
                     identities={
@@ -1244,6 +1265,25 @@ def main():
                                 "Native child cohort lacks forty distinct PIDs"
                             )
                         report["native_child_cohort_pids"] = 40
+                        (control / "nested-start").write_text("start grandchild once\n")
+                        await_event(
+                            [worker_names[0]],
+                            "native-child-running",
+                            seconds=30,
+                            minimum=2,
+                        )
+                        processes = [
+                            host_processes(name, executors=3 if index == 0 else 2)
+                            for index, name in enumerate(worker_names)
+                        ]
+                        if (
+                            len({p["host_pid"] for group in processes for p in group})
+                            != 41
+                        ):
+                            raise RuntimeError(
+                                "Nested native cohort lacks forty-one PIDs"
+                            )
+                        report["native_child_cohort_pids"] = 41
                         (control / "child-finish").write_text(
                             "finish native children\n"
                         )
@@ -1388,7 +1428,7 @@ def main():
                             0
                         ] != 10 or audit.execute(
                             "SELECT COUNT(*) FROM reservations"
-                        ).fetchone()[0] != (20 if profile.native_child_gate else 10):
+                        ).fetchone()[0] != (21 if profile.native_child_gate else 10):
                             raise RuntimeError(
                                 "Native completion released a hold or worker slot"
                             )
@@ -1429,6 +1469,9 @@ def main():
                                 profile.native_child_gate and index % 2 == 0
                             )
                             expected_finished = 2 if profile.native_child_gate else 1
+                            if profile.native_child_gate and index == 0:
+                                expected_started += 1
+                                expected_finished += 1
                             report["native_lifecycle_counts"].append(
                                 dict(
                                     worker_index=index,
@@ -1445,7 +1488,7 @@ def main():
                                 raise RuntimeError(
                                     "Native lifecycle events lack unique durable receipts"
                                 )
-                        if event_count < (35 if profile.native_child_gate else 20):
+                        if event_count < (37 if profile.native_child_gate else 20):
                             raise RuntimeError(
                                 "Native lifecycle events lack durable receipts"
                             )
@@ -1460,9 +1503,18 @@ def main():
                             child_states = audit.execute(
                                 "SELECT state,COUNT(*) FROM child_admissions GROUP BY state"
                             ).fetchall()
-                            if child_states != [("CONSUMED", 10)]:
+                            if child_states != [("CONSUMED", 11)]:
                                 raise RuntimeError(
-                                    "Native children lack ten consumed Context admissions"
+                                    "Native children lack eleven consumed Context admissions"
+                                )
+                            nested = audit.execute(
+                                "SELECT c.state,p.state,c.execution_id=p.execution_id "
+                                "FROM child_admissions c JOIN child_admissions p ON c.parent_id=p.id "
+                                "WHERE c.parent_id IS NOT NULL"
+                            ).fetchall()
+                            if nested != [("CONSUMED", "CONSUMED", 1)]:
+                                raise RuntimeError(
+                                    "Nested native admission lacks its original consumed parent"
                                 )
                         if any(
                             next(
@@ -1470,15 +1522,16 @@ def main():
                                 for e in worker["events"]
                                 if e["event"] == "native-finished"
                             )["native_children_admitted"]
-                            != 1
-                            for worker in report["workers"]
+                            != (2 if index == 0 else 1)
+                            for index, worker in enumerate(report["workers"])
                         ):
                             raise RuntimeError(
-                                "Native child provider did not observe one admission per worker"
+                                "Native child provider admission counts differ from the family tree"
                             )
                         report.update(
                             native_child_before_spawn_component_tested=True,
-                            native_child_admissions_consumed=10,
+                            native_child_admissions_consumed=11,
+                            native_nested_child_admissions_consumed=1,
                             full_family_qualified=False,
                         )
                     if profile.native_dss:
@@ -1593,7 +1646,7 @@ def main():
                     passed=True,
                     native_launch_path_tested=True,
                     native_concurrency_verified=True,
-                    logical_holds_retained=20 if profile.native_child_gate else 10,
+                    logical_holds_retained=21 if profile.native_child_gate else 10,
                     single_use_workers_spent=10,
                     context_isolated_from_host_manager=True,
                 )
