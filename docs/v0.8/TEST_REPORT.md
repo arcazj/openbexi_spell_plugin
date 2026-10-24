@@ -1116,3 +1116,35 @@ client hash/version, discovery and unchanged execution identities before/after
 Listener replacement, explicit 503 during outage, control denial for the read-only
 user and no reconstructed controller proof. This is pending hosted execution;
 it cannot qualify native IDE Run/Debug, Qt/browser controls or full v0.8.
+
+At **d523c96b4636c51dedf62a62563469e0de20982e**, the installed pinned IDE native
+observer passed hosted Listener jobs in both push 40045966181 and PR 40045970114.
+It used the actual installed client (version/hash checked), a separate gateway,
+Listener and unchanged Context. It observed ten actual native executions, was
+denied control, received 503 while Listener was absent and reconnected to the
+original execution identities with no controller proof. All ten native counters
+advanced through outage, thirty PIDs stayed unchanged and ten holds/spent slots
+remained. The push artifact 12540868163 digest
+`a991dd80314dd3c25b56e3b49370c30ee62d830614fc7ffb911b0b17b63abcfb`, CRC and
+all 24 source hashes were verified. See
+[evidence/listener-survival/ide-observer-summary.json](evidence/listener-survival/ide-observer-summary.json).
+Native IDE Run/Debug, active-controller disconnect and full v0.8 remain unqualified.
+
+The final local scoped suite at d523c96 completed **380 tests, two deliberately
+deselected Linux positive controls**, zero failures/errors, warnings as errors.
+Those controls remain mandatory/unskipped in hosted CI. Ruff and mypy passed.
+Clean full-publication preflight exited **1** with all eleven full groups false
+and the package still 0.8.0.dev17; no publication occurred.
+
+Final executable candidate **d523c96b4636c51dedf62a62563469e0de20982e** passed
+**all eight services/native jobs in both push 40045966181 and PR 40045970114**.
+Both portable workflows 40045966101/40045970135 also succeeded. The foundation
+suite completed **382 tests, zero failures/errors/skips**, lint/format/mypy and
+isolated installed package checks. This includes unchanged strict replay and
+ten-independent-effect assertions after the bounded metadata concurrency fix.
+PR foundation artifact 12541695642 digest
+`78e07b565e46b83eeb3f8873a3ed1feb23b7666594a4b54d713ba6152cc3bf36` and CRC
+were verified, and all 119 public source hashes matched d523c96. See
+[evidence/native-child-start/dev17-final-foundation.json](evidence/native-child-start/dev17-final-foundation.json).
+These results qualify the stated development components only. All eleven full
+release groups remain false; public runtime remains disabled.

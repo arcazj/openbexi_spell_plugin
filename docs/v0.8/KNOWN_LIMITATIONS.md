@@ -32,7 +32,7 @@ authenticates the native Context process and original family over the separate
 local and mTLS boundaries. The agent disables dumpability before configuration
 or native startup to protect its memory-only consumption proof; deployment must
 also drop all capabilities. See NATIVE_CHILD_ADMISSION.md for candidate results.
-Default profiles still reject children. Native manual modes, nested execution,
+Default profiles still reject children. Native manual/nonblocking modes, broader nested execution,
 child prompt/return/repeat/failure semantics, per-child driver attribution and
 complete descendant containment require additional qualification. Admission
 and native status observations do not establish quiescence or release a hold.
@@ -65,7 +65,11 @@ not yet established, and that PR workflow is not qualified.
 ## Joint product and full qualification
 
 The pinned IDE supports discovery, reservations, observers and explicit prelaunch
-handoff through real mTLS and Qt integration. Native IDE Run/Debug, browser/WSS,
+handoff through real mTLS and Qt integration. At d523c96 its installed client
+observed ten actual native executions through a separate gateway, failed closed
+during Listener loss and reconnected to the original executions after replacement.
+The read-only user was denied control. The digest/CRC and 24 source hashes were
+verified; see `evidence/listener-survival/ide-observer-summary.json`. Native IDE Run/Debug, browser/WSS,
 Git collaboration and the full joint deployed workflow remain unfinished or
 unqualified. No local fallback is authorized while connected to the server.
 
