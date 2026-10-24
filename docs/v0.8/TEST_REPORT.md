@@ -1295,3 +1295,9 @@ These evidence-only changes preserve all 122 hashed foundation inputs and all
 to preserve the still-active push validation. Full-family native handoff/resume,
 joint native IDE Run/Debug, all-763 compatibility, deployed Compose/Kubernetes
 faults/recovery and final security/release acceptance remain incomplete.
+
+Final follow-up: push services/native run **40114789340** completed successfully
+at the same a9c9bb1 executable commit. Both PR and push now pass all eight
+services/native jobs and both portable workflows pass. The evidence branch can
+be integrated without cancelling the original validation. All full-release
+gates remain false; no additional runtime functionality is inferred.
