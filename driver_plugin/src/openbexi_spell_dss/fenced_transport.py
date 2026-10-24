@@ -27,9 +27,11 @@ class NoRedirect(HTTPRedirectHandler):
 
 class Transport(LegacyTransport):
     def __init__(self, *args, **kwargs):
-        # One Context-owned instance per binding. Do not overload the legacy
-        # four-handler metadata API when ten executions begin together.
-        self.metadata_admission = threading.BoundedSemaphore(1)
+        # One Context-owned instance per binding. The fixed DSS API has four
+        # handlers: use at most three, leaving one for independent observation.
+        # A single reader needlessly exhausted the unchanged 250ms admission
+        # budget during the qualified ten-independent-execution burst.
+        self.metadata_admission = threading.BoundedSemaphore(3)
         super().__init__(*args, **kwargs)
 
     def get(self, path):

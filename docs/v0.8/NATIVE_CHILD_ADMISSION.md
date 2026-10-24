@@ -128,3 +128,12 @@ memory-reader test includes a successful read before protection and denial after
 protection; unavailable positive controls fail rather than count as protection.
 This is agent-memory protection, not an arbitrary-procedure sandbox or full
 family-participant/recovery proof.
+
+At **9bbae553b863b40129111f2d904a5cdf33891706**, the expanded hosted native
+cohort also completed one visible automatic blocking grandchild under child 0.
+The trusted host verified 41 simultaneous native PIDs, eleven consumed child
+admissions, the exact consumed same-family parent link, 37 original EV receipts
+and 21 retained logical holds. The archive digest/CRC and all 23 source hashes
+were verified; see [nested receipt](evidence/native-child-start/nested-summary.json).
+This qualifies that nested component only. Other modes, denied/error/prompt/return
+semantics, driver attribution and full-family pause/handoff/resume remain pending.

@@ -74,7 +74,7 @@ def pki(directory, *, extra_peers=()):
     )
     extensions = directory / "extensions.cnf"
     extensions.write_text(
-        "subjectAltName=DNS:localhost,DNS:context,IP:127.0.0.1\nbasicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth,clientAuth\n"
+        "subjectAltName=DNS:localhost,DNS:context,DNS:listener,IP:127.0.0.1\nbasicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage=serverAuth,clientAuth\n"
     )
     peers = {}
     for name in ["context", "listener", *extra_peers] + [
@@ -521,7 +521,9 @@ def main():
                 load_runtime(temporary, output)
                 ca, peers = pki(
                     temporary / "pki",
-                    extra_peers=("edge",) if profile.native_listener_survival else (),
+                    extra_peers=("edge", "observer")
+                    if profile.native_listener_survival
+                    else (),
                 )
                 code = temporary / "code"
                 package = code / "server/src/openbexi_spell_server"

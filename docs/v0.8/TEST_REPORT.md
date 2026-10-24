@@ -1085,3 +1085,34 @@ Generated procedure sources compiled and 27 local provider tests passed (the
 managed host's Unix peer control was deliberately deselected, still mandatory
 unskipped in hosted CI). This new nested native cohort awaits hosted execution;
 no nested or full-family pass is claimed from source/provider checks.
+
+At **9bbae553b863b40129111f2d904a5cdf33891706**, all seven native jobs passed
+in push run 40045545732 and PR run 40045550149, including the expanded nested
+cohort. It verified **41 native PIDs, eleven consumed admissions with one correct
+consumed same-family parent link, 37 original lifecycle receipts, 21 retained
+holds and ten spent workers**. ZIP digest
+`1459a71a6ab2cbd8c1561c3260fe7716e64efd778b7fcbd7b1a17c8ec2869618`, CRC and
+all 23 repository source hashes matched. See
+[evidence/native-child-start/nested-summary.json](evidence/native-child-start/nested-summary.json).
+Only one visible automatic blocking grandchild is qualified; manual, nonblocking,
+error/prompt/return/repeat, full-family handoff/resume and recovery remain pending.
+
+Both foundation attempts at 9bbae55 failed the ten-independent-effect test before
+any command effect: the metadata reader's one-slot admission queue exceeded its
+250ms budget. The PR archive 12541003473 digest
+`2b9f706c7a307601c7daece15a855069f23308fa435d372eb7c8b24e93c8d66f` and
+push archive 12541097738 digest
+`dc519337203b86f832a131e5b4bb3c14498f631973a40c59c2f1d4ce1dc0a19c`, plus both
+CRCs, were verified. The duplicate-driver assertion passed in these attempts;
+its earlier differing denials remain unexplained, not presumed fixed. The
+follow-up allows three concurrent metadata reads against the fixed DSS API's
+four configured handlers, preserving one handler for independent observation.
+Queue/socket/effect deadlines, replay denial and exact test expectations remain
+unchanged. Hosted load qualification is required; this change is not yet a pass.
+
+The same next candidate adds the installed pinned IDE observer through a
+separate actual gateway to the native Listener-survival cohort: exact installed
+client hash/version, discovery and unchanged execution identities before/after
+Listener replacement, explicit 503 during outage, control denial for the read-only
+user and no reconstructed controller proof. This is pending hosted execution;
+it cannot qualify native IDE Run/Debug, Qt/browser controls or full v0.8.

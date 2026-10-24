@@ -7,8 +7,10 @@ Docker socket, host manager, recovery authority or a replacement execution grant
 from contextlib import closing
 import hashlib
 import http.client
+import importlib.metadata
 import json
 import os
+from pathlib import Path
 import shutil
 import socket
 import sqlite3
@@ -46,14 +48,14 @@ def qualify_listener_survival(
     with socket.socket() as reservation:
         reservation.bind(("127.0.0.1", 0))
         port = reservation.getsockname()[1]
-    client_pin = hashlib.sha256(b"native-listener-read-only-observer").hexdigest()
+    client_pin = peers["observer"]["pin"]
     config = dict(
         ca="/credentials/ca.pem",
         certificate="/credentials/listener.pem",
         key="/credentials/listener.key",
         bind="0.0.0.0",
         port=9444,
-        allowed_hosts=[f"localhost:{port}"],
+        allowed_hosts=[f"localhost:{port}", "listener:9444"],
         max_handlers=16,
         edge_fingerprint=peers["edge"]["pin"],
         identities={client_pin: "observer"},
@@ -75,6 +77,8 @@ def qualify_listener_survival(
         "--read-only",
         "--network",
         control_network,
+        "--network-alias",
+        "listener",
         "--cap-drop",
         "ALL",
         "--security-opt",
@@ -183,12 +187,103 @@ def qualify_listener_survival(
     wrong_role = tls_context(ca, peers["worker-0"]["cert"], peers["worker-0"]["key"])
     if read("/v1/contexts/A/executions", tls=wrong_role)[0] != 403:
         raise RuntimeError("Worker certificate gained Listener edge authority")
+
+    # Use the installed pinned IDE client through an actual separate edge.
+    # No delegated identity header or controller capability is supplied by it.
+    import openbexi_runtime.spell_server_client as ide
+
+    pair = json.loads(
+        (Path(__file__).resolve().parents[1] / "docs/v0.8/IDE_PAIR.json").read_text()
+    )
+    client_sha = hashlib.sha256(Path(ide.__file__).read_bytes()).hexdigest()
+    if (
+        client_sha
+        != pair["ide_source_sha256"]["src/openbexi_runtime/spell_server_client.py"]
+        or importlib.metadata.version("openbexi-ide") != pair["ide_version"]
+    ):
+        raise RuntimeError(
+            "Installed companion IDE client differs from the pinned pair"
+        )
+    edge_credentials = directory / "edge-credentials"
+    edge_credentials.mkdir(mode=0o755)
+    for original, target in (
+        (ca, "ca.pem"),
+        (peers["edge"]["cert"], "edge.pem"),
+        (peers["edge"]["key"], "edge.key"),
+    ):
+        shutil.copy2(original, edge_credentials / target)
+        (edge_credentials / target).chmod(0o444)
+    with socket.socket() as reservation:
+        reservation.bind(("127.0.0.1", 0))
+        edge_port = reservation.getsockname()[1]
+    edge_config = dict(
+        ca="/credentials/ca.pem",
+        certificate="/credentials/edge.pem",
+        key="/credentials/edge.key",
+        bind="0.0.0.0",
+        port=9445,
+        allowed_hosts=[f"localhost:{edge_port}"],
+        max_handlers=16,
+        listener_url="https://listener:9444",
+        listener_fingerprint=peers["listener"]["pin"],
+        clients=[client_pin],
+    )
+    (edge_credentials / "config.json").write_bytes(canonical(edge_config))
+    (edge_credentials / "config.json").chmod(0o444)
+    edge_name = context_name + "-edge"
+    edge_arguments = list(arguments)
+    edge_arguments[edge_arguments.index("--name") + 1] = edge_name
+    edge_arguments[edge_arguments.index("--network-alias") + 1] = "edge"
+    edge_arguments[edge_arguments.index("--publish") + 1] = (
+        f"127.0.0.1:{edge_port}:9445"
+    )
+    edge_arguments[
+        edge_arguments.index(f"type=bind,src={credentials},dst=/credentials,readonly")
+    ] = f"type=bind,src={edge_credentials},dst=/credentials,readonly"
+    edge_arguments[-3] = "gateway"
+    names.append(edge_name)
+    command(*edge_arguments)
+    client = ide.SpellServerClient(
+        url=f"https://localhost:{edge_port}",
+        fingerprint=peers["edge"]["pin"],
+        ca=ca,
+        certificate=peers["observer"]["cert"],
+        key=peers["observer"]["key"],
+    )
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        try:
+            if client.contexts() == ["A"]:
+                break
+        except ide.SpellServerError:
+            pass
+        time.sleep(0.05)
+    else:
+        raise RuntimeError(
+            "Pinned IDE could not discover the native Context through edge"
+        )
+    if client.read("A", "executions")["executions"] != executions:
+        raise RuntimeError("Pinned IDE observed different native execution identities")
+    try:
+        client.authority("A", "session.open", {}, key="observer-control-denial")
+    except ide.SpellServerError as error:
+        if error.status != 403:
+            raise
+    else:
+        raise RuntimeError("Read-only IDE observer gained control authority")
     pids_before = native_pids()
     context_before = json.loads(command("docker", "inspect", context_name))[0]["State"]
     counts_before = progress()
     command("docker", "kill", "--signal", "KILL", listener_name)
     if command("docker", "wait", listener_name) != "137":
         raise RuntimeError("Listener loss was not an actual process kill")
+    try:
+        client.read("A", "executions")
+    except ide.SpellServerError as error:
+        if error.status != 503:
+            raise
+    else:
+        raise RuntimeError("IDE succeeded while its Listener was absent")
     counts_during = progress()
     if any(
         after <= before
@@ -201,6 +296,12 @@ def qualify_listener_survival(
     command("docker", "rm", listener_name)
     second, second_pid = start()
     after, retained = snapshot()
+    if client.read("A", "executions")["executions"] != executions:
+        raise RuntimeError(
+            "Pinned IDE did not reconnect to the unchanged native Context"
+        )
+    if client._controllers:
+        raise RuntimeError("Read-only IDE reconstructed a controller proof")
     context_after = json.loads(command("docker", "inspect", context_name))[0]["State"]
     if (
         first == second
@@ -244,4 +345,11 @@ def qualify_listener_survival(
         full_v08_qualified=False,
         progress_before=counts_before,
         progress_during_outage=counts_during,
+        installed_ide_observer_tested=True,
+        ide_commit=pair["ide_commit"],
+        ide_client_sha256=client_sha,
+        ide_observer_control_denied=True,
+        ide_outage_failed_closed=True,
+        ide_reconnected_with_original_executions=True,
+        ide_native_run_debug_qualified=False,
     )
