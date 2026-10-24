@@ -1366,3 +1366,28 @@ Ruff/format/mypy and isolated dev22 package install/import/version/CLI passed.
 Hosted native compilation and before-forward positive/negative evidence are
 pending. Neither forwarding admission nor IPC acknowledgment qualifies native
 dequeue, family quiescence, handoff/resume or full v0.8 release.
+
+### Verified dev22 executable result
+
+**bfa4a7f07c5c2289c7329bd1da10ee08c5e69932** passed all eight jobs in both
+PR services/native run **40120586927** and push **40120582247**. PR portable
+compatibility **40120586930** also passed. Foundation completed **424 tests,
+zero failures/errors/skips**; both previously excluded Linux controls ran.
+
+Foundation artifact 12570687307 digest
+`328fbd49feda6a2e9e8ab3995e2c20b525ef489fdecd117daa50ca92c95c7715`,
+CRC and 124 source hashes were verified. Native child/forward artifact 12571112042
+digest `970deacb6809aabe1f7b5c93cff9c41da30c563652f7d49887ebc7fac8449b08`,
+CRC and 26 hashes were verified. The real rebuilt native Context denied all ten
+unregistered RUN probes, accepted sixteen legitimate forwards with identical
+journal origins/operation hashes, and retained FORWARD_UNPROVEN for every one.
+Eleven child admissions including one nested child, 21 holds and ten spent
+workers remained. No native dequeue or quiescence proof was synthesized.
+[Foundation](evidence/native-child-start/dev22-foundation.json) and
+[actual forwarding component](evidence/native-child-start/dev22-forward.json).
+
+The [clean publication preflight](evidence/release-readiness/publication-preflight-dev22.json)
+still exits **1**: dev22 is a development package and all eleven full groups are
+unqualified. No PR merge, v0.8 tag, release or production migration occurred.
+These documentation/evidence changes preserve all 124 foundation and 26 native
+qualification inputs from bfa4a7f.

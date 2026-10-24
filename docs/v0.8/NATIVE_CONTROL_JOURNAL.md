@@ -107,3 +107,13 @@ as a whole failed a separate DSS telemetry refresh and is not labelled green.
 Implementation: `server/src/openbexi_spell_server/control.py`,
 `host_runtime/python/control_journal.py`, and the explicit routing/configuration
 in `launch.py`, `services.py`, `transport.py` and `__main__.py`.
+
+Dev22 runtime **bfa4a7f07c5c2289c7329bd1da10ee08c5e69932** passed every service/native
+job in both PR 40120586927 and push 40120582247. The native Context was actually
+rebuilt and the cohort verified **ten unregistered-RUN denials**, sixteen matching
+forward admissions, eleven child admissions and retained holds. The downloaded
+native artifact digest/CRC and all 26 source hashes were checked. Foundation
+passed 424 checks without skips, with digest/CRC and 124 source hashes verified.
+[Native forward receipt](evidence/native-child-start/dev22-forward.json).
+Executor dequeue, other mutation paths, whole-family settlement, live transfer
+and new-owner resume remain unqualified.
