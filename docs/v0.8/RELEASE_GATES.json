@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Automatic visible/hidden before-spawn children, one visible blocking grandchild and observed-thread barrier passed. dev19 adds an unqualified private initial-RUN journal; native dequeue/direct-mutation fencing, manual/nonblocking/failure children and whole-family handoff/resume remain pending."
+      "reason": "Automatic visible/hidden children, one blocking grandchild, observed-thread barrier and dev19 initial agent RUN journal passed as components. Native dequeue/direct-mutation fencing, manual/nonblocking/failure children and whole-family handoff/resume remain pending."
     },
     "compatibility": {
       "qualified": false,
@@ -25,7 +25,7 @@
     "driver_faults": {
       "qualified": false,
       "receipt": null,
-      "reason": "dev18 fixed the confirmed global command/receipt lock contention and passed exact-source hosted native/scoped/portable checks. Earlier duplicate-denial anomaly and full lifecycle/reset/partition/recovery/load remain unqualified."
+      "reason": "dev18 command contention correction passed; dev19 PR native telemetry failed with one uncertain read. dev20 moves the existing three-reader limit to all HTTP reads; exact-source qualification pending. Full lifecycle/reset/partition/recovery/load remains unqualified."
     },
     "ide_browser": {
       "qualified": false,

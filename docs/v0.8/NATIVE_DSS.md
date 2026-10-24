@@ -1,6 +1,6 @@
 # Context-owned native DSS subset (development)
 
-`0.8.0.dev13` connects the original protobuf driver request to the private Context
+`0.8.0.dev20` connects the original protobuf driver request to the private Context
 effect gate. This is an optional retained, single-use qualification profile.
 Default gateway, Listener and IDE execution remain disabled. It is not a full
 v0.8 release or a claim of complete legacy driver compatibility.
@@ -144,6 +144,15 @@ gates. No merge, release or production promotion is implied by this subset.
 The private v0.8 transport reads only `state` and `telemetry` on the operator's
 configured endpoint. It disables environment proxies and rejects redirects
 before contacting another authority. HTTP error responses are closed. The
+shared HTTP read boundary admits at most three requests, covering initialization,
+state and inherited telemetry reads against the fixed API's four-handler budget.
+The unchanged 250 ms admission deadline applies before any HTTP request; reads
+are not retried. Earlier admission in `current_state()` did not cover inherited
+`sample()` calls and allowed telemetry to exceed the configured handler bound.
+The dev19 PR native DSS run failed one telemetry refresh with `RemoteDisconnected`
+while all fifty command-stage receipts were ACKED. Dev20's two regressions first
+failed against that source, then passed after moving admission into `get()`;
+exact-source hosted native qualification is still required. The
 existing response-size and timeout bounds remain in force. Real HTTP regressions
 check that a redirect target and an environment-selected proxy receive no
 request, an unlisted path makes no request, and a 503 response is closed without

@@ -1217,3 +1217,44 @@ The final strengthened 25 journal tests passed again, including checking the
 committed uncertain row before the native send boundary. Ruff/format/mypy passed;
 the dev19 wheel built and its isolated installed import/version/CLI smoke passed.
 Hosted dev19 native execution and exact-source CI remain pending.
+
+## dev19 hosted evidence and dev20 telemetry admission correction
+
+At **ec9ad5d94022a8915970f0e5ac5c5c2a44e11f60**, push run 40113822680 passed
+all eight services/native jobs. PR run 40113825594 passed seven jobs, including
+foundation (**409 tests, zero failures/errors/skips**) and the native child cohort,
+but failed the DSS cohort. Portable PR 40113825595 passed. Foundation artifact
+12567672711 digest
+`d1287126cfc78bea43ad02e2a40eac4f57ff948e9fab03c2d0a29fbf8982d7c9`,
+CRC and 122 source hashes were verified. Child artifact 12567304316 digest
+`d62f544d7936e2ba3a8028d479a927fd2ba423f7564b50233c667bfac86abefa`,
+CRC and 25 hashes were verified. Ten workers recorded sixteen original agent
+RUN attempts, with six correct consumed child bindings; every IPC acknowledgment
+remained uncertain and no family transfer was authorized.
+See [foundation](evidence/native-child-start/dev19-foundation.json) and
+[child journal](evidence/native-child-start/dev19-child.json) receipts.
+
+The failed PR DSS artifact 12567532971 digest
+`fb20c26abb841169572f9df931c619b50012ab6f4094e99ccdfe24ad6f9ea9bc`,
+CRC and all 90 source hashes were verified. One TM/RefreshItem call encountered
+RemoteDisconnected: 49 driver calls completed, one stayed UNCERTAIN, and all 50
+command-stage receipts were ACKED. The affected native procedure failed; the
+successful push run does not override this failure.
+[Redacted failed-run receipt](evidence/native-context-dss/dev19-failed-telemetry.json).
+
+Inspection found that the three-reader metadata limit covered current_state()
+but inherited sample() called get(telemetry) directly. Two deterministic
+regressions fail against dev19: ten inherited samples exceed the reader limit at
+the actual four-handler HTTP boundary, and a saturated metadata budget still
+permits HTTP. Dev20 moves the unchanged three-reader/250 ms admission budget into
+get(), so initialization, state and telemetry share it. No deadline, handler
+capacity, command receipt rule or retry behavior changes; the legacy transport
+and original patch preimages remain unchanged. Both regressions and the complete
+79-test metadata/driver/effect group pass after the change. Full local and hosted
+dev20 qualification remain pending. This evidence establishes the admission gap;
+the hosted disconnect's exact server-side interleaving was not captured.
+
+The final dev20 local suite passed **409 tests, two deselected**, warnings as
+errors (166.68 seconds). Ruff/format/mypy and the built, isolated installed dev20
+wheel import/version/CLI smoke passed. Hosted CI must run all **411** checks,
+including the two Linux positive controls, and the real native DSS cohort.

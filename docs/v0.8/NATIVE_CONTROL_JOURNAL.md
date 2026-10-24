@@ -74,6 +74,15 @@ conflicting/forged reports. Native IPC is a test boundary in these tests; the
 hosted child cohort supplies the real native execution check and exact journal
 cardinality. Neither result qualifies the remaining native boundaries above.
 
+At `ec9ad5d94022a8915970f0e5ac5c5c2a44e11f60`, both hosted native child jobs
+passed. The push artifact's digest, CRC and all 25 source hashes were verified:
+ten workers journalled exactly 16 agent RUNs, with six child targets matching
+their original consumed family admissions. All outcomes remained unproven.
+See [the component receipt](evidence/native-child-start/dev19-child.json).
+Both foundation jobs also passed 409 tests without skips; the PR foundation
+artifact's digest/CRC and all 122 source hashes were checked. The PR workflow
+as a whole failed a separate DSS telemetry refresh and is not labelled green.
+
 Implementation: `server/src/openbexi_spell_server/control.py`,
 `host_runtime/python/control_journal.py`, and the explicit routing/configuration
 in `launch.py`, `services.py`, `transport.py` and `__main__.py`.

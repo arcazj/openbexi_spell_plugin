@@ -31,6 +31,8 @@ class Transport(LegacyTransport):
         # handlers: use at most three, leaving one for independent observation.
         # A single reader needlessly exhausted the unchanged 250ms admission
         # budget during the qualified ten-independent-execution burst.
+        # Admission belongs in get(): inherited sample() reads telemetry without
+        # passing through current_state(), and must share this same budget.
         self.metadata_admission = threading.BoundedSemaphore(3)
         super().__init__(*args, **kwargs)
 
@@ -39,28 +41,28 @@ class Transport(LegacyTransport):
         # nor environment proxy settings may select another network authority.
         if path not in {"state", "telemetry"}:
             raise ValueError("DSS metadata path is not permitted")
-        opener = build_opener(ProxyHandler({}), NoRedirect())
-        request = Request(
-            self.url + "/api/v1/" + path, headers={"Accept": "application/json"}
-        )
-        try:
-            response = opener.open(request, timeout=3)
-        except HTTPError as error:
-            error.close()
-            raise
-        with response:
-            raw = response.read(16 * 1024 * 1024 + 1)
-            if len(raw) > 16 * 1024 * 1024:
-                raise ValueError("DSS response bound exceeded")
-            return json.loads(raw)
-
-    def current_state(self):
         if not self.metadata_admission.acquire(timeout=0.25):
             raise TimeoutError("DSS metadata admission busy; no effect attempted")
         try:
-            return self.get("state")
+            opener = build_opener(ProxyHandler({}), NoRedirect())
+            request = Request(
+                self.url + "/api/v1/" + path, headers={"Accept": "application/json"}
+            )
+            try:
+                response = opener.open(request, timeout=3)
+            except HTTPError as error:
+                error.close()
+                raise
+            with response:
+                raw = response.read(16 * 1024 * 1024 + 1)
+                if len(raw) > 16 * 1024 * 1024:
+                    raise ValueError("DSS response bound exceeded")
+                return json.loads(raw)
         finally:
             self.metadata_admission.release()
+
+    def current_state(self):
+        return self.get("state")
 
     def command(
         self, name, arguments, identity, operation, check, *, admission, timeout=5
