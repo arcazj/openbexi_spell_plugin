@@ -1674,3 +1674,82 @@ patch-preimage reconstruction, wheel build and isolated installed version/CLI
 smokes passed. Actual native C++ compilation/execution requires hosted CI.
 All eleven full release gate groups remain false; no full v0.8, release,
 production migration, family quiescence or safe post-start handoff is claimed.
+
+
+## Dev28 verified native final-admission fence and retained DSS failure
+
+**05aff1c525dca5ecd9d15ba322166b871c9ec024** passed every job in push
+40137535527. PR 40137539739 passed foundation (**444 tests without skips**),
+the native family and five other native jobs, but its DSS job failed.
+Portable PR 40137539750 passed. The complete PR workflow is failed evidence.
+
+The native family proves **21 exact final RUN consumptions/bindings, 11 child
+admissions, 41 PIDs and 42 lifecycle events**. Its independent Context B probe
+held the actual Executor before channel creation, waited five seconds, durably
+closed its controller, then obtained a real **HTTP 403** at final admission.
+No consumption row or body marker appeared; the same three native PIDs remained.
+Original owner/epoch and CONTROLLER_DISCONNECTED stayed recorded. B retained two
+holds/one spent worker after independent host teardown; the unstarted witness
+and Context A's 21 holds/ten spent workers were unchanged. This is a negative
+admission proof, not family quiescence, positive handoff or new-owner resume.
+
+Family artifact 12578175646 SHA-256
+`ab4e5f127f3887560ff4df32d9b2458883e2cdbc0033a0056bf1afee74e9a847`,
+CRC, 30 repository and all 144 compiled native source hashes were verified.
+Foundation artifact 12578161451 SHA-256
+`f58996d0bb3227dcce2a9cbdd61b87ab7cb969c064bff0a6bff70eafe90aaa37`,
+CRC and 128 repository source hashes were verified.
+[Native consumption receipt](evidence/native-child-start/dev28-consumption.json)
+and [foundation receipt](evidence/native-child-start/dev28-foundation.json).
+Explicit worker-owned writable tmpfs allowed the probe to complete; the prior
+run's missing-marker cause is not independently reconstructed from lost logs.
+
+The PR DSS failure had **38 completed driver calls, four uncertain calls and
+45 ACKED stages**. Four chains identify effect_deadline_expired. The native
+fixture already uses Timeout=2; it has not been increased. Failure artifact
+12577406524 SHA-256
+`dcad7450c2ffeb315665b04ef62dbb4435e52a0cdb5284aa108827887b8c9089`,
+CRC and 95 source hashes were checked.
+[Retained failure](evidence/native-context-dss/dev28-dss-failure.json).
+No failed command is retried. A separate local 30-case stress with the same
+explicit two-second timeout passed 900 commands/4500 ACKED stages per ledger;
+that does not explain or erase the hosted failure.
+
+## Dev29 incomplete-operation fencing correction
+
+A deterministic reproduction found a safety gap independent of timing
+performance: after earlier stages have receipts, the next stage may fail its
+deadline before creating an INTENT. The previous uncertainty path found no row
+for that stage and returned, leaving the execution OWNED. A partially completed
+multi-stage operation must prevent further writes until reconciliation.
+
+The gate now looks for prior stages with the exact original operation,
+execution and grant provenance. It retains their real receipts, records
+DRIVER_OPERATION_INCOMPLETE, revokes the capability and marks only that
+execution RECOVERY_REQUIRED under its execution mutex. It does not manufacture
+an unsent stage or mark ACKED receipts uncertain. A never-started operation,
+foreign grant and fully settled receipt cannot fence another execution. An audit
+failure poisons the authority while retaining every hold, even if the fencing
+transaction rolls back. The original timeout, lock order and no-replay rule
+remain unchanged.
+
+The exact old 05aff1c effects module fails **three** new safety regressions;
+its unrelated/settled-operation positive control passes. The corrected module
+passes all four. Local full service checks passed **445 tests**, with the three
+mandatory hosted Linux controls excluded. Afterwards the real ten-request burst
+case was expanded to explicit two- and three-second deadlines; both cases passed.
+The final hosted suite therefore expects **449 tests without skips**.
+Ruff/format/mypy and an isolated installed dev29 wheel/version/CLI smoke passed.
+Final repeated two-second stress passed **900 commands and 4500 matching ACKED stages per ledger** in 30 fresh-state cases (111.53 seconds). Exact-source hosted confirmation is pending.
+[Safety regressions](evidence/native-context-dss/dev29-incomplete-stage.json) and
+[two-second stress](evidence/native-context-dss/dev29-two-second-stress.json).
+
+The next native qualification candidate also provisions explicit Docker CPU
+weights: Context/DSS 2048, each worker 128, checked through Docker configuration.
+Ten worker cgroups previously used default weights while all competed with the
+services. These are relative scheduling weights, not guaranteed CPU reservations,
+and the preceding deadline failure's cause remains unproven. Per-worker two-CPU
+limits, all operation/write deadlines, full native counts and admission oracles
+remain unchanged. The default-weight failure is retained rather than relabelled
+fixed by this deployment candidate. Full production resource qualification is
+still required. No full release gate is promoted.

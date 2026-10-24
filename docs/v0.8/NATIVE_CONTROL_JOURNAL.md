@@ -173,3 +173,16 @@ Executor bootstrap, before user tracing, while preserving Context's separate
 metadata graph. All 21 consumptions, exact bindings, child modes and the final
 HTTP-403 probe are still mandatory. This candidate remains unqualified until
 its actual native execution passes.
+
+
+At **05aff1c525dca5ecd9d15ba322166b871c9ec024**, both hosted family jobs
+passed. The PR receipt verifies 21 final consumptions/bindings, 11 children,
+41 native PIDs and exactly 42 lifecycle records. An isolated actual Executor
+held before channel creation received HTTP 403 after its owner disconnected,
+with no body execution or consumption row, unchanged native PIDs, original
+owner/epoch and retained holds. The separate reserved witness was unchanged.
+Archive digest/CRC, 30 repository and 144 compiled source hashes were verified.
+See [dev28 consumption](evidence/native-child-start/dev28-consumption.json).
+All remaining mutation, queue, full-family barrier and positive transfer
+requirements above remain unqualified. The PR workflow failed a separate DSS
+deadline check; only the push workflow was fully green.

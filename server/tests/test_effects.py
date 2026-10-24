@@ -733,3 +733,94 @@ def test_expired_operation_waiting_for_ledger_writer_cannot_send_late(gate, dss,
         assert db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0
     assert gate.authority.list_executions("alice")["executions"][0]["control_state"] == "OWNED"
     assert dss.get("state")["core"]["commands_executed"] == 0
+
+
+@pytest.mark.parametrize("expired_stage", ["LOADING", "ACKNOWLEDGEMENT"])
+def test_deadline_before_next_intent_fences_incomplete_operation(gate, dss, expired_stage):
+    from test_authority import public
+
+    _, execution, bound = admission(gate)
+    _, witness, other = admission(gate, "witness")
+    before = public(gate.authority, witness)
+
+    class ExpiredNextStage:
+        validate = bound.validate
+        settle = bound.settle
+        uncertain = bound.uncertain
+
+        def send(self, stage, connection, packet):
+            if stage == expired_stage:
+                gate.uncertain(other.grant, bound.operation, stage)
+                assert public(gate.authority, execution)["control_state"] == "OWNED"
+                assert public(gate.authority, witness) == before
+            current = replace(bound, deadline=0.0) if stage == expired_stage else bound
+            current.send(stage, connection, packet)
+
+    with pytest.raises(UncertainEffect) as denied:
+        dss.command(
+            "CMD1", [], identity(bound), bound.operation, lambda: None, admission=ExpiredNextStage()
+        )
+    assert denied.value.__cause__.code == "effect_deadline_expired"
+    stages = ["TRANSPORT", "LOADING", "RELEASE", "ACKNOWLEDGEMENT", "ONBOARD_EXECUTION"]
+    expected = [(stage, "ACKED") for stage in stages[: stages.index(expired_stage)]]
+    for db in (gate.store.db, gate.db):
+        assert [
+            tuple(row) for row in db.execute("SELECT stage,state FROM effect_intents")
+        ] == expected
+    row = public(gate.authority, execution)
+    assert (row["owner"], row["epoch"], row["control_state"]) == ("alice", 1, "RECOVERY_REQUIRED")
+    assert public(gate.authority, witness) == before
+    gate.authority.validate_start_grant(other.grant)
+    with pytest.raises(Fault):
+        gate.authority.validate_start_grant(bound.grant)
+    assert gate.store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 2
+
+
+def test_unknown_next_stage_cannot_fence_foreign_or_fully_settled_operation(gate, dss):
+    from test_authority import public
+
+    _, execution, bound = admission(gate)
+    _, witness, foreign = admission(gate, "witness")
+    before = public(gate.authority, execution), public(gate.authority, witness)
+    gate.uncertain(bound.grant, str(uuid.uuid4()), "LOADING")
+    assert command(dss, bound)[0]
+    gate.uncertain(foreign.grant, bound.operation, "LOADING")
+    gate.uncertain(bound.grant, bound.operation, "TRANSPORT")
+    assert (public(gate.authority, execution), public(gate.authority, witness)) == before
+    for db in (gate.store.db, gate.db):
+        assert [row[0] for row in db.execute("SELECT state FROM effect_intents")] == ["ACKED"] * 5
+
+
+def test_incomplete_operation_audit_failure_poison_retains_all_holds(gate, dss, monkeypatch):
+    _, _, bound = admission(gate)
+    event = gate.store._event
+
+    def audit(kind, body):
+        if kind == "DRIVER_OPERATION_INCOMPLETE":
+            raise Fault(503, "audit_capacity_reached")
+        return event(kind, body)
+
+    monkeypatch.setattr(gate.store, "_event", audit)
+
+    class ExpiredNextStage:
+        validate = bound.validate
+        settle = bound.settle
+        uncertain = bound.uncertain
+
+        def send(self, stage, connection, packet):
+            current = replace(bound, deadline=0.0) if stage == "LOADING" else bound
+            current.send(stage, connection, packet)
+
+    with pytest.raises(UncertainEffect):
+        dss.command(
+            "CMD1", [], identity(bound), bound.operation, lambda: None, admission=ExpiredNextStage()
+        )
+    assert gate.store.failed
+    with pytest.raises(Fault) as denied:
+        gate.authority.validate_start_grant(bound.grant)
+    assert denied.value.code == "state_unavailable"
+    for db in (gate.store.db, gate.db):
+        assert [tuple(row) for row in db.execute("SELECT stage,state FROM effect_intents")] == [
+            ("TRANSPORT", "ACKED")
+        ]
+    assert gate.store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1

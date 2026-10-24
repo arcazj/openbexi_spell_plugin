@@ -81,8 +81,11 @@ def native_call(setup, pki, path, message, *, key=None, certificate="worker", **
     )
 
 
-def command():
-    return proto.CommandDesc(command=proto.TcItemDesc(mnemonic="CMD1"))
+def command(timeout=None):
+    value = proto.CommandDesc(command=proto.TcItemDesc(mnemonic="CMD1"))
+    if timeout is not None:
+        value.config.CopyFrom(pack(dict(Timeout=timeout)))
+    return value
 
 
 def test_driver_failure_chain_records_types_without_exception_secrets(
@@ -154,13 +157,18 @@ def test_busy_resource_denial_is_audited_without_effect_or_retry(driver_setup, p
     assert native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=key)[0] == 409
 
 
-def test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(driver_setup, pki):
+@pytest.mark.parametrize("timeout", [2, 3])
+def test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(
+    driver_setup, pki, timeout
+):
     setup = driver_setup
     for _ in range(3):
         with ThreadPoolExecutor(max_workers=10) as pool:
             replies = list(
                 pool.map(
-                    lambda _index: native_call(setup, pki, PREFIX + "TC/SendCommand", command()),
+                    lambda _index: native_call(
+                        setup, pki, PREFIX + "TC/SendCommand", command(timeout)
+                    ),
                     range(10),
                 )
             )

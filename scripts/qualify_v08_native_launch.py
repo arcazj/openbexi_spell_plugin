@@ -884,6 +884,8 @@ def main():
                         "64",
                         "--memory",
                         "256m",
+                        "--cpu-shares",
+                        "2048",
                         "--user",
                         "10003:10003",
                         "--tmpfs",
@@ -899,6 +901,8 @@ def main():
                         dss_program,
                     )
                     dss_info = json.loads(command("docker", "inspect", dss_name))[0]
+                    if dss_info["HostConfig"]["CpuShares"] != 2048:
+                        raise RuntimeError("DSS CPU resource profile differs")
                     dss_ip = dss_info["NetworkSettings"]["Networks"][driver_network][
                         "IPAddress"
                     ]
@@ -953,6 +957,8 @@ def main():
                     "128",
                     "--memory",
                     "512m",
+                    "--cpu-shares",
+                    "2048",
                     "--user",
                     f"{os.getuid()}:{os.getgid()}",
                 ]
@@ -1161,6 +1167,8 @@ def main():
                         "768m",
                         "--cpus",
                         "2",
+                        "--cpu-shares",
+                        "128",
                         "--user",
                         "10003:10003",
                         "--tmpfs",
@@ -1326,6 +1334,7 @@ def main():
                             info["State"]["Running"]
                             or info["State"]["OOMKilled"]
                             or info["HostConfig"]["Privileged"]
+                            or info["HostConfig"]["CpuShares"] != 128
                             or not info["HostConfig"]["ReadonlyRootfs"]
                             or info["Image"] != worker_image
                         ):
@@ -1773,6 +1782,8 @@ def main():
                     for mount in authority_info["Mounts"]
                 ):
                     raise RuntimeError("Context gained a host manager/socket")
+                if authority_info["HostConfig"]["CpuShares"] != 2048:
+                    raise RuntimeError("Context CPU resource profile differs")
                 report.update(
                     passed=True,
                     native_launch_path_tested=True,
@@ -1780,6 +1791,11 @@ def main():
                     logical_holds_retained=21 if profile.native_child_gate else 10,
                     single_use_workers_spent=10,
                     context_isolated_from_host_manager=True,
+                    requested_cpu_shares_verified=dict(
+                        context=2048,
+                        dss=2048 if profile.native_dss else None,
+                        worker=128,
+                    ),
                 )
             finally:
                 if (

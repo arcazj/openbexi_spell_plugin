@@ -109,6 +109,8 @@ def qualify_consumption_fence(
         "128",
         "--memory",
         "512m",
+        "--cpu-shares",
+        "2048",
         "--user",
         f"{os.getuid()}:{os.getgid()}",
     ]
@@ -276,6 +278,8 @@ def qualify_consumption_fence(
         "768m",
         "--cpus",
         "2",
+        "--cpu-shares",
+        "128",
         "--user",
         "10003:10003",
         "--tmpfs",
@@ -392,6 +396,7 @@ def qualify_consumption_fence(
         info["State"]["Running"]
         or info["State"]["OOMKilled"]
         or info["Image"] != worker_image
+        or info["HostConfig"]["CpuShares"] != 128
     ):
         raise RuntimeError("Native stale-RUN probe termination/image differs")
     with closing(

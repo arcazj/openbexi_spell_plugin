@@ -86,3 +86,18 @@ controlled delayed-response regression.
 Dev25's final exact-source hosted results are recorded in TEST_REPORT.md when
 available. Local scoped tests and stress do not qualify driver reset, deployed
 partitions/storage, full native family control, recovery or v0.8 publication.
+
+
+## Incomplete operation before a later intent
+
+Dev29 closes a gap exposed while investigating a native deadline failure.
+If a later stage expires before INTENT, prior stages with the exact original
+operation/execution/provenance still require reconciliation. The gate preserves
+their real ACKED receipts, creates no fictional stage, and fences that execution
+with DRIVER_OPERATION_INCOMPLETE and RECOVERY_REQUIRED. Foreign and never-started
+operations cannot obtain this effect; a fully settled receipt stays settled.
+Failure to persist the fence/audit poisons the Context so rollback cannot leave
+usable authority. Holds remain retained. Deterministic before/after tests cover
+both pre-effect and post-release boundaries plus audit failure and unrelated
+execution/foreign-origin controls. This does not solve native two-second
+performance, driver lifecycle/reset or full deployed recovery qualification.

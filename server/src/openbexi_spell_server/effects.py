@@ -241,29 +241,48 @@ class DriverGate:
                 ).fetchone()
                 # A denied/forged attempt must not fence another live operation or
                 # overwrite a previously settled receipt when replay is rejected.
-                if (
-                    original is None
-                    or original["provenance"] != provenance(grant)
-                    or original["state"] == "ACKED"
+                if original is not None and (
+                    original["provenance"] != provenance(grant) or original["state"] == "ACKED"
                 ):
                     return
+                if original is None:
+                    # A later stage can expire before its INTENT exists. Prior
+                    # stages still form an incomplete external operation: retain
+                    # their real receipts and fence this execution without
+                    # inventing an unsent stage or accepting another provenance.
+                    prior = self.store.db.execute(
+                        "SELECT 1 FROM effect_intents WHERE operation=? AND execution_id=? "
+                        "AND provenance=? LIMIT 1",
+                        (operation, execution_id, provenance(grant)),
+                    ).fetchone()
+                    if prior is None or stage not in STAGES:
+                        return
             # If persistence itself fails, poison the authority: no further admission.
             try:
-                with self._transaction() as db:
-                    db.execute(
-                        "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
-                        (operation, stage, execution_id),
-                    )
+                if original is not None:
+                    with self._transaction() as db:
+                        db.execute(
+                            "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
+                            (operation, stage, execution_id),
+                        )
                 with self.store.transaction():
-                    self.store.db.execute(
-                        "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
-                        (operation, stage, execution_id),
-                    )
+                    if original is not None:
+                        self.store.db.execute(
+                            "UPDATE effect_intents SET state='UNCERTAIN' WHERE operation=? AND stage=? AND execution_id=?",
+                            (operation, stage, execution_id),
+                        )
                     self.store.db.execute(
                         "UPDATE executions SET control_state='RECOVERY_REQUIRED',cap_hash=NULL WHERE id=?",
                         (execution_id,),
                     )
                     self.authority._invalidate_claims(execution_id)
+                    if original is None:
+                        self.store._event(
+                            "DRIVER_OPERATION_INCOMPLETE",
+                            dict(
+                                execution_id=execution_id, operation=operation, unsent_stage=stage
+                            ),
+                        )
             except BaseException:
                 self.store.failed = True
                 raise

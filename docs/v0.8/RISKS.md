@@ -26,6 +26,11 @@
    inspection/debugger behavior needs separate compatibility qualification before
    any full-v0.8 compatibility claim.
 
+10. Dev28 PR native DSS hit four unchanged two-second effect deadlines while
+    the push cohort and local stress passed. Exact performance cause is open.
+    Dev29 changes only explicit qualification CPU weights and incomplete-
+    operation safety fencing; neither is a full deployed load qualification.
+
 Any dual controller, observer mutation, accepted stale epoch, duplicate active
 logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
 regression, failed mandatory CI or missing required qualification blocks release.
