@@ -230,6 +230,7 @@ def test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation(
     server.listener = lambda: SimpleNamespace(pid=os.getpid(), poll=lambda: None)
     server.executable = Path(sys.executable).resolve()
     server.context_pid, server.pidfd = None, None
+    server.members, server.member_pids = {}, {}
     endpoint = str(tmp_path / "peer.sock")
     listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     listener.bind(endpoint)
@@ -261,3 +262,97 @@ def test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation(
             first.wait()
         if server.pidfd is not None:
             os.close(server.pidfd)
+
+
+def test_executor_role_cannot_spawn_bind_forward_or_consume_another_member():
+    import threading
+
+    server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+    consumed = []
+    server.controls = SimpleNamespace(consume=consumed.append)
+    server.consume_denials = threading.Event()
+    server.report = lambda *_args, **_kwargs: None
+    for schema in (
+        "openbexi.native-start/1",
+        "openbexi.native-member/1",
+        "openbexi.native-control/1",
+    ):
+        with pytest.raises(ValueError, match="scope denied"):
+            server.dispatch("executor", "main#1", dict(schema=schema, instance_id="main#1"))
+    with pytest.raises(ValueError, match="scope denied"):
+        server.dispatch(
+            "executor", "main#1", dict(schema="openbexi.native-consume/1", instance_id="child#1")
+        )
+    assert not consumed
+    packet = dict(schema="openbexi.native-consume/1", instance_id="main#1")
+    server.dispatch("executor", "main#1", packet)
+    assert consumed == [packet]
+
+
+def test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incarnation(tmp_path):
+    # Real Linux credentials and pidfds with owned Python helper processes.
+    # This does not substitute Python for the production read-only native image.
+    import os
+
+    server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+    server.listener = lambda: SimpleNamespace(pid=os.getpid(), poll=lambda: None)
+    server.executable = server.executor = Path(sys.executable).resolve()
+    server.context_pid, server.pidfd = None, None
+    server.members, server.member_pids = {}, {}
+    server.gate = SimpleNamespace(started={"main#1": None, "child#1": "admission"})
+    endpoint = str(tmp_path / "member.sock")
+    listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    listener.bind(endpoint)
+    listener.listen(2)
+    listener.settimeout(3)
+    child_script = "import socket,sys;s=socket.socket(socket.AF_UNIX);s.connect(sys.argv[1]);s.recv(1);s.close()"
+    context_script = (
+        "import socket,subprocess,sys;"
+        "s=socket.socket(socket.AF_UNIX);s.connect(sys.argv[1]);s.recv(1);"
+        "p=subprocess.Popen([sys.executable,'-I','-c',sys.argv[2],sys.argv[1]]);"
+        "print(p.pid,flush=True);p.wait(timeout=5);s.recv(1);s.close()"
+    )
+    context = subprocess.Popen(
+        [sys.executable, "-I", "-c", context_script, endpoint, child_script],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    try:
+        with listener.accept()[0] as context_stream:
+            assert server.authenticate(context_stream) == ("context", None)
+            context_stream.sendall(b"s")
+            pid = int(context.stdout.readline())
+            binding = dict(schema="openbexi.native-member/1", instance_id="main#1", pid=pid)
+            with pytest.raises(ValueError, match="not admitted"):
+                server.register(dict(binding, instance_id="unknown#1"))
+            with pytest.raises(ValueError, match="parent/executable"):
+                server.register(dict(binding, pid=context.pid))
+            server.register(binding)
+            with pytest.raises(ValueError, match="already bound"):
+                server.register(dict(binding, instance_id="child#1"))
+            with listener.accept()[0] as executor_stream:
+                assert server.authenticate(executor_stream) == ("executor", "main#1")
+                # Replacing the expected executable must be observed even when
+                # an already registered pidfd is still live.
+                server.executor = Path("/unowned/executor")
+                with pytest.raises(ValueError, match="parent/executable"):
+                    server.authenticate(executor_stream)
+                server.executor = server.executable
+                executor_stream.sendall(b"x")
+            import select
+
+            assert select.select([server.members["main#1"][1]], [], [], 3)[0]
+            with pytest.raises(ValueError, match="already bound"):
+                server.register(binding)
+            context_stream.sendall(b"x")
+        assert context.wait(timeout=3) == 0
+    finally:
+        listener.close()
+        if context.poll() is None:
+            context.kill()
+            context.wait()
+        context.stdout.close()
+        if server.pidfd is not None:
+            os.close(server.pidfd)
+        for _pid, handle in server.members.values():
+            os.close(handle)

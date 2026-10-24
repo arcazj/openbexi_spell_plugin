@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev22 bfa4a7f passed all eight services/native jobs in both PR and push, PR portable workflow, and 424 scoped tests without skips; full v0.8 remains unqualified",
+  "phase": "dev23 candidate: 431 local scoped tests passed, three mandatory-hosted Linux controls excluded; final initial RUN consumption and hidden automatic admission await exact-source hosted rebuild; full v0.8 remains unqualified",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -56,7 +56,8 @@
     "Final push run 40114789340 completed successfully at a9c9bb1; PR and push services/native workflows and both portable workflows are all green. No full-release gate was promoted.",
     "6e5cecb PR foundation failed one ten-command burst (411 tests, one failure); all native jobs and the push run passed. Failed artifact digest/CRC and 122 source hashes verified. Diagnostic stress reproduced execution_busy; FIFO alone failed repetition 28. FIFO plus identity-only read snapshots passed 30 repetitions (900 commands, 4500 ACKED stages per ledger), 416 scoped tests, lint/format/types and installed dev21 wheel smoke.",
     "0d31c49 dev21 passed all eight PR and push services/native jobs plus both portable workflows; 418 scoped tests without failures/errors/skips. PR foundation artifact digest/CRC and all 124 source hashes verified. Atomic identity reads and bounded FIFO retained all actual-send authority checks/deadlines.",
-    "bfa4a7f: PR 40120586927 and push 40120582247 passed all eight services/native jobs; PR portable 40120586930 passed. Foundation 424 tests, zero failures/errors/skips. Actual native Context denied ten unregistered RUN probes and admitted sixteen forwards with original identities; 21 holds/10 spent workers retained. Foundation/forward artifact digest/CRC and 124/26 source hashes verified."
+    "bfa4a7f: PR 40120586927 and push 40120582247 passed all eight services/native jobs; PR portable 40120586930 passed. Foundation 424 tests, zero failures/errors/skips. Actual native Context denied ten unregistered RUN probes and admitted sixteen forwards with original identities; 21 holds/10 spent workers retained. Foundation/forward artifact digest/CRC and 124/26 source hashes verified.",
+    "dev23 local: 431 passed, three hosted-only Linux positive controls excluded; 67 focused checks, Ruff/format/mypy and isolated package install/import/CLI passed. Frozen source patch reproduction selects 74 Context and 112 Executor units (139 unique); hosted native compilation and 21 consumption/binding oracles pending."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -111,8 +112,8 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev22",
-  "native_control_profile": "dev22 schema 12: one-shot initial RUN journal plus live before-forward admission through the authenticated native Context/agent helper. Unknown/replayed/missing markers denied before Executor IPC. FORWARD_UNPROVEN retains uncertainty; Executor dequeue/direct mutations/full-family transfer remain unqualified.",
+  "package_version": "0.8.0.dev23",
+  "native_control_profile": "dev23 candidate: schema 13 initial RUN consumption requires original forwarded operation, live authority and exact Context-bound Executor PID/executable/incarnation; hidden automatic children defer to admitted initial RUN. In-flight outcomes, all other mutation paths and full-family handoff/resume remain unqualified; exact native hosted validation pending.",
   "remaining_effort_estimates": {
     "basis": "Active engineering effort, low confidence until native participant inventory is complete; not a wall-clock or background-execution promise",
     "native_family_control": "2-4 days",

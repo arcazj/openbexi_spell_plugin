@@ -3,7 +3,8 @@
 The private retained profile permits one agent RUN per admitted native member.
 Commit uncertainty before IPC. Even a send acknowledgment leaves that command
 unproven: the frozen mailbox can discard it, and this journal is not a native
-dequeue fence. No row authorizes handoff, replay, resume or reservation release.
+settlement proof. Final initial RUN consumption is separately admitted, but
+still unresolved after permission. No row authorizes handoff, replay, resume or reservation release.
 """
 
 from .contracts import Fault, digest
@@ -38,6 +39,14 @@ class NativeControlJournal:
             self.store.db.execute("UPDATE native_control_forwards SET state='RESTART_FENCED'")
             if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 12:
                 self.store.db.execute("PRAGMA user_version=12")
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_control_consumptions("
+                "request_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,origin_hash TEXT NOT NULL,"
+                "operation_digest TEXT NOT NULL,state TEXT NOT NULL)"
+            )
+            self.store.db.execute("UPDATE native_control_consumptions SET state='RESTART_FENCED'")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 13:
+                self.store.db.execute("PRAGMA user_version=13")
         authority.native_controls = self
 
     @staticmethod
@@ -161,6 +170,55 @@ class NativeControlJournal:
                     origin_hash=origin,
                     operation_digest=hashed,
                     state="FORWARD_UNPROVEN",
+                    quiescence_proven=False,
+                    effective_transfer=False,
+                    hold_retained=True,
+                    runtime_enabled=False,
+                )
+
+    def consume(self, grant, body):
+        """One live admission at the native Executor command-consumption boundary.
+
+        This cannot settle the post-admission execution interval or prove quiescence.
+        An unknown IPC outcome remains held, never replayed or upgraded to proof.
+        """
+        operation = self.operation(body)
+        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        with self.authority._execution_lock(grant.execution_id):
+            with self.store.transaction():
+                self.authority._grant(grant)
+                row = self.store.db.execute(
+                    "SELECT * FROM native_control_forwards WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone()
+                if (
+                    row is None
+                    or row["execution_id"] != grant.execution_id
+                    or row["origin_hash"] != origin
+                    or row["operation_digest"] != hashed
+                    or row["state"] != "FORWARD_UNPROVEN"
+                ):
+                    raise Fault(403, "native_control_origin_fenced")
+                if self.store.db.execute(
+                    "SELECT 1 FROM native_control_consumptions WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone():
+                    raise Fault(409, "native_control_consume_replay_denied")
+                self.store.db.execute(
+                    "INSERT INTO native_control_consumptions VALUES(?,?,?,?,'EXECUTION_UNPROVEN')",
+                    (body["request_id"], grant.execution_id, origin, hashed),
+                )
+                self.store._event(
+                    "NATIVE_CONTROL_CONSUMPTION_ADMITTED",
+                    dict(execution_id=grant.execution_id, origin_hash=origin, **operation),
+                )
+                return dict(
+                    consume_admitted=True,
+                    execution_id=grant.execution_id,
+                    **operation,
+                    origin_hash=origin,
+                    operation_digest=hashed,
+                    state="EXECUTION_UNPROVEN",
                     quiescence_proven=False,
                     effective_transfer=False,
                     hold_retained=True,

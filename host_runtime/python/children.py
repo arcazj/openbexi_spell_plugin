@@ -9,10 +9,11 @@ import re
 
 
 class ChildProcedures:
-    def __init__(self, root, present=None):
+    def __init__(self, root, present=None, *, admit_hidden=False):
         self.root = root
         self.children = {}
         self.present = present
+        self.admit_hidden = admit_hidden
 
     def observe(self, message):
         fields = message.get('fields', {})
@@ -46,7 +47,7 @@ class ChildProcedures:
                 # reprint source, and hidden procedures must not read it at all.
                 child['presented'] = True
                 self.present(procedure)
-            if match.groups()[:2] != ('True', 'True'):
+            if match.group(1) != 'True' or (match.group(2) != 'True' and not self.admit_hidden):
                 child['pending'] = False
                 continue
             status = info.get('ExecutorStatus')

@@ -131,6 +131,7 @@ class Context:
                     "/v1/worker/control-admit",
                     "/v1/worker/control-report",
                     "/v1/worker/control-forward",
+                    "/v1/worker/control-consume",
                 )
                 else self.preflight
             )

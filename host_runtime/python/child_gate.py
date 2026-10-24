@@ -162,6 +162,7 @@ class NativeAdmissionServer:
         gate,
         *,
         controls=None,
+        executor=None,
         report=lambda *_args, **_kwargs: None,
     ):
         self.path = str(path)
@@ -172,7 +173,18 @@ class NativeAdmissionServer:
         self.gate = gate
         self.report = report
         self.controls = controls
+        self.executor = (
+            None if executor is None else Path(executor).resolve(strict=True)
+        )
+        if (
+            self.executor is not None
+            and not os.statvfs(self.executor).f_flag & os.ST_RDONLY
+        ):
+            raise ValueError("Native Executor must be immutable")
+        self.members = {}
+        self.member_pids = {}
         self.control_denials = threading.Event()
+        self.consume_denials = threading.Event()
         self.context_pid = None
         self.pidfd = None
         self.stop = threading.Event()
@@ -192,23 +204,117 @@ class NativeAdmissionServer:
         process = self.listener()
         if process is None or process.poll() is not None or uid != os.getuid():
             raise ValueError("Native Listener unavailable")
+        instance = self.member_pids.get(pid)
+        if instance is not None:
+            handle = self.members[instance][1]
+            if (
+                select.select([handle], [], [], 0)[0]
+                or self.pidfd is None
+                or select.select([self.pidfd], [], [], 0)[0]
+            ):
+                raise ValueError("Native Executor/Context incarnation differs")
+            self.process_identity(pid, self.context_pid, self.executor)
+            return "executor", instance
         if self.context_pid is not None:
             if pid != self.context_pid or select.select([self.pidfd], [], [], 0)[0]:
                 raise ValueError("Native Context incarnation differs")
-            return
+            self.process_identity(pid, process.pid, self.executable)
+            return "context", None
         # Parse after the final ')' since Linux comm names may include spaces
         # and parentheses. Bind the exact owned parent, never a name-only scan.
+        self.pidfd = self.pin_process(pid, process.pid, self.executable)
+        self.context_pid = pid
+        return "context", None
+
+    @staticmethod
+    def process_identity(pid, parent, executable):
         status = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
         if (
-            int(status[1]) != process.pid
-            or Path(f"/proc/{pid}/exe").resolve(strict=True) != self.executable
+            int(status[1]) != parent
+            or Path(f"/proc/{pid}/exe").resolve(strict=True) != executable
         ):
-            raise ValueError("Native Context parent/executable differs")
+            raise ValueError("Native process parent/executable differs")
+        return status[19]  # Linux starttime, bound on both sides of pidfd_open.
+
+    @classmethod
+    def pin_process(cls, pid, parent, executable):
+        before = cls.process_identity(pid, parent, executable)
         handle = os.pidfd_open(pid, 0)
-        if select.select([handle], [], [], 0)[0]:
+        try:
+            if (
+                before != cls.process_identity(pid, parent, executable)
+                or select.select([handle], [], [], 0)[0]
+            ):
+                raise ValueError("Native process incarnation changed")
+        except BaseException:
             os.close(handle)
-            raise ValueError("Native Context exited")
-        self.context_pid, self.pidfd = pid, handle
+            raise
+        return handle
+
+    def register(self, body):
+        exact(body, {"schema", "instance_id", "pid"})
+        if (
+            body["schema"] != "openbexi.native-member/1"
+            or type(body["instance_id"]) is not str
+            or body["instance_id"] not in self.gate.started
+            or type(body["pid"]) is not int
+            or not 1 <= body["pid"] <= 2**31 - 1
+            or self.executor is None
+        ):
+            raise ValueError("Native member identity was not admitted")
+        instance, pid = body["instance_id"], body["pid"]
+        if (
+            instance in self.members
+            or pid in self.member_pids
+            or len(self.members) >= 65
+        ):
+            raise ValueError("Native member already bound or capacity reached")
+        handle = self.pin_process(pid, self.context_pid, self.executor)
+        self.members[instance] = (pid, handle)
+        self.member_pids[pid] = instance
+
+    def dispatch(self, role, instance, body):
+        if role == "executor":
+            if (
+                body.get("schema") != "openbexi.native-consume/1"
+                or body.get("instance_id") != instance
+                or self.controls is None
+            ):
+                raise ValueError("Native member scope denied")
+            try:
+                self.controls.consume(body)
+            except Exception:
+                self.consume_denials.set()
+                self.report("native-before-consume-denied")
+                raise
+            self.report("native-before-consume-admitted")
+            return
+        if role != "context":
+            raise ValueError("Native role denied")
+        if body.get("schema") == "openbexi.native-member/1":
+            self.register(body)
+            self.report("native-executor-bound")
+            return
+        if body.get("schema") == "openbexi.native-control/1":
+            try:
+                if self.controls is None:
+                    raise ValueError("Native control provider unavailable")
+                self.controls.forward(body)
+            except Exception:
+                self.control_denials.set()
+                self.report("native-before-forward-denied")
+                raise
+            self.report("native-before-forward-admitted")
+            return
+        self.report(
+            "native-before-spawn-request",
+            child=bool(body.get("parent_instance_id")),
+        )
+        self.gate.admit(body)
+        self.report(
+            "native-before-spawn-admitted",
+            child=bool(body.get("parent_instance_id")),
+        )
 
     def serve(self):
         while not self.stop.is_set():
@@ -221,7 +327,7 @@ class NativeAdmissionServer:
             with stream:
                 try:
                     stream.settimeout(0.5)
-                    self.authenticate(stream)
+                    role, instance = self.authenticate(stream)
                     raw = bytearray()
                     deadline = time.monotonic() + 1.0
                     while b"\n" not in raw:
@@ -236,27 +342,7 @@ class NativeAdmissionServer:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
                     body = decode(bytes(raw))
-                    if body.get("schema") == "openbexi.native-control/1":
-                        try:
-                            if self.controls is None:
-                                raise ValueError("Native control provider unavailable")
-                            self.controls.forward(body)
-                        except Exception:
-                            self.control_denials.set()
-                            self.report("native-before-forward-denied")
-                            raise
-                        self.report("native-before-forward-admitted")
-                        stream.sendall(b"ALLOW\n")
-                        continue
-                    self.report(
-                        "native-before-spawn-request",
-                        child=bool(body.get("parent_instance_id")),
-                    )
-                    self.gate.admit(body)
-                    self.report(
-                        "native-before-spawn-admitted",
-                        child=bool(body.get("parent_instance_id")),
-                    )
+                    self.dispatch(role, instance, body)
                     stream.sendall(b"ALLOW\n")
                 except Exception as error:
                     self.report(
@@ -281,3 +367,5 @@ class NativeAdmissionServer:
             raise RuntimeError("Native admission callback did not settle")
         if self.pidfd is not None:
             os.close(self.pidfd)
+        for _pid, handle in self.members.values():
+            os.close(handle)

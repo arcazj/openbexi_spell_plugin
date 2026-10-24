@@ -1391,3 +1391,37 @@ still exits **1**: dev22 is a development package and all eleven full groups are
 unqualified. No PR merge, v0.8 tag, release or production migration occurred.
 These documentation/evidence changes preserve all 124 foundation and 26 native
 qualification inputs from bfa4a7f.
+
+## dev23 native initial RUN consumption candidate
+
+Dev23 carries the immutable RUN UUID through the real native command structure
+and checks live authority again at `SPELLcontroller::executeCommand`, before RUN
+effects. Context binds each admitted member to its spawned PID; the helper
+requires the exact read-only candidate Executor, owned native Context parent,
+pidfd incarnation and SO_PEERCRED identity. Executor callbacks are limited to
+their own instance and cannot spawn/bind/forward. A consumption must match its
+original verified forward and cannot retry after reply loss. Schema 13 records
+EXECUTION_UNPROVEN, retaining all holds and restart fencing.
+
+The private candidate defers internal hidden/headless `setAutoRun` to the normal
+initial pause. Its opt-in child client issues one admitted initial RUN for hidden
+and visible automatic children. The frozen published programs and default
+legacy child behavior are preserved. Only initial RUN is covered: other direct
+mutations, prompts, queue dispositions, complete family barrier and new-owner
+resume remain unfinished. Consumption admission is not completion or settlement.
+
+Local result: **431 passed, three deselected**, warnings as errors, 166.56 seconds.
+The two prior Linux controls and new exact Executor peer control remain mandatory
+in hosted CI, for **434 expected checks**. The new control was attempted locally;
+this managed host rejects AF_UNIX socket creation with EPERM. No pass is inferred.
+**67 focused checks passed**, with two peer controls excluded. Ruff check/format,
+mypy (17 modules), and isolated installed dev23 wheel import/version and both
+CLI help checks passed. Frozen source patch reproduction matched the original
+Context preimage; source manifests select **74 Context / 112 Executor units**,
+139 unique compilation units. Native compilation was not performed on this host.
+
+The hosted child cohort must now produce **21 matching journal/forward/consumption
+rows and exact PID bindings**, including hidden children, and retain all 21 holds,
+ten spent workers and the ten actual native unadmitted-RUN denials. Exact-source
+hosted results are pending. All eleven full release groups remain unqualified;
+no merge, version tag, release, or production migration is performed.

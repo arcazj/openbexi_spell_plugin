@@ -291,7 +291,7 @@ def run(config):
             session.arguments,
             lambda: rpc("check"),
         )
-        children = ChildProcedures(session.instance)
+        children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
         session.request = controls.dispatch
         admission = NativeAdmissionServer(
@@ -300,6 +300,7 @@ def run(config):
             lambda: session.process,
             child_gate,
             controls=controls,
+            executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
 

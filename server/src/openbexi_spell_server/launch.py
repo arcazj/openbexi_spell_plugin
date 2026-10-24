@@ -65,6 +65,7 @@ class WorkerLaunch:
                     "/v1/worker/control-admit",
                     "/v1/worker/control-report",
                     "/v1/worker/control-forward",
+                    "/v1/worker/control-consume",
                 }
             )
             safety_only = safety_only or path == "/v1/worker/control-report"
@@ -85,7 +86,9 @@ class WorkerLaunch:
             extra = {"request_id", "parent_admission_id", "entrypoint", "arguments_sha256", "mode"}
         elif path.endswith("child-consume"):
             extra = {"child_grant"}
-        elif path.endswith(("control-admit", "control-report", "control-forward")):
+        elif path.endswith(
+            ("control-admit", "control-report", "control-forward", "control-consume")
+        ):
             extra = {"request_id", "target_admission_id", "command"}
             if path.endswith("control-report"):
                 extra.add("outcome")
@@ -117,6 +120,8 @@ class WorkerLaunch:
             return controls.admit(grant, body)
         if path.endswith("control-forward"):
             return controls.forward(grant, body)
+        if path.endswith("control-consume"):
+            return controls.consume(grant, body)
         if path.endswith("control-report"):
             return controls.report(grant, body)
         if path.endswith("event"):

@@ -1,6 +1,7 @@
 """Journal the private agent's first RUN for each admitted native member.
 
-This does not intercept native internal commands or prove dequeue/settlement.
+The private candidate routes initial automatic RUNs through final consumption.
+This does not settle execution or intercept all other native mutation paths.
 No failed call is retried, even with a newly generated request identifier.
 """
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -28,6 +29,8 @@ class NativeRunJournal:
         self.operations = {}
         self.forward_attempted = set()
         self.forwarded = set()
+        self.consume_attempted = set()
+        self.consumed = set()
         self.lock = threading.Lock()
 
     def dispatch(
@@ -134,6 +137,50 @@ class NativeRunJournal:
             raise ValueError("Native RUN forwarding receipt differs")
         with self.lock:
             self.forwarded.add(body["request_id"])
+
+    def consume(self, body):
+        """Authenticated, registered native Executor callback before executing RUN."""
+        exact(body, {"schema", "request_id", "instance_id", "command"})
+        canonical_uuid(body["request_id"])
+        if (
+            body["schema"] != "openbexi.native-consume/1"
+            or body["command"] != "CMD_RUN"
+        ):
+            raise ValueError("Native control schema/command differs")
+        with self.lock:
+            known = self.operations.get(body["request_id"])
+            if (
+                known is None
+                or body["request_id"] not in self.forwarded
+                or type(body["instance_id"]) is not str
+                or known[0] != body["instance_id"]
+            ):
+                raise ValueError("Native RUN consumption identity was not admitted")
+            if body["request_id"] in self.consume_attempted:
+                raise ValueError("Native RUN consumption already attempted")
+            self.consume_attempted.add(body["request_id"])
+            operation = known[1]
+        reply = self.route.call(
+            {**self.request, **operation},
+            path="/v1/worker/control-consume",
+            schema="openbexi.worker/2",
+        )
+        expected = dict(
+            consume_admitted=True,
+            execution_id=self.grant.execution_id,
+            **operation,
+            origin_hash=FamilyAdmission.origin(self.grant),
+            operation_digest=digest(operation),
+            state="EXECUTION_UNPROVEN",
+            quiescence_proven=False,
+            effective_transfer=False,
+            hold_retained=True,
+            runtime_enabled=False,
+        )
+        if canonical(reply) != canonical(expected):
+            raise ValueError("Native RUN consumption receipt differs")
+        with self.lock:
+            self.consumed.add(body["request_id"])
 
     def report(self, operation, outcome):
         reply = self.route.call(

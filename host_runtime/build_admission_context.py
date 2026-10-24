@@ -1,7 +1,7 @@
-"""Reproduce the installed Context graph, then add the before-spawn gate.
+"""Reproduce the installed Context/Executor graphs, then add native admission.
 
 Uses the frozen runtime's own complete source/recipe provenance. No old binary
-is edited or interposed, and the new Context requires independent qualification.
+is edited or interposed, and both new programs require independent qualification.
 """
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -16,43 +16,13 @@ import sys
 import sysconfig
 import zipfile
 
-import spell_native
-
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def main():
-    runtime = Path(spell_native.__file__).parent
-    recipe = runtime / "provenance/source_port"
-    sys.path.insert(0, str(recipe))
-    from native_patches import apply_tree
-    from integrated_patches import apply_native_tree
-    from native_manifest import libraries
-
-    archive = runtime / "provenance/SPELL2.6.10-src.zip"
-    manifest = json.loads((runtime / "manifest.json").read_text())
-    if sha(archive) != manifest["archive_sha256"]:
-        raise ValueError("Native source archive differs")
-    source = Path("/tmp/v08-context-source")
-    source.mkdir()
-    with zipfile.ZipFile(archive) as bundle:
-        for member in bundle.infolist():
-            path = (source / member.filename).resolve()
-            if not path.is_relative_to(source):
-                raise ValueError("Source archive traversal")
-            if not member.is_dir():
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(bundle.read(member))
-    apply_tree(source)
-    composition = apply_native_tree(
-        source, archive, Path("/tmp/v08-context-composition")
-    )
-    expected = dict(manifest["composition"]["native"])
-    expected.pop("manifest_sha256")
-    if composition != expected:
-        raise ValueError("Installed native source composition does not reproduce")
+def patch_native_tree(source):
+    """Apply only to the independently reproduced frozen composition."""
     unit = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
     before = sha(unit)
     if before != "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598":
@@ -89,7 +59,73 @@ def main():
     }
 """,
     )
+    bind_anchor = "\t\t\tm_model.setPID( SPELLprocessManager::instance().getProcessId( m_model.getInstanceId() ));"
+    if text.count(bind_anchor) != 1:
+        raise ValueError("Ambiguous native Executor PID binding")
+    text = text.replace(
+        bind_anchor,
+        bind_anchor
+        + """
+            try { v08_bind_native_executor(m_model); }
+            catch (const std::exception&) {
+                THROW_EXCEPTION("Native Executor denied", "Executor identity binding unavailable or rejected", SPELL_ERROR_PROCESS);
+            }
+""",
+    )
     unit.write_text(text)
+    # Carry the immutable request through value copies in both the mailbox and
+    # trace-deferred commands, then check at executeCommand before RUN effects.
+    command = source / "include/SPELL_EXC/SPELLcommand.H"
+    command_text = command.read_text()
+    if command_text.count("    std::string earg;") != 1:
+        raise ValueError("Ambiguous native command representation")
+    command.write_text(
+        command_text.replace(
+            "    std::string earg;",
+            "    std::string earg;\n    std::string v08Request;",
+        )
+    )
+    cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    cif_text = cif.read_text()
+    marker = "    cmd.id = msgId;"
+    if cif_text.count(marker) != 1:
+        raise ValueError("Ambiguous native command decoding")
+    cif.write_text(
+        cif_text.replace(
+            marker,
+            marker
+            + '\n    if (msg.hasField("V08ControlRequest")) cmd.v08Request = msg.get("V08ControlRequest");',
+        )
+    )
+    controller = source / "lib/SPELL_EXC/src/SPELLcontroller.C"
+    controller_text = controller.read_text()
+    controller_text = controller_text.replace(
+        '#include "SPELL_EXC/SPELLcommand.H"',
+        '#include "SPELL_EXC/SPELLcommand.H"\n#include "/candidate/execution_gate.H"',
+    )
+    execute = "void SPELLcontroller::executeCommand( const ExecutorCommand& cmd )\n{\n"
+    autorun = "void SPELLcontroller::setAutoRun()\n{\n"
+    if controller_text.count(execute) != 1 or controller_text.count(autorun) != 1:
+        raise ValueError("Ambiguous native command consumption boundary")
+    controller_text = controller_text.replace(
+        execute,
+        execute
+        + """    try { v08_consume_native_run(m_procId, cmd); }
+    catch (const std::exception&) {
+        LOG_ERROR("Native RUN consumption denied by Context admission");
+        return;
+    }
+""",
+    )
+    # Hidden automatic children use the same admitted initial RUN as visible
+    # children. They must reach the normal initial pause before executing code.
+    controller.write_text(
+        controller_text.replace(
+            autorun,
+            autorun
+            + '    LOG_INFO("Native automatic RUN deferred to admitted command");\n    return;\n',
+        )
+    )
     service = source / "lib/SPELL_CTX/src/SPELLservice.C"
     if (
         sha(service)
@@ -108,6 +144,59 @@ def main():
 """,
         )
     )
+    return before
+
+
+def native_graph(source, libraries, program):
+    makefile = source / ("src/" + program.lower() + "/Makefile.am")
+    logical = makefile.read_text().replace("\\\n", " ")
+    name = "SPELL_" + program
+    dependencies = re.findall(r"^" + name + r"_LDADD\s*=\s*([^\n]+)", logical, re.M)
+    mains = re.findall(r"^" + name + r"_SOURCES\s*=\s*([^\n]+)", logical, re.M)
+    if len(dependencies) != 1 or len(mains) != 1:
+        raise ValueError("Ambiguous original native manifest")
+    names = re.findall(r"/lib/(SPELL_\w+)/lib\1_v[23]\.la", dependencies[0])
+    library = libraries(source)
+    units = [source / p for name in names for p in library[name]["units"]]
+    units += [makefile.parent / name for name in mains[0].split()]
+    if not units or len(units) != len(set(units)):
+        raise ValueError("Invalid native source graph")
+    return units
+
+
+def main():
+    import spell_native
+
+    runtime = Path(spell_native.__file__).parent
+    recipe = runtime / "provenance/source_port"
+    sys.path.insert(0, str(recipe))
+    from native_patches import apply_tree
+    from integrated_patches import apply_native_tree
+    from native_manifest import libraries
+
+    archive = runtime / "provenance/SPELL2.6.10-src.zip"
+    manifest = json.loads((runtime / "manifest.json").read_text())
+    if sha(archive) != manifest["archive_sha256"]:
+        raise ValueError("Native source archive differs")
+    source = Path("/tmp/v08-context-source")
+    source.mkdir()
+    with zipfile.ZipFile(archive) as bundle:
+        for member in bundle.infolist():
+            path = (source / member.filename).resolve()
+            if not path.is_relative_to(source):
+                raise ValueError("Source archive traversal")
+            if not member.is_dir():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(bundle.read(member))
+    apply_tree(source)
+    composition = apply_native_tree(
+        source, archive, Path("/tmp/v08-context-composition")
+    )
+    expected = dict(manifest["composition"]["native"])
+    expected.pop("manifest_sha256")
+    if composition != expected:
+        raise ValueError("Installed native source composition does not reproduce")
+    before = patch_native_tree(source)
     build = Path("/tmp/v08-context-objects")
     build.mkdir()
     flags = [
@@ -124,18 +213,10 @@ def main():
         "-I" + str(source / "include"),
         "-I" + sysconfig.get_path("include"),
     ]
-    makefile = source / "src/context/Makefile.am"
-    logical = makefile.read_text().replace("\\\n", " ")
-    dependencies = re.findall(r"^SPELL_Context_LDADD\s*=\s*([^\n]+)", logical, re.M)
-    mains = re.findall(r"^SPELL_Context_SOURCES\s*=\s*([^\n]+)", logical, re.M)
-    if len(dependencies) != 1 or len(mains) != 1:
-        raise ValueError("Ambiguous original Context manifest")
-    names = re.findall(r"/lib/(SPELL_\w+)/lib\1_v[23]\.la", dependencies[0])
-    library = libraries(source)
-    units = [source / p for name in names for p in library[name]["units"]]
-    units += [makefile.parent / name for name in mains[0].split()]
-    if not units or len(units) != len(set(units)):
-        raise ValueError("Invalid Context source graph")
+    graphs = {
+        name: native_graph(source, libraries, name) for name in ("Context", "Executor")
+    }
+    units = sorted(set(path for graph in graphs.values() for path in graph))
 
     def compile_unit(path):
         name = path.relative_to(source).as_posix()
@@ -159,29 +240,34 @@ def main():
     binaries = home / "bin"
     binaries.mkdir()
     for child in (runtime / "bin").iterdir():
-        if child.name != "SPELL-Context":
+        if child.name not in {"SPELL-Context", "SPELL-Executor", "SPELL-Executor_v3"}:
             (binaries / child.name).symlink_to(child)
-    program = binaries / "SPELL-Context"
-    subprocess.run(
-        [
-            "c++",
-            "-pthread",
-            "-fsanitize=address,undefined",
-            "-Wl,--no-undefined",
-            *[row["object"] for row in records],
-            "-L" + sysconfig.get_config_var("LIBDIR"),
-            "-lpython3.13",
-            "-llog4cplus",
-            "-lxerces-c",
-            "-lz",
-            "-lmenu",
-            "-lncurses",
-            "-o",
-            str(program),
-        ],
-        check=True,
-        timeout=120,
-    )
+    indexed = {row["unit"]: row["object"] for row in records}
+    programs = {}
+    for name, graph in graphs.items():
+        program = binaries / ("SPELL-" + name)
+        subprocess.run(
+            [
+                "c++",
+                "-pthread",
+                "-fsanitize=address,undefined",
+                "-Wl,--no-undefined",
+                *[indexed[path.relative_to(source).as_posix()] for path in graph],
+                "-L" + sysconfig.get_config_var("LIBDIR"),
+                "-lpython3.13",
+                "-llog4cplus",
+                "-lxerces-c",
+                "-lz",
+                "-lmenu",
+                "-lncurses",
+                "-o",
+                str(program),
+            ],
+            check=True,
+            timeout=120,
+        )
+        programs[name] = sha(program)
+    (binaries / "SPELL-Executor_v3").symlink_to("SPELL-Executor")
     report = dict(
         schema=1,
         native_start_qualified=False,
@@ -190,7 +276,13 @@ def main():
         archive_sha256=sha(archive),
         original_unit_sha256=before,
         gate_sha256=sha(Path("/candidate/admission_gate.H")),
-        candidate_context_sha256=sha(program),
+        candidate_context_sha256=programs["Context"],
+        candidate_executor_sha256=programs["Executor"],
+        original_executor_sha256=sha(runtime / "bin/SPELL-Executor"),
+        graph_units={name: len(graph) for name, graph in graphs.items()},
+        admission_headers={
+            path.name: sha(path) for path in Path("/candidate").glob("*.H")
+        },
         units=records,
         compiler=subprocess.check_output(["c++", "--version"], text=True).splitlines()[
             0

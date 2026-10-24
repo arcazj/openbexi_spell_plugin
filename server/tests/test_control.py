@@ -77,6 +77,7 @@ def test_routes_require_explicit_control_profile(family, pki):
     body = operation()
     assert admit(family, pki, body)[0] == 404
     assert report(family, pki, body)[0] == 404
+    assert consume(family, pki, body)[0] == 404
 
 
 @pytest.mark.parametrize("certificate", ["alice", "bob", "observer", "listener"])
@@ -84,6 +85,9 @@ def test_non_worker_cannot_admit_or_report(journal, family, pki, certificate):
     body = operation()
     assert admit(family, pki, body, certificate=certificate)[0] in (403, 404)
     assert report(family, pki, body, certificate=certificate)[0] in (403, 404)
+    assert call(family, pki, family["grant"], "control-consume", **body, certificate=certificate)[
+        0
+    ] in (403, 404)
     assert not rows(family)
 
 
@@ -99,7 +103,7 @@ def test_one_of_100_run_admissions_wins_and_new_uuid_cannot_replay(journal, fami
     assert statuses.count(200) == 1 and statuses.count(409) == 99
     assert admit(family, pki)[0] == 409
     assert len(rows(family)) == 1
-    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 12
+    assert family["store"].db.execute("PRAGMA user_version").fetchone()[0] == 13
 
 
 def test_send_ack_is_not_execution_or_queue_settlement(journal, family, pki):
@@ -171,6 +175,7 @@ def test_restart_retains_uncertainty_original_binding_and_holds(journal, family,
     assert admit(family, pki, body)[0] == 200
     assert report(family, pki, body)[0] == 200
     assert forward(family, pki, body)[0] == 200
+    assert consume(family, pki, body)[0] == 200
     before = dict(rows(family)[0])
     old = family["store"]
     directory = Path(old.db.execute("PRAGMA database_list").fetchone()[2]).parent
@@ -185,6 +190,12 @@ def test_restart_retains_uncertainty_original_binding_and_holds(journal, family,
             store.db.execute("SELECT state FROM native_control_forwards").fetchone()[0]
             == "RESTART_FENCED"
         )
+        assert (
+            store.db.execute("SELECT state FROM native_control_consumptions").fetchone()[0]
+            == "RESTART_FENCED"
+        )
+        with pytest.raises(Fault):
+            restarted.consume(family["grant"], body)
         with pytest.raises(Fault):
             restarted.forward(family["grant"], body)
         with pytest.raises(Fault):
@@ -376,4 +387,127 @@ def test_lost_forward_receipt_cannot_retry_the_native_callback(agent, family):
     assert (
         family["store"].db.execute("SELECT state FROM native_control_forwards").fetchone()[0]
         == "FORWARD_UNPROVEN"
+    )
+
+
+def consume(family, pki, body):
+    return call(family, pki, family["grant"], "control-consume", **body)
+
+
+def test_consumption_requires_original_forward_and_spends_only_once(journal, family, pki):
+    body = operation()
+    assert consume(family, pki, body)[0] == 403
+    assert admit(family, pki, body)[0] == 200
+    assert consume(family, pki, body)[0] == 403
+    assert forward(family, pki, body)[0] == 200
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        replies = list(pool.map(lambda _: consume(family, pki, body), range(20)))
+    assert sum(code == 200 for code, _ in replies) == 1
+    assert sum(code == 409 for code, _ in replies) == 19
+    result = next(reply["result"] for code, reply in replies if code == 200)
+    assert result["state"] == "EXECUTION_UNPROVEN"
+    assert result["hold_retained"] and not result["quiescence_proven"]
+    assert not result["effective_transfer"] and not result["runtime_enabled"]
+
+
+def test_stale_forward_cannot_consume_after_controller_fence(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert accept(family)[0]["state"] == "BLOCKED"
+    assert consume(family, pki, body)[0] == 403
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
+        == 0
+    )
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_consumption_before_fence_is_unproven_and_cannot_release_or_transfer(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert consume(family, pki, body)[0] == 200
+    assert accept(family)[0]["state"] == "BLOCKED"
+    assert consume(family, pki, body)[0] == 403
+    assert (
+        family["store"].db.execute("SELECT state FROM native_control_consumptions").fetchone()[0]
+        == "EXECUTION_UNPROVEN"
+    )
+    assert tuple(family["store"].db.execute("SELECT owner,epoch FROM executions").fetchone()) == (
+        "alice",
+        1,
+    )
+
+
+def test_substituted_consumption_and_audit_failure_cannot_spend_original(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert consume(family, pki, dict(body, target_admission_id=str(uuid.uuid4())))[0] == 403
+    assert consume(family, pki, dict(body, command="CMD_STEP"))[0] == 403
+    store = family["store"]
+    store.max_events = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    assert consume(family, pki, body)[0] == 503
+    assert store.db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0] == 0
+    store.max_events += 10
+    assert consume(family, pki, body)[0] == 200
+
+
+def test_agent_consumption_requires_verified_forward_and_exact_member(agent, family):
+    agent.dispatch("CMD_RUN", send=True)
+    forwarded = native_forward_body(agent)
+    body = dict(forwarded, schema="openbexi.native-consume/1")
+    with pytest.raises(ValueError, match="not admitted"):
+        agent.consume(body)
+    agent.forward(forwarded)
+    with pytest.raises(ValueError, match="not admitted"):
+        agent.consume(dict(body, instance_id="child#1"))
+    agent.consume(body)
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.consume(body)
+    assert len(agent.consumed) == 1
+
+
+@pytest.mark.parametrize("outcome", ["lost", "forged"])
+def test_uncertain_or_forged_consumption_reply_never_allows_executor_retry(agent, family, outcome):
+    agent.dispatch("CMD_RUN", send=True)
+    forwarded = native_forward_body(agent)
+    agent.forward(forwarded)
+    real = agent.route
+
+    def change(payload, **options):
+        reply = real.call(payload, **options)
+        if outcome == "lost":
+            raise TimeoutError("Injected consumption reply loss")
+        return dict(reply, quiescence_proven=True)
+
+    agent.route = SimpleNamespace(call=change)
+    body = dict(forwarded, schema="openbexi.native-consume/1")
+    with pytest.raises((TimeoutError, ValueError)):
+        agent.consume(body)
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.consume(body)
+    assert not agent.consumed
+    assert (
+        family["store"].db.execute("SELECT state FROM native_control_consumptions").fetchone()[0]
+        == "EXECUTION_UNPROVEN"
+    )
+
+
+def test_consumption_cannot_use_copied_config_or_revoked_subject(journal, family, pki):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert (
+        call(family, pki, family["grant"], "control-consume", **body, runtime_capability="0" * 64)[
+            0
+        ]
+        == 403
+    )
+    family["app"].authority.subjects["alice"] = policy({"alice": ["execution:read"]})["alice"]
+    assert consume(family, pki, body)[0] == 403
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
+        == 0
     )

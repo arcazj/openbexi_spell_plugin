@@ -494,7 +494,8 @@ def main():
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
         ROOT / "host_runtime/build_admission_context.py",
-        ROOT / "host_runtime/native/admission_gate.H",
+        *sorted((ROOT / "host_runtime/native").glob("*.H")),
+        ROOT / "host_runtime/python/children.py",
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
     ]
@@ -540,6 +541,9 @@ def main():
                         code / "native_candidate.py",
                     )
                 if profile.native_child_gate:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/children.py", code / "children.py"
+                    )
                     shutil.copy2(
                         ROOT / "host_runtime/python/control_journal.py",
                         code / "control_journal.py",
@@ -614,10 +618,8 @@ def main():
                 if profile.native_child_gate:
                     native_build = temporary / "native-build"
                     native_build.mkdir()
-                    shutil.copy2(
-                        ROOT / "host_runtime/native/admission_gate.H",
-                        native_build / "admission_gate.H",
-                    )
+                    for header in (ROOT / "host_runtime/native").glob("*.H"):
+                        shutil.copy2(header, native_build / header.name)
                     shutil.copy2(
                         ROOT / "host_runtime/build_admission_context.py",
                         native_build / "build.py",
@@ -625,7 +627,7 @@ def main():
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY admission_gate.H build.py /candidate/\n"
+                        "COPY *.H build.py /candidate/\n"
                         "RUN python /candidate/build.py\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
@@ -637,7 +639,7 @@ def main():
                             str(native_build),
                         ],
                         capture_output=True,
-                        timeout=600,
+                        timeout=900,
                     )
                     (output / "native-context-build.log").write_bytes(
                         built.stdout + built.stderr
@@ -1528,11 +1530,10 @@ def main():
                                 "SELECT state,outcome,COUNT(*) FROM native_control_attempts "
                                 "GROUP BY state,outcome"
                             ).fetchall()
-                            # Ten roots, five visible children and one visible
-                            # grandchild. Five hidden children start internally
-                            # and are explicitly outside the agent RUN journal.
+                            # Ten roots, ten visible/hidden children and one
+                            # visible grandchild all require admitted initial RUN.
                             if controls != [
-                                ("DISPATCH_UNCERTAIN", "IPC_SEND_ACKNOWLEDGED", 16)
+                                ("DISPATCH_UNCERTAIN", "IPC_SEND_ACKNOWLEDGED", 21)
                             ]:
                                 raise RuntimeError(
                                     "Native agent RUN attempts lack exact durable receipts"
@@ -1540,7 +1541,7 @@ def main():
                             forwards = audit.execute(
                                 "SELECT state,COUNT(*) FROM native_control_forwards GROUP BY state"
                             ).fetchall()
-                            if forwards != [("FORWARD_UNPROVEN", 16)]:
+                            if forwards != [("FORWARD_UNPROVEN", 21)]:
                                 raise RuntimeError(
                                     "Native RUN bypassed one-shot before-forward admission"
                                 )
@@ -1551,10 +1552,29 @@ def main():
                                     "WHERE f.execution_id=a.execution_id AND f.origin_hash=a.origin_hash "
                                     "AND f.operation_digest=a.operation_digest"
                                 ).fetchone()[0]
-                                != 16
+                                != 21
                             ):
                                 raise RuntimeError(
                                     "Native RUN forward lost original journal identity"
+                                )
+                            consumptions = audit.execute(
+                                "SELECT state,COUNT(*) FROM native_control_consumptions GROUP BY state"
+                            ).fetchall()
+                            if consumptions != [("EXECUTION_UNPROVEN", 21)]:
+                                raise RuntimeError(
+                                    "Native RUN bypassed Executor consumption admission"
+                                )
+                            if (
+                                audit.execute(
+                                    "SELECT COUNT(*) FROM native_control_consumptions c "
+                                    "JOIN native_control_forwards f ON c.request_id=f.request_id "
+                                    "WHERE c.execution_id=f.execution_id AND c.origin_hash=f.origin_hash "
+                                    "AND c.operation_digest=f.operation_digest"
+                                ).fetchone()[0]
+                                != 21
+                            ):
+                                raise RuntimeError(
+                                    "Native RUN consumption lost original forward identity"
                                 )
                             if (
                                 audit.execute(
@@ -1562,7 +1582,7 @@ def main():
                                     "JOIN child_admissions a ON c.target_id=a.id "
                                     "WHERE c.execution_id=a.execution_id AND c.origin_hash=a.origin_hash"
                                 ).fetchone()[0]
-                                != 6
+                                != 11
                             ):
                                 raise RuntimeError(
                                     "Native child RUN attempt has a different family origin"
@@ -1590,13 +1610,26 @@ def main():
                             raise RuntimeError(
                                 "Native unadmitted RUN denial count differs"
                             )
+                        if (
+                            sum(
+                                event["event"] == "native-executor-bound"
+                                for worker in report["workers"]
+                                for event in worker["events"]
+                            )
+                            != 21
+                        ):
+                            raise RuntimeError(
+                                "Native Executor PID binding count differs"
+                            )
                         report.update(
                             native_child_before_spawn_component_tested=True,
                             native_child_admissions_consumed=11,
                             native_nested_child_admissions_consumed=1,
                             full_family_qualified=False,
-                            native_agent_run_attempts_journalled=16,
-                            native_context_run_forwards_admitted=16,
+                            native_agent_run_attempts_journalled=21,
+                            native_context_run_forwards_admitted=21,
+                            native_executor_run_consumptions_admitted=21,
+                            native_executor_pid_bindings=21,
                             native_unadmitted_run_denials=10,
                             native_control_queue_settlement_proven=False,
                         )
