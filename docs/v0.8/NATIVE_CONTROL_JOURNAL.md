@@ -163,3 +163,13 @@ exceeds its ordinary four-second network deadline without consuming that budget.
 The subsequent callback must receive HTTP 403 from the live authority. Status,
 marker absence and PID continuity alone cannot substitute for that check.
 Exact-source native validation remains pending.
+
+
+At f14749f, foundation passed 444 checks and all six other native jobs passed in
+both PR and push. The new native family had ten admitted/running roots but no
+consumed children; it stalled before the independent stale-controller probe.
+The failure is retained. Dev26 moves singleton validation into trusted native
+Executor bootstrap, before user tracing, while preserving Context's separate
+metadata graph. All 21 consumptions, exact bindings, child modes and the final
+HTTP-403 probe are still mandatory. This candidate remains unqualified until
+its actual native execution passes.

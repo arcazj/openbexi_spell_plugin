@@ -705,11 +705,6 @@ def main():
                     )
                 if profile.native_child_gate:
                     fixture += (
-                        "import libSPELL_DTA_v3\n"
-                        "assert libSPELL_DTA_v3.__spec__.origin == 'built-in'\n"
-                        "with open('/proc/self/maps') as maps: native_maps=maps.read()\n"
-                        "assert '/opt/v08-native-home/bin/libspell_executor313.so' in native_maps\n"
-                        "assert not any('libspell_executor313.so' in line and '/opt/v08-native-home/bin/' not in line for line in native_maps.splitlines())\n"
                         "from spell.lang.functions import StartProc\n"
                         "assert StartProc('child_{index}',args=[['INDEX',{index}]],Automatic=True,Visible=({index}%2==0),Blocking=True,HandleError=False) is True\n"
                     )

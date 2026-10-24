@@ -181,6 +181,9 @@ class NativeSession:
         tree.write(config, encoding='utf-8')
         environment = dict(os.environ, **example['environment'], OPENBEXI_SPELL_PROJECT=str(self.project))
         if self.native_home is not None:
+            # This role marker belongs to the candidate Executor's own main;
+            # the native Listener/Context must retain their metadata graph.
+            environment.pop('OPENBEXI_V08_EXECUTOR_BOOTSTRAP', None)
             environment.update(SPELL_HOME=str(self.native_home),
                 OPENBEXI_V08_ADMISSION_SOCKET=str(self.admission_socket),
                 OPENBEXI_V08_AGENT_PID=str(os.getpid()))

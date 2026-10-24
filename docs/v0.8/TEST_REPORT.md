@@ -1559,3 +1559,46 @@ The completed stale-RUN oracle is followed by independent host container teardow
 matching the existing negative pause probes. A closed controller connection
 cannot authorize native close/resume. Host termination still cannot release B's
 holds or qualify family quiescence/recovery.
+
+### dev25 hosted confirmation and retained family failure
+
+At **f14749f6e0fca1ac16c8fb8fdf5917506115e068**, PR 40133883368 and push
+40133879115 passed foundation (**444 checks, zero failures/errors/skips**) and
+all six other native jobs: boundary, audit, DSS, pause, observed-thread barrier
+and Listener survival. Both child-family jobs failed waiting for child-running.
+This is not an all-green workflow or complete native-family qualification.
+
+Foundation artifact 12576600823 digest
+`240de0558e308a2a776a0a3812891e42c4f878134acf61d27bc17ecd68afcb5f`
+and failed family artifact 12575767828 digest
+`6ae6eca46a19d23542b9b97cddd9cd46654e9115af9e03c35217a5207b0a160a`
+were verified with ZIP CRCs and **128 / 30** repository hashes. The family
+artifact shows ten actual root final-consumption admission callbacks and ten
+RUNNING roots, but no consumed child admissions. It never reached the isolated
+stale-controller probe. Exact source of the root stall is not yet established.
+[Foundation receipt](evidence/native-child-start/dev25-foundation.json) and
+[retained family failure](evidence/native-child-start/dev25-family-failure.json).
+
+## dev26 candidate: trusted singleton bootstrap and bounded progress diagnosis
+
+The native singleton check moves from the procedure fixture into the candidate
+Executor's trusted bootstrap, before procedure tracing. Its own main registers
+the built-in DTA initializer and sets an internal Executor role marker. Under
+the GIL, bootstrap requires the built-in DTA module and only the candidate common
+library in process mappings. A failure prevents Executor initialization. The
+Context retains its independent original metadata graph; the private session
+clears the Executor marker before launching Listener/Context, and only Executor
+main sets it. The original frozen source programs remain untouched.
+
+The fixture no longer mixes generator/map-inspection assertions into the child
+procedure test. This removes an unrelated debugger/tracing boundary from that
+oracle; no child count, grant, PID, consumption, deadline or singleton assertion
+is relaxed. Candidate progress diagnostics emit at most 64 code positions and
+never variable values, arguments or capabilities. The next native run must still
+prove all 21 consumptions and the independent Context B stale-admission denial.
+The cause of the prior stall is not labelled fixed before that run.
+
+Local: frozen native patch reproduction, **68 focused control/child checks**
+(two kernel peer controls excluded), Ruff/format/mypy passed. All driver/service
+runtime code is preserved from f14749f; only package version changes. The exact
+native bootstrap/child execution and stale-controller probe await hosted CI.

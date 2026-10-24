@@ -139,7 +139,54 @@ def patch_native_tree(source):
             entry,
             'extern "C" PyObject* PyInit_libSPELL_DTA_v3();\n'
             + entry
+            + '    if (setenv("OPENBEXI_V08_EXECUTOR_BOOTSTRAP", "1", 1) != 0) return 2;\n'
             + '    if (PyImport_AppendInittab("libSPELL_DTA_v3", PyInit_libSPELL_DTA_v3) != 0) return 2;\n',
+        )
+    )
+    helper = source / "lib/SPELL_UTIL/src/SPELLpythonHelper.C"
+    helper_text = helper.read_text()
+    framework_end = """    for (const char* name: modules) {
+        importAllFrom(name);
+    }
+}"""
+    if helper_text.count(framework_end) != 1:
+        raise ValueError("Ambiguous native framework bootstrap")
+    # Verify the singleton during trusted bootstrap, before user tracing is
+    # installed. A procedure-level generator/map-inspection assertion would
+    # also exercise unrelated native debugger/frame semantics.
+    helper_text = helper_text.replace(
+        "#include <cstdlib>", "#include <cstdlib>\n#include <fstream>"
+    )
+    helper.write_text(
+        helper_text.replace(
+            framework_end,
+            framework_end[:-1]
+            + """
+    // Context has its original independent metadata graph. Only the candidate
+    // Executor main sets this marker, before Python initialization/user code.
+    const char* bootstrap = std::getenv("OPENBEXI_V08_EXECUTOR_BOOTSTRAP");
+    if (!bootstrap) return;
+    if (std::string(bootstrap) != "1")
+        THROW_EXCEPTION("Native singleton rejected", "Executor bootstrap marker differs", SPELL_ERROR_PYTHON_API);
+    SPELLpython313::Owned module(PyImport_ImportModule("libSPELL_DTA_v3"));
+    SPELLpython313::Owned spec(module.get() ? PyObject_GetAttrString(module.get(), "__spec__") : nullptr);
+    SPELLpython313::Owned origin(spec.get() ? PyObject_GetAttrString(spec.get(), "origin") : nullptr);
+    if (!origin.get() || !PyUnicode_Check(origin.get()) ||
+        PyUnicode_CompareWithASCIIString(origin.get(), "built-in") != 0)
+        THROW_EXCEPTION("Native singleton rejected", "DTA must use this Executor's built-in initializer", SPELL_ERROR_PYTHON_API);
+    std::ifstream mappings("/proc/self/maps");
+    if (!mappings) THROW_EXCEPTION("Native singleton rejected", "Native mappings unavailable", SPELL_ERROR_PYTHON_API);
+    bool found = false;
+    std::string mapping;
+    while (std::getline(mappings, mapping)) {
+        if (mapping.find("libspell_executor313.so") == std::string::npos) continue;
+        if (mapping.find("/opt/v08-native-home/bin/libspell_executor313.so") == std::string::npos)
+            THROW_EXCEPTION("Native singleton rejected", "Foreign executor library mapped", SPELL_ERROR_PYTHON_API);
+        found = true;
+    }
+    if (!found) THROW_EXCEPTION("Native singleton rejected", "Candidate executor library missing", SPELL_ERROR_PYTHON_API);
+}
+""",
         )
     )
     service = source / "lib/SPELL_CTX/src/SPELLservice.C"

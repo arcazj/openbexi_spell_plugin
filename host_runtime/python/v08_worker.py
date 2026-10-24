@@ -427,6 +427,8 @@ def run(config):
         next_poll = 0
         child_running = set()
         previous_state = None
+        next_position = 0
+        position_count = 0
         while time.monotonic() < deadline:
             pump()
             if children is not None:
@@ -441,7 +443,22 @@ def run(config):
                     ):
                         child_running.add(instance)
                         emit("native-child-running", execution_id=grant.execution_id)
-            state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+            information = session.request("REQ_EXEC_INFO", context=True)
+            state = information["ExecutorStatus"]
+            if (
+                child_profile
+                and position_count < 64
+                and time.monotonic() >= next_position
+            ):
+                # Bounded fixture diagnostics: field names and code position,
+                # never variables, procedure arguments, credentials or proofs.
+                emit(
+                    "native-child-position",
+                    csp=str(information.get("Csp", ""))[:256],
+                    code_name=str(information.get("CodeName", ""))[:256],
+                )
+                next_position = time.monotonic() + 1
+                position_count += 1
             if child_profile and state != previous_state:
                 emit("native-child-parent-status", native_status=state)
                 previous_state = state
