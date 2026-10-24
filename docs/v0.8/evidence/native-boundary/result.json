@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "archive_sha256": "d7535367869416f807b376dd0289b62a8aec70a9891a78e59a4e1535a03b25cd",
+  "archive_size": 207521854,
+  "image": "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283",
+  "runtime_enabled": false,
+  "v08_launch_qualified": false,
+  "harness_sha256": "0192ec86f9a4597ad5eaa1d2fec701ea0c67e1ecb4a91820711285fe53f1098e",
+  "git_head": "ff2895ae5a5a9b52576819e3f88f7fb96ba7952a",
+  "command": [
+    "docker",
+    "run",
+    "--name",
+    "spell-v08-boundary-632f44bbeb2141e18d616f8993e0481d",
+    "--rm",
+    "--init",
+    "--read-only",
+    "--network",
+    "none",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--pids-limit",
+    "256",
+    "--memory",
+    "768m",
+    "--cpus",
+    "2",
+    "--user",
+    "10003:10003",
+    "--tmpfs",
+    "/tmp:rw,nosuid,nodev,size=128m",
+    "--tmpfs",
+    "/workspace:rw,nosuid,nodev,size=16m",
+    "--mount",
+    "type=bind,src=/tmp/spell-native-boundary-u85lvis3/fixture,dst=/fixture,readonly",
+    "--entrypoint",
+    "python",
+    "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283",
+    "-I",
+    "/fixture/probe.py"
+  ],
+  "native": {
+    "native_executor_tested": true,
+    "v08_launch_qualified": false,
+    "runtime_enabled": false,
+    "initial_status": "PAUSED",
+    "native_processes": [
+      {
+        "pid": 9,
+        "executable": "/usr/local/lib/python3.13/site-packages/spell_native/bin/SPELL-Listener",
+        "command": "/usr/local/lib/python3.13/site-packages/spell_native/bin/SPELL-Listener -c /tmp/spell-host-q6s63_3p/session/config/server/server.xml "
+      },
+      {
+        "pid": 26,
+        "executable": "/usr/local/lib/python3.13/site-packages/spell_native/bin/SPELL-Context",
+        "command": "/usr/local/lib/python3.13/site-packages/spell_native/bin/SPELL-Context -n example -s 9981 -c /tmp/spell-host-q6s63_3p/session/config/server/server.xml "
+      },
+      {
+        "pid": 74,
+        "executable": "/usr/local/lib/python3.13/site-packages/spell_native/bin/SPELL-Executor_v3",
+        "command": "/tmp/spell-host-q6s63_3p/session/bin/SPELL-Executor -c /tmp/spell-host-q6s63_3p/session/config/server/server.xml -n example -s 42029 -p procedure#1 -w "
+      }
+    ],
+    "final_status": "FINISHED",
+    "notification_count": 7
+  }
+}

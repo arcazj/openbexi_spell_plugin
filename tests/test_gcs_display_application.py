@@ -46,6 +46,7 @@ def original(name):
 
 def module(name):
     unit = types.ModuleType('openbexi_spell_dss._display_test_' + name)
+    unit.__package__ = 'openbexi_spell_dss'
     exec(compile(display_patches.apply('openbexi_spell_dss/' + name + '.py',
                  original('openbexi_spell_dss/' + name + '.py')), name + '.py', 'exec'), unit.__dict__)
     return unit
@@ -275,6 +276,7 @@ def test_read_only_viewer_serves_instances_and_exact_print_downloads(bridge):
             with pytest.raises(HTTPError) as rejected:
                 urlopen(base + invalid)
             assert rejected.value.code == 404
+            rejected.value.close()
         assert read() == before
         assert bridge.ground.state() == before
     finally:
@@ -395,3 +397,21 @@ def test_source_recipe_rejects_drift_and_keeps_compilable_sources(name):
     compile(display_patches.apply(name, raw), name, 'exec')
     with pytest.raises(ValueError, match='preimage'):
         display_patches.apply(name, raw + b'\n')
+
+
+def test_journal_reader_closes_connection_on_success_and_error(bridge, monkeypatch):
+    import sqlite3
+    from openbexi_spell_dss import display_viewer
+    original, opened = sqlite3.connect, []
+    def connect(*args, **kwargs):
+        connection = original(*args, **kwargs)
+        opened.append(connection)
+        return connection
+    monkeypatch.setattr(display_viewer.sqlite3, 'connect', connect)
+    assert display_viewer.journal_state(bridge.path, bridge.ground.namespace) == bridge.ground.state()
+    with pytest.raises(ValueError, match='does not exist'):
+        display_viewer.journal_state(bridge.path, 'absent')
+    assert len(opened) == 2
+    for connection in opened:
+        with pytest.raises(sqlite3.ProgrammingError, match='closed'):
+            connection.execute('SELECT 1')

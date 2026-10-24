@@ -1,0 +1,24 @@
+{
+  "scope": "30 fresh-state repetitions of the original strict three-ten-command burst check",
+  "candidate": "dev21 working source; hosted exact-commit verification pending",
+  "base_commit": "6e5cecb8354bcfde07af0ba9341514835d69e5b3",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/mutex.py": "98f40547eeed9739732f963812c1ee1f806abc574db6e31e574fbd37189b1b3a",
+    "server/src/openbexi_spell_server/authority.py": "706bb9a33a52d5b6d98915f083260c02909a6c9e80bb588ea38bee1903c955c1",
+    "server/src/openbexi_spell_server/launch.py": "f82aa591b274516b967a02f75cb8656fd8df4d9c25a1c68e962854fdb664f5c1",
+    "driver_plugin/src/openbexi_spell_dss/context_driver.py": "a6baf2401f6bda244d6e37e12787bf812ab7a5abb5cc385d3109e45b7fa87ae1",
+    "server/tests/test_native_driver.py": "feecb4ba76a040934be5890281cce2c2952281ae48b1a0c3be03422ae6101e3e"
+  },
+  "junit": {
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "successful_commands": 900,
+  "acknowledged_stages_per_ledger": 4500,
+  "harness": "import pytest\nimport conftest as conf\nimport test_native_driver as native\n\npki = conf.pki\nsource = conf.source\nindependent_dss = native.independent_dss\ndriver_setup = native.driver_setup\n\n\n@pytest.mark.parametrize(\"attempt\", range(30))\ndef test_original_driver_bursts(attempt, driver_setup, pki):\n    native.test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(driver_setup, pki)\n",
+  "harness_sha256": "72b9c59cda3d6e2559db3efe3f9db48eedce078609cd325b15d43be8ed8701f8",
+  "failed_diagnostic_attempt": "Without FIFO/read changes: failed repetition 9; FIFO alone: failed repetition 28. Fault execution_busy persisted in type-only error chain; no retries or timeouts relaxed.",
+  "full_v08_qualified": false
+}

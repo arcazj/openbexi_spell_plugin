@@ -5,6 +5,7 @@ HEADER = '''##########
 # PYTHON VERSION: 3
 ##########
 import json,sqlite3
+from contextlib import closing
 from pathlib import Path as FilePath
 from spell.lang import functions as api
 from spell.lang.constants import *
@@ -27,10 +28,10 @@ def equal(actual,expected):
     observed['observations'].append({'actual':actual,'expected':expected});save()
     assert actual==expected,(actual,expected)
 def ground():
-    with sqlite3.connect('driver.sqlite') as db:
+    with closing(sqlite3.connect('driver.sqlite')) as db:
         return json.loads(db.execute('SELECT state FROM ground').fetchone()[0])
 def snapshot():
-    with sqlite3.connect('driver.sqlite') as db:
+    with closing(sqlite3.connect('driver.sqlite')) as db:
         rows=db.execute('SELECT * FROM effects ORDER BY request_id').fetchall()
         return ground(),[[{'binary_hex':value.hex()} if type(value) is bytes else value for value in row] for row in rows]
 def unchanged(function,error=DriverException):

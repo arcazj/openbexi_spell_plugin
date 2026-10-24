@@ -22,6 +22,7 @@ NAMESPACE=hashlib.sha256((URL+'\0'+EPOCH).encode()).hexdigest()
 def candidate():
     raw=(ROOT/'driver_plugin/src'/NAME).read_bytes()
     module=ModuleType('openbexi_spell_dss._rng_state_candidate')
+    module.__package__ = 'openbexi_spell_dss'
     module.__package__='openbexi_spell_dss'
     exec(compile(rng_state_patches.apply(NAME,raw),NAME,'exec'),module.__dict__)
     return module.Ground

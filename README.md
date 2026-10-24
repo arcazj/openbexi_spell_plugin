@@ -115,3 +115,12 @@ The retained DSS baseline has its own tests:
 python -m pip install '.[test]'
 python -m pytest tests -q
 ```
+
+## v0.8 development branch
+
+The draft v0.8 work includes [approved G1 review resolutions](docs/v0.8/G1_REVIEW_RESOLUTION.md)
+and an [internal Listener/Context foundation](server/README.md). This new
+`0.8.0.dev3` server adds [durable prelaunch execution authority](docs/v0.8/EXECUTION_AUTHORITY.md)
+with [approved source and worker preflight](docs/v0.8/WORKER_PREFLIGHT.md). It does not execute procedures or replace the published v0.7
+runtime. See the [test report](docs/v0.8/TEST_REPORT.md) for local foundation
+evidence and the remaining native, browser, deployment and release gates.

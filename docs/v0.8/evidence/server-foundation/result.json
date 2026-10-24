@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "scope": "internal Listener/Context foundation only",
+  "passed": true,
+  "runtime_enabled": false,
+  "native_executor_tested": false,
+  "python": "3.13.16",
+  "openssl": "OpenSSL 3.5.9 29 Sep 2026",
+  "source_sha256": {
+    "server/src/openbexi_spell_server/__init__.py": "8e12e9043048cc5349b04ba451836b1a3f7f1cd55c3a150f3144d3758d115a29",
+    "server/src/openbexi_spell_server/__main__.py": "81369262af745510ab5c71501936c5897db92479b0ff9c9505f49de8c3523d23",
+    "server/src/openbexi_spell_server/contracts.py": "9a3290d921900fb913fd5549645e3cc2fccf97b6b5eb247ca4b76112e8b11b29",
+    "server/src/openbexi_spell_server/services.py": "e47fe3a5905c6b59a3a40c898de0c8d3d9f6306d7c594c2b26e31424a95be1e9",
+    "server/src/openbexi_spell_server/store.py": "d2ba7124a706d712243c3896229feb8b2164bbdf85a2398a89e89c00a6dc4cd7",
+    "server/src/openbexi_spell_server/transport.py": "acbabd77949bb680b26b784eebf52a3cb1be11db3880f2525d0aa57a43d1f00a",
+    "server/tests/conftest.py": "b9208c0637e7c428a00262d9b8e7d61c79d99df7da90889c555f7eee8093babf",
+    "server/tests/test_contracts.py": "215bb20ab607172c4a414bc9d54407b2efe41024ef7ec1cafc562af243e66634",
+    "server/tests/test_process_lifecycle.py": "3bd2ef1cc9bb3543b1f6d46c79a4c5b3af5f354690300ea1dd52427446b1ed7d",
+    "server/tests/test_services.py": "e5b87adbf9499dd4a9c98f699490d4af758687d680b37e010f5e616d85a859fc",
+    "server/tests/test_store.py": "17d13ad48ecb56afd8d818a3a50962584205150760c424244730026070d0809b",
+    "server/pyproject.toml": "3595ac5637bf7938913edbc4d3807d9700f2faeed6110f1e899933f317b763a9",
+    "server/requirements-test.lock": "48d3141ea5dcce58ebc15534f34d1a9fa159704c62351a4589b65236c238f217",
+    "server/README.md": "63c57aec584a811ce5c15aa6c542e467765478ef731bd0823de67cafc36be5f5",
+    "server/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "server/MANIFEST.in": "e96e6e445125d0b4d905b204281d57d2688f9241ffd28710a39c250bd4099456",
+    ".github/workflows/v08-server-foundation.yml": "cd96df1a09518b9b22296826fa19f3bd6964602b114835cc0043df32c6156885",
+    "scripts/qualify_v08_server.py": "451025688601127de02ba1dd995600c7cc4f5e5daa25eeb4dd6f97f8c7504f65"
+  },
+  "checks": [
+    {
+      "name": "lint",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "format",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "server",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "types",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "server/pyproject.toml",
+        "server/src"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.venv/bin/python",
+        "-m",
+        "pytest",
+        "server/tests",
+        "-q",
+        "-W",
+        "error",
+        "--tb=short",
+        "--junitxml=/workspace/scratch/ad640084ab56/openbexi_spell_plugin/.qualification/v08-server/run-20261023T033054Z-cc2f4f28/tests.xml"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "git_head": "2d02bb1f030eebca61374dbbba34938b30c29e5d",
+  "working_tree_dirty": true,
+  "junit": {
+    "tests": 51,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  }
+}

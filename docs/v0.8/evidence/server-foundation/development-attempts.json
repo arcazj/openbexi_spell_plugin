@@ -1,0 +1,50 @@
+[
+  {
+    "file": "first.xml.gz",
+    "original_xml_sha256": "6e6bcc7d81d730f1c0c59ec300263464906d3dea3bf4aa188dc2e5a617c2e71c",
+    "junit": {
+      "tests": 47,
+      "errors": 0,
+      "failures": 19,
+      "skipped": 0
+    },
+    "explanation": "Initial private test CA lacked strict key-usage extensions; certificate verification rejected connections. Fixed test PKI without weakening TLS verification.",
+    "source_identity": "development working tree; not an exact-SHA qualification run"
+  },
+  {
+    "file": "tls-attempt2.xml.gz",
+    "original_xml_sha256": "ce4b8d0b0166492ee745cfd832a1085cbc6b55072b511d8c45f852e02e79e0f1",
+    "junit": {
+      "tests": 11,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0
+    },
+    "explanation": "Warnings-as-errors exposed leaked server-side TLS sockets after accepted sockets were wrapped. Fixed explicit TLS socket ownership/close.",
+    "source_identity": "development working tree; not an exact-SHA qualification run"
+  },
+  {
+    "file": "tls-attempt3.xml.gz",
+    "original_xml_sha256": "3288e9ee8f3a8a98cb512f580e08928727c9afaf1ddc5eebf01ef5dbda6911b2",
+    "junit": {
+      "tests": 20,
+      "errors": 0,
+      "failures": 2,
+      "skipped": 0
+    },
+    "explanation": "Denial responses could be reset when a bounded request body remained unread. Added bounded rejection-body consumption.",
+    "source_identity": "development working tree; not an exact-SHA qualification run"
+  },
+  {
+    "file": "tls-attempt4.xml.gz",
+    "original_xml_sha256": "321f4e42b279bfe05e319a75fac9120aa986f73be230e5437bd0ef8f4802ca4b",
+    "junit": {
+      "tests": 20,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0
+    },
+    "explanation": "Chunked-only deliberately unframed input may be disconnected. Tightened framing test to an explicit conflicting Transfer-Encoding/Content-Length request; secure rejection of unknown framing is unchanged.",
+    "source_identity": "development working tree; not an exact-SHA qualification run"
+  }
+]

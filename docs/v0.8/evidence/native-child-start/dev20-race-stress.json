@@ -1,0 +1,19 @@
+{
+  "scope": "50 fresh-state repetitions of committed strict 100-way child-admission race",
+  "code_commit": "a9c9bb17c4b68e9a53b79f6263ac93f44f0a6695",
+  "junit": {
+    "tests": 50,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "total_admission_attempts": 5000,
+  "successful_admissions": 50,
+  "required_conflict_responses": 4950,
+  "original_test_sha256": "0c0cd0b678a756254323ed40484c64aeffa17cc3b212344ca8f10d8fb0698438",
+  "harness": "\"\"\"Temporary repetition of the committed race, with fresh state per attempt.\"\"\"\nimport pytest\nimport conftest as original\nimport test_family as family_tests\n\npki = original.pki\nsource = family_tests.source\nsetup = family_tests.setup\nfamily = family_tests.family\n\n\n@pytest.mark.parametrize(\"attempt\", range(50))\ndef test_original_100_way_child_race(attempt, family, pki):\n    family_tests.test_100_child_admissions_have_one_winner_and_retained_logical_identity(\n        family, pki\n    )\n",
+  "harness_sha256": "67e590761551de825dcd60a20e05249dc2dd88776d3236315de7dcddd5c153f3",
+  "passed": true,
+  "earlier_unclassified_response_anomaly_resolved": false,
+  "full_v08_qualified": false
+}

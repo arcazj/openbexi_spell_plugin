@@ -37,6 +37,7 @@ def composed(name):
         if recipe is command_feature_patches:
             break  # Preserve this focused individual-command fixture's scope.
     module = types.ModuleType('openbexi_spell_dss._command_rpc_test_'+name)
+    module.__package__ = 'openbexi_spell_dss'
     exec(compile(raw,path,'exec'),module.__dict__)
     return module
 

@@ -1,0 +1,159 @@
+name: v0.8 services, authority and worker preflight
+
+on:
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'src/dss/**'
+      - 'driver_plugin/src/**'
+      - 'docs/v0.8/**'
+      - 'scripts/qualify_v08_server.py'
+      - 'scripts/qualify_v08_native_boundary.py'
+      - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_listener_survival.py'
+      - 'scripts/check_v08_release.py'
+      - 'host_runtime/python/v08_worker.py'
+      - 'host_runtime/python/thread_barrier.py'
+      - 'host_runtime/python/child_gate.py'
+      - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native/**'
+      - 'host_runtime/python/native.py'
+      - '.github/workflows/v08-server-foundation.yml'
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - 'server/**'
+      - 'src/dss/**'
+      - 'driver_plugin/src/**'
+      - 'docs/v0.8/**'
+      - 'scripts/qualify_v08_server.py'
+      - 'scripts/qualify_v08_native_boundary.py'
+      - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_listener_survival.py'
+      - 'scripts/check_v08_release.py'
+      - 'host_runtime/python/v08_worker.py'
+      - 'host_runtime/python/thread_barrier.py'
+      - 'host_runtime/python/child_gate.py'
+      - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native/**'
+      - 'host_runtime/python/native.py'
+      - '.github/workflows/v08-server-foundation.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v08-server-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned companion IDE
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: a1ec00f742594208fd7c84001b6950d8e11aeb3d
+          path: .qualification/companion-ide
+      - name: Install Qt system library
+        run: sudo apt-get update && sudo apt-get install -y libegl1
+      - name: Install test tools and pinned IDE client
+        run: |
+          python -m pip install -r server/requirements-test.lock
+          python -m pip install --no-deps ./.qualification/companion-ide
+          python -m pip install PySide6-Essentials==6.10.3
+
+      - name: Qualify services, source inventories and worker preflight
+        run: python scripts/qualify_v08_server.py
+      - name: Build and smoke the isolated development package
+        run: |
+          python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-server/wheels
+          python -m pip install --no-deps .qualification/v08-server/wheels/*.whl
+          python -I -c 'import importlib.metadata as m, openbexi_spell_server as s; assert s.__version__ == m.version("openbexi-spell-server")'
+          python -I -m openbexi_spell_server --help
+          python -I -m openbexi_spell_server.worker --help
+      - name: Retain qualification evidence including failed attempts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-server-foundation-${{ github.sha }}
+          path: .qualification/v08-server/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  native-boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Verify frozen runtime bytes and exercise real native processes
+        run: python scripts/qualify_v08_native_boundary.py
+      - name: Retain native boundary outcomes including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-boundary-${{ github.sha }}
+          path: .qualification/v08-native-boundary/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  native-launch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: audit
+            flags: ''
+          - profile: dss
+            flags: '--native-dss'
+          - profile: pause-probe
+            flags: '--native-pause-probe'
+          - profile: thread-barrier
+            flags: '--native-thread-barrier'
+          - profile: child-gate
+            flags: '--native-child-gate'
+          - profile: listener-survival
+            flags: '--native-listener-survival'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned IDE for native observer qualification
+        if: matrix.profile == 'listener-survival'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: a1ec00f742594208fd7c84001b6950d8e11aeb3d
+          path: .qualification/companion-ide
+      - name: Install pinned IDE client without optional UI dependencies
+        if: matrix.profile == 'listener-survival'
+        run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Qualify ten retained native launches through an isolated Context
+        run: python scripts/qualify_v08_native_launch.py ${{ matrix.flags }}
+      - name: Retain native launch evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-launch-${{ matrix.profile }}-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
