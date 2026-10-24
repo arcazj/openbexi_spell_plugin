@@ -82,8 +82,15 @@ operation UUID. The worker cannot restamp an epoch, choose a resource endpoint,
 submit a replacement admission object, reset the driver or acquire a new grant.
 Every command stage still uses `DriverGate`'s original-grant final check and
 bounded actual TCP write, two durable intent ledgers and correlated receipts.
-Receipt waits and the one-second shared DSS resource admission wait hold no
-execution mutex or authority database transaction. TC and fresh-TM timeouts in
+Receipt waits hold no execution mutex or authority database transaction.
+In dev18, at most ten command operations can be in flight per fixed simulator
+binding, below its sixteen TCP handler slots. Each command owns its TCP stream,
+operation UUID and correlated receipts. A full admission limit rejects immediately
+before metadata access or binary effect; no command waits behind another command’s
+receipt. This replaces a single lock held across all five stages that caused
+valid ten-command bursts to expire under load. This concurrency contract is for
+the synthetic DSS only; vendor resource exclusivity requires its own adapter
+policy and qualification. TC and fresh-TM timeouts in
 this initial profile are capped at three seconds. The composed native TC proxy
 may send neutral defaults: `ConfirmCritical: false`, `LoadOnly: false`,
 `SendDelay: 0`, and `addInfo: {}`. Their types and neutral values are checked

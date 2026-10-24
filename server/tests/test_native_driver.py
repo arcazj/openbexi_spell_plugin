@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, replace
 import uuid
 import time
+import threading
 
 import pytest
 from google.protobuf.wrappers_pb2 import BoolValue
@@ -24,7 +25,7 @@ from test_launch import call, event_body, grant
 import test_preflight as helpers
 from test_services import request
 
-from openbexi_spell_dss.context_driver import ContextDriver, METHODS, PREFIX
+from openbexi_spell_dss.context_driver import ContextDriver, MAX_INFLIGHT_COMMANDS, METHODS, PREFIX
 from openbexi_spell_dss.codec import pack, unpack
 from openbexi_spell_dss.stubs import SPELLDriver_pb2 as proto
 
@@ -106,12 +107,14 @@ def test_original_tc_over_worker_mtls_has_five_durable_receipts(driver_setup, pk
 def test_busy_resource_denial_is_audited_without_effect_or_retry(driver_setup, pki):
     setup = driver_setup
     key = str(uuid.uuid4())
-    assert setup["driver"].resource_lock.acquire(timeout=0.1)
+    for _ in range(MAX_INFLIGHT_COMMANDS):
+        assert setup["driver"].command_slots.acquire(blocking=False)
     try:
         code, _ = native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=key)
         assert code == 503
     finally:
-        setup["driver"].resource_lock.release()
+        for _ in range(MAX_INFLIGHT_COMMANDS):
+            setup["driver"].command_slots.release()
     assert setup["dss"].get("state")["core"]["commands_executed"] == 0
     assert setup["store"].db.execute("SELECT COUNT(*) FROM effect_intents").fetchone()[0] == 0
     event = (
@@ -147,6 +150,92 @@ def test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(driver
     for db in (setup["store"].db, setup["driver"].gate.db):
         assert [row[0] for row in db.execute("SELECT state FROM effect_intents")] == ["ACKED"] * 150
     assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+@pytest.mark.parametrize("fence", [False, True], ids=["complete", "handoff-fenced"])
+def test_ten_pending_receipts_bound_eleventh_rpc_without_effect(
+    driver_setup, pki, monkeypatch, fence
+):
+    setup = driver_setup
+    gate = setup["driver"].gate
+    original_send = gate.send
+    entered = set()
+    condition, release = threading.Condition(), threading.Event()
+    keys = [str(uuid.uuid4()) for _ in range(10)]
+    overflow = str(uuid.uuid4())
+    execution = setup["execution"]
+    if fence:
+        bob = setup["controller"]("session.open", {}, subject="bob")["connection_id"]
+        claim = setup["controller"](
+            "execution.claim",
+            dict(execution_id=execution["id"], connection_id=bob, expected_epoch=1),
+            subject="bob",
+        )
+
+    def hold_after_actual_write(grant, binding, operation, stage, connection, packet):
+        original_send(grant, binding, operation, stage, connection, packet)
+        if stage == "TRANSPORT" and operation in keys:
+            with condition:
+                entered.add(operation)
+                condition.notify_all()
+            assert release.wait(2), "Test receipt barrier expired"
+
+    monkeypatch.setattr(gate, "send", hold_after_actual_write)
+    with ThreadPoolExecutor(max_workers=10) as pool:
+        pending = [
+            pool.submit(native_call, setup, pki, PREFIX + "TC/SendCommand", command(), key=key)
+            for key in keys
+        ]
+        try:
+            with condition:
+                assert condition.wait_for(lambda: len(entered) == 10, timeout=1.5), entered
+            assert (
+                native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=overflow)[0]
+                == 503
+            )
+            with setup["store"].transaction(write=False):
+                assert (
+                    setup["store"]
+                    .db.execute(
+                        "SELECT COUNT(*) FROM effect_intents WHERE operation=?", (overflow,)
+                    )
+                    .fetchone()[0]
+                    == 0
+                )
+            if fence:
+                decision = setup["controller"](
+                    "execution.decide",
+                    dict(**helpers.proof(execution), claim_id=claim["claim_id"], decision="accept"),
+                )
+                assert decision["state"] == "BLOCKED"
+        finally:
+            release.set()
+        assert [future.result()[0] for future in pending] == ([500] if fence else [200]) * 10
+    if fence:
+        assert setup["dss"].get("state")["core"]["commands_executed"] == 0
+        for db in (setup["store"].db, gate.db):
+            rows = db.execute("SELECT DISTINCT stage FROM effect_intents").fetchall()
+            assert [tuple(row) for row in rows] == [("TRANSPORT",)]
+        row = setup["app"].authority.list_executions("alice")["executions"][0]
+        assert row["owner"] == "alice" and row["epoch"] == 1
+        assert row["control_state"] == "RECOVERY_REQUIRED"
+        assert setup["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+        assert (
+            setup["store"]
+            .db.execute("SELECT COUNT(*) FROM native_driver_calls WHERE state='UNCERTAIN'")
+            .fetchone()[0]
+            == 11
+        )
+        assert native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=overflow)[0] == 403
+        return
+    assert setup["dss"].get("state")["core"]["commands_executed"] == 10
+    for db in (setup["store"].db, gate.db):
+        rows = db.execute(
+            "SELECT operation,COUNT(*) FROM effect_intents WHERE state='ACKED' "
+            "GROUP BY operation ORDER BY operation"
+        ).fetchall()
+        assert [tuple(row) for row in rows] == [(key, 5) for key in sorted(keys)]
+    assert native_call(setup, pki, PREFIX + "TC/SendCommand", command(), key=overflow)[0] == 409
 
 
 def test_real_worker_client_uses_protocol_two_and_cannot_downgrade(driver_setup, pki):

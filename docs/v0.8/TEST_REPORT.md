@@ -1148,3 +1148,37 @@ were verified, and all 119 public source hashes matched d523c96. See
 [evidence/native-child-start/dev17-final-foundation.json](evidence/native-child-start/dev17-final-foundation.json).
 These results qualify the stated development components only. All eleven full
 release groups remain false; public runtime remains disabled.
+
+## dev18 bounded concurrent command admission (in progress)
+
+Latest evidence-head PR run 40046331677 retained a failure at
+`test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss`: two
+requests returned 503 with durable `native_driver_resource_busy` categories.
+Push run 40046325660 and all seven native jobs in both runs passed. The failed
+PR foundation archive 12541263559 digest
+`ee9dd2354ec97fa5f8f8f2fadf4840af352bca83c195f8cfbe19e9b035c757b5` and CRC
+were independently verified. That failed run is not replaced by earlier green
+results. This is a distinct command-resource wait bottleneck, after the earlier
+metadata admission correction.
+
+A deterministic regression holds actual TRANSPORT sends before receipt reads.
+Before correction, only one of ten calls reached this point; the test failed.
+The private simulator adapter now permits at most ten independent command
+streams (below DSS's sixteen TCP handlers), with immediate capacity denial.
+It retains original per-operation identities, per-stage authorization under the
+execution mutex, separate durable ledgers, bounded deadlines and no replay.
+The normal case requires all ten real streams to reach the receipt barrier,
+the eleventh request to produce no effect, and exactly five ACKED rows for each
+accepted operation in both ledgers. A second case fences control while all ten
+receipts are pending: no call may progress beyond TRANSPORT or execute a command,
+all call outcomes remain uncertain, and original owner/epoch/holds are retained.
+No native handoff success or full release gate is inferred. Hosted dev18
+qualification is pending.
+
+Local dev18 validation: **74 driver/effect tests passed**, including both new
+actual-send/receipt-barrier cases. Full scoped local run: **382 passed, two
+explicitly deselected host-incompatible Linux positive controls**, warnings as
+errors, zero failures. Hosted CI retains both controls unskipped (384 total).
+Ruff format/lint, mypy over fifteen server files, dev18 wheel build, isolated
+installed version match and service CLI smoke passed. No hosted dev18 result is
+claimed yet.

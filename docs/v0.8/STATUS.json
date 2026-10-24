@@ -4,8 +4,8 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev17 d523c96 passed all eight hosted services/native jobs in push and PR, plus portable workflows; native nested child and installed IDE observer components qualified; full v0.8 unqualified",
-  "reasoning_level": "R5 architecture, protocol safety and source audit",
+  "phase": "dev18 bounded independent command admission implemented; 382 local scoped tests passed with two managed-host exclusions; mandatory 384-test hosted/native qualification pending",
+  "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
     "Exact published v0.7 baseline and latest remote requirements base",
@@ -78,7 +78,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete native manual/nonblocking/error/prompt/return/repeat semantics and whole-family participant/control/prompt/effect settlement, effective handoff and explicit new-owner resume; finish native IDE Run/Debug, all-763 compatibility, deployment, driver recovery/load and independent security gates.",
+  "next_step": "Complete hosted dev18 validation, then implement whole-family participant and queue settlement before effective native handoff and explicitly admitted new-owner resume; continue paired IDE Run/Debug, recovery and deployment qualification.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -98,5 +98,6 @@
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/listener-survival/qualification-summary.json; 24 source hashes, CRC and digest verified; read-only observer only",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
-  "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified"
+  "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
+  "native_driver_concurrency": "Up to ten independent fixed-simulator command streams, immediate overload denial before effect; each actual stage retains original authorization mutex and dual-ledger receipts. Ten-pending-receipt success and fencing regressions pass locally; no vendor concurrency or full-load qualification implied."
 }

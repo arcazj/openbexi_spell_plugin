@@ -39,6 +39,7 @@ METHODS = frozenset(
         "TM/RefreshItem",
     )
 )
+MAX_INFLIGHT_COMMANDS = 10
 
 
 class ContextDriver:
@@ -73,7 +74,11 @@ class ContextDriver:
             raise ValueError("At least one explicit resource permission is required")
         self.authority, self.store = authority, authority.store
         self.binding, self.bindings = binding, frozenset({binding})
-        self.resource_lock = threading.Lock()
+        # This fixed simulator supports independent per-operation TCP streams.
+        # Bound them to the ten-worker profile (below DSS's 16 TCP handlers),
+        # without serializing receipt waits across unrelated operations.
+        # The actual-send execution mutex remains the authorization boundary.
+        self.command_slots = threading.BoundedSemaphore(MAX_INFLIGHT_COMMANDS)
         self.transport = self.gate = None
         try:
             self.transport = Transport(settings["url"], endpoint)
@@ -279,7 +284,7 @@ class ContextDriver:
             bound = EffectAdmission(self.gate, grant, self.binding, request_id)
 
             def send():
-                if not self.resource_lock.acquire(timeout=1):
+                if not self.command_slots.acquire(blocking=False):
                     raise Fault(503, "native_driver_resource_busy")
                 try:
                     success, _ = self.transport.command(
@@ -293,7 +298,7 @@ class ContextDriver:
                     )
                     return BoolValue(value=success)
                 finally:
-                    self.resource_lock.release()
+                    self.command_slots.release()
 
             return send
         self._resource(request.item.mnemonic)
