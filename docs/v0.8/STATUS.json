@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "dev25 hosted 444 checks and six native jobs passed in PR/push; family stalled after ten admitted root RUNs. Dev26 moves singleton checks to trusted bootstrap and adds bounded positions; actual family/probe execution pending; full v0.8 unqualified",
+  "phase": "dev26 completed 21 native RUNs/11 children/41 PIDs but strict lifecycle oracle expected old hidden-start behavior. Dev27 requires exactly 42 real lifecycle records and still awaits isolated stale-controller probe; full v0.8 remains unqualified",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -63,7 +63,8 @@
     "c497309: push foundation passed 435 tests; PR foundation failed three concurrency assertions; both native family jobs correctly rejected an eleven-slot harness. Native programs/common library compiled. Push/PR/native artifact digest/CRC and 128/128/30 source hashes plus frozen support sources verified; no native execution pass inferred.",
     "dev25 local: final aligned-budget 30-case stress passed 900 commands and 4500 matching ACKED stages per ledger; earlier variant failures/timeouts retained. Three new fencing/poison regressions fail with old effects code; old two-second client fails the delayed response regression. Current full/hosted confirmation pending.",
     "dev25 final local: 441 passed, three mandatory-hosted Linux controls excluded (444 expected hosted). Final aligned-budget 900-command stress, Ruff/format/mypy and isolated wheel API/version/CLI checks passed; prior failures retained. Native C++ hold, exact binding/consumption and independent Context B execution remain pending hosted checks.",
-    "f14749f: PR/push foundation passed 444 tests without skips and all six other native jobs passed. Family timed out before any consumed child, after ten real final-consumption callbacks and RUNNING roots. Foundation/failure digest/CRC and 128/30 hashes verified; isolated stale-controller probe never ran."
+    "f14749f: PR/push foundation passed 444 tests without skips and all six other native jobs passed. Family timed out before any consumed child, after ten real final-consumption callbacks and RUNNING roots. Foundation/failure digest/CRC and 128/30 hashes verified; isolated stale-controller probe never ran.",
+    "20078bc: PR/push foundation passed 444 checks and six other native jobs passed; actual child cohort finished with 11 consumed children, 21 native consumption callbacks/bindings and 41 PIDs. Strict lifecycle validator failed on correctly added hidden child start. Family/foundation digests, CRCs, 30/128 repo hashes and all 144 compiled native source hashes verified. Independent stale-controller probe not reached."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -118,8 +119,8 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev26",
-  "native_control_profile": "dev26 candidate: original-grant initial RUN consumption, exact Executor binding and trusted built-in/shared singleton bootstrap. Ten root consumptions observed at f14749f; full 21-member family and isolated Context B probe pending; other mutations/family transfer/full release remain unqualified.",
+  "package_version": "0.8.0.dev27",
+  "native_control_profile": "dev27 candidate: exact native initial RUN admission and trusted singleton bootstrap completed actual 21-member family at dev26; lifecycle oracle now requires exactly 42 real events. Isolated Context B stale-consumption denial and all other mutation/family handoff/full release semantics remain pending.",
   "remaining_effort_estimates": {
     "basis": "Active engineering effort, low confidence until native participant inventory is complete; not a wall-clock or background-execution promise",
     "native_family_control": "2-4 days",

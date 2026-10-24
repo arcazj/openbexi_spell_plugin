@@ -1479,12 +1479,10 @@ def main():
                                 message.startswith("Procedure finished:")
                                 for message in messages
                             )
-                            # The original callbackEventCall emits setStartTime
-                            # only from STATUS_LOADED. Hidden automatic children
-                            # skip that path. Never fabricate driver events.
-                            expected_started = 1 + int(
-                                profile.native_child_gate and index % 2 == 0
-                            )
+                            # Every candidate automatic child now enters its
+                            # normal initial pause and admitted RUN, including
+                            # hidden children. Each must emit one real start/end.
+                            expected_started = 2 if profile.native_child_gate else 1
                             expected_finished = 2 if profile.native_child_gate else 1
                             if profile.native_child_gate and index == 0:
                                 expected_started += 1
@@ -1505,7 +1503,9 @@ def main():
                                 raise RuntimeError(
                                     "Native lifecycle events lack unique durable receipts"
                                 )
-                        if event_count < (37 if profile.native_child_gate else 20):
+                        if (profile.native_child_gate and event_count != 42) or (
+                            not profile.native_child_gate and event_count < 20
+                        ):
                             raise RuntimeError(
                                 "Native lifecycle events lack durable receipts"
                             )

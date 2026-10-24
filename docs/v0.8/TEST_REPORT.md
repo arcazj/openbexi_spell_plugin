@@ -1602,3 +1602,38 @@ Local: frozen native patch reproduction, **68 focused control/child checks**
 (two kernel peer controls excluded), Ruff/format/mypy passed. All driver/service
 runtime code is preserved from f14749f; only package version changes. The exact
 native bootstrap/child execution and stale-controller probe await hosted CI.
+
+### dev26 actual family completion; strict validator mismatch retained
+
+At **20078bc5836106e4eb90acdec6d84d9199743b2f**, both PR 40135761109 and push
+40135757016 again passed foundation and the six other native jobs. Foundation
+completed **444 checks without failures/errors/skips**. The child cohort reached
+**41 native PIDs, 11 consumed children including the grandchild, 21 exact Executor
+bindings and 21 before-forward/consumption callbacks**. All ten parent workers
+reached native FINISHED and completed container cleanup. Whole-family transfer
+remained BLOCKED with holds retained.
+
+The workflow still failed: its legacy lifecycle expectation omitted hidden
+child start events. Worker 1 correctly produced two starts/two finishes for its
+root and now-admitted hidden child; the validator expected one start/two finishes.
+The check was not bypassed, and the separate stale-controller probe never ran.
+
+Family artifact 12576209442 digest
+`91af31d17d6ebafda50d7766d4a5e47fb95b3bb0b3a114902b0a62729d36a3fd`,
+ZIP CRC, all 30 repository inputs and **all 144 compiled native source hashes**
+were checked against the reproduced frozen composition plus exact candidate
+patches. Both supplemental sources matched the frozen Git revision. Foundation
+artifact 12576980111 digest
+`fc20f528c703fd132a46a553e0b4a678136bfce194221249d682e14f67233b05`,
+CRC and 128 source hashes were checked.
+[Family validator failure](evidence/native-child-start/dev26-family-validator-failure.json)
+and [foundation](evidence/native-child-start/dev26-foundation.json).
+
+Dev27 changes the oracle to require **one real start and finish for each of the
+21 procedures**, including hidden children: exactly **42** durable lifecycle
+records. Original request IDs, all journal joins, 21 bindings/consumptions,
+41-PID concurrent/nested checks and the isolated stale-controller oracle remain
+mandatory. Runtime/driver/transport and native C++ code are unchanged from dev26;
+only this stronger expected lifecycle count and package metadata change.
+Exact-source hosted confirmation and the actual stale-controller probe are
+pending. Full v0.8 remains unqualified and all full release gates remain false.

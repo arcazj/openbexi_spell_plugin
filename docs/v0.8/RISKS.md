@@ -20,6 +20,12 @@
    resuming old work. Recovery must preserve uncertain effects, advance epochs
    and require explicit reconciliation.
 
+9. The dev25 traced singleton-verification fixture stalled before child creation.
+   Moving mandatory singleton checks to native bootstrap allowed the dev26 family
+   to finish. The exact traced fixture failure is unresolved; generator/module-
+   inspection/debugger behavior needs separate compatibility qualification before
+   any full-v0.8 compatibility claim.
+
 Any dual controller, observer mutation, accepted stale epoch, duplicate active
 logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
 regression, failed mandatory CI or missing required qualification blocks release.
