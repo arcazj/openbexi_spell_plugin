@@ -20,6 +20,7 @@ import sys
 import threading
 import time
 import traceback
+import tempfile
 
 # The installed frozen GPL bridge and the exact candidate authority client are
 # mounted separately; user source never participates in Python module lookup.
@@ -389,11 +390,37 @@ def run(config):
                 raise TimeoutError("Native start barrier expired")
             time.sleep(0.05)
         rpc("check")
+        if consumption_probe:
+            # Docker must provision this probe's tmpfs for the actual worker
+            # UID. Prove writability before relying on absence of a body marker.
+            workspace = Path("/workspace")
+            if workspace.stat().st_uid != os.getuid():
+                raise RuntimeError("Consumption probe workspace owner differs")
+            with tempfile.TemporaryFile(dir=workspace) as writable:
+                writable.write(b"probe")
+                writable.flush()
+            emit("native-consumption-probe-ready", writable_marker_directory=True)
         session.request("CMD_RUN", send=True)
         if consumption_probe:
             until = time.monotonic() + 10
             while not Path("/workspace/consume-awaiting").is_file():
                 if time.monotonic() >= until:
+                    # Publish only a fixed native failure category, never the
+                    # underlying log, variable values, arguments or capability.
+                    session.log.flush()
+                    with Path(session.log.name).open("rb") as native_log:
+                        native_log.seek(0, 2)
+                        native_log.seek(max(0, native_log.tell() - 65536))
+                        tail = native_log.read()
+                    for reason in (
+                        "Native RUN consumption has no admission identity",
+                        "Native consumption probe configuration differs",
+                        "Native consumption probe marker unavailable",
+                        "Native consumption probe marker uncertain",
+                        "Native consumption probe hold expired",
+                    ):
+                        if ("V08_NATIVE_RUN_DENIED:" + reason).encode() in tail:
+                            emit("native-consumption-probe-denied", reason=reason)
                     raise TimeoutError(
                         "Native Executor did not reach its consumption hold"
                     )

@@ -281,7 +281,7 @@ def qualify_consumption_fence(
         "--tmpfs",
         "/tmp:rw,nosuid,nodev,size=128m",
         "--tmpfs",
-        "/workspace:rw,nosuid,nodev,size=16m",
+        "/workspace:rw,nosuid,nodev,size=16m,mode=0700,uid=10003,gid=10003",
     ]
     for source, destination in (
         (snapshot, "/source"),

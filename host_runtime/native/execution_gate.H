@@ -2,6 +2,7 @@
 // Private candidate only. Original v0.7 binaries are preserved.
 #include "admission_ipc.H"
 #include <fcntl.h>
+#include <cstdio>
 
 static void v08_hold_before_consumption_probe()
 {

@@ -111,7 +111,8 @@ def patch_native_tree(source):
         execute,
         execute
         + """    try { v08_consume_native_run(m_procId, cmd); }
-    catch (const std::exception&) {
+    catch (const std::exception& error) {
+        std::fprintf(stderr, "V08_NATIVE_RUN_DENIED:%s\\n", error.what());
         LOG_ERROR("Native RUN consumption denied by Context admission");
         return;
     }

@@ -1637,3 +1637,40 @@ mandatory. Runtime/driver/transport and native C++ code are unchanged from dev26
 only this stronger expected lifecycle count and package metadata change.
 Exact-source hosted confirmation and the actual stale-controller probe are
 pending. Full v0.8 remains unqualified and all full release gates remain false.
+
+
+## Dev27 family completion and failed independent consumption probe
+
+At **cdc33dcdeb4bbcb8b1e9b7912efda586ef002e70**, PR run 40136588771 passed
+foundation (**444 tests, zero failures/errors/skips**) and the six other native
+jobs. The primary family passed all **21 native RUN consumptions/bindings,
+11 consumed children, 41 native PIDs and exactly 42 lifecycle events**. Its
+holds and spent workers remained retained. The separate Context B probe reached
+native before-forward admission, but the Executor did not create its pre-channel
+hold marker. The worker timed out before the host could close the controller.
+**This run does not verify stale-controller rejection at native consumption.**
+
+Verified foundation artifact 12577040844 SHA-256
+`101d9874da09ee55e00ecca7c5dbcba41c5e41cac5e3d6c6d6b5bcf16619ec50`
+and family artifact 12577775750 SHA-256
+`1da82e4dac59b030c7b28f460dccff5bd1220d36353ea91f462bc4ef1749019c`,
+ZIP CRCs, 128/30 repository input hashes and all 144 compiled native source
+hashes. Only redacted counts and public source hashes are retained in Git.
+[Foundation receipt](evidence/native-child-start/dev27-foundation.json) and
+[failed probe receipt](evidence/native-child-start/dev27-consumption-probe-failure.json).
+
+Dev28 assigns the probe workspace tmpfs explicitly to UID/GID 10003 with mode
+0700. Before RUN the agent checks ownership and proves marker-directory
+writability. A missing marker cannot silently stand in for inability to write
+one. The candidate native hook also emits a bounded failure reason on rejection;
+the worker publishes only one of five fixed probe categories, never raw logs.
+The preceding timeout's exact cause remains unconfirmed until hosted execution.
+No authority check, expected callback, HTTP 403, lifecycle count or retained-hold
+requirement is removed. The C++ hold remains before the ordinary socket deadline.
+
+Local dev28: **68 focused control/child tests passed**, two mandatory hosted
+kernel peer controls excluded; Ruff/format, mypy (17 modules), frozen native
+patch-preimage reconstruction, wheel build and isolated installed version/CLI
+smokes passed. Actual native C++ compilation/execution requires hosted CI.
+All eleven full release gate groups remain false; no full v0.8, release,
+production migration, family quiescence or safe post-start handoff is claimed.
