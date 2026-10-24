@@ -42,6 +42,19 @@ METHODS = frozenset(
 MAX_INFLIGHT_COMMANDS = 10
 
 
+def failure_chain(error):
+    """Bounded type/code diagnostics only; exception messages can contain secrets."""
+    result, seen = [], set()
+    while error is not None and id(error) not in seen and len(result) < 8:
+        seen.add(id(error))
+        item = dict(type=type(error).__name__[:80])
+        if isinstance(error, Fault):
+            item["code"] = error.code
+        result.append(item)
+        error = error.__cause__ or error.__context__
+    return result
+
+
 class ContextDriver:
     """One fixed simulator binding per Context; no reset/global mutations/replay."""
 
@@ -213,6 +226,7 @@ class ContextDriver:
                         request_id=request_id,
                         path=path,
                         error_type=type(error).__name__,
+                        error_chain=failure_chain(error),
                         error_code=error.code
                         if isinstance(error, Fault)
                         else "driver_operation_failed",

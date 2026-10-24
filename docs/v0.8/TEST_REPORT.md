@@ -1301,3 +1301,34 @@ at the same a9c9bb1 executable commit. Both PR and push now pass all eight
 services/native jobs and both portable workflows pass. The evidence branch can
 be integrated without cancelling the original validation. All full-release
 gates remain false; no additional runtime functionality is inferred.
+
+## dev21 bounded execution admission correction
+
+The unchanged executable code at documentation head 6e5cecb had another failed
+PR foundation run, **40116162199/job 120937765044**: 411 tests, one burst failure,
+ten HTTP 500 responses. All seven native jobs and the push workflow passed.
+Artifact 12568851330 SHA-256
+`2aad062856f053e03041c8ec752cdf609dc811ffcb6a275401a4ac9c58495812`,
+CRC and all 122 source hashes were verified. The failure remains retained in
+[the redacted receipt](evidence/native-context-dss/dev20-documentation-head-failure.json).
+
+Type-only exception diagnostics reproduced execution_busy in local strict burst
+stress: the diagnostic-only source failed repetition 9, and FIFO alone failed
+repetition 28. Dev21 adds bounded FIFO admission (64 waiters, the same 250 ms
+deadline) and removes redundant execution-mutex admission from identity-only
+reads. Each read still uses one consistent state transaction. Mutations and
+every actual send retain their final original-grant check and execution mutex;
+reads are not effect permits. No socket, metadata or effect deadlines were
+increased and no retries were added. The failed hosted run's original exceptions
+were not captured, so its precise interleaving is not claimed to be known.
+
+FIFO plus snapshot reads passed 30 fresh-state repetitions: **900 commands,
+4500 ACKED stages in each ledger**, unchanged exact success/count assertions.
+[Harness, counts and source hashes](evidence/native-context-dss/dev21-burst-stress.json).
+The 72 focused authority/driver tests passed. Full local suite: **416 passed,
+two deselected**, warnings as errors, 161.68 seconds. Those Linux controls remain
+mandatory in hosted CI (418 expected tests). Ruff/format/mypy and isolated dev21
+wheel install/import/version/CLI passed. Tests cover non-owner release, cancelled
+head, interrupted wait, bounded queue, no barging and real mTLS identity checks
+while another action owns the stage lock, followed by post-disconnect rejection.
+Exact-source hosted dev21 results are pending; no full gate is promoted.

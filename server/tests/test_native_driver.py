@@ -84,6 +84,30 @@ def command():
     return proto.CommandDesc(command=proto.TcItemDesc(mnemonic="CMD1"))
 
 
+def test_driver_failure_chain_records_types_without_exception_secrets(
+    driver_setup, pki, monkeypatch
+):
+    secret = "private-upstream-credential-never-log"
+
+    def failed():
+        try:
+            raise TimeoutError(secret)
+        except TimeoutError as error:
+            raise RuntimeError(secret) from error
+
+    monkeypatch.setattr(driver_setup["driver"].transport, "current_state", failed)
+    code, reply = native_call(driver_setup, pki, PREFIX + "TC/SendCommand", command())
+    assert code == 500 and secret not in json.dumps(reply)
+    row = (
+        driver_setup["store"]
+        .db.execute("SELECT body FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED'")
+        .fetchone()[0]
+    )
+    assert secret not in row
+    assert json.loads(row)["error_chain"] == [{"type": "RuntimeError"}, {"type": "TimeoutError"}]
+    assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
+
+
 def test_original_tc_over_worker_mtls_has_five_durable_receipts(driver_setup, pki):
     setup = driver_setup
     assert call(setup, pki, setup["grant"], "event", **event_body())[0] == 200
@@ -144,7 +168,14 @@ def test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss(driver
             .db.execute("SELECT body FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED'")
             .fetchall()
         )
-        categories = [json.loads(row[0])["error_code"] for row in failures]
+        categories = [
+            {
+                key: value
+                for key, value in json.loads(row[0]).items()
+                if key in {"error_code", "error_type", "error_chain"}
+            }
+            for row in failures
+        ]
         assert [code for code, _reply in replies] == [200] * 10, categories
     assert setup["dss"].get("state")["core"]["commands_executed"] == 30
     for db in (setup["store"].db, setup["driver"].gate.db):

@@ -13,6 +13,7 @@ import time
 import uuid
 from contextlib import ExitStack, contextmanager
 from dataclasses import asdict, dataclass
+from .mutex import ExecutionMutex
 
 from .contracts import (
     AUTHORITY_MUTATIONS,
@@ -140,7 +141,7 @@ class ExecutionAuthority:
         with self.store.transaction(write=False):
             self._execution(execution_id)
         with self.mutex_guard:
-            lock = self.mutexes.setdefault(execution_id, threading.Lock())
+            lock = self.mutexes.setdefault(execution_id, ExecutionMutex())
         if not lock.acquire(timeout=0.25):
             raise Fault(503, "execution_busy")
         try:
@@ -737,9 +738,11 @@ class ExecutionAuthority:
         """Recheck ORIGINAL provenance after consumption; this admits no driver effect."""
         if type(grant) is not StartGrant:
             raise Fault(403, "worker_grant_fenced")
-        with self._execution_lock(grant.execution_id):
-            with self.store.transaction(write=False):
-                row = self._grant(grant)
-                if row["lifecycle"] != "STARTING":
-                    raise Fault(403, "worker_grant_fenced")
-                return True
+        # This is an atomic read, not an effect permit. Every mutation and
+        # DriverGate's actual write rechecks under the execution mutex. Taking
+        # that mutex here queues redundant reads behind durable stage commits.
+        with self.store.transaction(write=False):
+            row = self._grant(grant)
+            if row["lifecycle"] != "STARTING":
+                raise Fault(403, "worker_grant_fenced")
+            return True

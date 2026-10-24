@@ -1701,6 +1701,10 @@ def main():
                                 "SELECT json_extract(body,'$.error_type'),json_extract(body,'$.error_code'),COUNT(*) "
                                 "FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED' GROUP BY 1,2"
                             ).fetchall()
+                            report["native_driver_failure_chains"] = audit.execute(
+                                "SELECT json_extract(body,'$.error_chain'),COUNT(*) "
+                                "FROM events WHERE type='NATIVE_DRIVER_CALL_FAILED' GROUP BY 1"
+                            ).fetchall()
                             report["native_driver_call_states"] = audit.execute(
                                 "SELECT state,COUNT(*) FROM native_driver_calls GROUP BY state"
                             ).fetchall()

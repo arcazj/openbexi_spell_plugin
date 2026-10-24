@@ -68,6 +68,17 @@ def test_original_grant_consumed_once_over_real_mutual_tls(setup, pki):
     assert setup["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
 
 
+def test_worker_identity_check_uses_atomic_read_without_admitting_a_stage(setup, pki):
+    enable(setup)
+    admitted = grant(setup)
+    assert call(setup, pki, admitted)[0] == 200
+    with setup["app"].authority._execution_lock(admitted.execution_id):
+        assert call(setup, pki, admitted, "check")[0] == 200
+        assert setup["app"].authority.validate_start_grant(admitted)
+    setup["controller"]("session.close", {"connection_id": setup["connection"]})
+    assert call(setup, pki, admitted, "check")[0] == 403
+
+
 def test_one_of_100_duplicate_authenticated_consumptions_wins(setup, pki):
     enable(setup)
     admitted = grant(setup)

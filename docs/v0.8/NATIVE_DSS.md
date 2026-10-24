@@ -161,3 +161,22 @@ request, an unlisted path makes no request, and a 503 response is closed without
 success. The published legacy transport and its patch preimages are unchanged.
 This does not establish production DSS mTLS, complete driver methods or full
 fault/recovery qualification.
+
+### dev21 execution admission
+
+The unchanged-code documentation-head PR foundation run failed a subsequent
+ten-command burst. Diagnostic-only local stress then reproduced execution_busy,
+including an uncertain command whose cause was that admission timeout. FIFO
+admission alone still failed a longer repetition. Dev21 combines a bounded
+64-waiter FIFO per execution with consistent read snapshots for identity-only
+checks. Those reads cannot issue an effect permit. Every mutating handler and
+the actual socket send still recheck original authority under the execution
+mutex; its 250 ms deadline and 200 ms write bound are unchanged. Timed-out or
+interrupted tickets leave the queue without granting authority.
+
+Failure diagnostics now retain up to eight exception types/codes, without
+exception messages, credentials or packet contents. Thirty fresh strict burst
+repetitions passed locally: 900 commands and 4,500 ACKED stages per ledger.
+The full local suite passed 416 checks with the two mandatory-hosted Linux
+controls excluded. Exact-source hosted dev21 validation remains pending; the
+older green runs are not a substitute for that result.

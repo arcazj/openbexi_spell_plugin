@@ -162,24 +162,26 @@ class WorkerLaunch:
             fingerprint(capability)
         except Fault as error:
             raise Fault(403, "worker_consumption_proof_required") from error
-        with self.authority._execution_lock(grant.execution_id):
-            with self.authority.store.transaction(write=False):
-                row = (
-                    self.authority._original_grant(grant)
-                    if safety_only
-                    else self.authority._grant(grant)
-                )
-                receipt = self.authority.store.db.execute(
-                    "SELECT request_id,capability_hash FROM worker_runtime_receipts WHERE execution_id=?",
-                    (grant.execution_id,),
-                ).fetchone()
-                if (
-                    row["lifecycle"] != "STARTING"
-                    or receipt is None
-                    or receipt["request_id"] != grant.request_id
-                    or not hmac.compare_digest(receipt["capability_hash"], secret_hash(capability))
-                ):
-                    raise Fault(403, "worker_consumption_proof_required")
+        # Authenticate one consistent state snapshot. This cannot authorize a
+        # later effect: every mutating handler rechecks under its execution
+        # mutex, including the final actual-send check. Reads need no stage lock.
+        with self.authority.store.transaction(write=False):
+            row = (
+                self.authority._original_grant(grant)
+                if safety_only
+                else self.authority._grant(grant)
+            )
+            receipt = self.authority.store.db.execute(
+                "SELECT request_id,capability_hash FROM worker_runtime_receipts WHERE execution_id=?",
+                (grant.execution_id,),
+            ).fetchone()
+            if (
+                row["lifecycle"] != "STARTING"
+                or receipt is None
+                or receipt["request_id"] != grant.request_id
+                or not hmac.compare_digest(receipt["capability_hash"], secret_hash(capability))
+            ):
+                raise Fault(403, "worker_consumption_proof_required")
 
     def record_event(self, grant, body):
         canonical_uuid(body["request_id"])
