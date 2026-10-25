@@ -57,6 +57,35 @@ def emit(event, **values):
     print(json.dumps(dict(event=event, **values)), flush=True)
 
 
+def drain_native_notifications(session, children, child_gate, execution_id, count):
+    # The real session queue holds at most 256 events. Bound work per pump so
+    # a notification stream cannot starve the RPC reply or command poll. Total
+    # lifetime traffic is not queue occupancy and must not terminate a normal
+    # procedure merely because its source emits more than 2048 notifications.
+    for _ in range(64):
+        try:
+            event = session.events.get_nowait()
+        except queue.Empty:
+            break
+        count += 1
+        if event.get("event") == "connectionError":
+            emit("native-notification-channel-failed", notifications_seen=count)
+            raise RuntimeError("Native notification connection failed")
+        message = event.get("message", {})
+        fields = message.get("fields", {})
+        if (
+            message.get("id") == "MSG_EXEC_OP"
+            and fields.get("ExecOp") == "OPEN"
+            and fields.get("ProcId") != session.instance
+        ):
+            if child_gate is None or fields.get("ProcId") not in child_gate.started:
+                raise RuntimeError("Native child admission is not qualified")
+            emit("native-child-open", execution_id=execution_id)
+        if children is not None:
+            children.observe(message)
+    return count
+
+
 def native_pause_probe(session, pump, status, *, timeout=3, prior=None):
     """Observe main-Executor pause; never synthesize family quiescence.
 
@@ -548,26 +577,9 @@ def run(config):
 
     def pump():
         nonlocal count
-        while True:
-            try:
-                event = session.events.get_nowait()
-            except queue.Empty:
-                return
-            count += 1
-            if count > 2048 or event.get("event") == "connectionError":
-                raise RuntimeError("Native notification capacity/connection failed")
-            message = event.get("message", {})
-            fields = message.get("fields", {})
-            if (
-                message.get("id") == "MSG_EXEC_OP"
-                and fields.get("ExecOp") == "OPEN"
-                and fields.get("ProcId") != session.instance
-            ):
-                if child_gate is None or fields.get("ProcId") not in child_gate.started:
-                    raise RuntimeError("Native child admission is not qualified")
-                emit("native-child-open", execution_id=grant.execution_id)
-            if children is not None:
-                children.observe(message)
+        count = drain_native_notifications(
+            session, children, child_gate, grant.execution_id, count
+        )
 
     try:
         try:
@@ -850,6 +862,7 @@ def run(config):
             native_children_admitted=0
             if child_gate is None
             else len(child_gate.started) - 1,
+            notifications_seen=count,
             full_family_qualified=False,
         )
     finally:

@@ -140,6 +140,29 @@ checks cover expiry, audit rollback, per-member scope and the durable order of
 an initial-consumption/owner-intent race. The actual native C and D oracles now
 also use the original worker credentials, while its owner is live, to require
 HTTP 403 for an unused startup RUN after the first explicit owner command.
-No initial RUN receipt may appear in either oracle. Hosted dev35 qualification
-is pending. Full-family quiescence, new-owner resume and public Run/Debug remain
+No initial RUN receipt may appear in either oracle. Dev35 PR native execution
+passed both negative probes; all 31 repository inputs and 144 compiled source
+units matched. Its hosted service suite passed 564 tests, zero skips/failures.
+The same-source push failed earlier with a combined notification error, so
+reliable operation remains unqualified. Full-family quiescence, new-owner resume and public Run/Debug remain
 outside these component receipts.
+
+## Dev36: bound notification work, not lifetime traffic
+
+The private worker previously counted all consumed notifications over its
+lifetime and failed above 2048, even when its 256-entry queue was continually
+drained. That is not a backlog bound. The exact dev35 pump reproduces this
+failure with normal drained traffic. Its push family failed with the combined
+capacity/connection message; that message alone cannot identify which branch
+fired, and the failed receipt remains retained.
+
+Dev36 processes at most a fixed batch per pump so a notification stream yields
+to RPC replies and owner command polling. The existing 256-entry queue provides
+backpressure and the original fixture deadline remains. Real connection errors
+still fail immediately, now with a separate fixed diagnostic and lifetime
+count. Unadmitted child OPEN messages remain fatal. Finished fixture diagnostics
+include the notification count; no total-traffic cap is used as occupancy proof.
+Five regressions cover a 5120-message stream without loss, yielding under
+backlog, fatal connection failure and both admitted/unadmitted child OPEN.
+Hosted integration remains required. This is a private harness correction,
+not production sustained-load or full-family qualification.

@@ -1,0 +1,16 @@
+{
+  "schema": "openbexi.component-failed/1",
+  "candidate_commit": "8f802186b5b7182877e34ab263d5ad63ab928ee8",
+  "workflow_event": "push",
+  "run_id": 40148111539,
+  "job_id": 121033715022,
+  "artifact_id": 12581760806,
+  "archive_sha256": "f62b48422ff95bf6bc9d33c244cec76931b6125c9920508f50227a6f43f6c66f",
+  "archive_crc_verified": true,
+  "source_hashes_verified": 31,
+  "passed": false,
+  "failure": "Worker 0 failed before child-running quorum with Native notification capacity/connection failed; the old combined message does not distinguish its cumulative 2048-event cap from connection errors. No OOM kill recorded. Native owner probes were not reached.",
+  "source_compatibility_issue": "Exact dev35 pump reproducibly rejects a normal drained stream at event 2049, despite a bounded 256-entry queue. Dev36 separates lifetime traffic from bounded per-pump work and keeps actual connection errors fatal.",
+  "qualification_claim": false,
+  "full_v08_qualified": false
+}

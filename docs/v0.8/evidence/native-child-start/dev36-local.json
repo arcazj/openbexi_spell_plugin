@@ -1,0 +1,39 @@
+{
+  "schema": "openbexi.component-local/1",
+  "package_version": "0.8.0.dev36",
+  "scope": "bounded native notification work with unchanged owner fencing",
+  "source_sha256": {
+    "host_runtime/python/v08_worker.py": "a0e2771b17de55daed9fe31ed3e18b7fccb89285a36833157a631279975becf6",
+    "server/tests/test_native_notifications.py": "7d2f0a94b9fd2a97d44a8f6b57842bbc7763c8764889673ebad45fb7b1792574",
+    "server/src/openbexi_spell_server/control.py": "2ea7d9ba7c359335befd345edb53ab73c874fd1c0c4be6908dddb26b415a9fe7",
+    "server/src/openbexi_spell_server/__init__.py": "479935da57d4d2af74638e6a0b9378affce075f0e2de1aa36cc3d53c6d263a6a"
+  },
+  "checks": {
+    "tests": 79,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "previous_full_local_suite": {
+    "candidate_commit": "8f802186b5b7182877e34ab263d5ad63ab928ee8",
+    "passed": 561,
+    "hosted_process_controls_excluded": 3
+  },
+  "exact_previous_notification_pump_failure_reproduced": true,
+  "notification_cases": 5,
+  "bounded_queue_entries": 256,
+  "per_pump_work_bounded": true,
+  "lifetime_traffic_not_queue_occupancy": true,
+  "real_connection_failure_remains_fatal": true,
+  "authority_logic_unchanged_from_dev35": true,
+  "wheel_modules_verified": 18,
+  "wheel_sha256": "8d0f33edca04409fb7f4b725b7bb1c1dc7893842ae3d7873eb73f34af933ec74",
+  "lint_format_types": true,
+  "hosted_qualification": "pending",
+  "native_execution_executed_locally": false,
+  "quiescence_proven": false,
+  "effective_transfer": false,
+  "runtime_enabled": false,
+  "full_v08_qualified": false,
+  "isolated_install_and_clis": true
+}
