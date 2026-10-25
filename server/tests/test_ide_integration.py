@@ -391,17 +391,17 @@ def test_three_actual_desktop_panels_reserve_request_accept_and_rebind(
         window.close()
 
 
-
 def test_three_pinned_ide_clients_monitor_redacted_context_events(desktop_cluster):
     """Real TLS replay across desktop -> gateway -> Listener -> Context."""
     clients, store = desktop_cluster["clients"], desktop_cluster["store"]
     with store.transaction():
-        store._event("CONTROL_CLAIM_REQUESTED", {
-            "execution_id": str(uuid.uuid4()), "capability": "SECRET_NEVER_EXPORT"
-        })
-        store._event("NATIVE_DRIVER_EVENT", {
-            "message": "SECRET_DRIVER_DATA", "token": "SECRET_NEVER_EXPORT"
-        })
+        store._event(
+            "CONTROL_CLAIM_REQUESTED",
+            {"execution_id": str(uuid.uuid4()), "capability": "SECRET_NEVER_EXPORT"},
+        )
+        store._event(
+            "NATIVE_DRIVER_EVENT", {"message": "SECRET_DRIVER_DATA", "token": "SECRET_NEVER_EXPORT"}
+        )
         store._event("CONTROL_OWNER_CHANGED", {"owner": "alice", "epoch": 5})
     observed = {}
     for role in ("alice", "bob", "observer"):
@@ -412,7 +412,8 @@ def test_three_pinned_ide_clients_monitor_redacted_context_events(desktop_cluste
         assert second["has_more"] is False
         events = first["events"] + second["events"]
         assert [event["type"] for event in events] == [
-            "CONTROL_CLAIM_REQUESTED", "CONTROL_OWNER_CHANGED"
+            "CONTROL_CLAIM_REQUESTED",
+            "CONTROL_OWNER_CHANGED",
         ]
         assert "SECRET_NEVER_EXPORT" not in json.dumps(events)
         assert "SECRET_DRIVER_DATA" not in json.dumps(events)
@@ -420,9 +421,7 @@ def test_three_pinned_ide_clients_monitor_redacted_context_events(desktop_cluste
         assert client.has_controller("A", "nonexistent") is False
         observed[role] = events
     assert observed["alice"] == observed["bob"] == observed["observer"]
-    desktop_cluster["context"].subjects["observer"] = Actor(
-        "observer", frozenset({"context:read"})
-    )
+    desktop_cluster["context"].subjects["observer"] = Actor("observer", frozenset({"context:read"}))
     with pytest.raises(SpellServerError) as error:
         clients["observer"].events("A", after_sequence=0, limit=1)
     assert error.value.status == 403
