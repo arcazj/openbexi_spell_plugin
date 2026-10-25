@@ -8,6 +8,8 @@ import os
 import select
 import subprocess
 import sys
+import threading
+from types import SimpleNamespace
 
 import pytest
 
@@ -17,6 +19,53 @@ spec = importlib.util.spec_from_file_location(
 )
 cohort = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cohort)
+
+probe_spec = importlib.util.spec_from_file_location(
+    "terminal_probe", ROOT / "host_runtime/python/terminal_probe.py"
+)
+probe = importlib.util.module_from_spec(probe_spec)
+probe_spec.loader.exec_module(probe)
+
+
+def test_every_supported_terminal_case_is_scheduled_by_native_qualification():
+    assert set(cohort.CASES) == probe.CASES
+    assert "forced-loss" in cohort.CASES
+
+
+def test_forced_loss_observes_original_process_and_reports_unknown(tmp_path, monkeypatch):
+    process = subprocess.Popen(["sleep", "30"])
+    handle = os.pidfd_open(process.pid)
+    events = []
+    (tmp_path / "kill-native").touch()
+    monkeypatch.setattr(probe, "Path", lambda value: tmp_path / Path(value).name)
+    controls = SimpleNamespace(lock=threading.Lock(), owner_operations={}, owner_consumed=set())
+    controls.poll_owner = lambda: None
+    session = SimpleNamespace(instance="original")
+    session.request = lambda *args, **kwargs: {"ExecutorStatus": "RUNNING"}
+    admission = SimpleNamespace(members={"original": (process.pid, handle)})
+    try:
+        probe.run_terminal_probe(
+            "forced-loss",
+            session,
+            controls,
+            admission,
+            None,
+            None,
+            lambda: None,
+            None,
+            lambda event, **data: events.append(dict(event=event, **data)),
+        )
+        process.wait(timeout=5)
+        assert process.returncode == -9
+        assert events[-1]["event"] == "native-terminal-observed"
+        assert events[-1]["native_status"] == "UNKNOWN"
+        assert events[-1]["hold_retained"] is True
+        assert events[-1]["quiescence_proven"] is False
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
+        os.close(handle)
 
 
 def test_private_terminal_profile_loads_in_isolated_python(tmp_path):

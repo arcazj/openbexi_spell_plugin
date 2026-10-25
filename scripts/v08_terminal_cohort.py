@@ -9,6 +9,7 @@ import sqlite3
 from openbexi_spell_server.contracts import Fault
 
 CASES = (
+    "forced-loss",
     "close-wait",
     "close-child",
     "abort-paused",

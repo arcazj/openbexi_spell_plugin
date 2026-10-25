@@ -2,7 +2,6 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 from pathlib import Path
-import os
 import select
 import signal
 import time
@@ -49,7 +48,7 @@ def run_terminal_probe(
                 for _, grant in controls.owner_operations.values()
                 if grant.command_id in controls.owner_consumed
             ]
-        pid, pidfd = admission.members[session.instance]
+        _pid, pidfd = admission.members[session.instance]
         if (
             case == "forced-loss"
             and not killed
@@ -59,7 +58,7 @@ def run_terminal_probe(
             # Never target a recycled numeric PID: its original pidfd is held.
             if select.select([pidfd], [], [], 0)[0]:
                 raise RuntimeError("Native fault injection target already exited")
-            os.kill(pid, signal.SIGKILL)
+            signal.pidfd_send_signal(pidfd, signal.SIGKILL)
             killed = True
         exited = bool(select.select([pidfd], [], [], 0)[0])
         if exited:
