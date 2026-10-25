@@ -82,3 +82,26 @@ complete process isolation, production routing, internal lifecycle provenance,
 recovery, all deferred queues and positive action compatibility remain release
 blockers. Procedures remain approved/trusted; this is not a hostile Python
 tenant sandbox. Every full gate in `RELEASE_GATES.json` remains false.
+
+
+## Dev39 denial response correction
+
+The dev38 PR run [40156748754](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40156748754)
+and push run 40156745123 both failed the family profile at the first foreign
+login denial probe. The original Context denied login, but the generated error
+response used literal `Error` and `Reason` fields. The frozen bridge forwards
+only the original `FIELD_*` inventory: those literals disappear. The client
+therefore received an error without the required denial marker. All ten root
+Executors had reached native-ready before this probe; no successful family
+or complete dev38 GUI-boundary result is inferred.
+
+Dev39 uses `MessageField::FIELD_ERROR` (`ErrorMsg`), `FIELD_REASON`
+(`ErrorReason`) and `FIELD_FATAL` (`FatalError`). Authorization and the
+before-dispatch denials remain mandatory. A regression compiles the generated
+C++ response branch against field constants from the immutable original archive,
+applies the same original bridge field inventory, and executes the real Python
+`Bridge.exchange` response reader. It fails on the prior response with empty
+forwarded fields and passes after the correction. Its message shells do not
+replace native IPC qualification. The original five foreign denials, key
+reconnect checks, 18 management and eight roster-message cases still must
+pass through the actual hosted Context/bridge processes.

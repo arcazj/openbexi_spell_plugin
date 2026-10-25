@@ -108,8 +108,9 @@ def patch_native_tree(source):
     try { v08_admit_gui(msg, true); }
     catch (const std::exception&) {
         SPELLipcMessage response = SPELLipcHelper::createErrorResponse("RSP_V08_GUI_DENIED", msg);
-        response.set("Error", "V08_CONTEXT_MUTATION_DENIED");
-        response.set("Reason", "Native Context GUI admission unavailable or rejected");
+        response.set(MessageField::FIELD_ERROR, "V08_CONTEXT_MUTATION_DENIED");
+        response.set(MessageField::FIELD_REASON, "Native Context GUI admission unavailable or rejected");
+        response.set(MessageField::FIELD_FATAL, PythonConstants::False);
         return response;
     }
 """,

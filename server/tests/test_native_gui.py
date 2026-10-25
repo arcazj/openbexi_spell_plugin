@@ -1,9 +1,15 @@
 """Private native GUI bootstrap, immutable connection identity and denied paths."""
 
 from concurrent.futures import ThreadPoolExecutor
+import ast
+import importlib.util
+import io
 from pathlib import Path
+import queue
+import re
 import subprocess
 from types import SimpleNamespace
+import zipfile
 
 import pytest
 
@@ -12,6 +18,83 @@ from openbexi_spell_server.contracts import Fault
 
 module = gates.module
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_compiled_context_denial_survives_original_bridge_fields(tmp_path):
+    """Execute the generated denial branch, then the real Python bridge reader.
+
+    The C++ message/response shells isolate field construction, not native IPC.
+    Field names come from the immutable upstream headers used by build_bridge;
+    hosted original Context/bridge controls remain mandatory.
+    """
+    tree = ast.parse((ROOT / "host_runtime/build_admission_context.py").read_text())
+    snippets = [
+        node.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Constant)
+        and isinstance(node.value, str)
+        and 'createErrorResponse("RSP_V08_GUI_DENIED"' in node.value
+    ]
+    assert len(snippets) == 1
+    snippet = snippets[0]
+    branch = snippet[
+        snippet.index("        SPELLipcMessage response = SPELLipcHelper::createErrorResponse(") :
+    ]
+    branch = branch[: branch.index("return response;") + len("return response;")]
+    fields, declarations = set(), []
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as bundle:
+        for name in bundle.namelist():
+            if name.startswith("include/SPELL_IPC/") and name.endswith(".H"):
+                header = bundle.read(name).decode()
+                fields.update(re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', header))
+                if name.endswith("/SPELLipc.H"):
+                    declarations = re.findall(
+                        r'static const std::string FIELD_(?:ERROR|REASON|FATAL)\("[^"]+"\);',
+                        header,
+                    )
+    assert len(declarations) == 3
+    source = tmp_path / "denial.cpp"
+    source.write_text(
+        "#include <map>\n#include <string>\n#include <iostream>\n"
+        "namespace MessageField {" + "\n".join(declarations) + "}\n"
+        'namespace PythonConstants { const std::string False = "False"; }\n'
+        "struct SPELLipcMessage {\n"
+        "std::map<std::string,std::string> fields;\n"
+        "void set(std::string key, std::string value) {fields[key]=value;}\n};\n"
+        "namespace SPELLipcHelper {\n"
+        "SPELLipcMessage createErrorResponse(std::string, const SPELLipcMessage&) {return {};}\n}\n"
+        "SPELLipcMessage denied(const SPELLipcMessage& msg) {\n" + branch + "\n}\nint main() {\n"
+        'for (const auto& field: denied({}).fields) std::cout << field.first << "=" << field.second << "\\n";\n}\n'
+    )
+    binary = tmp_path / "denial"
+    subprocess.run(
+        ["c++", "-std=c++17", "-Wall", "-Wextra", "-Werror", str(source), "-o", str(binary)],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    output = subprocess.check_output([str(binary)], text=True, timeout=5)
+    emitted = dict(line.split("=", 1) for line in output.splitlines())
+    # The frozen native bridge forwards only FIELD_* names; unlisted literals
+    # disappear even though the Context correctly rejected the operation.
+    forwarded = {key: value for key, value in emitted.items() if key in fields}
+    spec = importlib.util.spec_from_file_location(
+        "native_gui_denial_bridge", ROOT / "host_runtime/python/native.py"
+    )
+    native = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(native)
+    bridge = native.Bridge.__new__(native.Bridge)
+    bridge.sequence = 0
+    bridge.process = SimpleNamespace(stdin=io.StringIO())
+    bridge.replies = queue.Queue()
+    bridge.replies.put(dict(seq=1, ok=False, message=dict(fields=forwarded)))
+    with pytest.raises(RuntimeError, match="V08_CONTEXT_MUTATION_DENIED"):
+        bridge.exchange("REQ_GUI_LOGIN", "CTX", {"Host": "copied"})
+    assert forwarded == {
+        "ErrorMsg": "V08_CONTEXT_MUTATION_DENIED",
+        "ErrorReason": "Native Context GUI admission unavailable or rejected",
+        "FatalError": "False",
+    }
 
 
 @pytest.fixture

@@ -1908,3 +1908,38 @@ command/prompt queue settlement, all-participant pause and explicit new-owner
 resume remain prerequisites for full handoff and public Run/Debug. All eleven
 full release gate groups remain false; no merge, tag, release or production
 migration occurred.
+
+
+## Dev39 native Context error-field interoperability
+
+Both dev38 services workflows failed their family profile: PR 40156748754
+and push 40156745123. Other seven service/native jobs and the PR portable subset
+passed. The downloaded PR family artifact 12585320877 passed CRC and SHA-256
+`0c16f07a211ba78c44e3cc295c43c32dba34fe1d981ec309f697217b535bcbb8`;
+all 35 recorded repository input hashes matched exact code 8bc0fcac7741c6813bd2758bd938735eecc62017.
+It contains ten ready root Executors and the first foreign GUI login denial,
+then `Host operation failed: docker`. It is failed evidence. The retained
+Context SSLEOF startup diagnostic preceded successful startup and is not the
+terminal failure of this probe; the separate dev37 startup failure remains
+unresolved.
+
+A generated-response regression reproduced empty denial details: literal
+`Error`/`Reason` fields are outside the frozen native bridge's FIELD inventory.
+Changing to the original `ErrorMsg`/`ErrorReason` constants and nonfatal flag
+passes that same compiled branch plus actual Python bridge reader. The first
+test harness draft selected the earlier key-query branch and failed compilation;
+that extraction was corrected before reproducing the intended protocol failure.
+No native pass is claimed from either local message-shell test.
+
+Final focused GUI/Executor checks passed **63 tests**, warnings as errors.
+Ruff/format/mypy and the isolated installed dev39 wheel/version/service CLI
+smoke passed; all 18 wheel module bytes match source. The full local suite executed 632 cases: **629 passed and three failed**
+because this environment forbids AF_UNIX sockets and the process-memory-read
+positive control. These mandatory hosted security controls are unchanged and
+are not counted as local passes. Original native hosted confirmation is pending.
+The failed dev38 artifact's 144 compiled source units and seven candidate headers
+were independently verified using the frozen image's own provenance. Initial
+reconstruction with repository recipes matched 142 units; the two legacy
+comparison units require the exact frozen syntax helper and then match. No
+frozen v0.7 file is edited. All eleven mandatory full
+release groups remain unqualified, public runtime disabled and no release.
