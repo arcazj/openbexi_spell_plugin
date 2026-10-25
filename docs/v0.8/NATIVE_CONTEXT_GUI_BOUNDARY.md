@@ -113,3 +113,17 @@ management/roster/owner probes, so those remain unqualified at this increment.
 Dev40 adds bounded waiting for actual committed family lifecycle audit before
 worker teardown. It does not change the GUI authorization or relax any event
 count, and requires fresh native qualification.
+
+
+## Verified dev40 component
+
+ce6daedf passed all eight PR/push native/service jobs and 640 hosted scoped
+tests. The original native processes denied all five foreign requests, two
+proposed keys and closed-key reuse, plus 18 management requests and eight
+roster messages. The 19 Executor denial and original family/owner oracles
+also passed. The durable lifecycle wait retained all 42 actual start/end
+events before worker teardown. Artifact SHA/CRC, all 35 repository inputs
+and 144 compiled units match; see evidence/native-child-start/dev40-family.json.
+This qualifies the described private boundary and audit component only.
+Positive actions, complete queues/barrier/new-owner runtime and separate
+Listener/Executor-to-Context inventories remain mandatory.

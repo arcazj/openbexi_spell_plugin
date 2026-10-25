@@ -109,3 +109,12 @@ Dev39 confirms the native denial-field correction, 632 hosted scoped checks
 and 241 portable checks. Its family workflow remains failed on a missing
 durable finish event. Dev40 adds a bounded original-event settlement before
 teardown; native family and management/owner requalification are pending.
+
+
+Dev40 exact-source confirmation passed all eight PR/push service/native jobs,
+640 hosted scoped checks and 241 portable checks. Original native qualification
+confirmed the corrected denial fields and all 42 durable lifecycle events with
+21 members/41 PIDs; all original owner/control boundaries passed. See the
+source-bound dev40 receipts. Full participant/command/prompt settlement and
+new-owner runtime identity remain unfinished. The executed clean dev40
+publication preflight still exits 1; no full release is eligible.

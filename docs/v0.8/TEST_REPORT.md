@@ -1983,3 +1983,37 @@ bounds. The actual dev39 worker statements reproduce early completion; the
 corrected focused GUI/Executor/lifecycle suite passed **71 tests**. Initial
 new-test lint rejected a lambda assignment; it was corrected before final
 checks. Full scoped and original native confirmation are pending.
+
+
+Dev40 final local run executed **640 tests: 637 passed and three failed** on
+the unchanged Unix-socket/process-memory security positive controls blocked by
+this environment. All 140 recorded source hashes match committed candidate
+ce6daedf7c3cfb5698a7dfb7935c0b8523a843bb. Lint/format/types passed. The isolated
+installed dev40 wheel version/service CLI and all 18 module byte comparisons
+passed. Full hosted foundation/native confirmation is still pending here.
+
+
+## Dev40 exact-source hosted confirmation
+
+At ce6daedf7c3cfb5698a7dfb7935c0b8523a843bb, PR 40158609260 and push
+40158606495 passed all eight service/native jobs. Foundation passed **640
+tests**, zero failures/errors/skips, including all three mandatory Linux
+security controls; all 140 source hashes and artifact digest/CRC matched.
+Portable run 40158609322 passed **241 tests** without skips/errors/failures.
+
+The verified family artifact 12585064798 passed SHA/CRC, all 35 repository
+hashes, seven candidate headers and 144 compiled native source unit comparisons
+using immutable runtime provenance. All ten workers waited for real lifecycle
+acknowledgements: 21 durable members, 41 native PIDs, 11 consumed children,
+42 unique lifecycle events (nested worker three starts/three finishes),
+21 initial native RUN consumptions, 21 retained holds and ten spent workers.
+The foreign GUI/key boundary passed; isolated original-Executor tests denied
+19 mutations, 18 Context management requests and eight roster messages.
+Stale initial RUN/owner STEP consumption returned actual HTTP 403; same-owner
+RUN/PAUSE/RUN used three fresh grants. These are bounded components.
+
+See dev40-foundation.json/dev40-family.json. Public runtime, full-family
+quiescence/transfer, command queue settlement and full v0.8 remain false.
+The separate LOADED startup reliability issue remains unresolved; a later pass
+does not establish its cause. All eleven mandatory full groups remain pending,
+and the clean dev40 publication preflight exits 1. No merge/tag/release.

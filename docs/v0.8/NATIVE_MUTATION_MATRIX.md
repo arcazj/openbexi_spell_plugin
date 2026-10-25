@@ -57,3 +57,17 @@ Context GUI management and client-roster paths still require their own contracts
 binding, non-reusable transport identities and pre-dispatch management/roster
 denials. Hosted execution is pending. Its closure does not implement positive
 owner actions or qualify separate native Listener/Executor-to-Context surfaces.
+
+
+## Dev40 verified private boundary and audit settlement
+
+ce6daedf passed both native workflows, all eight jobs and 640 hosted scoped
+tests. The exact original native oracle confirmed 19 Executor mutation,
+18 Context management and eight roster denials; five foreign GUI requests,
+proposed-key rejection and key nonreuse; 42 real lifecycle audit events for
+21 admitted members. The worker now waits for original durable audit replies
+before teardown. This does not settle deferred command/prompt queues or
+prove whole-family closure. Next work remains positive argument/prompt-bound
+actions, terminal queue dispositions, full barrier/new-owner identity and the
+separate native peer/management inventories. The startup LOADED timeout is
+still unresolved; no full release gate is promoted.

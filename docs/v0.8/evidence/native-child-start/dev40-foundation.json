@@ -1,0 +1,115 @@
+{
+  "schema": "openbexi.component-hosted/1",
+  "candidate_commit": "ce6daedf7c3cfb5698a7dfb7935c0b8523a843bb",
+  "workflow_checkout": "1c49320eb6c754182bdda9aea3872b7fab32470c",
+  "run_id": 40158609260,
+  "push_run_id": 40158606495,
+  "pr_and_push_service_native_jobs_passed": true,
+  "passed": true,
+  "runtime_enabled": false,
+  "full_v08_qualified": false,
+  "quiescence_proven": false,
+  "effective_transfer": false,
+  "job_id": 121065193114,
+  "artifact_id": 12585598766,
+  "archive_sha256": "363266f6bfd8bc16be62b1ffc2900b81356427195ee8ec02838fa3e52c67a1ec",
+  "archive_crc_verified": true,
+  "source_hashes_verified": 140,
+  "junit": {
+    "tests": 640,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "ide_commit": "a1ec00f742594208fd7c84001b6950d8e11aeb3d",
+  "installed_package_passed": true,
+  "portable_run_id": 40158609322,
+  "portable_tests": 241,
+  "checks": [
+    {
+      "name": "lint",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "server",
+        "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+        "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+        "driver_plugin/src/openbexi_spell_dss/context_server.py",
+        "host_runtime/python/v08_worker.py",
+        "host_runtime/python/thread_barrier.py",
+        "host_runtime/python/child_gate.py",
+        "host_runtime/python/control_journal.py",
+        "host_runtime/build_admission_context.py",
+        "scripts/qualify_v08_native_launch.py",
+        "scripts/v08_listener_survival.py",
+        "scripts/v08_native_consumption.py",
+        "scripts/check_v08_release.py",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "timeout_seconds": 180
+    },
+    {
+      "name": "format",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "server",
+        "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+        "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+        "driver_plugin/src/openbexi_spell_dss/context_server.py",
+        "host_runtime/python/v08_worker.py",
+        "host_runtime/python/thread_barrier.py",
+        "host_runtime/python/child_gate.py",
+        "host_runtime/python/control_journal.py",
+        "host_runtime/build_admission_context.py",
+        "scripts/qualify_v08_native_launch.py",
+        "scripts/v08_listener_survival.py",
+        "scripts/v08_native_consumption.py",
+        "scripts/check_v08_release.py",
+        "scripts/qualify_v08_server.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "timeout_seconds": 180
+    },
+    {
+      "name": "types",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "server/pyproject.toml",
+        "server/src"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "timeout_seconds": 180
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+        "-m",
+        "pytest",
+        "server/tests",
+        "-v",
+        "-W",
+        "error",
+        "--tb=short",
+        "--durations=15",
+        "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/v08-server/run-20261025T033319Z-7fe66699/tests.xml"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "timeout_seconds": 300
+    }
+  ]
+}
