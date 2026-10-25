@@ -1,0 +1,90 @@
+name: v0.8 Stage 1 native lifecycle qualification
+
+on:
+  push:
+    branches: ['work/v0.8-stage1-native-lifecycle']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v08-stage1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout the fixed companion IDE source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: dd06fe91d9da9cad828ff659adced0e3be80816d
+          path: .qualification/companion-ide
+      - name: Retain clean source and pinned test dependencies for offline reproduction
+        run: |
+          set -euo pipefail
+          mkdir -p .qualification/stage1-environment/wheels
+          python -m pip download --only-binary=:all: -r server/requirements-test.lock \
+            'PySide6-Essentials==6.10.3' 'setuptools==80.9.0' 'wheel==0.45.1' \
+            --dest .qualification/stage1-environment/wheels
+          git archive --format=tar.gz HEAD > .qualification/stage1-environment/plugin-source.tar.gz
+          git -C .qualification/companion-ide archive --format=tar.gz HEAD > .qualification/stage1-environment/ide-source.tar.gz
+          git rev-parse HEAD > .qualification/stage1-environment/PLUGIN_COMMIT
+          git -C .qualification/companion-ide rev-parse HEAD > .qualification/stage1-environment/IDE_COMMIT
+          find .qualification/stage1-environment -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > .qualification/stage1-environment/SHA256SUMS
+      - name: Install exact test tools and paired IDE
+        run: |
+          set -euo pipefail
+          sudo apt-get update && sudo apt-get install -y libegl1
+          python -m pip install --no-index --find-links=.qualification/stage1-environment/wheels \
+            -r server/requirements-test.lock 'PySide6-Essentials==6.10.3' 'setuptools==80.9.0' 'wheel==0.45.1'
+          python -m pip install --no-deps --no-build-isolation ./.qualification/companion-ide
+      - name: Run source quality and complete existing foundation regression suite
+        run: python scripts/qualify_v08_server.py
+      - name: Preserve exact inputs without credentials or private test state
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-stage1-environment-${{ github.sha }}
+          path: .qualification/stage1-environment/
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: true
+      - name: Preserve qualification outcomes including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-stage1-foundation-${{ github.sha }}
+          path: .qualification/v08-server/run-*/
+          if-no-files-found: warn
+          retention-days: 30
+          include-hidden-files: true
+
+  original-native:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Execute original native family and same-owner RUN STEP PAUSE lifecycle
+        run: python scripts/qualify_v08_native_launch.py --native-child-gate
+      - name: Preserve native qualification including failed outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-stage1-original-native-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: true
