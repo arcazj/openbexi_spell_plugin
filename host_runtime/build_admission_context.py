@@ -273,6 +273,23 @@ def patch_native_tree(source):
     if controller_text.count(execute) != 1 or controller_text.count(autorun) != 1:
         raise ValueError("Ambiguous native command consumption boundary")
     controller_text = fence_external_controller_mailbox(controller_text)
+    # Record the original busy-command drop and handler return separately.
+    # Neither is proof that asynchronous procedure/driver work has settled.
+    drop = '\t\tLOG_WARN("Discarding command " + cmd.id);\n\t\treturn;'
+    returned = '\tsetCommandFinished();\n\tDEBUG("[C] Command execution finished " + cmd.id);'
+    if controller_text.count(drop) != 1 or controller_text.count(returned) != 1:
+        raise ValueError("Ambiguous original Executor mailbox disposition points")
+    controller_text = controller_text.replace(
+        drop,
+        '\t\tLOG_WARN("Discarding command " + cmd.id);\n'
+        '\t\tv08_report_native_disposition(m_procId, cmd, "DISCARDED_PENDING");\n'
+        '\t\treturn;',
+    ).replace(
+        returned,
+        '\tsetCommandFinished();\n'
+        '\tv08_report_native_disposition(m_procId, cmd, "HANDLER_RETURNED");\n'
+        '\tDEBUG("[C] Command execution finished " + cmd.id);',
+    )
     controller_text = controller_text.replace(
         execute,
         execute

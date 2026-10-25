@@ -94,6 +94,13 @@ class NativeOwnerCommands:
             self.store.db.execute("UPDATE native_owner_commands SET state='RESTART_FENCED'")
             if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 15:
                 self.store.db.execute("PRAGMA user_version=15")
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_owner_command_dispositions("
+                "command_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,"
+                "disposition TEXT NOT NULL)"
+            )
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 16:
+                self.store.db.execute("PRAGMA user_version=16")
         authority.native_commands = self
 
     def _permissions(self, owner, command):
@@ -336,6 +343,47 @@ class NativeOwnerCommands:
             hold_retained=True,
             runtime_enabled=False,
         )
+
+    def record_disposition(self, original, grant, disposition):
+        """Record a real native mailbox outcome without settling execution effects.
+
+        A returned command handler may have deferred work. This is a single
+        authenticated post-consumption observation, never an effect permission.
+        """
+        if type(disposition) is not str or disposition not in {
+            "DISCARDED_PENDING", "HANDLER_RETURNED"
+        }:
+            raise Fault(403, "owner_command_disposition_unqualified")
+        with self.authority._execution_lock(original.execution_id):
+            with self.store.transaction():
+                _execution, command = self._bound(original, grant)
+                if command["state"] != "EXECUTION_UNPROVEN":
+                    raise Fault(403, "owner_command_not_consumed")
+                previous = self.store.db.execute(
+                    "SELECT * FROM native_owner_command_dispositions WHERE command_id=?",
+                    (grant.command_id,),
+                ).fetchone()
+                if previous is not None:
+                    if (previous["execution_id"] != original.execution_id
+                            or previous["disposition"] != disposition):
+                        raise Fault(409, "owner_command_disposition_conflict")
+                else:
+                    self.store.db.execute(
+                        "INSERT INTO native_owner_command_dispositions VALUES(?,?,?)",
+                        (grant.command_id, original.execution_id, disposition),
+                    )
+                    self.store._event(
+                        "NATIVE_OWNER_COMMAND_MAILBOX_DISPOSITION",
+                        dict(execution_id=original.execution_id,
+                             command_id=grant.command_id, disposition=disposition),
+                    )
+                return dict(
+                    recorded=True, command_id=grant.command_id,
+                    execution_id=original.execution_id, disposition=disposition,
+                    state="EXECUTION_UNPROVEN", quiescence_proven=False,
+                    effective_transfer=False, hold_retained=True,
+                    runtime_enabled=False,
+                )
 
     def report(self, original, grant, outcome):
         if type(outcome) is not str or outcome not in {"IPC_SEND_ACKNOWLEDGED", "UNCERTAIN"}:

@@ -62,6 +62,11 @@ class NativeControlJournal:
             self.store.db.execute("UPDATE native_members SET state='RESTART_FENCED'")
             if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 14:
                 self.store.db.execute("PRAGMA user_version=14")
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_control_dispositions("
+                "request_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,"
+                "disposition TEXT NOT NULL)"
+            )
         authority.native_controls = self
 
     def bind_member(self, grant, body):
@@ -408,6 +413,62 @@ class NativeControlJournal:
                     quiescence_proven=False,
                     effective_transfer=False,
                     hold_retained=True,
+                    runtime_enabled=False,
+                )
+
+    def record_disposition(self, grant, body):
+        """Audit original native Executor mailbox handling, not effect settlement."""
+        operation = self.operation(body)
+        disposition = body["disposition"]
+        if type(disposition) is not str or disposition not in {
+            "DISCARDED_PENDING", "HANDLER_RETURNED"
+        }:
+            raise Fault(403, "native_control_disposition_unqualified")
+        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        with self.authority._execution_lock(grant.execution_id):
+            with self.store.transaction():
+                self.authority._original_grant(grant)
+                row = self.store.db.execute(
+                    "SELECT * FROM native_control_attempts WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone()
+                consumed = self.store.db.execute(
+                    "SELECT * FROM native_control_consumptions WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone()
+                if (row is None or consumed is None
+                        or row["execution_id"] != grant.execution_id
+                        or row["origin_hash"] != origin
+                        or row["operation_digest"] != hashed
+                        or row["state"] == "RESTART_FENCED"
+                        or consumed["execution_id"] != grant.execution_id
+                        or consumed["origin_hash"] != origin
+                        or consumed["operation_digest"] != hashed
+                        or consumed["state"] != "EXECUTION_UNPROVEN"):
+                    raise Fault(403, "native_control_disposition_unbound")
+                previous = self.store.db.execute(
+                    "SELECT * FROM native_control_dispositions WHERE request_id=?",
+                    (body["request_id"],),
+                ).fetchone()
+                if previous is not None:
+                    if (previous["execution_id"] != grant.execution_id
+                            or previous["disposition"] != disposition):
+                        raise Fault(409, "native_control_disposition_conflict")
+                else:
+                    self.store.db.execute(
+                        "INSERT INTO native_control_dispositions VALUES(?,?,?)",
+                        (body["request_id"], grant.execution_id, disposition),
+                    )
+                    self.store._event(
+                        "NATIVE_INITIAL_RUN_MAILBOX_DISPOSITION",
+                        dict(execution_id=grant.execution_id,
+                             request_id=body["request_id"], disposition=disposition),
+                    )
+                return dict(
+                    recorded=True, request_id=body["request_id"],
+                    execution_id=grant.execution_id, disposition=disposition,
+                    state="EXECUTION_UNPROVEN", quiescence_proven=False,
+                    effective_transfer=False, hold_retained=True,
                     runtime_enabled=False,
                 )
 

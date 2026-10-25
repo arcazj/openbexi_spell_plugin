@@ -203,3 +203,25 @@ def test_candidate_teardown_uses_host_process_control_and_retains_legacy_default
     assert (not requests) if candidate else requests
     assert ("host-kill-group",) in events and ("cleanup",) in events
     assert session.process is None
+
+
+def test_native_mailbox_disposition_instrumentation_precedes_drop_and_follows_handler():
+    """Source patch must instrument the original two distinct mailbox outcomes."""
+    import zipfile
+
+    builder_path = ROOT / "host_runtime/build_admission_context.py"
+    spec = importlib.util.spec_from_file_location("v08_disposition_builder", builder_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        controller = archive.read("lib/SPELL_EXC/src/SPELLcontroller.C").decode()
+    assert controller.count('LOG_WARN("Discarding command " + cmd.id);') == 1
+    assert controller.count("setCommandFinished();") == 1
+    text = builder_path.read_text()
+    drop = 'v08_report_native_disposition(m_procId, cmd, "DISCARDED_PENDING")'
+    returned = 'v08_report_native_disposition(m_procId, cmd, "HANDLER_RETURNED")'
+    assert text.count(drop) == 1 and text.count(returned) == 1
+    gate = (ROOT / "host_runtime/native/execution_gate.H").read_text()
+    assert '"openbexi.native-disposition/1"' in gate
+    assert 'if (!command.v08External) return;' in gate
+    assert 'catch (...)' in gate

@@ -112,3 +112,28 @@ hook and explicitly ensure that the original Executor denial route remains
 reachable. Full exact-head hosted native qualification is still required.
 No affirmative owner prompt/setter/management action or release permission
 is inferred; all eleven full v0.8 release groups remain unqualified.
+
+
+## Dev43 candidate: original native mailbox outcome observations
+
+The private native candidate now distinguishes `DISCARDED_PENDING` before a
+command handler from `HANDLER_RETURNED` after it has returned. The original
+Executor reports through a pinned native PID/Unix socket to an original-worker
+single-attempt relay and certificate-authenticated Context. New durable SQL
+rows and events bind each report to the original initial RUN or exact
+owner-issued RUN/STEP/PAUSE grant, **after final consumption**.
+
+These are mailbox observations, not effect completion. The original journal
+stays `DISPATCH_UNCERTAIN`, the owner journal stays `EXECUTION_UNPROVEN`,
+and ownership, reservations, holds and worker reuse are unchanged. Late
+post-disconnect reports are safety-only. Duplicate/conflicting reports, forged
+IDs or certificates, incorrect native process origins, unsupported labels and
+lost acknowledgments cannot promote a command or authorize another effect.
+The exact original Executor negative-oracle path remains untouched.
+
+See [Native mailbox disposition contract](NATIVE_MAILBOX_DISPOSITIONS.md).
+Exact-head hosted native compilation and end-to-end disposition evidence are
+required; no full acceptance gate is promoted. STOP positive authority,
+other native peer/management paths, prompt and deferred command settlement,
+complete family barrier, recovery/new owner identity and deployments are
+still release blockers.

@@ -545,3 +545,44 @@ def test_original_forwarded_run_is_denied_at_consumer_after_connection_close(age
         family["store"].db.execute("SELECT owner,epoch,control_state FROM executions").fetchone()
     ) == ("alice", 1, "CONTROLLER_DISCONNECTED")
     assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_original_run_mailbox_disposition_requires_final_consumption(journal, family, pki):
+    body = operation()
+    extra = dict(body, disposition="HANDLER_RETURNED")
+    assert call(family, pki, family["grant"], "control-disposition", **extra)[0] == 403
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert call(family, pki, family["grant"], "control-disposition", **extra)[0] == 403
+    assert consume(family, pki, body)[0] == 200
+    status, reply = call(family, pki, family["grant"], "control-disposition", **extra)
+    assert status == 200
+    assert reply["result"] == dict(
+        recorded=True, request_id=body["request_id"],
+        execution_id=family["grant"].execution_id,
+        disposition="HANDLER_RETURNED", state="EXECUTION_UNPROVEN",
+        quiescence_proven=False, effective_transfer=False,
+        hold_retained=True, runtime_enabled=False,
+    )
+    assert call(family, pki, family["grant"], "control-disposition", **extra) == (status, reply)
+    assert call(
+        family, pki, family["grant"], "control-disposition",
+        **dict(body, disposition="DISCARDED_PENDING"),
+    )[0] == 409
+    assert rows(family)[0]["state"] == "DISPATCH_UNCERTAIN"
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+@pytest.mark.parametrize("bad", ["COMPLETED", "QUIESCED", True, None])
+def test_original_disposition_rejects_false_settlement(journal, family, pki, bad):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    assert forward(family, pki, body)[0] == 200
+    assert consume(family, pki, body)[0] == 200
+    assert call(
+        family, pki, family["grant"], "control-disposition",
+        **dict(body, disposition=bad),
+    )[0] in (400, 403)
+    assert family["store"].db.execute(
+        "SELECT COUNT(*) FROM native_control_dispositions"
+    ).fetchone()[0] == 0

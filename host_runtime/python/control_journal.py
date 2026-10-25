@@ -40,6 +40,7 @@ class NativeRunJournal:
         self.owner_forwarded = set()
         self.owner_consume_attempted = set()
         self.owner_consumed = set()
+        self.disposition_attempted = set()
         self.lock = threading.Lock()
 
     def bind_member(self, instance, pid, parent_pid, start_ticks, executable_sha256):
@@ -382,6 +383,53 @@ class NativeRunJournal:
             raise ValueError("Native RUN consumption receipt differs")
         with self.lock:
             self.consumed.add(body["request_id"])
+
+    def disposition(self, body):
+        """Single attempt from a real Executor after mailbox handler/discard."""
+        exact(body, {"schema", "request_id", "instance_id", "command", "disposition"})
+        if body["schema"] != "openbexi.native-disposition/1":
+            raise ValueError("Native disposition schema differs")
+        canonical_uuid(body["request_id"])
+        if type(body["disposition"]) is not str or body["disposition"] not in {
+            "DISCARDED_PENDING", "HANDLER_RETURNED"
+        }:
+            raise ValueError("Native disposition not recognized")
+        with self.lock:
+            request_id = body["request_id"]
+            if request_id in self.disposition_attempted:
+                raise ValueError("Native disposition already attempted")
+            if request_id in self.owner_operations:
+                instance, grant = self.owner_operations[request_id]
+                if (instance != body["instance_id"] or grant.command != body["command"]
+                        or request_id not in self.owner_consumed):
+                    raise ValueError("Native owner disposition scope differs")
+                payload = {
+                    **self.request, "command_grant": asdict(grant),
+                    "disposition": body["disposition"],
+                }
+                path = "/v1/worker/command-disposition"
+                owner = True
+            else:
+                operation = self.operations.get(request_id)
+                if (operation is None or operation[0] != body["instance_id"]
+                        or operation[1]["command"] != body["command"]
+                        or request_id not in self.consumed):
+                    raise ValueError("Native initial disposition scope differs")
+                payload = {**self.request, **operation[1], "disposition": body["disposition"]}
+                path = "/v1/worker/control-disposition"
+                owner = False
+            self.disposition_attempted.add(request_id)
+        reply = self.route.call(payload, path=path, schema="openbexi.worker/2")
+        expected = dict(
+            recorded=True, request_id=request_id, execution_id=self.grant.execution_id,
+            disposition=body["disposition"], state="EXECUTION_UNPROVEN",
+            quiescence_proven=False, effective_transfer=False,
+            hold_retained=True, runtime_enabled=False,
+        )
+        if owner:
+            expected["command_id"] = expected.pop("request_id")
+        if canonical(reply) != canonical(expected):
+            raise ValueError("Native mailbox disposition receipt differs")
 
     def report(self, operation, outcome):
         reply = self.route.call(

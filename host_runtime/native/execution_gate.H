@@ -40,6 +40,29 @@ static void v08_hold_before_consumption_probe(const ExecutorCommand& command)
     }
 }
 
+// The native handler returning does not settle background execution/driver
+// effects, callbacks or descendants. This is an observation, never a barrier.
+static void v08_report_native_disposition(const std::string& instance,
+                                          const ExecutorCommand& command,
+                                          const char* disposition) noexcept
+{
+    if (!command.v08External) return;  // Original internal safety operations.
+    try {
+        if (!v08_command_supported(command.id) || command.v08Request.empty())
+            throw std::runtime_error("Native mailbox disposition not admitted");
+        v08_native_request({
+            {"schema", "openbexi.native-disposition/1"},
+            {"instance_id", instance},
+            {"request_id", command.v08Request},
+            {"command", command.id},
+            {"disposition", disposition}
+        });
+    } catch (...) {
+        // A failed report retains an uncertain hold; never replay a command.
+        std::fprintf(stderr, "V08_NATIVE_DISPOSITION_UNCERTAIN\n");
+    }
+}
+
 static void v08_consume_native_run(const std::string& instance, const ExecutorCommand& command)
 {
     // Never let a copied/deferred external command evade the owner inventory.

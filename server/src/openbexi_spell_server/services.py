@@ -137,6 +137,7 @@ class Context:
                     "/v1/worker/child-consume",
                     "/v1/worker/control-admit",
                     "/v1/worker/control-report",
+                    "/v1/worker/control-disposition",
                     "/v1/worker/control-forward",
                     "/v1/worker/control-consume",
                     "/v1/worker/member-bind",
@@ -144,6 +145,7 @@ class Context:
                     "/v1/worker/command-forward",
                     "/v1/worker/command-consume",
                     "/v1/worker/command-report",
+                    "/v1/worker/command-disposition",
                 )
                 else self.preflight
             )

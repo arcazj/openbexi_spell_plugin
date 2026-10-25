@@ -69,7 +69,10 @@ class WorkerLaunch:
                     "/v1/worker/member-bind",
                 }
             )
-            safety_only = safety_only or path == "/v1/worker/control-report"
+            safety_only = safety_only or path in {
+                "/v1/worker/control-report", "/v1/worker/control-disposition"
+            }
+            allowed.add("/v1/worker/control-disposition")
         commands = self.authority.native_commands
         if commands is not None:
             allowed.update(
@@ -83,6 +86,7 @@ class WorkerLaunch:
             # Startup provenance authenticates this original worker channel;
             # only the independently owner-issued command grant admits effects.
             safety_only = safety_only or path.startswith("/v1/worker/command-")
+            allowed.add("/v1/worker/command-disposition")
         if path not in allowed:
             raise Fault(404, "route_not_available")
         root_consume = path == "/v1/worker/consume"
@@ -109,16 +113,23 @@ class WorkerLaunch:
                 "start_ticks",
                 "executable_sha256",
             }
-        elif path.endswith(("command-forward", "command-consume", "command-report")):
+        elif path.endswith((
+            "command-forward", "command-consume", "command-report", "command-disposition"
+        )):
             extra = {"command_grant"}
             if path.endswith("command-report"):
                 extra.add("outcome")
-        elif path.endswith(
-            ("control-admit", "control-report", "control-forward", "control-consume")
-        ):
+            if path.endswith("command-disposition"):
+                extra.add("disposition")
+        elif path.endswith((
+            "control-admit", "control-report", "control-forward", "control-consume",
+            "control-disposition"
+        )):
             extra = {"request_id", "target_admission_id", "command"}
             if path.endswith("control-report"):
                 extra.add("outcome")
+            if path.endswith("control-disposition"):
+                extra.add("disposition")
         if not root_consume:
             extra.add("runtime_capability")
         exact(
@@ -147,12 +158,16 @@ class WorkerLaunch:
             return controls.bind_member(grant, body)
         if path.endswith("command-poll"):
             return commands.poll(grant)
-        if path.endswith(("command-forward", "command-consume", "command-report")):
+        if path.endswith((
+            "command-forward", "command-consume", "command-report", "command-disposition"
+        )):
             from .commands import owner_command_grant
 
             command = owner_command_grant(body["command_grant"])
             if path.endswith("command-report"):
                 return commands.report(grant, command, body["outcome"])
+            if path.endswith("command-disposition"):
+                return commands.record_disposition(grant, command, body["disposition"])
             return commands.advance(
                 grant, command, "forward" if path.endswith("command-forward") else "consume"
             )
@@ -164,6 +179,8 @@ class WorkerLaunch:
             return controls.consume(grant, body)
         if path.endswith("control-report"):
             return controls.report(grant, body)
+        if path.endswith("control-disposition"):
+            return controls.record_disposition(grant, body)
         if path.endswith("event"):
             return self.record_event(grant, body)
         if path.endswith("driver"):
