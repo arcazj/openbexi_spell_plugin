@@ -25,6 +25,7 @@ CASES = (
     "abort-thread",
     "abort-child",
     "close-thread",
+    "forced-loss",
 )
 
 
