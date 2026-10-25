@@ -1,0 +1,54 @@
+name: v0.8 Kubernetes prelaunch static security gate
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/v0.8/**'
+      - '.github/workflows/v08-kubernetes-static.yml'
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - 'deploy/v0.8/**'
+      - '.github/workflows/v08-kubernetes-static.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  kubernetes-static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Render Kubernetes resources and validate fail-closed invariants
+        run: |
+          set -euo pipefail
+          python deploy/v0.8/render_kubernetes.py --output .qualification/v08-kubernetes/resources.json
+          python -m json.tool .qualification/v08-kubernetes/resources.json >/dev/null
+          python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+          path = Path("deploy/v0.8/render_kubernetes.py")
+          spec = importlib.util.spec_from_file_location("v08_k8s_static", path)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          path = Path(".qualification/v08-kubernetes/resources.json")
+          listing = json.loads(path.read_text())
+          result = module.validate(listing["items"])
+          assert result["passed"] is True and not result["full_v08_qualified"]
+          assert not any(x["kind"] == "Secret" for x in listing["items"])
+          assert not any("PRIVATE KEY" in json.dumps(x) for x in listing["items"])
+          print(result)
+          PY
+      - name: Retain static structure only (never private keys or runtime claims)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-kubernetes-prelaunch-${{ github.sha }}
+          path: .qualification/v08-kubernetes/resources.json
+          if-no-files-found: warn
+          retention-days: 30
