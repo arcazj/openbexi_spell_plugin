@@ -1415,7 +1415,14 @@ def main():
                         worker_names, containers, executions, strict=True
                     ):
                         records = events(name)
-                        if not any(r["event"] == "native-finished" for r in records):
+                        if not any(
+                            r["event"] == "native-finished"
+                            and (
+                                not profile.native_child_gate
+                                or r.get("native_lifecycle_receipts_settled") is True
+                            )
+                            for r in records
+                        ):
                             raise RuntimeError("Native completion evidence absent")
                         info = json.loads(command("docker", "inspect", name))[0]
                         if (

@@ -6,7 +6,7 @@ mandatory criteria pass. It supersedes the separate-confirmation hold; another
 routine publication confirmation is not required. It does not authorize
 production migration or weaken G1 F1–F10 or acceptance requirements.
 
-The full release is **not qualified**. Package `0.8.0.dev38` remains development
+The full release is **not qualified**. Package `0.8.0.dev40` remains development
 code. Dev31 at `9de50ea` verified a 21-member retained native family, original
 durable member identities and stale-controller initial RUN rejection. Dev32
 adds fresh owner STEP/PAUSE grants. Its push native STEP/disconnect oracle passed;
@@ -28,7 +28,7 @@ IDE Run/Debug/browser, Kubernetes or deployed recovery.
 Dev37 closed the unsupported Executor CIF paths and passed all component jobs
 and 580 hosted service tests at `97af271`. Dev38 adds original-host Context GUI
 admission, non-reusable connection identities and closed management/roster
-dispatch. Its native qualification is pending. Positive owner actions, internal
+dispatch. Dev38 native qualification failed because denial error-field literals were omitted by the frozen bridge. Dev39 corrects that original-field interoperability; exact native confirmation is pending. Positive owner actions, internal
 native lifecycle and legacy Listener peer/management surfaces remain blockers;
 see `NATIVE_CONTEXT_GUI_BOUNDARY.md` for the precise candidate scope.
 
@@ -67,9 +67,10 @@ not all-763 requirement coverage.
 
 ## Work required before publication
 
-First implement the mandatory native before-RUN child gate and full participant,
-control/prompt/effect settlement. [Child admission](NATIVE_CHILD_ADMISSION.md) is
-preparatory and keeps native_start_qualified false. Then prove owner/epoch CAS
+Complete native child mode/lifecycle compatibility and full participant,
+control/prompt/effect settlement. [Child admission](NATIVE_CHILD_ADMISSION.md)
+has a qualified private before-spawn component; its receipts do not qualify
+all child modes or full-family settlement. Then prove owner/epoch CAS
 and explicit new-owner resume with old requests fenced. Complete compatibility,
 driver faults/recovery, joint SPELL/IDE browser Run/Debug/WSS/Git, actual
 Compose/Kubernetes qualification, independent security/SBOM/license/vulnerability
@@ -95,3 +96,16 @@ Dev37 adds an unsupported-mutation boundary in the private native Executor.
 Hosted compilation and the 19-operation denial probe passed at `97af271`,
 alongside all PR/push component jobs and 580 hosted tests without skips. Positive
 owner ABORT/CLOSE/prompt/setter functionality is not implemented by that guard.
+
+
+The dev37 evidence-only family rerun failure was re-inspected from the verified
+original artifact. Its retained Context `SSLEOFError` was a recovered readiness
+diagnostic. Two roots reached PAUSED; worker 2 was admitted/bound but timed out
+at native LOADED. That terminal startup failure remains unresolved. Neither
+a later pass nor the dev39 denial-field correction establishes its cause or fix.
+
+
+Dev39 confirms the native denial-field correction, 632 hosted scoped checks
+and 241 portable checks. Its family workflow remains failed on a missing
+durable finish event. Dev40 adds a bounded original-event settlement before
+teardown; native family and management/owner requalification are pending.

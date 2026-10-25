@@ -566,6 +566,7 @@ def run(config):
     denied = set()
     driver_methods = set()
     relay = None
+    lifecycle = None
 
     def dispatch(event, **body):
         if event != "openbexi/driverRequest":
@@ -617,6 +618,8 @@ def run(config):
                 recorded=True, request_id=request_id, execution_id=grant.execution_id
             ):
                 raise RuntimeError("Driver event receipt mismatch")
+            if lifecycle is not None:
+                lifecycle.acknowledge(original.message, list(child_gate.started))
             # Original RaiseEvent returns Empty, only after durable Context commit.
             relay.reply({"id": body["id"], "payload": ""})
         except Exception as error:
@@ -667,7 +670,11 @@ def run(config):
     children = None
     if child_profile:
         sys.path.insert(0, "/v08")
-        from child_gate import NativeAdmissionServer, NativeChildGate
+        from child_gate import (
+            NativeAdmissionServer,
+            NativeChildGate,
+            NativeLifecycleReceipts,
+        )
         from control_journal import NativeRunJournal
         from children import ChildProcedures
 
@@ -679,6 +686,7 @@ def run(config):
             session.arguments,
             lambda: rpc("check"),
         )
+        lifecycle = NativeLifecycleReceipts()
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
         if consumption_probe or owner_probe:
@@ -977,6 +985,12 @@ def run(config):
             time.sleep(0.05)
         else:
             raise TimeoutError("Native execution deadline expired")
+        if state == "FINISHED" and lifecycle is not None:
+            # The legacy controller publishes FINISHED before setEndTime's
+            # synchronous RaiseEvent. Keep the original processes/relay alive
+            # until their real Context audit receipts arrive; never replay or
+            # manufacture a missing event or treat this as a family barrier.
+            lifecycle.wait(lambda: list(child_gate.started), pump)
         if state != "FINISHED" or denied:
             terminal = session.request("REQ_EXEC_STATUS")
             emit(
@@ -1001,6 +1015,7 @@ def run(config):
             native_children_admitted=0
             if child_gate is None
             else len(child_gate.started) - 1,
+            native_lifecycle_receipts_settled=lifecycle is not None,
             notifications_seen=count,
             full_family_qualified=False,
         )

@@ -1943,3 +1943,43 @@ reconstruction with repository recipes matched 142 units; the two legacy
 comparison units require the exact frozen syntax helper and then match. No
 frozen v0.7 file is edited. All eleven mandatory full
 release groups remain unqualified, public runtime disabled and no release.
+
+
+Reinspection of dev37 failed artifact 12584023613 (verified ZIP SHA/CRC)
+corrects the earlier causal interpretation: its retained Context SSLEOFError
+preceded successful readiness. Two roots reached native-ready; worker 2 had
+root admission and one registered member, then timed out at native LOADED.
+The terminal startup cause remains unresolved. The historical failure receipt
+now explicitly distinguishes the recovered diagnostic from that failure.
+
+
+## Dev39 hosted outcome and dev40 completion-audit candidate
+
+Dev39 c4411d3 passed hosted **632 service tests**, zero failures/errors/skips,
+installed package checks and **241 portable tests**. All 139 foundation input
+hashes and archive SHA/CRC matched. Both service workflows failed the family
+job later: the corrected native GUI boundary passed all five foreign requests,
+two proposed-key denials and nonreuse; the 41-PID family consumed 11 children,
+but worker 0 had three starts and only two durable finishes. The original
+19-operation/18-management/eight-roster and owner probes were not reached.
+The failed artifact SHA/CRC, all 35 repository and 144 compiled inputs match;
+see dev39-family-failure.json. This is a failed overall component run.
+
+The original controller publishes terminal FINISHED in setStatus before
+setEndTime emits its synchronous finish audit event. The worker previously
+announced completion and killed the native processes/relay as soon as it read
+that status. Dev40 retains them while waiting at most five seconds for real
+Context-acknowledged start/end events for every currently admitted member.
+The same original EV requests and exact authority receipts supply the counters;
+no event is created, replayed or inferred from status. Duplicate/absent receipts,
+unknown substitutes, 65-member/130-counter capacity and deadline failures remain
+failed evidence. Notification pumping continues during that bounded wait.
+This audit settlement is neither participant closure nor quiescence, command
+queue disposition, safe reuse, transfer or a full-family qualification.
+
+Eight regressions exercise delayed committed completion, the actual worker
+completion statements, missing nested receipts, foreign events, duplicates and
+bounds. The actual dev39 worker statements reproduce early completion; the
+corrected focused GUI/Executor/lifecycle suite passed **71 tests**. Initial
+new-test lint rejected a lambda assignment; it was corrected before final
+checks. Full scoped and original native confirmation are pending.

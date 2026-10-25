@@ -24,6 +24,57 @@ from openbexi_spell_server.family import child_grant, FamilyAdmission
 from openbexi_spell_server.snapshots import source_path
 
 
+class NativeLifecycleReceipts:
+    """Bounded audit completion only; no quiescence or reservation release."""
+
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.counts = {}
+        self.invalid = False
+
+    def acknowledge(self, message, members):
+        # Called only AFTER Context acknowledges its original durable event.
+        # Ordinary procedure events do not satisfy these fixed lifecycle rows.
+        for member in members:
+            for phase in ("started", "finished"):
+                if message.startswith(f"Procedure {phase}: {member} at "):
+                    with self.lock:
+                        key = (member, phase)
+                        if key not in self.counts and len(self.counts) >= 130:
+                            self.invalid = True
+                            raise ValueError(
+                                "Native lifecycle receipt capacity reached"
+                            )
+                        self.counts[key] = self.counts.get(key, 0) + 1
+                        if self.counts[key] != 1:
+                            self.invalid = True
+                            raise ValueError("Duplicate native lifecycle receipt")
+                    return
+
+    def wait(self, members, pump, *, timeout=5):
+        deadline = time.monotonic() + timeout
+        while True:
+            expected = set(members())
+            if not expected or len(expected) > 65:
+                raise ValueError("Native lifecycle member bound differs")
+            with self.lock:
+                if self.invalid:
+                    raise ValueError("Native lifecycle receipts are invalid")
+                complete = all(
+                    self.counts.get((member, phase)) == 1
+                    for member in expected
+                    for phase in ("started", "finished")
+                )
+            if complete:
+                return
+            if time.monotonic() >= deadline:
+                raise TimeoutError(
+                    "Native lifecycle audit did not settle before teardown"
+                )
+            pump()
+            time.sleep(0.02)
+
+
 class NativeChildGate:
     def __init__(
         self, request, route, entrypoint, root_instance, root_arguments, root_check

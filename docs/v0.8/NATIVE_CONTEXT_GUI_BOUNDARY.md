@@ -105,3 +105,11 @@ forwarded fields and passes after the correction. Its message shells do not
 replace native IPC qualification. The original five foreign denials, key
 reconnect checks, 18 management and eight roster-message cases still must
 pass through the actual hosted Context/bridge processes.
+
+
+Dev39's real native foreign-client boundary passed five denials, two proposed
+keys and closed-key nonreuse. The later family audit failed before the full
+management/roster/owner probes, so those remain unqualified at this increment.
+Dev40 adds bounded waiting for actual committed family lifecycle audit before
+worker teardown. It does not change the GUI authorization or relax any event
+count, and requires fresh native qualification.
