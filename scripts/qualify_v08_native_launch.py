@@ -549,6 +549,10 @@ def main():
         ROOT / "host_runtime/python/native.py",
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
+        ROOT / "host_runtime/python/prompt_replies.py",
+        ROOT / "host_runtime/python/prompt_probe.py",
+        ROOT / "host_runtime/native/prompt_patch.py",
+        ROOT / "scripts/v08_native_prompts.py",
         ROOT / "host_runtime/build_admission_context.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
@@ -583,7 +587,14 @@ def main():
                     extra_peers=("edge", "observer")
                     if profile.native_listener_survival
                     else (
-                        ("worker-probe", "worker-owner", "worker-resume")
+                        (
+                            "worker-probe",
+                            "worker-owner",
+                            "worker-resume",
+                            "worker-prompt-complete",
+                            "worker-prompt-cancel",
+                            "worker-prompt-fenced",
+                        )
                         if profile.native_child_gate
                         else ()
                     ),
@@ -613,6 +624,11 @@ def main():
                         ROOT / "host_runtime/python/child_gate.py",
                         code / "child_gate.py",
                     )
+                if profile.native_child_gate:
+                    for module in ("prompt_replies.py", "prompt_probe.py"):
+                        shutil.copy2(
+                            ROOT / "host_runtime/python" / module, code / module
+                        )
                 if profile.native_thread_barrier:
                     shutil.copy2(
                         ROOT / "host_runtime/python/thread_barrier.py",
@@ -685,10 +701,14 @@ def main():
                         ROOT / "host_runtime/build_admission_context.py",
                         native_build / "build.py",
                     )
+                    shutil.copy2(
+                        ROOT / "host_runtime/native/prompt_patch.py",
+                        native_build / "prompt_patch.py",
+                    )
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H build.py /candidate/\n"
+                        "COPY *.H *.py /candidate/\n"
                         "RUN python /candidate/build.py\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
@@ -789,6 +809,35 @@ def main():
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    (sources / "prompt_complete.py").write_text(
+                        "from pathlib import Path\n"
+                        "from spell.lang.functions import Prompt,StartProc\n"
+                        "from spell.lang.constants import ALPHA,NUM\n"
+                        "value=Prompt('ROOT_FIRST',Type=ALPHA,HandleError=False)\n"
+                        "assert value == 'approved'\n"
+                        "assert StartProc('prompt_child',Automatic=True,Visible=True,Blocking=True,HandleError=False) is True\n"
+                        "value=Prompt('ROOT_SECOND',Type=ALPHA,HandleError=False)\n"
+                        "assert value == 'next'\n"
+                        "value=Prompt('ROOT_DEFAULT',Type=NUM,Default=7,Timeout=.5,HandleError=False)\n"
+                        "assert value == 7 and type(value) is int\n"
+                        "Path('/workspace/prompt-complete').write_text('verified')\n"
+                    )
+                    (sources / "prompt_child.py").write_text(
+                        "from pathlib import Path\n"
+                        "from spell.lang.functions import Prompt\n"
+                        "from spell.lang.constants import NUM\n"
+                        "value=Prompt('CHILD',Type=NUM,HandleError=False)\n"
+                        "assert value == 42 and type(value) is int\n"
+                        "Path('/workspace/prompt-child').write_text(str(value))\n"
+                    )
+                    for prompt_mode in ("cancel", "fenced"):
+                        (sources / ("prompt_" + prompt_mode + ".py")).write_text(
+                            "from pathlib import Path\n"
+                            "from spell.lang.functions import Prompt\n"
+                            "from spell.lang.constants import ALPHA\n"
+                            "Prompt('MUST_NOT_CONTINUE',Type=ALPHA,HandleError=False)\n"
+                            "Path('/workspace/prompt-UNSAFE').write_text('UNSAFE')\n"
+                        )
                     (sources / "owner_resume.py").write_text(
                         "import os,time\nFIRST = 1\n"
                         "with open('/workspace/owner-running','w') as marker:marker.write('running')\n"
@@ -863,6 +912,11 @@ def main():
                     catalog["grandchild-0"] = dict(
                         catalog["procedure-0"], entrypoint="grandchild_0.py"
                     )
+                    for prompt_mode in ("complete", "cancel", "fenced", "child"):
+                        catalog["prompt-" + prompt_mode] = dict(
+                            catalog["procedure-0"],
+                            entrypoint="prompt_" + prompt_mode + ".py",
+                        )
                     catalog["owner-resume"] = dict(
                         catalog["procedure-0"], entrypoint="owner_resume.py"
                     )
@@ -1970,6 +2024,30 @@ def main():
                         host_processes=host_processes,
                         events=events,
                     )
+                    for prompt_mode in ("complete", "cancel", "fenced"):
+                        qualify_consumption_fence(
+                            prompt_mode=prompt_mode,
+                            temporary=temporary,
+                            prefix=prefix,
+                            context_image=context_image,
+                            config=config,
+                            sources=sources,
+                            worker_image=worker_image,
+                            code=code,
+                            snapshot=snapshot,
+                            ca=ca,
+                            peers=peers,
+                            primary_controller=controller,
+                            control=control,
+                            primary_state=state,
+                            names=names,
+                            networks=networks,
+                            report=report,
+                            command=command,
+                            await_event=await_event,
+                            host_processes=host_processes,
+                            events=events,
+                        )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

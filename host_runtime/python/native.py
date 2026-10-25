@@ -305,7 +305,7 @@ class StartupObservation:
 class NativeSession:
     def __init__(self, project, script, arguments, *, driver_port=None, user_library=None,
                  native_home=None, admission_socket=None, consume_fence_probe=False,
-                 owner_step_probe=False):
+                 owner_step_probe=False, prompt_protocol=False, prompt_fence_probe=False):
         self.driver_port = driver_port
         self.native_home = None
         self.admission_socket = admission_socket
@@ -324,6 +324,13 @@ class NativeSession:
                 self.native_home is None or consume_fence_probe)):
             raise ValueError('Native owner probe requires its separate checked candidate')
         self.owner_step_probe = owner_step_probe
+        if type(prompt_protocol) is not bool or (prompt_protocol and (
+                self.native_home is None or owner_step_probe or consume_fence_probe)):
+            raise ValueError('Native prompt protocol requires its isolated candidate')
+        self.prompt_protocol = prompt_protocol
+        if type(prompt_fence_probe) is not bool or (prompt_fence_probe and not prompt_protocol):
+            raise ValueError('Native prompt fence requires the private prompt protocol')
+        self.prompt_fence_probe = prompt_fence_probe
         self.user_library = None
         if user_library is not None:
             library = Path(user_library).resolve(strict=True)
@@ -396,6 +403,12 @@ class NativeSession:
             # This role marker belongs to the candidate Executor's own main;
             # the native Listener/Context must retain their metadata graph.
             environment.pop('OPENBEXI_V08_EXECUTOR_BOOTSTRAP', None)
+            environment.pop('OPENBEXI_V08_PROMPT_PROTOCOL', None)
+            environment.pop('OPENBEXI_V08_PROMPT_CONSUME_PROBE', None)
+            if self.prompt_protocol:
+                environment['OPENBEXI_V08_PROMPT_PROTOCOL'] = '1'
+            if self.prompt_fence_probe:
+                environment['OPENBEXI_V08_PROMPT_CONSUME_PROBE'] = '1'
             environment.update(SPELL_HOME=str(self.native_home),
                 OPENBEXI_V08_ADMISSION_SOCKET=str(self.admission_socket),
                 OPENBEXI_V08_AGENT_PID=str(os.getpid()))

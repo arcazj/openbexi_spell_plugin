@@ -361,6 +361,7 @@ class NativeAdmissionServer:
         gate,
         *,
         controls=None,
+        prompts=None,
         executor=None,
         report=lambda *_args, **_kwargs: None,
     ):
@@ -372,6 +373,7 @@ class NativeAdmissionServer:
         self.gate = gate
         self.report = report
         self.controls = controls
+        self.prompts = prompts
         self.executor = (
             None if executor is None else Path(executor).resolve(strict=True)
         )
@@ -499,6 +501,33 @@ class NativeAdmissionServer:
         self.member_pids[pid] = instance
 
     def dispatch(self, role, instance, body):
+        schema = body.get("schema")
+        if schema in {
+            "openbexi.native-prompt-open/1",
+            "openbexi.native-prompt-open/2",
+            "openbexi.native-prompt-consume/1",
+            "openbexi.native-prompt-close/1",
+        }:
+            prompts = getattr(self, "prompts", None)
+            if (
+                role != "executor"
+                or body.get("instance_id") != instance
+                or prompts is None
+            ):
+                raise ValueError("Native prompt origin or private profile denied")
+            method = {
+                "openbexi.native-prompt-open/1": prompts.register,
+                "openbexi.native-prompt-open/2": prompts.register_native,
+                "openbexi.native-prompt-consume/1": prompts.consume,
+                "openbexi.native-prompt-close/1": prompts.close,
+            }[schema]
+            method(body)
+            self.report(
+                "native-prompt-protocol-acknowledged",
+                phase=schema,
+                outcome=body.get("outcome"),
+            )
+            return
         if role != "executor" and body.get("schema") == "openbexi.native-denied/1":
             raise ValueError("Native denied diagnostic role differs")
         if role == "executor":

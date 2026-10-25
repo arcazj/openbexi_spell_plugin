@@ -7,6 +7,7 @@ is edited or interposed, and both new programs require independent qualification
 
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -393,6 +394,14 @@ def patch_native_tree(source):
 """,
         )
     )
+    # Extend only the reproduced candidate graph, never the frozen v0.7 bytes.
+    patcher = Path(__file__).with_name("prompt_patch.py")
+    if not patcher.is_file():
+        patcher = Path(__file__).parent / "native/prompt_patch.py"
+    spec = importlib.util.spec_from_file_location("native_prompt_boundary", patcher)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.apply_prompt_boundary(source)
     return before
 
 

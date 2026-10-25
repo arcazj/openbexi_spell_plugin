@@ -470,6 +470,7 @@ def run(config):
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
+    prompt_probe = type(config) is dict and "native_prompt_probe" in config
     exact(
         config,
         fields
@@ -478,7 +479,8 @@ def run(config):
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
-        | ({"native_owner_resume_probe"} if owner_resume else set()),
+        | ({"native_owner_resume_probe"} if owner_resume else set())
+        | ({"native_prompt_probe"} if prompt_probe else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -511,6 +513,14 @@ def run(config):
         or consumption_probe
     ):
         raise ValueError("Owner resume requires its separate private native candidate")
+    if prompt_probe and (
+        config["native_prompt_probe"] not in ("complete", "cancel", "fenced")
+        or not child_profile
+        or owner_resume
+        or owner_probe
+        or consumption_probe
+    ):
+        raise ValueError("Native prompts require their isolated private candidate")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -656,6 +666,9 @@ def run(config):
                 admission_socket="/tmp/native-admission.sock",
                 consume_fence_probe=consumption_probe,
                 owner_step_probe=owner_probe,
+                prompt_protocol=prompt_probe,
+                prompt_fence_probe=prompt_probe
+                and config["native_prompt_probe"] == "fenced",
             )
     session = session_type(
         root,
@@ -689,6 +702,22 @@ def run(config):
         lifecycle = NativeLifecycleReceipts()
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
+        prompts = None
+        if prompt_probe:
+            from prompt_replies import NativePromptAgent
+
+            prompts = NativePromptAgent(controls)
+            original_prompt_consume = prompts.consume
+
+            def consume_prompt(body):
+                try:
+                    original_prompt_consume(body)
+                except Fault as error:
+                    if error.status == 403:
+                        emit("native-prompt-consume-fenced", status=403)
+                    raise
+
+            prompts.consume = consume_prompt
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
@@ -717,6 +746,7 @@ def run(config):
             lambda: session.process,
             child_gate,
             controls=controls,
+            prompts=prompts,
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
@@ -823,6 +853,22 @@ def run(config):
                 writable.write(b"probe")
                 writable.flush()
             emit("native-consumption-probe-ready", writable_marker_directory=True)
+        if prompt_probe:
+            from prompt_probe import run_prompt_probe
+
+            run_prompt_probe(
+                session,
+                controls,
+                prompts,
+                admission,
+                pump,
+                children,
+                child_gate,
+                lifecycle,
+                emit,
+                config["native_prompt_probe"],
+            )
+            return
         if owner_probe:
             owner_step_probe(session, controls, admission, consume_fenced, pump)
             return

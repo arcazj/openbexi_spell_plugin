@@ -219,11 +219,14 @@ def qualify_consumption_fence(
     events,
     owner_commands=False,
     owner_resume=False,
+    prompt_mode=None,
 ):
+    if prompt_mode not in (None, "complete", "cancel", "fenced"):
+        raise ValueError("Native prompt fixture mode differs")
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
     original_primary = primary_controller("execution.list", {})
-    if owner_commands and owner_resume:
+    if sum((bool(owner_commands), bool(owner_resume), prompt_mode is not None)) > 1:
         raise ValueError("Native owner qualification profiles must be separate")
     label = "resume" if owner_resume else "owner" if owner_commands else "consume"
     context_id = "D" if owner_resume else "C" if owner_commands else "B"
@@ -241,6 +244,11 @@ def qualify_consumption_fence(
         if owner_commands
         else "worker-probe"
     )
+    if prompt_mode is not None:
+        label = "prompt-" + prompt_mode
+        context_id = {"complete": "E", "cancel": "F", "fenced": "G"}[prompt_mode]
+        source_id = label
+        worker_id = "worker-" + label
     name, network = prefix + "-" + label + "-probe", prefix + "-" + label + "-net"
     context_name = prefix + "-" + label + "-context"
     context_network = prefix + "-" + label + "-control"
@@ -286,8 +294,14 @@ def qualify_consumption_fence(
             "witness": config["approved_sources"]["procedure-9"],
         },
     )
-    if owner_commands or owner_resume:
+    if owner_commands or owner_resume or prompt_mode is not None:
         probe_config["native_commands"] = "owner-queue"
+    if prompt_mode is not None:
+        probe_config["native_prompts"] = "owner-reply-candidate"
+        if prompt_mode == "complete":
+            probe_config["approved_sources"]["prompt-child"] = config[
+                "approved_sources"
+            ]["prompt-child"]
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -342,11 +356,11 @@ def qualify_consumption_fence(
         tls_context(ca, peers["listener"]["cert"], peers["listener"]["key"]),
     )
 
-    def controller(method, payload):
+    def controller(method, payload, *, subject="alice"):
         return route.call(
             envelope(
                 context_id,
-                "alice",
+                subject,
                 method,
                 payload,
                 None
@@ -453,7 +467,9 @@ def qualify_consumption_fence(
                 start_barrier="/control/start",
                 native_child_gate=True,
                 **(
-                    {"native_owner_resume_probe": True}
+                    {"native_prompt_probe": prompt_mode}
+                    if prompt_mode is not None
+                    else {"native_owner_resume_probe": True}
                     if owner_resume
                     else {"native_owner_commands_probe": True}
                     if owner_commands
@@ -510,6 +526,27 @@ def qualify_consumption_fence(
     ]
     names.append(name)
     command(*args)
+    if prompt_mode is not None:
+        from v08_native_prompts import qualify_prompt_execution
+
+        qualify_prompt_execution(
+            name=name,
+            execution=execution,
+            connection=connection,
+            controller=controller,
+            control=control,
+            state=state,
+            worker_image=worker_image,
+            command=command,
+            await_event=await_event,
+            host_processes=host_processes,
+            events=events,
+            report=report,
+            mode=prompt_mode,
+        )
+        if primary_controller("execution.list", {}) != original_primary:
+            raise RuntimeError("Native prompt changed primary Context executions")
+        return
     if owner_resume:
         qualify_owner_resume(
             name=name,

@@ -17,6 +17,9 @@ on:
       - 'host_runtime/python/thread_barrier.py'
       - 'host_runtime/python/child_gate.py'
       - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/python/prompt_replies.py'
+      - 'host_runtime/python/prompt_probe.py'
+      - 'scripts/v08_native_prompts.py'
       - 'host_runtime/build_admission_context.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
@@ -38,6 +41,9 @@ on:
       - 'host_runtime/python/thread_barrier.py'
       - 'host_runtime/python/child_gate.py'
       - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/python/prompt_replies.py'
+      - 'host_runtime/python/prompt_probe.py'
+      - 'scripts/v08_native_prompts.py'
       - 'host_runtime/build_admission_context.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
@@ -48,7 +54,7 @@ permissions:
 
 concurrency:
   group: v08-server-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   foundation:
