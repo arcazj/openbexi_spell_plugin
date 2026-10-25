@@ -191,6 +191,28 @@ def qualify_terminal_case(
                         "execution.command", dict(proof, command=native_command)
                     )["command_id"]
                 )
+        if case == "close-child":
+            # Original SPELL root CLOSE cannot finish while a Blocking=True
+            # StartProc child is still active. Never silently kill that child
+            # or infer family authority from the root grant. The same live
+            # owner must issue a fresh, independently checked CLOSE for the
+            # registered child member before root cleanup can be observed.
+            with closing(sqlite3.connect(state / "context.sqlite3")) as db:
+                children = db.execute(
+                    "SELECT id FROM child_admissions WHERE execution_id=? "
+                    "AND parent_admission_id IS NOT NULL AND state='CONSUMED'",
+                    (execution["id"],),
+                ).fetchall()
+            if len(children) != 1:
+                raise RuntimeError("Native CLOSE child has no unique consumed admission")
+            commands.append(
+                controller(
+                    "execution.command",
+                    dict(
+                        proof, command="CMD_CLOSE", target_admission_id=children[0][0]
+                    ),
+                )["command_id"]
+            )
         await_event([name], "native-terminal-observed", seconds=30)
         if command("docker", "wait", name, timeout=20) != "0":
             raise RuntimeError("Native terminal worker cleanup failed")
