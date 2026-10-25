@@ -53,10 +53,12 @@ def expect(probe, subject, path, status=200, method="GET", data=None, key=None):
     if body.get("schema") != "openbexi.listener/1":
         raise AssertionError("Expected certificate gateway -> Listener envelope")
     if path.startswith("/v1/contexts/"):
-        nested = body.get("result")
-        if not isinstance(nested, dict) or nested.get("schema") != "openbexi.context/1":
-            raise AssertionError("Context mTLS delegation envelope missing")
-        return nested["result"]
+        # Context.Route.call validates its internal schema and unwraps it
+        # before Listener wraps the result in openbexi.listener/1.
+        result = body.get("result")
+        if type(result) is not dict:
+            raise AssertionError("Context mTLS delegated result missing")
+        return result
     return body
 
 
@@ -67,9 +69,10 @@ def ready(probe):
         try:
             code, body = probe.call("alice", "GET", "/v1/contexts/A/health")
             if code == 200:
-                inner = body.get("result", {})
-                if (inner.get("schema") == "openbexi.context/1"
-                        and inner.get("result", {}).get("status") == "ready"):
+                if (
+                    body.get("schema") == "openbexi.listener/1"
+                    and body.get("result", {}).get("status") == "ready"
+                ):
                     return
             last_failure = "HTTP_" + str(code)
         except (OSError, TimeoutError, ssl.SSLError) as error:
