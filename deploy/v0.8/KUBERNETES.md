@@ -65,3 +65,27 @@ network partition qualification.
 real cluster/Pod identity qualification, dynamic worker admission, Pod UID
 fencing, node partition, storage restore/rollout/rollback, complete native
 mutation/barrier/effect proof and independent security review remain mandatory.
+
+
+## Disposable kind live-integration qualification
+
+The dedicated `v08-kubernetes-kind.yml` workflow creates a Kubernetes v1.32.2
+kind cluster using pinned kind source v0.27.0, builds both development images,
+loads them into the cluster, creates four **role-isolated Secrets** from new
+throwaway certificates outside Git, and deploys five bounded Pods. It probes
+the same full certificate-pinned gateway → Listener → separate Contexts as
+the Compose qualification, including three desktop principals, denied writes
+and scopes, independently restarted Context A, persistent SQLite and unchanged
+Context B. It runs DSS independently and deletes the disposable cluster.
+Only non-secret prelaunch receipts are retained.
+
+Default-deny ingress+egress is emitted **before** workloads to avoid an
+unprotected Pod-start interval. **Important:** kind's default `kindnet` CNI
+does not enforce Kubernetes NetworkPolicy. A passing kind workflow
+therefore verifies API acceptance of NetworkPolicy objects, **not actual
+packet isolation**. A NetworkPolicy-capable CNI and real cross-namespace
+denial probes remain required to qualify a production Kubernetes environment.
+No native Executor Pods or Pod UID fencing are yet provided.
+
+CI readiness requires this exact source's new Actions results; this section
+describes the test, not a claim that it passed until the workflow is green.

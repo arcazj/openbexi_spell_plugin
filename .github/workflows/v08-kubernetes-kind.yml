@@ -1,0 +1,87 @@
+name: v0.8 kind five-process prelaunch runtime smoke
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/v0.8/**'
+      - '.github/workflows/v08-kubernetes-kind.yml'
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - 'deploy/v0.8/**'
+      - '.github/workflows/v08-kubernetes-kind.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  kind-prelaunch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      V08_GATEWAY_PORT: '19443'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned kind CLI and create disposable local Kubernetes
+        run: |
+          set -euo pipefail
+          go install sigs.k8s.io/kind@v0.27.0
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          "$(go env GOPATH)/bin/kind" create cluster --name v08prelaunch --image kindest/node:v1.32.2 --wait 120s
+          kubectl get nodes
+      - name: Build isolated authority and independently packaged DSS images
+        run: |
+          set -euo pipefail
+          docker build -f deploy/v0.8/Dockerfile.server -t openbexi-spell-server:0.8.0.dev43-prelaunch .
+          docker build -f Dockerfile -t openbexi-spell-plugin-dss:0.1.0 .
+          kind load docker-image --name v08prelaunch openbexi-spell-server:0.8.0.dev43-prelaunch
+          kind load docker-image --name v08prelaunch openbexi-spell-plugin-dss:0.1.0
+      - name: Provision one-time isolated Kubernetes secrets and workloads
+        run: |
+          set -euo pipefail
+          echo "V08_DEPLOY_ROOT=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}" >> "$GITHUB_ENV"
+          python deploy/v0.8/provision.py --output "$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}"
+          mkdir -p .qualification/v08-kind
+          python deploy/v0.8/render_kubernetes.py --output .qualification/v08-kind/resources.json
+          kubectl create namespace openbexi-v08
+          for role in gateway listener context-a context-b; do
+            kubectl -n openbexi-v08 create secret generic "v08-$role-private" \
+              --from-file="ca.pem=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/ca.pem" \
+              --from-file="tls.crt=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/tls.crt" \
+              --from-file="tls.key=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/tls.key" \
+              --from-file="config.json=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/config.json"
+          done
+          kubectl apply -f .qualification/v08-kind/resources.json
+          for role in context-a context-b listener gateway dss; do
+            kubectl -n openbexi-v08 rollout status "deployment/$role" --timeout=180s
+          done
+      - name: Execute pinned-TLS multi-user and persistent-volume probes inside kind
+        run: |
+          set -euo pipefail
+          kubectl -n openbexi-v08 port-forward service/gateway 19443:9443 --address=127.0.0.1 >/tmp/v08-kind-port-forward.log 2>&1 &
+          relay=$!
+          trap 'kill "$relay" 2>/dev/null || true' EXIT
+          python deploy/v0.8/qualify_compose.py --root "$V08_DEPLOY_ROOT" \
+            --phase before --output .qualification/v08-kind/before.json
+          kubectl -n openbexi-v08 rollout restart deployment/context-a
+          kubectl -n openbexi-v08 rollout status deployment/context-a --timeout=180s
+          python deploy/v0.8/qualify_compose.py --root "$V08_DEPLOY_ROOT" \
+            --phase after --previous .qualification/v08-kind/before.json \
+            --output .qualification/v08-kind/after.json
+          kubectl -n openbexi-v08 exec deployment/dss -- python -I -c \
+            "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).status==200"
+      - name: Destroy ephemeral cluster
+        if: always()
+        run: |
+          kind delete cluster --name v08prelaunch || true
+      - name: Retain only redacted receipts, not private keys or rendered Secret
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-kind-prelaunch-${{ github.sha }}
+          path: .qualification/v08-kind/*.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -154,14 +154,15 @@ def resources():
                      "labels": {"openbexi-v08-scope": "prelaunch-only"}},
     }, service_account()]
     result += [pvc("v08-" + name + "-state") for name in (*CONTEXTS, "dss")]
-    for name, port in ROLES.items():
-        result.extend((deployment(name, port), service(name, port)))
-    # Namespace default-deny is essential. DNS is the only generic egress.
+    # Install the default deny *before* creating any workload, so even a
+    # fast-starting Pod cannot open an unrestricted egress/ingress window.
     result.append({
         "apiVersion": "networking.k8s.io/v1", "kind": "NetworkPolicy",
         "metadata": meta("v08-default-deny"),
         "spec": {"podSelector": {}, "policyTypes": ["Ingress", "Egress"]},
     })
+    for name, port in ROLES.items():
+        result.extend((deployment(name, port), service(name, port)))
     result.append(netpol("v08-dns-only", tuple(ROLES), egress=[{
         "to": [{"namespaceSelector": {"matchLabels": {
             "kubernetes.io/metadata.name": "kube-system"}},
@@ -225,6 +226,10 @@ def validate(items):
     assert all(o["spec"]["type"] == "ClusterIP" for o in items if o["kind"] == "Service")
     assert any(o["metadata"]["name"] == "v08-default-deny" and
                o["spec"]["policyTypes"] == ["Ingress", "Egress"] for o in items)
+    first_deployment = next(i for i, obj in enumerate(items) if obj["kind"] == "Deployment")
+    default_deny = next(i for i, obj in enumerate(items)
+                        if obj["metadata"]["name"] == "v08-default-deny")
+    assert default_deny < first_deployment
     assert not any(o["kind"] in ("Ingress", "RoleBinding", "ClusterRoleBinding",
                                  "DaemonSet", "Job") for o in items)
     return {"passed": True, "manifests": len(items), "namespace": NAMESPACE,
