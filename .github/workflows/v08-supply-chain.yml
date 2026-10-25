@@ -1,0 +1,74 @@
+name: v0.8 development Python supply chain inventory and known-vulnerability scan
+
+on:
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'scripts/qualify_v08_supply_chain.py'
+      - '.github/workflows/v08-supply-chain.yml'
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - 'server/**'
+      - 'scripts/qualify_v08_supply_chain.py'
+      - '.github/workflows/v08-supply-chain.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  python-dependency-inventory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Build a separate isolated runtime wheel (not stable distribution)
+        run: |
+          set -euo pipefail
+          mkdir -p .qualification/v08-supply-chain/wheels
+          python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-supply-chain/wheels
+          python -m venv .qualification/v08-supply-chain/runtime
+          .qualification/v08-supply-chain/runtime/bin/python -m pip install \
+            --no-deps .qualification/v08-supply-chain/wheels/openbexi_spell_server-0.8.0.dev43-py3-none-any.whl
+          .qualification/v08-supply-chain/runtime/bin/python -I -m openbexi_spell_server --help
+      - name: Install pinned audit tools separately from the runtime
+        run: |
+          set -euo pipefail
+          python -m venv .qualification/v08-supply-chain/audit
+          .qualification/v08-supply-chain/audit/bin/python -m pip install \
+            'pip-audit==2.10.1' 'cyclonedx-bom==7.5.0'
+      - name: Generate validated and reproducible runtime CycloneDX SBOM
+        run: |
+          set -euo pipefail
+          .qualification/v08-supply-chain/audit/bin/cyclonedx-py environment \
+            .qualification/v08-supply-chain/runtime/bin/python \
+            --output-reproducible --validate --output-format JSON \
+            --output-file .qualification/v08-supply-chain/runtime-sbom.json
+      - name: Fail on known vulnerabilities in the isolated installed environment
+        run: |
+          set -euo pipefail
+          .qualification/v08-supply-chain/audit/bin/pip-audit \
+            --path .qualification/v08-supply-chain/runtime/lib/python3.13/site-packages \
+            --vulnerability-service pypi --progress-spinner off \
+            --format json --desc off --aliases off \
+            --output .qualification/v08-supply-chain/python-vulnerabilities.json
+          python scripts/qualify_v08_supply_chain.py \
+            --root . \
+            --wheel .qualification/v08-supply-chain/wheels/openbexi_spell_server-0.8.0.dev43-py3-none-any.whl \
+            --sbom .qualification/v08-supply-chain/runtime-sbom.json \
+            --audit .qualification/v08-supply-chain/python-vulnerabilities.json \
+            --out .qualification/v08-supply-chain/summary.json
+      - name: Preserve executed scoped evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-python-supply-chain-${{ github.sha }}
+          path: |
+            .qualification/v08-supply-chain/runtime-sbom.json
+            .qualification/v08-supply-chain/python-vulnerabilities.json
+            .qualification/v08-supply-chain/summary.json
+          if-no-files-found: warn
+          retention-days: 30
