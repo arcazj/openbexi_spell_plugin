@@ -81,6 +81,42 @@ def validate_stopped(info, container_id, image):
         raise RuntimeError("Terminal container identity or clean exit differs")
 
 
+def retire_terminal_probe(
+    command, output, worker, context, probe_networks, names, networks
+):
+    # Run only after native cleanup and durable holds were independently checked.
+    # Each case keeps its own fresh Context, but completed cases must not consume
+    # the Docker daemon's finite default address pools for the rest of the cohort.
+    command("docker", "stop", "--time", "5", context)
+    for name in (worker, context):
+        info = json.loads(command("docker", "inspect", name))[0]
+        if info["State"]["Running"] or info["State"]["Pid"] != 0:
+            raise RuntimeError("Completed terminal probe still has a live container")
+        (output / (name + ".state.json")).write_text(
+            json.dumps(
+                dict(
+                    id=info["Id"],
+                    state=info["State"],
+                    image=info["Image"],
+                    memory_limit=info["HostConfig"]["Memory"],
+                    readonly_root=info["HostConfig"]["ReadonlyRootfs"],
+                ),
+                indent=2,
+            )
+            + "\n"
+        )
+        (output / (name + ".stdout.jsonl")).write_text(
+            command("docker", "logs", name) + "\n"
+        )
+    # No force removal: an unexpected live process makes qualification fail.
+    command("docker", "rm", worker, context)
+    names.remove(worker)
+    names.remove(context)
+    for network in probe_networks:
+        command("docker", "network", "rm", network)
+        networks.remove(network)
+
+
 def qualify_terminal_case(
     *,
     case,

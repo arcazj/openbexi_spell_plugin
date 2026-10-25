@@ -230,6 +230,7 @@ def qualify_consumption_fence(
     owner_commands=False,
     owner_resume=False,
     terminal_case=None,
+    terminal_evidence=None,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
@@ -253,6 +254,10 @@ def qualify_consumption_fence(
         else "worker-probe"
     )
     if terminal_case is not None:
+        if terminal_evidence is None:
+            raise ValueError(
+                "Terminal qualification requires a retained evidence directory"
+            )
         label = source_id = "terminal-" + terminal_case
         context_id = "T"
         worker_id = "worker-resume"
@@ -538,7 +543,7 @@ def qualify_consumption_fence(
     names.append(name)
     command(*args)
     if terminal_case is not None:
-        from v08_terminal_cohort import qualify_terminal_case
+        from v08_terminal_cohort import qualify_terminal_case, retire_terminal_probe
 
         qualify_terminal_case(
             case=terminal_case,
@@ -555,6 +560,15 @@ def qualify_consumption_fence(
         )
         if primary_controller("execution.list", {}) != original_primary:
             raise RuntimeError("Terminal cleanup changed unrelated executions")
+        retire_terminal_probe(
+            command,
+            terminal_evidence,
+            name,
+            context_name,
+            (network, context_network),
+            names,
+            networks,
+        )
         return
     if owner_resume:
         qualify_owner_resume(

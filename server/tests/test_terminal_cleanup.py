@@ -2,6 +2,7 @@
 
 import importlib.util
 import ast
+import json
 from pathlib import Path
 import os
 import select
@@ -94,3 +95,40 @@ def test_original_process_handle_distinguishes_live_from_exited():
             process.wait(timeout=5)
         for handle in handles:
             os.close(handle)
+
+
+def test_retirement_preserves_evidence_before_releasing_networks(tmp_path):
+    names, networks = ["worker", "context", "unrelated"], ["private", "control", "unrelated"]
+    calls = []
+
+    def command(*args):
+        calls.append(args)
+        if args[1] == "inspect":
+            return json.dumps(
+                [
+                    dict(
+                        Id=args[2],
+                        Image="exact-image",
+                        State=dict(Running=False, Pid=0, ExitCode=0),
+                        HostConfig=dict(Memory=768 * 1024 * 1024, ReadonlyRootfs=True),
+                    )
+                ]
+            )
+        if args[1] == "logs":
+            return '{"event":"retained"}'
+        if args[1] == "rm":
+            assert args == ("docker", "rm", "worker", "context")
+            for name in args[2:]:
+                assert (tmp_path / (name + ".state.json")).is_file()
+                assert "retained" in (tmp_path / (name + ".stdout.jsonl")).read_text()
+        return ""
+
+    cohort.retire_terminal_probe(
+        command, tmp_path, "worker", "context", ("private", "control"), names, networks
+    )
+    assert names == networks == ["unrelated"]
+    assert calls[0] == ("docker", "stop", "--time", "5", "context")
+    assert calls[-2:] == [
+        ("docker", "network", "rm", "private"),
+        ("docker", "network", "rm", "control"),
+    ]

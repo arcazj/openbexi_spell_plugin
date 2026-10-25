@@ -2058,6 +2058,7 @@ def main():
                     for case in CASES:
                         qualify_consumption_fence(
                             terminal_case=case,
+                            terminal_evidence=output,
                             temporary=temporary,
                             prefix=prefix,
                             context_image=context_image,
