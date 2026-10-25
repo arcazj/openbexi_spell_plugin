@@ -222,6 +222,22 @@ def test_pending_prompt_outcome_retains_reservations_after_process_exit(ledger, 
     assert release(ledger, pki, answer)[0] == 409
 
 
+@pytest.mark.parametrize("outcome", ["UNKNOWN", "FAILED"])
+def test_closed_but_unresolved_prompt_outcome_cannot_release(ledger, pki, outcome):
+    prompt = prompts.opened(ledger, pki)
+    assert (
+        prompts.worker(ledger, pki, "prompt-close", prompt_id=prompt["prompt_id"], outcome=outcome)[
+            0
+        ]
+        == 200
+    )
+    fence = begin(ledger, pki)
+    answer = complete(ledger, pki, fence)[1]["result"]
+    assert answer["state"] == "HELD"
+    assert "prompt_outcome_unresolved" in answer["report"]["reasons"]
+    assert release(ledger, pki, answer)[0] == 409
+
+
 def test_terminal_fence_retires_pending_transfer_without_giving_claimant_control(ledger, pki):
     pause = NativePauseBarrier(ledger["app"].authority)
     assert accept(ledger)[0]["state"] == "PAUSING"
@@ -306,6 +322,9 @@ def test_fence_stops_queued_commands_child_admission_and_startup_run(ledger, pki
     assert call(ledger, pki, ledger["grant"], "check")[0] == 403
     code, answer = complete(ledger, pki, fence)
     assert code == 200 and answer["result"]["state"] == "SETTLED"
+    assert answer["result"]["report"]["preserved_work_journals"]["native_owner_commands"] == {
+        "DELIVERY_UNPROVEN": 1
+    }
     assert release(ledger, pki, answer["result"])[0] == 200
     assert held(ledger) == 0
 

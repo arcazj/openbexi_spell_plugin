@@ -283,16 +283,25 @@ class TerminalSettlement:
         if digest(dict(members=members, children=children)) != row["roster_hash"]:
             reasons.append("family_roster_changed")
         expected = {""} | {c["id"] for c in children if c["state"] == "CONSUMED"}
+        origin = digest(json.loads(execution["start_binding"]))
         if (
             {m["target_id"] for m in members} != expected
-            or any(m["state"] != "REGISTERED_UNPROVEN" for m in members)
+            or any(
+                m["state"] != "REGISTERED_UNPROVEN" or m["origin_hash"] != origin for m in members
+            )
             or any(c["state"] not in {"ADMITTED", "CONSUMED"} for c in children)
+            or any(
+                c["origin_hash"] != origin or (c["parent_id"] or "") not in expected
+                for c in children
+            )
         ):
             reasons.append("family_membership_unresolved")
         if self.authority.native_prompts is None:
             reasons.append("prompt_journal_unavailable")
         elif self.store.db.execute(
-            "SELECT 1 FROM native_prompts WHERE execution_id=? AND state!='CLOSED'",
+            "SELECT 1 FROM native_prompts WHERE execution_id=? AND (state!='CLOSED' "
+            "OR outcome IS NULL OR outcome NOT IN "
+            "('ANSWER_SELECTED','CANCEL_SELECTED','TIMEOUT','TERMINAL_CANCELLED'))",
             (execution["id"],),
         ).fetchone():
             reasons.append("prompt_outcome_unresolved")
@@ -310,6 +319,7 @@ class TerminalSettlement:
             pending_native_work_retired=True,
             effects_settled=effects_settled,
             reservation_release_eligible=not reasons,
+            preserved_work_journals=self._work_journals(execution["id"]),
         )
         state = "HELD" if reasons else "SETTLED"
         self.store.db.execute(
@@ -334,6 +344,30 @@ class TerminalSettlement:
             ),
         )
         return self.snapshot(execution["id"])
+
+    def _work_journals(self, execution_id):
+        # Preserve original uncertainty instead of rewriting a queued/consumed
+        # command as successful. Container exit plus the durable authority fence
+        # retires its future execution, which is the terminal settlement claim.
+        result = {}
+        for table in (
+            "native_control_attempts",
+            "native_control_forwards",
+            "native_control_consumptions",
+            "native_owner_commands",
+            "native_prompt_replies",
+        ):
+            if self.store.db.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+                (table,),
+            ).fetchone():
+                result[table] = dict(
+                    self.store.db.execute(
+                        f"SELECT state,COUNT(*) FROM {table} WHERE execution_id=? GROUP BY state",
+                        (execution_id,),
+                    )
+                )
+        return result
 
     def _release(self, execution, body):
         row = self._record(execution["id"])
