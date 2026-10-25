@@ -17,7 +17,11 @@ both PR/push native cohorts and 551 hosted tests passed. Review subsequently
 found residual startup RUN permission after owner intents. Dev35 closes that
 permission; the PR native probes and 564 hosted tests passed. Its push failed
 earlier on the combined notification message. Dev36 corrects the lifetime
-notification cap; qualification is pending. All original failures are retained.
+notification cap; all PR/push service/native jobs and 569 hosted tests passed
+at `aa40430`. Component archive digests/CRCs, 31 repository inputs and 144
+compiled source units were verified. Full native mutation/queue/family barrier,
+new-owner resume and public IDE Run/Debug remain unfinished. All original
+failures remain retained, including the non-OOM startup issue.
 Existing component receipts do not qualify full family handoff/resume, joint
 IDE Run/Debug/browser, Kubernetes or deployed recovery.
 

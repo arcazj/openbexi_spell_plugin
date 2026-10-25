@@ -14,7 +14,7 @@ Authority checks live in [commands.py](../../server/src/openbexi_spell_server/co
 
 | Priority | Path | Current evidence / remaining work |
 |---|---|---|
-| P1 | Initial RUN versus fresh owner intent | Dev35 retires the exact member's startup lane under the shared execution/SQL order. Nine regressions fail dev34; PR native unused-permission rejection passed. Full reliability and all other mutations remain unqualified. |
+| P1 | Initial RUN versus fresh owner intent | Dev35 retires the exact member's startup lane under the shared execution/SQL order. Nine regressions fail dev34; Dev36 PR/push native unused-permission rejection passed. Full reliability and all other mutations remain unqualified. |
 | P1 | `SPELLserverCif::processMessageCommand`: ABORT | `cancelPrompt()` can complete the transition before the controller sees a command. Admission must precede prompt wakeup; checking only `executeCommand` is insufficient. |
 | P1 | Same method: CLOSE/BLOCK | `setClosing()` changes IPC behavior before controller consumption; BLOCK returns without entering that controller. Require an exact early admitted transition and separate termination/hold proof. |
 | P1 | `SPELLserverCif::processMessage`: prompt answer/cancel | Both paths occur before the ordinary procedure-target check. Bind prompt identity, original member, owner connection/epoch and answer digest; reject late/copied/observer answers before wakeup. |

@@ -164,5 +164,11 @@ count. Unadmitted child OPEN messages remain fatal. Finished fixture diagnostics
 include the notification count; no total-traffic cap is used as occupancy proof.
 Five regressions cover a 5120-message stream without loss, yielding under
 backlog, fatal connection failure and both admitted/unadmitted child OPEN.
-Hosted integration remains required. This is a private harness correction,
+Dev36 at `aa40430` passed all eight PR/push service/native jobs and the portable
+subset. The hosted service suite passed 569 tests without skips/errors/failures.
+The native family and both owner probes passed; their archive SHA/CRC, 31
+repository source inputs and 144 compiled units were verified. See
+`dev36-family.json` and `dev36-foundation.json`. Historical failures are retained;
+the prior combined notification error still cannot prove which old branch fired.
+This is a private harness correction,
 not production sustained-load or full-family qualification.

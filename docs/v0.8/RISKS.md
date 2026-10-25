@@ -53,8 +53,9 @@
 14. Dev35 push failed before child-running quorum with a combined notification
     capacity/connection error. The old 2048 lifetime cap independently rejects
     normal drained traffic. Dev36 bounds work per pump, preserves queue capacity
-    and fails real connection errors separately; native requalification remains
-    mandatory. This does not establish sustained-load or all-family semantics.
+    and fails real connection errors separately; native PR/push requalification passed at aa40430. The old combined failure
+    still cannot identify its exact branch. This does not establish sustained-
+    load or all-family semantics.
 
 Any dual controller, observer mutation, accepted stale epoch, duplicate active
 logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
