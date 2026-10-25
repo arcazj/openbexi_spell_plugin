@@ -5,7 +5,11 @@
 
 static bool v08_command_supported(const std::string& id)
 {
-    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE";
+    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE"
+#ifdef OPENBEXI_V08_TERMINAL_COMMANDS
+        || id == "CMD_ABORT" || id == "CMD_CLOSE"
+#endif
+        ;
 }
 
 static bool v08_message_disabled(const std::string& id, bool redirected)

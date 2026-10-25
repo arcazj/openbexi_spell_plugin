@@ -58,11 +58,19 @@ class Route:
             ("/v1/worker/control-forward", "openbexi.worker/2"),
             ("/v1/worker/control-consume", "openbexi.worker/2"),
             ("/v1/worker/member-bind", "openbexi.worker/2"),
+            ("/v1/worker/prompt-open", "openbexi.worker/2"),
+            ("/v1/worker/prompt-poll", "openbexi.worker/2"),
+            ("/v1/worker/prompt-forward", "openbexi.worker/2"),
+            ("/v1/worker/prompt-consume", "openbexi.worker/2"),
+            ("/v1/worker/prompt-close", "openbexi.worker/2"),
+            ("/v1/worker/prompt-report", "openbexi.worker/2"),
             ("/v1/worker/command-poll", "openbexi.worker/2"),
             ("/v1/worker/command-forward", "openbexi.worker/2"),
             ("/v1/worker/command-consume", "openbexi.worker/2"),
             ("/v1/worker/command-report", "openbexi.worker/2"),
             ("/v1/worker/command-disposition", "openbexi.worker/2"),
+            ("/v1/worker/terminal-consume", "openbexi.worker/2"),
+            ("/v1/worker/terminal-event", "openbexi.worker/2"),
         ):
             raise ValueError("Unconfigured RPC route")
         # A driver operation can use up to 3s before its bounded response is

@@ -18,13 +18,16 @@ from openbexi_spell_server.preflight import canonical_uuid
 
 
 class NativeRunJournal:
-    def __init__(self, session, request, route, children):
+    def __init__(self, session, request, route, children, *, terminal=False):
         self.session, self.request, self.route, self.children = (
             session,
             request,
             route,
             children,
         )
+        if type(terminal) is not bool:
+            raise ValueError("Explicit terminal profile required")
+        self.terminal = terminal
         self.original = session.request
         self.grant = start_grant(request["grant"])
         self.attempted = set()
@@ -182,7 +185,7 @@ class NativeRunJournal:
         return "command"
 
     def dispatch_owner(self, value):
-        grant = owner_command_grant(value)
+        grant = owner_command_grant(value, allow_terminal=self.terminal)
         if any(
             getattr(grant, key) != getattr(self.grant, key)
             for key in (
@@ -271,6 +274,8 @@ class NativeRunJournal:
             raise ValueError("Owner command receipt differs")
 
     def _owner_phase(self, body, stage):
+        if stage == "consume" and body.get("command") in {"CMD_ABORT", "CMD_CLOSE"}:
+            raise ValueError("Native terminal early consumption is required")
         expected_schema = (
             "openbexi.native-control/1"
             if stage == "forward"
@@ -308,6 +313,58 @@ class NativeRunJournal:
             (self.owner_forwarded if stage == "forward" else self.owner_consumed).add(
                 grant.command_id
             )
+
+    def consume_terminal(self, body):
+        """Pinned Executor request before CIF cancelPrompt/setClosing side effects."""
+        exact(
+            body,
+            {
+                "schema",
+                "request_id",
+                "instance_id",
+                "command",
+                "native_status",
+                "prompt_id",
+            },
+        )
+        canonical_uuid(body["request_id"])
+        if body["prompt_id"] is not None:
+            canonical_uuid(body["prompt_id"])
+        if (
+            not self.terminal
+            or body["schema"] != "openbexi.native-terminal-consume/1"
+            or body["command"] not in {"CMD_ABORT", "CMD_CLOSE"}
+        ):
+            raise ValueError("Native terminal profile/command differs")
+        with self.lock:
+            known = self.owner_operations.get(body["request_id"])
+            if known is None:
+                raise ValueError("Native terminal command was not owner-admitted")
+            target, grant = known
+            if (
+                target != body["instance_id"]
+                or grant.command != body["command"]
+                or grant.command_id not in self.owner_forwarded
+                or grant.command_id in self.owner_consume_attempted
+            ):
+                raise ValueError(
+                    "Native terminal original identity or consumption differs"
+                )
+            # Record BEFORE the one physical RPC, including response loss.
+            self.owner_consume_attempted.add(grant.command_id)
+        reply = self.route.call(
+            {
+                **self.request,
+                "command_grant": asdict(grant),
+                "native_status": body["native_status"],
+                "prompt_id": body["prompt_id"],
+            },
+            path="/v1/worker/terminal-consume",
+            schema="openbexi.worker/2",
+        )
+        self._owner_receipt(grant, reply, {"EXECUTION_UNPROVEN"})
+        with self.lock:
+            self.owner_consumed.add(grant.command_id)
 
     def forward(self, body):
         """Authenticated native Context callback, before its Executor IPC send."""

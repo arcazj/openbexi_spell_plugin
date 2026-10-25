@@ -470,6 +470,9 @@ def run(config):
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
+    prompt_profile = type(config) is dict and "native_prompt_gate" in config
+    terminal_profile = type(config) is dict and "native_terminal_gate" in config
+    step1_profile = type(config) is dict and "native_step1_probe" in config
     exact(
         config,
         fields
@@ -478,7 +481,10 @@ def run(config):
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
-        | ({"native_owner_resume_probe"} if owner_resume else set()),
+        | ({"native_owner_resume_probe"} if owner_resume else set())
+        | ({"native_prompt_gate"} if prompt_profile else set())
+        | ({"native_terminal_gate"} if terminal_profile else set())
+        | ({"native_step1_probe"} if step1_profile else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -511,6 +517,32 @@ def run(config):
         or consumption_probe
     ):
         raise ValueError("Owner resume requires its separate private native candidate")
+    if prompt_profile and (
+        config["native_prompt_gate"] is not True
+        or not child_profile
+        or consumption_probe
+        or owner_probe
+        or owner_resume
+    ):
+        raise ValueError("Native prompts require a separate private child profile")
+    if prompt_profile:
+        build_receipt = json.loads(Path("/opt/v08-native-home/build.json").read_text())
+        if build_receipt.get("native_prompt_hooks") is not True:
+            raise ValueError("Native prompt hooks are absent from the checked build")
+    if terminal_profile:
+        if not prompt_profile or config["native_terminal_gate"] is not True:
+            raise ValueError(
+                "Native terminal commands require private prompt coordination"
+            )
+        if build_receipt.get("native_terminal_hooks") is not True:
+            raise ValueError("Native terminal hooks are absent from the checked build")
+    if step1_profile:
+        if not terminal_profile:
+            raise ValueError("Step 1 test profile requires all native terminal hooks")
+        from step1_probe import CASES
+
+        if config["native_step1_probe"] not in CASES:
+            raise ValueError("Unknown Step 1 qualification scenario")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -611,7 +643,15 @@ def run(config):
                     "severity": settings.get("Severity", 8),
                     "scope": settings.get("Scope", 1),
                 },
-                path="/v1/worker/event",
+                path=(
+                    "/v1/worker/terminal-event"
+                    if terminal_profile
+                    and any(
+                        original.message.startswith(f"Procedure {phase}: ")
+                        for phase in ("started", "finished")
+                    )
+                    else "/v1/worker/event"
+                ),
                 schema="openbexi.worker/2",
             )
             if answer != dict(
@@ -667,6 +707,7 @@ def run(config):
     count = 0
     admission = None
     child_gate = None
+    prompts = None
     children = None
     if child_profile:
         sys.path.insert(0, "/v08")
@@ -688,7 +729,13 @@ def run(config):
         )
         lifecycle = NativeLifecycleReceipts()
         children = ChildProcedures(session.instance, admit_hidden=True)
-        controls = NativeRunJournal(session, request, route, child_gate)
+        controls = NativeRunJournal(
+            session, request, route, child_gate, terminal=terminal_profile
+        )
+        if prompt_profile:
+            from prompt_replies import NativePromptAgent
+
+            prompts = NativePromptAgent(controls)
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
@@ -717,6 +764,7 @@ def run(config):
             lambda: session.process,
             child_gate,
             controls=controls,
+            prompts=prompts,
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
@@ -823,6 +871,26 @@ def run(config):
                 writable.write(b"probe")
                 writable.flush()
             emit("native-consumption-probe-ready", writable_marker_directory=True)
+        if step1_profile:
+            from step1_probe import run as run_step1, failure_diagnostic
+
+            try:
+                run_step1(
+                    config["native_step1_probe"],
+                    session=session,
+                    controls=controls,
+                    prompts=prompts,
+                    admission=admission,
+                    children=children,
+                    child_gate=child_gate,
+                    lifecycle=lifecycle,
+                    pump=pump,
+                    emit=emit,
+                )
+            except BaseException:
+                failure_diagnostic(session, request, emit)
+                raise
+            return
         if owner_probe:
             owner_step_probe(session, controls, admission, consume_fenced, pump)
             return
@@ -887,6 +955,8 @@ def run(config):
         position_count = 0
         while time.monotonic() < deadline:
             pump()
+            if prompts is not None:
+                prompts.poll()
             if children is not None:
                 children.service(session)
                 for instance in list(children.children):

@@ -2,6 +2,9 @@
 // Private candidate only. Original v0.7 binaries are preserved.
 #include "admission_ipc.H"
 #include "mutation_policy.H"
+#ifdef OPENBEXI_V08_TERMINAL_COMMANDS
+#include "terminal_gate.H"
+#endif
 #include <fcntl.h>
 #include <cstdio>
 #include <atomic>
@@ -69,6 +72,14 @@ static void v08_consume_native_run(const std::string& instance, const ExecutorCo
     // Original native internal safety commands are not owner commands.
     if (v08_external_command_disabled(command.id, command.v08External))
         throw std::runtime_error("Native external mutation denied");
+#ifdef OPENBEXI_V08_TERMINAL_COMMANDS
+    if (command.v08External && v08_terminal_command(command.id)) {
+        // The one-use Context grant was consumed BEFORE CIF prompt/closing
+        // effects. A copied/replayed mailbox item cannot claim this ticket twice.
+        v08_claim_terminal(instance, command.id, command.v08Request);
+        return;
+    }
+#endif
     if (command.id != "CMD_RUN" &&
         (!(command.id == "CMD_STEP" || command.id == "CMD_PAUSE") || !command.v08External)) return;
     if (command.v08Request.empty())

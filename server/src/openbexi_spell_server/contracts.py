@@ -11,6 +11,7 @@ from dataclasses import dataclass
 MAX_BODY = 65536
 MAX_DEPTH = 16
 OWNER_COMMANDS = frozenset({"CMD_RUN", "CMD_STEP", "CMD_PAUSE"})
+TERMINAL_COMMANDS = frozenset({"CMD_ABORT", "CMD_CLOSE"})
 PERMISSIONS = frozenset(
     {
         "context:read",
@@ -151,7 +152,16 @@ def envelope(context, subject, method, payload, key=None):
     )
 
 
-def validate_envelope(value, context, *, now=None, allow_launch=False, allow_commands=False):
+def validate_envelope(
+    value,
+    context,
+    *,
+    now=None,
+    allow_launch=False,
+    allow_commands=False,
+    allow_prompts=False,
+    allow_terminal_commands=False,
+):
     exact(
         value,
         {
@@ -195,6 +205,7 @@ def validate_envelope(value, context, *, now=None, allow_launch=False, allow_com
         method not in METHODS
         and not (allow_launch and method == "execution.start")
         and not (allow_commands and method == "execution.command")
+        and not (allow_prompts and method == "execution.prompt.reply")
     ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
@@ -215,9 +226,14 @@ def validate_envelope(value, context, *, now=None, allow_launch=False, allow_com
             raise Fault(400, "invalid_event_cursor")
         if type(payload["limit"]) is not int or not 1 <= payload["limit"] <= 32:
             raise Fault(400, "invalid_event_page_size")
+    elif allow_prompts and method == "execution.prompt.reply":
+        from .prompts import validate_reply_payload
+
+        identifier(value["idempotency_key"])
+        validate_reply_payload(value["payload"])
     elif allow_commands and method == "execution.command":
         identifier(value["idempotency_key"])
-        validate_owner_command_payload(value["payload"])
+        validate_owner_command_payload(value["payload"], allow_terminal=allow_terminal_commands)
     elif method in AUTHORITY_MUTATIONS or (allow_launch and method == "execution.start"):
         identifier(value["idempotency_key"])
         validate_authority_payload(method, value["payload"])
@@ -304,11 +320,12 @@ def validate_authority_payload(method, body):
     return body
 
 
-def validate_owner_command_payload(body):
+def validate_owner_command_payload(body, *, allow_terminal=False):
     proof = AUTHORITY_FIELDS["execution.start"]
     exact(body, proof | {"target_admission_id", "command"})
     validate_authority_payload("execution.start", {key: body[key] for key in proof})
-    if type(body["command"]) is not str or body["command"] not in OWNER_COMMANDS:
+    allowed = OWNER_COMMANDS | TERMINAL_COMMANDS if allow_terminal else OWNER_COMMANDS
+    if type(body["command"]) is not str or body["command"] not in allowed:
         raise Fault(403, "owner_command_unqualified")
     target = body["target_admission_id"]
     if target is not None:

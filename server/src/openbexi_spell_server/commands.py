@@ -15,6 +15,7 @@ from .authority import secret_hash
 from .contracts import (
     Fault,
     OWNER_COMMANDS,
+    TERMINAL_COMMANDS,
     canonical,
     digest,
     exact,
@@ -48,12 +49,13 @@ class OwnerCommandGrant:
     token: str
 
 
-def owner_command_grant(value):
+def owner_command_grant(value, *, allow_terminal=False):
     exact(value, {field.name for field in fields(OwnerCommandGrant)})
     if (
         value["schema"] != "openbexi.owner-command/1"
         or type(value["command"]) is not str
-        or value["command"] not in OWNER_COMMANDS
+        or value["command"]
+        not in (OWNER_COMMANDS | TERMINAL_COMMANDS if allow_terminal else OWNER_COMMANDS)
     ):
         raise Fault(403, "owner_command_unqualified")
     for key in ("authority_incarnation", "execution_id", "connection_id", "command_id"):
@@ -77,7 +79,10 @@ def owner_command_grant(value):
 
 
 class NativeOwnerCommands:
-    def __init__(self, authority):
+    def __init__(self, authority, *, terminal=False):
+        if type(terminal) is not bool:
+            raise ValueError("Explicit terminal profile required")
+        self.terminal = terminal
         self.authority, self.store = authority, authority.store
         if authority.native_controls is None or authority.native_commands is not None:
             raise ValueError("Owner commands require one native control/member coordinator")
@@ -101,6 +106,16 @@ class NativeOwnerCommands:
             )
             if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 16:
                 self.store.db.execute("PRAGMA user_version=16")
+            # A retained terminal intent also fences subsequent driver writes and
+            # child/initial-RUN admission. Restart NEVER removes it or restores a token.
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_terminal_intents("
+                "command_id TEXT PRIMARY KEY, execution_id TEXT NOT NULL, target_id TEXT NOT NULL,"
+                "command TEXT NOT NULL,native_status TEXT NOT NULL,prompt_id TEXT,"
+                "UNIQUE(execution_id,target_id,command))"
+            )
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 18:
+                self.store.db.execute("PRAGMA user_version=18")
         authority.native_commands = self
 
     def _permissions(self, owner, command):
@@ -113,6 +128,10 @@ class NativeOwnerCommands:
 
     def _live(self, command, execution):
         self._permissions(command["owner"], command["command"])
+        if command["command"] in TERMINAL_COMMANDS and not self.terminal:
+            raise Fault(403, "terminal_command_profile_disabled")
+        if command["command"] in OWNER_COMMANDS and self.effects_fenced(execution["id"]):
+            raise Fault(403, "terminal_intent_retained")
         self.authority._session(command["owner"], command["connection_id"])
         if (
             execution["lifecycle"] != "STARTING"
@@ -142,7 +161,7 @@ class NativeOwnerCommands:
     def enqueue(self, subject, key, payload):
         self.authority._require(subject, "execution:control")
         identifier(key)
-        validate_owner_command_payload(payload)
+        validate_owner_command_payload(payload, allow_terminal=self.terminal)
         self._permissions(subject, payload["command"])
         with self.authority._execution_lock(payload["execution_id"]):
             with self.store.transaction():
@@ -150,6 +169,10 @@ class NativeOwnerCommands:
                 execution = self.authority._owner(subject, payload)
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "owner_command_runtime_unavailable")
+                # Native terminal admission is one-way. A new request ID must not
+                # turn uncertainty into an automatic second physical attempt.
+                if payload["command"] in OWNER_COMMANDS and self.effects_fenced(execution["id"]):
+                    raise Fault(403, "terminal_intent_retained")
                 # Live owner/session/policy proof precedes historical replay.
                 replay = self.authority._replay(subject, "execution.command", key, payload)
                 if replay is not None:
@@ -311,6 +334,10 @@ class NativeOwnerCommands:
         return execution, command
 
     def advance(self, original, grant, stage):
+        if grant.command in TERMINAL_COMMANDS and (not self.terminal or stage == "consume"):
+            # Terminal authorization MUST occur at the CIF, before cancelPrompt
+            # or setClosing, not at the later controller handler.
+            raise Fault(403, "terminal_early_consumption_required")
         expected, state = {
             "forward": ("DELIVERY_UNPROVEN", "FORWARD_UNPROVEN"),
             "consume": ("FORWARD_UNPROVEN", "EXECUTION_UNPROVEN"),
@@ -330,6 +357,108 @@ class NativeOwnerCommands:
                     dict(execution_id=original.execution_id, command_id=grant.command_id),
                 )
                 return self._receipt(grant, state)
+
+    def effects_fenced(self, execution_id):
+        """Retained terminal intent is a deny-only fence, never cleanup proof."""
+        return (
+            self.store.db.execute(
+                "SELECT 1 FROM native_terminal_intents WHERE execution_id=? LIMIT 1",
+                (execution_id,),
+            ).fetchone()
+            is not None
+        )
+
+    def consume_terminal(self, original, grant, native_status, prompt_id):
+        """Atomic one-use authorization before the original CIF's first effect.
+
+        Only the authenticated worker relay calls this, on a pinned original
+        native Executor callback. Status/prompt values are not controller input.
+        Cryptographic grant token + canonical binding, live owner, exact member,
+        previous Context forwarding and SQL state consumption are all mandatory.
+        """
+        if not self.terminal or grant.command not in TERMINAL_COMMANDS:
+            raise Fault(403, "terminal_command_profile_disabled")
+        if type(native_status) is not str or native_status not in {
+            "LOADED",
+            "PAUSED",
+            "RUNNING",
+            "WAITING",
+            "PROMPT",
+            "INTERRUPTED",
+            "FINISHED",
+            "ERROR",
+            "ABORTED",
+        }:
+            raise Fault(403, "terminal_native_status_invalid")
+        if prompt_id is not None:
+            canonical_uuid(prompt_id)
+        with self.authority._execution_lock(original.execution_id):
+            with self.store.transaction():
+                execution, command = self._bound(original, grant)
+                self._live(command, execution)
+                if command["state"] != "FORWARD_UNPROVEN":
+                    raise Fault(409, "terminal_command_phase_conflict")
+                if grant.command == "CMD_CLOSE":
+                    if (
+                        native_status not in {"FINISHED", "ERROR", "ABORTED"}
+                        or prompt_id is not None
+                    ):
+                        raise Fault(409, "terminal_close_requires_terminal_state")
+                elif native_status in {"FINISHED", "ERROR", "ABORTED"}:
+                    raise Fault(409, "terminal_abort_already_terminal")
+                prompts = self.authority.native_prompts
+                if prompts is None:
+                    raise Fault(403, "terminal_prompt_coordinator_required")
+                pending = self.store.db.execute(
+                    "SELECT * FROM native_prompts WHERE execution_id=? AND target_id=? AND state='OPEN'",
+                    (original.execution_id, grant.target_admission_id or ""),
+                ).fetchone()
+                if (pending is None) != (prompt_id is None) or (
+                    pending is not None
+                    and (
+                        pending["prompt_id"] != prompt_id
+                        or pending["origin_hash"] != grant.runtime_origin_hash
+                        or pending["member_hash"] != grant.member_binding_hash
+                    )
+                ):
+                    raise Fault(403, "terminal_pending_prompt_mismatch")
+                if native_status == "PROMPT" and prompt_id is None:
+                    raise Fault(403, "terminal_pending_prompt_required")
+                if self.store.db.execute(
+                    "SELECT 1 FROM native_terminal_intents WHERE execution_id=? AND target_id=? AND command=?",
+                    (original.execution_id, grant.target_admission_id or "", grant.command),
+                ).fetchone():
+                    raise Fault(409, "terminal_command_already_attempted")
+                self.store.db.execute(
+                    "INSERT INTO native_terminal_intents VALUES(?,?,?,?,?,?)",
+                    (
+                        grant.command_id,
+                        original.execution_id,
+                        grant.target_admission_id or "",
+                        grant.command,
+                        native_status,
+                        prompt_id,
+                    ),
+                )
+                changed = self.store.db.execute(
+                    "UPDATE native_owner_commands SET state='EXECUTION_UNPROVEN' WHERE command_id=? AND state='FORWARD_UNPROVEN'",
+                    (grant.command_id,),
+                ).rowcount
+                if changed != 1:
+                    raise Fault(409, "terminal_command_phase_conflict")
+                self.store._event(
+                    "NATIVE_TERMINAL_ADMISSION_CONSUMED",
+                    dict(
+                        execution_id=original.execution_id,
+                        command_id=grant.command_id,
+                        command=grant.command,
+                        native_status=native_status,
+                        prompt_id=prompt_id,
+                    ),
+                )
+                # No token is returned, and no hold, spent worker, owner or epoch
+                # is changed. Lost acknowledgment cannot be retried or rebound.
+                return self._receipt(grant, "EXECUTION_UNPROVEN")
 
     @staticmethod
     def _receipt(grant, state):

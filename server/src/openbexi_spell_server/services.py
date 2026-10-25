@@ -42,6 +42,7 @@ class Context:
         native_children=None,
         native_controls=None,
         native_commands=None,
+        native_prompts=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -93,12 +94,27 @@ class Context:
             from .control import NativeControlJournal
 
             NativeControlJournal(self.authority, catalog=self.catalog)
-        if native_commands not in (None, "owner-queue"):
+        if native_commands not in (None, "owner-queue", "owner-terminal-candidate"):
             raise ValueError("Unsupported native owner command profile")
         if native_commands is not None:
             from .commands import NativeOwnerCommands
 
-            NativeOwnerCommands(self.authority)
+            if (
+                native_commands == "owner-terminal-candidate"
+                and native_prompts != "owner-reply-candidate"
+            ):
+                raise ValueError("Terminal commands require native prompt coordination")
+            NativeOwnerCommands(
+                self.authority, terminal=native_commands == "owner-terminal-candidate"
+            )
+        if native_prompts not in (None, "owner-reply-candidate"):
+            raise ValueError("Unsupported private prompt profile")
+        if native_prompts is not None:
+            if self.launch is None:
+                raise ValueError("Prompt replies require the retained worker profile")
+            from .prompts import NativePromptReplies
+
+            NativePromptReplies(self.authority)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -141,11 +157,19 @@ class Context:
                     "/v1/worker/control-forward",
                     "/v1/worker/control-consume",
                     "/v1/worker/member-bind",
+                    "/v1/worker/prompt-open",
+                    "/v1/worker/prompt-poll",
+                    "/v1/worker/prompt-forward",
+                    "/v1/worker/prompt-consume",
+                    "/v1/worker/prompt-close",
+                    "/v1/worker/prompt-report",
                     "/v1/worker/command-poll",
                     "/v1/worker/command-forward",
                     "/v1/worker/command-consume",
                     "/v1/worker/command-report",
                     "/v1/worker/command-disposition",
+                    "/v1/worker/terminal-consume",
+                    "/v1/worker/terminal-event",
                 )
                 else self.preflight
             )
@@ -164,6 +188,9 @@ class Context:
             self.store.context_id,
             allow_launch=self.launch is not None,
             allow_commands=self.authority.native_commands is not None,
+            allow_terminal_commands=self.authority.native_commands is not None
+            and self.authority.native_commands.terminal,
+            allow_prompts=self.authority.native_prompts is not None,
         )
         actor = self.subjects.get(request["subject"])
         if actor is None:
@@ -174,7 +201,7 @@ class Context:
             "execution:start"
             if action == "execution.start"
             else "execution:control"
-            if action == "execution.command"
+            if action in ("execution.command", "execution.prompt.reply")
             else METHODS[action]
         )
         if action == "health":
@@ -206,6 +233,11 @@ class Context:
                 "hold_retained": True,
                 "runtime_enabled": False,
             }
+        elif action == "execution.prompt.reply":
+            prompts = self.authority.native_prompts
+            if prompts is None:
+                raise Fault(404, "prompt_profile_unconfigured")
+            result = prompts.enqueue(actor.subject, request["idempotency_key"], request["payload"])
         elif action == "execution.command":
             commands = self.authority.native_commands
             if commands is None:

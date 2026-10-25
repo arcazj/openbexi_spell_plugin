@@ -361,6 +361,7 @@ class NativeAdmissionServer:
         gate,
         *,
         controls=None,
+        prompts=None,
         executor=None,
         report=lambda *_args, **_kwargs: None,
     ):
@@ -372,6 +373,7 @@ class NativeAdmissionServer:
         self.gate = gate
         self.report = report
         self.controls = controls
+        self.prompts = prompts
         self.executor = (
             None if executor is None else Path(executor).resolve(strict=True)
         )
@@ -499,8 +501,42 @@ class NativeAdmissionServer:
         self.member_pids[pid] = instance
 
     def dispatch(self, role, instance, body):
+        schema = body.get("schema")
+        if schema in {
+            "openbexi.native-prompt-open/1",
+            "openbexi.native-prompt-consume/1",
+            "openbexi.native-prompt-close/1",
+            "openbexi.native-prompt-declare/1",
+        }:
+            prompts = getattr(self, "prompts", None)
+            if (
+                role != "executor"
+                or body.get("instance_id") != instance
+                or prompts is None
+            ):
+                raise ValueError("Native prompt origin or private profile denied")
+            method = {
+                "openbexi.native-prompt-open/1": prompts.register,
+                "openbexi.native-prompt-declare/1": prompts.declare,
+                "openbexi.native-prompt-consume/1": prompts.consume,
+                "openbexi.native-prompt-close/1": prompts.close,
+            }[schema]
+            method(body)
+            self.report("native-prompt-protocol-acknowledged")
+            return
         if role != "executor" and body.get("schema") == "openbexi.native-denied/1":
             raise ValueError("Native denied diagnostic role differs")
+        if body.get("schema") == "openbexi.native-terminal-consume/1":
+            if (
+                role != "executor"
+                or body.get("instance_id") != instance
+                or self.controls is None
+                or not self.controls.terminal
+            ):
+                raise ValueError("Native terminal origin or private profile denied")
+            self.controls.consume_terminal(body)
+            self.report("native-terminal-admission-consumed", command=body["command"])
+            return
         if role == "executor":
             if body.get("schema") == "openbexi.native-denied/1":
                 exact(body, {"schema", "instance_id", "operation"})
