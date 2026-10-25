@@ -85,5 +85,23 @@ def patch_terminal_tree(source):
         "    if (!v08_command_supported(msg.getId())) {",
         "    if (!v08_command_supported(msg.getId()) || v08_terminal_command(msg.getId())) {",
     )
+    controller = source / "lib/SPELL_EXC/src/SPELLcontroller.C"
+    controller_text = controller.read_text()
+    close_entry = (
+        "void SPELLcontroller::doClose()\n{\n"
+        '    DEBUG("[C] Do close");\n    m_finished = true;\n'
+    )
+    if controller_text.count(close_entry) != 1:
+        raise ValueError("Native terminal close handler differs")
+    controller_text = controller_text.replace(
+        close_entry,
+        close_entry
+        + """    // Like ABORT/FINISH, CLOSE must release a scheduler wait (including
+    // blocking StartProc) before finalization. doContinue only releases the
+    // controller stepping gate and cannot wake the scheduler's language lock.
+    SPELLexecutor::instance().getScheduler().abortWait( false );
+""",
+    )
     header.write_text(head)
     unit.write_text(text)
+    controller.write_text(controller_text)

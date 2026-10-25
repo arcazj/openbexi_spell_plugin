@@ -179,6 +179,31 @@ def test_terminal_settles_existing_prompt_and_fences_delivered_answer(
     ) == ("CLOSED", "TERMINAL_CANCELLED")
 
 
+def test_explicit_child_close_targets_only_consumed_registered_direct_child(terminal, family, pki):
+    cohort = native_boundary.load(ROOT / "scripts/v08_terminal_cohort.py", "child_close_cohort")
+    db = family["store"].db
+    execution_id = family["grant"].execution_id
+    child = owner.members.families.admit(family, pki)[1]["result"]["child_grant"]
+    with pytest.raises(RuntimeError, match="no unique"):
+        cohort.direct_child_target(db, execution_id)
+    assert owner.members.families.consume(family, pki, child)[0] == 200
+    with pytest.raises(RuntimeError, match="no unique"):
+        cohort.direct_child_target(db, execution_id)
+    assert (
+        owner.members.bind(
+            family,
+            pki,
+            owner.members.member(
+                target_admission_id=child["admission_id"], instance_id="child#0", pid=1235
+            ),
+        )[0]
+        == 200
+    )
+    assert cohort.direct_child_target(db, execution_id) == child["admission_id"]
+    with pytest.raises(RuntimeError, match="no unique"):
+        cohort.direct_child_target(db, str(uuid.uuid4()))
+
+
 def test_terminal_overlay_precedes_real_prompt_and_close_effects(native_sources, tmp_path):
     _, _, enabled, _ = native_sources
     root = tmp_path / "source"
@@ -186,6 +211,7 @@ def test_terminal_overlay_precedes_real_prompt_and_close_effects(native_sources,
     spec = importlib.util.spec_from_file_location(
         "terminal_patch", ROOT / "host_runtime/native_terminal_patch.py"
     )
+
     patcher = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(patcher)
     patcher.patch_terminal_tree(root)
@@ -196,6 +222,81 @@ def test_terminal_overlay_precedes_real_prompt_and_close_effects(native_sources,
     assert body.index("v08_admit_terminal(") < body.index(".command(cmd, true)")
     with pytest.raises(ValueError, match="declaration differs"):
         patcher.patch_terminal_tree(root)
+
+
+def test_composed_close_wakes_blocking_child_wait(native_sources, tmp_path):
+    _, _, enabled, _ = native_sources
+    root = tmp_path / "source"
+    shutil.copytree(enabled, root)
+    controller = root / "lib/SPELL_EXC/src/SPELLcontroller.C"
+    original = native_boundary.method(controller.read_text(), "void SPELLcontroller::doClose()")
+    patcher = native_boundary.load(
+        ROOT / "host_runtime/native_terminal_patch.py", "close_wait_patch"
+    )
+    patcher.patch_terminal_tree(root)
+    changed = native_boundary.method(controller.read_text(), "void SPELLcontroller::doClose()")
+    harness = r"""
+#include <chrono>
+#include <condition_variable>
+#include <future>
+#include <mutex>
+#define DEBUG(value) ((void)0)
+enum SPELLexecutorStatus {STATUS_WAITING,STATUS_FINISHED,STATUS_ABORTED,STATUS_ERROR};
+struct Scheduler {
+ std::mutex lock; std::condition_variable ready; bool waiting=true;
+ void wait(std::promise<void>& started) {
+  std::unique_lock<std::mutex> guard(lock); started.set_value();
+  ready.wait(guard,[this]{return !waiting;});
+ }
+ void abortWait(bool) {
+  std::lock_guard<std::mutex> guard(lock); waiting=false; ready.notify_all();
+ }
+};
+struct SPELLexecutor {
+ Scheduler scheduler; bool finalized=false;
+ static SPELLexecutor& instance() {static SPELLexecutor value; return value;}
+ Scheduler& getScheduler() {return scheduler;}
+ void finalize() {finalized=true;}
+};
+struct Event {void set(){}};
+struct SPELLcontroller {
+ bool m_finished=false; Event m_recoverEvent;
+ SPELLexecutorStatus getStatus() {return STATUS_WAITING;}
+ void doContinue() {} // Controller stepping gate is distinct from scheduler wait.
+ void doClose();
+};
+ACTUAL_CLOSE
+int main() {
+ auto& executor=SPELLexecutor::instance(); std::promise<void> started;
+ auto acknowledged=started.get_future();
+ auto childWait=std::async(std::launch::async,[&]{executor.scheduler.wait(started);});
+ acknowledged.get(); SPELLcontroller controller; controller.doClose();
+ bool woke=childWait.wait_for(std::chrono::milliseconds(100))==std::future_status::ready;
+ executor.scheduler.abortWait(false); childWait.get();
+ return woke && executor.finalized && controller.m_finished ? 0 : 1;
+}
+"""
+    for label, method, expected in (("original", original, 1), ("terminal", changed, 0)):
+        source = tmp_path / (label + ".cpp")
+        source.write_text(harness.replace("ACTUAL_CLOSE", method))
+        binary = tmp_path / label
+        subprocess.run(
+            [
+                "c++",
+                "-std=c++17",
+                "-pthread",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
+                str(source),
+                "-o",
+                str(binary),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        assert subprocess.run([str(binary)], timeout=5).returncode == expected
 
 
 def test_compiled_terminal_single_use_and_lost_ack(tmp_path):

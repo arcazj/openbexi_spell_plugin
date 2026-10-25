@@ -2170,7 +2170,7 @@ def main():
                         if (
                             profile.native_child_gate
                             and info["State"]["Running"]
-                            and name in worker_names
+                            and (name in worker_names or name.endswith("-probe"))
                         ):
                             native_logs = command(
                                 "docker",

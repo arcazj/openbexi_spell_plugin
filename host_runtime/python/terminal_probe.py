@@ -21,6 +21,7 @@ CASES = frozenset(
         "abort-child",
         "close-thread",
         "close-child",
+        "close-wait",
     }
 )
 
@@ -69,7 +70,9 @@ def run_terminal_probe(
             break
         if not active:
             ready = (
-                state == "PROMPT"
+                state == "WAITING"
+                if case == "close-wait"
+                else state == "PROMPT"
                 if "prompt" in case
                 else Path("/workspace/terminal-active").exists()
             )

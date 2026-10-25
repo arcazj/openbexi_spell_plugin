@@ -9,6 +9,8 @@ import sqlite3
 from openbexi_spell_server.contracts import Fault
 
 CASES = (
+    "close-wait",
+    "close-child",
     "abort-paused",
     "close-paused",
     "abort-running",
@@ -22,7 +24,6 @@ CASES = (
     "abort-thread",
     "abort-child",
     "close-thread",
-    "close-child",
 )
 
 
@@ -37,6 +38,12 @@ def terminal_fixture(case):
         return "RESULT = 42\nassert RESULT == 42\n"
     if case == "error":
         return "raise RuntimeError('expected native terminal fixture failure')\n"
+    if case == "close-wait":
+        return (
+            "from spell.lang.functions import WaitFor\n"
+            "WaitFor(120)\n"
+            "raise AssertionError('CLOSE did not interrupt the native scheduler wait')\n"
+        )
     if case.endswith("-child"):
         return (
             "from spell.lang.functions import StartProc\n"
@@ -67,6 +74,21 @@ def capture_process_handles(command, name):
             os.close(handle)
         raise
     return handles
+
+
+def direct_child_target(db, execution_id):
+    children = db.execute(
+        "SELECT a.id FROM child_admissions a JOIN native_members m "
+        "ON m.execution_id=a.execution_id AND m.target_id=a.id "
+        "WHERE a.execution_id=? AND a.parent_id IS NULL AND a.state='CONSUMED' "
+        "AND m.state='REGISTERED_UNPROVEN'",
+        (execution_id,),
+    ).fetchall()
+    if len(children) != 1:
+        raise RuntimeError(
+            "Native CLOSE child has no unique consumed registered admission"
+        )
+    return children[0][0]
 
 
 def validate_stopped(info, container_id, image):
@@ -183,6 +205,19 @@ def qualify_terminal_case(
                     ),
                 )
             else:
+                if case == "close-child":
+                    # Each member needs its own owner grant. Close the child
+                    # first so a completed root cannot outrun child dispatch.
+                    with closing(sqlite3.connect(state / "context.sqlite3")) as db:
+                        target = direct_child_target(db, execution["id"])
+                    commands.append(
+                        controller(
+                            "execution.command",
+                            dict(
+                                proof, command="CMD_CLOSE", target_admission_id=target
+                            ),
+                        )["command_id"]
+                    )
                 native_command = (
                     "CMD_CLOSE" if case.startswith("close-") else "CMD_ABORT"
                 )
@@ -191,26 +226,6 @@ def qualify_terminal_case(
                         "execution.command", dict(proof, command=native_command)
                     )["command_id"]
                 )
-        if case == "close-child":
-            # Original SPELL root CLOSE cannot finish while a Blocking=True
-            # StartProc child is still active. Never silently kill that child
-            # or infer family authority from the root grant. The same live
-            # owner must issue a fresh, independently checked CLOSE for the
-            # registered child member before root cleanup can be observed.
-            with closing(sqlite3.connect(state / "context.sqlite3")) as db:
-                children = db.execute(
-                    "SELECT id FROM child_admissions WHERE execution_id=? "
-                    "AND parent_admission_id IS NOT NULL AND state='CONSUMED'",
-                    (execution["id"],),
-                ).fetchall()
-            if len(children) != 1:
-                raise RuntimeError("Native CLOSE child has no unique consumed admission")
-            commands.append(
-                controller(
-                    "execution.command",
-                    dict(proof, command="CMD_CLOSE", target_admission_id=children[0][0]),
-                )["command_id"]
-            )
         await_event([name], "native-terminal-observed", seconds=30)
         if command("docker", "wait", name, timeout=20) != "0":
             raise RuntimeError("Native terminal worker cleanup failed")
