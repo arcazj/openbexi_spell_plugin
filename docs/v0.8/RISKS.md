@@ -31,6 +31,19 @@
     Dev29 changes only explicit qualification CPU weights and incomplete-
     operation safety fencing; neither is a full deployed load qualification.
 
+11. The dev31 evidence-only push at `73ce9dd` failed while opening one native
+    procedure: the unchanged 15-second startup deadline expired with status
+    LOADED and no code position. Its PR cohort passed. The cause is unresolved;
+    do not hide the failure with retries or relabel it as successful native
+    qualification. The checksummed failed-artifact receipt is retained.
+
+12. Dev32 PR native family OOM-killed worker 0 at its inherited 768 MiB cap,
+    before reaching the owner-command probe. The push passed actual STEP and
+    stale second-STEP rejection. Dev33 assigns explicit two/three-Executor
+    qualification memory budgets and checks cgroup peak/OOM accounting. The
+    failed attempt remains evidence; production resource admission and leak/
+    sustained-load qualification remain pending.
+
 Any dual controller, observer mutation, accepted stale epoch, duplicate active
 logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
 regression, failed mandatory CI or missing required qualification blocks release.

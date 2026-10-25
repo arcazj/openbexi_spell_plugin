@@ -6,10 +6,12 @@ mandatory criteria pass. It supersedes the separate-confirmation hold; another
 routine publication confirmation is not required. It does not authorize
 production migration or weaken G1 F1–F10 or acceptance requirements.
 
-The full release is **not qualified**. Package `0.8.0.dev32` remains development
+The full release is **not qualified**. Package `0.8.0.dev33` remains development
 code. Dev31 at `9de50ea` verified a 21-member retained native family, original
 durable member identities and stale-controller initial RUN rejection. Dev32
-adds fresh owner STEP/PAUSE grants; its actual-native qualification is pending.
+adds fresh owner STEP/PAUSE grants. Its push native STEP/disconnect oracle passed;
+the PR family OOM-killed a worker at 768 MiB. Dev33 bounded memory requalification
+is pending, and all original failures are retained.
 Existing component receipts do not qualify full family handoff/resume, joint
 IDE Run/Debug/browser, Kubernetes or deployed recovery.
 

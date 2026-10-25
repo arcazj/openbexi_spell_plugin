@@ -67,7 +67,20 @@ original owner/epoch, retained member/holds/spent worker, absent second effect,
 and unchanged unrelated executions. Context A's 21-member family and Context B's
 initial RUN stale-consumption tests remain required. Host teardown is independent.
 
-**Hosted dev32 native execution and compilation are pending.** Local source
-reproduction checks the frozen preimage and patch anchors; it is not a compiler
-or native runtime result. Prior dev31 receipts remain tied to their original
-source identity. All eleven full-release gate groups remain false.
+Dev32 at `644730d` passed the push native cohort, including the actual owner
+STEP/stale-consumption oracle, 21 original family members, 41 PIDs and 42 real
+lifecycle events. All 31 repository inputs and 144 compiled source units match.
+The hosted service suite passed **544 tests**, zero failures/errors/skips,
+including the mandatory process-isolation controls. See `dev32-family.json` and
+`dev32-foundation.json` in `evidence/native-child-start/`.
+
+The same-source PR native family failed before reaching the owner probe:
+Docker recorded an OOM kill in worker 0 at its inherited 768 MiB limit. The
+failed receipt is retained. Dev33 assigns bounded family-test limits of 1536 MiB
+for the three-Executor nested worker and 1024 MiB for the other two-Executor
+workers, verifies actual cgroup peak/limit/OOM counters, and checks the final
+Docker memory configuration. This is a qualification-resource correction, not
+production capacity qualification. Hosted dev33 requalification is pending.
+Deadlines, single-attempt commands, logical holds and authority checks do not
+change. Native PAUSE effects and reliable full-family operation remain unqualified.
+All eleven full-release gate groups remain false.

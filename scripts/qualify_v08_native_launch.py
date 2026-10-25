@@ -188,6 +188,33 @@ def host_processes(name, *, executors=1):
     return rows
 
 
+def family_memory(name, limit_mib):
+    """Trusted host reads the worker's actual cgroup-v2 resource accounting."""
+    raw = command(
+        "docker",
+        "exec",
+        name,
+        "python",
+        "-I",
+        "-c",
+        "import json\nfrom pathlib import Path\n"
+        "p=Path('/sys/fs/cgroup')\n"
+        "events=dict(line.split() for line in (p/'memory.events').read_text().splitlines())\n"
+        "print(json.dumps(dict(peak_bytes=int((p/'memory.peak').read_text()),"
+        "limit_bytes=int((p/'memory.max').read_text()),"
+        "oom_events=int(events['oom']),oom_kills=int(events['oom_kill']))))",
+    )
+    accounting = json.loads(raw)
+    if (
+        accounting["limit_bytes"] != limit_mib * 1024 * 1024
+        or not 0 < accounting["peak_bytes"] <= accounting["limit_bytes"]
+        or accounting["oom_events"] != 0
+        or accounting["oom_kills"] != 0
+    ):
+        raise RuntimeError("Native family exceeded its explicit memory budget")
+    return accounting
+
+
 def qualify_native_child_denial(name, report):
     """Independent local clients cannot impersonate the gate or start a root."""
     program = """import os,queue,socket,sys,tempfile
@@ -1053,6 +1080,14 @@ def main():
                 control = temporary / "control"
                 control.mkdir(mode=0o755)
                 executions, worker_names, containers, launch_commands = [], [], [], []
+                # The nested worker has three native Executors; the other
+                # family workers have two. The old one-Executor 768 MiB cap
+                # OOM-killed a child in the dev32 PR cohort. These are bounded
+                # qualification resources, not a production admission claim.
+                memory_limits = [
+                    (1536 if n == 0 else 1024) if profile.native_child_gate else 768
+                    for n in range(10)
+                ]
                 for n in range(10):
                     name = prefix + "-" + str(n)
                     network = name + "-net"
@@ -1174,7 +1209,7 @@ def main():
                         "--pids-limit",
                         "256",
                         "--memory",
-                        "768m",
+                        str(memory_limits[n]) + "m",
                         "--cpus",
                         "2",
                         "--cpu-shares",
@@ -1319,6 +1354,10 @@ def main():
                                 "Nested native cohort lacks forty-one PIDs"
                             )
                         report["native_child_cohort_pids"] = 41
+                        with ThreadPoolExecutor(max_workers=10) as pool:
+                            report["native_family_memory"] = list(
+                                pool.map(family_memory, worker_names, memory_limits)
+                            )
                         (control / "child-finish").write_text(
                             "finish native children\n"
                         )
@@ -1345,6 +1384,8 @@ def main():
                             or info["State"]["OOMKilled"]
                             or info["HostConfig"]["Privileged"]
                             or info["HostConfig"]["CpuShares"] != 128
+                            or info["HostConfig"]["Memory"]
+                            != memory_limits[worker_names.index(name)] * 1024 * 1024
                             or not info["HostConfig"]["ReadonlyRootfs"]
                             or info["Image"] != worker_image
                         ):
