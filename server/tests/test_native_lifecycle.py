@@ -53,14 +53,27 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
     block = next(n for n in ast.walk(tree) if isinstance(n, ast.Try) and any(map(finished, n.body)))
     end = next(i for i, node in enumerate(block.body) if finished(node))
     start = max(i for i, node in enumerate(block.body[:end]) if isinstance(node, ast.While)) + 1
+    # Keep the actual tail inside a function: private qualification profiles
+    # now return after their separate terminal observation. A module-level AST
+    # would reject that return before the legacy lifecycle proof is exercised.
+    selected = ast.FunctionDef(
+        name="complete_original",
+        args=ast.arguments(posonlyargs=[], args=[], kwonlyargs=[], kw_defaults=[], defaults=[]),
+        body=block.body[start : end + 1],
+        decorator_list=[],
+        type_params=[],
+    )
     code = compile(
-        ast.Module(body=block.body[start : end + 1], type_ignores=[]), str(source), "exec"
+        ast.fix_missing_locations(ast.Module(body=[selected], type_ignores=[])),
+        str(source),
+        "exec",
     )
     audit = module.NativeLifecycleReceipts()
     acknowledge(audit, "root#1", "started")
     waiting, announced = Event(), Event()
     namespace = dict(
         state="FINISHED",
+        prompt_profile=False,
         lifecycle=audit,
         child_gate=SimpleNamespace(started={"root#1": None}),
         pump=waiting.set,
@@ -70,7 +83,8 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
         driver_methods=set(),
         count=0,
     )
-    thread = Thread(target=lambda: exec(code, namespace))
+    exec(code, namespace)
+    thread = Thread(target=namespace["complete_original"])
     thread.start()
     try:
         assert waiting.wait(0.5)

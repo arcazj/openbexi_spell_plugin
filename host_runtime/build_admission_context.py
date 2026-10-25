@@ -393,6 +393,16 @@ def patch_native_tree(source):
 """,
         )
     )
+    # Only the fully reproduced composed CIF is patched, never the frozen
+    # archive or an earlier synchronization stage.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "v08_native_prompt_patch", Path(__file__).with_name("native_prompt_patch.py")
+    )
+    prompt_patch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(prompt_patch)
+    prompt_patch.patch_prompt_boundary(source)
     return before
 
 

@@ -219,6 +219,7 @@ def qualify_consumption_fence(
     events,
     owner_commands=False,
     owner_resume=False,
+    prompt_mode=None,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
@@ -241,6 +242,15 @@ def qualify_consumption_fence(
         if owner_commands
         else "worker-probe"
     )
+    if prompt_mode is not None:
+        if (
+            prompt_mode not in {"answer", "cancel", "timeout"}
+            or owner_commands
+            or owner_resume
+        ):
+            raise ValueError("Prompt qualification profile differs")
+        label = source_id = "prompt-" + prompt_mode
+        context_id, worker_id = "P-" + prompt_mode, "worker-probe"
     name, network = prefix + "-" + label + "-probe", prefix + "-" + label + "-net"
     context_name = prefix + "-" + label + "-context"
     context_network = prefix + "-" + label + "-control"
@@ -288,6 +298,8 @@ def qualify_consumption_fence(
     )
     if owner_commands or owner_resume:
         probe_config["native_commands"] = "owner-queue"
+    if prompt_mode is not None:
+        probe_config["native_prompts"] = "owner-reply-candidate"
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -453,7 +465,9 @@ def qualify_consumption_fence(
                 start_barrier="/control/start",
                 native_child_gate=True,
                 **(
-                    {"native_owner_resume_probe": True}
+                    {"native_prompt_protocol": True}
+                    if prompt_mode is not None
+                    else {"native_owner_resume_probe": True}
                     if owner_resume
                     else {"native_owner_commands_probe": True}
                     if owner_commands
@@ -510,6 +524,22 @@ def qualify_consumption_fence(
     ]
     names.append(name)
     command(*args)
+    if prompt_mode is not None:
+        qualify_prompt_runtime(
+            name=name,
+            execution=execution,
+            connection=connection,
+            controller=controller,
+            state=state,
+            mode=prompt_mode,
+            command=command,
+            await_event=await_event,
+            events=events,
+            report=report,
+        )
+        if primary_controller("execution.list", {}) != original_primary:
+            raise RuntimeError("Prompt qualification changed the primary Context")
+        return
     if owner_resume:
         qualify_owner_resume(
             name=name,
@@ -799,4 +829,99 @@ def qualify_consumption_fence(
         quiescence_proven=False,
         effective_transfer=False,
         runtime_enabled=False,
+    )
+
+
+def qualify_prompt_runtime(
+    *,
+    name,
+    execution,
+    connection,
+    controller,
+    state,
+    mode,
+    command,
+    await_event,
+    events,
+    report,
+):
+    """Actual source-built interpreter: prompt selection and terminal observation."""
+    await_event([name], "native-ready", seconds=60)
+    db_path = "file:" + str(state / "context.sqlite3") + "?mode=ro"
+    deadline = time.monotonic() + 45
+    observed = None
+    while time.monotonic() < deadline:
+        with closing(sqlite3.connect(db_path, uri=True)) as db:
+            prompts = db.execute(
+                "SELECT prompt_id,definition_hash,state,outcome FROM native_prompts "
+                "WHERE execution_id=?",
+                (execution["id"],),
+            ).fetchall()
+        if prompts:
+            if len(prompts) != 1:
+                raise RuntimeError(
+                    "Native fixture emitted an unexpected prompt generation"
+                )
+            observed = prompts[0]
+            break
+        time.sleep(0.05)
+    if observed is None:
+        raise RuntimeError("Original Executor did not register its prompt")
+    if mode != "timeout":
+        if observed[2] != "OPEN":
+            raise RuntimeError("Prompt closed before owner reply was admitted")
+        controller(
+            "execution.prompt.reply",
+            dict(
+                execution_id=execution["id"],
+                connection_id=connection,
+                expected_epoch=execution["epoch"],
+                connection_generation=execution["connection_generation"],
+                capability=execution["capability"],
+                prompt_id=observed[0],
+                target_admission_id=None,
+                definition_sha256=observed[1],
+                action="CANCEL" if mode == "cancel" else "ANSWER",
+                answer=None if mode == "cancel" else "yes",
+            ),
+        )
+    await_event([name], "native-prompt-terminal", seconds=45)
+    if command("docker", "wait", name, timeout=25) != "0":
+        raise RuntimeError("Native prompt worker failed during termination")
+    retained = json.loads(command("docker", "inspect", name))[0]
+    if retained["State"]["Running"] or retained["State"]["OOMKilled"]:
+        raise RuntimeError("Native prompt container did not terminate normally")
+    terminal = [row for row in events(name) if row["event"] == "native-prompt-terminal"]
+    expected = {
+        "answer": "ANSWER_SELECTED",
+        "cancel": "CANCEL_SELECTED",
+        "timeout": "TIMEOUT",
+    }[mode]
+    if len(terminal) != 1 or terminal[0]["outcome"] != expected:
+        raise RuntimeError("Original native prompt terminal receipt differs")
+    with closing(sqlite3.connect(db_path, uri=True)) as db:
+        rows = db.execute("SELECT state,outcome FROM native_prompts").fetchall()
+        if rows != [("CLOSED", expected)]:
+            raise RuntimeError("Original native prompt durable outcome differs")
+        replies = db.execute("SELECT state FROM native_prompt_replies").fetchall()
+        if replies != ([] if mode == "timeout" else [("CONSUMED_UNPROVEN",)]):
+            raise RuntimeError(
+                "Prompt selected without the required original owner consumption"
+            )
+        if (
+            db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 2
+            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1
+        ):
+            raise RuntimeError("Prompt test reclaimed an uncertain execution hold")
+    report.setdefault("native_prompt_scenarios", {})[mode] = dict(
+        passed=True,
+        original_native_interpreter=True,
+        outcome=expected,
+        native_status=terminal[0]["native_status"],
+        container_terminated=True,
+        consumed_replies=len(replies),
+        holds_retained=2,
+        spent_workers_retained=1,
+        safe_reuse_qualified=False,
+        full_v08_qualified=False,
     )

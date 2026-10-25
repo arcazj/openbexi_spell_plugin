@@ -81,6 +81,7 @@ def main():
     inputs = (
         sorted((root / "server/src").rglob("*.py"))
         + sorted((root / "server/tests").rglob("*.py"))
+        + sorted((root / "server/tests").glob("*.cpp"))
         + sorted((root / "src/dss").rglob("*.py"))
         + sorted((root / "src/dss/data").glob("*.json"))
         + sorted((root / "driver_plugin/src").rglob("*.py"))
@@ -99,7 +100,9 @@ def main():
             root / "host_runtime/python/thread_barrier.py",
             root / "host_runtime/python/child_gate.py",
             root / "host_runtime/python/control_journal.py",
+            root / "host_runtime/python/prompt_replies.py",
             root / "host_runtime/build_admission_context.py",
+            root / "host_runtime/native_prompt_patch.py",
             *sorted((root / "host_runtime/native").glob("*.H")),
             root / "host_runtime/python/children.py",
             root / "host_runtime/python/native.py",
@@ -149,7 +152,9 @@ def main():
                 "host_runtime/python/thread_barrier.py",
                 "host_runtime/python/child_gate.py",
                 "host_runtime/python/control_journal.py",
+                "host_runtime/python/prompt_replies.py",
                 "host_runtime/build_admission_context.py",
+                "host_runtime/native_prompt_patch.py",
                 "scripts/qualify_v08_native_launch.py",
                 "scripts/v08_listener_survival.py",
                 "scripts/v08_native_consumption.py",
@@ -173,7 +178,9 @@ def main():
                 "host_runtime/python/thread_barrier.py",
                 "host_runtime/python/child_gate.py",
                 "host_runtime/python/control_journal.py",
+                "host_runtime/python/prompt_replies.py",
                 "host_runtime/build_admission_context.py",
+                "host_runtime/native_prompt_patch.py",
                 "scripts/qualify_v08_native_launch.py",
                 "scripts/v08_listener_survival.py",
                 "scripts/v08_native_consumption.py",

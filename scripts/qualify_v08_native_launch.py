@@ -550,6 +550,8 @@ def main():
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
         ROOT / "host_runtime/build_admission_context.py",
+        ROOT / "host_runtime/native_prompt_patch.py",
+        ROOT / "host_runtime/python/prompt_replies.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
         Path(__file__),
@@ -612,6 +614,10 @@ def main():
                     shutil.copy2(
                         ROOT / "host_runtime/python/child_gate.py",
                         code / "child_gate.py",
+                    )
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/prompt_replies.py",
+                        code / "prompt_replies.py",
                     )
                 if profile.native_thread_barrier:
                     shutil.copy2(
@@ -685,10 +691,14 @@ def main():
                         ROOT / "host_runtime/build_admission_context.py",
                         native_build / "build.py",
                     )
+                    shutil.copy2(
+                        ROOT / "host_runtime/native_prompt_patch.py",
+                        native_build / "native_prompt_patch.py",
+                    )
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H build.py /candidate/\n"
+                        "COPY *.H build.py native_prompt_patch.py /candidate/\n"
                         "RUN python /candidate/build.py\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
@@ -796,6 +806,22 @@ def main():
                         "SECOND = 2\n"
                         "with open('/workspace/owner-resumed','w') as marker:marker.write('resumed')\n"
                     )
+                    for prompt_mode in ("answer", "cancel", "timeout"):
+                        (sources / ("prompt_" + prompt_mode + ".py")).write_text(
+                            "from spell.lang.functions import Prompt\n"
+                            "from spell.lang.constants import ALPHA\n"
+                            + (
+                                "answer=Prompt('Bound native prompt',Type=ALPHA,Default='default',Timeout=.25,HandleError=False)\n"
+                                if prompt_mode == "timeout"
+                                else "answer=Prompt('Bound native prompt',Type=ALPHA,Default='default',Timeout=10,HandleError=False)\n"
+                            )
+                            + (
+                                "assert answer=='default'\n"
+                                if prompt_mode == "timeout"
+                                else "assert answer=='yes'\n"
+                            )
+                            + "with open('/workspace/prompt-body-complete','w') as f:f.write('done')\n"
+                        )
                     (sources / "owner_probe.py").write_text(
                         "FIRST = 1\nSECOND = 2\nTHIRD = 3\n"
                     )
@@ -881,6 +907,12 @@ def main():
                         for n in range(10)
                     },
                 )
+                if profile.native_child_gate:
+                    for prompt_mode in ("answer", "cancel", "timeout"):
+                        catalog["prompt-" + prompt_mode] = dict(
+                            catalog["consume-probe"],
+                            entrypoint="prompt_" + prompt_mode + ".py",
+                        )
                 control_network = prefix + "-control"
                 command("docker", "network", "create", control_network)
                 networks.append(control_network)
@@ -1970,6 +2002,30 @@ def main():
                         host_processes=host_processes,
                         events=events,
                     )
+                    for prompt_mode in ("answer", "cancel", "timeout"):
+                        qualify_consumption_fence(
+                            prompt_mode=prompt_mode,
+                            temporary=temporary,
+                            prefix=prefix,
+                            context_image=context_image,
+                            config=config,
+                            sources=sources,
+                            worker_image=worker_image,
+                            code=code,
+                            snapshot=snapshot,
+                            ca=ca,
+                            peers=peers,
+                            primary_controller=controller,
+                            control=control,
+                            primary_state=state,
+                            names=names,
+                            networks=networks,
+                            report=report,
+                            command=command,
+                            await_event=await_event,
+                            host_processes=host_processes,
+                            events=events,
+                        )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

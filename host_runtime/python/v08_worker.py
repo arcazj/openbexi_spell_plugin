@@ -470,6 +470,7 @@ def run(config):
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
+    prompt_profile = type(config) is dict and "native_prompt_protocol" in config
     exact(
         config,
         fields
@@ -478,7 +479,8 @@ def run(config):
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
-        | ({"native_owner_resume_probe"} if owner_resume else set()),
+        | ({"native_owner_resume_probe"} if owner_resume else set())
+        | ({"native_prompt_protocol"} if prompt_profile else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -511,6 +513,14 @@ def run(config):
         or consumption_probe
     ):
         raise ValueError("Owner resume requires its separate private native candidate")
+    if prompt_profile and (
+        config["native_prompt_protocol"] is not True
+        or not child_profile
+        or consumption_probe
+        or owner_probe
+        or owner_resume
+    ):
+        raise ValueError("Native prompts require their separate private child profile")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -656,6 +666,7 @@ def run(config):
                 admission_socket="/tmp/native-admission.sock",
                 consume_fence_probe=consumption_probe,
                 owner_step_probe=owner_probe,
+                prompt_protocol=prompt_profile,
             )
     session = session_type(
         root,
@@ -668,6 +679,7 @@ def run(config):
     admission = None
     child_gate = None
     children = None
+    prompt_agent = None
     if child_profile:
         sys.path.insert(0, "/v08")
         from child_gate import (
@@ -689,6 +701,10 @@ def run(config):
         lifecycle = NativeLifecycleReceipts()
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
+        if prompt_profile:
+            from prompt_replies import NativePromptAgent
+
+            prompt_agent = NativePromptAgent(controls)
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
@@ -717,6 +733,7 @@ def run(config):
             lambda: session.process,
             child_gate,
             controls=controls,
+            prompts=prompt_agent,
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
@@ -887,6 +904,8 @@ def run(config):
         position_count = 0
         while time.monotonic() < deadline:
             pump()
+            if prompt_agent is not None:
+                prompt_agent.poll()
             if children is not None:
                 children.service(session)
                 for instance in list(children.children):
@@ -991,6 +1010,31 @@ def run(config):
             # until their real Context audit receipts arrive; never replay or
             # manufacture a missing event or treat this as a family barrier.
             lifecycle.wait(lambda: list(child_gate.started), pump)
+        if prompt_profile:
+            # Qualification-only terminal observation, not production cleanup,
+            # driver settlement, owner transfer or worker-reuse permission.
+            until = time.monotonic() + 5
+            while prompt_agent.active and time.monotonic() < until:
+                pump()
+                time.sleep(0.02)
+            outcomes = list(prompt_agent.outcomes.values())
+            if (
+                prompt_agent.active
+                or len(outcomes) != 1
+                or denied
+                or state not in {"FINISHED", "ABORTED"}
+                or ((state == "ABORTED") != (outcomes == ["CANCEL_SELECTED"]))
+            ):
+                raise RuntimeError("Native prompt terminal evidence differs")
+            emit(
+                "native-prompt-terminal",
+                native_status=state,
+                outcome=outcomes[0],
+                hold_retained=True,
+                runtime_enabled=False,
+                full_family_qualified=False,
+            )
+            return
         if state != "FINISHED" or denied:
             terminal = session.request("REQ_EXEC_STATUS")
             emit(
