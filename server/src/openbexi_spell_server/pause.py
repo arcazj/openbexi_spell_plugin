@@ -112,7 +112,12 @@ class NativePauseBarrier:
             report=json.loads(row["report"]) if row["report"] else None,
             quiescence_proven=False,
             effective_transfer=False,
-            hold_retained=True,
+            hold_retained=bool(
+                self.store.db.execute(
+                    "SELECT 1 FROM reservations WHERE execution_id=?",
+                    (execution_id,),
+                ).fetchone()
+            ),
         )
 
     def poll(self, grant):

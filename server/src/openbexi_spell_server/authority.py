@@ -112,8 +112,11 @@ class ExecutionAuthority:
             if affected:
                 store.db.execute(
                     "UPDATE executions SET epoch=epoch+1,connection_generation=connection_generation+1,"
-                    "cap_hash=NULL,start_hash=NULL,start_binding=NULL,control_state='RECOVERY_REQUIRED',"
-                    "lifecycle='RECOVERY_REQUIRED'"
+                    "cap_hash=NULL,start_hash=NULL,start_binding=NULL,"
+                    "control_state=CASE WHEN lifecycle='TERMINAL_SETTLED' THEN 'TERMINATED' "
+                    "ELSE 'RECOVERY_REQUIRED' END,"
+                    "lifecycle=CASE WHEN lifecycle IN ('TERMINAL_SETTLED','TERMINAL_HELD') "
+                    "THEN lifecycle ELSE 'RECOVERY_REQUIRED' END"
                 )
                 store.db.execute("UPDATE claims SET state='INVALIDATED' WHERE state='PENDING'")
                 store._event("EXECUTIONS_FENCED_ON_STARTUP", {"count": len(affected)})
@@ -258,6 +261,10 @@ class ExecutionAuthority:
                 )
                 if self.native_pause is not None:
                     item["pause_barrier"] = self.native_pause.snapshot(row["id"])
+                if self.terminal_settlement is not None:
+                    item["terminal_settlement"] = self.terminal_settlement.public_snapshot(
+                        row["id"]
+                    )
                 executions.append(item)
             return {"executions": executions, "runtime_enabled": False}
 

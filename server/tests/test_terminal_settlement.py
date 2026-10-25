@@ -7,7 +7,7 @@ import uuid
 
 import pytest
 
-from openbexi_spell_server.contracts import Fault, canonical
+from openbexi_spell_server.contracts import Fault, canonical, envelope, policy
 from openbexi_spell_server.control import NativeControlJournal
 from openbexi_spell_server.commands import NativeOwnerCommands
 from openbexi_spell_server.effects import DriverGate, EffectAdmission
@@ -284,6 +284,11 @@ def test_restart_keeps_reclamation_decision_and_cannot_replay_old_proof(ledger, 
             restarted = dict(ledger, app=app, store=store, server=server)
             assert release(restarted, pki, result)[0] == 403
             assert held(restarted) == (0 if phase == "RELEASED" else 1)
+            if phase in {"SETTLED", "RELEASED"}:
+                assert (
+                    app.authority._execution(ledger["execution"]["id"])["lifecycle"]
+                    == "TERMINAL_SETTLED"
+                )
             assert store.db.execute("SELECT spent FROM workers WHERE slot='one'").fetchone()[0] == 1
     finally:
         app.close()
@@ -352,6 +357,38 @@ def test_duplicate_completion_is_exactly_idempotent_and_changed_evidence_conflic
         .fetchone()[0]
     )
     assert count == 1
+
+
+def test_observers_see_terminal_lifecycle_without_host_evidence_or_capabilities(ledger, pki):
+    NativePauseBarrier(ledger["app"].authority)
+    assert accept(ledger)[0]["state"] == "PAUSING"
+    fence = begin(ledger, pki)
+    result = complete(ledger, pki, fence)[1]["result"]
+    assert release(ledger, pki, result)[0] == 200
+    ledger["app"].authority.subjects["bob"] = policy({"bob": ["execution:read"]})["bob"]
+    code, response = request(
+        ledger["server"],
+        pki["listener"]["client"],
+        "/v1/rpc",
+        subject=None,
+        payload=envelope("A", "bob", "execution.list", {}, None),
+    )
+    assert code == 200
+    listing = response["result"]
+    item = listing["executions"][0]
+    assert item["lifecycle"] == "TERMINAL_SETTLED"
+    assert item["terminal_settlement"] == dict(
+        state="RELEASED",
+        hold_retained=False,
+        worker_reusable=False,
+        reasons=[],
+        native_status="FINISHED",
+    )
+    assert item["pause_barrier"]["hold_retained"] is False
+    text = canonical(listing).decode()
+    assert fence["challenge"] not in text
+    assert "c" * 64 not in text
+    assert ledger["execution"]["capability"] not in text
 
 
 @pytest.mark.parametrize("source", ["simulator"], indirect=True)

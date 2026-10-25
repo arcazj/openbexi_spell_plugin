@@ -400,6 +400,18 @@ class TerminalSettlement:
         )
         return self.snapshot(execution["id"])
 
+    def public_snapshot(self, execution_id):
+        state = self.snapshot(execution_id)
+        if state is None:
+            return None
+        return dict(
+            state=state["state"],
+            hold_retained=state["hold_retained"],
+            worker_reusable=False,
+            reasons=(state["report"] or {}).get("reasons", []),
+            native_status=(state["report"] or {}).get("native_status"),
+        )
+
     def snapshot(self, execution_id):
         row = self.store.db.execute(
             "SELECT * FROM terminal_settlements WHERE execution_id=?", (execution_id,)
