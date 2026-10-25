@@ -598,7 +598,12 @@ def main():
                     extra_peers=("edge", "observer")
                     if profile.native_listener_survival
                     else (
-                        ("worker-probe", "worker-owner", "worker-resume")
+                        (
+                            "worker-probe",
+                            "worker-owner",
+                            "worker-resume",
+                            "settlement-host",
+                        )
                         if profile.native_child_gate
                         else ()
                     ),

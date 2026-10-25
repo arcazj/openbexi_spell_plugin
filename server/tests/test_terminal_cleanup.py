@@ -37,6 +37,7 @@ def test_forced_loss_observes_original_process_and_reports_unknown(tmp_path, mon
     handle = os.pidfd_open(process.pid)
     events = []
     (tmp_path / "kill-native").touch()
+    (tmp_path / "terminal-cleanup").touch()
     monkeypatch.setattr(probe, "Path", lambda value: tmp_path / Path(value).name)
     controls = SimpleNamespace(lock=threading.Lock(), owner_operations={}, owner_consumed=set())
     controls.poll_owner = lambda: None

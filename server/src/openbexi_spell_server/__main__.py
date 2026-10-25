@@ -40,6 +40,7 @@ def main(*, driver_factory=None):
             "native_controls",
             "native_commands",
             "native_prompts",
+            "host_settlement",
         }
         if args.role == "context"
         else set()
@@ -79,6 +80,7 @@ def main(*, driver_factory=None):
                 native_controls=config.get("native_controls"),
                 native_commands=config.get("native_commands"),
                 native_prompts=config.get("native_prompts"),
+                host_settlement=config.get("host_settlement"),
                 native_driver_factory=(
                     lambda authority: driver_factory(authority, config["native_driver"])
                 )

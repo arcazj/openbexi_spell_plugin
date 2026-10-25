@@ -315,6 +315,10 @@ def qualify_consumption_fence(
     if terminal_case is not None:
         probe_config["native_commands"] = "owner-terminal-candidate"
         probe_config["native_prompts"] = "owner-reply-candidate"
+        probe_config["host_settlement"] = dict(
+            profile="single-host-terminal-candidate",
+            fingerprint=peers["settlement-host"]["pin"],
+        )
         probe_config["approved_sources"]["terminal-child"] = dict(
             config["approved_sources"]["terminal-child"], driver_binding="context-audit"
         )
@@ -541,7 +545,42 @@ def qualify_consumption_fence(
         "/credentials/config.json",
     ]
     names.append(name)
-    command(*args)
+    host_call = None
+    if terminal_case is not None:
+        # Host credentials never enter the worker's mounts or process namespace.
+        from openbexi_spell_server.settlement import TerminalSettlement
+
+        host_route = Route(
+            f"https://localhost:{port}",
+            peers["context"]["pin"],
+            tls_context(
+                ca, peers["settlement-host"]["cert"], peers["settlement-host"]["key"]
+            ),
+        )
+
+        def host_call(action, **payload):
+            return host_route.call(
+                dict(
+                    schema=TerminalSettlement.SCHEMA,
+                    context_id=context_id,
+                    execution_id=execution["id"],
+                    authority_incarnation=grant["authority_incarnation"],
+                    **payload,
+                ),
+                path="/v1/host/terminal/" + action,
+                schema=TerminalSettlement.SCHEMA,
+            )
+
+        args[1] = "create"
+        args.remove("-d")
+        command(*args)
+        created = json.loads(command("docker", "inspect", name))[0]
+        if created["State"]["Status"] != "created" or created["Image"] != worker_image:
+            raise RuntimeError("Host terminal container was not bound before launch")
+        host_call("bind", container_id=created["Id"], image=created["Image"])
+        command("docker", "start", name)
+    else:
+        command(*args)
     if terminal_case is not None:
         from v08_terminal_cohort import qualify_terminal_case, retire_terminal_probe
 
@@ -558,6 +597,7 @@ def qualify_consumption_fence(
             await_event=await_event,
             events=events,
             report=report,
+            host_call=host_call,
         )
         if primary_controller("execution.list", {}) != original_primary:
             raise RuntimeError("Terminal cleanup changed unrelated executions")

@@ -65,6 +65,7 @@ class ExecutionAuthority:
         self.native_controls = None
         self.native_commands: NativeOwnerCommands | None = None
         self.native_prompts: NativePromptReplies | None = None
+        self.terminal_settlement = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})

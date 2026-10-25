@@ -127,3 +127,10 @@ def run_terminal_probe(
         hold_retained=True,
         quiescence_proven=False,
     )
+    # The independent host fences authority and captures the final family roster
+    # before allowing this agent to enter its ordinary native cleanup path.
+    deadline = time.monotonic() + 20
+    while not Path("/control/terminal-cleanup").is_file():
+        if time.monotonic() >= deadline:
+            raise TimeoutError("Host terminal settlement fence was not received")
+        time.sleep(0.02)

@@ -154,6 +154,7 @@ def qualify_terminal_case(
     await_event,
     events,
     report,
+    host_call,
 ):
     await_event([name], "native-terminal-ready", seconds=45)
     before = json.loads(command("docker", "inspect", name))[0]
@@ -233,6 +234,19 @@ def qualify_terminal_case(
                     )["command_id"]
                 )
         await_event([name], "native-terminal-observed", seconds=30)
+        observed = [
+            row for row in events(name) if row["event"] == "native-terminal-observed"
+        ]
+        if len(observed) != 1:
+            raise RuntimeError("Native terminal outcome is ambiguous")
+        fence = host_call(
+            "begin",
+            container_id=before["Id"],
+            native_status=observed[0]["native_status"],
+        )
+        if fence["state"] != "FENCED" or fence["hold_retained"] is not True:
+            raise RuntimeError("Host did not obtain a durable terminal fence")
+        (control / "terminal-cleanup").write_text("x")
         if command("docker", "wait", name, timeout=20) != "0":
             raise RuntimeError("Native terminal worker cleanup failed")
         after = json.loads(command("docker", "inspect", name))[0]
@@ -287,6 +301,64 @@ def qualify_terminal_case(
                 raise RuntimeError(
                     "Terminal cleanup reused a worker or released a hold"
                 )
+        evidence = dict(
+            provider="docker-pidfd-terminal/1",
+            container_id=after["Id"],
+            image=after["Image"],
+            running=after["State"]["Running"],
+            pid=after["State"]["Pid"],
+            exit_code=after["State"]["ExitCode"],
+            oom_killed=after["State"]["OOMKilled"],
+            restart_count=after["RestartCount"],
+            original_handles=len(handles),
+            exited_handles=len(handles),
+            roster_hash=fence["roster_hash"],
+        )
+        settled = host_call("complete", challenge=fence["challenge"], evidence=evidence)
+        expected_settlement = "HELD" if case == "forced-loss" else "SETTLED"
+        if settled["state"] != expected_settlement:
+            raise RuntimeError("Terminal settlement differs: " + json.dumps(settled))
+        if (
+            host_call("complete", challenge=fence["challenge"], evidence=evidence)
+            != settled
+        ):
+            raise RuntimeError("Terminal evidence replay changed its result")
+        if case == "forced-loss":
+            try:
+                host_call(
+                    "release",
+                    challenge=fence["challenge"],
+                    report_hash=settled["report_hash"],
+                )
+            except Fault as error:
+                if error.status != 409:
+                    raise
+            else:
+                raise RuntimeError("Unknown native loss released reservations")
+        else:
+            released = host_call(
+                "release",
+                challenge=fence["challenge"],
+                report_hash=settled["report_hash"],
+            )
+            if (
+                released["state"] != "RELEASED"
+                or released["worker_reusable"] is not False
+            ):
+                raise RuntimeError("Proven terminal reservation release differs")
+        with closing(sqlite3.connect(state / "context.sqlite3")) as db:
+            remaining = db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0]
+            own = db.execute(
+                "SELECT COUNT(*) FROM reservations WHERE execution_id=?",
+                (execution["id"],),
+            ).fetchone()[0]
+            if (
+                own != (holds - 1 if case == "forced-loss" else 0)
+                or remaining != own + 1
+            ):
+                raise RuntimeError("Terminal settlement changed unrelated holds")
+            if db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1:
+                raise RuntimeError("Terminal settlement recycled a spent worker")
         report.setdefault("native_terminal_cases", []).append(
             dict(
                 case=case,
@@ -299,7 +371,10 @@ def qualify_terminal_case(
                 container_id=before["Id"],
                 whole_container_terminated=True,
                 pending_prompts=0,
-                logical_holds_retained=holds,
+                logical_holds_before_settlement=holds,
+                logical_holds_retained=remaining,
+                terminal_settlement=settled,
+                reservation_released=case != "forced-loss",
                 worker_spent=True,
                 unknown_effects_replayable=False,
                 quiescence_proven=False,

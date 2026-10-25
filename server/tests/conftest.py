@@ -57,6 +57,7 @@ def pki(tmp_path_factory):
         "context-a",
         "context-b",
         "worker",
+        "host",
         "alice",
         "bob",
         "observer",

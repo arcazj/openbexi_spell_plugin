@@ -6,6 +6,7 @@ from .authority import ExecutionAuthority
 from .launch import WorkerLaunch
 from .preflight import WorkerPeer, WorkerPreflight
 from .snapshots import SnapshotCatalog
+from .settlement import SettlementHost, TerminalSettlement
 from .contracts import (
     AUTHORITY_MUTATIONS,
     METHODS,
@@ -43,6 +44,7 @@ class Context:
         native_controls=None,
         native_commands=None,
         native_prompts=None,
+        host_settlement=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -110,6 +112,15 @@ class Context:
             from .prompts import NativePromptReplies
 
             NativePromptReplies(self.authority)
+        self.settlement = None
+        if host_settlement is not None:
+            if self.launch is None or self.preflight is None:
+                raise ValueError("Host settlement requires the retained native profile")
+            self.settlement = TerminalSettlement(
+                self.authority,
+                host_settlement,
+                excluded_pins={self.listener_fingerprint, *self.preflight.peers},
+            )
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -120,10 +131,14 @@ class Context:
         if self.preflight is None:
             raise Fault(403, "worker_preflight_required")
         self.preflight.require_ready(row)
+        if self.settlement is not None and row["start_hash"]:
+            self.settlement.require_bound(row)
 
     def authenticate(self, peer, headers):
         if headers.get_all("X-OpenBEXI-Client-Fingerprint"):
             raise Fault(403, "unexpected_client_identity")
+        if self.settlement is not None and peer == self.settlement.peer.fingerprint:
+            return self.settlement.peer
         if self.preflight is not None and peer in self.preflight.peers:
             return self.preflight.peers[peer]
         if peer != self.listener_fingerprint:
@@ -131,6 +146,13 @@ class Context:
         return "listener"
 
     def handle(self, method, path, headers, body, *, identity=None):
+        if isinstance(identity, SettlementHost):
+            if method != "POST" or self.settlement is None:
+                raise Fault(404, "route_not_available")
+            return {
+                "schema": TerminalSettlement.SCHEMA,
+                "result": self.settlement.handle(identity, path, body),
+            }
         if isinstance(identity, WorkerPeer):
             if method != "POST" or self.preflight is None:
                 raise Fault(404, "route_not_available")
