@@ -241,6 +241,13 @@ class NativeControlJournal:
                 "SELECT 1 FROM native_owner_commands WHERE execution_id=? AND target_id=? LIMIT 1",
                 (grant.execution_id, target or ""),
             ).fetchone()
+        ) or (
+            self.authority.native_prompts is not None
+            and self.store.db.execute(
+                "SELECT 1 FROM native_prompt_replies r JOIN native_prompts p "
+                "ON r.prompt_id=p.prompt_id WHERE r.execution_id=? AND p.target_id=? LIMIT 1",
+                (grant.execution_id, target or ""),
+            ).fetchone()
         ):
             raise Fault(403, "native_initial_run_retired")
 

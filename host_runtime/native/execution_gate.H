@@ -2,6 +2,7 @@
 // Private candidate only. Original v0.7 binaries are preserved.
 #include "admission_ipc.H"
 #include "mutation_policy.H"
+#include "terminal_gate.H"
 #include <fcntl.h>
 #include <cstdio>
 #include <atomic>
@@ -65,6 +66,12 @@ static void v08_report_native_disposition(const std::string& instance,
 
 static void v08_consume_native_run(const std::string& instance, const ExecutorCommand& command)
 {
+    if (v08_terminal_command(command.id) && command.v08External) {
+        // This second, durable one-shot stage rejects copied mailbox entries,
+        // stale owners and a command that bypassed CIF preprocessing.
+        v08_terminal_authorize(instance, command.id, command.v08Request, "execute");
+        return;
+    }
     // Never let a copied/deferred external command evade the owner inventory.
     // Original native internal safety commands are not owner commands.
     if (v08_external_command_disabled(command.id, command.v08External))

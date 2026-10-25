@@ -88,6 +88,25 @@ class WorkerLaunch:
             # only the independently owner-issued command grant admits effects.
             safety_only = safety_only or path.startswith("/v1/worker/command-")
             allowed.add("/v1/worker/command-disposition")
+            if commands.terminal_commands:
+                allowed.add("/v1/worker/command-terminal-execute")
+        prompts = self.authority.native_prompts
+        if prompts is not None:
+            allowed.update(
+                {
+                    "/v1/worker/prompt-open",
+                    "/v1/worker/prompt-poll",
+                    "/v1/worker/prompt-forward",
+                    "/v1/worker/prompt-consume",
+                    "/v1/worker/prompt-close",
+                    "/v1/worker/prompt-report",
+                }
+            )
+            # Poll/forward/consume perform live owner checks themselves;
+            # closed/disconnected workers can only retain diagnostic evidence.
+            safety_only = safety_only or (
+                path.startswith("/v1/worker/prompt-") and not path.endswith("prompt-open")
+            )
         if path not in allowed:
             raise Fault(404, "route_not_available")
         root_consume = path == "/v1/worker/consume"
@@ -95,7 +114,15 @@ class WorkerLaunch:
             if type(body) is not dict or "runtime_capability" not in body:
                 raise Fault(403, "worker_consumption_proof_required")
         extra = set()
-        if path.endswith("event"):
+        if path.endswith("prompt-open"):
+            extra = {"prompt_id", "target_admission_id", "instance_id", "definition_sha256"}
+        elif path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
+            extra = {"prompt_grant"}
+            if path.endswith("prompt-report"):
+                extra.add("outcome")
+        elif path.endswith("prompt-close"):
+            extra = {"prompt_id", "outcome"}
+        elif path.endswith("event"):
             extra = {"request_id", "message", "severity", "scope"}
         elif path.endswith("driver"):
             extra = {"request_id", "path", "payload"}
@@ -115,7 +142,13 @@ class WorkerLaunch:
                 "executable_sha256",
             }
         elif path.endswith(
-            ("command-forward", "command-consume", "command-report", "command-disposition")
+            (
+                "command-forward",
+                "command-consume",
+                "command-report",
+                "command-disposition",
+                "command-terminal-execute",
+            )
         ):
             extra = {"command_grant"}
             if path.endswith("command-report"):
@@ -152,6 +185,21 @@ class WorkerLaunch:
             raise Fault(403, "worker_assignment_mismatch")
         if not root_consume:
             self._runtime(grant, body["runtime_capability"], safety_only=safety_only)
+        if path.endswith("prompt-open"):
+            return prompts.register(grant, body)
+        if path.endswith("prompt-poll"):
+            return prompts.poll(grant)
+        if path.endswith("prompt-close"):
+            return prompts.close_prompt(grant, body)
+        if path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
+            from .prompts import prompt_grant
+
+            reply = prompt_grant(body["prompt_grant"])
+            if path.endswith("prompt-report"):
+                return prompts.report(grant, reply, body["outcome"])
+            return prompts.advance(
+                grant, reply, "forward" if path.endswith("prompt-forward") else "consume"
+            )
         if path.endswith("pause-poll"):
             return pause.poll(grant)
         if path.endswith("pause-report"):
@@ -165,7 +213,13 @@ class WorkerLaunch:
         if path.endswith("command-poll"):
             return commands.poll(grant)
         if path.endswith(
-            ("command-forward", "command-consume", "command-report", "command-disposition")
+            (
+                "command-forward",
+                "command-consume",
+                "command-report",
+                "command-disposition",
+                "command-terminal-execute",
+            )
         ):
             from .commands import owner_command_grant
 
@@ -175,7 +229,13 @@ class WorkerLaunch:
             if path.endswith("command-disposition"):
                 return commands.record_disposition(grant, command, body["disposition"])
             return commands.advance(
-                grant, command, "forward" if path.endswith("command-forward") else "consume"
+                grant,
+                command,
+                "forward"
+                if path.endswith("command-forward")
+                else "terminal-execute"
+                if path.endswith("command-terminal-execute")
+                else "consume",
             )
         if path.endswith("control-admit"):
             return controls.admit(grant, body)

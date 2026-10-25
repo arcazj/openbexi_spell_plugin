@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Private local native provider. Context RPC remains certificate authenticated.
 #include "admission_ipc.H"
+#include "mutation_policy.H"
+#include "terminal_policy.H"
 
 static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 {
@@ -29,7 +31,11 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 static void v08_admit_native_run(SPELLexecutorModel& model, const SPELLipcMessage& message)
 {
     const std::string command = message.getId();
-    if (command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE") return;
+    if (command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE" && !v08_terminal_command(command)) return;
+    if (v08_terminal_command(command) &&
+        !v08_terminal_message_valid(command, message.getType() == MSG_TYPE_ONEWAY,
+                                    message.v08Fields(), model.getInstanceId()))
+        throw std::runtime_error("Native terminal forwarding shape differs");
     if (!message.hasField("V08ControlRequest"))
         throw std::runtime_error("Native RUN has no immutable admission identity");
     // The Executor can redirect commands bearing ParentId to a child. Fresh

@@ -3,9 +3,19 @@
 #define OPENBEXI_V08_MUTATION_POLICY_H
 #include <string>
 
+static bool v08_terminal_command(const std::string& id)
+{
+#ifdef OPENBEXI_V08_TERMINALS
+    return id == "CMD_ABORT" || id == "CMD_CLOSE";
+#else
+    (void)id;
+    return false;
+#endif
+}
+
 static bool v08_command_supported(const std::string& id)
 {
-    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE";
+    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE" || v08_terminal_command(id);
 }
 
 static bool v08_message_disabled(const std::string& id, bool redirected)

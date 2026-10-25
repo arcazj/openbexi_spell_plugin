@@ -10,7 +10,7 @@ import threading
 import uuid
 from dataclasses import asdict
 
-from openbexi_spell_server.contracts import canonical, digest, exact
+from openbexi_spell_server.contracts import TERMINAL_COMMANDS, canonical, digest, exact
 from openbexi_spell_server.family import FamilyAdmission
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.commands import owner_command_grant
@@ -18,7 +18,12 @@ from openbexi_spell_server.preflight import canonical_uuid
 
 
 class NativeRunJournal:
-    def __init__(self, session, request, route, children):
+    def __init__(self, session, request, route, children, *, terminal_commands=False):
+        if type(terminal_commands) is not bool:
+            raise ValueError("Terminal command profile must be explicit")
+        self.terminal_commands = terminal_commands
+        self.terminal_execute_attempted = set()
+        self.terminal_executed = set()
         self.session, self.request, self.route, self.children = (
             session,
             request,
@@ -183,6 +188,8 @@ class NativeRunJournal:
 
     def dispatch_owner(self, value):
         grant = owner_command_grant(value)
+        if grant.command in TERMINAL_COMMANDS and not self.terminal_commands:
+            raise ValueError("Terminal commands are not provisioned")
         if any(
             getattr(grant, key) != getattr(self.grant, key)
             for key in (
@@ -246,7 +253,12 @@ class NativeRunJournal:
         self._owner_receipt(
             grant,
             reply,
-            {"DELIVERY_UNPROVEN", "FORWARD_UNPROVEN", "EXECUTION_UNPROVEN"},
+            {
+                "DELIVERY_UNPROVEN",
+                "FORWARD_UNPROVEN",
+                "TERMINAL_PREPROCESSED_UNPROVEN",
+                "EXECUTION_UNPROVEN",
+            },
         )
 
     @staticmethod
@@ -302,7 +314,13 @@ class NativeRunJournal:
         self._owner_receipt(
             grant,
             reply,
-            {"FORWARD_UNPROVEN" if stage == "forward" else "EXECUTION_UNPROVEN"},
+            {
+                "FORWARD_UNPROVEN"
+                if stage == "forward"
+                else "TERMINAL_PREPROCESSED_UNPROVEN"
+                if grant.command in TERMINAL_COMMANDS
+                else "EXECUTION_UNPROVEN"
+            },
         )
         with self.lock:
             (self.owner_forwarded if stage == "forward" else self.owner_consumed).add(
@@ -359,6 +377,11 @@ class NativeRunJournal:
         exact(body, {"schema", "request_id", "instance_id", "command"})
         canonical_uuid(body["request_id"])
         if body["request_id"] in self.owner_operations:
+            if (
+                self.owner_operations[body["request_id"]][1].command
+                in TERMINAL_COMMANDS
+            ):
+                raise ValueError("Terminal commands require their pre-effect boundary")
             return self._owner_phase(body, "consume")
         if (
             body["schema"] != "openbexi.native-consume/1"
@@ -399,6 +422,61 @@ class NativeRunJournal:
             raise ValueError("Native RUN consumption receipt differs")
         with self.lock:
             self.consumed.add(body["request_id"])
+
+    def terminal(self, body):
+        """Called only for an attested Executor, before terminal side effects.
+
+        Store each local attempt BEFORE RPC. A lost ACK can never be repaired by
+        repeating the command. Context durably consumes the exact 256-bit grant.
+        """
+        exact(body, {"schema", "request_id", "instance_id", "command", "stage"})
+        canonical_uuid(body["request_id"])
+        if (
+            not self.terminal_commands
+            or body["schema"] != "openbexi.native-terminal/1"
+            or type(body["command"]) is not str
+            or body["command"] not in TERMINAL_COMMANDS
+            or body["stage"] not in ("preprocess", "execute")
+        ):
+            raise ValueError("Native terminal profile or operation denied")
+        with self.lock:
+            known = self.owner_operations.get(body["request_id"])
+            if (
+                known is None
+                or known[0] != body["instance_id"]
+                or known[1].command != body["command"]
+            ):
+                raise ValueError("Native terminal origin differs")
+            grant = known[1]
+        if body["stage"] == "preprocess":
+            # The same one-shot final-consumption primitive, earlier than the
+            # CIF's cancelPrompt/setClosing and before command dispatch.
+            return self._owner_phase(
+                {
+                    "schema": "openbexi.native-consume/1",
+                    "request_id": body["request_id"],
+                    "instance_id": body["instance_id"],
+                    "command": body["command"],
+                },
+                "consume",
+            )
+        with self.lock:
+            if (
+                grant.command_id not in self.owner_consumed
+                or grant.command_id in self.terminal_execute_attempted
+            ):
+                raise ValueError(
+                    "Native terminal execution already attempted or unadmitted"
+                )
+            self.terminal_execute_attempted.add(grant.command_id)
+        reply = self.route.call(
+            {**self.request, "command_grant": asdict(grant)},
+            path="/v1/worker/command-terminal-execute",
+            schema="openbexi.worker/2",
+        )
+        self._owner_receipt(grant, reply, {"EXECUTION_UNPROVEN"})
+        with self.lock:
+            self.terminal_executed.add(grant.command_id)
 
     def disposition(self, body):
         """Single attempt from a real Executor after mailbox handler/discard."""

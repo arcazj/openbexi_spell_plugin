@@ -1,6 +1,7 @@
 """Fresh owner-admitted native commands, separate from startup authority.
 
-This opt-in queue permits fresh RUN, STEP and single-member PAUSE. Delivery,
+This opt-in queue permits fresh RUN, STEP and single-member PAUSE; a separate
+private setting admits ABORT/CLOSE through two one-use effect boundaries. Delivery,
 forwarding and consumption remain unproven outcomes, never family quiescence or
 handoff permission. Every physical dispatch is single-attempt.
 """
@@ -15,6 +16,7 @@ from .authority import secret_hash
 from .contracts import (
     Fault,
     OWNER_COMMANDS,
+    TERMINAL_COMMANDS,
     canonical,
     digest,
     exact,
@@ -77,7 +79,10 @@ def owner_command_grant(value):
 
 
 class NativeOwnerCommands:
-    def __init__(self, authority):
+    def __init__(self, authority, *, terminal_commands=False):
+        if type(terminal_commands) is not bool:
+            raise ValueError("Terminal command profile must be explicit")
+        self.terminal_commands = terminal_commands
         self.authority, self.store = authority, authority.store
         if authority.native_controls is None or authority.native_commands is not None:
             raise ValueError("Owner commands require one native control/member coordinator")
@@ -104,6 +109,8 @@ class NativeOwnerCommands:
         authority.native_commands = self
 
     def _permissions(self, owner, command):
+        if command in TERMINAL_COMMANDS and not self.terminal_commands:
+            raise Fault(403, "terminal_commands_disabled")
         permissions = (
             ("execution:control", "execution:start")
             if command in {"CMD_RUN", "CMD_STEP"}
@@ -311,9 +318,16 @@ class NativeOwnerCommands:
         return execution, command
 
     def advance(self, original, grant, stage):
+        terminal = grant.command in TERMINAL_COMMANDS
+        if stage == "terminal-execute" and not terminal:
+            raise Fault(403, "terminal_command_required")
         expected, state = {
             "forward": ("DELIVERY_UNPROVEN", "FORWARD_UNPROVEN"),
-            "consume": ("FORWARD_UNPROVEN", "EXECUTION_UNPROVEN"),
+            "consume": (
+                "FORWARD_UNPROVEN",
+                "TERMINAL_PREPROCESSED_UNPROVEN" if terminal else "EXECUTION_UNPROVEN",
+            ),
+            "terminal-execute": ("TERMINAL_PREPROCESSED_UNPROVEN", "EXECUTION_UNPROVEN"),
         }[stage]
         with self.authority._execution_lock(original.execution_id):
             with self.store.transaction():

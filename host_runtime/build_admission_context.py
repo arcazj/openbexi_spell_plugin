@@ -45,7 +45,7 @@ def fence_external_controller_mailbox(text):
     )
 
 
-def patch_native_tree(source):
+def patch_native_tree(source, *, prompts=False, terminals=False):
     """Apply only to the independently reproduced frozen composition."""
     # The legacy GUI client key is client-proposed/reusable. Allocate an
     # incarnation-local monotonic key instead, before addClient can replace
@@ -393,6 +393,14 @@ def patch_native_tree(source):
 """,
         )
     )
+    if prompts:
+        from native_prompt_patch import patch_prompt_tree
+
+        patch_prompt_tree(source)
+    if terminals:
+        from native_terminal_patch import patch_terminal_tree
+
+        patch_terminal_tree(source, prompts=prompts)
     return before
 
 
@@ -415,6 +423,20 @@ def native_graph(source, libraries, program):
 
 
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--native-prompts",
+        action="store_true",
+        help="Build private owner-bound prompt hooks; needs matching agent",
+    )
+    parser.add_argument(
+        "--native-terminals",
+        action="store_true",
+        help="Build private owner-authorized ABORT/CLOSE hooks",
+    )
+    args = parser.parse_args()
     import spell_native
 
     runtime = Path(spell_native.__file__).parent
@@ -446,7 +468,9 @@ def main():
     expected.pop("manifest_sha256")
     if composition != expected:
         raise ValueError("Installed native source composition does not reproduce")
-    before = patch_native_tree(source)
+    before = patch_native_tree(
+        source, prompts=args.native_prompts, terminals=args.native_terminals
+    )
     build = Path("/tmp/v08-context-objects")
     build.mkdir()
     flags = [
@@ -463,6 +487,8 @@ def main():
         "-I" + str(source / "include"),
         "-I" + sysconfig.get_path("include"),
     ]
+    if args.native_terminals:
+        flags.append("-DOPENBEXI_V08_TERMINALS=1")
     graphs = {
         name: native_graph(source, libraries, name) for name in ("Context", "Executor")
     }
@@ -581,6 +607,8 @@ def main():
     report = dict(
         schema=1,
         native_start_qualified=False,
+        native_prompt_hooks=args.native_prompts,
+        native_terminal_hooks=args.native_terminals,
         full_v08_qualified=False,
         original_context_sha256=sha(runtime / "bin/SPELL-Context"),
         archive_sha256=sha(archive),
