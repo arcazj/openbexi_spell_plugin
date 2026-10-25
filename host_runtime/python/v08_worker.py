@@ -906,6 +906,7 @@ def run(config):
                 controls,
                 admission,
                 prompts,
+                children,
                 pump,
                 lifecycle,
                 emit,

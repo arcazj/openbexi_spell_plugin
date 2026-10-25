@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 import shutil
 import subprocess
+from types import SimpleNamespace
 import uuid
 
 import pytest
@@ -76,6 +77,55 @@ def test_terminal_disconnect_at_final_cif_gate(terminal, family, pki, command):
     family["controller"]("session.close", dict(connection_id=family["connection"]))
     assert owner.worker(family, pki, "command-consume", grant)[0] == 403
     assert owner.rows(family)[0]["state"] == "FORWARD_UNPROVEN"
+
+
+@pytest.mark.parametrize("command", ["CMD_ABORT", "CMD_CLOSE"])
+@pytest.mark.parametrize("failure", ["expired", "revoked"])
+def test_terminal_final_gate_rechecks_deadline_and_policy(terminal, family, pki, command, failure):
+    grant = owner.delivered(family, pki, command)
+    assert owner.worker(family, pki, "command-forward", grant)[0] == 200
+    if failure == "expired":
+        now = family["app"].authority.clock()
+        family["app"].authority.clock = lambda: now + 31
+    else:
+        family["app"].authority.subjects["alice"] = owner.policy({"alice": ["execution:read"]})[
+            "alice"
+        ]
+    assert owner.worker(family, pki, "command-consume", grant)[0] == 403
+    assert owner.rows(family)[0]["state"] == "FORWARD_UNPROVEN"
+    assert not terminal.terminal_pending(family["grant"].execution_id)
+
+
+@pytest.mark.parametrize("command", ["CMD_ABORT", "CMD_CLOSE"])
+@pytest.mark.parametrize("phase", ["forward", "consume"])
+@pytest.mark.parametrize("failure", ["lost", "forged"])
+def test_terminal_uncertain_acknowledgement_cannot_retry(
+    terminal, agent, family, pki, command, phase, failure
+):
+    grant = owner.delivered(family, pki, command)
+    agent.dispatch_owner(grant)
+    if phase == "consume":
+        agent.forward(owner.owner_callback(grant))
+    route = agent.route
+
+    def changed(payload, **options):
+        reply = route.call(payload, **options)
+        if failure == "lost":
+            raise TimeoutError("Injected terminal acknowledgement loss")
+        return dict(reply, quiescence_proven=True)
+
+    agent.route = SimpleNamespace(call=changed)
+    callback = agent.forward if phase == "forward" else agent.consume
+    with pytest.raises((TimeoutError, ValueError)):
+        callback(owner.owner_callback(grant, phase))
+    with pytest.raises(ValueError, match="already attempted"):
+        callback(owner.owner_callback(grant, phase))
+    assert grant["command_id"] not in agent.owner_consumed
+    assert owner.rows(family)[0]["state"] == (
+        "FORWARD_UNPROVEN" if phase == "forward" else "EXECUTION_UNPROVEN"
+    )
+    assert terminal.terminal_pending(family["grant"].execution_id) == (phase == "consume")
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
 
 
 def test_terminal_overlay_precedes_real_prompt_and_close_effects(native_sources, tmp_path):

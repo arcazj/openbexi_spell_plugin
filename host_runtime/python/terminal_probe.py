@@ -19,12 +19,14 @@ CASES = frozenset(
         "timeout",
         "abort-thread",
         "abort-child",
+        "close-thread",
+        "close-child",
     }
 )
 
 
 def run_terminal_probe(
-    case, session, controls, admission, prompts, pump, lifecycle, emit
+    case, session, controls, admission, prompts, children, pump, lifecycle, emit
 ):
     if case not in CASES:
         raise ValueError("Unknown native terminal case")
@@ -49,8 +51,12 @@ def run_terminal_probe(
                 raise RuntimeError("Native process exited without an admitted CLOSE")
             state = "CLOSED"
             break
-        pump()
         try:
+            pump()
+            if children is not None and not any(
+                value in {"CMD_ABORT", "CMD_CLOSE"} for value in commands
+            ):
+                children.service(session)
             state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
         except Exception:
             if "CMD_CLOSE" not in commands:

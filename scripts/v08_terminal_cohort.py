@@ -21,6 +21,8 @@ CASES = (
     "timeout",
     "abort-thread",
     "abort-child",
+    "close-thread",
+    "close-child",
 )
 
 
@@ -35,13 +37,13 @@ def terminal_fixture(case):
         return "RESULT = 42\nassert RESULT == 42\n"
     if case == "error":
         return "raise RuntimeError('expected native terminal fixture failure')\n"
-    if case == "abort-child":
+    if case.endswith("-child"):
         return (
             "from spell.lang.functions import StartProc\n"
             "StartProc('terminal_child',Automatic=True,Visible=True,Blocking=True,HandleError=False)\n"
         )
     prefix = "import time,threading\n"
-    if case == "abort-thread":
+    if case.endswith("-thread"):
         prefix += (
             "def background():\n"
             "    while True:time.sleep(0.05)\n"
