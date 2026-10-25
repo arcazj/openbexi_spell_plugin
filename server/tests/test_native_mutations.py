@@ -227,64 +227,23 @@ def test_native_mailbox_disposition_instrumentation_precedes_drop_and_follows_ha
     assert "catch (...)" in gate
 
 
-def test_frozen_native_prompt_is_armed_before_publication():
-    """The frozen prompt sent before clearing, losing an immediate reply."""
-    import zipfile
+def test_native_prompt_early_answer_is_already_fenced_by_source_port():
+    """Guard against reintroducing the original event-clear-after-send race.
 
-    path = ROOT / "host_runtime/build_admission_context.py"
-    spec = importlib.util.spec_from_file_location("v08_native_prompt_start", path)
-    builder = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(builder)
-    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
-        original = archive.read("lib/SPELL_CIFS/src/SPELLserverCif.C").decode()
-    fixed = builder.fence_native_prompt_start_race(original)
-    prompt = fixed.split("void SPELLserverCif::startPrompt()", 1)[1].split(
-        "void SPELLserverCif::cancelPrompt()", 1
-    )[0]
-    assert prompt.count("m_promptAnswerEvent.clear();") == 1
-    assert prompt.count("m_promptAnswer = VOID_MESSAGE;") == 1
-    assert prompt.count("sendGUIMessage(m_promptMessage);") == 1
-    assert prompt.index("m_promptAnswerEvent.clear();") < prompt.index(
-        "sendGUIMessage(m_promptMessage);"
-    )
-    assert prompt.index("m_promptAnswer = VOID_MESSAGE;") < prompt.index(
-        "sendGUIMessage(m_promptMessage);"
-    )
-    assert "getScheduler().startPrompt(" in prompt
-    assert "m_promptAnswerEvent.wait();" in fixed
-    assert "SPELLmonitor m(m_promptLock);" in fixed
-    assert "fence_native_prompt_start_race(cif_text)" in path.read_text()
-    with pytest.raises(ValueError, match="Ambiguous original native prompt"):
-        builder.fence_native_prompt_start_race(fixed)
-
-
-def test_native_prompt_start_rejects_changed_frozen_preimage():
-    """Do not silently patch a different upstream SPELL prompt implementation."""
-    import zipfile
-
-    path = ROOT / "host_runtime/build_admission_context.py"
-    spec = importlib.util.spec_from_file_location("v08_native_prompt_preimage", path)
-    builder = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(builder)
-    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
-        original = archive.read("lib/SPELL_CIFS/src/SPELLserverCif.C").decode()
-    modified = original.replace("sendGUIMessage(m_promptMessage);", "sendGUIMessage(VOID_MESSAGE);")
-    with pytest.raises(ValueError, match="Ambiguous original native prompt"):
-        builder.fence_native_prompt_start_race(modified)
-
-
-def test_prompt_start_reordering_preserves_early_answer_event():
-    """Deterministic early-answer interleaving: old order loses the signal."""
-    from threading import Event
-
-    def simulate(clear_before_send):
-        answered = Event()
-        if clear_before_send:
-            answered.clear()
-        answered.set()
-        if not clear_before_send:
-            answered.clear()
-        return answered.is_set()
-
-    assert simulate(clear_before_send=False) is False
-    assert simulate(clear_before_send=True) is True
+    The native builder receives a *composed* SPELL source, not the raw ZIP.
+    The existing prompt timeout/startup ports already arm the condition
+    variable before publication. Never apply the frozen-source fix twice.
+    """
+    timeout = (ROOT / "source_port/prompt_timeout_patches.py").read_text()
+    startup = (ROOT / "source_port/prompt_startup_patches.py").read_text()
+    builder = (ROOT / "host_runtime/build_admission_context.py").read_text()
+    assert "std::lock_guard<std::mutex> response(m_promptAnswerLock);" in timeout
+    assert "m_promptAnswer = VOID_MESSAGE;" in timeout
+    assert "m_promptPending = true;" in timeout
+    assert "m_promptAnswerReady.wait(response, answered);" in timeout
+    assert "Publish a fully initialized wait before the client can answer." in timeout
+    assert "transition.lock();" in startup
+    assert "m_promptPending = true;" in startup
+    assert "m_promptAnswerReady.notify_all();" in startup
+    assert "apply_native_tree(" in builder
+    assert "fence_native_prompt_start_race(" not in builder
