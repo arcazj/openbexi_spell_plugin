@@ -5,6 +5,9 @@
 #include <fcntl.h>
 #include <cstdio>
 #include <atomic>
+#ifdef OPENBEXI_V08_TERMINAL
+#include "terminal_gate.H"
+#endif
 
 static void v08_hold_before_consumption_probe(const ExecutorCommand& command)
 {
@@ -65,6 +68,12 @@ static void v08_report_native_disposition(const std::string& instance,
 
 static void v08_consume_native_run(const std::string& instance, const ExecutorCommand& command)
 {
+#ifdef OPENBEXI_V08_TERMINAL
+    if (command.v08External && v08_terminal_command(command.id)) {
+        v08_take_terminal(instance, command.v08Request, command.id);
+        return;
+    }
+#endif
     // Never let a copied/deferred external command evade the owner inventory.
     // Original native internal safety commands are not owner commands.
     if (v08_external_command_disabled(command.id, command.v08External))

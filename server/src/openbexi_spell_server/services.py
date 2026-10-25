@@ -94,12 +94,14 @@ class Context:
             from .control import NativeControlJournal
 
             NativeControlJournal(self.authority, catalog=self.catalog)
-        if native_commands not in (None, "owner-queue"):
+        if native_commands not in (None, "owner-queue", "owner-terminal-candidate"):
             raise ValueError("Unsupported native owner command profile")
         if native_commands is not None:
             from .commands import NativeOwnerCommands
 
-            NativeOwnerCommands(self.authority)
+            NativeOwnerCommands(
+                self.authority, terminal=native_commands == "owner-terminal-candidate"
+            )
         if native_prompts not in (None, "owner-reply-candidate"):
             raise ValueError("Unsupported private prompt profile")
         if native_prompts is not None:

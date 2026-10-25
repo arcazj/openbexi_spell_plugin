@@ -286,6 +286,7 @@ class NativePromptAgent:
             "TIMEOUT",
             "FAILED",
             "UNKNOWN",
+            "TERMINAL_CANCELLED",
         }:
             raise ValueError("Native prompt outcome differs")
         with self.lock:

@@ -108,6 +108,11 @@ class DriverGate:
                 raise
 
     def _live(self, grant, binding):
+        if (
+            self.authority.native_commands is not None
+            and self.authority.native_commands.terminal_pending(grant.execution_id)
+        ):
+            raise Fault(403, "terminal_execution_fenced")
         if binding not in self.bindings:
             raise Fault(403, "driver_binding_fenced")
         row = self.authority._grant(grant)

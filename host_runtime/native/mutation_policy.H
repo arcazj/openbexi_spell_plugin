@@ -5,6 +5,9 @@
 
 static bool v08_command_supported(const std::string& id)
 {
+#ifdef OPENBEXI_V08_TERMINAL
+    if (id == "CMD_ABORT" || id == "CMD_CLOSE") return true;
+#endif
     return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE";
 }
 

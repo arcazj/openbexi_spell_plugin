@@ -131,6 +131,11 @@ class FamilyAdmission:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
+                if (
+                    self.authority.native_commands is not None
+                    and self.authority.native_commands.terminal_pending(grant.execution_id)
+                ):
+                    raise Fault(403, "terminal_execution_fenced")
                 prior = self.store.db.execute(
                     "SELECT * FROM child_admissions WHERE execution_id=? AND request_id=?",
                     (grant.execution_id, payload["request_id"]),

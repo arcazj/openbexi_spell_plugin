@@ -77,8 +77,11 @@ def owner_command_grant(value):
 
 
 class NativeOwnerCommands:
-    def __init__(self, authority):
+    def __init__(self, authority, *, terminal=False):
         self.authority, self.store = authority, authority.store
+        if type(terminal) is not bool:
+            raise ValueError("Terminal command profile requires a boolean")
+        self.terminal = terminal
         if authority.native_controls is None or authority.native_commands is not None:
             raise ValueError("Owner commands require one native control/member coordinator")
         with self.store.transaction():
@@ -104,6 +107,8 @@ class NativeOwnerCommands:
         authority.native_commands = self
 
     def _permissions(self, owner, command):
+        if command in {"CMD_ABORT", "CMD_CLOSE"} and not self.terminal:
+            raise Fault(403, "terminal_command_profile_disabled")
         permissions = (
             ("execution:control", "execution:start")
             if command in {"CMD_RUN", "CMD_STEP"}
@@ -138,6 +143,28 @@ class NativeOwnerCommands:
             or member["binding_hash"] != command["member_hash"]
         ):
             raise Fault(403, "owner_command_member_fenced")
+        if command["command"] not in {"CMD_ABORT", "CMD_CLOSE"} and self.terminal_pending(
+            execution["id"]
+        ):
+            raise Fault(403, "terminal_execution_fenced")
+        if (
+            command["command"] in {"CMD_ABORT", "CMD_CLOSE"}
+            and self.store.db.execute(
+                "SELECT 1 FROM native_owner_commands WHERE execution_id=? AND target_id=? "
+                "AND command=? AND state='EXECUTION_UNPROVEN'",
+                (execution["id"], command["target_id"], command["command"]),
+            ).fetchone()
+        ):
+            raise Fault(403, "terminal_command_already_consumed")
+
+    def terminal_pending(self, execution_id):
+        return bool(
+            self.store.db.execute(
+                "SELECT 1 FROM native_owner_commands WHERE execution_id=? "
+                "AND command IN ('CMD_ABORT','CMD_CLOSE') AND state='EXECUTION_UNPROVEN'",
+                (execution_id,),
+            ).fetchone()
+        )
 
     def enqueue(self, subject, key, payload):
         self.authority._require(subject, "execution:control")
@@ -150,6 +177,10 @@ class NativeOwnerCommands:
                 execution = self.authority._owner(subject, payload)
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "owner_command_runtime_unavailable")
+                if payload["command"] not in {"CMD_ABORT", "CMD_CLOSE"} and self.terminal_pending(
+                    execution["id"]
+                ):
+                    raise Fault(403, "terminal_execution_fenced")
                 # Live owner/session/policy proof precedes historical replay.
                 replay = self.authority._replay(subject, "execution.command", key, payload)
                 if replay is not None:

@@ -231,6 +231,11 @@ class NativeControlJournal:
         return {key: body[key] for key in ("request_id", "target_admission_id", "command")}
 
     def _initial_run_open(self, grant, target):
+        if (
+            self.authority.native_commands is not None
+            and self.authority.native_commands.terminal_pending(grant.execution_id)
+        ):
+            raise Fault(403, "terminal_execution_fenced")
         # Caller holds the execution mutex and SQL transaction, shared with
         # owner intent admission. Any committed owner intent permanently
         # retires this member's startup lane, including undelivered/expired

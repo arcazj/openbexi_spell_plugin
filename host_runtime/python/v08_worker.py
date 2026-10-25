@@ -302,7 +302,6 @@ def verify_startup_run_retired(controls):
     raise RuntimeError("Unused startup RUN remained available after an owner command")
 
 
-
 def owner_resume_paused_guard(session, controls):
     """Check the pause fence without confusing a committed RUN with stale state.
 
@@ -315,7 +314,9 @@ def owner_resume_paused_guard(session, controls):
     if state != "PAUSED":
         if len(controls.owner_consume_attempted) >= 3:
             return False  # In-flight final admission; NOT a completion proof.
-        raise RuntimeError("Native fixture resumed before third owner consumption attempt")
+        raise RuntimeError(
+            "Native fixture resumed before third owner consumption attempt"
+        )
     try:
         values = owner_fixture_variables(session)
     except RuntimeError:
@@ -324,9 +325,11 @@ def owner_resume_paused_guard(session, controls):
         if len(controls.owner_consume_attempted) >= 3:
             return False
         raise
-    if values.get("FIRST") != "1" or "SECOND" in values or Path(
-        "/workspace/owner-resumed"
-    ).exists():
+    if (
+        values.get("FIRST") != "1"
+        or "SECOND" in values
+        or Path("/workspace/owner-resumed").exists()
+    ):
         raise RuntimeError("Native fixture resumed without its fresh owner RUN")
     return True
 
@@ -371,8 +374,19 @@ def owner_pause_resume_probe(session, controls, pump):
     while len(controls.owner_consumed) == 2:
         if Path("/control/owner-resume").is_file() and opened_at is None:
             opened_at = time.monotonic()
-        controls.poll_owner()
+        delivered = controls.poll_owner()
         pump()
+        if delivered == "command":
+            # IPC send acknowledgement can precede the native consumption
+            # callback. The resumed Executor may already reject variable reads;
+            # stop paused-only observations as soon as RUN is dispatched.
+            while len(controls.owner_consumed) != 3:
+                pump()
+                if time.monotonic() >= until:
+                    raise TimeoutError(
+                        "Fresh owner resume consumption was not confirmed"
+                    )
+                time.sleep(0.02)
         if len(controls.owner_consumed) == 3:
             if opened_at is None or time.monotonic() - opened_at < 4:
                 raise RuntimeError(
@@ -493,6 +507,7 @@ def run(config):
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
     prompt_profile = type(config) is dict and "native_prompt_gate" in config
+    terminal_case = config.get("native_terminal_case") if type(config) is dict else None
     exact(
         config,
         fields
@@ -502,7 +517,8 @@ def run(config):
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
         | ({"native_owner_resume_probe"} if owner_resume else set())
-        | ({"native_prompt_gate"} if prompt_profile else set()),
+        | ({"native_prompt_gate"} if prompt_profile else set())
+        | ({"native_terminal_case"} if terminal_case is not None else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -547,6 +563,16 @@ def run(config):
         build_receipt = json.loads(Path("/opt/v08-native-home/build.json").read_text())
         if build_receipt.get("native_prompt_hooks") is not True:
             raise ValueError("Native prompt hooks are absent from the checked build")
+    if terminal_case is not None:
+        from terminal_probe import CASES
+
+        if (
+            type(terminal_case) is not str
+            or terminal_case not in CASES
+            or not prompt_profile
+            or build_receipt.get("native_terminal_hooks") is not True
+        ):
+            raise ValueError("Native terminal profile/build differs")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -870,6 +896,20 @@ def run(config):
             return
         if owner_resume:
             owner_pause_resume_probe(session, controls, pump)
+            return
+        if terminal_case is not None:
+            from terminal_probe import run_terminal_probe
+
+            run_terminal_probe(
+                terminal_case,
+                session,
+                controls,
+                admission,
+                prompts,
+                pump,
+                lifecycle,
+                emit,
+            )
             return
         session.request("CMD_RUN", send=True)
         if consumption_probe:

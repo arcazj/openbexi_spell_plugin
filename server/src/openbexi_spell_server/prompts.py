@@ -325,6 +325,11 @@ class NativePromptReplies:
             return result
 
     def _live(self, execution, prompt, reply):
+        if (
+            self.authority.native_commands is not None
+            and self.authority.native_commands.terminal_pending(execution["id"])
+        ):
+            raise Fault(403, "terminal_execution_fenced")
         self.authority._require(reply["owner"], "execution:control", "execution:start")
         self.authority._session(reply["owner"], reply["connection_id"])
         if (
@@ -513,6 +518,7 @@ class NativePromptReplies:
             "TIMEOUT",
             "FAILED",
             "UNKNOWN",
+            "TERMINAL_CANCELLED",
         }:
             raise Fault(400, "prompt_close_outcome_invalid")
         with self.authority._execution_lock(original.execution_id):
@@ -527,6 +533,16 @@ class NativePromptReplies:
                 elif prompt["state"] != "OPEN":
                     raise Fault(403, "prompt_not_pending")
                 else:
+                    if outcome == "TERMINAL_CANCELLED" and (
+                        self.authority.native_commands is None
+                        or not self.authority.native_commands.terminal
+                        or not self.store.db.execute(
+                            "SELECT 1 FROM native_owner_commands WHERE execution_id=? AND target_id=? "
+                            "AND command IN ('CMD_ABORT','CMD_CLOSE') AND state='EXECUTION_UNPROVEN'",
+                            (original.execution_id, prompt["target_id"]),
+                        ).fetchone()
+                    ):
+                        raise Fault(403, "prompt_terminal_not_consumed")
                     if outcome in ("ANSWER_SELECTED", "CANCEL_SELECTED"):
                         action = "ANSWER" if outcome == "ANSWER_SELECTED" else "CANCEL"
                         if (

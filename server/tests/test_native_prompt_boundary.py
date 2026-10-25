@@ -334,7 +334,7 @@ def test_opt_in_prompt_module_is_shipped_and_source_bound_in_native_build():
     workflow = (ROOT / ".github/workflows/v08-server-foundation.yml").read_text()
     assert builder.count('ROOT / "host_runtime/native_prompt_patch.py"') == 2
     assert 'native_build / "native_prompt_patch.py"' in builder
-    assert "COPY *.H build.py native_prompt_patch.py /candidate/" in builder
+    assert "COPY *.H build.py native_prompt_patch.py native_terminal_patch.py /candidate/" in builder
     assert workflow.count("'host_runtime/native_prompt_patch.py'") == 2
     # Existing hosted cohorts must not silently activate unqualified prompts.
     assert '" --native-prompts" if profile.native_prompts else ""' in builder

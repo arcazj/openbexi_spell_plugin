@@ -504,6 +504,7 @@ def main():
     parser.add_argument("--native-thread-barrier", action="store_true")
     parser.add_argument("--native-child-gate", action="store_true")
     parser.add_argument("--native-prompts", action="store_true")
+    parser.add_argument("--native-terminal", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
@@ -514,6 +515,7 @@ def main():
                 profile.native_dss,
                 profile.native_child_gate,
                 profile.native_prompts,
+                profile.native_terminal,
                 profile.native_listener_survival,
             )
         )
@@ -522,6 +524,7 @@ def main():
         parser.error(
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
+    profile.native_prompts = profile.native_prompts or profile.native_terminal
     profile.native_child_gate = profile.native_child_gate or profile.native_prompts
     # Prompt qualification must exercise real driver effects against the
     # independently launched DSS, not only Context audit-event RPCs.
@@ -559,6 +562,9 @@ def main():
         ROOT / "scripts/v08_prompt_cohort.py",
         ROOT / "host_runtime/build_admission_context.py",
         ROOT / "host_runtime/native_prompt_patch.py",
+        ROOT / "host_runtime/native_terminal_patch.py",
+        ROOT / "host_runtime/python/terminal_probe.py",
+        ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
         Path(__file__),
@@ -625,6 +631,10 @@ def main():
                     shutil.copy2(
                         ROOT / "host_runtime/python/child_gate.py",
                         code / "child_gate.py",
+                    )
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/terminal_probe.py",
+                        code / "terminal_probe.py",
                     )
                 if profile.native_thread_barrier:
                     shutil.copy2(
@@ -705,12 +715,17 @@ def main():
                         ROOT / "host_runtime/native_prompt_patch.py",
                         native_build / "native_prompt_patch.py",
                     )
+                    shutil.copy2(
+                        ROOT / "host_runtime/native_terminal_patch.py",
+                        native_build / "native_terminal_patch.py",
+                    )
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H build.py native_prompt_patch.py /candidate/\n"
+                        "COPY *.H build.py native_prompt_patch.py native_terminal_patch.py /candidate/\n"
                         "RUN python /candidate/build.py"
                         + (" --native-prompts" if profile.native_prompts else "")
+                        + (" --native-terminal" if profile.native_terminal else "")
                         + "\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
@@ -850,6 +865,16 @@ def main():
                             "{square}", str(n * n)
                         )
                     )
+                if profile.native_terminal:
+                    from v08_terminal_cohort import CASES, terminal_fixture
+
+                    for case in CASES:
+                        (
+                            sources / ("terminal_" + case.replace("-", "_") + ".py")
+                        ).write_text(terminal_fixture(case))
+                    (sources / "terminal_child.py").write_text(
+                        terminal_fixture("abort-running")
+                    )
                 command("git", "-C", sources, "add", ".")
                 command(
                     "git",
@@ -900,6 +925,15 @@ def main():
                     )
                     catalog["consume-probe"] = dict(
                         catalog["procedure-0"], entrypoint="consume_probe.py"
+                    )
+                if profile.native_terminal:
+                    for case in CASES:
+                        catalog["terminal-" + case] = dict(
+                            catalog["procedure-0"],
+                            entrypoint="terminal_" + case.replace("-", "_") + ".py",
+                        )
+                    catalog["terminal-child"] = dict(
+                        catalog["procedure-0"], entrypoint="terminal_child.py"
                     )
                 credentials = dict(
                     profile="single-host-preflight",
@@ -1947,7 +1981,7 @@ def main():
                         raise RuntimeError(
                             "Blocked native handoff changed another execution"
                         )
-                if profile.native_child_gate:
+                if profile.native_child_gate and not profile.native_terminal:
                     from v08_native_consumption import qualify_consumption_fence
 
                     qualify_consumption_fence(
@@ -2018,6 +2052,33 @@ def main():
                         host_processes=host_processes,
                         events=events,
                     )
+                if profile.native_terminal:
+                    from v08_native_consumption import qualify_consumption_fence
+
+                    for case in CASES:
+                        qualify_consumption_fence(
+                            terminal_case=case,
+                            temporary=temporary,
+                            prefix=prefix,
+                            context_image=context_image,
+                            config=config,
+                            sources=sources,
+                            worker_image=worker_image,
+                            code=code,
+                            snapshot=snapshot,
+                            ca=ca,
+                            peers=peers,
+                            primary_controller=controller,
+                            control=control,
+                            primary_state=state,
+                            names=names,
+                            networks=networks,
+                            report=report,
+                            command=command,
+                            await_event=await_event,
+                            host_processes=host_processes,
+                            events=events,
+                        )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

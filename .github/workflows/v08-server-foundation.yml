@@ -21,6 +21,9 @@ on:
       - 'host_runtime/python/prompt_replies.py'
       - 'host_runtime/build_admission_context.py'
       - 'host_runtime/native_prompt_patch.py'
+      - 'host_runtime/native_terminal_patch.py'
+      - 'host_runtime/python/terminal_probe.py'
+      - 'scripts/v08_terminal_cohort.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
@@ -45,6 +48,9 @@ on:
       - 'host_runtime/python/prompt_replies.py'
       - 'host_runtime/build_admission_context.py'
       - 'host_runtime/native_prompt_patch.py'
+      - 'host_runtime/native_terminal_patch.py'
+      - 'host_runtime/python/terminal_probe.py'
+      - 'scripts/v08_terminal_cohort.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
@@ -139,6 +145,8 @@ jobs:
             flags: '--native-child-gate'
           - profile: native-prompts
             flags: '--native-prompts'
+          - profile: native-terminal
+            flags: '--native-terminal'
           - profile: listener-survival
             flags: '--native-listener-survival'
     steps:
