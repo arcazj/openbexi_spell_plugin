@@ -18,6 +18,7 @@ from .mutex import ExecutionMutex
 
 if TYPE_CHECKING:
     from .commands import NativeOwnerCommands
+    from .prompts import NativePromptReplies
 
 from .contracts import (
     AUTHORITY_MUTATIONS,
@@ -63,6 +64,7 @@ class ExecutionAuthority:
         self.native_children = None
         self.native_controls = None
         self.native_commands: NativeOwnerCommands | None = None
+        self.native_prompts: NativePromptReplies | None = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})

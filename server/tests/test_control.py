@@ -13,7 +13,7 @@ from openbexi_spell_server.contracts import Fault, canonical, policy
 from openbexi_spell_server.control import NativeControlJournal
 from openbexi_spell_server.store import ContextStore
 from test_launch import call
-from test_pause import accept
+from authority_test_helpers import accept
 import test_child_gate as gates
 import test_family as families
 

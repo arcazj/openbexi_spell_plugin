@@ -19,6 +19,7 @@ from openbexi_spell_server.transport import Route
 from test_launch import call
 import test_native_driver as native
 import test_preflight as helpers
+from authority_test_helpers import accept
 
 driver_setup = native.driver_setup
 independent_dss = native.independent_dss
@@ -29,20 +30,6 @@ def pause_setup(driver_setup):
     setup = driver_setup
     setup["pause"] = NativePauseBarrier(setup["app"].authority)
     yield setup
-
-
-def accept(setup, *, key=None):
-    bob = setup["controller"]("session.open", {}, subject="bob")["connection_id"]
-    claim = setup["controller"](
-        "execution.claim",
-        dict(execution_id=setup["execution"]["id"], connection_id=bob, expected_epoch=1),
-        subject="bob",
-    )
-    payload = dict(
-        **helpers.proof(setup["execution"]), claim_id=claim["claim_id"], decision="accept"
-    )
-    decision = setup["controller"]("execution.decide", payload, key=key)
-    return decision, payload
 
 
 def diagnostic(barrier_id, **updates):

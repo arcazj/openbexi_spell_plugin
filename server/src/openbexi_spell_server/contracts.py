@@ -151,7 +151,9 @@ def envelope(context, subject, method, payload, key=None):
     )
 
 
-def validate_envelope(value, context, *, now=None, allow_launch=False, allow_commands=False):
+def validate_envelope(
+    value, context, *, now=None, allow_launch=False, allow_commands=False, allow_prompts=False
+):
     exact(
         value,
         {
@@ -195,6 +197,7 @@ def validate_envelope(value, context, *, now=None, allow_launch=False, allow_com
         method not in METHODS
         and not (allow_launch and method == "execution.start")
         and not (allow_commands and method == "execution.command")
+        and not (allow_prompts and method == "execution.prompt.reply")
     ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
@@ -215,6 +218,11 @@ def validate_envelope(value, context, *, now=None, allow_launch=False, allow_com
             raise Fault(400, "invalid_event_cursor")
         if type(payload["limit"]) is not int or not 1 <= payload["limit"] <= 32:
             raise Fault(400, "invalid_event_page_size")
+    elif allow_prompts and method == "execution.prompt.reply":
+        from .prompts import validate_reply_payload
+
+        identifier(value["idempotency_key"])
+        validate_reply_payload(value["payload"])
     elif allow_commands and method == "execution.command":
         identifier(value["idempotency_key"])
         validate_owner_command_payload(value["payload"])
