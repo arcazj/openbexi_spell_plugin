@@ -662,6 +662,20 @@ def qualify_consumption_fence(
         != 1
     ):
         raise RuntimeError("Owner STEP did not retire its unused startup RUN")
+    if (
+        owner_commands
+        and sum(
+            event["event"] == "native-disabled-mutations-held"
+            and event.get("operations") == 19
+            and event.get("script_marker_absent") is True
+            and event.get("variables_unchanged") is True
+            for event in records
+        )
+        != 1
+    ):
+        raise RuntimeError(
+            "Native mutation boundary lacks its original-Executor negative oracle"
+        )
     if any(
         event["event"]
         in (
@@ -731,6 +745,8 @@ def qualify_consumption_fence(
                 fresh_owner_grants=2,
                 startup_run_grants_used=0,
                 unused_startup_run_denied=True,
+                disabled_native_mutations_denied=19,
+                direct_request_denial_before_evaluation=True,
             )
             if owner_commands
             else dict(body_marker_absent=True)

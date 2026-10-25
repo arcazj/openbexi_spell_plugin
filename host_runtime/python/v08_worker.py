@@ -145,6 +145,77 @@ def owner_fixture_variables(session):
     return dict(zip(names, values))
 
 
+def verify_disabled_native_mutations(session, controls, admission, pump):
+    script = (
+        "__import__('pathlib').Path('/workspace/mutation-bypass').write_text('unsafe')"
+    )
+    commands = (
+        ("CMD_SCRIPT", {"Script": script}),
+        ("CMD_GOTO", {"GotoLine": "2"}),
+        ("CMD_STEP_OVER", {}),
+        ("CMD_SKIP", {}),
+        ("CMD_INTERRUPT", {}),
+        ("CMD_FINISH", {}),
+        ("CMD_ACTION", {}),
+        ("CMD_RELOAD", {}),
+        ("MSG_ANSWER", {"ReturnValue": "unsafe"}),
+        ("MSG_CANCEL", {}),
+        ("CMD_ABORT", {}),
+        ("CMD_BLOCK", {}),
+        ("CMD_CLOSE", {}),
+    )
+    requests = (
+        ("REQ_SET_CONFIG", {}),
+        ("REQ_SET_BREAKPOINT", {}),
+        ("REQ_CLEAR_BREAKPOINT", {}),
+        (
+            "REQ_CHANGE_VARIABLE",
+            {"VarName": "FIRST", "VarValue": script, "VarGlobal": "True"},
+        ),
+        ("REQ_CHANGE_RESOURCE", {}),
+        ("REQ_UPD_DICTIONARY", {}),
+    )
+    for operation, fields in commands + requests:
+        if operation.startswith("REQ_"):
+            try:
+                controls.original(operation, fields)
+            except RuntimeError as error:
+                if "V08_NATIVE_MUTATION_DENIED" not in str(error):
+                    raise RuntimeError(
+                        "Native request did not reach its closed mutation boundary"
+                    ) from None
+            else:
+                raise RuntimeError("Unqualified native request was not rejected")
+        else:
+            controls.original(operation, fields, send=True)
+        until = time.monotonic() + 3
+        while (session.instance, operation) not in admission.disabled_mutations:
+            pump()
+            if time.monotonic() >= until:
+                raise TimeoutError("Missing original-Executor mutation denial")
+            time.sleep(0.01)
+        values = owner_fixture_variables(session)
+        if (
+            values.get("FIRST") != "1"
+            or "SECOND" in values
+            or Path("/workspace/mutation-bypass").exists()
+            or session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+            != "PAUSED"
+        ):
+            raise RuntimeError(
+                "Disabled native mutation changed the fixture or execution state"
+            )
+    emit(
+        "native-disabled-mutations-held",
+        operations=len(commands) + len(requests),
+        original_executor_denials=True,
+        variables_unchanged=True,
+        script_marker_absent=True,
+        native_status="PAUSED",
+        quiescence_proven=False,
+    )
+
+
 def verify_startup_run_retired(controls):
     try:
         controls.route.call(
@@ -281,6 +352,7 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
             raise TimeoutError("Owner first STEP lacks its exact native fixture effect")
         time.sleep(0.02)
     verify_startup_run_retired(controls)
+    verify_disabled_native_mutations(session, controls, admission, pump)
     emit(
         "native-owner-first-step",
         first_assignment_proven=True,

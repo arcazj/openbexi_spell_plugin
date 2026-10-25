@@ -87,6 +87,54 @@ def patch_native_tree(source):
     )
     cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
     cif_text = cif.read_text()
+    include = '#include "SPELL_IPC/SPELLipc_Executor.H"'
+    message_entry = (
+        "void SPELLserverCif::processMessage( const SPELLipcMessage& msg )\n{\n"
+    )
+    command_entry = (
+        "void SPELLserverCif::processMessageCommand( const SPELLipcMessage& msg )\n{\n"
+    )
+    request_entry = '\tDEBUG("[CIF] Request: " + msg.getId());'
+    if any(
+        cif_text.count(anchor) != 1
+        for anchor in (include, message_entry, command_entry, request_entry)
+    ):
+        raise ValueError("Ambiguous native mutation boundary")
+    cif_text = cif_text.replace(
+        include, include + '\n#include "/candidate/mutation_gate.H"'
+    )
+    cif_text = cif_text.replace(
+        message_entry,
+        message_entry
+        + """    if (v08_message_disabled(msg.getId(), msg.hasField("ParentId") && !msg.get("ParentId").empty())) {
+        v08_note_disabled_mutation(getProcId(), msg.getId());
+        return;
+    }
+""",
+    )
+    cif_text = cif_text.replace(
+        command_entry,
+        command_entry
+        + """    if (!v08_command_supported(msg.getId())) {
+        v08_note_disabled_mutation(getProcId(), msg.getId());
+        return;
+    }
+""",
+    )
+    cif_text = cif_text.replace(
+        request_entry,
+        request_entry
+        + """
+    if (!v08_request_supported(requestId)) {
+        v08_note_disabled_mutation(getProcId(), requestId);
+        response.setType(MSG_TYPE_ERROR);
+        response.set(MessageField::FIELD_ERROR, "V08_NATIVE_MUTATION_DENIED");
+        response.set(MessageField::FIELD_REASON, "Owner-admitted request protocol unavailable");
+        response.set(MessageField::FIELD_FATAL, PythonConstants::False);
+        return response;
+    }
+""",
+    )
     marker = "    cmd.id = msgId;"
     if cif_text.count(marker) != 1:
         raise ValueError("Ambiguous native command decoding")

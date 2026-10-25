@@ -40,3 +40,11 @@ browser/WSS behavior, complete compatibility, production-like Compose/Kubernetes
 admission/storage/node fencing, recovery, security and release packaging.
 [RELEASE_GATES.json](RELEASE_GATES.json) remains authoritative and all groups
 remain unqualified.
+
+## Dev37 boundary candidate
+
+`NATIVE_MUTATION_BOUNDARY.md` specifies fail-closed rejection of unsupported
+Executor CIF commands, prompt replies and direct requests before side effects.
+Its hosted 19-operation oracle is pending. This closes an unsafe alternate
+path; it does not implement positive owner ABORT/CLOSE/prompt/setter features.
+Context GUI management and client-roster paths still require their own contracts.

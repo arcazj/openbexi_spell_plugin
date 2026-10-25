@@ -191,6 +191,7 @@ class NativeAdmissionServer:
         )
         self.control_denials = threading.Event()
         self.consume_denials = threading.Event()
+        self.disabled_mutations = set()
         self.context_pid = None
         self.pidfd = None
         self.stop = threading.Event()
@@ -299,7 +300,30 @@ class NativeAdmissionServer:
         self.member_pids[pid] = instance
 
     def dispatch(self, role, instance, body):
+        if role != "executor" and body.get("schema") == "openbexi.native-denied/1":
+            raise ValueError("Native denied diagnostic role differs")
         if role == "executor":
+            if body.get("schema") == "openbexi.native-denied/1":
+                exact(body, {"schema", "instance_id", "operation"})
+                operation = body["operation"]
+                if (
+                    body["instance_id"] != instance
+                    or type(operation) is not str
+                    or not 1 <= len(operation) <= 64
+                    or any(
+                        ch not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+                        for ch in operation
+                    )
+                ):
+                    raise ValueError("Native denied diagnostic scope differs")
+                key = (instance, operation)
+                if key not in self.disabled_mutations:
+                    if len(self.disabled_mutations) >= 128:
+                        raise ValueError("Native denied diagnostic capacity reached")
+                    self.disabled_mutations.add(key)
+                    self.report("native-mutation-denied", operation=operation)
+                # It is never an admission, including after duplicate reports.
+                raise ValueError("Unqualified native mutation rejected")
             if (
                 body.get("schema") != "openbexi.native-consume/1"
                 or body.get("instance_id") != instance

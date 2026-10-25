@@ -6,7 +6,7 @@ mandatory criteria pass. It supersedes the separate-confirmation hold; another
 routine publication confirmation is not required. It does not authorize
 production migration or weaken G1 F1–F10 or acceptance requirements.
 
-The full release is **not qualified**. Package `0.8.0.dev36` remains development
+The full release is **not qualified**. Package `0.8.0.dev37` remains development
 code. Dev31 at `9de50ea` verified a 21-member retained native family, original
 durable member identities and stale-controller initial RUN rejection. Dev32
 adds fresh owner STEP/PAUSE grants. Its push native STEP/disconnect oracle passed;
@@ -83,3 +83,7 @@ exited 1 with full_v08_qualified and eligible_for_publication both false. All
 records 16 passes/3 failures and preserves the narrower scope. Hosted 344 scoped
 checks, 241 portable checks and all six services/native jobs passed at that code;
 they do not override this failed full-release assessment. See TEST_REPORT.md.
+
+Dev37 adds an unsupported-mutation boundary in the private native Executor.
+Hosted compilation and the 19-operation denial probe are pending. Positive
+owner ABORT/CLOSE/prompt/setter functionality is not implemented by that guard.

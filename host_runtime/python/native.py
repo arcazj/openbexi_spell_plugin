@@ -253,9 +253,10 @@ class NativeSession:
         errors = []
         if self.context:
             try:
-                if self.opened:
+                if self.opened and self.native_home is None:
                     self.request('REQ_CLOSE_EXEC', context=True)
-                self.context.exchange('REQ_GUI_LOGOUT', 'CTX')
+                if self.native_home is None:
+                    self.context.exchange('REQ_GUI_LOGOUT', 'CTX')
             except Exception as error:
                 errors.append(str(error))
             try:
@@ -265,8 +266,9 @@ class NativeSession:
             self.context = None
         if self.listener:
             try:
-                self.listener.exchange('REQ_CLOSE_CTX', 'LST', {'ContextName': 'example'})
-                self.listener.exchange('REQ_GUI_LOGOUT', 'LST')
+                if self.native_home is None:
+                    self.listener.exchange('REQ_CLOSE_CTX', 'LST', {'ContextName': 'example'})
+                    self.listener.exchange('REQ_GUI_LOGOUT', 'LST')
             except Exception as error:
                 errors.append(str(error))
             try:
