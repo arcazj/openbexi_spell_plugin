@@ -8,10 +8,12 @@ No failed call is retried, even with a newly generated request identifier.
 
 import threading
 import uuid
+from dataclasses import asdict
 
 from openbexi_spell_server.contracts import canonical, digest, exact
 from openbexi_spell_server.family import FamilyAdmission
 from openbexi_spell_server.launch import start_grant
+from openbexi_spell_server.commands import owner_command_grant
 from openbexi_spell_server.preflight import canonical_uuid
 
 
@@ -33,6 +35,11 @@ class NativeRunJournal:
         self.consumed = set()
         self.member_attempted = set()
         self.bound_members = {}
+        self.owner_operations = {}
+        self.owner_forward_attempted = set()
+        self.owner_forwarded = set()
+        self.owner_consume_attempted = set()
+        self.owner_consumed = set()
         self.lock = threading.Lock()
 
     def bind_member(self, instance, pid, parent_pid, start_ticks, executable_sha256):
@@ -138,10 +145,159 @@ class NativeRunJournal:
         self.report(operation, "IPC_SEND_ACKNOWLEDGED")
         return result
 
+    def poll_owner(self):
+        reply = self.route.call(
+            self.request, path="/v1/worker/command-poll", schema="openbexi.worker/2"
+        )
+        if (
+            type(reply) is not dict
+            or reply.get("execution_id") != self.grant.execution_id
+            or type(reply.get("action")) is not str
+        ):
+            raise ValueError("Owner command delivery scope differs")
+        if reply.get("action") in {"none", "hold"}:
+            exact(reply, {"action", "execution_id"})
+            return reply["action"]
+        exact(reply, {"action", "execution_id", "grant"})
+        if reply["action"] != "command":
+            raise ValueError("Owner command delivery action differs")
+        self.dispatch_owner(reply["grant"])
+        return "command"
+
+    def dispatch_owner(self, value):
+        grant = owner_command_grant(value)
+        if any(
+            getattr(grant, key) != getattr(self.grant, key)
+            for key in (
+                "authority_incarnation",
+                "execution_id",
+                "worker_slot",
+                "worker_incarnation",
+                "worker_generation",
+            )
+        ) or grant.runtime_origin_hash != FamilyAdmission.origin(self.grant):
+            raise ValueError("Owner command runtime identity differs")
+        operation = dict(
+            command_id=grant.command_id,
+            target_admission_id=grant.target_admission_id,
+            command=grant.command,
+        )
+        if digest(operation) != grant.operation_digest:
+            raise ValueError("Owner command operation differs")
+        with self.lock:
+            if (
+                grant.command_id in self.owner_operations
+                or grant.command_id in self.operations
+                or len(self.owner_operations) >= 512
+            ):
+                raise ValueError("Owner command already attempted or capacity reached")
+            with self.children.lock:
+                targets = [
+                    instance
+                    for instance, admission in self.children.started.items()
+                    if admission == grant.target_admission_id
+                ]
+            if (
+                len(targets) != 1
+                or self.bound_members.get(targets[0]) != grant.member_binding_hash
+            ):
+                raise ValueError("Owner command member binding differs")
+            target = targets[0]
+            self.owner_operations[grant.command_id] = (target, grant)
+        try:
+            result = self.original(
+                grant.command,
+                {"V08ControlRequest": grant.command_id},
+                send=True,
+                procedure=target,
+            )
+        except BaseException:
+            try:
+                self.report_owner(grant, "UNCERTAIN")
+            except Exception:
+                pass
+            raise
+        self.report_owner(grant, "IPC_SEND_ACKNOWLEDGED")
+        return result
+
+    def report_owner(self, grant, outcome):
+        reply = self.route.call(
+            {**self.request, "command_grant": asdict(grant), "outcome": outcome},
+            path="/v1/worker/command-report",
+            schema="openbexi.worker/2",
+        )
+        self._owner_receipt(
+            grant,
+            reply,
+            {"DELIVERY_UNPROVEN", "FORWARD_UNPROVEN", "EXECUTION_UNPROVEN"},
+        )
+
+    @staticmethod
+    def _owner_receipt(grant, reply, states):
+        if (
+            type(reply) is not dict
+            or type(reply.get("state")) is not str
+            or reply["state"] not in states
+        ):
+            raise ValueError("Owner command receipt state differs")
+        expected = dict(
+            command_id=grant.command_id,
+            execution_id=grant.execution_id,
+            state=reply["state"],
+            operation_digest=grant.operation_digest,
+            quiescence_proven=False,
+            effective_transfer=False,
+            hold_retained=True,
+            runtime_enabled=False,
+        )
+        if canonical(reply) != canonical(expected):
+            raise ValueError("Owner command receipt differs")
+
+    def _owner_phase(self, body, stage):
+        expected_schema = (
+            "openbexi.native-control/1"
+            if stage == "forward"
+            else "openbexi.native-consume/1"
+        )
+        with self.lock:
+            target, grant = self.owner_operations[body["request_id"]]
+            if (
+                body["schema"] != expected_schema
+                or body["instance_id"] != target
+                or body["command"] != grant.command
+            ):
+                raise ValueError("Owner command callback identity differs")
+            attempts = (
+                self.owner_forward_attempted
+                if stage == "forward"
+                else self.owner_consume_attempted
+            )
+            if grant.command_id in attempts:
+                raise ValueError("Owner command callback already attempted")
+            if stage == "consume" and grant.command_id not in self.owner_forwarded:
+                raise ValueError("Owner command forwarding was not verified")
+            attempts.add(grant.command_id)
+        reply = self.route.call(
+            {**self.request, "command_grant": asdict(grant)},
+            path="/v1/worker/command-" + stage,
+            schema="openbexi.worker/2",
+        )
+        self._owner_receipt(
+            grant,
+            reply,
+            {"FORWARD_UNPROVEN" if stage == "forward" else "EXECUTION_UNPROVEN"},
+        )
+        with self.lock:
+            (self.owner_forwarded if stage == "forward" else self.owner_consumed).add(
+                grant.command_id
+            )
+
     def forward(self, body):
         """Authenticated native Context callback, before its Executor IPC send."""
         exact(body, {"schema", "request_id", "instance_id", "command"})
         canonical_uuid(body["request_id"])
+        if body["request_id"] in self.owner_operations:
+            return self._owner_phase(body, "forward")
         if (
             body["schema"] != "openbexi.native-control/1"
             or body["command"] != "CMD_RUN"
@@ -185,6 +341,8 @@ class NativeRunJournal:
         """Authenticated, registered native Executor callback before executing RUN."""
         exact(body, {"schema", "request_id", "instance_id", "command"})
         canonical_uuid(body["request_id"])
+        if body["request_id"] in self.owner_operations:
+            return self._owner_phase(body, "consume")
         if (
             body["schema"] != "openbexi.native-consume/1"
             or body["command"] != "CMD_RUN"

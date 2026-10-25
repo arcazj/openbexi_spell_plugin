@@ -10,6 +10,7 @@ from dataclasses import dataclass
 
 MAX_BODY = 65536
 MAX_DEPTH = 16
+OWNER_COMMANDS = frozenset({"CMD_STEP", "CMD_PAUSE"})
 PERMISSIONS = frozenset(
     {
         "context:read",
@@ -149,7 +150,7 @@ def envelope(context, subject, method, payload, key=None):
     )
 
 
-def validate_envelope(value, context, *, now=None, allow_launch=False):
+def validate_envelope(value, context, *, now=None, allow_launch=False, allow_commands=False):
     exact(
         value,
         {
@@ -190,7 +191,9 @@ def validate_envelope(value, context, *, now=None, allow_launch=False):
         raise Fault(403, "delegation_expired")
     method = value["method"]
     if not isinstance(method, str) or (
-        method not in METHODS and not (allow_launch and method == "execution.start")
+        method not in METHODS
+        and not (allow_launch and method == "execution.start")
+        and not (allow_commands and method == "execution.command")
     ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
@@ -203,6 +206,9 @@ def validate_envelope(value, context, *, now=None, allow_launch=False):
             raise Fault(400, "invalid_revision")
         if len(canonical(body["value"])) > 16384:
             raise Fault(413, "value_too_large")
+    elif allow_commands and method == "execution.command":
+        identifier(value["idempotency_key"])
+        validate_owner_command_payload(value["payload"])
     elif method in AUTHORITY_MUTATIONS or (allow_launch and method == "execution.start"):
         identifier(value["idempotency_key"])
         validate_authority_payload(method, value["payload"])
@@ -286,4 +292,20 @@ def validate_authority_payload(method, body):
             "sha256:[0-9a-f]{64}", body["runtime_image"]
         ):
             raise Fault(400, "invalid_runtime_image")
+    return body
+
+
+def validate_owner_command_payload(body):
+    proof = AUTHORITY_FIELDS["execution.start"]
+    exact(body, proof | {"target_admission_id", "command"})
+    validate_authority_payload("execution.start", {key: body[key] for key in proof})
+    if type(body["command"]) is not str or body["command"] not in OWNER_COMMANDS:
+        raise Fault(403, "owner_command_unqualified")
+    target = body["target_admission_id"]
+    if target is not None:
+        try:
+            if str(uuid.UUID(target)) != target:
+                raise ValueError("noncanonical_uuid")
+        except (ValueError, TypeError, AttributeError) as error:
+            raise Fault(400, "invalid_owner_command_target") from error
     return body

@@ -1,0 +1,62 @@
+{
+  "schema": "openbexi.component-local/1",
+  "package_version": "0.8.0.dev32",
+  "scope": "fresh owner STEP/PAUSE authority and private native hooks; local service tests only",
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "54e024d4b1feb8232740fa672b8acd72537028c6e2b5fbef6bcf71bd9f11bd08",
+    "host_runtime/native/admission_gate.H": "a8880ce781183fe9c2b323373586f7e88d3356c39a246f69eda3e84f85b379b5",
+    "host_runtime/native/admission_ipc.H": "536e64dc3284c9103f16638ef07479744fe34af013a129e62926ac17ee605bd2",
+    "host_runtime/native/execution_gate.H": "d1b824f7006bb0be7b56fedf7eaef139ef81f0d218a8322aa21a96de7cddef3b",
+    "host_runtime/python/control_journal.py": "a74ea659401e8453bd682d222ee360ef1ed581065ae6350906dce712a173fb4a",
+    "host_runtime/python/native.py": "b991bfb54a33ba388c52416b3332eb6d408e12227d02a908b3ac1ff908533d35",
+    "host_runtime/python/v08_worker.py": "39fa6e9e761206386b92664eab523cbefdfc69c53c6126aada21b7cf7452d341",
+    "scripts/qualify_v08_native_launch.py": "1544088d65a10e28d44245f615bf61d7240e91b3f9efecdfb37fef03da47eb14",
+    "scripts/v08_native_consumption.py": "218c1b32bd1b535cd85ea1dcec6011239fe6f030b07210b2b8ed2800475e9c99",
+    "server/src/openbexi_spell_server/__init__.py": "c4bd96027635609729b5825c4203628431185f5b58fcf3ad7f45d554702cda7f",
+    "server/src/openbexi_spell_server/__main__.py": "a5728eddd5d3bc58a37912b41a55da1ba261ea66e1e635c5d23f208e5a7f4c25",
+    "server/src/openbexi_spell_server/authority.py": "3280c450f47fdaee27ee5b228693670cd423beb54637c9c79100b9e1d313daf2",
+    "server/src/openbexi_spell_server/commands.py": "e0f3de57645f841694b42c1e1e9b9bd4d73da430499c13b10fdda8b0163a4eba",
+    "server/src/openbexi_spell_server/contracts.py": "0aafdc70c395d69ab72e14248ca0413414569d74b114b517a286e7d6b9c39504",
+    "server/src/openbexi_spell_server/control.py": "027621dcc1948ba7d9ae633adc5ebe69c1df9b13f242d0444841a55af85091bf",
+    "server/src/openbexi_spell_server/effects.py": "3d6a47ab7cddca90aada9b9630ca106dc24e40fbf9bc90db68471a352b4daee3",
+    "server/src/openbexi_spell_server/family.py": "d9d7b68159bba010424bd06b8a185eec45328448612e57f7fe1165734a263d0c",
+    "server/src/openbexi_spell_server/gateway.py": "b13b7bf18120e797c0c4137ded65ac4ee3ccd4d130419e568b373865e640d5bf",
+    "server/src/openbexi_spell_server/launch.py": "392b2467632db9391ba45c7cad88a9dcd6f0b6b1da8c0d0b1d8d83345eeb5467",
+    "server/src/openbexi_spell_server/mutex.py": "b1fb7ef7891045c0188df53048a2378a17c81722cf94fe2ae664a74b0277a46a",
+    "server/src/openbexi_spell_server/pause.py": "6f7101f800df90d9f845dc2e56d5867720246a7f32414ed93740476b5554e091",
+    "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+    "server/src/openbexi_spell_server/services.py": "aaf591ebe526f5925c3a00c5343e52d36918523f287e81591be24214733bc1e4",
+    "server/src/openbexi_spell_server/snapshots.py": "d7267c50602b333ebd8034e1cf47319565dfc82fb42ddcd8ec7bc77c0b622f25",
+    "server/src/openbexi_spell_server/store.py": "360fb7650aba545da10f928e39544d8996b57ee8614c62bb4ad4916c916b7e6b",
+    "server/src/openbexi_spell_server/transport.py": "e5d9d7552140b58675edad173323be1361edd1e5250a1e81c6e82291af519216",
+    "server/src/openbexi_spell_server/worker.py": "0511757970f821bc3be79af32cebd5270275083b61ebbbfe9295b56882032ae9",
+    "server/tests/test_owner_commands.py": "1ed3b1133f4ae1ea429421263f6ba3c66d8b374d82ace8108ac3431387fb7219"
+  },
+  "checks": {
+    "full_local_suite": {
+      "tests": 537,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "final_owner_suite": {
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "mandatory_hosted_controls_excluded": 3,
+  "native_source_reproduction": true,
+  "native_compilation_executed": false,
+  "native_runtime_executed": false,
+  "hosted_candidate_qualification": "pending",
+  "wheel_modules_verified": 18,
+  "wheel_sha256": "d9217fa04e74c2b93637c915719cd061f9e86fc789e833f317c0ec4d2b7748ee",
+  "isolated_install_and_clis": true,
+  "lint_format_types": true,
+  "quiescence_proven": false,
+  "effective_transfer": false,
+  "runtime_enabled": false,
+  "full_v08_qualified": false
+}

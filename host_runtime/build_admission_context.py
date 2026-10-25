@@ -82,7 +82,7 @@ def patch_native_tree(source):
     command.write_text(
         command_text.replace(
             "    std::string earg;",
-            "    std::string earg;\n    std::string v08Request;",
+            "    std::string earg;\n    std::string v08Request;\n    bool v08External = false;",
         )
     )
     cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
@@ -94,7 +94,7 @@ def patch_native_tree(source):
         cif_text.replace(
             marker,
             marker
-            + '\n    if (msg.hasField("V08ControlRequest")) cmd.v08Request = msg.get("V08ControlRequest");',
+            + '\n    cmd.v08External = true;\n    if (msg.hasField("V08ControlRequest")) cmd.v08Request = msg.get("V08ControlRequest");',
         )
     )
     controller = source / "lib/SPELL_EXC/src/SPELLcontroller.C"

@@ -6,10 +6,12 @@ mandatory criteria pass. It supersedes the separate-confirmation hold; another
 routine publication confirmation is not required. It does not authorize
 production migration or weaken G1 F1–F10 or acceptance requirements.
 
-The full release is **not qualified**. Package `0.8.0.dev16` remains development
-code. Existing native receipts qualify named retained audit, TC/TM, negative
-main-pause and observed background-Python components. They do not qualify full
-family handoff/resume, native children, joint IDE/browser or deployed recovery.
+The full release is **not qualified**. Package `0.8.0.dev32` remains development
+code. Dev31 at `9de50ea` verified a 21-member retained native family, original
+durable member identities and stale-controller initial RUN rejection. Dev32
+adds fresh owner STEP/PAUSE grants; its actual-native qualification is pending.
+Existing component receipts do not qualify full family handoff/resume, joint
+IDE Run/Debug/browser, Kubernetes or deployed recovery.
 
 ## Publication preflight
 

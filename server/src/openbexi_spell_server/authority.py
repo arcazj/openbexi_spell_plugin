@@ -13,7 +13,11 @@ import time
 import uuid
 from contextlib import ExitStack, contextmanager
 from dataclasses import asdict, dataclass
+from typing import TYPE_CHECKING
 from .mutex import ExecutionMutex
+
+if TYPE_CHECKING:
+    from .commands import NativeOwnerCommands
 
 from .contracts import (
     AUTHORITY_MUTATIONS,
@@ -58,6 +62,7 @@ class ExecutionAuthority:
         self.native_pause = None
         self.native_children = None
         self.native_controls = None
+        self.native_commands: NativeOwnerCommands | None = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})

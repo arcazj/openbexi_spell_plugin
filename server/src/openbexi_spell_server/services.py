@@ -41,6 +41,7 @@ class Context:
         native_pause=None,
         native_children=None,
         native_controls=None,
+        native_commands=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
@@ -92,6 +93,12 @@ class Context:
             from .control import NativeControlJournal
 
             NativeControlJournal(self.authority, catalog=self.catalog)
+        if native_commands not in (None, "owner-queue"):
+            raise ValueError("Unsupported native owner command profile")
+        if native_commands is not None:
+            from .commands import NativeOwnerCommands
+
+            NativeOwnerCommands(self.authority)
         self.authority.start_guard = self._require_preflight
 
     def close(self):
@@ -133,6 +140,10 @@ class Context:
                     "/v1/worker/control-forward",
                     "/v1/worker/control-consume",
                     "/v1/worker/member-bind",
+                    "/v1/worker/command-poll",
+                    "/v1/worker/command-forward",
+                    "/v1/worker/command-consume",
+                    "/v1/worker/command-report",
                 )
                 else self.preflight
             )
@@ -147,14 +158,23 @@ class Context:
         if method != "POST" or path != "/v1/rpc":
             raise Fault(404, "route_not_available")
         request = validate_envelope(
-            body, self.store.context_id, allow_launch=self.launch is not None
+            body,
+            self.store.context_id,
+            allow_launch=self.launch is not None,
+            allow_commands=self.authority.native_commands is not None,
         )
         actor = self.subjects.get(request["subject"])
         if actor is None:
             raise Fault(403, "subject_denied")
         action = request["method"]
         # This always precedes replay lookup, including for an identical request.
-        actor.require("execution:start" if action == "execution.start" else METHODS[action])
+        actor.require(
+            "execution:start"
+            if action == "execution.start"
+            else "execution:control"
+            if action == "execution.command"
+            else METHODS[action]
+        )
         if action == "health":
             state = self.store.snapshot(values=False)
             result = {k: state[k] for k in ("context_id", "incarnation", "runtime_enabled")}
@@ -180,6 +200,11 @@ class Context:
                 "hold_retained": True,
                 "runtime_enabled": False,
             }
+        elif action == "execution.command":
+            commands = self.authority.native_commands
+            if commands is None:
+                raise Fault(404, "owner_commands_unconfigured")
+            result = commands.enqueue(actor.subject, request["idempotency_key"], request["payload"])
         elif action in AUTHORITY_MUTATIONS:
             result = self.authority.mutate(
                 actor.subject, action, request["idempotency_key"], request["payload"]

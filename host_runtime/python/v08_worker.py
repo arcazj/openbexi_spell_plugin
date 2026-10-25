@@ -105,19 +105,101 @@ def cooperative_thread_pause(session, pump, status, barrier_id):
     return native_pause_probe(session, pump, status)
 
 
+def owner_step_probe(session, controls, admission, consume_fenced, pump):
+    """Two real STEP commands; the second must fail after durable disconnect.
+
+    Only fixed fixture predicates leave the worker. Native variable values and
+    grants are never emitted. A PAUSED status alone cannot satisfy this probe.
+    """
+
+    def variables():
+        answer = session.request("REQ_GET_VARIABLES")
+        if answer.get("TotalChunks") not in {"0", "1"}:
+            raise RuntimeError("Owner fixture variable response is chunked or invalid")
+        names = answer.get("VarName", "").split("\4")
+        values = answer.get("VarValue", "").split("\4")
+        if len(names) != len(values):
+            raise RuntimeError("Owner fixture variable response differs")
+        return dict(zip(names, values))
+
+    if "FIRST" in variables() or "SECOND" in variables():
+        raise RuntimeError("Owner fixture advanced before its first grant")
+    emit("native-owner-ready", native_status="PAUSED")
+    until = time.monotonic() + 40
+    while len(controls.owner_consumed) != 1:
+        if time.monotonic() >= until:
+            raise TimeoutError("Owner first STEP was not consumed")
+        controls.poll_owner()
+        pump()
+        time.sleep(0.02)
+    until = time.monotonic() + 10
+    while True:
+        pump()
+        state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+        values = variables() if state == "PAUSED" else {}
+        if state == "PAUSED" and values.get("FIRST") == "1" and "SECOND" not in values:
+            break
+        if time.monotonic() >= until:
+            raise TimeoutError("Owner first STEP lacks its exact native fixture effect")
+        time.sleep(0.02)
+    emit(
+        "native-owner-first-step",
+        first_assignment_proven=True,
+        second_assignment_absent=True,
+    )
+    until = time.monotonic() + 40
+    while not Path("/workspace/owner-awaiting").is_file():
+        if time.monotonic() >= until:
+            raise TimeoutError("Owner second STEP did not reach final consumption hold")
+        controls.poll_owner()
+        pump()
+        time.sleep(0.02)
+    emit("native-owner-awaiting-fence")
+    if not admission.consume_denials.wait(40) or not consume_fenced.is_set():
+        raise RuntimeError("Owner second STEP lacks real authority denial")
+    until = time.monotonic() + 35
+    while True:
+        pump()
+        values = variables()
+        if (
+            session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"] != "PAUSED"
+            or values.get("FIRST") != "1"
+            or "SECOND" in values
+            or len(controls.owner_consumed) != 1
+            or controls.consumed
+        ):
+            raise RuntimeError("Stale owner STEP advanced or bypassed its fresh grant")
+        if Path("/control/owner-probe-stop").is_file():
+            return
+        if time.monotonic() >= until:
+            raise TimeoutError("Owner probe host observation expired")
+        if not Path("/workspace/owner-held").exists():
+            Path("/workspace/owner-held").write_text("held\n")
+            emit(
+                "native-stale-owner-step-held",
+                first_assignment_proven=True,
+                second_assignment_absent=True,
+                native_status="PAUSED",
+                hold_retained=True,
+            )
+        time.sleep(0.05)
+
+
 def run(config):
     fields = {"preflight", "grant", "start_barrier"}
     probe_enabled = type(config) is dict and "pause_probe" in config
     thread_probe = type(config) is dict and "thread_barrier_probe" in config
     child_profile = type(config) is dict and "native_child_gate" in config
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
+    owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     exact(
         config,
         fields
         | ({"pause_probe"} if probe_enabled else set())
         | ({"thread_barrier_probe"} if thread_probe else set())
         | ({"native_child_gate"} if child_profile else set())
-        | ({"native_consume_fence_probe"} if consumption_probe else set()),
+        | ({"native_consume_fence_probe"} if consumption_probe else set())
+        | ({"native_owner_commands_probe"} if owner_probe else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -134,6 +216,14 @@ def run(config):
     ):
         raise ValueError(
             "Consumption probe requires the private native child candidate"
+        )
+    if owner_probe and (
+        config["native_owner_commands_probe"] is not True
+        or not child_profile
+        or consumption_probe
+    ):
+        raise ValueError(
+            "Owner commands require their separate private native candidate"
         )
     grant = start_grant(config["grant"])
     worker = config["preflight"]
@@ -276,6 +366,7 @@ def run(config):
                 native_home="/opt/v08-native-home",
                 admission_socket="/tmp/native-admission.sock",
                 consume_fence_probe=consumption_probe,
+                owner_step_probe=owner_probe,
             )
     session = session_type(
         root,
@@ -304,7 +395,7 @@ def run(config):
         )
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
-        if consumption_probe:
+        if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
 
@@ -316,7 +407,12 @@ def run(config):
                 except Fault as error:
                     if error.status == 403:
                         consume_fenced.set()
-                        emit("native-consumption-authority-denied", status=403)
+                        emit(
+                            "native-owner-authority-denied"
+                            if owner_probe
+                            else "native-consumption-authority-denied",
+                            status=403,
+                        )
                     raise
 
             controls.consume = observe_consume
@@ -400,6 +496,9 @@ def run(config):
                 writable.write(b"probe")
                 writable.flush()
             emit("native-consumption-probe-ready", writable_marker_directory=True)
+        if owner_probe:
+            owner_step_probe(session, controls, admission, consume_fenced, pump)
+            return
         session.request("CMD_RUN", send=True)
         if consumption_probe:
             until = time.monotonic() + 10

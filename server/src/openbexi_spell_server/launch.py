@@ -70,6 +70,19 @@ class WorkerLaunch:
                 }
             )
             safety_only = safety_only or path == "/v1/worker/control-report"
+        commands = self.authority.native_commands
+        if commands is not None:
+            allowed.update(
+                {
+                    "/v1/worker/command-poll",
+                    "/v1/worker/command-forward",
+                    "/v1/worker/command-consume",
+                    "/v1/worker/command-report",
+                }
+            )
+            # Startup provenance authenticates this original worker channel;
+            # only the independently owner-issued command grant admits effects.
+            safety_only = safety_only or path.startswith("/v1/worker/command-")
         if path not in allowed:
             raise Fault(404, "route_not_available")
         root_consume = path == "/v1/worker/consume"
@@ -96,6 +109,10 @@ class WorkerLaunch:
                 "start_ticks",
                 "executable_sha256",
             }
+        elif path.endswith(("command-forward", "command-consume", "command-report")):
+            extra = {"command_grant"}
+            if path.endswith("command-report"):
+                extra.add("outcome")
         elif path.endswith(
             ("control-admit", "control-report", "control-forward", "control-consume")
         ):
@@ -128,6 +145,17 @@ class WorkerLaunch:
             return children.consume(grant, body["child_grant"])
         if path.endswith("member-bind"):
             return controls.bind_member(grant, body)
+        if path.endswith("command-poll"):
+            return commands.poll(grant)
+        if path.endswith(("command-forward", "command-consume", "command-report")):
+            from .commands import owner_command_grant
+
+            command = owner_command_grant(body["command_grant"])
+            if path.endswith("command-report"):
+                return commands.report(grant, command, body["outcome"])
+            return commands.advance(
+                grant, command, "forward" if path.endswith("command-forward") else "consume"
+            )
         if path.endswith("control-admit"):
             return controls.admit(grant, body)
         if path.endswith("control-forward"):

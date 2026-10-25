@@ -28,14 +28,19 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 
 static void v08_admit_native_run(SPELLexecutorModel& model, const SPELLipcMessage& message)
 {
-    if (message.getId() != "CMD_RUN") return;
+    const std::string command = message.getId();
+    if (command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE") return;
     if (!message.hasField("V08ControlRequest"))
         throw std::runtime_error("Native RUN has no immutable admission identity");
+    // The Executor can redirect commands bearing ParentId to a child. Fresh
+    // grants name one member, so never admit this alternative target path.
+    if (message.hasField("ParentId") && !message.get("ParentId").empty())
+        throw std::runtime_error("Native command redirection is unqualified");
     v08_native_request({
         {"schema", "openbexi.native-control/1"},
         {"instance_id", model.getInstanceId()},
         {"request_id", message.get("V08ControlRequest")},
-        {"command", "CMD_RUN"}
+        {"command", command}
     });
 }
 

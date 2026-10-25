@@ -526,7 +526,11 @@ def main():
                     temporary / "pki",
                     extra_peers=("edge", "observer")
                     if profile.native_listener_survival
-                    else (("worker-probe",) if profile.native_child_gate else ()),
+                    else (
+                        ("worker-probe", "worker-owner")
+                        if profile.native_child_gate
+                        else ()
+                    ),
                 )
                 code = temporary / "code"
                 package = code / "server/src/openbexi_spell_server"
@@ -729,6 +733,9 @@ def main():
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    (sources / "owner_probe.py").write_text(
+                        "FIRST = 1\nSECOND = 2\nTHIRD = 3\n"
+                    )
                     (sources / "consume_probe.py").write_text(
                         "with open('/workspace/consume-probe-ran','w') as marker:marker.write('UNSAFE')\n"
                     )
@@ -792,6 +799,9 @@ def main():
                         )
                     catalog["grandchild-0"] = dict(
                         catalog["procedure-0"], entrypoint="grandchild_0.py"
+                    )
+                    catalog["owner-probe"] = dict(
+                        catalog["procedure-0"], entrypoint="owner_probe.py"
                     )
                     catalog["consume-probe"] = dict(
                         catalog["procedure-0"], entrypoint="consume_probe.py"
@@ -1770,6 +1780,29 @@ def main():
                     from v08_native_consumption import qualify_consumption_fence
 
                     qualify_consumption_fence(
+                        temporary=temporary,
+                        prefix=prefix,
+                        context_image=context_image,
+                        config=config,
+                        sources=sources,
+                        worker_image=worker_image,
+                        code=code,
+                        snapshot=snapshot,
+                        ca=ca,
+                        peers=peers,
+                        primary_controller=controller,
+                        control=control,
+                        primary_state=state,
+                        names=names,
+                        networks=networks,
+                        report=report,
+                        command=command,
+                        await_event=await_event,
+                        host_processes=host_processes,
+                        events=events,
+                    )
+                    qualify_consumption_fence(
+                        owner_commands=True,
                         temporary=temporary,
                         prefix=prefix,
                         context_image=context_image,

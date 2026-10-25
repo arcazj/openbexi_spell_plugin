@@ -1,4 +1,4 @@
-"""Host-owned stale RUN probe against the actual candidate native Executor.
+"""Host-owned stale RUN and fresh owner STEP probes against the native Executor.
 
 The fresh worker has its own slot, certificate, connection, execution and network.
 No authority/container introspection is delegated to the Context or worker.
@@ -40,13 +40,18 @@ def qualify_consumption_fence(
     await_event,
     host_processes,
     events,
+    owner_commands=False,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
     original_primary = primary_controller("execution.list", {})
-    name, network = prefix + "-consume-probe", prefix + "-consume-net"
-    context_name = prefix + "-consume-context"
-    context_network = prefix + "-consume-control"
+    label = "owner" if owner_commands else "consume"
+    context_id = "C" if owner_commands else "B"
+    source_id = "owner-probe" if owner_commands else "consume-probe"
+    worker_id = "worker-owner" if owner_commands else "worker-probe"
+    name, network = prefix + "-" + label + "-probe", prefix + "-" + label + "-net"
+    context_name = prefix + "-" + label + "-context"
+    context_network = prefix + "-" + label + "-control"
     command("docker", "network", "create", context_network)
     networks.append(context_network)
     command("docker", "network", "create", "--internal", network)
@@ -54,9 +59,9 @@ def qualify_consumption_fence(
     with socket.socket() as reservation:
         reservation.bind(("127.0.0.1", 0))
         port = reservation.getsockname()[1]
-    state = temporary / "consume-probe-authority"
+    state = temporary / (label + "-probe-authority")
     state.mkdir(mode=0o700)
-    secure = temporary / "consume-probe-context-credentials"
+    secure = temporary / (label + "-probe-context-credentials")
     secure.mkdir(mode=0o755)
     for original, target in (
         (ca, "ca.pem"),
@@ -67,7 +72,7 @@ def qualify_consumption_fence(
         (secure / target).chmod(0o444)
     probe_config = dict(
         config,
-        context_id="B",
+        context_id=context_id,
         allowed_hosts=[f"localhost:{port}", "context:9443"],
         worker_slots={
             "slot-probe": "incarnation-probe",
@@ -76,7 +81,7 @@ def qualify_consumption_fence(
         worker_credentials=dict(
             profile="single-host-preflight",
             identities={
-                peers["worker-probe"]["pin"]: dict(
+                peers[worker_id]["pin"]: dict(
                     slot="slot-probe", incarnation="incarnation-probe"
                 ),
                 peers["worker-0"]["pin"]: dict(
@@ -85,10 +90,12 @@ def qualify_consumption_fence(
             },
         ),
         approved_sources={
-            "consume-probe": config["approved_sources"]["consume-probe"],
+            source_id: config["approved_sources"][source_id],
             "witness": config["approved_sources"]["procedure-9"],
         },
     )
+    if owner_commands:
+        probe_config["native_commands"] = "owner-queue"
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -146,7 +153,7 @@ def qualify_consumption_fence(
     def controller(method, payload):
         return route.call(
             envelope(
-                "B",
+                context_id,
                 "alice",
                 method,
                 payload,
@@ -170,11 +177,11 @@ def qualify_consumption_fence(
         for entry in controller("source.catalog", {})["procedures"]
     }
     connection = controller("session.open", {})["connection_id"]
-    approved = entries["consume-probe"]
+    approved = entries[source_id]
     execution = controller(
         "execution.reserve",
         dict(
-            procedure_id="consume-probe",
+            procedure_id=source_id,
             connection_id=connection,
             **{
                 key: approved[key]
@@ -205,14 +212,14 @@ def qualify_consumption_fence(
             },
         ),
     )
-    peer = peers["worker-probe"]
+    peer = peers[worker_id]
     params = dict(
         ca=str(ca),
         certificate=str(peer["cert"]),
         key=str(peer["key"]),
         context_url=f"https://localhost:{port}",
         context_fingerprint=peers["context"]["pin"],
-        context_id="B",
+        context_id=context_id,
         execution_id=execution["id"],
         worker_slot="slot-probe",
         worker_incarnation="incarnation-probe",
@@ -229,7 +236,7 @@ def qualify_consumption_fence(
             capability=execution["capability"],
         ),
     )["grant"]
-    private = temporary / "consume-probe-credentials"
+    private = temporary / (label + "-probe-credentials")
     private.mkdir(mode=0o755)
     for original, target in (
         (ca, "ca.pem"),
@@ -253,7 +260,11 @@ def qualify_consumption_fence(
                 grant=grant,
                 start_barrier="/control/start",
                 native_child_gate=True,
-                native_consume_fence_probe=True,
+                **(
+                    {"native_owner_commands_probe": True}
+                    if owner_commands
+                    else {"native_consume_fence_probe": True}
+                ),
             )
         )
     )
@@ -305,7 +316,29 @@ def qualify_consumption_fence(
     ]
     names.append(name)
     command(*args)
-    await_event([name], "native-consumption-awaiting-fence", seconds=45)
+    if owner_commands:
+        await_event([name], "native-owner-ready", seconds=45)
+        proof = dict(
+            execution_id=execution["id"],
+            connection_id=connection,
+            expected_epoch=execution["epoch"],
+            connection_generation=execution["connection_generation"],
+            capability=execution["capability"],
+            target_admission_id=None,
+            command="CMD_STEP",
+        )
+        first_command = controller("execution.command", proof)["command_id"]
+        await_event([name], "native-owner-first-step", seconds=20)
+        second_command = controller("execution.command", proof)["command_id"]
+        if first_command == second_command:
+            raise RuntimeError("Fresh owner STEP commands share an identity")
+    await_event(
+        [name],
+        "native-owner-awaiting-fence"
+        if owner_commands
+        else "native-consumption-awaiting-fence",
+        seconds=45,
+    )
     before = host_processes(name)
     # Deliberately exceed the ordinary four-second native socket deadline. The
     # C++ hold is before channel creation; a network timeout cannot pass this probe.
@@ -328,11 +361,19 @@ def qualify_consumption_fence(
     }
     if unrelated != current:
         raise RuntimeError("Native consumption probe fenced another execution")
-    (control / "consume-continue").write_text(
+    (control / ("owner-continue" if owner_commands else "consume-continue")).write_text(
         "continue into live check after durable close\n"
     )
-    await_event([name], "native-stale-run-held", seconds=15)
-    marker = "from pathlib import Path;assert not Path('/workspace/consume-probe-ran').exists()"
+    await_event(
+        [name],
+        "native-stale-owner-step-held" if owner_commands else "native-stale-run-held",
+        seconds=15,
+    )
+    marker = (
+        "from pathlib import Path;assert Path('/workspace/owner-held').is_file()"
+        if owner_commands
+        else "from pathlib import Path;assert not Path('/workspace/consume-probe-ran').exists()"
+    )
     for _ in range(3):
         command("docker", "exec", name, "python", "-I", "-c", marker)
         time.sleep(0.1)
@@ -354,17 +395,47 @@ def qualify_consumption_fence(
             raise RuntimeError(
                 "Native stale-RUN probe changed ownership instead of fencing"
             )
-        attempts = db.execute(
-            "SELECT a.state,f.state,c.state FROM native_control_attempts a "
-            "JOIN native_control_forwards f ON a.request_id=f.request_id "
-            "LEFT JOIN native_control_consumptions c ON a.request_id=c.request_id "
-            "WHERE a.execution_id=? AND a.origin_hash=f.origin_hash AND a.operation_digest=f.operation_digest",
-            (execution["id"],),
-        ).fetchall()
-        if attempts != [("DISPATCH_UNCERTAIN", "FORWARD_UNPROVEN", None)]:
-            raise RuntimeError(
-                "Stale native RUN obtained a consumption receipt or lost identity"
-            )
+        if owner_commands:
+            commands = db.execute(
+                "SELECT command_id,command,state,owner,epoch,connection_id,connection_generation FROM native_owner_commands ORDER BY sequence"
+            ).fetchall()
+            expected = [
+                (
+                    identity,
+                    "CMD_STEP",
+                    phase,
+                    "alice",
+                    execution["epoch"],
+                    connection,
+                    execution["connection_generation"],
+                )
+                for identity, phase in (
+                    (first_command, "EXECUTION_UNPROVEN"),
+                    (second_command, "FORWARD_UNPROVEN"),
+                )
+            ]
+            if (
+                commands != expected
+                or db.execute(
+                    "SELECT COUNT(*) FROM native_control_attempts"
+                ).fetchone()[0]
+                != 0
+            ):
+                raise RuntimeError(
+                    "Owner STEP lost its fresh identity or bypassed final consumption"
+                )
+        else:
+            attempts = db.execute(
+                "SELECT a.state,f.state,c.state FROM native_control_attempts a "
+                "JOIN native_control_forwards f ON a.request_id=f.request_id "
+                "LEFT JOIN native_control_consumptions c ON a.request_id=c.request_id "
+                "WHERE a.execution_id=? AND a.origin_hash=f.origin_hash AND a.operation_digest=f.operation_digest",
+                (execution["id"],),
+            ).fetchall()
+            if attempts != [("DISPATCH_UNCERTAIN", "FORWARD_UNPROVEN", None)]:
+                raise RuntimeError(
+                    "Stale native RUN obtained a consumption receipt or lost identity"
+                )
         if db.execute(
             "SELECT state,COUNT(*) FROM native_members GROUP BY state"
         ).fetchall() != [("REGISTERED_UNPROVEN", 1)]:
@@ -377,7 +448,12 @@ def qualify_consumption_fence(
     records = events(name)
     if (
         sum(
-            event["event"] == "native-consumption-authority-denied"
+            event["event"]
+            == (
+                "native-owner-authority-denied"
+                if owner_commands
+                else "native-consumption-authority-denied"
+            )
             and event.get("status") == 403
             for event in records
         )
@@ -386,7 +462,11 @@ def qualify_consumption_fence(
         raise RuntimeError("Native final admission lacks exact live authority denial")
     if any(
         event["event"]
-        in {"native-running", "native-finished", "native-before-consume-admitted"}
+        in (
+            {"native-running", "native-finished"}
+            if owner_commands
+            else {"native-running", "native-finished", "native-before-consume-admitted"}
+        )
         for event in records
     ):
         raise RuntimeError("Native stale RUN advanced or was granted consumption")
@@ -427,9 +507,11 @@ def qualify_consumption_fence(
             raise RuntimeError(
                 "Consumption probe changed primary Context holds/workers"
             )
-    report["native_consumption_fence"] = dict(
+    report[
+        "native_owner_command_fence" if owner_commands else "native_consumption_fence"
+    ] = dict(
         passed=True,
-        isolated_context_id="B",
+        isolated_context_id=context_id,
         primary_ten_slot_pool_preserved=True,
         unrelated_reserved_witness_unchanged=True,
         pre_channel_hold_seconds=5,
@@ -440,11 +522,20 @@ def qualify_consumption_fence(
         forwarded_before_disconnect=True,
         consumption_denied_after_disconnect=True,
         original_three_pids_retained=True,
-        body_marker_absent=True,
+        **(
+            dict(
+                first_step_assignment_proven=True,
+                second_step_assignment_absent=True,
+                fresh_owner_grants=2,
+                startup_run_grants_used=0,
+            )
+            if owner_commands
+            else dict(body_marker_absent=True)
+        ),
         original_owner_epoch_retained=True,
         unrelated_executions_unchanged=True,
         control_state="CONTROLLER_DISCONNECTED",
-        consumption_receipts=0,
+        consumption_receipts=1 if owner_commands else 0,
         durable_members_retained=1,
         member_host_attested=False,
         host_teardown_only=True,
