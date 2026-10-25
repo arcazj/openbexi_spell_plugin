@@ -276,17 +276,19 @@ def patch_native_tree(source):
     # Record the original busy-command drop and handler return separately.
     # Neither is proof that asynchronous procedure/driver work has settled.
     drop = '\t\tLOG_WARN("Discarding command " + cmd.id);\n\t\treturn;'
-    returned = '\tsetCommandFinished();\n\tDEBUG("[C] Command execution finished " + cmd.id);'
+    returned = (
+        '\tsetCommandFinished();\n\tDEBUG("[C] Command execution finished " + cmd.id);'
+    )
     if controller_text.count(drop) != 1 or controller_text.count(returned) != 1:
         raise ValueError("Ambiguous original Executor mailbox disposition points")
     controller_text = controller_text.replace(
         drop,
         '\t\tLOG_WARN("Discarding command " + cmd.id);\n'
         '\t\tv08_report_native_disposition(m_procId, cmd, "DISCARDED_PENDING");\n'
-        '\t\treturn;',
+        "\t\treturn;",
     ).replace(
         returned,
-        '\tsetCommandFinished();\n'
+        "\tsetCommandFinished();\n"
         '\tv08_report_native_disposition(m_procId, cmd, "HANDLER_RETURNED");\n'
         '\tDEBUG("[C] Command execution finished " + cmd.id);',
     )

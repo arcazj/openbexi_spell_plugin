@@ -626,26 +626,38 @@ def test_mailbox_disposition_requires_consumption_and_never_unblocks_handoff(que
     code, response = call(family, pki, family["grant"], "command-disposition", **body)
     assert code == 200
     assert response["result"] == dict(
-        recorded=True, command_id=grant["command_id"],
+        recorded=True,
+        command_id=grant["command_id"],
         execution_id=family["grant"].execution_id,
-        disposition="DISCARDED_PENDING", state="EXECUTION_UNPROVEN",
-        quiescence_proven=False, effective_transfer=False,
-        hold_retained=True, runtime_enabled=False,
+        disposition="DISCARDED_PENDING",
+        state="EXECUTION_UNPROVEN",
+        quiescence_proven=False,
+        effective_transfer=False,
+        hold_retained=True,
+        runtime_enabled=False,
     )
     assert rows(family)[0]["state"] == "EXECUTION_UNPROVEN"
     assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
     assert family["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
     assert (
-        family["store"].db.execute("SELECT disposition FROM native_owner_command_dispositions")
-        .fetchone()[0] == "DISCARDED_PENDING"
+        family["store"]
+        .db.execute("SELECT disposition FROM native_owner_command_dispositions")
+        .fetchone()[0]
+        == "DISCARDED_PENDING"
     )
     count = family["store"].db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
     assert call(family, pki, family["grant"], "command-disposition", **body) == (code, response)
     assert family["store"].db.execute("SELECT COUNT(*) FROM events").fetchone()[0] == count
-    assert call(
-        family, pki, family["grant"], "command-disposition",
-        **dict(body, disposition="HANDLER_RETURNED"),
-    )[0] == 409
+    assert (
+        call(
+            family,
+            pki,
+            family["grant"],
+            "command-disposition",
+            **dict(body, disposition="HANDLER_RETURNED"),
+        )[0]
+        == 409
+    )
     assert family["app"].authority.list_executions("alice")["executions"][0]["owner"] == "alice"
 
 
@@ -655,12 +667,19 @@ def test_owner_cannot_forge_settlement_disposition(queue, family, pki, bad):
     assert worker(family, pki, "command-forward", grant)[0] == 200
     assert worker(family, pki, "command-consume", grant)[0] == 200
     assert call(
-        family, pki, family["grant"], "command-disposition",
-        command_grant=grant, disposition=bad,
+        family,
+        pki,
+        family["grant"],
+        "command-disposition",
+        command_grant=grant,
+        disposition=bad,
     )[0] in (400, 403)
-    assert family["store"].db.execute(
-        "SELECT COUNT(*) FROM native_owner_command_dispositions"
-    ).fetchone()[0] == 0
+    assert (
+        family["store"]
+        .db.execute("SELECT COUNT(*) FROM native_owner_command_dispositions")
+        .fetchone()[0]
+        == 0
+    )
 
 
 def test_disposition_is_safety_only_after_controller_disconnect(queue, family, pki):
@@ -669,8 +688,12 @@ def test_disposition_is_safety_only_after_controller_disconnect(queue, family, p
     assert worker(family, pki, "command-consume", grant)[0] == 200
     family["controller"]("session.close", dict(connection_id=family["connection"]))
     status, answer = call(
-        family, pki, family["grant"], "command-disposition",
-        command_grant=grant, disposition="HANDLER_RETURNED",
+        family,
+        pki,
+        family["grant"],
+        "command-disposition",
+        command_grant=grant,
+        disposition="HANDLER_RETURNED",
     )
     assert status == 200
     assert answer["result"]["state"] == "EXECUTION_UNPROVEN"
@@ -693,12 +716,19 @@ def test_owner_disposition_original_member_and_worker_certificate_are_required(q
         certificate = kwargs.pop("certificate", "worker")
         request_body.update(kwargs)
         assert call(
-            family, pki, family["grant"], "command-disposition",
-            certificate=certificate, **request_body,
+            family,
+            pki,
+            family["grant"],
+            "command-disposition",
+            certificate=certificate,
+            **request_body,
         )[0] in (400, 403, 404)
-    assert family["store"].db.execute(
-        "SELECT COUNT(*) FROM native_owner_command_dispositions"
-    ).fetchone()[0] == 0
+    assert (
+        family["store"]
+        .db.execute("SELECT COUNT(*) FROM native_owner_command_dispositions")
+        .fetchone()[0]
+        == 0
+    )
 
 
 def test_agent_disposition_is_exactly_once_and_does_not_retry_on_lost_ack(agent, family, pki):
@@ -708,8 +738,10 @@ def test_agent_disposition_is_exactly_once_and_does_not_retry_on_lost_ack(agent,
     agent.owner_operations[grant["command_id"]] = ("main#1", owner_command_grant(grant))
     agent.owner_consumed.add(grant["command_id"])
     message = dict(
-        schema="openbexi.native-disposition/1", instance_id="main#1",
-        request_id=grant["command_id"], command=grant["command"],
+        schema="openbexi.native-disposition/1",
+        instance_id="main#1",
+        request_id=grant["command_id"],
+        command=grant["command"],
         disposition="HANDLER_RETURNED",
     )
     original = agent.route
@@ -727,7 +759,10 @@ def test_agent_disposition_is_exactly_once_and_does_not_retry_on_lost_ack(agent,
     with pytest.raises(ValueError, match="already attempted"):
         agent.disposition(message)
     assert len(calls) == 1
-    assert family["store"].db.execute(
-        "SELECT COUNT(*) FROM native_owner_command_dispositions"
-    ).fetchone()[0] == 1
+    assert (
+        family["store"]
+        .db.execute("SELECT COUNT(*) FROM native_owner_command_dispositions")
+        .fetchone()[0]
+        == 1
+    )
     assert rows(family)[0]["state"] == "EXECUTION_UNPROVEN"

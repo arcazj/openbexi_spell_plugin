@@ -524,14 +524,17 @@ class NativeAdmissionServer:
                 # It is never an admission, including after duplicate reports.
                 raise ValueError("Unqualified native mutation rejected")
             if body.get("schema") == "openbexi.native-disposition/1":
-                exact(body, {
-                    "schema", "instance_id", "request_id", "command", "disposition"
-                })
+                exact(
+                    body,
+                    {"schema", "instance_id", "request_id", "command", "disposition"},
+                )
                 if body["instance_id"] != instance or self.controls is None:
                     raise ValueError("Native disposition scope differs")
                 self.controls.disposition(body)
-                self.report("native-mailbox-disposition-received",
-                            disposition=body["disposition"])
+                self.report(
+                    "native-mailbox-disposition-received",
+                    disposition=body["disposition"],
+                )
                 return
             if (
                 body.get("schema") != "openbexi.native-consume/1"

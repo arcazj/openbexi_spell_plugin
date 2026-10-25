@@ -70,7 +70,8 @@ class WorkerLaunch:
                 }
             )
             safety_only = safety_only or path in {
-                "/v1/worker/control-report", "/v1/worker/control-disposition"
+                "/v1/worker/control-report",
+                "/v1/worker/control-disposition",
             }
             allowed.add("/v1/worker/control-disposition")
         commands = self.authority.native_commands
@@ -113,18 +114,23 @@ class WorkerLaunch:
                 "start_ticks",
                 "executable_sha256",
             }
-        elif path.endswith((
-            "command-forward", "command-consume", "command-report", "command-disposition"
-        )):
+        elif path.endswith(
+            ("command-forward", "command-consume", "command-report", "command-disposition")
+        ):
             extra = {"command_grant"}
             if path.endswith("command-report"):
                 extra.add("outcome")
             if path.endswith("command-disposition"):
                 extra.add("disposition")
-        elif path.endswith((
-            "control-admit", "control-report", "control-forward", "control-consume",
-            "control-disposition"
-        )):
+        elif path.endswith(
+            (
+                "control-admit",
+                "control-report",
+                "control-forward",
+                "control-consume",
+                "control-disposition",
+            )
+        ):
             extra = {"request_id", "target_admission_id", "command"}
             if path.endswith("control-report"):
                 extra.add("outcome")
@@ -158,9 +164,9 @@ class WorkerLaunch:
             return controls.bind_member(grant, body)
         if path.endswith("command-poll"):
             return commands.poll(grant)
-        if path.endswith((
-            "command-forward", "command-consume", "command-report", "command-disposition"
-        )):
+        if path.endswith(
+            ("command-forward", "command-consume", "command-report", "command-disposition")
+        ):
             from .commands import owner_command_grant
 
             command = owner_command_grant(body["command_grant"])

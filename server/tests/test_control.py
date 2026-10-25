@@ -558,17 +558,27 @@ def test_original_run_mailbox_disposition_requires_final_consumption(journal, fa
     status, reply = call(family, pki, family["grant"], "control-disposition", **extra)
     assert status == 200
     assert reply["result"] == dict(
-        recorded=True, request_id=body["request_id"],
+        recorded=True,
+        request_id=body["request_id"],
         execution_id=family["grant"].execution_id,
-        disposition="HANDLER_RETURNED", state="EXECUTION_UNPROVEN",
-        quiescence_proven=False, effective_transfer=False,
-        hold_retained=True, runtime_enabled=False,
+        disposition="HANDLER_RETURNED",
+        state="EXECUTION_UNPROVEN",
+        quiescence_proven=False,
+        effective_transfer=False,
+        hold_retained=True,
+        runtime_enabled=False,
     )
     assert call(family, pki, family["grant"], "control-disposition", **extra) == (status, reply)
-    assert call(
-        family, pki, family["grant"], "control-disposition",
-        **dict(body, disposition="DISCARDED_PENDING"),
-    )[0] == 409
+    assert (
+        call(
+            family,
+            pki,
+            family["grant"],
+            "control-disposition",
+            **dict(body, disposition="DISCARDED_PENDING"),
+        )[0]
+        == 409
+    )
     assert rows(family)[0]["state"] == "DISPATCH_UNCERTAIN"
     assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
 
@@ -580,9 +590,13 @@ def test_original_disposition_rejects_false_settlement(journal, family, pki, bad
     assert forward(family, pki, body)[0] == 200
     assert consume(family, pki, body)[0] == 200
     assert call(
-        family, pki, family["grant"], "control-disposition",
+        family,
+        pki,
+        family["grant"],
+        "control-disposition",
         **dict(body, disposition=bad),
     )[0] in (400, 403)
-    assert family["store"].db.execute(
-        "SELECT COUNT(*) FROM native_control_dispositions"
-    ).fetchone()[0] == 0
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_dispositions").fetchone()[0]
+        == 0
+    )

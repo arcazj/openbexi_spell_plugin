@@ -351,7 +351,8 @@ class NativeOwnerCommands:
         authenticated post-consumption observation, never an effect permission.
         """
         if type(disposition) is not str or disposition not in {
-            "DISCARDED_PENDING", "HANDLER_RETURNED"
+            "DISCARDED_PENDING",
+            "HANDLER_RETURNED",
         }:
             raise Fault(403, "owner_command_disposition_unqualified")
         with self.authority._execution_lock(original.execution_id):
@@ -364,8 +365,10 @@ class NativeOwnerCommands:
                     (grant.command_id,),
                 ).fetchone()
                 if previous is not None:
-                    if (previous["execution_id"] != original.execution_id
-                            or previous["disposition"] != disposition):
+                    if (
+                        previous["execution_id"] != original.execution_id
+                        or previous["disposition"] != disposition
+                    ):
                         raise Fault(409, "owner_command_disposition_conflict")
                 else:
                     self.store.db.execute(
@@ -374,14 +377,21 @@ class NativeOwnerCommands:
                     )
                     self.store._event(
                         "NATIVE_OWNER_COMMAND_MAILBOX_DISPOSITION",
-                        dict(execution_id=original.execution_id,
-                             command_id=grant.command_id, disposition=disposition),
+                        dict(
+                            execution_id=original.execution_id,
+                            command_id=grant.command_id,
+                            disposition=disposition,
+                        ),
                     )
                 return dict(
-                    recorded=True, command_id=grant.command_id,
-                    execution_id=original.execution_id, disposition=disposition,
-                    state="EXECUTION_UNPROVEN", quiescence_proven=False,
-                    effective_transfer=False, hold_retained=True,
+                    recorded=True,
+                    command_id=grant.command_id,
+                    execution_id=original.execution_id,
+                    disposition=disposition,
+                    state="EXECUTION_UNPROVEN",
+                    quiescence_proven=False,
+                    effective_transfer=False,
+                    hold_retained=True,
                     runtime_enabled=False,
                 )
 

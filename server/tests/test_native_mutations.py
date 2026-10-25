@@ -223,5 +223,5 @@ def test_native_mailbox_disposition_instrumentation_precedes_drop_and_follows_ha
     assert text.count(drop) == 1 and text.count(returned) == 1
     gate = (ROOT / "host_runtime/native/execution_gate.H").read_text()
     assert '"openbexi.native-disposition/1"' in gate
-    assert 'if (!command.v08External) return;' in gate
-    assert 'catch (...)' in gate
+    assert "if (!command.v08External) return;" in gate
+    assert "catch (...)" in gate
