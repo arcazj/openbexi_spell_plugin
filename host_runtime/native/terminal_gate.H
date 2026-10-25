@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #ifndef OPENBEXI_V08_TERMINAL_GATE_H
 #define OPENBEXI_V08_TERMINAL_GATE_H
+#include "SPELL_IPC/SPELLipcMessage.H"
 #include "admission_ipc.H"
 #include "prompt_policy.H"
 #include "terminal_ticket.H"
