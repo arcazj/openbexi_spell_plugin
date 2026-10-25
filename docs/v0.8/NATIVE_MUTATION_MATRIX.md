@@ -15,12 +15,13 @@ Authority checks live in [commands.py](../../server/src/openbexi_spell_server/co
 | Priority | Path | Current evidence / remaining work |
 |---|---|---|
 | P1 | Initial RUN versus fresh owner intent | Dev35 retires the exact member's startup lane under the shared execution/SQL order. Nine regressions fail dev34; Dev36 PR/push native unused-permission rejection passed. Full reliability and all other mutations remain unqualified. |
-| P1 | `SPELLserverCif::processMessageCommand`: ABORT | `cancelPrompt()` can complete the transition before the controller sees a command. Admission must precede prompt wakeup; checking only `executeCommand` is insufficient. |
-| P1 | Same method: CLOSE/BLOCK | `setClosing()` changes IPC behavior before controller consumption; BLOCK returns without entering that controller. Require an exact early admitted transition and separate termination/hold proof. |
-| P1 | `SPELLserverCif::processMessage`: prompt answer/cancel | Both paths occur before the ordinary procedure-target check. Bind prompt identity, original member, owner connection/epoch and answer digest; reject late/copied/observer answers before wakeup. |
+| P1 | `SPELLserverCif::processMessageCommand`: ABORT | Dev37 rejects unsupported ABORT before `cancelPrompt()`. Positive owner ABORT still needs prompt-specific and controller-consumption protocol plus pending-prompt qualification. |
+| P1 | Same method: CLOSE/BLOCK | Dev37 rejects these unsupported commands before `setClosing()`; candidate cleanup uses host process control. Positive owner CLOSE/BLOCK needs an exact early transition and separate termination/hold proof. |
+| P1 | `SPELLserverCif::processMessage`: prompt answer/cancel | Dev37 closes both paths before target handling and wakeup. Positive answers require prompt identity, original member, owner connection/epoch and answer digest; pending-prompt compatibility remains unqualified. |
 | P1 | Other commands and mailbox STOP | STEP_OVER, SKIP, GOTO, SCRIPT, RELOAD, INTERRUPT, FINISH, ACTION and other command IDs are outside the current owner whitelist. `SPELLcontroller::run` handles STOP before `executeCommand`. Close all alternate external paths before exposure; internal safety/lifecycle commands need distinct provenance. |
-| P1 | `SPELLserverCif::processRequest` | SET_CONFIG, SET/CLEAR_BREAKPOINT, CHANGE_VARIABLE, CHANGE_RESOURCE and UPD_DICTIONARY directly call processors. Bind exact arguments/member and authorize before evaluation or mutation. The local `procId` variable is not itself a target check. |
+| P1 | `SPELLserverCif::processRequest` | Dev37 denies direct setters and every request outside the diagnostic-read inventory before processors. Positive setters need exact argument/member grants and authorization before evaluation. Diagnostic reads are not an observer ACL. |
 | P1 | Child redirection | `processMessage` can route through `processMessageForChild` on ParentId. Nonempty ParentId is denied for admitted RUN/STEP/PAUSE; the full message/request matrix still needs exact target checks. |
+| P1 | Native Context lifecycle/GUI management | Context-level OPEN/CLOSE/kill/reconnect operations can bypass Executor CIF checks. Preserve approved starts while binding lifecycle operations to the authority/host role and exact original family. This is the next closure contract. |
 | P1 | Native controller-client messages | ADD_CLIENT, REMOVE_CLIENT, BACKGROUND, NODE_DEPTH and watch/resource toggles alter native state outside the command controller. Native GUI ownership cannot substitute for durable v0.8 owner capability. |
 | P1 | Deferred/discarded command disposition | A final-admission receipt does not prove completion: pending commands can be discarded, and SKIP/GOTO can be deferred onto tracing. Inventory all mailbox/deferred/prompt items and retain immutable origins through a terminal disposition. Never restamp old items after handoff. |
 | P1 | Complete family barrier | Current main PAUSE and observed-Python-thread experiments do not cover every thread, native callback, child, driver operation or future child start. Establish complete participant closure and drained effect/command queues, or keep transfer blocked. |
@@ -45,6 +46,7 @@ remain unqualified.
 
 `NATIVE_MUTATION_BOUNDARY.md` specifies fail-closed rejection of unsupported
 Executor CIF commands, prompt replies and direct requests before side effects.
-Its hosted 19-operation oracle is pending. This closes an unsafe alternate
+Its hosted 19-operation oracle passed at `97af271`, with all PR/push component
+jobs and 580 hosted tests passing. This closes an unsafe alternate
 path; it does not implement positive owner ABORT/CLOSE/prompt/setter features.
 Context GUI management and client-roster paths still require their own contracts.

@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "G3: dev36 component receipts remain verified at aa40430. Dev37 adds a closed native Executor CIF mutation boundary and 19-operation actual-Executor denial oracle; hosted qualification pending.",
+  "phase": "G3 component qualification at 97af271: all eight PR/push service/native jobs passed; 580 hosted tests without skips. Native Executor CIF denied 19 unsupported mutations before effects while preserving the original family and owner scenarios. Full v0.8 remains unqualified.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -105,7 +105,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify dev37 closed mutation boundary with the original family and owner scenarios. Then implement argument/prompt-specific owner grants and terminal queue dispositions, complete all-participant barrier and new-owner identity, and pair public IDE Run/Debug before full acceptance.",
+  "next_step": "Fence native Context lifecycle/GUI management and controller-client roster paths; implement exact argument/prompt-bound owner actions and terminal queue dispositions. Then complete all-participant barrier/new-owner runtime identity, paired public IDE Run/Debug and remaining full release acceptance.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -128,7 +128,7 @@
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
   "package_version": "0.8.0.dev37",
-  "native_control_profile": "Dev36 PR/push component verification passed: permanent per-member initial RUN retirement, fresh owner RUN/STEP/PAUSE, unchanged 21-member/41-PID/42-event original family, separate actual stale-consumption denial, bounded notifications and zero-OOM memory samples. All 31 repository inputs and 144 compiled units verified.",
+  "native_control_profile": "Dev37 preserves dev36 family/ownership proof and adds unsupported Executor CIF mutation rejection before prompt cancellation, closing flags, child redirection, mailbox insertion and direct setter evaluation. Host-process candidate cleanup passed the original family oracle; full management/client-roster and functional action protocols remain pending.",
   "remaining_effort_estimates": {
     "basis": "Rough active engineering effort from the current component checkpoint, with low confidence; estimates may overlap and are not a wall-clock or background-execution promise",
     "native_family_control": "2-4 days",
@@ -136,10 +136,10 @@
     "compatibility_and_deployment": "3-5 days",
     "security_and_release_packaging": "1-2 days"
   },
-  "last_verified_component_commit": "aa40430f61c38b686964292b7e882952ea60f1db",
+  "last_verified_component_commit": "97af271aa6e5beb98ac998e3588400b7423370e2",
   "next_native_contract": "Interactive STEP/PAUSE/etc must use fresh owner-admitted immutable command grants; the worker original StartGrant is runtime identity/start authority, not permission to invent interactive mutations. Preserve old origins, never restamp queued commands. Complete all mutation/queue and family-barrier paths before positive handoff or public Run/Debug.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; default-off schema 15 current-owner RUN/STEP/PAUSE with separate one-use command grants, preserved original StartGrant identity, retired startup lanes and no restamping. Component receipts dev36-family.json/dev36-foundation.json, source aa40430. Public Run/Debug and positive handoff remain disabled.",
   "native_command_security": "Native C/D oracles each require actual HTTP 403 for residual startup RUN while the original owner is live; first owner intent permanently closes startup admission/forward/consume. All 70 owner cases pass inside the 569-test hosted suite. Full mutation/prompt/queue/family-barrier and new-owner protocol remain unqualified.",
   "native_mutation_matrix": "NATIVE_MUTATION_MATRIX.md; remaining exact native entrypoints, queue/barrier and new-owner contracts; these are release blockers, not completed functionality",
-  "native_mutation_boundary": "NATIVE_MUTATION_BOUNDARY.md; unsupported commands, prompt replies and direct setters reject before native effects. Denial diagnostics authenticate the original Executor and never authorize effects. Functional owner ABORT/CLOSE/prompt/setter paths remain unimplemented."
+  "native_mutation_boundary": "NATIVE_MUTATION_BOUNDARY.md; actual native probe denied 13 one-way commands/prompt replies and six direct setters before effects. All 33 repository inputs, five admission headers and 144 compiled units verified. Positive owner ABORT/CLOSE/prompt/setter paths remain unimplemented."
 }

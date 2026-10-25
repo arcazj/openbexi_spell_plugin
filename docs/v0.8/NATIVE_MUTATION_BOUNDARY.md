@@ -45,7 +45,14 @@ Executor must remain PAUSED. The existing first/second STEP ownership-fencing
 oracle then continues. All original family, stale RUN and same-owner
 RUN/PAUSE/RUN tests remain mandatory.
 
-Hosted dev37 compilation and execution are pending. In particular, this paused
+Dev37 at `97af271` passed all PR/push service/native jobs and the portable
+subset. Hosted services passed 580 tests with zero failures/errors/skips. The
+real native C probe passed all 19 denials, unchanged variables, absent marker
+and PAUSED state, then completed the original ownership-fencing oracle. The
+21-member/41-PID/42-event family and same-owner pause/resume also passed.
+Artifact SHA/CRC, 33 repository inputs, five headers and all 144 compiled source
+units were verified. See `dev37-family.json` and `dev37-foundation.json` in
+`evidence/native-child-start/`. In particular, this paused
 fixture does not complete pending-prompt compatibility or positive owner ABORT,
 CLOSE, answer, setter, or debugger feature qualification. Native Context GUI
 management, controller-client roster messages, remaining queue dispositions,

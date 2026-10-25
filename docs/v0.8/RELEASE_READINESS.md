@@ -85,5 +85,6 @@ checks, 241 portable checks and all six services/native jobs passed at that code
 they do not override this failed full-release assessment. See TEST_REPORT.md.
 
 Dev37 adds an unsupported-mutation boundary in the private native Executor.
-Hosted compilation and the 19-operation denial probe are pending. Positive
+Hosted compilation and the 19-operation denial probe passed at `97af271`,
+alongside all PR/push component jobs and 580 hosted tests without skips. Positive
 owner ABORT/CLOSE/prompt/setter functionality is not implemented by that guard.
