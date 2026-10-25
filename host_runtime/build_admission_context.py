@@ -45,7 +45,6 @@ def fence_external_controller_mailbox(text):
     )
 
 
-
 def fence_native_prompt_start_race(text):
     """Arm the original native prompt wait before the prompt is made visible.
 
@@ -73,6 +72,7 @@ def fence_native_prompt_start_race(text):
     if text.count(old) != 1 or "Arm the answer event BEFORE" in text:
         raise ValueError("Ambiguous original native prompt start race boundary")
     return text.replace(old, new)
+
 
 def patch_native_tree(source):
     """Apply only to the independently reproduced frozen composition."""
