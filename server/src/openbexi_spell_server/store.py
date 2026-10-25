@@ -123,6 +123,63 @@ class ContextStore:
                 result["blackboard_revisions"] = {r["key"]: r["revision"] for r in rows}
             return result
 
+    def execution_events(self, after_sequence, limit):
+        """Bounded, redacted Context-local monitoring replay.
+
+        Never return raw event bodies: native audit events may contain driver
+        details, capabilities, procedure payloads or other sensitive data.
+        """
+        if type(after_sequence) is not int or not 0 <= after_sequence < 2**63:
+            raise Fault(400, "invalid_event_cursor")
+        if type(limit) is not int or not 1 <= limit <= 32:
+            raise Fault(400, "invalid_event_page_size")
+        visible = (
+            "EXECUTION_RESERVED", "CONTROLLER_REBOUND",
+            "CONTROL_CLAIM_REQUESTED", "CONTROL_CLAIM_REJECTED",
+            "CONTROL_CLAIM_ACCEPTED", "CONTROL_OWNER_CHANGED",
+            "CONTROL_CLAIM_CANCELLED", "CONTROL_TRANSFER_BLOCKED",
+            "CONTROL_CONNECTION_CLOSED", "CONTROL_TRANSFER_PAUSE_REQUESTED",
+            "CONTROL_TRANSFER_PAUSE_UNPROVEN",
+        )
+        placeholders = ",".join("?" for _ in visible)
+        with self.transaction(write=False):
+            latest = self.db.execute(
+                "SELECT COALESCE(MAX(sequence),0) FROM events"
+            ).fetchone()[0]
+            rows = self.db.execute(
+                f"SELECT sequence,type,body FROM events WHERE sequence>? "
+                f"AND type IN ({placeholders}) ORDER BY sequence LIMIT ?",
+                (after_sequence, *visible, limit + 1),
+            ).fetchall()
+            more = len(rows) > limit
+            page = rows[:limit]
+            projected = []
+            for row in page:
+                body = json.loads(row["body"])
+                item = {"sequence": row["sequence"], "type": row["type"]}
+                execution_id = body.get("execution_id")
+                # A monitoring client never receives the original native
+                # event body or operator/user identity, even when authorized.
+                if isinstance(execution_id, str):
+                    try:
+                        parsed = uuid.UUID(execution_id)
+                    except ValueError:
+                        pass
+                    else:
+                        if str(parsed) == execution_id:
+                            item["execution_id"] = execution_id
+                projected.append(item)
+            cursor = page[-1]["sequence"] if more and page else latest
+            return {
+                "context_id": self.context_id,
+                "after_sequence": after_sequence,
+                "next_sequence": max(after_sequence, cursor),
+                "latest_sequence": latest,
+                "has_more": more,
+                "events": projected,
+                "runtime_enabled": False,
+            }
+
     def cas(self, subject, key, payload):
         """Called only after live ACL checks; key is scoped to subject/blackboard.cas."""
         payload_hash = digest(payload)

@@ -30,6 +30,7 @@ METHODS = {
     "session.open": "execution:control",
     "session.close": "execution:control",
     "execution.list": "execution:read",
+    "execution.events": "execution:read",
     "source.catalog": "execution:read",
     "execution.reserve": "execution:start",
     "execution.rebind": "execution:control",
@@ -206,6 +207,14 @@ def validate_envelope(value, context, *, now=None, allow_launch=False, allow_com
             raise Fault(400, "invalid_revision")
         if len(canonical(body["value"])) > 16384:
             raise Fault(413, "value_too_large")
+    elif method == "execution.events":
+        if value["idempotency_key"] is not None:
+            raise Fault(400, "unexpected_idempotency_key")
+        payload = exact(value["payload"], {"after_sequence", "limit"})
+        if type(payload["after_sequence"]) is not int or not 0 <= payload["after_sequence"] < 2**63:
+            raise Fault(400, "invalid_event_cursor")
+        if type(payload["limit"]) is not int or not 1 <= payload["limit"] <= 32:
+            raise Fault(400, "invalid_event_page_size")
     elif allow_commands and method == "execution.command":
         identifier(value["idempotency_key"])
         validate_owner_command_payload(value["payload"])

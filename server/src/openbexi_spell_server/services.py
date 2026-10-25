@@ -193,6 +193,10 @@ class Context:
             result = self.catalog.metadata()
         elif action == "execution.list":
             result = self.authority.list_executions(actor.subject)
+        elif action == "execution.events":
+            result = self.store.execution_events(
+                request["payload"]["after_sequence"], request["payload"]["limit"]
+            )
         elif action == "execution.start":
             # Explicit retained profile only; the normal Listener/gateway still
             # cannot route this operator-to-Context admission. Token delivery is
@@ -274,6 +278,11 @@ class Listener:
             exact(body, {"key", "expected_revision", "value"})
             payload, action = body, "blackboard.cas"
             key = identifier(one_header(headers, "Idempotency-Key"))
+        elif method == "POST" and resource == "events":
+            if headers.get_all("Idempotency-Key"):
+                raise Fault(400, "unexpected_idempotency_key")
+            exact(body, {"after_sequence", "limit"})
+            action, payload = "execution.events", body
         else:
             raise Fault(404, "route_not_available")
         request = envelope(context_id, subject, action, payload, key)

@@ -57,6 +57,10 @@ class Gateway:
                 pass
             elif method == "POST" and parts[4] in ("authority", "blackboard"):
                 values["Idempotency-Key"] = identifier(one_header(headers, "Idempotency-Key"))
+            elif method == "POST" and parts[4] == "events":
+                # Read-only replay: no mutation/idempotency key is transmitted.
+                if headers.get_all("Idempotency-Key"):
+                    raise Fault(400, "unexpected_idempotency_key")
             else:
                 raise Fault(404, "route_not_available")
         raw = None if method == "GET" else canonical(body)
