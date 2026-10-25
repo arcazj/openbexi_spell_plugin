@@ -1,0 +1,34 @@
+name: One-time v0.8 formatter
+
+on:
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths: ['.github/workflows/v08-format-once.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    if: github.repository == 'arcazj/openbexi_spell_plugin'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: feature/v0.8-server-architecture
+          persist-credentials: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Format only dev43 candidate paths and push auditable commit
+        run: |
+          set -euo pipefail
+          python -m pip install ruff==0.14.1
+          python -m ruff format             host_runtime/build_admission_context.py             host_runtime/python/child_gate.py             host_runtime/python/control_journal.py             server/src/openbexi_spell_server/commands.py             server/src/openbexi_spell_server/control.py             server/src/openbexi_spell_server/launch.py             server/tests/test_control.py             server/tests/test_native_mutations.py             server/tests/test_owner_commands.py
+          python -m ruff check             host_runtime/build_admission_context.py             host_runtime/python/child_gate.py             host_runtime/python/control_journal.py             server
+          git add             host_runtime/build_admission_context.py             host_runtime/python/child_gate.py             host_runtime/python/control_journal.py             server/src/openbexi_spell_server/commands.py             server/src/openbexi_spell_server/control.py             server/src/openbexi_spell_server/launch.py             server/tests/test_control.py             server/tests/test_native_mutations.py             server/tests/test_owner_commands.py
+          if ! git diff --cached --quiet; then
+            git -c user.name='openbexi-ci' -c user.email='17037788+arcazj@users.noreply.github.com'               commit -m 'style(v0.8): format dev43 native mailbox disposition code'
+            git push origin HEAD:refs/heads/feature/v0.8-server-architecture
+          fi
