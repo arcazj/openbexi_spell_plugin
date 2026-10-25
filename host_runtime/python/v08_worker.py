@@ -564,6 +564,9 @@ def run(config):
         if build_receipt.get("native_prompt_hooks") is not True:
             raise ValueError("Native prompt hooks are absent from the checked build")
     if terminal_case is not None:
+        # The worker runs Python in isolated mode; its script directory is not
+        # on sys.path. Only the operator-mounted private modules are eligible.
+        sys.path.insert(0, "/v08")
         from terminal_probe import CASES
 
         if (

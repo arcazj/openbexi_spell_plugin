@@ -220,6 +220,11 @@ class FamilyAdmission:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                if (
+                    self.authority.native_commands is not None
+                    and self.authority.native_commands.terminal_pending(grant.execution_id)
+                ):
+                    raise Fault(403, "terminal_execution_fenced")
                 row = self.store.db.execute(
                     "SELECT * FROM child_admissions WHERE id=?", (child.admission_id,)
                 ).fetchone()

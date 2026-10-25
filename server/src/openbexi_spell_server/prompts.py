@@ -205,6 +205,11 @@ class NativePromptReplies:
         with self.authority._execution_lock(original.execution_id):
             with self.store.transaction():
                 execution = self.authority._grant(original)
+                if (
+                    self.authority.native_commands is not None
+                    and self.authority.native_commands.terminal_pending(original.execution_id)
+                ):
+                    raise Fault(403, "terminal_execution_fenced")
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "prompt_runtime_unavailable")
                 member = self._member(original.execution_id, target, origin)

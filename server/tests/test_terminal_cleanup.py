@@ -1,10 +1,12 @@
 """Cleanup evidence must identify the original isolated process family."""
 
 import importlib.util
+import ast
 from pathlib import Path
 import os
 import select
 import subprocess
+import sys
 
 import pytest
 
@@ -14,6 +16,39 @@ spec = importlib.util.spec_from_file_location(
 )
 cohort = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cohort)
+
+
+def test_private_terminal_profile_loads_in_isolated_python(tmp_path):
+    worker = ast.parse((ROOT / "host_runtime/python/v08_worker.py").read_text())
+    run = next(
+        node for node in worker.body if isinstance(node, ast.FunctionDef) and node.name == "run"
+    )
+    validation = next(
+        node
+        for node in run.body
+        if isinstance(node, ast.If) and ast.unparse(node.test) == "terminal_case is not None"
+    )
+
+    # Substitute only the operator mount location; execute the actual validation
+    # block under the same -I mode, without relying on cwd or PYTHONPATH.
+    class Mount(ast.NodeTransformer):
+        def visit_Constant(self, node):
+            return (
+                ast.copy_location(ast.Constant(str(tmp_path)), node)
+                if node.value == "/v08"
+                else node
+            )
+
+    validation = Mount().visit(validation)
+    (tmp_path / "terminal_probe.py").write_bytes(
+        (ROOT / "host_runtime/python/terminal_probe.py").read_bytes()
+    )
+    program = (
+        "import sys\nterminal_case='abort-paused'\nprompt_profile=True\n"
+        "build_receipt={'native_terminal_hooks':True}\n" + ast.unparse(validation)
+    )
+    result = subprocess.run([sys.executable, "-I", "-c", program], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
 
 
 @pytest.mark.parametrize(

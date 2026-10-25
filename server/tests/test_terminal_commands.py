@@ -10,6 +10,7 @@ import uuid
 import pytest
 import test_owner_commands as owner
 import test_native_prompt_boundary as native_boundary
+import test_prompt_authority as prompt_authority
 
 source = owner.source
 native_sources = native_boundary.native_sources
@@ -126,6 +127,56 @@ def test_terminal_uncertain_acknowledgement_cannot_retry(
     )
     assert terminal.terminal_pending(family["grant"].execution_id) == (phase == "consume")
     assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+@pytest.mark.parametrize("command", ["CMD_ABORT", "CMD_CLOSE"])
+def test_terminal_fences_already_admitted_child_and_new_prompt(terminal, family, pki, command):
+    child = owner.members.families.admit(family, pki)[1]["result"]["child_grant"]
+    prompt_authority.NativePromptReplies(family["app"].authority)
+    grant = owner.delivered(family, pki, command)
+    assert owner.worker(family, pki, "command-forward", grant)[0] == 200
+    assert owner.worker(family, pki, "command-consume", grant)[0] == 200
+    assert owner.members.families.consume(family, pki, child)[0] == 403
+    assert owner.members.families.admit(family, pki, entrypoint="grand.py")[0] == 403
+    assert owner.controls.admit(family, pki)[0] == 403
+    assert (
+        owner.call(
+            family,
+            pki,
+            family["grant"],
+            "prompt-open",
+            prompt_id=str(uuid.uuid4()),
+            target_admission_id=None,
+            instance_id="main#1",
+            definition_sha256="a" * 64,
+        )[0]
+        == 403
+    )
+    assert (
+        family["store"].db.execute("SELECT state FROM child_admissions").fetchone()[0] == "ADMITTED"
+    )
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 2
+
+
+@pytest.mark.parametrize("command", ["CMD_ABORT", "CMD_CLOSE"])
+def test_terminal_settles_existing_prompt_and_fences_delivered_answer(
+    terminal, family, pki, command
+):
+    prompt_authority.NativePromptReplies(family["app"].authority)
+    prompt, reply, _ = prompt_authority.delivered(family, pki)
+    assert prompt_authority.worker(family, pki, "prompt-forward", reply)[0] == 200
+    closed = dict(prompt_id=prompt["prompt_id"], outcome="TERMINAL_CANCELLED")
+    assert prompt_authority.worker(family, pki, "prompt-close", **closed)[0] == 403
+    grant = owner.delivered(family, pki, command)
+    assert owner.worker(family, pki, "command-forward", grant)[0] == 200
+    assert owner.worker(family, pki, "command-consume", grant)[0] == 200
+    assert prompt_authority.worker(family, pki, "prompt-consume", reply)[0] == 403
+    code, result = prompt_authority.worker(family, pki, "prompt-close", **closed)
+    assert code == 200
+    prompt_authority.assert_no_release(family, result["result"])
+    assert tuple(
+        family["store"].db.execute("SELECT state,outcome FROM native_prompts").fetchone()
+    ) == ("CLOSED", "TERMINAL_CANCELLED")
 
 
 def test_terminal_overlay_precedes_real_prompt_and_close_effects(native_sources, tmp_path):
