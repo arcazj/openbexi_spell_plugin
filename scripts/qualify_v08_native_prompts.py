@@ -81,6 +81,15 @@ def fixture_sources():
     return sources
 
 
+def native_list_wire_answer(case, previous_replies):
+    """Original LIST IPC uses zero-based indexes, not displayed option values.
+
+    The native procedure must still receive YES/NO after its original conversion.
+    Context treats this as an opaque authorized answer; it does not convert it.
+    """
+    return "1" if case == "sequential" and previous_replies else "0"
+
+
 def wait_for(test, message, *, timeout=40):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -585,7 +594,7 @@ def main():
                                         target_admission_id=prompt["target_id"] or None,
                                         definition_sha256=prompt["definition_hash"],
                                         action="ANSWER",
-                                        answer="YES",
+                                        answer="0",
                                     )
                                     try:
                                         controller("execution.prompt.reply", invalid)
@@ -601,9 +610,7 @@ def main():
                                 continue
                             if case in ("timeout", "late"):
                                 continue
-                            selected = (
-                                "NO" if case == "sequential" and replies else "YES"
-                            )
+                            selected = native_list_wire_answer(case, len(replies))
                             payload = dict(
                                 proof,
                                 prompt_id=prompt["prompt_id"],
@@ -644,6 +651,14 @@ def main():
                         else "ERROR"
                         if case == "failure"
                         else "FINISHED"
+                    )
+                    # Retain bounded non-secret state even when the real native
+                    # result disagrees, rather than losing the reason at teardown.
+                    result["observed_native_status"] = terminal["native_status"]
+                    result["durable_prompt_states"] = rows(
+                        database,
+                        "SELECT state,outcome,target_id FROM native_prompts WHERE execution_id=? ORDER BY rowid",
+                        (execution["id"],),
                     )
                     if terminal["native_status"] != expected:
                         raise RuntimeError(

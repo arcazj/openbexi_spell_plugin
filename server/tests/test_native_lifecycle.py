@@ -4,6 +4,7 @@ import ast
 from pathlib import Path
 from threading import Event, Thread
 from types import SimpleNamespace
+import time
 
 import pytest
 
@@ -35,7 +36,8 @@ def test_delayed_original_finish_receipt_keeps_worker_and_relay_alive():
         assert not thread.is_alive()
 
 
-def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
+@pytest.mark.parametrize("prompt_probe", [False, True])
+def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup(prompt_probe):
     source = Path(__file__).resolve().parents[2] / "host_runtime/python/v08_worker.py"
     tree = ast.parse(source.read_text())
 
@@ -59,13 +61,24 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
     audit = module.NativeLifecycleReceipts()
     acknowledge(audit, "root#1", "started")
     waiting, announced = Event(), Event()
+    observed, inspected = Event(), Event()
+
+    def emit(kind, **_fields):
+        if kind == "native-prompt-terminal-observed":
+            observed.set()
+        elif kind == "native-finished":
+            announced.set()
+
     namespace = dict(
+        prompt_probe=prompt_probe,
+        Path=lambda _path: SimpleNamespace(is_file=inspected.is_set),
+        time=time,
         state="FINISHED",
         lifecycle=audit,
         child_gate=SimpleNamespace(started={"root#1": None}),
         pump=waiting.set,
         denied=set(),
-        emit=lambda *_args, **_kwargs: announced.set(),
+        emit=emit,
         grant=SimpleNamespace(execution_id="original-execution"),
         driver_methods=set(),
         count=0,
@@ -76,8 +89,13 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
         assert waiting.wait(0.5)
         assert not announced.wait(0.05)
         acknowledge(audit, "root#1", "finished")
+        if prompt_probe:
+            assert observed.wait(0.5)
+            assert not announced.wait(0.05)
+            inspected.set()
         assert announced.wait(0.5)
     finally:
+        inspected.set()
         thread.join(timeout=6)
         assert not thread.is_alive()
 
