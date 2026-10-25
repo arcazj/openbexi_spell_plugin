@@ -22,7 +22,9 @@ class Bridge:
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log,
             text=True, encoding='utf-8', env=environment)
         self.replies = queue.Queue()
-        self.events = queue.Queue(maxsize=256)
+        # Publish to the final bounded queue from the first reader instruction.
+        # Swapping queues after 'connected' can orphan already-read notifications.
+        self.events = events
         self.closing = threading.Event()
         self.sequence = 0
         self.thread = threading.Thread(target=self.read, name='native-ipc-reader')
@@ -35,7 +37,6 @@ class Bridge:
         if first.get('event') != 'connected':
             self.close()
             raise BridgeConnectionError('Native IPC could not connect: ' + str(first))
-        self.events = events
 
     def read(self):
         try:
@@ -156,7 +157,37 @@ class NativeSession:
                     raise
                 time.sleep(.05)
 
+    def _pump_startup_notifications(self):
+        # Startup owns its PAUSED notification even while a request reply is
+        # behind a burst on the same wire. Work per pump, not lifetime traffic,
+        # is bounded; no nested RPC, retry or automatic RUN is performed here.
+        for _ in range(64):
+            try:
+                item = self.events.get_nowait()
+            except queue.Empty:
+                break
+            self.startup_notifications_seen += 1
+            fields = item.get('message', {}).get('fields', {})
+            if (fields.get('ProcId') == self.instance
+                    and fields.get('DataType') == 'STATUS'
+                    and fields.get('ExecutorStatus') == 'PAUSED'):
+                self._startup_paused_notification = True
+            if item.get('event') == 'connectionError':
+                raise RuntimeError(item.get('error', 'Native connection failed'))
+
     def start(self):
+        previous_pump = self.pump
+        self._startup_paused_notification = False
+        self.startup_notifications_seen = 0
+        self.pump = self._pump_startup_notifications
+        try:
+            return self._start_owned()
+        finally:
+            # A runtime consumer must not steal startup evidence, and a failed
+            # sent OPEN is not permission to repeat any physical operation.
+            self.pump = previous_pump
+
+    def _start_owned(self):
         root = Path(self.directory.name)
         example = json.loads(subprocess.check_output(
             ['spell-native', 'init-example', str(root / 'session')], text=True))
@@ -209,9 +240,11 @@ class NativeSession:
         deadline = time.monotonic() + 10
         self.listener = self.connect_bridge(9980, environment, deadline)
         self.listener.exchange('REQ_GUI_LOGIN', 'LST',
-            {'ContextName': 'example', 'Host': 'openbexi-host-v1', 'GuiMode': 'Development'})
+            {'ContextName': 'example', 'Host': 'openbexi-host-v1', 'GuiMode': 'Development'},
+            pump=self.pump)
         while time.monotonic() < deadline:
-            info = self.listener.exchange('REQ_CTX_INFO', 'LST', {'ContextName': 'example'})
+            info = self.listener.exchange('REQ_CTX_INFO', 'LST',
+                {'ContextName': 'example'}, pump=self.pump)
             if info.get('ContextStatus') == 'RUNNING':
                 break
             time.sleep(.05)
@@ -223,32 +256,24 @@ class NativeSession:
         if self.native_home is not None:
             if self.gui_binding_callback is None:
                 raise RuntimeError('Native GUI admission provider unavailable')
-            key = self.context.exchange('REQ_V08_GUI_KEY', 'CTX')['GuiKey']
+            key = self.context.exchange('REQ_V08_GUI_KEY', 'CTX', pump=self.pump)['GuiKey']
             self.gui_binding_callback(int(key), self.context.process)
-        self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'})
+        self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'},
+            pump=self.pump)
         self.request('REQ_OPEN_EXEC', context=True, fields={'GuiMode': 'CONTROL',
             'Arguments': self.arguments, 'OpenMode': '{Automatic:True,Visible:True,Blocking:False}'})
         self.opened = True
         deadline = time.monotonic() + 15
-        paused_notification = False
         while time.monotonic() < deadline:
-            # Drain startup notifications before handing control to a host.
-            # Context status can change before its GUI notification arrives.
-            while not self.events.empty():
-                item = self.events.get_nowait()
-                fields = item.get('message', {}).get('fields', {})
-                if fields.get('DataType') == 'STATUS' and fields.get('ExecutorStatus') == 'PAUSED':
-                    paused_notification = True
-                if item.get('event') == 'connectionError':
-                    raise RuntimeError(item.get('error', 'Native connection failed'))
+            self._pump_startup_notifications()
             info = self.request('REQ_EXEC_INFO', context=True)
-            if info.get('ExecutorStatus') == 'PAUSED' and paused_notification:
+            if info.get('ExecutorStatus') == 'PAUSED' and self._startup_paused_notification:
                 return
             if info.get('ExecutorStatus') in {'ERROR', 'ABORTED'}:
                 raise RuntimeError('Native procedure could not open: ' + str(info))
             time.sleep(.05)
         raise RuntimeError('Native procedure startup timed out: ' + str(info) +
-                           '; paused notification: ' + str(paused_notification))
+                           '; paused notification: ' + str(self._startup_paused_notification))
 
     def request(self, identifier, fields=None, *, context=False, send=False, procedure=None):
         target = self.instance if procedure is None else procedure

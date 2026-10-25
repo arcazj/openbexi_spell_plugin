@@ -23,14 +23,24 @@ def sample(tmp_path, monkeypatch):
         z.writestr("openbexi_spell_server/__init__.py", "__version__ = '0.8.0.dev43'\n")
         z.writestr("openbexi_spell_server-0.8.0.dev43.dist-info/licenses/LICENSE", "Apache-2.0")
     sbom = tmp_path / "sbom.json"
-    sbom.write_text(json.dumps({
-        "bomFormat": "CycloneDX",
-        "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev43"}],
-    }))
+    sbom.write_text(
+        json.dumps(
+            {
+                "bomFormat": "CycloneDX",
+                "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev43"}],
+            }
+        )
+    )
     audit = tmp_path / "audit.json"
-    audit.write_text(json.dumps({"dependencies": [
-        {"name": "openbexi-spell-server", "version": "0.8.0.dev43", "vulns": []}
-    ]}))
+    audit.write_text(
+        json.dumps(
+            {
+                "dependencies": [
+                    {"name": "openbexi-spell-server", "version": "0.8.0.dev43", "vulns": []}
+                ]
+            }
+        )
+    )
     return wheel, sbom, audit
 
 
@@ -45,23 +55,41 @@ def test_scoped_supply_chain_assessment_never_authorizes_release(sample, tmp_pat
 
 def test_scoped_vulnerability_is_exposed_not_silently_ignored(sample, tmp_path):
     wheel, sbom, audit = sample
-    audit.write_text(json.dumps({"dependencies": [{
-        "name": "openbexi-spell-server", "version": "0.8.0.dev43",
-        "vulns": [{"id": "TEST-CVE-0001"}],
-    }]}))
+    audit.write_text(
+        json.dumps(
+            {
+                "dependencies": [
+                    {
+                        "name": "openbexi-spell-server",
+                        "version": "0.8.0.dev43",
+                        "vulns": [{"id": "TEST-CVE-0001"}],
+                    }
+                ]
+            }
+        )
+    )
     result = module.assess(tmp_path, wheel, sbom, audit)
     assert not result["passed"]
-    assert result["known_vulnerable_dependencies"] == [{
-        "name": "openbexi-spell-server", "version": "0.8.0.dev43"
-    }]
+    assert result["known_vulnerable_dependencies"] == [
+        {"name": "openbexi-spell-server", "version": "0.8.0.dev43"}
+    ]
     assert result["full_v08_qualified"] is False
 
 
-@pytest.mark.parametrize("changed", [
-    {"bomFormat": "INVALID", "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev43"}]},
-    {"bomFormat": "CycloneDX", "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev42"}]},
-    {"bomFormat": "CycloneDX", "components": []},
-])
+@pytest.mark.parametrize(
+    "changed",
+    [
+        {
+            "bomFormat": "INVALID",
+            "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev43"}],
+        },
+        {
+            "bomFormat": "CycloneDX",
+            "components": [{"name": "openbexi-spell-server", "version": "0.8.0.dev42"}],
+        },
+        {"bomFormat": "CycloneDX", "components": []},
+    ],
+)
 def test_refuse_incomplete_or_stale_development_sbom(sample, tmp_path, changed):
     wheel, sbom, audit = sample
     sbom.write_text(json.dumps(changed))
