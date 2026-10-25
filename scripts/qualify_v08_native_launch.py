@@ -236,18 +236,34 @@ with tempfile.TemporaryFile(mode='w+') as log:
     try:
         info=listener.exchange('REQ_CTX_INFO','LST',{'ContextName':'example'})
         context=Bridge(int(info['ContextPort']),dict(os.environ),log,queue.Queue())
-        context.exchange('REQ_GUI_LOGIN','CTX',{'Host':'native-child-denial-probe'})
-        try:
-            context.exchange('REQ_OPEN_EXEC','CTX',{
-                'ProcId':'child_0#999999999','GuiMode':'CONTROL','Arguments':'{}',
-                'OpenMode':'{Automatic:True,Visible:False,Blocking:False}'})
-        except RuntimeError as error:
-            assert 'Native start denied' in str(error),str(error)
-        else:
-            raise AssertionError('Unadmitted native root opened')
+        first_key=int(context.exchange('REQ_V08_GUI_KEY','CTX')['GuiKey'])
+        for operation,fields in (
+            ('REQ_GUI_LOGIN',{'Host':'openbexi-host-v1'}),
+            ('REQ_OPEN_EXEC',{'ProcId':'child_0#999999999','GuiMode':'CONTROL',
+                'Arguments':'{}','OpenMode':'{Automatic:True,Visible:False,Blocking:False}'}),
+            ('REQ_CLOSE_EXEC',{'ProcId':'main_0#1'}),
+            ('REQ_GUI_LOGOUT',{}),
+            ('REQ_CLIENT_INFO',{})):
+            try:
+                context.exchange(operation,'CTX',fields)
+            except RuntimeError as error:
+                assert 'V08_CONTEXT_MUTATION_DENIED' in str(error),str(error)
+            else:
+                raise AssertionError('Foreign Context request was accepted')
+        # Host was the first channel. Proposed existing/closed keys must fail
+        # before addClient and can never displace its original IPC connection.
+        for key in (1,first_key):
+            with socket.create_connection(('127.0.0.1',int(info['ContextPort'])),timeout=2) as raw:
+                raw.sendall(key.to_bytes(2,'big'))
+                try:
+                    assert raw.recv(2) == b''
+                except ConnectionResetError:
+                    pass
+        context.close()
+        context=Bridge(int(info['ContextPort']),dict(os.environ),log,queue.Queue())
+        assert int(context.exchange('REQ_V08_GUI_KEY','CTX')['GuiKey']) > first_key
     finally:
         if context is not None:
-            context.exchange('REQ_GUI_LOGOUT','CTX')
             context.close()
         listener.close()
 print('native-unadmitted-start-and-peer-denied',flush=True)
@@ -258,6 +274,13 @@ print('native-unadmitted-start-and-peer-denied',flush=True)
     host_processes(name)
     report["native_unadmitted_root_denied_before_spawn"] = True
     report["native_same_uid_peer_impersonation_denied"] = True
+    report["native_context_gui_boundary"] = dict(
+        foreign_requests_denied=5,
+        proposed_keys_denied=2,
+        connection_keys_never_reused=True,
+        native_roster_admission=False,
+        boundary="before Context login/management and native addClient",
+    )
 
 
 def qualify_pause_probe(

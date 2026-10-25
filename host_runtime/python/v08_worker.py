@@ -214,6 +214,72 @@ def verify_disabled_native_mutations(session, controls, admission, pump):
         native_status="PAUSED",
         quiescence_proven=False,
     )
+    management = (
+        "REQ_GUI_LOGIN",
+        "REQ_GUI_LOGOUT",
+        "REQ_OPEN_EXEC",
+        "REQ_CLOSE_EXEC",
+        "REQ_KILL_EXEC",
+        "REQ_ATTACH_EXEC",
+        "REQ_DETACH_EXEC",
+        "REQ_RECOVER_EXEC",
+        "REQ_DELETE_RECOVERY",
+        "REQ_REMOVE_CONTROL",
+        "REQ_SET_BACKGROUND",
+        "REQ_SET_SHARED_DATA",
+        "REQ_DEL_SHARED_DATA",
+        "REQ_ADD_SHARED_DATA_SCOPE",
+        "REQ_DEL_SHARED_DATA_SCOPE",
+        "REQ_SET_CTX_EXEC_DFLT",
+        "REQ_INSTANCE_ID",
+        "REQ_FUTURE_UNREVIEWED",
+    )
+    for operation in management:
+        try:
+            controls.original(operation, {}, context=True)
+        except RuntimeError as error:
+            if "V08_CONTEXT_MUTATION_DENIED" not in str(error):
+                raise RuntimeError(
+                    "Native Context mutation boundary not reached"
+                ) from None
+        else:
+            raise RuntimeError("Unqualified native Context mutation was accepted")
+        if operation not in admission.gui.denied:
+            raise RuntimeError("Missing authenticated Context management denial")
+        if (
+            owner_fixture_variables(session).get("FIRST") != "1"
+            or "SECOND" in owner_fixture_variables(session)
+            or session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+            != "PAUSED"
+        ):
+            raise RuntimeError("Disabled Context mutation changed the native fixture")
+    roster_messages = (
+        "MSG_ADD_CLIENT",
+        "MSG_REMOVE_CLIENT",
+        "MSG_BACKGROUND",
+        "MSG_SHOW_NODE_DEPTH",
+        "MSG_WVARIABLES_ENABLE",
+        "MSG_WVARIABLES_DISABLE",
+        "MSG_DRESOURCES_ENABLE",
+        "MSG_DRESOURCES_DISABLE",
+    )
+    for operation in roster_messages:
+        controls.original(operation, {}, send=True)
+        until = time.monotonic() + 3
+        while operation not in admission.gui.denied:
+            pump()
+            if time.monotonic() >= until:
+                raise TimeoutError("Missing native Context roster-message denial")
+            time.sleep(0.01)
+    emit(
+        "native-context-mutations-held",
+        operations=len(management),
+        roster_messages=len(roster_messages),
+        original_context_denials=True,
+        variables_unchanged=True,
+        native_status="PAUSED",
+        quiescence_proven=False,
+    )
 
 
 def verify_startup_run_retired(controls):
@@ -646,6 +712,7 @@ def run(config):
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
+        session.gui_binding_callback = admission.gui.bind
 
     def pump():
         nonlocal count

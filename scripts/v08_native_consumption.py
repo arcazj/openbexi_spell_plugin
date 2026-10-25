@@ -676,6 +676,20 @@ def qualify_consumption_fence(
         raise RuntimeError(
             "Native mutation boundary lacks its original-Executor negative oracle"
         )
+    if (
+        owner_commands
+        and sum(
+            event["event"] == "native-context-mutations-held"
+            and event.get("operations") == 18
+            and event.get("roster_messages") == 8
+            and event.get("original_context_denials") is True
+            and event.get("variables_unchanged") is True
+            and event.get("native_status") == "PAUSED"
+            for event in records
+        )
+        != 1
+    ):
+        raise RuntimeError("Native Context management/roster oracle is incomplete")
     if any(
         event["event"]
         in (
@@ -746,6 +760,8 @@ def qualify_consumption_fence(
                 startup_run_grants_used=0,
                 unused_startup_run_denied=True,
                 disabled_native_mutations_denied=19,
+                disabled_native_context_requests_denied=18,
+                disabled_native_roster_messages_denied=8,
                 direct_request_denial_before_evaluation=True,
             )
             if owner_commands

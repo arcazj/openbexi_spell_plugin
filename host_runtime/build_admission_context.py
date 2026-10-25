@@ -23,6 +23,98 @@ def sha(path):
 
 def patch_native_tree(source):
     """Apply only to the independently reproduced frozen composition."""
+    # The legacy GUI client key is client-proposed/reusable. Allocate an
+    # incarnation-local monotonic key instead, before addClient can replace
+    # an existing channel. This applies only to the private Context GUI port.
+    ipc = source / "lib/SPELL_IPC/src/SPELLipcServerInterface.C"
+    ipc_text = ipc.read_text()
+    marker = "\t\t\t\tif (key == 0)\n"
+    if ipc_text.count(marker) != 1:
+        raise ValueError("Ambiguous native GUI reconnect boundary")
+    ipc_text = ipc_text.replace(
+        '#include "SPELL_IPC/SPELLipcError.H"',
+        '#include "SPELL_IPC/SPELLipcError.H"\n#include "/candidate/gui_policy.H"',
+    )
+    ipc_text = ipc_text.replace(
+        marker,
+        """                if (m_ifcName == "CTX-TO-GUI")
+                {
+                    SPELLmonitor lock(m_clientLock);
+                    int last = m_usedClientKeys.empty() ? 0 : m_usedClientKeys.back();
+                    try { key = v08_next_gui_key(last, key); }
+                    catch (const std::exception&) {
+                        delete clientSocket;
+                        throw SPELLipcError("Native GUI reconnect/capacity denied");
+                    }
+                    m_usedClientKeys.push_back(key);
+                }
+                else if (key == 0)
+""",
+    )
+    # Retain even failed/closed GUI allocations in the bounded original vector.
+    # This avoids both key reuse and an ABI change in the legacy server class.
+    cleanup = "            m_usedClientKeys.erase(std::remove(m_usedClientKeys.begin(),m_usedClientKeys.end(),key),m_usedClientKeys.end());"
+    removal = "        if (used!=m_usedClientKeys.end()) m_usedClientKeys.erase(used);"
+    if ipc_text.count(cleanup) != 1 or ipc_text.count(removal) != 1:
+        raise ValueError("Ambiguous native GUI key retirement")
+    ipc_text = ipc_text.replace(
+        cleanup, '            if (m_ifcName != "CTX-TO-GUI")\n' + cleanup
+    )
+    ipc.write_text(
+        ipc_text.replace(
+            removal,
+            '        if (m_ifcName != "CTX-TO-GUI" && used!=m_usedClientKeys.end()) m_usedClientKeys.erase(used);',
+        )
+    )
+    message = source / "include/SPELL_IPC/SPELLipcMessage.H"
+    message_text = message.read_text()
+    marker = "\t\tbool hasField( std::string field ) const;"
+    if message_text.count(marker) != 1:
+        raise ValueError("Ambiguous native GUI field representation")
+    message.write_text(
+        message_text.replace(
+            marker,
+            marker
+            + "\n        const Properties& v08Fields() const { return m_properties; }",
+        )
+    )
+    client = source / "lib/SPELL_CTX/src/SPELLclientIPC.C"
+    client_text = client.read_text()
+    include = '#include "SPELL_CTX/SPELLclientIPC.H"'
+    oneway = "void SPELLclientIPC::processMessage( const SPELLipcMessage& msg )\n{\n"
+    request = "SPELLipcMessage SPELLclientIPC::processRequest( const SPELLipcMessage& msg )\n{\n"
+    if any(client_text.count(anchor) != 1 for anchor in (include, oneway, request)):
+        raise ValueError("Ambiguous native Context GUI boundary")
+    client_text = client_text.replace(
+        include, include + '\n#include "/candidate/gui_gate.H"'
+    )
+    client_text = client_text.replace(
+        oneway,
+        oneway
+        + """    try { v08_admit_gui(msg, false); }
+    catch (const std::exception&) { return; }
+""",
+    )
+    client.write_text(
+        client_text.replace(
+            request,
+            request
+            + """    // Read only: exposes this channel's transport key, never admission.
+    if (msg.getId() == "REQ_V08_GUI_KEY") {
+        SPELLipcMessage response = SPELLipcHelper::createResponse("RSP_V08_GUI_KEY", msg);
+        response.set("GuiKey", ISTR(msg.getKey()));
+        return response;
+    }
+    try { v08_admit_gui(msg, true); }
+    catch (const std::exception&) {
+        SPELLipcMessage response = SPELLipcHelper::createErrorResponse("RSP_V08_GUI_DENIED", msg);
+        response.set("Error", "V08_CONTEXT_MUTATION_DENIED");
+        response.set("Reason", "Native Context GUI admission unavailable or rejected");
+        return response;
+    }
+""",
+        )
+    )
     unit = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
     before = sha(unit)
     if before != "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598":

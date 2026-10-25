@@ -154,6 +154,153 @@ class NativeChildGate:
             self.started[instance] = grant.admission_id
 
 
+class NativeGuiBinding:
+    """One protected host connection; never a second controller protocol.
+
+    The key comes from the owned bridge's read-only transport-key query. Only
+    the protected agent calls bind(), not a native message or operator file.
+    The native transport must forbid proposed/reused keys for this Context.
+    """
+
+    READS = frozenset(
+        {
+            "REQ_EXEC_INFO",
+            "REQ_EXEC_LIST",
+            "REQ_CLIENT_INFO",
+            "REQ_CURRENT_TIME",
+            "REQ_GET_CONFIG",
+            "REQ_EXEC_STATUS",
+            "REQ_GET_VARIABLES",
+            "REQ_WVARIABLES_ENABLED",
+            "REQ_GET_RESOURCES",
+            "REQ_DRESOURCES_ENABLED",
+            "REQ_GET_DICTIONARY",
+        }
+    )
+    # These traverse no Context mutation handler; the independently guarded
+    # Executor CIF must reject them before prompt/mailbox/setter effects.
+    CLOSED_EXECUTOR_REQUESTS = frozenset(
+        {
+            "REQ_SET_CONFIG",
+            "REQ_SET_BREAKPOINT",
+            "REQ_CLEAR_BREAKPOINT",
+            "REQ_CHANGE_VARIABLE",
+            "REQ_CHANGE_RESOURCE",
+            "REQ_UPD_DICTIONARY",
+        }
+    )
+    EXECUTOR_MESSAGES = frozenset(
+        {
+            "ACKNOWLEDGE",
+            "CMD_RUN",
+            "CMD_STEP",
+            "CMD_PAUSE",
+            "CMD_SCRIPT",
+            "CMD_GOTO",
+            "CMD_STEP_OVER",
+            "CMD_SKIP",
+            "CMD_INTERRUPT",
+            "CMD_FINISH",
+            "CMD_ACTION",
+            "CMD_RELOAD",
+            "MSG_ANSWER",
+            "MSG_CANCEL",
+            "CMD_ABORT",
+            "CMD_BLOCK",
+            "CMD_CLOSE",
+        }
+    )
+
+    def __init__(self, gate, pin_process, report):
+        self.gate, self.pin_process, self.report = gate, pin_process, report
+        self.lock = threading.Lock()
+        self.attempted = False
+        self.key = self.handle = None
+        self.logged_in = self.open_attempted = False
+        self.denied = set()
+
+    def bind(self, key, process):
+        with self.lock:
+            if self.attempted:
+                raise ValueError("Native GUI binding already attempted")
+            self.attempted = True
+            executable = Path("/bridge/spell-host-ipc").resolve(strict=True)
+            if (
+                type(key) is not int
+                or not 1 <= key <= 1024
+                or process.poll() is not None
+                or not os.statvfs(executable).f_flag & os.ST_RDONLY
+            ):
+                raise ValueError("Native GUI bridge identity differs")
+            self.handle = self.pin_process(process.pid, os.getpid(), executable)
+            self.key = key
+
+    def admit(self, body):
+        exact(body, {"schema", "key", "operation", "request", "fields"})
+        operation, fields = body["operation"], body["fields"]
+        if (
+            body["schema"] != "openbexi.native-gui/1"
+            or type(body["key"]) is not int
+            or type(body["request"]) is not bool
+            or type(operation) is not str
+            or not 1 <= len(operation) <= 64
+            or any(
+                ch not in "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_" for ch in operation
+            )
+            or type(fields) is not dict
+            or len(fields) > 32
+            or any(type(k) is not str or type(v) is not str for k, v in fields.items())
+        ):
+            raise ValueError("Native GUI frame differs")
+        with self.lock:
+            if (
+                self.key is None
+                or body["key"] != self.key
+                or self.handle is None
+                or select.select([self.handle], [], [], 0)[0]
+            ):
+                self.deny(operation)
+            if operation == "REQ_GUI_LOGIN" and body["request"]:
+                if self.logged_in or fields != {"Host": "openbexi-host-v1"}:
+                    self.deny(operation)
+                self.gate.root_check()
+                # Never repeat roster mutation after a lost native reply.
+                self.logged_in = True
+                return
+            if not self.logged_in:
+                self.deny(operation)
+            if operation == "REQ_OPEN_EXEC" and body["request"]:
+                if self.open_attempted:
+                    self.deny(operation)
+                self.open_attempted = True
+                if fields != {
+                    "ProcId": self.gate.root_instance,
+                    "GuiMode": "CONTROL",
+                    "Arguments": self.gate.root_arguments,
+                    "OpenMode": "{Automatic:True,Visible:True,Blocking:False}",
+                }:
+                    self.deny(operation)
+                self.gate.root_check()
+                return
+            if body["request"]:
+                if operation in self.READS | self.CLOSED_EXECUTOR_REQUESTS:
+                    return
+            elif operation in self.EXECUTOR_MESSAGES:
+                return
+            self.deny(operation)
+
+    def deny(self, operation):
+        if operation not in self.denied and len(self.denied) < 128:
+            self.denied.add(operation)
+            self.report("native-context-mutation-denied", operation=operation)
+        raise ValueError("Native Context GUI operation denied")
+
+    def close(self):
+        if self.handle is not None:
+            os.close(self.handle)
+            self.handle = None
+
+
 class NativeAdmissionServer:
     def __init__(
         self,
@@ -194,6 +341,7 @@ class NativeAdmissionServer:
         self.disabled_mutations = set()
         self.context_pid = None
         self.pidfd = None
+        self.gui = NativeGuiBinding(gate, self.pin_process, report)
         self.stop = threading.Event()
         self.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.socket.bind(self.path)
@@ -340,6 +488,9 @@ class NativeAdmissionServer:
             return
         if role != "context":
             raise ValueError("Native role denied")
+        if body.get("schema") == "openbexi.native-gui/1":
+            self.gui.admit(body)
+            return
         if body.get("schema") == "openbexi.native-member/1":
             self.register(body)
             self.report("native-executor-bound")
@@ -418,3 +569,4 @@ class NativeAdmissionServer:
             os.close(self.pidfd)
         for _pid, handle in self.members.values():
             os.close(handle)
+        self.gui.close()

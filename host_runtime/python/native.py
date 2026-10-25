@@ -103,6 +103,7 @@ class NativeSession:
         self.driver_port = driver_port
         self.native_home = None
         self.admission_socket = admission_socket
+        self.gui_binding_callback = None
         if native_home is not None:
             home = Path(native_home).resolve(strict=True)
             if not home.is_dir() or not os.statvfs(home).f_flag & os.ST_RDONLY or not admission_socket:
@@ -219,6 +220,11 @@ class NativeSession:
         # RUNNING is listener bookkeeping; the context IPC accept thread can
         # still be starting. Retry only connection setup, never a sent request.
         self.context = self.connect_bridge(int(info['ContextPort']), environment, deadline)
+        if self.native_home is not None:
+            if self.gui_binding_callback is None:
+                raise RuntimeError('Native GUI admission provider unavailable')
+            key = self.context.exchange('REQ_V08_GUI_KEY', 'CTX')['GuiKey']
+            self.gui_binding_callback(int(key), self.context.process)
         self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'})
         self.request('REQ_OPEN_EXEC', context=True, fields={'GuiMode': 'CONTROL',
             'Arguments': self.arguments, 'OpenMode': '{Automatic:True,Visible:True,Blocking:False}'})

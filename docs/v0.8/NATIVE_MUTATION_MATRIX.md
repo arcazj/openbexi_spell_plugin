@@ -21,8 +21,8 @@ Authority checks live in [commands.py](../../server/src/openbexi_spell_server/co
 | P1 | Other commands and mailbox STOP | STEP_OVER, SKIP, GOTO, SCRIPT, RELOAD, INTERRUPT, FINISH, ACTION and other command IDs are outside the current owner whitelist. `SPELLcontroller::run` handles STOP before `executeCommand`. Close all alternate external paths before exposure; internal safety/lifecycle commands need distinct provenance. |
 | P1 | `SPELLserverCif::processRequest` | Dev37 denies direct setters and every request outside the diagnostic-read inventory before processors. Positive setters need exact argument/member grants and authorization before evaluation. Diagnostic reads are not an observer ACL. |
 | P1 | Child redirection | `processMessage` can route through `processMessageForChild` on ParentId. Nonempty ParentId is denied for admitted RUN/STEP/PAUSE; the full message/request matrix still needs exact target checks. |
-| P1 | Native Context lifecycle/GUI management | Context-level OPEN/CLOSE/kill/reconnect operations can bypass Executor CIF checks. Preserve approved starts while binding lifecycle operations to the authority/host role and exact original family. This is the next closure contract. |
-| P1 | Native controller-client messages | ADD_CLIENT, REMOVE_CLIENT, BACKGROUND, NODE_DEPTH and watch/resource toggles alter native state outside the command controller. Native GUI ownership cannot substitute for durable v0.8 owner capability. |
+| P1 | Native Context lifecycle/GUI management | Dev38 candidate binds the original protected host bridge once, rejects proposed/reused transport keys and closes unqualified management before legacy dispatch. Only one exact original login/root OPEN is allowed. Hosted qualification pending; see NATIVE_CONTEXT_GUI_BOUNDARY.md. Positive owner lifecycle actions remain unimplemented. |
+| P1 | Native controller-client messages | Dev38 candidate closes external ADD_CLIENT, REMOVE_CLIENT, BACKGROUND, NODE_DEPTH and watch/resource-toggle messages at Context GUI entry. Internal native lifecycle messages and separate Listener/Executor-to-Context surfaces still need their full inventories. Native GUI ownership cannot substitute for durable v0.8 owner capability. |
 | P1 | Deferred/discarded command disposition | A final-admission receipt does not prove completion: pending commands can be discarded, and SKIP/GOTO can be deferred onto tracing. Inventory all mailbox/deferred/prompt items and retain immutable origins through a terminal disposition. Never restamp old items after handoff. |
 | P1 | Complete family barrier | Current main PAUSE and observed-Python-thread experiments do not cover every thread, native callback, child, driver operation or future child start. Establish complete participant closure and drained effect/command queues, or keep transfer blocked. |
 | P1 | New-owner runtime identity | Original StartGrant remains bound to its original epoch/connection. A separate resumed-runtime identity/channel and fresh new-owner grants must follow a proved barrier. Loosening `_original_grant` or refreshing old commands would violate the contract. |
@@ -50,3 +50,10 @@ Its hosted 19-operation oracle passed at `97af271`, with all PR/push component
 jobs and 580 hosted tests passing. This closes an unsafe alternate
 path; it does not implement positive owner ABORT/CLOSE/prompt/setter features.
 Context GUI management and client-roster paths still require their own contracts.
+
+## Dev38 Context candidate
+
+`NATIVE_CONTEXT_GUI_BOUNDARY.md` specifies the one-attempt original bridge
+binding, non-reusable transport identities and pre-dispatch management/roster
+denials. Hosted execution is pending. Its closure does not implement positive
+owner actions or qualify separate native Listener/Executor-to-Context surfaces.

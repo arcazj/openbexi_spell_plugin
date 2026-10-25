@@ -6,7 +6,7 @@ mandatory criteria pass. It supersedes the separate-confirmation hold; another
 routine publication confirmation is not required. It does not authorize
 production migration or weaken G1 F1–F10 or acceptance requirements.
 
-The full release is **not qualified**. Package `0.8.0.dev37` remains development
+The full release is **not qualified**. Package `0.8.0.dev38` remains development
 code. Dev31 at `9de50ea` verified a 21-member retained native family, original
 durable member identities and stale-controller initial RUN rejection. Dev32
 adds fresh owner STEP/PAUSE grants. Its push native STEP/disconnect oracle passed;
@@ -24,6 +24,13 @@ new-owner resume and public IDE Run/Debug remain unfinished. All original
 failures remain retained, including the non-OOM startup issue.
 Existing component receipts do not qualify full family handoff/resume, joint
 IDE Run/Debug/browser, Kubernetes or deployed recovery.
+
+Dev37 closed the unsupported Executor CIF paths and passed all component jobs
+and 580 hosted service tests at `97af271`. Dev38 adds original-host Context GUI
+admission, non-reusable connection identities and closed management/roster
+dispatch. Its native qualification is pending. Positive owner actions, internal
+native lifecycle and legacy Listener peer/management surfaces remain blockers;
+see `NATIVE_CONTEXT_GUI_BOUNDARY.md` for the precise candidate scope.
 
 ## Publication preflight
 
