@@ -50,7 +50,11 @@ def run_terminal_probe(
                 if grant.command_id in controls.owner_consumed
             ]
         pid, pidfd = admission.members[session.instance]
-        if case == "forced-loss" and not killed and Path("/control/kill-native").exists():
+        if (
+            case == "forced-loss"
+            and not killed
+            and Path("/control/kill-native").exists()
+        ):
             # Explicit fault injection only in this isolated native test.
             # Never target a recycled numeric PID: its original pidfd is held.
             if select.select([pidfd], [], [], 0)[0]:
