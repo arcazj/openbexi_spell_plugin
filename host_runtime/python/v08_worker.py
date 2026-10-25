@@ -26,7 +26,6 @@ import tempfile
 # mounted separately; user source never participates in Python module lookup.
 sys.path.insert(0, "/opt/host")
 sys.path.insert(0, "/v08/server/src")
-sys.path.insert(0, "/v08/driver_plugin/src")
 from native import NativeSession
 from openbexi_spell_dss.relay import Relay
 from openbexi_spell_dss.codec import unpack
@@ -713,7 +712,12 @@ def run(config):
             )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
-    relay = Relay(dispatch, runtime_epochs=True) if handoff_profile else Relay(dispatch)
+    if handoff_profile:
+        from epoch_relay import EpochRelay
+
+        relay = EpochRelay(dispatch)
+    else:
+        relay = Relay(dispatch)
     session_type, options = NativeSession, {}
     if thread_probe or child_profile:
         # The published v0.7 image and its default host session stay intact.

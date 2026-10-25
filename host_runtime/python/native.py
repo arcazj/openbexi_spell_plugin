@@ -408,7 +408,6 @@ class NativeSession:
             environment['OPENBEXI_SPELL_ENTRYPOINT'] = str(self.script)
         if os.environ.get('OPENBEXI_V08_RUNTIME_EPOCH'):
             environment['OPENBEXI_V08_RUNTIME_EPOCH'] = os.environ['OPENBEXI_V08_RUNTIME_EPOCH']
-            environment['PYTHONPATH'] = '/v08/driver_plugin/src:' + environment.get('PYTHONPATH','')
         if self.driver_port:
             environment['OPENBEXI_DRIVER_RELAY_PORT'] = str(self.driver_port)
         self.log = (root / 'native.log').open('w+')

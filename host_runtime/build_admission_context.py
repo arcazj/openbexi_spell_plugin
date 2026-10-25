@@ -371,6 +371,17 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         found = true;
     }
     if (!found) THROW_EXCEPTION("Native singleton rejected", "Candidate executor library missing", SPELL_ERROR_PYTHON_API);
+    if (std::getenv("OPENBEXI_V08_RUNTIME_EPOCH")) {
+        // Fixed trusted image source, independent of isolated Python's path.
+        const int result = PyRun_SimpleString(
+            "import importlib.util as _v08_util\\n"
+            "_v08_spec = _v08_util.spec_from_file_location('_v08_epoch', '/candidate/epoch_connection.py')\\n"
+            "_v08_epoch = _v08_util.module_from_spec(_v08_spec)\\n"
+            "_v08_spec.loader.exec_module(_v08_epoch)\\n"
+            "_v08_epoch.install()\\n");
+        if (result != 0)
+            THROW_EXCEPTION("Native epoch rejected", "Trusted driver bootstrap failed", SPELL_ERROR_PYTHON_API);
+    }
 }
 """,
         )
@@ -618,6 +629,7 @@ def main():
         candidate_executor_sha256=programs["Executor"],
         original_executor_sha256=sha(runtime / "bin/SPELL-Executor_v3"),
         candidate_shared_runtime_sha256=sha(shared),
+        epoch_bootstrap_sha256=sha(Path("/candidate/epoch_connection.py")),
         original_shared_runtime_sha256=sha(runtime / "bin/libspell_executor313.so"),
         shared_runtime_library_units=len(runtime_graph),
         supplemental_units={path.name: sha(path) for path in support},

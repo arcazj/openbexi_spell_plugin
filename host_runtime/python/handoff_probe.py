@@ -10,7 +10,7 @@ def run_handoff_probe(
 ):
     session.request("CMD_RUN", send=True)
     deadline = time.monotonic() + 120
-    ready = rotated = False
+    ready = rotated = paused = False
     while time.monotonic() < deadline:
         runtime.ensure()
         pump()
@@ -46,6 +46,9 @@ def run_handoff_probe(
                 new_owner_driver_completed=True,
             )
         state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+        if runtime.rotated and state == "PAUSED" and not paused:
+            paused = True
+            emit("native-handoff-paused", native_status=state)
         if state in {"FINISHED", "ERROR", "ABORTED"}:
             if state != "FINISHED" or not rotated:
                 raise RuntimeError(

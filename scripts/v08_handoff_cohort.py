@@ -258,7 +258,7 @@ def qualify_handoff_case(
         await_event([name], "native-handoff-activated", seconds=15)
         # B exercises the original native owner-command path after the family
         # resume. C keeps observing; A's pending STEP must stay fenced.
-        for operation, status in (("CMD_PAUSE", "PAUSED"), ("CMD_RUN", "RUNNING")):
+        for operation in ("CMD_PAUSE", "CMD_RUN"):
             result = controller(
                 "execution.command", dict(bproof, command=operation), subject="bob"
             )
@@ -278,6 +278,8 @@ def qualify_handoff_case(
                 if time.monotonic() > until:
                     raise RuntimeError("B native command did not return")
                 time.sleep(0.05)
+            if operation == "CMD_PAUSE":
+                await_event([name], "native-handoff-paused", seconds=15)
         (control / "handoff-after").write_text("B continuation")
         await_event([name], "native-handoff-continued", seconds=25)
         after = counters(command, name, output)
