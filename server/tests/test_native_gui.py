@@ -2,10 +2,8 @@
 
 from concurrent.futures import ThreadPoolExecutor
 import ast
-import importlib.util
-import io
+import json
 from pathlib import Path
-import queue
 import re
 import subprocess
 from types import SimpleNamespace
@@ -14,6 +12,7 @@ import zipfile
 import pytest
 
 import test_child_gate as gates
+from native_bridge_test_support import peer
 from openbexi_spell_server.contracts import Fault
 
 module = gates.module
@@ -78,18 +77,20 @@ def test_compiled_context_denial_survives_original_bridge_fields(tmp_path):
     # The frozen native bridge forwards only FIELD_* names; unlisted literals
     # disappear even though the Context correctly rejected the operation.
     forwarded = {key: value for key, value in emitted.items() if key in fields}
-    spec = importlib.util.spec_from_file_location(
-        "native_gui_denial_bridge", ROOT / "host_runtime/python/native.py"
+    # Exercise the full Python Bridge with real pipes. The C++ fixture above
+    # still checks the original immutable error-field constants independently.
+    response = json.dumps(dict(ok=False, message=dict(fields=forwarded)))
+    script = (
+        "for line in sys.stdin:\n"
+        "    request = json.loads(line)\n"
+        f"    response = json.loads({response!r})\n"
+        "    response['seq'] = request['seq']\n"
+        "    print(json.dumps(response), flush=True)\n"
     )
-    native = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(native)
-    bridge = native.Bridge.__new__(native.Bridge)
-    bridge.sequence = 0
-    bridge.process = SimpleNamespace(stdin=io.StringIO())
-    bridge.replies = queue.Queue()
-    bridge.replies.put(dict(seq=1, ok=False, message=dict(fields=forwarded)))
-    with pytest.raises(RuntimeError, match="V08_CONTEXT_MUTATION_DENIED"):
-        bridge.exchange("REQ_GUI_LOGIN", "CTX", {"Host": "copied"})
+    with peer(script) as (bridge, _):
+        with pytest.raises(RuntimeError, match="V08_CONTEXT_MUTATION_DENIED"):
+            bridge.exchange("REQ_GUI_LOGIN", "CTX", {"Host": "copied"})
+        assert not bridge.failed.is_set()
     assert forwarded == {
         "ErrorMsg": "V08_CONTEXT_MUTATION_DENIED",
         "ErrorReason": "Native Context GUI admission unavailable or rejected",

@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import queue
+import select
 import signal
 import subprocess
 import tempfile
@@ -17,75 +18,224 @@ class BridgeConnectionError(RuntimeError):
 
 
 class Bridge:
+    """One owned IPC process with ordered notifications and single-flight RPC.
+
+    Transport uncertainty permanently fences this instance. Reconnecting here
+    must never become an implicit retry of an already sent native command.
+    """
+
+    MAX_FRAME = 4 * 1024 * 1024
+    STARTUP_EVENTS = 256
+
     def __init__(self, port, environment, log, events, *, connect_timeout=10):
+        self._timeout(connect_timeout)
+        # The queue identity never changes after the reader starts. A separate
+        # bounded pre-handshake buffer is owned exclusively by the reader.
+        self.events = events
+        self.replies = queue.Queue(maxsize=2)
+        self.closing = threading.Event()
+        self.connected = threading.Event()
+        self.failed = threading.Event()
+        self.exchange_lock = threading.Lock()
+        self.failure_lock = threading.Lock()
+        self.failure = None
+        self.sequence = 0
         self.process = subprocess.Popen(['/bridge/spell-host-ipc', str(port)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log,
             text=True, encoding='utf-8', env=environment)
-        self.replies = queue.Queue()
-        self.events = queue.Queue(maxsize=256)
-        self.closing = threading.Event()
-        self.sequence = 0
+        os.set_blocking(self.process.stdin.fileno(), False)
         self.thread = threading.Thread(target=self.read, name='native-ipc-reader')
         self.thread.start()
         try:
             first = self.replies.get(timeout=connect_timeout)
         except queue.Empty:
             self.close()
-            raise BridgeConnectionError('Native bridge connection timed out')
-        if first.get('event') != 'connected':
+            raise BridgeConnectionError('Native bridge connection timed out') from None
+        if first.get('event') != 'connected' or self.failed.is_set():
             self.close()
-            raise BridgeConnectionError('Native IPC could not connect: ' + str(first))
-        self.events = events
+            raise BridgeConnectionError('Native IPC could not connect')
+
+    @staticmethod
+    def _timeout(value):
+        if type(value) not in (int, float) or not 0 < value <= 10:
+            raise ValueError('Native bridge timeout must be finite and in (0, 10]')
+
+    def _fail(self, reason, event=None):
+        """Keep a failure latch even if the bounded event queue is full."""
+        with self.failure_lock:
+            if self.failed.is_set():
+                return
+            self.failure = reason
+            self.failed.set()
+        # A failed connection attempt must not poison the shared notification
+        # queue used by a later, still pre-request connection attempt.
+        if self.connected.is_set() and not self.closing.is_set():
+            try:
+                self.events.put_nowait(event or {'event': 'connectionError', 'error': reason})
+            except queue.Full:
+                pass  # Every request checks the independent failure latch.
+        try:
+            self.replies.put_nowait({'error': reason})
+        except queue.Full:
+            pass
+
+    def _available(self):
+        if self.closing.is_set() or self.failed.is_set():
+            raise RuntimeError('Native bridge unavailable: ' + (self.failure or 'closed'))
 
     def read(self):
+        pending = []
         try:
-            for line in self.process.stdout:
+            while not self.closing.is_set():
+                line = self.process.stdout.readline(self.MAX_FRAME + 1)
+                if not line:
+                    if not self.closing.is_set():
+                        self._fail('Native bridge ended')
+                    return
+                if len(line.encode('utf-8')) > self.MAX_FRAME or not line.endswith('\n'):
+                    raise ValueError('Native bridge frame exceeds bound')
                 item = json.loads(line)
-                if 'seq' in item or item.get('event') == 'connected':
-                    self.replies.put(item)
+                if type(item) is not dict:
+                    raise ValueError('Native bridge frame is not an object')
+                if item.get('event') == 'connected':
+                    if self.connected.is_set() or 'seq' in item:
+                        raise ValueError('Duplicate native bridge handshake')
+                    self.connected.set()
+                    self.replies.put_nowait(item)
+                    for buffered in pending:
+                        self.publish(buffered)
+                    pending.clear()
+                elif not self.connected.is_set():
+                    if 'seq' in item or item.get('event') in {'connectionError', 'connectionClosed'}:
+                        raise ValueError('Native bridge connection failed')
+                    if len(pending) >= self.STARTUP_EVENTS:
+                        raise ValueError('Native bridge startup notification capacity')
+                    pending.append(item)
+                elif item.get('event') in {'connectionError', 'connectionClosed'}:
+                    # Fence first: observing closure must never race a new write.
+                    self._fail('Native IPC connection closed', item)
+                    return
+                elif 'seq' in item:
+                    self.replies.put_nowait(item)
                 else:
                     self.publish(item)
-        except Exception as error:
-            self.publish({'event': 'connectionError', 'error': str(error)})
+        except Exception:
+            # No private JSON frame or procedure values in parser diagnostics.
+            self._fail('Native bridge protocol failed')
         finally:
-            self.replies.put({'error': 'Native bridge ended'})
+            if not self.closing.is_set() and not self.failed.is_set():
+                self._fail('Native bridge ended')
 
     def publish(self, item):
-        while not self.closing.is_set():
+        while not self.closing.is_set() and not self.failed.is_set():
             try:
                 self.events.put(item, timeout=.1)
                 return
             except queue.Full:
                 continue
 
-    def exchange(self, identifier, receiver, fields=None, *, send=False, pump=None):
-        self.sequence += 1
-        self.process.stdin.write(json.dumps({'seq': self.sequence,
-            'operation': 'send' if send else 'request', 'id': identifier,
-            'receiver': receiver, 'fields': fields or {}}) + '\n')
-        self.process.stdin.flush()
-        deadline = time.monotonic() + 10
-        while True:
-            # Notifications and replies share one wire. Keep forwarding the
-            # bounded event queue while awaiting a reply behind a burst.
-            if pump:
-                pump()
+    def _write_packet(self, packet, deadline):
+        fd = self.process.stdin.fileno()
+        raw = packet.encode('utf-8')
+        offset = 0
+        while offset < len(raw):
+            self._available()
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError('Native bridge write deadline expired')
+            _, ready, _ = select.select([], [fd], [], min(.05, remaining))
+            if not ready:
+                continue
             try:
-                reply = self.replies.get(timeout=.05)
-                break
-            except queue.Empty as error:
-                if time.monotonic() >= deadline:
-                    raise RuntimeError(f'{identifier}: Native reply timed out') from error
-        if reply.get('seq') != self.sequence or not reply.get('ok'):
-            raise RuntimeError(f'{identifier}: {reply}')
-        return reply.get('message', {}).get('fields', {})
+                written = os.write(fd, raw[offset:])
+            except BlockingIOError:
+                continue
+            if written <= 0:
+                raise OSError('Native bridge pipe closed')
+            offset += written
+
+    def exchange(self, identifier, receiver, fields=None, *, send=False, pump=None, timeout=10):
+        self._timeout(timeout)
+        # Reentrancy from an event pump is also rejected before touching the
+        # wire: two callers cannot swap each other's sequence or receipt.
+        if not self.exchange_lock.acquire(blocking=False):
+            raise RuntimeError('A native request is already in flight')
+        attempted = settled = False
+        try:
+            self._available()
+            if self.sequence >= 2**32 - 1:
+                self._fail('Native bridge sequence exhausted')
+                raise RuntimeError('Native bridge sequence exhausted')
+            self.sequence += 1
+            sequence = self.sequence
+            packet = json.dumps({'seq': sequence,
+                'operation': 'send' if send else 'request', 'id': identifier,
+                'receiver': receiver, 'fields': fields or {}}) + '\n'
+            if len(packet.encode('utf-8')) > self.MAX_FRAME:
+                raise ValueError('Native bridge request exceeds bound')
+            deadline = time.monotonic() + timeout
+            attempted = True  # Any later interruption leaves a non-replayable attempt.
+            try:
+                self._write_packet(packet, deadline)
+            except (OSError, ValueError):
+                self._fail('Native bridge write uncertain')
+                raise RuntimeError('Native bridge write uncertain') from None
+            while True:
+                self._available()
+                # Notifications and replies share one pipe. Bounded pumps keep
+                # a reply behind a normal notification burst reachable.
+                if pump:
+                    try:
+                        pump()
+                    except Exception:
+                        self._fail('Native notification processing failed')
+                        raise
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    self._fail('Native reply timed out')
+                    raise RuntimeError(f'{identifier}: Native reply timed out')
+                try:
+                    reply = self.replies.get(timeout=min(.05, remaining))
+                    break
+                except queue.Empty:
+                    continue
+            self._available()
+            if (type(reply.get('seq')) is not int or reply['seq'] != sequence
+                    or type(reply.get('ok')) is not bool):
+                self._fail('Native response identity differs')
+                raise RuntimeError('Native response identity differs')
+            # A negative bridge envelope is not necessarily a native rejection.
+            # native_bridge.cpp also emits ok=false/error for exceptions and IPC
+            # timeouts, without a native message. Such an outcome cannot permit
+            # retransmission, even though its bridge sequence is correlated.
+            if not reply['ok'] and ('error' in reply or 'message' not in reply):
+                self._fail('Native IPC dispatch outcome uncertain')
+                raise RuntimeError(f'{identifier}: Native IPC dispatch outcome uncertain')
+            message = reply.get('message', {})
+            if type(message) is not dict or type(message.get('fields', {})) is not dict:
+                self._fail('Native response fields differ')
+                raise RuntimeError('Native response fields differ')
+            if not reply['ok']:
+                # A native error *response* retains the original denial oracle.
+                # This settles only the bridge exchange, not procedure effects.
+                settled = True
+                raise RuntimeError(f'{identifier}: {reply}')
+            settled = True
+            return message.get('fields', {})
+        except BaseException:
+            if attempted and not settled:
+                self._fail('Native request interrupted or uncertain')
+            raise
+        finally:
+            self.exchange_lock.release()
 
     def close(self):
         self.closing.set()
-        if self.process.stdin:
+        self._fail('Native bridge closed')
+        if self.process.stdin and not self.process.stdin.closed:
             try:
                 self.process.stdin.close()
-            except BrokenPipeError:
+            except (BrokenPipeError, OSError):
                 pass
         try:
             self.process.wait(timeout=10)
@@ -93,7 +243,63 @@ class Bridge:
             self.process.kill()
             self.process.wait(timeout=5)
         self.thread.join(timeout=5)
-        self.process.stdout.close()
+        if self.thread.is_alive():
+            raise RuntimeError('Native bridge reader did not terminate')
+        if self.process.stdout and not self.process.stdout.closed:
+            self.process.stdout.close()
+
+class StartupObservation:
+    """Latest status for exactly the admitted root; never execution authority."""
+
+    STATUSES = frozenset({
+        'UNKNOWN', 'UNINIT', 'LOADED', 'RELOADING', 'RUNNING', 'PAUSED', 'WAITING',
+        'PROMPT', 'INTERRUPTED', 'ERROR', 'ABORTED', 'FINISHED',
+    })
+
+    def __init__(self, instance):
+        self.instance = instance
+        self.status = None
+        self.notifications = 0
+
+    def drain(self, events):
+        # Match the worker's bounded pump: a busy notification stream must
+        # yield to the original command reply, without imposing a lifetime cap.
+        for _ in range(64):
+            try:
+                item = events.get_nowait()
+            except queue.Empty:
+                return
+            self.notifications += 1
+            if type(item) is not dict:
+                raise RuntimeError('Invalid native startup notification')
+            if item.get('event') in {'connectionError', 'connectionClosed'}:
+                raise RuntimeError('Native startup connection failed')
+            message = item.get('message', {})
+            if type(message) is not dict:
+                raise RuntimeError('Invalid native startup message')
+            fields = message.get('fields', {})
+            if type(fields) is not dict:
+                raise RuntimeError('Invalid native startup fields')
+            if fields.get('DataType') != 'STATUS' or fields.get('ProcId') != self.instance:
+                continue
+            status = fields.get('ExecutorStatus')
+            if type(status) is not str or status not in self.STATUSES:
+                raise RuntimeError('Invalid native startup status')
+            self.status = status
+            if status in {'ERROR', 'ABORTED', 'FINISHED'}:
+                raise RuntimeError('Native root became terminal during startup: ' + status)
+
+    def paused(self, info):
+        if type(info) is not dict:
+            raise RuntimeError('Invalid native startup status response')
+        if info.get('ProcId') != self.instance:
+            raise RuntimeError('Native startup status response scope differs')
+        status = info.get('ExecutorStatus')
+        if type(status) is not str or status not in self.STATUSES:
+            raise RuntimeError('Invalid native startup status response')
+        if status in {'ERROR', 'ABORTED', 'FINISHED'}:
+            raise RuntimeError('Native root became terminal during startup: ' + status)
+        return status == 'PAUSED' and self.status == 'PAUSED'
 
 
 class NativeSession:
@@ -206,12 +412,15 @@ class NativeSession:
         self.process = subprocess.Popen(['spell-native', 'listener', '-c', example['config']],
             cwd=self.project, env=environment, stdout=self.log, stderr=subprocess.STDOUT,
             start_new_session=True)
+        startup = StartupObservation(self.instance)
+        def pump():
+            startup.drain(self.events)
         deadline = time.monotonic() + 10
         self.listener = self.connect_bridge(9980, environment, deadline)
         self.listener.exchange('REQ_GUI_LOGIN', 'LST',
-            {'ContextName': 'example', 'Host': 'openbexi-host-v1', 'GuiMode': 'Development'})
+            {'ContextName': 'example', 'Host': 'openbexi-host-v1', 'GuiMode': 'Development'}, pump=pump)
         while time.monotonic() < deadline:
-            info = self.listener.exchange('REQ_CTX_INFO', 'LST', {'ContextName': 'example'})
+            info = self.listener.exchange('REQ_CTX_INFO', 'LST', {'ContextName': 'example'}, pump=pump)
             if info.get('ContextStatus') == 'RUNNING':
                 break
             time.sleep(.05)
@@ -223,37 +432,33 @@ class NativeSession:
         if self.native_home is not None:
             if self.gui_binding_callback is None:
                 raise RuntimeError('Native GUI admission provider unavailable')
-            key = self.context.exchange('REQ_V08_GUI_KEY', 'CTX')['GuiKey']
+            key = self.context.exchange('REQ_V08_GUI_KEY', 'CTX', pump=pump)['GuiKey']
             self.gui_binding_callback(int(key), self.context.process)
-        self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'})
+        self.context.exchange('REQ_GUI_LOGIN', 'CTX', {'Host': 'openbexi-host-v1'}, pump=pump)
         self.request('REQ_OPEN_EXEC', context=True, fields={'GuiMode': 'CONTROL',
-            'Arguments': self.arguments, 'OpenMode': '{Automatic:True,Visible:True,Blocking:False}'})
+            'Arguments': self.arguments, 'OpenMode': '{Automatic:True,Visible:True,Blocking:False}'}, pump=pump)
         self.opened = True
         deadline = time.monotonic() + 15
-        paused_notification = False
         while time.monotonic() < deadline:
-            # Drain startup notifications before handing control to a host.
-            # Context status can change before its GUI notification arrives.
-            while not self.events.empty():
-                item = self.events.get_nowait()
-                fields = item.get('message', {}).get('fields', {})
-                if fields.get('DataType') == 'STATUS' and fields.get('ExecutorStatus') == 'PAUSED':
-                    paused_notification = True
-                if item.get('event') == 'connectionError':
-                    raise RuntimeError(item.get('error', 'Native connection failed'))
-            info = self.request('REQ_EXEC_INFO', context=True)
-            if info.get('ExecutorStatus') == 'PAUSED' and paused_notification:
+            pump()
+            info = self.request('REQ_EXEC_INFO', context=True, pump=pump)
+            # A synchronous reply can be read while preceding notifications
+            # still occupy the queue. Do not declare readiness from a stale
+            # PAUSED observation before the bounded pump catches up.
+            pump()
+            if self.events.empty() and startup.paused(info):
                 return
-            if info.get('ExecutorStatus') in {'ERROR', 'ABORTED'}:
-                raise RuntimeError('Native procedure could not open: ' + str(info))
             time.sleep(.05)
-        raise RuntimeError('Native procedure startup timed out: ' + str(info) +
-                           '; paused notification: ' + str(paused_notification))
+        status = info.get('ExecutorStatus')
+        status = status if type(status) is str and status in StartupObservation.STATUSES else 'UNKNOWN'
+        raise RuntimeError('Native procedure startup timed out: status=' + status +
+                           '; notified_status=' + str(startup.status) +
+                           '; notifications=' + str(startup.notifications))
 
-    def request(self, identifier, fields=None, *, context=False, send=False, procedure=None):
+    def request(self, identifier, fields=None, *, context=False, send=False, procedure=None, pump=None):
         target = self.instance if procedure is None else procedure
         return self.context.exchange(identifier, 'CTX' if context else target,
-            dict(fields or {}, ProcId=target), send=send, pump=self.pump)
+            dict(fields or {}, ProcId=target), send=send, pump=self.pump if pump is None else pump)
 
     def close(self):
         errors = []

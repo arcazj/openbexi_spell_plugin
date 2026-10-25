@@ -600,3 +600,28 @@ def test_original_disposition_rejects_false_settlement(journal, family, pki, bad
         family["store"].db.execute("SELECT COUNT(*) FROM native_control_dispositions").fetchone()[0]
         == 0
     )
+
+
+def test_startup_pump_survives_original_worker_request_wrapper(agent):
+    calls = []
+
+    def startup_pump():
+        return None
+
+    agent.original = lambda *args, **kw: calls.append((args, kw)) or {"opened": True}
+    assert agent.dispatch("REQ_OPEN_EXEC", context=True, pump=startup_pump) == {"opened": True}
+    assert calls[0][1]["pump"] is startup_pump
+    assert calls[0][1]["context"] is True
+    assert not agent.operations and not agent.attempted
+
+
+def test_initial_run_with_explicit_pump_retains_single_attempt_journal(agent, family):
+    def startup_pump():
+        return None
+
+    assert agent.dispatch("CMD_RUN", send=True, pump=startup_pump) == {"sent": True}
+    assert agent.sent[0][2]["pump"] is startup_pump
+    assert rows(family)[0]["state"] == "DISPATCH_UNCERTAIN"
+    with pytest.raises(ValueError, match="already attempted"):
+        agent.dispatch("CMD_RUN", send=True, pump=startup_pump)
+    assert len(agent.sent) == 1

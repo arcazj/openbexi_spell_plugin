@@ -85,11 +85,26 @@ class NativeRunJournal:
             self.bound_members[instance] = digest(fields)
 
     def dispatch(
-        self, identifier, fields=None, *, context=False, send=False, procedure=None
+        self,
+        identifier,
+        fields=None,
+        *,
+        context=False,
+        send=False,
+        procedure=None,
+        pump=None,
     ):
+        # Startup owns its notification consumer; preserve that pump through
+        # the worker-installed wrapper without admitting or retrying a RUN.
+        options = {} if pump is None else {"pump": pump}
         if identifier != "CMD_RUN":
             return self.original(
-                identifier, fields, context=context, send=send, procedure=procedure
+                identifier,
+                fields,
+                context=context,
+                send=send,
+                procedure=procedure,
+                **options,
             )
         target = self.session.instance if procedure is None else procedure
         if context is not False or send is not True or fields not in (None, {}):
@@ -136,6 +151,7 @@ class NativeRunJournal:
                 context=context,
                 send=send,
                 procedure=procedure,
+                **options,
             )
         except BaseException:
             try:
