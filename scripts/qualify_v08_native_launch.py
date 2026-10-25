@@ -207,11 +207,17 @@ def family_memory(name, limit_mib):
     accounting = json.loads(raw)
     if (
         accounting["limit_bytes"] != limit_mib * 1024 * 1024
-        or not 0 < accounting["peak_bytes"] <= accounting["limit_bytes"]
+        # memory.max permits temporary exceedance; memory.peak is telemetry,
+        # not a proof that every instantaneous charge stayed below the cap.
+        # https://docs.kernel.org/admin-guide/cgroup-v2.html#memory-interface-files
+        or accounting["peak_bytes"] <= 0
         or accounting["oom_events"] != 0
         or accounting["oom_kills"] != 0
     ):
-        raise RuntimeError("Native family exceeded its explicit memory budget")
+        raise RuntimeError(
+            "Native family memory binding/OOM differs: "
+            + json.dumps(accounting, sort_keys=True)
+        )
     return accounting
 
 
@@ -554,7 +560,7 @@ def main():
                     extra_peers=("edge", "observer")
                     if profile.native_listener_survival
                     else (
-                        ("worker-probe", "worker-owner")
+                        ("worker-probe", "worker-owner", "worker-resume")
                         if profile.native_child_gate
                         else ()
                     ),
@@ -760,6 +766,13 @@ def main():
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    (sources / "owner_resume.py").write_text(
+                        "import os,time\nFIRST = 1\n"
+                        "with open('/workspace/owner-running','w') as marker:marker.write('running')\n"
+                        "while not os.path.exists('/control/owner-resume'):\n    time.sleep(0.05)\n"
+                        "SECOND = 2\n"
+                        "with open('/workspace/owner-resumed','w') as marker:marker.write('resumed')\n"
+                    )
                     (sources / "owner_probe.py").write_text(
                         "FIRST = 1\nSECOND = 2\nTHIRD = 3\n"
                     )
@@ -826,6 +839,9 @@ def main():
                         )
                     catalog["grandchild-0"] = dict(
                         catalog["procedure-0"], entrypoint="grandchild_0.py"
+                    )
+                    catalog["owner-resume"] = dict(
+                        catalog["procedure-0"], entrypoint="owner_resume.py"
                     )
                     catalog["owner-probe"] = dict(
                         catalog["procedure-0"], entrypoint="owner_probe.py"
@@ -1844,6 +1860,29 @@ def main():
                     )
                     qualify_consumption_fence(
                         owner_commands=True,
+                        temporary=temporary,
+                        prefix=prefix,
+                        context_image=context_image,
+                        config=config,
+                        sources=sources,
+                        worker_image=worker_image,
+                        code=code,
+                        snapshot=snapshot,
+                        ca=ca,
+                        peers=peers,
+                        primary_controller=controller,
+                        control=control,
+                        primary_state=state,
+                        names=names,
+                        networks=networks,
+                        report=report,
+                        command=command,
+                        await_event=await_event,
+                        host_processes=host_processes,
+                        events=events,
+                    )
+                    qualify_consumption_fence(
+                        owner_resume=True,
                         temporary=temporary,
                         prefix=prefix,
                         context_image=context_image,

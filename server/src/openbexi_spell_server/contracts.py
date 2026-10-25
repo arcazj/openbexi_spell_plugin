@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 MAX_BODY = 65536
 MAX_DEPTH = 16
-OWNER_COMMANDS = frozenset({"CMD_STEP", "CMD_PAUSE"})
+OWNER_COMMANDS = frozenset({"CMD_RUN", "CMD_STEP", "CMD_PAUSE"})
 PERMISSIONS = frozenset(
     {
         "context:read",

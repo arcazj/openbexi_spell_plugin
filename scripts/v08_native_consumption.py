@@ -18,6 +18,157 @@ from openbexi_spell_server.transport import Route, tls_context
 from openbexi_spell_server.worker import preflight
 
 
+def qualify_owner_resume(
+    *,
+    name,
+    execution,
+    connection,
+    controller,
+    control,
+    state,
+    worker_image,
+    command,
+    await_event,
+    host_processes,
+    events,
+    report,
+):
+    """Actual same-owner RUN/PAUSE/RUN; never positive ownership transfer."""
+    await_event([name], "native-owner-resume-ready", seconds=45)
+    before = host_processes(name)
+    proof = dict(
+        execution_id=execution["id"],
+        connection_id=connection,
+        expected_epoch=execution["epoch"],
+        connection_generation=execution["connection_generation"],
+        capability=execution["capability"],
+        target_admission_id=None,
+    )
+    unrelated = [
+        row
+        for row in controller("execution.list", {})["executions"]
+        if row["id"] != execution["id"]
+    ]
+    commands = []
+    for native_command, event in (
+        ("CMD_RUN", "native-owner-run-started"),
+        ("CMD_PAUSE", "native-owner-paused"),
+    ):
+        commands.append(
+            controller("execution.command", dict(proof, command=native_command))[
+                "command_id"
+            ]
+        )
+        await_event([name], event, seconds=20)
+    (control / "owner-resume").write_text(
+        "fixture barrier open; await fresh owner RUN\n"
+    )
+    # A running fixture would finish immediately after its barrier opens. The
+    # main native PAUSE must keep its second assignment absent for five seconds.
+    time.sleep(5)
+    command(
+        "docker",
+        "exec",
+        name,
+        "python",
+        "-I",
+        "-c",
+        "from pathlib import Path;assert not Path('/workspace/owner-resumed').exists()",
+    )
+    paused = host_processes(name)
+    if {p["host_pid"] for p in before} != {p["host_pid"] for p in paused}:
+        raise RuntimeError("Owner PAUSE replaced a native participant")
+    commands.append(
+        controller("execution.command", dict(proof, command="CMD_RUN"))["command_id"]
+    )
+    if len(set(commands)) != 3:
+        raise RuntimeError("Owner RUN/PAUSE/resume reused an immutable command")
+    await_event([name], "native-owner-resume-finished", seconds=20)
+    if command("docker", "wait", name, timeout=15) != "0":
+        raise RuntimeError("Owner native pause/resume worker failed")
+    info = json.loads(command("docker", "inspect", name))[0]
+    if (
+        info["State"]["Running"]
+        or info["State"]["OOMKilled"]
+        or info["Image"] != worker_image
+        or info["HostConfig"]["Memory"] != 768 * 1024 * 1024
+    ):
+        raise RuntimeError(
+            "Owner native pause/resume termination/resource binding differs"
+        )
+    with closing(
+        sqlite3.connect("file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True)
+    ) as db:
+        rows = db.execute(
+            "SELECT command_id,command,state,owner,epoch,connection_id,connection_generation FROM native_owner_commands ORDER BY sequence"
+        ).fetchall()
+        expected = [
+            (
+                identity,
+                native_command,
+                "EXECUTION_UNPROVEN",
+                "alice",
+                execution["epoch"],
+                connection,
+                execution["connection_generation"],
+            )
+            for identity, native_command in zip(
+                commands, ("CMD_RUN", "CMD_PAUSE", "CMD_RUN"), strict=True
+            )
+        ]
+        if (
+            rows != expected
+            or db.execute("SELECT COUNT(*) FROM native_control_attempts").fetchone()[0]
+            != 0
+            or db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] != 2
+            or db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] != 1
+            or db.execute(
+                "SELECT owner,epoch,control_state FROM executions WHERE id=?",
+                (execution["id"],),
+            ).fetchone()
+            != ("alice", execution["epoch"], "OWNED")
+        ):
+            raise RuntimeError(
+                "Owner pause/resume changed original authority or released an uncertain hold"
+            )
+    after = [
+        row
+        for row in controller("execution.list", {})["executions"]
+        if row["id"] != execution["id"]
+    ]
+    if unrelated != after:
+        raise RuntimeError("Owner pause/resume changed an unrelated reserved witness")
+    records = events(name)
+    if (
+        sum(row["event"] == "native-owner-resume-finished" for row in records) != 1
+        or sum(row["event"] == "native-before-consume-admitted" for row in records) != 3
+        or any(row["event"] == "native-driver-denied" for row in records)
+    ):
+        raise RuntimeError(
+            "Owner pause/resume lacks three original native consumption callbacks"
+        )
+    report["native_owner_pause_resume"] = dict(
+        passed=True,
+        context_id="D",
+        actual_native_executor=True,
+        commands=["CMD_RUN", "CMD_PAUSE", "CMD_RUN"],
+        fresh_owner_grants=3,
+        startup_run_grants_used=0,
+        first_assignment_proven=True,
+        continuation_open_while_paused_seconds=5,
+        second_assignment_held_until_fresh_run=True,
+        same_original_owner_connection_epoch=True,
+        replacement_native_processes=False,
+        unrelated_witness_unchanged=True,
+        holds_retained_after_termination=2,
+        spent_workers_retained=1,
+        quiescence_proven=False,
+        effective_transfer=False,
+        runtime_enabled=False,
+        full_v08_qualified=False,
+    )
+
+
 def qualify_consumption_fence(
     *,
     temporary,
@@ -41,14 +192,29 @@ def qualify_consumption_fence(
     host_processes,
     events,
     owner_commands=False,
+    owner_resume=False,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
     original_primary = primary_controller("execution.list", {})
-    label = "owner" if owner_commands else "consume"
-    context_id = "C" if owner_commands else "B"
-    source_id = "owner-probe" if owner_commands else "consume-probe"
-    worker_id = "worker-owner" if owner_commands else "worker-probe"
+    if owner_commands and owner_resume:
+        raise ValueError("Native owner qualification profiles must be separate")
+    label = "resume" if owner_resume else "owner" if owner_commands else "consume"
+    context_id = "D" if owner_resume else "C" if owner_commands else "B"
+    source_id = (
+        "owner-resume"
+        if owner_resume
+        else "owner-probe"
+        if owner_commands
+        else "consume-probe"
+    )
+    worker_id = (
+        "worker-resume"
+        if owner_resume
+        else "worker-owner"
+        if owner_commands
+        else "worker-probe"
+    )
     name, network = prefix + "-" + label + "-probe", prefix + "-" + label + "-net"
     context_name = prefix + "-" + label + "-context"
     context_network = prefix + "-" + label + "-control"
@@ -94,7 +260,7 @@ def qualify_consumption_fence(
             "witness": config["approved_sources"]["procedure-9"],
         },
     )
-    if owner_commands:
+    if owner_commands or owner_resume:
         probe_config["native_commands"] = "owner-queue"
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
@@ -261,7 +427,9 @@ def qualify_consumption_fence(
                 start_barrier="/control/start",
                 native_child_gate=True,
                 **(
-                    {"native_owner_commands_probe": True}
+                    {"native_owner_resume_probe": True}
+                    if owner_resume
+                    else {"native_owner_commands_probe": True}
                     if owner_commands
                     else {"native_consume_fence_probe": True}
                 ),
@@ -316,6 +484,24 @@ def qualify_consumption_fence(
     ]
     names.append(name)
     command(*args)
+    if owner_resume:
+        qualify_owner_resume(
+            name=name,
+            execution=execution,
+            connection=connection,
+            controller=controller,
+            control=control,
+            state=state,
+            worker_image=worker_image,
+            command=command,
+            await_event=await_event,
+            host_processes=host_processes,
+            events=events,
+            report=report,
+        )
+        if primary_controller("execution.list", {}) != original_primary:
+            raise RuntimeError("Owner pause/resume changed primary Context executions")
+        return
     if owner_commands:
         await_event([name], "native-owner-ready", seconds=45)
         proof = dict(

@@ -117,9 +117,10 @@ def test_owner_proof_is_distinct_from_startup_grant(queue, family, pki):
     assert not rows(family)
 
 
-def test_owner_can_queue_and_deliver_command_only_once(queue, family, pki):
-    grant = delivered(family, pki)
-    assert owner_command_grant(grant).command == "CMD_STEP"
+@pytest.mark.parametrize("command", ["CMD_RUN", "CMD_STEP", "CMD_PAUSE"])
+def test_owner_can_queue_and_deliver_command_only_once(queue, family, pki, command):
+    grant = delivered(family, pki, command)
+    assert owner_command_grant(grant).command == command
     assert rows(family)[0]["state"] == "DELIVERY_UNPROVEN"
     assert worker(family, pki)[1]["result"]["action"] == "none"
     assert worker(family, pki, "command-consume", grant)[0] == 409
@@ -190,7 +191,7 @@ def test_non_owner_and_observer_cannot_enqueue_even_with_copied_owner_proof(queu
 @pytest.mark.parametrize(
     "change",
     [
-        dict(command="CMD_RUN"),
+        dict(command="CMD_STEP_OVER"),
         dict(command="CMD_SCRIPT"),
         dict(command=[]),
         dict(command=True),
@@ -274,6 +275,7 @@ def test_revoked_start_permission_cannot_step_but_owner_can_request_main_pause(q
         {"alice": ["execution:control", "execution:read"]}
     )["alice"]
     assert enqueue(family, pki)[0] == 403
+    assert enqueue(family, pki, "CMD_RUN")[0] == 403
     grant = delivered(family, pki, "CMD_PAUSE")
     assert worker(family, pki, "command-forward", grant)[0] == 200
     assert worker(family, pki, "command-consume", grant)[0] == 200
@@ -497,3 +499,32 @@ def test_pending_command_capacity_cannot_discard_or_replace_old_intents(queue, f
     before = [(row["command_id"], row["state"]) for row in rows(family)]
     assert enqueue(family, pki)[0] == 503
     assert before == [(row["command_id"], row["state"]) for row in rows(family)]
+
+
+def test_fresh_run_does_not_reuse_or_restamp_startup_authority(queue, family, pki):
+    original = (
+        family["store"]
+        .db.execute(
+            "SELECT start_hash,start_binding,epoch,connection_id FROM executions WHERE id=?",
+            (family["grant"].execution_id,),
+        )
+        .fetchone()
+    )
+    first = delivered(family, pki, "CMD_RUN")
+    assert worker(family, pki, "command-forward", first)[0] == 200
+    assert worker(family, pki, "command-consume", first)[0] == 200
+    second = delivered(family, pki, "CMD_RUN")
+    assert first["command_id"] != second["command_id"] and first["token"] != second["token"]
+    assert worker(family, pki, "command-forward", second)[0] == 200
+    family["controller"]("session.close", dict(connection_id=family["connection"]))
+    assert worker(family, pki, "command-consume", second)[0] == 403
+    current = (
+        family["store"]
+        .db.execute(
+            "SELECT start_hash,start_binding,epoch,connection_id FROM executions WHERE id=?",
+            (family["grant"].execution_id,),
+        )
+        .fetchone()
+    )
+    assert tuple(original) == tuple(current)
+    assert [row["state"] for row in rows(family)] == ["EXECUTION_UNPROVEN", "FORWARD_UNPROVEN"]

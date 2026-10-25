@@ -105,6 +105,101 @@ def cooperative_thread_pause(session, pump, status, barrier_id):
     return native_pause_probe(session, pump, status)
 
 
+def owner_fixture_variables(session):
+    answer = session.request("REQ_GET_VARIABLES")
+    if answer.get("TotalChunks") not in {"0", "1"}:
+        raise RuntimeError("Owner fixture variable response is chunked or invalid")
+    names = answer.get("VarName", "").split("\4")
+    values = answer.get("VarValue", "").split("\4")
+    if len(names) != len(values):
+        raise RuntimeError("Owner fixture variable response differs")
+    return dict(zip(names, values))
+
+
+def owner_pause_resume_probe(session, controls, pump):
+    """Main-Executor pause and same-owner resume, never a family barrier."""
+    emit("native-owner-resume-ready", native_status="PAUSED")
+    until = time.monotonic() + 40
+    while True:
+        controls.poll_owner()
+        pump()
+        state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+        if (
+            len(controls.owner_consumed) == 1
+            and state == "RUNNING"
+            and Path("/workspace/owner-running").is_file()
+        ):
+            break
+        if time.monotonic() >= until:
+            raise TimeoutError("Fresh owner RUN did not start its native fixture")
+        time.sleep(0.02)
+    emit("native-owner-run-started", native_status="RUNNING")
+    until = time.monotonic() + 40
+    while True:
+        controls.poll_owner()
+        pump()
+        state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+        if len(controls.owner_consumed) == 2 and state == "PAUSED":
+            break
+        if time.monotonic() >= until:
+            raise TimeoutError(
+                "Fresh owner PAUSE did not pause the native main Executor"
+            )
+        time.sleep(0.02)
+    values = owner_fixture_variables(session)
+    if values.get("FIRST") != "1" or "SECOND" in values:
+        raise RuntimeError("Native PAUSE fixture advanced beyond its barrier")
+    emit("native-owner-paused", native_status="PAUSED", quiescence_proven=False)
+    until = time.monotonic() + 40
+    opened_at = None
+    while len(controls.owner_consumed) == 2:
+        if Path("/control/owner-resume").is_file() and opened_at is None:
+            opened_at = time.monotonic()
+        controls.poll_owner()
+        pump()
+        if len(controls.owner_consumed) == 3:
+            if opened_at is None or time.monotonic() - opened_at < 4:
+                raise RuntimeError(
+                    "Owner resume was not independently held behind native PAUSE"
+                )
+            break
+        values = owner_fixture_variables(session)
+        if (
+            session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"] != "PAUSED"
+            or values.get("FIRST") != "1"
+            or "SECOND" in values
+            or Path("/workspace/owner-resumed").exists()
+        ):
+            raise RuntimeError("Native fixture resumed without its fresh owner RUN")
+        if time.monotonic() >= until:
+            raise TimeoutError("Fresh same-owner resume was not delivered")
+        time.sleep(0.02)
+    until = time.monotonic() + 15
+    while True:
+        pump()
+        state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+        if state == "FINISHED":
+            break
+        if time.monotonic() >= until:
+            raise TimeoutError("Fresh owner resume did not finish the native fixture")
+        time.sleep(0.02)
+    if (
+        not Path("/workspace/owner-resumed").is_file()
+        or len(controls.owner_consumed) != 3
+        or controls.consumed
+    ):
+        raise RuntimeError("Owner resume effect or original grant accounting differs")
+    emit(
+        "native-owner-resume-finished",
+        native_status="FINISHED",
+        fresh_owner_grants=3,
+        startup_run_grants_used=0,
+        quiescence_proven=False,
+        effective_transfer=False,
+        hold_retained=True,
+    )
+
+
 def owner_step_probe(session, controls, admission, consume_fenced, pump):
     """Two real STEP commands; the second must fail after durable disconnect.
 
@@ -113,14 +208,7 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
     """
 
     def variables():
-        answer = session.request("REQ_GET_VARIABLES")
-        if answer.get("TotalChunks") not in {"0", "1"}:
-            raise RuntimeError("Owner fixture variable response is chunked or invalid")
-        names = answer.get("VarName", "").split("\4")
-        values = answer.get("VarValue", "").split("\4")
-        if len(names) != len(values):
-            raise RuntimeError("Owner fixture variable response differs")
-        return dict(zip(names, values))
+        return owner_fixture_variables(session)
 
     if "FIRST" in variables() or "SECOND" in variables():
         raise RuntimeError("Owner fixture advanced before its first grant")
@@ -192,6 +280,7 @@ def run(config):
     child_profile = type(config) is dict and "native_child_gate" in config
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
+    owner_resume = type(config) is dict and "native_owner_resume_probe" in config
     exact(
         config,
         fields
@@ -199,7 +288,8 @@ def run(config):
         | ({"thread_barrier_probe"} if thread_probe else set())
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
-        | ({"native_owner_commands_probe"} if owner_probe else set()),
+        | ({"native_owner_commands_probe"} if owner_probe else set())
+        | ({"native_owner_resume_probe"} if owner_resume else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -225,6 +315,13 @@ def run(config):
         raise ValueError(
             "Owner commands require their separate private native candidate"
         )
+    if owner_resume and (
+        config["native_owner_resume_probe"] is not True
+        or not child_profile
+        or owner_probe
+        or consumption_probe
+    ):
+        raise ValueError("Owner resume requires its separate private native candidate")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -451,7 +548,56 @@ def run(config):
                 children.observe(message)
 
     try:
-        session.start()
+        try:
+            session.start()
+        except Exception:
+            if child_gate is not None:
+                # Fixed protocol milestones survive cleanup. Never emit the
+                # native log, variable values, launch proof, PID or arguments.
+                markers = {}
+                try:
+                    session.log.flush()
+                    with Path(session.log.name).open("rb") as native_log:
+                        native_log.seek(0, 2)
+                        native_log.seek(max(0, native_log.tell() - 65536))
+                        tail = native_log.read()
+                    markers = {
+                        label: literal in tail
+                        for label, literal in (
+                            (
+                                "interpreter_initializing",
+                                b"[*] Initializing interpreter",
+                            ),
+                            ("objects_preparing", b"[***] Preparing objects"),
+                            ("python_initializing", b"Initializing Python interface"),
+                            (
+                                "framework_loading",
+                                b"Loading execution framework functions",
+                            ),
+                            ("executor_initializing", b"Initializing executor"),
+                            ("controller_starting", b"Starting controller"),
+                            ("objects_ready", b"[***] Objects ready"),
+                            ("executor_binding", b"Installing executor binding"),
+                            ("fatal_cif", b"[FATAL] Failed to setup CIF"),
+                            ("python_traceback", b"Traceback (most recent call last)"),
+                            ("native_run_denied", b"V08_NATIVE_RUN_DENIED:"),
+                        )
+                    }
+                except (AttributeError, OSError, ValueError):
+                    pass
+                emit(
+                    "native-startup-incomplete",
+                    root_admitted=session.instance in child_gate.started,
+                    members_attempted=len(controls.member_attempted),
+                    members_registered=len(controls.bound_members),
+                    original_native_context_pinned=admission.context_pid is not None,
+                    listener_process_alive=session.process is not None
+                    and session.process.poll() is None,
+                    bounded_tail_markers=markers,
+                    hold_retained=True,
+                    runtime_enabled=False,
+                )
+            raise
         # NativeSession.start owns its startup PAUSED notification. Installing
         # the runtime consumer early can steal that notification during an
         # info request and leave startup waiting despite a PAUSED Executor.
@@ -498,6 +644,9 @@ def run(config):
             emit("native-consumption-probe-ready", writable_marker_directory=True)
         if owner_probe:
             owner_step_probe(session, controls, admission, consume_fenced, pump)
+            return
+        if owner_resume:
+            owner_pause_resume_probe(session, controls, pump)
             return
         session.request("CMD_RUN", send=True)
         if consumption_probe:

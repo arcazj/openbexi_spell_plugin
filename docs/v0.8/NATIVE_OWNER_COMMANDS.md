@@ -1,6 +1,6 @@
 # Fresh owner commands: private development profile
 
-`0.8.0.dev32` adds the opt-in Context setting `native_commands: owner-queue`.
+`0.8.0.dev32` added the opt-in Context setting `native_commands: owner-queue`.
 It requires `native_controls: run-journal` and the retained native child/member
 profile. The default public Listener/gateway method inventory is unchanged.
 Only the trusted certificate-authenticated listener-to-Context RPC can enqueue
@@ -8,7 +8,7 @@ Only the trusted certificate-authenticated listener-to-Context RPC can enqueue
 
 The current owner supplies its execution, connection, connection generation,
 expected control epoch and capability, plus `target_admission_id` (null for the
-root) and exactly `CMD_STEP` or `CMD_PAUSE`. STEP requires current start and
+root) and exactly `CMD_RUN`, `CMD_STEP` or `CMD_PAUSE`. RUN/STEP require current start and
 control permissions. PAUSE requires current control permission. Live policy,
 connection, ownership and capability checks precede idempotency replay. The
 member must already have its original durable registration. Unknown children,
@@ -49,7 +49,7 @@ this increment and must be fenced before exposing public control.
 
 ## Qualification
 
-The new real-mTLS test module has **54 passing tests**, including concurrent
+The expanded real-mTLS test module has **57 passing tests**, including concurrent
 idempotency, current-owner and worker identity checks, copied credentials,
 expiry, disconnect at every phase, audit rollback, restart, exact child targets,
 queue capacity, lost delivery/forward/consume replies and uncertain native send.
@@ -80,7 +80,36 @@ failed receipt is retained. Dev33 assigns bounded family-test limits of 1536 MiB
 for the three-Executor nested worker and 1024 MiB for the other two-Executor
 workers, verifies actual cgroup peak/limit/OOM counters, and checks the final
 Docker memory configuration. This is a qualification-resource correction, not
-production capacity qualification. Hosted dev33 requalification is pending.
+production capacity qualification. Dev33 requalification failed as described below.
 Deadlines, single-attempt commands, logical holds and authority checks do not
 change. Native PAUSE effects and reliable full-family operation remain unqualified.
 All eleven full-release gate groups remain false.
+
+## Dev34 same-owner resume candidate
+
+Dev34 adds fresh owner `CMD_RUN` to the same immutable command protocol. RUN,
+like STEP, requires both current start and control permissions. This neither
+reissues nor changes the original startup binding; disconnect still fences it.
+The new isolated Context D fixture requires real RUN, a real main-Executor
+PAUSE, five seconds with the fixture continuation open but its second effect
+absent, then a third fresh RUN to finish. The original owner/connection/epoch,
+three distinct grants/consumptions, unchanged physical participants, unrelated
+witness and retained uncertain holds must be verified. This is same-owner
+resume, not an ownership transfer or complete family barrier. Hosted dev34
+execution is pending.
+
+Dev33 PR reached all 41 PIDs but its new memory assertion failed; its push had
+the separate non-OOM startup timeout. Both failed receipts are retained.
+Dev34 keeps the exact configured limit and zero-OOM requirements. It records
+positive `memory.peak` as telemetry because Linux explicitly permits temporary
+exceedance of `memory.max`; a transient peak is not itself an OOM event.
+See the [kernel memory interface documentation](https://docs.kernel.org/admin-guide/cgroup-v2.html#memory-interface-files).
+A regression fails the previous check; three more reject changed limits and
+real OOM counts. Numeric accounting is retained in future assertion failures.
+Neither sustained-load/leak qualification nor production capacity is inferred.
+
+On candidate startup failure, fixed admission/member/context milestones now
+survive native cleanup for diagnosis, together with booleans for fixed startup
+log markers in a bounded tail. Native logs, variable values, arguments,
+PIDs and authority proofs are excluded from this diagnostic. The startup
+deadline is unchanged; a failed launch is not retried or declared recovered.

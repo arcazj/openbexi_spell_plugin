@@ -1,6 +1,6 @@
 """Fresh owner-admitted native commands, separate from startup authority.
 
-This opt-in queue currently permits STEP and single-member PAUSE only. Delivery,
+This opt-in queue permits fresh RUN, STEP and single-member PAUSE. Delivery,
 forwarding and consumption remain unproven outcomes, never family quiescence or
 handoff permission. Every physical dispatch is single-attempt.
 """
@@ -99,7 +99,7 @@ class NativeOwnerCommands:
     def _permissions(self, owner, command):
         permissions = (
             ("execution:control", "execution:start")
-            if command == "CMD_STEP"
+            if command in {"CMD_RUN", "CMD_STEP"}
             else ("execution:control",)
         )
         self.authority._require(owner, *permissions)
