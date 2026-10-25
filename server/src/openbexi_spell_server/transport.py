@@ -69,6 +69,10 @@ class Route:
             ("/v1/worker/command-consume", "openbexi.worker/2"),
             ("/v1/worker/command-report", "openbexi.worker/2"),
             ("/v1/worker/command-disposition", "openbexi.worker/2"),
+            ("/v1/host/terminal/bind", "openbexi.host-terminal/1"),
+            ("/v1/host/terminal/begin", "openbexi.host-terminal/1"),
+            ("/v1/host/terminal/complete", "openbexi.host-terminal/1"),
+            ("/v1/host/terminal/release", "openbexi.host-terminal/1"),
         ):
             raise ValueError("Unconfigured RPC route")
         # A driver operation can use up to 3s before its bounded response is

@@ -18,6 +18,7 @@ from openbexi_spell_server.settlement import TerminalSettlement
 from openbexi_spell_server.pause import NativePauseBarrier
 from openbexi_spell_server.services import Context
 from openbexi_spell_server.store import ContextStore
+from openbexi_spell_server.transport import Route
 from openbexi_spell_server.worker import preflight
 from test_launch import call
 from test_services import request, serving
@@ -56,19 +57,26 @@ def configure(setup, pki):
 
 
 def host(setup, pki, action, *, certificate="host", **body):
-    return request(
-        setup["server"],
+    route = Route(
+        f"https://localhost:{setup['server'].server_port}",
+        pki["context-a"]["pin"],
         pki[certificate]["client"],
-        "/v1/host/terminal/" + action,
-        subject=None,
-        payload=dict(
-            schema=TerminalSettlement.SCHEMA,
-            context_id="A",
-            execution_id=setup["execution"]["id"],
-            authority_incarnation=setup["store"].incarnation,
-            **body,
-        ),
     )
+    try:
+        result = route.call(
+            dict(
+                schema=TerminalSettlement.SCHEMA,
+                context_id="A",
+                execution_id=setup["execution"]["id"],
+                authority_incarnation=setup["store"].incarnation,
+                **body,
+            ),
+            path="/v1/host/terminal/" + action,
+            schema=TerminalSettlement.SCHEMA,
+        )
+        return 200, dict(result=result)
+    except Fault as error:
+        return error.status, dict(error=error.code)
 
 
 def bind(setup, pki, **changes):
