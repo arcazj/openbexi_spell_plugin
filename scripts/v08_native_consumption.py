@@ -18,6 +18,16 @@ from openbexi_spell_server.transport import Route, tls_context
 from openbexi_spell_server.worker import preflight
 
 
+def isolate_audit_probe(config):
+    result = dict(config)
+    result.pop("native_driver", None)
+    result["approved_sources"] = {
+        name: dict(entry, driver_binding="context-audit")
+        for name, entry in config["approved_sources"].items()
+    }
+    return result
+
+
 def qualify_owner_resume(
     *,
     name,
@@ -286,6 +296,10 @@ def qualify_consumption_fence(
             "witness": config["approved_sources"]["procedure-9"],
         },
     )
+    # These separate native authorization probes issue no driver TC/TM calls.
+    # They use the core Context CLI, not the DSS driver-factory entrypoint.
+    # Never inherit its private driver configuration or simulator catalog binding.
+    probe_config = isolate_audit_probe(probe_config)
     if owner_commands or owner_resume:
         probe_config["native_commands"] = "owner-queue"
     (secure / "config.json").write_bytes(canonical(probe_config))
