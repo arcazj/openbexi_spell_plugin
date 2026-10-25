@@ -225,6 +225,20 @@ class NativeControlJournal:
             raise Fault(403, "native_control_unqualified")
         return {key: body[key] for key in ("request_id", "target_admission_id", "command")}
 
+    def _initial_run_open(self, grant, target):
+        # Caller holds the execution mutex and SQL transaction, shared with
+        # owner intent admission. Any committed owner intent permanently
+        # retires this member's startup lane, including undelivered/expired
+        # commands. Otherwise an unused startup RUN could become a resume.
+        if (
+            self.authority.native_commands is not None
+            and self.store.db.execute(
+                "SELECT 1 FROM native_owner_commands WHERE execution_id=? AND target_id=? LIMIT 1",
+                (grant.execution_id, target or ""),
+            ).fetchone()
+        ):
+            raise Fault(403, "native_initial_run_retired")
+
     def admit(self, grant, body):
         operation = self.operation(body)
         origin = FamilyAdmission.origin(grant)
@@ -234,6 +248,7 @@ class NativeControlJournal:
                 row = self.authority._grant(grant)
                 if row["lifecycle"] != "STARTING":
                     raise Fault(403, "native_control_origin_fenced")
+                self._initial_run_open(grant, body["target_admission_id"])
                 if self.store.db.execute(
                     "SELECT 1 FROM native_control_attempts WHERE request_id=? OR "
                     "(execution_id=? AND target_id=?)",
@@ -305,6 +320,7 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                self._initial_run_open(grant, body["target_admission_id"])
                 self._member(grant, body["target_admission_id"])
                 row = self.store.db.execute(
                     "SELECT * FROM native_control_attempts WHERE request_id=?",
@@ -355,6 +371,7 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                self._initial_run_open(grant, body["target_admission_id"])
                 self._member(grant, body["target_admission_id"])
                 row = self.store.db.execute(
                     "SELECT * FROM native_control_forwards WHERE request_id=?",

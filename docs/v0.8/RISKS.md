@@ -44,6 +44,12 @@
     failed attempt remains evidence; production resource admission and leak/
     sustained-load qualification remain pending.
 
+13. Dev32–34 fresh owner commands left an unused or pending initial RUN lane
+    available as a later resume. Dev35 permanently retires that member lane
+    under the shared owner-intent transaction; old-code regressions and actual
+    native negative probes are required. Prior functional receipts do not
+    qualify this missing authorization fence.
+
 Any dual controller, observer mutation, accepted stale epoch, duplicate active
 logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
 regression, failed mandatory CI or missing required qualification blocks release.

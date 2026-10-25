@@ -143,6 +143,11 @@ def qualify_owner_resume(
         sum(row["event"] == "native-owner-resume-finished" for row in records) != 1
         or sum(row["event"] == "native-before-consume-admitted" for row in records) != 3
         or any(row["event"] == "native-driver-denied" for row in records)
+        or sum(
+            row["event"] == "native-startup-run-retired" and row.get("status") == 403
+            for row in records
+        )
+        != 1
     ):
         raise RuntimeError(
             "Owner pause/resume lacks three original native consumption callbacks"
@@ -154,6 +159,7 @@ def qualify_owner_resume(
         commands=["CMD_RUN", "CMD_PAUSE", "CMD_RUN"],
         fresh_owner_grants=3,
         startup_run_grants_used=0,
+        unused_startup_run_denied=True,
         first_assignment_proven=True,
         continuation_open_while_paused_seconds=5,
         second_assignment_held_until_fresh_run=True,
@@ -646,6 +652,16 @@ def qualify_consumption_fence(
         != 1
     ):
         raise RuntimeError("Native final admission lacks exact live authority denial")
+    if (
+        owner_commands
+        and sum(
+            event["event"] == "native-startup-run-retired"
+            and event.get("status") == 403
+            for event in records
+        )
+        != 1
+    ):
+        raise RuntimeError("Owner STEP did not retire its unused startup RUN")
     if any(
         event["event"]
         in (
@@ -714,6 +730,7 @@ def qualify_consumption_fence(
                 second_step_assignment_absent=True,
                 fresh_owner_grants=2,
                 startup_run_grants_used=0,
+                unused_startup_run_denied=True,
             )
             if owner_commands
             else dict(body_marker_absent=True)

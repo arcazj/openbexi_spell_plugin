@@ -116,6 +116,26 @@ def owner_fixture_variables(session):
     return dict(zip(names, values))
 
 
+def verify_startup_run_retired(controls):
+    try:
+        controls.route.call(
+            {
+                **controls.request,
+                "request_id": str(uuid.uuid4()),
+                "target_admission_id": None,
+                "command": "CMD_RUN",
+            },
+            path="/v1/worker/control-admit",
+            schema="openbexi.worker/2",
+        )
+    except Fault as error:
+        if error.status == 403:
+            emit("native-startup-run-retired", status=403)
+            return
+        raise
+    raise RuntimeError("Unused startup RUN remained available after an owner command")
+
+
 def owner_pause_resume_probe(session, controls, pump):
     """Main-Executor pause and same-owner resume, never a family barrier."""
     emit("native-owner-resume-ready", native_status="PAUSED")
@@ -133,6 +153,7 @@ def owner_pause_resume_probe(session, controls, pump):
         if time.monotonic() >= until:
             raise TimeoutError("Fresh owner RUN did not start its native fixture")
         time.sleep(0.02)
+    verify_startup_run_retired(controls)
     emit("native-owner-run-started", native_status="RUNNING")
     until = time.monotonic() + 40
     while True:
@@ -230,6 +251,7 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
         if time.monotonic() >= until:
             raise TimeoutError("Owner first STEP lacks its exact native fixture effect")
         time.sleep(0.02)
+    verify_startup_run_retired(controls)
     emit(
         "native-owner-first-step",
         first_assignment_proven=True,

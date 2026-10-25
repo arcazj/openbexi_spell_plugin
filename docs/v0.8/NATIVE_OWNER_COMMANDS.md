@@ -95,8 +95,11 @@ PAUSE, five seconds with the fixture continuation open but its second effect
 absent, then a third fresh RUN to finish. The original owner/connection/epoch,
 three distinct grants/consumptions, unchanged physical participants, unrelated
 witness and retained uncertain holds must be verified. This is same-owner
-resume, not an ownership transfer or complete family barrier. Hosted dev34
-execution is pending.
+resume, not an ownership transfer or complete family barrier. Both dev34 PR/push native cohorts passed this functional oracle, including
+the five-second pause hold and three distinct consumptions. Its hosted service
+suite passed 551 tests with zero failures/errors/skips. See `dev34-family.json`
+and `dev34-foundation.json`. This does not qualify the residual permission
+identified below.
 
 Dev33 PR reached all 41 PIDs but its new memory assertion failed; its push had
 the separate non-OOM startup timeout. Both failed receipts are retained.
@@ -113,3 +116,30 @@ survive native cleanup for diagnosis, together with booleans for fixed startup
 log markers in a bounded tail. Native logs, variable values, arguments,
 PIDs and authority proofs are excluded from this diagnostic. The startup
 deadline is unchanged; a failed launch is not retried or declared recovered.
+
+## Dev35: retire unused startup authority at owner-intent admission
+
+Review found a security gap in dev32–34: a worker that used fresh owner commands
+before consuming its original initial RUN could retain that initial permission
+and later use it as a resume. An initial RUN already admitted/forwarded could
+also reach consumption after an explicit owner command. These functional native
+receipts do not establish the missing authorization fence.
+
+Dev35 checks for any committed owner intent for the exact execution/member at
+initial RUN admission, forwarding and final consumption. The owner intent's SQL
+commit permanently closes this startup lane, including undelivered, expired or
+fenced commands. These operations share the execution mutex and SQL transaction;
+a racing initial consumption either commits before the owner intent or is
+denied. The original startup identity and all uncertain rows remain intact.
+A failed, rolled-back intent cannot partially close the lane. Other members'
+first automatic RUNs retain their approved-source semantics; a root-only PAUSE
+is still not a family barrier.
+
+Nine regressions fail against the exact dev34 control implementation. Further
+checks cover expiry, audit rollback, per-member scope and the durable order of
+an initial-consumption/owner-intent race. The actual native C and D oracles now
+also use the original worker credentials, while its owner is live, to require
+HTTP 403 for an unused startup RUN after the first explicit owner command.
+No initial RUN receipt may appear in either oracle. Hosted dev35 qualification
+is pending. Full-family quiescence, new-owner resume and public Run/Debug remain
+outside these component receipts.

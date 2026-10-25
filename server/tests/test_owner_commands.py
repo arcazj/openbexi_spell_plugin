@@ -528,3 +528,89 @@ def test_fresh_run_does_not_reuse_or_restamp_startup_authority(queue, family, pk
     )
     assert tuple(original) == tuple(current)
     assert [row["state"] for row in rows(family)] == ["EXECUTION_UNPROVEN", "FORWARD_UNPROVEN"]
+
+
+@pytest.mark.parametrize("command", ["CMD_RUN", "CMD_STEP", "CMD_PAUSE"])
+@pytest.mark.parametrize("phase", ["unused", "admitted", "forwarded"])
+def test_owner_intent_retires_unused_and_pending_startup_run(queue, family, pki, command, phase):
+    initial = controls.operation()
+    if phase != "unused":
+        assert controls.admit(family, pki, initial)[0] == 200
+    if phase == "forwarded":
+        assert controls.forward(family, pki, initial)[0] == 200
+    assert enqueue(family, pki, command)[0] == 200
+    assert controls.admit(family, pki, controls.operation())[0] == 403
+    assert controls.forward(family, pki, initial)[0] == 403
+    assert controls.consume(family, pki, initial)[0] == 403
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
+        == 0
+    )
+    grant = worker(family, pki)[1]["result"]["grant"]
+    assert worker(family, pki, "command-forward", grant)[0] == 200
+    assert worker(family, pki, "command-consume", grant)[0] == 200
+
+
+def test_expired_owner_intent_cannot_reopen_startup_run(queue, family, pki):
+    assert enqueue(family, pki)[0] == 200
+    clock = family["app"].authority.clock()
+    family["app"].authority.clock = lambda: clock + 31
+    assert worker(family, pki)[1]["result"]["action"] == "hold"
+    assert rows(family)[0]["state"] == "DELIVERY_FENCED"
+    assert controls.admit(family, pki)[0] == 403
+
+
+def test_failed_owner_intent_cannot_half_retire_startup_run(queue, family, pki):
+    store = family["store"]
+    store.max_events = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    assert enqueue(family, pki)[0] == 503
+    assert not rows(family)
+    store.max_events += 100
+    initial = controls.operation()
+    assert controls.admit(family, pki, initial)[0] == 200
+    assert controls.forward(family, pki, initial)[0] == 200
+    assert controls.consume(family, pki, initial)[0] == 200
+
+
+def test_startup_retirement_is_per_member_and_keeps_child_initial_run(queue, family, pki):
+    assert enqueue(family, pki, "CMD_PAUSE")[0] == 200
+    child = members.families.admit(family, pki)[1]["result"]["child_grant"]
+    target = child["admission_id"]
+    assert members.families.consume(family, pki, child)[0] == 200
+    assert (
+        members.bind(
+            family, pki, members.member(target_admission_id=target, instance_id="child#0", pid=1235)
+        )[0]
+        == 200
+    )
+    child_initial = dict(controls.operation(), target_admission_id=target)
+    assert controls.admit(family, pki)[0] == 403
+    assert controls.admit(family, pki, child_initial)[0] == 200
+    assert controls.forward(family, pki, child_initial)[0] == 200
+    assert controls.consume(family, pki, child_initial)[0] == 200
+    assert (
+        family["store"].db.execute("SELECT COUNT(*) FROM native_control_consumptions").fetchone()[0]
+        == 1
+    )
+
+
+def test_initial_consume_and_owner_intent_have_one_durable_order(queue, family, pki):
+    initial = controls.operation()
+    assert controls.admit(family, pki, initial)[0] == 200
+    assert controls.forward(family, pki, initial)[0] == 200
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        consuming = pool.submit(controls.consume, family, pki, initial)
+        owner = pool.submit(enqueue, family, pki, "CMD_PAUSE")
+        consumed = consuming.result()[0]
+        assert owner.result()[0] == 200
+    assert consumed in (200, 403)
+    events = [
+        row[0] for row in family["store"].db.execute("SELECT type FROM events ORDER BY sequence")
+    ]
+    if consumed == 200:
+        assert events.index("NATIVE_CONTROL_CONSUMPTION_ADMITTED") < events.index(
+            "OWNER_COMMAND_ADMITTED"
+        )
+    else:
+        assert "NATIVE_CONTROL_CONSUMPTION_ADMITTED" not in events
+    assert controls.consume(family, pki, initial)[0] == 403
