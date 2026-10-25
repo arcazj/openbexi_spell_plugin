@@ -9,7 +9,44 @@ import uuid
 from openbexi_spell_server.contracts import Fault
 
 
-def pending_prompt(state, instance, *, exclude=(), seconds=25):
+def select_pending_prompt(
+    db, execution_id, *, instance=None, child_entrypoint=None, exclude=()
+):
+    """Select only an exact originally bound member, never a guessed child suffix."""
+    if (instance is None) == (child_entrypoint is None):
+        raise ValueError("Choose one exact root or admitted child prompt scope")
+    query = (
+        "SELECT p.* FROM native_prompts p JOIN native_members m "
+        "ON p.execution_id=m.execution_id AND p.target_id=m.target_id "
+        "AND p.instance_id=m.instance_id AND p.origin_hash=m.origin_hash "
+        "AND p.member_hash=m.binding_hash "
+    )
+    parameters = [execution_id]
+    if child_entrypoint is not None:
+        query += (
+            "JOIN child_admissions c ON c.id=p.target_id "
+            "AND c.execution_id=p.execution_id AND c.origin_hash=p.origin_hash "
+            "AND c.parent_id IS NULL AND c.state='CONSUMED' "
+        )
+    query += (
+        "WHERE p.execution_id=? AND p.state='OPEN' AND m.state='REGISTERED_UNPROVEN' "
+    )
+    if child_entrypoint is not None:
+        query += "AND c.entrypoint=?"
+        parameters.append(child_entrypoint)
+    else:
+        query += "AND p.target_id='' AND p.instance_id=?"
+        parameters.append(instance)
+    rows = db.execute(query, parameters).fetchall()
+    selected = [dict(row) for row in rows if row["prompt_id"] not in exclude]
+    if len(selected) > 1:
+        raise RuntimeError("Original native member scope has multiple pending prompts")
+    return selected[0] if selected else None
+
+
+def pending_prompt(
+    state, execution_id, *, instance=None, child_entrypoint=None, exclude=(), seconds=25
+):
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
         with closing(
@@ -18,17 +55,15 @@ def pending_prompt(state, instance, *, exclude=(), seconds=25):
             )
         ) as db:
             db.row_factory = sqlite3.Row
-            rows = db.execute(
-                'SELECT * FROM native_prompts WHERE instance_id=? AND state="OPEN"',
-                (instance,),
-            ).fetchall()
-            selected = [dict(row) for row in rows if row["prompt_id"] not in exclude]
-            if len(selected) == 1:
-                return selected[0]
-            if len(selected) > 1:
-                raise RuntimeError(
-                    "Original native member has multiple pending prompts"
-                )
+            selected = select_pending_prompt(
+                db,
+                execution_id,
+                instance=instance,
+                child_entrypoint=child_entrypoint,
+                exclude=exclude,
+            )
+            if selected is not None:
+                return selected
         time.sleep(0.03)
     raise TimeoutError("Original native prompt registration not observed")
 
@@ -83,7 +118,7 @@ def qualify_prompt_execution(
         else:
             raise RuntimeError("Foreign or retargeted native prompt reply was admitted")
 
-    prompt = pending_prompt(state, prefix + "#1")
+    prompt = pending_prompt(state, execution["id"], instance=prefix + "#1")
     registered.append(prompt["prompt_id"])
     await_event([name], "native-prompt-denial-observed", minimum=1, seconds=10)
     payload = reply(prompt, "ANSWER", "approved")
@@ -92,7 +127,9 @@ def qualify_prompt_execution(
     denied(dict(payload, target_admission_id=str(uuid.uuid4())))
     if mode == "complete":
         controller("execution.prompt.reply", payload)
-        child = pending_prompt(state, "prompt_child#1")
+        child = pending_prompt(
+            state, execution["id"], child_entrypoint="prompt_child.py"
+        )
         if not child["target_id"]:
             raise RuntimeError(
                 "Native child prompt lost its independent admission identity"
@@ -102,7 +139,9 @@ def qualify_prompt_execution(
         denied(dict(reply(child, "ANSWER", "42"), target_admission_id=None))
         denied(payload)  # Closed-generation replay cannot be newly admitted.
         controller("execution.prompt.reply", reply(child, "ANSWER", "42"))
-        second = pending_prompt(state, prefix + "#1", exclude=registered)
+        second = pending_prompt(
+            state, execution["id"], instance=prefix + "#1", exclude=registered
+        )
         registered.append(second["prompt_id"])
         await_event([name], "native-prompt-denial-observed", minimum=3, seconds=10)
         controller("execution.prompt.reply", reply(second, "ANSWER", "next"))
