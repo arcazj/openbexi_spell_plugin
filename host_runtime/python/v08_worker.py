@@ -470,6 +470,8 @@ def run(config):
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
+    prompt_profile = type(config) is dict and "native_prompt_gate" in config
+    prompt_probe = type(config) is dict and "native_prompt_probe" in config
     exact(
         config,
         fields
@@ -478,7 +480,9 @@ def run(config):
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
-        | ({"native_owner_resume_probe"} if owner_resume else set()),
+        | ({"native_owner_resume_probe"} if owner_resume else set())
+        | ({"native_prompt_gate"} if prompt_profile else set())
+        | ({"native_prompt_probe"} if prompt_probe else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -511,6 +515,24 @@ def run(config):
         or consumption_probe
     ):
         raise ValueError("Owner resume requires its separate private native candidate")
+    if prompt_profile and (
+        config["native_prompt_gate"] is not True
+        or not child_profile
+        or consumption_probe
+        or owner_probe
+        or owner_resume
+    ):
+        raise ValueError("Native prompts require a separate private child profile")
+    if prompt_probe and (
+        config["native_prompt_probe"] is not True or not prompt_profile
+    ):
+        raise ValueError(
+            "Prompt observation requires the explicit prompt-enabled profile"
+        )
+    if prompt_profile:
+        build_receipt = json.loads(Path("/opt/v08-native-home/build.json").read_text())
+        if build_receipt.get("native_prompt_hooks") is not True:
+            raise ValueError("Native prompt hooks are absent from the checked build")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -667,6 +689,7 @@ def run(config):
     count = 0
     admission = None
     child_gate = None
+    prompts = None
     children = None
     if child_profile:
         sys.path.insert(0, "/v08")
@@ -689,6 +712,10 @@ def run(config):
         lifecycle = NativeLifecycleReceipts()
         children = ChildProcedures(session.instance, admit_hidden=True)
         controls = NativeRunJournal(session, request, route, child_gate)
+        if prompt_profile:
+            from prompt_replies import NativePromptAgent
+
+            prompts = NativePromptAgent(controls)
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
@@ -717,6 +744,7 @@ def run(config):
             lambda: session.process,
             child_gate,
             controls=controls,
+            prompts=prompts,
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
         )
@@ -887,6 +915,8 @@ def run(config):
         position_count = 0
         while time.monotonic() < deadline:
             pump()
+            if prompts is not None:
+                prompts.poll()
             if children is not None:
                 children.service(session)
                 for instance in list(children.children):
@@ -991,6 +1021,22 @@ def run(config):
             # until their real Context audit receipts arrive; never replay or
             # manufacture a missing event or treat this as a family barrier.
             lifecycle.wait(lambda: list(child_gate.started), pump)
+        if prompt_probe:
+            # Explicit fixed qualification profile only. The host inspects the
+            # actual native terminal state and fixture effect before teardown.
+            # This is never a terminal grant or permission to reclaim holds.
+            emit(
+                "native-prompt-terminal-observed",
+                native_status=state,
+                driver_denials=len(denied),
+                full_effect_settlement_proven=False,
+            )
+            observation_deadline = time.monotonic() + 20
+            while not Path("/control/terminal-inspected").is_file():
+                if time.monotonic() >= observation_deadline:
+                    raise TimeoutError("Native terminal host observation expired")
+                pump()
+                time.sleep(0.02)
         if state != "FINISHED" or denied:
             terminal = session.request("REQ_EXEC_STATUS")
             emit(

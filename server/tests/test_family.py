@@ -18,7 +18,7 @@ from openbexi_spell_server.snapshots import git_manifest
 from openbexi_spell_server.store import ContextStore
 from openbexi_spell_server.worker import preflight
 from test_launch import call
-from test_pause import accept
+from authority_test_helpers import accept
 from test_services import request
 import conftest as conf
 import test_preflight as helpers

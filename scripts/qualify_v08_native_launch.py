@@ -550,6 +550,7 @@ def main():
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
         ROOT / "host_runtime/build_admission_context.py",
+        ROOT / "host_runtime/native_prompt_patch.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
         Path(__file__),
@@ -685,10 +686,17 @@ def main():
                         ROOT / "host_runtime/build_admission_context.py",
                         native_build / "build.py",
                     )
+                    # Ship the exact opt-in composition module with the builder.
+                    # Existing child cohorts do not pass --native-prompts and
+                    # retain their original closed prompt mutation policy.
+                    shutil.copy2(
+                        ROOT / "host_runtime/native_prompt_patch.py",
+                        native_build / "native_prompt_patch.py",
+                    )
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H build.py /candidate/\n"
+                        "COPY *.H build.py native_prompt_patch.py /candidate/\n"
                         "RUN python /candidate/build.py\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
