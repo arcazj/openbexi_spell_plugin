@@ -45,6 +45,35 @@ def fence_external_controller_mailbox(text):
     )
 
 
+
+def fence_native_prompt_start_race(text):
+    """Arm the original native prompt wait before the prompt is made visible.
+
+    The frozen SPELL CIF sends the prompt before clearing its answer event.
+    A sufficiently fast answer can set the event and then be erased by clear().
+    The original prompt lock, scheduler and answer-selection logic are retained.
+    """
+    old = (
+        "    // Send actual prompt message\n"
+        "\tsendGUIMessage(m_promptMessage);\n"
+        "\n"
+        "\t// Reset the event that will trigger the answer\n"
+        "\tm_promptAnswerEvent.clear();\n"
+        "\tm_promptAnswer = VOID_MESSAGE;"
+    )
+    new = (
+        "    // Arm the answer event BEFORE making the prompt visible.\n"
+        "    // An immediate answer must not be erased after delivery.\n"
+        "\tm_promptAnswerEvent.clear();\n"
+        "\tm_promptAnswer = VOID_MESSAGE;\n"
+        "\n"
+        "    // Send actual prompt message\n"
+        "\tsendGUIMessage(m_promptMessage);"
+    )
+    if text.count(old) != 1 or "Arm the answer event BEFORE" in text:
+        raise ValueError("Ambiguous original native prompt start race boundary")
+    return text.replace(old, new)
+
 def patch_native_tree(source):
     """Apply only to the independently reproduced frozen composition."""
     # The legacy GUI client key is client-proposed/reusable. Allocate an
@@ -204,6 +233,7 @@ def patch_native_tree(source):
     )
     cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
     cif_text = cif.read_text()
+    cif_text = fence_native_prompt_start_race(cif_text)
     include = '#include "SPELL_IPC/SPELLipc_Executor.H"'
     message_entry = (
         "void SPELLserverCif::processMessage( const SPELLipcMessage& msg )\n{\n"
