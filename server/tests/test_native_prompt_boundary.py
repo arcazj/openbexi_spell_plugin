@@ -340,3 +340,22 @@ def test_opt_in_prompt_module_is_shipped_and_source_bound_in_native_build():
     assert '" --native-prompts" if profile.native_prompts else ""' in builder
     assert 'parser.add_argument("--native-prompts", action="store_true")' in builder
     assert "native-prompts" in workflow and "flags: '--native-prompts'" in workflow
+
+
+def test_real_native_yes_no_timeout_uses_accepted_default_key():
+    """The original helper accepts Y/YES, not Python bool True, as a default."""
+    import importlib.util
+
+    path = ROOT / "scripts/v08_prompt_cohort.py"
+    spec = importlib.util.spec_from_file_location("prompt_timeout_fixture", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    fixture = module.prompt_fixture(timeout=True)
+    assert "Default:'Y'" in fixture and "Timeout:1" in fixture
+    assert "Default:True" not in fixture
+    # Cross-check the actual composed native conversion, not just the fixture.
+    import zipfile
+
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        helper = archive.read("lib/SPELL_CIF/src/SPELLcifHelper.C").decode()
+    assert 'deflt == "Y" || deflt == ISTR(LanguageConstants::PROMPT_YES)' in helper

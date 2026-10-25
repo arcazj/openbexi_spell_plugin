@@ -5,6 +5,7 @@ cooperative quiescence, production deployment or the complete legacy driver.
 """
 
 import base64
+import http.client
 import json
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, replace
@@ -15,7 +16,7 @@ import threading
 import pytest
 from google.protobuf.wrappers_pb2 import BoolValue
 
-from openbexi_spell_server.contracts import Fault, policy
+from openbexi_spell_server.contracts import Fault, canonical, policy
 from openbexi_spell_server.launch import WorkerLaunch
 from openbexi_spell_server.services import Context
 from openbexi_spell_server.store import ContextStore
@@ -60,7 +61,9 @@ def driver_setup(tmp_path, pki, source, independent_dss):
             setup["app"].close()
 
 
-def native_call(setup, pki, path, message, *, key=None, certificate="worker", **updates):
+def native_call(
+    setup, pki, path, message, *, key=None, certificate="worker", connection=None, **updates
+):
     body = dict(
         schema="openbexi.worker/2",
         context_id="A",
@@ -71,6 +74,17 @@ def native_call(setup, pki, path, message, *, key=None, certificate="worker", **
         payload=base64.b64encode(message.SerializeToString(deterministic=True)).decode("ascii"),
     )
     body.update(updates)
+    if connection is not None:
+        # The capacity test establishes real mTLS channels before timing the
+        # ten actual writes. TLS setup is not part of its receipt-barrier oracle.
+        try:
+            connection.request(
+                "POST", "/v1/worker/driver", canonical(body), {"Content-Type": "application/json"}
+            )
+            response = connection.getresponse()
+            return response.status, json.loads(response.read())
+        finally:
+            connection.close()
     return request(
         setup["server"],
         pki[certificate]["client"],
@@ -221,10 +235,31 @@ def test_ten_pending_receipts_bound_eleventh_rpc_without_effect(
             assert release.wait(2), "Test receipt barrier expired"
 
     monkeypatch.setattr(gate, "send", hold_after_actual_write)
+
+    def connect(_index):
+        client = http.client.HTTPSConnection(
+            "localhost", setup["server"].server_port, context=pki["worker"]["client"], timeout=5
+        )
+        client.connect()
+        assert client.sock.getpeercert(binary_form=True)
+        return client
+
     with ThreadPoolExecutor(max_workers=10) as pool:
+        # Preconnect all real mTLS channels before starting any effect. This
+        # removes cold TLS scheduling from the bounded receipt-capacity test;
+        # actual effect deadlines, the 1.5s join and 2s hold remain unchanged.
+        connections = list(pool.map(connect, range(10)))
         pending = [
-            pool.submit(native_call, setup, pki, PREFIX + "TC/SendCommand", command(), key=key)
-            for key in keys
+            pool.submit(
+                native_call,
+                setup,
+                pki,
+                PREFIX + "TC/SendCommand",
+                command(),
+                key=key,
+                connection=client,
+            )
+            for key, client in zip(keys, connections, strict=True)
         ]
         try:
             with condition:

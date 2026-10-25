@@ -20,7 +20,7 @@ def prompt_fixture(*, timeout=False):
         "from spell.lang.constants import YES_NO\n"
         "from spell.lang.modifiers import Type,Default,Timeout\n"
         "assert Prompt('STEP1_NATIVE_PROMPT', {Type:YES_NO"
-        + (",Default:True,Timeout:1" if timeout else "")
+        + (",Default:'Y',Timeout:1" if timeout else "")
         + "}) is True\n"
     )
 
