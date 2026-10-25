@@ -1677,6 +1677,30 @@ def main():
                                 raise RuntimeError(
                                     "Native RUN bypassed Executor consumption admission"
                                 )
+                            # The actual native Executor now emits a one-shot
+                            # mailbox observation for every completed handler.
+                            # This remains neither external-effect settlement nor
+                            # proof of full-family quiescence.
+                            dispositions = audit.execute(
+                                "SELECT disposition,COUNT(*) FROM native_control_dispositions "
+                                "GROUP BY disposition"
+                            ).fetchall()
+                            if dispositions != [("HANDLER_RETURNED", 21)]:
+                                raise RuntimeError(
+                                    "Original native Executor mailbox return evidence differs"
+                                )
+                            if (
+                                audit.execute(
+                                    "SELECT COUNT(*) FROM native_control_dispositions d "
+                                    "JOIN native_control_consumptions c "
+                                    "ON d.request_id=c.request_id AND d.execution_id=c.execution_id "
+                                    "WHERE c.state='EXECUTION_UNPROVEN'"
+                                ).fetchone()[0]
+                                != 21
+                            ):
+                                raise RuntimeError(
+                                    "Native mailbox observations lost original consumption identity"
+                                )
                             members = audit.execute(
                                 "SELECT state,COUNT(*) FROM native_members GROUP BY state"
                             ).fetchall()
@@ -1749,7 +1773,19 @@ def main():
                             raise RuntimeError(
                                 "Native Executor PID binding count differs"
                             )
+                        observed_returns = sum(
+                            event["event"] == "native-mailbox-disposition-received"
+                            and event.get("disposition") == "HANDLER_RETURNED"
+                            for worker in report["workers"]
+                            for event in worker["events"]
+                        )
+                        if observed_returns != 21:
+                            raise RuntimeError(
+                                "Native Executor one-shot mailbox callbacks differ from durable receipts"
+                            )
                         report.update(
+                            native_initial_run_mailbox_returns_observed=observed_returns,
+                            native_initial_mailbox_dispositions_durable=21,
                             native_child_before_spawn_component_tested=True,
                             native_child_admissions_consumed=11,
                             native_nested_child_admissions_consumed=1,

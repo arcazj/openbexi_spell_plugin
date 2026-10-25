@@ -75,4 +75,13 @@ queue-wide terminal disposition, full family closure, new-owner runtime,
 public Run/Debug/WSS/Git, all legacy compatibility, Kubernetes/Compose
 deployment, recovery, security review or stable release packaging.
 
+The exact original-native child-gate qualification now requires all 21
+`HANDLER_RETURNED` observations in both the original worker callbacks
+and the Context's durable `native_control_dispositions` table, joined to
+exactly the 21 consumed original RUNs. The isolated actual same-owner
+RUN/PAUSE/RUN probe requires three matching `native_owner_command_dispositions`
+rows joined to the three original grants. Every one of these observations
+continues to be explicitly **not full effect settlement**. Failure of any
+receipt is a failed native qualification, not a reason to replay its operation.
+
 All eleven full-release groups in `RELEASE_GATES.json` remain false.

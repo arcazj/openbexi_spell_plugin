@@ -116,6 +116,15 @@ def qualify_owner_resume(
                 commands, ("CMD_RUN", "CMD_PAUSE", "CMD_RUN"), strict=True
             )
         ]
+        owner_dispositions = db.execute(
+            "SELECT d.command_id,d.disposition FROM native_owner_command_dispositions d "
+            "JOIN native_owner_commands c ON d.command_id=c.command_id "
+            "WHERE d.execution_id=c.execution_id ORDER BY c.sequence"
+        ).fetchall()
+        if owner_dispositions != [(value, "HANDLER_RETURNED") for value in commands]:
+            raise RuntimeError(
+                "Actual native owner RUN/PAUSE/RUN lacks three durable mailbox returns"
+            )
         if (
             rows != expected
             or db.execute("SELECT COUNT(*) FROM native_control_attempts").fetchone()[0]
@@ -140,6 +149,15 @@ def qualify_owner_resume(
         raise RuntimeError("Owner pause/resume changed an unrelated reserved witness")
     records = events(name)
     if (
+        sum(
+            row["event"] == "native-mailbox-disposition-received"
+            and row.get("disposition") == "HANDLER_RETURNED"
+            for row in records
+        )
+        != 3
+    ):
+        raise RuntimeError("Native owner RUN/PAUSE/RUN callback count differs")
+    if (
         sum(row["event"] == "native-owner-resume-finished" for row in records) != 1
         or sum(row["event"] == "native-before-consume-admitted" for row in records) != 3
         or any(row["event"] == "native-driver-denied" for row in records)
@@ -158,6 +176,8 @@ def qualify_owner_resume(
         actual_native_executor=True,
         commands=["CMD_RUN", "CMD_PAUSE", "CMD_RUN"],
         fresh_owner_grants=3,
+        native_owner_mailbox_returns_durable=3,
+        native_owner_mailbox_returns_observed=3,
         startup_run_grants_used=0,
         unused_startup_run_denied=True,
         first_assignment_proven=True,
