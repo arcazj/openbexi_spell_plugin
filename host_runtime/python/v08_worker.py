@@ -302,6 +302,35 @@ def verify_startup_run_retired(controls):
     raise RuntimeError("Unused startup RUN remained available after an owner command")
 
 
+
+def owner_resume_paused_guard(session, controls):
+    """Check the pause fence without confusing a committed RUN with stale state.
+
+    The final native consume RPC may be committed before its receipt returns to
+    the worker. A real Executor can transition out of PAUSED while that callback
+    is in flight. Never query paused-only variables in that interval. The
+    original consumption receipt is still mandatory before reporting success.
+    """
+    state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
+    if state != "PAUSED":
+        if len(controls.owner_consume_attempted) >= 3:
+            return False  # In-flight final admission; NOT a completion proof.
+        raise RuntimeError("Native fixture resumed before third owner consumption attempt")
+    try:
+        values = owner_fixture_variables(session)
+    except RuntimeError:
+        # A successful final admission can race a status read and make the
+        # paused-only variable API unavailable. Never suppress earlier errors.
+        if len(controls.owner_consume_attempted) >= 3:
+            return False
+        raise
+    if values.get("FIRST") != "1" or "SECOND" in values or Path(
+        "/workspace/owner-resumed"
+    ).exists():
+        raise RuntimeError("Native fixture resumed without its fresh owner RUN")
+    return True
+
+
 def owner_pause_resume_probe(session, controls, pump):
     """Main-Executor pause and same-owner resume, never a family barrier."""
     emit("native-owner-resume-ready", native_status="PAUSED")
@@ -350,14 +379,7 @@ def owner_pause_resume_probe(session, controls, pump):
                     "Owner resume was not independently held behind native PAUSE"
                 )
             break
-        values = owner_fixture_variables(session)
-        if (
-            session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"] != "PAUSED"
-            or values.get("FIRST") != "1"
-            or "SECOND" in values
-            or Path("/workspace/owner-resumed").exists()
-        ):
-            raise RuntimeError("Native fixture resumed without its fresh owner RUN")
+        owner_resume_paused_guard(session, controls)
         if time.monotonic() >= until:
             raise TimeoutError("Fresh same-owner resume was not delivered")
         time.sleep(0.02)
