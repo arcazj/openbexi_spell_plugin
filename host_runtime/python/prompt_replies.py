@@ -128,6 +128,12 @@ class NativePromptAgent:
             )
 
     def poll(self):
+        # Only a registered native prompt can receive a reply. Do not contend
+        # with declarations/consumption using idle TLS/SQL polls for an empty
+        # local prompt inventory. This is not an authority or effect decision.
+        with self.lock:
+            if not self.active:
+                return "none"
         result = self._call("prompt-poll", {})
         if (
             type(result) is not dict

@@ -901,13 +901,18 @@ def run(config):
         attempted_pause = {}
         pause_channel_failed = False
         next_poll = 0
+        next_prompt_poll = 0
         child_running = set()
         previous_state = None
         next_position = 0
         position_count = 0
         while time.monotonic() < deadline:
             pump()
-            if prompts is not None:
+            if prompts is not None and time.monotonic() >= next_prompt_poll:
+                # A bounded read cadence avoids ten idle workers saturating
+                # the authority while actual native prompt callbacks commit.
+                # Any failed delivery still exits; there is no mutation retry.
+                next_prompt_poll = time.monotonic() + 0.2
                 prompts.poll()
             if children is not None:
                 children.service(session)

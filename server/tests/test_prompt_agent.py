@@ -275,3 +275,31 @@ def test_role_checked_dispatch_reaches_prompt_adapter(relay):
     )
     server.dispatch("executor", "main#1", message)
     assert message["prompt_id"] in relay.registrations
+
+
+def test_no_native_prompt_means_no_authority_poll_or_new_effect(relay):
+    def unexpected(*args, **kwargs):
+        raise AssertionError("An empty native prompt inventory must not poll Context")
+
+    relay._call = unexpected
+    for _ in range(1000):
+        assert relay.poll() == "none"
+    assert not relay.sent and not relay.active and not relay.replies
+
+
+def test_closed_last_prompt_stops_idle_polling_without_replay(relay, family, pki):
+    native = queued(relay, family, pki)
+    assert relay.poll() == "reply"
+    grant = asdict(next(iter(relay.replies.values()))[1])
+    relay.consume(consume_body(grant))
+    relay.close(
+        dict(
+            schema="openbexi.native-prompt-close/1",
+            instance_id="main#1",
+            prompt_id=native["prompt_id"],
+            outcome="ANSWER_SELECTED",
+        )
+    )
+    relay._call = lambda *a, **k: (_ for _ in ()).throw(AssertionError("idle poll"))
+    assert relay.poll() == "none"
+    assert len(relay.sent) == 1

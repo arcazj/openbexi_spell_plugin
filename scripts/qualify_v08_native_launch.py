@@ -523,6 +523,9 @@ def main():
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
     profile.native_child_gate = profile.native_child_gate or profile.native_prompts
+    # Prompt qualification must exercise real driver effects against the
+    # independently launched DSS, not only Context audit-event RPCs.
+    profile.native_dss = profile.native_dss or profile.native_prompts
     profile.native_pause_probe = (
         profile.native_pause_probe or profile.native_thread_barrier
     )
