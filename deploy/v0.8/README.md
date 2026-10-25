@@ -20,8 +20,9 @@ evidence. Published v0.7 is untouched.
 - No Docker socket, host PID/network mode, privileged container, extra caps,
   executable writable root filesystem or cross-Context authority volume.
 
-The two services networks are internal. The gateway is the only published
-loopback port. Each process mounts **only its own role's certificate/key**
+The control and driver networks are internal. A separate gateway-only ingress
+bridge handles Docker loopback publication; no Listener, Context or DSS
+container belongs to it. The gateway is the only published loopback port. Each process mounts **only its own role's certificate/key**
 from a read-only private directory. The disposable CA and client keys are
 not embedded in images or stored in the repository.
 

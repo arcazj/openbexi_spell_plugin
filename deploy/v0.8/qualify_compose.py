@@ -62,14 +62,20 @@ def expect(probe, subject, path, status=200, method="GET", data=None, key=None):
 
 def ready(probe):
     end = time.monotonic() + 65
+    last_failure = "no_probe_attempt"
     while time.monotonic() < end:
         try:
-            if expect(probe, "alice", "/v1/contexts/A/health")["status"] == "ready":
-                return
-        except (OSError, TimeoutError, ssl.SSLError):
-            pass
+            code, body = probe.call("alice", "GET", "/v1/contexts/A/health")
+            if code == 200:
+                inner = body.get("result", {})
+                if (inner.get("schema") == "openbexi.context/1"
+                        and inner.get("result", {}).get("status") == "ready"):
+                    return
+            last_failure = "HTTP_" + str(code)
+        except (OSError, TimeoutError, ssl.SSLError) as error:
+            last_failure = type(error).__name__
         time.sleep(0.4)
-    raise RuntimeError("mTLS Compose gateway/Context failed readiness deadline")
+    raise RuntimeError("mTLS Compose gateway/Context readiness: " + last_failure)
 
 
 def run(root, port, phase, previous):

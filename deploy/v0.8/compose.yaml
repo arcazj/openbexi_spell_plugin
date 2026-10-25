@@ -86,7 +86,7 @@ services:
         source: "${V08_DEPLOY_ROOT}/gateway"
         target: /run/private
         read_only: true
-    networks: [control]
+    networks: [ingress, control]
     ports: ["127.0.0.1:${V08_GATEWAY_PORT:-19443}:9443"]
     depends_on:
       listener: {condition: service_healthy}
@@ -118,6 +118,8 @@ services:
       timeout: 3s
       retries: 15
 networks:
+  # Gateway-only bridge carries loopback port publication. Control stays private.
+  ingress: {}
   control:
     internal: true
   driver:
