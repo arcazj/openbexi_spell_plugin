@@ -149,6 +149,7 @@ def qualify_terminal_case(
     state,
     worker_image,
     command,
+    control,
     await_event,
     events,
     report,
@@ -182,7 +183,11 @@ def qualify_terminal_case(
                     "command_id"
                 ]
             )
-        if case not in {"normal", "error", "timeout"}:
+        if case == "forced-loss":
+            await_event([name], "native-terminal-active", seconds=25)
+            handles.extend(capture_process_handles(command, name))
+            (control / "kill-native").write_text("x")
+        if case not in {"normal", "error", "timeout", "forced-loss"}:
             if not case.endswith("paused"):
                 await_event([name], "native-terminal-active", seconds=25)
                 # Include descendants and background threads' owning processes.
@@ -237,7 +242,9 @@ def qualify_terminal_case(
             row for row in events(name) if row["event"] == "native-terminal-observed"
         ]
         expected = (
-            "CLOSED"
+            "UNKNOWN"
+            if case == "forced-loss"
+            else "CLOSED"
             if case.startswith("close-")
             else "ERROR"
             if case == "error"

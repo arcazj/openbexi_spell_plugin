@@ -554,6 +554,7 @@ def qualify_consumption_fence(
             state=state,
             worker_image=worker_image,
             command=command,
+            control=control,
             await_event=await_event,
             events=events,
             report=report,

@@ -2,7 +2,9 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 from pathlib import Path
+import os
 import select
+import signal
 import time
 
 CASES = frozenset(
@@ -22,6 +24,7 @@ CASES = frozenset(
         "close-thread",
         "close-child",
         "close-wait",
+        "forced-loss",
     }
 )
 
@@ -34,6 +37,7 @@ def run_terminal_probe(
     emit("native-terminal-ready", case=case)
     deadline = time.monotonic() + 70
     active = False
+    killed = False
     state = "PAUSED"
     while time.monotonic() < deadline:
         controls.poll_owner()
@@ -45,9 +49,19 @@ def run_terminal_probe(
                 for _, grant in controls.owner_operations.values()
                 if grant.command_id in controls.owner_consumed
             ]
-        pidfd = admission.members[session.instance][1]
+        pid, pidfd = admission.members[session.instance]
+        if case == "forced-loss" and not killed and Path("/control/kill-native").exists():
+            # Explicit fault injection only in this isolated native test.
+            # Never target a recycled numeric PID: its original pidfd is held.
+            if select.select([pidfd], [], [], 0)[0]:
+                raise RuntimeError("Native fault injection target already exited")
+            os.kill(pid, signal.SIGKILL)
+            killed = True
         exited = bool(select.select([pidfd], [], [], 0)[0])
         if exited:
+            if case == "forced-loss" and killed:
+                state = "UNKNOWN"
+                break
             if "CMD_CLOSE" not in commands:
                 raise RuntimeError("Native process exited without an admitted CLOSE")
             state = "CLOSED"
@@ -60,6 +74,11 @@ def run_terminal_probe(
                 children.service(session)
             state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
         except Exception:
+            if case == "forced-loss" and killed:
+                if not select.select([pidfd], [], [], 5)[0]:
+                    raise RuntimeError("Injected native process loss was not observed")
+                state = "UNKNOWN"
+                break
             if "CMD_CLOSE" not in commands:
                 raise
             # The native process can disappear between the pidfd check and its
