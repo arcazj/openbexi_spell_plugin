@@ -10,7 +10,6 @@ still unresolved after permission. No row authorizes handoff, replay, resume or 
 import json
 
 from .contracts import Fault, digest, fingerprint
-from .family import FamilyAdmission
 from .preflight import canonical_uuid
 
 
@@ -95,7 +94,7 @@ class NativeControlJournal:
                 "executable_sha256",
             )
         }
-        origin, hashed = FamilyAdmission.origin(grant), digest(fields)
+        origin, hashed = self.authority.family_origin(grant), digest(fields)
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
@@ -215,7 +214,7 @@ class NativeControlJournal:
         if (
             self.store.db.execute(
                 "SELECT 1 FROM native_members WHERE execution_id=? AND target_id=? AND origin_hash=? AND state='REGISTERED_UNPROVEN'",
-                (grant.execution_id, target or "", FamilyAdmission.origin(grant)),
+                (grant.execution_id, target or "", self.authority.family_origin(grant)),
             ).fetchone()
             is None
         ):
@@ -231,6 +230,11 @@ class NativeControlJournal:
         return {key: body[key] for key in ("request_id", "target_admission_id", "command")}
 
     def _initial_run_open(self, grant, target):
+        if (
+            self.authority.live_handoff is not None
+            and self.authority.live_handoff.record(grant.execution_id) is not None
+        ):
+            raise Fault(403, "native_initial_run_retired")
         if (
             self.authority.native_commands is not None
             and self.authority.native_commands.terminal_pending(grant.execution_id)
@@ -258,7 +262,7 @@ class NativeControlJournal:
 
     def admit(self, grant, body):
         operation = self.operation(body)
-        origin = FamilyAdmission.origin(grant)
+        origin = self.authority.family_origin(grant)
         target = body["target_admission_id"] or ""
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
@@ -333,7 +337,7 @@ class NativeControlJournal:
         An unknown IPC outcome remains held, never replayed or upgraded to proof.
         """
         operation = self.operation(body)
-        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        origin, hashed = self.authority.family_origin(grant), digest(operation)
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
@@ -384,7 +388,7 @@ class NativeControlJournal:
         An unknown IPC outcome remains held, never replayed or upgraded to proof.
         """
         operation = self.operation(body)
-        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        origin, hashed = self.authority.family_origin(grant), digest(operation)
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
@@ -437,7 +441,7 @@ class NativeControlJournal:
             "HANDLER_RETURNED",
         }:
             raise Fault(403, "native_control_disposition_unqualified")
-        origin, hashed = FamilyAdmission.origin(grant), digest(operation)
+        origin, hashed = self.authority.family_origin(grant), digest(operation)
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._original_grant(grant)
@@ -513,7 +517,7 @@ class NativeControlJournal:
                 if (
                     row is None
                     or row["execution_id"] != grant.execution_id
-                    or row["origin_hash"] != FamilyAdmission.origin(grant)
+                    or row["origin_hash"] != self.authority.family_origin(grant)
                     or row["operation_digest"] != digest(operation)
                     or row["state"] == "RESTART_FENCED"
                 ):

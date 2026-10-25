@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-server-architecture",
-  "phase": "Step 1 host-authenticated terminal settlement candidate; live-family transfer remains gated",
+  "phase": "Step 1 private live-family host-freezer handoff candidate; exact native A/B/C qualification in progress",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -105,7 +105,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Qualify host-proven terminal settlement at the exact PR #4 head, then implement a positive live-family barrier and fresh new-owner runtime identity for accepted A/B/C transfer. Continue with paired installed IDE Run/Debug, browser/WSS/Git, full compatibility, deployment, recovery, security and packaging gates.",
+  "next_step": "Qualify the exact PR #4 live-family handoff candidate: A accepts, the host proves a frozen root/child/background family, B explicitly resumes with a fresh runtime identity, and C observes read-only. Then complete repeated transfer/recovery, paired IDE Run/Debug, browser/WSS/Git, compatibility, deployed security and packaging gates.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -152,5 +152,13 @@
     "scope": "Separate pinned host, prelaunch immutable container binding, durable terminal fence, physical process/container exit, child/prompt/command/effect reconciliation and scoped reservation release; workers remain single-use",
     "qualification": "Local mTLS and independent DSS regressions; exact hosted native qualification recorded in PR #4",
     "live_family_transfer_qualified": false
+  },
+  "live_handoff_profile": {
+    "profile": "host-freeze-candidate",
+    "documentation": "LIVE_HANDOFF.md",
+    "scope": "One accepted A/B handoff of an existing sealed family; exact host cgroup freezer, original pidfds, settled native/prompt/driver journals, single-delivery runtime rotation and read-only C observation",
+    "qualification": "40 real mTLS/independent DSS regressions passed locally; exact hosted native qualification pending",
+    "new_children_after_transfer": false,
+    "full_v08_qualified": false
   }
 }

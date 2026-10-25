@@ -22,7 +22,6 @@ from .contracts import (
     identifier,
     validate_owner_command_payload,
 )
-from .family import FamilyAdmission
 from .preflight import canonical_uuid
 
 
@@ -171,6 +170,11 @@ class NativeOwnerCommands:
         identifier(key)
         validate_owner_command_payload(payload)
         self._permissions(subject, payload["command"])
+        if self.authority.live_handoff is not None:
+            self.authority.live_handoff.expire()
+            resumed = self.authority.live_handoff.request_resume(subject, key, payload)
+            if resumed is not None:
+                return resumed
         with self.authority._execution_lock(payload["execution_id"]):
             with self.store.transaction():
                 self._permissions(subject, payload["command"])
@@ -272,7 +276,7 @@ class NativeOwnerCommands:
                     )
                 try:
                     self._live(command, execution)
-                    if command["runtime_origin_hash"] != FamilyAdmission.origin(original):
+                    if command["runtime_origin_hash"] != self.authority.family_origin(original):
                         raise Fault(403, "owner_command_runtime_fenced")
                 except Fault:
                     self.store.db.execute(
@@ -323,7 +327,7 @@ class NativeOwnerCommands:
         execution = self.authority._original_grant(original)
         if (
             original.execution_id != grant.execution_id
-            or FamilyAdmission.origin(original) != grant.runtime_origin_hash
+            or self.authority.family_origin(original) != grant.runtime_origin_hash
         ):
             raise Fault(403, "owner_command_runtime_fenced")
         command = self.store.db.execute(

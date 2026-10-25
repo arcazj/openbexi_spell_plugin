@@ -108,6 +108,11 @@ class FamilyAdmission:
         raise Fault(403, "child_source_not_approved")
 
     def admit(self, grant, payload):
+        if (
+            self.authority.live_handoff is not None
+            and self.authority.live_handoff.record(grant.execution_id) is not None
+        ):
+            raise Fault(403, "handoff_family_sealed")
         canonical_uuid(payload["request_id"])
         if payload["parent_admission_id"] is not None:
             canonical_uuid(payload["parent_admission_id"])
@@ -127,7 +132,7 @@ class FamilyAdmission:
                 "mode",
             )
         }
-        origin, operation_hash = self.origin(grant), digest(operation)
+        origin, operation_hash = self.authority.family_origin(grant), digest(operation)
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
@@ -232,7 +237,7 @@ class FamilyAdmission:
                     row is None
                     or child.execution_id != grant.execution_id
                     or child.authority_incarnation != self.store.incarnation
-                    or child.origin_hash != self.origin(grant)
+                    or child.origin_hash != self.authority.family_origin(grant)
                     or row["binding"] != canonical(binding).decode()
                     or not hmac.compare_digest(row["token_hash"], secret_hash(child.token))
                     or row["state"] != "ADMITTED"

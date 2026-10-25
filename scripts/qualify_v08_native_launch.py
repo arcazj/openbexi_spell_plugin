@@ -505,6 +505,7 @@ def main():
     parser.add_argument("--native-child-gate", action="store_true")
     parser.add_argument("--native-prompts", action="store_true")
     parser.add_argument("--native-terminal", action="store_true")
+    parser.add_argument("--native-handoff", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
@@ -516,6 +517,7 @@ def main():
                 profile.native_child_gate,
                 profile.native_prompts,
                 profile.native_terminal,
+                profile.native_handoff,
                 profile.native_listener_survival,
             )
         )
@@ -524,7 +526,9 @@ def main():
         parser.error(
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
-    profile.native_prompts = profile.native_prompts or profile.native_terminal
+    profile.native_prompts = (
+        profile.native_prompts or profile.native_terminal or profile.native_handoff
+    )
     profile.native_child_gate = profile.native_child_gate or profile.native_prompts
     # Prompt qualification must exercise real driver effects against the
     # independently launched DSS, not only Context audit-event RPCs.
@@ -564,6 +568,9 @@ def main():
         ROOT / "host_runtime/native_prompt_patch.py",
         ROOT / "host_runtime/native_terminal_patch.py",
         ROOT / "host_runtime/python/terminal_probe.py",
+        ROOT / "host_runtime/python/handoff_runtime.py",
+        ROOT / "host_runtime/python/handoff_probe.py",
+        ROOT / "scripts/v08_handoff_cohort.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
@@ -641,6 +648,11 @@ def main():
                         ROOT / "host_runtime/python/terminal_probe.py",
                         code / "terminal_probe.py",
                     )
+                if profile.native_handoff:
+                    for module in ("handoff_runtime.py", "handoff_probe.py"):
+                        shutil.copy2(
+                            ROOT / "host_runtime/python" / module, code / module
+                        )
                 if profile.native_thread_barrier:
                     shutil.copy2(
                         ROOT / "host_runtime/python/thread_barrier.py",
@@ -880,6 +892,13 @@ def main():
                     (sources / "terminal_child.py").write_text(
                         terminal_fixture("abort-running")
                     )
+                if profile.native_handoff:
+                    from v08_handoff_cohort import handoff_fixture
+
+                    (sources / "handoff.py").write_text(handoff_fixture())
+                    (sources / "handoff_child.py").write_text(
+                        handoff_fixture(child=True)
+                    )
                 command("git", "-C", sources, "add", ".")
                 command(
                     "git",
@@ -930,6 +949,13 @@ def main():
                     )
                     catalog["consume-probe"] = dict(
                         catalog["procedure-0"], entrypoint="consume_probe.py"
+                    )
+                if profile.native_handoff:
+                    catalog["handoff"] = dict(
+                        catalog["procedure-0"], entrypoint="handoff.py"
+                    )
+                    catalog["handoff-child"] = dict(
+                        catalog["procedure-0"], entrypoint="handoff_child.py"
                     )
                 if profile.native_terminal:
                     for case in CASES:
@@ -1986,7 +2012,11 @@ def main():
                         raise RuntimeError(
                             "Blocked native handoff changed another execution"
                         )
-                if profile.native_child_gate and not profile.native_terminal:
+                if (
+                    profile.native_child_gate
+                    and not profile.native_terminal
+                    and not profile.native_handoff
+                ):
                     from v08_native_consumption import qualify_consumption_fence
 
                     qualify_consumption_fence(
@@ -2085,6 +2115,34 @@ def main():
                             host_processes=host_processes,
                             events=events,
                         )
+                if profile.native_handoff:
+                    from v08_native_consumption import qualify_consumption_fence
+
+                    qualify_consumption_fence(
+                        live_handoff=True,
+                        driver_network=driver_network,
+                        terminal_evidence=output,
+                        temporary=temporary,
+                        prefix=prefix,
+                        context_image=context_image,
+                        config=config,
+                        sources=sources,
+                        worker_image=worker_image,
+                        code=code,
+                        snapshot=snapshot,
+                        ca=ca,
+                        peers=peers,
+                        primary_controller=controller,
+                        control=control,
+                        primary_state=state,
+                        names=names,
+                        networks=networks,
+                        report=report,
+                        command=command,
+                        await_event=await_event,
+                        host_processes=host_processes,
+                        events=events,
+                    )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

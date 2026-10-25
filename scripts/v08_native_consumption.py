@@ -231,6 +231,8 @@ def qualify_consumption_fence(
     owner_resume=False,
     terminal_case=None,
     terminal_evidence=None,
+    live_handoff=False,
+    driver_network=None,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
@@ -261,6 +263,14 @@ def qualify_consumption_fence(
         label = source_id = "terminal-" + terminal_case
         context_id = "T"
         worker_id = "worker-resume"
+    if live_handoff:
+        label = source_id = "handoff"
+        context_id = "H"
+        worker_id = "worker-resume"
+        if terminal_evidence is None or driver_network is None:
+            raise ValueError(
+                "Handoff requires retained evidence and an independent DSS"
+            )
     name, network = prefix + "-" + label + "-probe", prefix + "-" + label + "-net"
     context_name = prefix + "-" + label + "-context"
     context_network = prefix + "-" + label + "-control"
@@ -309,19 +319,31 @@ def qualify_consumption_fence(
     # These separate native authorization probes issue no driver TC/TM calls.
     # They use the core Context CLI, not the DSS driver-factory entrypoint.
     # Never inherit its private driver configuration or simulator catalog binding.
-    probe_config = isolate_audit_probe(probe_config)
+    if not live_handoff:
+        probe_config = isolate_audit_probe(probe_config)
     if owner_commands or owner_resume:
         probe_config["native_commands"] = "owner-queue"
-    if terminal_case is not None:
+    if terminal_case is not None or live_handoff:
         probe_config["native_commands"] = "owner-terminal-candidate"
         probe_config["native_prompts"] = "owner-reply-candidate"
         probe_config["host_settlement"] = dict(
             profile="single-host-terminal-candidate",
             fingerprint=peers["settlement-host"]["pin"],
         )
-        probe_config["approved_sources"]["terminal-child"] = dict(
-            config["approved_sources"]["terminal-child"], driver_binding="context-audit"
+        if terminal_case is not None:
+            probe_config["approved_sources"]["terminal-child"] = dict(
+                config["approved_sources"]["terminal-child"],
+                driver_binding="context-audit",
+            )
+    if live_handoff:
+        probe_config["native_pause"] = "host-freeze-candidate"
+        probe_config["subjects"] = dict(
+            probe_config["subjects"], observer=["context:read", "execution:read"]
         )
+        probe_config["approved_sources"].pop("terminal-child", None)
+        probe_config["approved_sources"]["handoff-child"] = config["approved_sources"][
+            "handoff-child"
+        ]
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -356,12 +378,16 @@ def qualify_consumption_fence(
         args += ["--mount", f"type=bind,src={source},dst={destination}{mode}"]
     args += [
         "--env",
-        "PYTHONPATH=/v08/server/src",
+        "PYTHONPATH=/v08/server/src:/v08/driver_plugin/src:/v08/src"
+        if live_handoff
+        else "PYTHONPATH=/v08/server/src",
         "--entrypoint",
         "python",
         context_image,
         "-m",
-        "openbexi_spell_server",
+        "openbexi_spell_dss.context_server"
+        if live_handoff
+        else "openbexi_spell_server",
         "context",
         "--config",
         "/credentials/config.json",
@@ -369,6 +395,8 @@ def qualify_consumption_fence(
     names.append(context_name)
     command(*args)
     command("docker", "network", "connect", "--alias", "context", network, context_name)
+    if live_handoff:
+        command("docker", "network", "connect", driver_network, context_name)
     command("docker", "start", context_name)
     route = Route(
         f"https://localhost:{port}",
@@ -376,11 +404,11 @@ def qualify_consumption_fence(
         tls_context(ca, peers["listener"]["cert"], peers["listener"]["key"]),
     )
 
-    def controller(method, payload):
+    def controller(method, payload, subject="alice"):
         return route.call(
             envelope(
                 context_id,
-                "alice",
+                subject,
                 method,
                 payload,
                 None
@@ -487,7 +515,12 @@ def qualify_consumption_fence(
                 start_barrier="/control/start",
                 native_child_gate=True,
                 **(
-                    {"native_terminal_case": terminal_case, "native_prompt_gate": True}
+                    {"native_handoff_probe": True, "native_prompt_gate": True}
+                    if live_handoff
+                    else {
+                        "native_terminal_case": terminal_case,
+                        "native_prompt_gate": True,
+                    }
                     if terminal_case is not None
                     else {"native_owner_resume_probe": True}
                     if owner_resume
@@ -499,6 +532,8 @@ def qualify_consumption_fence(
         )
     )
     (private / "config.json").chmod(0o444)
+    if live_handoff:
+        (control / "handoff-epoch").write_text(grant["request_id"])
     args = [
         "docker",
         "run",
@@ -546,7 +581,7 @@ def qualify_consumption_fence(
     ]
     names.append(name)
     host_call = None
-    if terminal_case is not None:
+    if terminal_case is not None or live_handoff:
         # Host credentials never enter the worker's mounts or process namespace.
         from openbexi_spell_server.settlement import TerminalSettlement
 
@@ -581,6 +616,51 @@ def qualify_consumption_fence(
         command("docker", "start", name)
     else:
         command(*args)
+    if live_handoff:
+        from openbexi_spell_server.handoff import LiveFamilyHandoff
+        from v08_handoff_cohort import qualify_handoff_case
+        from v08_terminal_cohort import retire_terminal_probe
+
+        def handoff_call(action, **payload):
+            return host_route.call(
+                dict(
+                    schema=LiveFamilyHandoff.SCHEMA,
+                    context_id=context_id,
+                    execution_id=execution["id"],
+                    authority_incarnation=grant["authority_incarnation"],
+                    **payload,
+                ),
+                path="/v1/host/handoff/" + action,
+                schema=LiveFamilyHandoff.SCHEMA,
+            )
+
+        qualify_handoff_case(
+            name=name,
+            execution=execution,
+            connection=connection,
+            controller=controller,
+            state=state,
+            worker_image=worker_image,
+            command=command,
+            control=control,
+            await_event=await_event,
+            report=report,
+            host_call=host_call,
+            handoff_call=handoff_call,
+            output=terminal_evidence,
+        )
+        if primary_controller("execution.list", {}) != original_primary:
+            raise RuntimeError("Live handoff changed unrelated primary executions")
+        retire_terminal_probe(
+            command,
+            terminal_evidence,
+            name,
+            context_name,
+            (network, context_network),
+            names,
+            networks,
+        )
+        return
     if terminal_case is not None:
         from v08_terminal_cohort import qualify_terminal_case, retire_terminal_probe
 

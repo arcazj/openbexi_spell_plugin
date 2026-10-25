@@ -364,7 +364,9 @@ class NativeAdmissionServer:
         prompts=None,
         executor=None,
         report=lambda *_args, **_kwargs: None,
+        runtime=None,
     ):
+        self.runtime = runtime
         self.path = str(path)
         self.executable = Path(executable).resolve(strict=True)
         if not os.statvfs(self.executable).f_flag & os.ST_RDONLY:
@@ -631,6 +633,10 @@ class NativeAdmissionServer:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
                     body = decode(bytes(raw))
+                    if self.runtime is not None:
+                        self.runtime.ensure(
+                            body.pop("runtime_epoch", None), native=True
+                        )
                     self.dispatch(role, instance, body)
                     stream.sendall(b"ALLOW\n")
                 except Exception as error:

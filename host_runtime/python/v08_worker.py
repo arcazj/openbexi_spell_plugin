@@ -26,6 +26,7 @@ import tempfile
 # mounted separately; user source never participates in Python module lookup.
 sys.path.insert(0, "/opt/host")
 sys.path.insert(0, "/v08/server/src")
+sys.path.insert(0, "/v08/driver_plugin/src")
 from native import NativeSession
 from openbexi_spell_dss.relay import Relay
 from openbexi_spell_dss.codec import unpack
@@ -507,6 +508,9 @@ def run(config):
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
     prompt_profile = type(config) is dict and "native_prompt_gate" in config
+    handoff_profile = (
+        type(config) is dict and config.get("native_handoff_probe") is True
+    )
     terminal_case = config.get("native_terminal_case") if type(config) is dict else None
     exact(
         config,
@@ -518,7 +522,8 @@ def run(config):
         | ({"native_owner_commands_probe"} if owner_probe else set())
         | ({"native_owner_resume_probe"} if owner_resume else set())
         | ({"native_prompt_gate"} if prompt_profile else set())
-        | ({"native_terminal_case"} if terminal_case is not None else set()),
+        | ({"native_terminal_case"} if terminal_case is not None else set())
+        | ({"native_handoff_probe"} if handoff_profile else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -626,6 +631,12 @@ def run(config):
 
     # Exactly ONE consumption attempt. A lost reply must prevent native launch.
     rpc("consume")
+    runtime = None
+    if handoff_profile:
+        from handoff_runtime import HandoffRuntime
+
+        os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"
+        runtime = HandoffRuntime(request, route, "/control/handoff-epoch")
     # Force the real proxy. Only procedure-scoped audit events are journalled
     # by Context; unqualified methods never fall back to ExampleDriver.
     denied = set()
@@ -637,6 +648,8 @@ def run(config):
         if event != "openbexi/driverRequest":
             raise RuntimeError("Unexpected driver relay event")
         try:
+            if runtime is not None:
+                runtime.ensure(body.get("runtime_epoch"), native=True)
             raw = base64.b64decode(body["payload"], validate=True)
             if len(raw) > 32768:
                 raise ValueError("Native driver request exceeds bounds")
@@ -700,7 +713,7 @@ def run(config):
             )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
-    relay = Relay(dispatch)
+    relay = Relay(dispatch, runtime_epochs=True) if handoff_profile else Relay(dispatch)
     session_type, options = NativeSession, {}
     if thread_probe or child_profile:
         # The published v0.7 image and its default host session stay intact.
@@ -790,6 +803,7 @@ def run(config):
             prompts=prompts,
             executor="/opt/v08-native-home/bin/SPELL-Executor",
             report=emit,
+            runtime=runtime,
         )
         session.gui_binding_callback = admission.gui.bind
 
@@ -899,6 +913,21 @@ def run(config):
             return
         if owner_resume:
             owner_pause_resume_probe(session, controls, pump)
+            return
+        if handoff_profile:
+            from handoff_probe import run_handoff_probe
+
+            run_handoff_probe(
+                session,
+                controls,
+                child_gate,
+                children,
+                prompts,
+                pump,
+                runtime,
+                lifecycle,
+                emit,
+            )
             return
         if terminal_case is not None:
             from terminal_probe import run_terminal_probe

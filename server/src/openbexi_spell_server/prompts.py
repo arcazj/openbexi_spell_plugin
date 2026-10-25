@@ -23,7 +23,6 @@ from .contracts import (
     identifier,
     validate_authority_payload,
 )
-from .family import FamilyAdmission
 from .preflight import canonical_uuid
 
 
@@ -182,7 +181,7 @@ class NativePromptReplies:
         if (
             row is None
             or row["execution_id"] != original.execution_id
-            or row["origin_hash"] != FamilyAdmission.origin(original)
+            or row["origin_hash"] != self.authority.family_origin(original)
         ):
             raise Fault(403, "prompt_origin_fenced")
         member = self._member(original.execution_id, row["target_id"], row["origin_hash"])
@@ -201,7 +200,7 @@ class NativePromptReplies:
         fingerprint(body["definition_sha256"])
         if type(body["instance_id"]) is not str or not 1 <= len(body["instance_id"]) <= 512:
             raise Fault(400, "prompt_instance_invalid")
-        origin = FamilyAdmission.origin(original)
+        origin = self.authority.family_origin(original)
         with self.authority._execution_lock(original.execution_id):
             with self.store.transaction():
                 execution = self.authority._grant(original)
@@ -429,7 +428,7 @@ class NativePromptReplies:
         prompt = self._prompt(original, grant.prompt_id)
         if (
             grant.execution_id != original.execution_id
-            or grant.runtime_origin_hash != FamilyAdmission.origin(original)
+            or grant.runtime_origin_hash != self.authority.family_origin(original)
         ):
             raise Fault(403, "prompt_grant_origin_fenced")
         reply = self.store.db.execute(

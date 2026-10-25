@@ -66,6 +66,7 @@ class ExecutionAuthority:
         self.native_commands: NativeOwnerCommands | None = None
         self.native_prompts: NativePromptReplies | None = None
         self.terminal_settlement = None
+        self.live_handoff = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})
@@ -167,6 +168,16 @@ class ExecutionAuthority:
         if row is None:
             raise Fault(404, "execution_not_found")
         return row
+
+    def family_origin(self, grant):
+        """Immutable family origin survives a separately proven runtime rotation."""
+        from .family import FamilyAdmission
+
+        if self.live_handoff is not None:
+            row = self.live_handoff.record(grant.execution_id)
+            if row is not None:
+                return row["origin_hash"]
+        return FamilyAdmission.origin(grant)
 
     def _session(self, subject, connection_id):
         row = self.store.db.execute(
@@ -289,6 +300,8 @@ class ExecutionAuthority:
             raise Fault(404, "method_not_available")
         identifier(key)
         validate_authority_payload(method, payload)
+        if self.live_handoff is not None:
+            self.live_handoff.expire()
         permissions = {
             "session.open": ("execution:control",),
             "session.close": ("execution:control",),
@@ -483,6 +496,8 @@ class ExecutionAuthority:
         row = self._execution(payload["execution_id"])
         if row["owner"] != subject or row["epoch"] != payload["expected_epoch"]:
             raise Fault(403, "controller_fenced")
+        if self.live_handoff is not None and row["control_state"] == "HANDOFF_PAUSED":
+            return self.live_handoff.rebind(subject, payload, row)
         # Native resumption/rebinding needs a qualified quiescence barrier. Stay closed.
         if row["lifecycle"] != "RESERVED" or row["authority_incarnation"] != self.store.incarnation:
             raise Fault(409, "native_rebind_unqualified")

@@ -10,10 +10,21 @@
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <stdexcept>
 
 static void v08_native_request(const nlohmann::json& body)
 {
+    nlohmann::json captured = body;
+    const char* epochPath = std::getenv("OPENBEXI_V08_RUNTIME_EPOCH");
+    if (epochPath) {
+        std::ifstream stream(epochPath);
+        std::string epoch;
+        std::getline(stream, epoch);
+        if (!stream || epoch.size() != 36 || stream.peek() != EOF)
+            throw std::runtime_error("Native runtime epoch unavailable");
+        captured["runtime_epoch"] = epoch;
+    }
     const char* path = std::getenv("OPENBEXI_V08_ADMISSION_SOCKET");
     const char* agent = std::getenv("OPENBEXI_V08_AGENT_PID");
     if (!path || !agent || std::strlen(path) >= sizeof(sockaddr_un::sun_path))
@@ -47,7 +58,7 @@ static void v08_native_request(const nlohmann::json& body)
         || size != sizeof(peer) || peer.uid != getuid()
         || std::to_string(peer.pid) != expectedAgent)
         throw std::runtime_error("Native admission provider identity differs");
-    const std::string packet = body.dump() + "\n";
+    const std::string packet = captured.dump() + "\n";
     if (packet.size() > 32768) throw std::runtime_error("Native admission request too large");
     size_t sent = 0;
     while (sent < packet.size()) {

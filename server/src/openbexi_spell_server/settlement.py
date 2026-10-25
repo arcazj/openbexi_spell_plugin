@@ -48,7 +48,8 @@ class TerminalSettlement:
             self.store.db.execute(
                 "UPDATE terminal_settlements SET state='RESTART_FENCED' WHERE state!='RELEASED'"
             )
-            self.store.db.execute("PRAGMA user_version=18")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 18:
+                self.store.db.execute("PRAGMA user_version=18")
         authority.terminal_settlement = self
 
     def _record(self, execution_id):
@@ -284,6 +285,10 @@ class TerminalSettlement:
             reasons.append("family_roster_changed")
         expected = {""} | {c["id"] for c in children if c["state"] == "CONSUMED"}
         origin = digest(json.loads(execution["start_binding"]))
+        if self.authority.live_handoff is not None:
+            handoff = self.authority.live_handoff.record(execution["id"])
+            if handoff is not None:
+                origin = handoff["origin_hash"]
         if (
             {m["target_id"] for m in members} != expected
             or any(

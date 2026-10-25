@@ -72,9 +72,9 @@ class Context:
         self.launch = (
             WorkerLaunch(self.preflight, self.native_driver) if worker_launch is not None else None
         )
-        if native_pause not in (None, "fenced-probe"):
+        if native_pause not in (None, "fenced-probe", "host-freeze-candidate"):
             raise ValueError("Unsupported native pause profile")
-        if native_pause is not None:
+        if native_pause == "fenced-probe":
             if self.launch is None:
                 raise ValueError("Native pause requires the explicit retained launch profile")
             from .pause import NativePauseBarrier
@@ -122,6 +122,10 @@ class Context:
                 excluded_pins={self.listener_fingerprint, *self.preflight.peers},
             )
         self.authority.start_guard = self._require_preflight
+        if native_pause == "host-freeze-candidate":
+            from .handoff import LiveFamilyHandoff
+
+            LiveFamilyHandoff(self.authority)
 
     def close(self):
         if self.native_driver is not None:
@@ -149,6 +153,11 @@ class Context:
         if isinstance(identity, SettlementHost):
             if method != "POST" or self.settlement is None:
                 raise Fault(404, "route_not_available")
+            if path.startswith("/v1/host/handoff/") and self.authority.live_handoff is not None:
+                return {
+                    "schema": self.authority.live_handoff.SCHEMA,
+                    "result": self.authority.live_handoff.handle(identity, path, body),
+                }
             return {
                 "schema": TerminalSettlement.SCHEMA,
                 "result": self.settlement.handle(identity, path, body),
@@ -161,6 +170,7 @@ class Context:
                 if path
                 in (
                     "/v1/worker/consume",
+                    "/v1/worker/handoff-activate",
                     "/v1/worker/check",
                     "/v1/worker/event",
                     "/v1/worker/driver",

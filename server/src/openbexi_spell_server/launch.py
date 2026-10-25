@@ -45,6 +45,8 @@ class WorkerLaunch:
     def handle(self, peer, path, body):
         if self.preflight.peers.get(peer.fingerprint) != peer:
             raise Fault(403, "worker_identity_required")
+        if path == "/v1/worker/handoff-activate" and self.authority.live_handoff is not None:
+            return self.authority.live_handoff.activate(peer, body)
         allowed = {"/v1/worker/consume", "/v1/worker/check", "/v1/worker/event"}
         if self.driver is not None:
             allowed.add("/v1/worker/driver")
