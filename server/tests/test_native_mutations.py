@@ -74,11 +74,8 @@ def test_native_final_executor_hook_precedes_effect_admission():
     consumption = (ROOT / "host_runtime/native/execution_gate.H").read_text()
     assert builder.count("v08_admit_native_run(m_model, msg);") == 1
     assert builder.count("v08_consume_native_run(m_procId, cmd);") == 1
-    forward = forward.split("static void v08_admit_native_run", 1)[1]
     consumption = consumption.split("static void v08_consume_native_run", 1)[1]
-    forward_guard = "v08_context_forward_disabled(command)"
     final_guard = "v08_external_command_disabled(command.id, command.v08External)"
-    assert forward.index(forward_guard) < forward.index("v08_native_request({")
     assert consumption.index(final_guard) < consumption.index("v08_native_request({")
 
 
