@@ -33,3 +33,27 @@ release-gate acceptance.
 The authoritative `RELEASE_GATES.json` security gate and all other full
 gates remain unqualified until the full implementation and executed evidence
 pass. Publication and migration remain blocked.
+
+## Confirmed exact-code development scan — PASS
+
+Candidate **`b333607e0b73f6030bd430b52e883ee7cd8a7836`** passed the hosted
+[Python supply-chain job](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40206043448).
+The executed Python 3.13.16 environment contained **two installed components**:
+`openbexi-spell-server 0.8.0.dev43` and `pip 26.2.1`. The validated
+CycloneDX 1.6 SBOM included both. A pinned `pip-audit 2.10.1` lookup
+returned **zero known advisories for these two Python packages**; this
+does not mean the complete server image or native runtime is vulnerability-free.
+
+A direct download of the retained Action artifact was checked for ZIP
+integrity and JSON source identity. The archive SHA-256 is
+`b2e10a4475e6b46e593bcf87ba0c788e47ba92641ac5911822826f4f2344bdef`.
+The tested runtime wheel SHA-256 is
+`88447345edccda5318288345fc2b8dc69a146525b94811ca94b77f9a1f5847ce`.
+The three original artifacts are `runtime-sbom.json`,
+`python-vulnerabilities.json` and `summary.json`; the summary explicitly
+records `independent_security_qualified:false` and
+`full_v08_qualified:false`.
+
+This passes the narrowly defined installed-Python component scan only.
+It does **not** authorize changing the full `security` gate or releasing
+v0.8.
