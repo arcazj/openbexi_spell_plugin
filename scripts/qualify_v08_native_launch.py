@@ -503,6 +503,7 @@ def main():
     parser.add_argument("--native-pause-probe", action="store_true")
     parser.add_argument("--native-thread-barrier", action="store_true")
     parser.add_argument("--native-child-gate", action="store_true")
+    parser.add_argument("--native-prompts", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
@@ -512,6 +513,7 @@ def main():
                 profile.native_thread_barrier,
                 profile.native_dss,
                 profile.native_child_gate,
+                profile.native_prompts,
                 profile.native_listener_survival,
             )
         )
@@ -520,6 +522,7 @@ def main():
         parser.error(
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
+    profile.native_child_gate = profile.native_child_gate or profile.native_prompts
     profile.native_pause_probe = (
         profile.native_pause_probe or profile.native_thread_barrier
     )
@@ -549,6 +552,8 @@ def main():
         ROOT / "host_runtime/python/native.py",
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
+        ROOT / "host_runtime/python/prompt_replies.py",
+        ROOT / "scripts/v08_prompt_cohort.py",
         ROOT / "host_runtime/build_admission_context.py",
         ROOT / "host_runtime/native_prompt_patch.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
@@ -605,6 +610,10 @@ def main():
                 if profile.native_child_gate:
                     shutil.copy2(
                         ROOT / "host_runtime/python/children.py", code / "children.py"
+                    )
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/prompt_replies.py",
+                        code / "prompt_replies.py",
                     )
                     shutil.copy2(
                         ROOT / "host_runtime/python/control_journal.py",
@@ -697,7 +706,9 @@ def main():
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
                         "COPY *.H build.py native_prompt_patch.py /candidate/\n"
-                        "RUN python /candidate/build.py\nUSER 10003:10003\n"
+                        "RUN python /candidate/build.py"
+                        + (" --native-prompts" if profile.native_prompts else "")
+                        + "\nUSER 10003:10003\n"
                     )
                     built = subprocess.run(
                         [
@@ -818,12 +829,19 @@ def main():
                         "    if time.monotonic()>deadline:raise RuntimeError('grandchild barrier expired')\n"
                         "    time.sleep(0.05)\n"
                     )
+                if profile.native_prompts:
+                    from v08_prompt_cohort import prompt_fixture
+
+                    for child in sources.glob("*child*.py"):
+                        child.write_text(child.read_text() + prompt_fixture())
                 for n in range(10):
                     selected = fixture
                     if profile.native_pause_probe and n == 1:
                         selected = selected.replace(
                             "import os,time\n", "import os,time\n" + background
                         )
+                    if profile.native_prompts:
+                        selected += prompt_fixture(timeout=(n == 0))
                     (sources / ("procedure_" + str(n) + ".py")).write_text(
                         selected.replace("{index}", str(n)).replace(
                             "{square}", str(n * n)
@@ -928,6 +946,8 @@ def main():
                 if profile.native_child_gate:
                     config["native_children"] = "admission-only"
                     config["native_controls"] = "run-journal"
+                if profile.native_prompts:
+                    config["native_prompts"] = "owner-reply-candidate"
                 if profile.native_listener_survival:
                     config["subjects"]["observer"] = ["context:read", "execution:read"]
                 dss_name = None
@@ -1231,7 +1251,14 @@ def main():
                                     else {}
                                 ),
                                 **(
-                                    {"native_child_gate": True}
+                                    {
+                                        "native_child_gate": True,
+                                        **(
+                                            {"native_prompt_gate": True}
+                                            if profile.native_prompts
+                                            else {}
+                                        ),
+                                    }
                                     if profile.native_child_gate
                                     else {}
                                 ),
@@ -1301,6 +1328,14 @@ def main():
                     {"container": container, "processes": host_processes(name)}
                     for name, container in zip(worker_names, containers, strict=True)
                 ]
+                prompt_cohort = None
+                if profile.native_prompts:
+                    from v08_prompt_cohort import PromptCohort
+
+                    prompt_cohort = PromptCohort(
+                        state, controller, executions, connection
+                    )
+                    prompt_cohort.start()
                 (control / "start").write_text("start once\n")
                 await_event(worker_names, "native-running", seconds=30)
                 report["running_cohort"] = [
@@ -1417,6 +1452,8 @@ def main():
                                 worker_names,
                             )
                         )
+                    if prompt_cohort is not None:
+                        report["native_prompt_cohort"] = prompt_cohort.finish()
                     if exits != ["0"] * 10:
                         raise RuntimeError("Native cohort did not exit successfully")
                     for name, container, execution in zip(

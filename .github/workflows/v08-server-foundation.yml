@@ -12,6 +12,7 @@ on:
       - 'scripts/qualify_v08_native_launch.py'
       - 'scripts/v08_listener_survival.py'
       - 'scripts/v08_native_consumption.py'
+      - 'scripts/v08_prompt_cohort.py'
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
@@ -35,6 +36,7 @@ on:
       - 'scripts/qualify_v08_native_launch.py'
       - 'scripts/v08_listener_survival.py'
       - 'scripts/v08_native_consumption.py'
+      - 'scripts/v08_prompt_cohort.py'
       - 'scripts/check_v08_release.py'
       - 'host_runtime/python/v08_worker.py'
       - 'host_runtime/python/thread_barrier.py'
@@ -51,8 +53,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: v08-server-${{ github.ref }}
-  cancel-in-progress: true
+  group: v08-server-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
 
 jobs:
   foundation:
@@ -135,6 +137,8 @@ jobs:
             flags: '--native-thread-barrier'
           - profile: child-gate
             flags: '--native-child-gate'
+          - profile: native-prompts
+            flags: '--native-prompts'
           - profile: listener-survival
             flags: '--native-listener-survival'
     steps:
