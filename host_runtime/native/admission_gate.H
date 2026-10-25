@@ -29,7 +29,11 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 static void v08_admit_native_run(SPELLexecutorModel& model, const SPELLipcMessage& message)
 {
     const std::string command = message.getId();
-    if (command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE") return;
+    const bool terminal = command == "CMD_ABORT" || command == "CMD_CLOSE";
+    // Preserve the Executor-specific denial oracle for uncredentialled legacy
+    // messages; positive terminal actions MUST carry a fresh owner request.
+    if (terminal && !message.hasField("V08ControlRequest")) return;
+    if (!terminal && command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE") return;
     if (!message.hasField("V08ControlRequest"))
         throw std::runtime_error("Native RUN has no immutable admission identity");
     // The Executor can redirect commands bearing ParentId to a child. Fresh

@@ -131,6 +131,8 @@ class FamilyAdmission:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 prior = self.store.db.execute(
                     "SELECT * FROM child_admissions WHERE execution_id=? AND request_id=?",
                     (grant.execution_id, payload["request_id"]),
@@ -215,6 +217,8 @@ class FamilyAdmission:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 row = self.store.db.execute(
                     "SELECT * FROM child_admissions WHERE id=?", (child.admission_id,)
                 ).fetchone()

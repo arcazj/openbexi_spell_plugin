@@ -2,6 +2,7 @@
 // Private candidate only. Original v0.7 binaries are preserved.
 #include "admission_ipc.H"
 #include "mutation_policy.H"
+#include "terminal_gate.H"
 #include <fcntl.h>
 #include <cstdio>
 #include <atomic>
@@ -69,6 +70,13 @@ static void v08_consume_native_run(const std::string& instance, const ExecutorCo
     // Original native internal safety commands are not owner commands.
     if (v08_external_command_disabled(command.id, command.v08External))
         throw std::runtime_error("Native external mutation denied");
+    if (v08_terminal_command(command.id)) {
+        if (command.v08External) {
+            static V08TerminalContinuations continuations;
+            continuations.consume(command);
+        }
+        return; // The complete terminal intent was consumed before CIF effects.
+    }
     if (command.id != "CMD_RUN" &&
         (!(command.id == "CMD_STEP" || command.id == "CMD_PAUSE") || !command.v08External)) return;
     if (command.v08Request.empty())

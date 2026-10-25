@@ -111,6 +111,8 @@ class DriverGate:
         if binding not in self.bindings:
             raise Fault(403, "driver_binding_fenced")
         row = self.authority._grant(grant)
+        if self.authority.native_commands is not None:
+            self.authority.native_commands.check_new_work(grant.execution_id)
         self.authority._require(row["owner"], "execution:start", "execution:control")
         if (
             row["lifecycle"] != "STARTING"

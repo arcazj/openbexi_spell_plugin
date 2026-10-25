@@ -470,6 +470,7 @@ def run(config):
     consumption_probe = type(config) is dict and "native_consume_fence_probe" in config
     owner_probe = type(config) is dict and "native_owner_commands_probe" in config
     owner_resume = type(config) is dict and "native_owner_resume_probe" in config
+    terminal_probe = type(config) is dict and "native_terminal_probe" in config
     exact(
         config,
         fields
@@ -478,7 +479,8 @@ def run(config):
         | ({"native_child_gate"} if child_profile else set())
         | ({"native_consume_fence_probe"} if consumption_probe else set())
         | ({"native_owner_commands_probe"} if owner_probe else set())
-        | ({"native_owner_resume_probe"} if owner_resume else set()),
+        | ({"native_owner_resume_probe"} if owner_resume else set())
+        | ({"native_terminal_probe"} if terminal_probe else set()),
     )
     if probe_enabled and config["pause_probe"] is not True:
         raise ValueError("Native pause probe requires explicit true")
@@ -511,6 +513,22 @@ def run(config):
         or consumption_probe
     ):
         raise ValueError("Owner resume requires its separate private native candidate")
+    if terminal_probe and (
+        config["native_terminal_probe"]
+        not in {
+            "abort-paused",
+            "abort-running",
+            "abort-prompt",
+            "normal",
+            "error",
+            "timeout",
+        }
+        or not child_profile
+        or owner_probe
+        or owner_resume
+        or consumption_probe
+    ):
+        raise ValueError("Terminal probe requires its own private native profile")
     grant = start_grant(config["grant"])
     worker = config["preflight"]
     root = readonly_tree(worker["snapshot_directory"])
@@ -823,6 +841,19 @@ def run(config):
                 writable.write(b"probe")
                 writable.flush()
             emit("native-consumption-probe-ready", writable_marker_directory=True)
+        if terminal_probe:
+            from terminal_probe import qualify_worker_terminal
+
+            qualify_worker_terminal(
+                config["native_terminal_probe"],
+                session,
+                controls,
+                admission,
+                pump,
+                lifecycle,
+                emit,
+            )
+            return
         if owner_probe:
             owner_step_probe(session, controls, admission, consume_fenced, pump)
             return

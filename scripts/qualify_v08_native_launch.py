@@ -549,6 +549,8 @@ def main():
         ROOT / "host_runtime/python/native.py",
         ROOT / "host_runtime/python/child_gate.py",
         ROOT / "host_runtime/python/control_journal.py",
+        ROOT / "host_runtime/python/terminal_probe.py",
+        ROOT / "scripts/v08_terminal_probes.py",
         ROOT / "host_runtime/build_admission_context.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",
@@ -602,6 +604,10 @@ def main():
                         code / "native_candidate.py",
                     )
                 if profile.native_child_gate:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/terminal_probe.py",
+                        code / "terminal_probe.py",
+                    )
                     shutil.copy2(
                         ROOT / "host_runtime/python/children.py", code / "children.py"
                     )
@@ -789,6 +795,9 @@ def main():
                             "    if time.monotonic()>deadline:raise RuntimeError('child barrier expired')\n"
                             "    time.sleep(0.05)\n"
                         )
+                    from v08_terminal_probes import prepare_terminal_fixtures
+
+                    prepare_terminal_fixtures(sources)
                     (sources / "owner_resume.py").write_text(
                         "import os,time\nFIRST = 1\n"
                         "with open('/workspace/owner-running','w') as marker:marker.write('running')\n"
@@ -863,6 +872,13 @@ def main():
                     catalog["grandchild-0"] = dict(
                         catalog["procedure-0"], entrypoint="grandchild_0.py"
                     )
+                    from v08_terminal_probes import CASES as TERMINAL_CASES
+
+                    for case in TERMINAL_CASES:
+                        catalog["terminal-" + case] = dict(
+                            catalog["procedure-0"],
+                            entrypoint="terminal_" + case.replace("-", "_") + ".py",
+                        )
                     catalog["owner-resume"] = dict(
                         catalog["procedure-0"], entrypoint="owner_resume.py"
                     )
@@ -1970,6 +1986,30 @@ def main():
                         host_processes=host_processes,
                         events=events,
                     )
+                    for terminal_case in TERMINAL_CASES:
+                        qualify_consumption_fence(
+                            terminal_case=terminal_case,
+                            temporary=temporary,
+                            prefix=prefix,
+                            context_image=context_image,
+                            config=config,
+                            sources=sources,
+                            worker_image=worker_image,
+                            code=code,
+                            snapshot=snapshot,
+                            ca=ca,
+                            peers=peers,
+                            primary_controller=controller,
+                            control=control,
+                            primary_state=state,
+                            names=names,
+                            networks=networks,
+                            report=report,
+                            command=command,
+                            await_event=await_event,
+                            host_processes=host_processes,
+                            events=events,
+                        )
                 authority_info = json.loads(command("docker", "inspect", context_name))[
                     0
                 ]

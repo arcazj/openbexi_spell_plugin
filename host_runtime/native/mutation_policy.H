@@ -5,7 +5,8 @@
 
 static bool v08_command_supported(const std::string& id)
 {
-    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE";
+    return id == "CMD_RUN" || id == "CMD_STEP" || id == "CMD_PAUSE" ||
+        id == "CMD_ABORT" || id == "CMD_CLOSE";
 }
 
 static bool v08_message_disabled(const std::string& id, bool redirected)

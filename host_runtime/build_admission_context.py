@@ -199,7 +199,7 @@ def patch_native_tree(source):
     command.write_text(
         command_text.replace(
             "    std::string earg;",
-            "    std::string earg;\n    std::string v08Request;\n    bool v08External = false;",
+            "    std::string earg;\n    std::string v08Request;\n    bool v08External = false;\n    bool v08TerminalAdmitted = false;",
         )
     )
     cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
@@ -218,7 +218,9 @@ def patch_native_tree(source):
     ):
         raise ValueError("Ambiguous native mutation boundary")
     cif_text = cif_text.replace(
-        include, include + '\n#include "/candidate/mutation_gate.H"'
+        include,
+        include
+        + '\n#include "/candidate/mutation_gate.H"\n#include "/candidate/execution_gate.H"',
     )
     cif_text = cif_text.replace(
         message_entry,
@@ -252,6 +254,15 @@ def patch_native_tree(source):
     }
 """,
     )
+    prompt_abort = "        if (cancelPrompt()) return;"
+    if cif_text.count(prompt_abort) != 1:
+        raise ValueError("Ambiguous composed prompt ABORT boundary")
+    cif_text = cif_text.replace(
+        prompt_abort,
+        "        if (cancelPrompt()) {\n"
+        '            v08_report_native_disposition(getProcId(), cmd, "HANDLER_RETURNED");\n'
+        "            return;\n        }",
+    )
     marker = "    cmd.id = msgId;"
     if cif_text.count(marker) != 1:
         raise ValueError("Ambiguous native command decoding")
@@ -259,7 +270,27 @@ def patch_native_tree(source):
         cif_text.replace(
             marker,
             marker
-            + '\n    cmd.v08External = true;\n    if (msg.hasField("V08ControlRequest")) cmd.v08Request = msg.get("V08ControlRequest");',
+            + """
+    cmd.v08External = true;
+    if (msg.hasField("V08ControlRequest")) cmd.v08Request = msg.get("V08ControlRequest");
+    if (v08_terminal_command(cmd.id)) {
+        try {
+            const auto status = SPELLexecutor::instance().getStatus();
+            const bool terminal = status == STATUS_FINISHED || status == STATUS_ABORTED || status == STATUS_ERROR;
+            v08_admit_terminal_command(cmd, terminal, [&]() {
+                v08_native_request({
+                    {"schema", "openbexi.native-consume/1"},
+                    {"instance_id", getProcId()},
+                    {"request_id", cmd.v08Request},
+                    {"command", cmd.id}
+                });
+            });
+        } catch (const std::exception&) {
+            v08_note_disabled_mutation(getProcId(), msg.getId());
+            return;
+        }
+    }
+""",
         )
     )
     controller = source / "lib/SPELL_EXC/src/SPELLcontroller.C"

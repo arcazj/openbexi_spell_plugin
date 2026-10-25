@@ -103,6 +103,21 @@ class NativeOwnerCommands:
                 self.store.db.execute("PRAGMA user_version=16")
         authority.native_commands = self
 
+    def terminal_intents(self, execution_id):
+        """Consumed terminal requests, not terminal outcomes or release proof."""
+        return self.store.db.execute(
+            "SELECT command,target_id FROM native_owner_commands "
+            "WHERE execution_id=? AND state='EXECUTION_UNPROVEN' "
+            "AND command IN ('CMD_ABORT','CMD_CLOSE')",
+            (execution_id,),
+        ).fetchall()
+
+    def check_new_work(self, execution_id):
+        # Conservatively fence the whole family when any member is stopping.
+        # Audit/safety reports use the immutable original grant and remain open.
+        if self.terminal_intents(execution_id):
+            raise Fault(403, "native_terminal_work_fenced")
+
     def _permissions(self, owner, command):
         permissions = (
             ("execution:control", "execution:start")
@@ -113,6 +128,16 @@ class NativeOwnerCommands:
 
     def _live(self, command, execution):
         self._permissions(command["owner"], command["command"])
+        intents = self.terminal_intents(execution["id"])
+        if intents and (
+            command["command"] not in {"CMD_ABORT", "CMD_CLOSE"}
+            or any(
+                row["target_id"] == command["target_id"]
+                and (row["command"] == "CMD_CLOSE" or command["command"] == "CMD_ABORT")
+                for row in intents
+            )
+        ):
+            raise Fault(403, "native_terminal_work_fenced")
         self.authority._session(command["owner"], command["connection_id"])
         if (
             execution["lifecycle"] != "STARTING"
@@ -150,6 +175,8 @@ class NativeOwnerCommands:
                 execution = self.authority._owner(subject, payload)
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "owner_command_runtime_unavailable")
+                if payload["command"] not in {"CMD_ABORT", "CMD_CLOSE"}:
+                    self.check_new_work(execution["id"])
                 # Live owner/session/policy proof precedes historical replay.
                 replay = self.authority._replay(subject, "execution.command", key, payload)
                 if replay is not None:
@@ -236,7 +263,12 @@ class NativeOwnerCommands:
                 ).fetchone()
                 if command is None:
                     return dict(
-                        action="none" if execution["control_state"] == "OWNED" else "hold",
+                        action=(
+                            "none"
+                            if execution["control_state"] == "OWNED"
+                            and not self.terminal_intents(original.execution_id)
+                            else "hold"
+                        ),
                         execution_id=original.execution_id,
                     )
                 try:

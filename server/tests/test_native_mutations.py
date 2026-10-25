@@ -18,13 +18,13 @@ def test_compiled_native_policy_closes_unsupported_messages_and_requests(tmp_pat
 #include "mutation_policy.H"
 #include <cassert>
 int main() {
-    for (const auto id: {"CMD_RUN", "CMD_STEP", "CMD_PAUSE"}) {
+    for (const auto id: {"CMD_RUN", "CMD_STEP", "CMD_PAUSE", "CMD_ABORT", "CMD_CLOSE"}) {
         assert(v08_command_supported(id));
         assert(!v08_message_disabled(id, false));
         assert(v08_message_disabled(id, true));
         assert(!v08_external_command_disabled(id, true));
     }
-    for (const auto id: {"CMD_ABORT", "CMD_CLOSE", "CMD_BLOCK", "CMD_STOP",
+    for (const auto id: {"CMD_BLOCK", "CMD_STOP",
                          "CMD_SCRIPT", "CMD_GOTO", "CMD_STEP_OVER", "CMD_SKIP",
                          "CMD_RELOAD", "CMD_ACTION", "CMD_FINISH", "CMD_INTERRUPT",
                          "CMD_FUTURE_UNREVIEWED"}) {

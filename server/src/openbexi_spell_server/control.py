@@ -99,6 +99,8 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 if self.catalog is None or row["lifecycle"] != "STARTING":
                     raise Fault(403, "native_member_origin_fenced")
                 if target is None:
@@ -251,6 +253,8 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 row = self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 if row["lifecycle"] != "STARTING":
                     raise Fault(403, "native_control_origin_fenced")
                 self._initial_run_open(grant, body["target_admission_id"])
@@ -325,6 +329,8 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 self._initial_run_open(grant, body["target_admission_id"])
                 self._member(grant, body["target_admission_id"])
                 row = self.store.db.execute(
@@ -376,6 +382,8 @@ class NativeControlJournal:
         with self.authority._execution_lock(grant.execution_id):
             with self.store.transaction():
                 self.authority._grant(grant)
+                if self.authority.native_commands is not None:
+                    self.authority.native_commands.check_new_work(grant.execution_id)
                 self._initial_run_open(grant, body["target_admission_id"])
                 self._member(grant, body["target_admission_id"])
                 row = self.store.db.execute(
