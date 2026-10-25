@@ -32,7 +32,10 @@ def test_every_supported_terminal_case_is_scheduled_by_native_qualification():
     assert "forced-loss" in cohort.CASES
 
 
-def test_forced_loss_observes_original_process_and_reports_unknown(tmp_path, monkeypatch):
+@pytest.mark.parametrize("legacy_status", ["RUNNING", "ERROR"])
+def test_forced_loss_observes_original_process_and_reports_unknown(
+    tmp_path, monkeypatch, legacy_status
+):
     process = subprocess.Popen(["sleep", "30"])
     handle = os.pidfd_open(process.pid)
     events = []
@@ -42,7 +45,7 @@ def test_forced_loss_observes_original_process_and_reports_unknown(tmp_path, mon
     controls = SimpleNamespace(lock=threading.Lock(), owner_operations={}, owner_consumed=set())
     controls.poll_owner = lambda: None
     session = SimpleNamespace(instance="original")
-    session.request = lambda *args, **kwargs: {"ExecutorStatus": "RUNNING"}
+    session.request = lambda *args, **kwargs: {"ExecutorStatus": legacy_status}
     admission = SimpleNamespace(members={"original": (process.pid, handle)})
     try:
         probe.run_terminal_probe(

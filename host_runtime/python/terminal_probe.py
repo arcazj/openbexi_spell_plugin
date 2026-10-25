@@ -60,6 +60,14 @@ def run_terminal_probe(
                 raise RuntimeError("Native fault injection target already exited")
             signal.pidfd_send_signal(pidfd, signal.SIGKILL)
             killed = True
+            # Context may publish ERROR before the killed Executor is reaped.
+            # That status is not a known procedure outcome. Complete the fault
+            # observation against the original process handle before querying
+            # native status or considering the ordinary terminal-state branch.
+            if not select.select([pidfd], [], [], 5)[0]:
+                raise RuntimeError("Injected native process loss was not observed")
+            state = "UNKNOWN"
+            break
         exited = bool(select.select([pidfd], [], [], 0)[0])
         if exited:
             if case == "forced-loss" and killed:
