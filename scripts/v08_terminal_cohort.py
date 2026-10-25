@@ -208,9 +208,7 @@ def qualify_terminal_case(
             commands.append(
                 controller(
                     "execution.command",
-                    dict(
-                        proof, command="CMD_CLOSE", target_admission_id=children[0][0]
-                    ),
+                    dict(proof, command="CMD_CLOSE", target_admission_id=children[0][0]),
                 )["command_id"]
             )
         await_event([name], "native-terminal-observed", seconds=30)
