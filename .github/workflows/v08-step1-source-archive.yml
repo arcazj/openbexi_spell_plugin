@@ -1,0 +1,35 @@
+name: v0.8 Step 1 exact-source checkout archive
+
+on:
+  push:
+    branches: ['feature/v0.8-step1-lifecycle']
+    paths: ['.github/workflows/v08-step1-source-archive.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  exact-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Archive only tracked files with exact commit identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qualification/v08-step1-source
+          git ls-files -z | tar --null -T - -czf .qualification/v08-step1-source/source.tar.gz
+          sha256sum .qualification/v08-step1-source/source.tar.gz > .qualification/v08-step1-source/SHA256SUMS
+          git rev-parse HEAD > .qualification/v08-step1-source/COMMIT_SHA
+          git rev-parse HEAD^{tree} > .qualification/v08-step1-source/TREE_SHA
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Retain source for offline exact-tree integration and review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-step1-exact-source-${{ github.sha }}
+          path: .qualification/v08-step1-source/
+          retention-days: 7
+          if-no-files-found: error
