@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Private local native provider. Context RPC remains certificate authenticated.
 #include "admission_ipc.H"
+#include "mutation_policy.H"
 
 static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 {
@@ -29,6 +30,10 @@ static void v08_admit_native_start(SPELLexecutorModel& model, bool reconnecting)
 static void v08_admit_native_run(SPELLexecutorModel& model, const SPELLipcMessage& message)
 {
     const std::string command = message.getId();
+    // Close alternate native peer paths before a mutating command or prompt
+    // response reaches the Executor. Ordinary lifecycle traffic is unchanged.
+    if (v08_context_forward_disabled(command))
+        throw std::runtime_error("Native Context forwarding mutation denied");
     if (command != "CMD_RUN" && command != "CMD_STEP" && command != "CMD_PAUSE") return;
     if (!message.hasField("V08ControlRequest"))
         throw std::runtime_error("Native RUN has no immutable admission identity");

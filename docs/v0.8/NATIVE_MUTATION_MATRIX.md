@@ -71,3 +71,22 @@ prove whole-family closure. Next work remains positive argument/prompt-bound
 actions, terminal queue dispositions, full barrier/new-owner identity and the
 separate native peer/management inventories. The startup LOADED timeout is
 still unresolved; no full release gate is promoted.
+
+## Dev41 candidate: Context outbound and final-Executor defense in depth
+
+The Context-to-Executor `sendMessageToExecutor` path previously returned
+early for unsupported command IDs, leaving enforcement to the Executor CIF.
+The private candidate now **denies unsupported `CMD_*` commands and prompt
+answer/cancel at Context forwarding**. Admitted RUN/STEP/PAUSE still require
+the exact immutable operation identity and certificate-authenticated RPC.
+The `executeCommand` gate also rejects external commands outside the
+owner allowlist before execution, including value-copied/deferred commands.
+Internal native safety commands are not reclassified as owner commands.
+
+A compiled C++ policy test covers allowed and denied forwarding, external
+commands, prompt replies and ordinary non-mutating traffic; a source wiring
+test verifies both pre-dispatch hooks. These are private denial defenses,
+**not** positive ABORT/CLOSE/prompt/setter support or proof of complete
+native peer/management inventories. The controller's separate STOP path,
+whole-family barrier and owner handoff remain unresolved. All full v0.8
+release gates stay false until separately qualified.

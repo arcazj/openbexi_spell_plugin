@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Private candidate only. Original v0.7 binaries are preserved.
 #include "admission_ipc.H"
+#include "mutation_policy.H"
 #include <fcntl.h>
 #include <cstdio>
 #include <atomic>
@@ -41,6 +42,10 @@ static void v08_hold_before_consumption_probe(const ExecutorCommand& command)
 
 static void v08_consume_native_run(const std::string& instance, const ExecutorCommand& command)
 {
+    // Never let a copied/deferred external command evade the owner inventory.
+    // Original native internal safety commands are not owner commands.
+    if (v08_external_command_disabled(command.id, command.v08External))
+        throw std::runtime_error("Native external mutation denied");
     if (command.id != "CMD_RUN" &&
         (!(command.id == "CMD_STEP" || command.id == "CMD_PAUSE") || !command.v08External)) return;
     if (command.v08Request.empty())

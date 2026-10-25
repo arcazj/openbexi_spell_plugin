@@ -22,6 +22,8 @@ int main() {
         assert(v08_command_supported(id));
         assert(!v08_message_disabled(id, false));
         assert(v08_message_disabled(id, true));
+        assert(!v08_context_forward_disabled(id));
+        assert(!v08_external_command_disabled(id, true));
     }
     for (const auto id: {"CMD_ABORT", "CMD_CLOSE", "CMD_BLOCK", "CMD_STOP",
                          "CMD_SCRIPT", "CMD_GOTO", "CMD_STEP_OVER", "CMD_SKIP",
@@ -30,9 +32,19 @@ int main() {
         assert(!v08_command_supported(id));
         assert(v08_message_disabled(id, false));
         assert(v08_message_disabled(id, true));
+        assert(v08_context_forward_disabled(id));
+        assert(v08_external_command_disabled(id, true));
+        assert(!v08_external_command_disabled(id, false));
     }
     assert(v08_message_disabled("MSG_ANSWER", false));
     assert(v08_message_disabled("MSG_CANCEL", false));
+    assert(v08_context_forward_disabled("MSG_ANSWER"));
+    assert(v08_context_forward_disabled("MSG_CANCEL"));
+    assert(!v08_context_forward_disabled("MSG_LOADED"));
+    assert(!v08_context_forward_disabled("RSP_DONE"));
+    assert(!v08_context_forward_disabled("REQ_EXEC_STATUS"));
+    assert(v08_external_command_disabled("MSG_ANSWER", true));
+    assert(!v08_external_command_disabled("CMD_PAUSE", false));
     for (const auto id: {"REQ_SET_CONFIG", "REQ_SET_BREAKPOINT", "REQ_CLEAR_BREAKPOINT",
                          "REQ_CHANGE_VARIABLE", "REQ_CHANGE_RESOURCE", "REQ_UPD_DICTIONARY",
                          "REQ_FUTURE_UNREVIEWED"}) assert(!v08_request_supported(id));
@@ -61,6 +73,19 @@ int main() {
         timeout=30,
     )
     subprocess.run([str(binary)], check=True, capture_output=True, timeout=5)
+
+
+def test_native_context_and_executor_hooks_precede_effect_admission():
+    """The compiled allowlist must be called at the actual native boundaries."""
+    builder = (ROOT / "host_runtime/build_admission_context.py").read_text()
+    forward = (ROOT / "host_runtime/native/admission_gate.H").read_text()
+    consumption = (ROOT / "host_runtime/native/execution_gate.H").read_text()
+    assert builder.count("v08_admit_native_run(m_model, msg);") == 1
+    assert builder.count("v08_consume_native_run(m_procId, cmd);") == 1
+    forward = forward.split("static void v08_admit_native_run", 1)[1]
+    consumption = consumption.split("static void v08_consume_native_run", 1)[1]
+    assert forward.index("v08_context_forward_disabled(command)") < forward.index("v08_native_request({")
+    assert consumption.index("v08_external_command_disabled(command.id, command.v08External)") < consumption.index("v08_native_request({")
 
 
 @pytest.fixture
