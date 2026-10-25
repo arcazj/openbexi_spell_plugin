@@ -1,0 +1,70 @@
+name: v0.8 prelaunch multi-service Compose integration
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/v0.8/**'
+      - 'server/**'
+      - '.github/workflows/v08-compose.yml'
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - 'deploy/v0.8/**'
+      - 'server/**'
+      - '.github/workflows/v08-compose.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compose-prelaunch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    env:
+      V08_GATEWAY_PORT: '19443'
+      COMPOSE_PROJECT_NAME: v08-prelaunch-ci
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Provision one-time role-isolated certificates outside workspace
+        run: |
+          set -euo pipefail
+          echo "V08_DEPLOY_ROOT=$RUNNER_TEMP/v08-private-${{ github.run_id }}" >> "$GITHUB_ENV"
+          echo "V08_SERVICE_UID=$(id -u)" >> "$GITHUB_ENV"
+          python deploy/v0.8/provision.py --output "$RUNNER_TEMP/v08-private-${{ github.run_id }}"
+      - name: Build, boot and exercise separate TLS gateway, Listener, Contexts and DSS
+        run: |
+          set -euo pipefail
+          compose() { docker compose -f deploy/v0.8/compose.yaml "$@"; }
+          trap 'compose down -v --remove-orphans || true' EXIT
+          compose config --quiet
+          compose up -d --build --wait --wait-timeout 240
+          mkdir -p .qualification/v08-compose
+          python deploy/v0.8/qualify_compose.py \
+            --root "$V08_DEPLOY_ROOT" --phase before \
+            --output .qualification/v08-compose/before.json
+          compose exec -T dss python -I -c \
+            "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).status==200"
+          compose restart context-a
+          python deploy/v0.8/qualify_compose.py \
+            --root "$V08_DEPLOY_ROOT" --phase after \
+            --previous .qualification/v08-compose/before.json \
+            --output .qualification/v08-compose/after.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipts = [json.loads((Path(".qualification/v08-compose") / (name + ".json")).read_text()) for name in ("before","after")]
+          assert all(r["passed"] and not r["full_v08_qualified"] for r in receipts)
+          print({"passed": True, "scope": "prelaunch-compose", "checks": sum(len(r["executed_checks"]) for r in receipts)})
+          PY
+      - name: Keep only redacted prelaunch receipts, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-compose-prelaunch-${{ github.sha }}
+          path: .qualification/v08-compose/*.json
+          if-no-files-found: warn
+          retention-days: 30
+          include-hidden-files: true

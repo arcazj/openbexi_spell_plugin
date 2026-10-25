@@ -1,0 +1,126 @@
+# Staging-only certificate gateway -> Listener -> independent Contexts.
+# No native workers, execution, controller handoff or runtime release are enabled.
+name: openbexi-spell-v08-prelaunch
+x-authority-security: &authority-security
+  read_only: true
+  init: true
+  restart: "no"
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  pids_limit: 128
+  mem_limit: 384m
+  tmpfs:
+    - /tmp:size=16m,noexec,nosuid,nodev
+x-authority-build: &authority-build
+  context: ../..
+  dockerfile: deploy/v0.8/Dockerfile.server
+services:
+  context-a:
+    <<: *authority-security
+    build: *authority-build
+    image: openbexi-spell-server:0.8.0.dev43-prelaunch
+    user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
+    command: ["context", "--config", "/run/private/config.json"]
+    volumes:
+      - type: bind
+        source: "${V08_DEPLOY_ROOT:?Provision private directory}/context-a"
+        target: /run/private
+        read_only: true
+      - type: bind
+        source: "${V08_DEPLOY_ROOT}/state-a"
+        target: /state
+    networks: [control, driver]
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import socket; socket.create_connection(('127.0.0.1',9441),2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+  context-b:
+    <<: *authority-security
+    build: *authority-build
+    image: openbexi-spell-server:0.8.0.dev43-prelaunch
+    user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
+    command: ["context", "--config", "/run/private/config.json"]
+    volumes:
+      - type: bind
+        source: "${V08_DEPLOY_ROOT}/context-b"
+        target: /run/private
+        read_only: true
+      - type: bind
+        source: "${V08_DEPLOY_ROOT}/state-b"
+        target: /state
+    networks: [control, driver]
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import socket; socket.create_connection(('127.0.0.1',9442),2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+  listener:
+    <<: *authority-security
+    build: *authority-build
+    image: openbexi-spell-server:0.8.0.dev43-prelaunch
+    user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
+    command: ["listener", "--config", "/run/private/config.json"]
+    volumes:
+      - type: bind
+        source: "${V08_DEPLOY_ROOT}/listener"
+        target: /run/private
+        read_only: true
+    networks: [control]
+    depends_on:
+      context-a: {condition: service_healthy}
+      context-b: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import socket; socket.create_connection(('127.0.0.1',9444),2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+  gateway:
+    <<: *authority-security
+    build: *authority-build
+    image: openbexi-spell-server:0.8.0.dev43-prelaunch
+    user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
+    command: ["gateway", "--config", "/run/private/config.json"]
+    volumes:
+      - type: bind
+        source: "${V08_DEPLOY_ROOT}/gateway"
+        target: /run/private
+        read_only: true
+    networks: [control]
+    ports: ["127.0.0.1:${V08_GATEWAY_PORT:-19443}:9443"]
+    depends_on:
+      listener: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import socket; socket.create_connection(('127.0.0.1',9443),2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+  dss:
+    image: openbexi-spell-plugin-dss:0.1.0
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    read_only: true
+    restart: "no"
+    init: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 64
+    mem_limit: 256m
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev
+    volumes:
+      - dss_state:/var/lib/dss
+    networks: [driver]
+    healthcheck:
+      test: ["CMD", "python", "-I", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 15
+networks:
+  control:
+    internal: true
+  driver:
+    internal: true
+volumes:
+  dss_state:
