@@ -539,6 +539,11 @@ def run(config):
     if step1_profile:
         if not terminal_profile:
             raise ValueError("Step 1 test profile requires all native terminal hooks")
+        # -I intentionally excludes the entry script directory. Import this
+        # operator-only probe from the verified read-only code mount, never
+        # from the procedure snapshot or working directory.
+        readonly_tree("/v08")
+        sys.path.insert(0, "/v08")
         from step1_probe import CASES
 
         if config["native_step1_probe"] not in CASES:
