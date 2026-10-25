@@ -22,7 +22,6 @@ int main() {
         assert(v08_command_supported(id));
         assert(!v08_message_disabled(id, false));
         assert(v08_message_disabled(id, true));
-        assert(!v08_context_forward_disabled(id));
         assert(!v08_external_command_disabled(id, true));
     }
     for (const auto id: {"CMD_ABORT", "CMD_CLOSE", "CMD_BLOCK", "CMD_STOP",
@@ -32,17 +31,11 @@ int main() {
         assert(!v08_command_supported(id));
         assert(v08_message_disabled(id, false));
         assert(v08_message_disabled(id, true));
-        assert(v08_context_forward_disabled(id));
         assert(v08_external_command_disabled(id, true));
         assert(!v08_external_command_disabled(id, false));
     }
     assert(v08_message_disabled("MSG_ANSWER", false));
     assert(v08_message_disabled("MSG_CANCEL", false));
-    assert(v08_context_forward_disabled("MSG_ANSWER"));
-    assert(v08_context_forward_disabled("MSG_CANCEL"));
-    assert(!v08_context_forward_disabled("MSG_LOADED"));
-    assert(!v08_context_forward_disabled("RSP_DONE"));
-    assert(!v08_context_forward_disabled("REQ_EXEC_STATUS"));
     assert(v08_external_command_disabled("MSG_ANSWER", true));
     assert(!v08_external_command_disabled("CMD_PAUSE", false));
     for (const auto id: {"REQ_SET_CONFIG", "REQ_SET_BREAKPOINT", "REQ_CLEAR_BREAKPOINT",
@@ -75,10 +68,9 @@ int main() {
     subprocess.run([str(binary)], check=True, capture_output=True, timeout=5)
 
 
-def test_native_context_and_executor_hooks_precede_effect_admission():
+def test_native_final_executor_hook_precedes_effect_admission():
     """The compiled allowlist must be called at the actual native boundaries."""
     builder = (ROOT / "host_runtime/build_admission_context.py").read_text()
-    forward = (ROOT / "host_runtime/native/admission_gate.H").read_text()
     consumption = (ROOT / "host_runtime/native/execution_gate.H").read_text()
     assert builder.count("v08_admit_native_run(m_model, msg);") == 1
     assert builder.count("v08_consume_native_run(m_procId, cmd);") == 1
@@ -88,6 +80,33 @@ def test_native_context_and_executor_hooks_precede_effect_admission():
     final_guard = "v08_external_command_disabled(command.id, command.v08External)"
     assert forward.index(forward_guard) < forward.index("v08_native_request({")
     assert consumption.index(final_guard) < consumption.index("v08_native_request({")
+
+
+def test_real_frozen_native_stop_mailbox_fence_is_unambiguous():
+    """STOP bypasses executeCommand: reject external STOP, retain internal stop."""
+    import zipfile
+
+    builder_path = ROOT / "host_runtime/build_admission_context.py"
+    spec = importlib.util.spec_from_file_location("v08_stop_fence", builder_path)
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        controller = archive.read("lib/SPELL_EXC/src/SPELLcontroller.C").decode()
+    changed = builder.fence_external_controller_mailbox(controller)
+    stop = changed.index("if (cmd.id == CMD_STOP)")
+    guard = changed.index("v08_external_command_disabled(cmd.id, cmd.v08External)")
+    assert guard < stop
+    assert 'LOG_ERROR("V08_NATIVE_EXTERNAL_MUTATION_DENIED")' in changed
+    with pytest.raises(ValueError, match="Ambiguous original controller STOP mailbox"):
+        builder.fence_external_controller_mailbox(changed)
+
+
+def test_original_executor_negative_oracle_remains_reachable():
+    """Do not intercept the native CIF's mandatory denial oracle upstream."""
+    forwarding = (ROOT / "host_runtime/native/admission_gate.H").read_text()
+    native_patch = (ROOT / "host_runtime/build_admission_context.py").read_text()
+    assert "v08_context_forward_disabled(" not in forwarding
+    assert "v08_note_disabled_mutation(getProcId(), msg.getId())" in native_patch
 
 
 @pytest.fixture

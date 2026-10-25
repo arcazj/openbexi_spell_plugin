@@ -90,3 +90,25 @@ test verifies both pre-dispatch hooks. These are private denial defenses,
 native peer/management inventories. The controller's separate STOP path,
 whole-family barrier and owner handoff remain unresolved. All full v0.8
 release gates stay false until separately qualified.
+
+## Dev41/42: Native negative-oracle correction and STOP mailbox fence
+
+The first dev41 candidate rejected unsupported Context-to-Executor commands
+upstream. Hosted dev41 child-gate qualification **failed** in the owner probe:
+`Missing original-Executor mutation denial`, because the negative payload
+never reached the Executor's audited boundary. Other scoped jobs passed,
+but the failed native proof is retained and is not reclassified as a pass.
+
+The Context outbound denial is reverted instead of weakening the original
+Executor denial oracle. The Executor CIF still rejects unsupported mutations
+before side effects, and the additional final consumption guard fences
+external unsupported commands. The original C++ `SPELLcontroller::run()`
+processes `CMD_STOP` **before** `executeCommand()`; the candidate now
+rejects copied/deferred external commands at that earlier mailbox special
+case, while preserving original internal `stop()` behavior.
+
+Exact frozen source ZIP and double-patch regression tests verify the stop
+hook and explicitly ensure that the original Executor denial route remains
+reachable. Full exact-head hosted native qualification is still required.
+No affirmative owner prompt/setter/management action or release permission
+is inferred; all eleven full v0.8 release groups remain unqualified.

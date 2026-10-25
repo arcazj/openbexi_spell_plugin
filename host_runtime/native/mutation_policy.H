@@ -15,13 +15,6 @@ static bool v08_message_disabled(const std::string& id, bool redirected)
         (!v08_command_supported(id) || redirected);
 }
 
-// Context -> Executor IPC: reject unqualified native mutations before dispatch.
-static bool v08_context_forward_disabled(const std::string& id)
-{
-    return id == "MSG_ANSWER" || id == "MSG_CANCEL" ||
-        (id.compare(0, 4, "CMD_") == 0 && !v08_command_supported(id));
-}
-
 // Defense in depth for copied/deferred commands marked external by the CIF.
 static bool v08_external_command_disabled(const std::string& id, bool external)
 {

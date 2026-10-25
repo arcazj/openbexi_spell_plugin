@@ -21,6 +21,30 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def fence_external_controller_mailbox(text):
+    """Close native STOP's path around executeCommand's authorization gate."""
+    run = "void SPELLcontroller::run()\n{\n"
+    stop = "        if (cmd.id == CMD_STOP)\n        {\n"
+    if (
+        text.count(run) != 1
+        or text.count(stop) != 1
+        or "v08_external_command_disabled(cmd.id, cmd.v08External)" in text
+    ):
+        raise ValueError("Ambiguous original controller STOP mailbox")
+    return text.replace(
+        stop,
+        """        // STOP is consumed before executeCommand; fence external commands here.
+        // The original stop() operation inserts a non-external safety marker.
+        if (v08_external_command_disabled(cmd.id, cmd.v08External))
+        {
+            LOG_ERROR("V08_NATIVE_EXTERNAL_MUTATION_DENIED");
+            continue;
+        }
+"""
+        + stop,
+    )
+
+
 def patch_native_tree(source):
     """Apply only to the independently reproduced frozen composition."""
     # The legacy GUI client key is client-proposed/reusable. Allocate an
@@ -248,6 +272,7 @@ def patch_native_tree(source):
     autorun = "void SPELLcontroller::setAutoRun()\n{\n"
     if controller_text.count(execute) != 1 or controller_text.count(autorun) != 1:
         raise ValueError("Ambiguous native command consumption boundary")
+    controller_text = fence_external_controller_mailbox(controller_text)
     controller_text = controller_text.replace(
         execute,
         execute
