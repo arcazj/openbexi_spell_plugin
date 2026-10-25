@@ -84,8 +84,10 @@ def test_native_context_and_executor_hooks_precede_effect_admission():
     assert builder.count("v08_consume_native_run(m_procId, cmd);") == 1
     forward = forward.split("static void v08_admit_native_run", 1)[1]
     consumption = consumption.split("static void v08_consume_native_run", 1)[1]
-    assert forward.index("v08_context_forward_disabled(command)") < forward.index("v08_native_request({")
-    assert consumption.index("v08_external_command_disabled(command.id, command.v08External)") < consumption.index("v08_native_request({")
+    forward_guard = "v08_context_forward_disabled(command)"
+    final_guard = "v08_external_command_disabled(command.id, command.v08External)"
+    assert forward.index(forward_guard) < forward.index("v08_native_request({")
+    assert consumption.index(final_guard) < consumption.index("v08_native_request({")
 
 
 @pytest.fixture
