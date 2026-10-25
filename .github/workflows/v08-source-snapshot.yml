@@ -1,0 +1,32 @@
+name: v0.8 reproducible source snapshot
+
+on:
+  push:
+    branches: ['feature/v0.8-server-architecture']
+    paths:
+      - '.github/workflows/v08-source-snapshot.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Retain exact tracked source and qualification references
+        run: |
+          set -euo pipefail
+          mkdir -p .qualification/v08-source
+          git ls-files -z | tar --null -T - -czf .qualification/v08-source/tracked-source.tar.gz
+          sha256sum .qualification/v08-source/tracked-source.tar.gz > .qualification/v08-source/SHA256SUMS
+          git rev-parse HEAD > .qualification/v08-source/COMMIT_SHA
+          git status --porcelain --untracked-files=no > .qualification/v08-source/WORKTREE_STATUS
+      - name: Upload exact source snapshot
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-source-snapshot-${{ github.sha }}
+          path: .qualification/v08-source/
+          if-no-files-found: error
+          retention-days: 7
