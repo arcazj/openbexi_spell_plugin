@@ -387,9 +387,7 @@ def test_monitored_event_replay_is_bounded_scoped_and_redacted(cluster, pki):
         store._event("CONTROL_OWNER_CHANGED", {"execution_id": str(uuid.uuid4()), "user": "HIDDEN"})
         store._event("CONTROL_CLAIM_REQUESTED", {"capability": "SECRET"})
     query = {"after_sequence": 0, "limit": 1}
-    status, reply = request(
-        server, pki["edge"]["client"], path, subject=ALICE, payload=query
-    )
+    status, reply = request(server, pki["edge"]["client"], path, subject=ALICE, payload=query)
     assert status == 200
     page = reply["result"]
     assert page["runtime_enabled"] is False
@@ -401,7 +399,10 @@ def test_monitored_event_replay_is_bounded_scoped_and_redacted(cluster, pki):
     all_events = list(page["events"])
     for _ in range(5):
         next_status, next_body = request(
-            server, pki["edge"]["client"], path, subject=ALICE,
+            server,
+            pki["edge"]["client"],
+            path,
+            subject=ALICE,
             payload={"after_sequence": page["next_sequence"], "limit": 1},
         )
         assert next_status == 200
@@ -410,39 +411,52 @@ def test_monitored_event_replay_is_bounded_scoped_and_redacted(cluster, pki):
         if not page["has_more"]:
             break
     assert [event["type"] for event in all_events] == [
-        "EXECUTION_RESERVED", "CONTROL_OWNER_CHANGED", "CONTROL_CLAIM_REQUESTED"
+        "EXECUTION_RESERVED",
+        "CONTROL_OWNER_CHANGED",
+        "CONTROL_CLAIM_REQUESTED",
     ]
     assert not any(s in json.dumps(all_events) for s in ("SECRET", "DO_NOT_LEAK", "HIDDEN"))
-    assert request(
-        server, pki["edge"]["client"], path, subject=BOB, payload=query
-    )[0] == 403
-    assert request(
-        server, pki["edge"]["client"], "/v1/contexts/B/events",
-        subject=BOB, payload=query
-    )[0] == 403
-    assert request(
-        server, pki["edge"]["client"], path, subject=CAROL, payload=query
-    )[0] == 403
-    assert request(
-        server, pki["edge"]["client"], path, subject=ALICE, payload=query,
-        headers={"Idempotency-Key": "must-not-be-forwarded"}
-    )[0] == 400
+    assert request(server, pki["edge"]["client"], path, subject=BOB, payload=query)[0] == 403
+    assert (
+        request(server, pki["edge"]["client"], "/v1/contexts/B/events", subject=BOB, payload=query)[
+            0
+        ]
+        == 403
+    )
+    assert request(server, pki["edge"]["client"], path, subject=CAROL, payload=query)[0] == 403
+    assert (
+        request(
+            server,
+            pki["edge"]["client"],
+            path,
+            subject=ALICE,
+            payload=query,
+            headers={"Idempotency-Key": "must-not-be-forwarded"},
+        )[0]
+        == 400
+    )
 
 
-@pytest.mark.parametrize("payload", [
-    {"after_sequence": -1, "limit": 10},
-    {"after_sequence": True, "limit": 10},
-    {"after_sequence": 1.5, "limit": 10},
-    {"after_sequence": 2**63, "limit": 10},
-    {"after_sequence": 0, "limit": 0},
-    {"after_sequence": 0, "limit": 33},
-    {"after_sequence": 0, "limit": True},
-    {"after_sequence": 0, "limit": 1, "capability": "forged"},
-])
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"after_sequence": -1, "limit": 10},
+        {"after_sequence": True, "limit": 10},
+        {"after_sequence": 1.5, "limit": 10},
+        {"after_sequence": 2**63, "limit": 10},
+        {"after_sequence": 0, "limit": 0},
+        {"after_sequence": 0, "limit": 33},
+        {"after_sequence": 0, "limit": True},
+        {"after_sequence": 0, "limit": 1, "capability": "forged"},
+    ],
+)
 def test_event_replay_rejects_invalid_page_contract(cluster, pki, payload):
     code, _ = request(
-        cluster["listener"], pki["edge"]["client"],
-        "/v1/contexts/A/events", subject=ALICE, payload=payload
+        cluster["listener"],
+        pki["edge"]["client"],
+        "/v1/contexts/A/events",
+        subject=ALICE,
+        payload=payload,
     )
     assert code == 400
 
@@ -453,4 +467,3 @@ def test_event_replay_empty_and_high_cursor_do_not_rewind(cluster, pki):
     assert result["next_sequence"] == 2**62
     assert result["has_more"] is False
     assert result["runtime_enabled"] is False
-

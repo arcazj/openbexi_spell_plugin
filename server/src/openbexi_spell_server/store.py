@@ -134,18 +134,21 @@ class ContextStore:
         if type(limit) is not int or not 1 <= limit <= 32:
             raise Fault(400, "invalid_event_page_size")
         visible = (
-            "EXECUTION_RESERVED", "CONTROLLER_REBOUND",
-            "CONTROL_CLAIM_REQUESTED", "CONTROL_CLAIM_REJECTED",
-            "CONTROL_CLAIM_ACCEPTED", "CONTROL_OWNER_CHANGED",
-            "CONTROL_CLAIM_CANCELLED", "CONTROL_TRANSFER_BLOCKED",
-            "CONTROL_CONNECTION_CLOSED", "CONTROL_TRANSFER_PAUSE_REQUESTED",
+            "EXECUTION_RESERVED",
+            "CONTROLLER_REBOUND",
+            "CONTROL_CLAIM_REQUESTED",
+            "CONTROL_CLAIM_REJECTED",
+            "CONTROL_CLAIM_ACCEPTED",
+            "CONTROL_OWNER_CHANGED",
+            "CONTROL_CLAIM_CANCELLED",
+            "CONTROL_TRANSFER_BLOCKED",
+            "CONTROL_CONNECTION_CLOSED",
+            "CONTROL_TRANSFER_PAUSE_REQUESTED",
             "CONTROL_TRANSFER_PAUSE_UNPROVEN",
         )
         placeholders = ",".join("?" for _ in visible)
         with self.transaction(write=False):
-            latest = self.db.execute(
-                "SELECT COALESCE(MAX(sequence),0) FROM events"
-            ).fetchone()[0]
+            latest = self.db.execute("SELECT COALESCE(MAX(sequence),0) FROM events").fetchone()[0]
             rows = self.db.execute(
                 f"SELECT sequence,type,body FROM events WHERE sequence>? "
                 f"AND type IN ({placeholders}) ORDER BY sequence LIMIT ?",

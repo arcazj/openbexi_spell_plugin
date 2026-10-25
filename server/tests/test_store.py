@@ -128,15 +128,14 @@ def test_snapshot_excludes_values_and_service_credentials(tmp_path):
 
 def test_redacted_event_read_does_not_consume_audit_capacity(tmp_path):
     from openbexi_spell_server.store import ContextStore
+
     store = ContextStore(tmp_path / "events", "EVENTS", max_events=3)
     try:
         with store.transaction():
             store._event("CONTROL_CLAIM_REQUESTED", {"token": "DO_NOT_EXPOSE"})
         before = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
         page = store.execution_events(0, 1)
-        assert page["events"] == [{
-            "sequence": before, "type": "CONTROL_CLAIM_REQUESTED"
-        }]
+        assert page["events"] == [{"sequence": before, "type": "CONTROL_CLAIM_REQUESTED"}]
         assert "DO_NOT_EXPOSE" not in str(page)
         assert store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0] == before
         assert page["latest_sequence"] == before
