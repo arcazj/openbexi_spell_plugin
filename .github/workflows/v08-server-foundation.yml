@@ -17,7 +17,12 @@ on:
       - 'host_runtime/python/thread_barrier.py'
       - 'host_runtime/python/child_gate.py'
       - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/python/prompt_replies.py'
       - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native_prompt_patch.py'
+      - 'host_runtime/native_terminal_patch.py'
+      - 'host_runtime/python/step1_probe.py'
+      - 'scripts/qualify_v08_step1_native.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
@@ -38,7 +43,12 @@ on:
       - 'host_runtime/python/thread_barrier.py'
       - 'host_runtime/python/child_gate.py'
       - 'host_runtime/python/control_journal.py'
+      - 'host_runtime/python/prompt_replies.py'
       - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/native_prompt_patch.py'
+      - 'host_runtime/native_terminal_patch.py'
+      - 'host_runtime/python/step1_probe.py'
+      - 'scripts/qualify_v08_step1_native.py'
       - 'host_runtime/native/**'
       - 'host_runtime/python/native.py'
       - '.github/workflows/v08-server-foundation.yml'
@@ -48,7 +58,7 @@ permissions:
 
 concurrency:
   group: v08-server-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ !startsWith(github.head_ref || github.ref_name, 'feature/v0.8-step1') }}
 
 jobs:
   foundation:

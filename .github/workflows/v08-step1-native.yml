@@ -1,0 +1,32 @@
+name: v0.8 Step 1 actual prompt and terminal native lifecycle
+on:
+  pull_request:
+    paths: ['host_runtime/**', 'server/**', 'scripts/qualify_v08_step1_native.py', '.github/workflows/v08-step1-native.yml']
+  push:
+    branches: ['feature/v0.8-step1-complete', 'qualification/v0.8-step1-execution']
+    paths: ['host_runtime/**', 'server/**', 'scripts/qualify_v08_step1_native.py', '.github/workflows/v08-step1-native.yml']
+permissions:
+  contents: read
+concurrency:
+  group: v08-step1-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-native-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Rebuild original Context and Executor with prompt and terminal hooks
+        run: python scripts/qualify_v08_step1_native.py
+      - name: Preserve source-bound native results including every failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-step1-native-${{ github.sha }}
+          path: .qualification/v08-step1-native/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
