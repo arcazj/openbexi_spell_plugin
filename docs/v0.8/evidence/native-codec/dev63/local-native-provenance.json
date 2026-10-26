@@ -1,0 +1,39 @@
+{
+  "schema": "openbexi.local-native-allocation-provenance/1",
+  "archive_sha256": "d7535367869416f807b376dd0289b62a8aec70a9891a78e59a4e1535a03b25cd",
+  "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "flags": [
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-pthread",
+    "-no-pie",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer"
+  ],
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:abort_on_error=1"
+  },
+  "link_dependencies": [
+    "frozen libspell_executor313.so",
+    "published libpython3.13",
+    "published loader and system shared libraries"
+  ],
+  "sha256": {
+    "frozen_shared_runtime": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a",
+    "before_incoming": "45e3dcb8a2af61f575697066b443facc394ba1ee9e202a40989c67d01be5980d",
+    "after_incoming": "427b9ade304ff750d9391b83a3cd5a466f9d6e1e19502bdcb1126bfdf6e4af7e",
+    "before_header": "c54d973818d5a1c7658d1d6669464207edb5ddd989804d898acd81c31cf2114f",
+    "after_header": "ef491968798f934095ba25600ccfd2935a0ed0170501d97c0e449546d2dcd80b",
+    "incoming_harness": "22858fae5098bedbfb22dd427a86c391ce05011f362fb4e4cab427411bf1a76e",
+    "before_probe": "a0e78190f8cfc0f08b29dac5b248ae2a753848e3d7478a401d07bd18481789a4",
+    "after_probe": "6de7fe75609774ad1172127bc9cc9c94a40df156ad27317d3d770541a083e395",
+    "private_bridge_binary": "305e492902b1cb1f93b513a793d7538bcbb6aec464663baff45a1ac6601dc405"
+  },
+  "limitations": [
+    "Constructor harness runs actual composed constructors, not complete native procedures.",
+    "Bridge compilation uses frozen native dependencies locally; candidate private runtime integration is checked by hosted qualification.",
+    "The full hosted recovery/resource verdict is required separately."
+  ]
+}

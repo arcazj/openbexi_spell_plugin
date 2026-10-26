@@ -99,12 +99,30 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
         bridge = (ROOT / bridge_path).read_text()
         start = bridge.index("Json encode(const SPELLipcMessage& message) {")
         end = bridge.index("\n}", start) + 2
+        if name == "before":
+            # Exercise the frozen transport's initializer-list envelopes.
+            assert 'emit({{"event","message"},{"message",encode(message)}});' in bridge
+            assert (
+                'emit({{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}});'
+                in bridge
+            )
+            wrappers = """
+Json encodeEvent(const char* event, const SPELLipcMessage& message) {
+    return {{"event",event},{"message",encode(message)}};
+}
+Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
+    return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+}
+"""
+        else:
+            wrappers = bridge[end : bridge.index("class Peer final:")]
         (folder / "bridge_encode.inc").write_text(
-            "#include <nlohmann/json.hpp>\nusing Json=nlohmann::json;\n"
+            "#include <nlohmann/json.hpp>\n#include <algorithm>\nusing Json=nlohmann::json;\n"
             + "static const char* fieldNames[]={"
             + ",".join(json.dumps(field) for field in sorted(fields))
             + "};\n"
             + bridge[start:end]
+            + wrappers
         )
         text = text.replace(
             "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
@@ -167,7 +185,8 @@ def test_native_codec_rejects_unrepresentable_and_truncated_fields(codec_binarie
 
 
 @pytest.mark.parametrize(
-    "case,ratio", [("alloc_parse", 0.55), ("alloc_data", 0.35), ("alloc_bridge", 0.60)]
+    "case,ratio",
+    [("alloc_parse", 0.55), ("alloc_data", 0.35), ("alloc_bridge", 0.50), ("alloc_frame", 0.50)],
 )
 def test_native_codec_reduces_measured_allocation_churn(codec_binaries, case, ratio):
     before = run(codec_binaries["before"], case)

@@ -139,3 +139,37 @@ cannot run in this local environment (inconsistent child `/proc` visibility
 and denied Unix sockets) and remain mandatory in hosted CI without exclusions.
 The new hosted regression starts an actual process at a candidate path,
 rejects the old path, accepts the exact candidate and observes pidfd death.
+
+
+## Dev64 hosted outcome and dev65 envelope correction
+
+Dev64 `379be7d` (run `40383987717`) passes 1,283 service tests, including the
+real process/pidfd regression, plus 95 overlapping fault and 241 portable tests.
+Twelve of fourteen core jobs and all five ancillary workflows pass. All 19
+archives and recorded source hashes are verified; the tested merge tree matches.
+Twenty-four fresh startup cycles and all 16 terminal cases complete.
+Both original families finish the 45-second soak, every progress interval advances,
+all eight original processes survive, and no memory-pressure/OOM events occur.
+Resource acceptance still fails: handoff peak 2,131,828,736 bytes, growth
+361,357,312 bytes; IDE peak 2,123,988,992 bytes, growth 341,569,536 bytes.
+Allocation stack sampling is off and numeric memory observation remains on.
+See [retained receipts](evidence/native-codec/dev64-hosted/qualification-summary.json).
+
+Per-process observations show Context near a plateau while the bridge and both
+original Executors continue growing during this fixed interval. Live allocation
+counters remain small relative to retained allocator heap; this is not proof of
+a live-object leak. The fixed peak/growth limits remain mandatory.
+
+Dev65 iterates the message's existing fields through the unchanged whitelist,
+avoiding temporary lookup-key strings, and constructs final notification/request
+frames directly instead of copying initializer-list envelopes. The complete
+serialized payload digest matches the frozen and dev64 implementations for
+empty, binary, Unicode, invalid-UTF-8, omitted unknown fields, notification types,
+error/success replies and maximum sequence values. Emission still precedes ACK.
+
+Over 10,000 representative complete notification frames, allocated bytes drop
+from 22,010,000 in dev64 to 17,280,000 in dev65; allocations drop from 490,000 to
+290,000. The frozen baseline is 36,170,000 bytes / 830,000 allocations.
+These are component measurements, not proof that the resource gate is resolved.
+All 76 targeted checks and the full bridge compile pass. The unchanged hosted
+resource oracle must still pass, and all eleven full-release gates remain closed.

@@ -70,6 +70,15 @@ int main(int argc,char** argv) {
         require(value["fields"]["DefaultProvided"]=="true"&&value["fields"]["TimeoutMicroseconds"]=="123");
         require(!value["fields"].contains("not-in-whitelist"));
         record(value.dump(-1,' ',false,Json::error_handler_t::replace));
+        for(const char* event:{"message","unsupportedRequest"}) {
+            auto frame=encodeEvent(event,m);require(frame.size()==2&&frame["event"]==event&&frame["message"]==value);
+            record(frame.dump(-1,' ',false,Json::error_handler_t::replace));
+        }
+        for(auto type:{MSG_TYPE_RESPONSE,MSG_TYPE_ERROR}) {
+            m.setType(type);auto frame=encodeReply(4294967295u,m);
+            require(frame.size()==3&&frame["seq"]==4294967295u&&frame["ok"]==(type!=MSG_TYPE_ERROR));
+            require(frame["message"]==encode(m));record(frame.dump(-1,' ',false,Json::error_handler_t::replace));
+        }
     } else if(mode=="duplicates") {
         auto wire=m.data()+m.dataItem("Csp","last")+m.dataItem(MessageField::FIELD_ID,"last-id");
         m.fromData(wire);require(m.getId()=="last-id"&&m.get("Csp")=="last");
@@ -96,12 +105,13 @@ int main(int argc,char** argv) {
     } else if(mode=="oversize_key") {
         m.set(std::string(65536,'x'),"v");bool rejected=false;
         try{m.data();}catch(const SPELLipcError&){rejected=true;}require(rejected);
-    } else if(mode=="alloc_parse"||mode=="alloc_data"||mode=="alloc_bridge") {
+    } else if(mode=="alloc_parse"||mode=="alloc_data"||mode=="alloc_bridge"||mode=="alloc_frame") {
         for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
         auto data=m.data();
         measuring=true;
         for(int i=0;i<10000;++i) {
             if(mode=="alloc_parse") {SPELLipcMessage parsed;parsed.fromData(data);}
+            else if(mode=="alloc_frame") {auto value=encodeEvent("message",m);require(value.size()==2);}
             else if(mode=="alloc_bridge") {auto value=encode(m);require(value.size()==5);}
             else {auto wire=m.data();if(wire.empty())return 4;}
         }

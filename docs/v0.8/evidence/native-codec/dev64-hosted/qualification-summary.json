@@ -1,0 +1,143 @@
+{
+  "schema": "openbexi.native-ipc-qualified-scope/1",
+  "candidate": "379be7d4fbc07bd218186fe3724ef3b24bcdce11",
+  "candidate_tree": "17960fa1f7a47b7ddf0d5d39a2241e08aaf04a10",
+  "merge_commit": "590926fdb36edc35bb05e369cf8b44383f3007df",
+  "merge_tree_matches": true,
+  "run_id": 40383987717,
+  "core_jobs_passed": 12,
+  "core_jobs_failed": 2,
+  "service_tests": {
+    "tests": 1283,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "fault_tests": 95,
+  "portable_tests": 241,
+  "ancillary_workflows_passed": 5,
+  "startup_cycles": 24,
+  "terminal_cases": 16,
+  "bridge_identity_regression_resolved": true,
+  "profiles": [
+    {
+      "profile": "handoff",
+      "artifact_id": 12680985520,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_peak_budget_exceeded",
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.564268758,
+        "peak_bytes": 2131828736,
+        "window_growth_bytes": 361357312,
+        "first_window_median_bytes": 1714393088,
+        "last_window_median_bytes": 2075750400
+      },
+      "soak": {
+        "start_ns": 372196150174,
+        "end_ns": 417760418932,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1350,
+          "background": 1665,
+          "child": 1467
+        },
+        "counters_after": {
+          "root": 3352,
+          "background": 3892,
+          "child": 3529
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "allocation_stack_sampling_enabled": false,
+      "bridge_sha256": "2fff1b3abb1f9c48faac71d44a509b2aa992e9e51512545ebe6043403d8bc2f1"
+    },
+    {
+      "profile": "ide",
+      "artifact_id": 12680037762,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_peak_budget_exceeded",
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.483312577,
+        "peak_bytes": 2123988992,
+        "window_growth_bytes": 341569536,
+        "first_window_median_bytes": 1717616640,
+        "last_window_median_bytes": 2059186176
+      },
+      "soak": {
+        "start_ns": 362852130656,
+        "end_ns": 408335443233,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1420,
+          "background": 1698,
+          "child": 1532
+        },
+        "counters_after": {
+          "root": 3481,
+          "background": 3933,
+          "child": 3640
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "allocation_stack_sampling_enabled": false,
+      "bridge_sha256": "04adeb86da2c4994d047fd74a5afc6e6cc18cbaec0f5fd220a3db3304d1ac67b"
+    }
+  ],
+  "full_v08_qualified": false,
+  "files_sha256": {
+    "handoff/native-recovery-soak.json": "c1d31c0e532b938a12dcfa18ef7cb45dfe7bcff1869a87b789db919b51e15e83",
+    "handoff/native-resource-acceptance.json": "06ddbef8dfbd53611fee1ea769b2946c0f4e998d7b9a0d84ebaf5cd02ccdf718",
+    "handoff/native-resource-observer.json": "a898c162ff74ef42d8bfaeaddc3c3c8ea9a804e05e58efa416680e4dfca9256e",
+    "handoff/native-resources.log": "9650647848dac463e57e7c320a049e592d7512426da2b1fe600c5c3f7e55d408",
+    "ide/native-recovery-soak.json": "7213dd12c7dd6e75f01961a3936bc6ed2b8319407e26aac76d9ed4184bf00aa4",
+    "ide/native-resource-acceptance.json": "a18454b72cabea0e071fd63cfffe7303819951b84fa137f9273bd88a1e3ca005",
+    "ide/native-resource-observer.json": "da92267552ed507cbd43db378bcf0aa3bdca784caf4d784930e231265e22a164",
+    "ide/native-resources.log": "4e8dc49b0f79322d73d8421d29c57d366e9db0c3028bdca22ec6d15d590353f8",
+    "publication-preflight.json": "7db92852c85750c9a0be2f0c95ad1a8ae171b6dbd30125250910d5504d00654e",
+    "verified-artifacts.json": "25f9e42376c905a983554f80d825d929f67fc7cd580e6f7762d1f95c1360adf7"
+  }
+}

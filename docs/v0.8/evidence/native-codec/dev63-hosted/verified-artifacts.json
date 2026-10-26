@@ -320,5 +320,144 @@
         "native_terminal": null
       }
     ]
+  },
+  {
+    "artifact_id": 12678944344,
+    "name": "v08-server-foundation-a837e459be297d702da82b7720fa8f4738d12cfc",
+    "sha256": "17250aff16f7804e778250a8a0cc69b4c803758ee9455bbbeba7a8ccf78e5feb",
+    "zip_integrity": true,
+    "candidate": "c15fa936ef596e845afa91a59fc05190adaacab9",
+    "reports": [
+      {
+        "path": "/workspace/scratch/ee52b2b6d1b8/evidence/12678944344/run-20261026T190105Z-c9b9c583/result.json",
+        "passed": true,
+        "error": null,
+        "junit": {
+          "tests": 1282,
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0
+        },
+        "verified_source_files": 213,
+        "checks": [
+          {
+            "name": "lint",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_resource_probe.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "format",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_resource_probe.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "types",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "mypy",
+              "--config-file",
+              "server/pyproject.toml",
+              "server/src"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "tests",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "pytest",
+              "server/tests",
+              "-v",
+              "-W",
+              "error",
+              "--tb=short",
+              "--durations=15",
+              "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/v08-server/run-20261026T190105Z-c9b9c583/tests.xml"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 600
+          }
+        ],
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
   }
 ]

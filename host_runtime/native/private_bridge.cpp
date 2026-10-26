@@ -7,6 +7,7 @@
 #include "SPELL_IPC/SPELLipc_Executor.H"
 #include "SPELL_UTIL/SPELLerror.H"
 #include <nlohmann/json.hpp>
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <mutex>
@@ -24,8 +25,22 @@ Json encode(const SPELLipcMessage& message) {
     result["id"]=message.getId(); result["type"]=message.getType();
     result["sender"]=message.getSender(); result["receiver"]=message.getReceiver();
     auto& fields=result["fields"]=Json::object();
-    for (const auto& field:fieldNames)
-        if (message.hasField(field)) fields[field]=message.get(field);
+    for (const auto& field:message.v08Fields())
+        if (std::find(std::begin(fieldNames),std::end(fieldNames),field.first)!=std::end(fieldNames))
+            fields[field.first]=field.second;
+    return result;
+}
+Json encodeEvent(const char* event, const SPELLipcMessage& message) {
+    Json result=Json::object();
+    result["event"]=event;
+    result["message"]=encode(message);
+    return result;
+}
+Json encodeReply(unsigned sequence, const SPELLipcMessage& message) {
+    Json result=Json::object();
+    result["seq"]=sequence;
+    result["ok"]=message.getType()!=MSG_TYPE_ERROR;
+    result["message"]=encode(message);
     return result;
 }
 class Peer final:public SPELLipcInterfaceListener {
@@ -34,7 +49,7 @@ public:
     void processMessage(const SPELLipcMessage& message) override {
         // Publish before acknowledging: terminal status must never overtake
         // output which the executor already considers delivered.
-        emit({{"event","message"},{"message",encode(message)}});
+        emit(encodeEvent("message",message));
         if (message.getType()==MSG_TYPE_NOTIFY && message.hasField(MessageField::FIELD_MSG_SEQUENCE)) {
             SPELLipcMessage ack(ExecutorMessages::ACKNOWLEDGE);
             ack.setType(MSG_TYPE_ONEWAY);ack.setSender("GUI");
@@ -46,7 +61,7 @@ public:
     }
     SPELLipcMessage processRequest(const SPELLipcMessage& message) override {
         // GUI prompts use MSG_PROMPT/MSG_ANSWER, not synchronous IPC requests.
-        emit({{"event","unsupportedRequest"},{"message",encode(message)}});
+        emit(encodeEvent("unsupportedRequest",message));
         SPELLipcMessage reply("MSG_ERROR");reply.setType(MSG_TYPE_ERROR);
         reply.set(MessageField::FIELD_ERROR,"Unsupported host request");
         return reply;
@@ -96,7 +111,7 @@ int main(int argc,char** argv) {
                     message.setType(MSG_TYPE_REQUEST);
                     auto reply=client.sendRequest(message,7000);
                     if (reply.isVoid()) throw std::runtime_error("Native request timed out");
-                    emit({{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}});
+                    emit(encodeReply(sequence,reply));
                 } else if (request.at("operation")=="send") {
                     message.setType(MSG_TYPE_ONEWAY);client.sendMessage(message);
                     emit({{"seq",sequence},{"ok",true}});

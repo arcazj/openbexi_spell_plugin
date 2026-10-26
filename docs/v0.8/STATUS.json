@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev63 bridge identity mismatch identified before root admission; dev64 pins the candidate bridge beside its approved native Context",
+  "phase": "Dev64 restores private bridge identity and completes both 45-second recovery soaks without pressure; fixed peak/growth gates fail. Dev65 reduces bridge field and envelope copies.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -88,7 +88,8 @@
     "Dev59 removes native codec intermediate allocations and passes 1,267 service tests, 95 overlapping fault tests, 241 portable tests, 24 startup cycles and 16 terminal cases. Both original recovery families complete the fixed soak and settlement without OOM, but remain rejected for peak/growth or memory-limit pressure. All 19 artifacts verified; full release remains unqualified.",
     "Dev60 af838f7 passes eight core jobs but fails all six rebuilt native cohorts before native-ready. Shared-library regression reproduces weak-hook sample loss. Dev61 registers from main before native threads, removes executable symbol exporting, passes 61 targeted checks and loads/samples the published native runtime locally. Whole-native corrected qualification is pending.",
     "Dev61 7f690a0 restores the four non-recovery rebuilt native cohorts and passes 1,269 service tests; 12/14 core jobs pass. Handoff has three limit events and IDE has one OOM kill. Stack samples were filtered out by the host collector, so no live-site attribution is claimed. Dev62 adds bounded symbol/offset capture with process membership checks and passes 32 targeted collector/sampler cases.",
-    "Dev62: 1,275 service tests, 95 overlapping fault tests and 241 portable tests pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen artifact archives/source inventories verified. Handoff hits 2 GiB, records 271 max events and one OOM kill; IDE hits 2 GiB and one max event. Live allocation samples retained. Recovery and full v0.8 remain unqualified."
+    "Dev62: 1,275 service tests, 95 overlapping fault tests and 241 portable tests pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen artifact archives/source inventories verified. Handoff hits 2 GiB, records 271 max events and one OOM kill; IDE hits 2 GiB and one max event. Live allocation samples retained. Recovery and full v0.8 remain unqualified.",
+    "Dev64: 1,283 service tests (including real executable/pidfd regression), 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives and source inventories verified. Both original families complete the 45-second soak with zero memory pressure, but peaks 2,131,828,736 / 2,123,988,992 bytes and growth 361,357,312 / 341,569,536 bytes exceed the unchanged budgets. Full v0.8 remains unqualified."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -121,7 +122,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Run dev64 full CI, including actual process identity/pidfd regression and unchanged original-family recovery resource acceptance; no release gates opened.",
+  "next_step": "Qualify dev65 against the unchanged native recovery resource oracle; retain per-process memory attribution and keep all eleven full-release gates closed.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -154,9 +155,9 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev64",
+  "package_version": "0.8.0.dev65",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "0d282d84c954268e0b6b7fea89e7321b616c584a",
+  "last_verified_component_commit": "379be7d4fbc07bd218186fe3724ef3b24bcdce11",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -188,7 +189,7 @@
     "native_reconnections_executed": 1
   },
   "native_ide_controls_receipt": "evidence/controller-liveness/qualification-summary.json",
-  "last_verified_component_scope": "Dev62: 1,275 service tests, 95 overlapping fault tests and 241 portable tests pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen artifact archives/source inventories verified. Handoff hits 2 GiB, records 271 max events and one OOM kill; IDE hits 2 GiB and one max event. Live allocation samples retained. Recovery and full v0.8 remain unqualified.",
+  "last_verified_component_scope": "Dev64: 1,283 service tests (including real executable/pidfd regression), 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives and source inventories verified. Both original families complete the 45-second soak with zero memory pressure, but peaks 2,131,828,736 / 2,123,988,992 bytes and growth 361,357,312 / 341,569,536 bytes exceed the unchanged budgets. Full v0.8 remains unqualified.",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 23,

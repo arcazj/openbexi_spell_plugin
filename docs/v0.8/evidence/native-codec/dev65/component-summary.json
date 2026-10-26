@@ -1,0 +1,67 @@
+{
+  "schema": "openbexi.native-bridge-frame-comparison/1",
+  "previous_candidate": "379be7d4fbc07bd218186fe3724ef3b24bcdce11",
+  "iterations": 10000,
+  "serialized_digest_equal": true,
+  "local_targeted_tests": 76,
+  "private_bridge_compile_passed": true,
+  "source_sha256": {
+    "host_runtime/native/private_bridge.cpp": "f7ea8bb0be64c810fdd7bb6d08bddcafe9f59226e285ad437b71f8ff509412ad",
+    "server/tests/test_native_message_codec.py": "af5e79245146cf93d3cfd8f74735b9cc2b58f4f3b91ac1959c9e90b0562825a5",
+    "server/tests/native_message_harness.cpp": "0dd7a8f8161f911a26a5a7e779ef4f90a6207507304320c7dfdee8ba3edc2a84"
+  },
+  "measurements": {
+    "frozen": {
+      "bridge": {
+        "digest": 3383329494550228396,
+        "allocated_bytes": 0,
+        "allocations": 0
+      },
+      "alloc_bridge": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 31530000,
+        "allocations": 700000
+      },
+      "alloc_frame": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 36170000,
+        "allocations": 830000
+      }
+    },
+    "dev64": {
+      "bridge": {
+        "digest": 3383329494550228396,
+        "allocated_bytes": 0,
+        "allocations": 0
+      },
+      "alloc_bridge": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 17370000,
+        "allocations": 360000
+      },
+      "alloc_frame": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 22010000,
+        "allocations": 490000
+      }
+    },
+    "dev65": {
+      "bridge": {
+        "digest": 3383329494550228396,
+        "allocated_bytes": 0,
+        "allocations": 0
+      },
+      "alloc_bridge": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 15040000,
+        "allocations": 240000
+      },
+      "alloc_frame": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 17280000,
+        "allocations": 290000
+      }
+    }
+  },
+  "full_v08_qualified": false
+}
