@@ -35,10 +35,12 @@ jobs:
       - name: Build isolated authority and independently packaged DSS images
         run: |
           set -euo pipefail
-          docker build -f deploy/v0.8/Dockerfile.server -t openbexi-spell-server:0.8.0.dev47-prelaunch .
-          docker build -f Dockerfile -t openbexi-spell-plugin-dss:0.1.0 .
-          kind load docker-image --name v08prelaunch openbexi-spell-server:0.8.0.dev47-prelaunch
-          kind load docker-image --name v08prelaunch openbexi-spell-plugin-dss:0.1.0
+          authority_image="$(python -c 'import runpy; print(runpy.run_path("deploy/v0.8/render_kubernetes.py")["AUTHORITY_IMAGE"])')"
+          dss_image="$(python -c 'import runpy; print(runpy.run_path("deploy/v0.8/render_kubernetes.py")["DSS_IMAGE"])')"
+          docker build -f deploy/v0.8/Dockerfile.server -t "$authority_image" .
+          docker build -f Dockerfile -t "$dss_image" .
+          kind load docker-image --name v08prelaunch "$authority_image"
+          kind load docker-image --name v08prelaunch "$dss_image"
       - name: Provision one-time isolated Kubernetes secrets and workloads
         run: |
           set -euo pipefail
@@ -73,6 +75,10 @@ jobs:
             --output .qualification/v08-kind/after.json
           kubectl -n openbexi-v08 exec deployment/dss -- python -I -c \
             "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).status==200"
+      - name: Retain bounded workload status before destroying the cluster
+        if: always()
+        run: |
+          python deploy/v0.8/collect_kubernetes_status.py --output .qualification/v08-kind/workload-status.json
       - name: Destroy ephemeral cluster
         if: always()
         run: |
