@@ -616,9 +616,13 @@ class NativeAdmissionServer:
             except OSError:
                 return
             with stream:
+                started = time.monotonic()
+                phase = "authenticate"
+                dispatch_ms = None
                 try:
                     stream.settimeout(0.5)
                     role, instance = self.authenticate(stream)
+                    phase = "frame"
                     raw = bytearray()
                     deadline = time.monotonic() + 1.0
                     while b"\n" not in raw:
@@ -633,16 +637,26 @@ class NativeAdmissionServer:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
                     body = decode(bytes(raw))
+                    phase = "epoch"
                     if self.runtime is not None:
                         self.runtime.ensure(
                             body.pop("runtime_epoch", None), native=True
                         )
-                    self.dispatch(role, instance, body)
+                    phase = "dispatch"
+                    dispatch_started = time.monotonic()
+                    try:
+                        self.dispatch(role, instance, body)
+                    finally:
+                        dispatch_ms = int((time.monotonic() - dispatch_started) * 1000)
+                    phase = "reply"
                     stream.sendall(b"ALLOW\n")
                 except Exception as error:
                     self.report(
                         "native-before-spawn-denied",
                         error_type=type(error).__name__,
+                        phase=phase,
+                        elapsed_ms=int((time.monotonic() - started) * 1000),
+                        dispatch_ms=dispatch_ms,
                         status=error.status if isinstance(error, Fault) else None,
                         code=error.code if isinstance(error, Fault) else None,
                         cause_type=type(error.__cause__).__name__

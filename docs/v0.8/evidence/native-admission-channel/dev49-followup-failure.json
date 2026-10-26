@@ -1,0 +1,80 @@
+{
+  "candidate_commit": "5bde4fdaa987e52f69c61d5863fefd544b91b3eb",
+  "ci_merge_commit": "dad3994cd69649d3dd3f7c00eddb7c3169845381",
+  "workflow_run": 40262699591,
+  "run_attempt": 1,
+  "jobs_passed": 12,
+  "jobs_failed": 1,
+  "failed_job": 121378279102,
+  "artifact_id": 12625447072,
+  "artifact_name": "v08-native-launch-native-prompts-dad3994cd69649d3dd3f7c00eddb7c3169845381",
+  "artifact_sha256": "be996c92e89e520d6a17b4f27d58e5e56ce203760fda632bf5caa3c1536562bc",
+  "zip_integrity": true,
+  "repository_inputs_verified": 121,
+  "error": "TimeoutError: Native cohort did not reach native-child-running",
+  "failed_children": [
+    {
+      "worker": 2,
+      "log": "spell-v08-launch-937be6bdf611-2.stdout.jsonl",
+      "sha256": "72fd20cff6aecc4a406efa0de2079f4a2a52d6a907575a1ecff6890b2bcfa42f",
+      "events": [
+        {
+          "event": "native-executor-bound"
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "status": null,
+          "code": null,
+          "cause_type": null,
+          "reason": "Native RUN forwarding identity was not admitted"
+        },
+        {
+          "event": "native-executor-bound"
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "BrokenPipeError",
+          "status": null,
+          "code": null,
+          "cause_type": null,
+          "reason": "admission_unavailable"
+        }
+      ],
+      "child_running": false
+    },
+    {
+      "worker": 3,
+      "log": "spell-v08-launch-937be6bdf611-3.stdout.jsonl",
+      "sha256": "eabe39e62fc5a1b26f5c208cce950bc9fff91f7dbee916661a5f43e951e0e4f7",
+      "events": [
+        {
+          "event": "native-executor-bound"
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "status": null,
+          "code": null,
+          "cause_type": null,
+          "reason": "Native RUN forwarding identity was not admitted"
+        },
+        {
+          "event": "native-executor-bound"
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "BrokenPipeError",
+          "status": null,
+          "code": null,
+          "cause_type": null,
+          "reason": "admission_unavailable"
+        }
+      ],
+      "child_running": false
+    }
+  ],
+  "cause_established": false,
+  "interpretation": "Server-side member binding completed, then the native Unix peer was gone before ALLOW could be sent. Existing evidence does not distinguish interruption from deadline/other transport failure. The synthetic EINTR regression is not proof of this historical cause.",
+  "raw_artifact_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40262699591/artifacts/12625447072"
+}

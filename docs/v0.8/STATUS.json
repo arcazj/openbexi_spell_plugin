@@ -132,7 +132,7 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/native-prompt-handoff/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev49",
+  "package_version": "0.8.0.dev50",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "dc66d32cab359b8d5b471b7fa983b834e0f68e22",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -195,5 +195,11 @@
     "fresh_owner_reply_after_explicit_resume_required": true,
     "timed_or_uncertain_prompt_transfer_qualified": false,
     "graphical_prompt_or_browser_support_qualified": false
+  },
+  "native_admission_channel": {
+    "state": "qualification_in_progress",
+    "historical_failure_cause_established": false,
+    "dev49_followup_failure": "evidence/native-admission-channel/dev49-followup-failure.json",
+    "scope": "Retry interrupted/transient readiness or I/O only on the same original connection, packet offset and absolute four-second deadline; never replay a semantic request."
   }
 }

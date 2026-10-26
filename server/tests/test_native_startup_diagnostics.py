@@ -100,9 +100,25 @@ def test_process_snapshot_never_reads_arguments_environment_or_arbitrary_logs(tm
     (process / "environ").write_text("private secret")
     session = temporary / "spell-host-test"
     session.mkdir()
-    (session / "native.log").write_bytes(b"private raw log\n" + encode(record()))
+    failure = dict(
+        pid=23,
+        stage="read",
+        reason="deadline_expired",
+        errno=0,
+        elapsed_ms=4000,
+        interruptions=3,
+        monotonic_ns=5000000,
+    )
+    (session / "native.log").write_bytes(
+        b"private raw log\n"
+        + encode(record())
+        + b"V08_ADMISSION "
+        + json.dumps(failure).encode()
+        + b"\n"
+    )
     value = diagnostics.snapshot(proc, temporary)
     assert value["traces"] == [record()]
+    assert value["admission_failures"] == [failure]
     assert value["processes"] == [
         dict(
             pid=23,
@@ -112,3 +128,36 @@ def test_process_snapshot_never_reads_arguments_environment_or_arbitrary_logs(tm
         )
     ]
     assert "private" not in json.dumps(value)
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"reason": "private packet"},
+        {"stage": "private path"},
+        {"errno": True},
+        {"elapsed_ms": -1},
+        {"interruptions": "1"},
+        {"pid": 0},
+        {"errno": 4096},
+        {"private": "secret"},
+        {"monotonic_ns": 2**63},
+    ],
+)
+def test_admission_diagnostic_rejects_untrusted_fields(changes):
+    failure = dict(
+        pid=23,
+        stage="read",
+        reason="deadline_expired",
+        errno=0,
+        elapsed_ms=4000,
+        interruptions=3,
+        monotonic_ns=5000000,
+    )
+
+    def encoded(value):
+        return b"V08_ADMISSION " + json.dumps(value).encode() + b"\n"
+
+    assert diagnostics.admission_failures(encoded(failure)) == [failure]
+    assert diagnostics.admission_failures(encoded({**failure, **changes})) == []
+    assert len(diagnostics.admission_failures(encoded(failure) * 600)) == 512

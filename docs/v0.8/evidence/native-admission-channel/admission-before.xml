@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.577" timestamp="2026-10-26T04:24:17.470771+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_interrupt]" time="0.523"><failure message="AssertionError: b&quot;wait result=channel_unavailable elapsed_ms=10&#10;  harness: /workspace/scratch/b11f5d3ec705/repo/server/tests/native_admission_harness.cpp:58: void wait_case(): Assertion `failure.empty()' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-65/admission-channel0/harness', 'wait_interrupt', '/tmp/pytest-of-r...1f5d3ec705/repo/server/tests/native_admission_harness.cpp:58: void wait_case(): Assertion `failure.empty()' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-65/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-65/test_production_admission_chan0')
+case = 'wait_interrupt'
+
+    @pytest.mark.parametrize("case", [
+        "wait_interrupt", "wait_deadline", "oversize", "allow", "signal_reply",
+        "partial_io", "deny", "lost_reply", "wrong_peer", "expired_reply", "signal_deadline",
+    ])
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True, timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"wait result=channel_unavailable elapsed_ms=10
+E         harness: /workspace/scratch/b11f5d3ec705/repo/server/tests/native_admission_harness.cpp:58: void wait_case(): Assertion `failure.empty()' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-65/admission-channel0/harness', 'wait_interrupt', '/tmp/pytest-of-r...1f5d3ec705/repo/server/tests/native_admission_harness.cpp:58: void wait_case(): Assertion `failure.empty()' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:36: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_deadline]" time="0.024"><failure message="AssertionError: b'wait result=channel_unavailable elapsed_ms=10&#10;  harness: /workspace/scratch/b11f5d3ec705/repo/server/tests/native_admission_harness.cpp:59: void wait_case(): Assertion `failure == &quot;deadline_expired&quot;\' failed.&#10;  '&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-65/admission-channel0/harness', 'wait_deadline', '/tmp/pytest-of-ro.../server/tests/native_admission_harness.cpp:59: void wait_case(): Assertion `failure == &quot;deadline_expired&quot;\' failed.\n').returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-65/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-65/test_production_admission_chan1')
+case = 'wait_deadline'
+
+    @pytest.mark.parametrize("case", [
+        "wait_interrupt", "wait_deadline", "oversize", "allow", "signal_reply",
+        "partial_io", "deny", "lost_reply", "wrong_peer", "expired_reply", "signal_deadline",
+    ])
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True, timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b'wait result=channel_unavailable elapsed_ms=10
+E         harness: /workspace/scratch/b11f5d3ec705/repo/server/tests/native_admission_harness.cpp:59: void wait_case(): Assertion `failure == "deadline_expired"\' failed.
+E         '
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-65/admission-channel0/harness', 'wait_deadline', '/tmp/pytest-of-ro.../server/tests/native_admission_harness.cpp:59: void wait_case(): Assertion `failure == "deadline_expired"\' failed.\n').returncode
+
+server/tests/test_native_admission_channel.py:36: AssertionError</failure></testcase></testsuite></testsuites>

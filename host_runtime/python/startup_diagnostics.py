@@ -61,9 +61,65 @@ def trace_records(raw):
     return records[-1024:]
 
 
+def admission_failures(raw):
+    records = []
+    reasons = {
+        "deadline_expired",
+        "channel_unavailable",
+        "connect_denied",
+        "connect_failed",
+        "provider_identity_unavailable",
+        "provider_identity_differs",
+        "write_uncertain",
+        "reply_lost",
+        "admission_denied",
+    }
+    for line in raw[-262144:].splitlines():
+        if not line.startswith(b"V08_ADMISSION ") or len(line) > 383:
+            continue
+        try:
+            value = json.loads(line[14:])
+            if (
+                type(value) is dict
+                and set(value)
+                == {
+                    "pid",
+                    "stage",
+                    "reason",
+                    "errno",
+                    "elapsed_ms",
+                    "interruptions",
+                    "monotonic_ns",
+                }
+                and type(value["stage"]) is str
+                and value["stage"] in {"connect", "write", "read"}
+                and type(value["reason"]) is str
+                and value["reason"] in reasons
+                and all(
+                    type(value[k]) is int and 0 <= value[k] < 2**63
+                    for k in (
+                        "pid",
+                        "errno",
+                        "elapsed_ms",
+                        "interruptions",
+                        "monotonic_ns",
+                    )
+                )
+                and 0 < value["pid"] < 2**31
+                and value["errno"] < 4096
+            ):
+                records.append(value)
+        except (ValueError, TypeError):
+            continue
+    return records[-512:]
+
+
 def snapshot(proc=Path("/proc"), temporary=Path("/tmp")):
     result = dict(
-        schema="openbexi.native-startup-diagnostic/1", processes=[], traces=[]
+        schema="openbexi.native-startup-diagnostic/1",
+        processes=[],
+        traces=[],
+        admission_failures=[],
     )
     task_budget = 256
     for path in sorted(proc.iterdir()):
@@ -107,7 +163,9 @@ def snapshot(proc=Path("/proc"), temporary=Path("/tmp")):
             with path.open("rb") as stream:
                 stream.seek(0, 2)
                 stream.seek(max(0, stream.tell() - 262144))
-                result["traces"].extend(trace_records(stream.read(262144)))
+                raw = stream.read(262144)
+                result["traces"].extend(trace_records(raw))
+                result["admission_failures"].extend(admission_failures(raw))
         except OSError:
             continue
     result["task_limit_reached"] = task_budget == 0

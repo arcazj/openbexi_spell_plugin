@@ -358,3 +358,52 @@ def test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incar
             os.close(server.pidfd)
         for _pid, handle in server.members.values():
             os.close(handle)
+
+
+@pytest.mark.parametrize("failure_phase", ["dispatch", "reply"])
+def test_native_callback_failure_reports_stage_without_replaying(failure_phase):
+    import threading
+
+    server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+    server.stop = threading.Event()
+    server.runtime = None
+    reports, calls, writes = [], [], []
+    server.report = lambda event, **details: reports.append((event, details))
+    server.authenticate = lambda stream: ("context", None)
+
+    def dispatch(role, instance, body):
+        calls.append(body)
+        if failure_phase == "dispatch":
+            raise TimeoutError("private authority callback")
+
+    server.dispatch = dispatch
+
+    class Stream:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            server.stop.set()
+
+        def settimeout(self, value):
+            pass
+
+        def recv(self, size):
+            return b'{"schema":"openbexi.native-member/1"}\n'
+
+        def sendall(self, value):
+            writes.append(value)
+            raise BrokenPipeError("private endpoint")
+
+    server.socket = SimpleNamespace(accept=lambda: (Stream(), None))
+    server.serve()
+    assert len(calls) == len(reports) == 1
+    event, details = reports[0]
+    assert event == "native-before-spawn-denied"
+    assert details["phase"] == failure_phase
+    assert details["elapsed_ms"] >= details["dispatch_ms"] >= 0
+    assert details["error_type"] == (
+        "TimeoutError" if failure_phase == "dispatch" else "BrokenPipeError"
+    )
+    assert writes == ([b"ALLOW\n", b"DENY\n"] if failure_phase == "reply" else [b"DENY\n"])
+    assert "private" not in str(reports)

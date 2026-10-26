@@ -1,6 +1,12 @@
 # v0.8 work in progress
 
-## Current checkpoint: development package 0.8.0.dev49
+## Current checkpoint: development package 0.8.0.dev50
+
+- Fix the reproduced signal-interruption failure in native admission waits. Continue only the original socket/packet offset, within the original four-second deadline; retain fail-closed peer identity, lost reply and denial behavior.
+- Add compiled transport regressions and bounded phase/timing diagnostics. Full hosted qualification is in progress; no full-release gate is closed.
+- Retain the dev49 follow-up failure: two children were bound server-side but the native peer closed before ALLOW. The historical cause remains unproven. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
+
+## Development package 0.8.0.dev49
 
 - Preserve the original unanswered zero-timeout native prompt across host-proven handoff; require a fresh owner reply after explicit resume.
 - Validate reply controller fields against the current runtime grant while retaining the original family/member/definition identity. Keep timed/unclassified prompts and queued/uncertain replies blocked.
