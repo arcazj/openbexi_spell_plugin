@@ -205,6 +205,13 @@ def qualify_owner_resume(
     )
 
 
+def allocation_diagnostic_args(*, live_handoff, enabled):
+    """Opt-in sampler: only the independent-host native recovery fixture."""
+    if enabled and not live_handoff:
+        raise ValueError("Allocation profiling requires a live native handoff")
+    return ["--env", "OPENBEXI_V08_ALLOCATION_DIAGNOSTICS=1"] if enabled else []
+
+
 def qualify_consumption_fence(
     *,
     temporary,
@@ -232,9 +239,13 @@ def qualify_consumption_fence(
     terminal_case=None,
     terminal_evidence=None,
     live_handoff=False,
+    allocation_diagnostics=False,
     driver_network=None,
     desktop_stack=None,
 ):
+    diagnostic_env = allocation_diagnostic_args(
+        live_handoff=live_handoff, enabled=allocation_diagnostics
+    )
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
     original_primary = primary_controller("execution.list", {})
@@ -607,6 +618,7 @@ def qualify_consumption_fence(
             "--env",
             "OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1",
         ]
+    args += diagnostic_env
     for source, destination in (
         (snapshot, "/source"),
         (code, "/v08"),

@@ -1,0 +1,68 @@
+name: v0.8 native allocation site investigation (diagnostic only)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_native_consumption.py'
+      - 'host_runtime/**'
+      - 'docs/v0.8/**'
+      - '.github/workflows/v08-native-allocation-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v08-native-allocation-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  original-handoff-allocation-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Probe actual Context and Executor under the unchanged resource oracle
+        continue-on-error: true
+        run: python scripts/qualify_v08_native_launch.py --native-handoff --native-allocation-diagnostics
+      - name: Require bounded native allocation-site evidence, not a release pass
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          paths = sorted(Path(".qualification/v08-native-launch").glob("run-*/native-resources.jsonl"))
+          if len(paths) != 1 or paths[0].stat().st_size > 4 * 1024 * 1024:
+              raise SystemExit("Missing or unbounded allocation diagnostic")
+          rows = [json.loads(line) for line in paths[0].read_text().splitlines()]
+          original = {}
+          observed = set()
+          for row in rows:
+              if row.get("schema") != "openbexi.native-resources/1":
+                  continue
+              for proc in row.get("processes", []):
+                  if "namespace_pid" in proc and proc.get("program") in ("SPELL-Context", "SPELL-Executor"):
+                      original[proc["namespace_pid"]] = proc["program"]
+              for record in row.get("native_allocation_profiles", []):
+                  if record.get("sites") and record.get("samples", 0) > 0:
+                      observed.add(record["pid"])
+          roles = {original[pid] for pid in observed if pid in original}
+          print(json.dumps({"schema": "openbexi.native-allocation-diagnostic/1",
+                            "diagnostic_only": True, "profiler_roles": sorted(roles),
+                            "profiled_native_processes": len(observed),
+                            "full_v08_qualified": False}, sort_keys=True))
+          if roles != {"SPELL-Context", "SPELL-Executor"}:
+              raise SystemExit("Native allocation-site stacks missing for Context or Executor")
+          PY
+      - name: Retain failed and successful diagnostic attempts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-allocation-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

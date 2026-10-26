@@ -560,9 +560,14 @@ def main():
     parser.add_argument("--native-terminal", action="store_true")
     parser.add_argument("--native-handoff", action="store_true")
     parser.add_argument("--native-ide", action="store_true")
+    parser.add_argument("--native-allocation-diagnostics", action="store_true")
     parser.add_argument("--native-startup-stress", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
+    if profile.native_allocation_diagnostics and not (
+        profile.native_handoff or profile.native_ide
+    ):
+        parser.error("allocation diagnostics require --native-handoff or --native-ide")
     if (
         sum(
             (
@@ -609,6 +614,7 @@ def main():
         context_audit_events_enabled=True,
         runtime_enabled=False,
         full_v08_qualified=False,
+        allocation_diagnostics_only=profile.native_allocation_diagnostics,
         image=IMAGE,
         archive_sha256=ARCHIVE_SHA256,
         git_head=command("git", "rev-parse", "HEAD"),
@@ -2275,6 +2281,7 @@ def main():
 
                     qualify_consumption_fence(
                         live_handoff=True,
+                        allocation_diagnostics=profile.native_allocation_diagnostics,
                         desktop_stack=desktop_stack if profile.native_ide else None,
                         driver_network=driver_network,
                         terminal_evidence=output,
