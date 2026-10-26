@@ -682,7 +682,7 @@ def main():
                         "settlement-host",
                     )
                     if profile.native_ide
-                    else ("edge", "observer")
+                    else ("edge", "observer", *(f"observer-{i}" for i in range(1, 20)))
                     if profile.native_listener_survival
                     else (
                         (
@@ -1109,7 +1109,11 @@ def main():
                 if profile.native_prompts:
                     config["native_prompts"] = "owner-reply-candidate"
                 if profile.native_listener_survival:
-                    config["subjects"]["observer"] = ["context:read", "execution:read"]
+                    for subject in (
+                        "observer",
+                        *(f"observer-{i}" for i in range(1, 20)),
+                    ):
+                        config["subjects"][subject] = ["context:read", "execution:read"]
                 dss_name = None
                 driver_network = None
                 if profile.native_dss:

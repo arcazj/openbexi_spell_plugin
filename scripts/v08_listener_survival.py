@@ -5,6 +5,7 @@ Docker socket, host manager, recovery authority or a replacement execution grant
 """
 
 from contextlib import closing
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import http.client
 import importlib.metadata
@@ -14,6 +15,7 @@ from pathlib import Path
 import shutil
 import socket
 import sqlite3
+import threading
 import time
 
 from openbexi_spell_server.contracts import canonical, decode
@@ -49,6 +51,12 @@ def qualify_listener_survival(
         reservation.bind(("127.0.0.1", 0))
         port = reservation.getsockname()[1]
     client_pin = peers["observer"]["pin"]
+    observer_subjects = ["observer", *(f"observer-{i}" for i in range(1, 20))]
+    observer_pins = {peers[subject]["pin"]: subject for subject in observer_subjects}
+    if len(observer_pins) != 20:
+        raise RuntimeError(
+            "Observer cohort requires twenty distinct certificate identities"
+        )
     config = dict(
         ca="/credentials/ca.pem",
         certificate="/credentials/listener.pem",
@@ -56,10 +64,10 @@ def qualify_listener_survival(
         bind="0.0.0.0",
         port=9444,
         allowed_hosts=[f"localhost:{port}", "listener:9444"],
-        max_handlers=16,
+        max_handlers=32,
         edge_fingerprint=peers["edge"]["pin"],
-        identities={client_pin: "observer"},
-        scopes={"observer": ["A"]},
+        identities=observer_pins,
+        scopes={subject: ["A"] for subject in observer_subjects},
         contexts={
             "A": dict(url="https://context:9443", fingerprint=peers["context"]["pin"])
         },
@@ -84,7 +92,7 @@ def qualify_listener_survival(
         "--security-opt",
         "no-new-privileges",
         "--pids-limit",
-        "64",
+        "128",
         "--memory",
         "256m",
         "--user",
@@ -223,10 +231,10 @@ def qualify_listener_survival(
         bind="0.0.0.0",
         port=9445,
         allowed_hosts=[f"localhost:{edge_port}"],
-        max_handlers=16,
+        max_handlers=32,
         listener_url="https://listener:9444",
         listener_fingerprint=peers["listener"]["pin"],
-        clients=[client_pin],
+        clients=list(observer_pins),
     )
     (edge_credentials / "config.json").write_bytes(canonical(edge_config))
     (edge_credentials / "config.json").chmod(0o444)
@@ -264,6 +272,64 @@ def qualify_listener_survival(
         )
     if client.read("A", "executions")["executions"] != executions:
         raise RuntimeError("Pinned IDE observed different native execution identities")
+
+    observers = {
+        subject: ide.SpellServerClient(
+            url=f"https://localhost:{edge_port}",
+            fingerprint=peers["edge"]["pin"],
+            ca=ca,
+            certificate=peers[subject]["cert"],
+            key=peers[subject]["key"],
+        )
+        for subject in observer_subjects
+    }
+
+    def concurrent_observers(*, available):
+        barrier = threading.Barrier(20, timeout=10)
+
+        def observe(item):
+            subject, observer = item
+            barrier.wait()
+            started = time.monotonic()
+            if not available:
+                try:
+                    observer.read("A", "executions")
+                except ide.SpellServerError as error:
+                    if error.status != 503:
+                        raise
+                else:
+                    raise RuntimeError("Observer read succeeded during Listener outage")
+                return dict(
+                    subject=subject,
+                    unavailable=True,
+                    elapsed=time.monotonic() - started,
+                )
+            if observer.contexts() != ["A"]:
+                raise RuntimeError("Observer gained foreign Context visibility")
+            if observer.read("A", "executions")["executions"] != executions:
+                raise RuntimeError(
+                    "Concurrent observer saw different execution identities"
+                )
+            try:
+                observer.authority("A", "session.open", {}, key="twenty-viewer-denial")
+            except ide.SpellServerError as error:
+                if error.status != 403:
+                    raise
+            else:
+                raise RuntimeError("Concurrent observer gained controller authority")
+            if observer._controllers:
+                raise RuntimeError("Observer retained a controller capability")
+            return dict(
+                subject=subject,
+                read=True,
+                control_denied=True,
+                elapsed=time.monotonic() - started,
+            )
+
+        with ThreadPoolExecutor(max_workers=20) as pool:
+            return list(pool.map(observe, observers.items()))
+
+    observer_before = concurrent_observers(available=True)
     try:
         client.authority("A", "session.open", {}, key="observer-control-denial")
     except ide.SpellServerError as error:
@@ -284,6 +350,7 @@ def qualify_listener_survival(
             raise
     else:
         raise RuntimeError("IDE succeeded while its Listener was absent")
+    observer_outage = concurrent_observers(available=False)
     counts_during = progress()
     if any(
         after <= before
@@ -302,6 +369,7 @@ def qualify_listener_survival(
         )
     if client._controllers:
         raise RuntimeError("Read-only IDE reconstructed a controller proof")
+    observer_after = concurrent_observers(available=True)
     context_after = json.loads(command("docker", "inspect", context_name))[0]["State"]
     if (
         first == second
@@ -352,4 +420,9 @@ def qualify_listener_survival(
         ide_outage_failed_closed=True,
         ide_reconnected_with_original_executions=True,
         ide_native_run_debug_qualified=False,
+        concurrent_observer_identities=20,
+        concurrent_observer_before=observer_before,
+        concurrent_observer_outage=observer_outage,
+        concurrent_observer_after=observer_after,
+        browser_wss_tested=False,
     )
