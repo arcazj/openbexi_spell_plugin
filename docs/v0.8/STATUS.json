@@ -3,8 +3,8 @@
   "target": "v0.8",
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
-  "branch": "feature/v0.8-server-architecture",
-  "phase": "Step 1 private single-host live-family pause and A/B handoff qualified, with terminal cleanup; full v0.8 gates remain false",
+  "branch": "feature/v0.8-step1-lifecycle",
+  "phase": "Private native family handoff, terminal settlement and installed IDE control qualification; full v0.8 gates remain false",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -72,7 +72,8 @@
     "Dev30 local: 486 passed, three mandatory hosted Linux controls excluded; all 40 new member/incarnation cases pass. Two controlled-metadata/real-pidfd death cases fail with exact prior helper and pass after final recheck. Source/parent, mTLS role/proof, duplicate race, reply loss, audit rollback and restart roster checks pass. Lint/format/mypy and isolated installed wheel/version/CLI plus all 17 wheel-source comparisons passed; native durable-member oracle pending hosted execution.",
     "88efd35: hosted foundation 489 passed without skips and six other native jobs passed; both family jobs timed out before child-running. Failed archive digest/CRC, 30 repository and 144 compiled source hashes verified; foundation CRC/digest and 129 repository hashes verified. All ten child fixture IDs had the original allocator #0 suffix; 10 child admissions consumed but registration callbacks remained at ten roots. New zero-root/child mTLS regressions reproduce HTTP 400 before the correction.",
     "Dev31 local: 41 member tests and 68 original control/child tests pass (two selected-suite hosted peer controls excluded); zero-instance tests now also forward/consume the child once and reject replacement/replay. Ruff/format/mypy and isolated wheel/version/CLI checks pass. All original grant/source/parent/PID/incarnation/fencing checks remain; real native requalification pending.",
-    "9de50ea: all eight PR 40141633927/push 40141630301 jobs and portable PR 40141633920 passed. Hosted 490 checks without failures/errors/skips; local 487 checks with three mandatory hosted controls excluded. Native family verified 21 consumptions/bindings/durable member rows, 11 children, 41 PIDs, 42 events and actual stale-controller HTTP 403; isolated probe retained one original member. DSS ten commands/50 matching ACKED stages per ledger passed. Foundation/family/DSS archive digests/CRCs, 129/30/95 repository and 144 compiled source hashes verified; no full-release gate promoted."
+    "9de50ea: all eight PR 40141633927/push 40141630301 jobs and portable PR 40141633920 passed. Hosted 490 checks without failures/errors/skips; local 487 checks with three mandatory hosted controls excluded. Native family verified 21 consumptions/bindings/durable member rows, 11 children, 41 PIDs, 42 events and actual stale-controller HTTP 403; isolated probe retained one original member. DSS ten commands/50 matching ACKED stages per ledger passed. Foundation/family/DSS archive digests/CRCs, 129/30/95 repository and 144 compiled source hashes verified; no full-release gate promoted.",
+    "Dev44 bd85c635d0cc3389425924face9eb0755be4eda2: all twelve latest hosted service/native jobs passed; 1,052 CPython 3.13.16 service tests without skips; exact paired IDE 258 passed/one Windows-only skip. Installed A/B/C native handoff, Pause/Step/Run and four Abort/Close cases passed; sixteen-case terminal matrix, Compose/kind prelaunch, static manifests and Python inventory checks passed. The initial terminal job failed before its matrix on one admitted child not reaching native binding; its unchanged fresh repeat does not establish a fix. Artifact digests/CRC, 173 foundation/119 native source hashes and all 50 installed IDE Python modules verified. Full release gates remain false."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -101,11 +102,11 @@
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
     "G4_full_diagnostic": "Bounded current inherited diagnostic: 16 passed, 3 failed on missing historical Windows child-arguments captures. Broad diagnostic interrupted after repeated failures/errors. Historical evidence requires its original immutable sources; no full compatibility qualification.",
     "G3_native_child_before_spawn_component": "9bbae55: eleven consumed child admissions including one correct nested same-family parent; 41 PIDs, 37 EVs, 21 retained holds. Automatic blocking component only; manual/nonblocking/failure/full-family transfer pending.",
-    "G3_native_control_forward_component": "bfa4a7f before-forward component passed: rebuilt original 74-unit native Context, ten actual wrapper-bypass RUN denials, sixteen same-origin one-shot forward admissions; all remain FORWARD_UNPROVEN. Native Executor dequeue/direct mutation/family settlement and live handoff remain unqualified."
+    "G3_native_control_forward_component": "Historical before-forward component bfa4a7f is superseded by original-Executor final-consumption, host settlement and single live handoff qualification. Current paired native control evidence is in evidence/native-ide-controls/qualification-summary.json; broader native family/recovery remains unqualified."
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Complete repeated transfer/recovery and paired installed IDE Run/Debug, browser/WSS/Git, compatibility, deployed security and packaging gates. The current host-freezer profile supports one accepted handoff of an existing sealed family.",
+  "next_step": "Diagnose and reproduce the admitted-child/no-native-binding startup failure before promoting native reliability. Then complete repeated transfer/active-controller recovery, public launch/full debugger, browser/WSS/Git, all-763 compatibility, deployed fault/security and stable packaging gates.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -121,46 +122,41 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "evidence/release-readiness/publication-preflight-dev40.json: clean ce6daedf candidate, exit 1, development package and eleven full groups unqualified; no publication",
+  "release_assessment": "evidence/release-readiness/publication-preflight-dev44.json: clean executable candidate, exit 1, development version and all eleven mandatory gate groups unqualified.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/listener-survival/qualification-summary.json; 24 source hashes, CRC and digest verified; read-only observer only",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/listener-survival/ide-observer-summary.json; d523c96 hosted installed pinned IDE native observer passed with gateway, actual outage and reconnect, no control grant; 24 source hashes/digest/CRC verified",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev40",
-  "native_control_profile": "Dev37 preserves dev36 family/ownership proof and adds unsupported Executor CIF mutation rejection before prompt cancellation, closing flags, child redirection, mailbox insertion and direct setter evaluation. Host-process candidate cleanup passed the original family oracle; full management/client-roster and functional action protocols remain pending.",
-  "remaining_effort_estimates": {
-    "basis": "Rough active engineering effort from the current component checkpoint, with low confidence; estimates may overlap and are not a wall-clock or background-execution promise",
-    "native_family_control": "2-4 days",
-    "native_ide_and_recovery": "2-3 days",
-    "compatibility_and_deployment": "3-5 days",
-    "security_and_release_packaging": "1-2 days"
-  },
-  "last_verified_component_commit": "ce6daedf7c3cfb5698a7dfb7935c0b8523a843bb",
-  "next_native_contract": "Interactive STEP/PAUSE/etc must use fresh owner-admitted immutable command grants; the worker original StartGrant is runtime identity/start authority, not permission to invent interactive mutations. Preserve old origins, never restamp queued commands. Complete all mutation/queue and family-barrier paths before positive handoff or public Run/Debug.",
-  "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; default-off schema 15 current-owner RUN/STEP/PAUSE with separate one-use command grants, preserved original StartGrant identity, retired startup lanes and no restamping. Component receipts dev36-family.json/dev36-foundation.json, source aa40430. Public Run/Debug and positive handoff remain disabled.",
-  "native_command_security": "Native C/D oracles each require actual HTTP 403 for residual startup RUN while the original owner is live; first owner intent permanently closes startup admission/forward/consume. All 70 owner cases pass inside the 569-test hosted suite. Full mutation/prompt/queue/family-barrier and new-owner protocol remain unqualified.",
-  "native_mutation_matrix": "NATIVE_MUTATION_MATRIX.md; Context GUI candidate closure added, positive actions/queue/barrier/new-owner and separate native IPC surface contracts remain release blockers",
-  "native_mutation_boundary": "NATIVE_MUTATION_BOUNDARY.md; actual native probe denied 13 one-way commands/prompt replies and six direct setters before effects. All 33 repository inputs, five admission headers and 144 compiled units verified. Positive owner ABORT/CLOSE/prompt/setter paths remain unimplemented.",
-  "native_context_gui_boundary": "Dev40 exact native qualification passed five foreign GUI requests, two proposed keys/nonreuse, 18 Context management requests and eight roster messages, preserving all family and stale-owner oracles. All full-release gates remain false; separate native Listener/Executor-to-Context inventories and positive actions remain unfinished.",
-  "native_startup_reliability": "Dev37 evidence-only artifact 12584023613 reinspection: Context SSLEOF was a recovered startup diagnostic; two roots ready, worker 2 admitted/bound but timed out at LOADED. Terminal cause unresolved; no fix inferred from dev39 denial-field change or later passes.",
-  "native_lifecycle_audit": "Dev40 ce6daedf passed all eight PR/push service/native jobs, 640 hosted tests without skips and 241 portable checks. Artifact CRC/SHA, 140 foundation/35 family source hashes and 144 compiled units verified. Real audit wait preserves 21 members/41 PIDs/42 lifecycle events; 21 holds/10 spent workers retained. Isolated same-owner/stale-owner/19 Executor/18 Context/8 roster oracles passed. No whole-family quiescence, terminal command disposition or effective transfer proof.",
+  "package_version": "0.8.0.dev44",
+  "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
+  "last_verified_component_commit": "bd85c635d0cc3389425924face9eb0755be4eda2",
+  "next_native_contract": "Extend the qualified one-transfer sealed-family profile only with original-grant fencing, settled prompt/control/effect journals and original process identity proofs. Repeated transfer, later children and active-controller recovery remain unqualified.",
+  "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
+  "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
+  "native_mutation_matrix": "NATIVE_MUTATION_MATRIX.md and newer prompt/terminal/handoff receipts; positive bounded commands are implemented. Full debugger and separate native IPC inventories remain release blockers.",
+  "native_mutation_boundary": "Qualified original native unsupported-mutation denial boundary remains. Positive owner RUN/STEP/PAUSE, prompt replies and ABORT/CLOSE now have separate exact-source component receipts; arbitrary setters/full debugger remain unfinished.",
+  "native_context_gui_boundary": "Dev40 exact native qualification passed foreign GUI/key/management/roster denial oracles; later cohorts preserve them while qualifying bounded owner controls. Full public runtime remains disabled.",
+  "native_startup_reliability": "Historical dev37 root LOADED failure remains unresolved. At bd85c635, workflow 40249941420 first terminal attempt failed before its case matrix: all ten roots ran, ten child admissions were consumed, but worker 1 produced no child member binding or running event; all containers stayed live and no OOM occurred. The Context SSLEOF readiness diagnostic recovered. No cause or fix is inferred from other passes. See evidence/native-ide-controls/terminal-recheck-failure.json.",
+  "native_lifecycle_audit": "Historical dev40 640-test and 21-member/41-PID lifecycle audit is retained in its receipts. Newer 1052-test/native IDE checkpoints supersede its current-status claims; no full release gate is promoted.",
   "native_lifecycle_audit_receipts": "evidence/native-child-start/dev40-foundation.json; evidence/native-child-start/dev40-family.json",
   "terminal_settlement_profile": {
     "profile": "single-host-terminal-candidate",
     "documentation": "TERMINAL_SETTLEMENT.md",
     "scope": "Separate pinned host, prelaunch immutable container binding, durable terminal fence, physical process/container exit, child/prompt/command/effect reconciliation and scoped reservation release; workers remain single-use",
-    "qualification": "Local mTLS and independent DSS regressions; exact hosted native qualification recorded in PR #4",
+    "qualification": "Native sixteen-case terminal matrix and scope-bound host reconciliation; see native IDE control receipt for the latest source-bound workflow.",
     "live_family_transfer_qualified": false
   },
   "live_handoff_profile": {
     "profile": "host-freeze-candidate",
     "documentation": "LIVE_HANDOFF.md",
     "scope": "One accepted A/B handoff of an existing sealed family; exact host cgroup freezer, original pidfds, settled native/prompt/driver journals, single-delivery runtime rotation and read-only C observation",
-    "qualification": "c850ba8: 1,026 hosted tests, 47 handoff regressions and the rebuilt native A/B/C cohort passed. Eight original processes, frozen root/child/background counters, B native PAUSE/RUN, exact stale-packet denial, two DSS commands with ten matching receipts, and post-handoff terminal release preserving the witness. See evidence/native-live-handoff/qualification-summary.json.",
+    "qualification": "Latest installed IDE component: bd85c635d0cc3389425924face9eb0755be4eda2; eight original processes, host freeze, explicit B resume, native Pause/Step/Run including source-position change, stale A denial, read-only C, two handoff DSS commands/ten matching receipts, and host terminal release preserving the witness. See evidence/native-ide-controls/qualification-summary.json.",
     "new_children_after_transfer": false,
     "full_v08_qualified": false,
     "qualification_receipt": "evidence/native-live-handoff/qualification-summary.json",
     "private_single_host_handoff_qualified": true
-  }
+  },
+  "native_ide_controls_receipt": "evidence/native-ide-controls/qualification-summary.json",
+  "last_verified_component_scope": "1,052 hosted service tests, installed native IDE handoff/Step/terminal subset and all twelve latest workflow jobs; original terminal child-start timeout retained, one fresh same-source repeat passed, cause unresolved."
 }

@@ -1,39 +1,80 @@
-# Paired IDE controls for existing native executions
+# Paired IDE controls for an existing native execution
 
-The development Listener accepts `POST /v1/contexts/{id}/commands` only when
-that Context is explicitly listed in `native_command_contexts`. The list is
-empty by default. Gateway certificate identity, Listener Context scope and
-Context role/owner proof remain independently enforced. Worker provisioning,
-host attestation and prompt reply routes are not exposed by this change.
+Server `0.8.0.dev44` and the exact IDE pin in `IDE_PAIR.json` add Run/Continue,
+Step, Pause, Abort and Close execution to the asynchronous server panel. These
+actions control an already provisioned retained native execution. Public worker
+provisioning remains unavailable and `runtime_enabled` remains false.
 
-Health advertises only the configured commands allowed by the caller's live
-permissions: RUN/STEP require start and control; PAUSE requires control;
-ABORT/CLOSE additionally require the terminal profile. The Listener clears this
-list for disabled Contexts. Public `runtime_enabled` stays false.
+## Enablement and authority
 
-The paired IDE client and panel use the originally delivered capability, epoch
-and connection generation. They never derive a command proof from monitoring
-data or retry an ambiguous transport response. B can explicitly reconnect after
-accepted family transfer and request RUN while paused. A's original identity
-remains fenced. The local Run/Debug fallback stays disabled in connected mode.
+The Context must explicitly enable `native_commands: "owner-queue"`, or
+`"owner-terminal-candidate"` for Abort/Close. Its other native admission,
+worker, host and settlement profiles must already be configured. The Listener
+separately requires `native_command_contexts: ["<configured-context-name>"]`.
+Omitting this list disables the command route and its advertised capabilities.
+Unknown Context names and invalid list types reject configuration at startup.
 
-Local development verification: 230 selected server, live-handoff, terminal,
-owner-command and real three-hop TLS checks passed; 37 IDE client/Qt checks
-passed. Local Python is 3.12, so these are regressions rather than CPython 3.13
-release evidence. Hosted foundation qualification uses CPython 3.13 and installs
-the exact IDE pair from IDE_PAIR.json.
+The only new public operation is
+`POST /v1/contexts/{context_id}/commands`, with the existing native command
+payload and a mandatory `Idempotency-Key`. The gateway preserves the pinned
+certificate identity; the Listener applies its Context scope; the Context
+rechecks live roles, current owner, epoch, generation and the original delivered
+controller capability. Copying that capability into another user's client
+does not confer authority. Role revocation takes effect before replay lookup.
 
-`qualify_v08_native_launch.py --native-ide` adds separate Listener/gateway
-processes and three installed certificate-authenticated clients to the actual
-native handoff fixture. Reservations, observation, claims, acceptance, rebind
-and owner commands traverse those services. Only initial worker provisioning
-remains on the independent trusted host path. The native source, cgroup freeze,
-original process identity, cross-owner DSS receipts and terminal settlement
-oracles are preserved. The IDE profile additionally verifies a native source
-location change followed by PAUSED after B's explicit STEP, and four actual
-ABORT/CLOSE cases while paused or running through the installed client. Its
-executed outcome must be retained before this component is called qualified.
+Health advertises the configured commands allowed by the current user's roles.
+Pause, Abort and Close require `execution:control`; Run and Step additionally
+require `execution:start`. The UI also requires the selected current owner,
+an original cached controller proof and the admitted native lifecycle. Observers
+receive no advertised command authority. Server authorization remains decisive
+even if a caller bypasses the UI.
 
-This does not qualify public launch, full debugger inspection/breakpoints,
-browser/WSS/Git, repeated handoff or deployed recovery. Full release gates
-remain unchanged. Historical failures and receipts retain their original scope.
+The installed client sends each intent once. It does not retry after response
+loss, repair an epoch from a read-only listing, silently reacquire a capability,
+or fall back to a local execution. Successful queue admission does not prove
+that the native command executed. Native admission and settlement journals
+remain the source of completion evidence.
+
+## Handoff through the panel
+
+For the private single-host profile, B requests control and A explicitly accepts.
+A's cached proof is discarded when acceptance enters REQUESTED/PAUSING, before
+the host freeze completes. The separate trusted host proves the original family
+is frozen and Context settles the required journals as described in
+[LIVE_HANDOFF.md](LIVE_HANDOFF.md).
+
+After ownership moves to B in HANDOFF_PAUSED, B uses Reconnect control to obtain
+its own controller proof and explicitly presses Run/Continue. Other native
+commands stay disabled until this resume. C can observe B's paused and resumed
+ownership but cannot mutate the family. This profile permits one transfer and
+does not create new children after transfer.
+
+## Executable qualification
+
+`python scripts/qualify_v08_native_launch.py --native-ide` installs no substitute
+client. CI installs the exact paired IDE commit first; the harness checks the
+installed package version and client module hash against `IDE_PAIR.json`.
+It then starts separate Listener and gateway processes with three distinct
+client certificates and the private native Context. These edge processes have
+no host-manager interface. Initial worker provisioning remains a separate
+trusted-host operation.
+
+The native cohort exercises A/B handoff, C observation, stale-owner denial,
+whole-family freeze, B's explicit resume, native Pause/Step/Run and final host
+settlement. Step must change the original native current-source-position and
+pause again. Four additional cases send Abort and Close through the installed
+client while native execution is paused or running. The separate native-terminal
+profile retains the full sixteen-case terminal matrix.
+
+Twenty-two service regressions use the actual client through real TLS
+gateway/Listener/Context hops. They check all five operations, duplicate queue
+admission, stolen proofs, live role revocation, disabled configuration and
+A/B/C handoff. Qt tests separately check button enablement, asynchronous actions
+and observer denial; the native CI cohort is headless client qualification,
+not a claim that a graphical browser or every debugger feature was exercised.
+
+Exact workflow, artifact, source-hash and installed-wheel results are retained
+in [the component receipt](evidence/native-ide-controls/qualification-summary.json).
+The full release gates remain false. Public launch, variables/breakpoints,
+browser/WSS, Git collaboration, repeated transfer and deployed recovery still
+require implementation or qualification.

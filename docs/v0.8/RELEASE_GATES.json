@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Scoped original-Executor controls, prompts, ABORT/CLOSE and host terminal settlement are qualified. The c850ba8 original-family pause and single A/B handoff passed with stale-A fencing and B resume. Repeated handoff, open-prompt transfer, children after transfer and reconnect recovery remain unqualified."
+      "reason": "Scoped original-Executor controls, prompts, ABORT/CLOSE and host terminal settlement are qualified. The c850ba8 original-family pause and single A/B handoff passed with stale-A fencing and B resume. Repeated handoff, open-prompt transfer, children after transfer and reconnect recovery remain unqualified. The bd85c635 first terminal recheck failed before its matrix when one admitted child never reached native member binding; the cause remains unresolved."
     },
     "compatibility": {
       "qualified": false,
@@ -25,22 +25,22 @@
     "driver_faults": {
       "qualified": false,
       "receipt": null,
-      "reason": "2c35425 passed PR/push native DSS, 449 hosted scoped checks and incomplete-stage fencing regressions; prior dev28 native two-second failure retained with cause unresolved. Full lifecycle/reset/partition/recovery/load remains unqualified."
+      "reason": "Independent native DSS command/receipt and stale-epoch denial components passed. Full driver lifecycle/reset/partition/recovery/load remains unqualified; historical failures are retained."
     },
     "ide_browser": {
       "qualified": false,
       "receipt": null,
-      "reason": "Dev44 adds explicitly enabled native command routing and a paired IDE panel/client. Exact installed native A/B/C qualification is pending; public launch, full debugger, browser/WSS/Git E2E remain unfinished."
+      "reason": "Installed native A/B/C controls, native Step position change, four IDE Abort/Close cases and Qt tests passed as components. Public launch, full debugger, twenty-viewer browser/WSS/Git end-to-end acceptance remain unfinished."
     },
     "compose": {
       "qualified": false,
       "receipt": null,
-      "reason": "No full production Compose boot/fault/storage/restore qualification receipt"
+      "reason": "Five-service prelaunch identity/isolation/CAS/restart checks passed. Full runtime ten-execution/twenty-viewer, egress/process/storage failure and restore qualification remains pending."
     },
     "kubernetes": {
       "qualified": false,
       "receipt": null,
-      "reason": "No kind/minikube plus production-like cluster workload admission/Pod identity/partition/storage qualification receipt"
+      "reason": "kind five-service prelaunch restart and static manifest checks passed. Production-like cluster, native workload Pod identity, RBAC/admission/network denial and node/storage recovery remain unqualified."
     },
     "recovery": {
       "qualified": false,
@@ -50,7 +50,7 @@
     "security": {
       "qualified": false,
       "receipt": null,
-      "reason": "Full implemented-system independent review, bounded load, SBOM/license/vulnerability disposition remains pending"
+      "reason": "Development Python inventory/SBOM scan passed with explicit local-package registry exclusion. Independent implemented-system review, native/OS SBOM/license/vulnerability disposition and bounded load remain pending."
     },
     "ci": {
       "qualified": false,

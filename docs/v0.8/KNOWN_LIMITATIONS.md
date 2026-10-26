@@ -1,90 +1,90 @@
 # Current limitations
 
-SPELL v0.8 remains a development implementation. Public services report
-`runtime_enabled: false`; PR #2 is draft, and no stable v0.8 release is qualified.
-G1 authorized staged implementation under F1–F10. It did not establish that the
-runtime, recovery, deployment or release gates had passed. See STATUS.json,
-TEST_REPORT.md and RELEASE_GATES.json for exact candidate identities and results.
+SPELL `0.8.0.dev44` and the paired IDE `1.2.1.dev2` are development candidates.
+All eleven full-v0.8 release gates remain false. Public services still report
+`runtime_enabled: false`. The private retained-worker components below do not
+enable public provisioning or establish production readiness.
 
-## Implemented private profiles
+## Current private components
 
-Internal services implement pinned mTLS identity, explicit route/role checks,
-Context ACLs, durable SQLite CAS, original-grant reservations, ownership
-claims/acceptance/rebind before launch, immutable approved Git inventories and
-worker preflight. The catalog can contain 64 approved entries, including children;
-there are ten retained worker slots. Source verification covers configured
-catalogs only. A worker report is not hardware, Pod or image attestation.
+The services enforce pinned mTLS identity, Context scopes, live roles, durable
+SQLite CAS, original controller grants, ownership epochs and approved source
+inventories. The retained worker consumes its grant once and launches the
+actual native Listener/Context/Executor. The separate Context-owned DSS subset
+checks authority at actual send and records matching receipts in two ledgers.
+Uncertain effects are not retried.
 
-The operator-provisioned retained profile adds one-time certificate-bound grant
-consumption, actual native Listener/Context/Executor launch, durable procedure EV
-audit and a separate Context-owned TC/TM subset with explicit resource allowlists.
-The actual-send gate repeats live authorization under the same execution mutex
-as fencing and records separate authority/driver intents and correlated receipts.
-It never retries an uncertain effect. Read DRIVER_WRITE_GATE.md and NATIVE_DSS.md
-for those component boundaries; they are no longer merely disconnected adapters.
-Complete driver methods, lifecycle, overload, reset, loss and recovery remain
-unqualified. A retained failing native DSS burst is documented in TEST_REPORT.md.
+Native before-spawn child admission, original-member identities, fresh owner
+Run/Step/Pause grants, prompt delivery/replies and Abort/Close have bounded
+component qualification. Terminal settlement requires a separate pinned host,
+original process-exit proof and reconciled command/prompt/effect outcomes before
+releasing only that family's logical reservations. Workers remain single-use.
+Forced loss and other unknown outcomes retain their holds.
 
-The dev17 child provider builds a new native Context from the frozen image's
-checked source/recipe provenance. It admits and consumes an approved child
-before physical spawn, preserving original zero-based native instance IDs. It
-authenticates the native Context process and original family over the separate
-local and mTLS boundaries. The agent disables dumpability before configuration
-or native startup to protect its memory-only consumption proof; deployment must
-also drop all capabilities. See NATIVE_CHILD_ADMISSION.md for candidate results.
-Default profiles still reject children. Native manual/nonblocking modes, broader nested execution,
-child prompt/return/repeat/failure semantics, per-child driver attribution and
-complete descendant containment require additional qualification. Admission
-and native status observations do not establish quiescence or release a hold.
+The `host-freeze-candidate` profile supports one accepted A-to-B handoff of an
+existing sealed family. The host proves cgroup freeze completion and original
+pidfd/member identity; Context settles the journals and moves ownership while
+the family stays paused. B explicitly resumes the same processes. A's stale
+commands and driver packets remain fenced; C remains read-only. See
+[LIVE_HANDOFF.md](LIVE_HANDOFF.md) and its exact-source receipt.
 
-## Ownership and recovery blockers
+The paired installed IDE can send Run/Continue, Step, Pause, Abort and Close for
+an existing native execution through an explicitly enabled Listener route. The
+client retains original delivered proofs, sends once and has no local fallback.
+Headless native-client qualification and real Qt panel tests are separate;
+neither establishes full graphical debugger or browser acceptance. See
+[IDE_NATIVE_CONTROLS.md](IDE_NATIVE_CONTROLS.md).
 
-Post-consumption ownership transfer remains blocked without complete native
-quiescence proof. The main native PAUSED state alone leaves a background thread
-running. The optional cooperative barrier holds observed snapshot Python threads
-only; it does not prove that C/native/generated code, children, prompt/control
-queues and external effects are settled. Neither component authorizes effective
-handoff or resume. Unknown outcomes retain the owner/epoch and recovery holds.
+## Native and recovery work still required
 
-No automatic worker reuse, logical-hold release, capacity reclamation, uncertain
-command replay or authority relocation is exposed. Native FINISHED, process-group
-cleanup and container termination are distinct observations; none alone is a
-whole-family recovery protocol. Single-authority storage, node fencing,
-backup/restore and upgrade/rollback still need deployed fault qualification.
-Certificate and fixed identity configuration changes require process restart.
+Repeated handoff, transfer with an open prompt, new children after transfer,
+controller reconnect recovery and Kubernetes host attestation are unqualified.
+The accepted single-handoff profile deliberately seals the admitted child roster
+and rejects further transfers. A native main-thread PAUSED status alone cannot
+prove family quiescence; the background-thread negative control demonstrates it.
 
-At 56439d7, killing and recreating the separate v0.8 Listener preserved ten
-advancing native procedures, thirty PIDs, Context incarnation and original
-owners/epochs/generations. This read-only observer component does not establish
-active-controller disconnection behavior, browser/WSS or recovery. See
-`evidence/listener-survival/qualification-summary.json`. The push scoped suite
-passed 382 tests; the PR suite retained one concurrent duplicate-driver denial
-assertion failure. Exact status/error diagnostics are being added; its cause is
-not yet established, and that PR workflow is not qualified.
+Manual/nonblocking child modes, broader nested execution, repeat/failure/return
+semantics and full compatibility need further original-native coverage.
+Full driver lifecycle, reset, partitions, recovery and bounded load remain open.
+The historical non-OOM native LOADED startup failure has no established cause;
+later passes do not constitute its fix. The bd85c635 terminal recheck also failed
+before its case matrix: one admitted child never reached native member binding,
+while the other nine did and no worker was OOM-killed. Its cause remains
+unresolved; see the retained terminal-recheck-failure receipt. Earlier failed workflow and concurrency
+receipts remain historical failed evidence.
 
-## Joint product and full qualification
+There is no automatic worker reuse, uncertain-command replay or authority
+relocation. Single-authority storage, node fencing, backup/restore and
+upgrade/rollback require deployed fault qualification. Certificate and fixed
+identity configuration changes require process restart.
 
-The pinned IDE supports discovery, reservations, observers and explicit prelaunch
-handoff through real mTLS and Qt integration. At d523c96 its installed client
-observed ten actual native executions through a separate gateway, failed closed
-during Listener loss and reconnected to the original executions after replacement.
-The read-only user was denied control. The digest/CRC and 24 source hashes were
-verified; see `evidence/listener-survival/ide-observer-summary.json`. Native IDE Run/Debug, browser/WSS,
-Git collaboration and the full joint deployed workflow remain unfinished or
-unqualified. No local fallback is authorized while connected to the server.
+## Joint product, compatibility and deployment
 
-The passing 241-test portable subset is not all-763 qualification. Inherited
-archival tests refer to older immutable source checkpoints and absolute Windows
-capture paths. Published v0.7 captures do not satisfy all those older references.
-Their failed diagnostics remain retained; no skip, restamped hash or fabricated
-capture is used to claim compatibility. Published v0.7 bytes and original legacy
-patch preimages remain unchanged.
+Public worker launch, complete debugger variables/breakpoints, browser/WSS gap
+recovery and Git collaboration remain unfinished or unqualified. The installed
+observer Listener-loss/reconnect component preserves advancing native processes;
+it does not establish active-controller fault recovery or twenty-viewer browser
+acceptance.
 
-Production Compose and Kubernetes admission/RBAC/Pod identity/network/storage
-faults, a production-like cluster, independent implemented-system security
-review, bounded load, SBOM/license/vulnerability disposition and final stable
-installed artifacts remain mandatory. Vendor GCS/spacecraft integration,
-untrusted Python sandboxing and distributed HA are outside the qualified scope.
-The full-publication preflight rejects this candidate until every mandatory gate
-has valid exact-source evidence. Publication is blocked by incomplete work and
-qualification, not by a missing routine owner confirmation.
+The passing 241-test portable compatibility subset is not all-763 qualification.
+Inherited archival checks reference missing original Windows captures and older
+immutable source checkpoints. Current files cannot replace or restamp those
+captures. Published v0.7 bytes and legacy patch preimages remain unchanged.
+
+Compose and kind prelaunch checks exercise service identity, isolation, durable
+CAS and Context restart. They do not run the complete native workload, prove
+production Pod identity, enforce every network/admission denial, or qualify
+node partitions and storage recovery. A production-like qualification cluster
+has not been supplied or qualified in this checkpoint.
+
+The Python SBOM and vulnerability workflow covers the development Python package
+only. The unpublished server distribution has an explicit PyPI registry-audit
+exclusion; a passing inventory check is not a vulnerability audit of its code.
+Full native/OS SBOM and license disposition, independent implemented-system
+security review, bounded load and stable installed artifacts remain mandatory.
+
+Vendor GCS/spacecraft integration, untrusted Python sandboxing and distributed
+HA are outside the qualified scope. Publication is authorized only after the
+full mandatory acceptance criteria pass. The release preflight rejects the
+current candidate; qualification work, not routine owner confirmation, blocks
+publication. Production migration is not authorized.

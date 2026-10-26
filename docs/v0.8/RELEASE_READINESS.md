@@ -1,120 +1,88 @@
 # Full v0.8 publication qualification
 
-Latest owner request: **"Qualify and release full v0.8"**. This authorizes
-implementation/qualification, merge, tag and GitHub publication when all
-mandatory criteria pass. It supersedes the separate-confirmation hold; another
-routine publication confirmation is not required. It does not authorize
-production migration or weaken G1 F1–F10 or acceptance requirements.
+The full release is **not qualified**. Server `0.8.0.dev44` and the pinned IDE
+`1.2.1.dev2` remain development packages. The current component checkpoint is
+recorded in [the installed IDE control receipt](evidence/native-ide-controls/qualification-summary.json).
+Earlier exact-source receipts and failed attempts remain in `evidence/` and
+`TEST_REPORT.md`.
 
-The full release is **not qualified**. Package `0.8.0.dev40` remains development
-code. Dev31 at `9de50ea` verified a 21-member retained native family, original
-durable member identities and stale-controller initial RUN rejection. Dev32
-adds fresh owner STEP/PAUSE grants. Its push native STEP/disconnect oracle passed;
-the PR family OOM-killed a worker at 768 MiB. Dev33 bounded memory requalification
-failed on resource accounting and a separate non-OOM startup timeout. Dev34
-corrects kernel peak telemetry and adds same-owner RUN/PAUSE/RUN qualification;
-both PR/push native cohorts and 551 hosted tests passed. Review subsequently
-found residual startup RUN permission after owner intents. Dev35 closes that
-permission; the PR native probes and 564 hosted tests passed. Its push failed
-earlier on the combined notification message. Dev36 corrects the lifetime
-notification cap; all PR/push service/native jobs and 569 hosted tests passed
-at `aa40430`. Component archive digests/CRCs, 31 repository inputs and 144
-compiled source units were verified. Full native mutation/queue/family barrier,
-new-owner resume and public IDE Run/Debug remain unfinished. All original
-failures remain retained, including the non-OOM startup issue.
-Existing component receipts do not qualify full family handoff/resume, joint
-IDE Run/Debug/browser, Kubernetes or deployed recovery.
+The owner request **"Qualify and release full v0.8"** authorizes implementation,
+qualification, merge, tag and GitHub publication once all mandatory criteria
+pass. Another routine publication confirmation is not required. Production
+migration is not authorized, and G1 F1-F10 remain binding.
 
-Dev37 closed the unsupported Executor CIF paths and passed all component jobs
-and 580 hosted service tests at `97af271`. Dev38 adds original-host Context GUI
-admission, non-reusable connection identities and closed management/roster
-dispatch. Dev38 native qualification failed because denial error-field literals were omitted by the frozen bridge. Dev39 corrects that original-field interoperability; exact native confirmation is pending. Positive owner actions, internal
-native lifecycle and legacy Listener peer/management surfaces remain blockers;
-see `NATIVE_CONTEXT_GUI_BOUNDARY.md` for the precise candidate scope.
+## Verified component scope
+
+The private native profiles now cover retained launch, immutable child/member
+admission, owner Run/Step/Pause, prompts, Abort/Close, host-proven terminal
+settlement and one accepted live-family A-to-B handoff. The new paired IDE route
+controls an existing execution through gateway, Listener and Context with the
+original certificate identity and controller proof. Native-client receipts and
+Qt tests are distinct from full browser/debugger qualification.
+
+The separate host freezes the original family and B explicitly resumes those
+same processes; stale A packets retain their original identity and are denied.
+Terminal settlement releases only known-settled family reservations. Workers
+remain spent, unknown outcomes remain held and public launch remains disabled.
+See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
+[IDE_NATIVE_CONTROLS.md](IDE_NATIVE_CONTROLS.md) and
+[TERMINAL_SETTLEMENT.md](TERMINAL_SETTLEMENT.md).
+
+## Mandatory work before publication
+
+| Full gate | Outstanding acceptance |
+| --- | --- |
+| Services | Active-controller disconnect, production routing and complete deployed isolation/fault coverage |
+| Native family | Repeated transfer, open-prompt transfer, later children, reconnect recovery and broader native child semantics |
+| Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
+| Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
+| IDE/browser | Public launch, full debugger, twenty observers, WSS gap resynchronization and Git conflicts |
+| Compose | Full ten-execution/twenty-viewer runtime workload, negative egress, process/storage failure and restore |
+| Kubernetes | Production-like cluster, runtime Pod identity, RBAC/admission/network denial, node partition and storage recovery |
+| Recovery | Full deployed shutdown/fencing/settlement plus backup restore, upgrade and rollback |
+| Security | Independent implemented-system review, bounded load, native/OS SBOM, licenses and vulnerability disposition |
+| CI | Complete clean-candidate runtime/driver/browser/deployment workflows |
+| Packaging | Stable versions, final checksums, clean installed acceptance and release runbooks |
+
+Compose and kind prelaunch smoke results establish only their executed service
+checks. The Python supply-chain result explicitly retains the unpublished local
+package's registry-audit exclusion. Neither is a full release receipt. The
+historical non-OOM LOADED startup failure remains unresolved. The bd85c635
+terminal recheck also timed out before its case matrix when one admitted child
+never reached native member binding. All ten roots and the other nine children
+were live, and no worker was OOM-killed. Its exact cause remains unresolved;
+[the failed receipt](evidence/native-ide-controls/terminal-recheck-failure.json)
+is retained separately from successful component results.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records eleven mandatory gate groups and their blockers.
-`python scripts/check_v08_release.py --output <report.json>` exits nonzero unless
-all have complete, source-bound, checksummed receipts and server version `0.8.0`.
-Partial/component schemas, missing checks, altered evidence, stale SPELL/IDE
-commits and uncommitted runtime changes cannot qualify publication. The
-preflight validates records; it does not execute missing qualification or create
-a release. Actual hosted/cluster results and source artifact verification remain
-mandatory; hand-edited flags are not executed tests.
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev44
+[executed preflight](evidence/release-readiness/publication-preflight-dev44.json)
+reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
+`publication_performed: false`.
 
-Receipts use `openbexi.v08.acceptance-gate/1`, the gate name, exact executable
-candidate_commit, paired ide_commit, passed true, every required check true and
-executed-evidence references. The manifest pins relative path and SHA-256.
-`--candidate <exact-code-SHA>` permits later evidence-only commits, avoiding a
-self-referential commit hash inside its own receipt. Runtime/workflow/IDE-pin
-changes require new qualification; evidence commits cannot hide them.
+`python scripts/check_v08_release.py --output <report.json>` exits nonzero until
+every group has a complete, checksummed, source-bound receipt and the server
+version is `0.8.0`. Partial component receipts cannot qualify full gates.
+Receipts use `openbexi.v08.acceptance-gate/1`, exact SPELL and IDE commits,
+all required checks and actual execution evidence. Hand-edited flags are not
+executed tests.
 
-## Confirmed inherited-suite issue
+`--candidate <exact-code-SHA>` permits later evidence-only commits without a
+self-referential receipt hash. Runtime, workflow and IDE-pin changes require
+qualification for their new sources. This preflight validates evidence; it
+does not execute missing tests or create a release.
 
-The broad inherited diagnostic was interrupted after repeated failures/errors;
-it is not a completed suite. A bounded reproduction stopped after **three
-failures and sixteen passes**, first failures in
-`tests/test_child_arguments_report.py`. They reference missing captures at
-historical Windows path `C:\\obspell_v06_resume\\.qualification\\...`. The
-original v0.7 raw archive SHA-256 is
+## Inherited compatibility evidence
+
+The retained bounded inherited diagnostic ended after 16 passes and three
+failures, initially in `tests/test_child_arguments_report.py`, referencing
+historical Windows `obspell_v06_resume/.qualification` captures. The broader
+diagnostic was interrupted and is not a completed suite. The published v0.7
+raw archive SHA256 is
 `9db68109972848d7dd38634c421c1aad94bb75103df9e65432e0e58e99dd9357`.
-Captures must be verified against original immutable sources. Current files
-cannot replace captured sources or relabel old reports as v0.8 proof. The
-historical/current split is in `scripts/qualify_repository_v07.py`. New behavior
-needs fresh native qualification. The 241 portable tests remain a named subset,
-not all-763 requirement coverage.
+Historical captures require their original immutable sources. The 241 portable
+checks are a named subset; they do not substitute for all-763 coverage.
 
-## Work required before publication
-
-Complete native child mode/lifecycle compatibility and full participant,
-control/prompt/effect settlement. [Child admission](NATIVE_CHILD_ADMISSION.md)
-has a qualified private before-spawn component; its receipts do not qualify
-all child modes or full-family settlement. Then prove owner/epoch CAS
-and explicit new-owner resume with old requests fenced. Complete compatibility,
-driver faults/recovery, joint SPELL/IDE browser Run/Debug/WSS/Git, actual
-Compose/Kubernetes qualification, independent security/SBOM/license/vulnerability
-review and stable installed artifacts. No full deployment environment or full
-gate receipt is present here; hosted component jobs do not satisfy those gates.
-
-Publication remains authorized conditional on these results. Release is blocked
-by qualification, not missing user approval.
-
-
-## Executed assessment
-
-On clean code **7d2ab39951e3e250aa5bbb43633641fbd5254a3c**, the
-[publication preflight](evidence/release-readiness/publication-preflight.json)
-exited 1 with full_v08_qualified and eligible_for_publication both false. All
-11 mandatory full gate groups remain unqualified; server is 0.8.0.dev16. The
-[bounded inherited summary](evidence/release-readiness/inherited-bounded-summary.json)
-records 16 passes/3 failures and preserves the narrower scope. Hosted 344 scoped
-checks, 241 portable checks and all six services/native jobs passed at that code;
-they do not override this failed full-release assessment. See TEST_REPORT.md.
-
-Dev37 adds an unsupported-mutation boundary in the private native Executor.
-Hosted compilation and the 19-operation denial probe passed at `97af271`,
-alongside all PR/push component jobs and 580 hosted tests without skips. Positive
-owner ABORT/CLOSE/prompt/setter functionality is not implemented by that guard.
-
-
-The dev37 evidence-only family rerun failure was re-inspected from the verified
-original artifact. Its retained Context `SSLEOFError` was a recovered readiness
-diagnostic. Two roots reached PAUSED; worker 2 was admitted/bound but timed out
-at native LOADED. That terminal startup failure remains unresolved. Neither
-a later pass nor the dev39 denial-field correction establishes its cause or fix.
-
-
-Dev39 confirms the native denial-field correction, 632 hosted scoped checks
-and 241 portable checks. Its family workflow remains failed on a missing
-durable finish event. Dev40 adds a bounded original-event settlement before
-teardown; native family and management/owner requalification are pending.
-
-
-Dev40 exact-source confirmation passed all eight PR/push service/native jobs,
-640 hosted scoped checks and 241 portable checks. Original native qualification
-confirmed the corrected denial fields and all 42 durable lifecycle events with
-21 members/41 PIDs; all original owner/control boundaries passed. See the
-source-bound dev40 receipts. Full participant/command/prompt settlement and
-new-owner runtime identity remain unfinished. The executed clean dev40
-publication preflight still exits 1; no full release is eligible.
+No stable release, merge or production migration is justified by the current
+component checkpoint.

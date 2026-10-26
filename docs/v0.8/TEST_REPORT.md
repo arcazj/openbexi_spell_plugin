@@ -2017,3 +2017,57 @@ quiescence/transfer, command queue settlement and full v0.8 remain false.
 The separate LOADED startup reliability issue remains unresolved; a later pass
 does not establish its cause. All eleven mandatory full groups remain pending,
 and the clean dev40 publication preflight exits 1. No merge/tag/release.
+
+
+## Dev44 paired installed IDE native control qualification
+
+Executable candidate **`bd85c635d0cc3389425924face9eb0755be4eda2`**, paired
+IDE **`cf0e9dd7581b283d63c98c95c46cdd368e005ac7`**, passed all **12 latest** jobs after one terminal-job rerun
+in [workflow 40249941420](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40249941420).
+The first terminal job (121339435097) failed before its matrix: ten child
+admissions were consumed, but worker 1 recorded no child member-binding or
+running event; all containers stayed live and no OOM was reported. The failure
+artifact passed digest/CRC and all 119 source checks. A single unchanged fresh
+repeat (121341159923) passed all sixteen terminal cases. Its pass does not
+establish a cause or fix. The original failure and worker traces are retained
+in `evidence/native-ide-controls/terminal-recheck-failure.json`.
+
+The CI merge tree equals the executable candidate tree. Hosted CPython 3.13.16
+passed **1,052 service tests**, zero errors/failures/skips, plus Ruff lint/format,
+mypy and installed-package smoke checks. The separate IDE workflow passed
+**258 tests with one Windows-only skip**; all 50 installed Python modules match
+the pinned source. Local 230-service, 69-focused, 37-IDE and 11-supply checks
+are overlapping regression suites, not additive full-qualification counts.
+
+Three certificate-bound installed clients now control existing private native
+executions through separate gateway/Listener processes. A accepts B's request;
+the host freezes the same eight processes; B explicitly resumes and executes
+Pause/Step/Run. Step changes the original native source position and pauses.
+A's stale commands and driver packet are denied; C only observes. Both epoch
+DSS commands have ten matching stage receipts. Terminal settlement exits the
+original family and releases its holds while preserving the witness. Four
+additional installed-client Abort/Close cases pass while paused/running. The
+separate full native terminal matrix passes all sixteen cases; forced loss
+remains unknown/held. The native cohort also passes 21 prompt generations and
+ten independent DSS commands with fifty matching stage receipts per ledger.
+
+Artifacts passed SHA256 and ZIP integrity checks; all 173 foundation and
+119 native repository source hashes match the candidate. All 144 compiled-unit
+hashes and ten candidate headers equal the previously verified terminal build;
+the build inputs are unchanged. A fresh local reconstruction independently
+matched 142 units; two legacy-comparison units require the original frozen
+syntax helper and are recorded as continuity checks, not new reconstruction
+passes. See [the exact component receipt](evidence/native-ide-controls/qualification-summary.json).
+
+Compose and kind five-service prelaunch identity/CAS/isolation/restart, static
+Kubernetes manifests and the development Python inventory scan passed. The
+unpublished server package retains an explicit registry-audit exclusion. The
+old dev43 wheel-name failure and strict local-audit version-reader failure are
+preserved; neither is reclassified as a pass. The Step count correction changes
+only the report value from two to three; the native Step oracle already passed.
+
+This adds existing-execution native controls, not public provisioning or full
+browser/debugger acceptance. All eleven full release gates remain false; the
+clean dev44 publication preflight exits 1. No merge, tag, stable release or
+production migration was performed. Current blockers are in
+[RELEASE_READINESS.md](RELEASE_READINESS.md) and [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md).
