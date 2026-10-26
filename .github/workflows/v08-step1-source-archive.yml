@@ -1,6 +1,6 @@
 name: v0.8 Step 1 exact-source checkout archive
 
-# Refresh exact native-memory remediation inputs after ranked allocation profiling.
+# Exact tracked sources plus the normal CI's offline verification dependencies.
 on:
   push:
     branches: ['feature/v0.8-step1-lifecycle']
@@ -27,6 +27,18 @@ jobs:
           git rev-parse HEAD > .qualification/v08-step1-source/COMMIT_SHA
           git rev-parse HEAD^{tree} > .qualification/v08-step1-source/TREE_SHA
           test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Retain bounded offline component-test dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          folder=.qualification/v08-step1-source/tools
+          mkdir -p "$folder"
+          python -m pip download --no-deps --only-binary=:all: ruff==0.14.1 --dest "$folder"
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends nlohmann-json3-dev liblog4cplus-dev
+          tar -czf "$folder/native-headers.tar.gz" -C /usr/include nlohmann log4cplus
+          dpkg-query -W nlohmann-json3-dev liblog4cplus-dev > "$folder/packages.txt"
+          (cd "$folder" && sha256sum *.whl *.tar.gz packages.txt > SHA256SUMS)
       - name: Retain source for offline exact-tree integration and review
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
