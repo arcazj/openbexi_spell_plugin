@@ -45,12 +45,22 @@ class Context:
         native_commands=None,
         native_prompts=None,
         host_settlement=None,
+        controller_liveness_seconds=None,
     ):
         self.store = store
         self.listener_fingerprint = fingerprint(listener_fingerprint)
         self.subjects = policy(subjects)
         self.catalog = SnapshotCatalog(approved_sources) if approved_sources is not None else None
-        self.authority = ExecutionAuthority(store, self.subjects, worker_slots=worker_slots)
+        self.authority = ExecutionAuthority(
+            store,
+            self.subjects,
+            worker_slots=worker_slots,
+            controller_liveness_seconds=(
+                30
+                if worker_launch is not None and controller_liveness_seconds is None
+                else controller_liveness_seconds
+            ),
+        )
         self.preflight = None
         if self.catalog is not None:
             self.authority.reservation_validator = self.catalog.approve
@@ -126,8 +136,12 @@ class Context:
             from .handoff import LiveFamilyHandoff
 
             LiveFamilyHandoff(self.authority)
+        if self.authority.liveness is not None:
+            self.authority.liveness.start()
 
     def close(self):
+        if self.authority.liveness is not None:
+            self.authority.liveness.close()
         if self.native_driver is not None:
             self.native_driver.close()
 

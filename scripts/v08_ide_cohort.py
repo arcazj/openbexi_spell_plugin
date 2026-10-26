@@ -192,6 +192,18 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
                 )
                 raise Fault(error.status, "ide_request_denied") from error
 
+        def lose(connection):
+            for client in clients.values():
+                with client._lock:
+                    if (context_id, connection) in client._leases:
+                        client._drop_lease(context_id, connection)
+                        return {
+                            "fault": "desktop_heartbeat_transport_detached",
+                            "lease_seconds": 30,
+                        }
+            raise RuntimeError("No live desktop session to detach")
+
+        controller.lose = lose
         receipt = dict(
             context_id=context_id,
             installed_client_sha256=client_hash,
@@ -209,6 +221,8 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
         yield controller
         receipt["passed"] = True
     finally:
+        for client in locals().get("clients", {}).values():
+            client.forget()
         for process in reversed(processes):
             if process.poll() is None:
                 process.terminate()

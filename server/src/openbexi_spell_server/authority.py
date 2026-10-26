@@ -15,6 +15,7 @@ from contextlib import ExitStack, contextmanager
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING
 from .mutex import ExecutionMutex
+from .liveness import ControllerLiveness
 
 if TYPE_CHECKING:
     from .commands import NativeOwnerCommands
@@ -53,7 +54,16 @@ def secret_hash(value):
 class ExecutionAuthority:
     """One instance per ContextStore; policy lookup is live, including on replay."""
 
-    def __init__(self, store, subjects, *, worker_slots=None, clock=time.time):
+    def __init__(
+        self,
+        store,
+        subjects,
+        *,
+        worker_slots=None,
+        clock=time.time,
+        controller_liveness_seconds=None,
+        monotonic_clock=time.monotonic,
+    ):
         self.store, self.subjects, self.clock = store, subjects, clock
         self.mutexes = {}  # Bounded by the retained execution ledger (64).
         self.mutex_guard = threading.Lock()
@@ -67,6 +77,7 @@ class ExecutionAuthority:
         self.native_prompts: NativePromptReplies | None = None
         self.terminal_settlement = None
         self.live_handoff = None
+        self.liveness: ControllerLiveness | None = None
         if worker_slots is not None and type(worker_slots) is not dict:
             raise ValueError("Worker slots must be an object")
         self.worker_slots = dict(worker_slots or {})
@@ -138,6 +149,10 @@ class ExecutionAuthority:
             if getattr(store, "execution_authority", None) is not None:
                 raise ValueError("Context already has an execution authority")
         store.execution_authority = self
+        if controller_liveness_seconds is not None:
+            self.liveness = ControllerLiveness(
+                self, controller_liveness_seconds, clock=monotonic_clock
+            )
 
     def _require(self, subject, *permissions):
         actor = self.subjects.get(subject)
@@ -185,6 +200,8 @@ class ExecutionAuthority:
         ).fetchone()
         if row is None or row["subject"] != subject or row["active"] != 1:
             raise Fault(403, "connection_denied")
+        if self.liveness is not None:
+            self.liveness.require(connection_id)
 
     def _owner(self, subject, payload):
         row = self._execution(payload["execution_id"])
@@ -222,7 +239,9 @@ class ExecutionAuthority:
 
     def _record(self, subject, method, key, payload, result):
         # Only hashes of capability inputs, and never plaintext capability outputs.
-        durable = {k: v for k, v in result.items() if k != "capability"}
+        durable = {k: v for k, v in result.items() if k not in {"capability", "heartbeat_nonce"}}
+        if "heartbeat_nonce" in result:
+            durable["heartbeat_delivery"] = "new_session_required_on_replay"
         if "capability" in result:
             durable["capability_delivery"] = "rebind_required_on_replay"
         self.store.db.execute(
@@ -305,6 +324,7 @@ class ExecutionAuthority:
         permissions = {
             "session.open": ("execution:control",),
             "session.close": ("execution:control",),
+            "session.heartbeat": ("execution:control",),
             "execution.reserve": ("execution:start", "execution:control"),
             "execution.rebind": ("execution:control",),
             "execution.claim": ("execution:request_control", "execution:control"),
@@ -312,6 +332,10 @@ class ExecutionAuthority:
             "execution.cancel": ("execution:request_control",),
         }
         self._require(subject, *permissions[method])
+        if method == "session.heartbeat":
+            if self.liveness is None:
+                raise Fault(404, "controller_liveness_unavailable")
+            return self.liveness.heartbeat(subject, payload)
         if method == "session.close":
             return self._close_session(subject, key, payload)
         if method in ("session.open", "execution.reserve"):
@@ -436,6 +460,8 @@ class ExecutionAuthority:
                 "CONTROL_CONNECTION_OPENED", {"connection_id": connection, "subject": subject}
             )
             result = {"connection_id": connection}
+            if self.liveness is not None:
+                result.update(self.liveness.open(connection))
         elif method == "execution.reserve":
             result = self._reserve(subject, payload)
         elif method == "execution.rebind":

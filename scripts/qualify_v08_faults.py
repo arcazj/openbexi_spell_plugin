@@ -60,6 +60,8 @@ def main():
         "server/tests/test_native_binding_faults.py",
         "server/tests/test_native_spawn.py",
         "server/tests/test_controller_network_recovery.py",
+        "server/tests/test_controller_liveness.py",
+        "server/tests/test_controller_liveness_tls.py",
         "server/tests/test_native_admission_channel.py",
         "server/tests/test_driver_timing.py",
         "--junitxml=" + str(output / "tests.xml"),
@@ -80,7 +82,7 @@ def main():
             for key in ("tests", "failures", "errors", "skipped")
         }
         report["passed"] = result.returncode == 0 and report["junit"] == dict(
-            tests=71, failures=0, errors=0, skipped=0
+            tests=92, failures=0, errors=0, skipped=0
         )
     except subprocess.TimeoutExpired as error:
         (output / "tests.log").write_bytes(

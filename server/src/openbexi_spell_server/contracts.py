@@ -29,6 +29,7 @@ METHODS = {
     "blackboard.cas": "blackboard:admin",
     "session.open": "execution:control",
     "session.close": "execution:control",
+    "session.heartbeat": "execution:control",
     "execution.list": "execution:read",
     "execution.events": "execution:read",
     "source.catalog": "execution:read",
@@ -240,6 +241,7 @@ AUTHORITY_MUTATIONS = frozenset(
     {
         "session.open",
         "session.close",
+        "session.heartbeat",
         "execution.reserve",
         "execution.rebind",
         "execution.claim",
@@ -258,6 +260,7 @@ AUTHORITY_FIELDS = {
     },
     "session.open": set(),
     "session.close": {"connection_id"},
+    "session.heartbeat": {"connection_id", "heartbeat_nonce"},
     "execution.reserve": {
         "procedure_id",
         "connection_id",
@@ -293,6 +296,8 @@ def validate_authority_payload(method, body):
     for key in ("expected_epoch", "connection_generation"):
         if key in body and (type(body[key]) is not int or not 1 <= body[key] < 2**63 - 1):
             raise Fault(400, "invalid_authority_generation")
+    if "heartbeat_nonce" in body:
+        fingerprint(body["heartbeat_nonce"])
     if "capability" in body:
         fingerprint(body["capability"])
     if "decision" in body and body["decision"] not in ("accept", "reject"):

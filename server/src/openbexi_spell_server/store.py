@@ -67,6 +67,7 @@ class ContextStore:
                 20,
                 21,
                 22,
+                23,
             ):
                 raise ValueError("Unsupported authority schema")
             self.db.executescript("""
@@ -260,6 +261,9 @@ class ContextStore:
             return result
 
     def close(self):
+        authority = getattr(self, "execution_authority", None)
+        if authority is not None and authority.liveness is not None:
+            authority.liveness.close()
         with self.lock:
             self.closed = True
             database = getattr(self, "db", None)

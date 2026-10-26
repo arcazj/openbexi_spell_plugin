@@ -28,6 +28,7 @@ on:
       - 'scripts/v08_terminal_cohort.py'
       - 'scripts/v08_handoff_cohort.py'
       - 'scripts/v08_ide_cohort.py'
+      - 'scripts/v08_controller_heartbeat.py'
       - 'host_runtime/python/handoff_*.py'
       - 'host_runtime/python/epoch_*.py'
       - 'host_runtime/native/**'
@@ -61,6 +62,7 @@ on:
       - 'scripts/v08_terminal_cohort.py'
       - 'scripts/v08_handoff_cohort.py'
       - 'scripts/v08_ide_cohort.py'
+      - 'scripts/v08_controller_heartbeat.py'
       - 'host_runtime/python/handoff_*.py'
       - 'host_runtime/python/epoch_*.py'
       - 'host_runtime/native/**'
@@ -111,7 +113,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: 1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e
+          ref: e060272720fc31b5a1aa19ff4d251fb48a798da6
           path: .qualification/companion-ide
       - name: Install Qt system library
         run: sudo apt-get update && sudo apt-get install -y libegl1
@@ -199,7 +201,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: 1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e
+          ref: e060272720fc31b5a1aa19ff4d251fb48a798da6
           path: .qualification/companion-ide
       - name: Install pinned IDE client without optional UI dependencies
         if: matrix.profile == 'listener-survival' || matrix.profile == 'native-ide'

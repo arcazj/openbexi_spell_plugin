@@ -424,6 +424,9 @@ def qualify_consumption_fence(
             )
         )
 
+    from v08_controller_heartbeat import HeartbeatController
+
+    controller = HeartbeatController(controller)
     until = time.monotonic() + 20
     while True:
         try:
@@ -454,6 +457,8 @@ def qualify_consumption_fence(
             if method == "execution.start":
                 return private_controller(method, payload, subject)
             return desktop_controller(method, payload, subject)
+
+        controller.lose = desktop_controller.lose
 
     entries = {
         entry["procedure_id"]: entry

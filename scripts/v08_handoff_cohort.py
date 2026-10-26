@@ -228,7 +228,8 @@ def qualify_reconnect(
         proof["expected_epoch"],
         proof["connection_generation"],
     )
-    controller("session.close", dict(connection_id=proof["connection_id"]))
+    loss = controller.lose(proof["connection_id"])
+    lost_at = time.monotonic()
 
     def view():
         return next(
@@ -238,6 +239,13 @@ def qualify_reconnect(
         )
 
     disconnected = view()
+    while (
+        disconnected["control_state"] == "OWNED"
+        and time.monotonic() - lost_at < loss["lease_seconds"] + 3
+    ):
+        time.sleep(0.1)
+        disconnected = view()
+    detected_after = time.monotonic() - lost_at
     if (
         disconnected["owner"],
         disconnected["epoch"],
@@ -247,7 +255,9 @@ def qualify_reconnect(
     if disconnected["pause_barrier"]["quiescence_proven"]:
         raise RuntimeError("Disconnect falsely claimed whole-family pause")
     before = counters(command, name, output)
-    (control / "handoff-disconnected").write_text("explicit controller close committed")
+    (control / "handoff-disconnected").write_text(
+        "automatic controller lease fence observed"
+    )
     await_event([name], "native-handoff-disconnected-denied", seconds=15)
     time.sleep(3)
     alive = counters(command, name, output)
@@ -342,6 +352,10 @@ def qualify_reconnect(
         raise RuntimeError("Old controller capability revived after reconnect")
     return dict(
         passed=True,
+        automatic_disconnect_detection=True,
+        explicit_close_sent=False,
+        controller_loss=loss,
+        detection_seconds=detected_after,
         owner_unchanged=True,
         epoch_unchanged=True,
         epoch=epoch,

@@ -642,6 +642,7 @@ def main():
         ROOT / "scripts/qualify_v08_native_boundary.py",
         ROOT / "scripts/v08_native_consumption.py",
         ROOT / "scripts/v08_ide_cohort.py",
+        ROOT / "scripts/v08_controller_heartbeat.py",
         ROOT / "docs/v0.8/IDE_PAIR.json",
     ]
     if profile.native_listener_survival:
@@ -1283,6 +1284,9 @@ def main():
                         )
                     )
 
+                from v08_controller_heartbeat import HeartbeatController
+
+                controller = HeartbeatController(controller)
                 deadline = time.monotonic() + 20
                 while True:
                     try:
@@ -2317,6 +2321,9 @@ def main():
                 retain_failure(report, error)
                 raise
             finally:
+                from v08_controller_heartbeat import HeartbeatController
+
+                HeartbeatController.close_all()
                 if (
                     profile.native_dss
                     and "state" in locals()
