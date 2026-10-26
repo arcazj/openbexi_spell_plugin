@@ -23,7 +23,7 @@ from openbexi_spell_server.effects import DriverGate, EffectAdmission, provenanc
 from openbexi_spell_server.preflight import canonical_uuid
 
 from .codec import pack, unpack
-from .fenced_transport import Transport
+from .fenced_transport import CommandTiming, Transport
 from .rpc import config as modifiers, method_descriptor
 from .stubs import SPELLDriver_pb2 as proto
 
@@ -50,6 +50,9 @@ def failure_chain(error):
         item = dict(type=type(error).__name__[:80])
         if isinstance(error, Fault):
             item["code"] = error.code
+        timing = getattr(error, "_dss_command_timing", None)
+        if type(timing) is CommandTiming:
+            item["command_timing"] = timing.snapshot()
         result.append(item)
         error = error.__cause__ or error.__context__
     return result

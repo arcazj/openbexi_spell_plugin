@@ -10,6 +10,7 @@ import json
 import socket
 import time
 import threading
+from contextlib import contextmanager
 from urllib.error import HTTPError
 from urllib.request import build_opener, HTTPRedirectHandler, ProxyHandler, Request
 
@@ -17,6 +18,59 @@ from dss.catalog import canonical
 from dss.packets import decode_packet, decode_tm, encode_tc, recv_packet
 from .journal import UncertainEffect
 from .transport import Transport as LegacyTransport
+
+
+class CommandTiming:
+    """Fixed labels and bounded numeric timings; never packets or exception text."""
+
+    PHASES = frozenset(
+        {
+            "preparation",
+            "metadata",
+            "connect",
+            "authority",
+            "deadline",
+            "send",
+            "receipt",
+            "settle",
+        }
+    )
+    STAGES = frozenset(
+        {"TRANSPORT", "LOADING", "RELEASE", "ACKNOWLEDGEMENT", "ONBOARD_EXECUTION"}
+    )
+
+    def __init__(self):
+        self.started = time.monotonic()
+        self.steps = []
+
+    @staticmethod
+    def milliseconds(seconds):
+        return max(0, min(300000, round(seconds * 1000)))
+
+    @contextmanager
+    def measure(self, phase, stage=None):
+        if phase not in self.PHASES or (stage is not None and stage not in self.STAGES):
+            raise ValueError("Unsupported command timing label")
+        started, failed = time.monotonic(), True
+        try:
+            yield
+            failed = False
+        finally:
+            if len(self.steps) < 32:
+                self.steps.append(
+                    dict(
+                        phase=phase,
+                        stage=stage,
+                        elapsed_ms=self.milliseconds(time.monotonic() - started),
+                        failed=failed,
+                    )
+                )
+
+    def snapshot(self):
+        return dict(
+            elapsed_ms=self.milliseconds(time.monotonic() - self.started),
+            steps=[dict(step) for step in self.steps],
+        )
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -67,10 +121,31 @@ class Transport(LegacyTransport):
     def command(
         self, name, arguments, identity, operation, check, *, admission, timeout=5
     ):
-        identity = dict(identity)
-        admission.validate(identity, operation)
-        arguments = self.arguments(name, arguments)
-        state = self.current_state()
+        timing = CommandTiming()
+        try:
+            return self._command(
+                name,
+                arguments,
+                identity,
+                operation,
+                check,
+                admission=admission,
+                timeout=timeout,
+                timing=timing,
+            )
+        except BaseException as error:
+            error._dss_command_timing = timing
+            raise
+
+    def _command(
+        self, name, arguments, identity, operation, check, *, admission, timeout, timing
+    ):
+        with timing.measure("preparation"):
+            identity = dict(identity)
+            admission.validate(identity, operation)
+            arguments = self.arguments(name, arguments)
+        with timing.measure("metadata"):
+            state = self.current_state()
         if state["epoch"] != self.epoch or state["scenario_id"] != self.scenario:
             raise ValueError("DSS epoch changed; explicit rebinding required")
         digest = hashlib.sha256(
@@ -108,22 +183,28 @@ class Transport(LegacyTransport):
             ("ONBOARD_EXECUTION", "SUCCEEDED"),
         ]
         try:
-            with socket.create_connection(self.tc_address, timeout=2) as connection:
+            with timing.measure("connect"):
+                connection = socket.create_connection(self.tc_address, timeout=2)
+            with connection:
                 for sequence, (stage, expected) in enumerate(stages):
-                    check()  # Live parent authority is checked before EVERY write.
-                    remaining = deadline - time.monotonic()
-                    if remaining <= 0:
-                        raise TimeoutError("Command deadline expired")
-                    connection.settimeout(min(3, remaining))
-                    packet_bytes = encode_tc(dict(base, stage=stage), sequence)
+                    with timing.measure("authority", stage):
+                        check()  # Live parent authority is checked before EVERY write.
+                    with timing.measure("deadline", stage):
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            raise TimeoutError("Command deadline expired")
+                        connection.settimeout(min(3, remaining))
+                        packet_bytes = encode_tc(dict(base, stage=stage), sequence)
                     # The Context adapter owns the final check AND socket write.
                     # Receipt waiting/decoding remains outside its execution mutex.
                     sent = True  # A failed write can have sent a prefix.
-                    admission.send(stage, connection, packet_bytes)
-                    raw = recv_packet(
-                        connection,
-                        timeout=min(3, max(0.001, deadline - time.monotonic())),
-                    )
+                    with timing.measure("send", stage):
+                        admission.send(stage, connection, packet_bytes)
+                    with timing.measure("receipt", stage):
+                        raw = recv_packet(
+                            connection,
+                            timeout=min(3, max(0.001, deadline - time.monotonic())),
+                        )
                     packet = decode_packet(raw)
                     answer = decode_tm(raw)
                     if (
@@ -143,7 +224,8 @@ class Transport(LegacyTransport):
                         "INDETERMINATE",
                     }:
                         raise UncertainEffect("DSS reported uncertain command outcome")
-                    admission.settle(stage, raw)
+                    with timing.measure("settle", stage):
+                        admission.settle(stage, raw)
                     receipts.append(answer)
                     if answer.get("outcome") != expected:
                         return False, receipts

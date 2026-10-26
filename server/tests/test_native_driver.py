@@ -122,7 +122,14 @@ def test_driver_failure_chain_records_types_without_exception_secrets(
         .fetchone()[0]
     )
     assert secret not in row
-    assert json.loads(row)["error_chain"] == [{"type": "RuntimeError"}, {"type": "TimeoutError"}]
+    chain = json.loads(row)["error_chain"]
+    assert [{k: v for k, v in item.items() if k != "command_timing"} for item in chain] == [
+        {"type": "RuntimeError"},
+        {"type": "TimeoutError"},
+    ]
+    timing = chain[0]["command_timing"]
+    assert timing["steps"][-1]["phase"] == "metadata"
+    assert timing["steps"][-1]["failed"] is True
     assert driver_setup["dss"].get("state")["core"]["commands_executed"] == 0
 
 

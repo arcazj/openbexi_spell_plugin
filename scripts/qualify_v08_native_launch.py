@@ -2343,6 +2343,9 @@ def main():
                             report["native_driver_stage_states"] = audit.execute(
                                 "SELECT state,COUNT(*) FROM effect_intents GROUP BY state"
                             ).fetchall()
+                            report["native_driver_stages_by_state"] = audit.execute(
+                                "SELECT stage,state,COUNT(*) FROM effect_intents GROUP BY stage,state"
+                            ).fetchall()
                     except sqlite3.Error:
                         report["native_driver_failure_categories_unavailable"] = True
                 if (

@@ -1,9 +1,15 @@
 # v0.8 development changelog
 
+## 0.8.0.dev53 — bounded DSS command diagnostics
+
+- Retain the dev52 native terminal failure: ten uncertain command calls and twenty ACKED stages before child admission. Other twelve core jobs, 1,144 service tests and four ancillary workflows pass; no all-green checkpoint is inferred.
+- Record fixed phase/stage labels and bounded numeric timings on failed commands, plus per-stage ledger counts. No payloads, credentials or exception messages are recorded. Existing deadlines, live authority checks, durable ledgers and no-replay behavior remain unchanged.
+- Five deterministic timing/failure-path tests pass locally; the historical timeout cause remains unestablished. Hosted requalification is pending.
+
 ## 0.8.0.dev52 — completed session cleanup
 
 - Fix Disconnect after native reconnect when the original session is already closed: require the original authenticated subject, current permission, inactive state and durable original close receipt before acknowledging a fresh cleanup request. Never repeat fencing or complete a pending close under a different key.
-- Preserve dev51 hosted evidence: 1,141 passing tests and one failed Qt Disconnect assertion. The same integration test remains mandatory unchanged. Two local regressions fail before the repair; 106 authority/contract/control tests pass afterwards, including pending-close recovery across restart. Full requalification is pending.
+- Preserve dev51 hosted evidence: 1,141 passing tests and one failed Qt Disconnect assertion. The same integration test remains mandatory unchanged. Two local regressions fail before the repair; 106 authority/contract/control tests pass afterwards, including pending-close recovery across restart. The unchanged Qt integration test now passes among all 1,144 hosted service tests. The separate native terminal cohort failed on ten DSS command timeouts; twelve other core jobs pass.
 
 ## 0.8.0.dev51 — desktop reconnect session repair
 

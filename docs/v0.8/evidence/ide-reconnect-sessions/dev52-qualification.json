@@ -1,0 +1,3644 @@
+{
+  "schema": "openbexi.v08.ide-reconnect-sessions-checkpoint/1",
+  "candidate_commit": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc",
+  "package_version": "0.8.0.dev52",
+  "ide_commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
+  "ide_version": "1.2.1.dev4",
+  "passed": false,
+  "desktop_reconnect_component_passed": true,
+  "full_v08_qualified": false,
+  "publication_performed": false,
+  "source_identity": {
+    "candidate_commit": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc",
+    "candidate_tree": "c7c95fd1594d8ed3b2e34e213b61d52d35f41068",
+    "merge_commit": "e72966340510f40bfd0724656b75643dd4cf0739",
+    "merge_tree": "c7c95fd1594d8ed3b2e34e213b61d52d35f41068",
+    "run_id": 40265747097,
+    "run_attempt": 1,
+    "jobs": [
+      {
+        "id": 121387670165,
+        "name": "native-boundary",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670411,
+        "name": "native-launch (native-ide, --native-ide)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670501,
+        "name": "foundation",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670590,
+        "name": "native-launch (audit)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670622,
+        "name": "native-launch (native-prompts, --native-prompts)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670632,
+        "name": "native-launch (listener-survival, --native-listener-survival)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670635,
+        "name": "native-launch (dss, --native-dss)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670653,
+        "name": "native-launch (thread-barrier, --native-thread-barrier)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670657,
+        "name": "native-launch (native-handoff, --native-handoff)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670686,
+        "name": "native-launch (native-startup-stress, --native-startup-stress)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670692,
+        "name": "native-launch (pause-probe, --native-pause-probe)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670719,
+        "name": "native-launch (child-gate, --native-child-gate)",
+        "conclusion": "success"
+      },
+      {
+        "id": 121387670748,
+        "name": "native-launch (native-terminal, --native-terminal)",
+        "conclusion": "failure"
+      }
+    ],
+    "workflows": [
+      {
+        "id": 40265747095,
+        "name": "v0.8 Kubernetes prelaunch static security gate",
+        "conclusion": "success"
+      },
+      {
+        "id": 40265747123,
+        "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+        "conclusion": "success"
+      },
+      {
+        "id": 40265747102,
+        "name": "v0.8 prelaunch multi-service Compose integration",
+        "conclusion": "success"
+      },
+      {
+        "id": 40265747120,
+        "name": "v0.8 kind five-process prelaunch runtime smoke",
+        "conclusion": "success"
+      },
+      {
+        "id": 40265747097,
+        "name": "v0.8 services, authority and worker preflight",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  "foundation": {
+    "python": "3.13.16",
+    "junit": {
+      "tests": 1144,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "checks": [
+      {
+        "name": "lint",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+          "-m",
+          "ruff",
+          "check",
+          "server",
+          "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+          "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+          "driver_plugin/src/openbexi_spell_dss/context_server.py",
+          "host_runtime/python/v08_worker.py",
+          "host_runtime/python/thread_barrier.py",
+          "host_runtime/python/child_gate.py",
+          "host_runtime/python/control_journal.py",
+          "host_runtime/python/prompt_replies.py",
+          "host_runtime/build_admission_context.py",
+          "host_runtime/native_prompt_patch.py",
+          "host_runtime/native_terminal_patch.py",
+          "host_runtime/python/terminal_probe.py",
+          "host_runtime/python/handoff_runtime.py",
+          "host_runtime/python/handoff_probe.py",
+          "host_runtime/python/epoch_connection.py",
+          "host_runtime/python/epoch_relay.py",
+          "scripts/v08_handoff_cohort.py",
+          "scripts/v08_ide_cohort.py",
+          "scripts/v08_terminal_cohort.py",
+          "scripts/qualify_v08_native_launch.py",
+          "scripts/v08_listener_survival.py",
+          "scripts/v08_native_consumption.py",
+          "scripts/check_v08_release.py",
+          "scripts/qualify_v08_server.py"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "format",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "server",
+          "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+          "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+          "driver_plugin/src/openbexi_spell_dss/context_server.py",
+          "host_runtime/python/v08_worker.py",
+          "host_runtime/python/thread_barrier.py",
+          "host_runtime/python/child_gate.py",
+          "host_runtime/python/control_journal.py",
+          "host_runtime/python/prompt_replies.py",
+          "host_runtime/build_admission_context.py",
+          "host_runtime/native_prompt_patch.py",
+          "host_runtime/native_terminal_patch.py",
+          "host_runtime/python/terminal_probe.py",
+          "host_runtime/python/handoff_runtime.py",
+          "host_runtime/python/handoff_probe.py",
+          "host_runtime/python/epoch_connection.py",
+          "host_runtime/python/epoch_relay.py",
+          "scripts/v08_handoff_cohort.py",
+          "scripts/v08_ide_cohort.py",
+          "scripts/v08_terminal_cohort.py",
+          "scripts/qualify_v08_native_launch.py",
+          "scripts/v08_listener_survival.py",
+          "scripts/v08_native_consumption.py",
+          "scripts/check_v08_release.py",
+          "scripts/qualify_v08_server.py"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "types",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+          "-m",
+          "mypy",
+          "--config-file",
+          "server/pyproject.toml",
+          "server/src"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "tests",
+        "command": [
+          "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+          "-m",
+          "pytest",
+          "server/tests",
+          "-v",
+          "-W",
+          "error",
+          "--tb=short",
+          "--durations=15",
+          "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/v08-server/run-20261026T034730Z-48711c74/tests.xml"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 300
+      }
+    ],
+    "source_sha256": {
+      "server/src/openbexi_spell_server/__init__.py": "6805130a572a71491e591185e935766c681ac8c7505fc5456f6bb5cab9b23506",
+      "server/src/openbexi_spell_server/__main__.py": "2eb56ac02914ef874936fbb820b443be601c2ced9867d36d319610e0955a6a83",
+      "server/src/openbexi_spell_server/authority.py": "f871d4eab45810f2e2a013c799f5c446eb54bd703e32fba6e7e510ece0e41d03",
+      "server/src/openbexi_spell_server/commands.py": "46821728bf3bc65b8e2d815be777da4a832ffadb1d7e6c528b4ef38239449de2",
+      "server/src/openbexi_spell_server/contracts.py": "b9dead2e0b1ccbba713e57be7d8c2718492c9fa47860a4011235886206350c16",
+      "server/src/openbexi_spell_server/control.py": "c81af99fdfafded3526fb9e233c3d84b9c4f8c3ee33ddb8f0883b83a9a1b2185",
+      "server/src/openbexi_spell_server/effects.py": "59d6107d5e3473f5318ecfe265dc85c19a8aac6aaeb59dd6782ee745053330c3",
+      "server/src/openbexi_spell_server/family.py": "e879b22a0d54b3536db4cf20accf9e761c4a5a94bf19e0080e25c735d1d3c717",
+      "server/src/openbexi_spell_server/gateway.py": "092abb3548cf55e2091b13cb8758cd1ad44f92eaec59ec4ef8738f05c78dd08b",
+      "server/src/openbexi_spell_server/handoff.py": "3a2887d2d69b372cb27625b189134fa25d259bfdb7209d689bf33482ba8ae270",
+      "server/src/openbexi_spell_server/launch.py": "0c067388a8214e2bc29e5113e3a127dbd7db3a0419c0170121710d65a13e8d18",
+      "server/src/openbexi_spell_server/mutex.py": "b1fb7ef7891045c0188df53048a2378a17c81722cf94fe2ae664a74b0277a46a",
+      "server/src/openbexi_spell_server/pause.py": "050d4f9664d942b96cc3d6567c720f518f8578ccd4492f8acdfe1a9e5681c8f9",
+      "server/src/openbexi_spell_server/preflight.py": "8fb01220990bffc50bd6ce4d5d825d1e4a4b6b8818f59e1010a73f7c97398913",
+      "server/src/openbexi_spell_server/prompts.py": "eea1be47d052c212b9036ab3c19d0d3f71cdeab719500753bc233552ca8165b9",
+      "server/src/openbexi_spell_server/services.py": "524242c9f07f0ffe18e144a85c8faff2b56320b75393847f0a9960912cf2e2b3",
+      "server/src/openbexi_spell_server/settlement.py": "55ef2abf97d4433170d3d5f3477afd8fea87a3a796efb29022237bb1c8abdd9f",
+      "server/src/openbexi_spell_server/snapshots.py": "d7267c50602b333ebd8034e1cf47319565dfc82fb42ddcd8ec7bc77c0b622f25",
+      "server/src/openbexi_spell_server/store.py": "120366860cf22f96ff61f7a76be7869a152ee8f5cad0075c365331b0825604e2",
+      "server/src/openbexi_spell_server/transport.py": "ad9c1b0424340ad6558b33280b6335ee9b54e3434ca884fc21c06a15705841b5",
+      "server/src/openbexi_spell_server/worker.py": "0511757970f821bc3be79af32cebd5270275083b61ebbbfe9295b56882032ae9",
+      "server/tests/authority_test_helpers.py": "7107701f601f822e0ce94fa3583ca804bec2f5b59cd7f2f1c9a84d4704e19bc7",
+      "server/tests/conftest.py": "e976111f2f71ad2399d04f97d86ca3a16a479af2aa3b2203564b674f23d1ea59",
+      "server/tests/native_bridge_test_support.py": "b6a7fb0825dc8c289cf06fa36cdbc9e3e74192db79ecd2d1a315dea709a642df",
+      "server/tests/test_authority.py": "3e6965b7517dca73f6d21e36edf3e9071f1c4421203bfd8e6225c1d0f61741c3",
+      "server/tests/test_authority_contracts.py": "5ab00d510c66c08fa1c6dba22e3a7afc792008ea1e463e7fa4634bb30408b8eb",
+      "server/tests/test_child_gate.py": "a7a35f6f27470899c5435ffc5871e70310055d7ff6c6a3b25d2340c0bdbc3023",
+      "server/tests/test_contracts.py": "215bb20ab607172c4a414bc9d54407b2efe41024ef7ec1cafc562af243e66634",
+      "server/tests/test_control.py": "70f87622dbe297483b4f2fed3b42be141df996198ea5d7fe9562a78738ba1819",
+      "server/tests/test_effects.py": "f96695e196f25460a0b2fb5c9a167bf648ce8613efa682b492820aef8619c2ac",
+      "server/tests/test_execution_mutex.py": "65ff9d8a7b89f274fb68460c48af9f327d7b74299ad01d20458fdffe08c47aae",
+      "server/tests/test_family.py": "330e87be606d66c6ffa5f0ca863e4d5820073a1c3aab3f7dd7b18d0ff43755c8",
+      "server/tests/test_fixed_metadata.py": "47a5d6c437507a72b08db001aa75017bf8c144f70fb83c8162544f198e8319a1",
+      "server/tests/test_handoff_drain.py": "a2c93548575ed44dade96c54ef63fb1a188e6fe4c077839e7caea98a4aa5e8f4",
+      "server/tests/test_ide_integration.py": "1d964e33a5067ce69c7a055904c8b8f1c4e4159c59067034f53b83c039ca8276",
+      "server/tests/test_ide_native_controls.py": "671c74e3d1932599aba6e55dea386abda9deff4db45e2f8b98c76cca299fa26a",
+      "server/tests/test_ide_prompt_controls.py": "1b85796424df53efbea89cbf0590dc0c8143bf78ca93c577002e202889e80031",
+      "server/tests/test_launch.py": "607bc95aa4b06379f5e42cec2012aa702120e70e42dd0a89c21c089f329a9821",
+      "server/tests/test_live_handoff.py": "c9cb784cb704fdc0a008de8e0b39b1e560457cdfd6b0d389d766f6b0d19bf960",
+      "server/tests/test_members.py": "c27d0a802622672e5634c8aad7f48500ef161b4e5bf13fd55a1744bb9480e4a4",
+      "server/tests/test_native_admission_channel.py": "d1b3e28eb754ac375aec7a56b48c34b796ba91f781bb5bca871be4655a75b723",
+      "server/tests/test_native_bridge_lifecycle.py": "735707891bdced6f19de2995e37ae42c07f1a2108b77f51b53733a40d591da8a",
+      "server/tests/test_native_driver.py": "baf653bcd00f7824db81d965d4a3e1839106621230fc2c38523e8f16cb9518c8",
+      "server/tests/test_native_epoch.py": "f6f57633a39047231ab77941da73ce0dcee206395c73d29d7c72ff330e4dd8f3",
+      "server/tests/test_native_gui.py": "179265b7dd5fdd8100ae923b3ca64b17459e271be91d9e52cf7623d74c46eea3",
+      "server/tests/test_native_lifecycle.py": "8bbd0dfbc129ba605e2bb5be38ff73e87081d10783d4794d2f972fa599becdd2",
+      "server/tests/test_native_memory.py": "2707729e6a21ba26f1f5c834fc25e7ce84f18a1c0fb171a393c93a01af17a8f3",
+      "server/tests/test_native_mutations.py": "0fe8c7ea7bec0cd9de3fc7f8fc2e0b947abe6c4d9b9c72b318ba92f833edd1ba",
+      "server/tests/test_native_notifications.py": "7d2f0a94b9fd2a97d44a8f6b57842bbc7763c8764889673ebad45fb7b1792574",
+      "server/tests/test_native_prompt_boundary.py": "e6acf0f50dfced9eccb48939b6eac9e667e13dded17042f945074667f37e2612",
+      "server/tests/test_native_qualification_cleanup.py": "0eb1d47232c191221c1cf266ec4d73d269f18b9efe37b486ab7bd7002004a83e",
+      "server/tests/test_native_rebind.py": "92e1268d8364dc6e1ec8da8da32d55aa04f625df36a9f6a609f471f3512b8c5f",
+      "server/tests/test_native_startup_diagnostics.py": "f8da34dc35904f918f00656bf113b623b82615b21936a3cbbe032c7bae39a41c",
+      "server/tests/test_owner_commands.py": "eb985f5dc5c0d685ad2f58513d3cff7e1d8c671780ef327ef886ea0c05a0c667",
+      "server/tests/test_owner_resume_race.py": "4ea9e6a875d5e29d42fe19b7846346010bb91f16bf55780b0a0a61a732d77903",
+      "server/tests/test_pause.py": "793fbe9ee43713b1886a7aec503bc2ca4f9e40a62c381570add0f34ecc9d3213",
+      "server/tests/test_preflight.py": "a4286e2bb7139ff1dcbaa04835b7453cf506cadacb24f87fc9f73857cbbfc8b6",
+      "server/tests/test_probe_profile.py": "a55dee4b0e7cc71c6f6b31ed86349e7bf4d00997c32b85921137c72f77461188",
+      "server/tests/test_process_lifecycle.py": "e5ca6a1648b7473875b7195e27483417643c9ea55aa71cf8fd7c92b42c1e2c5d",
+      "server/tests/test_prompt_agent.py": "af579b62fc3dd405e5c0560c1d348ffff92d767793bbba7466dbb8d48680abb3",
+      "server/tests/test_prompt_authority.py": "1513f205895cb44544294537dae83ff30f12df47572ab6b0475f20ff262ff5ed",
+      "server/tests/test_prompt_handoff.py": "03e8a4a7f8646fd23d153f4722d2a1a3f0fa24bcbaf2e5486da2156974e62b0e",
+      "server/tests/test_qualification_runner.py": "b76f33e2eff8e50df6f278080465ba9c19e55860dd06a422950f8a7c30df835c",
+      "server/tests/test_release_gate.py": "74009521b968b5780d9245ae18cf06c0e62e97338b5245b03e5a6581c0fe2206",
+      "server/tests/test_repeated_handoff.py": "1a38de00f6eb4a4655379d72a350e0c73daecdba11fec6636a9611f4c9638a1a",
+      "server/tests/test_services.py": "77d5c592893abe87fab209775ca3c60b5cec62610a35236d8a71bcb088eb847c",
+      "server/tests/test_snapshots.py": "0281f180fc3a835d5285d77b0e5837895fa98b6dda71fee23c7947b0baba83f8",
+      "server/tests/test_store.py": "8f9ed19619c630f1db634fbe2c8bab3cff480b2eb31d52ab8088de7ac11c860a",
+      "server/tests/test_supply_chain.py": "a3c57b106b98dffa03cfb390582f6ef667d084786a18626ab100915a1fe8b5e8",
+      "server/tests/test_terminal_cleanup.py": "2df7a8bac5bb10c59bdd2a2c05f31b809756b925c2e101c5c5808227d4e01afe",
+      "server/tests/test_terminal_commands.py": "dc5ef54ffbcd2d47e19b66b09ff25bcf70002a10a0f70223c13d77d229ae5af6",
+      "server/tests/test_terminal_settlement.py": "58b0460c666808b894edf0268b749287a603626bc0f349fe3bd0513972a0fbe5",
+      "server/tests/test_thread_barrier.py": "c781956627e5a2d4eb0435d17319132a2cddb2a9a4997df2b876b1c4fb99ab82",
+      "server/tests/test_worker_isolation.py": "44ee25ff6334fb77d942ca00325cefcc2845f9f60031f63335d968da58ba2d07",
+      "src/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+      "src/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+      "src/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+      "src/dss/engine.py": "604663fb2a921922fc5318a31923b95523aec5193e31495ef310cacf1714a8ce",
+      "src/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+      "src/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+      "src/dss/local.py": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+      "src/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+      "src/dss/server.py": "a136d929c27d7934cb72562b3be0849a19681040c42e2e959a139e055e7b3383",
+      "src/dss/uplink.py": "04bf381b2c4273e3aa107312586811c32cd4b2289a14151e7773960f6f08683a",
+      "src/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+      "driver_plugin/src/openbexi_dss_proxy/__init__.py": "59e24342bfd8ffcfd727ee616b9bfa3d96fd60d2ef29544cbb92034c41872734",
+      "driver_plugin/src/openbexi_dss_proxy/command_catalog.py": "685f47cd9349bdea084ea863e4f14ee99c9c465a0236c7ff91b22a211e17cf02",
+      "driver_plugin/src/openbexi_dss_proxy/command_group.py": "a69012b3a59670ad1dcb67fbe5264ba52b7400356172e2c7ce95d6475441333d",
+      "driver_plugin/src/openbexi_dss_proxy/command_settings.py": "a5b1a3837a6f33a78a4424c061d0aad8efae5befc3afbdb4ade8840b814f11eb",
+      "driver_plugin/src/openbexi_dss_proxy/common.py": "38c8974152772d7d696e565c60ee28ff0b2dce66f640944fabe83cbebdb713f1",
+      "driver_plugin/src/openbexi_dss_proxy/config.py": "a608a47466e259f0c61b6a015bdaea1e6b3422f7042885443fea5c971b3b0969",
+      "driver_plugin/src/openbexi_dss_proxy/connection.py": "a8097827a1ebdc7d4d58858a3d6f211af65fba779ee0d9f4962827dde4c7ad0f",
+      "driver_plugin/src/openbexi_dss_proxy/ev.py": "fce0f7d064b2fc237038aaf299bf0f76795e52892ecebf5dca7565e49baced6c",
+      "driver_plugin/src/openbexi_dss_proxy/gcstime.py": "28ed30f4ce54a5281f20755bd39ff12f6c996c72bde283a9fd820055ca95044a",
+      "driver_plugin/src/openbexi_dss_proxy/limit_arguments.py": "d0262093bff4c7be45f2ffc272675cdeedfe9d746ec1ee0c0e671d1a7ec5a9f1",
+      "driver_plugin/src/openbexi_dss_proxy/limit_profile.py": "57cf0be8cb334422f67829288c99472247dcff20d73c3b8dda98977a0ce06cf7",
+      "driver_plugin/src/openbexi_dss_proxy/limit_support.py": "2f338cf44416dfa042c6f95db5e237e978ff14c345d3cca69e1231ab9ad831ac",
+      "driver_plugin/src/openbexi_dss_proxy/memory.py": "3efb17ca7600f7b99c849dd3870ad516eb8079c1d2bf4890d88e30abb715f5f7",
+      "driver_plugin/src/openbexi_dss_proxy/memory_support.py": "114aad2a8af11e2b29742d14e3bcd0fa13b4b34c44395809197bfb7ba77416ab",
+      "driver_plugin/src/openbexi_dss_proxy/pcs.py": "551794f22b796655013ffbaf88a17ed3c64716378111f6b61d850b410addf5b6",
+      "driver_plugin/src/openbexi_dss_proxy/provenance.py": "a1e2987fa8f57e2896b49131a28bd03d20f31cca989fd5187950de4d68f5558e",
+      "driver_plugin/src/openbexi_dss_proxy/ranging.py": "7c962da4fae3a08d5b13d7a7ab72573b3061196c8be1d123258ded6aece1937a",
+      "driver_plugin/src/openbexi_dss_proxy/ranging_complete.py": "0159fb94bdb51a149c0cfa328e9476d1e29ba20f134243354ddaff8383abbf42",
+      "driver_plugin/src/openbexi_dss_proxy/resources.py": "8f2394fe3f4cc48050305f5437292eefc5fb0e276dffa7a0c7008a19020de5a5",
+      "driver_plugin/src/openbexi_dss_proxy/task.py": "abe7a3a954b671a117775ea57c2ef013b7733192746a90fa7ce6f7591d98288e",
+      "driver_plugin/src/openbexi_dss_proxy/tc.py": "5b6784d0bd7ed7f5bc935e06a51f8b9d52fe27d30f53b139868cedaf84e40f97",
+      "driver_plugin/src/openbexi_dss_proxy/tm.py": "468dc9ca3bd1a1646e97905f8fe6ee85e2c64427ed24e72b3b0cb455089d5aa8",
+      "driver_plugin/src/openbexi_dss_proxy/usr.py": "9d8cb78da7fe69aaf22d7e269fa19cfa6ad03903493d55ece82e1ed2d4a232c0",
+      "driver_plugin/src/openbexi_spell_dss/__init__.py": "b3d5562c0cbe1115ce15e1987b5770ee8513336029dd9412020f69f006418081",
+      "driver_plugin/src/openbexi_spell_dss/codec.py": "7b868ac97b6419b6b8c4a8604e7ee53acc648d2ab54fc86699aba2b841f6077a",
+      "driver_plugin/src/openbexi_spell_dss/command_blocks.py": "6bb03cca63283bf244010c74b037960367493144d8879818897ad387ce9a5767",
+      "driver_plugin/src/openbexi_spell_dss/command_budget.py": "08d6858bec5f168ff96c7a12b95a111f2a4391a22f0d929a7f788bf230f675da",
+      "driver_plugin/src/openbexi_spell_dss/command_catalog.py": "5674d07c2dcf62782dd4fc8e05a9ef7084c04a57b982b22a75325941ff496764",
+      "driver_plugin/src/openbexi_spell_dss/command_execution.py": "3c7d048327ae4338ae9d4c72597acdb6d468ec63f19ae96fef1c7882d580e477",
+      "driver_plugin/src/openbexi_spell_dss/command_group_rpc.py": "9c6443989c617efdaaaeb45b7bf241cfb05ae1b2868a93f391a38e145c8f78ac",
+      "driver_plugin/src/openbexi_spell_dss/command_groups.py": "f54ed3eac7d3bdb231f3b5513941224e8228f51864205b1c7dc34551764ac023",
+      "driver_plugin/src/openbexi_spell_dss/command_results.py": "5eebfd3c44893d6fb1ce5eab55099c85f016fb72b5dc3cce11c97d4a6851270f",
+      "driver_plugin/src/openbexi_spell_dss/command_rpc.py": "387ac050ebeb69ed6e862e6f4f39051d85db7b0925feacf4aebd7b422553dc99",
+      "driver_plugin/src/openbexi_spell_dss/context_driver.py": "c53282c42f7fc3236d9c00054df49657eef2869bdf8b63b7063ea2cf523e97e0",
+      "driver_plugin/src/openbexi_spell_dss/context_server.py": "c27fd1c1fe4374965b3371415c1ccab47be248b66b3ba229d9a09a129b2f3de3",
+      "driver_plugin/src/openbexi_spell_dss/display_viewer.py": "c3d54123a23be5730421d3237fa0ba6c85b2afbb3fc8a5bfb60951bcace87ffe",
+      "driver_plugin/src/openbexi_spell_dss/displays.py": "c395c616582046c550fad942801d93c00748ebdb53fbc1cafd9aa1a59856921a",
+      "driver_plugin/src/openbexi_spell_dss/fenced_transport.py": "953d2156b73c389a0eef1fe0d029dc92c5e5df4cc36e5f3af44d27fa43a45662",
+      "driver_plugin/src/openbexi_spell_dss/ground.py": "727669bbe36281faebbe7d5e53f9e1cf5db2d262ff7e9496e9aa89c3d9130880",
+      "driver_plugin/src/openbexi_spell_dss/journal.py": "2d5df422f838235793cd5d21c41eb374cf7c8514fd747ded98d794cf763287f3",
+      "driver_plugin/src/openbexi_spell_dss/limit_algorithm.py": "41c66e5c8ca0a11bcfad60bf223f366976c4f0ed5072f2b76f846247e5287ec9",
+      "driver_plugin/src/openbexi_spell_dss/limit_definitions.py": "1330fd4936ba97760066dbdd3f755bc6c037310e1a217dce5d0b6ca30d284626",
+      "driver_plugin/src/openbexi_spell_dss/limits.py": "6edbaed47e212ff04d6b36c0633e4df9ae66f4c4e028915799fa049956129a4c",
+      "driver_plugin/src/openbexi_spell_dss/memory_images.py": "0abfe2253fa0e14da18810c7eddd63a2e8615216f72d6dbf62cd9a98bc8c4867",
+      "driver_plugin/src/openbexi_spell_dss/operational_journal.py": "16d53ae3069082be829dc36f5bec6271fa9dd8f6685fc398a9ea643b8129d0d0",
+      "driver_plugin/src/openbexi_spell_dss/ranging_complete.py": "e4c60c535e6abc6fe4cf86f4a56b96edaba9434913bbf4406899f54408420f35",
+      "driver_plugin/src/openbexi_spell_dss/relay.py": "a28a694a5da00b57e4f77bcf68a99323d872a6eff890c21ec4dad572d4955c5e",
+      "driver_plugin/src/openbexi_spell_dss/rpc.py": "3fd63bd7b16fa3f2cad0d8f2dd1d9071a1890f69cb266f1e1e6172932565cd52",
+      "driver_plugin/src/openbexi_spell_dss/server.py": "d7f37e9f15c94b2edbd202aba1c5af9b6658350805567e09d22f47d29efb2814",
+      "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2.py": "94d1c0f3c529dacf5d914760f28ef61c42b0b08cdfb15bdc10c19814f8dbf091",
+      "driver_plugin/src/openbexi_spell_dss/stubs/SPELLDriver_pb2_grpc.py": "27e0f6deb54083ff19f511762f4c306867a330e539e66dadeed8398fe76d8715",
+      "driver_plugin/src/openbexi_spell_dss/stubs/__init__.py": "dc075835f79593dd185373937940fec1b8cc7fb69f7da5703db3d7689960fc2f",
+      "driver_plugin/src/openbexi_spell_dss/telemetry_budget.py": "c314b4c3091222a7e0457d53946bb7bd2a2e81e4c4787508835fd75ae06fbf70",
+      "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+      "server/pyproject.toml": "9d8c4107f51915368d4b4799b6d35c3b05ba509bc467bafcfc3bacb29f30a8f1",
+      "server/requirements-test.lock": "96398df2ffef43db492e9ccb4ea4159f6c3ccee8d7c8f17adad00e39d44c4f6e",
+      "server/README.md": "03058e2f1472175b93af94bec0a279081d1deada9e71ed2b688a2e09b0789bcb",
+      "server/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "server/MANIFEST.in": "e96e6e445125d0b4d905b204281d57d2688f9241ffd28710a39c250bd4099456",
+      ".github/workflows/v08-server-foundation.yml": "e39ed3ab95f01da55ab90be8d7dacab1dec6c49d9fdf6cf6a055bc9a88913bd9",
+      "scripts/qualify_v08_server.py": "6a6f60a5a1a70822a01633d50eec4d5dd8f99fe4b4191f22ec528d2e55ceb996",
+      "docs/v0.8/IDE_PAIR.json": "4a01fe6e3cfb01cb16c71c136a3a02b755894fe83cd13e27a3323c4a0d94b42c",
+      "docs/v0.8/RELEASE_GATES.json": "4d7026b1f5c1f868b4d026555a2da9748fe76dc7cf3b69fdc8ecc84a8b292a63",
+      "scripts/check_v08_release.py": "0f7d66d177a9468b0c77198d2b78dec772687e6737b5355d7cf542f6843e1507",
+      "host_runtime/python/v08_worker.py": "0ba5698831a2b4c5a50e4b4a4c7a861c7d5839150a3ea84ed3018a5b06865b2e",
+      "host_runtime/python/thread_barrier.py": "31bc9b2de2b78fcbc17d6213a4b9c20a96c689fa63b15a5f32e29e9491bec895",
+      "host_runtime/python/child_gate.py": "ee43f47693ea35b07b32fd76a5750f755a8af4e0172edd014774b1e1d14fb5f6",
+      "host_runtime/python/startup_diagnostics.py": "06616af052b8e4d57993911aa111954309a3e215e54cccf14b9f13b5534ee67e",
+      "host_runtime/python/control_journal.py": "ae7a2e9cf0ec49c2cf20735834dacc85583646fcf544bc4ca86d452cab790619",
+      "host_runtime/python/prompt_replies.py": "3c3af5a035e8614905694aaeff640dcc07e6f12fbcd49d85ebf9a4965f82e518",
+      "host_runtime/build_admission_context.py": "4933c3f12ec7d1df5c0bacdb760f50adccb58fc047428de4c0a0786a35fdc6c7",
+      "host_runtime/native_prompt_patch.py": "fe4f64ea88b3a3d42caa1d786ad95bd160806a989e072ebdd51dcf4e8b597f42",
+      "host_runtime/native_terminal_patch.py": "6047ed890ee89e818d67fbbc948c3bc473858233f50e10296fd8791799b0c2d9",
+      "host_runtime/python/terminal_probe.py": "ccf8a15cc0cd1003d76720b484df01a1d25eee7ea651aa459354143f949ed48f",
+      "host_runtime/python/handoff_runtime.py": "39f51e2e61e16e284a8616e9ce66ed0d66df2353f4be0ad6b73cbf982a2c4cac",
+      "host_runtime/python/handoff_probe.py": "77e96126eb5ae2a0c8a16ae19507944a2f89e9169808e4d25b13b446c3efdbb7",
+      "host_runtime/python/epoch_connection.py": "b3520cd3621129cc58f4de7831ddfc0bdc5b4a5a41feecb8a1c30e32764d778b",
+      "host_runtime/python/epoch_relay.py": "e79042dcde5ac0b764a2193a72049d96fa4f026e23946ca943d59bb45484bcd5",
+      "scripts/v08_handoff_cohort.py": "b549ef111eb8c2f10eadbb9572603440d2353fa70ddf3a5f0b22981203879a28",
+      "scripts/v08_ide_cohort.py": "4153efdc9afda44248c6fc3167fa638047821ff19bf960e3197dc6e969f6a09b",
+      "scripts/v08_terminal_cohort.py": "b4a8f319f904351ca8b65d633f0a922c420314d9d29ebc02e780fcbfa307cbce",
+      "server/tests/native_prompt_harness.cpp": "6e5c15a2ae45773998817f9a7bd3fe5ec99347c7f52fc04e99004d76cc548209",
+      "server/tests/native_admission_harness.cpp": "d8b9f43a632757d132aefde5707e24f8d3fd94b928947fedc827369d4981995f",
+      "host_runtime/native/admission_channel.H": "f7c40e528645b91121200d6bc7e0d4a45d6cc60e43cbbb12738e6432eda4e5f6",
+      "host_runtime/native/admission_gate.H": "1ee04162a69963b7ef11576f18f6600fa611a95ed22c3e9e7d2648a01f2212cd",
+      "host_runtime/native/admission_ipc.H": "c6ddab63d76616b7e8a0b93513d62434b1a71bc1c158e083bd0c533784016bdd",
+      "host_runtime/native/execution_gate.H": "409e45ba4c2f80c2cc10d2d699b64320543006cfcdd6c0d14f68747b9d4b62f4",
+      "host_runtime/native/gui_gate.H": "2147c18a4997889d7fa3d319380e1ae0b309248cbebea2aa2c42163df5eb8764",
+      "host_runtime/native/gui_policy.H": "b644ad6fd080846a8cda8c235b5ef705dbfdee365ab93f993dca95d44e4abbc0",
+      "host_runtime/native/mutation_gate.H": "afa033d2fffd6e83776b1bb00e6b3eda76cb51fef904afaf030c75858280a0f0",
+      "host_runtime/native/mutation_policy.H": "54202bf5ac37ab5aefd1be71e1b36e19278082a4fbba033e6b6aa8b91cf9aa52",
+      "host_runtime/native/prompt_gate.H": "9ae08af8ebcf3ddccc30f690dcd56282c1e46739f6d8f52080c282264b942fee",
+      "host_runtime/native/prompt_policy.H": "f2367de98dfb280e44f93df91da5c05a0da7e65f4ef11a691dd50674b6bc17a2",
+      "host_runtime/native/startup_trace.H": "57c957094d7b18c46488f6f6f31deabbe53650abf7e95fd10acc062772e86871",
+      "host_runtime/native/terminal_gate.H": "9c4f6cfd85bb5623b33202252f3f90e2ff815f441451e6c927d99edd4a92cf9d",
+      "host_runtime/python/children.py": "a2d3d04b6e00fab337af54806539ceee00964d69f3107dcd5f994e44a0469a4f",
+      "host_runtime/python/native.py": "549fd9e9abdc6e7e9a9ec0d56183ca23dc89d147bb05d52ef7d95be5bab5b8f0",
+      "scripts/qualify_v08_native_launch.py": "485bcc41065009718c814bc7e2dc86be48813f2527133ab4e88cd421691a26fb",
+      "scripts/v08_listener_survival.py": "458e164836533b4db214f962c70d79122be76dc287b031d18619a576670a0108",
+      "scripts/v08_native_consumption.py": "be1b5a11eb93b7b2cdd50a8202daf233802f9bbc2ef56d23d90bfeffe40b6a91"
+    },
+    "ide_client_inputs": {
+      "openbexi_runtime.spell_server_client": "e3cdc909e3162b665067306a81b15dcb780c84a9af567f1c4f9f4f1e12aeac19",
+      "openbexi_ide.spell_server_panel": "4b30d929052c34b18a2c63e1c45d64ff8c38690bea36c2f4f9366b6b7d07a5da",
+      "openbexi_ide.app": "27f59dc75ed2d434b547beb2b7a1b460c6e3d1379e6a58dba7c175acd7b10ccb"
+    }
+  },
+  "exact_qt_tls_test_passed": true,
+  "host_evidence_in_qt_test": "service fixture, not physical host proof",
+  "ide_suite": {
+    "commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
+    "version": "1.2.1.dev4",
+    "workflow_run": 40264995293,
+    "artifact_id": 12625953090,
+    "artifact_sha256": "8d35ea7c020c9432ea8d082bde3cedf9fbcac6387f7bdff94b91ac2adcfb7b82",
+    "zip_integrity": true,
+    "passed": true,
+    "junit": {
+      "tests": 273,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "skips": [
+      {
+        "classname": "tests.test_runtime",
+        "name": "test_normal_worker_exit_reaps_detached_user_child_on_windows",
+        "time": "0.001"
+      }
+    ],
+    "wheel_sha256": "bb6693f5c4ee5def847c36449e3ff6d248b841b7cd0d8ca13290917c8fce7133",
+    "wheel_python_modules_verified": 50,
+    "source_sha256": {
+      "openbexi_ide/__init__.py": "8632fde3fc8e279276892e8ba574045c1e3c4b998c35d56465905c0a2163c5b2",
+      "openbexi_ide/__main__.py": "a67c172046323b0efcafe92cb83abc266d5dd4bc931d9312cde1b7bed50643db",
+      "openbexi_ide/app.py": "27f59dc75ed2d434b547beb2b7a1b460c6e3d1379e6a58dba7c175acd7b10ccb",
+      "openbexi_ide/console.py": "4df50b5221b31be1646ccd897ddc51a77ff1be140e9b8fc238ad099285689bfb",
+      "openbexi_ide/controller.py": "ee3ce4c4515e6ac351b767927b160de7bbd295ae525d0927ade7e91344e0110c",
+      "openbexi_ide/debugger.py": "8b71deafdd7f26a9bd8df7dc32a93f27819a65c93a81d7ab494987f69743a291",
+      "openbexi_ide/editor.py": "76c979564896aee99dca2f19dd188101b5498c70ded4991dddeb26237a0fced4",
+      "openbexi_ide/fonts.py": "e99274c43c6a0e04a56152cb420d3802b9ba841883d48f9dbd79b9e40bd66c82",
+      "openbexi_ide/navigation.py": "b14850951c9ed1a10ed2203126f8382e07c99839b07cf9a552ee25451c3dc987",
+      "openbexi_ide/plugin_manager.py": "c7c01b9b30fe0560ac5666f3d5e7d02759aacfe82601426c953d56c9ace69339",
+      "openbexi_ide/procedure_connection.py": "19eee10a0cffce9e4188c8f38075c77b48c22448768ab72d59851700c5463754",
+      "openbexi_ide/procedure_workspace.py": "8b9d120ec25cf533b27f2b7ba637f2f333c2389ee1e6733c0393331b078c68b5",
+      "openbexi_ide/productivity.py": "0bdab0a1cd32966aa579eab7aa19a0b08f8fc95218449488fcfc3b42af59ceb7",
+      "openbexi_ide/session_client.py": "652449ed0e8889948c5438c2b257ce5478a711abe48fa5f1b1ec6b16f54cccb8",
+      "openbexi_ide/session_panel.py": "24b8e0577f379125ebd6a688a30272ccf18a9abbec9766daf43d9277eaa151c9",
+      "openbexi_ide/shared_debugger.py": "538745a5216b07e7e37f970e08cddb2ba89f58b611eb4679f247e289d1ce5b0d",
+      "openbexi_ide/source_view.py": "413ef2c931aa40284e889cc3f38985ce2c4d21194ba4e514f8dfba3c8a315e81",
+      "openbexi_ide/spell_server_panel.py": "4b30d929052c34b18a2c63e1c45d64ff8c38690bea36c2f4f9366b6b7d07a5da",
+      "openbexi_ide/themes.py": "1fa6f2559ac41e9f96187b60642714cce070ea81f50c45e6efa7e6aa80ac7bf8",
+      "openbexi_runtime/__init__.py": "2256d042148d2b6199eb77a7d8346c67296217d7d251243ac92e94393a77bada",
+      "openbexi_runtime/bounded_http.py": "0c995b71194e994c16f51b62b877add726bbb19b6553f48dbd22f324b81229d8",
+      "openbexi_runtime/cli.py": "c31677b9c2176b05bb493e746dc0383bbe42ad79a1aff38e28dade64c3cd58d8",
+      "openbexi_runtime/dap.py": "f6833b90e7842f0b4fb68ef1c0f8a56808a92986848b2bbcf79eccc8a6d6fc0d",
+      "openbexi_runtime/diagnostics.py": "365af6e74a803561a1547c83eb6419df741cb1dce9f43df0a9ab7328bff061a2",
+      "openbexi_runtime/execution_container.py": "368df1b34e988a2f8e9a867a43d1c0e89cf4759b5a96fbc78209dfa388b2f7a0",
+      "openbexi_runtime/execution_release.py": "3a9323db588ae6e5721dc13f3b06e3c6ff7173f0fe5b9584c4785f9e1ff94796",
+      "openbexi_runtime/execution_transport.py": "02ab4e8094d32bfaf2b414289151f0814d54a21b1f73726e6582420e82fe66c5",
+      "openbexi_runtime/interpreter_probe.py": "278461a3bfa8e0d8cbc550240bddd0d5c61a64fda2344c2969d43eb2d45d5fef",
+      "openbexi_runtime/languages.py": "d3c6526879f193da65245b5c97eb80e16795791fcdee2e595c69dac9d754044c",
+      "openbexi_runtime/launch.py": "897715993ec1f16c990712fd7a5bed69aeb1845b48a0d98fb2df020981918797",
+      "openbexi_runtime/maintenance.py": "03b4f026f71caed632292cd352590c16e0dac0d41502263267596eee3b9f57c2",
+      "openbexi_runtime/plugin_inventory.py": "874a8e923a92ea2aa16e266a3cc6db98ef1bf08bfc92224c179add7fb5e3b453",
+      "openbexi_runtime/procedure_bridge.py": "4f6b4092164918e1d4cec4d4883282b0c93efb571ca4a9a3e267d45170ec04ad",
+      "openbexi_runtime/procedure_client.py": "aa68b293b91db3b1f6c5557dc5cb5fc87de5520dceb93151a2dc511385b7c313",
+      "openbexi_runtime/procedure_colors.py": "f7ce630ee0ba5d068ae0ae76cee80056faf0a2a21e3ddd940bd3bee723ac8cb5",
+      "openbexi_runtime/procedure_identity.py": "e43fbbe481fc43ff42a85d52307b0f41b1eff2f099aed7a8a63e87497225aca0",
+      "openbexi_runtime/procedure_model.py": "5f0d8460e46339ce6fe8ff2c5f7b5706e40cf972e77cbacb73cff60383a8a47d",
+      "openbexi_runtime/procedure_records.py": "dfc89d18cd1db2dd6e4eb1e972c1bfe7de30f567a24a6eb6e711e7ae668611d0",
+      "openbexi_runtime/procedure_service.py": "c35dec1d13d6d59a869aea4d35917e9bd596812db07b820dcc2ce4029766d05d",
+      "openbexi_runtime/processes.py": "0d59aa976dacc7f2514b2595ae4c47e4312abae95641f9a82568bc8e2bc7ebed",
+      "openbexi_runtime/session.py": "f9b0b64265cc4297a2924be6457def078a280bd22a4d7f743040ca241d6cfdc6",
+      "openbexi_runtime/session_http.py": "94b0ee3d5b69f3e0eab4979e5a1e1aae35cd31a4398f23b1170d84fc33946ccd",
+      "openbexi_runtime/session_identity.py": "6d7e0a190d5aca9124fde9f530315e3c7f48450085a983c83831858d00eada54",
+      "openbexi_runtime/session_store.py": "b622e9c905a8b6c2f6b74f1203fcd571215684db45043df8fa75706f477dd83f",
+      "openbexi_runtime/session_worker.py": "eb7f0a3909e02792699fa6c6f17c278d0c08356b66c3e29f31cc5ab705754589",
+      "openbexi_runtime/shared_backends.py": "b089222da66a82c157f9def2e3a24d5c68302dd821236487340c00b80caa4fba",
+      "openbexi_runtime/shared_debug.py": "117f5ff8e969f8bfe7aff84bb54a2b90ca3290e418e9808e5da98d396459377a",
+      "openbexi_runtime/source_capture.py": "3d1832886fc16ca39ab596f3a598619edf140c0cd181355ba4b1858ef5dd83a1",
+      "openbexi_runtime/spell_server_client.py": "e3cdc909e3162b665067306a81b15dcb780c84a9af567f1c4f9f4f1e12aeac19",
+      "openbexi_runtime/worker.py": "feb8550adb2bad4d0525b5ca6337abbc2b7ae6a3612c6a283aa5dafb0cb50f6e"
+    }
+  },
+  "native_profiles": {
+    "v08-native-launch-native-startup-stress-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true,
+      "native_terminal_cases": [
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "5c12df2efe15901be03ed75716b4176224a615561ad5bf95797340417c4ce7b5",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "e418e4b9-e0db-4287-9f6f-93a9639eb71d",
+            "effective_transfer": false,
+            "execution_id": "3b23f277-02cb-41ec-92dd-c1bef5414eec",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "5c12df2efe15901be03ed75716b4176224a615561ad5bf95797340417c4ce7b5",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "f388a5a62b22f452d359bffa0dfa66f6f2233ac7ec89a0fdd93abb1af2e87cf5",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "bd6ee1d887122bb3b2a4c672794a4b075e7a9c78b2c983a5f9b42408021c1933",
+            "roster_hash": "f388a5a62b22f452d359bffa0dfa66f6f2233ac7ec89a0fdd93abb1af2e87cf5",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "7d90f40d0df6bddf87d68e876bdf8985fc8546dd0e30a09b066023414573661b",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "a7409b4a-c2f3-48ca-89eb-5b9c8ed5f8de",
+            "effective_transfer": false,
+            "execution_id": "45ea58a6-3b78-427f-b548-ec4a0827251e",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "7d90f40d0df6bddf87d68e876bdf8985fc8546dd0e30a09b066023414573661b",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "24710d4b6bc10088645b90d4c328f305374e40733865e247ec92469442c94ad2",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "9bbb97ebfe28f29e3b8024dfded340ecd5384d8592b0717a6964d532997c75d2",
+            "roster_hash": "24710d4b6bc10088645b90d4c328f305374e40733865e247ec92469442c94ad2",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "f53a22a9c316a5079087c08dc297f9de24a118f9f8774d6397ce5e34cc07aab4",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "59e934f9-eada-4faf-a7ed-10fdd0af0e56",
+            "effective_transfer": false,
+            "execution_id": "99ad8086-c4ff-4234-8732-1c2c41ce41eb",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "f53a22a9c316a5079087c08dc297f9de24a118f9f8774d6397ce5e34cc07aab4",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "43dbd35735f3d28ed2d60f12307fbfe1fc6568549af839cea49b9473364fd6e2",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "2448ded87d0cde017c28070131a338c6e0f93f5a509499e900136fb4f77cc72d",
+            "roster_hash": "43dbd35735f3d28ed2d60f12307fbfe1fc6568549af839cea49b9473364fd6e2",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "0ce2ec8565c92a8063ace8ce43207dbd6bff0cfd84f8df2fee6366bcad908d24",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "f198e8b1-06c8-47b0-99e1-dad60a4eb3c3",
+            "effective_transfer": false,
+            "execution_id": "9aa857a5-139a-4862-9d0d-8a8776e5c8c9",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "0ce2ec8565c92a8063ace8ce43207dbd6bff0cfd84f8df2fee6366bcad908d24",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "6c88b0dd53c7a50a5bb2dedf09adf21b2597defd9a2b2b3c02f7203a1b69fd25",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "a742c687c005a27439485599ae19db22d9aa59ecc222cf935f61e53386e2d4da",
+            "roster_hash": "6c88b0dd53c7a50a5bb2dedf09adf21b2597defd9a2b2b3c02f7203a1b69fd25",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "088c75cccf061f06d81d05f1eb779af08f1bfdd8a7f20ac05bfda45fa1c26350",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "6f32081a-ab10-47db-a2ca-985808fbf979",
+            "effective_transfer": false,
+            "execution_id": "a76b0d69-964f-4ea7-807d-e03119454f12",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "088c75cccf061f06d81d05f1eb779af08f1bfdd8a7f20ac05bfda45fa1c26350",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "8d05da003ac8b1eb2e6ba26dd97274bdeafc701c028ba944db6686918cea84a5",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "2029a638a1939d94e924f80c49d3e844eb34c39bd74e0238de623d6f99764cb4",
+            "roster_hash": "8d05da003ac8b1eb2e6ba26dd97274bdeafc701c028ba944db6686918cea84a5",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "f339190b769b79c524304bf18f1eacc7f542689e534817a54d3c889b320a9c4d",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "ceb07fa0-4b0f-4d82-b8f4-354836d36905",
+            "effective_transfer": false,
+            "execution_id": "437b91e7-7755-4cd4-9a32-a60b0fedd9bd",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "f339190b769b79c524304bf18f1eacc7f542689e534817a54d3c889b320a9c4d",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "ad49a0bca4f6970d935d0cb31e5885f132ccfb8fa8f69fcf080731d247618a10",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "4f6acb8665f37891be462e10498df5605ec19d168860d9de43b7a8cb26317b13",
+            "roster_hash": "ad49a0bca4f6970d935d0cb31e5885f132ccfb8fa8f69fcf080731d247618a10",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "dcde112c88b42a0ee96c29aa2f68f95e243f70dca3a4ac2ecb02ab439303bd17",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "1823f827-6ba4-48bd-9100-c9f3fd440b12",
+            "effective_transfer": false,
+            "execution_id": "e1995e08-1c35-49fb-98e1-91eb3655018f",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "dcde112c88b42a0ee96c29aa2f68f95e243f70dca3a4ac2ecb02ab439303bd17",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "628476abe4b8c241d7982e4b7254b3b88602f59ddd5a5f9fd06248d402fede43",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "bd8a094922f35e993b9203a4b105e5fc1c1842d1de0a22ece7c8baf2e8a728dc",
+            "roster_hash": "628476abe4b8c241d7982e4b7254b3b88602f59ddd5a5f9fd06248d402fede43",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "75f63e6148c4e9fa445963c9c5e6596e3acba1abca69f7976d5525835cffa7d6",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "1d436a24-f107-4178-8991-d64f841e3ae5",
+            "effective_transfer": false,
+            "execution_id": "9bec8ace-8442-4d4b-9b6b-d3e4776365d5",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "75f63e6148c4e9fa445963c9c5e6596e3acba1abca69f7976d5525835cffa7d6",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "ca6e0778629aa9b3a557ce4c27d83f9ac2596f602dc1d91a2be86a26b2d13104",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "86f69002a07e35b5221387eea2344eb4d3370a79edd5a6d15edb366f9c6d4a44",
+            "roster_hash": "ca6e0778629aa9b3a557ce4c27d83f9ac2596f602dc1d91a2be86a26b2d13104",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "04c891b0ab0d585aee40a6f4cbbe85cacab3ccb1a07369df96676304f1ab0053",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "4c002e4a-7c1c-418d-acda-1410a42e9fa5",
+            "effective_transfer": false,
+            "execution_id": "46ccd68c-b47a-4981-8d7b-3f58395f3bfd",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "04c891b0ab0d585aee40a6f4cbbe85cacab3ccb1a07369df96676304f1ab0053",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "9f9fee3667b55e85197f42f243a5b15f5986c2dac382ce25973187f99504d0ec",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "14358513b440196a258d5a85e02e46100f44941223d1d8d0264024a95c658928",
+            "roster_hash": "9f9fee3667b55e85197f42f243a5b15f5986c2dac382ce25973187f99504d0ec",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "9d84a6c4db173eeab2dfd0e9d3bb6b238bf4ffc3fc056ec163f15557351e5a40",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "e70227b3-202d-4fe2-955f-fa914a0c8689",
+            "effective_transfer": false,
+            "execution_id": "6304f146-091f-4214-a34d-e230e0acc752",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "9d84a6c4db173eeab2dfd0e9d3bb6b238bf4ffc3fc056ec163f15557351e5a40",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "9e855da62ab46d3789a3dd23085ecd4471aaf25b1f10e4c09147549cb0c7f80c",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "ae3d8220de6646647044a6339bf23bad26a6bf8a92ca7a089d53f05405a37201",
+            "roster_hash": "9e855da62ab46d3789a3dd23085ecd4471aaf25b1f10e4c09147549cb0c7f80c",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "0ac68bb8092b57c922653e8d93a5cb6b7410836f98d42edcfcac5ebee5523012",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "c6edbcb4-c2f9-4820-80f8-f24286af4031",
+            "effective_transfer": false,
+            "execution_id": "559599b6-9306-49df-a173-931e07409baf",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "0ac68bb8092b57c922653e8d93a5cb6b7410836f98d42edcfcac5ebee5523012",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "ccc82d1154a61df475319435a200ea856ff98ac124edadf2e750ecc34b4ccc15",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "20513598afbf0ab343230c2e523fccbd70e83a154c68278a5b0bd0c7f2a8fa85",
+            "roster_hash": "ccc82d1154a61df475319435a200ea856ff98ac124edadf2e750ecc34b4ccc15",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "d9fc6b769285c84b0aaa40669d18224909057a1adf5af6d373eb2636fcc2dee5",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "0390333a-d485-4229-9d30-f28ee39be43e",
+            "effective_transfer": false,
+            "execution_id": "782c20b1-3a8a-4185-9833-f229d8a63e5a",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "d9fc6b769285c84b0aaa40669d18224909057a1adf5af6d373eb2636fcc2dee5",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "7f2b96cb2115c5839ada951f0e5a76e56a89df879cb563aea71745b359454bd5",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "ad4128b04e32bbc1a20ee9367f872e5e62de86ce8654b236cde47841cde715dc",
+            "roster_hash": "7f2b96cb2115c5839ada951f0e5a76e56a89df879cb563aea71745b359454bd5",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "7874d06de7d70e7e2fb7aa10b349647e92a4bac2ad330388c34976ca31d06f41",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "68315b7f-6893-4bc4-86a6-ca3e4c5d5521",
+            "effective_transfer": false,
+            "execution_id": "312b4ba0-bb78-4371-97d9-b4210ddaa630",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "7874d06de7d70e7e2fb7aa10b349647e92a4bac2ad330388c34976ca31d06f41",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "1c8c7ae70080deb97dca6b8eb4fa29facbfe7aba31b3b5cb93c329690a3f9c66",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "7109a845257bcb19f6976f89136ba2b31210b87d02ce96997b759384ee794686",
+            "roster_hash": "1c8c7ae70080deb97dca6b8eb4fa29facbfe7aba31b3b5cb93c329690a3f9c66",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "0ec84d1a5d1a166caafbe3e38ebd79f3320f27c5f247d256b70794f4f021ac42",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "35420158-a70e-4f8f-b42f-76bb99d39e3f",
+            "effective_transfer": false,
+            "execution_id": "182a682a-1cbf-4cd0-a5a0-399197ed475b",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "0ec84d1a5d1a166caafbe3e38ebd79f3320f27c5f247d256b70794f4f021ac42",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "d485429488298f27416cbd215aeb53f1f9fbfb2fe56ce4c82ed77fe636c62bef",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "12f141b09c25354f3c86e88c382b25de44220e5f8e99cbcfa0d78bc71774e8e4",
+            "roster_hash": "d485429488298f27416cbd215aeb53f1f9fbfb2fe56ce4c82ed77fe636c62bef",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "00ed0ab377ec85c5cbf377f43c131ea3af6af654ef8ba9796d53f00720eaedc9",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "4bc7637c-ff6b-48e5-a90c-31b4ae9bf114",
+            "effective_transfer": false,
+            "execution_id": "86d46842-d0c3-4f95-a96b-1430d2ab7192",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "00ed0ab377ec85c5cbf377f43c131ea3af6af654ef8ba9796d53f00720eaedc9",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "d989d5d48467349727e73c7d1e8385eef72271cf9727194678f17f64b5d52503",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "89e28bdc1842ad839ed18977dae35785bfad968df8513821373ab9769c5c9461",
+            "roster_hash": "d989d5d48467349727e73c7d1e8385eef72271cf9727194678f17f64b5d52503",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "c81ca043f395527e223084bb4aaeeac2117291f87b1e3875b3ac17bf28a30008",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "fa16a3ce-f011-4c52-977e-34ad854f956a",
+            "effective_transfer": false,
+            "execution_id": "8b321f29-cdad-4caa-8fee-58a1c18fa277",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "c81ca043f395527e223084bb4aaeeac2117291f87b1e3875b3ac17bf28a30008",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "547b2ced84c552bc76c3cc1c1580246538e79ed9d510280499006acddef896c4",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "74b138686ecc6a3b28ceb5f9b0b0ea386155a926f9c1f6c931c32a0d23c5f8b0",
+            "roster_hash": "547b2ced84c552bc76c3cc1c1580246538e79ed9d510280499006acddef896c4",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "5cf1c1f105483395c1440d997f46c7c45e14a221f72716439a9737da0544ce3f",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "e8f7760a-5cc1-4786-b710-de2f0c292225",
+            "effective_transfer": false,
+            "execution_id": "93bd7f17-1302-4384-b726-1bfaff37a371",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "5cf1c1f105483395c1440d997f46c7c45e14a221f72716439a9737da0544ce3f",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "3884dc9a4330c63721eb27a011bc2642cefbc731b7102ad77f30e36b5a27962d",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "011d660514d91ada074f0a71d5f9c838696ee1150788cc0fa577077d80fadd2b",
+            "roster_hash": "3884dc9a4330c63721eb27a011bc2642cefbc731b7102ad77f30e36b5a27962d",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "34912e6d31d1149af9699e01dfcb733f389ae333b7b57558998e3552f26ae48b",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "0c44235f-6dba-47ee-b39b-51255cadb886",
+            "effective_transfer": false,
+            "execution_id": "f4ec6b40-832b-4e0c-979b-7d00345fb3b0",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "34912e6d31d1149af9699e01dfcb733f389ae333b7b57558998e3552f26ae48b",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "67f45728cde34fa57f0aa7a5dca71fdb69e0148e9349836d47d73ac937a95d5e",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "f7f38fb9585e39dda4a3c188219f8c04d8b372785ecb800500bceb03f7d2b788",
+            "roster_hash": "67f45728cde34fa57f0aa7a5dca71fdb69e0148e9349836d47d73ac937a95d5e",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "a199fe98908398ff56aa1dafd18a1bcdd10922c43be71085b21b90712ec3bd66",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "952aa7b3-bb80-4cdd-9a4b-6028201af548",
+            "effective_transfer": false,
+            "execution_id": "5ba383f5-58bc-4efc-80ce-59d39d83b56d",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "a199fe98908398ff56aa1dafd18a1bcdd10922c43be71085b21b90712ec3bd66",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "abeda1cf8af9b755acab10e259abade1c0015c16520ca7009784f54d449b7b98",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "b0196dd4fe2183e557d7770671a71cc519d0583cebcf3e979abb79f5cccf3a49",
+            "roster_hash": "abeda1cf8af9b755acab10e259abade1c0015c16520ca7009784f54d449b7b98",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "4c24bbee846af919ac6b76f63b5e104ddc346631e0e104bf5a2c288a6009d42e",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "94438bc5-2cc6-4099-aa45-baf40342c8e4",
+            "effective_transfer": false,
+            "execution_id": "cde16038-423b-4d3f-9fcb-4bf30e850c1f",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "4c24bbee846af919ac6b76f63b5e104ddc346631e0e104bf5a2c288a6009d42e",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "b7bdb4b69a5cf0fee416218e9427ef32cca90a67200644e589294652aa6eb263",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "4ac08e6743532ee04e2a042ae5f27b2fef652b11dfa2359d486e390cea82d481",
+            "roster_hash": "b7bdb4b69a5cf0fee416218e9427ef32cca90a67200644e589294652aa6eb263",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "8669733bdbc9ad373bb8ab63874f667887cc5d6961d609c437194b525e164082",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "df9b3e66-4950-40fa-ac37-49e6b5fe4f38",
+            "effective_transfer": false,
+            "execution_id": "841b11d9-47b0-4f3d-80d2-228fb00a8887",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "8669733bdbc9ad373bb8ab63874f667887cc5d6961d609c437194b525e164082",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "14e5da5358c768b2ecf71ed9c9a0d8513cc79411da341358e4c9fcad3283a801",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "1c0ecd6012d4a7383e818089de624ca8d6a0bf38a05c76134d1ac70c87cf3716",
+            "roster_hash": "14e5da5358c768b2ecf71ed9c9a0d8513cc79411da341358e4c9fcad3283a801",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "f53f905a9495cbb287817841335cfd659138f837a3275a371309431318dec3e3",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "b5d737a2-28a9-4d92-8dc6-385c515149ea",
+            "effective_transfer": false,
+            "execution_id": "d03d65db-da6f-4635-b7d0-b01284c6de8a",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "f53f905a9495cbb287817841335cfd659138f837a3275a371309431318dec3e3",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "522417901dfb2cfea4dd30e4cf49ee6b2f100d70bbaa79c320cdde4d39939711",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "42255cb1cf88463761281ff7e5eb6558ceff59dd503141106548f28376d4d158",
+            "roster_hash": "522417901dfb2cfea4dd30e4cf49ee6b2f100d70bbaa79c320cdde4d39939711",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "18c900e4f8c1dcdfab650e4b0feea89940c6e3adddd1c24f7ef65c6db678c01b",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "4a4460fd-2637-489d-a877-a8b09c75fbce",
+            "effective_transfer": false,
+            "execution_id": "1bbdca15-1028-4e2a-9335-6b2b64b5c8fb",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "18c900e4f8c1dcdfab650e4b0feea89940c6e3adddd1c24f7ef65c6db678c01b",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "a2762903ef41823c4e60d2dafea52e2730839fde5398454de567378e1ec7ac0f",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "ec9e08012993340bdf70cdd7e612d9739bdb46212909ceafd72a1b08d91a9f9b",
+            "roster_hash": "a2762903ef41823c4e60d2dafea52e2730839fde5398454de567378e1ec7ac0f",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-child",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 3,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 15,
+          "container_id": "7cb52cc4f80b3e0f9e17b89c08085acf688825206249aad7caadcba223c95387",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 3,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "d35b158e-c440-4f44-b8d9-12c2bb1adb4b",
+            "effective_transfer": false,
+            "execution_id": "b3888872-517a-4a76-b3af-ffe6c64e8176",
+            "hold_retained": true,
+            "report": {
+              "children": 1,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "7cb52cc4f80b3e0f9e17b89c08085acf688825206249aad7caadcba223c95387",
+                "exit_code": 0,
+                "exited_handles": 15,
+                "image": "sha256:51b332c2d82f1bacfb89744f4e2b6bc3a217f1eb3673939c421f3e00cee6361f",
+                "oom_killed": false,
+                "original_handles": 15,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "70b967f103715421072d581fcf8ce48eb8df6629bf4774ecd4becd5e6bbb2ce5",
+                "running": false
+              },
+              "native_members": 2,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {
+                  "DISPATCH_UNCERTAIN": 1
+                },
+                "native_control_consumptions": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_control_forwards": {
+                  "FORWARD_UNPROVEN": 1
+                },
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 3
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "6465775a82d024abc56af1f5bfb88c0f7cc0b5512b35d6f130e0fbeb2eac6f4b",
+            "roster_hash": "70b967f103715421072d581fcf8ce48eb8df6629bf4774ecd4becd5e6bbb2ce5",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        }
+      ],
+      "native_startup_stress": {
+        "passed": true,
+        "fresh_root_child_families": 24,
+        "independently_settled_families": 24,
+        "worker_reuse": false,
+        "uncertain_start_retried": false,
+        "historical_failure_cause_established": false
+      }
+    },
+    "v08-native-launch-native-terminal-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": false,
+      "error": "RuntimeError: Native worker failed before native-child-running"
+    },
+    "v08-native-launch-child-gate-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-native-prompts-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-native-handoff-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true,
+      "native_live_handoff": {
+        "passed": true,
+        "open_prompt_handoff": {
+          "passed": true,
+          "scope": "unanswered exact-zero-timeout native prompt",
+          "original_prompt_id": "e114c2c2-b143-4fe8-877c-00c3bf3ad67d",
+          "original_definition_sha256": "92f8b7b6ebec8924b5cc9a3724d50a4e3921472fb746744fe60fc8bcb9264f60",
+          "original_member_binding_hash": "83e0e9c4c160718efb2f700169f218074ecf0d5ddcf783e0b1c7fb1f6df510bc",
+          "original_family_origin_hash": "a79a5d77e0090f42fa756171f108ad6c9820142866476f13ea7dd58da1d53dc9",
+          "identity_preserved": true,
+          "former_owner_and_observer_denied": true,
+          "reply_before_explicit_resume_denied": true,
+          "reply_owner": "bob",
+          "reply_epoch": 2,
+          "reply_connection_generation": 2,
+          "native_outcome": "ANSWER_SELECTED",
+          "selected_answers": 1,
+          "timed_prompt_transfer_qualified": false,
+          "queued_or_uncertain_reply_transfer_qualified": false
+        },
+        "native_step_location_verified": false,
+        "provider": "docker-cgroup-freezer-pidfd/1",
+        "whole_family_paused": true,
+        "frozen_observation_seconds": 3,
+        "root_child_background_counters_before": {
+          "root": 31,
+          "background": 121,
+          "child": 26
+        },
+        "root_child_background_counters_after": {
+          "root": 55,
+          "background": 194,
+          "child": 92
+        },
+        "original_processes": 8,
+        "replacement_native_processes": false,
+        "old_owner_denied": true,
+        "observer_read_only": true,
+        "observer_saw_paused_and_resumed_b": true,
+        "owner": "alice",
+        "epoch": 3,
+        "accepted_transfers": 2,
+        "same_owner_reconnections": 1,
+        "native_reconnect": {
+          "passed": true,
+          "owner_unchanged": true,
+          "epoch_unchanged": true,
+          "epoch": 3,
+          "previous_connection_generation": 3,
+          "connection_generation": 4,
+          "disconnect_observation_seconds": 3,
+          "counters_before_disconnect": {
+            "root": 82,
+            "background": 229,
+            "child": 124
+          },
+          "counters_after_disconnect": {
+            "root": 219,
+            "background": 387,
+            "child": 267
+          },
+          "frozen_observation_seconds": 3,
+          "frozen_counters": {
+            "root": 228,
+            "background": 397,
+            "child": 276
+          },
+          "counters_after_resume": {
+            "root": 235,
+            "background": 409,
+            "child": 287
+          },
+          "original_processes": 8,
+          "original_processes_survived_disconnect": true,
+          "disconnected_native_packet_denied": true,
+          "old_connection_native_packet_denied": true,
+          "old_controller_capability_denied": true,
+          "fresh_same_epoch_driver_command_completed": true,
+          "quiescence_claimed_on_disconnect": false,
+          "effective_transfer": false,
+          "public_launch_enabled": false,
+          "full_recovery_qualified": false
+        },
+        "completed_transfer_history": 2,
+        "first_round_host_proof_replay_denied": true,
+        "previous_b_controller_and_native_packet_denied": true,
+        "second_frozen_observation_seconds": 3,
+        "second_counters_before": {
+          "root": 65,
+          "background": 205,
+          "child": 102
+        },
+        "second_counters_after": {
+          "root": 78,
+          "background": 225,
+          "child": 120
+        },
+        "new_owner_native_commands": 2,
+        "stale_native_driver_denied": true,
+        "delayed_old_owner_step_fenced": true,
+        "dss_commands": 4,
+        "matching_stage_receipts": 20,
+        "provenance_epochs": [
+          1,
+          2,
+          3
+        ],
+        "provenance_connection_generations": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "logical_reservations_during_handoff": 3,
+        "terminal_settlement": {
+          "challenge": "1283ac99-0641-4ee6-a852-30a8c272fc6e",
+          "effective_transfer": false,
+          "execution_id": "749bc840-28b7-46e4-85d2-5abcb1b7bbbc",
+          "hold_retained": false,
+          "report": {
+            "children": 1,
+            "effect_receipts": 20,
+            "effects_settled": true,
+            "host_evidence": {
+              "container_id": "624aa3501290bcee757c0607f3be47dfa051acbb468a1c2d089b52d113a5f6c9",
+              "exit_code": 0,
+              "exited_handles": 8,
+              "image": "sha256:0c87707609f5b70c98579bf4fa04ad09de51b91915271929b484d60db51e9b7c",
+              "oom_killed": false,
+              "original_handles": 8,
+              "pid": 0,
+              "provider": "docker-pidfd-terminal/1",
+              "restart_count": 0,
+              "roster_hash": "f21ff54fe0b6b3f040e4176f08e4a9be5e28e44e790ba0a2b579e5cd9d04f1c1",
+              "running": false
+            },
+            "native_members": 2,
+            "native_status": "FINISHED",
+            "pending_native_work_retired": true,
+            "preserved_work_journals": {
+              "native_control_attempts": {
+                "DISPATCH_UNCERTAIN": 2
+              },
+              "native_control_consumptions": {
+                "EXECUTION_UNPROVEN": 2
+              },
+              "native_control_forwards": {
+                "FORWARD_UNPROVEN": 2
+              },
+              "native_owner_commands": {
+                "DELIVERY_FENCED": 1,
+                "EXECUTION_UNPROVEN": 2
+              },
+              "native_prompt_replies": {
+                "CONSUMED_UNPROVEN": 1
+              }
+            },
+            "process_family_terminated": true,
+            "reasons": [],
+            "reservation_release_eligible": true
+          },
+          "report_hash": "07e253874a8a3bfd6e573afcff5b06f96756f6a2e0e7372e2d2fe47e5f37eee9",
+          "roster_hash": "f21ff54fe0b6b3f040e4176f08e4a9be5e28e44e790ba0a2b579e5cd9d04f1c1",
+          "runtime_enabled": false,
+          "state": "RELEASED",
+          "worker_reusable": false
+        },
+        "original_processes_exited": true,
+        "unrelated_reservations_retained": 1,
+        "worker_reusable": false,
+        "new_children_after_handoff": false,
+        "full_v08_qualified": false
+      }
+    },
+    "v08-native-launch-native-ide-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true,
+      "native_live_handoff": {
+        "passed": true,
+        "open_prompt_handoff": {
+          "passed": true,
+          "scope": "unanswered exact-zero-timeout native prompt",
+          "original_prompt_id": "66b5a9f3-1f30-4e8f-af5b-a2f8da21c9fd",
+          "original_definition_sha256": "ba73fd948ba27930bc2f55f3674a4e26359aeb7736a998b28476ed3b3e5d7857",
+          "original_member_binding_hash": "cef1eb2f3098e76ef44f1133e3aed71c6f3e2c2b5c0bff96fdd84ecd3b3c4702",
+          "original_family_origin_hash": "ecb75d490c118a2f570b1e6fb04eb2a577a08f149b9d895109e8f2bc8c4b3742",
+          "identity_preserved": true,
+          "former_owner_and_observer_denied": true,
+          "reply_before_explicit_resume_denied": true,
+          "reply_owner": "bob",
+          "reply_epoch": 2,
+          "reply_connection_generation": 2,
+          "native_outcome": "ANSWER_SELECTED",
+          "selected_answers": 1,
+          "timed_prompt_transfer_qualified": false,
+          "queued_or_uncertain_reply_transfer_qualified": false
+        },
+        "native_step_location_verified": true,
+        "provider": "docker-cgroup-freezer-pidfd/1",
+        "whole_family_paused": true,
+        "frozen_observation_seconds": 3,
+        "root_child_background_counters_before": {
+          "root": 28,
+          "background": 140,
+          "child": 29
+        },
+        "root_child_background_counters_after": {
+          "root": 52,
+          "background": 246,
+          "child": 127
+        },
+        "original_processes": 8,
+        "replacement_native_processes": false,
+        "old_owner_denied": true,
+        "observer_read_only": true,
+        "observer_saw_paused_and_resumed_b": true,
+        "owner": "alice",
+        "epoch": 3,
+        "accepted_transfers": 2,
+        "same_owner_reconnections": 1,
+        "native_reconnect": {
+          "passed": true,
+          "owner_unchanged": true,
+          "epoch_unchanged": true,
+          "epoch": 3,
+          "previous_connection_generation": 3,
+          "connection_generation": 4,
+          "disconnect_observation_seconds": 3,
+          "counters_before_disconnect": {
+            "root": 76,
+            "background": 280,
+            "child": 158
+          },
+          "counters_after_disconnect": {
+            "root": 217,
+            "background": 437,
+            "child": 304
+          },
+          "frozen_observation_seconds": 3,
+          "frozen_counters": {
+            "root": 221,
+            "background": 442,
+            "child": 309
+          },
+          "counters_after_resume": {
+            "root": 233,
+            "background": 460,
+            "child": 325
+          },
+          "original_processes": 8,
+          "original_processes_survived_disconnect": true,
+          "disconnected_native_packet_denied": true,
+          "old_connection_native_packet_denied": true,
+          "old_controller_capability_denied": true,
+          "fresh_same_epoch_driver_command_completed": true,
+          "quiescence_claimed_on_disconnect": false,
+          "effective_transfer": false,
+          "public_launch_enabled": false,
+          "full_recovery_qualified": false
+        },
+        "completed_transfer_history": 2,
+        "first_round_host_proof_replay_denied": true,
+        "previous_b_controller_and_native_packet_denied": true,
+        "second_frozen_observation_seconds": 3,
+        "second_counters_before": {
+          "root": 62,
+          "background": 257,
+          "child": 138
+        },
+        "second_counters_after": {
+          "root": 72,
+          "background": 276,
+          "child": 154
+        },
+        "new_owner_native_commands": 3,
+        "stale_native_driver_denied": true,
+        "delayed_old_owner_step_fenced": true,
+        "dss_commands": 4,
+        "matching_stage_receipts": 20,
+        "provenance_epochs": [
+          1,
+          2,
+          3
+        ],
+        "provenance_connection_generations": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "logical_reservations_during_handoff": 3,
+        "terminal_settlement": {
+          "challenge": "36d4c9dd-a9a1-44b9-b4c2-923f77ef02bc",
+          "effective_transfer": false,
+          "execution_id": "64f88f23-9ef6-4488-9e95-37b035b7b339",
+          "hold_retained": false,
+          "report": {
+            "children": 1,
+            "effect_receipts": 20,
+            "effects_settled": true,
+            "host_evidence": {
+              "container_id": "76e70307146cb4245a136ce13e0c96a94293b4e60d4307e9ea38efed7d2d4423",
+              "exit_code": 0,
+              "exited_handles": 8,
+              "image": "sha256:03fdb763dd3e18f3279f9883f701483593aa2d016d2a3791a44a0591c3ae2ad1",
+              "oom_killed": false,
+              "original_handles": 8,
+              "pid": 0,
+              "provider": "docker-pidfd-terminal/1",
+              "restart_count": 0,
+              "roster_hash": "1f77e6c7ad1eed019d9c293b0d630a392f5baec16d37a21337dfbd15df9c687d",
+              "running": false
+            },
+            "native_members": 2,
+            "native_status": "FINISHED",
+            "pending_native_work_retired": true,
+            "preserved_work_journals": {
+              "native_control_attempts": {
+                "DISPATCH_UNCERTAIN": 2
+              },
+              "native_control_consumptions": {
+                "EXECUTION_UNPROVEN": 2
+              },
+              "native_control_forwards": {
+                "FORWARD_UNPROVEN": 2
+              },
+              "native_owner_commands": {
+                "DELIVERY_FENCED": 1,
+                "EXECUTION_UNPROVEN": 3
+              },
+              "native_prompt_replies": {
+                "CONSUMED_UNPROVEN": 1
+              }
+            },
+            "process_family_terminated": true,
+            "reasons": [],
+            "reservation_release_eligible": true
+          },
+          "report_hash": "28299a1d4b8520f5ad14b1cb48a5fd2dc35b51f62ef6e573e33472776a322a1d",
+          "roster_hash": "1f77e6c7ad1eed019d9c293b0d630a392f5baec16d37a21337dfbd15df9c687d",
+          "runtime_enabled": false,
+          "state": "RELEASED",
+          "worker_reusable": false
+        },
+        "original_processes_exited": true,
+        "unrelated_reservations_retained": 1,
+        "worker_reusable": false,
+        "new_children_after_handoff": false,
+        "full_v08_qualified": false
+      },
+      "native_ide": {
+        "context_id": "H",
+        "installed_client_sha256": "e3cdc909e3162b665067306a81b15dcb780c84a9af567f1c4f9f4f1e12aeac19",
+        "ide_commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
+        "ide_version": "1.2.1.dev4",
+        "listener_pid": 30295,
+        "gateway_pid": 30296,
+        "three_certificate_identities": true,
+        "public_launch_enabled": false,
+        "browser_tested": false,
+        "calls": [
+          {
+            "subject": "alice",
+            "method": "source.catalog",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "session.open",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.reserve",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "session.open",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.reserve",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "session.open",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_STEP",
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "execution.claim",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.decide",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          },
+          {
+            "subject": "observer",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          },
+          {
+            "subject": "bob",
+            "method": "execution.rebind",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 403
+          },
+          {
+            "subject": "observer",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 403
+          },
+          {
+            "subject": "bob",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 403
+          },
+          {
+            "subject": "bob",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 403
+          },
+          {
+            "subject": "observer",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 403
+          },
+          {
+            "subject": "bob",
+            "method": "execution.prompt.reply",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "execution.command",
+            "command": "CMD_PAUSE",
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "execution.command",
+            "command": "CMD_STEP",
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.claim",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "bob",
+            "method": "execution.decide",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          },
+          {
+            "subject": "bob",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          },
+          {
+            "subject": "alice",
+            "method": "execution.rebind",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "session.close",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          },
+          {
+            "subject": "alice",
+            "method": "session.open",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.rebind",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.rebind",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 200
+          },
+          {
+            "subject": "observer",
+            "method": "execution.list",
+            "command": null,
+            "status": 200
+          },
+          {
+            "subject": "alice",
+            "method": "execution.command",
+            "command": "CMD_RUN",
+            "status": 403
+          }
+        ],
+        "passed": true
+      },
+      "native_terminal_cases": [
+        {
+          "case": "abort-paused",
+          "passed": true,
+          "native_status": "ABORTED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 1,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 7,
+          "container_id": "48276c266b869a4b3c4ebc78ab778483d80fb39c976e70034358c71ad981f9b9",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 2,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "6c06e13e-0108-44d1-96ec-b5db08039d43",
+            "effective_transfer": false,
+            "execution_id": "3240dd6b-c7f2-4949-9884-c619fd9ef505",
+            "hold_retained": true,
+            "report": {
+              "children": 0,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "48276c266b869a4b3c4ebc78ab778483d80fb39c976e70034358c71ad981f9b9",
+                "exit_code": 0,
+                "exited_handles": 7,
+                "image": "sha256:03fdb763dd3e18f3279f9883f701483593aa2d016d2a3791a44a0591c3ae2ad1",
+                "oom_killed": false,
+                "original_handles": 7,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "b87693b4c2445e1598325e10e660622b3950980e078b749b9e501a819f5a70d1",
+                "running": false
+              },
+              "native_members": 1,
+              "native_status": "ABORTED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {},
+                "native_control_consumptions": {},
+                "native_control_forwards": {},
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "339f3ad49d63ad6c12be3d59b305d2bfd0005e19e975e2bfcdd8e75b65c26115",
+            "roster_hash": "b87693b4c2445e1598325e10e660622b3950980e078b749b9e501a819f5a70d1",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-paused",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 1,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 7,
+          "container_id": "f1bb90cc81a7f363321530aa385f8bd03a2638feb7a73c16e41d4209545df4c9",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 2,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "c6b201a7-e95a-45f1-87f9-0c7dc9ed5dcd",
+            "effective_transfer": false,
+            "execution_id": "bfb50b7c-e285-4ddf-9dee-fa84388e26ce",
+            "hold_retained": true,
+            "report": {
+              "children": 0,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "f1bb90cc81a7f363321530aa385f8bd03a2638feb7a73c16e41d4209545df4c9",
+                "exit_code": 0,
+                "exited_handles": 7,
+                "image": "sha256:03fdb763dd3e18f3279f9883f701483593aa2d016d2a3791a44a0591c3ae2ad1",
+                "oom_killed": false,
+                "original_handles": 7,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "0ffc026e06857534880944ed24f27cb4cd9baaa956cf6a009d1ba6fae627b90f",
+                "running": false
+              },
+              "native_members": 1,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {},
+                "native_control_consumptions": {},
+                "native_control_forwards": {},
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 1
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "2571dec62a171575bf52b3fe192b753057c4d6b6fa9467bc20935d2bbeb31534",
+            "roster_hash": "0ffc026e06857534880944ed24f27cb4cd9baaa956cf6a009d1ba6fae627b90f",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "abort-running",
+          "passed": true,
+          "native_status": "ABORTED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 2,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 14,
+          "container_id": "6faf628ee2964dfb2e19bd25572e747d28dff7d40ba81d961d1cb0dbc66bdc6f",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 2,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "abb6be4f-d8fd-4d98-96e3-1ab44774cf7d",
+            "effective_transfer": false,
+            "execution_id": "652d10bb-5928-4917-9b63-7ad4ae0a5073",
+            "hold_retained": true,
+            "report": {
+              "children": 0,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "6faf628ee2964dfb2e19bd25572e747d28dff7d40ba81d961d1cb0dbc66bdc6f",
+                "exit_code": 0,
+                "exited_handles": 14,
+                "image": "sha256:03fdb763dd3e18f3279f9883f701483593aa2d016d2a3791a44a0591c3ae2ad1",
+                "oom_killed": false,
+                "original_handles": 14,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "eb3dc2302481ba50b2a8779939f9e20a335c8318057ab668d6e7541ac6a3fdaa",
+                "running": false
+              },
+              "native_members": 1,
+              "native_status": "ABORTED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {},
+                "native_control_consumptions": {},
+                "native_control_forwards": {},
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 2
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "a53101dce26ee94560689e246f03f14bfdc06fb14b5fb44c1d87e7f582531825",
+            "roster_hash": "eb3dc2302481ba50b2a8779939f9e20a335c8318057ab668d6e7541ac6a3fdaa",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        },
+        {
+          "case": "close-running",
+          "passed": true,
+          "native_status": "CLOSED",
+          "actual_native_executor": true,
+          "consumed_owner_commands": 2,
+          "prompt_outcomes": [],
+          "original_process_handles_exited": 14,
+          "container_id": "05f5c46725942acf8f99d3c91889d8c98f27132b35b4f3a84306e70a9c51b8a7",
+          "whole_container_terminated": true,
+          "pending_prompts": 0,
+          "logical_holds_before_settlement": 2,
+          "logical_holds_retained": 1,
+          "terminal_settlement": {
+            "challenge": "ee8406ab-f078-4043-974c-2ed17a39663a",
+            "effective_transfer": false,
+            "execution_id": "51d9458b-a14e-4e67-89b9-22f8fa34e183",
+            "hold_retained": true,
+            "report": {
+              "children": 0,
+              "effect_receipts": 0,
+              "effects_settled": true,
+              "host_evidence": {
+                "container_id": "05f5c46725942acf8f99d3c91889d8c98f27132b35b4f3a84306e70a9c51b8a7",
+                "exit_code": 0,
+                "exited_handles": 14,
+                "image": "sha256:03fdb763dd3e18f3279f9883f701483593aa2d016d2a3791a44a0591c3ae2ad1",
+                "oom_killed": false,
+                "original_handles": 14,
+                "pid": 0,
+                "provider": "docker-pidfd-terminal/1",
+                "restart_count": 0,
+                "roster_hash": "93c8954ec95d18d8597066bd5f45e36715a2655bde6fa65a1bc59a51bd1e438b",
+                "running": false
+              },
+              "native_members": 1,
+              "native_status": "CLOSED",
+              "pending_native_work_retired": true,
+              "preserved_work_journals": {
+                "native_control_attempts": {},
+                "native_control_consumptions": {},
+                "native_control_forwards": {},
+                "native_owner_commands": {
+                  "EXECUTION_UNPROVEN": 2
+                },
+                "native_prompt_replies": {}
+              },
+              "process_family_terminated": true,
+              "reasons": [],
+              "reservation_release_eligible": true
+            },
+            "report_hash": "fc8c244f350e63a08b06cee7586b044bf30ec48c9f6f2654866fa1e1f2cb480d",
+            "roster_hash": "93c8954ec95d18d8597066bd5f45e36715a2655bde6fa65a1bc59a51bd1e438b",
+            "runtime_enabled": false,
+            "state": "SETTLED",
+            "worker_reusable": false
+          },
+          "reservation_released": true,
+          "worker_spent": true,
+          "unknown_effects_replayable": false,
+          "quiescence_proven": false,
+          "effective_transfer": false,
+          "runtime_enabled": false
+        }
+      ]
+    },
+    "v08-native-launch-pause-probe-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-audit-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-dss-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-thread-barrier-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true
+    },
+    "v08-native-launch-listener-survival-e72966340510f40bfd0724656b75643dd4cf0739": {
+      "passed": true,
+      "native_listener_survival": {
+        "component_tested": true,
+        "listener_killed": true,
+        "replacement_process_verified": true,
+        "native_procedures_advancing": 10,
+        "native_pid_count": 30,
+        "native_pids_unchanged": true,
+        "context_process_unchanged": true,
+        "context_incarnation_unchanged": true,
+        "owners_epochs_generations_unchanged": true,
+        "held_reservations": 10,
+        "spent_workers": 10,
+        "worker_as_edge_denied": true,
+        "listener_has_no_host_manager": true,
+        "observer_only": true,
+        "controller_disconnect_qualified": false,
+        "native_recovery_qualified": false,
+        "full_v08_qualified": false,
+        "progress_before": [
+          57,
+          57,
+          62,
+          63,
+          63,
+          63,
+          67,
+          70,
+          73,
+          79
+        ],
+        "progress_during_outage": [
+          84,
+          87,
+          93,
+          94,
+          94,
+          93,
+          97,
+          100,
+          101,
+          104
+        ],
+        "installed_ide_observer_tested": true,
+        "ide_commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
+        "ide_client_sha256": "e3cdc909e3162b665067306a81b15dcb780c84a9af567f1c4f9f4f1e12aeac19",
+        "ide_observer_control_denied": true,
+        "ide_outage_failed_closed": true,
+        "ide_reconnected_with_original_executions": true,
+        "ide_native_run_debug_qualified": false,
+        "concurrent_observer_identities": 20,
+        "concurrent_observer_before": [
+          {
+            "subject": "observer",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4562329960000113
+          },
+          {
+            "subject": "observer-1",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.43229805499998974
+          },
+          {
+            "subject": "observer-2",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.435521370999993
+          },
+          {
+            "subject": "observer-3",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4322493470000097
+          },
+          {
+            "subject": "observer-4",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4541982290000135
+          },
+          {
+            "subject": "observer-5",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4757794859999933
+          },
+          {
+            "subject": "observer-6",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.33401265699998817
+          },
+          {
+            "subject": "observer-7",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4873695830000031
+          },
+          {
+            "subject": "observer-8",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.43752562800000305
+          },
+          {
+            "subject": "observer-9",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4667933650000009
+          },
+          {
+            "subject": "observer-10",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.48192860300000007
+          },
+          {
+            "subject": "observer-11",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.47095260300000064
+          },
+          {
+            "subject": "observer-12",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4378127010000128
+          },
+          {
+            "subject": "observer-13",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4368951730000106
+          },
+          {
+            "subject": "observer-14",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.37821027699999377
+          },
+          {
+            "subject": "observer-15",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4729403800000114
+          },
+          {
+            "subject": "observer-16",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.48759142800000177
+          },
+          {
+            "subject": "observer-17",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4003848839999762
+          },
+          {
+            "subject": "observer-18",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.453976573999995
+          },
+          {
+            "subject": "observer-19",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4390364420000026
+          }
+        ],
+        "concurrent_observer_outage": [
+          {
+            "subject": "observer",
+            "unavailable": true,
+            "elapsed": 0.07592867299999284
+          },
+          {
+            "subject": "observer-1",
+            "unavailable": true,
+            "elapsed": 0.07863235599998575
+          },
+          {
+            "subject": "observer-2",
+            "unavailable": true,
+            "elapsed": 0.07854793399999949
+          },
+          {
+            "subject": "observer-3",
+            "unavailable": true,
+            "elapsed": 0.05349364999997874
+          },
+          {
+            "subject": "observer-4",
+            "unavailable": true,
+            "elapsed": 0.09767034399999375
+          },
+          {
+            "subject": "observer-5",
+            "unavailable": true,
+            "elapsed": 0.0612540079999917
+          },
+          {
+            "subject": "observer-6",
+            "unavailable": true,
+            "elapsed": 0.038627313000006325
+          },
+          {
+            "subject": "observer-7",
+            "unavailable": true,
+            "elapsed": 0.03843724200001475
+          },
+          {
+            "subject": "observer-8",
+            "unavailable": true,
+            "elapsed": 0.052080426999992824
+          },
+          {
+            "subject": "observer-9",
+            "unavailable": true,
+            "elapsed": 0.07935448300000303
+          },
+          {
+            "subject": "observer-10",
+            "unavailable": true,
+            "elapsed": 0.09319563699997957
+          },
+          {
+            "subject": "observer-11",
+            "unavailable": true,
+            "elapsed": 0.07280098500001486
+          },
+          {
+            "subject": "observer-12",
+            "unavailable": true,
+            "elapsed": 0.09573092200000133
+          },
+          {
+            "subject": "observer-13",
+            "unavailable": true,
+            "elapsed": 0.09639460200000372
+          },
+          {
+            "subject": "observer-14",
+            "unavailable": true,
+            "elapsed": 0.07042839499999332
+          },
+          {
+            "subject": "observer-15",
+            "unavailable": true,
+            "elapsed": 0.07910097100000257
+          },
+          {
+            "subject": "observer-16",
+            "unavailable": true,
+            "elapsed": 0.07682375999999635
+          },
+          {
+            "subject": "observer-17",
+            "unavailable": true,
+            "elapsed": 0.07349479999999176
+          },
+          {
+            "subject": "observer-18",
+            "unavailable": true,
+            "elapsed": 0.06768674500000316
+          },
+          {
+            "subject": "observer-19",
+            "unavailable": true,
+            "elapsed": 0.07181485999998927
+          }
+        ],
+        "concurrent_observer_after": [
+          {
+            "subject": "observer",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4691320919999953
+          },
+          {
+            "subject": "observer-1",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4827066140000227
+          },
+          {
+            "subject": "observer-2",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4550738160000094
+          },
+          {
+            "subject": "observer-3",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.3262883630000033
+          },
+          {
+            "subject": "observer-4",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.5001321029999986
+          },
+          {
+            "subject": "observer-5",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.46089639900000634
+          },
+          {
+            "subject": "observer-6",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.3316908079999905
+          },
+          {
+            "subject": "observer-7",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.35736649200001125
+          },
+          {
+            "subject": "observer-8",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4609172010000009
+          },
+          {
+            "subject": "observer-9",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4147966879999956
+          },
+          {
+            "subject": "observer-10",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.43889487100000224
+          },
+          {
+            "subject": "observer-11",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4065165229999934
+          },
+          {
+            "subject": "observer-12",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.461846544999986
+          },
+          {
+            "subject": "observer-13",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.48106923199998164
+          },
+          {
+            "subject": "observer-14",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.45873464199999603
+          },
+          {
+            "subject": "observer-15",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4102969140000141
+          },
+          {
+            "subject": "observer-16",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4582096350000029
+          },
+          {
+            "subject": "observer-17",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.4543969910000101
+          },
+          {
+            "subject": "observer-18",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.47428400900000156
+          },
+          {
+            "subject": "observer-19",
+            "read": true,
+            "control_denied": true,
+            "elapsed": 0.48339031399999044
+          }
+        ],
+        "browser_wss_tested": false
+      }
+    }
+  },
+  "failed_artifact": {
+    "artifact_id": 12626790047,
+    "name": "v08-native-launch-native-terminal-e72966340510f40bfd0724656b75643dd4cf0739",
+    "sha256": "8f7354476e45dd624611bd93c2fd3b92af9ef556ca6a75f9ecee2dcca9535d88",
+    "zip_integrity": true,
+    "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc",
+    "reports": [
+      {
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-child-running",
+        "junit": null,
+        "verified_source_files": 122,
+        "checks": null,
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  "failure_cause_established": false,
+  "failed_report": "dev52-native-terminal-result.json",
+  "artifacts": [
+    {
+      "artifact_id": 12626875382,
+      "name": "v08-native-launch-native-startup-stress-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "c2f85ccf33defb0ec8f520b5aa64bc9c6ec4ed98b18666580ad3bc377831b294",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626790047,
+      "name": "v08-native-launch-native-terminal-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "8f7354476e45dd624611bd93c2fd3b92af9ef556ca6a75f9ecee2dcca9535d88",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626547155,
+      "name": "v08-native-launch-child-gate-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "3782834e348739ef470329789e4f2f4a36d57d05396ec386ce54ec2098bbf8ac",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626427661,
+      "name": "v08-native-launch-native-prompts-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "30f42a9129ab0cc8eff8fd08f26f1d4c05f87a008e3514c3648453069d781d5e",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626203206,
+      "name": "v08-native-launch-native-handoff-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "c04647f13e481278a70adc53ad30e7242a021fe033c8c9a4e1f9a67396d6d28c",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626108502,
+      "name": "v08-server-foundation-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "ea85e408427ac092a02240d89176a0b1894589bdfd199251685c9106397556fe",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626078632,
+      "name": "v08-native-launch-native-ide-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "28562fe0c505fa752257e0b7c2f2f769a18b8c705962db9c0bc6b9a98853d0e2",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626486879,
+      "name": "v08-native-launch-pause-probe-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "5e3c03a483b6593938eda7ba2345d8857fa454aba5c01e740757a1f8f4bcf1d6",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626078107,
+      "name": "v08-native-launch-audit-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "d1b45bccd046133f40775e92ab79d60bc49d04cab6292538a55cd25121cf6bb3",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12625983352,
+      "name": "v08-native-launch-dss-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "69cb74584944f545710f3984af3abd7661bf930efe977da3cbe8cf4943ed2a53",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12625928694,
+      "name": "v08-native-boundary-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "363465af1b9edc7077cda16631e0f87bc919205e00ea7b0a87bea53200137137",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12625923816,
+      "name": "v08-native-launch-thread-barrier-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "5e5fad99e2b28b0a571a1b77c290e3f962211886e6b86ca465b3e2612f4eff1c",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12625524619,
+      "name": "v08-native-launch-listener-survival-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "5f08c42c4b4347f265e0958ddd7142a75f907f5591c0c784cc90ea697c1a38cd",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626611114,
+      "name": "v08-kubernetes-prelaunch-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "adb0d6d2db42352ec738d15eeb3da80f1fee026b488dbe434bb8dab3408d3d0f",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12625899990,
+      "name": "v08-python-supply-chain-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "e4dcb250b758d2ae8bf1eb2a83b53cb242f2e0863fabff2321986355ae15a3ab",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626486821,
+      "name": "v08-compose-prelaunch-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "ab29ce20cb3564fcc0ba1191a39d8f01b3dbb3633cef5eff725be5cb078c8cf2",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    },
+    {
+      "artifact_id": 12626033322,
+      "name": "v08-kind-prelaunch-e72966340510f40bfd0724656b75643dd4cf0739",
+      "sha256": "6adce40f4b6177839c75cc2ebd4af5c5ef3bbd0e69d81cdaecab21344c494cf4",
+      "zip_integrity": true,
+      "candidate": "1a3f51f8b10e1f333bcd73f007c3f8d2b18095cc"
+    }
+  ],
+  "publication_preflight": "publication-preflight-dev52.json"
+}
