@@ -1,8 +1,8 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev46` and the pinned IDE
-`1.2.1.dev2` remain development packages. The current component checkpoint is
-recorded in [the repeated-handoff and startup receipt](evidence/repeated-handoff/qualification-summary.json).
+The full release is **not qualified**. Server `0.8.0.dev47` and the pinned IDE
+`1.2.1.dev3` remain development packages. The current component checkpoint is
+recorded in [the native reconnect receipt](evidence/native-reconnect/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
 `TEST_REPORT.md`.
 
@@ -15,8 +15,9 @@ migration is not authorized, and G1 F1-F10 remain binding.
 
 The private native profiles now cover retained launch, immutable child/member
 admission, owner Run/Step/Pause, prompts, Abort/Close, host-proven terminal
-settlement and two successive live-family A→B→A transfers. Real mTLS service
-tests cover eight transfers, preserved history and denial at the capacity bound.
+settlement, two successive live-family A→B→A transfers and an explicit
+same-owner reconnect. Real mTLS tests cover eight combined runtime rotations,
+preserved history and denial at the capacity bound.
 The paired IDE route
 controls an existing execution through gateway, Listener and Context with the
 original certificate identity and controller proof. Native-client receipts and
@@ -24,7 +25,9 @@ Qt tests are distinct from full browser/debugger qualification.
 
 The separate host freezes the original family for each transfer; B and then A
 at epoch 3 explicitly resume those same processes. Earlier packets retain their
-original identity and are denied even after ownership returns to A.
+original identity and are denied even after ownership returns to A. Explicit
+controller-session reconnect then preserves owner/epoch and advances connection
+generation after another host freeze and explicit resume.
 Terminal settlement releases only known-settled family reservations. Workers
 remain spent, unknown outcomes remain held and public launch remains disabled.
 See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
@@ -35,8 +38,8 @@ See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
 
 | Full gate | Outstanding acceptance |
 | --- | --- |
-| Services | Active-controller disconnect, production routing and complete deployed isolation/fault coverage |
-| Native family | Startup reliability, open-prompt transfer, later children, reconnect recovery, broader child semantics and wider native transfer coverage |
+| Services | Abrupt controller/network faults, production routing and complete deployed isolation/fault coverage |
+| Native family | Startup reliability, open-prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
 | IDE/browser | Public launch, full debugger, twenty observers, WSS gap resynchronization and Git conflicts |
@@ -61,8 +64,8 @@ later pass as proof that either historical startup failure is fixed.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev46
-[executed preflight](evidence/release-readiness/publication-preflight-dev46.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev47
+[executed preflight](evidence/release-readiness/publication-preflight-dev47.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

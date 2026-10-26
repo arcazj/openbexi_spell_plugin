@@ -2140,3 +2140,56 @@ explicit; native/OS inventory and independent implemented-system review are not
 qualified. All eleven full release gates remain false. The clean dev46
 publication preflight exits 1; no merge, tag, stable release or production
 migration was performed. Full blockers remain in [RELEASE_READINESS.md](RELEASE_READINESS.md).
+
+
+## Dev47 same-owner native reconnection
+
+Executable candidate **`82dc4cb99201d2f96ff02b023331a6c32b0502f7`**, paired IDE
+**`faf2052ba764cbc147ef05f261164853e08489c8`**, passed all **13 first-attempt jobs**
+in [workflow 40256356289](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40256356289).
+The CI merge has the exact candidate tree. CPython 3.13.16 passed **1,087 service
+tests** with zero failures/errors/skips, Ruff, formatting, mypy and isolated
+installed-package smokes. Mandatory Linux controls executed. The independent IDE
+workflow passed **266 tests and one Windows-only skip**; all fifty wheel Python
+modules match its pinned source. All four deployment/inventory workflows passed.
+
+Two new reconnect regressions fail against exact prior commit `accb144` with
+HTTP 409 `native_rebind_unqualified`, both before and after explicit session
+close. They pass after the fix. The final local focused suite passed 139 tests;
+45 local IDE client/Qt checks passed. These overlap hosted counts. A broader
+local attempt was incomplete because grpc/protobuf were unavailable and its
+available subset stopped with a runtime-library error. It is not represented
+as full qualification; hosted evidence includes the complete mandatory suite.
+
+Same-owner reconnection now requires a new authenticated connection, settled
+native/prompt/effect journals, separate original-container host freeze proof
+and an explicit resume. Schema 21 journals reconnection separately from
+ownership claims. The owner and ownership epoch remain unchanged; connection
+generation increments once. Old controller/runtime proofs remain denied, even
+for a valid native packet with the same ownership epoch. Lost activation replies
+are never retried. Eight transfers/reconnects share one capacity limit; audit
+failure rolls back admission and history together.
+
+Both actual-native and installed IDE cohorts retain the original **eight
+processes** through A→B→A, then explicitly close A's session. Root, child and
+background counters advance for three seconds while old mutations are denied.
+The same family is frozen for three seconds and explicitly resumed with A still
+owning epoch 3 at generation 4. A stale connection packet is denied; its fresh
+same-payload counterpart succeeds. **Four DSS commands and twenty identical
+ACKED stages per ledger** cover epochs 1/2/3 and generations 1/2/3/4. Final host
+settlement observes original-process exit, releases only that family, preserves
+the unrelated witness and leaves the worker spent.
+
+The installed IDE also passes native Step and four Abort/Close cases; all sixteen
+terminal cases and 24 fresh root/child startup/settlement cycles pass. Artifact
+SHA256/ZIP integrity and all recorded repository hashes are verified, including
+178 foundation inputs and 121 per extended native profile. Eleven native header
+hashes match; 144 compiled-unit hashes per profile match prior source-bound
+inventories. This does not claim a new local reconstruction of every C++ unit.
+
+[The component receipt](evidence/native-reconnect/qualification-summary.json)
+contains exact runs, artifacts, original counters, source inventories and wheel
+verification. The explicit-session profile does not establish generic abrupt
+network/controller recovery. Historical startup failure causes remain unresolved.
+All eleven full release gates remain false and clean dev47 publication preflight
+exits 1. No merge, tag, stable release or production migration was performed.

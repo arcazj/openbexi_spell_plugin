@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="4.066" timestamp="2026-10-26T02:56:02.900471+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_native_rebind" name="test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[False]" time="2.979"><failure message="AssertionError: {'error': 'native_rebind_unqualified'}&#10;assert 409 == 200">server/tests/test_native_rebind.py:94: in test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests
+    _, _, bound, epoch = resumed(ledger, pki)
+                         ^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:53: in resumed
+    body, state, evidence = prepare(ledger, pki, subject=subject)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:40: in prepare
+    pending = controller("execution.rebind", body, subject=subject, key=key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_preflight.py:48: in controller
+    assert code == 200, response
+E   AssertionError: {'error': 'native_rebind_unqualified'}
+E   assert 409 == 200</failure></testcase><testcase classname="tests.test_native_rebind" name="test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[True]" time="0.225"><failure message="AssertionError: {'error': 'native_rebind_unqualified'}&#10;assert 409 == 200">server/tests/test_native_rebind.py:94: in test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests
+    _, _, bound, epoch = resumed(ledger, pki)
+                         ^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:53: in resumed
+    body, state, evidence = prepare(ledger, pki, subject=subject)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:40: in prepare
+    pending = controller("execution.rebind", body, subject=subject, key=key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_preflight.py:48: in controller
+    assert code == 200, response
+E   AssertionError: {'error': 'native_rebind_unqualified'}
+E   assert 409 == 200</failure></testcase></testsuite></testsuites>

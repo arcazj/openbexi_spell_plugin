@@ -1,6 +1,6 @@
 # Paired IDE controls for an existing native execution
 
-Server `0.8.0.dev46` and the exact IDE pin in `IDE_PAIR.json` provide Run/Continue,
+Server `0.8.0.dev47` and the exact IDE pin in `IDE_PAIR.json` provide Run/Continue,
 Step, Pause, Abort and Close execution to the asynchronous server panel. These
 actions control an already provisioned retained native execution. Public worker
 provisioning remains unavailable and `runtime_enabled` remains false.
@@ -51,6 +51,15 @@ transfers with fresh proof and explicit resume each round; native qualification
 includes a return to A at epoch 3. A's earlier proof remains invalid after that
 return. New children after transfer remain unavailable.
 
+With `native_rebind` advertised by the configured Context and Listener, the
+current owner can also use Reconnect control for a live or explicitly closed
+controller session. The first request returns `rebind_pending` without a
+capability, and the client clears only that execution's cached proof. Host
+freeze completion preserves owner and epoch, increases connection generation
+and enters HANDOFF_PAUSED. The owner then reconnects and explicitly resumes.
+Observers and users without start permission do not receive this UI action.
+See [NATIVE_RECONNECT.md](NATIVE_RECONNECT.md).
+
 ## Executable qualification
 
 `python scripts/qualify_v08_native_launch.py --native-ide` installs no substitute
@@ -62,21 +71,22 @@ no host-manager interface. Initial worker provisioning remains a separate
 trusted-host operation.
 
 The native cohort exercises A/B/A handoff, C observation, stale-owner denial,
-whole-family freeze for both transfers, explicit resume, native Pause/Step/Run and final host
+whole-family freeze for both transfers and a same-owner reconnect, explicit
+resume, native Pause/Step/Run and final host
 settlement. Step must change the original native current-source-position and
 pause again. Four additional cases send Abort and Close through the installed
 client while native execution is paused or running. The separate native-terminal
 profile retains the full sixteen-case terminal matrix.
 
-Twenty-two service regressions use the actual client through real TLS
+Service regressions use the actual client through real TLS
 gateway/Listener/Context hops. They check all five operations, duplicate queue
 admission, stolen proofs, live role revocation, disabled configuration and
-A/B/C handoff. Qt tests separately check button enablement, asynchronous actions
+A/B/C handoff and same-owner reconnect. Qt tests separately check button enablement, asynchronous actions
 and observer denial; the native CI cohort is headless client qualification,
 not a claim that a graphical browser or every debugger feature was exercised.
 
 Exact workflow, artifact, source-hash and installed-wheel results are retained
-in [the current component receipt](evidence/repeated-handoff/qualification-summary.json).
+in [the current component receipt](evidence/native-reconnect/qualification-summary.json).
 The [dev44 receipt](evidence/native-ide-controls/qualification-summary.json)
 retains the initial installed-control qualification and failed terminal recheck.
 The full release gates remain false. Public launch, variables/breakpoints,

@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev46` and the paired IDE `1.2.1.dev2` are development candidates.
+SPELL `0.8.0.dev47` and the paired IDE `1.2.1.dev3` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -26,7 +26,9 @@ existing sealed family. The host proves cgroup freeze completion and original
 pidfd/member identity; Context settles the journals and moves ownership while
 the family stays paused. B explicitly resumes the same processes. A's stale
 commands and driver packets remain fenced; C remains read-only. Native A→B→A
-is qualified as a component; real mTLS service tests cover the eight-transfer
+and an explicit same-owner reconnect are qualified components. Reconnect keeps
+the ownership epoch and changes connection generation after independent host
+freeze and explicit resume. Real mTLS tests cover the shared eight-rotation
 capacity and reject a ninth without revoking current authority. See
 [LIVE_HANDOFF.md](LIVE_HANDOFF.md) and its exact-source receipt.
 
@@ -40,9 +42,12 @@ neither establishes full graphical debugger or browser acceptance. See
 ## Native and recovery work still required
 
 Transfer with an open prompt, new children after transfer,
-controller reconnect recovery and Kubernetes host attestation are unqualified.
+abrupt controller/network fault recovery and Kubernetes host attestation are
+unqualified. The explicit `session.close` and same-owner reconnect component
+is documented in [NATIVE_RECONNECT.md](NATIVE_RECONNECT.md).
 The accepted handoff profile deliberately seals the admitted child roster;
-native qualification covers two transfers, with the eight-transfer bound tested
+native qualification covers two transfers and one reconnect, with the shared
+eight-rotation bound tested
 at the service/runtime layer. A native main-thread PAUSED status alone cannot
 prove family quiescence; the background-thread negative control demonstrates it.
 
@@ -69,8 +74,9 @@ identity configuration changes require process restart.
 Public worker launch, complete debugger variables/breakpoints, browser/WSS gap
 recovery and Git collaboration remain unfinished or unqualified. The installed
 observer Listener-loss/reconnect component preserves advancing native processes;
-it does not establish active-controller fault recovery or twenty-viewer browser
-acceptance.
+the separate explicit controller-session reconnect component also preserves
+the original family. Neither establishes all abrupt controller fault recovery
+or twenty-viewer browser acceptance.
 
 The passing 241-test portable compatibility subset is not all-763 qualification.
 Inherited archival checks reference missing original Windows captures and older

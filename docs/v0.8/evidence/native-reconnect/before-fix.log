@@ -1,0 +1,35 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[False] _
+server/tests/test_native_rebind.py:94: in test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests
+    _, _, bound, epoch = resumed(ledger, pki)
+                         ^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:53: in resumed
+    body, state, evidence = prepare(ledger, pki, subject=subject)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:40: in prepare
+    pending = controller("execution.rebind", body, subject=subject, key=key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_preflight.py:48: in controller
+    assert code == 200, response
+E   AssertionError: {'error': 'native_rebind_unqualified'}
+E   assert 409 == 200
+_ test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[True] _
+server/tests/test_native_rebind.py:94: in test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests
+    _, _, bound, epoch = resumed(ledger, pki)
+                         ^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:53: in resumed
+    body, state, evidence = prepare(ledger, pki, subject=subject)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_native_rebind.py:40: in prepare
+    pending = controller("execution.rebind", body, subject=subject, key=key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/tests/test_preflight.py:48: in controller
+    assert code == 200, response
+E   AssertionError: {'error': 'native_rebind_unqualified'}
+E   assert 409 == 200
+----- generated xml file: /workspace/scratch/9ce8bc4a3534/dev47-before.xml -----
+=========================== short test summary info ============================
+FAILED server/tests/test_native_rebind.py::test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[False]
+FAILED server/tests/test_native_rebind.py::test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_requests[True]
+2 failed, 19 deselected in 4.07s

@@ -1,7 +1,8 @@
 # Private single-host live-family handoff
 
 The `host-freeze-candidate` native pause profile permits bounded repeated
-handoff of an existing native family, up to eight accepted transfers. It requires the retained single-use worker,
+handoff and same-owner reconnection of an existing native family, with a shared
+limit of eight runtime identity rotations. It requires the retained single-use worker,
 all command/prompt/member journals, and the separate host certificate configured
 by `host_settlement`. It is disabled by default.
 
@@ -60,39 +61,56 @@ or terminates the family after failure; it must not unpause it as cleanup.
 This candidate seals the already admitted child roster and retires unused
 startup RUNs. It rejects all subsequent child creation. A later transfer needs
 the previous runtime activation to be complete, settled journals, a fresh barrier,
-a fresh host freeze proof and an explicit resume by the next owner. Schema 20
+a fresh host freeze proof and an explicit resume by the next owner. Schema 21
 archives completed handoff and pause records in the same transaction that fences
 the next round. The original family identity remains unchanged. Every earlier
 controller capability, runtime credential and host proof remains fenced, including
-when ownership returns to its original user. A ninth transfer is rejected before
+when ownership returns to its original user. A ninth rotation is rejected before
 revoking the current owner's authority.
 
-Open-prompt transfer, reconnect recovery and Kubernetes freezer attestation
-remain separate qualification work. Workers stay single-use and reservations
-remain held through handoff. The eight-transfer bound is covered by real mTLS
-service tests; the original native process cohort covers two successive transfers.
+Same-owner reconnect uses the existing `execution.rebind` operation with a new
+authenticated connection. It requires the same independent host freeze and an
+explicit resume, preserves ownership epoch and increments connection generation.
+It creates no ownership claim. The runtime rejects packets captured under the
+old connection even when their ownership epoch matches. See
+[NATIVE_RECONNECT.md](NATIVE_RECONNECT.md) for admission and failure behavior.
+
+Open-prompt transfer, broader controller fault recovery and Kubernetes freezer
+attestation remain separate qualification work. Workers stay single-use and
+reservations remain held through handoff. Real mTLS service tests cover the
+shared eight-rotation bound for transfers and reconnects.
 
 The dedicated `--native-handoff` qualification runs the rebuilt native runtime
 with a root, child and background thread, observes stationary counters during
 each host freeze, resumes the same processes first under B and then under A at
 epoch 3, rejects delayed native driver packets from both earlier epochs and A's
 original queued STEP, checks B's native PAUSE/RUN, and checks DSS receipts from
-all three owner epochs. The installed IDE profile additionally checks native
+all three owner epochs. It then closes A's controller session, observes all
+original participants advancing, and requires a third host freeze and explicit
+same-owner resume. A remains owner at epoch 3 while connection generation
+advances to 4; stale connection packets are denied. Four DSS commands must have
+twenty matching stage receipts in both independent ledgers. The installed IDE profile additionally checks native
 STEP through its source-position change. The cohort verifies C cannot mutate and an
 unrelated reservation remains unchanged. Foundation regressions cover real mTLS,
 concurrent and lost activation, restart, expiry, forged freezer evidence, prompt
 uncertainty and complete/partial/conflicting independent DSS histories.
 After continuation, the host obtains a terminal fence, verifies exit of every
-original process, reconciles all three owner epochs' DSS receipts and releases only
+original process, reconciles all three owner epochs and four connection generations' DSS receipts and releases only
 the finished family's reservations. The unrelated witness and spent-worker
 status remain intact.
 
-The repeated-transfer cohort and installed IDE profile passed at
+The earlier repeated-transfer cohort and installed IDE profile passed at
 `83113624ff3853d3c4c802a50b48dad4f3703429`: eight original processes, two
 three-second freezes, A→B→A ownership, three DSS commands with fifteen matching
 stage receipts in each independent ledger, and terminal release preserving the
 witness reservation. Its hosted foundation passed 1,065 tests without failures,
 errors or skips. The subsequent startup-stress candidate and exact artifact
-identities are recorded in the [current component receipt](evidence/repeated-handoff/qualification-summary.json).
+identities are recorded in the [dev46 component receipt](evidence/repeated-handoff/qualification-summary.json).
 The [earlier single-transfer receipt](evidence/native-live-handoff/qualification-summary.json)
 remains historical evidence. No full-v0.8 release gate is promoted by this private profile.
+
+Dev47 `82dc4cb99201d2f96ff02b023331a6c32b0502f7` also passed the original-native
+and installed IDE same-owner reconnect cohorts: the same eight processes,
+unchanged owner/epoch 3, new connection generation 4 and four commands/twenty
+matching DSS receipts. All thirteen first-attempt hosted jobs and 1,087 service
+tests passed. See [the current receipt](evidence/native-reconnect/qualification-summary.json).
