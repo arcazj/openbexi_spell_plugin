@@ -2,16 +2,6 @@
   "schema": "openbexi.local-native-allocation-provenance/1",
   "archive_sha256": "d7535367869416f807b376dd0289b62a8aec70a9891a78e59a4e1535a03b25cd",
   "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
-  "flags": [
-    "-std=c++17",
-    "-O1",
-    "-g",
-    "-pthread",
-    "-no-pie",
-    "-fsanitize=address,undefined",
-    "-fno-sanitize-recover=all",
-    "-fno-omit-frame-pointer"
-  ],
   "sanitizer_options": {
     "ASAN_OPTIONS": "detect_leaks=0:abort_on_error=1"
   },
@@ -35,5 +25,24 @@
     "Constructor harness runs actual composed constructors, not complete native procedures.",
     "Bridge compilation uses frozen native dependencies locally; candidate private runtime integration is checked by hosted qualification.",
     "The full hosted recovery/resource verdict is required separately."
+  ],
+  "incoming_probe_flags": [
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-pthread",
+    "-no-pie",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer"
+  ],
+  "private_bridge_flags": [
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer"
   ]
 }

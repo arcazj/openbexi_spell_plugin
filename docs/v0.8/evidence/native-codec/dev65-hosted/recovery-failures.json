@@ -1,0 +1,108 @@
+[
+  {
+    "profile": "handoff",
+    "artifact_id": 12681547732,
+    "passed": false,
+    "error": "RuntimeError: Native recovery resource acceptance failed",
+    "resource_acceptance": {
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [
+        "native_recovery_peak_budget_exceeded",
+        "native_recovery_memory_still_growing"
+      ],
+      "samples": 48,
+      "soak_samples": 22,
+      "duration_seconds": 45.449757365,
+      "peak_bytes": 2112180224,
+      "window_growth_bytes": 334139392,
+      "first_window_median_bytes": 1707249664,
+      "last_window_median_bytes": 2041389056
+    },
+    "soak": {
+      "start_ns": 333651306064,
+      "end_ns": 379101063429,
+      "minimum_seconds": 45,
+      "counters_before": {
+        "root": 1474,
+        "background": 1707,
+        "child": 1553
+      },
+      "counters_after": {
+        "root": 3560,
+        "background": 3941,
+        "child": 3684
+      },
+      "original_processes": 8,
+      "all_intervals_advanced": true
+    },
+    "memory_events": {
+      "high": 0,
+      "low": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_group_kill": 0,
+      "oom_kill": 0
+    },
+    "allocation_stack_sampling_enabled": false,
+    "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
+  },
+  {
+    "profile": "ide",
+    "artifact_id": 12681587944,
+    "passed": false,
+    "error": "RuntimeError: Native recovery resource acceptance failed",
+    "resource_acceptance": {
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [
+        "native_recovery_peak_budget_exceeded",
+        "native_recovery_memory_still_growing"
+      ],
+      "samples": 47,
+      "soak_samples": 21,
+      "duration_seconds": 45.617780691,
+      "peak_bytes": 2088316928,
+      "window_growth_bytes": 364591104.0,
+      "first_window_median_bytes": 1660276736,
+      "last_window_median_bytes": 2024867840.0
+    },
+    "soak": {
+      "start_ns": 381923428822,
+      "end_ns": 427541209513,
+      "minimum_seconds": 45,
+      "counters_before": {
+        "root": 1316,
+        "background": 1662,
+        "child": 1457
+      },
+      "counters_after": {
+        "root": 3283,
+        "background": 3896,
+        "child": 3513
+      },
+      "original_processes": 8,
+      "all_intervals_advanced": true
+    },
+    "memory_events": {
+      "high": 0,
+      "low": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_group_kill": 0,
+      "oom_kill": 0
+    },
+    "allocation_stack_sampling_enabled": false,
+    "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
+  }
+]

@@ -1,5 +1,27 @@
 # Full v0.8 publication qualification
 
+Dev65 `4f4a5ec` (run `40386646787`) passes 1,284 service tests, 95 overlapping
+fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases.
+Twelve of fourteen core jobs and all five ancillary workflows pass. All nineteen
+archives and recorded source hashes are verified, and the tested merge tree matches.
+Both original families complete the full 45-second soak, preserve all eight
+processes and advance every interval with zero memory-pressure/OOM events.
+The fixed resource acceptance still fails in both profiles:
+
+| Profile | Peak MiB | Window growth MiB | Required peak / growth MiB |
+| --- | ---: | ---: | ---: |
+| Handoff | 2,014.3 | 318.7 | 1,792 / 64 |
+| Installed IDE | 1,991.6 | 347.7 | 1,792 / 64 |
+
+The IPC and bridge allocation reductions and the bridge identity correction are
+verified component changes. They do not resolve this full-family memory blocker.
+No sanitizer settings, workload, soak duration, deadlines or resource thresholds
+were relaxed. All eleven full-release gates remain unqualified; public runtime
+and publication remain disabled. See the [latest complete receipt](evidence/native-codec/dev65-hosted/qualification-summary.json)
+and [implementation/measurement notes](NATIVE_MESSAGE_CODEC.md).
+
+Historical qualification records follow.
+
 Dev59 `5d0d64f` removes measured IPC allocation overhead and passes 1,267 service,
 95 overlapping fault and 241 portable tests. Both original recovery families
 now complete the fixed soak and terminal settlement without OOM, but both fail

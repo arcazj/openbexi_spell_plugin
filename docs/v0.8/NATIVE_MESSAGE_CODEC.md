@@ -173,3 +173,26 @@ from 22,010,000 in dev64 to 17,280,000 in dev65; allocations drop from 490,000 t
 These are component measurements, not proof that the resource gate is resolved.
 All 76 targeted checks and the full bridge compile pass. The unchanged hosted
 resource oracle must still pass, and all eleven full-release gates remain closed.
+
+
+## Dev65 hosted verdict
+
+Dev65 `4f4a5ec` (run `40386646787`) passes 1,284 service tests, 95 overlapping
+fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases.
+Twelve of fourteen core jobs and all five ancillary workflows pass. All nineteen
+archives and recorded source hashes are verified, and the tested merge tree matches.
+Both original families complete the full 45-second soak, preserve all eight
+processes and advance every interval with zero memory-pressure/OOM events.
+The fixed resource acceptance still fails in both profiles:
+
+| Profile | Peak MiB | Window growth MiB | Required peak / growth MiB |
+| --- | ---: | ---: | ---: |
+| Handoff | 2,014.3 | 318.7 | 1,792 / 64 |
+| Installed IDE | 1,991.6 | 347.7 | 1,792 / 64 |
+
+The IPC and bridge allocation reductions and the bridge identity correction are
+verified component changes. They do not resolve this full-family memory blocker.
+No sanitizer settings, workload, soak duration, deadlines or resource thresholds
+were relaxed. All eleven full-release gates remain unqualified; public runtime
+and publication remain disabled. See the [latest complete receipt](evidence/native-codec/dev65-hosted/qualification-summary.json)
+and [implementation/measurement notes](NATIVE_MESSAGE_CODEC.md).
