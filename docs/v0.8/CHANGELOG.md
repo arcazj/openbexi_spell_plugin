@@ -4,7 +4,7 @@
 
 - Retain the dev52 native terminal failure: ten uncertain command calls and twenty ACKED stages before child admission. Other twelve core jobs, 1,144 service tests and four ancillary workflows pass; no all-green checkpoint is inferred.
 - Record fixed phase/stage labels and bounded numeric timings on failed commands, plus per-stage ledger counts. No payloads, credentials or exception messages are recorded. Existing deadlines, live authority checks, durable ledgers and no-replay behavior remain unchanged.
-- Five deterministic timing/failure-path tests pass locally; the historical timeout cause remains unestablished. Hosted requalification is pending.
+- Five deterministic timing/failure-path tests pass locally; the historical timeout cause remains unestablished. Hosted requalification is pending. The initial 300-second full-suite harness stopped after 1,003 passing progress markers with no failed/error marker and no final JUnit; its failed artifact is retained. The finite suite budget is now 600 seconds with a 15-minute job budget. Individual operation deadlines and assertions are unchanged.
 
 ## 0.8.0.dev52 — completed session cleanup
 

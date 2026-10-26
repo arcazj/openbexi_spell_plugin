@@ -256,7 +256,10 @@ def main():
             root,
             environment,
             output,
-            timeout=300 if name == "tests" else 180,
+            # The preceding 1,144-case suite took 271s. The expanded suite
+            # reached 1,003 passes before the old 300s cap terminated it.
+            # Keep a finite suite budget without altering operation deadlines.
+            timeout=600 if name == "tests" else 180,
         )
         report["checks"].append(check)
         if check["exit_code"]:
