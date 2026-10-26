@@ -98,6 +98,7 @@ def main():
             root / "host_runtime/python/v08_worker.py",
             root / "host_runtime/python/thread_barrier.py",
             root / "host_runtime/python/child_gate.py",
+            root / "host_runtime/python/startup_diagnostics.py",
             root / "host_runtime/python/control_journal.py",
             root / "host_runtime/python/prompt_replies.py",
             root / "host_runtime/build_admission_context.py",

@@ -1151,6 +1151,13 @@ def run(config):
     finally:
         # This is best-effort native cleanup, never a quiescence/hold-release
         # proof. The independent host must confirm whole-container termination.
+        if child_profile:
+            try:
+                from startup_diagnostics import snapshot
+
+                emit("native-startup-diagnostics", diagnostic=snapshot())
+            except Exception:
+                emit("native-startup-diagnostics-unavailable")
         try:
             session.close()
         finally:

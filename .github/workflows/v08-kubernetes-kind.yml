@@ -35,9 +35,9 @@ jobs:
       - name: Build isolated authority and independently packaged DSS images
         run: |
           set -euo pipefail
-          docker build -f deploy/v0.8/Dockerfile.server -t openbexi-spell-server:0.8.0.dev44-prelaunch .
+          docker build -f deploy/v0.8/Dockerfile.server -t openbexi-spell-server:0.8.0.dev45-prelaunch .
           docker build -f Dockerfile -t openbexi-spell-plugin-dss:0.1.0 .
-          kind load docker-image --name v08prelaunch openbexi-spell-server:0.8.0.dev44-prelaunch
+          kind load docker-image --name v08prelaunch openbexi-spell-server:0.8.0.dev45-prelaunch
           kind load docker-image --name v08prelaunch openbexi-spell-plugin-dss:0.1.0
       - name: Provision one-time isolated Kubernetes secrets and workloads
         run: |

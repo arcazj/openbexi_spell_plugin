@@ -45,6 +45,46 @@ def fence_external_controller_mailbox(text):
     )
 
 
+def trace_native_startup(text):
+    """Fixed diagnostics at original startup boundaries; no retry or timeout change."""
+    anchors = {
+        "void SPELLexecutor::start()\n{\n": "entered",
+        '\tLOG_INFO("Starting executor " + m_model.getInstanceId());': "admitted",
+        "\tm_model.setIpcPort( m_ipc.getPort() );": "ipc-ready",
+        "\t\tSPELLprocessManager::instance().startProcess( m_model.getInstanceId(), command );": "spawn-requested",
+        '\t\tDEBUG("Start event received");': "process-started",
+        '\t\t\tDEBUG("Executor process logged in");': "login-observed",
+        "            try { v08_bind_native_executor(m_model); }": "member-bound",
+        '\tDEBUG("Received executor login: " + m_model.getInstanceId() );': "login-entered",
+        "\tm_executorLoggedInEvent.set();": "login-published",
+    }
+    if "v08_start_trace(" in text:
+        raise ValueError("Native startup already instrumented")
+    for anchor, phase in anchors.items():
+        if text.count(anchor) != 1:
+            raise ValueError("Ambiguous native startup diagnostic: " + phase)
+        # The bind expression is a try/catch: inserting before its catch would
+        # break C++. Observe the attempt here; success follows the whole block.
+        if phase == "member-bound":
+            text = text.replace(
+                anchor,
+                '            v08_start_trace(m_model.getInstanceId(), "binding-requested");\n'
+                + '            try { v08_bind_native_executor(m_model); v08_start_trace(m_model.getInstanceId(), "member-bound"); }',
+            )
+        else:
+            text = text.replace(
+                anchor,
+                anchor
+                + '\n    v08_start_trace(m_model.getInstanceId(), "'
+                + phase
+                + '");',
+            )
+    return text.replace(
+        '#include "/candidate/admission_gate.H"',
+        '#include "/candidate/admission_gate.H"\n#include "/candidate/startup_trace.H"',
+    )
+
+
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
     # The legacy GUI client key is client-proposed/reusable. Allocate an
@@ -189,7 +229,23 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
             }
 """,
     )
-    unit.write_text(text)
+    unit.write_text(trace_native_startup(text))
+    process = source / "lib/SPELL_PRC/src/SPELLprocess.C"
+    process_text = process.read_text()
+    spawned = "\t\t\tm_processPID = popen( m_command );"
+    if process_text.count(spawned) != 1 or "v08_start_trace(" in process_text:
+        raise ValueError("Ambiguous native process spawn diagnostic")
+    process.write_text(
+        process_text.replace(
+            '#include "SPELL_PRC/SPELLprocessManager.H"',
+            '#include "SPELL_PRC/SPELLprocessManager.H"\n#include "/candidate/startup_trace.H"',
+        ).replace(
+            spawned,
+            '            v08_start_trace(m_identifier, "fork-entered");\n'
+            + spawned
+            + '\n            v08_start_trace(m_identifier, m_processPID > 0 ? "fork-returned" : "fork-failed");',
+        )
+    )
     # Carry the immutable request through value copies in both the mailbox and
     # trace-deferred commands, then check at executeCommand before RUN effects.
     command = source / "include/SPELL_EXC/SPELLcommand.H"

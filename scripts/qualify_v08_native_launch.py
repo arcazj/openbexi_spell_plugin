@@ -565,6 +565,7 @@ def main():
         ROOT / "host_runtime/python/thread_barrier.py",
         ROOT / "host_runtime/python/native.py",
         ROOT / "host_runtime/python/child_gate.py",
+        ROOT / "host_runtime/python/startup_diagnostics.py",
         ROOT / "host_runtime/python/control_journal.py",
         ROOT / "host_runtime/python/prompt_replies.py",
         ROOT / "scripts/v08_prompt_cohort.py",
@@ -651,6 +652,10 @@ def main():
                         code / "native_candidate.py",
                     )
                 if profile.native_child_gate:
+                    shutil.copy2(
+                        ROOT / "host_runtime/python/startup_diagnostics.py",
+                        code / "startup_diagnostics.py",
+                    )
                     shutil.copy2(
                         ROOT / "host_runtime/python/children.py", code / "children.py"
                     )
@@ -2277,6 +2282,18 @@ def main():
                             and info["State"]["Running"]
                             and (name in worker_names or name.endswith("-probe"))
                         ):
+                            diagnostics = command(
+                                "docker",
+                                "exec",
+                                name,
+                                "python",
+                                "-I",
+                                "/v08/startup_diagnostics.py",
+                                timeout=10,
+                            )
+                            (output / (name + ".startup.json")).write_text(
+                                diagnostics + "\n"
+                            )
                             native_logs = command(
                                 "docker",
                                 "exec",
