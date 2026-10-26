@@ -104,6 +104,17 @@ def replace_native_message_codec(text):
         if text.count(old) != 1:
             raise ValueError("Native property storage boundary differs")
         text = text.replace(old, new)
+    # finish() clears an incoming message before its destructor. Recycle at
+    # that original lifetime boundary as well, then preserve clear() semantics.
+    clear_body = "void SPELLipcMessage::clear( )\n{\n\tm_properties.clear();"
+    if text.count(clear_body) != 1:
+        raise ValueError("Native message clear boundary differs")
+    text = text.replace(
+        clear_body,
+        "void SPELLipcMessage::clear( )\n{\n"
+        "    v08_recycle_properties(m_properties,m_id,m_senderId,m_receiverId);\n"
+        "\tm_properties.clear();",
+    )
     for name, marker in (
         ("msg", "\tm_id = msg.m_id;"),
         ("*msg", "\tm_id = msg->m_id;"),

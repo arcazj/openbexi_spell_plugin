@@ -41,6 +41,22 @@ int main(int argc,char** argv) {
         measure=true;
         for(int n=0;n<10000;++n) {auto a=source;auto b=a;SPELLipcMessage c;c=b;}
         measure=false;
+    } else if(mode=="clear_bench") {
+        // The real incoming worker invokes clear() in finish() before destruction.
+        // A destructor-only cache silently misses this high-frequency lifecycle.
+        {auto a=source;auto b=a;b.clear();a.clear();}
+        measure=true;
+        for(int n=0;n<10000;++n) {
+            auto incoming=source;auto forwarded=incoming;
+            forwarded.clear();incoming.clear();
+            require(incoming.v08Fields().empty() && incoming.getId().empty());
+            require(incoming.getSender().empty() && incoming.getReceiver().empty());
+            require(incoming.getSequence()==source.getSequence()
+                && incoming.getKey()==source.getKey()
+                && incoming.getType()==source.getType()
+                && incoming.getCompressed()==source.getCompressed());
+        }
+        measure=false;
     } else if(mode=="mixed_bench") {
         SPELLipcMessage other("LONG_ALTERNATE_MESSAGE_ID");
         other.setSender("different-procedure-origin#1");
