@@ -585,9 +585,10 @@ def qualify_consumption_fence(
         "--pids-limit",
         "256",
         "--memory",
-        # Two live Executors now remain active through a full 30-second lease
-        # timeout. Match the primary two-Executor profile; retain cgroup peaks.
-        "1024m" if live_handoff else "768m",
+        # The former 1 GiB resident cap implicitly permitted another 1 GiB
+        # of swap. Keep that 2 GiB combined budget explicit and resident for
+        # this two-Executor ASan recovery probe; do not weaken the sanitizer.
+        "2048m" if live_handoff else "768m",
         "--cpus",
         "2",
         "--cpu-shares",
@@ -600,7 +601,12 @@ def qualify_consumption_fence(
         "/workspace:rw,nosuid,nodev,size=16m,mode=0700,uid=10003,gid=10003",
     ]
     if live_handoff:
-        args += ["--env", "OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1"]
+        args += [
+            "--memory-swap",
+            "2048m",
+            "--env",
+            "OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1",
+        ]
     for source, destination in (
         (snapshot, "/source"),
         (code, "/v08"),
@@ -672,7 +678,7 @@ def qualify_consumption_fence(
                 schema=LiveFamilyHandoff.SCHEMA,
             )
 
-        from v08_resource_probe import observe
+        from v08_resource_probe import observe, assess_recovery_resources
 
         with observe(command, name, terminal_evidence):
             qualify_handoff_case(
@@ -691,6 +697,10 @@ def qualify_consumption_fence(
                 output=terminal_evidence,
                 verify_step=desktop_stack is not None,
             )
+        resource_result = assess_recovery_resources(terminal_evidence)
+        report["native_live_handoff"]["resource_acceptance"] = resource_result
+        if not resource_result["passed"]:
+            raise RuntimeError("Native recovery resource acceptance failed")
         if primary_controller("execution.list", {}) != original_primary:
             raise RuntimeError("Live handoff changed unrelated primary executions")
         retire_terminal_probe(

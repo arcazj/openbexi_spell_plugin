@@ -9,7 +9,9 @@ def run_handoff_probe(
     session, controls, child_gate, children, prompts, pump, runtime, lifecycle, emit
 ):
     session.request("CMD_RUN", send=True)
-    deadline = time.monotonic() + 120
+    # Qualification-only budget includes the new 45-second post-reconnect soak.
+    # RPC, admission, lease and authority deadlines are unchanged.
+    deadline = time.monotonic() + 180
     ready = rotated = paused = False
     observed_rotations = 0
     return_reported = False

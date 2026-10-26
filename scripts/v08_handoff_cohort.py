@@ -806,6 +806,32 @@ def qualify_handoff_case(
             output=output,
             await_event=await_event,
         )
+        # Continue the same original family for 45 seconds after reconnect.
+        # Each bounded interval proves progress and original pidfd liveness.
+        # Only the qualification fixture budget includes this extra workload;
+        # no admission, RPC, lease or authority deadline is extended.
+        soak_started = time.monotonic_ns()
+        soak_before = previous = counters(command, name, output)
+        for _ in range(9):
+            time.sleep(5)
+            current = counters(command, name, output)
+            if any(current[key] <= previous[key] for key in previous):
+                raise RuntimeError(
+                    "Original family stopped advancing during recovery soak"
+                )
+            if any(select.select([fd], [], [], 0)[0] for fd in handles.values()):
+                raise RuntimeError("Original process exited during recovery soak")
+            previous = current
+        soak = dict(
+            start_ns=soak_started,
+            end_ns=time.monotonic_ns(),
+            minimum_seconds=45,
+            counters_before=soak_before,
+            counters_after=previous,
+            original_processes=len(handles),
+            all_intervals_advanced=True,
+        )
+        (output / "native-recovery-soak.json").write_text(json.dumps(soak) + "\n")
         with closing(
             sqlite3.connect(
                 "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
@@ -929,6 +955,7 @@ def qualify_handoff_case(
             accepted_transfers=2,
             same_owner_reconnections=1,
             native_reconnect=reconnection,
+            recovery_soak=soak,
             completed_transfer_history=history,
             first_round_host_proof_replay_denied=True,
             previous_b_controller_and_native_packet_denied=True,

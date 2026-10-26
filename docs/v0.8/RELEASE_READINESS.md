@@ -1,6 +1,15 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev56` and paired IDE
+The full release is **not qualified**. Dev58 is under qualification. It corrects
+empty native audit-event compatibility and adds explicit no-swap resource
+acceptance after a 45-second original-family recovery soak. Dev57 run
+`40367729648` passed 13 of 14 core jobs; startup-stress failed after its prompt
+cohort because worker 0 recorded a denied RaiseEvent (HTTP 400), despite native
+FINISHED and no OOM. The event shape was not retained, so the empty-event
+regression is a proven compatibility defect but is not yet a proven cause of
+that historical failure. New diagnostics retain only validation booleans.
+
+The last fully verified component checkpoint follows. Server `0.8.0.dev56` and paired IDE
 `1.2.1.dev5` remain development packages. Candidate `bad5f98` passes
 **1,234 service tests**, **95 overlapping fault tests** and **241 portable tests**,
 all fourteen core jobs and five ancillary workflows. IDE `c5edbda` passes

@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+from copy import deepcopy
 
 import pytest
 
@@ -14,6 +15,104 @@ spec = importlib.util.spec_from_file_location(
 )
 probe = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(probe)
+
+
+def acceptance_evidence(tmp_path, mutate=None):
+    records = []
+    for second in range(0, 102, 2):
+        records.append(
+            dict(
+                schema="openbexi.native-resources/1",
+                container_id="original",
+                pid=12,
+                start_ticks=17,
+                monotonic_ns=(second + 1) * 10**9,
+                values={
+                    "memory.max": 2 * 1024**3,
+                    "memory.swap.max": 0,
+                    "memory.current": 1200 * 1024**2,
+                    "memory.peak": 1300 * 1024**2,
+                    "memory.swap.current": 0,
+                    "memory.events": {"max": 0, "oom": 0, "oom_kill": 0},
+                },
+            )
+        )
+    if mutate:
+        mutate(records)
+    (tmp_path / "native-resources.jsonl").write_text("".join(json.dumps(r) + "\n" for r in records))
+    (tmp_path / "native-resource-observer.json").write_text(
+        json.dumps(dict(errors=[], container_id="original"))
+    )
+    (tmp_path / "native-recovery-soak.json").write_text(
+        json.dumps(dict(start_ns=54 * 10**9, end_ns=99 * 10**9))
+    )
+    return records
+
+
+def test_bounded_recovery_acceptance_requires_no_swap_and_stable_memory(tmp_path):
+    acceptance_evidence(tmp_path)
+    result = probe.assess_recovery_resources(tmp_path)
+    assert result["passed"]
+    assert result["duration_seconds"] == 45
+    assert result["window_growth_bytes"] == 0
+    assert result["full_v08_qualified"] is False
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("memory.max", 1024**3),
+        ("memory.swap.max", 1024**3),
+        ("memory.swap.current", 4096),
+        ("memory.peak", 1800 * 1024**2),
+        ("memory.current", "unknown"),
+        ("memory.events", {"max": 1, "oom": 0, "oom_kill": 0}),
+        ("memory.events", {"max": 0, "oom": 0, "oom_kill": 1}),
+    ],
+)
+def test_recovery_rejects_pressure_swap_and_unverifiable_counters(tmp_path, field, value):
+    acceptance_evidence(tmp_path, lambda rows: rows[5]["values"].update({field: value}))
+    assert not probe.assess_recovery_resources(tmp_path)["passed"]
+
+
+def test_recovery_rejects_growth_even_without_limit_or_oom_events(tmp_path):
+    def grow(rows):
+        for row in rows:
+            row["values"]["memory.current"] += row["monotonic_ns"] // 10**9 * 3 * 1024**2
+
+    acceptance_evidence(tmp_path, grow)
+    result = probe.assess_recovery_resources(tmp_path)
+    assert result["failures"] == ["native_recovery_memory_still_growing"]
+
+
+@pytest.mark.parametrize(
+    "fault", ["gap", "identity", "counter_missing", "end_missing", "bad_record"]
+)
+def test_recovery_rejects_incomplete_or_replaced_evidence(tmp_path, fault):
+    def corrupt(rows):
+        if fault == "gap":
+            del rows[30:35]
+        elif fault == "identity":
+            rows[30]["start_ticks"] += 1
+        elif fault == "counter_missing":
+            del rows[30]["values"]["memory.swap.current"]
+        elif fault == "end_missing":
+            del rows[40:]
+        else:
+            rows.append({"observation_error": "OSError"})
+
+    acceptance_evidence(tmp_path, corrupt)
+    assert not probe.assess_recovery_resources(tmp_path)["passed"]
+
+
+def test_recovery_verifier_does_not_mutate_sampled_values(tmp_path):
+    records = acceptance_evidence(tmp_path)
+    original = deepcopy(records)
+    probe.assess_recovery_resources(tmp_path)
+    assert records == original
+    assert [
+        json.loads(line) for line in (tmp_path / "native-resources.jsonl").read_text().splitlines()
+    ] == original
 
 
 def fixture(tmp_path):

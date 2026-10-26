@@ -650,6 +650,7 @@ def run(config):
     def dispatch(event, **body):
         if event != "openbexi/driverRequest":
             raise RuntimeError("Unexpected driver relay event")
+        event_shape = None
         try:
             if runtime is not None:
                 runtime.ensure(body.get("runtime_epoch"), native=True)
@@ -684,6 +685,14 @@ def run(config):
             settings = unpack(original.config)
             if type(settings) is not dict or set(settings) - {"Severity", "Scope"}:
                 raise ValueError("Driver event modifiers differ")
+            event_shape = dict(
+                message_empty=not original.message,
+                message_within_bound=len(original.message.encode("utf-8")) <= 8192,
+                severity_valid=type(settings.get("Severity", 8)) is int
+                and settings.get("Severity", 8) in {1, 2, 4, 8},
+                scope_valid=type(settings.get("Scope", 1)) is int
+                and settings.get("Scope", 1) == 1,
+            )
             answer = route.call(
                 {
                     **request,
@@ -713,6 +722,7 @@ def run(config):
                 code=error.code
                 if isinstance(error, Fault)
                 else "driver_response_invalid",
+                event_shape=event_shape,
             )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 

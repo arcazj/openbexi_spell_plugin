@@ -364,6 +364,22 @@ def test_actual_driver_event_has_durable_receipt_and_no_secret_storage(audit_set
     assert setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == 1
 
 
+def test_explicit_empty_native_event_is_recorded_once_without_becoming_idle(audit_setup, pki):
+    # The frozen v0.7 display-buffer port intentionally preserves empty events.
+    # An empty event still has an authenticated origin and an immutable receipt.
+    admitted = ready_audit(audit_setup, pki)
+    event = dict(event_body(), message="")
+    for _ in range(2):
+        status, response = call(audit_setup, pki, admitted, "event", **event)
+        assert status == 200
+        assert response["result"]["recorded"] is True
+    assert (
+        audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
+        == 1
+    )
+    assert call(audit_setup, pki, admitted, "event", **dict(event, message="changed"))[0] == 409
+
+
 @pytest.mark.parametrize(
     "field,value",
     [

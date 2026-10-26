@@ -4,8 +4,124 @@ from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
+import statistics
 import threading
 import time
+
+
+def assess_recovery_resources(output):
+    """Fail closed on missing, swapped, pressure-limited or still-growing evidence.
+
+    This is a bounded acceptance of one instrumented two-Executor fixture, not
+    a production capacity recommendation or proof of indefinite stability.
+    """
+    result = dict(
+        schema="openbexi.native-recovery-resources/1",
+        passed=False,
+        resident_limit_bytes=2 * 1024**3,
+        swap_limit_bytes=0,
+        peak_budget_bytes=1792 * 1024**2,
+        maximum_window_growth_bytes=64 * 1024**2,
+        full_v08_qualified=False,
+        failures=[],
+    )
+    failures = result["failures"]
+    try:
+        observer = json.loads((output / "native-resource-observer.json").read_text())
+        soak = json.loads((output / "native-recovery-soak.json").read_text())
+        path = output / "native-resources.jsonl"
+        if path.stat().st_size > 4 * 1024**2:
+            raise ValueError("resource_evidence_too_large")
+        rows = [json.loads(line) for line in path.read_text().splitlines()]
+        samples = [r for r in rows if r.get("schema") == "openbexi.native-resources/1"]
+        if observer["errors"] or not 20 <= len(samples) <= 120:
+            raise ValueError("incomplete_resource_observation")
+        if any(r not in samples and r != {"container_exited": True} for r in rows):
+            raise ValueError("unrecognized_resource_observation")
+        identities = {(r["container_id"], r["pid"], r["start_ticks"]) for r in samples}
+        if (
+            len(identities) != 1
+            or samples[0]["container_id"] != observer["container_id"]
+        ):
+            raise ValueError("resource_container_identity_changed")
+        ticks = [r["monotonic_ns"] for r in samples]
+        if any(not 0 < b - a <= 6 * 10**9 for a, b in zip(ticks, ticks[1:])):
+            raise ValueError("resource_sampling_gap")
+        if soak["end_ns"] - soak["start_ns"] < 45 * 10**9:
+            raise ValueError("recovery_soak_too_short")
+        window = [
+            r
+            for r in samples
+            if soak["start_ns"] <= r["monotonic_ns"] <= soak["end_ns"]
+        ]
+        if (
+            len(window) < 20
+            or window[0]["monotonic_ns"] > soak["start_ns"] + 5 * 10**9
+            or window[-1]["monotonic_ns"] < soak["end_ns"] - 5 * 10**9
+        ):
+            raise ValueError("recovery_soak_coverage_incomplete")
+        for row in samples:
+            values = row["values"]
+            for key in (
+                "memory.max",
+                "memory.peak",
+                "memory.current",
+                "memory.swap.max",
+                "memory.swap.current",
+            ):
+                if type(values[key]) is not int or values[key] < 0:
+                    raise ValueError("invalid_resource_counter")
+            if (
+                values["memory.max"] != result["resident_limit_bytes"]
+                or values["memory.swap.max"] != 0
+            ):
+                raise ValueError("resource_limits_differ")
+            if values["memory.swap.current"] != 0:
+                raise ValueError("native_recovery_swapped")
+            events = values["memory.events"]
+            for key in ("max", "oom", "oom_kill"):
+                if type(events[key]) is not int or events[key] != 0:
+                    raise ValueError("native_recovery_memory_pressure")
+        peak = max(r["values"]["memory.peak"] for r in samples)
+        if peak > result["peak_budget_bytes"]:
+            failures.append("native_recovery_peak_budget_exceeded")
+        first = [
+            r["values"]["memory.current"]
+            for r in window
+            if r["monotonic_ns"] <= soak["start_ns"] + 10 * 10**9
+        ]
+        last = [
+            r["values"]["memory.current"]
+            for r in window
+            if r["monotonic_ns"] >= soak["end_ns"] - 10 * 10**9
+        ]
+        growth = statistics.median(last) - statistics.median(first)
+        if growth > result["maximum_window_growth_bytes"]:
+            failures.append("native_recovery_memory_still_growing")
+        result.update(
+            samples=len(samples),
+            soak_samples=len(window),
+            duration_seconds=(soak["end_ns"] - soak["start_ns"]) / 10**9,
+            peak_bytes=peak,
+            window_growth_bytes=growth,
+            first_window_median_bytes=statistics.median(first),
+            last_window_median_bytes=statistics.median(last),
+        )
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        TypeError,
+        statistics.StatisticsError,
+    ) as error:
+        # Only fixed labels from this verifier enter the public receipt.
+        label = str(error) if type(error) is ValueError else type(error).__name__
+        failures.append(label if label.isidentifier() else type(error).__name__)
+    result["passed"] = not failures
+    (output / "native-resource-acceptance.json").write_text(
+        json.dumps(result, indent=2) + "\n"
+    )
+    return result
 
 
 def read(path):

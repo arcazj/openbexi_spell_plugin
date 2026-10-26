@@ -307,7 +307,9 @@ class WorkerLaunch:
         canonical_uuid(body["request_id"])
         if (
             type(body["message"]) is not str
-            or not 1 <= len(body["message"].encode("utf-8")) <= 8192
+            # An explicitly empty event is valid in the frozen native port.
+            # Keep its immutable receipt; it is distinct from no event.
+            or len(body["message"].encode("utf-8")) > 8192
             or type(body["severity"]) is not int
             or body["severity"] not in {1, 2, 4, 8}
             or type(body["scope"]) is not int
