@@ -1,0 +1,192 @@
+{
+  "candidate_commit": "bad5f984e5be852dba70ed959fa73203d16b5639",
+  "deployments": {
+    "compose-prelaunch": {
+      "before": {
+        "executed_checks": [
+          "certificate_scope",
+          "observer_write_denied",
+          "runtime_disabled",
+          "isolated_state",
+          "durable_cas_idempotency",
+          "wrong_revision_denied"
+        ],
+        "full_v08_qualified": false,
+        "incarnation_a": "a23b9b63-e4fd-4989-b249-22a753af569f",
+        "incarnation_b": "2d84432e-3f3e-4e3a-ba3c-7f8701614579",
+        "native_runtime_qualified": false,
+        "passed": true,
+        "phase": "before",
+        "prelaunch_only": true,
+        "production_migration_authorized": false,
+        "schema": "openbexi.v08.compose-prelaunch/1"
+      },
+      "after": {
+        "executed_checks": [
+          "context_a_restart_incarnation_rotated",
+          "context_b_incarnation_unchanged",
+          "context_a_durable_state",
+          "cross_context_isolation",
+          "runtime_remains_disabled"
+        ],
+        "full_v08_qualified": false,
+        "incarnation_a": "8b362183-135e-4717-921e-2c23c5e9fb66",
+        "incarnation_b": "2d84432e-3f3e-4e3a-ba3c-7f8701614579",
+        "native_runtime_qualified": false,
+        "passed": true,
+        "phase": "after",
+        "prelaunch_only": true,
+        "production_migration_authorized": false,
+        "schema": "openbexi.v08.compose-prelaunch/1"
+      },
+      "artifact_id": 12633192550
+    },
+    "kind-prelaunch": {
+      "before": {
+        "executed_checks": [
+          "certificate_scope",
+          "observer_write_denied",
+          "runtime_disabled",
+          "isolated_state",
+          "durable_cas_idempotency",
+          "wrong_revision_denied"
+        ],
+        "full_v08_qualified": false,
+        "incarnation_a": "4782ec92-291b-4924-816c-087839eff628",
+        "incarnation_b": "d4714ff2-b90b-4af4-879c-98a398a95592",
+        "native_runtime_qualified": false,
+        "passed": true,
+        "phase": "before",
+        "prelaunch_only": true,
+        "production_migration_authorized": false,
+        "schema": "openbexi.v08.compose-prelaunch/1"
+      },
+      "after": {
+        "executed_checks": [
+          "context_a_restart_incarnation_rotated",
+          "context_b_incarnation_unchanged",
+          "context_a_durable_state",
+          "cross_context_isolation",
+          "runtime_remains_disabled"
+        ],
+        "full_v08_qualified": false,
+        "incarnation_a": "54ad9bab-9139-49ec-a373-f3b7acd00381",
+        "incarnation_b": "d4714ff2-b90b-4af4-879c-98a398a95592",
+        "native_runtime_qualified": false,
+        "passed": true,
+        "phase": "after",
+        "prelaunch_only": true,
+        "production_migration_authorized": false,
+        "schema": "openbexi.v08.compose-prelaunch/1"
+      },
+      "artifact_id": 12633192734,
+      "status": {
+        "schema": "openbexi.v08.kubernetes-status/1",
+        "pods": [
+          {
+            "name": "context-a-6fc9db5588-xlq9v",
+            "phase": "Running",
+            "containers": [
+              {
+                "name": "context-a",
+                "image": "docker.io/library/openbexi-spell-server:0.8.0.dev56-prelaunch",
+                "ready": true,
+                "restart_count": 0,
+                "state": "running",
+                "reason": "",
+                "exit_code": null
+              }
+            ]
+          },
+          {
+            "name": "context-b-5db99c6744-64h8d",
+            "phase": "Running",
+            "containers": [
+              {
+                "name": "context-b",
+                "image": "docker.io/library/openbexi-spell-server:0.8.0.dev56-prelaunch",
+                "ready": true,
+                "restart_count": 0,
+                "state": "running",
+                "reason": "",
+                "exit_code": null
+              }
+            ]
+          },
+          {
+            "name": "dss-5b9957c75f-vdh6t",
+            "phase": "Running",
+            "containers": [
+              {
+                "name": "dss",
+                "image": "docker.io/library/openbexi-spell-plugin-dss:0.1.0",
+                "ready": true,
+                "restart_count": 0,
+                "state": "running",
+                "reason": "",
+                "exit_code": null
+              }
+            ]
+          },
+          {
+            "name": "gateway-5fb76c8579-b4j48",
+            "phase": "Running",
+            "containers": [
+              {
+                "name": "gateway",
+                "image": "docker.io/library/openbexi-spell-server:0.8.0.dev56-prelaunch",
+                "ready": true,
+                "restart_count": 0,
+                "state": "running",
+                "reason": "",
+                "exit_code": null
+              }
+            ]
+          },
+          {
+            "name": "listener-686d84f575-v2vhm",
+            "phase": "Running",
+            "containers": [
+              {
+                "name": "listener",
+                "image": "docker.io/library/openbexi-spell-server:0.8.0.dev56-prelaunch",
+                "ready": true,
+                "restart_count": 0,
+                "state": "running",
+                "reason": "",
+                "exit_code": null
+              }
+            ]
+          }
+        ],
+        "pod_limit_reached": false,
+        "full_v08_qualified": false
+      }
+    }
+  },
+  "supply_chain": {
+    "audit_sha256": "ee3a7943a2d6ad8848ef002f32bc29067c6246d733a0b8d67da7177967157525",
+    "audited_dependencies": 2,
+    "checked_commit": "bb5eb0e98cbd857b50ff98cff4c31dd628bb536b",
+    "full_v08_qualified": false,
+    "independent_security_qualified": false,
+    "known_vulnerable_dependencies": [],
+    "package_version": "0.8.0.dev56",
+    "passed": true,
+    "python": "3.13.16",
+    "recorded_at": "2026-10-26T07:09:11.225737+00:00",
+    "sbom_components": 2,
+    "sbom_sha256": "1efdbfd042d6aa42644bdbbff32d7354daa77e70d440c048fc87c0dd70b2ba61",
+    "schema": "openbexi.v08.supply-chain-component/1",
+    "scope": "development installed Python package only",
+    "server_package_audited_by_registry": false,
+    "unaudited_dependencies": [
+      {
+        "name": "openbexi-spell-server",
+        "reason": "Dependency not found on PyPI and could not be audited: openbexi-spell-server (0.8.0.dev56)"
+      }
+    ],
+    "wheel_file_count": 28,
+    "wheel_sha256": "c887bf16c6a1f8eb720f30c5450ac00ac58219582660d97e94d72e6a20a9b366"
+  }
+}
