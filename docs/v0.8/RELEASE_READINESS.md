@@ -1,11 +1,14 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev53` and the pinned IDE
-`1.2.1.dev4` remain development packages. Executable `d01fc30` passes the full
-available component workflows, recorded in [the paired receipt](evidence/ide-reconnect-sessions/qualification-summary.json).
-Earlier exact-source receipts and failed attempts remain in `evidence/` and
-`TEST_REPORT.md`. The dev52 DSS timeout and earlier native startup causes remain
-unestablished; a subsequent passing run does not establish their repair.
+The full release is **not qualified**. Server `0.8.0.dev54` and the pinned IDE
+`1.2.1.dev4` remain development packages. Executable `1182388` passes the
+available component workflows: 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes.
+[The receipt](evidence/fault-reproduction/qualification-summary.json) binds these results to exact sources.
+Dev54 fixes a reproduced native deadline-check defect and the two-Context
+prelaunch readiness gap. [Controlled fault probes](FAULT_REPRODUCTION.md) now
+distinguish writer/commit delays, uncertain DSS receipts and post-binding native
+reply loss. The retained historical DSS/startup causes remain unestablished.
+Earlier receipts and failures remain in `evidence/` and `TEST_REPORT.md`.
 
 The owner request **"Qualify and release full v0.8"** authorizes implementation,
 qualification, merge, tag and GitHub publication once all mandatory criteria
@@ -85,8 +88,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev53
-[executed preflight](evidence/ide-reconnect-sessions/publication-preflight-dev53-final.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev54
+[executed preflight](evidence/fault-reproduction/publication-preflight.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

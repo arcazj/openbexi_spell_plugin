@@ -2314,3 +2314,48 @@ The initial dev53 run passes all twelve native jobs, including sixteen terminal 
 Harness candidate **`d01fc30a114e0f45978b2771493917aea16269b1`** keeps the same dev53 runtime and adds a finite 600-second suite budget with a 15-minute foundation job. Operation deadlines, assertions, supported SQLite DELETE/FULL durability and no-replay rules remain unchanged. Three qualification-runner failure/timeout-retention checks pass locally. The [fresh full available qualification](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40267235234) passes all **thirteen first-attempt core jobs** and **five ancillary workflows**. CPython 3.13.16 passes **1,149 service tests**, with zero failures/errors/skips, plus lint, format, types and installed-package checks. The separate portable subset passes **241 tests**, with 191 recorded source inputs verified. All 186 foundation source inputs match. The candidate and CI merge have identical trees. The clean [dev53 publication preflight](evidence/ide-reconnect-sessions/publication-preflight-dev53-final.json) exits 1: all eleven full-release gate groups remain false. No stable publication, merge or production migration occurred.
 
 The final native and installed-IDE profiles retain eight original processes through A/B/A and explicit same-owner reconnect, an unanswered untimed prompt and twenty matching DSS stages for four commands. Four installed-IDE terminal cases, the sixteen-case terminal matrix, twenty-four fresh startup/settlement cycles and twenty authenticated observers across ten advancing executions and thirty unchanged PIDs pass. All eighteen artifact digests and ZIP integrity checks pass; every recorded repository input matches the exact candidate. Twelve native headers match and the 144-unit compiled-source inventories agree with the prior source-bound checkpoint; no fresh local reconstruction of all C++ units is claimed. Python registry-audit exclusions remain explicit. [The final receipt](evidence/ide-reconnect-sessions/qualification-summary.json) binds these results. Historical DSS deadline and native startup failure causes remain unestablished; later passing samples do not close them.
+
+## Dev54 controlled fault reproduction and deadline/readiness repairs
+
+Candidate **`11823881f0c1c5daf770611687ae21ce41aec271`**, server **0.8.0.dev54**, paired
+with unchanged IDE **`1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e` / 1.2.1.dev4**,
+passes [run 40273133915](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40273133915) and all five ancillary workflows.
+The fourteen core jobs include a new 37-case fault suite.
+**1,175 service tests**, **37 overlapping fault probes**, and **241 portable
+tests** pass with zero failures/errors/skips. These overlapping counts are not
+additive full-qualification coverage. Lint, format, types and installed package
+checks pass.
+
+The compiled late-readiness probe fails before the native correction and passes
+afterward. Original native admission remains four seconds. Real worker
+mTLS/SQLite/DSS probes distinguish writer/commit delays from uncertain receipts,
+retain holds and deny retries under both old and new keys. Compiled Unix-client
+probes reproduce dropped/delayed replies after durable binding; their native
+peer roles/process pins are explicit fixtures.
+
+Initial candidate `fb04f3d` passed all fourteen core jobs, 1,170 service tests,
+37 fault probes and 241 portable checks, but kind failed with Context B HTTP 503.
+[That attempt](evidence/fault-reproduction/initial-attempt.json) remains failed
+overall. Readiness had checked only Context A. The correction requires both
+Contexts within the same original 65-second budget, never retries mutations,
+and retains immediate TLS pin failures. Docker/Compose/Kubernetes version
+markers also now match dev54. Five deterministic regressions have four failures
+before repair and five passes after. Final Compose and kind before/after restart
+checks pass; B's underlying transient 503 cause is not inferred from this repair.
+
+Native profiles retain eight original processes through A/B/A and reconnect,
+an unanswered untimed prompt and twenty matched DSS stages for four commands.
+Four installed-IDE terminal cases, sixteen terminal cases, twenty-four fresh
+startup/settlement cycles and twenty authenticated observers across ten advancing
+executions and thirty unchanged PIDs pass. All nineteen artifact digests and ZIP
+checks pass. All recorded source hashes match the exact candidate and CI merge
+trees agree. Twelve native headers are verified, including the changed
+`admission_channel.H`; the 144-unit C++ inventories match the prior recorded
+source inventory, without claiming fresh local reconstruction. Python registry
+audit exclusions remain explicit.
+
+[The final receipt](evidence/fault-reproduction/qualification-summary.json) and [fault report](FAULT_REPRODUCTION.md) preserve
+the source identities and limits. The release preflight exits 1, all eleven
+full-release gate groups remain false, and no merge, stable release or production
+migration occurred. Historical DSS deadline and native startup causes remain
+unestablished.

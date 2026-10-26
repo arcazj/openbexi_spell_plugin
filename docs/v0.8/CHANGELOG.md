@@ -1,5 +1,12 @@
 # v0.8 development changelog
 
+## 0.8.0.dev54 — controlled faults and native deadline enforcement
+
+- Reject native readiness and complete ALLOW replies consumed after the original deadline. The compiled pipe regression fails before the correction; production admission retains its four-second budget and adds no reconnect or request replay.
+- Add real mTLS/SQLite/DSS fault injection for writer/commit delays and delayed/lost receipts, plus compiled Unix client reply loss after durable Context binding. Native binding peer roles/process pins remain explicit fixtures. Uncertain outcomes retain holds and deny original-key and new-key retries.
+- Fix prelaunch readiness checking only Context A: require both A and B within one existing 65-second budget. Keep TLS pin failures immediate. Align Docker/Compose/Kubernetes markers with dev54 and add package-version consistency coverage. Preserve the original kind HTTP 503 failure and fail-before/pass-after results.
+- Exact candidate `1182388` passes 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes. IDE remains pinned to `1ac0b8a` / `1.2.1.dev4`. Historical DSS/startup causes and all eleven full-release gates remain open. See [the fault report](FAULT_REPRODUCTION.md).
+
 ## 0.8.0.dev53 — bounded DSS command diagnostics
 
 - Retain the dev52 native terminal failure: ten uncertain command calls and twenty ACKED stages before child admission. Other twelve core jobs, 1,144 service tests and four ancillary workflows pass; no all-green checkpoint is inferred.
