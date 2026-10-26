@@ -55,8 +55,12 @@ def test_metadata_failure_keeps_original_error_and_excludes_private_details(cloc
 
 
 @pytest.mark.parametrize("failed_phase", ["send", "receipt", "settle"])
+@pytest.mark.parametrize(
+    "failed_stage",
+    ["TRANSPORT", "LOADING", "RELEASE", "ACKNOWLEDGEMENT", "ONBOARD_EXECUTION"],
+)
 def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
-    clock, monkeypatch, failed_phase
+    clock, monkeypatch, failed_phase, failed_stage
 ):
     transport = Transport.__new__(Transport)
     transport.arguments = lambda *_: []
@@ -67,9 +71,17 @@ def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
     calls, body = [], {}
     original = TimeoutError("private-upstream-detail")
 
-    def phase(name):
-        calls.append(name)
-        if name == failed_phase:
+    stages = {
+        "TRANSPORT": "ACCEPTED",
+        "LOADING": "LOADED",
+        "RELEASE": "RELEASED",
+        "ACKNOWLEDGEMENT": "ACKNOWLEDGED",
+        "ONBOARD_EXECUTION": "SUCCEEDED",
+    }
+
+    def phase(name, stage):
+        calls.append((name, stage))
+        if name == failed_phase and stage == failed_stage:
             clock.value += 0.2
             raise original
 
@@ -88,15 +100,13 @@ def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
             pass
 
         def send(self, stage, connection, packet):
-            assert stage == "TRANSPORT"
-            phase("send")
+            phase("send", stage)
 
         def settle(self, stage, raw):
-            assert stage == "TRANSPORT"
-            phase("settle")
+            phase("settle", stage)
 
         def uncertain(self, stage):
-            assert stage == "TRANSPORT"
+            assert stage == failed_stage
             calls.append("uncertain")
 
     def encode(value, _sequence):
@@ -104,7 +114,7 @@ def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
         return b"packet"
 
     def receive(*_args, **_kwargs):
-        phase("receipt")
+        phase("receipt", body["stage"])
         return b"reply"
 
     monkeypatch.setattr(
@@ -116,7 +126,11 @@ def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
     monkeypatch.setattr(
         transport_module,
         "decode_tm",
-        lambda _: {**body, "schema_version": "openbexi.dss.ack/1", "outcome": "ACCEPTED"},
+        lambda _: {
+            **body,
+            "schema_version": "openbexi.dss.ack/1",
+            "outcome": stages[body["stage"]],
+        },
     )
     with pytest.raises(UncertainEffect) as denied:
         transport.command(
@@ -129,14 +143,18 @@ def test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty(
             timeout=2,
         )
     assert denied.value.__cause__ is original
-    assert calls.count("send") == 1 and calls.count("uncertain") == 1
+    completed = list(stages).index(failed_stage)
+    assert [entry for entry in calls if isinstance(entry, tuple) and entry[0] == "send"] == [
+        ("send", stage) for stage in list(stages)[: completed + 1]
+    ]
+    assert calls.count("uncertain") == 1
     assert calls[-2:] == ["close", "uncertain"]
     chain = failure_chain(denied.value)
     assert "private-upstream-detail" not in str(chain)
     trace = chain[0]["command_timing"]
     assert trace["elapsed_ms"] == 200
     assert trace["steps"][-1] == dict(
-        phase=failed_phase, stage="TRANSPORT", elapsed_ms=200, failed=True
+        phase=failed_phase, stage=failed_stage, elapsed_ms=200, failed=True
     )
 
 
