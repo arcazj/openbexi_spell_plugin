@@ -30,9 +30,9 @@ deadline extension was added.
 ## Executed fault signatures
 
 The timings below are from the first dev54 attempt, `fb04f3d`, retained in
-[the initial trace](evidence/fault-reproduction/initial-fault-signatures.jsonl).
+[the initial trace](evidence/fault-reproduction/initial-fault-signatures.log).
 The final exact candidate repeats all 37 probes successfully and retains its
-own [trace](evidence/fault-reproduction/reliability-faults.jsonl).
+own [trace](evidence/fault-reproduction/reliability-faults.log).
 
 The DSS cases use real worker mTLS, actual Context and driver SQLite ledgers,
 and a separate DSS process. Each command uses the existing two-second option.
