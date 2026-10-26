@@ -135,9 +135,10 @@ def test_native_storage_reduces_real_message_copy_allocations(storage_binaries):
     assert after["allocations"] < before["allocations"] * 0.25
 
 
-def test_interleaved_message_shapes_reuse_matching_owned_storage(storage_binaries):
-    before = run(storage_binaries["before"], "mixed_bench")
-    after = run(storage_binaries["after"], "mixed_bench")
+@pytest.mark.parametrize("mode", ["mixed_bench", "saturated_bench"])
+def test_interleaved_message_shapes_reuse_matching_owned_storage(storage_binaries, mode):
+    before = run(storage_binaries["before"], mode)
+    after = run(storage_binaries["after"], mode)
     assert before["allocations"] >= 200_000
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0

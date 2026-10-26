@@ -14,7 +14,7 @@ static std::atomic<bool> v08_storage_live{false};
 struct V08PropertyStorage {
     std::mutex mutex;
     std::array<SPELLipcMessage::Properties,v08_storage_slots> maps;
-    size_t used=0;
+    size_t used=0, nextVictim=0;
     V08PropertyStorage() { v08_storage_live.store(true); }
     ~V08PropertyStorage() { v08_storage_live.store(false); }
 };
@@ -51,11 +51,17 @@ static void v08_take_properties(SPELLipcMessage::Properties& target,
         --storage.used;
         return;
     }
-    // Preserve bounded behavior for unbounded input shape diversity. A full
-    // cache may reuse its final map; copy synchronization still removes every
-    // absent key. Never grow the cache or block waiting for another thread.
-    if (storage.used==v08_storage_slots)
-        target.swap(storage.maps[--storage.used]);
+    // A cache filled by startup layouts must adapt to the running stream.
+    // Replacing only the final slot makes all new layouts fight for that slot,
+    // leaving the other 31 unused forever. Rotate the victim at fixed capacity.
+    // Copy synchronization still removes absent keys before publication.
+    if (storage.used==v08_storage_slots) {
+        const size_t victim=storage.nextVictim;
+        storage.nextVictim=(victim+1)%v08_storage_slots;
+        target.swap(storage.maps[victim]);
+        --storage.used;
+        if (victim!=storage.used) storage.maps[victim].swap(storage.maps[storage.used]);
+    }
 }
 
 void v08_copy_properties(SPELLipcMessage::Properties& target,

@@ -53,3 +53,47 @@ eight original processes, a 2-GiB/no-swap limit, at most 1,792 MiB peak and
 The allocation result above does not imply those cgroup measurements pass.
 No release gate, publication, production migration or public-runtime enablement
 is authorized by this component receipt alone.
+
+## Hosted first correction and saturated-cache follow-up
+
+The first correction, candidate `ad5ccc14ba485806dd391cbad3765f732e0941ea`,
+completed both normal recovery profiles in run `40416255833`. The exact CI merge
+tree matches the tested candidate. Both archive digests/CRC checks and all 131
+source hashes in each profile are verified. Both families preserve eight original
+processes, advance every interval and finish terminal settlement. The fixed
+resource oracle still fails only window growth:
+
+| Profile | Peak MiB | Window growth MiB | Fixed limit MiB |
+| --- | ---: | ---: | ---: |
+| Handoff | 1,584.2 | 180.3 | 1,792 peak / 64 growth |
+| Installed IDE | 1,590.7 | 199.9 | 1,792 peak / 64 growth |
+
+The allocation-frequency diagnostic still finds message copies among the main
+Context allocation sites. A second regression reproduces a distinct full-cache
+problem: after startup fills all 32 slots with unrelated layouts, fallback always
+replaces the same last slot. Interleaved new layouts then repeatedly evict each
+other while the other 31 cached layouts are never reused.
+
+The follow-up rotates the eviction victim at the same fixed capacity. Exact
+layout matching still runs first. No allocation budget, lock fallback, message
+ownership, wire behavior, sanitizer setting or recovery deadline changes.
+The full-cache reproducer fails at the first correction with 260,000 allocations
+/ 24,960,000 bytes; rotating eviction reduces it to zero after three warm-up passes.
+The original empty-cache regression also stays at zero after warm-up.
+
+All 28 native checks and 39 recovery guards pass locally without failures,
+errors or skips. Ruff lint and formatting pass for the complete server tree.
+These component results do not qualify the new native family. Both normal hosted
+recovery profiles must execute again; no release gate is promoted.
+The source-bound follow-up receipt is
+`evidence/native-shape-cache/full-cache-component-summary.json`.
+
+### Concurrent stream integration
+
+The 67 local checks above were executed on `ad5ccc1` plus rotating eviction.
+While they ran, `621cbe79c47b419996f2b97ad9e71e60f9b4e5e6` added separate native
+stream reuse and versioned the package `0.8.0.dev68`. Those changes are preserved
+intact as the integration parent; this patch changes none of their files. The
+combined source tree requires fresh local and hosted qualification. The existing
+exact-source snapshot workflow is invoked for that integration candidate; it
+does not grant a release pass or alter any acceptance threshold.

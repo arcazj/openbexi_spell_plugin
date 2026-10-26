@@ -39,10 +39,22 @@ int main(int argc,char** argv) {
         measure=true;
         for(int n=0;n<10000;++n) {auto a=source;auto b=a;SPELLipcMessage c;c=b;}
         measure=false;
-    } else if(mode=="mixed_bench") {
+    } else if(mode=="mixed_bench" || mode=="saturated_bench") {
         // Interleaved native LINE, ACK, and control shapes: same-size shapes
         // deliberately have different keys. Short metadata isolates map nodes.
+        if(mode=="saturated_bench") {
+            // Startup traffic fills the bounded cache with unrelated layouts.
+            // Steady-state layouts must be able to displace more than one slot.
+            std::vector<std::unique_ptr<SPELLipcMessage>> startup;
+            for(int n=0;n<32;++n) {
+                auto item=std::make_unique<SPELLipcMessage>("INIT");
+                item->set("startup-"+std::to_string(n),"value");
+                startup.push_back(std::move(item));
+            }
+            startup.clear();
+        }
         std::vector<SPELLipcMessage> shapes;
+        shapes.reserve(4);
         for (int kind=0;kind<4;++kind) {
             SPELLipcMessage item("MSG");item.setSender("X");item.setReceiver("Y");
             for (int field=0;field<(kind==1?2:8);++field)

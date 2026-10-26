@@ -1,0 +1,94 @@
+{
+  "schema": "openbexi.native-full-cache-component/1",
+  "base_commit": "ad5ccc14ba485806dd391cbad3765f732e0941ea",
+  "base_tree": "753ca89c25577cbb0ab72ff89e01690e5236fa50",
+  "source_sha256": {
+    "host_runtime/native/message_storage.H": "0afccebce1b746b3c0e1fe78c5b21da4516f5cc0261ca1a57b1550b75548209d",
+    "server/tests/native_storage_harness.cpp": "2768e61102e929118cf219da535f32949bbc35ba81c898530348969912e26547",
+    "server/tests/test_native_message_storage.py": "b1822a1868dd2a0503e1f72e3dfeb9a3b2a8f2a613e86bc3aeddaf22e3217259"
+  },
+  "local_environment": {
+    "python": "3.13.5",
+    "pytest": "9.0.2",
+    "compiler": "GCC 14.2.0"
+  },
+  "saturated_cache_benchmark": {
+    "prefilled_layouts": 32,
+    "copies": 40000,
+    "steady_layouts": 4,
+    "baseline_allocations": 260000,
+    "baseline_allocated_bytes": 24960000,
+    "candidate_allocations": 0,
+    "candidate_allocated_bytes": 0,
+    "warmup_passes": 3
+  },
+  "baseline_regression_failed_as_expected": true,
+  "baseline_failure_junit_sha256": "e201a436d9c24e32b97eaa807e83f577f49180237168c221885853f669dff076",
+  "component_suites": [
+    {
+      "name": "native",
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "40db50f755781dbf469578c7797e28e76e8bd9c2af0f35cd10a0ddffa7a6c371"
+    },
+    {
+      "name": "recovery_guards",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "ef277db79b54fd07af3ebe5fe2b10a81bb1c907ee3e08630ac4b9dbdd05b5b03"
+    }
+  ],
+  "previous_hosted_candidate": {
+    "commit": "ad5ccc14ba485806dd391cbad3765f732e0941ea",
+    "merge_commit": "540e47ff33d5e3b10e9a242984f1f6b34cb295ce",
+    "merge_tree_matches": true,
+    "run_id": 40416255833,
+    "profiles": [
+      {
+        "profile": "handoff",
+        "artifact_id": 12695498477,
+        "archive_sha256": "0db7413c8286a25ac165c19e98d5d803ea76d821b5f283337a8894638bf60a19",
+        "zip_crc_verified": true,
+        "source_inventory_count": 131,
+        "source_mismatches": [],
+        "original_processes_exited": true,
+        "passed": false,
+        "peak_bytes": 1661161472,
+        "window_growth_bytes": 189014016,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "soak_seconds": 45.461911647,
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      {
+        "profile": "ide",
+        "artifact_id": 12695518685,
+        "archive_sha256": "f1895cdbbb36d856015ee4ae4a058d67bbd9b6b2c5f78889f7d2564c2b94db78",
+        "zip_crc_verified": true,
+        "source_inventory_count": 131,
+        "source_mismatches": [],
+        "original_processes_exited": true,
+        "passed": false,
+        "peak_bytes": 1667952640,
+        "window_growth_bytes": 209661952.0,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "soak_seconds": 45.628714778,
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    ]
+  },
+  "hosted_recovery_qualified": false,
+  "full_v08_qualified": false,
+  "release_gates_promoted": [],
+  "integration_parent": "621cbe79c47b419996f2b97ad9e71e60f9b4e5e6",
+  "integrated_source_qualification_pending": true
+}
