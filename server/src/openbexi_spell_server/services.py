@@ -348,7 +348,13 @@ class Listener:
             action, payload = "execution.list", {}
         elif method == "POST" and resource == "authority":
             exact(body, {"method", "payload"})
-            if not isinstance(body["method"], str) or body["method"] not in AUTHORITY_MUTATIONS:
+            if not isinstance(body["method"], str) or (
+                body["method"] not in AUTHORITY_MUTATIONS
+                and not (
+                    body["method"] == "execution.prompt.reply"
+                    and context_id in self.native_command_contexts
+                )
+            ):
                 raise Fault(404, "method_not_available")
             action, payload = body["method"], body["payload"]
             key = identifier(one_header(headers, "Idempotency-Key"))
@@ -370,7 +376,10 @@ class Listener:
             raise Fault(404, "route_not_available")
         request = envelope(context_id, subject, action, payload, key)
         validate_envelope(
-            request, context_id, allow_commands=context_id in self.native_command_contexts
+            request,
+            context_id,
+            allow_commands=context_id in self.native_command_contexts,
+            allow_prompts=context_id in self.native_command_contexts,
         )
         result = self.contexts[context_id].call(request)
         if action == "health" and context_id not in self.native_command_contexts:

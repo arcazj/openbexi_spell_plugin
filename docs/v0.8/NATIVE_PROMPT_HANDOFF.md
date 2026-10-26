@@ -1,5 +1,7 @@
 # Pending native prompt handoff candidate
 
+The pinned installed IDE uses its existing authenticated request transport to send `execution.prompt.reply` through the authority endpoint. Listener permits this operation only for an explicitly configured native-control Context, which must independently enable its private prompt profile. Subject identity comes from the client's certificate and is checked again at Context. This qualifies the installed transport path; no prompt GUI or browser support is implied.
+
 Server `0.8.0.dev49` extends the private host-freeze profile to an unanswered native prompt whose actual declaration has exactly `TimeoutMicroseconds="0"`. The pinned native process supplies that declaration; the agent retains its digest and sends only the zero-timeout classification to Context. Prompt text and answer values are not persisted in the authority journal.
 
 The prompt ID, original family origin, member binding, target, instance and definition digest survive ownership transfer unchanged. The independently attested cgroup freeze and original pidfds remain mandatory. No prompt reply is admitted while the family awaits explicit resume. After one-shot runtime activation, the new owner can submit a fresh reply for that original prompt. The relay checks its controller epoch and connection against the current runtime grant, while retaining the original family identity. It never rewrites an old reply grant.

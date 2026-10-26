@@ -159,6 +159,15 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
                             payload,
                             key=key,
                         )["result"]
+                elif method == "execution.prompt.reply":
+                    # The pinned client's authenticated request transport carries
+                    # the exact supplied proof. No GUI prompt support is claimed.
+                    result = client.request(
+                        "POST",
+                        f"/v1/contexts/{context_id}/authority",
+                        {"method": method, "payload": payload},
+                        key=key,
+                    )["result"]
                 else:
                     result = client.authority(context_id, method, payload, key=key)
                     if method in {"execution.reserve", "execution.rebind"}:
