@@ -42,7 +42,7 @@ def main():
         passed=False,
         full_v08_qualified=False,
         historical_failure_causes_established=False,
-        scope="Controlled ledger and DSS receipt faults; compiled native admission deadline and post-binding reply faults",
+        scope="Controlled ledger and DSS stage faults, process restart and immutable epoch checks; compiled native admission deadline and post-binding reply faults",
         process_identity_scope="Native binding tests use fixture peer roles/process pins; Context mTLS/SQLite and native Unix client are real",
     )
     command = [
@@ -54,6 +54,7 @@ def main():
         "-W",
         "error",
         "server/tests/test_dss_fault_reproduction.py",
+        "server/tests/test_dss_lifecycle.py",
         "server/tests/test_native_binding_faults.py",
         "server/tests/test_native_admission_channel.py",
         "server/tests/test_driver_timing.py",
@@ -75,7 +76,7 @@ def main():
             for key in ("tests", "failures", "errors", "skipped")
         }
         report["passed"] = result.returncode == 0 and report["junit"] == dict(
-            tests=37, failures=0, errors=0, skipped=0
+            tests=55, failures=0, errors=0, skipped=0
         )
     except subprocess.TimeoutExpired as error:
         (output / "tests.log").write_bytes(
