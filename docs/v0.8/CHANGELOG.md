@@ -1,5 +1,12 @@
 # v0.8 development changelog
 
+## 0.8.0.dev55 — controller/network fault boundaries and native spawn
+
+- Add seven real TLS recovery cases covering committed close/rebind/activation reply loss, killed controller client and unreachable TLS. Require old-grant fencing, bounded observer reads, retained holds and no automatic resume/replay. Host proof remains an explicit fixture; abrupt-loss liveness detection remains unimplemented.
+- Replace frozen composed native fork/exec with posix_spawn; preserve parent/child identity, shell/environment/descriptors and the ported termination-signal policy. Nine compiled checks reproduce an inherited callback stall and verify preserved behavior. Add bounded native admission phase timing.
+- Retain the initial wrong-source build failures and full-suite failures, plus the second stale-count/diagnostic-assertion and in-place epoch writer failures. Correct the source preimage, signal policy and test inventories without relaxing deadlines or assertions about authority.
+- Exact `81b8b41` passes 1,210 service tests, 71 overlapping fault probes, 241 portable tests, fourteen core jobs and five ancillary workflows. Nineteen archives/source inventories are verified. Historical causes and all eleven full-release gates remain open. See [controller/network recovery](CONTROLLER_NETWORK_RECOVERY.md), [native spawn](NATIVE_SPAWN.md) and [the receipt](evidence/controller-network/qualification-summary.json).
+
 ## Dev54 qualification follow-up — DSS lifecycle and independent execution faults
 
 - Add eighteen cases covering process death, connection cut and reply stall after every DSS stage commit, same-database restart, scenario reset and nine independent grants beside one uncertain execution. Both old and new request keys stay denied for uncertain outcomes; exact ingress counts expose hidden replay attempts.

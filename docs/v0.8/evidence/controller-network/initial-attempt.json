@@ -1,0 +1,77 @@
+{
+  "candidate_commit": "d86c9ed2e2c7bfc38a31075d4014eaaba2c4460f",
+  "merge_commit": "13f62399d44777a570561506fc4e1c31f9fdd93d",
+  "candidate_and_merge_tree": "9eb1179af54045dd3e24e1c813b3acb020fb397f",
+  "run_id": 40277428307,
+  "run_attempt": 1,
+  "passed": false,
+  "failures": [
+    {
+      "artifact_id": 12630902271,
+      "artifact_sha256": "7adb164d679036390ba327f2548670d68f78b43f09f3586d0d7a6199ed409620",
+      "profile": "child-gate",
+      "verified_source_files": 57,
+      "result": "initial-child-gate-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    },
+    {
+      "artifact_id": 12630947004,
+      "artifact_sha256": "34ceadf1fbf500ca0fffa52522a3a7a3ff98d12e0dffa37e5180969432f72f35",
+      "profile": "native-prompts",
+      "verified_source_files": 122,
+      "result": "initial-native-prompts-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    },
+    {
+      "artifact_id": 12630314132,
+      "artifact_sha256": "d202fc4e92471c86db8807c33d918846db7bfb7ab44eb889d538e184ffc48ebd",
+      "profile": "native-handoff",
+      "verified_source_files": 122,
+      "result": "initial-native-handoff-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    },
+    {
+      "artifact_id": 12630119252,
+      "artifact_sha256": "90cf11c0608c09ec4c22d2d5c25b345ccd9ccedeed8a5f1c966500ae0a3251b8",
+      "profile": "native-terminal",
+      "verified_source_files": 122,
+      "result": "initial-native-terminal-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    },
+    {
+      "artifact_id": 12630069265,
+      "artifact_sha256": "2183873c9fca84528904043a5f3c78d81111a88467d84669b7c62aec67225a42",
+      "profile": "native-ide",
+      "verified_source_files": 122,
+      "result": "initial-native-ide-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    },
+    {
+      "artifact_id": 12629979419,
+      "artifact_sha256": "9d9a539d4a4da727e9cdcefdc5aa631c1254bf69be2141c37e6872a5724a5067",
+      "profile": "native-startup-stress",
+      "verified_source_files": 122,
+      "result": "initial-native-startup-stress-result.json",
+      "error": "RuntimeError: Native before-spawn Context build failed"
+    }
+  ],
+  "correction": "Guard the reproduced port/composition method, preserve termination-signal unblocking with spawn attributes, and exercise both versions with a signal-mask regression.",
+  "artifact_verification": "GitHub SHA256, ZIP integrity and every recorded repository source hash matched exact candidate",
+  "failed_build_log": "initial-native-build.log",
+  "foundation": {
+    "artifact_id": 12630957750,
+    "artifact_sha256": "b57887951c784962c27517e9ba2b757e0543fb4139439675906f1360688676d0",
+    "junit": {
+      "tests": 1207,
+      "failures": 2,
+      "errors": 21,
+      "skipped": 0
+    },
+    "result": "initial-foundation-result.json",
+    "causes": [
+      "21 native composition setup errors from the same wrong method preimage",
+      "2 legacy diagnostic assertions expected one record, now two with timing"
+    ],
+    "verified_source_files": 199
+  }
+}

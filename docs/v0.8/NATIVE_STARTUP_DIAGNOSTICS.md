@@ -72,3 +72,13 @@ job/artifact/source identities, both failed results, five worker event logs and
 process snapshots. Diagnose binding queue/dispatch/transport timing separately
 from fork-to-exec progress. Uncertain starts stay spent; no timeout extension,
 automatic replay or later green run can substitute for a demonstrated correction.
+
+## Dev55 follow-up
+
+The parent launch markers now use `spawn-entered` and `spawn-returned`; the
+parser retains older fork stage names for historical logs. Bounded
+`native-admission-timing` records cover successful and failed callbacks.
+[The spawn correction](NATIVE_SPAWN.md) and
+[dev55 receipt](evidence/controller-network/qualification-summary.json) retain
+passing terminal and fresh-family profiles. These samples do not establish the
+causes of the retained dev54 binding and pre-login failures.

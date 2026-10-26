@@ -1,20 +1,23 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev54` and pinned IDE
-`1.2.1.dev4` remain development packages. Test/harness candidate `f1ea033`
-passes 1,193 service tests, 55 overlapping fault probes and 241 portable tests,
-twelve of fourteen core jobs and all five ancillary workflows. The core workflow
-is **failed**: terminal and startup profiles stall before their scenarios start.
-Nineteen artifact archives, including both failures, and their recorded source
-hashes are verified.
-[The receipt](evidence/dss-lifecycle/qualification-summary.json) binds these results to exact sources.
-Production runtime is unchanged from the earlier dev54 checkpoint `1182388`;
-the current native failures remain unresolved. [The blocker receipt](evidence/dss-lifecycle/native-blockers.json)
-localizes four late member-binding replies and one fork-to-login stall.
-[DSS lifecycle checks](DSS_LIFECYCLE.md) now cover every stage's lost reply,
-same-database restart, reset refusal and nine unaffected executions beside one
-uncertain execution. Historical DSS/startup causes and all eleven full-release
-gates remain unresolved. Earlier receipts and failures remain retained.
+The full release is **not qualified**. Server `0.8.0.dev55` and pinned IDE
+`1.2.1.dev4` remain development packages. Exact candidate `81b8b41` passes
+**1,210 service tests**, **71 overlapping fault probes** and **241 portable tests**,
+all fourteen core jobs and five ancillary workflows. Nineteen archives, their
+recorded repository source hashes and identical candidate/CI merge trees are
+verified. [The component receipt](evidence/controller-network/qualification-summary.json) retains the exact identities.
+
+[Controller/network testing](CONTROLLER_NETWORK_RECOVERY.md) verifies lost
+close/rebind/activation replies, client death after close commits and an
+unreachable transport. Host proofs in these seven fault cases remain fixtures.
+Automatic detection of an abrupt controller loss before explicit close is
+**not implemented**, so that release requirement remains blocked.
+[The native spawn correction](NATIVE_SPAWN.md) avoids a demonstrated inherited
+fork-callback stall, preserves the port's signal policy and passes native
+handoff/IDE, sixteen terminal cases and twenty-four fresh-family cycles.
+Historical startup and DSS timeout causes remain unproven; earlier failures
+and two failed dev55 attempts remain retained. All eleven full-release gates
+remain unresolved.
 
 The owner request **"Qualify and release full v0.8"** authorizes implementation,
 qualification, merge, tag and GitHub publication once all mandatory criteria
@@ -64,7 +67,7 @@ Desktop reconnect now opens a fresh authenticated session and retains other exec
 
 | Full gate | Outstanding acceptance |
 | --- | --- |
-| Services | Abrupt controller/network faults, production routing and complete deployed isolation/fault coverage |
+| Services | Automatic abrupt-controller-loss detection; native/deployed partitions and recovery; production routing and full isolation/fault coverage |
 | Native family | Startup reliability, timed/default and queued/uncertain prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Stage reply loss, same-DB DSS restart and reset denial now checked; historical dev52 timeout, broader partitions, authority/driver recovery and deployed bounded load remain |
@@ -94,8 +97,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev54
-[executed preflight](evidence/dss-lifecycle/publication-preflight.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev55
+[executed preflight](evidence/controller-network/publication-preflight.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

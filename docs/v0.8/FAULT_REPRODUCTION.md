@@ -104,3 +104,10 @@ passing native samples do not establish the historical causes.
 The current test/harness candidate `f1ea033` passes all 55 fault cases and 1,193
 service tests. Production runtime is unchanged from the dev54 checkpoint above.
 [The lifecycle receipt](evidence/dss-lifecycle/qualification-summary.json) retains the expanded result and failed harness attempt.
+
+Dev55 expands the exact-count suite to **71 cases**: seven controller/network
+recovery cases and nine compiled spawn checks join the previous fifty-five.
+All pass at `81b8b41`. See [controller/network recovery](CONTROLLER_NETWORK_RECOVERY.md),
+[native spawn](NATIVE_SPAWN.md) and
+[the source-bound receipt](evidence/controller-network/qualification-summary.json).
+Automatic abrupt-controller-loss detection and full-release qualification remain open.

@@ -2392,3 +2392,53 @@ this run. [Their failure receipt](evidence/dss-lifecycle/native-blockers.json)
 retains four late binding replies and one fork-to-login stall; causes remain
 unproven and no failed operation is replayed. The release preflight still exits 1:
 all eleven full-release gate groups remain false, with no merge or publication.
+
+## Dev55 controller/network and native spawn qualification
+
+Exact candidate **`81b8b41be71a3420241ed8163535e65518987226`**, server **0.8.0.dev55**, with unchanged
+IDE **`1ac0b8a` / 1.2.1.dev4**, passes [run 40278694435](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40278694435):
+**1,210 service tests**, **71 overlapping fault probes**, **241 portable tests**,
+fourteen core jobs and five ancillary workflows. The three suites have zero
+failures/errors/skips; their counts overlap and are not additive. Lint, format,
+types, development package and installed CLI checks pass. All nineteen archives
+match GitHub SHA-256, ZIP integrity and recorded source inventories; the candidate
+and CI merge trees match. No standalone full IDE suite is newly claimed.
+
+Seven new real TLS cases retain the durable fence after lost close/rebind replies,
+preserve uncertainty after lost activation and refuse automatic recovery from a
+blackholed transport. A real client PID is killed after close commits. Host proof
+in these fault cases is a fixture; abrupt death before close is not automatically
+detected by the current protocol. The [recovery report](CONTROLLER_NETWORK_RECOVERY.md)
+states this remaining blocker explicitly.
+
+Nine compiled checks compare the exact frozen composed spawn method with the
+actual patched method. An inherited atfork callback stalls the original child;
+posix_spawn completes. Shell, environment, descriptors, current directory, parent
+and child identity, exit/signal status and ported signal unblocking are preserved.
+The changed SPELLprocess.C source was freshly reconstructed locally and matches
+hosted native compilation. Twelve headers match candidate sources; among the
+144 compiled units only SPELLprocess.C differs from the prior corresponding
+composition. Historical CI causes remain unproven.
+
+Native profiles pass eight-original-process A/B/A handoff/reconnect, twenty matched
+DSS stages, sixteen terminal cases, twenty-four fresh-family cycles, four
+installed IDE terminal cases and twenty authenticated observers across ten
+advancing executions and thirty preserved PIDs. Bounded admission phase timings
+are retained for future binding-deadline diagnosis. Original admission and
+driver deadlines remain unchanged.
+
+The initial `d86c9ed` attempt rejected an unported source preimage in six native
+builds and twenty-one full-suite fixture setups; two diagnostic assertions also
+expected the old one-record output. The corrected `bf9e6bb` fault tests all
+passed (71/0/0/0), but its harness still required 69 and its two old diagnostic
+assertions remained failing. A third failure exposed the polling handoff test reading
+an invalid epoch during an in-place rewrite. The final test-only correction uses
+the native host atomic replacement pattern, with a deterministic before/after
+regression and no production deadline or read validation change. [Initial](evidence/controller-network/initial-attempt.json)
+and [second](evidence/controller-network/second-attempt.json) failed results and
+JUnit/logs remain retained. The final correction requires exactly 71 cases and
+checks both diagnostic records; no failure is relabelled or warning suppressed.
+
+[The source-bound receipt](evidence/controller-network/qualification-summary.json) records the component result and limits.
+The publication preflight still exits 1: development version, all eleven full
+gate groups unqualified, no merge/tag/release or production migration.

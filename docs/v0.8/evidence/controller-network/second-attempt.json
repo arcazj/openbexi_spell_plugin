@@ -1,0 +1,126 @@
+{
+  "candidate_commit": "bf9e6bb0d0cdb11aa6430b1587787fee948f1e4e",
+  "merge_commit": "002200539faf068a7e5cee43758b3888425c180d",
+  "run_id": 40277820274,
+  "passed": false,
+  "fault_suite": {
+    "artifact_id": 12630708769,
+    "artifact_sha256": "ebd90273dbd06d6957e71c36fbd1e4578e1ba7f959e2387a74894f8e7c6ef5e6",
+    "verified_source_files": 182,
+    "result": "second-fault-result.json",
+    "pytest_exit_code": 0,
+    "junit": {
+      "tests": 71,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "cause": "Suite inventory still expected 69 rather than the expanded 71 cases; failed overall result retained",
+  "correction": "Require exactly 71 tests, zero failures/errors/skips and exit status zero; existing native callback tests verify both original failure diagnostics and the additional timing record",
+  "foundation": {
+    "artifact_id": 12631036347,
+    "artifact_sha256": "a45b5feb39c3591c25733764d3b19f7c2132a3db2e243f7cddddedf302c81b2a",
+    "verified_source_files": 199,
+    "result": "second-foundation-result.json",
+    "junit": {
+      "tests": 1209,
+      "errors": 0,
+      "failures": 3,
+      "skipped": 0
+    },
+    "causes": [
+      "Two preexisting callback diagnostics tests expected one record; corrected tests check failure and timing records",
+      "Polling handoff test observed invalid epoch while the test writer truncated the file in place; test publication now uses the production host atomic replacement pattern"
+    ]
+  },
+  "merge_tree": "0ee1eb8b2073c544f85baa1613a1d60b6d9412fc",
+  "candidate_tree": "0ee1eb8b2073c544f85baa1613a1d60b6d9412fc",
+  "native_profile_outcome": "All twelve non-foundation/non-fault core jobs passed, including native startup stress; see exact GitHub job status records. Full second attempt remains failed.",
+  "job_statuses": [
+    {
+      "id": 121424241429,
+      "name": "foundation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 121424241650,
+      "name": "fault-reproduction",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 121424241673,
+      "name": "native-launch (child-gate, --native-child-gate)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241679,
+      "name": "native-launch (native-startup-stress, --native-startup-stress)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241680,
+      "name": "native-launch (native-terminal, --native-terminal)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241724,
+      "name": "native-boundary",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241758,
+      "name": "native-launch (native-prompts, --native-prompts)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241764,
+      "name": "native-launch (listener-survival, --native-listener-survival)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241830,
+      "name": "native-launch (native-handoff, --native-handoff)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241831,
+      "name": "native-launch (audit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241841,
+      "name": "native-launch (dss, --native-dss)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241845,
+      "name": "native-launch (thread-barrier, --native-thread-barrier)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241923,
+      "name": "native-launch (native-ide, --native-ide)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121424241941,
+      "name": "native-launch (pause-probe, --native-pause-probe)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}
