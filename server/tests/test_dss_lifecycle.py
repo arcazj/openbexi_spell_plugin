@@ -5,6 +5,7 @@ authority/driver gate directly; it does not claim native worker or Pod identity.
 """
 
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from dataclasses import replace
 import json
 import os
@@ -95,11 +96,13 @@ class DssProcess:
                 if self.child.poll() is None:
                     self.child.kill()
                     self.child.communicate(timeout=5)
+        elif self.child:
+            self.child.communicate(timeout=5)
         if self.transport:
             self.transport.close()
 
     def deliveries(self, operation):
-        with sqlite3.connect(self.path, timeout=2) as db:
+        with closing(sqlite3.connect(self.path, timeout=2)) as db:
             return db.execute(
                 "SELECT stage,delivery_count FROM ingress_deliveries WHERE operation_id=? ORDER BY rowid",
                 (operation,),
