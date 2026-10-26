@@ -18,10 +18,16 @@ spec.loader.exec_module(module)
 @pytest.fixture
 def sample(tmp_path, monkeypatch):
     monkeypatch.setattr(module.subprocess, "check_output", lambda *a, **k: "a" * 40)
+    (tmp_path / "server").mkdir()
+    (tmp_path / "server/pyproject.toml").write_text('[project]\nversion = "0.8.0.dev43"\n')
     wheel = tmp_path / "openbexi_spell_server-0.8.0.dev43-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as z:
         z.writestr("openbexi_spell_server/__init__.py", "__version__ = '0.8.0.dev43'\n")
         z.writestr("openbexi_spell_server-0.8.0.dev43.dist-info/licenses/LICENSE", "Apache-2.0")
+        z.writestr(
+            "openbexi_spell_server-0.8.0.dev43.dist-info/METADATA",
+            "Metadata-Version: 2.4\nName: openbexi-spell-server\nVersion: 0.8.0.dev43\n",
+        )
     sbom = tmp_path / "sbom.json"
     sbom.write_text(
         json.dumps(
@@ -49,8 +55,29 @@ def test_scoped_supply_chain_assessment_never_authorizes_release(sample, tmp_pat
     assert result["passed"] is True
     assert result["full_v08_qualified"] is False
     assert result["independent_security_qualified"] is False
-    assert result["wheel_file_count"] == 2
+    assert result["wheel_file_count"] == 3
     assert result["sbom_components"] == 1
+
+
+def test_new_source_version_cannot_reuse_old_wheel_or_sbom(sample, tmp_path):
+    (tmp_path / "server/pyproject.toml").write_text('[project]\nversion = "0.8.0.dev44"\n')
+    with pytest.raises(ValueError, match="Wheel version"):
+        module.assess(tmp_path, *sample)
+
+
+def test_stale_audit_cannot_qualify_current_wheel(sample, tmp_path):
+    wheel, sbom, audit = sample
+    audit.write_text(
+        json.dumps(
+            {
+                "dependencies": [
+                    {"name": "openbexi-spell-server", "version": "0.8.0.dev42", "vulns": []}
+                ]
+            }
+        )
+    )
+    with pytest.raises(ValueError, match="audit is not for"):
+        module.assess(tmp_path, wheel, sbom, audit)
 
 
 def test_scoped_vulnerability_is_exposed_not_silently_ignored(sample, tmp_path):

@@ -31,8 +31,10 @@ jobs:
           mkdir -p .qualification/v08-supply-chain/wheels
           python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-supply-chain/wheels
           python -m venv .qualification/v08-supply-chain/runtime
+          wheels=(.qualification/v08-supply-chain/wheels/openbexi_spell_server-*.whl)
+          test "${#wheels[@]}" -eq 1
           .qualification/v08-supply-chain/runtime/bin/python -m pip install \
-            --no-deps .qualification/v08-supply-chain/wheels/openbexi_spell_server-0.8.0.dev43-py3-none-any.whl
+            --no-deps "${wheels[0]}"
           .qualification/v08-supply-chain/runtime/bin/python -I -m openbexi_spell_server --help
       - name: Install pinned audit tools separately from the runtime
         run: |
@@ -57,7 +59,7 @@ jobs:
             --output .qualification/v08-supply-chain/python-vulnerabilities.json
           python scripts/qualify_v08_supply_chain.py \
             --root . \
-            --wheel .qualification/v08-supply-chain/wheels/openbexi_spell_server-0.8.0.dev43-py3-none-any.whl \
+            --wheel .qualification/v08-supply-chain/wheels/openbexi_spell_server-*.whl \
             --sbom .qualification/v08-supply-chain/runtime-sbom.json \
             --audit .qualification/v08-supply-chain/python-vulnerabilities.json \
             --out .qualification/v08-supply-chain/summary.json
