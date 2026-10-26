@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev50 native admission interruption fix and complete available component suite passed; full v0.8 remains unqualified",
+  "phase": "Dev51 paired desktop reconnect-session fix under qualification; dev50 native admission checkpoint retained",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -133,7 +133,7 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/native-prompt-handoff/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified.",
-  "package_version": "0.8.0.dev50",
+  "package_version": "0.8.0.dev51",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "e5198820b938ae47421c20062ceccd1b6a98f24c",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -209,5 +209,13 @@
     "fresh_authority": false,
     "compiled_transport_cases": 11,
     "interrupted_io_same_socket": true
+  },
+  "desktop_reconnect_sessions": {
+    "state": "qualification_in_progress",
+    "ide_commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
+    "ide_version": "1.2.1.dev4",
+    "documentation": "IDE_RECONNECT_SESSIONS.md",
+    "local_qt_tests": 51,
+    "full_v08_qualified": false
   }
 }

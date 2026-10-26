@@ -190,3 +190,78 @@ def test_installed_client_same_owner_reconnect_needs_host_pause_and_explicit_res
     )
     activated = live.activate(ledger, pki, permission["runtime_epoch"])
     assert activated["activation_kind"] == "rebind" and activated["grant"]["control_epoch"] == 1
+
+
+def test_actual_panel_reconnects_closed_session_with_cached_proof(desktop, pki):
+    """Real Qt clicks and three-hop TLS; host evidence remains a service fixture."""
+    import os
+    import time
+
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+    from PySide6.QtWidgets import QApplication
+    from openbexi_ide.spell_server_panel import SpellServerPanel
+
+    app = QApplication.instance() or QApplication([])
+    client = desktop["clients"]["alice"]
+    ledger = desktop["ledger"]
+    eid, old = ledger["execution"]["id"], ledger["connection"]
+    client.authority("A", "session.close", {"connection_id": old}, key="disconnect-original")
+    assert client.has_controller("A", eid)  # A stale local proof must not hide recovery.
+    panel = SpellServerPanel()
+    panel.client = client
+    panel.connections["A"] = old
+    panel.context.blockSignals(True)
+    panel.context.addItem("A")
+    panel.context.blockSignals(False)
+
+    def settled():
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            app.processEvents()
+            if not panel.busy and panel.state.get("health"):
+                panel.executions.setCurrentItem(panel.executions.topLevelItem(0))
+                app.processEvents()
+                return
+            time.sleep(0.01)
+        raise AssertionError("Native reconnect panel did not settle: " + panel.status.text())
+
+    try:
+        panel.refresh()
+        settled()
+        assert panel.selected()["control_state"] == "CONTROLLER_DISCONNECTED"
+        assert panel.rebind_button.isEnabled()
+        assert not any(b.isEnabled() for b in panel.command_buttons.values())
+        panel.rebind_button.click()
+        settled()
+        fresh = panel.connections["A"]
+        assert fresh != old and ("A", old) in panel.retained_connections
+        assert not client.has_controller("A", eid)
+        assert panel.selected()["epoch"] == 1
+        state = live.host(ledger, pki, "status")
+        assert state["state"] == "REQUESTED"
+        proof = live.evidence(ledger, state)
+        live.host(ledger, pki, "complete", barrier_id=state["barrier_id"], evidence=proof)
+        panel.refresh()
+        settled()
+        assert panel.selected()["control_state"] == "HANDOFF_PAUSED"
+        panel.rebind_button.click()
+        settled()
+        assert panel.connections["A"] == fresh and client.has_controller("A", eid)
+        assert panel.selected()["connection_generation"] == 2
+        assert panel.command_buttons["CMD_RUN"].isEnabled()
+        panel.command_buttons["CMD_RUN"].click()
+        settled()
+        resumed = live.host(ledger, pki, "status")
+        assert resumed["state"] == "RESUME_REQUESTED"
+        # Native physical resume is separately exercised by the installed cohort.
+        panel.disconnect_button.click()
+        deadline = time.monotonic() + 10
+        while panel.client is not None and time.monotonic() < deadline:
+            app.processEvents()
+            time.sleep(0.01)
+        assert panel.client is None
+        assert not panel.connections and not panel.retained_connections
+        assert not client.has_controller("A", eid)
+    finally:
+        panel.close_connection()
+        panel.close()

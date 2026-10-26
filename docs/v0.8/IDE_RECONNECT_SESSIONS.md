@@ -1,0 +1,7 @@
+# Desktop native reconnect sessions
+
+IDE `1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e` (`1.2.1.dev4`) fixes a recovery lockout: a stale cached proof no longer disables Reconnect control when Context reports CONTROLLER_DISCONNECTED. The live reconnect action opens a fresh authenticated session rather than reusing the old binding. It retains previous sessions for other controlled executions, and explicit Disconnect closes every known session with an independent stable close key. Pending rebind clears only the selected execution proof. Lost open/rebind responses are never automatically retried.
+
+Three new regressions failed on the previous IDE source. All 51 focused IDE client/Qt cases pass locally after the fix, including lost replies, independent execution proofs and scoped close retries. The new SPELL integration test drives actual Qt button clicks through the real mTLS Gateway/Listener/Context chain; its host evidence is an explicit service fixture, not a physical freezer claim. Hosted native IDE and terminal/startup cohorts still supply independent original-process evidence.
+
+The prior dev50 source checkpoint at e519882 has 1,141 hosted service tests, all thirteen core jobs and four deployment/inventory workflows passing. Its retained artifact receipt remains evidence for that exact source. This dependency update requires new hosted qualification. All eleven mandatory full-release gates remain false.

@@ -1,3 +1,11 @@
+# v0.8 development changelog
+
+## 0.8.0.dev51 — desktop reconnect session repair
+
+- Pair IDE 1ac0b8a / 1.2.1.dev4. A cached stale controller proof no longer hides explicit reconnect after a server disconnect. Live reconnect uses a fresh session. Other execution sessions remain available until explicit Disconnect closes every known session with stable per-session close keys.
+- Add actual Qt-panel / Gateway / Listener / Context TLS integration coverage for reconnect, paused rebind and explicit resume admission. Native process/freezer evidence remains separately required.
+- Local 51-case IDE client/panel suite passes; three pre-fix regressions retain their failures. Hosted complete IDE and paired source/native qualification is pending. No full release gate is promoted.
+
 # v0.8 work in progress
 
 ## Current checkpoint: development package 0.8.0.dev50
