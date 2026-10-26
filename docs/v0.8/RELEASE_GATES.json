@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Scoped original-Executor controls, prompts, ABORT/CLOSE and host terminal settlement are qualified. The c850ba8 original-family pause and single A/B handoff passed with stale-A fencing and B resume. Repeated handoff, open-prompt transfer, children after transfer and reconnect recovery remain unqualified. The bd85c635 first terminal recheck failed before its matrix when one admitted child never reached native member binding; the cause remains unresolved."
+      "reason": "Scoped original-Executor controls, prompts, ABORT/CLOSE and host terminal settlement are qualified. Dev46 original-family A/B/A uses eight unchanged processes, two freezes and fifteen matching DSS receipts; mTLS service tests cover eight transfers. Open-prompt transfer, later children, reconnect recovery and wider native semantics remain unqualified. Twenty-four fresh startup/settlement cycles passed with bounded stage diagnostics; historical root-LOADED and admitted-child/no-binding failures have no established cause."
     },
     "compatibility": {
       "qualified": false,

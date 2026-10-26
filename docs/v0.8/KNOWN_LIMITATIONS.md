@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev44` and the paired IDE `1.2.1.dev2` are development candidates.
+SPELL `0.8.0.dev46` and the paired IDE `1.2.1.dev2` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -21,11 +21,13 @@ original process-exit proof and reconciled command/prompt/effect outcomes before
 releasing only that family's logical reservations. Workers remain single-use.
 Forced loss and other unknown outcomes retain their holds.
 
-The `host-freeze-candidate` profile supports one accepted A-to-B handoff of an
+The `host-freeze-candidate` profile supports bounded repeated handoff of an
 existing sealed family. The host proves cgroup freeze completion and original
 pidfd/member identity; Context settles the journals and moves ownership while
 the family stays paused. B explicitly resumes the same processes. A's stale
-commands and driver packets remain fenced; C remains read-only. See
+commands and driver packets remain fenced; C remains read-only. Native A→B→A
+is qualified as a component; real mTLS service tests cover the eight-transfer
+capacity and reject a ninth without revoking current authority. See
 [LIVE_HANDOFF.md](LIVE_HANDOFF.md) and its exact-source receipt.
 
 The paired installed IDE can send Run/Continue, Step, Pause, Abort and Close for
@@ -37,10 +39,11 @@ neither establishes full graphical debugger or browser acceptance. See
 
 ## Native and recovery work still required
 
-Repeated handoff, transfer with an open prompt, new children after transfer,
+Transfer with an open prompt, new children after transfer,
 controller reconnect recovery and Kubernetes host attestation are unqualified.
-The accepted single-handoff profile deliberately seals the admitted child roster
-and rejects further transfers. A native main-thread PAUSED status alone cannot
+The accepted handoff profile deliberately seals the admitted child roster;
+native qualification covers two transfers, with the eight-transfer bound tested
+at the service/runtime layer. A native main-thread PAUSED status alone cannot
 prove family quiescence; the background-thread negative control demonstrates it.
 
 Manual/nonblocking child modes, broader nested execution, repeat/failure/return
@@ -50,7 +53,10 @@ The historical non-OOM native LOADED startup failure has no established cause;
 later passes do not constitute its fix. The bd85c635 terminal recheck also failed
 before its case matrix: one admitted child never reached native member binding,
 while the other nine did and no worker was OOM-killed. Its cause remains
-unresolved; see the retained terminal-recheck-failure receipt. Earlier failed workflow and concurrency
+unresolved; see the retained terminal-recheck-failure receipt. New bounded
+startup-stage markers and process/task snapshots retain evidence for subsequent
+failures. Successful startup stress is coverage, not an established fix for an
+unreproduced failure. Earlier failed workflow and concurrency
 receipts remain historical failed evidence.
 
 There is no automatic worker reuse, uncertain-command replay or authority

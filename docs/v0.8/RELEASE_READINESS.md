@@ -1,8 +1,8 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev44` and the pinned IDE
+The full release is **not qualified**. Server `0.8.0.dev46` and the pinned IDE
 `1.2.1.dev2` remain development packages. The current component checkpoint is
-recorded in [the installed IDE control receipt](evidence/native-ide-controls/qualification-summary.json).
+recorded in [the repeated-handoff and startup receipt](evidence/repeated-handoff/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
 `TEST_REPORT.md`.
 
@@ -15,13 +15,16 @@ migration is not authorized, and G1 F1-F10 remain binding.
 
 The private native profiles now cover retained launch, immutable child/member
 admission, owner Run/Step/Pause, prompts, Abort/Close, host-proven terminal
-settlement and one accepted live-family A-to-B handoff. The new paired IDE route
+settlement and two successive live-family A→B→A transfers. Real mTLS service
+tests cover eight transfers, preserved history and denial at the capacity bound.
+The paired IDE route
 controls an existing execution through gateway, Listener and Context with the
 original certificate identity and controller proof. Native-client receipts and
 Qt tests are distinct from full browser/debugger qualification.
 
-The separate host freezes the original family and B explicitly resumes those
-same processes; stale A packets retain their original identity and are denied.
+The separate host freezes the original family for each transfer; B and then A
+at epoch 3 explicitly resume those same processes. Earlier packets retain their
+original identity and are denied even after ownership returns to A.
 Terminal settlement releases only known-settled family reservations. Workers
 remain spent, unknown outcomes remain held and public launch remains disabled.
 See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
@@ -33,7 +36,7 @@ See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
 | Full gate | Outstanding acceptance |
 | --- | --- |
 | Services | Active-controller disconnect, production routing and complete deployed isolation/fault coverage |
-| Native family | Repeated transfer, open-prompt transfer, later children, reconnect recovery and broader native child semantics |
+| Native family | Startup reliability, open-prompt transfer, later children, reconnect recovery, broader child semantics and wider native transfer coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
 | IDE/browser | Public launch, full debugger, twenty observers, WSS gap resynchronization and Git conflicts |
@@ -52,12 +55,14 @@ terminal recheck also timed out before its case matrix when one admitted child
 never reached native member binding. All ten roots and the other nine children
 were live, and no worker was OOM-killed. Its exact cause remains unresolved;
 [the failed receipt](evidence/native-ide-controls/terminal-recheck-failure.json)
-is retained separately from successful component results.
+is retained separately from successful component results. Bounded startup-stage
+diagnostics and fresh-family stress now increase coverage without treating a
+later pass as proof that either historical startup failure is fixed.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev44
-[executed preflight](evidence/release-readiness/publication-preflight-dev44.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev46
+[executed preflight](evidence/release-readiness/publication-preflight-dev46.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

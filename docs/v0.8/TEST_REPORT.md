@@ -2071,3 +2071,72 @@ browser/debugger acceptance. All eleven full release gates remain false; the
 clean dev44 publication preflight exits 1. No merge, tag, stable release or
 production migration was performed. Current blockers are in
 [RELEASE_READINESS.md](RELEASE_READINESS.md) and [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md).
+
+
+## Dev46 repeated ownership and native startup coverage
+
+Executable candidate **`ed35c8d5e6f47ec3a05023c0be4937e300cb78cf`**, paired
+IDE **`cf0e9dd7581b283d63c98c95c46cdd368e005ac7`**, passed all **13 first-attempt**
+jobs in [workflow 40252610379](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40252610379).
+The CI merge `cab899c7a6779b2ce8d2892d43e533949566ed8c` has exactly the
+candidate tree. Hosted CPython 3.13.16 passed **1,065 service tests**, with zero
+errors, failures or skips, plus lint, formatting, mypy and installed-package
+smokes. All mandatory Linux controls executed. The local 212-test expanded
+suite and 58-test focused suite overlap; local AF_UNIX is unavailable and local
+mypy was not installed. They are not substitute hosted qualification counts.
+
+The one-transfer limitation is removed within the private sealed-family
+profile. Each subsequent transfer requires completed prior activation, settled
+journals, new host proof and explicit owner resume. Schema 20 atomically archives
+the preceding handoff and pause record with the next fencing transition.
+Original member origin remains stable. Real mTLS tests execute eight transfers,
+deny every earlier grant and host proof, and deny the ninth without revoking
+the current owner. Lost second activation replies are never retried; stale epoch
+markers stay fenced and audit failure rolls back history and fencing together.
+
+Both native handoff and installed IDE cohorts execute **A→B→A at epochs 1/2/3**
+using the same **eight original processes**. Root, child and background counters
+remain stationary during both three-second host freezes, then advance after
+explicit resume. Earlier A and B controller/native requests and the first host
+proof are denied. Three actual native DSS commands have **15 matching ACKED
+stage receipts per ledger**. The installed IDE verifies native Pause/Step/Run;
+Step changes the original source position. Final host settlement verifies exit
+of the original family, releases its holds, preserves the unrelated witness and
+leaves the worker spent. The native eight-transfer limit itself has service/runtime
+coverage; the original native cohort executes two transfers.
+
+The installed IDE's four additional Abort/Close cases pass. The separate complete
+native terminal matrix passes all **16 cases**, including forced loss remaining
+unknown/held. The new startup-stress profile executes **24 additional fresh
+root/child families** after the ten-worker cohort. Each has fresh Context state,
+credentials and a single-use worker; both native members bind and execute, then
+independent host terminal settlement releases only their reservations. No worker
+reuse or failed-operation retry is added.
+
+Startup observations were added at `d1494291d1085f9b77fc110fa8a4de09207fe097`,
+whose 12 jobs and 1,060 hosted tests passed. Repeated transfer first passed all
+12 jobs at `83113624ff3853d3c4c802a50b48dad4f3703429` with 1,065 tests.
+The final candidate adds the fresh-family stress workflow. Bounded fixed-stage
+native markers and read-only process/task snapshots retain useful failure
+evidence without reading argv/environment or changing timeouts, retries or
+admission. The historical dev37 root-LOADED and dev44 admitted-child/no-binding
+failures remain **unresolved**. These successful samples establish no cause or
+fix. See [the diagnostic guide](NATIVE_STARTUP_DIAGNOSTICS.md).
+
+Nine final artifact archives passed SHA256 and ZIP integrity checks. Every
+recorded foundation source hash (**177**) and native-profile repository hash
+(**121 per artifact**) matches the candidate. The installed IDE client hash
+matches its unchanged pin. All eleven candidate native header hashes match;
+144 compiled-unit hashes are retained per profile, and terminal/IDE/stress build
+source identities agree. This checkpoint does not claim a fresh independent
+local reconstruction of all compiled native units. Exact workflows, artifacts,
+source inventories, handoff/settlement results and diagnostic indexes are in
+[the component receipt](evidence/repeated-handoff/qualification-summary.json).
+
+Compose and kind five-service prelaunch identity/isolation/CAS/restart, static
+Kubernetes checks and the development Python inventory scan passed. They remain
+prelaunch components. The unpublished server's registry-audit exclusion remains
+explicit; native/OS inventory and independent implemented-system review are not
+qualified. All eleven full release gates remain false. The clean dev46
+publication preflight exits 1; no merge, tag, stable release or production
+migration was performed. Full blockers remain in [RELEASE_READINESS.md](RELEASE_READINESS.md).

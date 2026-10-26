@@ -1,6 +1,6 @@
 # Paired IDE controls for an existing native execution
 
-Server `0.8.0.dev44` and the exact IDE pin in `IDE_PAIR.json` add Run/Continue,
+Server `0.8.0.dev46` and the exact IDE pin in `IDE_PAIR.json` provide Run/Continue,
 Step, Pause, Abort and Close execution to the asynchronous server panel. These
 actions control an already provisioned retained native execution. Public worker
 provisioning remains unavailable and `runtime_enabled` remains false.
@@ -46,8 +46,10 @@ is frozen and Context settles the required journals as described in
 After ownership moves to B in HANDOFF_PAUSED, B uses Reconnect control to obtain
 its own controller proof and explicitly presses Run/Continue. Other native
 commands stay disabled until this resume. C can observe B's paused and resumed
-ownership but cannot mutate the family. This profile permits one transfer and
-does not create new children after transfer.
+ownership but cannot mutate the family. The profile permits up to eight
+transfers with fresh proof and explicit resume each round; native qualification
+includes a return to A at epoch 3. A's earlier proof remains invalid after that
+return. New children after transfer remain unavailable.
 
 ## Executable qualification
 
@@ -59,8 +61,8 @@ client certificates and the private native Context. These edge processes have
 no host-manager interface. Initial worker provisioning remains a separate
 trusted-host operation.
 
-The native cohort exercises A/B handoff, C observation, stale-owner denial,
-whole-family freeze, B's explicit resume, native Pause/Step/Run and final host
+The native cohort exercises A/B/A handoff, C observation, stale-owner denial,
+whole-family freeze for both transfers, explicit resume, native Pause/Step/Run and final host
 settlement. Step must change the original native current-source-position and
 pause again. Four additional cases send Abort and Close through the installed
 client while native execution is paused or running. The separate native-terminal
@@ -74,7 +76,9 @@ and observer denial; the native CI cohort is headless client qualification,
 not a claim that a graphical browser or every debugger feature was exercised.
 
 Exact workflow, artifact, source-hash and installed-wheel results are retained
-in [the component receipt](evidence/native-ide-controls/qualification-summary.json).
+in [the current component receipt](evidence/repeated-handoff/qualification-summary.json).
+The [dev44 receipt](evidence/native-ide-controls/qualification-summary.json)
+retains the initial installed-control qualification and failed terminal recheck.
 The full release gates remain false. Public launch, variables/breakpoints,
-browser/WSS, Git collaboration, repeated transfer and deployed recovery still
+browser/WSS, Git collaboration, open-prompt/later-child transfer and deployed recovery still
 require implementation or qualification.

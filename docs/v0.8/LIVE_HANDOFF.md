@@ -1,7 +1,7 @@
 # Private single-host live-family handoff
 
-The `host-freeze-candidate` native pause profile permits one accepted A→B
-handoff of an existing native family. It requires the retained single-use worker,
+The `host-freeze-candidate` native pause profile permits bounded repeated
+handoff of an existing native family, up to eight accepted transfers. It requires the retained single-use worker,
 all command/prompt/member journals, and the separate host certificate configured
 by `host_settlement`. It is disabled by default.
 
@@ -58,29 +58,41 @@ never authorize automatic resumption or reservation release. The host retains
 or terminates the family after failure; it must not unpause it as cleanup.
 
 This candidate seals the already admitted child roster and retires unused
-startup RUNs. It rejects all subsequent child creation and a second controller
-handoff. General repeated transfer, open-prompt transfer, reconnect recovery and
-Kubernetes freezer attestation remain separate qualification work. Workers stay
-single-use and reservations remain held through handoff.
+startup RUNs. It rejects all subsequent child creation. A later transfer needs
+the previous runtime activation to be complete, settled journals, a fresh barrier,
+a fresh host freeze proof and an explicit resume by the next owner. Schema 20
+archives completed handoff and pause records in the same transaction that fences
+the next round. The original family identity remains unchanged. Every earlier
+controller capability, runtime credential and host proof remains fenced, including
+when ownership returns to its original user. A ninth transfer is rejected before
+revoking the current owner's authority.
+
+Open-prompt transfer, reconnect recovery and Kubernetes freezer attestation
+remain separate qualification work. Workers stay single-use and reservations
+remain held through handoff. The eight-transfer bound is covered by real mTLS
+service tests; the original native process cohort covers two successive transfers.
 
 The dedicated `--native-handoff` qualification runs the rebuilt native runtime
 with a root, child and background thread, observes stationary counters during
-host freeze, resumes the same processes under B, rejects a delayed original
-native driver packet and A's queued STEP, checks B's native PAUSE/RUN, and checks
-DSS receipts from both owner epochs. It also verifies C cannot mutate and an
+each host freeze, resumes the same processes first under B and then under A at
+epoch 3, rejects delayed native driver packets from both earlier epochs and A's
+original queued STEP, checks B's native PAUSE/RUN, and checks DSS receipts from
+all three owner epochs. The installed IDE profile additionally checks native
+STEP through its source-position change. The cohort verifies C cannot mutate and an
 unrelated reservation remains unchanged. Foundation regressions cover real mTLS,
 concurrent and lost activation, restart, expiry, forged freezer evidence, prompt
 uncertainty and complete/partial/conflicting independent DSS histories.
 After continuation, the host obtains a terminal fence, verifies exit of every
-original process, reconciles both owner epochs' DSS receipts and releases only
+original process, reconciles all three owner epochs' DSS receipts and releases only
 the finished family's reservations. The unrelated witness and spent-worker
 status remain intact.
 
-The private cohort passed at `c850ba8e347c0c6d11d8b1b26cdb6f1b5f6c9105`:
-eight original processes, three stationary counters over a three-second freeze,
-B's native PAUSE/RUN, two DSS commands with ten matching stage receipts, and
-terminal release preserving the witness reservation. The same commit passed
-1,026 hosted tests without failures, errors or skips. See the source-bound
-[qualification receipt](evidence/native-live-handoff/qualification-summary.json)
-and PR #4 for workflow and artifact identities. No full-v0.8 release gate is
-promoted by this private profile.
+The repeated-transfer cohort and installed IDE profile passed at
+`83113624ff3853d3c4c802a50b48dad4f3703429`: eight original processes, two
+three-second freezes, A→B→A ownership, three DSS commands with fifteen matching
+stage receipts in each independent ledger, and terminal release preserving the
+witness reservation. Its hosted foundation passed 1,065 tests without failures,
+errors or skips. The subsequent startup-stress candidate and exact artifact
+identities are recorded in the [current component receipt](evidence/repeated-handoff/qualification-summary.json).
+The [earlier single-transfer receipt](evidence/native-live-handoff/qualification-summary.json)
+remains historical evidence. No full-v0.8 release gate is promoted by this private profile.
