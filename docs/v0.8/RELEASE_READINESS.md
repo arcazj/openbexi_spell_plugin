@@ -1,8 +1,8 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev49` and the pinned IDE
+The full release is **not qualified**. Server `0.8.0.dev50` and the pinned IDE
 `1.2.1.dev3` remain development packages. The current component checkpoint is
-recorded in [the prompt-handoff receipt](evidence/native-prompt-handoff/qualification-summary.json).
+recorded in [the admission-transport receipt](evidence/native-admission-channel/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
 `TEST_REPORT.md`.
 
@@ -46,6 +46,8 @@ See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
 
 Dev49 additionally qualifies an unanswered native prompt with exactly zero timeout across handoff. Its original identity and definition survive; only a fresh reply from the resumed owner is accepted. Timed/unclassified prompts and queued or uncertain replies remain blocked. The pinned installed IDE uses authenticated request transport through Listener; prompt GUI/browser support is not claimed. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md).
 
+Dev50 corrects interrupted native admission waits and transient I/O on the same original connection, packet offset and four-second deadline. Eleven compiled transport cases and all available component workflows pass. The dev49 follow-up still records two lost acknowledgements after member binding; the synthetic interruption reproducer does not establish that historical cause. Bounded native/agent timing diagnostics now distinguish future transport failures. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
+
 ## Mandatory work before publication
 
 | Full gate | Outstanding acceptance |
@@ -80,8 +82,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev49
-[executed preflight](evidence/release-readiness/publication-preflight-dev49.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev50
+[executed preflight](evidence/release-readiness/publication-preflight-dev50.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

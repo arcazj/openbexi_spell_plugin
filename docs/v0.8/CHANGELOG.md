@@ -3,7 +3,7 @@
 ## Current checkpoint: development package 0.8.0.dev50
 
 - Fix the reproduced signal-interruption failure in native admission waits. Continue only the original socket/packet offset, within the original four-second deadline; retain fail-closed peer identity, lost reply and denial behavior.
-- Add compiled transport regressions and bounded phase/timing diagnostics. Full hosted qualification is in progress; no full-release gate is closed.
+- Add compiled transport regressions and bounded phase/timing diagnostics. All thirteen core jobs, 1,141 hosted tests and four deployment/inventory workflows pass at `e519882`; no full-release gate is closed.
 - Retain the dev49 follow-up failure: two children were bound server-side but the native peer closed before ALLOW. The historical cause remains unproven. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
 
 ## Development package 0.8.0.dev49

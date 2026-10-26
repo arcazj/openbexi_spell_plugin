@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev49` and the paired IDE `1.2.1.dev3` are development candidates.
+SPELL `0.8.0.dev50` and the paired IDE `1.2.1.dev3` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -47,6 +47,8 @@ neither establishes full graphical debugger or browser acceptance. See
 [IDE_NATIVE_CONTROLS.md](IDE_NATIVE_CONTROLS.md).
 
 Dev49 additionally qualifies an unanswered native prompt with exactly zero timeout across handoff. Its original identity and definition survive; only a fresh reply from the resumed owner is accepted. Timed/unclassified prompts and queued or uncertain replies remain blocked. The pinned installed IDE uses authenticated request transport through Listener; prompt GUI/browser support is not claimed. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md).
+
+Dev50 corrects interrupted native admission waits and transient I/O on the same original connection, packet offset and four-second deadline. Eleven compiled transport cases and all available component workflows pass. The dev49 follow-up still records two lost acknowledgements after member binding; the synthetic interruption reproducer does not establish that historical cause. Bounded native/agent timing diagnostics now distinguish future transport failures. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
 
 ## Native and recovery work still required
 

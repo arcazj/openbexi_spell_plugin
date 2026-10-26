@@ -1,6 +1,6 @@
 # Native admission transport checkpoint
 
-Development package **0.8.0.dev50** is undergoing qualification. All eleven
+Development package **0.8.0.dev50**, exact executable `e5198820b938ae47421c20062ceccd1b6a98f24c`, passed the available component suite. All eleven
 full-release gates remain false.
 
 The dev49 evidence-only follow-up at `5bde4fd` failed one of thirteen core jobs:
@@ -37,7 +37,9 @@ Diagnostic parsing rejects extra fields and unexpected values; diagnostics do
 not grant admission or authorize a retry.
 
 Native, installed IDE, prompt/handoff, startup stress, terminal, deployment and
-package requalification must complete on the exact new sources before this
-checkpoint can be called a passing component result. Historical startup causes,
+package requalification passed on these exact sources: 1,141 hosted tests,
+thirteen core jobs and four deployment/inventory workflows. All eleven compiled
+transport cases passed, including the Unix tests unavailable locally.
+See [the verified receipt](evidence/native-admission-channel/qualification-summary.json). Historical startup causes,
 full compatibility, driver faults, public launch/debugger/browser, complete
 deployed recovery/security and stable publication remain open.
