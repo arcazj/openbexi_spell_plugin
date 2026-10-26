@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev56 automatic controller-loss fencing component passed; native memory pressure and all eleven full-release gates remain open",
+  "phase": "Full qualification resumed; extended native recovery resource acceptance failed",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -83,7 +83,8 @@
     "1182388 / dev54: 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes. Reproduced late native readiness is now rejected within the original four-second deadline. Two-Context prelaunch readiness and image markers corrected with four local failures before and five passes after. Initial kind HTTP 503 attempt retained. No historical-cause or full-release promotion.",
     "1,193 service tests, 55 overlapping fault probes and 241 portable tests pass. Twelve of fourteen core jobs and five ancillary workflows pass; core workflow failed at native terminal/startup preambles. All nineteen archives and source inventories verified, including failures. Eighteen DSS lifecycle cases pass; production runtime unchanged from 1182388. Full release remains unqualified.",
     "Dev55 81b8b41: 1,210 service tests, 71 overlapping fault probes and 241 portable tests pass, with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. All nineteen artifact archives and recorded source hashes are verified. Seven controller/network cases and nine compiled spawn cases pass. All eleven full-release gates remain unqualified.",
-    "Dev56 bad5f98: 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified."
+    "Dev56 bad5f98: 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.",
+    "Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -91,7 +92,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "TEST_REPORT.md; ide-pair-final and native-boundary evidence retain exact scope and source identities Dev56 bad5f98: 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.",
+  "test_commands_and_outcomes": "evidence/native-resources/qualification-summary.json; Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified.",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md; full historical root diagnostic failed on older capture paths/source identities and remains unqualified; dev19 initial local 100-way child-admission race returned eight unclassified responses; strict diagnostic assertion added, ten targeted reruns and confirmation passed, cause not claimed.",
   "gates": {
@@ -101,12 +102,12 @@
     "C": "Automatic controller lease fencing and original-family explicit recovery pass. Deployed partitions, complete isolation and long-duration resource behavior remain unqualified.",
     "D": "Context ACL/catalog/state and native EV plus retained positive TC/TM dispatch tested; full driver lifecycle/fault qualification remains pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
-    "K_foundation": "81b8b41: 1,210 CPython 3.13.16 service tests and a separate overlapping 71-case fault suite pass in 40278694435; lint/format/types/package checks pass. Full K remains unqualified.",
+    "K_foundation": "9e954de: 1,259 CPython 3.13.16 service tests and 95 overlapping fault cases pass; lint/format/types/package checks pass. Full K remains unqualified.",
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
-    "G3_native_subset": "Native and installed IDE A/B/A plus automatically detected disconnect/reconnect preserve eight processes and host barriers. Native memory pressure, timed/uncertain prompts, later children and repeated late binding remain unresolved.",
-    "K_native_subset": "81b8b41: fourteen of fourteen core jobs pass, including sixteen terminal cases and twenty-four fresh-family cycles. All five ancillary workflows pass; full runtime/browser/deployment CI remains unqualified.",
+    "G3_native_subset": "Dev58 extended recovery loses the original Context at the fixed 2 GiB no-swap bound in both handoff and installed-IDE profiles. Historical shorter handoff passes do not qualify this longer workload. Timed/uncertain prompts, later children and startup causes remain open.",
+    "K_native_subset": "9e954de: twelve of fourteen core jobs pass, including sixteen terminal cases and twenty-four fresh-family cycles. Handoff and installed-IDE extended recovery fail on OOM. Five ancillary workflows pass; full runtime/browser/deployment CI remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -116,7 +117,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Investigate native recovery memory pressure and repeated late member-binding deadlines; then qualify deployed controller/node partitions with ten executions and twenty observers. Continue remaining full browser, compatibility, deployment, restore and independent-review gates.",
+  "next_step": "Profile native allocation churn/allocator retention in the original Context, Executors and host bridge, then fix the demonstrated cause and rerun the unchanged 2 GiB/no-swap 45-second recovery oracle. Preserve failed evidence and strict deadlines. Continue deployed partitions, missing original Windows captures, browser/WSS, restore, independent review and other full-release gates.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -149,9 +150,9 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev56",
+  "package_version": "0.8.0.dev58",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "bad5f984e5be852dba70ed959fa73203d16b5639",
+  "last_verified_component_commit": "9e954dedc6ba985bc525fcdb1eb170affa2cd5b7",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -183,7 +184,7 @@
     "native_reconnections_executed": 1
   },
   "native_ide_controls_receipt": "evidence/controller-liveness/qualification-summary.json",
-  "last_verified_component_scope": "1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.",
+  "last_verified_component_scope": "Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified.",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 23,
@@ -266,7 +267,7 @@
     "historical_causes_established": false,
     "full_driver_fault_gate_qualified": false
   },
-  "native_startup_current_blockers": "evidence/dss-lifecycle/native-blockers.json",
+  "native_startup_current_blockers": "Dev58 completes 24 fresh startup/settlement cycles. Dev57 RaiseEvent HTTP 400, earlier non-OOM startup failures and late member-binding deadlines remain unclassified; a later pass does not establish historical causes. Explicit empty native event compatibility is separately reproduced and fixed.",
   "controller_network_recovery": {
     "documentation": "AUTOMATIC_CONTROLLER_LIVENESS.md",
     "qualification_receipt": "evidence/controller-liveness/qualification-summary.json",
@@ -291,25 +292,60 @@
     "historical_startup_cause_established": false
   },
   "native_recovery_memory": {
-    "handoff": {
-      "memory_max_bytes": 1073741824,
-      "observed_peak_bytes": 1073750016,
-      "limit_events": 3369,
-      "oom_events": 0,
-      "oom_kills": 0,
-      "observations": 11,
-      "long_duration_resource_behavior_qualified": false,
-      "interpretation": "High pressure at the resident-memory cap; no claim of resolved memory growth or total memory/swap bounds"
-    },
-    "ide": {
-      "memory_max_bytes": 1073741824,
-      "observed_peak_bytes": 1073750016,
-      "limit_events": 2957,
-      "oom_events": 0,
-      "oom_kills": 0,
-      "observations": 11,
-      "long_duration_resource_behavior_qualified": false,
-      "interpretation": "High pressure at the resident-memory cap; no claim of resolved memory growth or total memory/swap bounds"
-    }
+    "candidate_commit": "9e954dedc6ba985bc525fcdb1eb170affa2cd5b7",
+    "passed": false,
+    "receipt": "evidence/native-resources/recovery-failures.json",
+    "profiles": [
+      {
+        "profile": "handoff",
+        "artifact_id": 12672147141,
+        "passed": false,
+        "error": "RuntimeError: Original process exited during recovery soak",
+        "samples": 42,
+        "observed_seconds": 85.569441152,
+        "memory_limit_bytes": 2147483648,
+        "memory_peak_bytes": 2147483648,
+        "swap_peak_bytes": 0,
+        "memory_events": {
+          "high": 0,
+          "low": 0,
+          "max": 52,
+          "oom": 1,
+          "oom_group_kill": 0,
+          "oom_kill": 1
+        },
+        "docker_oom_killed": true,
+        "original_context_missing_from_final_sample": true,
+        "complete_45_second_soak": false,
+        "allocation_root_cause_established": false,
+        "sanitizer_options_changed": false,
+        "full_v08_qualified": false
+      },
+      {
+        "profile": "ide",
+        "artifact_id": 12672811764,
+        "passed": false,
+        "error": "RuntimeError: Original process exited during recovery soak",
+        "samples": 40,
+        "observed_seconds": 82.168441434,
+        "memory_limit_bytes": 2147483648,
+        "memory_peak_bytes": 2147483648,
+        "swap_peak_bytes": 0,
+        "memory_events": {
+          "high": 0,
+          "low": 0,
+          "max": 164,
+          "oom": 4,
+          "oom_group_kill": 0,
+          "oom_kill": 1
+        },
+        "docker_oom_killed": true,
+        "original_context_missing_from_final_sample": true,
+        "complete_45_second_soak": false,
+        "allocation_root_cause_established": false,
+        "sanitizer_options_changed": false,
+        "full_v08_qualified": false
+      }
+    ]
   }
 }

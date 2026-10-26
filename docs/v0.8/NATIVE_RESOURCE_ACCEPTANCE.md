@@ -1,5 +1,32 @@
 # Native recovery resource acceptance
 
+Dev58 `9e954dedc6ba985bc525fcdb1eb170affa2cd5b7` **fails** the new acceptance.
+Core run `40369523732` completes with 12 successes and two failures. Both
+handoff and installed-IDE recovery lose the original Context during the added
+soak. The independent host samples and Docker state agree on an OOM kill.
+
+| Profile | Samples | Peak resident cgroup bytes | Swap peak bytes | Limit events | OOM events | OOM kills |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Handoff | 42 | 2,147,483,648 | 0 | 52 | 1 | 1 |
+| Installed IDE | 40 | 2,147,483,648 | 0 | 164 | 4 | 1 |
+
+The original Context is absent from each final process sample; a running
+container is therefore not evidence that the original family survived. The
+host's pidfd check correctly fails. The successful-soak receipt and subsequent
+resource-acceptance receipt are not emitted because the cohort raises first;
+their absence is retained as a failed, incomplete qualification, never a pass.
+Raw numeric cgroup/process observations and validation-only event denials are
+retained in [the evidence directory](evidence/native-resources/qualification-summary.json).
+
+The Context's latest observed live allocations are approximately 10 MiB while
+its allocator heap is approximately 500 MiB. Executor and bridge resident
+memory also grows. This narrows the investigation to allocation churn and
+allocator retention but does not establish the allocation-site cause or prove
+an application leak. The next corrective experiment must profile those sites
+and preserve the existing sanitizer settings, authority deadlines and fixed
+acceptance oracle. Merely increasing limits, shortening the soak or obtaining a
+later green rerun would not resolve the demonstrated failure.
+
 Dev57 allocator telemetry separates live allocations from retained allocator heap.
 In one Context, live allocations stayed around 10 MiB while the ASan heap grew
 past 500 MiB. The 1 GiB resident profile also permitted 1 GiB of swap; its observed

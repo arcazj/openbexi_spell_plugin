@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.835" timestamp="2026-10-26T18:30:24.470326+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_launch" name="test_explicit_empty_native_event_is_recorded_once_without_becoming_idle" time="3.634"><failure message="assert 400 == 200">audit_setup = {'app': &lt;openbexi_spell_server.services.Context object at 0x7ff5680ee000&gt;, 'config': {'ca': '/tmp/pytest-of-root/pytes...4a7a67f-3b88-459e-803a-b3eef4e94fd4', 'controller': &lt;function worker_setup.&lt;locals&gt;.controller at 0x7ff567cd2e80&gt;, ...}
+pki = {'alice': {'cert': PosixPath('/tmp/pytest-of-root/pytest-100/private-test-pki0/alice.pem'), 'client': &lt;ssl.SSLContext ...rivate-test-pki0/context-a.key'), 'pin': '90e02c8c7cdcd8d0e2d4ef7709d3ba2ec548abf8168f5540bd5171d91ca86906', ...}, ...}
+
+    def test_explicit_empty_native_event_is_recorded_once_without_becoming_idle(audit_setup, pki):
+        # The frozen v0.7 display-buffer port intentionally preserves empty events.
+        # An empty event still has an authenticated origin and an immutable receipt.
+        admitted = ready_audit(audit_setup, pki)
+        event = dict(event_body(), message="")
+        for _ in range(2):
+            status, response = call(audit_setup, pki, admitted, "event", **event)
+&gt;           assert status == 200
+E           assert 400 == 200
+
+server/tests/test_launch.py:374: AssertionError</failure></testcase></testsuite></testsuites>

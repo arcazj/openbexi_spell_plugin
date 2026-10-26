@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Scoped handoff/reconnect and terminal/stress profiles pass. Longer recovery probes initially OOM at 768 MiB; 1 GiB reruns still reach the resident-memory cap thousands of times. Long-duration memory, repeated late member-binding replies, broader prompt/child faults and historical startup causes remain unresolved."
+      "reason": "Dev58 passes 24 fresh-family cycles and 16 terminal cases, but both extended handoff/IDE recovery probes OOM-kill the original Context at the fixed 2 GiB no-swap bound. Allocation cause, stable long-duration memory, repeated late member binding, broader prompts/children and historical startup failures remain unresolved."
     },
     "compatibility": {
       "qualified": false,
@@ -30,7 +30,7 @@
     "ide_browser": {
       "qualified": false,
       "receipt": null,
-      "reason": "Paired IDE c5edbda passes 282 tests with one Windows-only skip, rotating-challenge heartbeat and explicit expired-session reconnect. Native A/B/C controls and twenty observers pass. Prompt GUI, public launch, full debugger, browser/WSS/Git acceptance remain unfinished."
+      "reason": "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Current installed-IDE extended recovery fails on native Context OOM; earlier shorter control/observer results do not close this failure. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
     },
     "compose": {
       "qualified": false,
@@ -45,7 +45,7 @@
     "recovery": {
       "qualified": false,
       "receipt": null,
-      "reason": "Automatic lease expiry and explicit native host-proven reconnect pass. Memory pressure, deployed recovery, worker replenishment, backup restore, upgrade and rollback remain unqualified."
+      "reason": "Historical bounded explicit recovery passes; dev58 extended original-family recovery fails in both native and installed-IDE profiles on OOM. Memory behavior, deployed recovery, worker replenishment, backup restore, upgrade and rollback remain unqualified."
     },
     "security": {
       "qualified": false,
@@ -55,7 +55,7 @@
     "ci": {
       "qualified": false,
       "receipt": null,
-      "reason": "Fourteen scoped core jobs, five ancillary workflows and paired IDE qualification pass at bad5f98/c5edbda. Complete browser/deployment/full-runtime candidate workflows remain unfinished."
+      "reason": "Dev58 9e954de passes 1,259 service, 95 overlapping fault and 241 portable tests; twelve of fourteen core jobs and all five ancillary workflows pass. Native handoff and IDE recovery fail on OOM. Complete browser/deployment/full-runtime qualification remains unfinished."
     },
     "packaging": {
       "qualified": false,
