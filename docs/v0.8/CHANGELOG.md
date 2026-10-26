@@ -1,6 +1,14 @@
 # v0.8 work in progress
 
-## Current checkpoint: development package 0.8.0.dev48
+## Current checkpoint: development package 0.8.0.dev49
+
+- Preserve the original unanswered zero-timeout native prompt across host-proven handoff; require a fresh owner reply after explicit resume.
+- Validate reply controller fields against the current runtime grant while retaining the original family/member/definition identity. Keep timed/unclassified prompts and queued/uncertain replies blocked.
+- Carry prompt replies through the pinned installed IDE's authenticated request transport and the private Listener authority operation. Preserve certificate identity and live permission/ownership checks.
+- Verify 1,119 hosted service tests, all thirteen core jobs and four deployment/inventory workflows at `dc66d32`. Retain four failed intermediate artifacts and the corrected consumed-versus-selected qualification assertion.
+- Keep all eleven full-release gates false. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md) and [RELEASE_READINESS.md](RELEASE_READINESS.md).
+
+## Development package 0.8.0.dev48
 
 - Drain in-flight agent transport before independent host freeze, fixing the
   retained captured-query and interrupted-TLS handoff failures. Preserve

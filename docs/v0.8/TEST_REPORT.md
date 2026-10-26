@@ -2265,3 +2265,17 @@ debugger/browser/WSS/Git, full deployed recovery, a production-like cluster,
 independent implementation security review, native/OS inventory and stable
 packaging remain unqualified. No stable publication or production migration
 is justified by this component checkpoint.
+
+## Dev49 untimed prompt handoff and installed-client transport
+
+Executable **`dc66d32cab359b8d5b471b7fa983b834e0f68e22`**, server **0.8.0.dev49**, and unchanged paired IDE **`faf2052ba764cbc147ef05f261164853e08489c8`** passed all **13 first-attempt jobs** in [workflow 40261890283](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40261890283). Candidate and CI merge trees match. CPython 3.13.16 passed **1,119 service tests**, zero failures/errors/skips, plus lint, formatting, mypy and isolated package checks.
+
+Both actual-native and installed IDE profiles preserve the same unanswered exact-zero-timeout prompt across host freeze and activation. Original prompt ID, family origin, member binding, target and definition digest remain unchanged. B is denied before explicit resume; A and observers remain denied afterward. Exactly one fresh B reply produces native ANSWER_SELECTED. The reply journal retains CONSUMED_UNPROVEN while the separate prompt row records the selected outcome. No old reply grant is rewritten. Timed/unclassified and queued/uncertain cases remain blocked; races are covered by real authority tests.
+
+The installed IDE uses its pinned authenticated request transport through the private Listener authority operation. This is not prompt GUI or browser qualification. Existing three transport drains, eight original processes, A→B→A, same-owner reconnect, native Step and twenty matching DSS stages remain verified. Four IDE terminal cases, the sixteen-case terminal matrix, twenty-four fresh startup/settlement cycles, and twenty distinct observers across ten live executions also pass. Historical startup failures still have no established cause.
+
+Two earlier candidates each finished with eleven passing and two failed core jobs. Their four native failure artifacts retain exact hashes and source inventories: the first exposed the missing IDE transport path; three reached native answer selection before an incorrect fixture expectation required CLOSED_UNPROVEN instead of preserving consumed provenance. The corrected assertion still independently requires native ANSWER_SELECTED and exact current-owner provenance. No failed attempt is relabelled successful.
+
+Local runs cover **228 distinct passing cases**, overlapping each other and hosted tests. Local mypy was unavailable; mandatory hosted type checks passed. Seventeen final artifact SHA256/ZIP checks pass. All recorded repository hashes match, including **182 foundation inputs** and **121 per extended native profile**. Eleven native headers and 144-unit compiled-source inventories agree with the prior checkpoint; no fresh local reconstruction of every C++ unit is claimed. Compose, kind, Kubernetes static and Python inventory workflows pass their bounded scopes, including the explicit development-package registry-audit exclusion.
+
+[The component receipt](evidence/native-prompt-handoff/qualification-summary.json), retained failures and native-build inventory bind these results to exact sources. The clean [dev49 publication preflight](evidence/release-readiness/publication-preflight-dev49.json) exits 1. All eleven full-release gates remain false; no stable publication or production migration occurred.

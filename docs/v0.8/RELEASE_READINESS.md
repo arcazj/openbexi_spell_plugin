@@ -1,8 +1,8 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev48` and the pinned IDE
+The full release is **not qualified**. Server `0.8.0.dev49` and the pinned IDE
 `1.2.1.dev3` remain development packages. The current component checkpoint is
-recorded in [the transport-drain receipt](evidence/native-handoff-drain/qualification-summary.json).
+recorded in [the prompt-handoff receipt](evidence/native-prompt-handoff/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
 `TEST_REPORT.md`.
 
@@ -44,12 +44,14 @@ See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
 [IDE_NATIVE_CONTROLS.md](IDE_NATIVE_CONTROLS.md) and
 [TERMINAL_SETTLEMENT.md](TERMINAL_SETTLEMENT.md).
 
+Dev49 additionally qualifies an unanswered native prompt with exactly zero timeout across handoff. Its original identity and definition survive; only a fresh reply from the resumed owner is accepted. Timed/unclassified prompts and queued or uncertain replies remain blocked. The pinned installed IDE uses authenticated request transport through Listener; prompt GUI/browser support is not claimed. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md).
+
 ## Mandatory work before publication
 
 | Full gate | Outstanding acceptance |
 | --- | --- |
 | Services | Abrupt controller/network faults, production routing and complete deployed isolation/fault coverage |
-| Native family | Startup reliability, open-prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
+| Native family | Startup reliability, timed/default and queued/uncertain prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
 | IDE/browser | Public launch, full debugger, browser observers, WSS gap resynchronization and Git conflicts |
@@ -78,8 +80,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev48
-[executed preflight](evidence/release-readiness/publication-preflight-dev48.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev49
+[executed preflight](evidence/release-readiness/publication-preflight-dev49.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

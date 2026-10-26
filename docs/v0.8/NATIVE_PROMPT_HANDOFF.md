@@ -1,4 +1,4 @@
-# Pending native prompt handoff candidate
+# Untimed native prompt handoff
 
 The pinned installed IDE uses its existing authenticated request transport to send `execution.prompt.reply` through the authority endpoint. Listener permits this operation only for an explicitly configured native-control Context, which must independently enable its private prompt profile. Subject identity comes from the client's certificate and is checked again at Context. This qualifies the installed transport path; no prompt GUI or browser support is implied.
 
@@ -10,4 +10,4 @@ Any admitted reply, including a queued, delivered, forwarded, consumed or uncert
 
 The native and installed IDE handoff fixtures now open an untimed YES_NO prompt in the original root Executor before A accepts B's claim. They check the unchanged prompt before and after the host freeze and activation, deny A and observers, deny B before explicit resume, and require exactly one fresh B reply to produce native ANSWER_SELECTED. The existing child/background counters, eight original processes, A→B→A, same-owner reconnect, native Step and DSS reconciliation checks remain mandatory.
 
-This is a bounded candidate, not full prompt-transfer or v0.8 qualification. Timed/default deadline behavior across freeze, queued or uncertain reply transfer, broader interruption/recovery cases and the other release gates remain unresolved. Hosted native results must be tied to the exact executable candidate before this component is marked passed.
+This is a bounded candidate, not full prompt-transfer or v0.8 qualification. Timed/default deadline behavior across freeze, queued or uncertain reply transfer, broader interruption/recovery cases and the other release gates remain unresolved. Exact executable `dc66d32cab359b8d5b471b7fa983b834e0f68e22` passed the native and installed IDE profiles in workflow 40261890283. See [the verified component receipt](evidence/native-prompt-handoff/qualification-summary.json).

@@ -1,0 +1,150 @@
+{
+  "schema": "openbexi.v08.prompt-handoff-retained-failures/1",
+  "full_v08_qualified": false,
+  "attempts": [
+    {
+      "candidate_commit": "9fcc3ebb3d32cd8d716a0f171975da010a693a8a",
+      "workflow_run": 40261703967,
+      "artifact_id": 12625560011,
+      "artifact_name": "v08-native-launch-native-handoff-373eef8b3eb448be3309dd53d904b8b469c1cba5",
+      "artifact_sha256": "c42c5dd260b85f9b5ef60b48d506e36a6d978b42a73b3d444377a7091ea07af9",
+      "zip_integrity": true,
+      "verified_source_files": 121,
+      "passed": false,
+      "error": "RuntimeError: Transferred prompt reply lost fresh controller provenance",
+      "native_events": [
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-handoff-prompt-open",
+          "original_prompt_registered": true
+        },
+        {
+          "event": "native-handoff-agent-drained",
+          "runtime_epoch": "53daade7-9cb3-4788-bd73-65abc5b22072",
+          "active_calls": 0,
+          "quiescence_proven": false
+        },
+        {
+          "event": "native-handoff-activated",
+          "runtime_identity_rotated": true,
+          "rotation": 1
+        },
+        {
+          "event": "native-handoff-prompt-answered",
+          "native_outcome": "ANSWER_SELECTED"
+        }
+      ],
+      "diagnosis": "Native ANSWER_SELECTED and unchanged prompt identity checks passed before the fixture incorrectly required CLOSED_UNPROVEN. Consumed replies intentionally remain CONSUMED_UNPROVEN; the separate prompt row records the selected outcome. Corrected the fixture, preserving both checks."
+    },
+    {
+      "candidate_commit": "9fcc3ebb3d32cd8d716a0f171975da010a693a8a",
+      "workflow_run": 40261703967,
+      "artifact_id": 12625535217,
+      "artifact_name": "v08-native-launch-native-ide-373eef8b3eb448be3309dd53d904b8b469c1cba5",
+      "artifact_sha256": "67d0b4ed212f3df237211ceb4a34a931302532d64cdd37c15d18b5021c382bc6",
+      "zip_integrity": true,
+      "verified_source_files": 121,
+      "passed": false,
+      "error": "RuntimeError: Transferred prompt reply lost fresh controller provenance",
+      "native_events": [
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-handoff-prompt-open",
+          "original_prompt_registered": true
+        },
+        {
+          "event": "native-handoff-agent-drained",
+          "runtime_epoch": "7fc7b198-d700-47d3-92be-3ca7676222fc",
+          "active_calls": 0,
+          "quiescence_proven": false
+        },
+        {
+          "event": "native-handoff-activated",
+          "runtime_identity_rotated": true,
+          "rotation": 1
+        },
+        {
+          "event": "native-handoff-prompt-answered",
+          "native_outcome": "ANSWER_SELECTED"
+        }
+      ],
+      "diagnosis": "Native ANSWER_SELECTED and unchanged prompt identity checks passed before the fixture incorrectly required CLOSED_UNPROVEN. Consumed replies intentionally remain CONSUMED_UNPROVEN; the separate prompt row records the selected outcome. Corrected the fixture, preserving both checks."
+    },
+    {
+      "candidate_commit": "b455c9fe8e10f090396633817beef74089ef1372",
+      "workflow_run": 40261437818,
+      "artifact_id": 12625035407,
+      "artifact_name": "v08-native-launch-native-handoff-a38dee9f98496f8c7d17d411797a6f74c923da5f",
+      "artifact_sha256": "29e73e75942a0da9e9dda5142c77888167cc9108a6030ba30dbf1edcd8c43aea",
+      "zip_integrity": true,
+      "verified_source_files": 121,
+      "passed": false,
+      "error": "RuntimeError: Transferred prompt reply lost fresh controller provenance",
+      "native_events": [
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-handoff-prompt-open",
+          "original_prompt_registered": true
+        },
+        {
+          "event": "native-handoff-agent-drained",
+          "runtime_epoch": "9549847b-b442-4bd9-a60b-10dbf7975b4a",
+          "active_calls": 0,
+          "quiescence_proven": false
+        },
+        {
+          "event": "native-handoff-activated",
+          "runtime_identity_rotated": true,
+          "rotation": 1
+        },
+        {
+          "event": "native-handoff-prompt-answered",
+          "native_outcome": "ANSWER_SELECTED"
+        }
+      ],
+      "diagnosis": "Native ANSWER_SELECTED and unchanged prompt identity checks passed before the fixture incorrectly required CLOSED_UNPROVEN. Consumed replies intentionally remain CONSUMED_UNPROVEN; the separate prompt row records the selected outcome. Corrected the fixture, preserving both checks."
+    },
+    {
+      "candidate_commit": "b455c9fe8e10f090396633817beef74089ef1372",
+      "workflow_run": 40261437818,
+      "artifact_id": 12624776098,
+      "artifact_name": "v08-native-launch-native-ide-a38dee9f98496f8c7d17d411797a6f74c923da5f",
+      "artifact_sha256": "44a8a5dee65b9e4e07fe0b43407a2d785542e471e1ffcb3dbadf8dc2974dfd3b",
+      "zip_integrity": true,
+      "verified_source_files": 121,
+      "passed": false,
+      "error": "ValueError: Unknown authority operation",
+      "native_events": [
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-handoff-prompt-open",
+          "original_prompt_registered": true
+        },
+        {
+          "event": "native-handoff-agent-drained",
+          "runtime_epoch": "cc9f2e2c-22ad-4400-9d26-16d9cb59b27c",
+          "active_calls": 0,
+          "quiescence_proven": false
+        }
+      ],
+      "diagnosis": "Pinned IDE authority() rejects this operation; corrected through its authenticated request() and private Listener authority operation."
+    }
+  ],
+  "earlier_failures_retained": "../native-handoff-drain/prior-failures.json"
+}

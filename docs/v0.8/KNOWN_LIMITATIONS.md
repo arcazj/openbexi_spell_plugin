@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev48` and the paired IDE `1.2.1.dev3` are development candidates.
+SPELL `0.8.0.dev49` and the paired IDE `1.2.1.dev3` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -46,9 +46,11 @@ Headless native-client qualification and real Qt panel tests are separate;
 neither establishes full graphical debugger or browser acceptance. See
 [IDE_NATIVE_CONTROLS.md](IDE_NATIVE_CONTROLS.md).
 
+Dev49 additionally qualifies an unanswered native prompt with exactly zero timeout across handoff. Its original identity and definition survive; only a fresh reply from the resumed owner is accepted. Timed/unclassified prompts and queued or uncertain replies remain blocked. The pinned installed IDE uses authenticated request transport through Listener; prompt GUI/browser support is not claimed. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md).
+
 ## Native and recovery work still required
 
-Transfer with an open prompt, new children after transfer,
+Transfer with timed/default or queued/uncertain prompts, new children after transfer,
 abrupt controller/network fault recovery and Kubernetes host attestation are
 unqualified. The explicit `session.close` and same-owner reconnect component
 is documented in [NATIVE_RECONNECT.md](NATIVE_RECONNECT.md).
