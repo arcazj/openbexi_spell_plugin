@@ -1,0 +1,148 @@
+..........................................F............................. [ 48%]
+........F.F............................................................. [ 97%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+___ test_private_bridge_pin_rejects_old_path_and_accepts_exact_owned_process ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-115/test_private_bridge_pin_reject0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f75ecc91370>
+
+    def test_private_bridge_pin_rejects_old_path_and_accepts_exact_owned_process(tmp_path, monkeypatch):
+        """Real executable/parent/starttime/pidfd checks; only mount flags are a fixture."""
+        frozen = tmp_path / "frozen" / "spell-host-ipc"
+        candidate = tmp_path / "candidate" / "spell-host-ipc"
+        for path in (frozen, candidate):
+            path.parent.mkdir()
+            shutil.copy2("/bin/sleep", path)
+        monkeypatch.setattr(module.os, "statvfs", lambda _: SimpleNamespace(f_flag=module.os.ST_RDONLY))
+        pin = module.NativeAdmissionServer.pin_process
+        with subprocess.Popen([str(candidate), "30"]) as process:
+            handle = None
+            try:
+                old = module.NativeGuiBinding(None, pin, lambda *_: None, executable=frozen)
+                with pytest.raises(ValueError, match="parent/executable differs"):
+>                   old.bind(1, process)
+
+server/tests/test_native_gui.py:319: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+host_runtime/python/child_gate.py:294: in bind
+    self.handle = self.pin_process(process.pid, os.getpid(), executable)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+host_runtime/python/child_gate.py:468: in pin_process
+    before = cls.process_identity(pid, parent, executable)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+host_runtime/python/child_gate.py:458: in process_identity
+    status = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/proc/38/stat'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/proc/38/stat'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-115/test_native_context_peer_uses_0')
+
+    def test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation(tmp_path):
+        # Exercise real Linux SO_PEERCRED/pidfd, without claiming this Python helper
+        # is a native Context or bypassing the production readonly-image check.
+        server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+        import os
+    
+        server.listener = lambda: SimpleNamespace(pid=os.getpid(), poll=lambda: None)
+        server.executable = Path(sys.executable).resolve()
+        server.context_pid, server.pidfd = None, None
+        server.members, server.member_pids = {}, {}
+        endpoint = str(tmp_path / "peer.sock")
+>       listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_child_gate.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_UNIX: 1>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+_ test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incarnation _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-115/test_native_executor_peer_uses0')
+
+    def test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incarnation(tmp_path):
+        # Real Linux credentials and pidfds with owned Python helper processes.
+        # This does not substitute Python for the production read-only native image.
+        import os
+    
+        server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+        server.listener = lambda: SimpleNamespace(pid=os.getpid(), poll=lambda: None)
+        server.executable = server.executor = Path(sys.executable).resolve()
+        server.context_pid, server.pidfd = None, None
+        server.members, server.member_pids = {}, {}
+        server.gate = SimpleNamespace(started={"main#1": None, "child#1": "admission"})
+        server.controls = SimpleNamespace(bind_member=lambda *_args: None)
+        server.executor_sha256 = "a" * 64
+        endpoint = str(tmp_path / "member.sock")
+>       listener = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_child_gate.py:306: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_UNIX: 1>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+---- generated xml file: /workspace/scratch/ee52b2b6d1b8/dev64-targeted.xml ----
+=========================== short test summary info ============================
+FAILED server/tests/test_native_gui.py::test_private_bridge_pin_rejects_old_path_and_accepts_exact_owned_process
+FAILED server/tests/test_child_gate.py::test_native_context_peer_uses_exact_owned_parent_executable_and_incarnation
+FAILED server/tests/test_child_gate.py::test_native_executor_peer_uses_context_bound_pid_parent_executable_and_incarnation
+3 failed, 144 passed in 10.75s

@@ -5,6 +5,7 @@ import ast
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 from types import SimpleNamespace
 import zipfile
@@ -272,8 +273,14 @@ def test_executor_cannot_impersonate_native_context_gui_callback(gui):
 @pytest.mark.parametrize("failure", [None, "key", "dead", "writable", "pin"])
 def test_binding_is_protected_one_shot_original_readonly_bridge(gui, monkeypatch, failure):
     gui.attempted, gui.key, gui.handle = False, None, None
-    executable = Path("/bridge/spell-host-ipc")
-    monkeypatch.setattr(module, "Path", lambda _: SimpleNamespace(resolve=lambda **_: executable))
+    executable = Path("/opt/v08-native-home/bin/spell-host-ipc")
+    resolved = []
+
+    def path(value):
+        resolved.append(str(value))
+        return SimpleNamespace(resolve=lambda **_: executable)
+
+    monkeypatch.setattr(module, "Path", path)
     monkeypatch.setattr(
         module.os,
         "statvfs",
@@ -299,6 +306,39 @@ def test_binding_is_protected_one_shot_original_readonly_bridge(gui, monkeypatch
         assert gui.key is None and gui.handle is None
     with pytest.raises(ValueError, match="already attempted"):
         gui.bind(2, process)
+    assert resolved == [str(executable)]
+
+
+def test_private_bridge_pin_rejects_old_path_and_accepts_exact_owned_process(tmp_path, monkeypatch):
+    """Real executable/parent/starttime/pidfd checks; only mount flags are a fixture."""
+    frozen = tmp_path / "frozen" / "spell-host-ipc"
+    candidate = tmp_path / "candidate" / "spell-host-ipc"
+    for path in (frozen, candidate):
+        path.parent.mkdir()
+        shutil.copy2("/bin/sleep", path)
+    monkeypatch.setattr(module.os, "statvfs", lambda _: SimpleNamespace(f_flag=module.os.ST_RDONLY))
+    pin = module.NativeAdmissionServer.pin_process
+    with subprocess.Popen([str(candidate), "30"]) as process:
+        handle = None
+        try:
+            old = module.NativeGuiBinding(None, pin, lambda *_: None, executable=frozen)
+            with pytest.raises(ValueError, match="parent/executable differs"):
+                old.bind(1, process)
+            assert old.handle is None and old.key is None
+            correct = module.NativeGuiBinding(None, pin, lambda *_: None, executable=candidate)
+            correct.bind(1, process)
+            handle = correct.handle
+            assert correct.key == 1 and handle is not None
+            assert module.select.select([handle], [], [], 0)[0] == []
+            process.terminate()
+            process.wait(timeout=3)
+            assert module.select.select([handle], [], [], 0)[0] == [handle]
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=3)
+            if handle is not None:
+                module.os.close(handle)
 
 
 @pytest.mark.parametrize(

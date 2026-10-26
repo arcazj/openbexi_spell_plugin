@@ -262,8 +262,16 @@ class NativeGuiBinding:
         }
     )
 
-    def __init__(self, gate, pin_process, report):
+    def __init__(
+        self,
+        gate,
+        pin_process,
+        report,
+        *,
+        executable="/opt/v08-native-home/bin/spell-host-ipc",
+    ):
         self.gate, self.pin_process, self.report = gate, pin_process, report
+        self.executable = executable
         self.lock = threading.Lock()
         self.attempted = False
         self.key = self.handle = None
@@ -275,7 +283,7 @@ class NativeGuiBinding:
             if self.attempted:
                 raise ValueError("Native GUI binding already attempted")
             self.attempted = True
-            executable = Path("/bridge/spell-host-ipc").resolve(strict=True)
+            executable = Path(self.executable).resolve(strict=True)
             if (
                 type(key) is not int
                 or not 1 <= key <= 1024
@@ -396,7 +404,12 @@ class NativeAdmissionServer:
         self.disabled_mutations = set()
         self.context_pid = None
         self.pidfd = None
-        self.gui = NativeGuiBinding(gate, self.pin_process, report)
+        self.gui = NativeGuiBinding(
+            gate,
+            self.pin_process,
+            report,
+            executable=self.executable.with_name("spell-host-ipc"),
+        )
         self.stop = threading.Event()
         self.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         self.socket.bind(self.path)

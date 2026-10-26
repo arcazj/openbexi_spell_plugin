@@ -118,3 +118,24 @@ Allocation stack profiling now requires the separate
 `OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1` numeric observation without stack sampling.
 The 45-second soak, memory/swap limits, peak/growth budgets, sanitizer options,
 process-liveness requirements and all eleven full-release gates are unchanged.
+
+
+## Dev64 bridge identity correction
+
+Dev63 `c15fa93` (run `40382803096`) fails all six rebuilt native cohorts
+before root admission. Its retained worker chains identify the exact rejection:
+`NativeGuiBinding.bind` still pins `/bridge/spell-host-ipc`, while the session
+starts `/opt/v08-native-home/bin/spell-host-ipc`. The process-identity guard
+correctly rejects that mismatch. Dev63 provides no recovery/resource result.
+See [startup evidence](evidence/native-codec/dev63-hosted/qualification-summary.json).
+
+Dev64 selects the expected bridge beside the independently approved Context
+executable. Parent, canonical executable, read-only mount, start-time, pidfd
+liveness and one-shot binding checks remain enforced. No identity is learned
+from the process being authenticated. A deterministic path regression fails
+against the dev63 implementation and passes with the correction. There are
+144 passing local targeted checks; three real Linux process/socket checks
+cannot run in this local environment (inconsistent child `/proc` visibility
+and denied Unix sockets) and remain mandatory in hosted CI without exclusions.
+The new hosted regression starts an actual process at a candidate path,
+rejects the old path, accepts the exact candidate and observes pidfd death.

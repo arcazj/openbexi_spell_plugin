@@ -1,0 +1,54 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_binding_is_protected_one_shot_original_readonly_bridge[None] _______
+
+gui = <before_native_gui_gate.NativeGuiBinding object at 0x7f1197720770>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f119775d8b0>
+failure = None
+
+    @pytest.mark.parametrize("failure", [None, "key", "dead", "writable", "pin"])
+    def test_binding_is_protected_one_shot_original_readonly_bridge(gui, monkeypatch, failure):
+        gui.attempted, gui.key, gui.handle = False, None, None
+        executable = Path("/opt/v08-native-home/bin/spell-host-ipc")
+        resolved = []
+    
+        def path(value):
+            resolved.append(str(value))
+            return SimpleNamespace(resolve=lambda **_: executable)
+    
+        monkeypatch.setattr(module, "Path", path)
+        monkeypatch.setattr(
+            module.os,
+            "statvfs",
+            lambda _: SimpleNamespace(f_flag=0 if failure == "writable" else module.os.ST_RDONLY),
+        )
+        pins = []
+    
+        def pin(*identity):
+            pins.append(identity)
+            if failure == "pin":
+                raise ValueError("Original bridge PID changed during binding")
+            return 42
+    
+        gui.pin_process = pin
+        process = SimpleNamespace(pid=1234, poll=lambda: 0 if failure == "dead" else None)
+        if failure is None:
+            gui.bind(1, process)
+            assert gui.key == 1 and gui.handle == 42
+            assert pins == [(1234, module.os.getpid(), executable)]
+        else:
+            with pytest.raises(ValueError):
+                gui.bind(True if failure == "key" else 1, process)
+            assert gui.key is None and gui.handle is None
+        with pytest.raises(ValueError, match="already attempted"):
+            gui.bind(2, process)
+>       assert resolved == [str(executable)]
+E       AssertionError: assert ['/bridge/spell-host-ipc'] == ['/opt/v08-na...ell-host-ipc']
+E         
+E         At index 0 diff: '/bridge/spell-host-ipc' != '/opt/v08-native-home/bin/spell-host-ipc'
+E         Use -v to get more diff
+
+server/tests/test_native_gui.py:309: AssertionError
+=========================== short test summary info ============================
+FAILED server/tests/test_native_gui.py::test_binding_is_protected_one_shot_original_readonly_bridge[None]
+1 failed in 0.04s
