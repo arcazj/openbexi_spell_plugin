@@ -101,7 +101,7 @@ int main() {
         # High-frequency small allocations must outrank startup buffers.
         ranked = {}
         for line in sites:
-            match = re.search(r"pid=(\\d+) rank=(\\d+) samples=(\\d+)", line)
+            match = re.search(r"pid=([0-9]+) rank=([0-9]+) samples=([0-9]+)", line)
             assert match is not None
             pid, rank, samples = map(int, match.groups())
             ranked.setdefault(pid, []).append((rank, samples))
