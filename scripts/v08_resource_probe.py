@@ -149,7 +149,7 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
                     "python3.13",
                     "bash",
                     "docker-init",
-                "spell-host-ipc",
+                    "spell-host-ipc",
                 }
                 else "other"
             )
