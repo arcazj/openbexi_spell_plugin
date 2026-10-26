@@ -1,5 +1,7 @@
 """Real mTLS rotation with an in-flight RPC at the host freeze boundary."""
 
+import importlib.util
+from pathlib import Path
 import threading
 import time
 import uuid
@@ -9,6 +11,42 @@ import pytest
 import test_live_handoff as live
 
 source, setup, ledger = live.source, live.setup, live.ledger
+
+
+def publish_epoch(path, value):
+    # Match the independent native host: readers see the complete old or new
+    # epoch. In-place truncation races the parked worker's read_epoch loop.
+    pending = path.with_name(path.name + ".next")
+    pending.write_text(value)
+    pending.replace(path)
+
+
+def test_epoch_publication_never_exposes_truncated_marker(tmp_path, monkeypatch):
+    path = tmp_path / "handoff-epoch"
+    before, after = str(uuid.uuid4()), str(uuid.uuid4())
+    path.write_text(before)
+    source_path = Path(__file__).resolve().parents[2] / "host_runtime/python/handoff_runtime.py"
+    spec = importlib.util.spec_from_file_location("epoch_runtime", source_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    runtime = module.HandoffRuntime.__new__(module.HandoffRuntime)
+    runtime.path = path
+    # Deterministically reproduce the old writer's truncate/write interval.
+    with path.open("w") as stream:
+        with pytest.raises(ValueError, match="epoch is invalid"):
+            runtime.read_epoch()
+        stream.write(before)
+    replace = type(path).replace
+    seen = []
+
+    def observe_commit(pending, target):
+        seen.append(runtime.read_epoch())
+        assert pending.read_text() == after
+        return replace(pending, target)
+
+    monkeypatch.setattr(type(path), "replace", observe_commit)
+    publish_epoch(path, after)
+    assert seen == [before] and runtime.read_epoch() == after
 
 
 def start_thread(function):
@@ -86,7 +124,7 @@ def test_host_drain_waits_for_rpc_and_requires_fresh_one_shot_activation(
         assert parked.is_alive() and runtime.draining
         assert calls == ["/v1/worker/check"]
         _, _, _, new_epoch = live.resumed(ledger, pki)
-        epoch_path.write_text(new_epoch)
+        publish_epoch(epoch_path, new_epoch)
         parked.join(3)
         assert not parked.is_alive() and not parked_errors
         assert runtime.rotations == 1 and not runtime.draining
@@ -102,7 +140,7 @@ def test_host_drain_waits_for_rpc_and_requires_fresh_one_shot_activation(
         release.set()
         if parked.is_alive():
             # Unrecognized epochs fail activation and terminate the test thread.
-            epoch_path.write_text(str(uuid.uuid4()))
+            publish_epoch(epoch_path, str(uuid.uuid4()))
             parked.join(3)
 
 
@@ -123,7 +161,7 @@ def test_lost_activation_after_drain_cannot_resume_polling_or_retry(ledger, pki,
     try:
         assert drained.wait(2)
         _, _, _, new_epoch = live.resumed(ledger, pki)
-        epoch_path.write_text(new_epoch)
+        publish_epoch(epoch_path, new_epoch)
         thread.join(3)
         assert len(errors) == 1 and isinstance(errors[0], TimeoutError)
         assert runtime.failed and runtime.draining
@@ -134,7 +172,7 @@ def test_lost_activation_after_drain_cannot_resume_polling_or_retry(ledger, pki,
         assert calls == ["/v1/worker/handoff-activate"]
     finally:
         if thread.is_alive():
-            epoch_path.write_text(str(uuid.uuid4()))
+            publish_epoch(epoch_path, str(uuid.uuid4()))
             thread.join(3)
 
 
