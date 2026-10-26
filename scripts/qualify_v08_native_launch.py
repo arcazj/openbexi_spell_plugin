@@ -6,7 +6,7 @@ Context and Executor. No Docker socket/host manager enters a worker or Context.
 """
 
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import closing, ExitStack
+from contextlib import closing, contextmanager, ExitStack
 import argparse
 import hashlib
 import json
@@ -36,6 +36,59 @@ PERMISSIONS = [
     "execution:control",
     "execution:request_control",
 ]
+
+
+def retain_failure(report, error, *, phase="qualification"):
+    detail = type(error).__name__ + ": " + str(error)
+    report["passed"] = False
+    report.setdefault("error", detail)
+    failures = report.setdefault("failures", [])
+    item = dict(phase=phase, error=detail)
+    if item not in failures:
+        failures.append(item)
+
+
+@contextmanager
+def qualification_workspace(report):
+    """Never let teardown erase the first failure or delete a live bind mount."""
+    directory = Path(tempfile.mkdtemp(prefix="spell-native-launch-"))
+    try:
+        yield directory
+    except Exception as error:
+        retain_failure(report, error)
+        raise
+    finally:
+        if report.get("container_cleanup_failed"):
+            report["workspace_retained"] = str(directory)
+        else:
+            try:
+                shutil.rmtree(directory)
+            except Exception as error:
+                retain_failure(report, error, phase="workspace_cleanup")
+                report["workspace_retained"] = str(directory)
+
+
+def cleanup_resources(names, networks, report):
+    # Attempt every cleanup even if one resource fails. A failed removal never
+    # becomes a passing receipt, and its potentially live state is not deleted.
+    for resource, identifiers in (
+        ("container", reversed(names)),
+        ("network", networks),
+    ):
+        for identifier in identifiers:
+            args = (
+                ["docker", "rm", "--force", identifier]
+                if resource == "container"
+                else ["docker", "network", "rm", identifier]
+            )
+            try:
+                result = subprocess.run(args, capture_output=True, timeout=20)
+                if result.returncode:
+                    raise RuntimeError(f"{resource} removal failed: {identifier}")
+            except Exception as error:
+                if resource == "container":
+                    report["container_cleanup_failed"] = True
+                retain_failure(report, error, phase=resource + "_cleanup")
 
 
 def command(*args, timeout=30):
@@ -606,7 +659,7 @@ def main():
     worker_names = []
     try:
         with (
-            tempfile.TemporaryDirectory(prefix="spell-native-launch-") as temporary,
+            qualification_workspace(report) as temporary,
             ExitStack() as desktop_stack,
         ):
             temporary = Path(temporary)
@@ -2255,6 +2308,10 @@ def main():
                         worker=128,
                     ),
                 )
+            except Exception as error:
+                # Retain before container/desktop/directory teardown can fail.
+                retain_failure(report, error)
+                raise
             finally:
                 if (
                     profile.native_dss
@@ -2353,20 +2410,10 @@ def main():
                             )
                     except Exception:
                         pass
-                for name in reversed(names):
-                    subprocess.run(
-                        ["docker", "rm", "--force", name],
-                        capture_output=True,
-                        timeout=20,
-                    )
-                for network in networks:
-                    subprocess.run(
-                        ["docker", "network", "rm", network],
-                        capture_output=True,
-                        timeout=20,
-                    )
+                cleanup_resources(names, networks, report)
     except Exception as error:
-        report["error"] = type(error).__name__ + ": " + str(error)
+        if "error" not in report:
+            retain_failure(report, error)
     (output / "result.json").write_text(json.dumps(report, indent=2) + "\n")
     print(
         json.dumps(

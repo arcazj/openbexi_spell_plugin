@@ -639,6 +639,7 @@ def run(config):
 
         os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"
         runtime = HandoffRuntime(request, route, "/control/handoff-epoch")
+        route = runtime.guarded_route()
     # Force the real proxy. Only procedure-scoped audit events are journalled
     # by Context; unqualified methods never fall back to ExampleDriver.
     denied = set()

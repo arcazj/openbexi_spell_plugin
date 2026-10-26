@@ -17,6 +17,7 @@ def run_handoff_probe(
     paused_location = None
     step_reported = False
     while time.monotonic() < deadline:
+        runtime.checkpoint(emit)
         runtime.ensure()
         pump()
         children.service(session)

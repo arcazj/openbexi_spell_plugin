@@ -86,6 +86,27 @@ def handoff_fixture(*, child=False):
     )
 
 
+def drain_agent_before_freeze(command, name, control, await_event, *, rotation):
+    """Host requests transport idle, separately from its mandatory cgroup proof."""
+    epoch = (control / "handoff-epoch").read_text()
+    marker = control / "handoff-prepare.next"
+    marker.write_text(epoch)
+    marker.replace(control / "handoff-prepare")
+    await_event([name], "native-handoff-agent-drained", seconds=15, minimum=rotation)
+    events = [
+        json.loads(line)
+        for line in command("docker", "logs", name).splitlines()
+        if line.startswith('{"event": "native-handoff-agent-drained"')
+    ]
+    if (
+        len(events) != rotation
+        or events[-1]["runtime_epoch"] != epoch
+        or events[-1]["active_calls"] != 0
+        or events[-1]["quiescence_proven"] is not False
+    ):
+        raise RuntimeError("Agent drain acknowledgement differs from this freeze")
+
+
 def frozen_evidence(command, name, state, handles, original):
     info = json.loads(command("docker", "inspect", name))[0]
     if (
@@ -242,6 +263,7 @@ def qualify_reconnect(
     pending = controller("execution.rebind", request)
     if not pending.get("rebind_pending") or "capability" in pending:
         raise RuntimeError("Native reconnect granted control before host freeze")
+    drain_agent_before_freeze(command, name, control, await_event, rotation=3)
     command("docker", "pause", name)
     state = handoff_call("status")
     evidence = frozen_evidence(command, name, state, handles, original)
@@ -391,6 +413,7 @@ def qualify_handoff_case(
             "execution.decide",
             dict(proof, claim_id=claim["claim_id"], decision="accept"),
         )
+        drain_agent_before_freeze(command, name, control, await_event, rotation=1)
         command("docker", "pause", name)
         host_state = handoff_call("status")
         evidence = frozen_evidence(command, name, host_state, handles, original)
@@ -539,6 +562,7 @@ def qualify_handoff_case(
             ),
             subject="bob",
         )
+        drain_agent_before_freeze(command, name, control, await_event, rotation=2)
         command("docker", "pause", name)
         return_state = handoff_call("status")
         return_evidence = frozen_evidence(

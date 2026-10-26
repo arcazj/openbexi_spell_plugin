@@ -19,7 +19,7 @@ import threading
 import time
 import uuid
 
-from openbexi_spell_server.contracts import canonical, decode, exact
+from openbexi_spell_server.contracts import Fault, canonical, decode, exact
 from openbexi_spell_server.family import child_grant, FamilyAdmission
 from openbexi_spell_server.snapshots import source_path
 
@@ -643,6 +643,11 @@ class NativeAdmissionServer:
                     self.report(
                         "native-before-spawn-denied",
                         error_type=type(error).__name__,
+                        status=error.status if isinstance(error, Fault) else None,
+                        code=error.code if isinstance(error, Fault) else None,
+                        cause_type=type(error.__cause__).__name__
+                        if error.__cause__ is not None
+                        else None,
                         reason=str(error)[:128]
                         if isinstance(error, ValueError)
                         else "admission_unavailable",
