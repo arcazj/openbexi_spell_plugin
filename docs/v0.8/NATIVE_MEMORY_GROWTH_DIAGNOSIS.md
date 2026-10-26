@@ -53,3 +53,24 @@ Use its new allocation-site stacks to prioritize the live Context/Executor
 message dispatch paths, make a small reversible source-bound change, and then
 rerun both *non-profiled* recovery families and the full fixed gates. Do not
 publish, merge, or call v0.8 qualified based on component/profile receipts.
+
+## 26 October 2026: diagnostic first run
+
+The opt-in hosted native sampler completed successfully as a diagnostic workflow
+([run 40408379980](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40408379980),
+artifact `12692396250`). The original 45-second handoff remained functionally
+valid but resource acceptance failed again: 1,732.8 MiB peak, 222.0 MiB
+median-window growth against 1,792/64 MiB. The native original roster and
+allocation samples were independently retained; this was not a release pass.
+
+The profiler recorded 3.57 million further allocations in Context and 0.85/0.70
+million in the two Executors. Context hot traces include `std::string::reserve`
+and a native Context path. The Executor's six reported sites were dominated by
+one-off CPython initialization allocations (up to 131,072 bytes), which revealed
+an **attribution ranking defect**: sites were sorted by sampled total bytes
+instead of allocation repetition. A diagnostic-only change now ranks by sampled
+call count, preserving the existing raw count/byte values and six-site bound.
+The follow-up hosted diagnostic must locate the actual repeated Executor and
+Context call chains before another runtime optimization is attempted. It does
+not change memory limits, sanitizer behavior, original process lifetime or
+release decisions.

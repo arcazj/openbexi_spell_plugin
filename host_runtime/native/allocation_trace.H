@@ -82,7 +82,9 @@ extern "C" void v08_allocation_profile_dump(uint64_t tick) noexcept
     for (const auto& site:sites) {
         sampled+=site.count;
         for (size_t i=0;i<top;++i) {
-            if (site.bytes<=selected[i].bytes) continue;
+            // Rank by repeated sampled allocation sites, not one-off large
+            // CPython startup buffers. All bytes and sample counts remain raw.
+            if (site.count<=selected[i].count) continue;
             for (size_t j=top-1;j>i;--j) selected[j]=selected[j-1];
             selected[i]=site; break;
         }

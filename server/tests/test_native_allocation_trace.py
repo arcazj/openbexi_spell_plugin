@@ -98,6 +98,17 @@ int main() {
         assert 1 <= len(sites) <= 12
         assert len(lines) == len(totals) + len(sites)
         assert all(len(line) < 4096 for line in lines)
+        # High-frequency small allocations must outrank startup buffers.
+        ranked = {}
+        for line in sites:
+            match = re.search(r"pid=(\\d+) rank=(\\d+) samples=(\\d+)", line)
+            assert match is not None
+            pid, rank, samples = map(int, match.groups())
+            ranked.setdefault(pid, []).append((rank, samples))
+        for group in ranked.values():
+            group.sort()
+            counts = [samples for rank, samples in group]
+            assert counts == sorted(counts, reverse=True)
         counts = [dict(re.findall(r"(calls|bytes|samples|skipped)=(\d+)", line)) for line in totals]
         assert int(counts[0]["calls"]) >= 80000
         assert int(counts[0]["bytes"]) > 100000000
