@@ -11,7 +11,7 @@ GIB = 1024**3
 PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap")
 # Fail closed when the source to be transformed changes. No fuzzy patches.
 PREIMAGES = {
-    "host_runtime/build_admission_context.py": "6a1cebc4d024ca9a39fbd84a79c9714446feade16202ff7a89e0f6c8878dc744",
+    "host_runtime/build_admission_context.py": "24669fce3330cb9c4959816f7d202f7e1ff547d6d0793bf00631330eabb0e208",
     "host_runtime/python/native.py": "4d8a1664622dddd5192451f230b3fbc4361d632ae23692aa1a989b62d92b3ff7",
     "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
     "scripts/v08_native_consumption.py": "4ab366a3b03541ede860acb1e63b7d4952312b2af9150b61ca874ebef406a039",
