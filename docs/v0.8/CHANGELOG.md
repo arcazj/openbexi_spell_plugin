@@ -4,7 +4,7 @@
 
 - Retain the dev52 native terminal failure: ten uncertain command calls and twenty ACKED stages before child admission. Other twelve core jobs, 1,144 service tests and four ancillary workflows pass; no all-green checkpoint is inferred.
 - Record fixed phase/stage labels and bounded numeric timings on failed commands, plus per-stage ledger counts. No payloads, credentials or exception messages are recorded. Existing deadlines, live authority checks, durable ledgers and no-replay behavior remain unchanged.
-- Five deterministic timing/failure-path tests pass locally; the historical timeout cause remains unestablished. Hosted requalification is pending. The initial 300-second full-suite harness stopped after 1,003 passing progress markers with no failed/error marker and no final JUnit; its failed artifact is retained. The finite suite budget is now 600 seconds with a 15-minute job budget. Individual operation deadlines and assertions are unchanged.
+- Five deterministic timing/failure-path tests pass locally; the historical timeout cause remains unestablished. Exact candidate `d01fc30` passes 1,149 hosted service tests, 241 portable checks, thirteen core jobs and five ancillary workflows; all eleven full-release gate groups remain false. The initial 300-second full-suite harness stopped after 1,003 passing progress markers with no failed/error marker and no final JUnit; its failed artifact is retained. The finite suite budget is now 600 seconds with a 15-minute job budget. Individual operation deadlines and assertions are unchanged.
 
 ## 0.8.0.dev52 — completed session cleanup
 
@@ -15,7 +15,7 @@
 
 - Pair IDE 1ac0b8a / 1.2.1.dev4. A cached stale controller proof no longer hides explicit reconnect after a server disconnect. Live reconnect uses a fresh session. Other execution sessions remain available until explicit Disconnect closes every known session with stable per-session close keys.
 - Add actual Qt-panel / Gateway / Listener / Context TLS integration coverage for reconnect, paused rebind and explicit resume admission. Native process/freezer evidence remains separately required.
-- Local 51-case IDE client/panel suite passes; three pre-fix regressions retain their failures. Hosted complete IDE and paired source/native qualification is pending. No full release gate is promoted.
+- Local 51-case IDE client/panel suite passes; three pre-fix regressions retain their failures. The complete paired IDE workflow passes 272 tests with one Windows-only skip; the final dev53 native/component recheck also passes. No full release gate is promoted.
 
 ## Development package 0.8.0.dev50
 

@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev50` and the paired IDE `1.2.1.dev3` are development candidates.
+SPELL `0.8.0.dev53` and the paired IDE `1.2.1.dev4` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -49,6 +49,10 @@ neither establishes full graphical debugger or browser acceptance. See
 Dev49 additionally qualifies an unanswered native prompt with exactly zero timeout across handoff. Its original identity and definition survive; only a fresh reply from the resumed owner is accepted. Timed/unclassified prompts and queued or uncertain replies remain blocked. The pinned installed IDE uses authenticated request transport through Listener; prompt GUI/browser support is not claimed. See [NATIVE_PROMPT_HANDOFF.md](NATIVE_PROMPT_HANDOFF.md).
 
 Dev50 corrects interrupted native admission waits and transient I/O on the same original connection, packet offset and four-second deadline. Eleven compiled transport cases and all available component workflows pass. The dev49 follow-up still records two lost acknowledgements after member binding; the synthetic interruption reproducer does not establish that historical cause. Bounded native/agent timing diagnostics now distinguish future transport failures. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
+
+Dev52 repairs desktop reconnect and completed-session cleanup; its 1,144 service tests and paired 272-pass IDE suite succeed. Its native terminal cohort failed before child admission with ten uncertain DSS command calls and twenty ACKED stages. The cause is unestablished. Dev53 adds bounded phase timings while retaining the original deadlines, durable ledger requirements and no-replay behavior. See [IDE_RECONNECT_SESSIONS.md](IDE_RECONNECT_SESSIONS.md) and the [failed checkpoint](evidence/ide-reconnect-sessions/dev52-qualification.json).
+
+The final dev53 candidate `d01fc30` passes 1,149 service tests, 241 portable checks, all thirteen core jobs and all five ancillary workflows. [The receipt](evidence/ide-reconnect-sessions/qualification-summary.json) binds the exact source and eighteen verified artifacts. This component pass does not close the unresolved DSS/startup causes or any full-release gate.
 
 ## Native and recovery work still required
 

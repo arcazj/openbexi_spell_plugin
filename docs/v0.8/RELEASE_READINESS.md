@@ -1,10 +1,11 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev50` and the pinned IDE
-`1.2.1.dev3` remain development packages. The current component checkpoint is
-recorded in [the admission-transport receipt](evidence/native-admission-channel/qualification-summary.json).
+The full release is **not qualified**. Server `0.8.0.dev53` and the pinned IDE
+`1.2.1.dev4` remain development packages. Executable `d01fc30` passes the full
+available component workflows, recorded in [the paired receipt](evidence/ide-reconnect-sessions/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
-`TEST_REPORT.md`.
+`TEST_REPORT.md`. The dev52 DSS timeout and earlier native startup causes remain
+unestablished; a subsequent passing run does not establish their repair.
 
 The owner request **"Qualify and release full v0.8"** authorizes implementation,
 qualification, merge, tag and GitHub publication once all mandatory criteria
@@ -48,6 +49,8 @@ Dev49 additionally qualifies an unanswered native prompt with exactly zero timeo
 
 Dev50 corrects interrupted native admission waits and transient I/O on the same original connection, packet offset and four-second deadline. Eleven compiled transport cases and all available component workflows pass. The dev49 follow-up still records two lost acknowledgements after member binding; the synthetic interruption reproducer does not establish that historical cause. Bounded native/agent timing diagnostics now distinguish future transport failures. See [NATIVE_ADMISSION_CHANNEL.md](NATIVE_ADMISSION_CHANNEL.md).
 
+Desktop reconnect now opens a fresh authenticated session and retains other execution sessions until explicit Disconnect. Completed-session cleanup cannot refence a new controller or adopt an unfinished close under a new key. The actual Qt/TLS integration passes among 1,144 dev52 service tests. The independent native terminal cohort stopped with ten uncertain DSS commands before child admission; its cause remains open. Dev53 records bounded phase timings to distinguish command delays without increasing deadlines or replaying effects. See [IDE_RECONNECT_SESSIONS.md](IDE_RECONNECT_SESSIONS.md).
+
 ## Mandatory work before publication
 
 | Full gate | Outstanding acceptance |
@@ -55,7 +58,7 @@ Dev50 corrects interrupted native admission waits and transient I/O on the same 
 | Services | Abrupt controller/network faults, production routing and complete deployed isolation/fault coverage |
 | Native family | Startup reliability, timed/default and queued/uncertain prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
-| Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
+| Driver faults | Diagnose the retained dev52 ten-command timeout; lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
 | IDE/browser | Public launch, full debugger, browser observers, WSS gap resynchronization and Git conflicts |
 | Compose | Full ten-execution/twenty-viewer runtime workload, negative egress, process/storage failure and restore |
 | Kubernetes | Production-like cluster, runtime Pod identity, RBAC/admission/network denial, node partition and storage recovery |
@@ -82,8 +85,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev50
-[executed preflight](evidence/release-readiness/publication-preflight-dev50.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev53
+[executed preflight](evidence/ide-reconnect-sessions/publication-preflight-dev53-final.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

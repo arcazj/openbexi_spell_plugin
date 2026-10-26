@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev52 paired reconnect and 1,144 services tests pass; native terminal DSS burst failed. Dev53 adds bounded phase diagnostics; qualification pending.",
+  "phase": "Dev53 paired reconnect and available component qualification passed; historical DSS/startup causes and all eleven full-release gates remain unresolved",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -78,7 +78,8 @@
     "Dev47 82dc4cb99201d2f96ff02b023331a6c32b0502f7: all thirteen first-attempt hosted service/native jobs and all four deployment/inventory workflows passed. Hosted CPython 3.13.16 passed 1,087 tests without failures/errors/skips. Paired IDE faf2052ba764cbc147ef05f261164853e08489c8 passed 266 tests with one Windows-only skip; all 50 wheel Python modules match source. Both original-native and installed IDE A/B/A cohorts then close and reconnect A while retaining eight processes, owner/epoch 3 and explicit host freeze/resume; generation advances to 4, stale packets stay denied and four DSS commands have twenty matching receipts per ledger. Sixteen terminal cases and 24 fresh-family stress cycles passed. Historical startup causes and all full release gates remain unresolved.",
     "Dev48 40f38fb10690652819b367eafd9695f3ad0c69ce: all thirteen jobs in 40258910955 and four deployment/inventory workflows passed. 1,094 CPython 3.13.16 service tests without failures/errors/skips. Retained old-epoch query and interrupted-TLS handoff failures addressed by transport drain before independent host freeze. Twenty installed IDE observer identities pass concurrent read/control denial, Listener outage and recovery with ten advancing executions and thirty unchanged PIDs. Sixteen terminal cases and 24 fresh startup/settlement cycles passed. Fixed kind loaded/rendered image tag mismatch; five ready workloads retained. Seventeen artifact digests/ZIP checks, 180 foundation and 121 extended-native input hashes verified. Earlier failures retained; all full-release gates remain false.",
     "Dev49 dc66d32: original unanswered untimed prompt survives host freeze and runtime rotation; new-owner reply accepted only after explicit resume. Authenticated installed IDE request transport passes the same native path. Queued/uncertain replies block transfer; original prompt/family/member/definition remain unchanged. 1,119 hosted tests, 13 core jobs and four deployment/inventory workflows pass; four prior failed artifacts retained.",
-    "Dev50 e519882: the prior wait aborted on a real signal after 10 ms; original-deadline waits and interrupted/partial I/O now pass eleven compiled production-transport cases. All thirteen core jobs and four deployment/inventory workflows pass, with 1,141 hosted tests. The dev49 follow-up failure is retained and no full-release gate is promoted."
+    "Dev50 e519882: the prior wait aborted on a real signal after 10 ms; original-deadline waits and interrupted/partial I/O now pass eleven compiled production-transport cases. All thirteen core jobs and four deployment/inventory workflows pass, with 1,141 hosted tests. The dev49 follow-up failure is retained and no full-release gate is promoted.",
+    "d01fc30 / dev53: 1,149 hosted service tests and 241 portable checks pass without failures/errors/skips; thirteen core jobs and five ancillary workflows pass. Eighteen archives/source inventories verified. Paired IDE 1ac0b8a / dev4 passes 272 tests with one Windows-only skip. Dev51 cleanup failure, dev52 native DSS timeout and initial dev53 harness timeout remain retained; no historical timeout cause or full release qualification is inferred."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -96,12 +97,12 @@
     "C": "Twenty distinct installed IDE observers survive Listener loss with ten advancing native executions; bounded explicit same-owner controller reconnect also passes. Abrupt controller/network faults, production routing and full deployed isolation remain pending.",
     "D": "Context ACL/catalog/state and native EV plus retained positive TC/TM dispatch tested; full driver lifecycle/fault qualification remains pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
-    "K_foundation": "e519882: 1,141 CPython 3.13 service tests, lint/format/types and installed package checks pass in 40264114884; full K remains pending.",
+    "K_foundation": "d01fc30: 1,149 CPython 3.13.16 tests, lint/format/types and installed package checks pass in 40267235234. The overall test budget is 600s; operation deadlines are unchanged. Full K remains unqualified.",
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "Original-family A/B/A and same-owner reconnect preserve processes and grants with fresh runtime identities. Exact-zero-timeout unanswered prompt transfer passes. Timed/default or queued/uncertain prompts, later children, abrupt controller faults and startup causes remain unqualified.",
-    "K_native_subset": "40f38fb: thirteen first-attempt core service/native jobs pass in 40258910955; complete browser/deployment/runtime CI remains unqualified.",
+    "K_native_subset": "d01fc30: all thirteen first-attempt core jobs pass in 40267235234; sixteen terminal cases, twenty-four fresh startup cycles and paired native IDE/handoff rechecked. Full browser/deployment/runtime CI remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -111,7 +112,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Diagnose historical startup failures; qualify timed/default and queued/uncertain prompt transfer, later-child handoff, abrupt controller/network recovery, broader native/driver semantics, public launch/debugger/browser/WSS/Git, all-763 compatibility, deployed recovery/security and stable packaging.",
+  "next_step": "Diagnose the retained intermittent DSS deadline and native startup faults with the bounded diagnostics; then complete wider native/driver recovery, public launch/debugger/browser/WSS/Git, all-763 compatibility with original archival captures, deployed recovery/security and stable packaging acceptance.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -127,15 +128,15 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "evidence/release-readiness/publication-preflight-dev50.json: clean e519882 candidate; exit 1, development version and eleven mandatory gate groups unqualified.",
+  "release_assessment": "evidence/ide-reconnect-sessions/publication-preflight-dev53-final.json: clean d01fc30 candidate; exit 1, development version and all eleven mandatory gate groups unqualified.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
-  "native_listener_survival_receipt": "evidence/native-prompt-handoff/qualification-summary.json; twenty certificate identities, ten advancing executions, thirty unchanged PIDs; no browser/WSS acceptance inferred",
+  "native_listener_survival_receipt": "evidence/ide-reconnect-sessions/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
-  "native_ide_observer_receipt": "evidence/native-prompt-handoff/qualification-summary.json",
+  "native_ide_observer_receipt": "evidence/ide-reconnect-sessions/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy.",
   "package_version": "0.8.0.dev53",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "e5198820b938ae47421c20062ceccd1b6a98f24c",
+  "last_verified_component_commit": "d01fc30a114e0f45978b2771493917aea16269b1",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -143,7 +144,7 @@
   "native_mutation_boundary": "Qualified original native unsupported-mutation denial boundary remains. Positive owner RUN/STEP/PAUSE, prompt replies and ABORT/CLOSE now have separate exact-source component receipts; arbitrary setters/full debugger remain unfinished.",
   "native_context_gui_boundary": "Dev40 exact native qualification passed foreign GUI/key/management/roster denial oracles; later cohorts preserve them while qualifying bounded owner controls. Full public runtime remains disabled.",
   "native_startup_reliability": "Historical dev37 root LOADED failure remains unresolved. At bd85c635, workflow 40249941420 first terminal attempt failed before its case matrix: all ten roots ran, ten child admissions were consumed, but worker 1 produced no child member binding or running event; all containers stayed live and no OOM occurred. The Context SSLEOF readiness diagnostic recovered. No cause or fix is inferred from other passes. See evidence/native-ide-controls/terminal-recheck-failure.json. Dev45 added bounded twelve-stage startup traces and read-only process/task snapshots without changing retry or timeout policy. Dev46 executed 24 fresh root/child families and independent host terminal settlements; this positive stress result does not establish either historical failure cause. See evidence/repeated-handoff/startup-diagnostics.json. The 5ec9429 recheck again failed after one child binding request and cleanup masked the primary exception. Dev48 retains primary and cleanup failures separately plus bounded admission status/code/cause. All three dev48 core runs pass 24 fresh families each; this does not establish a startup cause or fix. See evidence/native-handoff-drain/prior-failures.json. Dev49 follow-up 5bde4fd failed native-prompts after two durable member bindings: ALLOW delivery hit BrokenPipeError and native member-bound was absent. Dev50 fixes a separately reproduced EINTR defect and adds bounded transport/callback timing, but does not establish the historical cause. See evidence/native-admission-channel/dev49-followup-failure.json.",
-  "native_lifecycle_audit": "Dev49 1,119-test and native/installed-client prompt-handoff checkpoint passed; no full release gate is promoted.",
+  "native_lifecycle_audit": "Dev53 1,149-test and paired native/IDE component recheck passed; all eleven full-release gates remain false.",
   "native_lifecycle_audit_receipts": "evidence/native-child-start/dev40-foundation.json; evidence/native-child-start/dev40-family.json",
   "terminal_settlement_profile": {
     "profile": "single-host-terminal-candidate",
@@ -166,8 +167,8 @@
     "service_runtime_rotation_capacity": 8,
     "native_reconnections_executed": 1
   },
-  "native_ide_controls_receipt": "evidence/native-admission-channel/qualification-summary.json",
-  "last_verified_component_scope": "1,141 hosted tests, including eleven compiled production-transport cases; thirteen first-attempt core jobs and four deployment/inventory workflows pass. Native prompts, installed IDE, A/B/A/reconnect, original process identity, terminal settlement, 24 fresh startup cycles and twenty concurrent observers are rechecked. Historical startup causes remain unresolved.",
+  "native_ide_controls_receipt": "evidence/ide-reconnect-sessions/qualification-summary.json",
+  "last_verified_component_scope": "1,149 hosted service tests, 241 portable checks, thirteen core jobs and five ancillary workflows pass. Native prompts, paired IDE, original-process A/B/A/reconnect, sixteen terminal cases, twenty-four fresh startup cycles and twenty concurrent observers are rechecked. Eighteen artifacts and all recorded repository source hashes match. Historical DSS/startup causes remain unestablished.",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 22,
@@ -211,7 +212,7 @@
     "interrupted_io_same_socket": true
   },
   "desktop_reconnect_sessions": {
-    "state": "component_passed_native_workflow_incomplete",
+    "state": "component_passed",
     "ide_commit": "1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e",
     "ide_version": "1.2.1.dev4",
     "documentation": "IDE_RECONNECT_SESSIONS.md",
@@ -220,10 +221,11 @@
     "server_local_tests": 106,
     "completed_session_cleanup": "Original authenticated subject and durable completed-close receipt required; pending closes retain original request keys",
     "failed_candidate": "b935fd3e0800945bca66a4860bad4cc53f8ef9ac",
-    "hosted_service_tests": 1144,
+    "hosted_service_tests": 1149,
     "hosted_ide_tests": {
       "passed": 272,
       "skipped": 1
-    }
+    },
+    "qualification_receipt": "evidence/ide-reconnect-sessions/qualification-summary.json"
   }
 }
