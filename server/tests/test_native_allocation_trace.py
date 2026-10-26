@@ -107,7 +107,7 @@ int main() {
             ranked.setdefault(pid, []).append((rank, samples))
         for group in ranked.values():
             group.sort()
-            counts = [samples for rank, samples in group]
+            counts = [samples for _, samples in group]
             assert counts == sorted(counts, reverse=True)
         counts = [dict(re.findall(r"(calls|bytes|samples|skipped)=(\d+)", line)) for line in totals]
         assert int(counts[0]["calls"]) >= 80000
