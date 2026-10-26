@@ -36,7 +36,11 @@ def replace_native_message_codec(text):
         start = text.index(signature)
         end = text.index("\n}", start) + 2
         text = text[:start] + text[end:]
-    return text + '\n#include "/candidate/message_codec.H"\n'
+    return (
+        text
+        + '\n#include "/candidate/message_codec.H"\n'
+        + '#include "/candidate/allocation_trace.H"\n'
+    )
 
 
 def replace_native_spawn(text):
@@ -749,6 +753,7 @@ def main():
                 "-pthread",
                 "-fsanitize=address,undefined",
                 "-Wl,--no-undefined",
+                "-Wl,--export-dynamic",
                 *objects,
                 "-L" + sysconfig.get_config_var("LIBDIR"),
                 "-lpython3.13",

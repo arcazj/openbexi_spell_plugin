@@ -1,5 +1,24 @@
 # Native IPC allocation correction
 
+Hosted dev59 `5d0d64f` (run `40374299787`) passes 1,267 service tests,
+95 overlapping fault tests and 241 portable tests. Twelve of fourteen core
+jobs and all five ancillary workflows pass. All 19 artifacts are digest/ZIP
+verified and their source inventories match the candidate; the PR merge tree
+matches. Both original recovery families complete the 45-second soak and
+terminal settlement without OOM. Resource acceptance **still fails**: handoff
+reaches 2,147,491,840 bytes with five memory-limit events and 201,719,808 bytes
+window growth; installed IDE reaches 2,133,803,008 bytes with 206,489,600 bytes
+growth. No limits or sanitizer settings changed. See
+[the retained evidence](evidence/native-codec/qualification-summary.json).
+
+Dev60 adds opt-in, fixed-capacity ASan allocation-site sampling to identify
+the remaining running-process costs. It samples approximately one allocation
+in 256, records six largest sampled stack groups at most every ten seconds,
+and suppresses its own symbol-lookup allocations from the measurements.
+The 1,024-slot table and 20-frame stacks are bounded; dropped samples are
+reported. It changes no allocator policy, authority decision or deadline.
+These samples are diagnostic evidence, never an acceptance receipt.
+
 Dev58's two extended recovery cohorts OOM-kill the original Context at the
 fixed 2 GiB, zero-swap limit. The resource acceptance remains failed. Live
 allocations and resident memory are distinct; rising allocator retention alone

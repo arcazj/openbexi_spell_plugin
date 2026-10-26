@@ -1,0 +1,1065 @@
+{
+  "passed": true,
+  "native_terminal_cases": [
+    {
+      "case": "forced-loss",
+      "passed": true,
+      "native_status": "UNKNOWN",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "c8e664c22b7de3126e768b77dd654c919fb3dbe46488c904b0f0bf5a9985b718",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 2,
+      "terminal_settlement": {
+        "challenge": "dc6f6636-3a68-4eb1-a0a4-ecf26a0cd496",
+        "effective_transfer": false,
+        "execution_id": "68ec1e97-3c9a-4e0b-84d6-bbd704ccae6e",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "c8e664c22b7de3126e768b77dd654c919fb3dbe46488c904b0f0bf5a9985b718",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "62b4f78fbeb6bf0ef8d28c091faa85322f47c46413e92cfe9db247d84e5a815b",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "UNKNOWN",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [
+            "native_outcome_unknown"
+          ],
+          "reservation_release_eligible": false
+        },
+        "report_hash": "c22921ad0b47b5ced875272e3afe22530fe3dd64428dcb1bba6d1d7e7ebdef71",
+        "roster_hash": "62b4f78fbeb6bf0ef8d28c091faa85322f47c46413e92cfe9db247d84e5a815b",
+        "runtime_enabled": false,
+        "state": "HELD",
+        "worker_reusable": false
+      },
+      "reservation_released": false,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-wait",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "8452f9cfe483d1982ce9df6473377682d0062e12637c3ab08bdbb0b64e1a2f95",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "7f9d6b82-f6d3-4707-a3c7-48f6784d9d36",
+        "effective_transfer": false,
+        "execution_id": "c60ec6ef-4764-4f29-a900-75ed42e74285",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "8452f9cfe483d1982ce9df6473377682d0062e12637c3ab08bdbb0b64e1a2f95",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "fa23e3b33517dbb90b6cded844bb1c103f89528c67fc5cf97baae4bd8fa216d4",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "cce47691f7d5cbaba4b0e02fccd524c7ff611acc5d8d37fda7bc7d41732846c5",
+        "roster_hash": "fa23e3b33517dbb90b6cded844bb1c103f89528c67fc5cf97baae4bd8fa216d4",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-child",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 3,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 15,
+      "container_id": "9f28048de944d5bfe76f6cb8b3878a88ccd429bfb2467d19d1006b30a00080f6",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 3,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "c64dae2a-1a9a-4787-ad68-b00cfcfb9e7b",
+        "effective_transfer": false,
+        "execution_id": "03724eb5-1459-4ebc-8fc3-1bc68fa77b82",
+        "hold_retained": true,
+        "report": {
+          "children": 1,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "9f28048de944d5bfe76f6cb8b3878a88ccd429bfb2467d19d1006b30a00080f6",
+            "exit_code": 0,
+            "exited_handles": 15,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 15,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "396ad1a3a266488aa5aa15081d2c1ce3c6936e5799bb6dcacfe7fec975924ecd",
+            "running": false
+          },
+          "native_members": 2,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {
+              "DISPATCH_UNCERTAIN": 1
+            },
+            "native_control_consumptions": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_control_forwards": {
+              "FORWARD_UNPROVEN": 1
+            },
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 3
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "d034e503b35ca84a909533dd7f5da331ba43210fbf4a769e1727996ac86af9e5",
+        "roster_hash": "396ad1a3a266488aa5aa15081d2c1ce3c6936e5799bb6dcacfe7fec975924ecd",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "abort-paused",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 7,
+      "container_id": "7d4ec45fc740614a7416d7f2b518bf88d45c20736e1a7edf95f5a30f12b34d22",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "0f7ee824-2a89-44c4-8479-9c8d955b2fc1",
+        "effective_transfer": false,
+        "execution_id": "dd458110-1fdd-4185-9b26-729cf4447374",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "7d4ec45fc740614a7416d7f2b518bf88d45c20736e1a7edf95f5a30f12b34d22",
+            "exit_code": 0,
+            "exited_handles": 7,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 7,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "e3fcb2faa1f5678feca223f361d2998a3680009208d9566c8c0e0618081947e8",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "6650fc4d4a44868a234d4e842cdc2fcc82264886ec17ce88789f24adef0143e5",
+        "roster_hash": "e3fcb2faa1f5678feca223f361d2998a3680009208d9566c8c0e0618081947e8",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-paused",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 7,
+      "container_id": "17f2f29a156302aa849706b67540b70ae556af4cd9f904b142ee9f6cb6c9346f",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "46a7fae2-7067-44b4-87fb-08dcd490edb4",
+        "effective_transfer": false,
+        "execution_id": "a2afb75d-d297-46a4-bea7-53ab919d495c",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "17f2f29a156302aa849706b67540b70ae556af4cd9f904b142ee9f6cb6c9346f",
+            "exit_code": 0,
+            "exited_handles": 7,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 7,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "088313069d501eee7575af601cbb7d2f58128fbb75efa113453ade109c20720e",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "06825250103ec844d8e9f56f48bf2f82aadae14f9570c93ba67a4f3009e7b81e",
+        "roster_hash": "088313069d501eee7575af601cbb7d2f58128fbb75efa113453ade109c20720e",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "abort-running",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "b67100c4a02e01360a098e442854634c72b7c7d3423ab2fe55af8424cb6f03e0",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "96bba122-4d5f-4f79-99a0-3dde14af8083",
+        "effective_transfer": false,
+        "execution_id": "e11c9392-6ae4-4689-9956-5f740e5836fb",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "b67100c4a02e01360a098e442854634c72b7c7d3423ab2fe55af8424cb6f03e0",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "0538b9d7daecdb7326dea9e80750b9e1d0bab5b0d0f8778328b79248e792c8f8",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "628b22ad6d2c6eeebaee285147b68535cc1874b89cb005f9d5f9b889c23e3e3e",
+        "roster_hash": "0538b9d7daecdb7326dea9e80750b9e1d0bab5b0d0f8778328b79248e792c8f8",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-running",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "2a0f8854f4aeb4b459164b6aca64be2a1e0d7de6b99a5fcf6855d57e4d95e25c",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "55789498-9721-4cf2-a8b4-a3c38f0ab097",
+        "effective_transfer": false,
+        "execution_id": "5b5caa51-0dae-4717-bf42-1d94f1cf47ec",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "2a0f8854f4aeb4b459164b6aca64be2a1e0d7de6b99a5fcf6855d57e4d95e25c",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "9c9b154fcac427ed7f13f771e7ab740c7c025c764986376bb1ea31d73110cc2d",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "85d5684f063c1ec47741f947458730c6202594f045b8d5ba242c9988daa019fa",
+        "roster_hash": "9c9b154fcac427ed7f13f771e7ab740c7c025c764986376bb1ea31d73110cc2d",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "abort-prompt",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [
+        [
+          "CLOSED",
+          "TERMINAL_CANCELLED"
+        ]
+      ],
+      "original_process_handles_exited": 14,
+      "container_id": "f1c9729235f61b0b7254a84414d1a0839bebe5fa17add3929d53c19370f4473a",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "2a49f77b-01c4-4a73-a455-5749b71aed36",
+        "effective_transfer": false,
+        "execution_id": "524959c6-d2d9-4966-a8f7-448a379c3000",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "f1c9729235f61b0b7254a84414d1a0839bebe5fa17add3929d53c19370f4473a",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "7a14c942c93e2c22da46c26a669ead69621f2a70c9736652654b79741ff7b061",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "9b37f26d6254798abf5426c7d1533fa778fb8dd967d57e19961746260d2fdb23",
+        "roster_hash": "7a14c942c93e2c22da46c26a669ead69621f2a70c9736652654b79741ff7b061",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-prompt",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [
+        [
+          "CLOSED",
+          "TERMINAL_CANCELLED"
+        ]
+      ],
+      "original_process_handles_exited": 14,
+      "container_id": "718c5acf96b378a883b3af0fdf42c9053e88081bd75bc7433a8579ac13e4fe86",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "950b4d26-e866-4cea-a33b-10b0aaf37e76",
+        "effective_transfer": false,
+        "execution_id": "640719d1-1bf3-4443-ac20-4baefd823b72",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "718c5acf96b378a883b3af0fdf42c9053e88081bd75bc7433a8579ac13e4fe86",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "83452a4a834266ec63acb986d706d9444ae9c5792849bccbb97928cc3159d4be",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "79a5bf7b83272c3017c2f58a7d2922d1ecd8c9b8753d9fbc8f49e31fe1f2602d",
+        "roster_hash": "83452a4a834266ec63acb986d706d9444ae9c5792849bccbb97928cc3159d4be",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "cancel-prompt",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [
+        [
+          "CLOSED",
+          "CANCEL_SELECTED"
+        ]
+      ],
+      "original_process_handles_exited": 14,
+      "container_id": "7058c49d3453d9dfe4d85fd9a5039b213ddbab6c01920ec510db51f55acdadcc",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "7d69b3d3-e3d7-4806-bac5-350400e063d9",
+        "effective_transfer": false,
+        "execution_id": "4b51c974-cd22-4259-87a9-b803267fce60",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "7058c49d3453d9dfe4d85fd9a5039b213ddbab6c01920ec510db51f55acdadcc",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "d3ed44cb2a00cc2317a820b969954eccfcf19b5fab12c8ea9ab0f8638bfda14f",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {
+              "CONSUMED_UNPROVEN": 1
+            }
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "bf6ed004ee78a8c7ad6a826553ff78ffb916c32f1875e9198a0a2e6f755dd66f",
+        "roster_hash": "d3ed44cb2a00cc2317a820b969954eccfcf19b5fab12c8ea9ab0f8638bfda14f",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "normal",
+      "passed": true,
+      "native_status": "FINISHED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 7,
+      "container_id": "8df1037dde2fd181118fbd99b473da368fa84f152e80ca7595097a74661b0fc6",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "659afb07-4f5f-4db3-afdc-610673d54bfe",
+        "effective_transfer": false,
+        "execution_id": "1a1a8af3-8f98-4b8c-82f8-e92429d5c3cb",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "8df1037dde2fd181118fbd99b473da368fa84f152e80ca7595097a74661b0fc6",
+            "exit_code": 0,
+            "exited_handles": 7,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 7,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "4d66fe892f3266c823b65bedb5e76fd860a5277996e167a6ad287cf70175829d",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "FINISHED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "bd9d316950be78a8a9a2c457d02c7b4db24c1d2dc8051ded5c8b12c49ba46736",
+        "roster_hash": "4d66fe892f3266c823b65bedb5e76fd860a5277996e167a6ad287cf70175829d",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "error",
+      "passed": true,
+      "native_status": "ERROR",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 7,
+      "container_id": "efbdac9131a8690fc02929da29b698270601a5965e32e3697792b466dc8b5b6c",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "2bb4bafe-d68e-4f69-b3e4-869f0731108b",
+        "effective_transfer": false,
+        "execution_id": "6b001fb1-1654-47a1-a277-b29c0a32809d",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "efbdac9131a8690fc02929da29b698270601a5965e32e3697792b466dc8b5b6c",
+            "exit_code": 0,
+            "exited_handles": 7,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 7,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "dc7a015bf343887b898b2bfd27642730b6ae43089f0fe616a064b0239b73ae8a",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ERROR",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "e042ea6e96f8e8025aef6c113eae9a3f966235407c58fa5cac9e8d3594efc571",
+        "roster_hash": "dc7a015bf343887b898b2bfd27642730b6ae43089f0fe616a064b0239b73ae8a",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "timeout",
+      "passed": true,
+      "native_status": "FINISHED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 1,
+      "prompt_outcomes": [
+        [
+          "CLOSED",
+          "TIMEOUT"
+        ]
+      ],
+      "original_process_handles_exited": 7,
+      "container_id": "76763f1cdc2f7e4ef41d5aed31991e1c9b10a167558366cae9f31623e7fb633f",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "04f14fbf-51c0-46f4-befd-b3ff7dfeaf3e",
+        "effective_transfer": false,
+        "execution_id": "219476bc-a587-4ffd-aac5-490542ae50b7",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "76763f1cdc2f7e4ef41d5aed31991e1c9b10a167558366cae9f31623e7fb633f",
+            "exit_code": 0,
+            "exited_handles": 7,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 7,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "848f6ac35a561fadeb7ef926e3904f4f28a4191be4be0ddb3855ddc961a48772",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "FINISHED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "8b679815ac95c3fa8f79c9e7de4b6f7c4fb40df0e876fc0be9edff65ed4c0556",
+        "roster_hash": "848f6ac35a561fadeb7ef926e3904f4f28a4191be4be0ddb3855ddc961a48772",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "abort-thread",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "ab8f3d79eec7806f3aa76f39a5de95e0757e85d04e199d127bd5f17daa6a6644",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "fa7704e7-31b1-4ac5-b24f-99398a4e48ae",
+        "effective_transfer": false,
+        "execution_id": "40dc493f-c1db-4b7b-a59a-8202b92c9c4c",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "ab8f3d79eec7806f3aa76f39a5de95e0757e85d04e199d127bd5f17daa6a6644",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "969f3218966fc9e821e0e9cb01285eb88f721f27ccf90afa1c717dc13df6d40e",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "d6d14e40eebba34b28cda06db4546d12c110d0ffbe4e9e69f37e874ab05dedb3",
+        "roster_hash": "969f3218966fc9e821e0e9cb01285eb88f721f27ccf90afa1c717dc13df6d40e",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "abort-child",
+      "passed": true,
+      "native_status": "ABORTED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 15,
+      "container_id": "f6bd69eedc74cefc213b4e2036040ed3be6a9f49a612afa5299bb6c836a03438",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 3,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "dc483706-f15f-43ad-b7eb-ee27177d82b3",
+        "effective_transfer": false,
+        "execution_id": "a07115a7-c977-4773-addb-bf3fd51ed82f",
+        "hold_retained": true,
+        "report": {
+          "children": 1,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "f6bd69eedc74cefc213b4e2036040ed3be6a9f49a612afa5299bb6c836a03438",
+            "exit_code": 0,
+            "exited_handles": 15,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 15,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "fa9f8856ee140bd854452f5fa082c81074a87148019b5716481791af0a1a4293",
+            "running": false
+          },
+          "native_members": 2,
+          "native_status": "ABORTED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {
+              "DISPATCH_UNCERTAIN": 1
+            },
+            "native_control_consumptions": {
+              "EXECUTION_UNPROVEN": 1
+            },
+            "native_control_forwards": {
+              "FORWARD_UNPROVEN": 1
+            },
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "e631e995139f6e493737b1ad8f62cee18fe05112016bf6b8670f39c5689d17ea",
+        "roster_hash": "fa9f8856ee140bd854452f5fa082c81074a87148019b5716481791af0a1a4293",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    },
+    {
+      "case": "close-thread",
+      "passed": true,
+      "native_status": "CLOSED",
+      "actual_native_executor": true,
+      "consumed_owner_commands": 2,
+      "prompt_outcomes": [],
+      "original_process_handles_exited": 14,
+      "container_id": "f66bb285de394bf5ba841e1a721dc90a561a53d2cabe1766bac4ca60af49763b",
+      "whole_container_terminated": true,
+      "pending_prompts": 0,
+      "logical_holds_before_settlement": 2,
+      "logical_holds_retained": 1,
+      "terminal_settlement": {
+        "challenge": "7e5cb8bf-c536-4dc4-a14b-9a9f996d20fe",
+        "effective_transfer": false,
+        "execution_id": "2eeceff9-c44f-4d67-bd5f-fbabe9446f4d",
+        "hold_retained": true,
+        "report": {
+          "children": 0,
+          "effect_receipts": 0,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "f66bb285de394bf5ba841e1a721dc90a561a53d2cabe1766bac4ca60af49763b",
+            "exit_code": 0,
+            "exited_handles": 14,
+            "image": "sha256:89faea3b72780b1809730229d9db851e5cf0b78af596b9f2ea8db710c7fbdb98",
+            "oom_killed": false,
+            "original_handles": 14,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "2cf08ef0562e87f53470433763f6090efe2ce6471e322dc0831cd28fb860822c",
+            "running": false
+          },
+          "native_members": 1,
+          "native_status": "CLOSED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {},
+            "native_control_consumptions": {},
+            "native_control_forwards": {},
+            "native_owner_commands": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {}
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "c6d16311eb6b671d15af50fa032e2a58b449254ff7be223591fd5aadbdf63782",
+        "roster_hash": "2cf08ef0562e87f53470433763f6090efe2ce6471e322dc0831cd28fb860822c",
+        "runtime_enabled": false,
+        "state": "SETTLED",
+        "worker_reusable": false
+      },
+      "reservation_released": true,
+      "worker_spent": true,
+      "unknown_effects_replayable": false,
+      "quiescence_proven": false,
+      "effective_transfer": false,
+      "runtime_enabled": false
+    }
+  ]
+}

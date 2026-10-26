@@ -16,8 +16,10 @@ extern "C" size_t __sanitizer_get_current_allocated_bytes(void);
 extern "C" size_t __sanitizer_get_heap_size(void);
 extern "C" size_t __sanitizer_get_free_bytes(void);
 extern "C" size_t __sanitizer_get_unmapped_bytes(void);
+extern "C" void v08_allocation_profile_enable() noexcept;
+extern "C" void v08_allocation_profile_dump(uint64_t) noexcept;
 
-// Opt-in observation only. No allocation, trim, allocator flags, signal handler,
+// Opt-in observation only. No trim, allocator flags, signal handler,
 // authority decision, retry or runtime deadline is changed. Role 1 denotes an
 // IPC participant; the host independently records its executable and identity.
 // At most 120 records per process, shared by all IPC input threads.
@@ -28,6 +30,7 @@ static void v08_resource_trace(unsigned int role) noexcept
         return value && std::strcmp(value, "1") == 0;
     }();
     if (!enabled || role != 1) return;
+    v08_allocation_profile_enable();
     static std::atomic<uint64_t> previous{0};
     static std::atomic<unsigned int> count{0};
     if (count.load(std::memory_order_relaxed) >= 120) return;
@@ -50,5 +53,6 @@ static void v08_resource_trace(unsigned int role) noexcept
         const auto ignored = write(STDERR_FILENO, record, static_cast<size_t>(size));
         (void)ignored;
     }
+    v08_allocation_profile_dump(tick);
 }
 #endif

@@ -1,0 +1,124 @@
+{
+  "schema": "openbexi.v08.component-checkpoint/1",
+  "candidate_commit": "5d0d64fa89e4766b4d4f70d80223c9acac010cf4",
+  "candidate_tree": "3e976600c2b0bd3c1ffaf8be52156719d1620139",
+  "merge_commit": "e1cc00d3f16da52384f1b56441b79efebd42ab8a",
+  "merge_tree_matches": true,
+  "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "hosted_run_id": 40374299787,
+  "hosted_complete": true,
+  "core_jobs_passed": 12,
+  "core_jobs_failed": 2,
+  "ancillary_workflows_passed": 5,
+  "hosted_service_tests": {
+    "tests": 1267,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "overlapping_fault_tests": 95,
+  "portable_tests": 241,
+  "local_targeted_tests": 84,
+  "local_python": "3.12.14",
+  "hosted_python": "3.13.16",
+  "artifacts_verified": 19,
+  "profiles": [
+    {
+      "profile": "handoff",
+      "artifact_id": 12674062189,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "complete_soak": true,
+      "original_processes": 8,
+      "original_processes_exited": true,
+      "terminal": "RELEASED",
+      "peak_bytes": 2147491840,
+      "window_growth_bytes": 201719808,
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 5,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "swap_peak_bytes": 0,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_pressure"
+        ]
+      }
+    },
+    {
+      "profile": "ide",
+      "artifact_id": 12674991039,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "complete_soak": true,
+      "original_processes": 8,
+      "original_processes_exited": true,
+      "terminal": "RELEASED",
+      "peak_bytes": 2133803008,
+      "window_growth_bytes": 206489600.0,
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 0,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "swap_peak_bytes": 0,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_peak_budget_exceeded",
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 21,
+        "duration_seconds": 45.62199115,
+        "peak_bytes": 2133803008,
+        "window_growth_bytes": 206489600.0,
+        "first_window_median_bytes": 1870860288,
+        "last_window_median_bytes": 2077349888.0
+      }
+    }
+  ],
+  "full_v08_qualified": false,
+  "files_sha256": {
+    "dev59-codec-allocations.json": "0a23ae48ba3934b3a9c9edbeed3a4ada5c6478f7031da1a047823de8d739dd84",
+    "dev59-hosted-jobs.json": "d40de9a03eb37dbf42a3277933eae06ceda31333ea0ed94fb16e4972a3408d9f",
+    "dev59-publication-preflight.json": "d4980bb12ed94dbe6b6d4b9da4e42aee3aa4cb8395b7cdfe60123ecc9562c3e0",
+    "dev59-targeted.xml": "6a4b689ef5364f586e4b1043c17fb9762db3b919907636ac61d89e51902350af",
+    "foundation-summary.json": "16ecda55fde4ac1fbfc0d2936ccae83566b06157425cd5ee6c8675b417c4827d",
+    "handoff/native-recovery-soak.json": "11885c006af6177d4ba3842405fbbe6a1b528ffad8f01a94f039d722e3960656",
+    "handoff/native-resource-acceptance.json": "8c784eea2e83b19302933b7b0053bd691072e39f444a818b843bd9ca51fddef2",
+    "handoff/native-resource-observer.json": "90b96fba79edcd4d7154f5fd631c3dffc575d1d1b0652381fe1aaca365e9607e",
+    "handoff/native-resources.log": "d5fc1c22eabc9e4a5954a32b693bc70b941eb4fbe60ff4dc6e0a0c567cbb8d7f",
+    "handoff/recovery-result.json": "0ba778f05bd61e78c68c5a902385e65e8a9ae6da3c3a6e2e74e8d347be30c32d",
+    "hosted-service-tests.xml": "faa6c54a3e40162326de92b9aea3093ff74f4f7bdedc52778fdd8e564e0d1306",
+    "ide/native-recovery-soak.json": "8caddd634633134cbc4059c2759c9ed909cb276b93db4f85edba3445e39adf99",
+    "ide/native-resource-acceptance.json": "1dc94de068f05c17657d38c9b1eff9b8fc0af9bab32f7c2916bf6f133d0f05f5",
+    "ide/native-resource-observer.json": "0ac611bf12d4d38a8dbc5c270fa62af63dc85ed1b36b3a02fd3de588aa99dbb2",
+    "ide/native-resources.log": "5f99fd91062a5500f04f8632f76fac9083f748ce22b4f788b53ae99bb1ed08b1",
+    "ide/recovery-result.json": "01238bbe87fc02fc3b099e3d0f0fb9066f22be684a02e6c023ee4443c7a149fa",
+    "recovery-failures.json": "ffc36c9fe657c25a83f8d95285cb7ac0f991922307015d38019625455cf5a9b7",
+    "startup-summary.json": "10edbe916750d82112ab010e58303b12f6c07ddd31a2cd9d9819ff07845f72f1",
+    "terminal-summary.json": "235aac3da9124ba9b26cdbbe113515e52083dfa55d4db42fabd0922f11246dfe",
+    "verified-artifacts.json": "1354c7c58a73467933b4b98a96eb52d5cd1c9728dd9cdcb63c15b9372472de5f"
+  }
+}

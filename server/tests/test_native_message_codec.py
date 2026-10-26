@@ -73,6 +73,8 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
     ):
         text = text.replace(
             "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+        ).replace(
+            "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
         )
         path = folder / (name + ".cpp")
         path.write_text(text)

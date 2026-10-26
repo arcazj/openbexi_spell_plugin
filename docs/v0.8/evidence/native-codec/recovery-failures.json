@@ -1,0 +1,76 @@
+[
+  {
+    "profile": "handoff",
+    "artifact_id": 12674062189,
+    "passed": false,
+    "error": "RuntimeError: Native recovery resource acceptance failed",
+    "complete_soak": true,
+    "original_processes": 8,
+    "original_processes_exited": true,
+    "terminal": "RELEASED",
+    "peak_bytes": 2147491840,
+    "window_growth_bytes": 201719808,
+    "memory_events": {
+      "high": 0,
+      "low": 0,
+      "max": 5,
+      "oom": 0,
+      "oom_group_kill": 0,
+      "oom_kill": 0
+    },
+    "swap_peak_bytes": 0,
+    "acceptance": {
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [
+        "native_recovery_memory_pressure"
+      ]
+    }
+  },
+  {
+    "profile": "ide",
+    "artifact_id": 12674991039,
+    "passed": false,
+    "error": "RuntimeError: Native recovery resource acceptance failed",
+    "complete_soak": true,
+    "original_processes": 8,
+    "original_processes_exited": true,
+    "terminal": "RELEASED",
+    "peak_bytes": 2133803008,
+    "window_growth_bytes": 206489600.0,
+    "memory_events": {
+      "high": 0,
+      "low": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_group_kill": 0,
+      "oom_kill": 0
+    },
+    "swap_peak_bytes": 0,
+    "acceptance": {
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [
+        "native_recovery_peak_budget_exceeded",
+        "native_recovery_memory_still_growing"
+      ],
+      "samples": 47,
+      "soak_samples": 21,
+      "duration_seconds": 45.62199115,
+      "peak_bytes": 2133803008,
+      "window_growth_bytes": 206489600.0,
+      "first_window_median_bytes": 1870860288,
+      "last_window_median_bytes": 2077349888.0
+    }
+  }
+]

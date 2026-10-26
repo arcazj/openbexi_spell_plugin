@@ -237,6 +237,7 @@ def test_compiled_allocator_observation_preserves_live_and_freed_distinction(tmp
     source, binary = tmp_path / "probe.cpp", tmp_path / "probe"
     source.write_text("""
 #include "resource_trace.H"
+#include "allocation_trace.H"
 #include <thread>
 #include <chrono>
 int main() {
@@ -280,7 +281,11 @@ int main() {
         if not enabled:
             assert not result.stderr
             continue
-        records = [json.loads(line[11:]) for line in result.stderr.splitlines()]
+        records = [
+            json.loads(line[11:])
+            for line in result.stderr.splitlines()
+            if line.startswith(b"V08_MEMORY ")
+        ]
         assert len(records) == 3
         baseline, live, freed = records
         assert live["allocated_bytes"] - baseline["allocated_bytes"] >= 4 * 1024 * 1024

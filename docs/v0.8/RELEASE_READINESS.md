@@ -1,12 +1,15 @@
 # Full v0.8 publication qualification
 
-Dev59 is the next candidate under qualification. It removes measured IPC
-encoding/decoding allocation overhead without changing the native class ABI or
-valid wire format. The fixed recovery oracle is unchanged; the dev58 failures
-below remain unresolved until the new whole-native evidence is verified.
-See [native IPC correction](NATIVE_MESSAGE_CODEC.md).
+Dev59 `5d0d64f` removes measured IPC allocation overhead and passes 1,267 service,
+95 overlapping fault and 241 portable tests. Both original recovery families
+now complete the fixed soak and terminal settlement without OOM, but both fail
+the unchanged resource acceptance. Twelve of fourteen core jobs and all five
+ancillary workflows pass; all 19 artifacts and their recorded source inventories
+are verified. Dev60 adds bounded allocation-site diagnostics for the remaining
+memory costs. See [native IPC correction](NATIVE_MESSAGE_CODEC.md) and
+[dev59 evidence](evidence/native-codec/qualification-summary.json).
 
-The full release is **not qualified**. Dev58 candidate `9e954de` completed its
+The full release is **not qualified**. Previously, dev58 candidate `9e954de` completed its
 first hosted qualification with **1,259 service tests**, **95 overlapping fault
 tests** and **241 portable tests** passing without failures/errors/skips. Twelve
 of fourteen core jobs and all five ancillary workflows pass, including 24 fresh

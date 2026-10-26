@@ -1,0 +1,209 @@
+{
+  "passed": true,
+  "open_prompt_handoff": {
+    "passed": true,
+    "scope": "unanswered exact-zero-timeout native prompt",
+    "original_prompt_id": "167a5d76-d067-42eb-87be-c8ff03e93bb4",
+    "original_definition_sha256": "05efd1672e57dd5e7ccd2cd236dd80f697b727fe16414fc34a6365f01d9a3537",
+    "original_member_binding_hash": "50edd7ace88b50350cd8ed004ea6908c47477cfc65291f784d02692800d5cace",
+    "original_family_origin_hash": "54eceafb99d4fe7f846ffb155fe073ee23c233602f4dc05d9a7343b7b2bd45aa",
+    "identity_preserved": true,
+    "former_owner_and_observer_denied": true,
+    "reply_before_explicit_resume_denied": true,
+    "reply_owner": "bob",
+    "reply_epoch": 2,
+    "reply_connection_generation": 2,
+    "native_outcome": "ANSWER_SELECTED",
+    "selected_answers": 1,
+    "timed_prompt_transfer_qualified": false,
+    "queued_or_uncertain_reply_transfer_qualified": false
+  },
+  "native_step_location_verified": false,
+  "provider": "docker-cgroup-freezer-pidfd/1",
+  "whole_family_paused": true,
+  "frozen_observation_seconds": 3,
+  "root_child_background_counters_before": {
+    "root": 26,
+    "background": 100,
+    "child": 26
+  },
+  "root_child_background_counters_after": {
+    "root": 45,
+    "background": 166,
+    "child": 87
+  },
+  "original_processes": 8,
+  "replacement_native_processes": false,
+  "old_owner_denied": true,
+  "observer_read_only": true,
+  "observer_saw_paused_and_resumed_b": true,
+  "owner": "alice",
+  "epoch": 3,
+  "accepted_transfers": 2,
+  "same_owner_reconnections": 1,
+  "native_reconnect": {
+    "passed": true,
+    "automatic_disconnect_detection": true,
+    "explicit_close_sent": false,
+    "controller_loss": {
+      "fault": "heartbeat_transport_detached",
+      "lease_seconds": 30
+    },
+    "detection_seconds": 26.239074096000024,
+    "owner_unchanged": true,
+    "epoch_unchanged": true,
+    "epoch": 3,
+    "previous_connection_generation": 3,
+    "connection_generation": 4,
+    "disconnect_observation_seconds": 3,
+    "counters_before_disconnect": {
+      "root": 1216,
+      "background": 1483,
+      "child": 1305
+    },
+    "counters_after_disconnect": {
+      "root": 1359,
+      "background": 1641,
+      "child": 1449
+    },
+    "frozen_observation_seconds": 3,
+    "frozen_counters": {
+      "root": 1368,
+      "background": 1652,
+      "child": 1459
+    },
+    "counters_after_resume": {
+      "root": 1381,
+      "background": 1671,
+      "child": 1477
+    },
+    "original_processes": 8,
+    "original_processes_survived_disconnect": true,
+    "disconnected_native_packet_denied": true,
+    "old_connection_native_packet_denied": true,
+    "old_controller_capability_denied": true,
+    "fresh_same_epoch_driver_command_completed": true,
+    "quiescence_claimed_on_disconnect": false,
+    "effective_transfer": false,
+    "public_launch_enabled": false,
+    "full_recovery_qualified": false
+  },
+  "recovery_soak": {
+    "start_ns": 322331645832,
+    "end_ns": 367895756275,
+    "minimum_seconds": 45,
+    "counters_before": {
+      "root": 1384,
+      "background": 1675,
+      "child": 1480
+    },
+    "counters_after": {
+      "root": 3406,
+      "background": 3909,
+      "child": 3553
+    },
+    "original_processes": 8,
+    "all_intervals_advanced": true
+  },
+  "completed_transfer_history": 2,
+  "first_round_host_proof_replay_denied": true,
+  "previous_b_controller_and_native_packet_denied": true,
+  "second_frozen_observation_seconds": 3,
+  "second_counters_before": {
+    "root": 55,
+    "background": 177,
+    "child": 97
+  },
+  "second_counters_after": {
+    "root": 67,
+    "background": 196,
+    "child": 114
+  },
+  "new_owner_native_commands": 2,
+  "stale_native_driver_denied": true,
+  "delayed_old_owner_step_fenced": true,
+  "dss_commands": 4,
+  "matching_stage_receipts": 20,
+  "provenance_epochs": [
+    1,
+    2,
+    3
+  ],
+  "provenance_connection_generations": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "logical_reservations_during_handoff": 3,
+  "terminal_settlement": {
+    "challenge": "75a34e54-1d9b-4668-9b8c-9afc9fa2095f",
+    "effective_transfer": false,
+    "execution_id": "936a3a7d-4bdf-4730-bc7c-2bfcf75d5bea",
+    "hold_retained": false,
+    "report": {
+      "children": 1,
+      "effect_receipts": 20,
+      "effects_settled": true,
+      "host_evidence": {
+        "container_id": "cc0aba114c915cad9d995a71fd1790849cbb93f846d87e530f3ca5fdbfeb98e1",
+        "exit_code": 0,
+        "exited_handles": 8,
+        "image": "sha256:124af494f141728b7ea189be915a9d27f6c4fb3881666b487532c0588a649f71",
+        "oom_killed": false,
+        "original_handles": 8,
+        "pid": 0,
+        "provider": "docker-pidfd-terminal/1",
+        "restart_count": 0,
+        "roster_hash": "4ed4e31e568dafec4913dd6385cec0be83cea31014893a872065fb3d6e09b5f8",
+        "running": false
+      },
+      "native_members": 2,
+      "native_status": "FINISHED",
+      "pending_native_work_retired": true,
+      "preserved_work_journals": {
+        "native_control_attempts": {
+          "DISPATCH_UNCERTAIN": 2
+        },
+        "native_control_consumptions": {
+          "EXECUTION_UNPROVEN": 2
+        },
+        "native_control_forwards": {
+          "FORWARD_UNPROVEN": 2
+        },
+        "native_owner_commands": {
+          "DELIVERY_FENCED": 1,
+          "EXECUTION_UNPROVEN": 2
+        },
+        "native_prompt_replies": {
+          "CONSUMED_UNPROVEN": 1
+        }
+      },
+      "process_family_terminated": true,
+      "reasons": [],
+      "reservation_release_eligible": true
+    },
+    "report_hash": "12b61c631e151f4fbae65453a3566c1c79f3fc8d58c8ec28c1ba6feb19c6f413",
+    "roster_hash": "4ed4e31e568dafec4913dd6385cec0be83cea31014893a872065fb3d6e09b5f8",
+    "runtime_enabled": false,
+    "state": "RELEASED",
+    "worker_reusable": false
+  },
+  "original_processes_exited": true,
+  "unrelated_reservations_retained": 1,
+  "worker_reusable": false,
+  "new_children_after_handoff": false,
+  "full_v08_qualified": false,
+  "resource_acceptance": {
+    "schema": "openbexi.native-recovery-resources/1",
+    "passed": false,
+    "resident_limit_bytes": 2147483648,
+    "swap_limit_bytes": 0,
+    "peak_budget_bytes": 1879048192,
+    "maximum_window_growth_bytes": 67108864,
+    "full_v08_qualified": false,
+    "failures": [
+      "native_recovery_memory_pressure"
+    ]
+  }
+}

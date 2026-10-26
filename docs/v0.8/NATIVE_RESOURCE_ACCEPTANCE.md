@@ -1,5 +1,14 @@
 # Native recovery resource acceptance
 
+Dev59 `5d0d64f` completes both original-family soaks and settlement without OOM,
+but **still fails** the fixed resource oracle. Handoff records five limit events,
+a 2,147,491,840-byte peak and 201,719,808-byte window growth. Installed IDE has
+no limit/OOM events but records a 2,133,803,008-byte peak and 206,489,600-byte
+growth. Neither satisfies the 1792 MiB peak and 64 MiB growth requirements.
+The codec correction and bounded dev60 diagnostic follow-up are described in
+[NATIVE_MESSAGE_CODEC.md](NATIVE_MESSAGE_CODEC.md); prior failures below remain
+historical evidence. Full recovery and release qualification remain false.
+
 Dev58 `9e954dedc6ba985bc525fcdb1eb170affa2cd5b7` **fails** the new acceptance.
 Core run `40369523732` completes with 12 successes and two failures. Both
 handoff and installed-IDE recovery lose the original Context during the added

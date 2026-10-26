@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Full qualification resumed; extended native recovery resource acceptance failed",
+  "phase": "Full qualification resumed; dev59 original recovery family survives but resource acceptance still fails; bounded allocation-site diagnosis in progress",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -84,7 +84,8 @@
     "1,193 service tests, 55 overlapping fault probes and 241 portable tests pass. Twelve of fourteen core jobs and five ancillary workflows pass; core workflow failed at native terminal/startup preambles. All nineteen archives and source inventories verified, including failures. Eighteen DSS lifecycle cases pass; production runtime unchanged from 1182388. Full release remains unqualified.",
     "Dev55 81b8b41: 1,210 service tests, 71 overlapping fault probes and 241 portable tests pass, with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. All nineteen artifact archives and recorded source hashes are verified. Seven controller/network cases and nine compiled spawn cases pass. All eleven full-release gates remain unqualified.",
     "Dev56 bad5f98: 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.",
-    "Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified."
+    "Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified.",
+    "Dev59 removes native codec intermediate allocations and passes 1,267 service tests, 95 overlapping fault tests, 241 portable tests, 24 startup cycles and 16 terminal cases. Both original recovery families complete the fixed soak and settlement without OOM, but remain rejected for peak/growth or memory-limit pressure. All 19 artifacts verified; full release remains unqualified."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -117,7 +118,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Profile native allocation churn/allocator retention in the original Context, Executors and host bridge, then fix the demonstrated cause and rerun the unchanged 2 GiB/no-swap 45-second recovery oracle. Preserve failed evidence and strict deadlines. Continue deployed partitions, missing original Windows captures, browser/WSS, restore, independent review and other full-release gates.",
+  "next_step": "Use bounded native allocation-site samples to correct the remaining recovery memory growth, preserving sanitizer settings and all fixed acceptance thresholds.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -150,7 +151,7 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev58",
+  "package_version": "0.8.0.dev60",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "9e954dedc6ba985bc525fcdb1eb170affa2cd5b7",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -292,59 +293,83 @@
     "historical_startup_cause_established": false
   },
   "native_recovery_memory": {
-    "candidate_commit": "9e954dedc6ba985bc525fcdb1eb170affa2cd5b7",
+    "candidate_commit": "5d0d64fa89e4766b4d4f70d80223c9acac010cf4",
     "passed": false,
-    "receipt": "evidence/native-resources/recovery-failures.json",
+    "receipt": "evidence/native-codec/recovery-failures.json",
     "profiles": [
       {
         "profile": "handoff",
-        "artifact_id": 12672147141,
+        "artifact_id": 12674062189,
         "passed": false,
-        "error": "RuntimeError: Original process exited during recovery soak",
-        "samples": 42,
-        "observed_seconds": 85.569441152,
-        "memory_limit_bytes": 2147483648,
-        "memory_peak_bytes": 2147483648,
-        "swap_peak_bytes": 0,
+        "error": "RuntimeError: Native recovery resource acceptance failed",
+        "complete_soak": true,
+        "original_processes": 8,
+        "original_processes_exited": true,
+        "terminal": "RELEASED",
+        "peak_bytes": 2147491840,
+        "window_growth_bytes": 201719808,
         "memory_events": {
           "high": 0,
           "low": 0,
-          "max": 52,
-          "oom": 1,
+          "max": 5,
+          "oom": 0,
           "oom_group_kill": 0,
-          "oom_kill": 1
+          "oom_kill": 0
         },
-        "docker_oom_killed": true,
-        "original_context_missing_from_final_sample": true,
-        "complete_45_second_soak": false,
-        "allocation_root_cause_established": false,
-        "sanitizer_options_changed": false,
-        "full_v08_qualified": false
+        "swap_peak_bytes": 0,
+        "acceptance": {
+          "schema": "openbexi.native-recovery-resources/1",
+          "passed": false,
+          "resident_limit_bytes": 2147483648,
+          "swap_limit_bytes": 0,
+          "peak_budget_bytes": 1879048192,
+          "maximum_window_growth_bytes": 67108864,
+          "full_v08_qualified": false,
+          "failures": [
+            "native_recovery_memory_pressure"
+          ]
+        }
       },
       {
         "profile": "ide",
-        "artifact_id": 12672811764,
+        "artifact_id": 12674991039,
         "passed": false,
-        "error": "RuntimeError: Original process exited during recovery soak",
-        "samples": 40,
-        "observed_seconds": 82.168441434,
-        "memory_limit_bytes": 2147483648,
-        "memory_peak_bytes": 2147483648,
-        "swap_peak_bytes": 0,
+        "error": "RuntimeError: Native recovery resource acceptance failed",
+        "complete_soak": true,
+        "original_processes": 8,
+        "original_processes_exited": true,
+        "terminal": "RELEASED",
+        "peak_bytes": 2133803008,
+        "window_growth_bytes": 206489600.0,
         "memory_events": {
           "high": 0,
           "low": 0,
-          "max": 164,
-          "oom": 4,
+          "max": 0,
+          "oom": 0,
           "oom_group_kill": 0,
-          "oom_kill": 1
+          "oom_kill": 0
         },
-        "docker_oom_killed": true,
-        "original_context_missing_from_final_sample": true,
-        "complete_45_second_soak": false,
-        "allocation_root_cause_established": false,
-        "sanitizer_options_changed": false,
-        "full_v08_qualified": false
+        "swap_peak_bytes": 0,
+        "acceptance": {
+          "schema": "openbexi.native-recovery-resources/1",
+          "passed": false,
+          "resident_limit_bytes": 2147483648,
+          "swap_limit_bytes": 0,
+          "peak_budget_bytes": 1879048192,
+          "maximum_window_growth_bytes": 67108864,
+          "full_v08_qualified": false,
+          "failures": [
+            "native_recovery_peak_budget_exceeded",
+            "native_recovery_memory_still_growing"
+          ],
+          "samples": 47,
+          "soak_samples": 21,
+          "duration_seconds": 45.62199115,
+          "peak_bytes": 2133803008,
+          "window_growth_bytes": 206489600.0,
+          "first_window_median_bytes": 1870860288,
+          "last_window_median_bytes": 2077349888.0
+        }
       }
     ]
   }
