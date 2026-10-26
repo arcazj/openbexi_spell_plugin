@@ -3,6 +3,7 @@
 #include <atomic>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <dlfcn.h>
 #include <sanitizer/asan_interface.h>
@@ -23,8 +24,11 @@ static uint64_t mix(uint64_t value) {
 }
 }
 
-// A strong test hook may replace this weak process-wide ASan callback.
-extern "C" __attribute__((weak)) void __sanitizer_malloc_hook(const volatile void* pointer, size_t size)
+// Register from main, after sanitizer initialization and before native threads.
+// Avoid changing weak-symbol resolution or exporting executable symbols.
+extern "C" int __sanitizer_install_malloc_and_free_hooks(
+    void (*)(const volatile void*, size_t), void (*)(const volatile void*));
+static void v08_capture_allocation(const volatile void* pointer, size_t size)
 {
     using namespace v08_alloc;
     if (!enabled.load(std::memory_order_relaxed) || reporting) return;
@@ -52,9 +56,16 @@ extern "C" __attribute__((weak)) void __sanitizer_malloc_hook(const volatile voi
     busy.clear(std::memory_order_release);
 }
 
-extern "C" void v08_allocation_profile_enable() noexcept
+static void v08_observe_free(const volatile void*) {}
+
+extern "C" bool v08_allocation_profile_start() noexcept
 {
-    v08_alloc::enabled.store(true,std::memory_order_relaxed);
+    // Main-thread-only: the hook installer must run before native threads.
+    const char* setting=std::getenv("OPENBEXI_V08_RESOURCE_DIAGNOSTICS");
+    if (!setting || std::strcmp(setting,"1")!=0) return true;
+    const bool installed=__sanitizer_install_malloc_and_free_hooks(v08_capture_allocation,v08_observe_free)>0;
+    v08_alloc::enabled.store(installed,std::memory_order_relaxed);
+    return installed;
 }
 
 extern "C" void v08_allocation_profile_dump(uint64_t tick) noexcept

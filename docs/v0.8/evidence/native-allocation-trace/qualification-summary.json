@@ -1,0 +1,45 @@
+{
+  "schema": "openbexi.native-allocation-diagnostic/1",
+  "failed_candidate": "af838f7dc09a0bcbee78e9e72639b2cb83449e97",
+  "failed_run_id": 40376625029,
+  "core_jobs_passed": 8,
+  "core_jobs_failed": 6,
+  "failed_profiles": [
+    "child-gate",
+    "native-prompts",
+    "native-handoff",
+    "native-ide",
+    "native-terminal",
+    "native-startup-stress"
+  ],
+  "failure_stage": "Native Context startup before native-ready",
+  "recovery_samples_qualified": false,
+  "shared_library_hook_before": {
+    "tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "cause": "Weak callback collects no allocation samples from the shared library"
+  },
+  "corrected_targeted_tests": {
+    "tests": 61,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "corrected_native_runtime_loader": {
+    "passed": true,
+    "allocations": 390000,
+    "allocated_bytes": 19500000,
+    "samples": 1531,
+    "skipped": 0
+  },
+  "full_v08_qualified": false,
+  "files_sha256": {
+    "dev60-native-startup-failure.log": "74c3d6b6d9d9881a9aaa0b0c7df3a1096c884227ebbe652d766a6ea74289e2e9",
+    "dev60-sampler-before.xml": "5183d8497771896534c240ea6b9713d409d9a4fa0fb7dd4c0d052e919d7ab931",
+    "dev60-targeted.xml": "bccb0c28ae2e3ac206f8c5d8bd12e865339a73204b713fd601aeb9dfa621daa3",
+    "dev60-verified-artifacts.json": "60c991343aaff0689800ea8f6d665bc7c4a6f282cd9d1c41ab96ca20ada26a96",
+    "dev61-native-loader.log": "b66750646ac14307ae4737e76dd35f9e9f60af67129f46d062298011964544f0",
+    "dev61-targeted.xml": "d4f15efae0ca682b8b360b99573f43fbfb1321ba2f9d0ca56d73e43b9cf3c1b1"
+  }
+}

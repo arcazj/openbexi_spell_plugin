@@ -166,6 +166,23 @@ def trace_native_startup(text):
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
+    for relative in (
+        "src/context/src/SPELLcontextMain.C",
+        "src/executor/src/SPELLexecutorMain.C",
+    ):
+        path = source / relative
+        text = path.read_text()
+        entry = "int main( int argc, char** argv )\n{\n"
+        if text.count(entry) != 1 or "v08_allocation_profile_start" in text:
+            raise ValueError("Native profiler entry boundary differs")
+        path.write_text(
+            text.replace(
+                entry,
+                'extern "C" bool v08_allocation_profile_start() noexcept;\n'
+                + entry
+                + "    if (!v08_allocation_profile_start()) return 2;\n",
+            )
+        )
     message_codec = source / "lib/SPELL_IPC/src/SPELLipcMessage.C"
     message_codec.write_text(replace_native_message_codec(message_codec.read_text()))
     native_input = source / "lib/SPELL_IPC/src/SPELLipcInput.C"
@@ -753,7 +770,6 @@ def main():
                 "-pthread",
                 "-fsanitize=address,undefined",
                 "-Wl,--no-undefined",
-                "-Wl,--export-dynamic",
                 *objects,
                 "-L" + sysconfig.get_config_var("LIBDIR"),
                 "-lpython3.13",
@@ -770,6 +786,18 @@ def main():
         )
         programs[name] = sha(program)
     (binaries / "SPELL-Executor_v3").symlink_to("SPELL-Executor")
+    # Symbolize private executable offsets offline without changing dynamic
+    # symbol interposition. Shared-library symbols are already discoverable.
+    context_symbols = []
+    for line in subprocess.check_output(
+        ["nm", "-n", "-S", "--defined-only", str(binaries / "SPELL-Context")],
+        text=True,
+    ).splitlines():
+        fields = line.split()
+        if len(fields) == 4 and fields[2] in {"T", "t", "W", "w"}:
+            context_symbols.append([int(fields[0], 16), int(fields[1], 16), fields[3]])
+    if len(context_symbols) > 20000:
+        raise ValueError("Native diagnostic symbol inventory exceeds bound")
     report = dict(
         schema=1,
         native_start_qualified=False,
@@ -781,6 +809,7 @@ def main():
         original_unit_sha256=before,
         gate_sha256=sha(Path("/candidate/admission_gate.H")),
         candidate_context_sha256=programs["Context"],
+        context_function_symbols=context_symbols,
         candidate_executor_sha256=programs["Executor"],
         original_executor_sha256=sha(runtime / "bin/SPELL-Executor_v3"),
         candidate_shared_runtime_sha256=sha(shared),

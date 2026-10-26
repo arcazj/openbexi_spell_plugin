@@ -241,6 +241,7 @@ def test_compiled_allocator_observation_preserves_live_and_freed_distinction(tmp
 #include <thread>
 #include <chrono>
 int main() {
+    if (!v08_allocation_profile_start()) return 3;
     v08_resource_trace(1);
     void* data = std::malloc(4*1024*1024);
     if (!data) return 2;

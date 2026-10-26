@@ -11,7 +11,18 @@ window growth; installed IDE reaches 2,133,803,008 bytes with 206,489,600 bytes
 growth. No limits or sanitizer settings changed. See
 [the retained evidence](evidence/native-codec/qualification-summary.json).
 
-Dev60 adds opt-in, fixed-capacity ASan allocation-site sampling to identify
+Dev60's diagnostic build introduced native Context startup failures in all six
+rebuilt cohorts before recovery. That run is failed and supplies no recovery
+allocation-site evidence. A compiled shared-library regression separately
+reproduces its weak hook collecting no allocation samples. Dev61 replaces weak
+symbol overriding with explicit sanitizer hook registration from `main`, before
+native threads, and removes executable symbol exporting. Context symbols are
+retained for offline address resolution instead. The 61 targeted checks pass,
+including the shared-library regression; a local probe linked to the verified
+published native runtime loads and records 1,531 samples from 390,000 allocations.
+The corrected whole-native startup and recovery still require hosted acceptance.
+
+The diagnostic uses opt-in, fixed-capacity ASan allocation-site sampling to identify
 the remaining running-process costs. It samples approximately one allocation
 in 256, records six largest sampled stack groups at most every ten seconds,
 and suppresses its own symbol-lookup allocations from the measurements.

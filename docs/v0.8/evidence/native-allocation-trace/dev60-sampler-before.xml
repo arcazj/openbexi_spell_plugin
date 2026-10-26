@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="2.582" timestamp="2026-10-26T19:28:40.267829+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_native_allocation_trace" name="test_compiled_allocation_sampler_is_bounded_and_opt_in[False]" time="1.258" /><testcase classname="tests.test_native_allocation_trace" name="test_compiled_allocation_sampler_is_bounded_and_opt_in[True]" time="1.285"><failure message="assert 1 &lt;= 0&#10; +  where 0 = len([])">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-107/test_compiled_allocation_sampl1')
+shared = True
+
+    @pytest.mark.parametrize("shared", [False, True])
+    def test_compiled_allocation_sampler_is_bounded_and_opt_in(tmp_path, shared):
+        source, binary = tmp_path / "trace.cpp", tmp_path / "trace"
+        source.write_text("""
+    #include "allocation_trace.H"
+    #include &lt;thread&gt;
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    int main(int argc,char**) {
+        if(argc&gt;1)v08_allocation_profile_enable();
+        std::vector&lt;std::thread&gt; workers;
+        for(int t=0;t&lt;4;t++)workers.emplace_back([]{
+            for(int i=0;i&lt;20000;i++){
+                auto* data=new char[64+i%4096];
+                data[0]='x'; asm volatile("" : : "r"(data) : "memory"); delete[] data;
+            }
+        });
+        for(auto&amp; worker:workers)worker.join();
+        for(uint64_t t=1;t&lt;=20000;t++)v08_allocation_profile_dump(t*1000000);
+    }
+    """)
+        flags = [
+            "c++",
+            "-std=c++17",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-O1",
+            "-g",
+            "-pthread",
+            "-fsanitize=address,undefined",
+            "-fno-sanitize-recover=all",
+            "-fno-omit-frame-pointer",
+            "-no-pie",
+            "-I",
+            str(ROOT / "host_runtime/native"),
+        ]
+        objects = []
+        if shared:
+            module = tmp_path / "module.cpp"
+            library = tmp_path / "libtrace.so"
+            module.write_text('#include "allocation_trace.H"\n')
+            source.write_text(
+                source.read_text().replace(
+                    '#include "allocation_trace.H"',
+                    '#include &lt;cstdint&gt;\nextern "C" void v08_allocation_profile_enable() noexcept;\n'
+                    'extern "C" void v08_allocation_profile_dump(uint64_t) noexcept;',
+                )
+            )
+            subprocess.run(
+                flags + ["-shared", "-fPIC", str(module), "-o", str(library)],
+                check=True,
+                capture_output=True,
+                timeout=30,
+            )
+            objects.append(str(library))
+        subprocess.run(
+            flags + [str(source), *objects, "-o", str(binary)],
+            check=True,
+            capture_output=True,
+            timeout=30,
+        )
+        env = dict(
+            os.environ, ASAN_OPTIONS="detect_leaks=0:abort_on_error=1", UBSAN_OPTIONS="halt_on_error=1"
+        )
+        for enabled in (False, True):
+            result = subprocess.run(
+                [str(binary), *(["enabled"] if enabled else [])],
+                env=env,
+                capture_output=True,
+                check=True,
+                timeout=30,
+            )
+            assert not result.stdout
+            if not enabled:
+                assert not result.stderr
+                continue
+            lines = result.stderr.decode().splitlines()
+            totals = [line for line in lines if line.startswith("V08_ALLOC ")]
+            sites = [line for line in lines if line.startswith("V08_ALLOC_SITE ")]
+            assert len(totals) == 2
+&gt;           assert 1 &lt;= len(sites) &lt;= 12
+E           assert 1 &lt;= 0
+E            +  where 0 = len([])
+
+server/tests/test_native_allocation_trace.py:94: AssertionError</failure></testcase></testsuite></testsuites>

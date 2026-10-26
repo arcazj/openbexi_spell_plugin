@@ -5,18 +5,21 @@ from pathlib import Path
 import re
 import subprocess
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_compiled_allocation_sampler_is_bounded_and_opt_in(tmp_path):
+@pytest.mark.parametrize("shared", [False, True])
+def test_compiled_allocation_sampler_is_bounded_and_opt_in(tmp_path, shared):
     source, binary = tmp_path / "trace.cpp", tmp_path / "trace"
     source.write_text("""
 #include "allocation_trace.H"
 #include <thread>
 #include <string>
 #include <vector>
-int main(int argc,char**) {
-    if(argc>1)v08_allocation_profile_enable();
+int main() {
+    if(!v08_allocation_profile_start())return 2;
     std::vector<std::thread> workers;
     for(int t=0;t<4;t++)workers.emplace_back([]{
         for(int i=0;i<20000;i++){
@@ -28,27 +31,43 @@ int main(int argc,char**) {
     for(uint64_t t=1;t<=20000;t++)v08_allocation_profile_dump(t*1000000);
 }
 """)
+    flags = [
+        "c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-pthread",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-fno-omit-frame-pointer",
+        "-no-pie",
+        "-I",
+        str(ROOT / "host_runtime/native"),
+    ]
+    objects = []
+    if shared:
+        module = tmp_path / "module.cpp"
+        library = tmp_path / "libtrace.so"
+        module.write_text('#include "allocation_trace.H"\n')
+        source.write_text(
+            source.read_text().replace(
+                '#include "allocation_trace.H"',
+                '#include <cstdint>\nextern "C" bool v08_allocation_profile_start() noexcept;\n'
+                'extern "C" void v08_allocation_profile_dump(uint64_t) noexcept;',
+            )
+        )
+        subprocess.run(
+            flags + ["-shared", "-fPIC", str(module), "-o", str(library)],
+            check=True,
+            capture_output=True,
+            timeout=30,
+        )
+        objects.append(str(library))
     subprocess.run(
-        [
-            "c++",
-            "-std=c++17",
-            "-Wall",
-            "-Wextra",
-            "-Werror",
-            "-O1",
-            "-g",
-            "-pthread",
-            "-fsanitize=address,undefined",
-            "-fno-sanitize-recover=all",
-            "-fno-omit-frame-pointer",
-            "-no-pie",
-            "-Wl,--export-dynamic",
-            "-I",
-            str(ROOT / "host_runtime/native"),
-            str(source),
-            "-o",
-            str(binary),
-        ],
+        flags + [str(source), *objects, "-o", str(binary)],
         check=True,
         capture_output=True,
         timeout=30,
@@ -57,6 +76,7 @@ int main(int argc,char**) {
         os.environ, ASAN_OPTIONS="detect_leaks=0:abort_on_error=1", UBSAN_OPTIONS="halt_on_error=1"
     )
     for enabled in (False, True):
+        env["OPENBEXI_V08_RESOURCE_DIAGNOSTICS"] = "1" if enabled else "0"
         result = subprocess.run(
             [str(binary), *(["enabled"] if enabled else [])],
             env=env,
