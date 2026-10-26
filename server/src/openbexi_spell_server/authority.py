@@ -364,6 +364,22 @@ class ExecutionAuthority:
                 "SELECT * FROM session_closures WHERE connection_id=?", (connection,)
             ).fetchone()
             if pending is None:
+                if self.liveness is not None:
+                    expired = self.store.db.execute(
+                        "SELECT 1 FROM sessions s JOIN controller_leases l ON l.connection_id=s.id "
+                        "WHERE s.id=? AND s.subject=? AND s.active=0 AND l.expired=1",
+                        (connection, subject),
+                    ).fetchone()
+                    if expired:
+                        # Expiry already durably finished fencing this exact
+                        # connection. Desktop cleanup must not touch a successor.
+                        return self._record(
+                            subject,
+                            "session.close",
+                            key,
+                            payload,
+                            {"closed": True, "already_closed": True},
+                        )
                 self._session(subject, connection)
                 self.store.db.execute(
                     "INSERT INTO session_closures VALUES(?,?,?,?)",

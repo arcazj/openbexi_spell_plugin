@@ -261,3 +261,47 @@ def test_many_heartbeats_keep_bounded_rows_and_redacted_audit(leased):
     assert authority.store.db.execute("SELECT COUNT(*) FROM authority_requests").fetchone()[0] == 1
     assert authority.store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0] == before
     assert session["heartbeat_nonce"] not in json.dumps(authority.store.snapshot())
+
+
+def test_expired_session_cleanup_acknowledges_only_its_durable_fence(leased):
+    authority, now = leased
+    old = Client(authority, "alice")
+    execution = old.reserve()
+    now[0] += 5
+    authority.liveness.expire()
+    fresh = Client(authority, "alice")
+    fresh.rebind(execution["id"], 1)
+    before = dict(authority.store.db.execute("SELECT * FROM executions").fetchone())
+    payload = {"connection_id": old.connection}
+    with pytest.raises(Fault, match="connection_denied"):
+        authority.mutate("bob", "session.close", "wrong-owner", payload)
+    closed = old.call("session.close", payload, "close-expired")
+    assert closed == {"closed": True, "already_closed": True}
+    assert old.call("session.close", payload, "close-expired") == dict(closed, replayed=True)
+    assert dict(authority.store.db.execute("SELECT * FROM executions").fetchone()) == before
+    assert authority.store.db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+
+
+def test_retained_native_context_requires_default_lease_and_owns_watchdog(tmp_path, source):
+    from openbexi_spell_server.services import Context
+
+    store = ContextStore(tmp_path / "native", "A")
+    try:
+        app = Context(
+            store,
+            "a" * 64,
+            {"alice": PERMISSIONS},
+            worker_slots=SLOTS,
+            approved_sources=source["config"],
+            worker_launch="retained-single-use",
+            worker_credentials={
+                "profile": "single-host-preflight",
+                "identities": {"b" * 64: {"slot": "slot-0", "incarnation": "incarnation-0"}},
+            },
+        )
+        assert app.authority.liveness.seconds == 30
+        assert app.authority.liveness.thread.is_alive()
+        app.close()
+        assert not app.authority.liveness.thread.is_alive()
+    finally:
+        store.close()

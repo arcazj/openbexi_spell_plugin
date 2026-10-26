@@ -199,14 +199,18 @@ def counters(command, name, directory):
             "python3",
             "-c",
             "import json,sys;from pathlib import Path;"
-            "root=Path('/proc')/sys.argv[1]/'root/workspace';"
-            "print(json.dumps({k:int((root/('handoff-'+k)).read_text()) for k in ('root','background','child')}))",
+            "proc=Path('/proc')/sys.argv[1];root=proc/'root/workspace';"
+            "group=Path('/sys/fs/cgroup')/(proc/'cgroup').read_text().strip().split('0::',1)[1].lstrip('/');"
+            "print(json.dumps(dict(counters={k:int((root/('handoff-'+k)).read_text()) for k in ('root','background','child')},"
+            "memory={k:(group/k).read_text().strip() for k in ('memory.current','memory.peak','memory.max','memory.events')})))",
             str(info["State"]["Pid"]),
         )
     )
+    with (directory / "handoff-memory-observations.jsonl").open("a") as output:
+        output.write(json.dumps(result["memory"]) + "\n")
     with (directory / "handoff-counter-observations.jsonl").open("a") as output:
-        output.write(json.dumps(result) + "\n")
-    return result
+        output.write(json.dumps(result["counters"]) + "\n")
+    return result["counters"]
 
 
 def qualify_reconnect(

@@ -82,7 +82,7 @@ def main():
             for key in ("tests", "failures", "errors", "skipped")
         }
         report["passed"] = result.returncode == 0 and report["junit"] == dict(
-            tests=93, failures=0, errors=0, skipped=0
+            tests=95, failures=0, errors=0, skipped=0
         )
     except subprocess.TimeoutExpired as error:
         (output / "tests.log").write_bytes(

@@ -585,7 +585,9 @@ def qualify_consumption_fence(
         "--pids-limit",
         "256",
         "--memory",
-        "768m",
+        # Two live Executors now remain active through a full 30-second lease
+        # timeout. Match the primary two-Executor profile; retain cgroup peaks.
+        "1024m" if live_handoff else "768m",
         "--cpus",
         "2",
         "--cpu-shares",

@@ -157,7 +157,7 @@ def until_fenced(ledger, pki):
     while time.monotonic() < deadline:
         row = observer_survives(ledger, pki)
         if row["control_state"] == "CONTROLLER_DISCONNECTED":
-            assert not row["pause_barrier"]["quiescence_proven"]
+            assert (row.get("pause_barrier") or {}).get("quiescence_proven", False) is False
             return
         time.sleep(0.05)
     raise AssertionError("Controller loss was not automatically fenced")

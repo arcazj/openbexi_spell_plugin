@@ -206,7 +206,11 @@ def test_actual_panel_reconnects_closed_session_with_cached_proof(desktop, pki):
     ledger = desktop["ledger"]
     eid, old = ledger["execution"]["id"], ledger["connection"]
     client.authority("A", "session.close", {"connection_id": old}, key="disconnect-original")
-    assert client.has_controller("A", eid)  # A stale local proof must not hide recovery.
+    assert not client.has_controller("A", eid)
+    # Explicit close now discards the local proof. Reintroduce the original
+    # stale receipt to retain the hostile/stale-cache panel regression.
+    assert client.remember_controller("A", ledger["execution"])
+    assert client.has_controller("A", eid)
     panel = SpellServerPanel()
     panel.client = client
     panel.connections["A"] = old
