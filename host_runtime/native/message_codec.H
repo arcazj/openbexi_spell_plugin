@@ -30,6 +30,13 @@ void v08_append_field(std::string& out, const std::string& key, const std::strin
 
 std::string SPELLipcMessage::data() const
 {
+    std::string result;
+    v08DataInto(result);
+    return result;
+}
+
+void SPELLipcMessage::v08DataInto(std::string& result) const
+{
     const std::string sequence = ISTR(m_sequence), key = ISTR(m_key);
     const std::pair<const std::string*, const std::string*> metadata[] = {
         {&MessageField::FIELD_SENDER_ID, &m_senderId},
@@ -48,7 +55,7 @@ std::string SPELLipcMessage::data() const
     };
     for (const auto& field : metadata) account(*field.first, *field.second);
     for (const auto& field : m_properties) account(field.first, field.second);
-    std::string result;
+    result.clear();
     // The socket layer prepends one compression byte. Reserve its space while
     // preserving the unframed data() API and its exact wire bytes.
     result.reserve(size + 1);
@@ -56,7 +63,6 @@ std::string SPELLipcMessage::data() const
         v08_append_field(result, *field.first, *field.second);
     for (const auto& field : m_properties)
         v08_append_field(result, field.first, field.second);
-    return result;
 }
 
 void SPELLipcMessage::fromData(std::string data)
@@ -71,6 +77,7 @@ struct V08FieldView {
 };
 struct V08DecodeScratch {
     std::vector<V08FieldView> fields;
+    std::string id, sender, receiver, key;
     bool busy=false;
 };
 // Input threads own their cache. A nested decode gets independent storage.
@@ -84,12 +91,16 @@ struct V08DecodeLease {
         scratch.fields.clear();
         if (scratch.fields.capacity()>4096)
             std::vector<V08FieldView>().swap(scratch.fields);
+        for (auto* value:{&scratch.id,&scratch.sender,&scratch.receiver,&scratch.key}) {
+            if (value->capacity()>1024*1024) std::string().swap(*value);
+            else value->clear();
+        }
         scratch.busy=false;
     }
 };
 }
 
-void SPELLipcMessage::v08ReadData(const std::string& data)
+void SPELLipcMessage::v08ReadData(std::string_view data)
 {
     // Input dispatch used to construct a fresh message for every packet. Reset
     // every metadata member while retaining only the owned property storage.
@@ -99,7 +110,7 @@ void SPELLipcMessage::v08ReadData(const std::string& data)
     v08FromData(data);
 }
 
-void SPELLipcMessage::v08FromData(const std::string& data)
+void SPELLipcMessage::v08FromData(std::string_view data)
 {
     static thread_local V08DecodeScratch cached;
     V08DecodeLease lease(cached);
@@ -128,11 +139,13 @@ void SPELLipcMessage::v08FromData(const std::string& data)
         std::sort(fields.begin(),fields.end(),[](const auto& a,const auto& b) {
             return a.name<b.name || (a.name==b.name && a.ordinal<b.ordinal);
         });
-        std::string id=m_id, sender=m_senderId, receiver=m_receiverId;
+        auto& scratch=lease.scratch;
+        auto& id=scratch.id; auto& sender=scratch.sender; auto& receiver=scratch.receiver;
+        id=m_id; sender=m_senderId; receiver=m_receiverId;
         long sequence=m_sequence;
         int ipcKey=m_key;
         SPELLipcMessageType type=m_type;
-        std::string key;
+        auto& key=scratch.key;
         for (size_t i=0;i<fields.size();++i) {
             const auto& field=fields[i];
             if (i+1<fields.size() && fields[i+1].name==field.name) continue;

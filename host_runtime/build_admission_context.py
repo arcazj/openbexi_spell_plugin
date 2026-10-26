@@ -30,12 +30,13 @@ def enable_native_message_moves(text):
     anchor = "SPELLipcMessage( const SPELLipcMessage& msg );"
     if text.count(anchor) != 1:
         raise ValueError("Native message move boundary differs")
-    return text.replace(
+    return "#include <string_view>\n" + text.replace(
         anchor,
         anchor + "\n    SPELLipcMessage(SPELLipcMessage&&) = default;"
         "\n    SPELLipcMessage& operator=(SPELLipcMessage&&) = default;"
-        "\n    void v08FromData(const std::string& data);"
-        "\n    void v08ReadData(const std::string& data);",
+        "\n    void v08FromData(std::string_view data);"
+        "\n    void v08ReadData(std::string_view data);"
+        "\n    void v08DataInto(std::string& result) const;",
     )
 
 
@@ -112,22 +113,114 @@ def replace_native_message_codec(text):
 
 
 def transfer_native_output(text):
-    """Keep framing/compression/error behavior; transfer the owned wire buffer."""
+    """Reuse the writer-owned wire buffer behind its original output mutex."""
     if hashlib.sha256(text.encode()).hexdigest() != (
         "ead687e6c52a06552b4709fd645c7d78d781423590a2159131158e32e1b3ec02"
     ):
         raise ValueError("Native output transfer preimage differs")
+    release = """        struct WireRelease {
+            std::string& bytes;
+            ~WireRelease() {
+                if (bytes.capacity()>1024*1024) std::string().swap(bytes);
+                else bytes.clear();
+            }
+        } release{m_v08Wire};
+        std::string& data = m_v08Wire;
+        msg.v08DataInto(data);"""
     for old, new in (
+        ("        std::string data = msg.data();", release),
         (
             "data = (doCompression ? COMPRESSION_FLAG_TRUE_STR : COMPRESSION_FLAG_FALSE_STR) + data;",
             "data.insert(0, doCompression ? COMPRESSION_FLAG_TRUE_STR : COMPRESSION_FLAG_FALSE_STR);",
         ),
-        ("writeData( data );", "writeData( std::move(data) );"),
+        ("writeData( data );", "v08WriteData( data );"),
+        (
+            "void SPELLipcOutput::writeData( std::string data )\n{",
+            "void SPELLipcOutput::writeData( std::string data )\n"
+            "{\n    v08WriteData(data);\n}\n\n"
+            "void SPELLipcOutput::v08WriteData( const std::string& data )\n{",
+        ),
     ):
         if text.count(old) != 1:
             raise ValueError("Native output transfer boundary differs")
         text = text.replace(old, new)
     return "#include <utility>\n" + text
+
+
+def reuse_native_output_header(text):
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "3ca50036e35553abc76752bf0c2421c74c6d728c4e6512e3272c4f10619a2bf1"
+    ):
+        raise ValueError("Native output header preimage differs")
+    anchor = "virtual void writeData( std::string data );"
+    if text.count(anchor) != 1:
+        raise ValueError("Native output header boundary differs")
+    return text.replace(
+        anchor,
+        anchor + "\n        void v08WriteData(const std::string& data);"
+        "\n        std::string m_v08Wire;",
+    )
+
+
+def borrow_native_message_callbacks(source):
+    """Borrow only synchronous, read-only notification callbacks, never queues."""
+    names = (
+        "include/SPELL_CTX/SPELLexecutorListener.H",
+        "include/SPELL_CTX/SPELLexecutor.H",
+        "include/SPELL_CTX/SPELLclientNotifier.H",
+        "lib/SPELL_CTX/src/SPELLexecutor.C",
+        "lib/SPELL_CTX/src/SPELLclientNotifier.C",
+    )
+    for name in names:
+        path = source / name
+        text = path.read_text()
+        anchor = "processMessageFromExecutor( SPELLipcMessage msg )"
+        if text.count(anchor) != 1:
+            raise ValueError("Native read-only callback boundary differs: " + name)
+        path.write_text(
+            text.replace(
+                anchor, "processMessageFromExecutor( const SPELLipcMessage& msg )"
+            )
+        )
+
+
+def transfer_native_line_notification(source):
+    """Keep the const-reference API and give owned line messages a no-copy path."""
+    path = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    text = path.read_text()
+    signature = "void SPELLserverCif::sendGUIMessage( const SPELLipcMessage& msg )"
+    start = text.index(signature)
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if (
+        hashlib.sha256(original.encode()).hexdigest()
+        != "581a5d25b0660c6a30fb72ed2a791a312c441e79ef6ee5df7ce2d28fc3a6a49a"
+    ):
+        raise ValueError("Native GUI send body preimage differs")
+    owned = original.replace(
+        signature, "void SPELLserverCif::sendGUIMessage( SPELLipcMessage&& msg )"
+    ).replace("SPELLipcMessage toSend(msg);", "SPELLipcMessage& toSend = msg;")
+    line_start = text.index("void SPELLserverCif::specificNotifyLine()")
+    line_end = text.index("\n}", line_start) + 2
+    line = text[line_start:line_end]
+    if line.count("sendGUIMessage(msg);") != 1:
+        raise ValueError("Native line notification boundary differs")
+    text = (
+        text[:line_start]
+        + line.replace("sendGUIMessage(msg);", "sendGUIMessage(std::move(msg));")
+        + text[line_end:]
+    )
+    path.write_text("#include <utility>\n" + text + "\n" + owned + "\n")
+    path = source / "include/SPELL_CIFS/SPELLserverCif.H"
+    text = path.read_text()
+    anchor = "void sendGUIMessage( const SPELLipcMessage& msg );"
+    if text.count(anchor) != 1:
+        raise ValueError("Native GUI owned-send declaration differs")
+    path.write_text(
+        text.replace(
+            anchor, anchor + "\n        void sendGUIMessage( SPELLipcMessage&& msg );"
+        )
+    )
 
 
 def replace_native_spawn(text):
@@ -278,6 +371,8 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     message_codec.write_text(replace_native_message_codec(message_codec.read_text()))
     output = source / "lib/SPELL_IPC/src/SPELLipcOutput.C"
     output.write_text(transfer_native_output(output.read_text()))
+    output_header = source / "include/SPELL_IPC/SPELLipcOutput.H"
+    output_header.write_text(reuse_native_output_header(output_header.read_text()))
     native_input = source / "lib/SPELL_IPC/src/SPELLipcInput.C"
     if (
         sha(native_input)
@@ -285,6 +380,25 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     ):
         raise ValueError("Native resource observation preimage differs")
     input_text = native_input.read_text()
+    for old, new in (
+        (
+            '    std::string dataForMsg = "";',
+            "    std::string uncompressed;\n    std::string_view dataForMsg;",
+        ),
+        (
+            "dataForMsg = decompressor.uncompress();",
+            "uncompressed = decompressor.uncompress(); dataForMsg = uncompressed;",
+        ),
+        (
+            "dataForMsg = m_packet.substr(1,m_packet.size()-1);",
+            "dataForMsg = std::string_view(m_packet).substr(1);",
+        ),
+        ('" Message: " + dataForMsg', '" Message: " + std::string(dataForMsg)'),
+        ("    msg.setSender(msg.getSender());", ""),
+    ):
+        if input_text.count(old) != 1:
+            raise ValueError("Native borrowed input boundary differs")
+        input_text = input_text.replace(old, new)
     decode = "msg.fromData( dataForMsg );"
     if input_text.count(decode) != 1:
         raise ValueError("Native input decode boundary differs")
@@ -696,6 +810,8 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         from native_terminal_patch import patch_terminal_tree
 
         patch_terminal_tree(source)
+    borrow_native_message_callbacks(source)
+    transfer_native_line_notification(source)
     return before
 
 
@@ -954,6 +1070,17 @@ def main():
         gate_sha256=sha(Path("/candidate/admission_gate.H")),
         candidate_context_sha256=programs["Context"],
         context_function_symbols=context_symbols,
+        stream_header_sha256={
+            name: sha(source / name)
+            for name in (
+                "include/SPELL_IPC/SPELLipcMessage.H",
+                "include/SPELL_IPC/SPELLipcOutput.H",
+                "include/SPELL_CTX/SPELLexecutorListener.H",
+                "include/SPELL_CTX/SPELLexecutor.H",
+                "include/SPELL_CTX/SPELLclientNotifier.H",
+                "include/SPELL_CIFS/SPELLserverCif.H",
+            )
+        },
         candidate_executor_sha256=programs["Executor"],
         original_executor_sha256=sha(runtime / "bin/SPELL-Executor_v3"),
         candidate_shared_runtime_sha256=sha(shared),

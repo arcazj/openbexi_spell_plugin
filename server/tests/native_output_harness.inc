@@ -35,6 +35,8 @@ struct SPELLipcOutput {
     OutputSocket m_socket;OutputChannel m_channel;OutputTime m_lastSentTime;
     void send(SPELLipcMessage&);
     void writeData(std::string);
+    void v08WriteData(const std::string&);
+    std::string m_v08Wire;
 };
 #include "output_methods.inc"
 #undef LOG_ERROR

@@ -86,7 +86,10 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
     ):
         output_text = output if name == "before" else builder.transfer_native_output(output)
         methods = []
-        for signature in ("void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("):
+        signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+        if name == "after":
+            signatures.append("void SPELLipcOutput::v08WriteData(")
+        for signature in signatures:
             begin = output_text.index(signature)
             end_method = output_text.index("\n}", begin) + 2
             methods.append(output_text[begin:end_method])
