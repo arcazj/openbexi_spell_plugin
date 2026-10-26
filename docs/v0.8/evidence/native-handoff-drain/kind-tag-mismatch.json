@@ -1,0 +1,30 @@
+{
+  "schema": "openbexi.v08.kind-tag-mismatch/1",
+  "failed_candidate": "dd810267fc0963812dd3906b51baaa90f7621c39",
+  "failed_workflow": 40258339479,
+  "failed_job": 121364956510,
+  "failed_artifact": 12623665601,
+  "failed_artifact_sha256": "494398f001a582b8ed6e79f2da3e3c9a30cd66221698162272878eef559a779d",
+  "observation": "context-a rollout timed out before runtime probes; artifact contains only rendered resources",
+  "workflow_loaded_image": "openbexi-spell-server:0.8.0.dev47-prelaunch",
+  "manifest_requested_image": "openbexi-spell-server:0.8.0.dev48-prelaunch",
+  "cause_supported_by": "Exact failed source .github/workflows/v08-kubernetes-kind.yml and deploy/v0.8/render_kubernetes.py; rollout timeout in job log. No Pod status was retained by that workflow.",
+  "fix_commit": "40f38fb10690652819b367eafd9695f3ad0c69ce",
+  "fix": "Build/load both image tags directly from rendered deployment definitions; capture bounded workload status before cluster deletion",
+  "qualification": "Corrected exact-source workflow passed; earlier failed runs remain failed. Full Kubernetes acceptance remains unqualified.",
+  "full_v08_qualified": false,
+  "other_failed_workflow_same_tag_mismatch": 40258112227,
+  "local_diagnostic_checks": [
+    "Pod status excludes environment/annotations/messages",
+    "Pod count bounded to 64",
+    "Missing kubectl retains collection_error_type without leaking stderr"
+  ],
+  "corrected_workflow": 40258910971,
+  "corrected_job": 121366749578,
+  "corrected_artifact": 12623855647,
+  "corrected_artifact_sha256": "e659c6632cd37fdd55fe2a65d6a12f6dd90e060f16e71a075f56c740e6eadd2e",
+  "corrected_workflow_passed": true,
+  "corrected_artifact_digest_and_crc_verified": true,
+  "corrected_workloads_running_ready": 5,
+  "corrected_prelaunch_before_after_passed": true
+}

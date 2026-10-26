@@ -1,6 +1,6 @@
 # Current limitations
 
-SPELL `0.8.0.dev47` and the paired IDE `1.2.1.dev3` are development candidates.
+SPELL `0.8.0.dev48` and the paired IDE `1.2.1.dev3` are development candidates.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
@@ -32,6 +32,13 @@ freeze and explicit resume. Real mTLS tests cover the shared eight-rotation
 capacity and reject a ninth without revoking current authority. See
 [LIVE_HANDOFF.md](LIVE_HANDOFF.md) and its exact-source receipt.
 
+Dev48 adds an agent transport drain before host freeze, after retained dev47
+failures showed a captured old-epoch query and an interrupted command-poll TLS
+exchange. No new RPC enters during the hold; only a fresh one-shot activation
+can resume the agent. This acknowledgement is not native family quiescence.
+The host freeze and settled-journal requirements remain mandatory. See
+[NATIVE_HANDOFF_DRAIN.md](NATIVE_HANDOFF_DRAIN.md).
+
 The paired installed IDE can send Run/Continue, Step, Pause, Abort and Close for
 an existing native execution through an explicitly enabled Listener route. The
 client retains original delivered proofs, sends once and has no local fallback.
@@ -61,7 +68,10 @@ while the other nine did and no worker was OOM-killed. Its cause remains
 unresolved; see the retained terminal-recheck-failure receipt. New bounded
 startup-stage markers and process/task snapshots retain evidence for subsequent
 failures. Successful startup stress is coverage, not an established fix for an
-unreproduced failure. Earlier failed workflow and concurrency
+unreproduced failure. The `5ec9429` stress failure again stopped after one child's
+binding request. Dev48 preserves its first failure separately from cleanup and
+retains bounded status/code/cause categories; it does not establish that fault's
+cause. Earlier failed workflow and concurrency
 receipts remain historical failed evidence.
 
 There is no automatic worker reuse, uncertain-command replay or authority
@@ -73,7 +83,9 @@ identity configuration changes require process restart.
 
 Public worker launch, complete debugger variables/breakpoints, browser/WSS gap
 recovery and Git collaboration remain unfinished or unqualified. The installed
-observer Listener-loss/reconnect component preserves advancing native processes;
+observer Listener-loss/reconnect component now covers twenty distinct concurrent
+certificate identities and preserves ten advancing executions and thirty native
+processes. All observers fail closed during the outage and remain read-only;
 the separate explicit controller-session reconnect component also preserves
 the original family. Neither establishes all abrupt controller fault recovery
 or twenty-viewer browser acceptance.

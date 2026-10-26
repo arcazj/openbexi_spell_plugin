@@ -36,3 +36,30 @@ Qualification must include focused mTLS regression tests, all service checks,
 the rebuilt native handoff and paired IDE profiles, terminal cases and fresh
 startup stress at the exact candidate. Full-v0.8 release gates remain blocked
 until their complete acceptance criteria pass.
+
+## Executed dev48 checkpoint
+
+Candidate `40f38fb10690652819b367eafd9695f3ad0c69ce`, paired with IDE
+`faf2052ba764cbc147ef05f261164853e08489c8`, passed all thirteen jobs in workflow
+40258910955 and all four deployment/inventory workflows. Its 1,094 service tests
+include the real-mTLS drain and failure-preserving cleanup regressions.
+Both actual-native and installed-IDE profiles record three zero-active-RPC
+drains, two ownership transfers and a same-owner reconnect with the same eight
+processes. The sixteen-case terminal matrix and twenty-four fresh root/child
+startup-and-settlement cycles pass. Historical startup causes remain unresolved.
+
+Twenty distinct installed IDE certificate identities now concurrently observe
+ten native executions across Listener SIGKILL and replacement. All thirty native
+PIDs survive, every procedure advances, every observer remains read-only and
+outage reads fail closed. No browser/WSS result is inferred.
+
+The initial dev48 kind runs exposed a separate image-tag mismatch: CI loaded
+dev47 while the renderer requested dev48. Building and loading image tags
+directly from the renderer fixes that mismatch. The corrected kind prelaunch
+workflow passes and retains bounded status for all five ready workloads. Failed
+runs remain in [the image-mismatch receipt](evidence/native-handoff-drain/kind-tag-mismatch.json).
+
+Seventeen final artifact digests/ZIP checks and their recorded repository source
+hashes were verified. See [the qualification receipt](evidence/native-handoff-drain/qualification-summary.json),
+[retained prior failures](evidence/native-handoff-drain/prior-failures.json)
+and [the test report](TEST_REPORT.md). All eleven full-release gates remain false.

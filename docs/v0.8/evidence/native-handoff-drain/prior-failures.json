@@ -1,0 +1,574 @@
+{
+  "schema": "openbexi.v08.retained-failures/1",
+  "full_v08_qualified": false,
+  "attempts": [
+    {
+      "artifact_id": 12622378963,
+      "name": "v08-native-launch-native-handoff-5245c8c8e5e1ff81073e093176daf1e307da7a26",
+      "sha256": "3939ff322c9843085903497e5727d3687de127f000b8d8279104a353e0df5f6c",
+      "zip_integrity": true,
+      "candidate": "5ec942985689c06b0bff2f1f820ab54928d8547d",
+      "workflow_run": 40257178288,
+      "error": "RuntimeError: Native worker failed before native-handoff-activated",
+      "verified_source_files": 121,
+      "passed": false,
+      "events": [
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "reason": "Native RUN forwarding identity was not admitted"
+        },
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "reason": "Original native operation epoch is fenced"
+        },
+        {
+          "event": "native-worker-failed",
+          "error": "RuntimeError",
+          "hold_retained": true,
+          "runtime_enabled": false,
+          "causes": [
+            {
+              "type": "RuntimeError",
+              "message": "REQ_EXEC_INFO: {'message': {'fields': {'ErrorMsg': 'V08_CONTEXT_MUTATION_DENIED', 'ErrorReason': 'Native Context GUI admission unavailable or rejected', 'FatalError': 'False'}, 'id': 'RSP_V08_GUI_DENIED', 'receiver': 'GUI', 'sender': 'CTX', 'type': 7}, 'ok': False, 'seq': 47}",
+              "stack": [
+                {
+                  "file": "agent.py",
+                  "line": 1177,
+                  "function": "main"
+                },
+                {
+                  "file": "agent.py",
+                  "line": 927,
+                  "function": "run"
+                },
+                {
+                  "file": "handoff_probe.py",
+                  "line": 91,
+                  "function": "run_handoff_probe"
+                },
+                {
+                  "file": "control_journal.py",
+                  "line": 101,
+                  "function": "dispatch"
+                },
+                {
+                  "file": "native_candidate.py",
+                  "line": 462,
+                  "function": "request"
+                },
+                {
+                  "file": "native_candidate.py",
+                  "line": 222,
+                  "function": "exchange"
+                }
+              ]
+            }
+          ],
+          "stack": [
+            {
+              "file": "agent.py",
+              "line": 1177,
+              "function": "main"
+            },
+            {
+              "file": "agent.py",
+              "line": 927,
+              "function": "run"
+            },
+            {
+              "file": "handoff_probe.py",
+              "line": 91,
+              "function": "run_handoff_probe"
+            },
+            {
+              "file": "control_journal.py",
+              "line": 101,
+              "function": "dispatch"
+            },
+            {
+              "file": "native_candidate.py",
+              "line": 462,
+              "function": "request"
+            },
+            {
+              "file": "native_candidate.py",
+              "line": 222,
+              "function": "exchange"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_id": 12622453888,
+      "name": "v08-native-launch-native-ide-5245c8c8e5e1ff81073e093176daf1e307da7a26",
+      "sha256": "ab36254abddd6b48667a132135c5ddea52d32e94dd4527c66bced2a79fd8a127",
+      "zip_integrity": true,
+      "candidate": "5ec942985689c06b0bff2f1f820ab54928d8547d",
+      "workflow_run": 40257178288,
+      "error": "RuntimeError: Native worker failed before native-handoff-activated",
+      "verified_source_files": 121,
+      "passed": false,
+      "events": [
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "reason": "Native RUN forwarding identity was not admitted"
+        },
+        {
+          "event": "native-handoff-ready",
+          "members": 2,
+          "background_thread": true
+        },
+        {
+          "event": "native-handoff-activated",
+          "runtime_identity_rotated": true,
+          "rotation": 1
+        },
+        {
+          "event": "native-worker-failed",
+          "error": "context_unavailable",
+          "hold_retained": true,
+          "runtime_enabled": false,
+          "causes": [
+            {
+              "type": "Fault",
+              "message": "context_unavailable",
+              "stack": [
+                {
+                  "file": "agent.py",
+                  "line": 1177,
+                  "function": "main"
+                },
+                {
+                  "file": "agent.py",
+                  "line": 927,
+                  "function": "run"
+                },
+                {
+                  "file": "handoff_probe.py",
+                  "line": 24,
+                  "function": "run_handoff_probe"
+                },
+                {
+                  "file": "control_journal.py",
+                  "line": 166,
+                  "function": "poll_owner"
+                },
+                {
+                  "file": "transport.py",
+                  "line": 125,
+                  "function": "call"
+                }
+              ]
+            },
+            {
+              "type": "BrokenPipeError",
+              "message": "[Errno 32] Broken pipe",
+              "stack": [
+                {
+                  "file": "transport.py",
+                  "line": 108,
+                  "function": "call"
+                },
+                {
+                  "file": "client.py",
+                  "line": 1386,
+                  "function": "request"
+                },
+                {
+                  "file": "client.py",
+                  "line": 1432,
+                  "function": "_send_request"
+                },
+                {
+                  "file": "client.py",
+                  "line": 1381,
+                  "function": "endheaders"
+                },
+                {
+                  "file": "client.py",
+                  "line": 1141,
+                  "function": "_send_output"
+                },
+                {
+                  "file": "client.py",
+                  "line": 1105,
+                  "function": "send"
+                },
+                {
+                  "file": "ssl.py",
+                  "line": 1263,
+                  "function": "sendall"
+                },
+                {
+                  "file": "ssl.py",
+                  "line": 1232,
+                  "function": "send"
+                }
+              ]
+            }
+          ],
+          "stack": [
+            {
+              "file": "agent.py",
+              "line": 1177,
+              "function": "main"
+            },
+            {
+              "file": "agent.py",
+              "line": 927,
+              "function": "run"
+            },
+            {
+              "file": "handoff_probe.py",
+              "line": 24,
+              "function": "run_handoff_probe"
+            },
+            {
+              "file": "control_journal.py",
+              "line": 166,
+              "function": "poll_owner"
+            },
+            {
+              "file": "transport.py",
+              "line": 125,
+              "function": "call"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_id": 12623042788,
+      "name": "v08-native-launch-native-startup-stress-5245c8c8e5e1ff81073e093176daf1e307da7a26",
+      "sha256": "45ca86b3034506bf19b8cadbcfc863222d5095ec1f52472b7e315d4034619504",
+      "zip_integrity": true,
+      "candidate": "5ec942985689c06b0bff2f1f820ab54928d8547d",
+      "workflow_run": 40257178288,
+      "error": "OSError: [Errno 39] Directory not empty: '/tmp/spell-native-launch-w4yjb5vt/authority'",
+      "verified_source_files": 121,
+      "passed": false,
+      "member_stages": {
+        "spell-v08-launch-a477c1ed81ee-0.startup.json": {
+          "133cd3a717e22959": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "bc83376b60fe009d": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-1.startup.json": {
+          "1cc6faa71d895bb6": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "b3d30e6b5c106e9a": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-2.startup.json": {
+          "01f795a70e1def07": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "aa49496b5669e2c3": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-3.startup.json": {
+          "0a8caca712f49abc": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "a1b4306b519333a8": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-4.startup.json": {
+          "df29436b749e31a9": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "f170c7a704fb9c0d": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-5.startup.json": {
+          "d59f1a6b6ef6fbe6": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "fa20eea709e92aaa": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-observed",
+            "binding-requested",
+            "login-published",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-6.startup.json": {
+          "cceef56b6a0970af": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "df51e9a6fa7e611b": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-7.startup.json": {
+          "c459dc6b6532c194": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "e7e700a6ff550cd0": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-8.startup.json": {
+          "00f56f6b8784f555": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ],
+          "5888aba73f221eb1": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-observed",
+            "binding-requested",
+            "login-published",
+            "member-bound"
+          ]
+        },
+        "spell-v08-launch-a477c1ed81ee-9.startup.json": {
+          "613952a7441086ce": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested"
+          ],
+          "f845466b82976352": [
+            "entered",
+            "admitted",
+            "ipc-ready",
+            "spawn-requested",
+            "fork-entered",
+            "fork-returned",
+            "process-started",
+            "login-entered",
+            "login-published",
+            "login-observed",
+            "binding-requested",
+            "member-bound"
+          ]
+        }
+      },
+      "binding_denials": [
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "ValueError",
+          "reason": "Native RUN forwarding identity was not admitted"
+        },
+        {
+          "event": "native-before-spawn-denied",
+          "error_type": "Fault",
+          "reason": "admission_unavailable"
+        }
+      ]
+    }
+  ]
+}

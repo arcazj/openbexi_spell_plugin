@@ -1,8 +1,8 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev47` and the pinned IDE
+The full release is **not qualified**. Server `0.8.0.dev48` and the pinned IDE
 `1.2.1.dev3` remain development packages. The current component checkpoint is
-recorded in [the native reconnect receipt](evidence/native-reconnect/qualification-summary.json).
+recorded in [the transport-drain receipt](evidence/native-handoff-drain/qualification-summary.json).
 Earlier exact-source receipts and failed attempts remain in `evidence/` and
 `TEST_REPORT.md`.
 
@@ -23,6 +23,16 @@ controls an existing execution through gateway, Listener and Context with the
 original certificate identity and controller proof. Native-client receipts and
 Qt tests are distinct from full browser/debugger qualification.
 
+Before host freeze, the native agent now drains in-flight transport and holds
+new RPCs. This fixes the captured-query and interrupted-TLS handoff failures;
+the drain itself never proves family quiescence. The separate host still proves
+the original family's cgroup freeze and process identity. Twenty separately
+authenticated installed IDE observers have also passed concurrent reads and
+control denial before and after Listener loss; all thirty native PIDs and ten
+advancing executions survive. These are native-client components, not browser
+WSS or full Compose workload qualification. See
+[NATIVE_HANDOFF_DRAIN.md](NATIVE_HANDOFF_DRAIN.md).
+
 The separate host freezes the original family for each transfer; B and then A
 at epoch 3 explicitly resume those same processes. Earlier packets retain their
 original identity and are denied even after ownership returns to A. Explicit
@@ -42,7 +52,7 @@ See [LIVE_HANDOFF.md](LIVE_HANDOFF.md),
 | Native family | Startup reliability, open-prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
-| IDE/browser | Public launch, full debugger, twenty observers, WSS gap resynchronization and Git conflicts |
+| IDE/browser | Public launch, full debugger, browser observers, WSS gap resynchronization and Git conflicts |
 | Compose | Full ten-execution/twenty-viewer runtime workload, negative egress, process/storage failure and restore |
 | Kubernetes | Production-like cluster, runtime Pod identity, RBAC/admission/network denial, node partition and storage recovery |
 | Recovery | Full deployed shutdown/fencing/settlement plus backup restore, upgrade and rollback |
@@ -60,12 +70,16 @@ were live, and no worker was OOM-killed. Its exact cause remains unresolved;
 [the failed receipt](evidence/native-ide-controls/terminal-recheck-failure.json)
 is retained separately from successful component results. Bounded startup-stage
 diagnostics and fresh-family stress now increase coverage without treating a
-later pass as proof that either historical startup failure is fixed.
+later pass as proof that either historical startup failure is fixed. The
+`5ec9429` stress recheck again failed after one child's binding request. Its
+cleanup error masked the original exception. Dev48 preserves the primary
+failure, records bounded transport error categories and attempts all cleanup;
+this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev47
-[executed preflight](evidence/release-readiness/publication-preflight-dev47.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev48
+[executed preflight](evidence/release-readiness/publication-preflight-dev48.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

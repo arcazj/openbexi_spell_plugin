@@ -2193,3 +2193,75 @@ verification. The explicit-session profile does not establish generic abrupt
 network/controller recovery. Historical startup failure causes remain unresolved.
 All eleven full release gates remain false and clean dev47 publication preflight
 exits 1. No merge, tag, stable release or production migration was performed.
+
+
+## Dev48 transport drain, concurrent observers and deployment image consistency
+
+Executable candidate **`40f38fb10690652819b367eafd9695f3ad0c69ce`** retains server
+**`0.8.0.dev48`** and the unchanged IDE pin
+**`faf2052ba764cbc147ef05f261164853e08489c8`** (`1.2.1.dev3`). All **13 first-attempt
+jobs** passed in [workflow 40258910955](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40258910955).
+The CI merge and candidate trees match. CPython 3.13.16 passed **1,094 service
+tests**, with zero failures/errors/skips, plus lint, formatting, mypy and isolated
+package smokes. Two intermediate dev48 core workflows also passed all thirteen
+jobs; their separate kind failures remain recorded.
+
+The `5ec9429` follow-up failed native handoff, native IDE and startup stress.
+The first two failures respectively captured an old-epoch native status query
+and suspended a command-poll TLS exchange across host freeze. Dev48 adds an
+explicit loop-boundary transport drain before freeze. Counted outgoing RPCs
+finish, new RPC admission is held, and only a new one-shot activation can resume
+the agent. A lost activation response is never retried. The drain explicitly
+reports `quiescence_proven: false`; independent host freeze, original pidfds and
+settled journals remain required.
+
+Both native and installed-IDE profiles record three distinct drain events with
+zero active RPCs. They preserve the original **eight processes** through A→B→A
+and same-owner reconnect, retaining epoch 3 and advancing connection generation
+to 4. Four DSS commands have **twenty matching ACKED stages per ledger**; stale
+packets remain denied. Native Step, four installed-IDE Abort/Close cases, all
+**sixteen terminal cases** and **24 fresh root/child startup-and-settlement
+cycles** pass. These new samples do not establish the cause of historical
+root-LOADED or child-binding failures.
+
+Twenty separately authenticated installed IDE clients now concurrently read ten
+native executions. Every client is denied controller access, fails closed during
+Listener SIGKILL, then reconnects to the same execution identities. All **thirty
+native PIDs**, Context identity, owners/epochs and reservations remain unchanged;
+all ten procedures advance during the outage. This is an installed-client
+component, not browser/WSS, endurance load or full Compose workload acceptance.
+
+The startup-stress cleanup path previously overwrote the primary exception with
+a directory-removal error. It now retains the first error and separate cleanup
+failures, attempts all removals, and preserves potentially live bind-mount state
+when container removal fails. Native admission failures retain bounded
+status/code/cause categories. Focused local checks passed **20 tests**. A broader
+local attempt passed 87 and failed two existing exact Unix-peer identity tests
+at `socket.connect` with the environment's `PermissionError`; hosted Linux
+executes those tests without skips. Local counts overlap hosted results.
+
+Kind initially loaded a dev47 image while the manifest requested dev48, so
+Context rollout timed out before runtime probes. The workflow now builds and
+loads both tags from the renderer's image definitions. The corrected
+[kind workflow 40258910971](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40258910971)
+passes service probes and persistent-state restart checks; its retained status
+shows all five workloads ready with the intended images. Bounded status capture
+now precedes cluster deletion and excludes logs, environment and Secret data.
+Compose prelaunch, Kubernetes static and Python inventory workflows also pass.
+The development package's registry-audit exclusion remains explicit.
+
+Seventeen final archives pass SHA256 and ZIP integrity checks. Every recorded
+repository hash matches the candidate, including 180 foundation inputs and 121
+per extended native profile. Eleven native header hashes match; the 144-unit
+compiled-source inventories agree with the prior source-bound checkpoint. This
+does not claim a fresh local reconstruction of all C++ units. Exact artifacts,
+drain records, native/observer results and failed attempts are in
+[the component receipt](evidence/native-handoff-drain/qualification-summary.json).
+
+The clean dev48 publication preflight exits 1. All eleven full-release gates
+remain false: startup reliability, wider native/driver/controller faults,
+all-763 compatibility and original archival captures, public launch/full
+debugger/browser/WSS/Git, full deployed recovery, a production-like cluster,
+independent implementation security review, native/OS inventory and stable
+packaging remain unqualified. No stable publication or production migration
+is justified by this component checkpoint.
