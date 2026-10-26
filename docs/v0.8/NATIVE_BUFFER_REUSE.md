@@ -71,3 +71,20 @@ arbitrary event text and does not relax scope authorization.
 
 All 172 focused regression tests pass locally. Full acceptance remains pending.
 All eleven publication gates stay unqualified.
+
+## Dev67 hosted verdict
+
+Candidate `93dad418c1992c2863374cad53dfcbb3ba93858f` completed run `40397729336`.
+All 1,290 service tests, 95 overlapping fault tests and 241 portable tests pass.
+Twelve of fourteen core jobs and all five ancillary workflows pass, including
+24 fresh startup cycles, 16 terminal cases and the 21-generation prompt cohort.
+All nineteen artifact archives and recorded source hashes are verified.
+
+Handoff peaks at 1,662.8 MiB with 224.9 MiB window growth; installed IDE peaks at
+1,671.0 MiB with 238.8 MiB growth. Both complete the original 45-second soak with
+eight original processes. Peaks pass 1,792 MiB; growth still fails 64 MiB.
+The input change reduces peak memory, but this run does not show improved soak
+growth. Further work must target demonstrated live-stream allocations; the
+component benchmark does not close that blocker. No limits, sanitizer settings,
+workload or deadlines changed. The dev66 scope denial did not recur and remains
+unresolved. See the [retained receipt](evidence/native-codec/dev67-hosted/qualification-summary.json).

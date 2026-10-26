@@ -1,8 +1,35 @@
 # Full v0.8 publication qualification
 
-Dev67 is the current input-reuse candidate. It corrects the deployment version
-markers and adds bounded event-scope diagnostics. Hosted acceptance is pending.
-See [implementation and component evidence](NATIVE_BUFFER_REUSE.md).
+Dev67 `93dad41` completed hosted run `40397729336`. All 1,290 service tests,
+95 overlapping fault tests and 241 portable tests pass with no failures/errors/skips.
+Twelve of fourteen core jobs and all five ancillary workflows pass. All 24 fresh
+startup cycles, 16 terminal cases and 21 prompt outcomes pass. Nineteen archive
+digests, ZIP checks and every recorded source inventory are verified; the CI
+merge tree matches the candidate.
+
+Both recovery families complete the unchanged 45-second soak, preserve all eight
+original processes and pass the fixed peak limit. Memory growth still fails:
+
+| Profile | Peak MiB | Window growth MiB | Required peak / growth MiB |
+| --- | ---: | ---: | ---: |
+| Handoff | 1,662.8 | 224.9 | 1,792 / 64 |
+| Installed IDE | 1,671.0 | 238.8 | 1,792 / 64 |
+
+Deployment version markers are corrected. Buffer reuse reduces peak memory but
+does not establish stable full-family allocation behavior. The earlier prompt
+scope denial did not recur; its root cause remains unproved. All eleven full-release
+gates remain unqualified. See [dev67 receipt](evidence/native-codec/dev67-hosted/qualification-summary.json)
+and [implementation details](NATIVE_BUFFER_REUSE.md).
+
+The v0.6 archive recovery verifies 1,525 selected blobs, including 245 of 302
+referenced hashes. The previously missing child-argument capture and two failed
+harness captures are recovered byte-for-byte. Review against 131 frozen source
+inputs restores all ten historical checks and rejects eight altered-evidence cases.
+Seven source files differ from current v0.8; this historical review cannot qualify
+the current runtime. Fifty-seven referenced hashes remain unresolved by the v0.5
+and v0.6 manifests. See [archive recovery](COMPATIBILITY_ARCHIVE_RECOVERY.md).
+
+Historical qualification records follow.
 
 Dev66 `596701b` completed run `40395297987`: 10/14 core jobs and all five ancillary
 workflows passed. The 1,286 service tests had one version-marker failure; 95 fault

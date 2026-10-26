@@ -1,0 +1,81 @@
+{
+  "schema": "openbexi.v08.publication-preflight/1",
+  "version": "0.8.0",
+  "candidate_commit": "93dad418c1992c2863374cad53dfcbb3ba93858f",
+  "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "full_v08_qualified": false,
+  "eligible_for_publication": false,
+  "publication_performed": false,
+  "failures": [
+    "Server package is development version 0.8.0.dev67"
+  ],
+  "gates": {
+    "services": {
+      "qualified": false,
+      "errors": [
+        "Dev56 automatically fences four controller TLS loss cases and native/installed-IDE heartbeat detach, preserving observers and original processes. Deployed node/controller partitions, routing and full workload isolation/fault coverage remain unqualified."
+      ]
+    },
+    "native_family": {
+      "qualified": false,
+      "errors": [
+        "Dev65 completes 24 startup cycles, 16 terminal cases and both original-family 45-second recovery soaks without OOM or memory-limit events. Both fixed peak/growth checks still fail; historical startup faults and broader native cases remain unresolved."
+      ]
+    },
+    "compatibility": {
+      "qualified": false,
+      "errors": [
+        "241 portable tests passed; all-763 requirements/native compatibility unqualified; inherited archival checks reference missing original Windows captures"
+      ]
+    },
+    "driver_faults": {
+      "qualified": false,
+      "errors": [
+        "Existing DSS stage-loss/restart/reset and native effect provenance pass again at bad5f98; uncertain effects are not replayed. Broader deployed partitions, authority/driver crash recovery and bounded load remain unqualified."
+      ]
+    },
+    "ide_browser": {
+      "qualified": false,
+      "errors": [
+        "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Dev65 installed-IDE recovery completes without OOM but fails fixed native peak/growth budgets. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
+      ]
+    },
+    "compose": {
+      "qualified": false,
+      "errors": [
+        "Five-service prelaunch identity/isolation/CAS/restart checks passed. Full runtime ten-execution/twenty-viewer, egress/process/storage failure and restore qualification remains pending."
+      ]
+    },
+    "kubernetes": {
+      "qualified": false,
+      "errors": [
+        "kind five-service prelaunch restart and static manifest checks passed. Production-like cluster, native workload Pod identity, RBAC/admission/network denial and node/storage recovery remain unqualified."
+      ]
+    },
+    "recovery": {
+      "qualified": false,
+      "errors": [
+        "Dev65 handoff/reconnect preserves all eight original processes and all counter intervals, but both fixed resource acceptance checks fail. Stable memory, deployed recovery, replenishment, restore, upgrade and rollback remain unqualified."
+      ]
+    },
+    "security": {
+      "qualified": false,
+      "errors": [
+        "Development Python inventory/SBOM scan passed with explicit local-package registry exclusion. Independent implemented-system review, native/OS SBOM/license/vulnerability disposition and bounded load remain pending."
+      ]
+    },
+    "ci": {
+      "qualified": false,
+      "errors": [
+        "Dev65 4f4a5ec passes 1,284 service, 95 overlapping fault and 241 portable tests; twelve of fourteen core jobs and all five ancillary workflows pass. Both recovery memory gates fail. Full runtime/browser/deployment acceptance remains unfinished."
+      ]
+    },
+    "packaging": {
+      "qualified": false,
+      "errors": [
+        "Development wheels pass; stable v0.8 joint release artifacts, checksums, installed acceptance and final runbooks remain pending"
+      ]
+    }
+  },
+  "qualification_checkout_commit": "93dad418c1992c2863374cad53dfcbb3ba93858f"
+}

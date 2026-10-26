@@ -1,0 +1,242 @@
+{
+  "schema": "openbexi.native-ipc-qualified-scope/1",
+  "candidate": "93dad418c1992c2863374cad53dfcbb3ba93858f",
+  "candidate_tree": "030287dad8af8772d094dea7d3f6e5c74bd2ee11",
+  "merge_commit": "8ee76a85ebe78425388ffe8305b97054a14551fd",
+  "merge_tree_matches": true,
+  "run_id": 40397729336,
+  "core_jobs_passed": 12,
+  "core_jobs_failed": 2,
+  "service_tests": {
+    "tests": 1290,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "fault_tests": 95,
+  "portable_tests": 241,
+  "ancillary_workflows_passed": 5,
+  "startup_stress": {
+    "passed": true,
+    "fresh_root_child_families": 24,
+    "independently_settled_families": 24,
+    "worker_reuse": false,
+    "uncertain_start_retried": false,
+    "historical_failure_cause_established": false
+  },
+  "terminal_cases": 16,
+  "profiles": [
+    {
+      "profile": "handoff",
+      "artifact_id": 12687278532,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.468649613,
+        "peak_bytes": 1743556608,
+        "window_growth_bytes": 235859968,
+        "first_window_median_bytes": 1455591424,
+        "last_window_median_bytes": 1691451392
+      },
+      "soak": {
+        "start_ns": 311694294086,
+        "end_ns": 357162943699,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1454,
+          "background": 1701,
+          "child": 1549
+        },
+        "counters_after": {
+          "root": 3526,
+          "background": 3938,
+          "child": 3667
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "original_processes": 8,
+      "terminal_settlement": {
+        "challenge": "1fa2f0a3-50b4-4c9f-bf5e-e5a84f6a287c",
+        "effective_transfer": false,
+        "execution_id": "edc110ba-d1fa-436e-bd41-f5c96211b92b",
+        "hold_retained": false,
+        "report": {
+          "children": 1,
+          "effect_receipts": 20,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "da00fa3259c5876f2178ddd25aef3db52d3eacaef3487bf68b9a67c719dd2283",
+            "exit_code": 0,
+            "exited_handles": 8,
+            "image": "sha256:8ddb75cdd73bd2d5a347611766f28b72efeb78736f6ebf7a3f803429f0e12ce2",
+            "oom_killed": false,
+            "original_handles": 8,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "507c138a227b6693499ab8ea44ec9ff623c9192e22af733cbdf5ed065b10a581",
+            "running": false
+          },
+          "native_members": 2,
+          "native_status": "FINISHED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {
+              "DISPATCH_UNCERTAIN": 2
+            },
+            "native_control_consumptions": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_control_forwards": {
+              "FORWARD_UNPROVEN": 2
+            },
+            "native_owner_commands": {
+              "DELIVERY_FENCED": 1,
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_prompt_replies": {
+              "CONSUMED_UNPROVEN": 1
+            }
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "32ca9c33b1304188aa5c6bc990cb879461baa32a9fc7892886d0cc603b6711cb",
+        "roster_hash": "507c138a227b6693499ab8ea44ec9ff623c9192e22af733cbdf5ed065b10a581",
+        "runtime_enabled": false,
+        "state": "RELEASED",
+        "worker_reusable": false
+      },
+      "original_processes_exited": true
+    },
+    {
+      "profile": "ide",
+      "artifact_id": 12687004051,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.480029676,
+        "peak_bytes": 1752166400,
+        "window_growth_bytes": 250400768,
+        "first_window_median_bytes": 1440628736,
+        "last_window_median_bytes": 1691029504
+      },
+      "soak": {
+        "start_ns": 755491399257,
+        "end_ns": 800971428933,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1363,
+          "background": 1647,
+          "child": 1480
+        },
+        "counters_after": {
+          "root": 3426,
+          "background": 3882,
+          "child": 3590
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "original_processes": 8,
+      "terminal_settlement": {
+        "challenge": "83cae445-464c-4ca9-95ad-84238d30b2e8",
+        "effective_transfer": false,
+        "execution_id": "a6414ad0-1900-4688-9b4f-5106bc1af338",
+        "hold_retained": false,
+        "report": {
+          "children": 1,
+          "effect_receipts": 20,
+          "effects_settled": true,
+          "host_evidence": {
+            "container_id": "cbca99271498c7c6c57e400410bf2bcef881ed7691909cc76d9cd949e85d0e82",
+            "exit_code": 0,
+            "exited_handles": 8,
+            "image": "sha256:27647fbfc10ab8d72a78f07a24f86e0d270daaaf1f56e5ac52f164e5a45c9337",
+            "oom_killed": false,
+            "original_handles": 8,
+            "pid": 0,
+            "provider": "docker-pidfd-terminal/1",
+            "restart_count": 0,
+            "roster_hash": "bf603523343f7c7f8ffd0550c9ffe85ceaa3443777385563d3cb281b09a51782",
+            "running": false
+          },
+          "native_members": 2,
+          "native_status": "FINISHED",
+          "pending_native_work_retired": true,
+          "preserved_work_journals": {
+            "native_control_attempts": {
+              "DISPATCH_UNCERTAIN": 2
+            },
+            "native_control_consumptions": {
+              "EXECUTION_UNPROVEN": 2
+            },
+            "native_control_forwards": {
+              "FORWARD_UNPROVEN": 2
+            },
+            "native_owner_commands": {
+              "DELIVERY_FENCED": 1,
+              "EXECUTION_UNPROVEN": 3
+            },
+            "native_prompt_replies": {
+              "CONSUMED_UNPROVEN": 1
+            }
+          },
+          "process_family_terminated": true,
+          "reasons": [],
+          "reservation_release_eligible": true
+        },
+        "report_hash": "b69cceff146f8e640d273f8fa00379fd31d8a3127c393847dfd9efd6922dd6fa",
+        "roster_hash": "bf603523343f7c7f8ffd0550c9ffe85ceaa3443777385563d3cb281b09a51782",
+        "runtime_enabled": false,
+        "state": "RELEASED",
+        "worker_reusable": false
+      },
+      "original_processes_exited": true
+    }
+  ],
+  "prompt_cohort": {
+    "passed": true,
+    "actual_native_executor": true,
+    "prompt_generations": 21,
+    "owner_answers_selected": 20,
+    "native_timed_defaults": 1,
+    "invalid_owner_denials": 3,
+    "root_child_and_grandchild": true,
+    "reply_grants_consumed_once": true,
+    "quiescence_proven": false,
+    "effective_transfer": false,
+    "full_v08_qualified": false
+  },
+  "prior_prompt_scope_denial_resolved": false,
+  "archives_verified": 19,
+  "recorded_source_inventories_verified": true,
+  "full_v08_qualified": false,
+  "release_gates_promoted": []
+}

@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev65 qualified component results retained; both full-soak recovery families survive without pressure, but peak/growth acceptance remains blocked",
+  "phase": "Dev67 completed: deployment mismatch fixed; native peaks pass but memory growth remains blocked; historical child-argument captures recovered and independently reviewed",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -90,7 +90,9 @@
     "Dev61 7f690a0 restores the four non-recovery rebuilt native cohorts and passes 1,269 service tests; 12/14 core jobs pass. Handoff has three limit events and IDE has one OOM kill. Stack samples were filtered out by the host collector, so no live-site attribution is claimed. Dev62 adds bounded symbol/offset capture with process membership checks and passes 32 targeted collector/sampler cases.",
     "Dev62: 1,275 service tests, 95 overlapping fault tests and 241 portable tests pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen artifact archives/source inventories verified. Handoff hits 2 GiB, records 271 max events and one OOM kill; IDE hits 2 GiB and one max event. Live allocation samples retained. Recovery and full v0.8 remain unqualified.",
     "Dev64: 1,283 service tests (including real executable/pidfd regression), 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives and source inventories verified. Both original families complete the 45-second soak with zero memory pressure, but peaks 2,131,828,736 / 2,123,988,992 bytes and growth 361,357,312 / 341,569,536 bytes exceed the unchanged budgets. Full v0.8 remains unqualified.",
-    "Dev65: 1,284 service tests, 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives, recorded source inventories and the identical PR merge tree are verified. Both original families complete the 45-second soak, retain all eight processes and advance every interval, without memory pressure/OOM. Handoff peak/growth are 2,112,180,224 / 334,139,392 bytes; IDE 2,088,316,928 / 364,591,104 bytes. Both fixed peak/growth gates fail. Full v0.8 remains unqualified."
+    "Dev65: 1,284 service tests, 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives, recorded source inventories and the identical PR merge tree are verified. Both original families complete the 45-second soak, retain all eight processes and advance every interval, without memory pressure/OOM. Handoff peak/growth are 2,112,180,224 / 334,139,392 bytes; IDE 2,088,316,928 / 364,591,104 bytes. Both fixed peak/growth gates fail. Full v0.8 remains unqualified.",
+    "Dev67 source-bound receipt: 1290 service, 95 fault, 241 portable tests; 24 fresh starts, 16 terminal cases, 21 prompt outcomes; 19 verified archives. Native/IDE peaks 1662.8/1671.0 MiB pass; growth 224.9/238.8 MiB fails 64 MiB.",
+    "v0.6 archive restores 245 of 302 referenced hashes and original child-argument/harness captures; 131 immutable source bindings, 10 historical checks and 8 negative mutations verified. Historical evidence does not qualify changed v0.8 sources."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -123,7 +125,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Profile allocation lifetimes in the bridge and both original Executors, then reduce the demonstrated runtime allocation churn and rerun the unchanged 45-second resource oracle. Complete the remaining full-runtime/browser/deployment/compatibility/security gates before publication.",
+  "next_step": "Profile remaining live-stream allocations and eliminate demonstrated native transport/dispatch churn; rerun unchanged resource acceptance. Qualify the earlier system-scope event denial and fresh current-source compatibility; resolve remaining 57 archival hashes and full browser/deployment/recovery/security gates before publication.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -156,9 +158,9 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev65",
+  "package_version": "0.8.0.dev67",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "4f4a5ec0d1a78726a07c5009096cfd54210247de",
+  "last_verified_component_commit": "93dad418c1992c2863374cad53dfcbb3ba93858f",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -190,7 +192,7 @@
     "native_reconnections_executed": 1
   },
   "native_ide_controls_receipt": "evidence/controller-liveness/qualification-summary.json",
-  "last_verified_component_scope": "Dev65: 1,284 service tests, 95 overlapping fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases pass. Twelve of fourteen core jobs and all five ancillary workflows pass; nineteen archives, recorded source inventories and the identical PR merge tree are verified. Both original families complete the 45-second soak, retain all eight processes and advance every interval, without memory pressure/OOM. Handoff peak/growth are 2,112,180,224 / 334,139,392 bytes; IDE 2,088,316,928 / 364,591,104 bytes. Both fixed peak/growth gates fail. Full v0.8 remains unqualified.",
+  "last_verified_component_scope": "12/14 core jobs, five ancillary workflows, 1290 service/95 fault/241 portable tests; native recovery growth remains failed; no full gate promoted",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 23,
@@ -298,116 +300,123 @@
     "historical_startup_cause_established": false
   },
   "native_recovery_memory": {
-    "candidate_commit": "4f4a5ec0d1a78726a07c5009096cfd54210247de",
-    "passed": false,
-    "receipt": "evidence/native-codec/dev65-hosted/qualification-summary.json",
-    "profiles": [
-      {
-        "profile": "handoff",
-        "artifact_id": 12681547732,
-        "passed": false,
-        "error": "RuntimeError: Native recovery resource acceptance failed",
-        "resource_acceptance": {
-          "schema": "openbexi.native-recovery-resources/1",
+    "qualified": false,
+    "receipt": "evidence/native-codec/dev67-hosted/qualification-summary.json",
+    "peak_limits_passed": true,
+    "growth_limits_passed": false,
+    "sanitizer_workload_deadlines_limits_unchanged": true,
+    "previous_qualification": {
+      "candidate_commit": "4f4a5ec0d1a78726a07c5009096cfd54210247de",
+      "passed": false,
+      "receipt": "evidence/native-codec/dev65-hosted/qualification-summary.json",
+      "profiles": [
+        {
+          "profile": "handoff",
+          "artifact_id": 12681547732,
           "passed": false,
-          "resident_limit_bytes": 2147483648,
-          "swap_limit_bytes": 0,
-          "peak_budget_bytes": 1879048192,
-          "maximum_window_growth_bytes": 67108864,
-          "full_v08_qualified": false,
-          "failures": [
-            "native_recovery_peak_budget_exceeded",
-            "native_recovery_memory_still_growing"
-          ],
-          "samples": 48,
-          "soak_samples": 22,
-          "duration_seconds": 45.449757365,
-          "peak_bytes": 2112180224,
-          "window_growth_bytes": 334139392,
-          "first_window_median_bytes": 1707249664,
-          "last_window_median_bytes": 2041389056
-        },
-        "soak": {
-          "start_ns": 333651306064,
-          "end_ns": 379101063429,
-          "minimum_seconds": 45,
-          "counters_before": {
-            "root": 1474,
-            "background": 1707,
-            "child": 1553
+          "error": "RuntimeError: Native recovery resource acceptance failed",
+          "resource_acceptance": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": false,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [
+              "native_recovery_peak_budget_exceeded",
+              "native_recovery_memory_still_growing"
+            ],
+            "samples": 48,
+            "soak_samples": 22,
+            "duration_seconds": 45.449757365,
+            "peak_bytes": 2112180224,
+            "window_growth_bytes": 334139392,
+            "first_window_median_bytes": 1707249664,
+            "last_window_median_bytes": 2041389056
           },
-          "counters_after": {
-            "root": 3560,
-            "background": 3941,
-            "child": 3684
+          "soak": {
+            "start_ns": 333651306064,
+            "end_ns": 379101063429,
+            "minimum_seconds": 45,
+            "counters_before": {
+              "root": 1474,
+              "background": 1707,
+              "child": 1553
+            },
+            "counters_after": {
+              "root": 3560,
+              "background": 3941,
+              "child": 3684
+            },
+            "original_processes": 8,
+            "all_intervals_advanced": true
           },
-          "original_processes": 8,
-          "all_intervals_advanced": true
+          "memory_events": {
+            "high": 0,
+            "low": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_group_kill": 0,
+            "oom_kill": 0
+          },
+          "allocation_stack_sampling_enabled": false,
+          "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
         },
-        "memory_events": {
-          "high": 0,
-          "low": 0,
-          "max": 0,
-          "oom": 0,
-          "oom_group_kill": 0,
-          "oom_kill": 0
-        },
-        "allocation_stack_sampling_enabled": false,
-        "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
-      },
-      {
-        "profile": "ide",
-        "artifact_id": 12681587944,
-        "passed": false,
-        "error": "RuntimeError: Native recovery resource acceptance failed",
-        "resource_acceptance": {
-          "schema": "openbexi.native-recovery-resources/1",
+        {
+          "profile": "ide",
+          "artifact_id": 12681587944,
           "passed": false,
-          "resident_limit_bytes": 2147483648,
-          "swap_limit_bytes": 0,
-          "peak_budget_bytes": 1879048192,
-          "maximum_window_growth_bytes": 67108864,
-          "full_v08_qualified": false,
-          "failures": [
-            "native_recovery_peak_budget_exceeded",
-            "native_recovery_memory_still_growing"
-          ],
-          "samples": 47,
-          "soak_samples": 21,
-          "duration_seconds": 45.617780691,
-          "peak_bytes": 2088316928,
-          "window_growth_bytes": 364591104.0,
-          "first_window_median_bytes": 1660276736,
-          "last_window_median_bytes": 2024867840.0
-        },
-        "soak": {
-          "start_ns": 381923428822,
-          "end_ns": 427541209513,
-          "minimum_seconds": 45,
-          "counters_before": {
-            "root": 1316,
-            "background": 1662,
-            "child": 1457
+          "error": "RuntimeError: Native recovery resource acceptance failed",
+          "resource_acceptance": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": false,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [
+              "native_recovery_peak_budget_exceeded",
+              "native_recovery_memory_still_growing"
+            ],
+            "samples": 47,
+            "soak_samples": 21,
+            "duration_seconds": 45.617780691,
+            "peak_bytes": 2088316928,
+            "window_growth_bytes": 364591104.0,
+            "first_window_median_bytes": 1660276736,
+            "last_window_median_bytes": 2024867840.0
           },
-          "counters_after": {
-            "root": 3283,
-            "background": 3896,
-            "child": 3513
+          "soak": {
+            "start_ns": 381923428822,
+            "end_ns": 427541209513,
+            "minimum_seconds": 45,
+            "counters_before": {
+              "root": 1316,
+              "background": 1662,
+              "child": 1457
+            },
+            "counters_after": {
+              "root": 3283,
+              "background": 3896,
+              "child": 3513
+            },
+            "original_processes": 8,
+            "all_intervals_advanced": true
           },
-          "original_processes": 8,
-          "all_intervals_advanced": true
-        },
-        "memory_events": {
-          "high": 0,
-          "low": 0,
-          "max": 0,
-          "oom": 0,
-          "oom_group_kill": 0,
-          "oom_kill": 0
-        },
-        "allocation_stack_sampling_enabled": false,
-        "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
-      }
-    ]
+          "memory_events": {
+            "high": 0,
+            "low": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_group_kill": 0,
+            "oom_kill": 0
+          },
+          "allocation_stack_sampling_enabled": false,
+          "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
+        }
+      ]
+    }
   }
 }
