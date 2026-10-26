@@ -1,0 +1,239 @@
+{
+  "schema": "openbexi.v08.native-startup-blockers/1",
+  "candidate_commit": "f1ea0337c89838a637c5e58896aaae09994be86c",
+  "passed": false,
+  "full_v08_qualified": false,
+  "cases": [
+    {
+      "profile": "terminal",
+      "job_id": 121416357103,
+      "passed": false,
+      "scenario_cases_reached": false,
+      "run_id": 40275195710,
+      "artifact": {
+        "artifact_id": 12630102062,
+        "name": "v08-native-launch-native-terminal-45824c76d6a9f3f7858d03bc59671f50a8688a40",
+        "sha256": "265b4daa396607687e8249d0dc1ef990dda8d2fd06988b25196f25d667ec1fe5",
+        "zip_integrity": true,
+        "candidate": "f1ea0337c89838a637c5e58896aaae09994be86c"
+      },
+      "verified_source_files": 122,
+      "error": "TimeoutError: Native cohort did not reach native-child-running",
+      "full_result": "terminal-failed-result.json",
+      "child_admissions_consumed": 10,
+      "workers": [
+        {
+          "index": 1,
+          "furthest_child_stage": "binding-requested",
+          "child_member_bound": false,
+          "child_running_observed": false,
+          "native_admission_failures": [
+            {
+              "elapsed_ms": 0,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 235268486565,
+              "pid": 37,
+              "reason": "admission_denied",
+              "stage": "read"
+            },
+            {
+              "elapsed_ms": 4002,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 276002273585,
+              "pid": 37,
+              "reason": "deadline_expired",
+              "stage": "read"
+            }
+          ],
+          "agent_denials": [
+            {
+              "event": "native-before-spawn-denied",
+              "error_type": "BrokenPipeError",
+              "phase": "reply",
+              "elapsed_ms": 3611,
+              "dispatch_ms": 2055,
+              "status": null,
+              "code": null,
+              "cause_type": null,
+              "reason": "admission_unavailable"
+            }
+          ],
+          "startup": "terminal-worker-1-startup.json",
+          "events": "terminal-worker-1-events.log"
+        },
+        {
+          "index": 3,
+          "furthest_child_stage": "binding-requested",
+          "child_member_bound": false,
+          "child_running_observed": false,
+          "native_admission_failures": [
+            {
+              "elapsed_ms": 0,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 241226652375,
+              "pid": 37,
+              "reason": "admission_denied",
+              "stage": "read"
+            },
+            {
+              "elapsed_ms": 4002,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 275555090094,
+              "pid": 37,
+              "reason": "deadline_expired",
+              "stage": "read"
+            }
+          ],
+          "agent_denials": [
+            {
+              "event": "native-before-spawn-denied",
+              "error_type": "BrokenPipeError",
+              "phase": "reply",
+              "elapsed_ms": 4068,
+              "dispatch_ms": 4065,
+              "status": null,
+              "code": null,
+              "cause_type": null,
+              "reason": "admission_unavailable"
+            }
+          ],
+          "startup": "terminal-worker-3-startup.json",
+          "events": "terminal-worker-3-events.log"
+        },
+        {
+          "index": 5,
+          "furthest_child_stage": "binding-requested",
+          "child_member_bound": false,
+          "child_running_observed": false,
+          "native_admission_failures": [
+            {
+              "elapsed_ms": 0,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 247235618110,
+              "pid": 37,
+              "reason": "admission_denied",
+              "stage": "read"
+            },
+            {
+              "elapsed_ms": 4005,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 275807466277,
+              "pid": 37,
+              "reason": "deadline_expired",
+              "stage": "read"
+            }
+          ],
+          "agent_denials": [
+            {
+              "event": "native-before-spawn-denied",
+              "error_type": "BrokenPipeError",
+              "phase": "reply",
+              "elapsed_ms": 3230,
+              "dispatch_ms": 3142,
+              "status": null,
+              "code": null,
+              "cause_type": null,
+              "reason": "admission_unavailable"
+            }
+          ],
+          "startup": "terminal-worker-5-startup.json",
+          "events": "terminal-worker-5-events.log"
+        },
+        {
+          "index": 7,
+          "furthest_child_stage": "binding-requested",
+          "child_member_bound": false,
+          "child_running_observed": false,
+          "native_admission_failures": [
+            {
+              "elapsed_ms": 0,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 253091755591,
+              "pid": 37,
+              "reason": "admission_denied",
+              "stage": "read"
+            },
+            {
+              "elapsed_ms": 4002,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 275890085225,
+              "pid": 37,
+              "reason": "deadline_expired",
+              "stage": "read"
+            }
+          ],
+          "agent_denials": [
+            {
+              "event": "native-before-spawn-denied",
+              "error_type": "BrokenPipeError",
+              "phase": "reply",
+              "elapsed_ms": 2256,
+              "dispatch_ms": 2184,
+              "status": null,
+              "code": null,
+              "cause_type": null,
+              "reason": "admission_unavailable"
+            }
+          ],
+          "startup": "terminal-worker-7-startup.json",
+          "events": "terminal-worker-7-events.log"
+        }
+      ],
+      "cause_established": false
+    },
+    {
+      "profile": "startup",
+      "job_id": 121416357216,
+      "passed": false,
+      "scenario_cases_reached": false,
+      "run_id": 40275195710,
+      "artifact": {
+        "artifact_id": 12630460671,
+        "name": "v08-native-launch-native-startup-stress-45824c76d6a9f3f7858d03bc59671f50a8688a40",
+        "sha256": "34af6e85ac4349a8d8a1da01c367cad2973a514742d0f937ad1a36fa1a73f598",
+        "zip_integrity": true,
+        "candidate": "f1ea0337c89838a637c5e58896aaae09994be86c"
+      },
+      "verified_source_files": 122,
+      "error": "TimeoutError: Native cohort did not reach native-child-running",
+      "full_result": "startup-failed-result.json",
+      "child_admissions_consumed": 10,
+      "workers": [
+        {
+          "index": 6,
+          "furthest_child_stage": "process-started",
+          "child_member_bound": false,
+          "child_running_observed": false,
+          "native_admission_failures": [
+            {
+              "elapsed_ms": 0,
+              "errno": 0,
+              "interruptions": 0,
+              "monotonic_ns": 552942337362,
+              "pid": 37,
+              "reason": "admission_denied",
+              "stage": "read"
+            }
+          ],
+          "agent_denials": [],
+          "startup": "startup-worker-6-startup.json",
+          "events": "startup-worker-6-events.log"
+        }
+      ],
+      "cause_established": false
+    }
+  ],
+  "assessment": "Terminal preamble: four children reached login and binding-requested, then the original four-second admission deadline expired; late agent replies failed with BrokenPipeError. Startup preamble: one child reached process-started but no login was observed; its child PID still had the Context executable and sleeping futex tasks. These observations localize failures but do not establish their causes.",
+  "next_diagnostic": "Reproduce registration latency separately from the fork-to-exec stall. Correlate bounded queue/dispatch/transport timing and safe process stack evidence. Do not replay uncertain starts, raise deadlines, or treat a later green run as a fix.",
+  "runtime_changed": false,
+  "automatic_retry_added": false,
+  "deadline_relaxed": false
+}

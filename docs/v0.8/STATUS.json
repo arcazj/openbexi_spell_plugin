@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev54 controlled-fault and available component qualification passed; historical DSS/startup causes and all eleven full-release gates remain unresolved",
+  "phase": "Dev54 DSS lifecycle component passed; current candidate blocked by native member-binding deadlines and fork-to-login stall; all eleven full-release gates remain unresolved",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -80,7 +80,8 @@
     "Dev49 dc66d32: original unanswered untimed prompt survives host freeze and runtime rotation; new-owner reply accepted only after explicit resume. Authenticated installed IDE request transport passes the same native path. Queued/uncertain replies block transfer; original prompt/family/member/definition remain unchanged. 1,119 hosted tests, 13 core jobs and four deployment/inventory workflows pass; four prior failed artifacts retained.",
     "Dev50 e519882: the prior wait aborted on a real signal after 10 ms; original-deadline waits and interrupted/partial I/O now pass eleven compiled production-transport cases. All thirteen core jobs and four deployment/inventory workflows pass, with 1,141 hosted tests. The dev49 follow-up failure is retained and no full-release gate is promoted.",
     "d01fc30 / dev53: 1,149 hosted service tests and 241 portable checks pass without failures/errors/skips; thirteen core jobs and five ancillary workflows pass. Eighteen archives/source inventories verified. Paired IDE 1ac0b8a / dev4 passes 272 tests with one Windows-only skip. Dev51 cleanup failure, dev52 native DSS timeout and initial dev53 harness timeout remain retained; no historical timeout cause or full release qualification is inferred.",
-    "1182388 / dev54: 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes. Reproduced late native readiness is now rejected within the original four-second deadline. Two-Context prelaunch readiness and image markers corrected with four local failures before and five passes after. Initial kind HTTP 503 attempt retained. No historical-cause or full-release promotion."
+    "1182388 / dev54: 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes. Reproduced late native readiness is now rejected within the original four-second deadline. Two-Context prelaunch readiness and image markers corrected with four local failures before and five passes after. Initial kind HTTP 503 attempt retained. No historical-cause or full-release promotion.",
+    "1,193 service tests, 55 overlapping fault probes and 241 portable tests pass. Twelve of fourteen core jobs and five ancillary workflows pass; core workflow failed at native terminal/startup preambles. All nineteen archives and source inventories verified, including failures. Eighteen DSS lifecycle cases pass; production runtime unchanged from 1182388. Full release remains unqualified."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -98,12 +99,12 @@
     "C": "Twenty distinct installed IDE observers survive Listener loss with ten advancing native executions; bounded explicit same-owner controller reconnect also passes. Abrupt controller/network faults, production routing and full deployed isolation remain pending.",
     "D": "Context ACL/catalog/state and native EV plus retained positive TC/TM dispatch tested; full driver lifecycle/fault qualification remains pending",
     "E_through_L": "Prelaunch admission/ownership subset tested; full native, driver, UI, deployment, security and release gates pending",
-    "K_foundation": "1182388: 1,175 CPython 3.13.16 service tests, lint/format/types and installed-package checks pass in 40273133915. A separate overlapping 37-case fault suite passes. Operation deadlines remain unchanged; full K remains unqualified.",
+    "K_foundation": "f1ea033: 1,193 CPython 3.13.16 service tests and a separate overlapping 55-case fault suite pass in 40275195710. Lint/format/types/package checks pass. Full K remains unqualified.",
     "G4_compatibility": "241-test portable subset passes locally; full native/all-763 compatibility and historical capture portability remain pending",
     "G5_driver_seam": "Private Context/GPL adapter seam tested against independent DSS process; full native driver lifecycle, TM/resource ACLs and deployed recovery remain pending",
     "G2_native_subset": "d962268 hosted native compute cohort passed: ten distinct concurrent native Executors, original grants, approved read-only source and retained holds; full abort/pause/child/recovery gate remains pending",
     "G3_native_subset": "Original-family A/B/A and same-owner reconnect preserve processes and grants with fresh runtime identities. Exact-zero-timeout unanswered prompt transfer passes. Timed/default or queued/uncertain prompts, later children, abrupt controller faults and startup causes remain unqualified.",
-    "K_native_subset": "1182388: all fourteen first-attempt core jobs pass; sixteen terminal cases, twenty-four fresh startup cycles and paired native IDE/handoff rechecked. Full browser/deployment/runtime CI remains unqualified.",
+    "K_native_subset": "f1ea033: twelve of fourteen core jobs pass. Native terminal/startup jobs fail before their scenario cases begin: four late member-binding replies and one fork-to-login stall. Native handoff, IDE, prompts and observers pass. Full CI remains unqualified.",
     "G5_native_dss_rpc": "14ddf3d hosted retained native positive profile passed: ten completed Executors, ten commands, telemetry, fifty matching receipt rows per ledger, valid copied-config direct-command denial and retained holds. Full G5 lifecycle/fault/recovery remains pending.",
     "G3_native_thread_component": "41a2fb2 hosted private cooperative component passed: main PAUSED, counter 72 to 72, one observed/acked snapshot Python thread, nine unrelated native completions, unchanged owner/epoch, ten holds retained; same-candidate original control counter advanced 62 to 81. Unknown/native/generated/outside-snapshot execution, children, queues, whole-family pause and live handoff/resume remain unqualified.",
     "G3_child_admission_authority": "Schema 10 admission/RPC and original family binding tested; actual native before-spawn hook passed automatic visible/hidden blocking component. Manual/nested/failure and full-family transfer remain unqualified.",
@@ -113,7 +114,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Use retained phase and native/provider diagnostics to establish historical DSS/startup failure causes; complete native/driver/controller fault recovery, public launch/debugger/browser/WSS/Git, all-763 compatibility with original captures, deployed recovery/security and stable joint packaging gates.",
+  "next_step": "First reproduce and diagnose native member-binding latency separately from the fork-to-exec/login stall using the retained failed source-bound traces; implement and qualify proven corrections without replay or deadline relaxation. Then qualify abrupt controller/network-loss recovery and the remaining eleven full-release gate groups.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -129,29 +130,29 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "evidence/fault-reproduction/publication-preflight.json: clean 1182388 candidate; exit 1, development version and all eleven mandatory gate groups unqualified.",
+  "release_assessment": "evidence/dss-lifecycle/publication-preflight.json: clean f1ea033 candidate; development version and all eleven full-release groups remain unqualified.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
-  "native_listener_survival_receipt": "evidence/fault-reproduction/qualification-summary.json",
+  "native_listener_survival_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
-  "native_ide_observer_receipt": "evidence/fault-reproduction/qualification-summary.json",
-  "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy.",
+  "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
+  "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
   "package_version": "0.8.0.dev54",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "11823881f0c1c5daf770611687ae21ce41aec271",
+  "last_verified_component_commit": "f1ea0337c89838a637c5e58896aaae09994be86c",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
   "native_mutation_matrix": "NATIVE_MUTATION_MATRIX.md and newer prompt/terminal/handoff receipts; positive bounded commands are implemented. Full debugger and separate native IPC inventories remain release blockers.",
   "native_mutation_boundary": "Qualified original native unsupported-mutation denial boundary remains. Positive owner RUN/STEP/PAUSE, prompt replies and ABORT/CLOSE now have separate exact-source component receipts; arbitrary setters/full debugger remain unfinished.",
   "native_context_gui_boundary": "Dev40 exact native qualification passed foreign GUI/key/management/roster denial oracles; later cohorts preserve them while qualifying bounded owner controls. Full public runtime remains disabled.",
-  "native_startup_reliability": "Historical dev37 root LOADED failure remains unresolved. At bd85c635, workflow 40249941420 first terminal attempt failed before its case matrix: all ten roots ran, ten child admissions were consumed, but worker 1 produced no child member binding or running event; all containers stayed live and no OOM occurred. The Context SSLEOF readiness diagnostic recovered. No cause or fix is inferred from other passes. See evidence/native-ide-controls/terminal-recheck-failure.json. Dev45 added bounded twelve-stage startup traces and read-only process/task snapshots without changing retry or timeout policy. Dev46 executed 24 fresh root/child families and independent host terminal settlements; this positive stress result does not establish either historical failure cause. See evidence/repeated-handoff/startup-diagnostics.json. The 5ec9429 recheck again failed after one child binding request and cleanup masked the primary exception. Dev48 retains primary and cleanup failures separately plus bounded admission status/code/cause. All three dev48 core runs pass 24 fresh families each; this does not establish a startup cause or fix. See evidence/native-handoff-drain/prior-failures.json. Dev49 follow-up 5bde4fd failed native-prompts after two durable member bindings: ALLOW delivery hit BrokenPipeError and native member-bound was absent. Dev50 fixes a separately reproduced EINTR defect and adds bounded transport/callback timing, but does not establish the historical cause. See evidence/native-admission-channel/dev49-followup-failure.json.",
-  "native_lifecycle_audit": "Dev54 1,175-test and paired native/IDE component recheck passed; all eleven full-release gates remain false.",
+  "native_startup_reliability": "Historical dev37 root LOADED failure remains unresolved. At bd85c635, workflow 40249941420 first terminal attempt failed before its case matrix: all ten roots ran, ten child admissions were consumed, but worker 1 produced no child member binding or running event; all containers stayed live and no OOM occurred. The Context SSLEOF readiness diagnostic recovered. No cause or fix is inferred from other passes. See evidence/native-ide-controls/terminal-recheck-failure.json. Dev45 added bounded twelve-stage startup traces and read-only process/task snapshots without changing retry or timeout policy. Dev46 executed 24 fresh root/child families and independent host terminal settlements; this positive stress result does not establish either historical failure cause. See evidence/repeated-handoff/startup-diagnostics.json. The 5ec9429 recheck again failed after one child binding request and cleanup masked the primary exception. Dev48 retains primary and cleanup failures separately plus bounded admission status/code/cause. All three dev48 core runs pass 24 fresh families each; this does not establish a startup cause or fix. See evidence/native-handoff-drain/prior-failures.json. Dev49 follow-up 5bde4fd failed native-prompts after two durable member bindings: ALLOW delivery hit BrokenPipeError and native member-bound was absent. Dev50 fixes a separately reproduced EINTR defect and adds bounded transport/callback timing, but does not establish the historical cause. See evidence/native-admission-channel/dev49-followup-failure.json. Current f1ea033 run 40275195710 fails terminal/startup preambles: four child binding replies exceed the original deadline and a fifth child remains in the Context executable before login. Causes remain unproven; see evidence/dss-lifecycle/native-blockers.json.",
+  "native_lifecycle_audit": "Dev54 f1ea033 service/DSS lifecycle checks pass; native terminal and startup qualification fails in the initial child cohort. See evidence/dss-lifecycle/native-blockers.json. All eleven full-release gate groups remain false.",
   "native_lifecycle_audit_receipts": "evidence/native-child-start/dev40-foundation.json; evidence/native-child-start/dev40-family.json",
   "terminal_settlement_profile": {
     "profile": "single-host-terminal-candidate",
     "documentation": "TERMINAL_SETTLEMENT.md",
     "scope": "Separate pinned host, prelaunch immutable container binding, durable terminal fence, physical process/container exit, child/prompt/command/effect reconciliation and scoped reservation release; workers remain single-use",
-    "qualification": "Native sixteen-case terminal matrix and scope-bound host reconciliation; see native IDE control receipt for the latest source-bound workflow.",
+    "qualification": "Earlier sixteen-case terminal matrix retained at 1182388. The current f1ea033 standalone terminal profile fails before its matrix in child startup; four IDE terminal cases pass. See evidence/dss-lifecycle/native-blockers.json.",
     "live_family_transfer_qualified": false
   },
   "live_handoff_profile": {
@@ -168,8 +169,8 @@
     "service_runtime_rotation_capacity": 8,
     "native_reconnections_executed": 1
   },
-  "native_ide_controls_receipt": "evidence/fault-reproduction/qualification-summary.json",
-  "last_verified_component_scope": "1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes. Historical DSS/startup causes remain unestablished; this is not full release qualification.",
+  "native_ide_controls_receipt": "evidence/dss-lifecycle/qualification-summary.json",
+  "last_verified_component_scope": "1,193 service tests, 55 overlapping fault probes and 241 portable tests pass. Twelve of fourteen core jobs and five ancillary workflows pass; core workflow failed at native terminal/startup preambles. All nineteen archives and source inventories verified, including failures. Eighteen DSS lifecycle cases pass; production runtime unchanged from 1182388. Full release remains unqualified.",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 22,
@@ -224,20 +225,31 @@
     "server_local_tests": 106,
     "completed_session_cleanup": "Original authenticated subject and durable completed-close receipt required; pending closes retain original request keys",
     "failed_candidate": "b935fd3e0800945bca66a4860bad4cc53f8ef9ac",
-    "hosted_service_tests": 1175,
+    "hosted_service_tests": 1193,
     "hosted_ide_tests": {
       "passed": 272,
       "skipped": 1
     },
-    "qualification_receipt": "evidence/fault-reproduction/qualification-summary.json"
+    "qualification_receipt": "evidence/dss-lifecycle/qualification-summary.json"
   },
   "controlled_fault_reproduction": {
     "documentation": "FAULT_REPRODUCTION.md",
-    "qualification_receipt": "evidence/fault-reproduction/qualification-summary.json",
-    "cases": 37,
+    "qualification_receipt": "evidence/dss-lifecycle/qualification-summary.json",
+    "cases": 55,
     "historical_failure_causes_established": false,
     "original_deadlines_preserved": true,
     "no_effect_replay_added": true,
     "post_binding_peer_role_and_process_pins": "fixtures"
-  }
+  },
+  "dss_lifecycle_qualification": {
+    "documentation": "DSS_LIFECYCLE.md",
+    "qualification_receipt": "evidence/dss-lifecycle/qualification-summary.json",
+    "new_cases": 18,
+    "post_commit_stage_fault_pairs": 15,
+    "nine_peer_elapsed_ms": 370,
+    "runtime_changed": false,
+    "historical_causes_established": false,
+    "full_driver_fault_gate_qualified": false
+  },
+  "native_startup_current_blockers": "evidence/dss-lifecycle/native-blockers.json"
 }

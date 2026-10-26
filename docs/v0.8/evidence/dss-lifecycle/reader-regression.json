@@ -1,0 +1,22 @@
+{
+  "schema": "openbexi.v08.test-harness-reader-regression/1",
+  "python": "3.12.14",
+  "before_commit": "3802e73b7085cc5ee5f8b242329b35b7e0e8c925",
+  "after_commit": "f1ea0337c89838a637c5e58896aaae09994be86c",
+  "results": {
+    "before": {
+      "reader_connection_closed": false
+    },
+    "after": {
+      "reader_connection_closed": true
+    }
+  },
+  "runtime_code_changed": false,
+  "scope": "Actual SQLite reader connection usable after old helper returns, closed after corrected helper returns; no sockets/native runtime",
+  "initial_local_warning_probe": {
+    "before_warnings": 0,
+    "after_warnings": 0,
+    "qualified": false,
+    "reason": "Local Python does not emit the CPython 3.13 unclosed-connection warning; hosted failing JUnit retains it"
+  }
+}

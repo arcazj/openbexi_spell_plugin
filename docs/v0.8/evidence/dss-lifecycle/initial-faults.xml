@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="7" failures="3" skipped="0" tests="55" time="72.060" timestamp="2026-10-26T05:35:22.022874+00:00" hostname="runnervmtai0g"><testcase classname="tests.test_dss_fault_reproduction" name="test_declared_fault_retains_receipts_holds_and_never_replays[ledger_queue]" time="6.563" /><testcase classname="tests.test_dss_fault_reproduction" name="test_declared_fault_retains_receipts_holds_and_never_replays[ledger_commit]" time="3.267" /><testcase classname="tests.test_dss_fault_reproduction" name="test_declared_fault_retains_receipts_holds_and_never_replays[receipt_delay]" time="3.303" /><testcase classname="tests.test_dss_fault_reproduction" name="test_declared_fault_retains_receipts_holds_and_never_replays[receipt_drop]" time="1.282" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[TRANSPORT-crash]" time="1.351" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[TRANSPORT-cut]" time="1.115"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 122, in _event
+    |     count = self.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    |             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbe4040&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbe4040&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 122, in _event
+    |     count = self.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+    |             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbfe4d0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbfe4d0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[TRANSPORT-stall]" time="3.863" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[LOADING-crash]" time="1.398"><failure message="ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 158, in pytest_runtest_call
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 1268, in _make_invoke_excepthook
+    |     def _make_invoke_excepthook():
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fc863e0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fc863e0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 1268, in _make_invoke_excepthook
+    |     def _make_invoke_excepthook():
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbe4220&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbe4220&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</failure></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[LOADING-cut]" time="1.882" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[LOADING-stall]" time="3.906"><failure message="ExceptionGroup: multiple unraisable exception warnings (4 sub-exceptions)">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 158, in pytest_runtest_call
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (4 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/email/feedparser.py", line 90, in readline
+    |     for ateof in reversed(self._eofstack):
+    |                  ~~~~~~~~^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9f9d5210&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9f9d5210&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/email/feedparser.py", line 90, in readline
+    |     for ateof in reversed(self._eofstack):
+    |                  ~~~~~~~~^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbe4b80&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbe4b80&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/email/feedparser.py", line 90, in readline
+    |     for ateof in reversed(self._eofstack):
+    |                  ~~~~~~~~^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbff010&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbff010&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/email/feedparser.py", line 90, in readline
+    |     for ateof in reversed(self._eofstack):
+    |                  ~~~~~~~~^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbfff10&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbfff10&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</failure></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[RELEASE-crash]" time="1.387" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[RELEASE-cut]" time="1.673"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (4 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (4 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 109, in transaction
+    |     self.db.execute("COMMIT")
+    |     ~~~~~~~~~~~~~~~^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da023c9a0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da023c9a0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 109, in transaction
+    |     self.db.execute("COMMIT")
+    |     ~~~~~~~~~~~~~~~^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbfea70&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbfea70&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 109, in transaction
+    |     self.db.execute("COMMIT")
+    |     ~~~~~~~~~~~~~~~^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fc84c70&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fc84c70&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/server/src/openbexi_spell_server/store.py", line 109, in transaction
+    |     self.db.execute("COMMIT")
+    |     ~~~~~~~~~~~~~~~^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fc86b60&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fc86b60&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[RELEASE-stall]" time="3.870" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ACKNOWLEDGEMENT-crash]" time="1.142"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 291, in __init__
+    |     if hasattr(lock, '_release_save'):
+    |        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fc87d30&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fc87d30&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 291, in __init__
+    |     if hasattr(lock, '_release_save'):
+    |        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9f9d48b0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9f9d48b0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ACKNOWLEDGEMENT-cut]" time="1.878" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ACKNOWLEDGEMENT-stall]" time="1.118"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/json/encoder.py", line 254, in iterencode
+    |     _iterencode = c_make_encoder(
+    |         markers, self.default, _encoder, indent,
+    |         self.key_separator, self.item_separator, self.sort_keys,
+    |         self.skipkeys, self.allow_nan)
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbfd030&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbfd030&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/json/encoder.py", line 254, in iterencode
+    |     _iterencode = c_make_encoder(
+    |         markers, self.default, _encoder, indent,
+    |         self.key_separator, self.item_separator, self.sort_keys,
+    |         self.skipkeys, self.allow_nan)
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9f9d67a0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9f9d67a0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ONBOARD_EXECUTION-crash]" time="1.404" /><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ONBOARD_EXECUTION-cut]" time="1.117"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 281, in __init__
+    |     def __init__(self, lock=None):
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018d210&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018d210&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 281, in __init__
+    |     def __init__(self, lock=None):
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9fbfd210&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9fbfd210&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_dss_post_commit_fault_and_restart_never_replay[ONBOARD_EXECUTION-stall]" time="3.855" /><testcase classname="tests.test_dss_lifecycle" name="test_completed_call_survives_dss_restart_without_replay" time="1.123"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 1148, in daemon
+    |     @property
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018fd30&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018fd30&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 1148, in daemon
+    |     @property
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7d9f9d67a0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7d9f9d67a0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_dss_lifecycle" name="test_scenario_reset_cannot_implicitly_rebind_existing_driver" time="1.117" /><testcase classname="tests.test_dss_lifecycle" name="test_one_uncertain_execution_does_not_block_nine_other_grants[stall-RELEASE]" time="2.930"><failure message="ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 158, in pytest_runtest_call
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 303, in __enter__
+    |     def __enter__(self):
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da01e2f20&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da01e2f20&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 303, in __enter__
+    |     def __enter__(self):
+    |     
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da0603f10&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da0603f10&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</failure></testcase><testcase classname="tests.test_native_binding_faults" name="test_native_reply_after_durable_binding_never_rebinds[timely]" time="2.564" /><testcase classname="tests.test_native_binding_faults" name="test_native_reply_after_durable_binding_never_rebinds[drop_after_bind]" time="0.133"><error message="failed on setup with &quot;ExceptionGroup: multiple unraisable exception warnings (10 sub-exceptions)&quot;">+ Exception Group Traceback (most recent call last):
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/runner.py", line 246, in &lt;lambda&gt;
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_caller.py", line 197, in __call__
+  |     return self._hookexec(
+  |            ~~~~~~~~~~~~~~^
+  |         self.name, self._hookimpls.copy(), call_kwargs, firstresult
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_manager.py", line 183, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 195, in _multicall
+  |     raise exception
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 167, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/pluggy/_execution.py", line 147, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (10 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018cb80&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018cb80&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018d990&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018d990&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018ef20&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018ef20&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018d120&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018d120&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 5 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018cf40&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018cf40&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 6 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018c310&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018c310&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 7 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018e3e0&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018e3e0&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 8 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da018cc70&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da018cc70&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 9 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da0603c40&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da0603c40&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +---------------- 10 ----------------
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/threading.py", line 297, in __init__
+    |     self._waiters = _deque()
+    |                     ~~~~~~^^
+    | ResourceWarning: unclosed database in &lt;sqlite3.Connection object at 0x7f7da0603f10&gt;
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/opt/hostedtoolcache/Python/3.13.16/x64/lib/python3.13/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored in: &lt;sqlite3.Connection object at 0x7f7da0603f10&gt;
+    | Enable tracemalloc to get traceback where the object was allocated.
+    | See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    +------------------------------------</error></testcase><testcase classname="tests.test_native_binding_faults" name="test_native_reply_after_durable_binding_never_rebinds[delay_after_bind]" time="4.422" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_interrupt]" time="0.534" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_deadline]" time="0.305" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_late_ready]" time="0.363" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[oversize]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[allow]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[signal_reply]" time="0.103" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[partial_io]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[deny]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[lost_reply]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wrong_peer]" time="0.002" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[expired_reply]" time="4.023" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[signal_deadline]" time="4.005" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[late_read]" time="4.203" /><testcase classname="tests.test_driver_timing" name="test_metadata_failure_keeps_original_error_and_excludes_private_details" time="0.000" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[TRANSPORT-send]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[TRANSPORT-receipt]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[TRANSPORT-settle]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[LOADING-send]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[LOADING-receipt]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[LOADING-settle]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[RELEASE-send]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[RELEASE-receipt]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[RELEASE-settle]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ACKNOWLEDGEMENT-send]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ACKNOWLEDGEMENT-receipt]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ACKNOWLEDGEMENT-settle]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ONBOARD_EXECUTION-send]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ONBOARD_EXECUTION-receipt]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_stage_failure_is_timed_without_resend_or_loss_of_uncertainty[ONBOARD_EXECUTION-settle]" time="0.001" /><testcase classname="tests.test_driver_timing" name="test_diagnostics_are_bounded_and_do_not_accept_arbitrary_exception_attributes" time="0.001" /></testsuite></testsuites>

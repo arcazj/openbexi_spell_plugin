@@ -9,7 +9,8 @@ provide diagnostic signatures; they do not retrospectively identify a cause.
 Run `python scripts/qualify_v08_faults.py` on Linux with the pinned
 `server/requirements-test.lock` tools. The runner retains its source hashes,
 JUnit result, complete test log and bounded `reliability-faults.jsonl` records,
-including failed attempts. Its separate CI job runs 37 cases and rejects skips.
+including failed attempts. Its separate CI job now runs 55 cases and rejects skips. The original 37-case
+checkpoint below is extended by [eighteen DSS lifecycle cases](DSS_LIFECYCLE.md).
 
 ## Confirmed defect and correction
 
@@ -99,3 +100,7 @@ diagnosis requires a captured spontaneous failure with phase timings and both
 native/provider records, or a reproduction establishing the same causal
 mechanism from the original evidence. These injected faults and subsequent
 passing native samples do not establish the historical causes.
+
+The current test/harness candidate `f1ea033` passes all 55 fault cases and 1,193
+service tests. Production runtime is unchanged from the dev54 checkpoint above.
+[The lifecycle receipt](evidence/dss-lifecycle/qualification-summary.json) retains the expanded result and failed harness attempt.

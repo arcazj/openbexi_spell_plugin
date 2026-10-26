@@ -1,0 +1,26 @@
+{
+  "schema": "openbexi.v08.dss-lifecycle-failed-attempt/1",
+  "candidate_commit": "3802e73b7085cc5ee5f8b242329b35b7e0e8c925",
+  "run_id": 40274992236,
+  "job_id": 121415739994,
+  "passed": false,
+  "full_v08_qualified": false,
+  "artifact": {
+    "artifact_id": 12629359071,
+    "name": "v08-fault-reproduction-212826d17d6f83dff67eae7d857e5a3e1bd87ed0",
+    "sha256": "8e37f1e5894ab5358d8ac57d27ee5b0ff73181cbe36c25eb35e0d1fa353b58be",
+    "zip_integrity": true
+  },
+  "source_inputs_verified": 178,
+  "junit": {
+    "tests": 55,
+    "failures": 3,
+    "errors": 7,
+    "skipped": 0
+  },
+  "failure": "New test-only SQLite delivery readers were left open; CPython 3.13 emitted fatal ResourceWarning/unraisable warnings, including during later test setup",
+  "correction": "Explicitly close each evidence reader and reap failed test children",
+  "runtime_code_changed": false,
+  "warning_policy_relaxed": false,
+  "local_reader_regression": "reader-regression.json"
+}

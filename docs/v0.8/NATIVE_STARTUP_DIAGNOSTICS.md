@@ -55,3 +55,20 @@ not establish the cause of either historical intermittent failure or promote
 the full native-family release gate. Exact outcomes and source identities are
 in the [component receipt](evidence/repeated-handoff/qualification-summary.json)
 and [stage evidence index](evidence/repeated-handoff/startup-diagnostics.json).
+
+## Current dev54 follow-up failure
+
+Candidate `f1ea033` / run `40275195710` fails both native terminal and startup
+jobs in their initial ten-worker root/child cohort. Neither reaches its later
+sixteen-case terminal matrix or twenty-four fresh-family cycles. Four terminal
+workers reach child binding but lose the reply at the original four-second
+native deadline; the agent records late BrokenPipe replies. A startup worker
+reaches process-started without login and retains a child PID whose executable
+is still SPELL-Context, with sleeping futex tasks. These observations distinguish
+two investigation paths; they establish neither underlying cause nor a fix.
+
+[The failure receipt](evidence/dss-lifecycle/native-blockers.json) retains exact
+job/artifact/source identities, both failed results, five worker event logs and
+process snapshots. Diagnose binding queue/dispatch/transport timing separately
+from fork-to-exec progress. Uncertain starts stay spent; no timeout extension,
+automatic replay or later green run can substitute for a demonstrated correction.

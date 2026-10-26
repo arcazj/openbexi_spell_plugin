@@ -2359,3 +2359,36 @@ the source identities and limits. The release preflight exits 1, all eleven
 full-release gate groups remain false, and no merge, stable release or production
 migration occurred. Historical DSS deadline and native startup causes remain
 unestablished.
+
+## Dev54 DSS lifecycle qualification follow-up
+
+Exact candidate **`f1ea0337c89838a637c5e58896aaae09994be86c`** changes only test/harness inputs from the
+qualified dev54 runtime. The paired IDE stays **`1ac0b8a` / 1.2.1.dev4**.
+[Run 40275195710](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40275195710) **fails overall**: twelve of fourteen first-attempt
+core jobs pass; native terminal/startup jobs time out in the initial child
+cohort. All five ancillary workflows pass. **1,193 service tests**, **55 overlapping fault probes**
+and **241 portable tests** pass without failures/errors/skips. Lint, format,
+types and installed-package checks pass. All nineteen archives match GitHub
+digests, ZIP integrity and recorded source hashes; candidate/CI merge trees agree.
+
+The eighteen new cases exercise three failures after each of five real DSS stage
+commits, restart on the same database/endpoints, scenario-reset refusal and ten
+independent execution grants. Original Context/driver receipts and uncertainty
+holds survive; old/new-key retries cannot send. Exact ingress counts stay one
+per admitted stage. Nine unaffected executions complete in 370 ms while
+one RELEASE receipt stalls. This ten-grant case calls the real gate directly;
+the single-execution lifecycle cases use actual worker mTLS. No new native
+identity, Pod identity, broad network-partition or historical-cause claim is made.
+
+The initial `3802e73` fault run failed with three failures and seven setup errors
+from test-only unclosed SQLite readers. The corrected helper explicitly closes
+the readers and reaps failed children. [Original failed evidence](evidence/dss-lifecycle/initial-attempt.json)
+and its JUnit/logs remain retained; no warning suppression or timeout relaxation
+was used. [The final receipt](evidence/dss-lifecycle/qualification-summary.json) and [lifecycle report](DSS_LIFECYCLE.md)
+record the full result. Native/IDE handoff/reconnect, four IDE terminal cases
+and twenty authenticated observers pass. The separate sixteen-case terminal
+and twenty-four-cycle startup profiles never reach those scenario cases in
+this run. [Their failure receipt](evidence/dss-lifecycle/native-blockers.json)
+retains four late binding replies and one fork-to-login stall; causes remain
+unproven and no failed operation is replayed. The release preflight still exits 1:
+all eleven full-release gate groups remain false, with no merge or publication.

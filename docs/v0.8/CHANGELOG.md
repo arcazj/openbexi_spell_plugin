@@ -1,5 +1,11 @@
 # v0.8 development changelog
 
+## Dev54 qualification follow-up — DSS lifecycle and independent execution faults
+
+- Add eighteen cases covering process death, connection cut and reply stall after every DSS stage commit, same-database restart, scenario reset and nine independent grants beside one uncertain execution. Both old and new request keys stay denied for uncertain outcomes; exact ingress counts expose hidden replay attempts.
+- Correct unclosed SQLite evidence readers in the new test harness and reap failed subprocesses. Keep the failed initial artifact, original JUnit/logs and local reader regression; warnings remain fatal. Production runtime stays unchanged from `1182388`.
+- Candidate `f1ea033` passes 1,193 service tests, 55 overlapping fault probes and 241 portable tests. Twelve of fourteen core jobs and five ancillary workflows pass. Native terminal/startup preambles fail; retain their five affected-worker traces and keep the overall candidate blocked. All nineteen archives/source inventories, including failures, are verified. [DSS lifecycle report](DSS_LIFECYCLE.md). Historical causes and all eleven full-release gates remain open.
+
 ## 0.8.0.dev54 — controlled faults and native deadline enforcement
 
 - Reject native readiness and complete ALLOW replies consumed after the original deadline. The compiled pipe regression fails before the correction; production admission retains its four-second budget and adds no reconnect or request replay.

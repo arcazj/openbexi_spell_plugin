@@ -1,14 +1,20 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev54` and the pinned IDE
-`1.2.1.dev4` remain development packages. Executable `1182388` passes the
-available component workflows: 1,175 service tests, 37 overlapping fault probes and 241 portable tests; fourteen core jobs and five ancillary workflows; nineteen verified artifact archives and their recorded source hashes.
-[The receipt](evidence/fault-reproduction/qualification-summary.json) binds these results to exact sources.
-Dev54 fixes a reproduced native deadline-check defect and the two-Context
-prelaunch readiness gap. [Controlled fault probes](FAULT_REPRODUCTION.md) now
-distinguish writer/commit delays, uncertain DSS receipts and post-binding native
-reply loss. The retained historical DSS/startup causes remain unestablished.
-Earlier receipts and failures remain in `evidence/` and `TEST_REPORT.md`.
+The full release is **not qualified**. Server `0.8.0.dev54` and pinned IDE
+`1.2.1.dev4` remain development packages. Test/harness candidate `f1ea033`
+passes 1,193 service tests, 55 overlapping fault probes and 241 portable tests,
+twelve of fourteen core jobs and all five ancillary workflows. The core workflow
+is **failed**: terminal and startup profiles stall before their scenarios start.
+Nineteen artifact archives, including both failures, and their recorded source
+hashes are verified.
+[The receipt](evidence/dss-lifecycle/qualification-summary.json) binds these results to exact sources.
+Production runtime is unchanged from the earlier dev54 checkpoint `1182388`;
+the current native failures remain unresolved. [The blocker receipt](evidence/dss-lifecycle/native-blockers.json)
+localizes four late member-binding replies and one fork-to-login stall.
+[DSS lifecycle checks](DSS_LIFECYCLE.md) now cover every stage's lost reply,
+same-database restart, reset refusal and nine unaffected executions beside one
+uncertain execution. Historical DSS/startup causes and all eleven full-release
+gates remain unresolved. Earlier receipts and failures remain retained.
 
 The owner request **"Qualify and release full v0.8"** authorizes implementation,
 qualification, merge, tag and GitHub publication once all mandatory criteria
@@ -61,7 +67,7 @@ Desktop reconnect now opens a fresh authenticated session and retains other exec
 | Services | Abrupt controller/network faults, production routing and complete deployed isolation/fault coverage |
 | Native family | Startup reliability, timed/default and queued/uncertain prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
-| Driver faults | Diagnose the retained dev52 ten-command timeout; lifecycle/reset/partition/recovery and bounded load, with uncertain effects never replayed |
+| Driver faults | Stage reply loss, same-DB DSS restart and reset denial now checked; historical dev52 timeout, broader partitions, authority/driver recovery and deployed bounded load remain |
 | IDE/browser | Public launch, full debugger, browser observers, WSS gap resynchronization and Git conflicts |
 | Compose | Full ten-execution/twenty-viewer runtime workload, negative egress, process/storage failure and restore |
 | Kubernetes | Production-like cluster, runtime Pod identity, RBAC/admission/network denial, node partition and storage recovery |
@@ -89,7 +95,7 @@ this diagnostic repair is not a startup reliability fix.
 ## Publication preflight
 
 `RELEASE_GATES.json` records all eleven mandatory groups. The clean dev54
-[executed preflight](evidence/fault-reproduction/publication-preflight.json)
+[executed preflight](evidence/dss-lifecycle/publication-preflight.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 
