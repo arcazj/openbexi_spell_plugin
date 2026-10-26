@@ -80,6 +80,32 @@ def test_stale_audit_cannot_qualify_current_wheel(sample, tmp_path):
         module.assess(tmp_path, wheel, sbom, audit)
 
 
+@pytest.mark.parametrize("version", ["0.8.0.dev43", "0.8.0.dev42"])
+def test_real_pip_audit_local_package_skip_is_explicit_and_version_bound(sample, tmp_path, version):
+    wheel, sbom, audit = sample
+    audit.write_text(
+        json.dumps(
+            {
+                "dependencies": [
+                    {
+                        "name": "openbexi-spell-server",
+                        "skip_reason": "Dependency not found on PyPI and could not be audited: "
+                        f"openbexi-spell-server ({version})",
+                    },
+                    {"name": "pip", "version": "26.2.1", "vulns": []},
+                ]
+            }
+        )
+    )
+    if version != "0.8.0.dev43":
+        with pytest.raises(ValueError, match="audit is not for"):
+            module.assess(tmp_path, wheel, sbom, audit)
+    else:
+        result = module.assess(tmp_path, wheel, sbom, audit)
+        assert result["passed"] and result["server_package_audited_by_registry"] is False
+        assert len(result["unaudited_dependencies"]) == 1
+
+
 def test_scoped_vulnerability_is_exposed_not_silently_ignored(sample, tmp_path):
     wheel, sbom, audit = sample
     audit.write_text(

@@ -83,8 +83,18 @@ def assess(root, wheel_path, sbom_path, audit_path):
     audited_server = [
         item for item in dependencies if item.get("name") == "openbexi-spell-server"
     ]
-    if len(audited_server) != 1 or audited_server[0].get("version") != expected_version:
+    local_skip = (
+        len(audited_server) == 1
+        and "version" not in audited_server[0]
+        and audited_server[0].get("skip_reason")
+        == "Dependency not found on PyPI and could not be audited: "
+        f"openbexi-spell-server ({expected_version})"
+    )
+    if len(audited_server) != 1 or (
+        audited_server[0].get("version") != expected_version and not local_skip
+    ):
         raise ValueError("Vulnerability audit is not for the candidate server version")
+    result["server_package_audited_by_registry"] = not local_skip
     result["unaudited_dependencies"] = [
         {"name": item["name"], "reason": item["skip_reason"]}
         for item in dependencies

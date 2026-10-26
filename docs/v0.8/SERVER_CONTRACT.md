@@ -64,6 +64,18 @@ request logs or public health/snapshot responses.
 | GET /v1/contexts/{id}/procedures | source.catalog | execution:read, configured catalog only |
 | GET /v1/contexts/{id}/executions | execution.list | execution:read |
 | POST /v1/contexts/{id}/authority | explicit session/execution methods only | EXECUTION_AUTHORITY.md matrix |
+| POST /v1/contexts/{id}/events | execution.events | execution:read; read-only cursor replay; no idempotency key |
+| POST /v1/contexts/{id}/commands | execution.command | Listener native_command_contexts opt-in; live execution:control and exact owner proof; RUN/STEP also execution:start; ABORT/CLOSE also terminal profile |
+
+The commands payload is exactly the delivered controller proof plus `command`
+and nullable `target_admission_id`; `Idempotency-Key` is mandatory. The only
+commands are `CMD_RUN`, `CMD_STEP`, `CMD_PAUSE`, `CMD_ABORT`, `CMD_CLOSE`.
+Context validates the original epoch, connection generation, capability,
+registered native member and lifecycle before replay or queue admission.
+No start grant, worker provisioning, expression evaluation, arbitrary native
+request, host recovery or prompt reply is exposed by this route. A disabled
+Context returns 404. Health advertises only commands permitted by the live
+caller and enabled Listener; this does not set public `runtime_enabled` true.
 
 Context discovery reports configured scope, not cached claims of live health.
 Every forwarded request re-establishes TLS/pin verification; unavailable/stale
