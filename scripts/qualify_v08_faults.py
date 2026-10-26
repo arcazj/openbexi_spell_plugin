@@ -44,8 +44,8 @@ def main():
         passed=False,
         full_v08_qualified=False,
         historical_failure_causes_established=False,
-        scope="Controlled ledger and DSS stage faults, process restart and immutable epoch checks; compiled native admission deadline and post-binding reply faults",
-        process_identity_scope="Native binding tests use fixture peer roles/process pins; Context mTLS/SQLite and native Unix client are real",
+        scope="Controlled ledger/DSS stage faults and restart; controller TLS/recovery boundaries; compiled native spawn, admission deadline and post-binding reply faults",
+        process_identity_scope="Native binding tests use fixture peer roles/process pins and recovery tests use fixture host proof; Context mTLS/SQLite, client process death and native Unix client are real",
     )
     command = [
         sys.executable,
@@ -80,7 +80,7 @@ def main():
             for key in ("tests", "failures", "errors", "skipped")
         }
         report["passed"] = result.returncode == 0 and report["junit"] == dict(
-            tests=69, failures=0, errors=0, skipped=0
+            tests=71, failures=0, errors=0, skipped=0
         )
     except subprocess.TimeoutExpired as error:
         (output / "tests.log").write_bytes(

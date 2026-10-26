@@ -397,7 +397,7 @@ def test_native_callback_failure_reports_stage_without_replaying(failure_phase):
 
     server.socket = SimpleNamespace(accept=lambda: (Stream(), None))
     server.serve()
-    assert len(calls) == len(reports) == 1
+    assert len(calls) == 1 and len(reports) == 2
     event, details = reports[0]
     assert event == "native-before-spawn-denied"
     assert details["phase"] == failure_phase
@@ -405,5 +405,11 @@ def test_native_callback_failure_reports_stage_without_replaying(failure_phase):
     assert details["error_type"] == (
         "TimeoutError" if failure_phase == "dispatch" else "BrokenPipeError"
     )
+    timing_event, timing = reports[1]
+    assert timing_event == "native-admission-timing"
+    assert timing["kind"] == "openbexi.native-member/1"
+    assert timing["member"] is None and timing["outcome"] == "reply_lost"
+    assert timing["accepted_ns"] > 0
+    assert timing["elapsed_ms"] >= timing["phases"]["dispatch_ms"] >= 0
     assert writes == ([b"ALLOW\n", b"DENY\n"] if failure_phase == "reply" else [b"DENY\n"])
     assert "private" not in str(reports)
