@@ -1,0 +1,126 @@
+{
+  "schema": "openbexi.v08.prelaunch-readiness-regression/1",
+  "failed_candidate": "fb04f3db894f5e89426e5996d9f15eb6c2eaf178",
+  "failed_workflow_run": 40272315197,
+  "failed_job": 121407577184,
+  "failed_run_retained": true,
+  "artifact": {
+    "artifact_id": 12629135219,
+    "name": "v08-kind-prelaunch-61287c85a7b79f0b83de8c053660288306a662cb",
+    "sha256": "d41a42167fe9d77b15b3bf9b577742632324fc3017b7117260608c27082c08af",
+    "zip_integrity": true
+  },
+  "error": "Redacted alice GET /v1/contexts/B/health: HTTP 503, expected 200",
+  "bounded_log_excerpt": "2026-10-26T05:06:32.4816160Z \u001b[36;1mpython deploy/v0.8/qualify_compose.py --root \"$V08_DEPLOY_ROOT\" \\\u001b[0m\n2026-10-26T05:06:32.4817229Z \u001b[36;1mpython deploy/v0.8/qualify_compose.py --root \"$V08_DEPLOY_ROOT\" \\\u001b[0m\n2026-10-26T05:06:33.1610624Z Traceback (most recent call last):\n2026-10-26T05:06:33.1681441Z   File \"/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/deploy/v0.8/qualify_compose.py\", line 172, in <module>\n2026-10-26T05:06:33.1682228Z   File \"/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/deploy/v0.8/qualify_compose.py\", line 165, in main\n2026-10-26T05:06:33.1682923Z   File \"/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/deploy/v0.8/qualify_compose.py\", line 94, in run\n2026-10-26T05:06:33.1683252Z     health_b = expect(probe, \"alice\", \"/v1/contexts/B/health\")\n2026-10-26T05:06:33.1684063Z   File \"/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/deploy/v0.8/qualify_compose.py\", line 50, in expect\n2026-10-26T05:06:33.1684486Z     raise AssertionError(f\"Redacted {subject} {method} {path}: HTTP {code}, expected {status}\")\n2026-10-26T05:06:33.1684812Z AssertionError: Redacted alice GET /v1/contexts/B/health: HTTP 503, expected 200\n",
+  "collected_workload_status": {
+    "schema": "openbexi.v08.kubernetes-status/1",
+    "pods": [
+      {
+        "name": "context-a-75874c766f-jz4rw",
+        "phase": "Running",
+        "containers": [
+          {
+            "name": "context-a",
+            "image": "docker.io/library/openbexi-spell-server:0.8.0.dev53-prelaunch",
+            "ready": true,
+            "restart_count": 0,
+            "state": "running",
+            "reason": "",
+            "exit_code": null
+          }
+        ]
+      },
+      {
+        "name": "context-b-6c8d5c96c7-dtrvk",
+        "phase": "Running",
+        "containers": [
+          {
+            "name": "context-b",
+            "image": "docker.io/library/openbexi-spell-server:0.8.0.dev53-prelaunch",
+            "ready": true,
+            "restart_count": 0,
+            "state": "running",
+            "reason": "",
+            "exit_code": null
+          }
+        ]
+      },
+      {
+        "name": "dss-5b9957c75f-bzgdt",
+        "phase": "Running",
+        "containers": [
+          {
+            "name": "dss",
+            "image": "docker.io/library/openbexi-spell-plugin-dss:0.1.0",
+            "ready": true,
+            "restart_count": 0,
+            "state": "running",
+            "reason": "",
+            "exit_code": null
+          }
+        ]
+      },
+      {
+        "name": "gateway-6fbff87cf8-xb42h",
+        "phase": "Running",
+        "containers": [
+          {
+            "name": "gateway",
+            "image": "docker.io/library/openbexi-spell-server:0.8.0.dev53-prelaunch",
+            "ready": true,
+            "restart_count": 0,
+            "state": "running",
+            "reason": "",
+            "exit_code": null
+          }
+        ]
+      },
+      {
+        "name": "listener-559bb488b4-nsltk",
+        "phase": "Running",
+        "containers": [
+          {
+            "name": "listener",
+            "image": "docker.io/library/openbexi-spell-server:0.8.0.dev53-prelaunch",
+            "ready": true,
+            "restart_count": 0,
+            "state": "running",
+            "reason": "",
+            "exit_code": null
+          }
+        ]
+      }
+    ],
+    "pod_limit_reached": false,
+    "full_v08_qualified": false
+  },
+  "before": {
+    "sha256": "b32558dded693a4f9e3641645e5f137ba02a0e98081817791fbe25e144f80af2",
+    "junit": {
+      "tests": 5,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"4\" skipped=\"0\" tests=\"5\" time=\"0.041\" timestamp=\"2026-10-26T06:11:12.176139+01:00\" hostname=\"c590a6082f0b\"><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_waits_for_both_contexts_without_mutation_or_replay[A]\" time=\"0.001\"><failure message=\"assert (2 &gt;= 2 and 0 &gt;= 1)\">clock = namespace(now=0.4), delayed = 'A'\n\n    @pytest.mark.parametrize(\"delayed\", [\"A\", \"B\"])\n    def test_readiness_waits_for_both_contexts_without_mutation_or_replay(clock, delayed):\n        calls, counts = [], {\"A\": 0, \"B\": 0}\n    \n        def call(subject, method, path):\n            context = path.split(\"/\")[3]\n            assert subject == \"alice\" and method == \"GET\" and path.endswith(\"/health\")\n            counts[context] += 1\n            code = 503 if context == delayed and counts[context] == 1 else 200\n            calls.append((context, code))\n            return code, healthy(context)\n    \n        probe_module.ready(SimpleNamespace(call=call))\n&gt;       assert counts[delayed] &gt;= 2 and counts[\"B\" if delayed == \"A\" else \"A\"] &gt;= 1\nE       assert (2 &gt;= 2 and 0 &gt;= 1)\n\nserver/tests/test_deployment_readiness.py:46: AssertionError</failure></testcase><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_waits_for_both_contexts_without_mutation_or_replay[B]\" time=\"0.000\"><failure message=\"assert (0 &gt;= 2)\">clock = namespace(now=0.0), delayed = 'B'\n\n    @pytest.mark.parametrize(\"delayed\", [\"A\", \"B\"])\n    def test_readiness_waits_for_both_contexts_without_mutation_or_replay(clock, delayed):\n        calls, counts = [], {\"A\": 0, \"B\": 0}\n    \n        def call(subject, method, path):\n            context = path.split(\"/\")[3]\n            assert subject == \"alice\" and method == \"GET\" and path.endswith(\"/health\")\n            counts[context] += 1\n            code = 503 if context == delayed and counts[context] == 1 else 200\n            calls.append((context, code))\n            return code, healthy(context)\n    \n        probe_module.ready(SimpleNamespace(call=call))\n&gt;       assert counts[delayed] &gt;= 2 and counts[\"B\" if delayed == \"A\" else \"A\"] &gt;= 1\nE       assert (0 &gt;= 2)\n\nserver/tests/test_deployment_readiness.py:46: AssertionError</failure></testcase><testcase classname=\"tests.test_deployment_readiness\" name=\"test_unready_second_context_uses_original_shared_budget\" time=\"0.000\"><failure message=\"Failed: DID NOT RAISE &lt;class 'RuntimeError'&gt;\">clock = namespace(now=0.0)\n\n    def test_unready_second_context_uses_original_shared_budget(clock):\n        calls = []\n    \n        def call(subject, method, path):\n            calls.append((subject, method, path))\n            context = path.split(\"/\")[3]\n            return (200 if context == \"A\" else 503), healthy(context)\n    \n&gt;       with pytest.raises(RuntimeError, match=\"B.*HTTP_503\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE &lt;class 'RuntimeError'&gt;\n\nserver/tests/test_deployment_readiness.py:59: Failed</failure></testcase><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_pin_failure_is_not_retried\" time=\"0.000\" /><testcase classname=\"tests.test_deployment_readiness\" name=\"test_prelaunch_image_markers_match_the_installed_package_version\" time=\"0.003\"><failure message=\"AssertionError: assert 'openbexi-spe...v53-prelaunch' == 'openbexi-spe...v54-prelaunch'&#10;  &#10;  - openbexi-spell-server:0.8.0.dev54-prelaunch&#10;  ?                                 ^&#10;  + openbexi-spell-server:0.8.0.dev53-prelaunch&#10;  ?                                 ^\">def test_prelaunch_image_markers_match_the_installed_package_version():\n        version = tomllib.loads((ROOT / \"server/pyproject.toml\").read_text())[\"project\"][\"version\"]\n        deployment = ROOT / \"deploy/v0.8\"\n        expected = \"openbexi-spell-server:\" + version + \"-prelaunch\"\n&gt;       assert runpy.run_path(str(deployment / \"render_kubernetes.py\"))[\"AUTHORITY_IMAGE\"] == expected\nE       AssertionError: assert 'openbexi-spe...v53-prelaunch' == 'openbexi-spe...v54-prelaunch'\nE         \nE         - openbexi-spell-server:0.8.0.dev54-prelaunch\nE         ?                                 ^\nE         + openbexi-spell-server:0.8.0.dev53-prelaunch\nE         ?                                 ^\n\nserver/tests/test_deployment_readiness.py:81: AssertionError</failure></testcase></testsuite></testsuites>"
+  },
+  "after": {
+    "sha256": "b9d3b7fb85def4015518d44c6cc5792dc7f4259e01bbbd4d066aa7a8d65e7f3c",
+    "junit": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"5\" time=\"0.033\" timestamp=\"2026-10-26T06:12:52.774554+01:00\" hostname=\"c590a6082f0b\"><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_waits_for_both_contexts_without_mutation_or_replay[A]\" time=\"0.001\" /><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_waits_for_both_contexts_without_mutation_or_replay[B]\" time=\"0.000\" /><testcase classname=\"tests.test_deployment_readiness\" name=\"test_unready_second_context_uses_original_shared_budget\" time=\"0.001\" /><testcase classname=\"tests.test_deployment_readiness\" name=\"test_readiness_pin_failure_is_not_retried\" time=\"0.000\" /><testcase classname=\"tests.test_deployment_readiness\" name=\"test_prelaunch_image_markers_match_the_installed_package_version\" time=\"0.003\" /></testsuite></testsuites>"
+  },
+  "confirmed_defects": [
+    "Readiness returned after Context A health without checking Context B",
+    "Deployment image names and OCI version label retained dev53 while server package was dev54"
+  ],
+  "correction": "Check both Contexts using only GET health calls within the same original 65-second readiness deadline; retain immediate TLS pin failure; align all prelaunch version markers",
+  "mutating_operation_retry_added": false,
+  "operation_deadlines_extended": false,
+  "context_b_http_503_physical_cause_established": false,
+  "full_v08_qualified": false
+}

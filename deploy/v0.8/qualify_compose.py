@@ -66,18 +66,28 @@ def ready(probe):
     end = time.monotonic() + 65
     last_failure = "no_probe_attempt"
     while time.monotonic() < end:
-        try:
-            code, body = probe.call("alice", "GET", "/v1/contexts/A/health")
-            if code == 200:
+        failures = []
+        for context in ("A", "B"):
+            if time.monotonic() >= end:
+                failures.append("Context " + context + " shared_deadline_expired")
+                break
+            try:
+                code, body = probe.call("alice", "GET", f"/v1/contexts/{context}/health")
                 if (
-                    body.get("schema") == "openbexi.listener/1"
+                    code == 200
+                    and body.get("schema") == "openbexi.listener/1"
                     and body.get("result", {}).get("status") == "ready"
+                    and body.get("result", {}).get("context_id") == context
+                    and body.get("result", {}).get("runtime_enabled") is False
                 ):
-                    return
-            last_failure = "HTTP_" + str(code)
-        except (OSError, TimeoutError, ssl.SSLError) as error:
-            last_failure = type(error).__name__
-        time.sleep(0.4)
+                    continue
+                failures.append("Context " + context + " HTTP_" + str(code))
+            except (OSError, TimeoutError, ssl.SSLError) as error:
+                failures.append("Context " + context + " " + type(error).__name__)
+        if not failures and time.monotonic() < end:
+            return
+        last_failure = "; ".join(failures) or "shared_deadline_expired"
+        time.sleep(min(0.4, max(0, end - time.monotonic())))
     raise RuntimeError("mTLS Compose gateway/Context readiness: " + last_failure)
 
 
