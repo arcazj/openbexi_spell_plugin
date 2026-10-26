@@ -56,11 +56,14 @@ def native_sources(tmp_path_factory):
             original, ROOT / "docs/reference/SPELL2.6.10-src.zip", root / "composition"
         )
         builder = load(ROOT / "host_runtime/build_admission_context.py", "prompt_builder")
-        builder.patch_native_tree(original)
         enabled = root / "enabled"
+        # Branch before private overlays, exactly as the hosted builder does.
+        # Stream reuse changes CIF source after prompt/terminal composition;
+        # adding prompts to an already-finished default tree is invalid.
         shutil.copytree(original, enabled)
+        builder.patch_native_tree(original)
+        builder.patch_native_tree(enabled, prompts=True)
         patcher = load(ROOT / "host_runtime/native_prompt_patch.py", "prompt_hooks")
-        patcher.patch_prompt_tree(enabled)
     finally:
         sys.path[:] = before_path
     return root, original, enabled, patcher
