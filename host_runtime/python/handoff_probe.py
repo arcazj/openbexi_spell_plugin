@@ -60,6 +60,11 @@ def run_handoff_probe(
                 native_status=state,
                 members=len(child_gate.started),
             )
+            until = time.monotonic() + 20
+            while not Path("/control/handoff-cleanup").is_file():
+                if time.monotonic() >= until:
+                    raise TimeoutError("Host did not fence finished handoff family")
+                time.sleep(0.05)
             return
         time.sleep(0.05)
     raise TimeoutError("Native handoff fixture expired")

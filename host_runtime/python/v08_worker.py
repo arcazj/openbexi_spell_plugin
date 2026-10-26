@@ -632,6 +632,9 @@ def run(config):
     rpc("consume")
     runtime = None
     if handoff_profile:
+        # python -I excludes the script directory. Only the read-only operator
+        # modules participate; source snapshots never enter this lookup path.
+        sys.path.insert(0, "/v08")
         from handoff_runtime import HandoffRuntime
 
         os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"

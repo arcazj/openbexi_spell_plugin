@@ -191,6 +191,21 @@ def test_actual_A_B_C_routes_rotate_once_and_preserve_original_family(ledger, pk
     assert observe(ledger, pki)["pause_barrier"]["runtime_identity_rotated"]
 
 
+@pytest.mark.parametrize("status", ["FINISHED", "ERROR", "ABORTED", "CLOSED"])
+def test_terminal_settlement_preserves_original_lineage_after_rotation(ledger, pki, status):
+    _, _, _, epoch = resumed(ledger, pki)
+    new = activate(ledger, pki, epoch)
+    ledger["grant"] = start_grant(new["grant"])
+    ledger["runtime_capabilities"][ledger["grant"].execution_id] = new["runtime_capability"]
+    fence = terminal.begin(ledger, pki, status)
+    code, answer = terminal.complete(ledger, pki, fence)
+    assert code == 200 and answer["result"]["state"] == "SETTLED", answer
+    assert terminal.release(ledger, pki, answer["result"])[0] == 200
+    assert terminal.held(ledger) == 0
+    assert call(ledger, pki, ledger["grant"], "check")[0] == 403
+    assert ledger["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
+
+
 @pytest.mark.parametrize("certificate", ["worker", "listener", "alice", "bob", "observer"])
 def test_only_separate_host_can_submit_freezer_evidence(ledger, pki, certificate):
     state, proof = prepare(ledger, pki)

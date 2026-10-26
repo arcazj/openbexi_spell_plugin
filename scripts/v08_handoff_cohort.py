@@ -327,8 +327,60 @@ def qualify_handoff_case(
             )
         (control / "handoff-finish").write_text("finish after B effects")
         await_event([name], "native-handoff-finished", seconds=25)
+        fence = host_call(
+            "begin", container_id=original["Id"], native_status="FINISHED"
+        )
+        if fence["state"] != "FENCED" or not fence["hold_retained"]:
+            raise RuntimeError("Finished handoff family lacks a terminal fence")
+        (control / "handoff-cleanup").write_text("host terminal fence committed")
         if command("docker", "wait", name, timeout=20) != "0":
             raise RuntimeError("Native handoff cleanup failed")
+        stopped = json.loads(command("docker", "inspect", name))[0]
+        from v08_terminal_cohort import validate_stopped
+
+        validate_stopped(stopped, original["Id"], worker_image)
+        if any(not select.select([fd], [], [], 0)[0] for fd in handles.values()):
+            raise RuntimeError("Original handoff participant survived cleanup")
+        settled = host_call(
+            "complete",
+            challenge=fence["challenge"],
+            evidence=dict(
+                provider="docker-pidfd-terminal/1",
+                container_id=stopped["Id"],
+                image=stopped["Image"],
+                running=stopped["State"]["Running"],
+                pid=stopped["State"]["Pid"],
+                exit_code=stopped["State"]["ExitCode"],
+                oom_killed=stopped["State"]["OOMKilled"],
+                restart_count=stopped["RestartCount"],
+                original_handles=len(handles),
+                exited_handles=len(handles),
+                roster_hash=fence["roster_hash"],
+            ),
+        )
+        if settled["state"] != "SETTLED" or settled["report"]["effect_receipts"] != 10:
+            raise RuntimeError(
+                "Cross-owner terminal settlement failed: " + json.dumps(settled)
+            )
+        released = host_call(
+            "release", challenge=fence["challenge"], report_hash=settled["report_hash"]
+        )
+        with closing(
+            sqlite3.connect(
+                "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
+            )
+        ) as db:
+            remaining = db.execute("SELECT execution_id FROM reservations").fetchall()
+            spent = db.execute("SELECT SUM(spent) FROM workers").fetchone()[0]
+        if (
+            released["state"] != "RELEASED"
+            or len(remaining) != 1
+            or remaining[0][0] == execution["id"]
+            or spent != 1
+        ):
+            raise RuntimeError(
+                "Handoff settlement changed unrelated holds or worker reuse"
+            )
         report["native_live_handoff"] = dict(
             passed=True,
             provider="docker-cgroup-freezer-pidfd/1",
@@ -348,7 +400,10 @@ def qualify_handoff_case(
             dss_commands=2,
             matching_stage_receipts=10,
             provenance_epochs=[1, 2],
-            logical_reservations_retained=holds,
+            logical_reservations_during_handoff=holds,
+            terminal_settlement=released,
+            original_processes_exited=True,
+            unrelated_reservations_retained=len(remaining),
             worker_reusable=False,
             new_children_after_handoff=False,
             full_v08_qualified=False,

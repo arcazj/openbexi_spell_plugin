@@ -34,7 +34,10 @@ consumption proof in one delivery over its pinned mTLS channel. Both remain only
 in memory. An activation reply lost after commit is never retried. A's runtime
 credential and controller capability no longer authorize any operation.
 
-Original native driver calls capture the epoch in gRPC metadata before dispatch.
+The candidate Executor loads a fixed, source-hashed trusted bootstrap before
+driver initialization, even with isolated CPython. The frozen driver sources,
+command scheduling and RPC budgets remain unchanged. Original native driver
+calls capture the epoch in gRPC metadata before dispatch.
 Native admission callbacks capture it before opening their Unix channel. The
 worker rejects an old captured epoch instead of stamping it with B's identity.
 All new DSS operations carry the newly issued grant in both effect ledgers.
@@ -68,6 +71,10 @@ DSS receipts from both owner epochs. It also verifies C cannot mutate and an
 unrelated reservation remains unchanged. Foundation regressions cover real mTLS,
 concurrent and lost activation, restart, expiry, forged freezer evidence, prompt
 uncertainty and complete/partial/conflicting independent DSS histories.
+After continuation, the host obtains a terminal fence, verifies exit of every
+original process, reconciles both owner epochs' DSS receipts and releases only
+the finished family's reservations. The unrelated witness and spent-worker
+status remain intact.
 
 These are candidate acceptance criteria; exact successful commit/workflow and
 artifact evidence are recorded in PR #4. No full-v0.8 release gate is promoted
