@@ -97,6 +97,9 @@ def test_unanswered_untimed_prompt_keeps_identity_and_requires_fresh_owner_reply
     assert len(relay.sent) == 1
     assert prompt_row(ledger) == dict(original, state="CLOSED", outcome="ANSWER_SELECTED")
     assert protocol.rows(ledger)[0]["epoch"] == 2
+    # Native close preserves final-consumption provenance in the reply journal;
+    # the separate prompt row carries the selected native outcome.
+    assert protocol.rows(ledger)[0]["state"] == "CONSUMED_UNPROVEN"
     ledger["app"].authority.live_handoff._prompts_settled(ledger["grant"].execution_id)
 
 

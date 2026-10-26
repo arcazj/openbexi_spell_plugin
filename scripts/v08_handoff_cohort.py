@@ -579,7 +579,7 @@ def qualify_handoff_case(
                 (pending_prompt["prompt_id"],),
             ).fetchall()
         if replies != [
-            ("bob", 2, bob, bproof["connection_generation"], "CLOSED_UNPROVEN")
+            ("bob", 2, bob, bproof["connection_generation"], "CONSUMED_UNPROVEN")
         ]:
             raise RuntimeError(
                 "Transferred prompt reply lost fresh controller provenance"
