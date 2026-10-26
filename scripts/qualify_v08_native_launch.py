@@ -6,7 +6,7 @@ Context and Executor. No Docker socket/host manager enters a worker or Context.
 """
 
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import closing
+from contextlib import closing, ExitStack
 import argparse
 import hashlib
 import json
@@ -506,6 +506,7 @@ def main():
     parser.add_argument("--native-prompts", action="store_true")
     parser.add_argument("--native-terminal", action="store_true")
     parser.add_argument("--native-handoff", action="store_true")
+    parser.add_argument("--native-ide", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
@@ -518,6 +519,7 @@ def main():
                 profile.native_prompts,
                 profile.native_terminal,
                 profile.native_handoff,
+                profile.native_ide,
                 profile.native_listener_survival,
             )
         )
@@ -526,6 +528,7 @@ def main():
         parser.error(
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
+    profile.native_handoff = profile.native_handoff or profile.native_ide
     profile.native_prompts = (
         profile.native_prompts or profile.native_terminal or profile.native_handoff
     )
@@ -579,6 +582,8 @@ def main():
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
         ROOT / "scripts/v08_native_consumption.py",
+        ROOT / "scripts/v08_ide_cohort.py",
+        ROOT / "docs/v0.8/IDE_PAIR.json",
     ]
     if profile.native_listener_survival:
         inputs.append(ROOT / "scripts/v08_listener_survival.py")
@@ -594,7 +599,10 @@ def main():
     names, networks = [], []
     worker_names = []
     try:
-        with tempfile.TemporaryDirectory(prefix="spell-native-launch-") as temporary:
+        with (
+            tempfile.TemporaryDirectory(prefix="spell-native-launch-") as temporary,
+            ExitStack() as desktop_stack,
+        ):
             temporary = Path(temporary)
             try:
                 if os.getuid() == 0:
@@ -604,7 +612,18 @@ def main():
                 load_runtime(temporary, output)
                 ca, peers = pki(
                     temporary / "pki",
-                    extra_peers=("edge", "observer")
+                    extra_peers=(
+                        "edge",
+                        "observer",
+                        "alice",
+                        "bob",
+                        "worker-probe",
+                        "worker-owner",
+                        "worker-resume",
+                        "settlement-host",
+                    )
+                    if profile.native_ide
+                    else ("edge", "observer")
                     if profile.native_listener_survival
                     else (
                         (
@@ -2130,6 +2149,7 @@ def main():
 
                     qualify_consumption_fence(
                         live_handoff=True,
+                        desktop_stack=desktop_stack if profile.native_ide else None,
                         driver_network=driver_network,
                         terminal_evidence=output,
                         temporary=temporary,

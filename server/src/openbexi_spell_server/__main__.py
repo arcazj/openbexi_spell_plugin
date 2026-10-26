@@ -43,6 +43,8 @@ def main(*, driver_factory=None):
             "host_settlement",
         }
         if args.role == "context"
+        else {"native_command_contexts"}
+        if args.role == "listener"
         else set()
     )
     if args.role == "context" and driver_factory is not None:
@@ -101,7 +103,11 @@ def main(*, driver_factory=None):
                 exact(target, {"url", "fingerprint"})
                 routes[name] = Route(target["url"], target["fingerprint"], client_tls)
             app = Listener(
-                config["edge_fingerprint"], config["identities"], config["scopes"], routes
+                config["edge_fingerprint"],
+                config["identities"],
+                config["scopes"],
+                routes,
+                native_command_contexts=config.get("native_command_contexts"),
             )
         server = Server(
             (config["bind"], config["port"]),

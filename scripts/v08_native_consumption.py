@@ -233,6 +233,7 @@ def qualify_consumption_fence(
     terminal_evidence=None,
     live_handoff=False,
     driver_network=None,
+    desktop_stack=None,
 ):
     # A fresh Context keeps the primary ten-slot single-use bound intact.
     # Its second, unstarted witness tests that close fences only one execution.
@@ -344,6 +345,11 @@ def qualify_consumption_fence(
         probe_config["approved_sources"]["handoff-child"] = config["approved_sources"][
             "handoff-child"
         ]
+        if desktop_stack is not None:
+            for subject in ("alice", "bob"):
+                probe_config["subjects"][subject] = sorted(
+                    set(probe_config["subjects"][subject]) | {"context:read"}
+                )
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -426,6 +432,28 @@ def qualify_consumption_fence(
             if time.monotonic() >= until:
                 raise RuntimeError("Isolated consumption-probe Context startup failed")
             time.sleep(0.1)
+    if desktop_stack is not None:
+        from v08_ide_cohort import installed_desktop
+
+        private_controller = controller
+        desktop_controller = desktop_stack.enter_context(
+            installed_desktop(
+                directory=temporary,
+                code=code,
+                ca=ca,
+                peers=peers,
+                context_id=context_id,
+                context_url=f"https://localhost:{port}",
+                report=report,
+            )
+        )
+
+        def controller(method, payload, subject="alice"):
+            # Worker provisioning remains the separately authenticated host path.
+            if method == "execution.start":
+                return private_controller(method, payload, subject)
+            return desktop_controller(method, payload, subject)
+
     entries = {
         entry["procedure_id"]: entry
         for entry in controller("source.catalog", {})["procedures"]

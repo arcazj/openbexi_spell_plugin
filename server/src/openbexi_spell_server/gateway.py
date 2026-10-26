@@ -55,7 +55,7 @@ class Gateway:
                 "executions",
             ):
                 pass
-            elif method == "POST" and parts[4] in ("authority", "blackboard"):
+            elif method == "POST" and parts[4] in ("authority", "blackboard", "commands"):
                 values["Idempotency-Key"] = identifier(one_header(headers, "Idempotency-Key"))
             elif method == "POST" and parts[4] == "events":
                 # Read-only replay: no mutation/idempotency key is transmitted.

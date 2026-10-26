@@ -233,6 +233,16 @@ class Context:
             result["status"] = "ready"
             result["subject"] = actor.subject
             result["permissions"] = sorted(actor.permissions)
+            # Existing-execution commands do not grant public launch authority.
+            # The Listener further restricts this list to enabled Contexts.
+            result["native_commands"] = []
+            commands = self.authority.native_commands
+            if commands is not None and "execution:control" in actor.permissions:
+                result["native_commands"] = ["CMD_PAUSE"]
+                if "execution:start" in actor.permissions:
+                    result["native_commands"] += ["CMD_RUN", "CMD_STEP"]
+                if commands.terminal:
+                    result["native_commands"] += ["CMD_ABORT", "CMD_CLOSE"]
         elif action == "snapshot":
             result = self.store.snapshot(values=False)
         elif action == "blackboard.get":
@@ -276,7 +286,9 @@ class Context:
 
 
 class Listener:
-    def __init__(self, edge_fingerprint, identities, scopes, contexts):
+    def __init__(
+        self, edge_fingerprint, identities, scopes, contexts, *, native_command_contexts=None
+    ):
         self.edge_fingerprint = fingerprint(edge_fingerprint)
         self.identities = {
             fingerprint(cert): identifier(subject) for cert, subject in identities.items()
@@ -288,6 +300,13 @@ class Listener:
         }
         if any(c not in self.contexts for names in self.scopes.values() for c in names):
             raise ValueError("Subject scope references an unconfigured Context")
+        if native_command_contexts is None:
+            native_command_contexts = []
+        if type(native_command_contexts) is not list or any(
+            type(name) is not str or name not in self.contexts for name in native_command_contexts
+        ):
+            raise ValueError("Native commands require explicitly configured Context names")
+        self.native_command_contexts = frozenset(native_command_contexts)
 
     def authenticate(self, peer, headers):
         if peer != self.edge_fingerprint:
@@ -333,6 +352,11 @@ class Listener:
             exact(body, {"key", "expected_revision", "value"})
             payload, action = body, "blackboard.cas"
             key = identifier(one_header(headers, "Idempotency-Key"))
+        elif method == "POST" and resource == "commands":
+            if context_id not in self.native_command_contexts:
+                raise Fault(404, "native_commands_unavailable")
+            action, payload = "execution.command", body
+            key = identifier(one_header(headers, "Idempotency-Key"))
         elif method == "POST" and resource == "events":
             if headers.get_all("Idempotency-Key"):
                 raise Fault(400, "unexpected_idempotency_key")
@@ -341,6 +365,10 @@ class Listener:
         else:
             raise Fault(404, "route_not_available")
         request = envelope(context_id, subject, action, payload, key)
-        validate_envelope(request, context_id)
+        validate_envelope(
+            request, context_id, allow_commands=context_id in self.native_command_contexts
+        )
         result = self.contexts[context_id].call(request)
+        if action == "health" and context_id not in self.native_command_contexts:
+            result = dict(result, native_commands=[])
         return {"schema": "openbexi.listener/1", "result": result}
