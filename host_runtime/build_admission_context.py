@@ -33,7 +33,8 @@ def enable_native_message_moves(text):
     return text.replace(
         anchor,
         anchor + "\n    SPELLipcMessage(SPELLipcMessage&&) = default;"
-        "\n    SPELLipcMessage& operator=(SPELLipcMessage&&) = default;",
+        "\n    SPELLipcMessage& operator=(SPELLipcMessage&&) = default;"
+        "\n    void v08FromData(const std::string& data);",
     )
 
 
@@ -76,11 +77,35 @@ def replace_native_message_codec(text):
         start = text.index(signature)
         end = text.index("\n}", start) + 2
         text = text[:start] + text[end:]
+    setter = "    m_properties[key] = value;"
+    if text.count(setter) != 1:
+        raise ValueError("Native IPC setter boundary differs")
+    text = text.replace(setter, "    m_properties[std::move(key)] = std::move(value);")
     return (
-        text
+        "#include <utility>\n"
+        + text
         + '\n#include "/candidate/message_codec.H"\n'
         + '#include "/candidate/allocation_trace.H"\n'
     )
+
+
+def transfer_native_output(text):
+    """Keep framing/compression/error behavior; transfer the owned wire buffer."""
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "ead687e6c52a06552b4709fd645c7d78d781423590a2159131158e32e1b3ec02"
+    ):
+        raise ValueError("Native output transfer preimage differs")
+    for old, new in (
+        (
+            "data = (doCompression ? COMPRESSION_FLAG_TRUE_STR : COMPRESSION_FLAG_FALSE_STR) + data;",
+            "data.insert(0, doCompression ? COMPRESSION_FLAG_TRUE_STR : COMPRESSION_FLAG_FALSE_STR);",
+        ),
+        ("writeData( data );", "writeData( std::move(data) );"),
+    ):
+        if text.count(old) != 1:
+            raise ValueError("Native output transfer boundary differs")
+        text = text.replace(old, new)
+    return "#include <utility>\n" + text
 
 
 def replace_native_spawn(text):
@@ -229,6 +254,8 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         )
     message_codec = source / "lib/SPELL_IPC/src/SPELLipcMessage.C"
     message_codec.write_text(replace_native_message_codec(message_codec.read_text()))
+    output = source / "lib/SPELL_IPC/src/SPELLipcOutput.C"
+    output.write_text(transfer_native_output(output.read_text()))
     native_input = source / "lib/SPELL_IPC/src/SPELLipcInput.C"
     if (
         sha(native_input)
@@ -236,6 +263,10 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     ):
         raise ValueError("Native resource observation preimage differs")
     input_text = native_input.read_text()
+    decode = "msg.fromData( dataForMsg );"
+    if input_text.count(decode) != 1:
+        raise ValueError("Native input decode boundary differs")
+    input_text = input_text.replace(decode, "msg.v08FromData( dataForMsg );")
     include = '#include "SPELL_IPC/SPELLipcInput.H"'
     loop = "    while(isConnected())\n    {\n"
     if input_text.count(include) != 1 or input_text.count(loop) != 1:

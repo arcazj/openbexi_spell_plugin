@@ -28,6 +28,7 @@ def codec_binaries(tmp_path_factory):
     folder = tmp_path_factory.mktemp("native-message-codec")
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
         original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+        output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
         for name in ("SPELLipcMessage.H", "SPELLipc.H"):
             text = archive.read("include/SPELL_IPC/" + name).decode()
             if name == "SPELLipcMessage.H":
@@ -57,7 +58,10 @@ def codec_binaries(tmp_path_factory):
 #include <cstdlib>
 #include <stdexcept>
 using BYTE=unsigned char;
-struct SPELLipcError:std::runtime_error { SPELLipcError(const std::string& s,int):std::runtime_error(s){} };
+struct SPELLipcError:std::runtime_error {
+    SPELLipcError(const std::string& s,int=0):std::runtime_error(s){}
+    std::string getError() const {return what();}
+};
 """
     (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
     (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
@@ -80,6 +84,13 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
         ("before", original),
         ("after", builder.replace_native_message_codec(original)),
     ):
+        output_text = output if name == "before" else builder.transfer_native_output(output)
+        methods = []
+        for signature in ("void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("):
+            begin = output_text.index(signature)
+            end_method = output_text.index("\n}", begin) + 2
+            methods.append(output_text[begin:end_method])
+        (folder / "output_methods.inc").write_text("\n".join(methods))
         header = (
             message_header
             if name == "before"
@@ -91,22 +102,11 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
                 "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }",
             )
         )
-        bridge_path = (
-            "host_runtime/native_bridge.cpp"
-            if name == "before"
-            else "host_runtime/native/private_bridge.cpp"
-        )
-        bridge = (ROOT / bridge_path).read_text()
+        # Frozen encoder is an independent wire oracle for the cached encoder.
+        bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
         start = bridge.index("Json encode(const SPELLipcMessage& message) {")
         end = bridge.index("\n}", start) + 2
-        if name == "before":
-            # Exercise the frozen transport's initializer-list envelopes.
-            assert 'emit({{"event","message"},{"message",encode(message)}});' in bridge
-            assert (
-                'emit({{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}});'
-                in bridge
-            )
-            wrappers = """
+        wrappers = """
 Json encodeEvent(const char* event, const SPELLipcMessage& message) {
     return {{"event",event},{"message",encode(message)}};
 }
@@ -114,8 +114,6 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
     return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
 }
 """
-        else:
-            wrappers = bridge[end : bridge.index("class Peer final:")]
         (folder / "bridge_encode.inc").write_text(
             "#include <nlohmann/json.hpp>\n#include <algorithm>\nusing Json=nlohmann::json;\n"
             + "static const char* fieldNames[]={"
@@ -123,6 +121,9 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
             + "};\n"
             + bridge[start:end]
             + wrappers
+            + '\n#include "'
+            + str(ROOT / "host_runtime/native/bridge_frame.H")
+            + '"\n'
         )
         text = text.replace(
             "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
@@ -146,6 +147,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 str(path),
                 str(folder / "utils.cpp"),
                 str(ROOT / "server/tests/native_message_harness.cpp"),
+                "-lz",
                 "-o",
                 str(binary),
             ],
@@ -174,7 +176,7 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("case", ["wire", "duplicates", "partial_metadata", "moves", "bridge"])
+@pytest.mark.parametrize("case", ["wire", "duplicates", "partial_metadata", "moves", "output"])
 def test_native_codec_preserves_original_wire_and_decoding(codec_binaries, case):
     assert run(codec_binaries["before"], case) == run(codec_binaries["after"], case)
 
@@ -186,7 +188,7 @@ def test_native_codec_rejects_unrepresentable_and_truncated_fields(codec_binarie
 
 @pytest.mark.parametrize(
     "case,ratio",
-    [("alloc_parse", 0.55), ("alloc_data", 0.35), ("alloc_bridge", 0.50), ("alloc_frame", 0.50)],
+    [("alloc_parse", 0.55), ("alloc_data", 0.35), ("alloc_output", 0.25)],
 )
 def test_native_codec_reduces_measured_allocation_churn(codec_binaries, case, ratio):
     before = run(codec_binaries["before"], case)
@@ -226,3 +228,22 @@ def test_native_move_patches_reject_drift_and_reapplication():
             for text in (original + "\n", patcher(original)):
                 with pytest.raises(ValueError, match="preimage"):
                     patcher(text)
+
+
+def test_cached_bridge_frames_match_frozen_bytes_and_clear_stale_fields(codec_binaries):
+    run(codec_binaries["after"], "cached_frames")
+
+
+def test_cached_bridge_removes_measured_repeated_frame_allocations(codec_binaries):
+    before = run(codec_binaries["before"], "alloc_frame")
+    after = run(codec_binaries["after"], "alloc_cached_frame")
+    assert after["allocated_bytes"] < before["allocated_bytes"] * 0.05
+    assert after["allocations"] < before["allocations"] * 0.05
+
+
+def test_native_output_transfer_rejects_changed_or_repeated_source():
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        original = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+    for text in (original + "\n", builder.transfer_native_output(original)):
+        with pytest.raises(ValueError, match="preimage"):
+            builder.transfer_native_output(text)

@@ -46,7 +46,9 @@ std::string SPELLipcMessage::data() const
     for (const auto& field : metadata) account(*field.first, *field.second);
     for (const auto& field : m_properties) account(field.first, field.second);
     std::string result;
-    result.reserve(size);
+    // The socket layer prepends one compression byte. Reserve its space while
+    // preserving the unframed data() API and its exact wire bytes.
+    result.reserve(size + 1);
     for (const auto& field : metadata)
         v08_append_field(result, *field.first, *field.second);
     for (const auto& field : m_properties)
@@ -55,6 +57,11 @@ std::string SPELLipcMessage::data() const
 }
 
 void SPELLipcMessage::fromData(std::string data)
+{
+    v08FromData(data);
+}
+
+void SPELLipcMessage::v08FromData(const std::string& data)
 {
     // The old decoder clears properties before parsing but does not mutate
     // metadata on a malformed packet. Preserve that failure behavior.

@@ -1,5 +1,9 @@
 # Full v0.8 publication qualification
 
+Dev66 is the current buffer-reuse candidate; hosted acceptance is pending.
+See [implementation and component evidence](NATIVE_BUFFER_REUSE.md). The latest
+completed resource verdict below remains dev65; no full gate is promoted.
+
 Dev65 `4f4a5ec` (run `40386646787`) passes 1,284 service tests, 95 overlapping
 fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases.
 Twelve of fourteen core jobs and all five ancillary workflows pass. All nineteen

@@ -27,13 +27,22 @@ static std::string legacy_wire(const SPELLipcMessage& m) {
     for(const auto& p:m.v08Fields())wire+=m.dataItem(p.first,p.second);
     return wire;
 }
+#include "native_output_harness.inc"
 int main(int argc,char** argv) {
     if(argc!=2)return 2;
     std::string mode=argv[1];
     SPELLipcMessage m("MSG_NOTIFY");m.setType(MSG_TYPE_NOTIFY_ASYNC);
     m.setSender("root#0");m.setReceiver("GUI");m.setSequence(-1);m.setKey(97);
     m.set("Csp","root:14");m.set("ExecutorStatus","RUNNING");
-    if(mode=="wire") {
+    if(mode=="output") {
+        check_output(m);
+    } else if(mode=="alloc_output") {
+        for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
+        SPELLipcOutput out;out.m_socket.wire.reserve(4096);
+        measuring=true;
+        for(int i=0;i<10000;++i) {out.m_socket.wire.clear();out.m_socket.calls=0;out.send(m);}
+        measuring=false;
+    } else if(mode=="wire") {
         for(int i=0;i<256;++i) {
             m.setSequence(i%2 ? -2147483647L : 2147483648L+i);
             m.setType(static_cast<SPELLipcMessageType>(i%12));
@@ -79,6 +88,23 @@ int main(int argc,char** argv) {
             require(frame.size()==3&&frame["seq"]==4294967295u&&frame["ok"]==(type!=MSG_TYPE_ERROR));
             require(frame["message"]==encode(m));record(frame.dump(-1,' ',false,Json::error_handler_t::replace));
         }
+    } else if(mode=="cached_frames") {
+        V08BridgeFrame encoder;
+        for (int i=0;i<256;++i) {
+            m.set("VarValue",std::string(64,static_cast<char>(i)));
+            m.set("Csp",u8"é中🙂");m.set("not-in-whitelist","hidden");
+            m.set("DefaultProvided",i%2?"true":"");
+            for (const char* event:{"message","unsupportedRequest"})
+                require(encoder.event(event,m)==encodeEvent(event,m).dump(-1,' ',false,Json::error_handler_t::replace));
+            m.setType(i%2?MSG_TYPE_ERROR:MSG_TYPE_RESPONSE);
+            require(encoder.reply(4294967295u-i,m)==encodeReply(4294967295u-i,m).dump(-1,' ',false,Json::error_handler_t::replace));
+            SPELLipcMessage empty;
+            require(encoder.event("message",empty)==encodeEvent("message",empty).dump(-1,' ',false,Json::error_handler_t::replace));
+        }
+        m.set("VarValue",std::string(2*1024*1024,'x'));
+        require(encoder.event("message",m)==encodeEvent("message",m).dump(-1,' ',false,Json::error_handler_t::replace));
+        encoder.releaseLargeBuffers();
+        m.clear();require(encoder.event("message",m)==encodeEvent("message",m).dump(-1,' ',false,Json::error_handler_t::replace));
     } else if(mode=="duplicates") {
         auto wire=m.data()+m.dataItem("Csp","last")+m.dataItem(MessageField::FIELD_ID,"last-id");
         m.fromData(wire);require(m.getId()=="last-id"&&m.get("Csp")=="last");
@@ -105,12 +131,15 @@ int main(int argc,char** argv) {
     } else if(mode=="oversize_key") {
         m.set(std::string(65536,'x'),"v");bool rejected=false;
         try{m.data();}catch(const SPELLipcError&){rejected=true;}require(rejected);
-    } else if(mode=="alloc_parse"||mode=="alloc_data"||mode=="alloc_bridge"||mode=="alloc_frame") {
+    } else if(mode=="alloc_parse"||mode=="alloc_data"||mode=="alloc_bridge"||mode=="alloc_frame"||mode=="alloc_cached_frame") {
         for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
         auto data=m.data();
+        V08BridgeFrame encoder;
+        encoder.event("message",m);
         measuring=true;
         for(int i=0;i<10000;++i) {
-            if(mode=="alloc_parse") {SPELLipcMessage parsed;parsed.fromData(data);}
+            if(mode=="alloc_cached_frame") {require(!encoder.event("message",m).empty());}
+            else if(mode=="alloc_parse") {SPELLipcMessage parsed;parsed.fromData(data);}
             else if(mode=="alloc_frame") {auto value=encodeEvent("message",m);require(value.size()==2);}
             else if(mode=="alloc_bridge") {auto value=encode(m);require(value.size()==5);}
             else {auto wire=m.data();if(wire.empty())return 4;}

@@ -15,33 +15,18 @@
 #include "fields.inc"
 
 using Json=nlohmann::json;
+#include "bridge_frame.H"
 std::mutex outputMutex;
 void emit(const Json& value) {
     std::lock_guard<std::mutex> guard(outputMutex);
     std::cout << value.dump(-1,' ',false,Json::error_handler_t::replace) << std::endl;
 }
-Json encode(const SPELLipcMessage& message) {
-    Json result=Json::object();
-    result["id"]=message.getId(); result["type"]=message.getType();
-    result["sender"]=message.getSender(); result["receiver"]=message.getReceiver();
-    auto& fields=result["fields"]=Json::object();
-    for (const auto& field:message.v08Fields())
-        if (std::find(std::begin(fieldNames),std::end(fieldNames),field.first)!=std::end(fieldNames))
-            fields[field.first]=field.second;
-    return result;
-}
-Json encodeEvent(const char* event, const SPELLipcMessage& message) {
-    Json result=Json::object();
-    result["event"]=event;
-    result["message"]=encode(message);
-    return result;
-}
-Json encodeReply(unsigned sequence, const SPELLipcMessage& message) {
-    Json result=Json::object();
-    result["seq"]=sequence;
-    result["ok"]=message.getType()!=MSG_TYPE_ERROR;
-    result["message"]=encode(message);
-    return result;
+void emitFrame(const SPELLipcMessage& message,const char* event,unsigned sequence=0) {
+    std::lock_guard<std::mutex> guard(outputMutex);
+    static V08BridgeFrame encoder;
+    const auto& bytes=event?encoder.event(event,message):encoder.reply(sequence,message);
+    std::cout << bytes << std::endl;
+    encoder.releaseLargeBuffers();
 }
 class Peer final:public SPELLipcInterfaceListener {
 public:
@@ -49,7 +34,7 @@ public:
     void processMessage(const SPELLipcMessage& message) override {
         // Publish before acknowledging: terminal status must never overtake
         // output which the executor already considers delivered.
-        emit(encodeEvent("message",message));
+        emitFrame(message,"message");
         if (message.getType()==MSG_TYPE_NOTIFY && message.hasField(MessageField::FIELD_MSG_SEQUENCE)) {
             SPELLipcMessage ack(ExecutorMessages::ACKNOWLEDGE);
             ack.setType(MSG_TYPE_ONEWAY);ack.setSender("GUI");
@@ -61,7 +46,7 @@ public:
     }
     SPELLipcMessage processRequest(const SPELLipcMessage& message) override {
         // GUI prompts use MSG_PROMPT/MSG_ANSWER, not synchronous IPC requests.
-        emit(encodeEvent("unsupportedRequest",message));
+        emitFrame(message,"unsupportedRequest");
         SPELLipcMessage reply("MSG_ERROR");reply.setType(MSG_TYPE_ERROR);
         reply.set(MessageField::FIELD_ERROR,"Unsupported host request");
         return reply;
@@ -111,7 +96,7 @@ int main(int argc,char** argv) {
                     message.setType(MSG_TYPE_REQUEST);
                     auto reply=client.sendRequest(message,7000);
                     if (reply.isVoid()) throw std::runtime_error("Native request timed out");
-                    emit(encodeReply(sequence,reply));
+                    emitFrame(reply,nullptr,sequence);
                 } else if (request.at("operation")=="send") {
                     message.setType(MSG_TYPE_ONEWAY);client.sendMessage(message);
                     emit({{"seq",sequence},{"ok",true}});
