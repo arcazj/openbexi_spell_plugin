@@ -4,6 +4,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import zipfile
 
@@ -25,9 +26,15 @@ def storage_binaries(tmp_path_factory):
         header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
         ipc = archive.read("include/SPELL_IPC/SPELLipc.H").decode()
         utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        executor_header = archive.read("include/SPELL_IPC/SPELLipc_Executor.H").decode()
+        context_header = archive.read("include/SPELL_IPC/SPELLipc_Context.H").decode()
+        cif = archive.read("lib/SPELL_CIFS/src/SPELLserverCif.C").decode()
+        cif_header = archive.read("include/SPELL_CIFS/SPELLserverCif.H").decode()
     (folder / "SPELL_IPC").mkdir()
     (folder / "SPELL_UTIL").mkdir()
     (folder / "SPELL_IPC/SPELLipc.H").write_text(ipc)
+    (folder / "SPELL_IPC/SPELLipc_Executor.H").write_text(executor_header)
+    (folder / "SPELL_IPC/SPELLipc_Context.H").write_text(context_header)
     (folder / "SPELL_UTIL/SPELLbase.H").write_text("""#pragma once
 #include <string>
 #include <vector>
@@ -48,6 +55,7 @@ struct SPELLipcError:std::runtime_error {
 struct SPELLutils {
 static std::map<std::string,std::vector<BYTE>> tokenizeData(const std::string&);
 static std::string itostr(long n){return std::to_string(n);}
+static std::string timestamp(){static int t=0;return "2026/10/26 23:59:"+std::to_string(++t);}
 static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str());}
 };
 #define ISTR(x) SPELLutils::itostr(x)
@@ -58,6 +66,27 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
     (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
     binaries = {}
     for name in ("before", "after"):
+        cif_text = cif
+        if name == "after":
+            cif_tree = folder / "cif-source"
+            unit = cif_tree / "lib/SPELL_CIFS/src/SPELLserverCif.C"
+            head = cif_tree / "include/SPELL_CIFS/SPELLserverCif.H"
+            unit.parent.mkdir(parents=True)
+            head.parent.mkdir(parents=True)
+            unit.write_text(builder.reuse_native_line_message(cif))
+            head.write_text(cif_header)
+            builder.transfer_native_line_notification(cif_tree)
+            cif_text = unit.read_text()
+        methods = []
+        for method in ("specificNotifyLine", "prepareMessage", "completeMessage", "sendGUIMessage"):
+            pattern = r"(?m)^void SPELLserverCif::" + method + r"\([^\n]*\)\n\{"
+            matches = list(re.finditer(pattern, cif_text))
+            assert len(matches) == (2 if name == "after" and method == "sendGUIMessage" else 1)
+            for match in matches:
+                begin = match.start()
+                end = cif_text.index("\n}", begin) + 2
+                methods.append(cif_text[begin:end])
+        (folder / "line_methods.inc").write_text("\n".join(methods))
         text = original if name == "before" else builder.replace_native_message_codec(original)
         candidate = header if name == "before" else builder.enable_native_message_moves(header)
         candidate = candidate.replace(
@@ -73,7 +102,10 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
 extern "C" size_t storage_size(){return v08_property_storage.used;}
 extern "C" size_t storage_capacity(){
     size_t n=0;for(const auto& m:v08_property_storage.maps)
-    for(const auto& f:m)n+=f.first.capacity()+f.second.capacity();return n;
+    for(const auto& f:m)n+=f.first.capacity()+f.second.capacity();
+    for(size_t i=0;i<v08_storage_slots;++i) n+=v08_property_storage.ids[i].capacity()
+        +v08_property_storage.senders[i].capacity()+v08_property_storage.receivers[i].capacity();
+    return n;
 }
 extern "C" size_t storage_fields(){
     size_t n=0;for(const auto& m:v08_property_storage.maps)n+=m.size();return n;
@@ -95,6 +127,7 @@ extern "C" size_t storage_fields(){
                 "-no-pie",
                 "-DV08_STORAGE=" + str(int(name == "after")),
                 "-I" + str(folder),
+                "-I" + str(ROOT / "host_runtime/native"),
                 str(source),
                 str(folder / "utils.cpp"),
                 str(ROOT / "server/tests/native_storage_harness.cpp"),
@@ -121,24 +154,47 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("mode", ["copy", "shapes", "threads", "bounds"])
+@pytest.mark.parametrize("mode", ["copy", "shapes", "threads", "bounds", "metadata", "line"])
 def test_native_storage_preserves_independence_and_bounds(storage_binaries, mode):
     assert run(storage_binaries["before"], mode) == run(storage_binaries["after"], mode)
 
 
-def test_native_storage_reduces_real_message_copy_allocations(storage_binaries):
-    before = run(storage_binaries["before"], "bench")
-    after = run(storage_binaries["after"], "bench")
+@pytest.mark.parametrize("mode", ["bench", "mixed_bench", "decode_bench"])
+def test_native_storage_reduces_real_message_copy_allocations(storage_binaries, mode):
+    before = run(storage_binaries["before"], mode)
+    after = run(storage_binaries["after"], mode)
     assert before["message_size"] == after["message_size"]
     assert before["allocated_bytes"] > 20_000_000
     assert after["allocated_bytes"] < before["allocated_bytes"] * 0.25
     assert after["allocations"] < before["allocations"] * 0.25
 
 
-@pytest.mark.parametrize("mode", ["mixed_bench", "saturated_bench"])
-def test_interleaved_message_shapes_reuse_matching_owned_storage(storage_binaries, mode):
+def test_native_line_storage_reduces_actual_cif_method_allocations(storage_binaries):
+    before = run(storage_binaries["before"], "line_bench")
+    after = run(storage_binaries["after"], "line_bench")
+    assert after["line_digest"] == before["line_digest"]
+    assert after["deliveries"] == before["deliveries"] == 10002
+    assert after["allocated_bytes"] < before["allocated_bytes"] * 0.35
+    assert after["allocations"] < before["allocations"] * 0.35
+
+
+def test_native_line_cache_patch_rejects_changed_or_repeated_method():
+    spec = importlib.util.spec_from_file_location(
+        "line_cache_builder", ROOT / "host_runtime/build_admission_context.py"
+    )
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        original = archive.read("lib/SPELL_CIFS/src/SPELLserverCif.C").decode()
+    changed = original.replace("stage = getStage();", "stage = getStage(); // changed")
+    for text in (changed, builder.reuse_native_line_message(original)):
+        with pytest.raises(ValueError, match="preimage"):
+            builder.reuse_native_line_message(text)
+
+
+@pytest.mark.parametrize("mode", ["shape_bench", "saturated_bench"])
+def test_native_storage_interleaved_key_inventories_are_allocation_free(storage_binaries, mode):
     before = run(storage_binaries["before"], mode)
     after = run(storage_binaries["after"], mode)
     assert before["allocations"] >= 200_000
-    assert after["allocations"] == 0
-    assert after["allocated_bytes"] == 0
+    assert after["allocations"] == after["allocated_bytes"] == 0

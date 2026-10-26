@@ -96,16 +96,34 @@ def replace_native_message_codec(text):
             "m_properties = copy.m_properties;",
             "v08_copy_properties(m_properties,copy.m_properties);",
         ),
-        ("    m_properties.clear();", "    v08_recycle_properties(m_properties);"),
+        (
+            "    m_properties.clear();",
+            "    v08_recycle_properties(m_properties,m_id,m_senderId,m_receiverId);",
+        ),
     ):
         if text.count(old) != 1:
             raise ValueError("Native property storage boundary differs")
         text = text.replace(old, new)
+    for name, marker in (
+        ("msg", "\tm_id = msg.m_id;"),
+        ("*msg", "\tm_id = msg->m_id;"),
+        ("copy", "\tm_id = copy.m_id;"),
+    ):
+        if text.count(marker) != 1:
+            raise ValueError("Native metadata storage boundary differs")
+        text = text.replace(
+            marker,
+            "    v08_acquire_message(m_properties,m_id,m_senderId,m_receiverId,("
+            + name
+            + ").m_properties);\n"
+            + marker,
+        )
     return (
         '#include <utility>\n#include "SPELL_IPC/SPELLipcMessage.H"\n'
         "namespace {\n"
         "void v08_copy_properties(SPELLipcMessage::Properties&, const SPELLipcMessage::Properties&);\n"
-        "void v08_recycle_properties(SPELLipcMessage::Properties&) noexcept;\n}\n"
+        "void v08_acquire_message(SPELLipcMessage::Properties&, std::string&, std::string&, std::string&, const SPELLipcMessage::Properties&);\n"
+        "void v08_recycle_properties(SPELLipcMessage::Properties&, std::string&, std::string&, std::string&) noexcept;\n}\n"
         + text
         + '\n#include "/candidate/message_codec.H"\n'
         + '#include "/candidate/allocation_trace.H"\n'
@@ -221,6 +239,24 @@ def transfer_native_line_notification(source):
             anchor, anchor + "\n        void sendGUIMessage( SPELLipcMessage&& msg );"
         )
     )
+
+
+def reuse_native_line_message(text):
+    """Reuse only the verified line method's completely overwritten fields."""
+    start = text.index("void SPELLserverCif::specificNotifyLine()")
+    end = text.index("\n}", start) + 2
+    body = text[start:end]
+    if hashlib.sha256(body.encode()).hexdigest() != (
+        "f7b576f1797d0606fc682422e78099785006fb8e5a90a3c651a845f6d829c4e4"
+    ):
+        raise ValueError("Native line notification preimage differs")
+    body = body.replace(
+        "    SPELLipcMessage msg = m_lnMessage;",
+        "    static thread_local V08LineScratch v08_line_scratch;\n"
+        "    V08LineLease v08_line_lease(v08_line_scratch,m_lnMessage);\n"
+        "    SPELLipcMessage& msg = v08_line_lease.message();",
+    )
+    return text[:start] + body + text[end:]
 
 
 def replace_native_spawn(text):
@@ -569,6 +605,10 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
             }
 """,
     )
+    notification_copy = "\tSPELLipcMessage msg(nmsg);"
+    if text.count(notification_copy) != 1:
+        raise ValueError("Native read-only notification boundary differs")
+    text = text.replace(notification_copy, "    const SPELLipcMessage& msg = nmsg;")
     unit.write_text(trace_native_startup(text))
     process = source / "lib/SPELL_PRC/src/SPELLprocess.C"
     process_text = replace_native_spawn(process.read_text())
@@ -810,6 +850,17 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         from native_terminal_patch import patch_terminal_tree
 
         patch_terminal_tree(source)
+    # Apply the checked line-storage overlay after prompt/terminal preimages,
+    # and before the independently qualified owned-send stream overlay.
+    cif_text = cif.read_text()
+    anchor = '#include "SPELL_IPC/SPELLipc_Executor.H"'
+    if cif_text.count(anchor) != 1:
+        raise ValueError("Native line cache include differs")
+    cif.write_text(
+        reuse_native_line_message(cif_text).replace(
+            anchor, anchor + '\n#include "/candidate/line_message.H"'
+        )
+    )
     borrow_native_message_callbacks(source)
     transfer_native_line_notification(source)
     return before
