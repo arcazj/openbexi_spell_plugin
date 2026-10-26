@@ -125,11 +125,25 @@ print(json.dumps({'frozen':True,'member_bindings':sorted(found),'pids':sorted(ta
 
 
 def counters(command, name, directory):
-    result = {}
-    for label in ("root", "background", "child"):
-        target = directory / ("read-" + label)
-        command("docker", "cp", name + ":/workspace/handoff-" + label, str(target))
-        result[label] = int(target.read_text())
+    info = json.loads(command("docker", "inspect", name))[0]
+    if not info["State"]["Running"] or info["State"]["Pid"] <= 0:
+        raise RuntimeError("Counter observation requires the live bound container")
+    # The workspace is a private tmpfs. Read its actual mounted namespace via
+    # the host's /proc root; never exec or temporarily thaw a frozen container.
+    result = json.loads(
+        command(
+            "sudo",
+            "-n",
+            "python3",
+            "-c",
+            "import json,sys;from pathlib import Path;"
+            "root=Path('/proc')/sys.argv[1]/'root/workspace';"
+            "print(json.dumps({k:int((root/('handoff-'+k)).read_text()) for k in ('root','background','child')}))",
+            str(info["State"]["Pid"]),
+        )
+    )
+    with (directory / "handoff-counter-observations.jsonl").open("a") as output:
+        output.write(json.dumps(result) + "\n")
     return result
 
 
@@ -285,6 +299,17 @@ def qualify_handoff_case(
                 await_event([name], "native-handoff-paused", seconds=15)
         (control / "handoff-after").write_text("B continuation")
         await_event([name], "native-handoff-continued", seconds=25)
+        continued = next(
+            e
+            for e in controller("execution.list", {}, subject="observer")["executions"]
+            if e["id"] == execution["id"]
+        )
+        if (continued["owner"], continued["epoch"], continued["control_state"]) != (
+            "bob",
+            2,
+            "OWNED",
+        ) or not continued["pause_barrier"]["runtime_identity_rotated"]:
+            raise RuntimeError("C did not observe B's resumed original family")
         after = counters(command, name, output)
         if any(after[k] <= first[k] for k in first):
             raise RuntimeError("Original family did not continue after B resume")
@@ -395,6 +420,7 @@ def qualify_handoff_case(
             replacement_native_processes=False,
             old_owner_denied=True,
             observer_read_only=True,
+            observer_saw_paused_and_resumed_b=True,
             owner="bob",
             epoch=2,
             new_owner_native_commands=2,

@@ -42,7 +42,7 @@ def command(*args, timeout=30):
     result = subprocess.run(list(map(str, args)), capture_output=True, timeout=timeout)
     if result.returncode:
         # Never include arbitrary command stderr/configuration in an exception.
-        raise RuntimeError("Host operation failed: " + str(args[0]))
+        raise RuntimeError("Host operation failed: " + " ".join(map(str, args[:2])))
     return (
         (result.stdout + (result.stderr if args[:2] == ("docker", "logs") else b""))
         .decode()
