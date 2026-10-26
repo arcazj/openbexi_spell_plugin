@@ -617,11 +617,24 @@ class NativeAdmissionServer:
                 return
             with stream:
                 started = time.monotonic()
+                started_ns = time.monotonic_ns()
                 phase = "authenticate"
                 dispatch_ms = None
+                phases = {}
+                previous = started
+                kind, member = "unknown", None
+                outcome = "denied"
+
+                def checkpoint(name):
+                    nonlocal previous
+                    now = time.monotonic()
+                    phases[name] = int((now - previous) * 1000)
+                    previous = now
+
                 try:
                     stream.settimeout(0.5)
                     role, instance = self.authenticate(stream)
+                    checkpoint("authenticate_ms")
                     phase = "frame"
                     raw = bytearray()
                     deadline = time.monotonic() + 1.0
@@ -637,19 +650,40 @@ class NativeAdmissionServer:
                             raise ValueError("Native start request exceeds bound")
                         raw.extend(part)
                     body = decode(bytes(raw))
+                    checkpoint("frame_ms")
+                    schema = body.get("schema")
+                    if schema in {
+                        "openbexi.native-start/1",
+                        "openbexi.native-member/1",
+                        "openbexi.native-control/1",
+                        "openbexi.native-consume/1",
+                        "openbexi.native-disposition/1",
+                    }:
+                        kind = schema
+                    identifier = body.get("instance_id")
+                    if type(identifier) is str and len(identifier.encode()) <= 1024:
+                        # Match the native trace's opaque FNV correlation value.
+                        value = 14695981039346656037
+                        for byte in identifier.encode():
+                            value = ((value ^ byte) * 1099511628211) % (2**64)
+                        member = f"{value:016x}"
                     phase = "epoch"
                     if self.runtime is not None:
                         self.runtime.ensure(
                             body.pop("runtime_epoch", None), native=True
                         )
+                    checkpoint("epoch_ms")
                     phase = "dispatch"
                     dispatch_started = time.monotonic()
                     try:
                         self.dispatch(role, instance, body)
                     finally:
                         dispatch_ms = int((time.monotonic() - dispatch_started) * 1000)
+                        checkpoint("dispatch_ms")
                     phase = "reply"
                     stream.sendall(b"ALLOW\n")
+                    checkpoint("reply_ms")
+                    outcome = "allowed"
                 except Exception as error:
                     self.report(
                         "native-before-spawn-denied",
@@ -671,7 +705,22 @@ class NativeAdmissionServer:
                     try:
                         stream.sendall(b"DENY\n")
                     except OSError:
-                        pass
+                        outcome = "reply_lost"
+                finally:
+                    # Bounded metadata only, including successful callbacks.
+                    # No authority decisions, deadlines or retries are changed.
+                    count = getattr(self, "timing_records", 0)
+                    if count < 512:
+                        self.timing_records = count + 1
+                        self.report(
+                            "native-admission-timing",
+                            kind=kind,
+                            member=member,
+                            accepted_ns=started_ns,
+                            elapsed_ms=int((time.monotonic() - started) * 1000),
+                            phases=phases,
+                            outcome=outcome,
+                        )
 
     def close(self):
         self.stop.set()

@@ -14,6 +14,8 @@ STAGES = frozenset(
         "fork-entered",
         "fork-returned",
         "fork-failed",
+        "spawn-entered",
+        "spawn-returned",
         "process-started",
         "login-entered",
         "login-published",

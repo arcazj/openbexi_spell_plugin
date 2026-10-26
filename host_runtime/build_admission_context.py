@@ -21,6 +21,46 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def replace_native_spawn(text):
+    """Execute through libc spawn without running the Context's fork callbacks.
+
+    The frozen Context is multithreaded and loads driver libraries. A child
+    must not execute inherited library callbacks before replacing its image.
+    Keep the original shell, command, environment, descriptors and parent PID.
+    """
+    start = text.index("pid_t SPELLprocess::popen(")
+    end = text.index(
+        "//=============================================================================",
+        start,
+    )
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "756a57aa3942c167c86de65070b0d1f7f87f669e0815f27ea1f63a1126dc6f9c"
+    ):
+        raise ValueError("Native process spawn source differs")
+    replacement = """pid_t SPELLprocess::popen( std::string command )
+{
+    pid_t pid = -1;
+    char shell[] = "bash";
+    char option[] = "-c";
+    char* arguments[] = {shell, option, const_cast<char*>(command.c_str()), nullptr};
+    const int error = posix_spawn(&pid, "/bin/bash", nullptr, nullptr, arguments, environ);
+    if (error != 0) {
+        // No PID or started event exists on this path. Never retry a spawn.
+        THROW_EXCEPTION("Native process spawn failed", "Process creation unavailable", SPELL_ERROR_PROCESS);
+    }
+    return pid;
+}
+
+"""
+    include = '#include "SPELL_PRC/SPELLprocessManager.H"'
+    if text.count(include) != 1:
+        raise ValueError("Native process include differs")
+    return (text[:start] + replacement + text[end:]).replace(
+        include, include + "\n#include <spawn.h>\nextern char **environ;"
+    )
+
+
 def fence_external_controller_mailbox(text):
     """Close native STOP's path around executeCommand's authorization gate."""
     run = "void SPELLcontroller::run()\n{\n"
@@ -231,7 +271,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     )
     unit.write_text(trace_native_startup(text))
     process = source / "lib/SPELL_PRC/src/SPELLprocess.C"
-    process_text = process.read_text()
+    process_text = replace_native_spawn(process.read_text())
     spawned = "\t\t\tm_processPID = popen( m_command );"
     if process_text.count(spawned) != 1 or "v08_start_trace(" in process_text:
         raise ValueError("Ambiguous native process spawn diagnostic")
@@ -241,9 +281,9 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
             '#include "SPELL_PRC/SPELLprocessManager.H"\n#include "/candidate/startup_trace.H"',
         ).replace(
             spawned,
-            '            v08_start_trace(m_identifier, "fork-entered");\n'
+            '            v08_start_trace(m_identifier, "spawn-entered");\n'
             + spawned
-            + '\n            v08_start_trace(m_identifier, m_processPID > 0 ? "fork-returned" : "fork-failed");',
+            + '\n            v08_start_trace(m_identifier, "spawn-returned");',
         )
     )
     # Carry the immutable request through value copies in both the mailbox and

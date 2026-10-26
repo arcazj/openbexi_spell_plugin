@@ -24,6 +24,8 @@ def main():
         *sorted((root / "host_runtime/python").glob("*.py")),
         *sorted((root / "host_runtime/native").glob("*.H")),
         root / "server/tests/native_admission_harness.cpp",
+        root / "server/tests/native_spawn_legacy.cpp",
+        root / "host_runtime/build_admission_context.py",
         root / "server/pyproject.toml",
         root / "server/requirements-test.lock",
         root / ".github/workflows/v08-server-foundation.yml",
@@ -56,6 +58,8 @@ def main():
         "server/tests/test_dss_fault_reproduction.py",
         "server/tests/test_dss_lifecycle.py",
         "server/tests/test_native_binding_faults.py",
+        "server/tests/test_native_spawn.py",
+        "server/tests/test_controller_network_recovery.py",
         "server/tests/test_native_admission_channel.py",
         "server/tests/test_driver_timing.py",
         "--junitxml=" + str(output / "tests.xml"),
@@ -76,7 +80,7 @@ def main():
             for key in ("tests", "failures", "errors", "skipped")
         }
         report["passed"] = result.returncode == 0 and report["junit"] == dict(
-            tests=55, failures=0, errors=0, skipped=0
+            tests=69, failures=0, errors=0, skipped=0
         )
     except subprocess.TimeoutExpired as error:
         (output / "tests.log").write_bytes(

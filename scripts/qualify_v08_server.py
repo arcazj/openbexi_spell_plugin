@@ -119,6 +119,7 @@ def main():
             root / "scripts/v08_terminal_cohort.py",
             root / "server/tests/native_prompt_harness.cpp",
             root / "server/tests/native_admission_harness.cpp",
+            root / "server/tests/native_spawn_legacy.cpp",
             *sorted((root / "host_runtime/native").glob("*.H")),
             root / "host_runtime/python/children.py",
             root / "host_runtime/python/native.py",

@@ -101,6 +101,19 @@ def test_native_reply_after_durable_binding_never_rebinds(
                 assert 3900 <= outcome["elapsed_ms"] < 5000
             else:
                 assert outcome["reason"] in {"reply_lost", "channel_unavailable"}
+        server.stop.set()
+        server.thread.join(timeout=2)
+        assert not server.thread.is_alive()
+        timings = [r for r in reports if r["event"] == "native-admission-timing"]
+        assert len(timings) == 1
+        timing = timings[0]
+        assert timing["kind"] == "openbexi.native-member/1"
+        assert len(timing["member"]) == 16 and "main#1" not in json.dumps(timing)
+        assert timing["accepted_ns"] > 0
+        assert timing["phases"]["dispatch_ms"] >= 0
+        assert timing["outcome"] == ("allowed" if fault == "timely" else "reply_lost")
+        if fault == "delay_after_bind":
+            assert timing["phases"]["dispatch_ms"] >= 4200
         rows = members.rows(family)
         assert len(rows) == 1 and rows[0]["state"] == "REGISTERED_UNPROVEN"
         assert set(agent.bound_members) == {"main#1"}
