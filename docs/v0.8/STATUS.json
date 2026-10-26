@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev60 allocation diagnostics introduced native startup failures; dev61 corrects hook registration and resumes diagnosis; resource acceptance remains failed",
+  "phase": "Dev61 restores diagnostic native startup but recovery resources still fail; dev62 captures bounded live allocation-site evidence",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -86,7 +86,8 @@
     "Dev56 bad5f98: 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.",
     "Dev58 9e954de: 1,259 hosted service tests, 95 overlapping fault tests and 241 portable tests pass without failures/errors/skips; 12 of 14 core jobs and all five ancillary workflows pass. Startup stress completes 24 fresh families and all 16 terminal cases pass. Both extended handoff/IDE recovery probes reach 2 GiB with zero swap and OOM-kill the original Context. Nineteen artifact archives and recorded source hashes verified; memory acceptance failed and all eleven full-release gates remain unqualified.",
     "Dev59 removes native codec intermediate allocations and passes 1,267 service tests, 95 overlapping fault tests, 241 portable tests, 24 startup cycles and 16 terminal cases. Both original recovery families complete the fixed soak and settlement without OOM, but remain rejected for peak/growth or memory-limit pressure. All 19 artifacts verified; full release remains unqualified.",
-    "Dev60 af838f7 passes eight core jobs but fails all six rebuilt native cohorts before native-ready. Shared-library regression reproduces weak-hook sample loss. Dev61 registers from main before native threads, removes executable symbol exporting, passes 61 targeted checks and loads/samples the published native runtime locally. Whole-native corrected qualification is pending."
+    "Dev60 af838f7 passes eight core jobs but fails all six rebuilt native cohorts before native-ready. Shared-library regression reproduces weak-hook sample loss. Dev61 registers from main before native threads, removes executable symbol exporting, passes 61 targeted checks and loads/samples the published native runtime locally. Whole-native corrected qualification is pending.",
+    "Dev61 7f690a0 restores the four non-recovery rebuilt native cohorts and passes 1,269 service tests; 12/14 core jobs pass. Handoff has three limit events and IDE has one OOM kill. Stack samples were filtered out by the host collector, so no live-site attribution is claimed. Dev62 adds bounded symbol/offset capture with process membership checks and passes 32 targeted collector/sampler cases."
   ],
   "assumptions_or_proposals": [
     "Separate authenticated Listener and isolated Context authorities",
@@ -119,7 +120,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Verify corrected diagnostic native startup and inspect allocation-site evidence before correcting the remaining fixed resource-acceptance failures.",
+  "next_step": "Inspect retained native allocation profiles and apply the measured ownership/copy correction only after the live sites confirm it; rerun the unchanged resource oracle.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -152,7 +153,7 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev61",
+  "package_version": "0.8.0.dev62",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "9e954dedc6ba985bc525fcdb1eb170affa2cd5b7",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",

@@ -22,6 +22,15 @@ including the shared-library regression; a local probe linked to the verified
 published native runtime loads and records 1,531 samples from 390,000 allocations.
 The corrected whole-native startup and recovery still require hosted acceptance.
 
+Dev61 run `40378632943` restores the four non-recovery rebuilt cohorts and
+passes 1,269 service tests; twelve of fourteen core jobs pass. Recovery still
+fails: handoff records three limit events; installed IDE records one OOM kill.
+The host's existing numeric-only log filter did not retain the new stack rows,
+so no live allocation-site attribution is claimed from that run. Dev62 extends
+the bounded collector with strict numeric/symbol/offset parsing, matches each
+profile to an independently observed process, and marks partial top-site groups.
+Both static and shared compiled sampler tests now exercise that exact collector.
+
 The diagnostic uses opt-in, fixed-capacity ASan allocation-site sampling to identify
 the remaining running-process costs. It samples approximately one allocation
 in 256, records six largest sampled stack groups at most every ten seconds,

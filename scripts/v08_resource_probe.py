@@ -4,6 +4,7 @@ from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
+import re
 import statistics
 import threading
 import time
@@ -182,6 +183,69 @@ def allocator_records(raw):
     return list(latest.values())[:256]
 
 
+def allocation_profiles(raw):
+    """Retain only bounded numeric counters and compiler symbol/offset metadata."""
+    latest = {}
+    totals = re.compile(
+        rb"V08_ALLOC pid=(\d{1,10}) tick=(\d{1,20}) calls=(\d{1,20}) "
+        rb"bytes=(\d{1,20}) samples=(\d{1,20}) skipped=(\d{1,20})"
+    )
+    site = re.compile(
+        rb"V08_ALLOC_SITE pid=(\d{1,10}) rank=([0-5]) samples=(\d{1,20}) bytes=(\d{1,20})"
+    )
+    frame = re.compile(
+        rb"([A-Za-z0-9_.?+\-]{1,60})\+([0-9a-f]{1,16}):([A-Za-z0-9_.$?]{1,100})"
+    )
+    for line in raw[-262144:].splitlines():
+        if len(line) >= 4096:
+            continue
+        matched = totals.fullmatch(line)
+        if matched:
+            values = [int(value) for value in matched.groups()]
+            if not 0 < values[0] < 2**31 or any(value >= 2**64 for value in values):
+                continue
+            if values[0] not in latest and len(latest) >= 32:
+                continue
+            latest[values[0]] = dict(
+                zip(
+                    ("pid", "monotonic_ns", "calls", "bytes", "samples", "skipped"),
+                    values,
+                )
+            )
+            latest[values[0]]["sites"] = {}
+            continue
+        parts = line.split(b" | ")
+        matched = site.fullmatch(parts[0])
+        if not matched or not 1 < len(parts) <= 21:
+            continue
+        owner, rank, samples, size = map(int, matched.groups())
+        if owner not in latest or max(samples, size) >= 2**64:
+            continue
+        frames = [frame.fullmatch(part) for part in parts[1:]]
+        if not all(frames):
+            continue
+        latest[owner]["sites"][rank] = dict(
+            rank=rank,
+            samples=samples,
+            bytes=size,
+            frames=[
+                dict(
+                    module=item[1].decode(),
+                    offset=int(item[2], 16),
+                    symbol=item[3].decode(),
+                )
+                for item in frames
+            ],
+        )
+    result = []
+    for record in latest.values():
+        sites = record.pop("sites")
+        record["all_six_sites_observed"] = set(sites) == set(range(6))
+        record["sites"] = [sites[rank] for rank in sorted(sites)]
+        result.append(record)
+    return result
+
+
 def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
     root = proc / str(pid)
     start = identity(root)
@@ -310,12 +374,20 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
         except FileNotFoundError:
             result["processes"].append(dict(pid=task, exited_during_sample=True))
     result["native_allocator"] = []
+    result["native_allocation_profiles"] = []
+    original_pids = {row.get("namespace_pid") for row in result["processes"]}
     for log in sorted((root / "root/tmp").glob("spell-host-*/native.log"))[:2]:
         try:
             with log.open("rb") as stream:
                 stream.seek(0, 2)
-                stream.seek(max(0, stream.tell() - 65536))
-                result["native_allocator"].extend(allocator_records(stream.read(65536)))
+                stream.seek(max(0, stream.tell() - 262144))
+                raw = stream.read(262144)
+                result["native_allocator"].extend(allocator_records(raw))
+                result["native_allocation_profiles"].extend(
+                    record
+                    for record in allocation_profiles(raw)
+                    if record["pid"] in original_pids
+                )
         except FileNotFoundError:
             continue
     if identity(root) != start or read(root / "cgroup").splitlines() != rows:

@@ -1,6 +1,7 @@
 """Actual ASan hooks remain opt-in, bounded, concurrent and non-recursive."""
 
 import os
+import importlib.util
 from pathlib import Path
 import re
 import subprocess
@@ -100,3 +101,12 @@ int main() {
         assert int(counts[0]["bytes"]) > 100000000
         assert 50 < int(counts[0]["samples"]) < 1000
         assert counts[0] == counts[1], "Reporting must not sample its own allocations"
+        spec = importlib.util.spec_from_file_location(
+            "trace_collector", ROOT / "scripts/v08_resource_probe.py"
+        )
+        collector = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(collector)
+        captured = collector.allocation_profiles(result.stderr)
+        assert len(captured) == 1
+        assert captured[0]["calls"] == int(counts[-1]["calls"])
+        assert captured[0]["sites"], "The host collector must retain actual compiled stack samples"

@@ -6,8 +6,9 @@ now complete the fixed soak and terminal settlement without OOM, but both fail
 the unchanged resource acceptance. Twelve of fourteen core jobs and all five
 ancillary workflows pass; all 19 artifacts and their recorded source inventories
 are verified. Dev60's diagnostic build failed native startup. Dev61 corrects
-the hook registration/visibility and reruns bounded allocation-site diagnostics
-for the remaining memory costs. See [native IPC correction](NATIVE_MESSAGE_CODEC.md) and
+the hook registration/visibility and restores native startup, but resource
+acceptance still fails in both recovery profiles. Dev62 retains the stack
+metadata that the earlier host filter omitted. See [native IPC correction](NATIVE_MESSAGE_CODEC.md) and
 [dev59 evidence](evidence/native-codec/qualification-summary.json).
 
 The full release is **not qualified**. Previously, dev58 candidate `9e954de` completed its

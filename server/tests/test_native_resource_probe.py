@@ -293,3 +293,51 @@ int main() {
         assert live["allocated_bytes"] - freed["allocated_bytes"] >= 4 * 1024 * 1024
         assert live["heap_bytes"] >= live["allocated_bytes"]
         assert freed["heap_bytes"] > freed["allocated_bytes"]
+
+
+def allocation_sample(pid=7, tick=100):
+    total = f"V08_ALLOC pid={pid} tick={tick} calls=80000 bytes=1234567 samples=300 skipped=2\n"
+    sites = "".join(
+        f"V08_ALLOC_SITE pid={pid} rank={rank} samples=20 bytes=2000"
+        " | libasan.so.8+123:_Znwm | SPELL-Context+123abc:_ZN15SPELLipcMessage4dataEv\n"
+        for rank in range(6)
+    )
+    return (total + sites).encode()
+
+
+def test_allocation_profile_collector_keeps_only_latest_bounded_symbol_metadata():
+    records = probe.allocation_profiles(allocation_sample() + allocation_sample(tick=200))
+    assert len(records) == 1
+    assert records[0]["monotonic_ns"] == 200
+    assert records[0]["all_six_sites_observed"]
+    assert len(records[0]["sites"]) == 6
+    assert records[0]["sites"][0]["frames"][1]["offset"] == 0x123ABC
+    assert probe.allocation_profiles(b"native user text, credentials and arguments") == []
+    assert probe.allocation_profiles(allocation_sample(pid=2**31)) == []
+    assert (
+        len(probe.allocation_profiles(b"".join(allocation_sample(pid=n) for n in range(1, 40))))
+        == 32
+    )
+    partial = allocation_sample().split(b"V08_ALLOC_SITE")[0]
+    assert not probe.allocation_profiles(partial)[0]["all_six_sites_observed"]
+
+
+@pytest.mark.parametrize(
+    "invalid",
+    [b"procedure secret", b"/private/path", b"bad\x00symbol", b"x" * 101],
+)
+def test_allocation_profile_rejects_arbitrary_log_payload(invalid):
+    raw = allocation_sample().replace(b"_ZN15SPELLipcMessage4dataEv", invalid)
+    assert probe.allocation_profiles(raw)[0]["sites"] == []
+
+
+def test_snapshot_retains_allocation_sites_only_for_observed_original_process(tmp_path):
+    proc, groups = fixture(tmp_path)
+    status = proc / "123/status"
+    status.write_text(status.read_text() + "NSpid:\t123\t7\n")
+    log = proc / "123/root/tmp/spell-host-fixture/native.log"
+    log.parent.mkdir(parents=True)
+    log.write_bytes(allocation_sample() + allocation_sample(pid=999))
+    records = probe.snapshot(123, proc=proc, groups=groups)["native_allocation_profiles"]
+    assert len(records) == 1 and records[0]["pid"] == 7
+    assert records[0]["all_six_sites_observed"]
