@@ -206,6 +206,26 @@ def test_terminal_settlement_preserves_original_lineage_after_rotation(ledger, p
     assert ledger["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
 
 
+@pytest.mark.parametrize("phase", ["REQUESTED", "TRANSFERRED_PAUSED", "RESUME_AUTHORIZED"])
+def test_terminal_fence_retires_unfinished_handoff_deadline(ledger, pki, phase):
+    if phase == "REQUESTED":
+        prepare(ledger, pki)
+    elif phase == "TRANSFERRED_PAUSED":
+        transfer(ledger, pki)
+    else:
+        resumed(ledger, pki)
+    fence = terminal.begin(ledger, pki)
+    ledger["app"].authority.clock = lambda: 1e12
+    ledger["app"].authority.live_handoff.expire()
+    code, answer = terminal.complete(ledger, pki, fence)
+    assert code == 200 and answer["result"]["state"] == "SETTLED", answer
+    assert terminal.release(ledger, pki, answer["result"])[0] == 200
+    ledger["app"].authority.live_handoff.expire()
+    row = ledger["app"].authority._execution(ledger["execution"]["id"])
+    assert row["control_state"] == "TERMINATED" and terminal.held(ledger) == 0
+    assert ledger["app"].authority.live_handoff.record(row["id"])["state"] == "TERMINAL_FENCED"
+
+
 @pytest.mark.parametrize("certificate", ["worker", "listener", "alice", "bob", "observer"])
 def test_only_separate_host_can_submit_freezer_evidence(ledger, pki, certificate):
     state, proof = prepare(ledger, pki)

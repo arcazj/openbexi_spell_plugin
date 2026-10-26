@@ -139,7 +139,7 @@ class LiveFamilyHandoff(NativePauseBarrier):
         rows = self.store.db.execute(
             "SELECT h.execution_id,h.barrier_id FROM live_handoffs h "
             "JOIN native_pause_barriers p USING(execution_id) "
-            "WHERE h.state NOT IN ('ACTIVE','EXPIRED','RESTART_FENCED') AND p.deadline<=?",
+            "WHERE h.state NOT IN ('ACTIVE','EXPIRED','RESTART_FENCED','TERMINAL_FENCED') AND p.deadline<=?",
             (self.authority.clock(),),
         ).fetchall()
         for row in rows:

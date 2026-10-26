@@ -195,6 +195,11 @@ class TerminalSettlement:
                 "WHERE execution_id=? AND state='REQUESTED'",
                 (execution["id"],),
             )
+        if self.authority.live_handoff is not None:
+            self.store.db.execute(
+                "UPDATE live_handoffs SET state='TERMINAL_FENCED' WHERE execution_id=?",
+                (execution["id"],),
+            )
         self.store.db.execute(
             "UPDATE claims SET state='INVALIDATED' WHERE execution_id=? AND state='PAUSING'",
             (execution["id"],),

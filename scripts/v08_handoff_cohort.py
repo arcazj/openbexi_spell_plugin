@@ -28,10 +28,11 @@ def handoff_fixture(*, child=False):
         "threading.Thread(target=progress,args=('handoff-background',),daemon=True).start()\n"
         "assert StartProc('handoff_child',Automatic=True,Visible=True,Blocking=False,HandleError=False) is True\n"
         "from openbexi_dss_proxy import connection\n"
+        "from openbexi_dss_proxy.tc import TC,descriptor\n"
         "from spell.stubs import SPELLDriver_pb2 as proto\n"
         "import grpc\n"
         "with open('/control/handoff-epoch') as f:old_epoch=f.read()\n"
-        "old_packet=proto.CommandDesc(command=proto.TcItemDesc(mnemonic='CMD1')).SerializeToString()\n"
+        "old_packet=descriptor(TC._createTcItem('CMD1'),{'Timeout':3}).SerializeToString()\n"
         "count=0\n"
         "while not os.path.exists('/control/handoff-after'):\n"
         "    count+=1\n"
@@ -43,7 +44,9 @@ def handoff_fixture(*, child=False):
         "except grpc.RpcError:\n"
         "    with open('/workspace/handoff-stale-denied','w') as f:f.write('denied')\n"
         "else:raise AssertionError('Delayed old-owner driver operation accepted')\n"
-        "assert Send(command='CMD1',Timeout=3,HandleError=False,PromptUser=False,Confirm=False) is True\n"
+        # Send the exact same valid payload as a fresh original-driver call
+        # under B. A malformed delayed packet must not pass this negative test.
+        "assert connection.call('TC','SendCommand',proto.CommandDesc.FromString(old_packet)).value is True\n"
         "with open('/workspace/handoff-after','w') as f:f.write('completed')\n"
         "progress('handoff-root',count)\n"
     )

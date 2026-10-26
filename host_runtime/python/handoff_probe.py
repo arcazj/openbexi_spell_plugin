@@ -51,6 +51,13 @@ def run_handoff_probe(
             emit("native-handoff-paused", native_status=state)
         if state in {"FINISHED", "ERROR", "ABORTED"}:
             if state != "FINISHED" or not rotated:
+                terminal = session.request("REQ_EXEC_STATUS")
+                emit(
+                    "native-terminal-failure",
+                    native_status=state,
+                    error_message=str(terminal.get("ErrorMsg", ""))[:1024],
+                    error_reason=str(terminal.get("ErrorReason", ""))[:1024],
+                )
                 raise RuntimeError(
                     "Native handoff fixture terminated before continuation"
                 )
