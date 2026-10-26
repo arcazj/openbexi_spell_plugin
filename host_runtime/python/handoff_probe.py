@@ -16,11 +16,26 @@ def run_handoff_probe(
     disconnect_reported = reconnect_reported = False
     paused_location = None
     step_reported = False
+    prompt_reported = answer_reported = False
     while time.monotonic() < deadline:
         runtime.checkpoint(emit)
         runtime.ensure()
         pump()
         children.service(session)
+        prompts.poll()
+        if not prompt_reported:
+            with prompts.lock:
+                prompt_reported = bool(prompts.active) and all(
+                    identity in prompts.registrations
+                    for identity in prompts.active.values()
+                )
+            if prompt_reported:
+                emit("native-handoff-prompt-open", original_prompt_registered=True)
+        if Path("/workspace/handoff-prompt-answered").is_file() and not answer_reported:
+            if runtime.rotations != 1:
+                raise RuntimeError("Native prompt answered outside the first handoff")
+            answer_reported = True
+            emit("native-handoff-prompt-answered", native_outcome="ANSWER_SELECTED")
         if runtime.rotated:
             controls.poll_owner()
             if observed_rotations != runtime.rotations:

@@ -57,7 +57,8 @@ class LiveFamilyHandoff(NativePauseBarrier):
             self.store.db.execute(
                 "UPDATE native_rebindings SET state='RESTART_FENCED' WHERE state='REQUESTED'"
             )
-            self.store.db.execute("PRAGMA user_version=21")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 21:
+                self.store.db.execute("PRAGMA user_version=21")
         authority.live_handoff = self
 
     def record(self, execution_id):
@@ -91,8 +92,8 @@ class LiveFamilyHandoff(NativePauseBarrier):
         if self.authority.native_commands.terminal_pending(row["id"]):
             raise Fault(409, "handoff_terminal_pending")
         roster = self._roster_check(row)
-        # A known open prompt is rejected before changing A's authority. A racing
-        # prompt is fenced by begin and independently checked before transfer.
+        # Unresolved replies and unclassified/timed prompts are rejected before
+        # changing A's authority. Recheck the journal before host completion.
         self._prompts_settled(row["id"])
         receipt = self.store.db.execute(
             "SELECT * FROM worker_runtime_receipts WHERE execution_id=?", (row["id"],)
@@ -185,10 +186,15 @@ class LiveFamilyHandoff(NativePauseBarrier):
         )
 
     def _prompts_settled(self, execution_id):
+        # An unanswered, natively declared zero-timeout prompt has no deadline
+        # or admitted reply that can advance it. Preserve its original identity
+        # across the host freeze. Never rebase a queued or uncertain reply.
         if self.store.db.execute(
-            "SELECT 1 FROM native_prompts WHERE execution_id=? AND (state!='CLOSED' "
-            "OR outcome IS NULL OR outcome NOT IN "
-            "('ANSWER_SELECTED','CANCEL_SELECTED','TIMEOUT','TERMINAL_CANCELLED'))",
+            "SELECT 1 FROM native_prompts p WHERE execution_id=? AND NOT ("
+            "(state='CLOSED' AND COALESCE(outcome,'') IN "
+            "('ANSWER_SELECTED','CANCEL_SELECTED','TIMEOUT','TERMINAL_CANCELLED')) OR "
+            "(state='OPEN' AND outcome IS NULL AND handoff_untimed=1 AND NOT EXISTS "
+            "(SELECT 1 FROM native_prompt_replies r WHERE r.prompt_id=p.prompt_id)))",
             (execution_id,),
         ).fetchone():
             raise Fault(409, "handoff_prompt_unresolved")

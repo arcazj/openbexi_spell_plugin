@@ -116,6 +116,8 @@ class WorkerLaunch:
         extra = set()
         if path.endswith("prompt-open"):
             extra = {"prompt_id", "target_admission_id", "instance_id", "definition_sha256"}
+            if "native_timeout_microseconds" in body:
+                extra.add("native_timeout_microseconds")
         elif path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
             extra = {"prompt_grant"}
             if path.endswith("prompt-report"):

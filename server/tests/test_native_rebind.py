@@ -111,7 +111,7 @@ def test_same_owner_rebind_keeps_epoch_rotates_generation_and_fences_old_request
     assert call(ledger, pki, ledger["grant"], "check")[0] == 200
     assert terminal.held(ledger) == 1
     assert ledger["store"].db.execute("SELECT COUNT(*) FROM claims").fetchone()[0] == 0
-    assert ledger["store"].db.execute("PRAGMA user_version").fetchone()[0] == 21
+    assert ledger["store"].db.execute("PRAGMA user_version").fetchone()[0] == 22
 
 
 def test_rebind_after_transfer_preserves_original_family_and_later_transfer(ledger, pki, tmp_path):

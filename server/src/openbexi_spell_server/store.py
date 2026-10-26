@@ -66,6 +66,7 @@ class ContextStore:
                 19,
                 20,
                 21,
+                22,
             ):
                 raise ValueError("Unsupported authority schema")
             self.db.executescript("""

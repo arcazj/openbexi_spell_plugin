@@ -23,7 +23,9 @@ def handoff_fixture(*, child=False):
     if child:
         return prefix + "progress('handoff-child')\n"
     return prefix + (
-        "from spell.lang.functions import StartProc,Send\n"
+        "from spell.lang.functions import StartProc,Send,Prompt\n"
+        "from spell.lang.constants import YES_NO\n"
+        "from spell.lang.modifiers import Type\n"
         "assert Send(command='CMD1',Timeout=3,HandleError=False,PromptUser=False,Confirm=False) is True\n"
         "threading.Thread(target=progress,args=('handoff-background',),daemon=True).start()\n"
         "assert StartProc('handoff_child',Automatic=True,Visible=True,Blocking=False,HandleError=False) is True\n"
@@ -34,7 +36,12 @@ def handoff_fixture(*, child=False):
         "with open('/control/handoff-epoch') as f:old_epoch=f.read()\n"
         "old_packet=descriptor(TC._createTcItem('CMD1'),{'Timeout':3}).SerializeToString()\n"
         "count=0\n"
+        "prompted=False\n"
         "while not os.path.exists('/control/handoff-after'):\n"
+        "    if not prompted and os.path.exists('/control/handoff-prompt'):\n"
+        "        assert Prompt('HANDOFF_NATIVE_PROMPT',{Type:YES_NO}) is True\n"
+        "        with open('/workspace/handoff-prompt-answered','w') as f:f.write('answered')\n"
+        "        prompted=True\n"
         "    count+=1\n"
         "    with open('/workspace/handoff-root.next','w') as f:f.write(str(count))\n"
         "    os.replace('/workspace/handoff-root.next','/workspace/handoff-root')\n"
@@ -390,6 +397,47 @@ def qualify_handoff_case(
         connection_generation=execution["connection_generation"],
         capability=execution["capability"],
     )
+
+    def prompt_snapshot():
+        with closing(
+            sqlite3.connect(
+                "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
+            )
+        ) as db:
+            db.row_factory = sqlite3.Row
+            rows = db.execute(
+                "SELECT * FROM native_prompts WHERE execution_id=?", (execution["id"],)
+            ).fetchall()
+            if len(rows) != 1:
+                raise RuntimeError(
+                    "Handoff requires exactly one original native prompt"
+                )
+            return dict(rows[0])
+
+    (control / "handoff-prompt").write_text("open untimed native prompt")
+    await_event([name], "native-handoff-prompt-open", seconds=15)
+    pending_prompt = prompt_snapshot()
+    if (
+        pending_prompt["state"],
+        pending_prompt["outcome"],
+        pending_prompt["handoff_untimed"],
+    ) != ("OPEN", None, 1):
+        raise RuntimeError("Native handoff prompt is not unanswered and untimed")
+
+    def prompt_reply(authority_proof, subject):
+        return controller(
+            "execution.prompt.reply",
+            dict(
+                authority_proof,
+                prompt_id=pending_prompt["prompt_id"],
+                target_admission_id=None,
+                definition_sha256=pending_prompt["definition_hash"],
+                action="ANSWER",
+                answer="0",
+            ),
+            subject=subject,
+        )
+
     bob = controller("session.open", {}, subject="bob")["connection_id"]
     queued = controller(
         "execution.command", dict(proof, target_admission_id=None, command="CMD_STEP")
@@ -472,6 +520,20 @@ def qualify_handoff_case(
             capability=bound["capability"],
             target_admission_id=None,
         )
+        if prompt_snapshot() != pending_prompt:
+            raise RuntimeError("Host freeze changed the original prompt identity")
+        for subject, authority_proof in (
+            ("alice", proof),
+            ("observer", bproof),
+            ("bob", bproof),
+        ):
+            try:
+                prompt_reply(authority_proof, subject)
+            except Fault as error:
+                if error.status != 403:
+                    raise
+            else:
+                raise RuntimeError("Prompt answered before explicit new-owner resume")
         resume = controller(
             "execution.command", dict(bproof, command="CMD_RUN"), subject="bob"
         )
@@ -487,6 +549,41 @@ def qualify_handoff_case(
         temporary.replace(control / "handoff-epoch")
         command("docker", "unpause", name)
         await_event([name], "native-handoff-activated", seconds=15)
+        if prompt_snapshot() != pending_prompt:
+            raise RuntimeError("Runtime rotation changed the original pending prompt")
+        for subject in ("alice", "observer"):
+            try:
+                prompt_reply(proof, subject)
+            except Fault as error:
+                if error.status != 403:
+                    raise
+            else:
+                raise RuntimeError(
+                    "Former owner or observer answered transferred prompt"
+                )
+        prompt_reply(bproof, "bob")
+        await_event([name], "native-handoff-prompt-answered", seconds=15)
+        if prompt_snapshot() != dict(
+            pending_prompt, state="CLOSED", outcome="ANSWER_SELECTED"
+        ):
+            raise RuntimeError(
+                "New owner did not close the exact original native prompt"
+            )
+        with closing(
+            sqlite3.connect(
+                "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
+            )
+        ) as db:
+            replies = db.execute(
+                "SELECT owner,epoch,connection_id,connection_generation,state FROM native_prompt_replies WHERE prompt_id=?",
+                (pending_prompt["prompt_id"],),
+            ).fetchall()
+        if replies != [
+            ("bob", 2, bob, bproof["connection_generation"], "CLOSED_UNPROVEN")
+        ]:
+            raise RuntimeError(
+                "Transferred prompt reply lost fresh controller provenance"
+            )
         # B exercises the original native owner-command path after the family
         # resume. C keeps observing; A's pending STEP must stay fenced.
         operations = (
@@ -780,6 +877,24 @@ def qualify_handoff_case(
             )
         report["native_live_handoff"] = dict(
             passed=True,
+            open_prompt_handoff=dict(
+                passed=True,
+                scope="unanswered exact-zero-timeout native prompt",
+                original_prompt_id=pending_prompt["prompt_id"],
+                original_definition_sha256=pending_prompt["definition_hash"],
+                original_member_binding_hash=pending_prompt["member_hash"],
+                original_family_origin_hash=pending_prompt["origin_hash"],
+                identity_preserved=True,
+                former_owner_and_observer_denied=True,
+                reply_before_explicit_resume_denied=True,
+                reply_owner="bob",
+                reply_epoch=2,
+                reply_connection_generation=bproof["connection_generation"],
+                native_outcome="ANSWER_SELECTED",
+                selected_answers=1,
+                timed_prompt_transfer_qualified=False,
+                queued_or_uncertain_reply_transfer_qualified=False,
+            ),
             native_step_location_verified=verify_step,
             provider="docker-cgroup-freezer-pidfd/1",
             whole_family_paused=True,

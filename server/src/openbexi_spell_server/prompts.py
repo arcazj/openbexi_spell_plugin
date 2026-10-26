@@ -140,6 +140,12 @@ class NativePromptReplies:
                 "CREATE UNIQUE INDEX IF NOT EXISTS one_active_native_prompt "
                 'ON native_prompts(execution_id,target_id) WHERE state="OPEN"'
             )
+            if "handoff_untimed" not in {
+                row["name"] for row in self.store.db.execute("PRAGMA table_info(native_prompts)")
+            }:
+                self.store.db.execute(
+                    "ALTER TABLE native_prompts ADD COLUMN handoff_untimed INTEGER NOT NULL DEFAULT 0"
+                )
             self.store.db.execute(
                 "CREATE TABLE IF NOT EXISTS native_prompt_replies("
                 "sequence INTEGER PRIMARY KEY AUTOINCREMENT,reply_id TEXT UNIQUE NOT NULL,"
@@ -156,8 +162,8 @@ class NativePromptReplies:
                 'UPDATE native_prompt_replies SET state="RESTART_FENCED" '
                 'WHERE state!="RESTART_FENCED"'
             )
-            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 17:
-                self.store.db.execute("PRAGMA user_version=17")
+            if self.store.db.execute("PRAGMA user_version").fetchone()[0] < 22:
+                self.store.db.execute("PRAGMA user_version=22")
         authority.native_prompts = self
 
     def _member(self, execution_id, target_id, origin):
@@ -198,6 +204,9 @@ class NativePromptReplies:
         if target is not None:
             canonical_uuid(target)
         fingerprint(body["definition_sha256"])
+        timeout = body.get("native_timeout_microseconds")
+        if timeout is not None and (type(timeout) is not str or len(timeout) > 64):
+            raise Fault(400, "prompt_timeout_invalid")
         if type(body["instance_id"]) is not str or not 1 <= len(body["instance_id"]) <= 512:
             raise Fault(400, "prompt_instance_invalid")
         origin = self.authority.family_origin(original)
@@ -231,7 +240,7 @@ class NativePromptReplies:
                 ):
                     raise Fault(503, "prompt_capacity_reached")
                 self.store.db.execute(
-                    'INSERT INTO native_prompts VALUES(?,?,?,?,?,?,?,"OPEN",NULL)',
+                    'INSERT INTO native_prompts VALUES(?,?,?,?,?,?,?,"OPEN",NULL,?)',
                     (
                         prompt_id,
                         original.execution_id,
@@ -240,6 +249,7 @@ class NativePromptReplies:
                         origin,
                         member["binding_hash"],
                         body["definition_sha256"],
+                        int(timeout == "0"),
                     ),
                 )
                 self.store._event(

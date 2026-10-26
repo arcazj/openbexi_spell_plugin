@@ -11,6 +11,7 @@ import threading
 
 from openbexi_spell_server.contracts import canonical, digest, exact, fingerprint
 from openbexi_spell_server.family import FamilyAdmission
+from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.preflight import canonical_uuid
 from openbexi_spell_server.prompts import FLAGS, answer_digest, prompt_grant
 
@@ -49,7 +50,8 @@ class NativePromptAgent:
     def declare(self, body):
         """Digest the actual native definition, received from its pinned process.
 
-        It is transient only: register() sends just the digest to Context.
+        It is transient only: register() sends the digest and exact zero-timeout
+        classification to Context, never prompt text or answer values.
         No caller-supplied digest can substitute for these native fields.
         """
         exact(body, {"schema", "instance_id", "prompt_id", "definition"})
@@ -79,10 +81,13 @@ class NativePromptAgent:
                 instance_id=body["instance_id"],
                 prompt_id=body["prompt_id"],
                 definition_sha256=digest(fields),
-            )
+            ),
+            native_timeout_microseconds=(
+                "0" if fields.get("TimeoutMicroseconds") == "0" else None
+            ),
         )
 
-    def register(self, body):
+    def register(self, body, *, native_timeout_microseconds=None):
         exact(body, {"schema", "instance_id", "prompt_id", "definition_sha256"})
         if body["schema"] != "openbexi.native-prompt-open/1":
             raise ValueError("Native prompt schema differs")
@@ -109,6 +114,11 @@ class NativePromptAgent:
                 instance_id=instance,
                 target_admission_id=target,
                 definition_sha256=body["definition_sha256"],
+                **(
+                    {"native_timeout_microseconds": native_timeout_microseconds}
+                    if native_timeout_microseconds is not None
+                    else {}
+                ),
             ),
         )
         expected = dict(
@@ -178,6 +188,7 @@ class NativePromptAgent:
 
     def dispatch(self, value, answer):
         grant = prompt_grant(value)
+        current = start_grant(self.journal.request["grant"])
         if (
             any(
                 getattr(grant, key) != getattr(self.original, key)
@@ -187,10 +198,11 @@ class NativePromptAgent:
                     "worker_slot",
                     "worker_incarnation",
                     "worker_generation",
-                    "control_epoch",
-                    "connection_id",
-                    "connection_generation",
                 )
+            )
+            or any(
+                getattr(grant, key) != getattr(current, key)
+                for key in ("control_epoch", "connection_id", "connection_generation")
             )
             or grant.runtime_origin_hash != FamilyAdmission.origin(self.original)
             or answer_digest(grant.action, answer) != grant.answer_sha256
