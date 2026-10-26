@@ -27,7 +27,8 @@ class Bridge:
     MAX_FRAME = 4 * 1024 * 1024
     STARTUP_EVENTS = 256
 
-    def __init__(self, port, environment, log, events, *, connect_timeout=10):
+    def __init__(self, port, environment, log, events, *, connect_timeout=10,
+                 executable='/bridge/spell-host-ipc'):
         self._timeout(connect_timeout)
         # The queue identity never changes after the reader starts. A separate
         # bounded pre-handshake buffer is owned exclusively by the reader.
@@ -40,7 +41,7 @@ class Bridge:
         self.failure_lock = threading.Lock()
         self.failure = None
         self.sequence = 0
-        self.process = subprocess.Popen(['/bridge/spell-host-ipc', str(port)],
+        self.process = subprocess.Popen([str(executable), str(port)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log,
             text=True, encoding='utf-8', env=environment)
         os.set_blocking(self.process.stdin.fileno(), False)
@@ -356,7 +357,10 @@ class NativeSession:
                 raise BridgeConnectionError('Native IPC startup deadline expired')
             try:
                 return Bridge(port, environment, self.log, self.events,
-                              connect_timeout=min(10, remaining))
+                              connect_timeout=min(10, remaining),
+                              executable=(self.native_home / 'bin/spell-host-ipc'
+                                          if self.native_home is not None
+                                          else '/bridge/spell-host-ipc'))
             except BridgeConnectionError:
                 if time.monotonic() >= deadline:
                     raise

@@ -11,7 +11,7 @@ from pathlib import Path
 NAMESPACE = "openbexi-v08"
 ROLES = {"context-a": 9441, "context-b": 9442, "listener": 9444, "gateway": 9443, "dss": 8085}
 CONTEXTS = ("context-a", "context-b")
-AUTHORITY_IMAGE = "openbexi-spell-server:0.8.0.dev62-prelaunch"
+AUTHORITY_IMAGE = "openbexi-spell-server:0.8.0.dev63-prelaunch"
 DSS_IMAGE = "openbexi-spell-plugin-dss:0.1.0"
 
 

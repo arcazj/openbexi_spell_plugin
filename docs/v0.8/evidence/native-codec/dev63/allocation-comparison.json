@@ -1,0 +1,70 @@
+{
+  "schema": "openbexi.native-ipc-allocation-comparison/1",
+  "scope": "Compiled actual message and bridge encoder; unrelated Python/logging dependencies are fixtures. Composed incoming constructors separately link verified frozen native dependencies. Hosted whole-family acceptance remains required.",
+  "measurements": {
+    "alloc_parse": {
+      "before": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 27330000,
+        "allocations": 440000
+      },
+      "after": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 12160000,
+        "allocations": 100000
+      }
+    },
+    "alloc_data": {
+      "before": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 14600000,
+        "allocations": 200000
+      },
+      "after": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 3520000,
+        "allocations": 10000
+      }
+    },
+    "alloc_bridge": {
+      "before": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 31530000,
+        "allocations": 700000
+      },
+      "after": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 17370000,
+        "allocations": 360000
+      }
+    },
+    "alloc_move": {
+      "before": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 2770,
+        "allocations": 10
+      },
+      "after": {
+        "digest": 1469598103934665603,
+        "allocated_bytes": 0,
+        "allocations": 0
+      }
+    }
+  },
+  "incoming": {
+    "before_allocations": 330000,
+    "after_allocations": 150000,
+    "before_bytes": 29280000,
+    "after_bytes": 12000000,
+    "iterations": 10000,
+    "message_size_before": 176,
+    "message_size_after": 176
+  },
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "459de7fb3b51919e202e160e2dcf0efdc1feb196d05e7c36e986b3c4f88cb2bc",
+    "host_runtime/native/private_bridge.cpp": "cab0987c513354f102e1caf6f41516461da8b2cff04b2b8f572e1e72c316d473",
+    "server/tests/test_native_message_codec.py": "e34867f53c732e9e8a3b64c3a916f2b64806528ddb7f68b76e5169f7d89d2fdc",
+    "server/tests/native_message_harness.cpp": "1fa9bbe691563f97fca9599808424e26157063b0d6a2ee12b5c37443fb2de292"
+  },
+  "full_v08_qualified": false
+}

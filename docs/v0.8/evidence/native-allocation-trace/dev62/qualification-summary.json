@@ -1,0 +1,3219 @@
+{
+  "schema": "openbexi.native-allocation-diagnostic/1",
+  "candidate": "0d282d84c954268e0b6b7fea89e7321b616c584a",
+  "candidate_tree": "d5e23b0f53d41806905e6b1427ccf6976dc4638f",
+  "merge_commit": "57b567b207c97f1f32e2aa672b57d0d60d95b95c",
+  "merge_tree_matches": true,
+  "run_id": 40380435228,
+  "core_jobs_passed": 12,
+  "core_jobs_failed": 2,
+  "service_tests": {
+    "tests": 1275,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "ancillary_workflows_passed": 5,
+  "allocation_site_attribution_available": true,
+  "profiles": [
+    {
+      "profile": "handoff",
+      "artifact_id": 12678582239,
+      "passed": false,
+      "error": "RuntimeError: Counter observation requires the live bound container",
+      "samples": 44,
+      "terminal_container_exit": true,
+      "peak_bytes": 2147483648,
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 271,
+        "oom": 6,
+        "oom_group_kill": 0,
+        "oom_kill": 1
+      },
+      "live_allocation_profile_count": 126,
+      "latest_allocation_profiles": [
+        {
+          "all_six_sites_observed": true,
+          "bytes": 612644648,
+          "calls": 4970030,
+          "monotonic_ns": 545108158924,
+          "pid": 37,
+          "samples": 19647,
+          "sites": [
+            {
+              "bytes": 119302,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "libstdc++.so.6",
+                  "offset": 1383780,
+                  "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm"
+                }
+              ],
+              "rank": 0,
+              "samples": 342
+            },
+            {
+              "bytes": 116544,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11599865,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11603476,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11580729,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12213270,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235219,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235674,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12245330,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12950851,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12951075,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libasan.so.8",
+                  "offset": 373205,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1214
+            },
+            {
+              "bytes": 65537,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1600658,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2045144,
+                  "symbol": "PyByteArray_Resize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2668229,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1687844,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2290227,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1627035,
+                  "symbol": "PyObject_Vectorcall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1698252,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2398435,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 65424,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1000976,
+                  "symbol": "__interceptor_calloc"
+                },
+                {
+                  "module": "ld-linux-x86-64.so.2",
+                  "offset": 73570,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 3,
+              "samples": 141
+            },
+            {
+              "bytes": 64723,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 8414511,
+                  "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_St20forward_iterator_t"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12356539,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11739133,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 8460572,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 8306089,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 9911680,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 9934632,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 10061289,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11485874,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12950851,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12951075,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libasan.so.8",
+                  "offset": 373205,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 4,
+              "samples": 186
+            },
+            {
+              "bytes": 61776,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11905406,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12218970,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235219,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235674,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12245330,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12950851,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12951075,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libasan.so.8",
+                  "offset": 373205,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 5,
+              "samples": 143
+            }
+          ],
+          "skipped": 21
+        },
+        {
+          "all_six_sites_observed": true,
+          "bytes": 233019092,
+          "calls": 975522,
+          "monotonic_ns": 543011137864,
+          "pid": 100,
+          "samples": 3884,
+          "sites": [
+            {
+              "bytes": 131072,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1645853,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666324,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777951,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1751248,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1796408,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1797039,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2301544,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675271,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 0,
+              "samples": 1
+            },
+            {
+              "bytes": 107840,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638407,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284945,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284270,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280830,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280165,
+                  "symbol": "Py_CompileStringObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2429977,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1880356,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1
+            },
+            {
+              "bytes": 95808,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1674261,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1668128,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1744512,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1743806,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1742643,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1660934,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1658276,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636092,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292490,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 64777,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "libstdc++.so.6",
+                  "offset": 1383780,
+                  "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm"
+                }
+              ],
+              "rank": 3,
+              "samples": 202
+            },
+            {
+              "bytes": 61811,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1803588,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1651313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1644867,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1798576,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1680666,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675163,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777127,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 4,
+              "samples": 3
+            },
+            {
+              "bytes": 58893,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636974,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1550038,
+                  "symbol": "PyBytes_FromStringAndSize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2427657,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1629353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2939447,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2426528,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1687278,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946282,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                }
+              ],
+              "rank": 5,
+              "samples": 1
+            }
+          ],
+          "skipped": 0
+        },
+        {
+          "all_six_sites_observed": true,
+          "bytes": 189807175,
+          "calls": 691594,
+          "monotonic_ns": 537012109839,
+          "pid": 204,
+          "samples": 2737,
+          "sites": [
+            {
+              "bytes": 131072,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1645853,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666324,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777951,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1751248,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1796408,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1797039,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2301544,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675271,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 0,
+              "samples": 1
+            },
+            {
+              "bytes": 107840,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638407,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284945,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284270,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280830,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280165,
+                  "symbol": "Py_CompileStringObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2429977,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1880356,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1
+            },
+            {
+              "bytes": 95808,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1674261,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1668128,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1744512,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1743806,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1742643,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1660934,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1658276,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636092,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292490,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 61811,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1803588,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1651313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1644867,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1798576,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1680666,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675163,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777127,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 3,
+              "samples": 3
+            },
+            {
+              "bytes": 58893,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636974,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1550038,
+                  "symbol": "PyBytes_FromStringAndSize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2427657,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1629353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2939447,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2426528,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1687278,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946282,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                }
+              ],
+              "rank": 4,
+              "samples": 1
+            },
+            {
+              "bytes": 57344,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2425129,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2488147,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619914,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619275,
+                  "symbol": "_PyObject_MakeTpCall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1608023,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1607550,
+                  "symbol": "PyObject_CallFunction"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2421190,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1699543,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 14126420,
+                  "symbol": "_ZN17SPELLframeManager7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 12958550,
+                  "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 12964527,
+                  "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13623535,
+                  "symbol": "_ZN16SPELLinterpreter7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13634254,
+                  "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+                },
+                {
+                  "module": "SPELL-Executor",
+                  "offset": 196697,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libc.so.6",
+                  "offset": 171175,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 5,
+              "samples": 14
+            }
+          ],
+          "skipped": 0
+        }
+      ]
+    },
+    {
+      "profile": "ide",
+      "artifact_id": 12677289932,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "samples": 48,
+      "terminal_container_exit": false,
+      "peak_bytes": 2147483648,
+      "memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 1,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0
+      },
+      "live_allocation_profile_count": 140,
+      "latest_allocation_profiles": [
+        {
+          "all_six_sites_observed": true,
+          "bytes": 601048282,
+          "calls": 4847861,
+          "monotonic_ns": 418924750037,
+          "pid": 37,
+          "samples": 19132,
+          "sites": [
+            {
+              "bytes": 123217,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "libstdc++.so.6",
+                  "offset": 1383780,
+                  "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm"
+                }
+              ],
+              "rank": 0,
+              "samples": 360
+            },
+            {
+              "bytes": 111264,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11599801,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11603412,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 11580665,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12213206,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235155,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12235610,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12245266,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12950787,
+                  "symbol": "?"
+                },
+                {
+                  "module": "SPELL-Context",
+                  "offset": 12951011,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libasan.so.8",
+                  "offset": 373205,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1159
+            },
+            {
+              "bytes": 83480,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1600658,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2045144,
+                  "symbol": "PyByteArray_Resize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2526819,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2526140,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2525414,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1722451,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2398435,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 65537,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1600658,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2045144,
+                  "symbol": "PyByteArray_Resize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2668229,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1687844,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2290227,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1627035,
+                  "symbol": "PyObject_Vectorcall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1698252,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2398435,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                }
+              ],
+              "rank": 3,
+              "samples": 1
+            },
+            {
+              "bytes": 65424,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1000976,
+                  "symbol": "__interceptor_calloc"
+                },
+                {
+                  "module": "ld-linux-x86-64.so.2",
+                  "offset": 73570,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 4,
+              "samples": 141
+            },
+            {
+              "bytes": 58576,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1594409,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2269052,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1719943,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1628975,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2595612,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619275,
+                  "symbol": "_PyObject_MakeTpCall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1698252,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1628975,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1853994,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619914,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619275,
+                  "symbol": "_PyObject_MakeTpCall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1698252,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2398435,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                }
+              ],
+              "rank": 5,
+              "samples": 8
+            }
+          ],
+          "skipped": 29
+        },
+        {
+          "all_six_sites_observed": true,
+          "bytes": 242494521,
+          "calls": 1047502,
+          "monotonic_ns": 424936323194,
+          "pid": 102,
+          "samples": 4175,
+          "sites": [
+            {
+              "bytes": 131072,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1645853,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666324,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777951,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1751248,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1796408,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1797039,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2301544,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675271,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 0,
+              "samples": 1
+            },
+            {
+              "bytes": 107840,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638407,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284945,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284270,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280830,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280165,
+                  "symbol": "Py_CompileStringObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2429977,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1880356,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1
+            },
+            {
+              "bytes": 95808,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1674261,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1668128,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1744512,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1743806,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1742643,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1660934,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1658276,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636092,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292490,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 69632,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2425129,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2488147,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619914,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619275,
+                  "symbol": "_PyObject_MakeTpCall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1608023,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1607550,
+                  "symbol": "PyObject_CallFunction"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2421190,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1699543,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1947313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2786102,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2785979,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libasan.so.8",
+                  "offset": 373205,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 3,
+              "samples": 17
+            },
+            {
+              "bytes": 68292,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1005432,
+                  "symbol": "_Znwm"
+                },
+                {
+                  "module": "libstdc++.so.6",
+                  "offset": 1383780,
+                  "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm"
+                }
+              ],
+              "rank": 4,
+              "samples": 217
+            },
+            {
+              "bytes": 61811,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1803588,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1651313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1644867,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1798576,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1680666,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675163,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777127,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 5,
+              "samples": 3
+            }
+          ],
+          "skipped": 0
+        },
+        {
+          "all_six_sites_observed": true,
+          "bytes": 199064635,
+          "calls": 782012,
+          "monotonic_ns": 420815445547,
+          "pid": 208,
+          "samples": 3099,
+          "sites": [
+            {
+              "bytes": 131072,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1645853,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666324,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777951,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1751248,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1796408,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1797039,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2301544,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675271,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 0,
+              "samples": 1
+            },
+            {
+              "bytes": 107840,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638407,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284945,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2284270,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280830,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2280165,
+                  "symbol": "Py_CompileStringObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2429977,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1880356,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 1,
+              "samples": 1
+            },
+            {
+              "bytes": 95808,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 998232,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599862,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1599667,
+                  "symbol": "_PyList_AppendTakeRefListResize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1657828,
+                  "symbol": "_PyArena_AddPyObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1667353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1666413,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1674261,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1668128,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1744512,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1743806,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1742643,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1660934,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1658276,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636092,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2292490,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1638224,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636059,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2305199,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2312148,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 2,
+              "samples": 1
+            },
+            {
+              "bytes": 73728,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2425129,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2488147,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619914,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1619275,
+                  "symbol": "_PyObject_MakeTpCall"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1608023,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1607550,
+                  "symbol": "PyObject_CallFunction"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2421190,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1699543,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 14200436,
+                  "symbol": "_ZN17SPELLframeManager7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13032566,
+                  "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13038543,
+                  "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13697551,
+                  "symbol": "_ZN16SPELLinterpreter7executeEv"
+                },
+                {
+                  "module": "libspell_executor313.so",
+                  "offset": 13708270,
+                  "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+                },
+                {
+                  "module": "SPELL-Executor",
+                  "offset": 196697,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libc.so.6",
+                  "offset": 171175,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 3,
+              "samples": 18
+            },
+            {
+              "bytes": 61811,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1803588,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1651313,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1644867,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1798576,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1680666,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1675163,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1777127,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1776439,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1775271,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1772897,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1771748,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1770355,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1769583,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1768431,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1765887,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1758916,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1757284,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1754548,
+                  "symbol": "?"
+                }
+              ],
+              "rank": 4,
+              "samples": 3
+            },
+            {
+              "bytes": 58893,
+              "frames": [
+                {
+                  "module": "libasan.so.8",
+                  "offset": 1002583,
+                  "symbol": "___interceptor_malloc"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1548015,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1636974,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1550038,
+                  "symbol": "PyBytes_FromStringAndSize"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2427657,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1629353,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2939447,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2426528,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1687278,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2380436,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1945734,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1780139,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1701048,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1795465,
+                  "symbol": "?"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946600,
+                  "symbol": "PyObject_CallMethodObjArgs"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1946282,
+                  "symbol": "PyImport_ImportModuleLevelObject"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 1715741,
+                  "symbol": "_PyEval_EvalFrameDefault"
+                },
+                {
+                  "module": "libpython3.13.so.1.0",
+                  "offset": 2286579,
+                  "symbol": "PyEval_EvalCode"
+                }
+              ],
+              "rank": 5,
+              "samples": 1
+            }
+          ],
+          "skipped": 0
+        }
+      ]
+    }
+  ],
+  "full_v08_qualified": false,
+  "files_sha256": {
+    "handoff/native-resource-observer.json": "3a50483c19653afc78ac95b109f44c1b3e7c66b7bd6256e21a28207d139eb245",
+    "handoff/native-resources.log": "b734393fb28013cd42d5d1e4cbae5b47e8c96cc32c294752bcb19f6a187f385f",
+    "handoff-allocations.log": "69b01dbf2a61df7ae4c65d570c8db11b1a8b948648d2b4616e50019213f3302f",
+    "ide/native-recovery-soak.json": "aa1b9357776ae9c872d101b7055925391b9ad0f334aa069c178c012d6882183a",
+    "ide/native-resource-acceptance.json": "8c784eea2e83b19302933b7b0053bd691072e39f444a818b843bd9ca51fddef2",
+    "ide/native-resource-observer.json": "a8ead20c600c135b582ce7094b7fcb638c9776d55ef46434ee54189be1e05731",
+    "ide/native-resources.log": "59e4644bcf4420164d5e574fd6a255d0b0ea42f52d375b7901ad59a56560f878",
+    "verified-artifacts.json": "b24657122aa1490c8eca81d174164933aee10c0d68d141b4ff813082197bb534"
+  }
+}

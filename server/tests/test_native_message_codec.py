@@ -8,6 +8,7 @@ Hosted whole-native recovery remains a separate mandatory acceptance.
 import importlib.util
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import zipfile
@@ -37,6 +38,14 @@ def codec_binaries(tmp_path_factory):
             path = folder / "SPELL_IPC" / name
             path.parent.mkdir(exist_ok=True)
             path.write_text(text)
+        message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+        fields = set()
+        for path in archive.namelist():
+            if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                fields.update(
+                    re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                )
+        fields.update({"DefaultProvided", "TimeoutMicroseconds"})
         utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
     (folder / "SPELL_UTIL").mkdir()
     common = """#pragma once
@@ -71,6 +80,32 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
         ("before", original),
         ("after", builder.replace_native_message_codec(original)),
     ):
+        header = (
+            message_header
+            if name == "before"
+            else builder.enable_native_message_moves(message_header)
+        )
+        (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+            header.replace(
+                "bool hasField( std::string field ) const;",
+                "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }",
+            )
+        )
+        bridge_path = (
+            "host_runtime/native_bridge.cpp"
+            if name == "before"
+            else "host_runtime/native/private_bridge.cpp"
+        )
+        bridge = (ROOT / bridge_path).read_text()
+        start = bridge.index("Json encode(const SPELLipcMessage& message) {")
+        end = bridge.index("\n}", start) + 2
+        (folder / "bridge_encode.inc").write_text(
+            "#include <nlohmann/json.hpp>\nusing Json=nlohmann::json;\n"
+            + "static const char* fieldNames[]={"
+            + ",".join(json.dumps(field) for field in sorted(fields))
+            + "};\n"
+            + bridge[start:end]
+        )
         text = text.replace(
             "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
         ).replace(
@@ -121,7 +156,7 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("case", ["wire", "duplicates", "partial_metadata"])
+@pytest.mark.parametrize("case", ["wire", "duplicates", "partial_metadata", "moves", "bridge"])
 def test_native_codec_preserves_original_wire_and_decoding(codec_binaries, case):
     assert run(codec_binaries["before"], case) == run(codec_binaries["after"], case)
 
@@ -131,7 +166,9 @@ def test_native_codec_rejects_unrepresentable_and_truncated_fields(codec_binarie
     run(codec_binaries["after"], case)
 
 
-@pytest.mark.parametrize("case,ratio", [("alloc_parse", 0.55), ("alloc_data", 0.35)])
+@pytest.mark.parametrize(
+    "case,ratio", [("alloc_parse", 0.55), ("alloc_data", 0.35), ("alloc_bridge", 0.60)]
+)
 def test_native_codec_reduces_measured_allocation_churn(codec_binaries, case, ratio):
     before = run(codec_binaries["before"], case)
     after = run(codec_binaries["after"], case)
@@ -146,3 +183,27 @@ def test_native_message_patch_rejects_changed_or_repeated_source():
     for text in (original + "\n", builder.replace_native_message_codec(original)):
         with pytest.raises(ValueError, match="preimage"):
             builder.replace_native_message_codec(text)
+
+
+def test_native_move_transfers_payload_without_allocating(codec_binaries):
+    before = run(codec_binaries["before"], "alloc_move")
+    after = run(codec_binaries["after"], "alloc_move")
+    assert before["allocations"] > 0
+    assert after["allocated_bytes"] == after["allocations"] == 0
+
+
+def test_native_move_patches_reject_drift_and_reapplication():
+    port_spec = importlib.util.spec_from_file_location(
+        "move_native_port", ROOT / "source_port/native_patches.py"
+    )
+    port = importlib.util.module_from_spec(port_spec)
+    port_spec.loader.exec_module(port)
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        for path, patcher in (
+            ("include/SPELL_IPC/SPELLipcMessage.H", builder.enable_native_message_moves),
+            ("lib/SPELL_IPC/src/SPELLipcIncoming.C", builder.transfer_native_incoming),
+        ):
+            original = port.apply(path, archive.read(path)).decode()
+            for text in (original + "\n", patcher(original)):
+                with pytest.raises(ValueError, match="preimage"):
+                    patcher(text)

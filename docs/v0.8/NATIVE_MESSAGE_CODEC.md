@@ -77,3 +77,44 @@ bytes; encode 15,210,000 → 3,760,000 bytes). Those component measurements are 
 a pass of full native recovery. Hosted qualification must still complete the
 same 45-second soak, original-process liveness, 2 GiB/no-swap, peak/growth and
 zero-pressure requirements. No sanitizer options or authority deadlines change.
+
+## Dev62 diagnosis and dev63 candidate
+
+Dev62 `0d282d8` (run `40380435228`) retains live allocation profiles.
+Its 1,275 service tests, 95 overlapping fault tests, 241 portable tests and
+five ancillary workflows pass. Twelve of fourteen core jobs pass. Handoff
+hits the 2 GiB limit with 271 max events and one OOM kill; IDE hits the limit
+with one max event. All 19 archives and recorded source hashes are verified.
+See [diagnostic evidence](evidence/native-allocation-trace/dev62/qualification-summary.json).
+Context reports 4,970,030 allocations totalling 612,644,648 bytes. Sampled
+stacks include IPC decode map nodes, incoming dispatch objects and forwarding
+string copies. Sampling does not establish a live leak or a complete cost ranking.
+
+Dev63 adds defaulted move operations without changing message layout or copy
+semantics. Incoming constructors transfer their owned by-value parameters,
+while retaining the independent copy from their caller and reading the IPC key
+from the destination after transfer. The patch checks the exact composed
+incoming source fingerprint, retaining its existing synchronization and exception
+completion fixes. Real composed constructor measurements, linked to the frozen
+native library, reduce allocated bytes from 29,280,000 to 12,000,000 and allocations
+from 330,000 to 150,000 over 10,000 messages. Both message layouts are 176 bytes.
+
+The private opt-in session now selects a separately built bridge linked to its
+candidate native library. Its JSON encoder constructs the result directly,
+avoiding initializer-list copies of the fields and metadata. Protocol fields,
+whitelist, invalid-UTF-8 replacement, callback order and ACK behavior are preserved.
+The default frozen v0.7 bridge is unchanged. Source, binary and field-inventory
+hashes are retained by the builder and qualification source inventory.
+
+The 134 targeted tests pass, including compiled binary/Unicode/empty-field wire
+compatibility, copy isolation, move reassignment, unchanged layout, allocation
+counts, exact composed patches, bridge selection and original lifecycle tests.
+The full private bridge compiles against the verified native headers/library.
+[Measured component evidence](evidence/native-codec/dev63/allocation-comparison.json)
+is separate from the pending hosted recovery verdict.
+
+Allocation stack profiling now requires the separate
+`OPENBEXI_V08_ALLOCATION_DIAGNOSTICS=1` opt-in. Normal acceptance retains
+`OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1` numeric observation without stack sampling.
+The 45-second soak, memory/swap limits, peak/growth budgets, sanitizer options,
+process-liveness requirements and all eleven full-release gates are unchanged.

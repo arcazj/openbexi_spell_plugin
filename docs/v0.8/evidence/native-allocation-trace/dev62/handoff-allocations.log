@@ -1,0 +1,299 @@
+PROCESS 37 SPELL-Context {'all_six_sites_observed': True, 'bytes': 612644648, 'calls': 4970030, 'monotonic_ns': 545108158924, 'pid': 37, 'samples': 19647, 'skipped': 21}
+SITE 0 samples 342 bytes 119302
+  libasan.so.8 0xf5778 operator new(unsigned long)
+  libstdc++.so.6 0x151d64 std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::reserve(unsigned long)
+SITE 1 samples 1214 bytes 116544
+  libasan.so.8 0xf5778 operator new(unsigned long)
+  SPELL-Context 0xb0fff9 std::_Rb_tree_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > std::_Rb_tree<std::__cxx11
+  SPELL-Context 0xb10e14 std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits
+  SPELL-Context 0xb0b539 SPELLipcMessage::fromData(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+  SPELL-Context 0xba5c16 SPELLipcInput::dispatch()
+  SPELL-Context 0xbab1d3 SPELLipcInput::addBytesToPacketFit(int)
+  SPELL-Context 0xbab39a SPELLipcInput::processReadBytes(int)
+  SPELL-Context 0xbad952 SPELLipcInput::run()
+  SPELL-Context 0xc59d43 SPELLthread::doRun()
+  SPELL-Context 0xc59e23 do_run(void*)
+  libasan.so.8 0x5b1d5 ?
+SITE 2 samples 1 bytes 65537
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x186c92 ?
+  libpython3.13.so.1.0 0x1f34d8 PyByteArray_Resize
+  libpython3.13.so.1.0 0x28b6c5 ?
+  libpython3.13.so.1.0 0x19c124 _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22f233 ?
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x18d39b PyObject_Vectorcall
+  libpython3.13.so.1.0 0x19e9cc _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22e3f3 PyEval_EvalCode
+  libpython3.13.so.1.0 0x2498e3 ?
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x19f4b8 _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x1b6589 ?
+  libpython3.13.so.1.0 0x1db3e8 PyObject_CallMethodObjArgs
+  libpython3.13.so.1.0 0x245294 ?
+  libpython3.13.so.1.0 0x1db086 PyImport_ImportModuleLevelObject
+  libpython3.13.so.1.0 0x1a2e1d _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22e3f3 PyEval_EvalCode
+SITE 3 samples 141 bytes 65424
+  libasan.so.8 0xf4610 __interceptor_calloc
+  ld-linux-x86-64.so.2 0x11f62 ?
+SITE 4 samples 186 bytes 64723
+  libasan.so.8 0xf5778 operator new(unsigned long)
+  SPELL-Context 0x80652f void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)
+  SPELL-Context 0xbc8bbb SPELLipcOutput::send(SPELLipcMessage&)
+  SPELL-Context 0xb31ffd SPELLipcServerInterface::sendMessage(int, SPELLipcMessage&)
+  SPELL-Context 0x81191c SPELLclientIPC::sendMessage(int, SPELLipcMessage const&)
+  SPELL-Context 0x7ebda9 SPELLclient::sendMessageToClient(SPELLipcMessage const&)
+  SPELL-Context 0x973d80 SPELLexecutor::forwardMessageToClient(SPELLipcMessage const&)
+  SPELL-Context 0x979728 SPELLexecutor::processMessageFromExecutor(SPELLipcMessage)
+  SPELL-Context 0x9985e9 SPELLexecutorIPC::processMessage(SPELLipcMessage const&)
+  SPELL-Context 0xaf42b2 SPELLipcIncomingMessage::run()
+  SPELL-Context 0xc59d43 SPELLthread::doRun()
+  SPELL-Context 0xc59e23 do_run(void*)
+  libasan.so.8 0x5b1d5 ?
+SITE 5 samples 143 bytes 61776
+  libasan.so.8 0xf5778 operator new(unsigned long)
+  SPELL-Context 0xb5a97e SPELLipcServerInterfaceSingle::incomingMessage(SPELLipcMessage const&)
+  SPELL-Context 0xba725a SPELLipcInput::dispatch()
+  SPELL-Context 0xbab1d3 SPELLipcInput::addBytesToPacketFit(int)
+  SPELL-Context 0xbab39a SPELLipcInput::processReadBytes(int)
+  SPELL-Context 0xbad952 SPELLipcInput::run()
+  SPELL-Context 0xc59d43 SPELLthread::doRun()
+  SPELL-Context 0xc59e23 do_run(void*)
+  libasan.so.8 0x5b1d5 ?
+PROCESS 100 SPELL-Executor {'all_six_sites_observed': True, 'bytes': 233019092, 'calls': 975522, 'monotonic_ns': 543011137864, 'pid': 100, 'samples': 3884, 'skipped': 0}
+SITE 0 samples 1 bytes 131072
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x191d1d ?
+  libpython3.13.so.1.0 0x196d14 ?
+  libpython3.13.so.1.0 0x1b211f ?
+  libpython3.13.so.1.0 0x1b1b37 ?
+  libpython3.13.so.1.0 0x1b16a7 ?
+  libpython3.13.so.1.0 0x1b0d61 ?
+  libpython3.13.so.1.0 0x1b08e4 ?
+  libpython3.13.so.1.0 0x1b0373 ?
+  libpython3.13.so.1.0 0x1b006f ?
+  libpython3.13.so.1.0 0x1afbef ?
+  libpython3.13.so.1.0 0x1af1ff ?
+  libpython3.13.so.1.0 0x1ad6c4 ?
+  libpython3.13.so.1.0 0x1ad064 ?
+  libpython3.13.so.1.0 0x1ac5b4 ?
+  libpython3.13.so.1.0 0x1ab8d0 ?
+  libpython3.13.so.1.0 0x1b6938 ?
+  libpython3.13.so.1.0 0x1b6baf ?
+  libpython3.13.so.1.0 0x231e68 ?
+  libpython3.13.so.1.0 0x199007 ?
+SITE 1 samples 1 bytes 107840
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x186976 ?
+  libpython3.13.so.1.0 0x1868b3 _PyList_AppendTakeRefListResize
+  libpython3.13.so.1.0 0x194be4 _PyArena_AddPyObject
+  libpython3.13.so.1.0 0x197119 ?
+  libpython3.13.so.1.0 0x196d6d ?
+  libpython3.13.so.1.0 0x22fa59 ?
+  libpython3.13.so.1.0 0x18ff50 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x2347d4 ?
+  libpython3.13.so.1.0 0x190007 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x22dd91 ?
+  libpython3.13.so.1.0 0x22daee ?
+  libpython3.13.so.1.0 0x22cd7e ?
+  libpython3.13.so.1.0 0x22cae5 Py_CompileStringObject
+  libpython3.13.so.1.0 0x251419 ?
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x1cb124 ?
+SITE 2 samples 1 bytes 95808
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x186976 ?
+  libpython3.13.so.1.0 0x1868b3 _PyList_AppendTakeRefListResize
+  libpython3.13.so.1.0 0x194be4 _PyArena_AddPyObject
+  libpython3.13.so.1.0 0x197119 ?
+  libpython3.13.so.1.0 0x196d6d ?
+  libpython3.13.so.1.0 0x198c15 ?
+  libpython3.13.so.1.0 0x197420 ?
+  libpython3.13.so.1.0 0x1a9e80 ?
+  libpython3.13.so.1.0 0x1a9bbe ?
+  libpython3.13.so.1.0 0x1a9733 ?
+  libpython3.13.so.1.0 0x195806 ?
+  libpython3.13.so.1.0 0x194da4 ?
+  libpython3.13.so.1.0 0x18f6fc ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x22fb0a ?
+  libpython3.13.so.1.0 0x18ff50 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x2347d4 ?
+SITE 3 samples 202 bytes 64777
+  libasan.so.8 0xf5778 operator new(unsigned long)
+  libstdc++.so.6 0x151d64 std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::reserve(unsigned long)
+SITE 4 samples 3 bytes 61811
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x1b8544 ?
+  libpython3.13.so.1.0 0x193271 ?
+  libpython3.13.so.1.0 0x191943 ?
+  libpython3.13.so.1.0 0x1b71b0 ?
+  libpython3.13.so.1.0 0x19a51a ?
+  libpython3.13.so.1.0 0x198f9b ?
+  libpython3.13.so.1.0 0x1b1de7 ?
+  libpython3.13.so.1.0 0x1b1b37 ?
+  libpython3.13.so.1.0 0x1b16a7 ?
+  libpython3.13.so.1.0 0x1b0d61 ?
+  libpython3.13.so.1.0 0x1b08e4 ?
+  libpython3.13.so.1.0 0x1b0373 ?
+  libpython3.13.so.1.0 0x1b006f ?
+  libpython3.13.so.1.0 0x1afbef ?
+  libpython3.13.so.1.0 0x1af1ff ?
+  libpython3.13.so.1.0 0x1ad6c4 ?
+  libpython3.13.so.1.0 0x1ad064 ?
+  libpython3.13.so.1.0 0x1ac5b4 ?
+SITE 5 samples 1 bytes 58893
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x18fa6e ?
+  libpython3.13.so.1.0 0x17a6d6 PyBytes_FromStringAndSize
+  libpython3.13.so.1.0 0x250b09 ?
+  libpython3.13.so.1.0 0x18dca9 ?
+  libpython3.13.so.1.0 0x2cda37 ?
+  libpython3.13.so.1.0 0x2506a0 ?
+  libpython3.13.so.1.0 0x19beee _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x1b6589 ?
+  libpython3.13.so.1.0 0x1db3e8 PyObject_CallMethodObjArgs
+  libpython3.13.so.1.0 0x245294 ?
+  libpython3.13.so.1.0 0x1db086 PyImport_ImportModuleLevelObject
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x19f4b8 _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x1b6589 ?
+  libpython3.13.so.1.0 0x1db3e8 PyObject_CallMethodObjArgs
+  libpython3.13.so.1.0 0x1db2aa PyImport_ImportModuleLevelObject
+  libpython3.13.so.1.0 0x1a2e1d _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22e3f3 PyEval_EvalCode
+PROCESS 204 SPELL-Executor {'all_six_sites_observed': True, 'bytes': 189807175, 'calls': 691594, 'monotonic_ns': 537012109839, 'pid': 204, 'samples': 2737, 'skipped': 0}
+SITE 0 samples 1 bytes 131072
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x191d1d ?
+  libpython3.13.so.1.0 0x196d14 ?
+  libpython3.13.so.1.0 0x1b211f ?
+  libpython3.13.so.1.0 0x1b1b37 ?
+  libpython3.13.so.1.0 0x1b16a7 ?
+  libpython3.13.so.1.0 0x1b0d61 ?
+  libpython3.13.so.1.0 0x1b08e4 ?
+  libpython3.13.so.1.0 0x1b0373 ?
+  libpython3.13.so.1.0 0x1b006f ?
+  libpython3.13.so.1.0 0x1afbef ?
+  libpython3.13.so.1.0 0x1af1ff ?
+  libpython3.13.so.1.0 0x1ad6c4 ?
+  libpython3.13.so.1.0 0x1ad064 ?
+  libpython3.13.so.1.0 0x1ac5b4 ?
+  libpython3.13.so.1.0 0x1ab8d0 ?
+  libpython3.13.so.1.0 0x1b6938 ?
+  libpython3.13.so.1.0 0x1b6baf ?
+  libpython3.13.so.1.0 0x231e68 ?
+  libpython3.13.so.1.0 0x199007 ?
+SITE 1 samples 1 bytes 107840
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x186976 ?
+  libpython3.13.so.1.0 0x1868b3 _PyList_AppendTakeRefListResize
+  libpython3.13.so.1.0 0x194be4 _PyArena_AddPyObject
+  libpython3.13.so.1.0 0x197119 ?
+  libpython3.13.so.1.0 0x196d6d ?
+  libpython3.13.so.1.0 0x22fa59 ?
+  libpython3.13.so.1.0 0x18ff50 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x2347d4 ?
+  libpython3.13.so.1.0 0x190007 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x22dd91 ?
+  libpython3.13.so.1.0 0x22daee ?
+  libpython3.13.so.1.0 0x22cd7e ?
+  libpython3.13.so.1.0 0x22cae5 Py_CompileStringObject
+  libpython3.13.so.1.0 0x251419 ?
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x1cb124 ?
+SITE 2 samples 1 bytes 95808
+  libasan.so.8 0xf3b58 ?
+  libpython3.13.so.1.0 0x186976 ?
+  libpython3.13.so.1.0 0x1868b3 _PyList_AppendTakeRefListResize
+  libpython3.13.so.1.0 0x194be4 _PyArena_AddPyObject
+  libpython3.13.so.1.0 0x197119 ?
+  libpython3.13.so.1.0 0x196d6d ?
+  libpython3.13.so.1.0 0x198c15 ?
+  libpython3.13.so.1.0 0x197420 ?
+  libpython3.13.so.1.0 0x1a9e80 ?
+  libpython3.13.so.1.0 0x1a9bbe ?
+  libpython3.13.so.1.0 0x1a9733 ?
+  libpython3.13.so.1.0 0x195806 ?
+  libpython3.13.so.1.0 0x194da4 ?
+  libpython3.13.so.1.0 0x18f6fc ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x22fb0a ?
+  libpython3.13.so.1.0 0x18ff50 ?
+  libpython3.13.so.1.0 0x18f6db ?
+  libpython3.13.so.1.0 0x232caf ?
+  libpython3.13.so.1.0 0x2347d4 ?
+SITE 3 samples 3 bytes 61811
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x1b8544 ?
+  libpython3.13.so.1.0 0x193271 ?
+  libpython3.13.so.1.0 0x191943 ?
+  libpython3.13.so.1.0 0x1b71b0 ?
+  libpython3.13.so.1.0 0x19a51a ?
+  libpython3.13.so.1.0 0x198f9b ?
+  libpython3.13.so.1.0 0x1b1de7 ?
+  libpython3.13.so.1.0 0x1b1b37 ?
+  libpython3.13.so.1.0 0x1b16a7 ?
+  libpython3.13.so.1.0 0x1b0d61 ?
+  libpython3.13.so.1.0 0x1b08e4 ?
+  libpython3.13.so.1.0 0x1b0373 ?
+  libpython3.13.so.1.0 0x1b006f ?
+  libpython3.13.so.1.0 0x1afbef ?
+  libpython3.13.so.1.0 0x1af1ff ?
+  libpython3.13.so.1.0 0x1ad6c4 ?
+  libpython3.13.so.1.0 0x1ad064 ?
+  libpython3.13.so.1.0 0x1ac5b4 ?
+SITE 4 samples 1 bytes 58893
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x18fa6e ?
+  libpython3.13.so.1.0 0x17a6d6 PyBytes_FromStringAndSize
+  libpython3.13.so.1.0 0x250b09 ?
+  libpython3.13.so.1.0 0x18dca9 ?
+  libpython3.13.so.1.0 0x2cda37 ?
+  libpython3.13.so.1.0 0x2506a0 ?
+  libpython3.13.so.1.0 0x19beee _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x1b6589 ?
+  libpython3.13.so.1.0 0x1db3e8 PyObject_CallMethodObjArgs
+  libpython3.13.so.1.0 0x245294 ?
+  libpython3.13.so.1.0 0x1db086 PyImport_ImportModuleLevelObject
+  libpython3.13.so.1.0 0x1b29ab ?
+  libpython3.13.so.1.0 0x19f4b8 _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x1b6589 ?
+  libpython3.13.so.1.0 0x1db3e8 PyObject_CallMethodObjArgs
+  libpython3.13.so.1.0 0x1db2aa PyImport_ImportModuleLevelObject
+  libpython3.13.so.1.0 0x1a2e1d _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22e3f3 PyEval_EvalCode
+SITE 5 samples 14 bytes 57344
+  libasan.so.8 0xf4c57 ___interceptor_malloc
+  libpython3.13.so.1.0 0x179eef ?
+  libpython3.13.so.1.0 0x250129 ?
+  libpython3.13.so.1.0 0x25f753 ?
+  libpython3.13.so.1.0 0x18b7ca ?
+  libpython3.13.so.1.0 0x18b54b _PyObject_MakeTpCall
+  libpython3.13.so.1.0 0x188957 ?
+  libpython3.13.so.1.0 0x18877e PyObject_CallFunction
+  libpython3.13.so.1.0 0x24f1c6 ?
+  libpython3.13.so.1.0 0x19eed7 _PyEval_EvalFrameDefault
+  libpython3.13.so.1.0 0x22e3f3 PyEval_EvalCode
+  libspell_executor313.so 0xd78d54 SPELLframeManager::execute()
+  libspell_executor313.so 0xc5bb56 SPELLexecutorImpl::executeInternal(bool)
+  libspell_executor313.so 0xc5d2af SPELLexecutorImpl::execute()
+  libspell_executor313.so 0xcfe0ef SPELLinterpreter::execute()
+  libspell_executor313.so 0xd00ace SPELLinterpreter::mainLoop()
+  SPELL-Executor 0x30059 ?
+  libc.so.6 0x29ca7 ?
+TOTAL_PROFILES 3

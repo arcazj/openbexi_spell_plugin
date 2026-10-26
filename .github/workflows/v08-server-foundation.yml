@@ -117,8 +117,8 @@ jobs:
           repository: arcazj/openbexi_ide
           ref: c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc
           path: .qualification/companion-ide
-      - name: Install Qt system library
-        run: sudo apt-get update && sudo apt-get install -y libegl1
+      - name: Install Qt and native JSON test headers
+        run: sudo apt-get update && sudo apt-get install -y libegl1 nlohmann-json3-dev
       - name: Install test tools and pinned IDE client
         run: |
           python -m pip install -r server/requirements-test.lock

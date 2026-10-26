@@ -4,6 +4,8 @@
 #include <atomic>
 #include <iostream>
 #include <stdexcept>
+#include <utility>
+#include "bridge_encode.inc"
 static bool measuring=false;
 static size_t allocated=0, allocations=0;
 extern "C" void __sanitizer_malloc_hook(const volatile void*, size_t size) {
@@ -43,6 +45,31 @@ int main(int argc,char** argv) {
             record(parsed.data());record(parsed.requestId());record(parsed.responseId());
             require(parsed.get("Binary")==std::string("a\0b",3));
         }
+    } else if(mode=="moves"||mode=="alloc_move") {
+        m.set("Binary",std::string("a\0b",3));m.set("large",std::string(1000,'x'));
+        m.setCompressed(true);const auto wire=m.data();
+        auto copy=m;copy.set("large","changed");require(m.data()==wire);
+        measuring=mode=="alloc_move";
+        SPELLipcMessage moved(std::move(m));
+        SPELLipcMessage target;target=std::move(moved);
+        measuring=false;
+        require(target.data()==wire&&target.getCompressed()&&target.getKey()==97);
+        // Only destruction and reassignment are required of moved-from values.
+        m=SPELLipcMessage("reassigned");moved=target;
+        require(m.getId()=="reassigned"&&moved.data()==wire);
+        if(mode=="moves"){record(target.data());record(std::to_string(sizeof(m)));}
+    } else if(mode=="bridge") {
+        m.set("Csp",u8"é中🙂");m.set("VarName","");m.set("VarValue",std::string("a\0b\xff",4));
+        m.set("DefaultProvided","true");m.set("TimeoutMicroseconds","123");
+        m.set("not-in-whitelist","hidden");
+        auto value=encode(m);
+        require(value.size()==5&&value["id"]==m.getId()&&value["type"]==m.getType());
+        require(value["sender"]==m.getSender()&&value["receiver"]==m.getReceiver());
+        require(value["fields"]["Csp"]==u8"é中🙂"&&value["fields"]["VarName"]=="");
+        require(value["fields"]["VarValue"]==std::string("a\0b\xff",4));
+        require(value["fields"]["DefaultProvided"]=="true"&&value["fields"]["TimeoutMicroseconds"]=="123");
+        require(!value["fields"].contains("not-in-whitelist"));
+        record(value.dump(-1,' ',false,Json::error_handler_t::replace));
     } else if(mode=="duplicates") {
         auto wire=m.data()+m.dataItem("Csp","last")+m.dataItem(MessageField::FIELD_ID,"last-id");
         m.fromData(wire);require(m.getId()=="last-id"&&m.get("Csp")=="last");
@@ -69,12 +96,13 @@ int main(int argc,char** argv) {
     } else if(mode=="oversize_key") {
         m.set(std::string(65536,'x'),"v");bool rejected=false;
         try{m.data();}catch(const SPELLipcError&){rejected=true;}require(rejected);
-    } else if(mode=="alloc_parse"||mode=="alloc_data") {
+    } else if(mode=="alloc_parse"||mode=="alloc_data"||mode=="alloc_bridge") {
         for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
         auto data=m.data();
         measuring=true;
         for(int i=0;i<10000;++i) {
             if(mode=="alloc_parse") {SPELLipcMessage parsed;parsed.fromData(data);}
+            else if(mode=="alloc_bridge") {auto value=encode(m);require(value.size()==5);}
             else {auto wire=m.data();if(wire.empty())return 4;}
         }
         measuring=false;

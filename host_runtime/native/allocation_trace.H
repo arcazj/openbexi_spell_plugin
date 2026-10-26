@@ -61,7 +61,7 @@ static void v08_observe_free(const volatile void*) {}
 extern "C" bool v08_allocation_profile_start() noexcept
 {
     // Main-thread-only: the hook installer must run before native threads.
-    const char* setting=std::getenv("OPENBEXI_V08_RESOURCE_DIAGNOSTICS");
+    const char* setting=std::getenv("OPENBEXI_V08_ALLOCATION_DIAGNOSTICS");
     if (!setting || std::strcmp(setting,"1")!=0) return true;
     const bool installed=__sanitizer_install_malloc_and_free_hooks(v08_capture_allocation,v08_observe_free)>0;
     v08_alloc::enabled.store(installed,std::memory_order_relaxed);

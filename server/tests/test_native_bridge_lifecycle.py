@@ -24,6 +24,23 @@ def take(events, expected):
     return item
 
 
+@pytest.mark.parametrize("home", [None, Path("/opt/v08-native-home")])
+def test_session_selects_bridge_from_its_checked_native_home(home):
+    # NativeSession validates this operator mount at construction. This test
+    # exercises its actual connection dispatch without launching a listener.
+    session = native.NativeSession.__new__(native.NativeSession)
+    session.native_home = home
+    session.process = SimpleNamespace(poll=lambda: None)
+    session.log, session.events = None, queue.Queue()
+    with patch.object(native, "Bridge") as bridge:
+        session.connect_bridge(9980, {}, time.monotonic() + 5)
+    kwargs = bridge.call_args.kwargs
+    assert str(kwargs["executable"]) == (
+        "/opt/v08-native-home/bin/spell-host-ipc" if home else "/bridge/spell-host-ipc"
+    )
+    assert 0 < kwargs["connect_timeout"] <= 5
+
+
 def test_notification_between_connected_and_constructor_return_is_not_lost():
     published = threading.Event()
     real_thread = threading.Thread

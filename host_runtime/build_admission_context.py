@@ -21,6 +21,46 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def enable_native_message_moves(text):
+    """Keep message layout/copy semantics; transfer already-owned IPC values."""
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "c54d973818d5a1c7658d1d6669464207edb5ddd989804d898acd81c31cf2114f"
+    ):
+        raise ValueError("Native message move preimage differs")
+    anchor = "SPELLipcMessage( const SPELLipcMessage& msg );"
+    if text.count(anchor) != 1:
+        raise ValueError("Native message move boundary differs")
+    return text.replace(
+        anchor,
+        anchor + "\n    SPELLipcMessage(SPELLipcMessage&&) = default;"
+        "\n    SPELLipcMessage& operator=(SPELLipcMessage&&) = default;",
+    )
+
+
+def transfer_native_incoming(text):
+    """Move constructor-owned parameters; preserve the independent input copy."""
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "45e3dcb8a2af61f575697066b443facc394ba1ee9e202a40989c67d01be5980d"
+    ):
+        raise ValueError("Native incoming move preimage differs")
+    for old, new in (
+        ("m_message(msg)", "m_message(std::move(msg))"),
+        ("m_key(msg.getKey())", "m_key(m_message.getKey())"),
+        (
+            "SPELLipcIncomingBase(msgId,ifcName,msg,listener)",
+            "SPELLipcIncomingBase(msgId,ifcName,std::move(msg),listener)",
+        ),
+        (
+            "SPELLipcIncomingBase(requestId,ifcName,msg,listener)",
+            "SPELLipcIncomingBase(requestId,ifcName,std::move(msg),listener)",
+        ),
+    ):
+        if text.count(old) != 1:
+            raise ValueError("Native incoming move boundary differs")
+        text = text.replace(old, new)
+    return "#include <utility>\n" + text
+
+
 def replace_native_message_codec(text):
     """Remove intermediate IPC allocations without changing the class ABI."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -166,6 +206,10 @@ def trace_native_startup(text):
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
+    message_header = source / "include/SPELL_IPC/SPELLipcMessage.H"
+    message_header.write_text(enable_native_message_moves(message_header.read_text()))
+    incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+    incoming.write_text(transfer_native_incoming(incoming.read_text()))
     for relative in (
         "src/context/src/SPELLcontextMain.C",
         "src/executor/src/SPELLexecutorMain.C",
@@ -786,6 +830,39 @@ def main():
         )
         programs[name] = sha(program)
     (binaries / "SPELL-Executor_v3").symlink_to("SPELL-Executor")
+    # The opt-in session must use the same candidate IPC codec as its native
+    # peers. The frozen host bridge and default session remain separate.
+    bridge_source = Path("/candidate/private_bridge.cpp")
+    fields = set()
+    for header in (source / "include/SPELL_IPC").glob("*.H"):
+        fields.update(
+            re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', header.read_text())
+        )
+    if not {"Csp", "ExecutorStatus", "VarName", "VarValue", "ContextPort"} <= fields:
+        raise ValueError("Native bridge field inventory differs")
+    fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+    fields_path = Path("/candidate/fields.inc")
+    fields_path.write_text(
+        "static const char* fieldNames[] = {\n"
+        + ",\n".join(json.dumps(field) for field in sorted(fields))
+        + "\n};\n"
+    )
+    bridge_binary = binaries / "spell-host-ipc"
+    subprocess.run(
+        flags
+        + [
+            str(bridge_source),
+            "-L" + str(binaries),
+            "-lspell_executor313",
+            "-Wl,-rpath,$ORIGIN",
+            "-L" + sysconfig.get_config_var("LIBDIR"),
+            "-lpython3.13",
+            "-o",
+            str(bridge_binary),
+        ],
+        check=True,
+        timeout=120,
+    )
     # Symbolize private executable offsets offline without changing dynamic
     # symbol interposition. Shared-library symbols are already discoverable.
     context_symbols = []
@@ -813,6 +890,9 @@ def main():
         candidate_executor_sha256=programs["Executor"],
         original_executor_sha256=sha(runtime / "bin/SPELL-Executor_v3"),
         candidate_shared_runtime_sha256=sha(shared),
+        candidate_bridge_sha256=sha(bridge_binary),
+        candidate_bridge_source_sha256=sha(bridge_source),
+        candidate_bridge_fields_sha256=sha(fields_path),
         epoch_bootstrap_sha256=sha(Path("/candidate/epoch_connection.py")),
         original_shared_runtime_sha256=sha(runtime / "bin/libspell_executor313.so"),
         shared_runtime_library_units=len(runtime_graph),

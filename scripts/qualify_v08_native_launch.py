@@ -638,6 +638,7 @@ def main():
         ROOT / "scripts/v08_resource_probe.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
+        ROOT / "host_runtime/native/private_bridge.cpp",
         ROOT / "host_runtime/python/children.py",
         Path(__file__),
         ROOT / "scripts/qualify_v08_native_boundary.py",
@@ -809,6 +810,10 @@ def main():
                 if profile.native_child_gate:
                     native_build = temporary / "native-build"
                     native_build.mkdir()
+                    shutil.copy2(
+                        ROOT / "host_runtime/native/private_bridge.cpp",
+                        native_build / "private_bridge.cpp",
+                    )
                     for header in (ROOT / "host_runtime/native").glob("*.H"):
                         shutil.copy2(header, native_build / header.name)
                     shutil.copy2(
@@ -833,7 +838,7 @@ def main():
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H build.py native_prompt_patch.py native_terminal_patch.py epoch_connection.py /candidate/\n"
+                        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py native_terminal_patch.py epoch_connection.py /candidate/\n"
                         "RUN python /candidate/build.py"
                         + (" --native-prompts" if profile.native_prompts else "")
                         + (" --native-terminal" if profile.native_terminal else "")

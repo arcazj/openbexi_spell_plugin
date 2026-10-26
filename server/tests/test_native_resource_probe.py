@@ -279,6 +279,7 @@ int main() {
         env["OPENBEXI_V08_RESOURCE_DIAGNOSTICS"] = "1" if enabled else "0"
         result = subprocess.run([str(binary)], env=env, capture_output=True, check=True, timeout=10)
         assert not result.stdout
+        assert b"V08_ALLOC " not in result.stderr
         if not enabled:
             assert not result.stderr
             continue

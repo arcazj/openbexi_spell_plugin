@@ -77,7 +77,9 @@ int main() {
         os.environ, ASAN_OPTIONS="detect_leaks=0:abort_on_error=1", UBSAN_OPTIONS="halt_on_error=1"
     )
     for enabled in (False, True):
-        env["OPENBEXI_V08_RESOURCE_DIAGNOSTICS"] = "1" if enabled else "0"
+        # Numeric resource observation alone must not enable expensive stacks.
+        env["OPENBEXI_V08_RESOURCE_DIAGNOSTICS"] = "1"
+        env["OPENBEXI_V08_ALLOCATION_DIAGNOSTICS"] = "1" if enabled else "0"
         result = subprocess.run(
             [str(binary), *(["enabled"] if enabled else [])],
             env=env,
