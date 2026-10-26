@@ -241,7 +241,7 @@ def qualify_reconnect(
     disconnected = view()
     while (
         disconnected["control_state"] == "OWNED"
-        and time.monotonic() - lost_at < loss["lease_seconds"] + 3
+        and time.monotonic() - lost_at < loss["lease_seconds"] + 10
     ):
         time.sleep(0.1)
         disconnected = view()

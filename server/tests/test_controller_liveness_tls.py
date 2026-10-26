@@ -6,6 +6,10 @@ is established separately by the hosted Docker handoff cohorts.
 
 from functools import partial
 import json
+import os
+from pathlib import Path
+import socket
+import threading
 import select
 import subprocess
 import sys
@@ -55,19 +59,23 @@ while True:
  if r.status!=200:sys.exit(2)
  nonce=data['result']['heartbeat_nonce']
  print('renewed',flush=True)
+ if c.get('blackhole_port'):c['port']=c.pop('blackhole_port')
  time.sleep(data['result']['lease_seconds']/3)
 """
 
 
-@pytest.mark.parametrize("fault", ["client_death", "heartbeat_reply_loss", "heartbeat_stall"])
+@pytest.mark.parametrize(
+    "fault", ["client_death", "heartbeat_reply_loss", "heartbeat_stall", "tls_blackhole"]
+)
 def test_abrupt_loss_is_automatically_fenced_then_requires_explicit_recovery(
-    ledger, pki, monkeypatch, fault
+    ledger, pki, monkeypatch, fault, blackhole
 ):
     child = subprocess.Popen(
         [sys.executable, "-c", CLIENT],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env=dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1] / "src")),
     )
     try:
         child.stdin.write(
@@ -79,6 +87,7 @@ def test_abrupt_loss_is_automatically_fenced_then_requires_explicit_recovery(
                     port=ledger["server"].server_port,
                     connection=ledger["connection"],
                     nonce=ledger["lease"]["heartbeat_nonce"],
+                    blackhole_port=blackhole[0] if fault == "tls_blackhole" else None,
                 )
             ).encode()
         )
@@ -90,6 +99,9 @@ def test_abrupt_loss_is_automatically_fenced_then_requires_explicit_recovery(
         if fault == "client_death":
             child.kill()
             child.wait(timeout=2)
+            until_fenced(ledger, pki)
+        elif fault == "tls_blackhole":
+            assert blackhole[1].wait(3), "Client did not reach the TCP blackhole"
             until_fenced(ledger, pki)
         else:
             with cut_reply(monkeypatch, ledger, "/v1/rpc", stall=fault == "heartbeat_stall") as (
@@ -149,3 +161,33 @@ def until_fenced(ledger, pki):
             return
         time.sleep(0.05)
     raise AssertionError("Controller loss was not automatically fenced")
+
+
+@pytest.fixture
+def blackhole():
+    listener = socket.socket()
+    listener.bind(("127.0.0.1", 0))
+    listener.listen(1)
+    listener.settimeout(0.1)
+    release, connected = threading.Event(), threading.Event()
+
+    def accept():
+        while not release.is_set():
+            try:
+                wire, _ = listener.accept()
+            except TimeoutError:
+                continue
+            with wire:
+                connected.set()
+                release.wait(10)  # Accept TCP but deliver no TLS handshake or reply.
+            return
+
+    thread = threading.Thread(target=accept)
+    thread.start()
+    try:
+        yield listener.getsockname()[1], connected
+    finally:
+        release.set()
+        thread.join(2)
+        listener.close()
+        assert not thread.is_alive()
