@@ -507,6 +507,7 @@ def main():
     parser.add_argument("--native-terminal", action="store_true")
     parser.add_argument("--native-handoff", action="store_true")
     parser.add_argument("--native-ide", action="store_true")
+    parser.add_argument("--native-startup-stress", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
     profile = parser.parse_args()
     if (
@@ -520,6 +521,7 @@ def main():
                 profile.native_terminal,
                 profile.native_handoff,
                 profile.native_ide,
+                profile.native_startup_stress,
                 profile.native_listener_survival,
             )
         )
@@ -529,7 +531,9 @@ def main():
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
     profile.native_handoff = profile.native_handoff or profile.native_ide
-    profile.native_terminal = profile.native_terminal or profile.native_ide
+    profile.native_terminal = (
+        profile.native_terminal or profile.native_ide or profile.native_startup_stress
+    )
     profile.native_prompts = (
         profile.native_prompts or profile.native_terminal or profile.native_handoff
     )
@@ -2126,7 +2130,9 @@ def main():
                     from v08_native_consumption import qualify_consumption_fence
 
                     cases = (
-                        (
+                        ("close-child",) * 24
+                        if profile.native_startup_stress
+                        else (
                             "abort-paused",
                             "close-paused",
                             "abort-running",
@@ -2135,13 +2141,27 @@ def main():
                         if profile.native_ide
                         else CASES
                     )
-                    for case in cases:
+                    for index, case in enumerate(cases):
+                        case_directory, case_control, case_prefix = (
+                            temporary,
+                            control,
+                            prefix,
+                        )
+                        if profile.native_startup_stress:
+                            case_directory = temporary / ("startup-cycle-" + str(index))
+                            case_directory.mkdir(mode=0o755)
+                            case_control = case_directory / "control"
+                            case_control.mkdir(mode=0o755)
+                            (case_control / "start").write_text(
+                                "fresh single-use startup\n"
+                            )
+                            case_prefix = prefix + "-cycle-" + str(index)
                         qualify_consumption_fence(
                             terminal_case=case,
                             desktop_stack=desktop_stack if profile.native_ide else None,
                             terminal_evidence=output,
-                            temporary=temporary,
-                            prefix=prefix,
+                            temporary=case_directory,
+                            prefix=case_prefix,
                             context_image=context_image,
                             config=config,
                             sources=sources,
@@ -2151,7 +2171,7 @@ def main():
                             ca=ca,
                             peers=peers,
                             primary_controller=controller,
-                            control=control,
+                            control=case_control,
                             primary_state=state,
                             names=names,
                             networks=networks,
@@ -2160,6 +2180,28 @@ def main():
                             await_event=await_event,
                             host_processes=host_processes,
                             events=events,
+                        )
+                    if profile.native_startup_stress:
+                        completed = report.get("native_terminal_cases", [])
+                        if len(completed) != 24 or any(
+                            not case["passed"]
+                            or case["case"] != "close-child"
+                            or case["terminal_settlement"]["report"]["native_members"]
+                            != 2
+                            or not case["reservation_released"]
+                            or not case["worker_spent"]
+                            for case in completed
+                        ):
+                            raise RuntimeError(
+                                "Fresh native startup stress evidence is incomplete"
+                            )
+                        report["native_startup_stress"] = dict(
+                            passed=True,
+                            fresh_root_child_families=24,
+                            independently_settled_families=24,
+                            worker_reuse=False,
+                            uncertain_start_retried=False,
+                            historical_failure_cause_established=False,
                         )
                 if profile.native_handoff:
                     from v08_native_consumption import qualify_consumption_fence
