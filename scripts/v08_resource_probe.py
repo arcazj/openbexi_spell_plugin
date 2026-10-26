@@ -2,6 +2,7 @@
 
 from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 import threading
 import time
@@ -30,6 +31,39 @@ def numbers(path, allowed=None, *, colon=False):
 def identity(path):
     fields = read(path / "stat").rsplit(")", 1)[1].split()
     return int(fields[19])
+
+
+def allocator_records(raw):
+    """Fixed numeric metadata only; never return arbitrary native log text."""
+    latest = {}
+    fields = {
+        "pid",
+        "role",
+        "monotonic_ns",
+        "allocated_bytes",
+        "heap_bytes",
+        "free_bytes",
+        "unmapped_bytes",
+    }
+    for line in raw[-65536:].splitlines():
+        if not line.startswith(b"V08_MEMORY ") or len(line) >= 384:
+            continue
+        try:
+            record = json.loads(line[11:])
+            if (
+                type(record) is dict
+                and set(record) == fields
+                and all(
+                    type(value) is int and 0 <= value < 2**64
+                    for value in record.values()
+                )
+                and 0 < record["pid"] < 2**31
+                and record["role"] == 1
+            ):
+                latest[record["pid"]] = record
+        except (ValueError, TypeError):
+            continue
+    return list(latest.values())[:256]
 
 
 def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
@@ -92,7 +126,16 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
         try:
             before = identity(path)
             row = dict(pid=task, start_ticks=before)
-            program = (path / "exe").resolve(strict=True).name
+            namespace = [
+                line.split()[1:]
+                for line in read(path / "status").splitlines()
+                if line.startswith("NSpid:")
+            ]
+            if namespace:
+                row["namespace_pid"] = int(namespace[0][-1])
+            # /proc/PID/exe is a magic link into the container mount namespace.
+            # Resolving its textual target on the host can falsely report exit.
+            program = Path(os.readlink(path / "exe")).name
             row["program"] = (
                 program
                 if program
@@ -106,6 +149,7 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
                     "python3.13",
                     "bash",
                     "docker-init",
+                "spell-host-ipc",
                 }
                 else "other"
             )
@@ -149,6 +193,15 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
             result["processes"].append(row)
         except FileNotFoundError:
             result["processes"].append(dict(pid=task, exited_during_sample=True))
+    result["native_allocator"] = []
+    for log in sorted((root / "root/tmp").glob("spell-host-*/native.log"))[:2]:
+        try:
+            with log.open("rb") as stream:
+                stream.seek(0, 2)
+                stream.seek(max(0, stream.tell() - 65536))
+                result["native_allocator"].extend(allocator_records(stream.read(65536)))
+        except FileNotFoundError:
+            continue
     if identity(root) != start or read(root / "cgroup").splitlines() != rows:
         raise ValueError("Bound resource container changed during observation")
     return result

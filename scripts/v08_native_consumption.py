@@ -599,6 +599,8 @@ def qualify_consumption_fence(
         "--tmpfs",
         "/workspace:rw,nosuid,nodev,size=16m,mode=0700,uid=10003,gid=10003",
     ]
+    if live_handoff:
+        args += ["--env", "OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1"]
     for source, destination in (
         (snapshot, "/source"),
         (code, "/v08"),

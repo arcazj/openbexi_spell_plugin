@@ -2,7 +2,9 @@
 
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -73,6 +75,16 @@ def test_exited_member_and_missing_smaps_are_explicit(tmp_path):
     assert result["processes"][1] == dict(pid=456, exited_during_sample=True)
 
 
+def test_container_executable_need_not_exist_in_host_mount_namespace(tmp_path):
+    proc, groups = fixture(tmp_path)
+    link = proc / "123/exe"
+    link.unlink()
+    link.symlink_to("/container-only/opt/runtime/SPELL-Executor_v3")
+    result = probe.snapshot(123, proc=proc, groups=groups)
+    assert result["processes"][0]["program"] == "SPELL-Executor_v3"
+    assert result["processes"][0]["status"]["VmRSS_bytes"] == 262144
+
+
 @pytest.mark.parametrize("cgroup", ["0::/../escape", "0::/worker\n1:cpu:/other"])
 def test_cgroup_path_cannot_escape_bound_root(tmp_path, cgroup):
     proc, groups = fixture(tmp_path)
@@ -94,3 +106,85 @@ def test_process_roster_is_bounded(tmp_path):
     (groups / "worker/cgroup.procs").write_text("123\n" * 257)
     with pytest.raises(ValueError, match="roster exceeds"):
         probe.snapshot(123, proc=proc, groups=groups)
+
+
+def test_allocator_records_reject_non_numeric_or_extra_fields():
+    record = dict(
+        pid=7,
+        role=1,
+        monotonic_ns=10,
+        allocated_bytes=1,
+        heap_bytes=2,
+        free_bytes=0,
+        unmapped_bytes=0,
+    )
+
+    def line(value):
+        return b"V08_MEMORY " + json.dumps(value).encode() + b"\n"
+
+    assert probe.allocator_records(line(record)) == [record]
+    for changed in [
+        dict(record, secret="private"),
+        dict(record, pid=True),
+        dict(record, role=2),
+        dict(record, heap_bytes=-1),
+    ]:
+        assert probe.allocator_records(line(changed)) == []
+    newer = dict(record, monotonic_ns=20)
+    assert probe.allocator_records(line(record) + line(newer)) == [newer]
+
+
+def test_compiled_allocator_observation_preserves_live_and_freed_distinction(tmp_path):
+    source, binary = tmp_path / "probe.cpp", tmp_path / "probe"
+    source.write_text("""
+#include "resource_trace.H"
+#include <thread>
+#include <chrono>
+int main() {
+    v08_resource_trace(1);
+    void* data = std::malloc(4*1024*1024);
+    if (!data) return 2;
+    std::memset(data, 1, 4*1024*1024);
+    for (int n=0;n<100;n++) v08_resource_trace(1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2100));
+    v08_resource_trace(1);
+    std::free(data);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2100));
+    v08_resource_trace(1);
+}
+""")
+    subprocess.run(
+        [
+            "c++",
+            "-std=c++17",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-pthread",
+            "-fsanitize=address,undefined",
+            "-fno-sanitize-recover=all",
+            "-I",
+            str(ROOT / "host_runtime/native"),
+            str(source),
+            "-o",
+            str(binary),
+        ],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    env = dict(os.environ, ASAN_OPTIONS="detect_leaks=0:abort_on_error=1")
+    for enabled in (False, True):
+        env["OPENBEXI_V08_RESOURCE_DIAGNOSTICS"] = "1" if enabled else "0"
+        result = subprocess.run([str(binary)], env=env, capture_output=True, check=True, timeout=10)
+        assert not result.stdout
+        if not enabled:
+            assert not result.stderr
+            continue
+        records = [json.loads(line[11:]) for line in result.stderr.splitlines()]
+        assert len(records) == 3
+        baseline, live, freed = records
+        assert live["allocated_bytes"] - baseline["allocated_bytes"] >= 4 * 1024 * 1024
+        assert live["allocated_bytes"] - freed["allocated_bytes"] >= 4 * 1024 * 1024
+        assert live["heap_bytes"] >= live["allocated_bytes"]
+        assert freed["heap_bytes"] > freed["allocated_bytes"]

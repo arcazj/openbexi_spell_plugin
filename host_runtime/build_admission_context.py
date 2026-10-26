@@ -144,6 +144,23 @@ def trace_native_startup(text):
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
+    native_input = source / "lib/SPELL_IPC/src/SPELLipcInput.C"
+    if (
+        sha(native_input)
+        != "fe0ee70bfeb33103c707365e408623aad86f89b8ced309459009cd64b90a8283"
+    ):
+        raise ValueError("Native resource observation preimage differs")
+    input_text = native_input.read_text()
+    include = '#include "SPELL_IPC/SPELLipcInput.H"'
+    loop = "    while(isConnected())\n    {\n"
+    if input_text.count(include) != 1 or input_text.count(loop) != 1:
+        raise ValueError("Native resource observation boundary differs")
+    native_input.write_text(
+        input_text.replace(
+            include,
+            include + '\n#include "/candidate/resource_trace.H"',
+        ).replace(loop, loop + "        v08_resource_trace(1);\n")
+    )
     # The legacy GUI client key is client-proposed/reusable. Allocate an
     # incarnation-local monotonic key instead, before addClient can replace
     # an existing channel. This applies only to the private Context GUI port.
