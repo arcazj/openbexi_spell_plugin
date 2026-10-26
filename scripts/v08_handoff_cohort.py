@@ -434,7 +434,7 @@ def qualify_handoff_case(
             observer_saw_paused_and_resumed_b=True,
             owner="bob",
             epoch=2,
-            new_owner_native_commands=2,
+            new_owner_native_commands=3 if verify_step else 2,
             stale_native_driver_denied=True,
             delayed_old_owner_step_fenced=True,
             dss_commands=2,
