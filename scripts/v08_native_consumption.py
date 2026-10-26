@@ -345,11 +345,12 @@ def qualify_consumption_fence(
         probe_config["approved_sources"]["handoff-child"] = config["approved_sources"][
             "handoff-child"
         ]
-        if desktop_stack is not None:
-            for subject in ("alice", "bob"):
-                probe_config["subjects"][subject] = sorted(
-                    set(probe_config["subjects"][subject]) | {"context:read"}
-                )
+    if desktop_stack is not None:
+        probe_config["subjects"]["observer"] = ["context:read", "execution:read"]
+        for subject in ("alice", "bob"):
+            probe_config["subjects"][subject] = sorted(
+                set(probe_config["subjects"][subject]) | {"context:read"}
+            )
     (secure / "config.json").write_bytes(canonical(probe_config))
     args = [
         "docker",
@@ -676,6 +677,7 @@ def qualify_consumption_fence(
             host_call=host_call,
             handoff_call=handoff_call,
             output=terminal_evidence,
+            verify_step=desktop_stack is not None,
         )
         if primary_controller("execution.list", {}) != original_primary:
             raise RuntimeError("Live handoff changed unrelated primary executions")

@@ -529,6 +529,7 @@ def main():
             "Native pause, cooperative threads and DSS qualify separate profiles"
         )
     profile.native_handoff = profile.native_handoff or profile.native_ide
+    profile.native_terminal = profile.native_terminal or profile.native_ide
     profile.native_prompts = (
         profile.native_prompts or profile.native_terminal or profile.native_handoff
     )
@@ -2119,9 +2120,20 @@ def main():
                 if profile.native_terminal:
                     from v08_native_consumption import qualify_consumption_fence
 
-                    for case in CASES:
+                    cases = (
+                        (
+                            "abort-paused",
+                            "close-paused",
+                            "abort-running",
+                            "close-running",
+                        )
+                        if profile.native_ide
+                        else CASES
+                    )
+                    for case in cases:
                         qualify_consumption_fence(
                             terminal_case=case,
+                            desktop_stack=desktop_stack if profile.native_ide else None,
                             terminal_evidence=output,
                             temporary=temporary,
                             prefix=prefix,

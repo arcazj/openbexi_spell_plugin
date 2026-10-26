@@ -29,8 +29,10 @@ native handoff fixture. Reservations, observation, claims, acceptance, rebind
 and owner commands traverse those services. Only initial worker provisioning
 remains on the independent trusted host path. The native source, cgroup freeze,
 original process identity, cross-owner DSS receipts and terminal settlement
-oracles are preserved. Its executed outcome must be retained before this
-component is called qualified.
+oracles are preserved. The IDE profile additionally verifies a native source
+location change followed by PAUSED after B's explicit STEP, and four actual
+ABORT/CLOSE cases while paused or running through the installed client. Its
+executed outcome must be retained before this component is called qualified.
 
 This does not qualify public launch, full debugger inspection/breakpoints,
 browser/WSS/Git, repeated handoff or deployed recovery. Full release gates

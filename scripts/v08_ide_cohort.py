@@ -31,7 +31,7 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
         raise RuntimeError(
             "Installed native control client differs from the pinned IDE"
         )
-    private = directory / "ide-control-services"
+    private = directory / ("ide-control-services-" + uuid.uuid4().hex)
     private.mkdir(mode=0o700)
     processes = []
     logs = []
@@ -137,7 +137,12 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
                     )
                 elif method == "execution.command":
                     eid = payload["execution_id"]
-                    if client.has_controller(context_id, eid):
+                    cached = client._controllers.get((context_id, eid))
+                    if cached is not None and payload == dict(
+                        cached,
+                        command=payload["command"],
+                        target_admission_id=payload["target_admission_id"],
+                    ):
                         result = client.command(
                             context_id,
                             eid,
@@ -146,8 +151,8 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
                             target_admission_id=payload["target_admission_id"],
                         )
                     else:
-                        # Deliberately hostile C bypasses its local UI/proof check.
-                        # The authenticated server must still return actual 403.
+                        # Hostile callers bypass their UI/proof checks, including
+                        # stale or malformed owner proofs in terminal negatives.
                         result = client.request(
                             "POST",
                             f"/v1/contexts/{context_id}/commands",
@@ -178,7 +183,8 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
                 )
                 raise Fault(error.status, "ide_request_denied") from error
 
-        report["native_ide"] = dict(
+        receipt = dict(
+            context_id=context_id,
             installed_client_sha256=client_hash,
             ide_commit=pair["ide_commit"],
             ide_version=pair["ide_version"],
@@ -189,8 +195,10 @@ def installed_desktop(*, directory, code, ca, peers, context_id, context_url, re
             browser_tested=False,
             calls=calls,
         )
+        report["native_ide"] = receipt
+        report.setdefault("native_ide_profiles", []).append(receipt)
         yield controller
-        report["native_ide"]["passed"] = True
+        receipt["passed"] = True
     finally:
         for process in reversed(processes):
             if process.poll() is None:

@@ -162,6 +162,7 @@ def qualify_handoff_case(
     host_call,
     handoff_call,
     output,
+    verify_step=False,
 ):
     await_event([name], "native-handoff-ready", seconds=45)
     initial = controller("execution.list", {}, subject="observer")
@@ -275,7 +276,14 @@ def qualify_handoff_case(
         await_event([name], "native-handoff-activated", seconds=15)
         # B exercises the original native owner-command path after the family
         # resume. C keeps observing; A's pending STEP must stay fenced.
-        for operation in ("CMD_PAUSE", "CMD_RUN"):
+        operations = (
+            ("CMD_PAUSE", "CMD_STEP", "CMD_RUN")
+            if verify_step
+            else ("CMD_PAUSE", "CMD_RUN")
+        )
+        for operation in operations:
+            if operation == "CMD_STEP":
+                (control / "handoff-step-requested").write_text("explicit B step")
             result = controller(
                 "execution.command", dict(bproof, command=operation), subject="bob"
             )
@@ -297,6 +305,8 @@ def qualify_handoff_case(
                 time.sleep(0.05)
             if operation == "CMD_PAUSE":
                 await_event([name], "native-handoff-paused", seconds=15)
+            if operation == "CMD_STEP":
+                await_event([name], "native-handoff-stepped", seconds=15)
         (control / "handoff-after").write_text("B continuation")
         await_event([name], "native-handoff-continued", seconds=25)
         continued = next(
@@ -411,6 +421,7 @@ def qualify_handoff_case(
             )
         report["native_live_handoff"] = dict(
             passed=True,
+            native_step_location_verified=verify_step,
             provider="docker-cgroup-freezer-pidfd/1",
             whole_family_paused=True,
             frozen_observation_seconds=3,

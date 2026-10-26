@@ -11,6 +11,8 @@ def run_handoff_probe(
     session.request("CMD_RUN", send=True)
     deadline = time.monotonic() + 120
     ready = rotated = paused = False
+    paused_location = None
+    step_reported = False
     while time.monotonic() < deadline:
         runtime.ensure()
         pump()
@@ -48,7 +50,23 @@ def run_handoff_probe(
         state = session.request("REQ_EXEC_INFO", context=True)["ExecutorStatus"]
         if runtime.rotated and state == "PAUSED" and not paused:
             paused = True
+            paused_location = session.request("REQ_EXEC_STATUS").get("Csp")
             emit("native-handoff-paused", native_status=state)
+        if (
+            paused
+            and state == "PAUSED"
+            and not step_reported
+            and Path("/control/handoff-step-requested").exists()
+        ):
+            location = session.request("REQ_EXEC_STATUS").get("Csp")
+            if paused_location and location and location != paused_location:
+                step_reported = True
+                emit(
+                    "native-handoff-stepped",
+                    previous_location=paused_location,
+                    current_location=location,
+                    native_status=state,
+                )
         if state in {"FINISHED", "ERROR", "ABORTED"}:
             if state != "FINISHED" or not rotated:
                 terminal = session.request("REQ_EXEC_STATUS")
