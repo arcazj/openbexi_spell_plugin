@@ -11,6 +11,8 @@ def run_handoff_probe(
     session.request("CMD_RUN", send=True)
     deadline = time.monotonic() + 120
     ready = rotated = paused = False
+    observed_rotations = 0
+    return_reported = False
     paused_location = None
     step_reported = False
     while time.monotonic() < deadline:
@@ -19,9 +21,27 @@ def run_handoff_probe(
         children.service(session)
         if runtime.rotated:
             controls.poll_owner()
-            if not rotated:
+            if observed_rotations != runtime.rotations:
                 rotated = True
-                emit("native-handoff-activated", runtime_identity_rotated=True)
+                observed_rotations = runtime.rotations
+                emit(
+                    "native-handoff-activated",
+                    runtime_identity_rotated=True,
+                    rotation=observed_rotations,
+                )
+        if Path("/workspace/handoff-return").is_file() and not return_reported:
+            if (
+                runtime.rotations != 2
+                or not Path("/workspace/handoff-stale-b-denied").is_file()
+            ):
+                raise RuntimeError("Second handoff lost the captured B packet fence")
+            return_reported = True
+            emit(
+                "native-handoff-returned",
+                captured_b_packet_denied=True,
+                original_family=True,
+                runtime_rotations=runtime.rotations,
+            )
         if not ready and all(
             Path("/workspace/" + name).is_file()
             for name in ("handoff-root", "handoff-background", "handoff-child")

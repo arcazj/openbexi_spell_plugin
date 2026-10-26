@@ -47,8 +47,23 @@ def handoff_fixture(*, child=False):
         # Send the exact same valid payload as a fresh original-driver call
         # under B. A malformed delayed packet must not pass this negative test.
         "assert connection.call('TC','SendCommand',proto.CommandDesc.FromString(old_packet)).value is True\n"
+        "with open('/control/handoff-epoch') as f:b_epoch=f.read()\n"
         "with open('/workspace/handoff-after','w') as f:f.write('completed')\n"
-        "progress('handoff-root',count)\n"
+        "returned=False\n"
+        "while not os.path.exists('/control/handoff-finish'):\n"
+        "    count+=1\n"
+        "    with open('/workspace/handoff-root.next','w') as f:f.write(str(count))\n"
+        "    os.replace('/workspace/handoff-root.next','/workspace/handoff-root')\n"
+        "    if not returned and os.path.exists('/control/handoff-return'):\n"
+        "        try:\n"
+        "            connection.channel.unary_unary('/spell.driver.SPELLDriverInterface_TC/SendCommand')(old_packet,metadata=(('x-openbexi-runtime-epoch',b_epoch),),timeout=3)\n"
+        "        except grpc.RpcError:\n"
+        "            with open('/workspace/handoff-stale-b-denied','w') as f:f.write('denied')\n"
+        "        else:raise AssertionError('Delayed B driver operation accepted after return')\n"
+        "        assert connection.call('TC','SendCommand',proto.CommandDesc.FromString(old_packet)).value is True\n"
+        "        with open('/workspace/handoff-return','w') as f:f.write('completed')\n"
+        "        returned=True\n"
+        "    time.sleep(0.02)\n"
     )
 
 
@@ -331,6 +346,103 @@ def qualify_handoff_case(
             poller.register(fd, select.POLLIN)
             if poller.poll(0):
                 raise RuntimeError("Handoff replaced an original process")
+        # Transfer the same sealed family back to A. No first-round host proof,
+        # controller grant or captured B packet can authorize this new epoch.
+        claim_back = controller(
+            "execution.claim",
+            dict(
+                execution_id=execution["id"], connection_id=connection, expected_epoch=2
+            ),
+            subject="alice",
+        )
+        accepted_back = controller(
+            "execution.decide",
+            dict(
+                {k: v for k, v in bproof.items() if k != "target_admission_id"},
+                claim_id=claim_back["claim_id"],
+                decision="accept",
+            ),
+            subject="bob",
+        )
+        command("docker", "pause", name)
+        return_state = handoff_call("status")
+        return_evidence = frozen_evidence(
+            command, name, return_state, handles, original
+        )
+        second_before = counters(command, name, output)
+        time.sleep(3)
+        if counters(command, name, output) != second_before:
+            raise RuntimeError("Original family advanced during second freeze")
+        try:
+            handoff_call(
+                "complete", barrier_id=accepted["barrier_id"], evidence=evidence
+            )
+        except Fault as error:
+            if error.status != 403:
+                raise
+        else:
+            raise RuntimeError("First-round host proof replayed during second transfer")
+        handoff_call(
+            "complete", barrier_id=accepted_back["barrier_id"], evidence=return_evidence
+        )
+        for former_subject, former_proof in (("alice", proof), ("bob", bproof)):
+            try:
+                controller(
+                    "execution.command",
+                    dict(former_proof, target_admission_id=None, command="CMD_RUN"),
+                    subject=former_subject,
+                )
+            except Fault as error:
+                if error.status != 403:
+                    raise
+            else:
+                raise RuntimeError(
+                    "Earlier controller proof survived the second transfer"
+                )
+        rebound = controller(
+            "execution.rebind",
+            dict(
+                execution_id=execution["id"], connection_id=connection, expected_epoch=3
+            ),
+            subject="alice",
+        )
+        aproof = dict(
+            execution_id=execution["id"],
+            connection_id=connection,
+            expected_epoch=3,
+            connection_generation=rebound["connection_generation"],
+            capability=rebound["capability"],
+            target_admission_id=None,
+        )
+        resume_back = controller(
+            "execution.command", dict(aproof, command="CMD_RUN"), subject="alice"
+        )
+        permission_back = handoff_call(
+            "resume",
+            barrier_id=accepted_back["barrier_id"],
+            resume_id=resume_back["command_id"],
+            evidence=return_evidence,
+        )
+        temporary.write_text(permission_back["runtime_epoch"])
+        temporary.replace(control / "handoff-epoch")
+        command("docker", "unpause", name)
+        await_event([name], "native-handoff-activated", seconds=15, minimum=2)
+        (control / "handoff-return").write_text("explicit return to A")
+        await_event([name], "native-handoff-returned", seconds=25)
+        returned = next(
+            e
+            for e in controller("execution.list", {}, subject="observer")["executions"]
+            if e["id"] == execution["id"]
+        )
+        if (returned["owner"], returned["epoch"], returned["control_state"]) != (
+            "alice",
+            3,
+            "OWNED",
+        ):
+            raise RuntimeError("Observer did not see resumed A at the third epoch")
+        second_after = counters(command, name, output)
+        if any(second_after[k] <= second_before[k] for k in second_before):
+            raise RuntimeError("Original family did not advance after return to A")
         with closing(
             sqlite3.connect(
                 "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
@@ -344,6 +456,10 @@ def qualify_handoff_case(
                 (queued["command_id"],),
             ).fetchone()
             holds = db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0]
+            history = db.execute(
+                "SELECT COUNT(*) FROM live_handoff_history WHERE execution_id=?",
+                (execution["id"],),
+            ).fetchone()[0]
         with closing(
             sqlite3.connect(
                 "file:" + str(state / "driver/driver.sqlite3") + "?mode=ro", uri=True
@@ -354,11 +470,12 @@ def qualify_handoff_case(
             ).fetchall()
         if (
             ctx != drv
-            or len(ctx) != 10
+            or len(ctx) != 15
             or any(r[5] != "ACKED" for r in ctx)
-            or {json.loads(r[3])["control_epoch"] for r in ctx} != {1, 2}
+            or {json.loads(r[3])["control_epoch"] for r in ctx} != {1, 2, 3}
             or delayed != ("DELIVERY_FENCED",)
             or holds != 3
+            or history != 1
         ):
             raise RuntimeError(
                 "Cross-owner DSS receipts, delayed STEP fence or holds differ"
@@ -396,7 +513,7 @@ def qualify_handoff_case(
                 roster_hash=fence["roster_hash"],
             ),
         )
-        if settled["state"] != "SETTLED" or settled["report"]["effect_receipts"] != 10:
+        if settled["state"] != "SETTLED" or settled["report"]["effect_receipts"] != 15:
             raise RuntimeError(
                 "Cross-owner terminal settlement failed: " + json.dumps(settled)
             )
@@ -432,14 +549,21 @@ def qualify_handoff_case(
             old_owner_denied=True,
             observer_read_only=True,
             observer_saw_paused_and_resumed_b=True,
-            owner="bob",
-            epoch=2,
+            owner="alice",
+            epoch=3,
+            accepted_transfers=2,
+            completed_transfer_history=history,
+            first_round_host_proof_replay_denied=True,
+            previous_b_controller_and_native_packet_denied=True,
+            second_frozen_observation_seconds=3,
+            second_counters_before=second_before,
+            second_counters_after=second_after,
             new_owner_native_commands=3 if verify_step else 2,
             stale_native_driver_denied=True,
             delayed_old_owner_step_fenced=True,
-            dss_commands=2,
-            matching_stage_receipts=10,
-            provenance_epochs=[1, 2],
+            dss_commands=3,
+            matching_stage_receipts=15,
+            provenance_epochs=[1, 2, 3],
             logical_reservations_during_handoff=holds,
             terminal_settlement=released,
             original_processes_exited=True,

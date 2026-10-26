@@ -1,7 +1,7 @@
 """Private host-freezer handoff of an existing, sealed native process family.
 
 The separately pinned deployment host owns Docker/cgroup inspection. Runtime
-credentials rotate once, in memory, after B explicitly requests family resume.
+credentials rotate once per accepted transfer, after explicit family resume.
 This profile does not permit new children after the original family is sealed.
 """
 
@@ -20,6 +20,7 @@ from .preflight import canonical_uuid
 
 class LiveFamilyHandoff(NativePauseBarrier):
     SCHEMA = "openbexi.host-handoff/1"
+    MAX_TRANSFERS = 8
 
     def __init__(self, authority):
         if authority.terminal_settlement is None or authority.native_prompts is None:
@@ -35,7 +36,12 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 "state TEXT NOT NULL,evidence_hash TEXT,resume_id TEXT UNIQUE,new_request_id TEXT)"
             )
             self.store.db.execute("UPDATE live_handoffs SET state='RESTART_FENCED'")
-            self.store.db.execute("PRAGMA user_version=19")
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS live_handoff_history("
+                "execution_id TEXT NOT NULL,barrier_id TEXT PRIMARY KEY,"
+                "handoff TEXT NOT NULL,pause_barrier TEXT NOT NULL)"
+            )
+            self.store.db.execute("PRAGMA user_version=20")
         authority.live_handoff = self
 
     def record(self, execution_id):
@@ -45,7 +51,8 @@ class LiveFamilyHandoff(NativePauseBarrier):
 
     def _roster_check(self, execution):
         members, children = self.host._roster(execution["id"])
-        origin = digest(json.loads(execution["start_binding"]))
+        prior = self.record(execution["id"])
+        origin = prior["origin_hash"] if prior else digest(json.loads(execution["start_binding"]))
         expected = {""} | {c["id"] for c in children}
         if (
             not members
@@ -76,6 +83,40 @@ class LiveFamilyHandoff(NativePauseBarrier):
         ).fetchone()
         if receipt is None:
             raise Fault(409, "handoff_runtime_unavailable")
+        prior = self.record(row["id"])
+        origin = prior["origin_hash"] if prior else digest(json.loads(row["start_binding"]))
+        if prior is not None:
+            if prior["state"] != "ACTIVE":
+                raise Fault(409, "handoff_previous_unresolved")
+            if (
+                self.store.db.execute(
+                    "SELECT COUNT(*) FROM live_handoff_history WHERE execution_id=?", (row["id"],)
+                ).fetchone()[0]
+                >= self.MAX_TRANSFERS - 1
+            ):
+                raise Fault(409, "handoff_transfer_capacity_reached")
+            self._journals_settled(row)
+            barrier = self.store.db.execute(
+                "SELECT * FROM native_pause_barriers WHERE execution_id=?", (row["id"],)
+            ).fetchone()
+            if barrier is None or barrier["state"] != "PROVEN":
+                raise Fault(409, "handoff_previous_unresolved")
+            # Inside accept's execution mutex and transaction: archive the
+            # completed round atomically with fencing the next one. A failed
+            # begin rolls this back; historical host proofs are never current.
+            self.store.db.execute(
+                "INSERT INTO live_handoff_history VALUES(?,?,?,?)",
+                (
+                    row["id"],
+                    prior["barrier_id"],
+                    canonical(dict(prior)).decode(),
+                    canonical(dict(barrier)).decode(),
+                ),
+            )
+            self.store.db.execute(
+                "DELETE FROM native_pause_barriers WHERE execution_id=?", (row["id"],)
+            )
+            self.store.db.execute("DELETE FROM live_handoffs WHERE execution_id=?", (row["id"],))
         result = super().begin(row, claim)
         self.store.db.execute(
             "UPDATE native_pause_barriers SET deadline=? WHERE execution_id=?",
@@ -86,7 +127,7 @@ class LiveFamilyHandoff(NativePauseBarrier):
             (
                 row["id"],
                 result["barrier_id"],
-                digest(json.loads(row["start_binding"])),
+                origin,
                 row["start_binding"],
                 row["start_hash"],
                 receipt["capability_hash"],

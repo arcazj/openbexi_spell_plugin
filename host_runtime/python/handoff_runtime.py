@@ -1,4 +1,4 @@
-"""One-shot in-memory rotation; native requests carry their original epoch tag."""
+"""One delivery per transfer; native requests carry their original epoch tag."""
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from pathlib import Path
@@ -7,6 +7,7 @@ import uuid
 
 from openbexi_spell_server.contracts import exact, fingerprint
 from openbexi_spell_server.launch import start_grant
+from openbexi_spell_server.family import FamilyAdmission
 
 
 class HandoffRuntime:
@@ -17,6 +18,9 @@ class HandoffRuntime:
         self.epoch = request["grant"]["request_id"]
         self.failed = False
         self.rotated = False
+        self.rotations = 0
+        self.seen_epochs = {self.epoch}
+        self.origin = FamilyAdmission.origin(start_grant(request["grant"]))
         if self.read_epoch() != self.epoch:
             raise ValueError("Initial native runtime epoch differs")
 
@@ -35,8 +39,11 @@ class HandoffRuntime:
                 raise ValueError("Original native operation epoch is fenced")
             if current == self.epoch:
                 return
-            if self.rotated:
-                raise ValueError("Native runtime already rotated")
+            if current in self.seen_epochs or self.rotations >= 8:
+                self.failed = True
+                raise ValueError(
+                    "Native runtime epoch replay or rotation capacity reached"
+                )
             # Do not retry a response-lost activation. The service may have
             # committed new credentials which this process never received.
             self.failed = True
@@ -51,6 +58,7 @@ class HandoffRuntime:
             old, new = start_grant(self.request["grant"]), start_grant(result["grant"])
             if (
                 result["runtime_epoch"] != current
+                or result["origin_hash"] != self.origin
                 or any(
                     getattr(old, k) != getattr(new, k)
                     for k in (
@@ -74,3 +82,5 @@ class HandoffRuntime:
                 grant=result["grant"], runtime_capability=result["runtime_capability"]
             )
             self.epoch, self.rotated, self.failed = current, True, False
+            self.rotations += 1
+            self.seen_epochs.add(current)
