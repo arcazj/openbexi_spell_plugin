@@ -49,11 +49,23 @@ int main(int argc, char** argv) {
         if (pthread_atfork(nullptr,nullptr,child_callback)) return 3;
     }
     fail_spawn = std::string(argv[1]) == "fail";
+    if (std::string(argv[1]) == "mask") {
+        sigset_t mask;
+        sigemptyset(&mask);
+        sigaddset(&mask,SIGTERM);
+        sigaddset(&mask,SIGUSR1);
+        if (pthread_sigmask(SIG_BLOCK,&mask,nullptr)) return 5;
+    }
     pid_t pid;
     try { pid = SPELLprocess::popen(argv[2]); }
     catch (const std::exception&) {
         std::cout << "{\"spawn_failed\":true,\"calls\":" << calls << "}" << std::endl;
         return 0;
+    }
+    if (std::string(argv[1]) == "mask") {
+        sigset_t mask;
+        if (pthread_sigmask(SIG_BLOCK,nullptr,&mask) ||
+            !sigismember(&mask,SIGTERM) || !sigismember(&mask,SIGUSR1)) return 6;
     }
     int status=0;
     for (int n=0;n<200;++n) {
@@ -172,6 +184,23 @@ def test_spawn_preserves_parent_environment_cwd_arguments_and_descriptor(
 @pytest.mark.parametrize("command,code", [("exit 23", 23), ("kill -TERM $$", -15)])
 def test_spawn_preserves_exit_and_signal_status(spawn_binaries, command, code):
     assert run(spawn_binaries["after"], "plain", command)["exit_code"] == code
+
+
+@pytest.mark.parametrize("version", ["before", "after"])
+def test_spawn_preserves_port_signal_policy(spawn_binaries, tmp_path, version):
+    output = tmp_path / "mask.json"
+    code = (
+        "import signal,json,pathlib;mask=signal.pthread_sigmask(signal.SIG_BLOCK,[]);"
+        "pathlib.Path(" + repr(str(output)) + ").write_text(json.dumps("
+        "{'term':signal.SIGTERM in mask,'user':signal.SIGUSR1 in mask}))"
+    )
+    result = run(
+        spawn_binaries[version],
+        "mask",
+        "exec " + shlex.quote(sys.executable) + " -c " + shlex.quote(code),
+    )
+    assert result["exited"] and result["exit_code"] == 0
+    assert json.loads(output.read_text()) == dict(term=False, user=True)
 
 
 def test_spawn_error_is_explicit_and_never_retries(spawn_binaries):

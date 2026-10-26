@@ -35,7 +35,7 @@ def replace_native_spawn(text):
     )
     original = text[start:end]
     if hashlib.sha256(original.encode()).hexdigest() != (
-        "756a57aa3942c167c86de65070b0d1f7f87f669e0815f27ea1f63a1126dc6f9c"
+        "d6ca57f721aa356ca6928fe8f02e954c05a3ff6257c62d46f47c7d63760a9135"
     ):
         raise ValueError("Native process spawn source differs")
     replacement = """pid_t SPELLprocess::popen( std::string command )
@@ -44,7 +44,22 @@ def replace_native_spawn(text):
     char shell[] = "bash";
     char option[] = "-c";
     char* arguments[] = {shell, option, const_cast<char*>(command.c_str()), nullptr};
-    const int error = posix_spawn(&pid, "/bin/bash", nullptr, nullptr, arguments, environ);
+    // Match the frozen port's child termination-signal unblocking, leaving
+    // all other mask bits and the Context thread's own mask unchanged.
+    sigset_t mask;
+    int error = pthread_sigmask(SIG_BLOCK, nullptr, &mask);
+    if (error == 0) {
+        for (int value : {SIGINT, SIGTERM, SIGHUP, SIGQUIT}) sigdelset(&mask, value);
+        posix_spawnattr_t attributes;
+        error = posix_spawnattr_init(&attributes);
+        if (error == 0) {
+            error = posix_spawnattr_setsigmask(&attributes, &mask);
+            if (error == 0) error = posix_spawnattr_setflags(&attributes, POSIX_SPAWN_SETSIGMASK);
+            if (error == 0)
+                error = posix_spawn(&pid, "/bin/bash", nullptr, &attributes, arguments, environ);
+            posix_spawnattr_destroy(&attributes);
+        }
+    }
     if (error != 0) {
         // No PID or started event exists on this path. Never retry a spawn.
         THROW_EXCEPTION("Native process spawn failed", "Process creation unavailable", SPELL_ERROR_PROCESS);
@@ -57,7 +72,9 @@ def replace_native_spawn(text):
     if text.count(include) != 1:
         raise ValueError("Native process include differs")
     return (text[:start] + replacement + text[end:]).replace(
-        include, include + "\n#include <spawn.h>\nextern char **environ;"
+        include,
+        include
+        + "\n#include <spawn.h>\n#include <pthread.h>\n#include <signal.h>\nextern char **environ;",
     )
 
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Frozen SPELLprocess::popen, SES ENGINEERING (2008, 2018).
+// Frozen composed SPELLprocess::popen; SES ENGINEERING with Python port signal handling.
 #include "SPELL_PRC/SPELLprocessManager.H"
 pid_t SPELLprocess::popen( std::string command )
 {
@@ -14,15 +14,15 @@ pid_t SPELLprocess::popen( std::string command )
     }
     else if (pid == 0)
     {
-        if (execl("/bin/bash", "bash", "-c", command.c_str(), NULL) != 0)
-		{
-        	std::cerr << "####################################################################" << std::endl;
-        	std::cerr << "####################################################################" << std::endl;
-        	std::cerr << "[FATAL] Unable to start process, errno " << errno << std::endl;
-        	std::cerr << "####################################################################" << std::endl;
-        	std::cerr << "####################################################################" << std::endl;
-		}
-        exit(1);
+        sigset_t termination;
+        sigemptyset(&termination);
+        for (int value : {SIGINT,SIGTERM,SIGHUP,SIGQUIT}) sigaddset(&termination,value);
+        if (sigprocmask(SIG_UNBLOCK,&termination,nullptr)!=0) _exit(127);
+        execl("/bin/bash", "bash", "-c", command.c_str(), nullptr);
+        // Only async-signal-safe operations between fork and exec/_exit.
+        const char failure[]="SPELL child exec failed\n";
+        write(STDERR_FILENO,failure,sizeof(failure)-1);
+        _exit(127);
     }
     return pid;
 }
