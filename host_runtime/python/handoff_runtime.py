@@ -53,7 +53,14 @@ class HandoffRuntime:
                 schema="openbexi.worker/2",
             )
             exact(
-                result, {"grant", "runtime_capability", "runtime_epoch", "origin_hash"}
+                result,
+                {
+                    "grant",
+                    "runtime_capability",
+                    "runtime_epoch",
+                    "origin_hash",
+                    "activation_kind",
+                },
             )
             old, new = start_grant(self.request["grant"]), start_grant(result["grant"])
             if (
@@ -70,7 +77,13 @@ class HandoffRuntime:
                         "operation_digest",
                     )
                 )
-                or new.control_epoch != old.control_epoch + 1
+                or result["activation_kind"] not in {"transfer", "rebind"}
+                or new.control_epoch
+                != old.control_epoch + (result["activation_kind"] == "transfer")
+                or (
+                    result["activation_kind"] == "rebind"
+                    and new.connection_id == old.connection_id
+                )
                 or new.connection_generation != old.connection_generation + 1
                 or new.request_id == old.request_id
                 or new.token == old.token

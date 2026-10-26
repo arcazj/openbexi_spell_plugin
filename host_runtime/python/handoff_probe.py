@@ -13,6 +13,7 @@ def run_handoff_probe(
     ready = rotated = paused = False
     observed_rotations = 0
     return_reported = False
+    disconnect_reported = reconnect_reported = False
     paused_location = None
     step_reported = False
     while time.monotonic() < deadline:
@@ -41,6 +42,26 @@ def run_handoff_probe(
                 captured_b_packet_denied=True,
                 original_family=True,
                 runtime_rotations=runtime.rotations,
+            )
+        if (
+            Path("/workspace/handoff-disconnected-denied").is_file()
+            and not disconnect_reported
+        ):
+            disconnect_reported = True
+            emit("native-handoff-disconnected-denied", controller_disconnected=True)
+        if Path("/workspace/handoff-reconnected").is_file() and not reconnect_reported:
+            if (
+                runtime.rotations != 3
+                or not Path("/workspace/handoff-stale-connection-denied").is_file()
+            ):
+                raise RuntimeError(
+                    "Same-owner reconnect lost the old connection packet fence"
+                )
+            reconnect_reported = True
+            emit(
+                "native-handoff-reconnected",
+                runtime_rotations=3,
+                old_connection_packet_denied=True,
             )
         if not ready and all(
             Path("/workspace/" + name).is_file()

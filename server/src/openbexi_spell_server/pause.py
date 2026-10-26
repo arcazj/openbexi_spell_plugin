@@ -33,7 +33,7 @@ class NativePauseBarrier:
             self.store.db.execute("UPDATE claims SET state='INVALIDATED' WHERE state='PAUSING'")
         authority.native_pause = self
 
-    def begin(self, row, claim):
+    def begin(self, row, claim, *, rebind=False):
         """Called inside the original accept's execution mutex and transaction."""
         if row["lifecycle"] != "STARTING" or not row["start_binding"]:
             raise Fault(409, "native_pause_origin_unavailable")
@@ -51,11 +51,15 @@ class NativePauseBarrier:
         self.store.db.execute(
             "UPDATE executions SET control_state='PAUSING',cap_hash=NULL WHERE id=?", (row["id"],)
         )
-        self.store.db.execute("UPDATE claims SET state='PAUSING' WHERE id=?", (claim["id"],))
+        if not rebind:
+            self.store.db.execute("UPDATE claims SET state='PAUSING' WHERE id=?", (claim["id"],))
         self.store._event(
-            "CONTROL_TRANSFER_PAUSE_REQUESTED",
+            "NATIVE_REBIND_PAUSE_REQUESTED" if rebind else "CONTROL_TRANSFER_PAUSE_REQUESTED",
             dict(
-                execution_id=row["id"], barrier_id=barrier, claim_id=claim["id"], epoch=row["epoch"]
+                execution_id=row["id"],
+                barrier_id=barrier,
+                **{"rebind_request_id" if rebind else "claim_id": claim["id"]},
+                epoch=row["epoch"],
             ),
         )
         return dict(

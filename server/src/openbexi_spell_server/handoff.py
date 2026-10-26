@@ -41,7 +41,23 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 "execution_id TEXT NOT NULL,barrier_id TEXT PRIMARY KEY,"
                 "handoff TEXT NOT NULL,pause_barrier TEXT NOT NULL)"
             )
-            self.store.db.execute("PRAGMA user_version=20")
+            if "kind" not in {
+                row["name"] for row in self.store.db.execute("PRAGMA table_info(live_handoffs)")
+            }:
+                self.store.db.execute(
+                    "ALTER TABLE live_handoffs ADD COLUMN kind TEXT NOT NULL DEFAULT 'transfer'"
+                )
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS native_rebindings("
+                "barrier_id TEXT PRIMARY KEY,execution_id TEXT NOT NULL,subject TEXT NOT NULL,"
+                "old_connection_id TEXT NOT NULL,new_connection_id TEXT NOT NULL,"
+                "expected_epoch INTEGER NOT NULL,expected_generation INTEGER NOT NULL,"
+                "state TEXT NOT NULL)"
+            )
+            self.store.db.execute(
+                "UPDATE native_rebindings SET state='RESTART_FENCED' WHERE state='REQUESTED'"
+            )
+            self.store.db.execute("PRAGMA user_version=21")
         authority.live_handoff = self
 
     def record(self, execution_id):
@@ -70,7 +86,7 @@ class LiveFamilyHandoff(NativePauseBarrier):
             raise Fault(409, "handoff_family_unresolved")
         return digest(dict(members=members, children=children))
 
-    def begin(self, row, claim):
+    def begin(self, row, claim, *, rebind=False):
         self.host.require_bound(row)
         if self.authority.native_commands.terminal_pending(row["id"]):
             raise Fault(409, "handoff_terminal_pending")
@@ -117,13 +133,13 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 "DELETE FROM native_pause_barriers WHERE execution_id=?", (row["id"],)
             )
             self.store.db.execute("DELETE FROM live_handoffs WHERE execution_id=?", (row["id"],))
-        result = super().begin(row, claim)
+        result = super().begin(row, claim, rebind=rebind)
         self.store.db.execute(
             "UPDATE native_pause_barriers SET deadline=? WHERE execution_id=?",
             (self.authority.clock() + 90, row["id"]),
         )
         self.store.db.execute(
-            "INSERT INTO live_handoffs VALUES(?,?,?,?,?,?,?,'REQUESTED',NULL,NULL,NULL)",
+            "INSERT INTO live_handoffs VALUES(?,?,?,?,?,?,?,'REQUESTED',NULL,NULL,NULL,?)",
             (
                 row["id"],
                 result["barrier_id"],
@@ -132,9 +148,41 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 row["start_hash"],
                 receipt["capability_hash"],
                 roster,
+                "rebind" if rebind else "transfer",
             ),
         )
         return self.snapshot(row["id"])
+
+    def begin_rebind(self, subject, payload, execution):
+        """Same owner and epoch; no new authority until a separate host proof."""
+        self.authority._require(subject, "execution:control", "execution:start")
+        if (
+            execution["control_state"] not in {"OWNED", "CONTROLLER_DISCONNECTED"}
+            or execution["authority_incarnation"] != self.store.incarnation
+            or payload["connection_id"] == execution["connection_id"]
+        ):
+            raise Fault(409, "native_rebind_unavailable")
+        self._journals_settled(execution)
+        result = self.begin(execution, dict(id=str(uuid.uuid4())), rebind=True)
+        self.store.db.execute(
+            "INSERT INTO native_rebindings VALUES(?,?,?,?,?,?,?,'REQUESTED')",
+            (
+                result["barrier_id"],
+                execution["id"],
+                subject,
+                execution["connection_id"],
+                payload["connection_id"],
+                execution["epoch"],
+                execution["connection_generation"],
+            ),
+        )
+        self.authority._invalidate_claims(execution["id"])
+        return dict(
+            **self.authority._public(self.authority._execution(execution["id"])),
+            rebind_pending=True,
+            barrier_id=result["barrier_id"],
+            effective_transfer=False,
+        )
 
     def _prompts_settled(self, execution_id):
         if self.store.db.execute(
@@ -198,6 +246,10 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 "UPDATE claims SET state='BLOCKED' WHERE execution_id=? AND state='PAUSING'",
                 (row[0],),
             )
+            self.store.db.execute(
+                "UPDATE native_rebindings SET state='EXPIRED' WHERE barrier_id=? AND state='REQUESTED'",
+                (row[1],),
+            )
             self.store._event("LIVE_HANDOFF_EXPIRED", dict(execution_id=row[0], barrier_id=row[1]))
 
     def snapshot(self, execution_id):
@@ -208,11 +260,18 @@ class LiveFamilyHandoff(NativePauseBarrier):
         result.update(
             state=row["state"],
             quiescence_proven=row["state"] in {"TRANSFERRED_PAUSED", "RESUME_REQUESTED"},
-            effective_transfer=row["state"]
+            effective_transfer=row["kind"] == "transfer"
+            and row["state"]
+            in {"TRANSFERRED_PAUSED", "RESUME_REQUESTED", "RESUME_AUTHORIZED", "ACTIVE"},
+            operation=row["kind"],
+            connection_rebound=row["kind"] == "rebind"
+            and row["state"]
             in {"TRANSFERRED_PAUSED", "RESUME_REQUESTED", "RESUME_AUTHORIZED", "ACTIVE"},
             family_roster_sealed=True,
             runtime_identity_rotated=row["state"] == "ACTIVE",
         )
+        if row["kind"] == "rebind":
+            result["rebind_request_id"] = result.pop("claim_id")
         return result
 
     def poll(self, grant):
@@ -350,6 +409,56 @@ class LiveFamilyHandoff(NativePauseBarrier):
         if row["state"] != "REQUESTED" or execution["control_state"] != "PAUSING":
             raise Fault(403, "handoff_not_pausing")
         self._journals_settled(execution)
+        if row["kind"] == "rebind":
+            self._complete_rebind(execution, row)
+        else:
+            self._complete_transfer(execution, row)
+        self.store.db.execute(
+            "UPDATE live_handoffs SET state='TRANSFERRED_PAUSED',evidence_hash=? WHERE execution_id=?",
+            (hashed, execution["id"]),
+        )
+        self.store.db.execute(
+            "UPDATE native_pause_barriers SET state='PROVEN' WHERE execution_id=?",
+            (execution["id"],),
+        )
+        return self.snapshot(execution["id"])
+
+    def _complete_rebind(self, execution, row):
+        request = self.store.db.execute(
+            "SELECT * FROM native_rebindings WHERE barrier_id=?", (row["barrier_id"],)
+        ).fetchone()
+        if (
+            request is None
+            or request["state"] != "REQUESTED"
+            or request["execution_id"] != execution["id"]
+            or request["subject"] != execution["owner"]
+            or request["expected_epoch"] != execution["epoch"]
+            or request["expected_generation"] != execution["connection_generation"]
+            or request["old_connection_id"] != execution["connection_id"]
+        ):
+            raise Fault(403, "native_rebind_fenced")
+        self.authority._session(request["subject"], request["new_connection_id"])
+        self.authority._require(request["subject"], "execution:control", "execution:start")
+        self.store.db.execute(
+            "UPDATE executions SET connection_id=?,connection_generation=connection_generation+1,"
+            "cap_hash=NULL,control_state='HANDOFF_PAUSED' WHERE id=?",
+            (request["new_connection_id"], execution["id"]),
+        )
+        self.store.db.execute(
+            "UPDATE native_rebindings SET state='REBOUND' WHERE barrier_id=?", (row["barrier_id"],)
+        )
+        self.store._event(
+            "NATIVE_CONTROLLER_REBOUND",
+            dict(
+                execution_id=execution["id"],
+                subject=execution["owner"],
+                epoch=execution["epoch"],
+                connection_generation=execution["connection_generation"] + 1,
+                barrier_id=row["barrier_id"],
+            ),
+        )
+
+    def _complete_transfer(self, execution, row):
         barrier = self.store.db.execute(
             "SELECT * FROM native_pause_barriers WHERE execution_id=?", (execution["id"],)
         ).fetchone()
@@ -372,14 +481,6 @@ class LiveFamilyHandoff(NativePauseBarrier):
             (claim["requester"], claim["connection_id"], execution["id"]),
         )
         self.store.db.execute("UPDATE claims SET state='ACCEPTED' WHERE id=?", (claim["id"],))
-        self.store.db.execute(
-            "UPDATE live_handoffs SET state='TRANSFERRED_PAUSED',evidence_hash=? WHERE execution_id=?",
-            (hashed, execution["id"]),
-        )
-        self.store.db.execute(
-            "UPDATE native_pause_barriers SET state='PROVEN' WHERE execution_id=?",
-            (execution["id"],),
-        )
         self.store._event(
             "CONTROL_OWNER_CHANGED",
             dict(
@@ -389,7 +490,6 @@ class LiveFamilyHandoff(NativePauseBarrier):
                 barrier_id=row["barrier_id"],
             ),
         )
-        return self.snapshot(execution["id"])
 
     def rebind(self, subject, payload, execution):
         row = self.record(execution["id"])
@@ -536,4 +636,5 @@ class LiveFamilyHandoff(NativePauseBarrier):
                     runtime_capability=capability,
                     runtime_epoch=row["resume_id"],
                     origin_hash=row["origin_hash"],
+                    activation_kind=row["kind"],
                 )

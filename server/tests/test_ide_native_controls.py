@@ -95,6 +95,7 @@ def test_disabled_listener_denies_commands_and_hides_availability(desktop):
     desktop["listener"].native_command_contexts = frozenset()
     client = desktop["clients"]["alice"]
     assert client.read("A", "health")["native_commands"] == []
+    assert client.read("A", "health")["native_rebind"] is False
     with pytest.raises(SpellServerError) as denied:
         client.command("A", desktop["ledger"]["execution"]["id"], "CMD_RUN", key="closed")
     assert denied.value.status == 404 and not owners.rows(desktop["ledger"])
@@ -155,3 +156,37 @@ def test_desktop_handoff_keeps_C_readonly_and_requires_B_explicit_resume(desktop
 def test_listener_rejects_invalid_native_context_allowlist(pki, bad):
     with pytest.raises(ValueError):
         Listener(pki["edge"]["pin"], {}, {}, {"A": object()}, native_command_contexts=bad)
+
+
+def test_installed_client_same_owner_reconnect_needs_host_pause_and_explicit_resume(desktop, pki):
+    a, c = (desktop["clients"][r] for r in ("alice", "observer"))
+    ledger = desktop["ledger"]
+    eid = ledger["execution"]["id"]
+    assert a.read("A", "health")["native_rebind"] is True
+    assert c.read("A", "health")["native_rebind"] is False
+    a.authority("A", "session.close", dict(connection_id=ledger["connection"]), key="disconnect")
+    connection = a.authority("A", "session.open", {}, key="new-session")["connection_id"]
+    payload = dict(execution_id=eid, connection_id=connection, expected_epoch=1)
+    pending = a.authority("A", "execution.rebind", payload, key="request-reconnect")
+    assert pending["rebind_pending"] and not a.remember_controller("A", pending)
+    assert not a.has_controller("A", eid)
+    with pytest.raises(SpellServerError, match="controller_proof_required"):
+        a.command("A", eid, "CMD_RUN", key="premature")
+    state = live.host(ledger, pki, "status")
+    evidence = live.evidence(ledger, state)
+    live.host(ledger, pki, "complete", barrier_id=state["barrier_id"], evidence=evidence)
+    row = next(e for e in c.read("A", "executions")["executions"] if e["id"] == eid)
+    assert (row["owner"], row["epoch"], row["connection_generation"]) == ("alice", 1, 2)
+    bound = a.authority("A", "execution.rebind", payload, key="bind-reconnected")
+    assert a.remember_controller("A", bound)
+    resume = a.command("A", eid, "CMD_RUN", key="explicit-resume")
+    permission = live.host(
+        ledger,
+        pki,
+        "resume",
+        barrier_id=state["barrier_id"],
+        resume_id=resume["command_id"],
+        evidence=evidence,
+    )
+    activated = live.activate(ledger, pki, permission["runtime_epoch"])
+    assert activated["activation_kind"] == "rebind" and activated["grant"]["control_epoch"] == 1

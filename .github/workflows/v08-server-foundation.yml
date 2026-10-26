@@ -87,7 +87,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: cf0e9dd7581b283d63c98c95c46cdd368e005ac7
+          ref: faf2052ba764cbc147ef05f261164853e08489c8
           path: .qualification/companion-ide
       - name: Install Qt system library
         run: sudo apt-get update && sudo apt-get install -y libegl1
@@ -175,7 +175,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: cf0e9dd7581b283d63c98c95c46cdd368e005ac7
+          ref: faf2052ba764cbc147ef05f261164853e08489c8
           path: .qualification/companion-ide
       - name: Install pinned IDE client without optional UI dependencies
         if: matrix.profile == 'listener-survival' || matrix.profile == 'native-ide'

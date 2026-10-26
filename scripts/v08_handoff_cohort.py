@@ -50,6 +50,8 @@ def handoff_fixture(*, child=False):
         "with open('/control/handoff-epoch') as f:b_epoch=f.read()\n"
         "with open('/workspace/handoff-after','w') as f:f.write('completed')\n"
         "returned=False\n"
+        "reconnected=False\n"
+        "disconnected_probed=False\n"
         "while not os.path.exists('/control/handoff-finish'):\n"
         "    count+=1\n"
         "    with open('/workspace/handoff-root.next','w') as f:f.write(str(count))\n"
@@ -61,8 +63,25 @@ def handoff_fixture(*, child=False):
         "            with open('/workspace/handoff-stale-b-denied','w') as f:f.write('denied')\n"
         "        else:raise AssertionError('Delayed B driver operation accepted after return')\n"
         "        assert connection.call('TC','SendCommand',proto.CommandDesc.FromString(old_packet)).value is True\n"
+        "        with open('/control/handoff-epoch') as f:a_epoch=f.read()\n"
         "        with open('/workspace/handoff-return','w') as f:f.write('completed')\n"
         "        returned=True\n"
+        "    if returned and not disconnected_probed and os.path.exists('/control/handoff-disconnected'):\n"
+        "        try:\n"
+        "            connection.channel.unary_unary('/spell.driver.SPELLDriverInterface_TC/SendCommand')(old_packet,metadata=(('x-openbexi-runtime-epoch',a_epoch),),timeout=3)\n"
+        "        except grpc.RpcError:\n"
+        "            with open('/workspace/handoff-disconnected-denied','w') as f:f.write('denied')\n"
+        "        else:raise AssertionError('Disconnected controller driver operation accepted')\n"
+        "        disconnected_probed=True\n"
+        "    if returned and not reconnected and os.path.exists('/control/handoff-reconnect'):\n"
+        "        try:\n"
+        "            connection.channel.unary_unary('/spell.driver.SPELLDriverInterface_TC/SendCommand')(old_packet,metadata=(('x-openbexi-runtime-epoch',a_epoch),),timeout=3)\n"
+        "        except grpc.RpcError:\n"
+        "            with open('/workspace/handoff-stale-connection-denied','w') as f:f.write('denied')\n"
+        "        else:raise AssertionError('Old connection packet accepted after same-epoch reconnect')\n"
+        "        assert connection.call('TC','SendCommand',proto.CommandDesc.FromString(old_packet)).value is True\n"
+        "        with open('/workspace/handoff-reconnected','w') as f:f.write('completed')\n"
+        "        reconnected=True\n"
         "    time.sleep(0.02)\n"
     )
 
@@ -160,6 +179,162 @@ def counters(command, name, directory):
     with (directory / "handoff-counter-observations.jsonl").open("a") as output:
         output.write(json.dumps(result) + "\n")
     return result
+
+
+def qualify_reconnect(
+    *,
+    name,
+    controller,
+    proof,
+    handoff_call,
+    command,
+    control,
+    handles,
+    original,
+    output,
+    await_event,
+):
+    """Actual disconnect keeps the family alive; same-owner resume needs host proof."""
+    eid, epoch, generation = (
+        proof["execution_id"],
+        proof["expected_epoch"],
+        proof["connection_generation"],
+    )
+    controller("session.close", dict(connection_id=proof["connection_id"]))
+
+    def view():
+        return next(
+            e
+            for e in controller("execution.list", {}, subject="observer")["executions"]
+            if e["id"] == eid
+        )
+
+    disconnected = view()
+    if (
+        disconnected["owner"],
+        disconnected["epoch"],
+        disconnected["control_state"],
+    ) != ("alice", epoch, "CONTROLLER_DISCONNECTED"):
+        raise RuntimeError("Disconnected controller authority was not fenced")
+    if disconnected["pause_barrier"]["quiescence_proven"]:
+        raise RuntimeError("Disconnect falsely claimed whole-family pause")
+    before = counters(command, name, output)
+    (control / "handoff-disconnected").write_text("explicit controller close committed")
+    await_event([name], "native-handoff-disconnected-denied", seconds=15)
+    time.sleep(3)
+    alive = counters(command, name, output)
+    if any(alive[k] <= before[k] for k in before):
+        raise RuntimeError(
+            "Controller disconnect stopped an original native participant"
+        )
+    for fd in handles.values():
+        if select.select([fd], [], [], 0)[0]:
+            raise RuntimeError("Controller disconnect terminated an original process")
+    try:
+        controller("execution.command", dict(proof, command="CMD_RUN"))
+    except Fault as error:
+        if error.status != 403:
+            raise
+    else:
+        raise RuntimeError("Disconnected controller command was accepted")
+    connection = controller("session.open", {})["connection_id"]
+    request = dict(execution_id=eid, connection_id=connection, expected_epoch=epoch)
+    pending = controller("execution.rebind", request)
+    if not pending.get("rebind_pending") or "capability" in pending:
+        raise RuntimeError("Native reconnect granted control before host freeze")
+    command("docker", "pause", name)
+    state = handoff_call("status")
+    evidence = frozen_evidence(command, name, state, handles, original)
+    frozen = counters(command, name, output)
+    time.sleep(3)
+    if counters(command, name, output) != frozen:
+        raise RuntimeError("Native reconnect family advanced while frozen")
+    completed = handoff_call(
+        "complete", barrier_id=pending["barrier_id"], evidence=evidence
+    )
+    paused = view()
+    if (
+        not completed["quiescence_proven"]
+        or not completed["connection_rebound"]
+        or completed["effective_transfer"]
+        or (
+            paused["owner"],
+            paused["epoch"],
+            paused["connection_generation"],
+            paused["control_state"],
+        )
+        != ("alice", epoch, generation + 1, "HANDOFF_PAUSED")
+    ):
+        raise RuntimeError(
+            "Same-owner reconnect changed ownership or omitted the pause barrier"
+        )
+    bound = controller("execution.rebind", request)
+    new_proof = dict(
+        execution_id=eid,
+        connection_id=connection,
+        expected_epoch=epoch,
+        connection_generation=bound["connection_generation"],
+        capability=bound["capability"],
+        target_admission_id=None,
+    )
+    resume = controller("execution.command", dict(new_proof, command="CMD_RUN"))
+    permission = handoff_call(
+        "resume",
+        barrier_id=pending["barrier_id"],
+        resume_id=resume["command_id"],
+        evidence=evidence,
+    )
+    marker = control / "handoff-epoch.next"
+    marker.write_text(permission["runtime_epoch"])
+    marker.replace(control / "handoff-epoch")
+    command("docker", "unpause", name)
+    await_event([name], "native-handoff-activated", seconds=15, minimum=3)
+    (control / "handoff-reconnect").write_text("explicit same-owner resume")
+    await_event([name], "native-handoff-reconnected", seconds=25)
+    after = counters(command, name, output)
+    if any(after[k] <= frozen[k] for k in frozen):
+        raise RuntimeError("Reconnected original family did not continue")
+    active = view()
+    if (
+        active["owner"],
+        active["epoch"],
+        active["connection_generation"],
+        active["control_state"],
+    ) != ("alice", epoch, generation + 1, "OWNED"):
+        raise RuntimeError(
+            "Observer did not see same-owner explicit native continuation"
+        )
+    try:
+        controller("execution.command", dict(proof, command="CMD_RUN"))
+    except Fault as error:
+        if error.status != 403:
+            raise
+    else:
+        raise RuntimeError("Old controller capability revived after reconnect")
+    return dict(
+        passed=True,
+        owner_unchanged=True,
+        epoch_unchanged=True,
+        epoch=epoch,
+        previous_connection_generation=generation,
+        connection_generation=generation + 1,
+        disconnect_observation_seconds=3,
+        counters_before_disconnect=before,
+        counters_after_disconnect=alive,
+        frozen_observation_seconds=3,
+        frozen_counters=frozen,
+        counters_after_resume=after,
+        original_processes=len(handles),
+        original_processes_survived_disconnect=True,
+        disconnected_native_packet_denied=True,
+        old_connection_native_packet_denied=True,
+        old_controller_capability_denied=True,
+        fresh_same_epoch_driver_command_completed=True,
+        quiescence_claimed_on_disconnect=False,
+        effective_transfer=False,
+        public_launch_enabled=False,
+        full_recovery_qualified=False,
+    )
 
 
 def qualify_handoff_case(
@@ -480,6 +655,49 @@ def qualify_handoff_case(
             raise RuntimeError(
                 "Cross-owner DSS receipts, delayed STEP fence or holds differ"
             )
+        reconnection = qualify_reconnect(
+            name=name,
+            controller=controller,
+            proof=aproof,
+            handoff_call=handoff_call,
+            command=command,
+            control=control,
+            handles=handles,
+            original=original,
+            output=output,
+            await_event=await_event,
+        )
+        with closing(
+            sqlite3.connect(
+                "file:" + str(state / "context.sqlite3") + "?mode=ro", uri=True
+            )
+        ) as db:
+            ctx = db.execute(
+                "SELECT * FROM effect_intents ORDER BY operation,stage"
+            ).fetchall()
+            history = db.execute(
+                "SELECT COUNT(*) FROM live_handoff_history WHERE execution_id=?",
+                (execution["id"],),
+            ).fetchone()[0]
+        with closing(
+            sqlite3.connect(
+                "file:" + str(state / "driver/driver.sqlite3") + "?mode=ro", uri=True
+            )
+        ) as db:
+            drv = db.execute(
+                "SELECT * FROM effect_intents ORDER BY operation,stage"
+            ).fetchall()
+        if (
+            ctx != drv
+            or len(ctx) != 20
+            or any(r[5] != "ACKED" for r in ctx)
+            or {json.loads(r[3])["control_epoch"] for r in ctx} != {1, 2, 3}
+            or {json.loads(r[3])["connection_generation"] for r in ctx} != {1, 2, 3, 4}
+            or history != 2
+        ):
+            raise RuntimeError(
+                "Same-epoch reconnect lost independent effect provenance"
+            )
         (control / "handoff-finish").write_text("finish after B effects")
         await_event([name], "native-handoff-finished", seconds=25)
         fence = host_call(
@@ -513,7 +731,7 @@ def qualify_handoff_case(
                 roster_hash=fence["roster_hash"],
             ),
         )
-        if settled["state"] != "SETTLED" or settled["report"]["effect_receipts"] != 15:
+        if settled["state"] != "SETTLED" or settled["report"]["effect_receipts"] != 20:
             raise RuntimeError(
                 "Cross-owner terminal settlement failed: " + json.dumps(settled)
             )
@@ -552,6 +770,8 @@ def qualify_handoff_case(
             owner="alice",
             epoch=3,
             accepted_transfers=2,
+            same_owner_reconnections=1,
+            native_reconnect=reconnection,
             completed_transfer_history=history,
             first_round_host_proof_replay_denied=True,
             previous_b_controller_and_native_packet_denied=True,
@@ -561,9 +781,10 @@ def qualify_handoff_case(
             new_owner_native_commands=3 if verify_step else 2,
             stale_native_driver_denied=True,
             delayed_old_owner_step_fenced=True,
-            dss_commands=3,
-            matching_stage_receipts=15,
+            dss_commands=4,
+            matching_stage_receipts=20,
             provenance_epochs=[1, 2, 3],
+            provenance_connection_generations=[1, 2, 3, 4],
             logical_reservations_during_handoff=holds,
             terminal_settlement=released,
             original_processes_exited=True,

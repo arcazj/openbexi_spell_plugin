@@ -498,6 +498,8 @@ class ExecutionAuthority:
             raise Fault(403, "controller_fenced")
         if self.live_handoff is not None and row["control_state"] == "HANDOFF_PAUSED":
             return self.live_handoff.rebind(subject, payload, row)
+        if self.live_handoff is not None and row["lifecycle"] == "STARTING":
+            return self.live_handoff.begin_rebind(subject, payload, row)
         # Native resumption/rebinding needs a qualified quiescence barrier. Stay closed.
         if row["lifecycle"] != "RESERVED" or row["authority_incarnation"] != self.store.incarnation:
             raise Fault(409, "native_rebind_unqualified")

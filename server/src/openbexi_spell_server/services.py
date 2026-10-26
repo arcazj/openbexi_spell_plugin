@@ -236,6 +236,10 @@ class Context:
             # Existing-execution commands do not grant public launch authority.
             # The Listener further restricts this list to enabled Contexts.
             result["native_commands"] = []
+            result["native_rebind"] = bool(
+                self.authority.live_handoff is not None
+                and {"execution:control", "execution:start"} <= actor.permissions
+            )
             commands = self.authority.native_commands
             if commands is not None and "execution:control" in actor.permissions:
                 result["native_commands"] = ["CMD_PAUSE"]
@@ -370,5 +374,5 @@ class Listener:
         )
         result = self.contexts[context_id].call(request)
         if action == "health" and context_id not in self.native_command_contexts:
-            result = dict(result, native_commands=[])
+            result = dict(result, native_commands=[], native_rebind=False)
         return {"schema": "openbexi.listener/1", "result": result}
