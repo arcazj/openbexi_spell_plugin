@@ -635,6 +635,7 @@ def main():
         ROOT / "host_runtime/python/epoch_connection.py",
         ROOT / "host_runtime/python/epoch_relay.py",
         ROOT / "scripts/v08_handoff_cohort.py",
+        ROOT / "scripts/v08_resource_probe.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/python/children.py",

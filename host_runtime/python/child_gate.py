@@ -466,6 +466,15 @@ class NativeAdmissionServer:
         return handle
 
     def register(self, body):
+        self.member_phases = {}
+        previous = time.monotonic()
+
+        def checkpoint(name):
+            nonlocal previous
+            now = time.monotonic()
+            self.member_phases[name] = int((now - previous) * 1000)
+            previous = now
+
         exact(body, {"schema", "instance_id", "pid"})
         if (
             body["schema"] != "openbexi.native-member/1"
@@ -484,18 +493,27 @@ class NativeAdmissionServer:
         ):
             raise ValueError("Native member already bound or capacity reached")
         handle = self.pin_process(pid, self.context_pid, self.executor)
+        checkpoint("pin_process_ms")
         try:
             if self.controls is None:
                 raise ValueError("Native member registration provider unavailable")
-            self.controls.bind_member(
-                instance,
-                pid,
-                self.context_pid,
-                int(self.process_identity(pid, self.context_pid, self.executor)),
-                self.executor_sha256,
+            start_ticks = int(
+                self.process_identity(pid, self.context_pid, self.executor)
             )
+            checkpoint("process_identity_ms")
+            try:
+                self.controls.bind_member(
+                    instance,
+                    pid,
+                    self.context_pid,
+                    start_ticks,
+                    self.executor_sha256,
+                )
+            finally:
+                checkpoint("registration_rpc_ms")
             if select.select([handle, self.pidfd], [], [], 0)[0]:
                 raise ValueError("Native member exited during registration")
+            checkpoint("liveness_ms")
         except BaseException:
             os.close(handle)
             raise
@@ -618,6 +636,8 @@ class NativeAdmissionServer:
             with stream:
                 started = time.monotonic()
                 started_ns = time.monotonic_ns()
+                started_cpu = time.thread_time_ns()
+                self.member_phases = {}
                 phase = "authenticate"
                 dispatch_ms = None
                 phases = {}
@@ -719,6 +739,9 @@ class NativeAdmissionServer:
                             accepted_ns=started_ns,
                             elapsed_ms=int((time.monotonic() - started) * 1000),
                             phases=phases,
+                            thread_cpu_ms=(time.thread_time_ns() - started_cpu)
+                            // 1_000_000,
+                            member_phases=self.member_phases,
                             outcome=outcome,
                         )
 

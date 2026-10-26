@@ -670,22 +670,25 @@ def qualify_consumption_fence(
                 schema=LiveFamilyHandoff.SCHEMA,
             )
 
-        qualify_handoff_case(
-            name=name,
-            execution=execution,
-            connection=connection,
-            controller=controller,
-            state=state,
-            worker_image=worker_image,
-            command=command,
-            control=control,
-            await_event=await_event,
-            report=report,
-            host_call=host_call,
-            handoff_call=handoff_call,
-            output=terminal_evidence,
-            verify_step=desktop_stack is not None,
-        )
+        from v08_resource_probe import observe
+
+        with observe(command, name, terminal_evidence):
+            qualify_handoff_case(
+                name=name,
+                execution=execution,
+                connection=connection,
+                controller=controller,
+                state=state,
+                worker_image=worker_image,
+                command=command,
+                control=control,
+                await_event=await_event,
+                report=report,
+                host_call=host_call,
+                handoff_call=handoff_call,
+                output=terminal_evidence,
+                verify_step=desktop_stack is not None,
+            )
         if primary_controller("execution.list", {}) != original_primary:
             raise RuntimeError("Live handoff changed unrelated primary executions")
         retire_terminal_probe(
