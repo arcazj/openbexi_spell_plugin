@@ -34,7 +34,8 @@ def enable_native_message_moves(text):
         anchor,
         anchor + "\n    SPELLipcMessage(SPELLipcMessage&&) = default;"
         "\n    SPELLipcMessage& operator=(SPELLipcMessage&&) = default;"
-        "\n    void v08FromData(const std::string& data);",
+        "\n    void v08FromData(const std::string& data);"
+        "\n    void v08ReadData(const std::string& data);",
     )
 
 
@@ -266,7 +267,21 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     decode = "msg.fromData( dataForMsg );"
     if input_text.count(decode) != 1:
         raise ValueError("Native input decode boundary differs")
-    input_text = input_text.replace(decode, "msg.v08FromData( dataForMsg );")
+    input_text = input_text.replace(decode, "msg.v08ReadData( dataForMsg );")
+    declaration = "    SPELLipcMessage msg;"
+    clear_packet = '    m_packet = "";'
+    dispatch_start = input_text.index("void SPELLipcInput::dispatch()")
+    dispatch_text = input_text[dispatch_start:]
+    if dispatch_text.count(declaration) != 1 or dispatch_text.count(clear_packet) != 1:
+        raise ValueError("Native input reuse boundary differs")
+    dispatch_text = dispatch_text.replace(
+        declaration, "    static thread_local SPELLipcMessage msg;"
+    )
+    dispatch_text = dispatch_text.replace(
+        clear_packet,
+        "    if (dataForMsg.size()>1024*1024) msg=SPELLipcMessage();\n" + clear_packet,
+    )
+    input_text = input_text[:dispatch_start] + dispatch_text
     include = '#include "SPELL_IPC/SPELLipcInput.H"'
     loop = "    while(isConnected())\n    {\n"
     if input_text.count(include) != 1 or input_text.count(loop) != 1:

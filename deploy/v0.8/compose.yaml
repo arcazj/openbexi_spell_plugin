@@ -18,7 +18,7 @@ services:
   context-a:
     <<: *authority-security
     build: *authority-build
-    image: openbexi-spell-server:0.8.0.dev65-prelaunch
+    image: openbexi-spell-server:0.8.0.dev67-prelaunch
     user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
     command: ["context", "--config", "/run/private/config.json"]
     volumes:
@@ -38,7 +38,7 @@ services:
   context-b:
     <<: *authority-security
     build: *authority-build
-    image: openbexi-spell-server:0.8.0.dev65-prelaunch
+    image: openbexi-spell-server:0.8.0.dev67-prelaunch
     user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
     command: ["context", "--config", "/run/private/config.json"]
     volumes:
@@ -58,7 +58,7 @@ services:
   listener:
     <<: *authority-security
     build: *authority-build
-    image: openbexi-spell-server:0.8.0.dev65-prelaunch
+    image: openbexi-spell-server:0.8.0.dev67-prelaunch
     user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
     command: ["listener", "--config", "/run/private/config.json"]
     volumes:
@@ -78,7 +78,7 @@ services:
   gateway:
     <<: *authority-security
     build: *authority-build
-    image: openbexi-spell-server:0.8.0.dev65-prelaunch
+    image: openbexi-spell-server:0.8.0.dev67-prelaunch
     user: "${V08_SERVICE_UID:?Set unprivileged runtime UID}"
     command: ["gateway", "--config", "/run/private/config.json"]
     volumes:

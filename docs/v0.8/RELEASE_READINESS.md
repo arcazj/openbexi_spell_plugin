@@ -1,8 +1,20 @@
 # Full v0.8 publication qualification
 
-Dev66 is the current buffer-reuse candidate; hosted acceptance is pending.
-See [implementation and component evidence](NATIVE_BUFFER_REUSE.md). The latest
-completed resource verdict below remains dev65; no full gate is promoted.
+Dev67 is the current input-reuse candidate. It corrects the deployment version
+markers and adds bounded event-scope diagnostics. Hosted acceptance is pending.
+See [implementation and component evidence](NATIVE_BUFFER_REUSE.md).
+
+Dev66 `596701b` completed run `40395297987`: 10/14 core jobs and all five ancillary
+workflows passed. The 1,286 service tests had one version-marker failure; 95 fault
+and 241 portable tests passed. All 24 fresh startup cycles and 16 terminal cases
+passed. Nineteen archive digests, ZIP integrity checks and every recorded source
+inventory were verified. The native and IDE peaks were 1,747.4 and 1,754.2 MiB,
+below the 1,792 MiB ceiling, but their 224.6 and 234.4 MiB window growth still
+exceeded 64 MiB. Both complete 45-second soaks preserved all eight processes.
+The prompt job also failed after a rejected non-procedure-scope RaiseEvent;
+all 21 prompt outcomes completed. Scope authorization remains unchanged. See
+[the retained receipt](evidence/native-codec/dev66-hosted/qualification-summary.json).
+No full-release gate is promoted.
 
 Dev65 `4f4a5ec` (run `40386646787`) passes 1,284 service tests, 95 overlapping
 fault tests, 241 portable tests, 24 fresh startup cycles and all 16 terminal cases.

@@ -73,3 +73,29 @@ def test_child_open_still_requires_the_original_admitted_member(notifications, r
         with pytest.raises(RuntimeError, match="Native child admission is not qualified"):
             drain(session, children, gate, "execution", 0)
         assert not seen and not reports
+
+
+def test_event_diagnostics_classify_known_warning_without_retaining_user_content():
+    source = Path(__file__).resolve().parents[2] / "host_runtime/python/v08_worker.py"
+    function = next(
+        n
+        for n in ast.parse(source.read_text()).body
+        if isinstance(n, ast.FunctionDef) and n.name == "driver_event_shape"
+    )
+    namespace = {}
+    exec(compile(ast.Module(body=[function], type_ignores=[]), str(source), "exec"), namespace)
+    shape = namespace["driver_event_shape"]
+    warning = shape("Procedure awaiting prompt answer", {"Scope": 2, "Severity": 1})
+    assert warning["scope_kind"] == "system" and not warning["scope_valid"]
+    assert warning["known_warning"] == "prompt_wait"
+    for scope, kind in [
+        (1, "procedure"),
+        (4, "configuration"),
+        (True, "invalid_type"),
+        ("private-scope", "invalid_type"),
+        (1000000000000000, "unknown"),
+    ]:
+        result = shape("private event payload", {"Scope": scope})
+        assert result["scope_kind"] == kind and result["known_warning"] == "other"
+        assert result["scope_valid"] == (type(scope) is int and scope == 1)
+        assert "private" not in repr(result)

@@ -57,6 +57,31 @@ def emit(event, **values):
     print(json.dumps(dict(event=event, **values)), flush=True)
 
 
+def driver_event_shape(message, settings):
+    """Bounded diagnostics only; the authority independently validates the event."""
+    scope = settings.get("Scope", 1)
+    severity = settings.get("Severity", 8)
+    scope_kind = "invalid_type"
+    if type(scope) is int:
+        scope_kind = {
+            1: "procedure",
+            2: "system",
+            4: "configuration",
+            8: "step",
+            16: "prompt",
+        }.get(scope, "unknown")
+    return dict(
+        message_empty=not message,
+        message_within_bound=len(message.encode("utf-8")) <= 8192,
+        severity_valid=type(severity) is int and severity in {1, 2, 4, 8},
+        scope_valid=type(scope) is int and scope == 1,
+        scope_kind=scope_kind,
+        known_warning="prompt_wait"
+        if message == "Procedure awaiting prompt answer"
+        else "other",
+    )
+
+
 def drain_native_notifications(session, children, child_gate, execution_id, count):
     # The real session queue holds at most 256 events. Bound work per pump so
     # a notification stream cannot starve the RPC reply or command poll. Total
@@ -685,14 +710,7 @@ def run(config):
             settings = unpack(original.config)
             if type(settings) is not dict or set(settings) - {"Severity", "Scope"}:
                 raise ValueError("Driver event modifiers differ")
-            event_shape = dict(
-                message_empty=not original.message,
-                message_within_bound=len(original.message.encode("utf-8")) <= 8192,
-                severity_valid=type(settings.get("Severity", 8)) is int
-                and settings.get("Severity", 8) in {1, 2, 4, 8},
-                scope_valid=type(settings.get("Scope", 1)) is int
-                and settings.get("Scope", 1) == 1,
-            )
+            event_shape = driver_event_shape(original.message, settings)
             answer = route.call(
                 {
                     **request,

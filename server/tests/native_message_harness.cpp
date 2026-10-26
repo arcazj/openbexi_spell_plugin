@@ -28,13 +28,60 @@ static std::string legacy_wire(const SPELLipcMessage& m) {
     return wire;
 }
 #include "native_output_harness.inc"
+static void readInput(SPELLipcMessage& message,const std::string& data) {
+#if V08_CODEC_REUSE
+    message.v08ReadData(data);
+#else
+    message=SPELLipcMessage();message.fromData(data);
+#endif
+}
 int main(int argc,char** argv) {
     if(argc!=2)return 2;
     std::string mode=argv[1];
     SPELLipcMessage m("MSG_NOTIFY");m.setType(MSG_TYPE_NOTIFY_ASYNC);
     m.setSender("root#0");m.setReceiver("GUI");m.setSequence(-1);m.setKey(97);
     m.set("Csp","root:14");m.set("ExecutorStatus","RUNNING");
-    if(mode=="output") {
+    if(mode=="input_reuse") {
+        SPELLipcMessage parsed;
+        for(int i=0;i<256;++i) {
+            m.set("Binary",std::string(64,static_cast<char>(i)));
+            m.set("Unicode",u8"é中🙂");
+            auto packet=m.data()+m.dataItem("Csp","last");
+            readInput(parsed,packet);record(parsed.data());
+            auto copy=parsed;parsed.set("Csp","changed");
+            require(copy.get("Csp")=="last");
+            readInput(parsed,m.dataItem("only","value"));
+            SPELLipcMessage fresh;fresh.fromData(m.dataItem("only","value"));
+            require(parsed.data()==fresh.data()&&parsed.getCompressed()==fresh.getCompressed());
+            record(parsed.data());
+            parsed.set(MessageField::FIELD_ID,"stale-metadata-property");
+            parsed.fromData(m.data());require(!parsed.hasField(MessageField::FIELD_ID));
+            readInput(parsed,"");require(parsed.data()==SPELLipcMessage().data());
+        }
+    } else if(mode=="input_malformed") {
+        SPELLipcMessage parsed;
+        const auto packet=m.data();
+        for(size_t cut=1;cut<packet.size();++cut) {
+            readInput(parsed,packet);auto malformed=packet.substr(0,cut);
+            try {readInput(parsed,malformed);}catch(const SPELLipcError&) {
+                require(parsed.v08Fields().empty()&&parsed.getId()=="<void>");
+            }
+            readInput(parsed,packet);require(parsed.data()==packet);
+        }
+        auto huge=m.dataItem("large",std::string(2*1024*1024,'x'));
+        readInput(parsed,huge);require(parsed.get("large").size()==2*1024*1024);
+        readInput(parsed,packet);require(!parsed.hasField("large"));
+        std::string many;
+        for(int i=0;i<5000;++i)many+=m.dataItem(std::to_string(i),"value");
+        readInput(parsed,many);require(parsed.v08Fields().size()==5000);
+        readInput(parsed,packet);require(parsed.data()==packet);
+    } else if(mode=="alloc_input") {
+        for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
+        auto packet=m.data();SPELLipcMessage parsed;readInput(parsed,packet);
+        measuring=true;
+        for(int i=0;i<10000;++i)readInput(parsed,packet);
+        measuring=false;
+    } else if(mode=="output") {
         check_output(m);
     } else if(mode=="alloc_output") {
         for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");

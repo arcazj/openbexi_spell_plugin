@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <limits>
 #include <utility>
+#include <algorithm>
+#include <string_view>
+#include <vector>
 #include "SPELL_IPC/SPELLipcError.H"
 
 namespace {
@@ -61,44 +64,106 @@ void SPELLipcMessage::fromData(std::string data)
     v08FromData(data);
 }
 
+namespace {
+struct V08FieldView {
+    std::string_view name, value;
+    size_t ordinal;
+};
+struct V08DecodeScratch {
+    std::vector<V08FieldView> fields;
+    bool busy=false;
+};
+// Input threads own their cache. A nested decode gets independent storage.
+struct V08DecodeLease {
+    V08DecodeScratch local;
+    V08DecodeScratch& scratch;
+    V08DecodeLease(V08DecodeScratch& cached):scratch(cached.busy ? local : cached) {
+        scratch.busy=true;
+    }
+    ~V08DecodeLease() {
+        scratch.fields.clear();
+        if (scratch.fields.capacity()>4096)
+            std::vector<V08FieldView>().swap(scratch.fields);
+        scratch.busy=false;
+    }
+};
+}
+
+void SPELLipcMessage::v08ReadData(const std::string& data)
+{
+    // Input dispatch used to construct a fresh message for every packet. Reset
+    // every metadata member while retaining only the owned property storage.
+    m_id="<void>"; m_sequence=-1; m_type=MSG_TYPE_NOTYPE;
+    m_senderId=MessageId::GENERIC_ID; m_receiverId=MessageId::GENERIC_ID;
+    m_compressed=DEFAULT_COMPRESSED_FLAG; m_key=-1;
+    v08FromData(data);
+}
+
 void SPELLipcMessage::v08FromData(const std::string& data)
 {
-    // The old decoder clears properties before parsing but does not mutate
-    // metadata on a malformed packet. Preserve that failure behavior.
-    m_properties.clear();
-    Properties properties;
-    std::string id=m_id, sender=m_senderId, receiver=m_receiverId;
-    long sequence=m_sequence;
-    int ipcKey=m_key;
-    SPELLipcMessageType type=m_type;
-    size_t pos=0;
-    auto length = [&](unsigned width) {
-        if (width > data.size()-pos)
-            throw SPELLipcError("Truncated IPC field length", 0);
-        uint32_t value=0;
-        while (width--) value=(value << 8) | static_cast<unsigned char>(data[pos++]);
-        return value;
-    };
-    auto take = [&](size_t size) {
-        if (size > data.size()-pos)
-            throw SPELLipcError("Truncated IPC field data", 0);
-        std::string value(data.data()+pos, size);
-        pos += size;
-        return value;
-    };
-    while (pos < data.size()) {
-        auto name=take(length(2));
-        auto value=take(length(4));
-        // Last duplicate wins, including metadata, just as the old map did.
-        if (name == MessageField::FIELD_ID) id=std::move(value);
-        else if (name == MessageField::FIELD_TYPE) type=StringToMessageType(value);
-        else if (name == MessageField::FIELD_SENDER_ID) sender=std::move(value);
-        else if (name == MessageField::FIELD_RECEIVER_ID) receiver=std::move(value);
-        else if (name == MessageField::FIELD_SEQUENCE) sequence=STRI(value);
-        else if (name == MessageField::FIELD_IPC_KEY) ipcKey=STRI(value);
-        else properties[std::move(name)]=std::move(value);
+    static thread_local V08DecodeScratch cached;
+    V08DecodeLease lease(cached);
+    auto& fields=lease.scratch.fields;
+    try {
+        size_t pos=0;
+        auto length = [&](unsigned width) {
+            if (width > data.size()-pos)
+                throw SPELLipcError("Truncated IPC field length", 0);
+            uint32_t value=0;
+            while (width--) value=(value << 8) | static_cast<unsigned char>(data[pos++]);
+            return value;
+        };
+        auto take = [&](size_t size) {
+            if (size > data.size()-pos)
+                throw SPELLipcError("Truncated IPC field data", 0);
+            std::string_view value(data.data()+pos, size);
+            pos += size;
+            return value;
+        };
+        while (pos < data.size()) {
+            auto name=take(length(2));
+            auto value=take(length(4));
+            fields.push_back({name,value,fields.size()});
+        }
+        std::sort(fields.begin(),fields.end(),[](const auto& a,const auto& b) {
+            return a.name<b.name || (a.name==b.name && a.ordinal<b.ordinal);
+        });
+        std::string id=m_id, sender=m_senderId, receiver=m_receiverId;
+        long sequence=m_sequence;
+        int ipcKey=m_key;
+        SPELLipcMessageType type=m_type;
+        std::string key;
+        for (size_t i=0;i<fields.size();++i) {
+            const auto& field=fields[i];
+            if (i+1<fields.size() && fields[i+1].name==field.name) continue;
+            const auto name=field.name, value=field.value;
+            // Last duplicate wins, exactly as in the frozen map decoder.
+            if (name == MessageField::FIELD_ID) id.assign(value);
+            else if (name == MessageField::FIELD_TYPE) type=StringToMessageType(std::string(value));
+            else if (name == MessageField::FIELD_SENDER_ID) sender.assign(value);
+            else if (name == MessageField::FIELD_RECEIVER_ID) receiver.assign(value);
+            else if (name == MessageField::FIELD_SEQUENCE) sequence=STRI(std::string(value));
+            else if (name == MessageField::FIELD_IPC_KEY) ipcKey=STRI(std::string(value));
+            else {
+                key.assign(name);
+                m_properties[key].assign(value);
+            }
+        }
+        for (auto it=m_properties.begin();it!=m_properties.end();) {
+            const auto found=std::lower_bound(fields.begin(),fields.end(),std::string_view(it->first),
+                [](const auto& field,std::string_view name) {return field.name<name;});
+            const auto& name=it->first;
+            const bool metadata=name==MessageField::FIELD_ID || name==MessageField::FIELD_TYPE
+                || name==MessageField::FIELD_SENDER_ID || name==MessageField::FIELD_RECEIVER_ID
+                || name==MessageField::FIELD_SEQUENCE || name==MessageField::FIELD_IPC_KEY;
+            if (metadata || found==fields.end() || found->name!=name) it=m_properties.erase(it);
+            else ++it;
+        }
+        m_id.swap(id); m_senderId.swap(sender); m_receiverId.swap(receiver);
+        m_sequence=sequence; m_key=ipcKey; m_type=type;
+    } catch (...) {
+        // Preserve empty properties and unchanged metadata on malformed input.
+        m_properties.clear();
+        throw;
     }
-    m_id.swap(id); m_senderId.swap(sender); m_receiverId.swap(receiver);
-    m_sequence=sequence; m_key=ipcKey; m_type=type;
-    m_properties.swap(properties);
 }

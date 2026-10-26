@@ -138,6 +138,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 "c++",
                 "-std=c++17",
                 "-O1",
+                "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
                 "-g",
                 "-fsanitize=address,undefined",
                 "-fno-sanitize-recover=all",
@@ -247,3 +248,20 @@ def test_native_output_transfer_rejects_changed_or_repeated_source():
     for text in (original + "\n", builder.transfer_native_output(original)):
         with pytest.raises(ValueError, match="preimage"):
             builder.transfer_native_output(text)
+
+
+def test_reused_input_matches_fresh_messages_and_clears_metadata(codec_binaries):
+    assert run(codec_binaries["before"], "input_reuse") == run(
+        codec_binaries["after"], "input_reuse"
+    )
+
+
+def test_reused_input_retains_no_malformed_packet_or_oversized_field_state(codec_binaries):
+    run(codec_binaries["after"], "input_malformed")
+
+
+def test_reused_input_removes_repeated_decode_allocations(codec_binaries):
+    before = run(codec_binaries["before"], "alloc_input")
+    after = run(codec_binaries["after"], "alloc_input")
+    assert after["allocated_bytes"] < before["allocated_bytes"] * 0.05
+    assert after["allocations"] < before["allocations"] * 0.05

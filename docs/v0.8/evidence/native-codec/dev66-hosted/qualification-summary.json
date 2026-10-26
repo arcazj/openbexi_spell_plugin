@@ -1,0 +1,136 @@
+{
+  "schema": "openbexi.native-ipc-qualified-scope/1",
+  "candidate": "596701b198f7c30cd3e297338a78d6a4502e27a1",
+  "candidate_tree": "adaa2d4eb7bfb21f23e23dad5e995c67ed8fb655",
+  "merge_commit": "ba3007e74bada621eb2b3c9f85f2fdb367ec5d6f",
+  "merge_tree_matches": true,
+  "run_id": 40395297987,
+  "core_jobs_passed": 10,
+  "core_jobs_failed": 4,
+  "service_tests": {
+    "tests": 1286,
+    "errors": 0,
+    "failures": 1,
+    "skipped": 0
+  },
+  "service_failure": "test_prelaunch_image_markers_match_the_installed_package_version: deployment dev65 differs from installed dev66",
+  "fault_tests": 95,
+  "portable_tests": 241,
+  "ancillary_workflows_passed": 5,
+  "startup_stress": {
+    "passed": true,
+    "fresh_root_child_families": 24,
+    "independently_settled_families": 24,
+    "worker_reuse": false,
+    "uncertain_start_retried": false,
+    "historical_failure_cause_established": false
+  },
+  "terminal_cases": 16,
+  "profiles": [
+    {
+      "profile": "handoff",
+      "artifact_id": 12686941378,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.505187353,
+        "peak_bytes": 1832325120,
+        "window_growth_bytes": 235470848,
+        "first_window_median_bytes": 1533792256,
+        "last_window_median_bytes": 1769263104
+      },
+      "soak": {
+        "start_ns": 320401167068,
+        "end_ns": 365906354421,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1419,
+          "background": 1673,
+          "child": 1512
+        },
+        "counters_after": {
+          "root": 3474,
+          "background": 3905,
+          "child": 3618
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "original_processes": 8
+    },
+    {
+      "profile": "ide",
+      "artifact_id": 12685538659,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.49318666,
+        "peak_bytes": 1839415296,
+        "window_growth_bytes": 245747712,
+        "first_window_median_bytes": 1523740672,
+        "last_window_median_bytes": 1769488384
+      },
+      "soak": {
+        "start_ns": 354741497403,
+        "end_ns": 400234684063,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1417,
+          "background": 1696,
+          "child": 1535
+        },
+        "counters_after": {
+          "root": 3462,
+          "background": 3935,
+          "child": 3631
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "original_processes": 8
+    }
+  ],
+  "prompt_denials": [
+    {
+      "event": "native-driver-denied",
+      "path": "/spell.driver.SPELLDriverInterface_EV/RaiseEvent",
+      "error_type": "Fault",
+      "status": 400,
+      "code": "context_request_denied",
+      "event_shape": {
+        "message_empty": false,
+        "message_within_bound": true,
+        "severity_valid": true,
+        "scope_valid": false
+      }
+    }
+  ],
+  "archives_verified": 19,
+  "recorded_source_inventories_verified": true,
+  "full_v08_qualified": false,
+  "release_gates_promoted": []
+}

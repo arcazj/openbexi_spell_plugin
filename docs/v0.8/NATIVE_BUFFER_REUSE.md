@@ -1,4 +1,4 @@
-# Native IPC buffer reuse — dev66 candidate
+# Native IPC buffer reuse — dev66/dev67
 
 The dev65 recovery evidence shows stable live objects but growing allocator
 retention in the active bridge and both Executors. Dev66 removes repeated
@@ -36,3 +36,38 @@ The complete hosted native family and installed IDE recovery must still pass
 both fixed resource checks: 1,792 MiB peak and 64 MiB window growth within the
 2 GiB resident, zero-swap profile. All eleven full-release gates remain closed
 pending their complete source-bound evidence.
+
+## Dev66 hosted result and dev67 follow-up
+
+Dev66 brings both memory peaks under the fixed ceiling, but neither profile
+passes the growth limit. The handoff/IDE peak values are 1,747.4/1,754.2 MiB and
+the window growth values are 224.6/234.4 MiB. All 19 artifacts and recorded source
+hashes are verified in the [receipt](evidence/native-codec/dev66-hosted/qualification-summary.json).
+A separate service test found the deployment image markers still at dev65;
+dev67 aligns all package, image and manifest version markers.
+
+Dev67 reuses each input thread's owned message storage. Every packet starts with
+fresh constructor metadata; fields absent from that packet are removed, and
+callbacks keep the same independent copies as before. Parsing validates bounds
+before committing metadata, sorts non-owning field views with last-duplicate
+semantics, and reuses property values. Malformed input still clears properties
+without committing metadata. Scratch fields are cleared after every call,
+reentrant calls use independent scratch, and oversized packet/view storage is
+discarded. Original by-value decoding and message class layout are preserved.
+The complete composed input and message translation units compile with ASan/UBSan.
+
+The measured 10,000 repeated input decodes fall from 27,330,000 allocated bytes /
+440,000 allocations to zero after warming the cache. This is component evidence;
+it cannot establish the full-family resource verdict. Tests compare fresh and
+reused messages across binary/Unicode fields, duplicates, empty packets, stale
+metadata, copy isolation, malformed prefixes and oversized fields/inventories.
+
+The dev66 prompt denial retained `scope_valid=false`. Original scheduler
+`checkTime()` raises a system-scope warning when a prompt remains unanswered,
+including at a timed default's deadline. That is a source-based hypothesis for
+the observed denial, not a proven attribution. Dev67 records a fixed scope enum
+and whether the message exactly matches that known warning; it never records
+arbitrary event text and does not relax scope authorization.
+
+All 172 focused regression tests pass locally. Full acceptance remains pending.
+All eleven publication gates stay unqualified.
