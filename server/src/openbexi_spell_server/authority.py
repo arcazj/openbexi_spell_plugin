@@ -354,6 +354,30 @@ class ExecutionAuthority:
                 or pending["key"] != key
                 or pending["hash"] != digest(payload)
             ):
+                closed = self.store.db.execute(
+                    "SELECT subject,active FROM sessions WHERE id=?", (connection,)
+                ).fetchone()
+                if (
+                    pending["subject"] == subject
+                    and pending["hash"] == digest(payload)
+                    and closed is not None
+                    and closed["subject"] == subject
+                    and closed["active"] == 0
+                    and (self._replay(subject, "session.close", pending["key"], payload) or {}).get(
+                        "closed"
+                    )
+                    is True
+                ):
+                    # A completed close needs no further fencing. An explicit
+                    # later cleanup may acknowledge it without changing another
+                    # execution/session or adopting a partially completed close.
+                    return self._record(
+                        subject,
+                        "session.close",
+                        key,
+                        payload,
+                        {"closed": True, "already_closed": True},
+                    )
                 raise Fault(409, "connection_close_pending")
             executions = self.store.db.execute(
                 "SELECT id FROM executions WHERE owner=? AND connection_id=? ORDER BY id",

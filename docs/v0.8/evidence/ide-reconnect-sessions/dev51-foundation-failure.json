@@ -1,0 +1,19 @@
+{
+  "candidate_commit": "b935fd3e0800945bca66a4860bad4cc53f8ef9ac",
+  "run_id": 40265146646,
+  "job_id": 121385810964,
+  "artifact_id": 12625913501,
+  "artifact_sha256": "92deabd8c361f706b7fc91e1428d152d73189747e5ad5e5693340df61eae7907",
+  "zip_integrity": true,
+  "repository_source_files_verified": 185,
+  "junit": {
+    "tests": 1142,
+    "errors": 0,
+    "failures": 1,
+    "skipped": 0
+  },
+  "failed_test": "test_actual_panel_reconnects_closed_session_with_cached_proof",
+  "failure": "The real Qt reconnect reached paused binding and explicit resume admission, then Disconnect could not acknowledge the already-closed original session under a new cleanup key.",
+  "fix": "A completed close can be acknowledged only for the authenticated original subject, with current permission, inactive session and durable original completion receipt. CLOSING or restart-deactivated incomplete closures still require the original key.",
+  "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40265146646/artifacts/12625913501"
+}

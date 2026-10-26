@@ -1,14 +1,17 @@
 # v0.8 development changelog
 
+## 0.8.0.dev52 — completed session cleanup
+
+- Fix Disconnect after native reconnect when the original session is already closed: require the original authenticated subject, current permission, inactive state and durable original close receipt before acknowledging a fresh cleanup request. Never repeat fencing or complete a pending close under a different key.
+- Preserve dev51 hosted evidence: 1,141 passing tests and one failed Qt Disconnect assertion. The same integration test remains mandatory unchanged. Two local regressions fail before the repair; 106 authority/contract/control tests pass afterwards, including pending-close recovery across restart. Full requalification is pending.
+
 ## 0.8.0.dev51 — desktop reconnect session repair
 
 - Pair IDE 1ac0b8a / 1.2.1.dev4. A cached stale controller proof no longer hides explicit reconnect after a server disconnect. Live reconnect uses a fresh session. Other execution sessions remain available until explicit Disconnect closes every known session with stable per-session close keys.
 - Add actual Qt-panel / Gateway / Listener / Context TLS integration coverage for reconnect, paused rebind and explicit resume admission. Native process/freezer evidence remains separately required.
 - Local 51-case IDE client/panel suite passes; three pre-fix regressions retain their failures. Hosted complete IDE and paired source/native qualification is pending. No full release gate is promoted.
 
-# v0.8 work in progress
-
-## Current checkpoint: development package 0.8.0.dev50
+## Development package 0.8.0.dev50
 
 - Fix the reproduced signal-interruption failure in native admission waits. Continue only the original socket/packet offset, within the original four-second deadline; retain fail-closed peer identity, lost reply and denial behavior.
 - Add compiled transport regressions and bounded phase/timing diagnostics. All thirteen core jobs, 1,141 hosted tests and four deployment/inventory workflows pass at `e519882`; no full-release gate is closed.

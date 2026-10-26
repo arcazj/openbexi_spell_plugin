@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="10" time="0.149" timestamp="2026-10-26T04:36:09.982260+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[CONTROLLER_DISCONNECTED-True-False-alice-True]" time="0.016" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[CONTROLLER_DISCONNECTED-True-True-alice-True]" time="0.002"><failure message="assert False is True&#10; +  where False = &lt;built-in method isEnabled of PySide6.QtWidgets.QPushButton object at 0x7fead657bf80&gt;()&#10; +    where &lt;built-in method isEnabled of PySide6.QtWidgets.QPushButton object at 0x7fead657bf80&gt; = &lt;PySide6.QtWidgets.QPushButton(0x1f1782c0) at 0x7fead657bf80&gt;.isEnabled&#10; +      where &lt;PySide6.QtWidgets.QPushButton(0x1f1782c0) at 0x7fead657bf80&gt; = &lt;openbexi_ide.spell_server_panel.SpellServerPanel(0x1ec82950) at 0x7fead6578a80&gt;.rebind_button">app = &lt;PySide6.QtWidgets.QApplication(0x1eea9ac0) at 0x7fead651f8c0&gt;
+state = 'CONTROLLER_DISCONNECTED', advertised = True, has_proof = True
+subject = 'alice', enabled = True
+
+    @pytest.mark.parametrize(
+        "state,advertised,has_proof,subject,enabled",
+        [
+            ("CONTROLLER_DISCONNECTED", True, False, "alice", True),
+            ("CONTROLLER_DISCONNECTED", True, True, "alice", True),
+            ("OWNED", True, False, "alice", True),
+            ("OWNED", True, True, "alice", False),
+            ("CONTROLLER_DISCONNECTED", False, False, "alice", False),
+            ("CONTROLLER_DISCONNECTED", True, False, "observer", False),
+            ("PAUSING", True, False, "alice", False),
+            ("RECOVERY_REQUIRED", True, False, "alice", False),
+        ],
+    )
+    def test_native_reconnect_button_requires_owner_and_configured_recovery(
+        app, state, advertised, has_proof, subject, enabled
+    ):
+        from PySide6.QtCore import Qt
+        from PySide6.QtWidgets import QTreeWidgetItem
+    
+        panel = SpellServerPanel()
+        panel.client = type("Client", (), {"has_controller": lambda *args: has_proof})()
+        try:
+            panel.context.blockSignals(True)
+            panel.context.addItem("A")
+            panel.context.blockSignals(False)
+            panel.state = {
+                "health": {
+                    "subject": subject,
+                    "permissions": ["execution:control", "execution:start"],
+                    "native_rebind": advertised,
+                }
+            }
+            row = QTreeWidgetItem(["example", "alice", state, ""])
+            row.setData(
+                0,
+                Qt.UserRole,
+                dict(id="one", owner="alice", lifecycle="STARTING", control_state=state),
+            )
+            panel.executions.addTopLevelItem(row)
+            panel.executions.setCurrentItem(row)
+            panel.update_buttons()
+&gt;           assert panel.rebind_button.isEnabled() is enabled
+E           assert False is True
+E            +  where False = &lt;built-in method isEnabled of PySide6.QtWidgets.QPushButton object at 0x7fead657bf80&gt;()
+E            +    where &lt;built-in method isEnabled of PySide6.QtWidgets.QPushButton object at 0x7fead657bf80&gt; = &lt;PySide6.QtWidgets.QPushButton(0x1f1782c0) at 0x7fead657bf80&gt;.isEnabled
+E            +      where &lt;PySide6.QtWidgets.QPushButton(0x1f1782c0) at 0x7fead657bf80&gt; = &lt;openbexi_ide.spell_server_panel.SpellServerPanel(0x1ec82950) at 0x7fead6578a80&gt;.rebind_button
+
+tests/test_spell_server_client.py:278: AssertionError</failure></testcase><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[OWNED-True-False-alice-True]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[OWNED-True-True-alice-False]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[CONTROLLER_DISCONNECTED-False-False-alice-False]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[CONTROLLER_DISCONNECTED-True-False-observer-False]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[PAUSING-True-False-alice-False]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_native_reconnect_button_requires_owner_and_configured_recovery[RECOVERY_REQUIRED-True-False-alice-False]" time="0.002" /><testcase classname="tests.test_spell_server_client" name="test_live_reconnect_uses_fresh_session_and_retains_other_connections[OWNED]" time="0.002"><failure message="AssertionError: assert 'original-session' == 'fresh-session'&#10;  &#10;  - fresh-session&#10;  + original-session">app = &lt;PySide6.QtWidgets.QApplication(0x1eea9ac0) at 0x7fead651f8c0&gt;
+control_state = 'OWNED'
+
+    @pytest.mark.parametrize("control_state", ["OWNED", "CONTROLLER_DISCONNECTED"])
+    def test_live_reconnect_uses_fresh_session_and_retains_other_connections(app, control_state):
+        from PySide6.QtCore import Qt
+        from PySide6.QtWidgets import QTreeWidgetItem
+        import threading
+    
+        panel = SpellServerPanel()
+        client = object.__new__(SpellServerClient)
+        client._lock = threading.RLock()
+        client._controllers = {
+            ("A", "one"): {"capability": "stale"},
+            ("A", "two"): {"capability": "other"},
+        }
+        calls = []
+    
+        def authority(context, method, payload, *, key):
+            calls.append((context, method, dict(payload), key))
+            if method == "session.open":
+                return {"connection_id": "fresh-session"}
+            if method == "execution.rebind":
+                assert payload["connection_id"] == "fresh-session"
+                return {"id": "one", "rebind_pending": True}
+            assert method == "session.close"
+            return {"closed": True}
+    
+        client.authority = authority
+        panel.client = client
+        panel.connections["A"] = "original-session"
+        panel.context.blockSignals(True)
+        panel.context.addItem("A")
+        panel.context.blockSignals(False)
+        row = QTreeWidgetItem(["example", "alice", control_state, ""])
+        row.setData(0, Qt.UserRole, dict(id="one", epoch=3, owner="alice", lifecycle="STARTING", control_state=control_state))
+        panel.executions.addTopLevelItem(row)
+        panel.executions.setCurrentItem(row)
+        # Run the network job synchronously; inspect its emitted request sequence.
+        panel.submit = lambda job: job()
+        try:
+&gt;           panel.mutate("rebind")
+
+tests/test_spell_server_client.py:342: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/openbexi_ide/spell_server_panel.py:382: in mutate
+    self.submit(action)
+tests/test_spell_server_client.py:340: in &lt;lambda&gt;
+    panel.submit = lambda job: job()
+                               ^^^^^
+src/openbexi_ide/spell_server_panel.py:368: in action
+    result = client.authority(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+context = 'A', method = 'execution.rebind'
+payload = {'connection_id': 'original-session', 'execution_id': 'one', 'expected_epoch': 3}
+
+    def authority(context, method, payload, *, key):
+        calls.append((context, method, dict(payload), key))
+        if method == "session.open":
+            return {"connection_id": "fresh-session"}
+        if method == "execution.rebind":
+&gt;           assert payload["connection_id"] == "fresh-session"
+E           AssertionError: assert 'original-session' == 'fresh-session'
+E             
+E             - fresh-session
+E             + original-session
+
+tests/test_spell_server_client.py:324: AssertionError</failure></testcase><testcase classname="tests.test_spell_server_client" name="test_live_reconnect_uses_fresh_session_and_retains_other_connections[CONTROLLER_DISCONNECTED]" time="0.002"><failure message="AssertionError: assert 'original-session' == 'fresh-session'&#10;  &#10;  - fresh-session&#10;  + original-session">app = &lt;PySide6.QtWidgets.QApplication(0x1eea9ac0) at 0x7fead651f8c0&gt;
+control_state = 'CONTROLLER_DISCONNECTED'
+
+    @pytest.mark.parametrize("control_state", ["OWNED", "CONTROLLER_DISCONNECTED"])
+    def test_live_reconnect_uses_fresh_session_and_retains_other_connections(app, control_state):
+        from PySide6.QtCore import Qt
+        from PySide6.QtWidgets import QTreeWidgetItem
+        import threading
+    
+        panel = SpellServerPanel()
+        client = object.__new__(SpellServerClient)
+        client._lock = threading.RLock()
+        client._controllers = {
+            ("A", "one"): {"capability": "stale"},
+            ("A", "two"): {"capability": "other"},
+        }
+        calls = []
+    
+        def authority(context, method, payload, *, key):
+            calls.append((context, method, dict(payload), key))
+            if method == "session.open":
+                return {"connection_id": "fresh-session"}
+            if method == "execution.rebind":
+                assert payload["connection_id"] == "fresh-session"
+                return {"id": "one", "rebind_pending": True}
+            assert method == "session.close"
+            return {"closed": True}
+    
+        client.authority = authority
+        panel.client = client
+        panel.connections["A"] = "original-session"
+        panel.context.blockSignals(True)
+        panel.context.addItem("A")
+        panel.context.blockSignals(False)
+        row = QTreeWidgetItem(["example", "alice", control_state, ""])
+        row.setData(0, Qt.UserRole, dict(id="one", epoch=3, owner="alice", lifecycle="STARTING", control_state=control_state))
+        panel.executions.addTopLevelItem(row)
+        panel.executions.setCurrentItem(row)
+        # Run the network job synchronously; inspect its emitted request sequence.
+        panel.submit = lambda job: job()
+        try:
+&gt;           panel.mutate("rebind")
+
+tests/test_spell_server_client.py:342: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/openbexi_ide/spell_server_panel.py:382: in mutate
+    self.submit(action)
+tests/test_spell_server_client.py:340: in &lt;lambda&gt;
+    panel.submit = lambda job: job()
+                               ^^^^^
+src/openbexi_ide/spell_server_panel.py:368: in action
+    result = client.authority(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+context = 'A', method = 'execution.rebind'
+payload = {'connection_id': 'original-session', 'execution_id': 'one', 'expected_epoch': 3}
+
+    def authority(context, method, payload, *, key):
+        calls.append((context, method, dict(payload), key))
+        if method == "session.open":
+            return {"connection_id": "fresh-session"}
+        if method == "execution.rebind":
+&gt;           assert payload["connection_id"] == "fresh-session"
+E           AssertionError: assert 'original-session' == 'fresh-session'
+E             
+E             - fresh-session
+E             + original-session
+
+tests/test_spell_server_client.py:324: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.177" timestamp="2026-10-26T04:44:21.129102+01:00" hostname="c590a6082f0b"><testcase classname="tests.test_authority" name="test_completed_session_close_can_be_acknowledged_under_new_key_without_refencing" time="0.028"><failure message="openbexi_spell_server.contracts.Fault: connection_close_pending">authority = &lt;openbexi_spell_server.authority.ExecutionAuthority object at 0x7fb7e4da2b10&gt;
+
+    def test_completed_session_close_can_be_acknowledged_under_new_key_without_refencing(authority):
+        alice = Client(authority, "alice")
+        execution = alice.reserve()
+        payload = {"connection_id": alice.connection}
+        assert alice.call("session.close", payload, "first-close") == {"closed": True}
+        replacement = Client(authority, "alice")
+        rebound = replacement.rebind(execution["id"], execution["epoch"])
+        before = dict(authority._execution(execution["id"]))
+        closures = authority.store.db.execute("SELECT * FROM session_closures").fetchall()
+&gt;       assert alice.call("session.close", payload, "cleanup-old-session") == {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "closed": True, "already_closed": True,
+        }
+
+server/tests/test_authority.py:744: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+server/tests/test_authority.py:35: in call
+    return self.authority.mutate(self.subject, method, key or str(uuid.uuid4()), payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/src/openbexi_spell_server/authority.py:316: in mutate
+    return self._close_session(subject, key, payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;openbexi_spell_server.authority.ExecutionAuthority object at 0x7fb7e4da2b10&gt;
+subject = 'alice', key = 'cleanup-old-session'
+payload = {'connection_id': 'eb103950-7081-4383-8cc1-a62aa247f812'}
+
+    def _close_session(self, subject, key, payload):
+        """Close admission before serializing final fencing with execution writes.
+    
+        CLOSING (active=2) survives timeout/crash and never admits new work. No
+        SQLite transaction is held while waiting for any execution mutex. Only
+        the original close request may finish a partially completed close.
+        """
+        connection = payload["connection_id"]
+        with self.store.transaction():
+            self._require(subject, "execution:control")
+            replay = self._replay(subject, "session.close", key, payload)
+            if replay is not None:
+                return replay
+            pending = self.store.db.execute(
+                "SELECT * FROM session_closures WHERE connection_id=?", (connection,)
+            ).fetchone()
+            if pending is None:
+                self._session(subject, connection)
+                self.store.db.execute(
+                    "INSERT INTO session_closures VALUES(?,?,?,?)",
+                    (connection, subject, key, digest(payload)),
+                )
+                self.store.db.execute("UPDATE sessions SET active=2 WHERE id=?", (connection,))
+                self.store._event(
+                    "CONTROL_CONNECTION_CLOSING", {"connection_id": connection, "subject": subject}
+                )
+            elif (
+                pending["subject"] != subject
+                or pending["key"] != key
+                or pending["hash"] != digest(payload)
+            ):
+&gt;               raise Fault(409, "connection_close_pending")
+E               openbexi_spell_server.contracts.Fault: connection_close_pending
+
+server/src/openbexi_spell_server/authority.py:357: Fault</failure></testcase><testcase classname="tests.test_authority" name="test_completed_close_ack_still_requires_original_subject_and_current_permission" time="0.018"><failure message="openbexi_spell_server.contracts.Fault: connection_close_pending">authority = &lt;openbexi_spell_server.authority.ExecutionAuthority object at 0x7fb7e4da3110&gt;
+
+    def test_completed_close_ack_still_requires_original_subject_and_current_permission(authority):
+        alice = Client(authority, "alice")
+        payload = {"connection_id": alice.connection}
+        alice.call("session.close", payload, "first-close")
+        with pytest.raises(Fault):
+            Client(authority, "bob").call("session.close", payload, "foreign-cleanup")
+&gt;       assert alice.call("session.close", payload, "own-cleanup")["already_closed"] is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_authority.py:759: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+server/tests/test_authority.py:35: in call
+    return self.authority.mutate(self.subject, method, key or str(uuid.uuid4()), payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+server/src/openbexi_spell_server/authority.py:316: in mutate
+    return self._close_session(subject, key, payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;openbexi_spell_server.authority.ExecutionAuthority object at 0x7fb7e4da3110&gt;
+subject = 'alice', key = 'own-cleanup'
+payload = {'connection_id': 'be4cdc1d-8a42-4669-a5da-ff013ef47b80'}
+
+    def _close_session(self, subject, key, payload):
+        """Close admission before serializing final fencing with execution writes.
+    
+        CLOSING (active=2) survives timeout/crash and never admits new work. No
+        SQLite transaction is held while waiting for any execution mutex. Only
+        the original close request may finish a partially completed close.
+        """
+        connection = payload["connection_id"]
+        with self.store.transaction():
+            self._require(subject, "execution:control")
+            replay = self._replay(subject, "session.close", key, payload)
+            if replay is not None:
+                return replay
+            pending = self.store.db.execute(
+                "SELECT * FROM session_closures WHERE connection_id=?", (connection,)
+            ).fetchone()
+            if pending is None:
+                self._session(subject, connection)
+                self.store.db.execute(
+                    "INSERT INTO session_closures VALUES(?,?,?,?)",
+                    (connection, subject, key, digest(payload)),
+                )
+                self.store.db.execute("UPDATE sessions SET active=2 WHERE id=?", (connection,))
+                self.store._event(
+                    "CONTROL_CONNECTION_CLOSING", {"connection_id": connection, "subject": subject}
+                )
+            elif (
+                pending["subject"] != subject
+                or pending["key"] != key
+                or pending["hash"] != digest(payload)
+            ):
+&gt;               raise Fault(409, "connection_close_pending")
+E               openbexi_spell_server.contracts.Fault: connection_close_pending
+
+server/src/openbexi_spell_server/authority.py:357: Fault</failure></testcase></testsuite></testsuites>

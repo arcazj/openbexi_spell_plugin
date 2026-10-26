@@ -725,8 +725,46 @@ def test_closing_session_is_not_restored_after_authority_restart(tmp_path):
     store.close()
     with closing(ContextStore(tmp_path, "A")) as reopened:
         recovered = ExecutionAuthority(reopened, subjects, worker_slots=SLOTS)
+        # Restart deactivates sessions, but it does not complete a pending close.
+        with pytest.raises(Fault, match="connection_close_pending"):
+            recovered.mutate("alice", "session.close", "different-close", payload)
         assert recovered.mutate("alice", "session.close", key, payload)["closed"]
         with reopened.transaction(write=False):
             assert recovered._execution(execution["id"])["control_state"] == "RECOVERY_REQUIRED"
             with pytest.raises(Fault, match="connection_denied"):
                 recovered._session("alice", alice.connection)
+
+
+def test_completed_session_close_can_be_acknowledged_under_new_key_without_refencing(authority):
+    alice = Client(authority, "alice")
+    execution = alice.reserve()
+    payload = {"connection_id": alice.connection}
+    assert alice.call("session.close", payload, "first-close") == {"closed": True}
+    replacement = Client(authority, "alice")
+    rebound = replacement.rebind(execution["id"], execution["epoch"])
+    before = dict(authority._execution(execution["id"]))
+    closures = authority.store.db.execute("SELECT * FROM session_closures").fetchall()
+    assert alice.call("session.close", payload, "cleanup-old-session") == {
+        "closed": True,
+        "already_closed": True,
+    }
+    assert alice.call("session.close", payload, "cleanup-old-session")["replayed"] is True
+    assert dict(authority._execution(execution["id"])) == before
+    assert authority.store.db.execute("SELECT * FROM session_closures").fetchall() == closures
+    assert admit_start(authority, rebound).connection_id == replacement.connection
+
+
+def test_completed_close_ack_still_requires_original_subject_and_current_permission(authority):
+    alice = Client(authority, "alice")
+    payload = {"connection_id": alice.connection}
+    alice.call("session.close", payload, "first-close")
+    with pytest.raises(Fault):
+        Client(authority, "bob").call("session.close", payload, "foreign-cleanup")
+    assert alice.call("session.close", payload, "own-cleanup")["already_closed"] is True
+    original = authority.subjects.pop("alice")
+    try:
+        for key in ("own-cleanup", "new-cleanup"):
+            with pytest.raises(Fault, match="subject_denied"):
+                alice.call("session.close", payload, key)
+    finally:
+        authority.subjects["alice"] = original
