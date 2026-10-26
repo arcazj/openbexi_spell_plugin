@@ -8,6 +8,7 @@ on:
       - 'driver_plugin/src/**'
       - 'docs/v0.8/**'
       - 'scripts/qualify_v08_server.py'
+      - 'scripts/qualify_v08_faults.py'
       - 'scripts/qualify_v08_native_boundary.py'
       - 'scripts/qualify_v08_native_launch.py'
       - 'scripts/v08_listener_survival.py'
@@ -40,6 +41,7 @@ on:
       - 'driver_plugin/src/**'
       - 'docs/v0.8/**'
       - 'scripts/qualify_v08_server.py'
+      - 'scripts/qualify_v08_faults.py'
       - 'scripts/qualify_v08_native_boundary.py'
       - 'scripts/qualify_v08_native_launch.py'
       - 'scripts/v08_listener_survival.py'
@@ -73,6 +75,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  fault-reproduction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Install pinned qualification tools
+        run: python -m pip install -r server/requirements-test.lock
+      - name: Reproduce isolated ledger, receipt and post-binding faults
+        run: python scripts/qualify_v08_faults.py
+      - name: Retain source-bound fault evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-fault-reproduction-${{ github.sha }}
+          path: .qualification/v08-faults/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
   foundation:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

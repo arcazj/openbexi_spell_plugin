@@ -32,6 +32,10 @@ static inline void v08_admission_wait(int fd, short events,
         const int available = poll(&pending, 1, static_cast<int>(remaining));
         if (available < 0 && errno == EINTR) { ++interruptions; continue; }
         if (available < 0) throw v08_admission_failure("channel_unavailable", errno);
+        // Readiness can precede a scheduler pause. It does not extend the
+        // original deadline when this thread eventually resumes.
+        if (std::chrono::steady_clock::now() >= deadline)
+            throw v08_admission_failure("deadline_expired");
         if (available == 0) continue;
         if (!(pending.revents & events)) throw v08_admission_failure("channel_unavailable");
         return;
@@ -90,6 +94,9 @@ static inline void v08_admission_exchange(const char* path,
             if (count <= 0) throw v08_admission_failure("reply_lost", count < 0 ? errno : 0);
             reply.append(buffer, static_cast<size_t>(count));
         }
+        // A complete reply is not authority to continue after the deadline.
+        if (std::chrono::steady_clock::now() >= deadline)
+            throw v08_admission_failure("deadline_expired");
         if (reply != "ALLOW\n") throw v08_admission_failure("admission_denied");
     } catch (const v08_admission_failure& error) {
         // Fixed labels and numeric metadata only: never log packets, paths,

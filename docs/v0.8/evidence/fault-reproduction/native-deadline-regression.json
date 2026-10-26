@@ -1,0 +1,24 @@
+{
+  "schema": "openbexi.v08.native-deadline-regression/1",
+  "baseline_commit": "5708f47ecf541e30a63f3df40845cbae6c75145f",
+  "baseline_header_sha256": "f7c40e528645b91121200d6bc7e0d4a45d6cc60e43cbbb12738e6432eda4e5f6",
+  "probe": "Production v08_admission_wait compiled with a linker poll wrapper that delays delivery of actual pipe readiness by 350 ms across the original 300 ms probe deadline",
+  "before": {
+    "failed": true,
+    "observed_elapsed_ms": 360,
+    "accepted_after_deadline": true,
+    "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"1\" skipped=\"0\" tests=\"1\" time=\"1.057\" timestamp=\"2026-10-26T05:59:29.085646+01:00\" hostname=\"c590a6082f0b\"><testcase classname=\"tests.test_native_admission_channel\" name=\"test_production_admission_channel[wait_late_ready]\" time=\"1.025\"><failure message=\"AssertionError: b'wait result= elapsed_ms=360&#10;  harness: /workspace/scratch/3c71e851b013/repo/server/tests/native_admission_harness.cpp:68: void wait_case(): Assertion `failure == &quot;deadline_expired&quot;\\' failed.&#10;  '&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-77/admission-channel0/harness', 'wait_late_ready', '/tmp/pytest-of-.../server/tests/native_admission_harness.cpp:68: void wait_case(): Assertion `failure == &quot;deadline_expired&quot;\\' failed.\\n').returncode\">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-77/admission-channel0/harness')\ntmp_path = PosixPath('/tmp/pytest-of-root/pytest-77/test_production_admission_chan0')\ncase = 'wait_late_ready'\n\n    @pytest.mark.parametrize(\n        \"case\",\n        [\n            \"wait_interrupt\",\n            \"wait_deadline\",\n            \"wait_late_ready\",\n            \"oversize\",\n            \"allow\",\n            \"signal_reply\",\n            \"partial_io\",\n            \"deny\",\n            \"lost_reply\",\n            \"wrong_peer\",\n            \"expired_reply\",\n            \"signal_deadline\",\n            \"late_read\",\n        ],\n    )\n    def test_production_admission_channel(admission_binary, tmp_path, case):\n        result = subprocess.run(\n            [str(admission_binary), case, str(tmp_path / \"agent.sock\")],\n            capture_output=True,\n            timeout=10,\n        )\n&gt;       assert result.returncode == 0, result.stdout + result.stderr\nE       AssertionError: b'wait result= elapsed_ms=360\nE         harness: /workspace/scratch/3c71e851b013/repo/server/tests/native_admission_harness.cpp:68: void wait_case(): Assertion `failure == \"deadline_expired\"\\' failed.\nE         '\nE       assert -6 == 0\nE        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-77/admission-channel0/harness', 'wait_late_ready', '/tmp/pytest-of-.../server/tests/native_admission_harness.cpp:68: void wait_case(): Assertion `failure == \"deadline_expired\"\\' failed.\\n').returncode\n\nserver/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase></testsuite></testsuites>"
+  },
+  "after": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "junit_xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><testsuites name=\"pytest tests\"><testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"4\" time=\"1.285\" timestamp=\"2026-10-26T06:03:10.034155+01:00\" hostname=\"c590a6082f0b\"><testcase classname=\"tests.test_native_admission_channel\" name=\"test_production_admission_channel[wait_interrupt]\" time=\"0.594\" /><testcase classname=\"tests.test_native_admission_channel\" name=\"test_production_admission_channel[wait_deadline]\" time=\"0.307\" /><testcase classname=\"tests.test_native_admission_channel\" name=\"test_production_admission_channel[wait_late_ready]\" time=\"0.364\" /><testcase classname=\"tests.test_native_admission_channel\" name=\"test_production_admission_channel[oversize]\" time=\"0.003\" /></testsuite></testsuites>"
+  },
+  "production_deadline_seconds": 4,
+  "deadline_changed": false,
+  "reconnect_or_replay_added": false,
+  "local_limit": "Unix and TCP socket creation denied by execution environment; actual channel and Context/DSS fault tests require hosted Linux",
+  "historical_failure_cause_established": false,
+  "full_v08_qualified": false
+}

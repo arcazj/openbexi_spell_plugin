@@ -25,6 +25,7 @@ def admission_binary(tmp_path_factory):
             str(ROOT / "server/tests/native_admission_harness.cpp"),
             "-Wl,--wrap=send",
             "-Wl,--wrap=recv",
+            "-Wl,--wrap=poll",
             "-o",
             str(binary),
         ],
@@ -40,6 +41,7 @@ def admission_binary(tmp_path_factory):
     [
         "wait_interrupt",
         "wait_deadline",
+        "wait_late_ready",
         "oversize",
         "allow",
         "signal_reply",
@@ -49,6 +51,7 @@ def admission_binary(tmp_path_factory):
         "wrong_peer",
         "expired_reply",
         "signal_deadline",
+        "late_read",
     ],
 )
 def test_production_admission_channel(admission_binary, tmp_path, case):
@@ -64,7 +67,14 @@ def test_production_admission_channel(admission_binary, tmp_path, case):
         for line in result.stderr.splitlines()
         if line.startswith(b"V08_ADMISSION ")
     ]
-    if case in ("deny", "lost_reply", "wrong_peer", "expired_reply", "signal_deadline"):
+    if case in (
+        "deny",
+        "lost_reply",
+        "wrong_peer",
+        "expired_reply",
+        "signal_deadline",
+        "late_read",
+    ):
         assert len(failures) == 1
         assert set(failures[0]) == {
             "pid",
@@ -77,5 +87,8 @@ def test_production_admission_channel(admission_binary, tmp_path, case):
         }
         if case == "signal_deadline":
             assert failures[0]["interruptions"] > 0
+        if case in ("expired_reply", "signal_deadline", "late_read"):
+            assert failures[0]["reason"] == "deadline_expired"
+            assert failures[0]["stage"] == "read"
     else:
         assert not failures

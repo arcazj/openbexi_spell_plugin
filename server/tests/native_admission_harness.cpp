@@ -14,6 +14,13 @@ static int sends = 0, receives = 0;
 static void interrupted(int) {}
 extern "C" ssize_t __real_send(int, const void*, size_t, int);
 extern "C" ssize_t __real_recv(int, void*, size_t, int);
+extern "C" int __real_poll(struct pollfd*, nfds_t, int);
+extern "C" int __wrap_poll(struct pollfd* fds, nfds_t count, int timeout) {
+    const int result = __real_poll(fds, count, timeout);
+    // Model a caller descheduled after readiness, without moving its deadline.
+    if (mode == "wait_late_ready" && result > 0) std::this_thread::sleep_for(350ms);
+    return result;
+}
 extern "C" ssize_t __wrap_send(int fd, const void* data, size_t size, int flags) {
     if (mode == "partial_io") {
         ++sends;
@@ -28,7 +35,9 @@ extern "C" ssize_t __wrap_recv(int fd, void* data, size_t size, int flags) {
         if (receives <= 2) { errno = receives == 1 ? EINTR : EAGAIN; return -1; }
         size = std::min(size, size_t(2));
     }
-    return __real_recv(fd, data, size, flags);
+    const auto result = __real_recv(fd, data, size, flags);
+    if (mode == "late_read" && result > 0) std::this_thread::sleep_for(4200ms);
+    return result;
 }
 
 static void wait_case() {
@@ -40,7 +49,7 @@ static void wait_case() {
             std::this_thread::sleep_for(10ms);
             if (finished) break;
             assert(pthread_kill(caller, SIGUSR1) == 0);
-            if (mode == "wait_interrupt" && n == 9) {
+            if ((mode == "wait_interrupt" && n == 9) || mode == "wait_late_ready") {
                 assert(write(descriptors[1], "x", 1) == 1);
                 break;
             }
@@ -57,15 +66,29 @@ static void wait_case() {
         << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count() << "\n";
     if (mode == "wait_interrupt") assert(failure.empty());
     else { assert(failure == "deadline_expired"); assert(elapsed >= 290ms && elapsed < 1s); }
-    assert(interruptions > 0);
+    if (mode != "wait_late_ready") assert(interruptions > 0);
     std::cout << "PASS " << mode << "\n";
 }
 
 int main(int argc, char** argv) {
-    assert(argc == 3); mode = argv[1];
+    assert(argc == 3 || argc == 4); mode = argv[1];
     struct sigaction action{}; action.sa_handler = interrupted;
     sigemptyset(&action.sa_mask); assert(sigaction(SIGUSR1, &action, nullptr) == 0);
     signal(SIGPIPE, SIG_IGN);
+    if (mode == "member_exchange") {
+        assert(argc == 4);
+        const auto started = std::chrono::steady_clock::now();
+        std::string failure;
+        try {
+            v08_admission_exchange(argv[2], argv[3],
+                "{\"schema\":\"openbexi.native-member/1\",\"instance_id\":\"main#1\",\"pid\":1234}\n");
+        } catch (const v08_admission_failure& error) { failure = error.reason; }
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::steady_clock::now() - started).count();
+        std::cout << "{\"admitted\":" << (failure.empty() ? "true" : "false")
+            << ",\"reason\":\"" << failure << "\",\"elapsed_ms\":" << elapsed << "}\n";
+        return 0;
+    }
     if (mode.rfind("wait_", 0) == 0) { wait_case(); return 0; }
     if (mode == "oversize") {
         try { v08_admission_exchange(argv[2], std::to_string(getpid()), std::string(32769, 'x')); }
@@ -122,7 +145,7 @@ int main(int argc, char** argv) {
         assert(observed == packet); // Exact captured bytes once; no partial replay.
         if (mode == "deny") assert(failure == "admission_denied");
         else if (mode == "lost_reply") assert(failure == "reply_lost" || failure == "channel_unavailable");
-        else if (mode == "expired_reply" || mode == "signal_deadline") {
+        else if (mode == "expired_reply" || mode == "signal_deadline" || mode == "late_read") {
             assert(failure == "deadline_expired"); assert(elapsed >= 3900ms && elapsed < 5s);
         } else assert(failure.empty());
     }
