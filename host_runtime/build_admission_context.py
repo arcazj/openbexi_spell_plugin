@@ -83,9 +83,18 @@ def replace_native_message_codec(text):
         raise ValueError("Native IPC setter boundary differs")
     text = text.replace(setter, "    m_properties[std::move(key)] = std::move(value);")
     for old, new in (
-        ("m_properties = msg.m_properties;", "v08_copy_properties(m_properties,msg.m_properties);"),
-        ("m_properties = msg->m_properties;", "v08_copy_properties(m_properties,msg->m_properties);"),
-        ("m_properties = copy.m_properties;", "v08_copy_properties(m_properties,copy.m_properties);"),
+        (
+            "m_properties = msg.m_properties;",
+            "v08_copy_properties(m_properties,msg.m_properties);",
+        ),
+        (
+            "m_properties = msg->m_properties;",
+            "v08_copy_properties(m_properties,msg->m_properties);",
+        ),
+        (
+            "m_properties = copy.m_properties;",
+            "v08_copy_properties(m_properties,copy.m_properties);",
+        ),
         ("    m_properties.clear();", "    v08_recycle_properties(m_properties);"),
     ):
         if text.count(old) != 1:
