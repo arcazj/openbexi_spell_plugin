@@ -1,0 +1,152 @@
+{
+  "schema": "openbexi.v08.live-family-handoff-qualification/1",
+  "scope": "Private single-host, one accepted transfer of an existing sealed native family",
+  "qualified_commit": "c850ba8e347c0c6d11d8b1b26cdb6f1b5f6c9105",
+  "qualified_tree": "0b30ab4402eb396a0c8dfb571a5284ea8348e34f",
+  "ci_merge": "5a25876f58a8378d1b13f3ef5b96ded51a0e53c3",
+  "ci_merge_tree_verified_identical": true,
+  "base_commit": "466b7bf5b654514798c4e3ea166ff529767c54e7",
+  "ide_commit": "dd06fe91d9da9cad828ff659adced0e3be80816d",
+  "workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40247789157",
+  "artifacts": {
+    "foundation": {
+      "id": 12618968475,
+      "sha256": "e77f6cf29fa7eb41a8c5b2ca7d756ef2b209889817faa6057c4e55646bd6b8ff"
+    },
+    "native_handoff": {
+      "id": 12620050732,
+      "sha256": "67b692b131d5d06bbf1f361750ff4e3f58e1dc895b9b28096ca717952bbacab5"
+    }
+  },
+  "artifact_integrity_verified": "SHA256 and every ZIP member CRC",
+  "source_hashes_verified": {
+    "foundation": 171,
+    "native_handoff": 117,
+    "mismatches": 0
+  },
+  "foundation": {
+    "python": "3.13.16",
+    "junit": {
+      "tests": 1026,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "checks": {
+      "lint": 0,
+      "format": 0,
+      "types": 0,
+      "tests": 0
+    },
+    "local_handoff_tests": 47,
+    "native_epoch_tests": 6
+  },
+  "native_build": {
+    "compiled_units": 144,
+    "candidate_executor_sha256": "80e19396053127476848f72dacbb639636478091b9f590ce1317face6486803f",
+    "candidate_context_sha256": "b5a7c46f444a35726a4ab03795c292fe857158c5dddde1b0396bb4f26bac0f45",
+    "candidate_shared_runtime_sha256": "89e5e843c7701d1c5914d53f6a814641f8471eb33a7c0ca6766634812c1b3883",
+    "epoch_bootstrap_sha256": "b3520cd3621129cc58f4de7831ddfc0bdc5b4a5a41feecb8a1c30e32764d778b",
+    "original_driver_sources_unchanged": true,
+    "frozen_driver_recipe_stages_reproduced": 16
+  },
+  "live_handoff": {
+    "passed": true,
+    "provider": "docker-cgroup-freezer-pidfd/1",
+    "whole_family_paused": true,
+    "frozen_observation_seconds": 3,
+    "root_child_background_counters_before": {
+      "root": 35,
+      "background": 110,
+      "child": 11
+    },
+    "root_child_background_counters_after": {
+      "root": 51,
+      "background": 151,
+      "child": 49
+    },
+    "original_processes": 8,
+    "replacement_native_processes": false,
+    "old_owner_denied": true,
+    "observer_read_only": true,
+    "observer_saw_paused_and_resumed_b": true,
+    "owner": "bob",
+    "epoch": 2,
+    "new_owner_native_commands": 2,
+    "stale_native_driver_denied": true,
+    "delayed_old_owner_step_fenced": true,
+    "dss_commands": 2,
+    "matching_stage_receipts": 10,
+    "provenance_epochs": [
+      1,
+      2
+    ],
+    "logical_reservations_during_handoff": 3,
+    "original_processes_exited": true,
+    "unrelated_reservations_retained": 1,
+    "worker_reusable": false,
+    "new_children_after_handoff": false,
+    "full_v08_qualified": false
+  },
+  "terminal_after_handoff": {
+    "state": "RELEASED",
+    "native_status": "FINISHED",
+    "native_members": 2,
+    "children": 1,
+    "effect_receipts": 10,
+    "processes_exited": 8,
+    "exit_code": 0,
+    "oom_killed": false,
+    "worker_reusable": false,
+    "unrelated_reservations_retained": 1
+  },
+  "independent_primary_dss": {
+    "commands": 10,
+    "matching_stage_receipts_each_ledger": 50,
+    "cross_ledger_match": true
+  },
+  "native_prompt_cohort": {
+    "passed": true,
+    "actual_native_executor": true,
+    "prompt_generations": 21,
+    "owner_answers_selected": 20,
+    "native_timed_defaults": 1,
+    "invalid_owner_denials": 3,
+    "root_child_and_grandchild": true,
+    "reply_grants_consumed_once": true,
+    "quiescence_proven": false,
+    "effective_transfer": false,
+    "full_v08_qualified": false
+  },
+  "failed_attempts_retained": [
+    {
+      "commit": "ee4a4fae00e9bb0ed91b7208ee511e4e23458978",
+      "workflow": 40246877695,
+      "reason": "Isolated worker module lookup; frozen driver preimages and native isolated bootstrap corrected"
+    },
+    {
+      "commit": "ead2ffabf58f33f0dff07eb4151eb529b376928f",
+      "workflow": 40247191325,
+      "reason": "Isolated worker module lookup"
+    },
+    {
+      "commit": "df02582831424d82b354ce83f606f23e6d97b436",
+      "workflow": 40247342623,
+      "reason": "Frozen tmpfs counter collection via docker cp failed"
+    },
+    {
+      "commit": "e7ec11ac49577f78e86083fb83c5a7b80705e2d5",
+      "workflow": 40247652247,
+      "reason": "Counter collection replaced with host /proc process-root reads"
+    }
+  ],
+  "limitations": [
+    "Single trusted Docker/cgroup-v2 host with a separate pinned host certificate",
+    "One accepted A-to-B transfer; child roster sealed and no new children after transfer",
+    "Known closed prompts and fully reconciled driver/command histories required",
+    "No repeated transfer, reconnect recovery, Kubernetes attestation or paired IDE/browser qualification",
+    "Full-v0.8 release gates remain false; public runtime disabled"
+  ],
+  "full_v08_qualified": false,
+  "release_published": false
+}

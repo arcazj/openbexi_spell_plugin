@@ -76,6 +76,11 @@ original process, reconciles both owner epochs' DSS receipts and releases only
 the finished family's reservations. The unrelated witness and spent-worker
 status remain intact.
 
-These are candidate acceptance criteria; exact successful commit/workflow and
-artifact evidence are recorded in PR #4. No full-v0.8 release gate is promoted
-merely by selecting this profile.
+The private cohort passed at `c850ba8e347c0c6d11d8b1b26cdb6f1b5f6c9105`:
+eight original processes, three stationary counters over a three-second freeze,
+B's native PAUSE/RUN, two DSS commands with ten matching stage receipts, and
+terminal release preserving the witness reservation. The same commit passed
+1,026 hosted tests without failures, errors or skips. See the source-bound
+[qualification receipt](evidence/native-live-handoff/qualification-summary.json)
+and PR #4 for workflow and artifact identities. No full-v0.8 release gate is
+promoted by this private profile.
