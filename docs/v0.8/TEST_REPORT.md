@@ -2442,3 +2442,10 @@ checks both diagnostic records; no failure is relabelled or warning suppressed.
 [The source-bound receipt](evidence/controller-network/qualification-summary.json) records the component result and limits.
 The publication preflight still exits 1: development version, all eleven full
 gate groups unqualified, no merge/tag/release or production migration.
+
+
+## Dev56 automatic controller liveness — 2026-10-25 Pacific/Honolulu
+
+1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.
+
+Candidate `bad5f984e5be852dba70ed959fa73203d16b5639` and IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` match their tested merge trees. Four TLS cases kill the client or disrupt heartbeat delivery before any explicit close; native and installed-IDE cohorts preserve eight original processes and require host-proven resume. The unchanged C++ composition matches dev55 (144 units and twelve admission headers). High cgroup memory pressure and late native-binding replies remain open; earlier failed attempts are retained. No full release gate was promoted. [Source-bound receipt](evidence/controller-liveness/qualification-summary.json); [workflow](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40283981575).

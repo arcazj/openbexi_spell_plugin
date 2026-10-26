@@ -1,23 +1,27 @@
 # Full v0.8 publication qualification
 
-The full release is **not qualified**. Server `0.8.0.dev55` and pinned IDE
-`1.2.1.dev4` remain development packages. Exact candidate `81b8b41` passes
-**1,210 service tests**, **71 overlapping fault probes** and **241 portable tests**,
-all fourteen core jobs and five ancillary workflows. Nineteen archives, their
-recorded repository source hashes and identical candidate/CI merge trees are
-verified. [The component receipt](evidence/controller-network/qualification-summary.json) retains the exact identities.
+The full release is **not qualified**. Server `0.8.0.dev56` and paired IDE
+`1.2.1.dev5` remain development packages. Candidate `bad5f98` passes
+**1,234 service tests**, **95 overlapping fault tests** and **241 portable tests**,
+all fourteen core jobs and five ancillary workflows. IDE `c5edbda` passes
+282 tests with one documented Windows-only skip. Nineteen server archives and
+one IDE archive, recorded sources, wheel contents and matching candidate/CI
+merge trees are verified. [The component receipt](evidence/controller-liveness/qualification-summary.json) records the identities.
 
-[Controller/network testing](CONTROLLER_NETWORK_RECOVERY.md) verifies lost
-close/rebind/activation replies, client death after close commits and an
-unreachable transport. Host proofs in these seven fault cases remain fixtures.
-Automatic detection of an abrupt controller loss before explicit close is
-**not implemented**, so that release requirement remains blocked.
-[The native spawn correction](NATIVE_SPAWN.md) avoids a demonstrated inherited
-fork-callback stall, preserves the port's signal policy and passes native
-handoff/IDE, sixteen terminal cases and twenty-four fresh-family cycles.
-Historical startup and DSS timeout causes remain unproven; earlier failures
-and two failed dev55 attempts remain retained. All eleven full-release gates
-remain unresolved.
+[Automatic controller-loss fencing](AUTOMATIC_CONTROLLER_LIVENESS.md) now uses
+monotonic leases and rotating challenges. Four actual TLS loss cases complete
+explicit recovery with fixture host proofs. Both native and installed-IDE
+cohorts detect absent heartbeats without `session.close`, preserve eight original
+processes and require independent host freeze and explicit resume. Detection was
+27.47 and 24.90 seconds after heartbeat detach under the 30-second lease policy.
+
+Initial longer native probes were OOM-killed at 768 MiB. The corrected 1 GiB
+resident-memory profile passes, but both cohorts still reach that cap with
+thousands of memory-limit events. Long-duration memory behavior remains a
+blocker. A second-attempt primary cohort also reproduced two late native member
+replies beyond the unchanged four-second deadline. Its timing and failures are
+retained; later passes do not establish their root cause. All eleven full-release
+gates remain unresolved.
 
 The owner request **"Qualify and release full v0.8"** authorizes implementation,
 qualification, merge, tag and GitHub publication once all mandatory criteria
@@ -67,7 +71,7 @@ Desktop reconnect now opens a fresh authenticated session and retains other exec
 
 | Full gate | Outstanding acceptance |
 | --- | --- |
-| Services | Automatic abrupt-controller-loss detection; native/deployed partitions and recovery; production routing and full isolation/fault coverage |
+| Services | Deployed controller/node partitions, production routing and complete workload isolation/fault coverage |
 | Native family | Startup reliability, timed/default and queued/uncertain prompt transfer, later children, broader controller fault recovery/child semantics and wider native coverage |
 | Compatibility | All 763 requirements and native compatibility; original archival Windows captures remain missing |
 | Driver faults | Stage reply loss, same-DB DSS restart and reset denial now checked; historical dev52 timeout, broader partitions, authority/driver recovery and deployed bounded load remain |
@@ -97,8 +101,8 @@ this diagnostic repair is not a startup reliability fix.
 
 ## Publication preflight
 
-`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev55
-[executed preflight](evidence/controller-network/publication-preflight.json)
+`RELEASE_GATES.json` records all eleven mandatory groups. The clean dev56
+[executed preflight](evidence/controller-liveness/publication-preflight.json)
 reports `full_v08_qualified: false`, `eligible_for_publication: false`, and
 `publication_performed: false`.
 

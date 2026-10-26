@@ -1,5 +1,13 @@
 # v0.8 development changelog
 
+## 0.8.0.dev56 — automatic controller-loss fencing
+
+- Require monotonic leases for retained native Contexts; rotate one-use heartbeat challenges, reject stale renewal and fence admission before serialized cleanup. Preserve holds and host-proven recovery.
+- Pair IDE c5edbda / 1.2.1.dev5 with background heartbeats, scoped proof disposal and fresh-session reconnect after expiry. Correct completed-expiry cleanup without affecting successor sessions.
+- Qualify four new TLS loss cases and both original-family native recovery routes without explicit close. Retain two failed candidate runs, local before/after regressions and initial OOM evidence. Record high memory pressure after aligning the two-executor probe with the 1 GiB profile.
+- 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified. See [controller liveness](AUTOMATIC_CONTROLLER_LIVENESS.md) and [receipt](evidence/controller-liveness/qualification-summary.json).
+
+
 ## 0.8.0.dev55 — controller/network fault boundaries and native spawn
 
 - Add seven real TLS recovery cases covering committed close/rebind/activation reply loss, killed controller client and unreachable TLS. Require old-grant fencing, bounded observer reads, retained holds and no automatic resume/replay. Host proof remains an explicit fixture; abrupt-loss liveness detection remains unimplemented.

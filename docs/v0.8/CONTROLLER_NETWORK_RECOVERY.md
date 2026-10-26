@@ -21,23 +21,21 @@ uses the existing explicit host completion and activation protocol. Lost replies
 do not justify replay of an uncertain effect. The client-death case kills a real
 separate TLS client process; it occurs **after an explicit close has committed**.
 
-## Remaining liveness gap
+## Automatic liveness component
 
-The current stateless request protocol has explicit `session.close` and rebind,
-but no controller heartbeat or persistent connection-loss notification. An abrupt
-client death or partition **before** an explicit close does not automatically
-change its logical session to `CONTROLLER_DISCONNECTED`. The blackhole case
-records `automatic_disconnect_detection: false` and observes `OWNED`; it does not
-mislabel the unreachable client as a detected disconnect.
+Dev56 adds four automatically detected loss cases: a killed controller process,
+a lost heartbeat acknowledgement, a stalled reply and a TCP/TLS blackhole.
+All retain holds and complete explicit recovery using fixture host proofs. The
+original seven dev55 cases remain regressions; their legacy prelaunch blackhole
+case intentionally has no lease and continues to report no automatic detection.
 
-Closing this gap requires authenticated session liveness, a bounded detection
-policy and durable fencing serialized with existing execution admission. Missing
-liveness must never promote an observer, release reservations, kill a native
-family or claim quiescence. Reconnect must still create a new generation and
-require the existing host barrier. Tests must include killed clients, one-way
-partitions, delayed heartbeats, old-generation traffic, Context restart and
-unaffected observers with actual native families. This remains a services and
-recovery release blocker.
+Retained native Contexts now require a monotonic lease, defaulting to 30 seconds.
+Rotating challenges prevent replayed or queued old heartbeats from extending it.
+Both native and installed-IDE cohorts verify automatic fencing with eight
+original processes and host-proven explicit resume. Their injected fault is
+heartbeat transport detach, not a deployed node partition. See
+[AUTOMATIC_CONTROLLER_LIVENESS.md](AUTOMATIC_CONTROLLER_LIVENESS.md) for the
+protocol, evidence limits and remaining native-memory concern.
 
 ## Reproduction
 
@@ -54,3 +52,7 @@ All eleven full-v0.8 release gates remain unqualified.
 Candidate `81b8b41be71a3420241ed8163535e65518987226` passes the available hosted component profiles.
 1,210 service tests, 71 overlapping fault probes and 241 portable tests pass, with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. All nineteen artifact archives and recorded source hashes are verified. Seven controller/network cases and nine compiled spawn cases pass. All eleven full-release gates remain unqualified.
 [The receipt](evidence/controller-network/qualification-summary.json) and [executed run](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40278694435) retain the exact result.
+
+## Dev56 source-bound qualification
+
+1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified. See [the exact receipt](evidence/controller-liveness/qualification-summary.json) and [executed workflow](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40283981575).

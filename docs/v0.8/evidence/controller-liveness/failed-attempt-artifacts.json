@@ -1,0 +1,3428 @@
+[
+  {
+    "artifact_id": 12633202503,
+    "name": "v08-fault-reproduction-a095e23c15b34de7b0cd2d12cd9394b6cc49e64a",
+    "sha256": "11b8cda032797a6e29c9c3d83bba49bf18095d966c6c73044a4b24d2d096c61c",
+    "zip_integrity": true,
+    "candidate": "abbeb876097dc6536c0a5eb29d9f15d761c837f5",
+    "reports": [
+      {
+        "passed": false,
+        "error": null,
+        "junit": {
+          "tests": 92,
+          "failures": 3,
+          "errors": 0,
+          "skipped": 0
+        },
+        "verified_source_files": 185,
+        "checks": null,
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12633028345,
+    "name": "v08-native-launch-native-handoff-a095e23c15b34de7b0cd2d12cd9394b6cc49e64a",
+    "sha256": "07e54fa33ef78d579e107b3f354be203d17e0c701a53ac277e8c9e01c18aa5fb",
+    "zip_integrity": true,
+    "candidate": "abbeb876097dc6536c0a5eb29d9f15d761c837f5",
+    "reports": [
+      {
+        "passed": false,
+        "error": "RuntimeError: Counter observation requires the live bound container",
+        "junit": null,
+        "verified_source_files": 124,
+        "checks": null,
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12632827634,
+    "name": "v08-native-launch-native-ide-a095e23c15b34de7b0cd2d12cd9394b6cc49e64a",
+    "sha256": "142cd2946f86cb7ec974a5471c2c1b9913e95497b200b03f3ded8f745235ace7",
+    "zip_integrity": true,
+    "candidate": "abbeb876097dc6536c0a5eb29d9f15d761c837f5",
+    "reports": [
+      {
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-handoff-disconnected-denied",
+        "junit": null,
+        "verified_source_files": 124,
+        "checks": null,
+        "native_ide": {
+          "context_id": "H",
+          "installed_client_sha256": "5274730a4a3198c91406922f0f3a852a606b28f5c01c5891eeb14a8231815d80",
+          "ide_commit": "e060272720fc31b5a1aa19ff4d251fb48a798da6",
+          "ide_version": "1.2.1.dev5",
+          "listener_pid": 31415,
+          "gateway_pid": 31416,
+          "three_certificate_identities": true,
+          "public_launch_enabled": false,
+          "browser_tested": false,
+          "calls": [
+            {
+              "subject": "alice",
+              "method": "source.catalog",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.reserve",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.reserve",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_STEP",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.claim",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.decide",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.rebind",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_PAUSE",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_STEP",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.claim",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.decide",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "alice",
+              "method": "execution.rebind",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            }
+          ]
+        },
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12632419569,
+    "name": "v08-server-foundation-a095e23c15b34de7b0cd2d12cd9394b6cc49e64a",
+    "sha256": "bfea8b4e33592069f513f10c527de6e137b31a6b401002e72b580789de6dd25d",
+    "zip_integrity": true,
+    "candidate": "abbeb876097dc6536c0a5eb29d9f15d761c837f5",
+    "reports": [
+      {
+        "passed": false,
+        "error": null,
+        "junit": {
+          "tests": 1231,
+          "errors": 0,
+          "failures": 4,
+          "skipped": 0
+        },
+        "verified_source_files": 203,
+        "checks": [
+          {
+            "name": "lint",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "format",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "types",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "mypy",
+              "--config-file",
+              "server/pyproject.toml",
+              "server/src"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "tests",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "pytest",
+              "server/tests",
+              "-v",
+              "-W",
+              "error",
+              "--tb=short",
+              "--durations=15",
+              "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/v08-server/run-20261026T070031Z-2267f067/tests.xml"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "timeout_seconds": 600
+          }
+        ],
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12632838893,
+    "name": "v08-fault-reproduction-ca67315530e9e9761a4a7aa330a27aa0f5a3beb8",
+    "sha256": "55a3a3a12a227ac31018b092c06325454b291b167bebdba1d05de0cabc51dc65",
+    "zip_integrity": true,
+    "candidate": "3292038e7aee2137f7913e2df9e4b3d49cb00b46",
+    "reports": [
+      {
+        "passed": false,
+        "error": null,
+        "junit": {
+          "tests": 93,
+          "failures": 4,
+          "errors": 0,
+          "skipped": 0
+        },
+        "verified_source_files": 185,
+        "checks": null,
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12633655089,
+    "name": "v08-native-launch-native-ide-ca67315530e9e9761a4a7aa330a27aa0f5a3beb8",
+    "sha256": "d0c499c58d20101bae36cb5cdfb90c21e471d87c0c4a152e0d097a713df5cea2",
+    "zip_integrity": true,
+    "candidate": "3292038e7aee2137f7913e2df9e4b3d49cb00b46",
+    "reports": [
+      {
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-handoff-disconnected-denied",
+        "junit": null,
+        "verified_source_files": 124,
+        "checks": null,
+        "native_ide": {
+          "context_id": "H",
+          "installed_client_sha256": "5274730a4a3198c91406922f0f3a852a606b28f5c01c5891eeb14a8231815d80",
+          "ide_commit": "e060272720fc31b5a1aa19ff4d251fb48a798da6",
+          "ide_version": "1.2.1.dev5",
+          "listener_pid": 30334,
+          "gateway_pid": 30335,
+          "three_certificate_identities": true,
+          "public_launch_enabled": false,
+          "browser_tested": false,
+          "calls": [
+            {
+              "subject": "alice",
+              "method": "source.catalog",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.reserve",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.reserve",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "session.open",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_STEP",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.claim",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.decide",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.rebind",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "observer",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.prompt.reply",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_PAUSE",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_STEP",
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.claim",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "bob",
+              "method": "execution.decide",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "bob",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 403
+            },
+            {
+              "subject": "alice",
+              "method": "execution.rebind",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "alice",
+              "method": "execution.command",
+              "command": "CMD_RUN",
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            },
+            {
+              "subject": "observer",
+              "method": "execution.list",
+              "command": null,
+              "status": 200
+            }
+          ]
+        },
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12633530347,
+    "name": "v08-native-launch-native-handoff-ca67315530e9e9761a4a7aa330a27aa0f5a3beb8",
+    "sha256": "7c1b8c7dc8e418f560a41b61661beea6f8297aa50a5f6220e94dffc557eb55b5",
+    "zip_integrity": true,
+    "candidate": "3292038e7aee2137f7913e2df9e4b3d49cb00b46",
+    "reports": [
+      {
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-child-running",
+        "junit": null,
+        "verified_source_files": 124,
+        "checks": null,
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  },
+  {
+    "artifact_id": 12633575573,
+    "name": "v08-server-foundation-ca67315530e9e9761a4a7aa330a27aa0f5a3beb8",
+    "sha256": "3bb0b0abe9bbf33741a97186611a328327b99f36a90d26f24113841f4783c68c",
+    "zip_integrity": true,
+    "candidate": "3292038e7aee2137f7913e2df9e4b3d49cb00b46",
+    "reports": [
+      {
+        "passed": false,
+        "error": null,
+        "junit": {
+          "tests": 1232,
+          "errors": 0,
+          "failures": 5,
+          "skipped": 0
+        },
+        "verified_source_files": 203,
+        "checks": [
+          {
+            "name": "lint",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "format",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "server",
+              "driver_plugin/src/openbexi_spell_dss/fenced_transport.py",
+              "driver_plugin/src/openbexi_spell_dss/context_driver.py",
+              "driver_plugin/src/openbexi_spell_dss/context_server.py",
+              "host_runtime/python/v08_worker.py",
+              "host_runtime/python/thread_barrier.py",
+              "host_runtime/python/child_gate.py",
+              "host_runtime/python/control_journal.py",
+              "host_runtime/python/prompt_replies.py",
+              "host_runtime/build_admission_context.py",
+              "host_runtime/native_prompt_patch.py",
+              "host_runtime/native_terminal_patch.py",
+              "host_runtime/python/terminal_probe.py",
+              "host_runtime/python/handoff_runtime.py",
+              "host_runtime/python/handoff_probe.py",
+              "host_runtime/python/epoch_connection.py",
+              "host_runtime/python/epoch_relay.py",
+              "scripts/v08_handoff_cohort.py",
+              "scripts/v08_ide_cohort.py",
+              "scripts/v08_controller_heartbeat.py",
+              "scripts/v08_terminal_cohort.py",
+              "scripts/qualify_v08_native_launch.py",
+              "scripts/v08_listener_survival.py",
+              "scripts/v08_native_consumption.py",
+              "scripts/check_v08_release.py",
+              "scripts/qualify_v08_faults.py",
+              "scripts/qualify_v08_server.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "types",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "mypy",
+              "--config-file",
+              "server/pyproject.toml",
+              "server/src"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "timeout_seconds": 180
+          },
+          {
+            "name": "tests",
+            "command": [
+              "/opt/hostedtoolcache/Python/3.13.16/x64/bin/python",
+              "-m",
+              "pytest",
+              "server/tests",
+              "-v",
+              "-W",
+              "error",
+              "--tb=short",
+              "--durations=15",
+              "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/v08-server/run-20261026T070427Z-7e923212/tests.xml"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "timeout_seconds": 600
+          }
+        ],
+        "native_ide": null,
+        "native_live_handoff": null,
+        "native_terminal": null
+      }
+    ]
+  }
+]
