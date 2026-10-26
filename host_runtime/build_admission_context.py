@@ -82,8 +82,20 @@ def replace_native_message_codec(text):
     if text.count(setter) != 1:
         raise ValueError("Native IPC setter boundary differs")
     text = text.replace(setter, "    m_properties[std::move(key)] = std::move(value);")
+    for old, new in (
+        ("m_properties = msg.m_properties;", "v08_copy_properties(m_properties,msg.m_properties);"),
+        ("m_properties = msg->m_properties;", "v08_copy_properties(m_properties,msg->m_properties);"),
+        ("m_properties = copy.m_properties;", "v08_copy_properties(m_properties,copy.m_properties);"),
+        ("    m_properties.clear();", "    v08_recycle_properties(m_properties);"),
+    ):
+        if text.count(old) != 1:
+            raise ValueError("Native property storage boundary differs")
+        text = text.replace(old, new)
     return (
-        "#include <utility>\n"
+        '#include <utility>\n#include "SPELL_IPC/SPELLipcMessage.H"\n'
+        "namespace {\n"
+        "void v08_copy_properties(SPELLipcMessage::Properties&, const SPELLipcMessage::Properties&);\n"
+        "void v08_recycle_properties(SPELLipcMessage::Properties&) noexcept;\n}\n"
         + text
         + '\n#include "/candidate/message_codec.H"\n'
         + '#include "/candidate/allocation_trace.H"\n'

@@ -167,3 +167,5 @@ void SPELLipcMessage::v08FromData(const std::string& data)
         throw;
     }
 }
+
+#include "message_storage.H"
