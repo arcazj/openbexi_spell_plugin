@@ -1,0 +1,330 @@
+{
+  "schema": "openbexi.v08.dss-stage-coverage/1",
+  "candidate_commit": "648b69dc7c45591c7d68afb14e21a40cc1416337",
+  "ci_merge_commit": "70c5aec121af1b046e6c7f94188c1d9beda8b053",
+  "identical_candidate_and_merge_tree": "0959e424f29d7942d94951e0f2275005af34a6c0",
+  "package_version": "0.8.0.dev53",
+  "runtime_unchanged_from": "d01fc30a114e0f45978b2771493917aea16269b1",
+  "test_only_change": "server/tests/test_driver_timing.py",
+  "test_file_sha256": "41e24d4478d5066b9e62d87b31083abcb5c5281c1ddb8ec408e657de09c6d24d",
+  "component_passed": true,
+  "full_v08_qualified": false,
+  "release_gate_groups_qualified": 0,
+  "publication_performed": false,
+  "core_workflow_run": 40270113131,
+  "jobs": [
+    {
+      "id": 121400887165,
+      "name": "foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887281,
+      "name": "native-launch (native-terminal, --native-terminal)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887339,
+      "name": "native-launch (dss, --native-dss)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887449,
+      "name": "native-launch (pause-probe, --native-pause-probe)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887452,
+      "name": "native-launch (thread-barrier, --native-thread-barrier)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887453,
+      "name": "native-boundary",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887460,
+      "name": "native-launch (listener-survival, --native-listener-survival)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887482,
+      "name": "native-launch (audit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887483,
+      "name": "native-launch (child-gate, --native-child-gate)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887496,
+      "name": "native-launch (native-prompts, --native-prompts)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887522,
+      "name": "native-launch (native-ide, --native-ide)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887550,
+      "name": "native-launch (native-handoff, --native-handoff)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121400887572,
+      "name": "native-launch (native-startup-stress, --native-startup-stress)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "workflows": [
+    {
+      "id": 40270113104,
+      "name": "v0.8 Kubernetes prelaunch static security gate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40270113107,
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40270112963,
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40270112977,
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40270112982,
+      "name": "v0.8 portable preparation and driver compatibility subset",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40270113131,
+      "name": "v0.8 services, authority and worker preflight",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "foundation": {
+    "tests": 1161,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "portable": {
+    "tests": 241,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "focused_diagnostic_tests_passed": 17,
+  "fault_matrix": {
+    "stages": [
+      "TRANSPORT",
+      "LOADING",
+      "RELEASE",
+      "ACKNOWLEDGEMENT",
+      "ONBOARD_EXECUTION"
+    ],
+    "failure_phases": [
+      "send",
+      "receipt",
+      "settle"
+    ],
+    "cases": 15,
+    "assertions": [
+      "original cause preserved",
+      "each admitted stage sent once",
+      "one uncertainty notification",
+      "failed phase and stage retained in bounded timing",
+      "private exception text excluded"
+    ]
+  },
+  "native_cases": [
+    {
+      "artifact_id": 12628525977,
+      "passed_cases": 4,
+      "case_names": [
+        "abort-paused",
+        "close-paused",
+        "abort-running",
+        "close-running"
+      ]
+    },
+    {
+      "artifact_id": 12628446210,
+      "passed_cases": 16,
+      "case_names": [
+        "forced-loss",
+        "close-wait",
+        "close-child",
+        "abort-paused",
+        "close-paused",
+        "abort-running",
+        "close-running",
+        "abort-prompt",
+        "close-prompt",
+        "cancel-prompt",
+        "normal",
+        "error",
+        "timeout",
+        "abort-thread",
+        "abort-child",
+        "close-thread"
+      ]
+    },
+    {
+      "artifact_id": 12628980480,
+      "passed_cases": 24,
+      "case_names": [
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child",
+        "close-child"
+      ]
+    }
+  ],
+  "verified_artifacts": [
+    {
+      "artifact_id": 12627862841,
+      "name": "v08-native-launch-dss-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "39fbfefd0efdde3601a741ee1d075022bea0abaa6fe44b0c313ae3a357ff90de",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "0d8b94399cdaaf7b2e8968d20389fd1f0be35e014b2908f904e42e959c9d5f2b",
+          "passed": true,
+          "verified_source_files": 122
+        }
+      ]
+    },
+    {
+      "artifact_id": 12628371115,
+      "name": "v08-server-foundation-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "89ce66a2776b4723f4afd896de4365c874d7a88a7c59bd25cc448a60d6bb3028",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "e9724bbae76762e905e1236c96bcfaebc94f6b06780b24c86cc0f7a9de7e7bee",
+          "passed": true,
+          "verified_source_files": 186
+        }
+      ]
+    },
+    {
+      "artifact_id": 12628485709,
+      "name": "v08-compatibility-subset-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "edb91889620e2b711f5a86e8aed4638ab9639711b3533f69003fc77bb6d0bc1d",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "5cd27b538dd8acf698f3c533ffd08af493c6305baa613f1c5358e00f8fdebfaf",
+          "passed": true,
+          "verified_source_files": 191
+        }
+      ]
+    },
+    {
+      "artifact_id": 12628525977,
+      "name": "v08-native-launch-native-ide-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "033173a346130965b6d3ec269637a5e6b57d7392c535a2fdce36c642c3f7a6e1",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "cb6b0225a46975cc6a88ff2c18ec997658385a10f3c572044031dd6fd20fd77e",
+          "passed": true,
+          "verified_source_files": 122
+        }
+      ]
+    },
+    {
+      "artifact_id": 12628446210,
+      "name": "v08-native-launch-native-terminal-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "08f287262b1901c3541af2c79aa1949b0e416dce5bdac5a10fdcd8e9ae49572b",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "e8965a7dcb6ce260dc9ee24f933058349838bf8c506fb9e81bbd0027af8cf544",
+          "passed": true,
+          "verified_source_files": 122
+        }
+      ]
+    },
+    {
+      "artifact_id": 12628980480,
+      "name": "v08-native-launch-native-startup-stress-70c5aec121af1b046e6c7f94188c1d9beda8b053",
+      "sha256": "d5a7f8cdde1139553a314d66939624de082151e5fab402ad0920f87458a281bf",
+      "zip_integrity": true,
+      "reports": [
+        {
+          "filename": "result.json",
+          "sha256": "c4ef253758d65c8048d492805ce399efe6c3ba8844c420164b42b26538716211",
+          "passed": true,
+          "verified_source_files": 122
+        }
+      ]
+    }
+  ],
+  "verification_scope": "Six relevant artifacts verified for this follow-up; all thirteen core jobs and five ancillary workflows succeeded. Does not replace the eighteen-artifact d01fc30 baseline receipt.",
+  "historical_dss_timeout_cause_established": false,
+  "historical_native_startup_causes_established": false,
+  "historical_failures": [
+    "dev52: ten uncertain driver commands, twenty ACKED stages, no child admissions; historical phase timings unavailable",
+    "dev49: two native peers disappeared after durable member binding and before ALLOW delivery; deadline versus other transport cause unknown"
+  ],
+  "next_acceptance": [
+    "Reproduce DSS deadline failure with phase timings and correlate ledger/authority waits, socket receipt delay and scheduling; preserve original budgets and prohibit replay",
+    "Reproduce native acknowledgement loss with both native channel reason/errno/timing and Context dispatch/binding events",
+    "Require a causal reproduction and a passing regression for a claimed fix; passing reruns alone do not close historical blockers"
+  ]
+}
