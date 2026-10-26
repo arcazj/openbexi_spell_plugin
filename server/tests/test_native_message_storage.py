@@ -133,3 +133,11 @@ def test_native_storage_reduces_real_message_copy_allocations(storage_binaries):
     assert before["allocated_bytes"] > 20_000_000
     assert after["allocated_bytes"] < before["allocated_bytes"] * 0.25
     assert after["allocations"] < before["allocations"] * 0.25
+
+
+def test_interleaved_message_shapes_reuse_matching_owned_storage(storage_binaries):
+    before = run(storage_binaries["before"], "mixed_bench")
+    after = run(storage_binaries["after"], "mixed_bench")
+    assert before["allocations"] >= 200_000
+    assert after["allocations"] == 0
+    assert after["allocated_bytes"] == 0

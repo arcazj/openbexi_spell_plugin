@@ -20,19 +20,49 @@ struct V08PropertyStorage {
 };
 static V08PropertyStorage v08_property_storage;
 
-static void v08_take_properties(SPELLipcMessage::Properties& target)
+static bool v08_same_keys(const SPELLipcMessage::Properties& a,
+                          const SPELLipcMessage::Properties& b)
 {
-    if (!target.empty() || !v08_storage_live.load()) return;
+    if (a.size()!=b.size()) return false;
+    auto left=a.begin();
+    for (const auto& field:b) {
+        if (left->first!=field.first) return false;
+        ++left;
+    }
+    return true;
+}
+
+static void v08_take_properties(SPELLipcMessage::Properties& target,
+                               const SPELLipcMessage::Properties& source)
+{
+    if (!target.empty() || source.empty() || source.size()>v08_storage_fields
+        || !v08_storage_live.load()) return;
     std::unique_lock<std::mutex> lock(v08_property_storage.mutex,std::try_to_lock);
-    if (lock.owns_lock() && v08_property_storage.used)
-        target.swap(v08_property_storage.maps[--v08_property_storage.used]);
+    if (!lock.owns_lock()) return;
+    auto& storage=v08_property_storage;
+    // LINE, ACK and control messages interleave. Taking the last map blindly
+    // destroys one shape's nodes to construct the next. Keep distinct shapes
+    // while there is room, and take only an exact key inventory after warm-up.
+    for (size_t index=storage.used;index>0;--index) {
+        auto& candidate=storage.maps[index-1];
+        if (!v08_same_keys(candidate,source)) continue;
+        target.swap(candidate);
+        if (index!=storage.used) candidate.swap(storage.maps[storage.used-1]);
+        --storage.used;
+        return;
+    }
+    // Preserve bounded behavior for unbounded input shape diversity. A full
+    // cache may reuse its final map; copy synchronization still removes every
+    // absent key. Never grow the cache or block waiting for another thread.
+    if (storage.used==v08_storage_slots)
+        target.swap(storage.maps[--storage.used]);
 }
 
 void v08_copy_properties(SPELLipcMessage::Properties& target,
                          const SPELLipcMessage::Properties& source)
 {
     if (&target==&source) return;
-    v08_take_properties(target);
+    v08_take_properties(target,source);
     auto current=target.begin();
     for (const auto& field:source) {
         while (current!=target.end() && current->first<field.first)

@@ -1,0 +1,48 @@
+{
+  "schema": "openbexi.native-shape-cache-component/1",
+  "base_commit": "153b2edf5571d887f30c83a1075faef7765f250e",
+  "base_tree": "f9a82b26f6c762f76328fbcb6c22c7d1e82b40f1",
+  "source_archive_sha256": "72465a84edc2e4bb3274265ecab6534402424639e9d2a700ffd0dcb41468fec4",
+  "source_sha256": {
+    "host_runtime/native/message_storage.H": "bc533300f3e7d7ee43a8dcf7233fd52263bf8d7d28961eb8f834953ad07e5a8e",
+    "server/tests/native_storage_harness.cpp": "f6722340fbe03c8ab2c6b4ecb41f5e3162bac7a41bfe1af840a05970a9dae8d0",
+    "server/tests/test_native_message_storage.py": "c46814ae87a06d4279ba8f7e130630f522f1fcfc68b1fe645c1d16606f05ae67"
+  },
+  "local_environment": {
+    "python": "3.13.5",
+    "pytest": "pytest 9.0.2",
+    "compiler": "c++ (Debian 14.2.0-19) 14.2.0"
+  },
+  "mixed_shape_benchmark": {
+    "copies": 40000,
+    "shapes": 4,
+    "baseline_allocations": 260000,
+    "baseline_allocated_bytes": 24960000,
+    "candidate_allocations": 0,
+    "candidate_allocated_bytes": 0,
+    "message_size_bytes": 176,
+    "warmup_passes": 3
+  },
+  "baseline_regression_failed_as_expected": true,
+  "component_suites": [
+    {
+      "name": "native",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "1ca0727bc1f4e542e37fe1b50936adca568707fea473267f8f1a51bd173bd57e"
+    },
+    {
+      "name": "recovery_guards",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "d26199928060abe492f84dae3e3a938958d64d100b4b3f33452640b4dc7e1ec8"
+    }
+  ],
+  "hosted_recovery_qualified": false,
+  "full_v08_qualified": false,
+  "release_gates_promoted": []
+}

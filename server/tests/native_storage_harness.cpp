@@ -39,6 +39,25 @@ int main(int argc,char** argv) {
         measure=true;
         for(int n=0;n<10000;++n) {auto a=source;auto b=a;SPELLipcMessage c;c=b;}
         measure=false;
+    } else if(mode=="mixed_bench") {
+        // Interleaved native LINE, ACK, and control shapes: same-size shapes
+        // deliberately have different keys. Short metadata isolates map nodes.
+        std::vector<SPELLipcMessage> shapes;
+        for (int kind=0;kind<4;++kind) {
+            SPELLipcMessage item("MSG");item.setSender("X");item.setReceiver("Y");
+            for (int field=0;field<(kind==1?2:8);++field)
+                item.set(std::to_string(kind)+"-"+std::to_string(field),"value");
+            shapes.push_back(std::move(item));
+        }
+        for (int warm=0;warm<3;++warm)
+            for (const auto& shape:shapes) {auto copy=shape;compare(copy,shape);}
+        measure=true;
+        for (int n=0;n<10000;++n)
+            for (const auto& shape:shapes) {
+                auto copy=shape;
+                require(copy.v08Fields()==shape.v08Fields());
+            }
+        measure=false;
     } else if(mode=="copy") {
         for(int n=0;n<256;++n) {
             source.set("Binary",std::string(100,static_cast<char>(n)));
