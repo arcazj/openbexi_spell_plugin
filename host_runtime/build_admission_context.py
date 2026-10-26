@@ -21,6 +21,24 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def replace_native_message_codec(text):
+    """Remove intermediate IPC allocations without changing the class ABI."""
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "470c0b989e292ec61c239cbb78f343754d79c001d51c689b5f3a65adafbddc15"
+    ):
+        raise ValueError("Native IPC message preimage differs")
+    for signature in (
+        "std::string SPELLipcMessage::data() const",
+        "void SPELLipcMessage::fromData( std::string data )",
+    ):
+        if text.count(signature) != 1:
+            raise ValueError("Native IPC message boundary differs")
+        start = text.index(signature)
+        end = text.index("\n}", start) + 2
+        text = text[:start] + text[end:]
+    return text + '\n#include "/candidate/message_codec.H"\n'
+
+
 def replace_native_spawn(text):
     """Execute through libc spawn without running the Context's fork callbacks.
 
@@ -144,6 +162,8 @@ def trace_native_startup(text):
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
+    message_codec = source / "lib/SPELL_IPC/src/SPELLipcMessage.C"
+    message_codec.write_text(replace_native_message_codec(message_codec.read_text()))
     native_input = source / "lib/SPELL_IPC/src/SPELLipcInput.C"
     if (
         sha(native_input)

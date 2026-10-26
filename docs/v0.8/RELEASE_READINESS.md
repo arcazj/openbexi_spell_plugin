@@ -1,5 +1,11 @@
 # Full v0.8 publication qualification
 
+Dev59 is the next candidate under qualification. It removes measured IPC
+encoding/decoding allocation overhead without changing the native class ABI or
+valid wire format. The fixed recovery oracle is unchanged; the dev58 failures
+below remain unresolved until the new whole-native evidence is verified.
+See [native IPC correction](NATIVE_MESSAGE_CODEC.md).
+
 The full release is **not qualified**. Dev58 candidate `9e954de` completed its
 first hosted qualification with **1,259 service tests**, **95 overlapping fault
 tests** and **241 portable tests** passing without failures/errors/skips. Twelve
