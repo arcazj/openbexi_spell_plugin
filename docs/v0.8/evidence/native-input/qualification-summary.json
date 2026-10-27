@@ -1,0 +1,932 @@
+{
+  "schema": "openbexi.v08.session-checkpoint/1",
+  "candidate": "16126007d3334c614a95289b0ea8084bbc247d65",
+  "candidate_tree": "1de6c45ba8a745938559cb272a6bebfb82899219",
+  "tested_merge": "37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+  "tested_merge_tree_matches": true,
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "core_run": 40523170281,
+  "diagnostic_run": 40523170557,
+  "comparison_run": 40523171304,
+  "implementation_commits": [
+    "3823fe046f5a820872131520f3d9e0f5e1e069ab",
+    "bea8f4f810afe2a5b26c28caa9a84a7beec89cee",
+    "16126007d3334c614a95289b0ea8084bbc247d65"
+  ],
+  "local_distinct_tests_final": 172,
+  "full_v08_qualified": false,
+  "remaining_gate_groups": [
+    "services",
+    "native_family",
+    "compatibility",
+    "driver_faults",
+    "ide_browser",
+    "compose",
+    "kubernetes",
+    "recovery",
+    "security",
+    "ci",
+    "packaging"
+  ],
+  "evidence_policy": "Keep initial failures and follow-up successes distinct; a diagnostic success does not imply resource acceptance.",
+  "core_jobs": [
+    {
+      "id": 122255474350,
+      "name": "native-boundary",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255474858,
+      "name": "fault-reproduction",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255474892,
+      "name": "native-launch (native-ide, --native-ide)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255474941,
+      "name": "native-launch (thread-barrier, --native-thread-barrier)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475024,
+      "name": "native-launch (native-prompts, --native-prompts)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475050,
+      "name": "native-launch (native-startup-stress, --native-startup-stress)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475057,
+      "name": "native-launch (child-gate, --native-child-gate)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475061,
+      "name": "native-launch (listener-survival, --native-listener-survival)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475098,
+      "name": "native-launch (dss, --native-dss)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475177,
+      "name": "native-launch (pause-probe, --native-pause-probe)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475229,
+      "name": "native-launch (native-terminal, --native-terminal)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475242,
+      "name": "native-launch (audit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122255475318,
+      "name": "native-launch (native-handoff, --native-handoff)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122255475371,
+      "name": "foundation",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "workflow_snapshot": [
+    {
+      "id": 40523171304,
+      "name": "v0.8 isolated memory comparisons (not release qualification)",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 40523171167,
+      "name": "v0.8 Kubernetes prelaunch static security gate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170502,
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170660,
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170415,
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170405,
+      "name": "v0.8 portable preparation and driver compatibility subset",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170557,
+      "name": "v0.8 native allocation site investigation (diagnostic only)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40523170281,
+      "name": "v0.8 services, authority and worker preflight",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": 12743385013,
+      "name": "v08-native-launch-listener-survival-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "5ea33cf06c1f92f29d9f8d5a06faae9422f42f1cd2ef76079979b1b008eb6b3b",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-3236b1bee6a343a0a5b24037587cd368/result.json",
+          "source_inputs": 68,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742726701,
+      "name": "v08-fault-reproduction-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "b8427ee0393686218d25b91faa29a634bd2e1aa11ad41617661454545d43d5cb",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-ac9683433d354f8cb2a43b9e3bab5beb/result.json",
+          "source_inputs": 204,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742706590,
+      "name": "v08-native-boundary-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "ae5ff4954f26e50d07af8ab0d86cb1dc75a472ba0e41a193c14967d57ab1cb13",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-6f3b672590e64ba681b383c670af8dcd/result.json",
+          "source_inputs": 0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742522356,
+      "name": "v08-native-launch-pause-probe-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "6798a13cf205cbed2873612e9d1ab83964f0f641bf452274b836e20463cf72f6",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-cd95c8d6f97d42be9b1b594869d416ea/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742479321,
+      "name": "v08-native-launch-thread-barrier-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "bf1a1cb7b02aa14a85619d04ee515b3c37ce7680c3ccbd86389330e358e52658",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-df5d0fd7b359435c8eb5f36940950af9/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741879571,
+      "name": "v08-native-launch-audit-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "d1b90451839ebed7bdf038eed30477c1fdc7c31f6236320205e274af2343442d",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-a337455dad904dbb962052b9feff2b19/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741289149,
+      "name": "v08-native-launch-dss-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "c7ecd34992af0ba5b09975aad3b5397d592021e38a934c328bd6b37d0b917467",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-de00e8d8d556406e9c49cc7a95a20877/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743575749,
+      "name": "v08-native-launch-native-handoff-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "e373612422dfe06684c490e8bf05a660a57c16d3cfc1651703b5dc8c3858e6b5",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-9b7864ce0b724e7db125571367568832/result.json",
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743271125,
+      "name": "v08-native-launch-native-prompts-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "2f2c5cd6fff3147d8d8cc17b81282910954a8e3b3779edd453c170b79d7e86aa",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-5042e703fa4b4cbd9c9c3f553f0ed1f1/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742269167,
+      "name": "v08-native-launch-child-gate-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "933c91ce8290c6281bea366d8e6630185b628eef654986214e430bdcc0046bcd",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-966d023fb144481bb8e56b5b08c97b98/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743930420,
+      "name": "v08-native-allocation-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "b2774c9253206eb5fd93d7cf0c7bb1c806afc41d25b81cd69771a86c53241e66",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-6f1a0f263d3a434688bb5b8c8d6c4da0/result.json",
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743670385,
+      "name": "v08-server-foundation-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "fdb449f89ae73ba91826a574fad1b7e6b2d92765bb179acc237f468888790928",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-20261027T143959Z-82079b8c/result.json",
+          "source_inputs": 233,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742857201,
+      "name": "v08-native-launch-native-ide-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "2d67d9c29af4baa804174abb5df0b0f4c75e23fd9aa7cc3d37bde28cb4a7832f",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-674c8ed317fd434dba3daba3dfd816f8/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743096565,
+      "name": "v08-kubernetes-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "da13d342e45fc618c4f1ec8bd20056e261fbb986b162f35ff44c1cf53293a7c7",
+      "zip_crc_verified": true,
+      "source_verification": []
+    },
+    {
+      "artifact_id": 12742128697,
+      "name": "v08-python-supply-chain-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "d09fbbe565d6da49f7e4c5d1935254c4dc4130038edd72737f6b5cb5e153c915",
+      "zip_crc_verified": true,
+      "source_verification": []
+    },
+    {
+      "artifact_id": 12742024164,
+      "name": "v08-compose-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "7a5b158fe8c408756b6a40b7602b1d79b2264a3d8eb6a48f3322a01071a63b94",
+      "zip_crc_verified": true,
+      "source_verification": []
+    },
+    {
+      "artifact_id": 12741974201,
+      "name": "v08-kind-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "d0fc20a29adb691cd966cf14e6b066ac26173e3cd2f9d1d4fe7870d323d52d50",
+      "zip_crc_verified": true,
+      "source_verification": []
+    },
+    {
+      "artifact_id": 12743910266,
+      "name": "v08-compatibility-subset-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "641c50699b4d4e6c3fce130b6eab0302bc8308b2f1c56fa46aa00b1fbd874d5a",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-4c9e8570319b4a70af8287ba634b50b7/result.json",
+          "source_inputs": 191,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742597844,
+      "name": "v08-native-launch-native-terminal-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "9d4554cb1b3280a3bda89d1b148411a500153d7568e7e3046561b2b8c8eb6977",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-08d95b592246498491feda92f30db34f/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12743036936,
+      "name": "v08-native-launch-native-startup-stress-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "sha256": "d5db234cb6f1485f4e62c0bacf06093bf99a98d789220a32b8e30902270d6ddb",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-320ffe1b694d496ca60ca3fe71b00fad/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "artifact_metadata": [
+    {
+      "id": 12743385013,
+      "name": "v08-native-launch-listener-survival-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 24124,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743385013",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743385013/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:40:46Z",
+      "expires_at": "2026-11-26T14:40:45Z",
+      "updated_at": "2026-10-27T14:40:46Z",
+      "digest": "sha256:5ea33cf06c1f92f29d9f8d5a06faae9422f42f1cd2ef76079979b1b008eb6b3b",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742726701,
+      "name": "v08-fault-reproduction-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 18176,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742726701",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742726701/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:41:23Z",
+      "expires_at": "2026-11-26T14:41:22Z",
+      "updated_at": "2026-10-27T14:41:23Z",
+      "digest": "sha256:b8427ee0393686218d25b91faa29a634bd2e1aa11ad41617661454545d43d5cb",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742706590,
+      "name": "v08-native-boundary-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 2069,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742706590",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742706590/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:39:53Z",
+      "expires_at": "2026-11-26T14:39:52Z",
+      "updated_at": "2026-10-27T14:39:53Z",
+      "digest": "sha256:ae5ff4954f26e50d07af8ab0d86cb1dc75a472ba0e41a193c14967d57ab1cb13",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742522356,
+      "name": "v08-native-launch-pause-probe-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 20006,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742522356",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742522356/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:42:37Z",
+      "expires_at": "2026-11-26T14:42:36Z",
+      "updated_at": "2026-10-27T14:42:37Z",
+      "digest": "sha256:6798a13cf205cbed2873612e9d1ab83964f0f641bf452274b836e20463cf72f6",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742479321,
+      "name": "v08-native-launch-thread-barrier-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 20309,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742479321",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742479321/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:42:34Z",
+      "expires_at": "2026-11-26T14:42:33Z",
+      "updated_at": "2026-10-27T14:42:34Z",
+      "digest": "sha256:bf1a1cb7b02aa14a85619d04ee515b3c37ce7680c3ccbd86389330e358e52658",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12741879571,
+      "name": "v08-native-launch-audit-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 20863,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741879571",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741879571/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:41:16Z",
+      "expires_at": "2026-11-26T14:41:15Z",
+      "updated_at": "2026-10-27T14:41:16Z",
+      "digest": "sha256:d1b90451839ebed7bdf038eed30477c1fdc7c31f6236320205e274af2343442d",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12741289149,
+      "name": "v08-native-launch-dss-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 26853,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741289149",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741289149/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:40:42Z",
+      "expires_at": "2026-11-26T14:40:41Z",
+      "updated_at": "2026-10-27T14:40:42Z",
+      "digest": "sha256:c7ecd34992af0ba5b09975aad3b5397d592021e38a934c328bd6b37d0b917467",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743575749,
+      "name": "v08-native-launch-native-handoff-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 209424,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743575749",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743575749/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:45:50Z",
+      "expires_at": "2026-11-26T14:45:49Z",
+      "updated_at": "2026-10-27T14:45:50Z",
+      "digest": "sha256:e373612422dfe06684c490e8bf05a660a57c16d3cfc1651703b5dc8c3858e6b5",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743271125,
+      "name": "v08-native-launch-native-prompts-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 185372,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743271125",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743271125/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:44:31Z",
+      "expires_at": "2026-11-26T14:44:30Z",
+      "updated_at": "2026-10-27T14:44:31Z",
+      "digest": "sha256:2f2c5cd6fff3147d8d8cc17b81282910954a8e3b3779edd453c170b79d7e86aa",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742269167,
+      "name": "v08-native-launch-child-gate-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 154175,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742269167",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742269167/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:43:33Z",
+      "expires_at": "2026-11-26T14:43:32Z",
+      "updated_at": "2026-10-27T14:43:33Z",
+      "digest": "sha256:933c91ce8290c6281bea366d8e6630185b628eef654986214e430bdcc0046bcd",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743930420,
+      "name": "v08-native-allocation-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 232477,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743930420",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743930420/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:45:37Z",
+      "expires_at": "2026-11-26T14:45:37Z",
+      "updated_at": "2026-10-27T14:45:37Z",
+      "digest": "sha256:b2774c9253206eb5fd93d7cf0c7bb1c806afc41d25b81cd69771a86c53241e66",
+      "workflow_run": {
+        "id": 40523170557,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743670385,
+      "name": "v08-server-foundation-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 146777,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743670385",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743670385/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:46:11Z",
+      "expires_at": "2026-11-26T14:46:11Z",
+      "updated_at": "2026-10-27T14:46:11Z",
+      "digest": "sha256:fdb449f89ae73ba91826a574fad1b7e6b2d92765bb179acc237f468888790928",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742857201,
+      "name": "v08-native-launch-native-ide-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 231002,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742857201",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742857201/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:46:03Z",
+      "expires_at": "2026-11-26T14:46:03Z",
+      "updated_at": "2026-10-27T14:46:03Z",
+      "digest": "sha256:2d67d9c29af4baa804174abb5df0b0f4c75e23fd9aa7cc3d37bde28cb4a7832f",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743096565,
+      "name": "v08-kubernetes-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 2378,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743096565",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743096565/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:41:44Z",
+      "expires_at": "2026-11-26T14:41:43Z",
+      "updated_at": "2026-10-27T14:41:44Z",
+      "digest": "sha256:da13d342e45fc618c4f1ec8bd20056e261fbb986b162f35ff44c1cf53293a7c7",
+      "workflow_run": {
+        "id": 40523171167,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742128697,
+      "name": "v08-python-supply-chain-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 2328,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742128697",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742128697/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:39:44Z",
+      "expires_at": "2026-11-26T14:39:43Z",
+      "updated_at": "2026-10-27T14:39:44Z",
+      "digest": "sha256:d09fbbe565d6da49f7e4c5d1935254c4dc4130038edd72737f6b5cb5e153c915",
+      "workflow_run": {
+        "id": 40523170415,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742024164,
+      "name": "v08-compose-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 855,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742024164",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742024164/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:41:32Z",
+      "expires_at": "2026-11-26T14:41:32Z",
+      "updated_at": "2026-10-27T14:41:32Z",
+      "digest": "sha256:7a5b158fe8c408756b6a40b7602b1d79b2264a3d8eb6a48f3322a01071a63b94",
+      "workflow_run": {
+        "id": 40523170502,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12741974201,
+      "name": "v08-kind-prelaunch-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 3739,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741974201",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12741974201/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:41:18Z",
+      "expires_at": "2026-11-26T14:41:17Z",
+      "updated_at": "2026-10-27T14:41:18Z",
+      "digest": "sha256:d0fc20a29adb691cd966cf14e6b066ac26173e3cd2f9d1d4fe7870d323d52d50",
+      "workflow_run": {
+        "id": 40523170660,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743910266,
+      "name": "v08-compatibility-subset-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 15089,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743910266",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743910266/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:44:49Z",
+      "expires_at": "2026-11-26T14:44:48Z",
+      "updated_at": "2026-10-27T14:44:49Z",
+      "digest": "sha256:641c50699b4d4e6c3fce130b6eab0302bc8308b2f1c56fa46aa00b1fbd874d5a",
+      "workflow_run": {
+        "id": 40523170405,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12742597844,
+      "name": "v08-native-launch-native-terminal-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 233139,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742597844",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12742597844/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:46:50Z",
+      "expires_at": "2026-11-26T14:46:49Z",
+      "updated_at": "2026-10-27T14:46:50Z",
+      "digest": "sha256:9d4554cb1b3280a3bda89d1b148411a500153d7568e7e3046561b2b8c8eb6977",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    },
+    {
+      "id": 12743036936,
+      "name": "v08-native-launch-native-startup-stress-37cfa6fdd0037a1d3948134f24bc3db418bf2134",
+      "size_in_bytes": 271707,
+      "url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743036936",
+      "archive_download_url": "https://api.github.com/repos/arcazj/openbexi_spell_plugin/actions/artifacts/12743036936/zip",
+      "expired": false,
+      "created_at": "2026-10-27T14:49:14Z",
+      "expires_at": "2026-11-26T14:49:13Z",
+      "updated_at": "2026-10-27T14:49:14Z",
+      "digest": "sha256:d5db234cb6f1485f4e62c0bacf06093bf99a98d789220a32b8e30902270d6ddb",
+      "workflow_run": {
+        "id": 40523170281,
+        "repository_id": 1414560638,
+        "head_repository_id": 1414560638,
+        "head_branch": "feature/v0.8-step1-lifecycle",
+        "head_sha": "16126007d3334c614a95289b0ea8084bbc247d65"
+      }
+    }
+  ],
+  "foundation": {
+    "tests": 1490,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "core_passed": 13,
+  "core_failed": 1,
+  "ancillary_passed": 5,
+  "profiles": {
+    "handoff": {
+      "artifact_id": 12743575749,
+      "passed": false,
+      "recovery_soak": {
+        "start_ns": 357479702961,
+        "end_ns": 403105688224,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1397,
+          "background": 1656,
+          "child": 1489
+        },
+        "counters_after": {
+          "root": 3466,
+          "background": 3900,
+          "child": 3614
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 21,
+        "duration_seconds": 45.625985263,
+        "peak_bytes": 1185312768,
+        "window_growth_bytes": 88274944.0,
+        "first_window_median_bytes": 1061931008.0,
+        "last_window_median_bytes": 1150205952
+      }
+    },
+    "ide": {
+      "artifact_id": 12742857201,
+      "passed": true,
+      "recovery_soak": {
+        "start_ns": 369131594342,
+        "end_ns": 414755196397,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1330,
+          "background": 1658,
+          "child": 1467
+        },
+        "counters_after": {
+          "root": 3321,
+          "background": 3894,
+          "child": 3541
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": true,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.623602055,
+        "peak_bytes": 1445335040,
+        "window_growth_bytes": 49815552,
+        "first_window_median_bytes": 1332051968,
+        "last_window_median_bytes": 1381867520
+      }
+    },
+    "diagnostic": {
+      "artifact_id": 12743930420,
+      "passed": false,
+      "recovery_soak": {
+        "start_ns": 433220129767,
+        "end_ns": 478832478482,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1372,
+          "background": 1657,
+          "child": 1472
+        },
+        "counters_after": {
+          "root": 3381,
+          "background": 3898,
+          "child": 3559
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 21,
+        "duration_seconds": 45.612348715,
+        "peak_bytes": 1184210944,
+        "window_growth_bytes": 92098560.0,
+        "first_window_median_bytes": 1062475776.0,
+        "last_window_median_bytes": 1154574336.0
+      }
+    }
+  },
+  "terminal": {
+    "artifact_id": 12742597844,
+    "cases": 16,
+    "passed": true,
+    "historical_failure_cause_established": false
+  },
+  "startup_stress": {
+    "artifact_id": 12743036936,
+    "families": 24,
+    "passed": true,
+    "historical_failure_cause_established": false
+  },
+  "longer_comparisons": "Run 40523171304 remains in progress/queued; no current-candidate endurance qualification claimed.",
+  "next_investigation": "Remaining diagnostic growth is predominantly anonymous memory: Context ~37.40 MiB and Executors ~25.04/17.87 MiB between retained windows, with live allocator totals approximately stable. Resolved sample stacks include incoming-message allocation, event mutex construction and string copies. These observations do not establish whole-failure causality.",
+  "recorded_utc": "2026-10-27T14:50:33.525029+00:00"
+}

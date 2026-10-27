@@ -1,5 +1,25 @@
 # Full v0.8 publication qualification
 
+Candidate `1612600` completes core run `40523170281`: **13/14 core jobs**,
+all five ancillary workflows and **1,490 foundation tests** pass with no test
+failures/errors/skips. All 24 startup-stress families and 16 terminal cases pass.
+Twenty archives and all recorded source inventories are verified; the tested
+merge and candidate trees match. See [complete checkpoint](evidence/native-input/qualification-summary.json).
+
+| Recovery profile | Peak MiB | Growth MiB | Result |
+| --- | ---: | ---: | --- |
+| Handoff | 1,130.40 | 84.19 | Fails 64 MiB growth |
+| Installed IDE | 1,378.38 | 47.51 | Passes this scoped recovery check |
+
+Both retain eight original processes for 45.62 seconds with every interval
+advancing. Limits, sanitizers and deadlines are unchanged. The earlier startup
+GUI-admission failure did not recur; its cause remains unproved. Current longer
+comparisons are pending, while prior endurance file/audit growth and broader
+native/compatibility/browser/deployment/security/packaging gates remain open.
+All eleven full-release gate groups stay false; no publication is eligible.
+
+Historical checkpoints follow.
+
 The latest decoder follow-up reuses owned fields when incoming LINE/ACK layouts
 alternate; its measured 200,000 allocations fall to zero in 10,000 cycles.
 See [implementation and qualification limits](NATIVE_INPUT_FIELD_REUSE.md).

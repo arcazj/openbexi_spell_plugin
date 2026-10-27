@@ -52,3 +52,25 @@ were changed. See [verified receipt](evidence/native-input/prior-candidate.json)
 Fresh whole-runtime qualification is required for this decoder change. The
 startup deadline fault, long-run audit/file growth and all broader release gates
 remain open. No release, tag, merge or publication is authorized by these results.
+
+## Completed hosted checkpoint for 1612600
+
+Core run 40523170281 passes 13/14 jobs and all five ancillary workflows pass.
+All 1,490 foundation tests, 24 startup-stress families and 16 terminal cases pass.
+Twenty archive digests/CRCs and all recorded source inventories are verified.
+The tested merge and executable candidate trees match.
+
+Handoff peak drops to 1,130.40 MiB, but 84.19 MiB growth still fails the fixed
+64 MiB limit. Installed IDE passes at 1,378.38 MiB peak and 47.51 MiB growth.
+Both preserve eight processes throughout their 45.62-second progressing soaks.
+No claim is made that the historical admission deadline fault is fixed.
+
+Remaining diagnostic window growth is primarily anonymous memory in Context
+(about 37.40 MiB) and Executors (25.04/17.87 MiB). Live allocator byte totals stay
+approximately stable. Offline resolution against the exact binary's symbol
+inventory identifies incoming-message allocation, event-mutex construction and
+string-copy sites. These samples guide further investigation; they do not prove
+that any single site causes the full resource failure. See [resolved sites](evidence/native-input/context-allocation-sites.json)
+and [full receipt](evidence/native-input/qualification-summary.json).
+
+Current-candidate longer comparisons remain pending. Full release is blocked.
