@@ -17,6 +17,8 @@ extern "C" void __sanitizer_malloc_hook(const volatile void*, size_t size) {
 extern "C" size_t storage_size();
 extern "C" size_t storage_capacity();
 extern "C" size_t storage_fields();
+extern "C" void storage_trace_start();
+extern "C" void storage_trace_dump();
 #endif
 static void require(bool ok) { if(!ok)std::abort(); }
 static SPELLipcMessage fixture() {
@@ -35,7 +37,19 @@ static void compare(const SPELLipcMessage& a,const SPELLipcMessage& b) {
 int main(int argc,char** argv) {
     require(argc==2);const std::string mode=argv[1];
     auto source=fixture();
-    if(mode=="notification" || mode=="notification_bench") {
+    if(mode=="storage_trace" || mode=="storage_trace_off") {
+#if V08_STORAGE
+        storage_trace_dump(); // Disabled diagnostics emit nothing.
+        if(mode=="storage_trace")storage_trace_start();
+        for(int n=0;n<30;++n) {
+            auto copy=source;
+            SPELLipcMessage fresh("ACK");
+            fresh.set("ProcId","root");fresh.set("DataType","ACK");
+            auto queued=copy;compare(queued,copy);
+        }
+        storage_trace_dump();
+#endif
+    } else if(mode=="notification" || mode=="notification_bench") {
         notification_test(mode=="notification_bench");
     } else if(mode=="bench") {
         {auto a=source;auto b=a;SPELLipcMessage c;c=b;}

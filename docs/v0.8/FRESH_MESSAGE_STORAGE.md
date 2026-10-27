@@ -1,5 +1,37 @@
 # Bounded storage for newly constructed native messages
 
+## Cache decision diagnostics
+
+Candidate `0bc731f` passes 1,476 foundation tests, twelve of fourteen core jobs
+and all five ancillary workflows. Both original-family recovery jobs still fail
+the unchanged 64 MiB growth limit: 104.37 MiB for handoff and 95.60 MiB for IDE.
+Their peaks are 1,462.21/1,436.52 MiB. Both preserve eight processes and progress
+through the full 45-second soak. Archive digests and all 132 source inputs per
+recovery archive are verified in [the hosted receipt](evidence/fresh-message-storage/fragmented-hosted.json).
+The mixed-traffic regression is fixed, but whole-process resource acceptance is
+not fixed. The actual Context still allocates in forwarding and queued copies.
+
+The existing opt-in allocation diagnostic now also records fixed numeric cache
+decisions: hits, empty-cache and contention misses, ordinary copy allocations,
+and returns rejected by field count, retained capacity, contention or a full
+cache. It retains no field names or values. One bounded line accompanies each
+existing ten-second allocation sample; the host accepts at most 32 process
+records and requires original process identity. The diagnostic workflow requires
+observations from both Context and Executor. These counters do not change cache
+policy, runtime authority, allocator settings or memory acceptance.
+
+All 146 distinct focused checks pass, including compiled diagnostics-off/on,
+counter accounting, bounded parsing, allocation sampling and all comparison
+source guards. Thirteen storage checks are repeated on the final atomic opt-in
+flag. [Validation](evidence/fresh-message-storage/cache-diagnostics-validation.json)
+records that overlap; a hosted diagnostic is needed to explain the real misses.
+
+The older same-optimization-level ASan/UBSan comparisons also complete both
+five-minute soaks with eight original processes, but fail peak and growth limits.
+All 135 source entries per overlaid build are independently reconstructed and
+verified in [the comparison receipt](evidence/fresh-message-storage/asan-o2-baseline-results.json).
+Optimization flags alone do not resolve that baseline's resource failure.
+
 ## Follow-up: copies reuse partially consumed cached maps
 
 Candidate `0eb29d8` passes all 1,475 hosted foundation tests, but both mandatory

@@ -88,6 +88,8 @@ extern "C" size_t storage_capacity(){
 extern "C" size_t storage_fields(){
     size_t n=0;for(const auto& m:v08_property_storage.maps)n+=m.size();return n;
 }
+extern "C" void storage_trace_start(){v08_storage_profile_begin();}
+extern "C" void storage_trace_dump(){v08_storage_profile_dump(123456789);}
 """
         source = folder / (name + ".cpp")
         source.write_text(text)
@@ -179,3 +181,51 @@ def test_copies_reuse_nodes_left_by_interleaved_producers(storage_binaries):
     assert before["message_size"] == after["message_size"]
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0
+
+
+def test_storage_diagnostics_are_opt_in_bounded_and_account_for_decisions(storage_binaries):
+    spec = importlib.util.spec_from_file_location(
+        "storage_probe", ROOT / "scripts/v08_resource_probe.py"
+    )
+    probe = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(probe)
+    environment = dict(
+        os.environ,
+        ASAN_OPTIONS="detect_leaks=0:abort_on_error=1",
+        UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1",
+    )
+    for enabled in (False, True):
+        result = subprocess.run(
+            [str(storage_binaries["after"]), "storage_trace" if enabled else "storage_trace_off"],
+            capture_output=True,
+            env=environment,
+            check=True,
+            timeout=30,
+        )
+        if not enabled:
+            assert not result.stderr
+            continue
+        assert len(result.stderr.splitlines()) == 1
+        assert len(result.stderr) < 1536
+        records = probe.message_storage_profiles(result.stderr)
+        assert len(records) == 1
+        record = records[0]
+        assert record["copy_calls"] == 60
+        assert record["recycled_maps"] > 0
+        assert record["node_requests"] >= 60
+        assert record["node_requests"] == sum(
+            record[name]
+            for name in ("node_reused", "node_unavailable", "node_lock_miss", "node_empty")
+        )
+        assert record["recycle_calls"] == sum(
+            record[name]
+            for name in (
+                "recycle_empty",
+                "recycle_wide",
+                "recycle_capacity",
+                "recycle_unavailable",
+                "recycle_lock_miss",
+                "recycle_full",
+                "recycled_maps",
+            )
+        )

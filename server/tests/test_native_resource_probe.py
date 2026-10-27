@@ -306,6 +306,26 @@ def allocation_sample(pid=7, tick=100):
     return (total + sites).encode()
 
 
+def test_message_storage_profiles_reject_unbounded_and_non_numeric_payloads():
+    def sample(pid=7, tick=100, value=23):
+        return (
+            f"V08_STORAGE pid={pid} tick={tick}"
+            + "".join(f" {name}={value}" for name in probe.STORAGE_METRICS)
+            + "\n"
+        ).encode()
+
+    records = probe.message_storage_profiles(sample() + sample(tick=200))
+    assert len(records) == 1
+    assert records[0]["monotonic_ns"] == 200
+    assert records[0]["node_reused"] == 23
+    assert probe.message_storage_profiles(sample(pid=2**31)) == []
+    assert probe.message_storage_profiles(sample(value=2**64)) == []
+    assert probe.message_storage_profiles(sample(value="secret")) == []
+    assert probe.message_storage_profiles(sample()[:-1] + b" secret=value\n") == []
+    assert probe.message_storage_profiles(sample()[:50]) == []
+    assert len(probe.message_storage_profiles(b"".join(sample(pid=n) for n in range(1, 40)))) == 32
+
+
 def test_allocation_profile_collector_keeps_only_latest_bounded_symbol_metadata():
     records = probe.allocation_profiles(allocation_sample() + allocation_sample(tick=200))
     assert len(records) == 1

@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Dev67 passes 24 startup cycles, 16 terminal cases and 21 prompt outcomes. Both original-family 45-second soaks pass peak limits but fail 64 MiB window growth. The earlier scope denial and historical startup faults remain unresolved; broader native cases remain unqualified."
+      "reason": "Candidate 0bc731f passes native startup, prompt, terminal and family component jobs. Both 45-second original-family soaks retain eight processes and meet peak limits but fail 64 MiB growth at 104.37/95.60 MiB (handoff/installed IDE). Historical startup and scope faults and broader native coverage remain unresolved."
     },
     "compatibility": {
       "qualified": false,
@@ -30,7 +30,7 @@
     "ide_browser": {
       "qualified": false,
       "receipt": null,
-      "reason": "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Dev67 installed-IDE recovery preserves the original family and passes peak memory but fails window growth. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
+      "reason": "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Candidate 0bc731f installed-IDE recovery preserves eight original processes and passes peak memory but fails growth at 95.60 MiB. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
     },
     "compose": {
       "qualified": false,
@@ -45,7 +45,7 @@
     "recovery": {
       "qualified": false,
       "receipt": null,
-      "reason": "Dev67 handoff/reconnect preserves all eight original processes and every counter interval; both profiles pass peak but fail memory-growth acceptance. Stable memory, deployed recovery, replenishment, restore, upgrade and rollback remain unqualified."
+      "reason": "Candidate 0bc731f handoff/reconnect preserves all eight original processes and every counter interval. Both profiles meet peak limits but fail 64 MiB growth at 104.37/95.60 MiB. Stable memory, deployed recovery, replenishment, restore, upgrade and rollback remain unqualified."
     },
     "security": {
       "qualified": false,
@@ -55,7 +55,7 @@
     "ci": {
       "qualified": false,
       "receipt": null,
-      "reason": "Dev67 93dad41 passes 1,290 service, 95 overlapping fault and 241 portable tests; 12/14 core jobs and all five ancillary workflows pass. Both recovery growth gates fail. Full runtime/browser/deployment acceptance remains unfinished."
+      "reason": "Candidate 0bc731f passes 1,476 foundation tests, 12/14 core jobs and all five ancillary workflows. Both recovery growth checks fail. A bounded opt-in cache diagnostic is prepared to explain runtime misses. Full runtime/browser/deployment acceptance remains unfinished."
     },
     "packaging": {
       "qualified": false,

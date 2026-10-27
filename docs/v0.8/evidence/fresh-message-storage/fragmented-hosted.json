@@ -1,0 +1,107 @@
+{
+  "candidate_commit": "0bc731f8dd91d4b13034cc3307b5b3c25ece31d8",
+  "tested_merge": "fc6d97e5928084f737e5bf3b76f07ae3f3f97ef0",
+  "tree": "588cd5a7dc8999b04e4c82b96d970988daf29c84",
+  "workflow_run": 40453830603,
+  "core_jobs_passed": 12,
+  "core_jobs_total": 14,
+  "recovery": {
+    "handoff": {
+      "artifact_id": 12712226391,
+      "archive_sha256": "58c48dcc7af5df52dc6dd51064f1cfba128d884a43e3b27fb1130a3e59719bf4",
+      "verified_source_entries": 132,
+      "result_sha256": "89e8ff51844431eb42a27caddedd6505dea6356cd365a909df07a0823a1dffb5",
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.606095329,
+        "peak_bytes": 1533235200,
+        "window_growth_bytes": 109436928,
+        "first_window_median_bytes": 1357639680,
+        "last_window_median_bytes": 1467076608
+      },
+      "soak": {
+        "start_ns": 334505714036,
+        "end_ns": 380111809365,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1361,
+          "background": 1664,
+          "child": 1469
+        },
+        "counters_after": {
+          "root": 3353,
+          "background": 3900,
+          "child": 3543
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    },
+    "ide": {
+      "artifact_id": 12711369234,
+      "archive_sha256": "d2fe92b3a7c851eee41c7d5b8c033233402ffb09a93353305fb8d49c0031cc0a",
+      "verified_source_entries": 132,
+      "result_sha256": "a90ce5e685b27c0802e5103034d6195e55ad4de890c580da87301dcb7dcdbb91",
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.608728765,
+        "peak_bytes": 1506299904,
+        "window_growth_bytes": 100241408,
+        "first_window_median_bytes": 1335599104,
+        "last_window_median_bytes": 1435840512
+      },
+      "soak": {
+        "start_ns": 494624171032,
+        "end_ns": 540232899797,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1335,
+          "background": 1664,
+          "child": 1471
+        },
+        "counters_after": {
+          "root": 3321,
+          "background": 3897,
+          "child": 3541
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    }
+  },
+  "foundation": {
+    "job_id": 122022427884,
+    "artifact_id": 12711412615,
+    "archive_sha256": "d1d5126431e4f1e8088210af63c14e29b6e9a948530d16023ff1b51fcb92509f",
+    "junit_from_job_log": {
+      "tests": 1476,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "archive_downloaded": false
+  },
+  "full_v08_qualified": false
+}

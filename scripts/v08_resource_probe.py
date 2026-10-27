@@ -246,6 +246,50 @@ def allocation_profiles(raw):
     return result
 
 
+STORAGE_METRICS = (
+    "node_requests",
+    "node_reused",
+    "node_unavailable",
+    "node_lock_miss",
+    "node_empty",
+    "copy_calls",
+    "copy_whole_map",
+    "copy_map_lock_miss",
+    "copy_shape_miss",
+    "copy_allocations",
+    "recycle_calls",
+    "recycle_empty",
+    "recycle_wide",
+    "recycle_capacity",
+    "recycle_unavailable",
+    "recycle_lock_miss",
+    "recycle_full",
+    "recycled_maps",
+)
+
+
+def message_storage_profiles(raw):
+    """Fixed numeric cache decisions only; never retain property names or values."""
+    pattern = re.compile(
+        rb"V08_STORAGE pid=(\d{1,10}) tick=(\d{1,20})"
+        + b"".join(b" " + name.encode() + rb"=(\d{1,20})" for name in STORAGE_METRICS)
+    )
+    latest = {}
+    for line in raw[-262144:].splitlines():
+        if len(line) >= 1536:
+            continue
+        match = pattern.fullmatch(line)
+        if match is None:
+            continue
+        values = [int(value) for value in match.groups()]
+        if not 0 < values[0] < 2**31 or any(value >= 2**64 for value in values):
+            continue
+        if values[0] not in latest and len(latest) >= 32:
+            continue
+        latest[values[0]] = dict(zip(("pid", "monotonic_ns", *STORAGE_METRICS), values))
+    return list(latest.values())
+
+
 def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
     root = proc / str(pid)
     start = identity(root)
@@ -375,6 +419,7 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
             result["processes"].append(dict(pid=task, exited_during_sample=True))
     result["native_allocator"] = []
     result["native_allocation_profiles"] = []
+    result["native_message_storage"] = []
     original_pids = {row.get("namespace_pid") for row in result["processes"]}
     for log in sorted((root / "root/tmp").glob("spell-host-*/native.log"))[:2]:
         try:
@@ -386,6 +431,11 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
                 result["native_allocation_profiles"].extend(
                     record
                     for record in allocation_profiles(raw)
+                    if record["pid"] in original_pids
+                )
+                result["native_message_storage"].extend(
+                    record
+                    for record in message_storage_profiles(raw)
                     if record["pid"] in original_pids
                 )
         except FileNotFoundError:

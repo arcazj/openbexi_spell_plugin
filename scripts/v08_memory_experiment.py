@@ -17,10 +17,10 @@ PREIMAGES = {
     "host_runtime/python/native.py": "4d8a1664622dddd5192451f230b3fbc4361d632ae23692aa1a989b62d92b3ff7",
     "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
     "scripts/v08_native_consumption.py": "4ab366a3b03541ede860acb1e63b7d4952312b2af9150b61ca874ebef406a039",
-    "scripts/v08_resource_probe.py": "c2f4ec84b35466058528b651bed72e8ef425aa40e25f044a0beca100c737358f",
+    "scripts/v08_resource_probe.py": "46b96091adf8a84552141360ed3bffe113a013bea538dc152b7348e62fc8ef4a",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
     "host_runtime/python/handoff_probe.py": "d2c2ee8d05bd6d4fc0e79d11387058c79508b2f346ae7d6710c5ebae48ff0023",
-    "host_runtime/native/allocation_trace.H": "7d537b3fc832f590918ecab0233a94ed588553e50df1f23e209bca4f8c02663b",
+    "host_runtime/native/allocation_trace.H": "f89d661ee8ae19d41bb81af87063967eae81ab84dd667888bf17907355ed17b8",
     "host_runtime/native/resource_trace.H": "0f55d562c2a40c4b733520c1c9386842955cf5ba9229d8b336c9ad8c980415a8",
 }
 NATIVE_PROGRAMS = {

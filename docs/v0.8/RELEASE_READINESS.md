@@ -1,14 +1,15 @@
 # Full v0.8 publication qualification
 
-The latest recovery baseline is `0eb29d8` / run `40452778531`. Foundation
-passes 1,475 tests with no failures/errors/skips. Handoff and installed-IDE
-growth remains above the unchanged 64 MiB limit at 105.31/115.75 MiB.
-Both retain eight processes through 45-second soaks and pass the peak ceiling.
-The redundant synchronous Context notification copy is removed; the rebuilt
-profile now identifies forwarding and queued-message copies. A mixed-traffic
-reproducer exposes unused nodes in partially consumed cached maps. The next
-correction lets copies reuse those nodes under the existing fixed bounds;
-rebuilt hosted acceptance is still required.
+The latest recovery baseline is `0bc731f` / run `40453830603`. Foundation
+passes 1,476 tests with no failures/errors/skips. Twelve of fourteen core jobs
+and all five ancillary workflows pass. Handoff and installed-IDE growth remains
+above the unchanged 64 MiB limit at 104.37/95.60 MiB. Both retain eight processes
+through 45-second soaks and pass the peak ceiling. Fresh-field reuse, removal of
+a redundant synchronous copy and reuse of partially consumed cached maps are
+verified component corrections, not a resolved whole-process memory blocker.
+Bounded, opt-in cache counters now distinguish real contention, empty-cache,
+capacity and return failures before further cache-policy changes. All 146 focused
+diagnostic checks pass; hosted cache-decision evidence is pending.
 See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
 The separate optimized-IDE comparison also recorded uncertain driver effects
 before child-running and did not reach its soak. No release gate is promoted.

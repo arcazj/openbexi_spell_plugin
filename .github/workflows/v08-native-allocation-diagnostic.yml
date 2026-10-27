@@ -40,6 +40,7 @@ jobs:
           rows = [json.loads(line) for line in paths[0].read_text().splitlines()]
           original = {}
           observed = set()
+          storage_observed = set()
           for row in rows:
               if row.get("schema") != "openbexi.native-resources/1":
                   continue
@@ -49,13 +50,20 @@ jobs:
               for record in row.get("native_allocation_profiles", []):
                   if record.get("sites") and record.get("samples", 0) > 0:
                       observed.add(record["pid"])
+              for record in row.get("native_message_storage", []):
+                  if record.get("copy_calls", 0) > 0 and record.get("recycle_calls", 0) > 0:
+                      storage_observed.add(record["pid"])
           roles = {original[pid] for pid in observed if pid in original}
+          storage_roles = {original[pid] for pid in storage_observed if pid in original}
           print(json.dumps({"schema": "openbexi.native-allocation-diagnostic/1",
                             "diagnostic_only": True, "profiler_roles": sorted(roles),
+                            "storage_profiler_roles": sorted(storage_roles),
                             "profiled_native_processes": len(observed),
                             "full_v08_qualified": False}, sort_keys=True))
           if roles != {"SPELL-Context", "SPELL-Executor"}:
               raise SystemExit("Native allocation-site stacks missing for Context or Executor")
+          if storage_roles != {"SPELL-Context", "SPELL-Executor"}:
+              raise SystemExit("Native storage decisions missing for Context or Executor")
           PY
       - name: Retain failed and successful diagnostic attempts
         if: always()

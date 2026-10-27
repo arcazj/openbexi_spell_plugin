@@ -74,6 +74,9 @@ extern "C" bool v08_allocation_profile_start() noexcept
     if (!setting || std::strcmp(setting,"1")!=0) return true;
     const bool installed=__sanitizer_install_malloc_and_free_hooks(v08_capture_allocation,v08_observe_free)>0;
     v08_alloc::enabled.store(installed,std::memory_order_relaxed);
+#ifdef OPENBEXI_V08_MESSAGE_STORAGE
+    if(installed)v08_storage_profile_begin();
+#endif
     return installed;
 }
 
@@ -102,6 +105,9 @@ extern "C" void v08_allocation_profile_dump(uint64_t tick) noexcept
     // Symbol lookup is outside the hook and lock. Suppress its own allocations
     // from the measurements, without changing allocator behavior.
     reporting=true;
+#ifdef OPENBEXI_V08_MESSAGE_STORAGE
+    v08_storage_profile_dump(tick);
+#endif
     char line[4096];
     int count=std::snprintf(line,sizeof(line),
         "V08_ALLOC pid=%ld tick=%llu calls=%llu bytes=%llu samples=%llu skipped=%llu\n",
