@@ -103,6 +103,18 @@ def replace_native_message_codec(text):
         if text.count(old) != 1:
             raise ValueError("Native property storage boundary differs")
         text = text.replace(old, new)
+    start = text.index("void SPELLipcMessage::clear( )")
+    end = text.index("\n}", start) + 2
+    clear = text[start:end]
+    if hashlib.sha256(clear.encode()).hexdigest() != (
+        "7769a7352a68bd1dd514d057b6ce9ade4a31bb882ed91e31809ff57c0c4ad67d"
+    ):
+        raise ValueError("Native message clear preimage differs")
+    clear = clear.replace(
+        "\tm_properties.clear();",
+        "\tv08_recycle_properties(m_properties);\n\tm_properties.clear();",
+    )
+    text = text[:start] + clear + text[end:]
     return (
         '#include <utility>\n#include "SPELL_IPC/SPELLipcMessage.H"\n'
         "namespace {\n"

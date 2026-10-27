@@ -1,5 +1,33 @@
 # Bounded storage for newly constructed native messages
 
+## Recycle the explicit incoming-message completion path
+
+The rebuilt `e0f3b2e` diagnostic identifies an actual empty-cache problem in
+Context. Its last snapshot records 488,760 empty-node misses versus 4,477 lock
+misses, with zero field-count, capacity or full-cache return rejections. Executor
+node reuse is already nearly complete. All 132 source entries and the archive
+digest are verified in [the source-bound finding](evidence/fresh-message-storage/message-clear-root-cause.json),
+which also retains counter deltas within the exact soak and native method hashes.
+
+`SPELLipcIncomingBase::finish()` explicitly calls `m_message.clear()` before the
+message destructor. That method destroyed the field nodes directly, leaving an
+empty message for the destructor's recycling hook. The correction offers those
+nodes to the same bounded cache before the original clear operation. A refused
+cache return still clears normally. The exact original clear body is SHA-256
+guarded; its field clearing, ID/sender/receiver clearing and preservation of type,
+sequence, key and compression metadata are unchanged.
+
+The compiled completion-path benchmark allocates 90,000 times / 8,640,000 bytes
+on both the frozen runtime and parent `e0f3b2e`, and zero after this correction
+across 10,000 completions. All 143 storage, codec, stream and comparison-profile
+checks pass under the existing native sanitizer settings. Tests cover repeated
+clear, independent copies, oversized messages and subsequent reuse. The initial
+test-fixture compression assumption and its correction are retained separately.
+[Validation](evidence/fresh-message-storage/message-clear-validation.json) and
+[benchmark](evidence/fresh-message-storage/message-clear-benchmark.json) do not
+qualify whole-runtime memory. Rebuilt mandatory recovery and the cache diagnostic
+must verify this correction before any resource blocker can be closed.
+
 ## Cache decision diagnostics
 
 Candidate `0bc731f` passes 1,476 foundation tests, twelve of fourteen core jobs

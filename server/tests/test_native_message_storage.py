@@ -134,7 +134,9 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("mode", ["copy", "shapes", "fresh", "threads", "bounds", "notification"])
+@pytest.mark.parametrize(
+    "mode", ["copy", "shapes", "fresh", "threads", "bounds", "notification", "clear"]
+)
 def test_native_storage_preserves_independence_and_bounds(storage_binaries, mode):
     assert run(storage_binaries["before"], mode) == run(storage_binaries["after"], mode)
 
@@ -179,6 +181,15 @@ def test_copies_reuse_nodes_left_by_interleaved_producers(storage_binaries):
     after = run(storage_binaries["after"], "fragmented_bench")
     assert before["allocations"] >= 200_000
     assert before["message_size"] == after["message_size"]
+    assert after["allocations"] == 0
+    assert after["allocated_bytes"] == 0
+
+
+def test_completed_incoming_messages_recycle_before_clear(storage_binaries):
+    before = run(storage_binaries["before"], "clear_bench")
+    after = run(storage_binaries["after"], "clear_bench")
+    assert before["message_size"] == after["message_size"]
+    assert before["allocations"] == 90_000
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0
 

@@ -1,0 +1,45 @@
+{
+  "distinct_tests_passed": 143,
+  "junit": {
+    "message-clear.xml": {
+      "tests": 15,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "message-clear-corrected.xml": {
+      "tests": 143,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "initial_test_correction": "The initial clear round-trip test incorrectly expected compression to be carried inside data(); compression is socket framing metadata. The corrected test explicitly supplies the unchanged flag, and the failure occurred on the frozen baseline too. No runtime change addressed or hid this test-fixture error.",
+  "benchmark": {
+    "frozen": {
+      "allocations": 90000,
+      "allocated_bytes": 8640000,
+      "message_size": 176,
+      "binary_sha256": "6ae459a7c9a1c0a6831981bc87c60d06b20e4720a5511add6704166acce1282d"
+    },
+    "parent_e0f3b2e": {
+      "allocations": 90000,
+      "allocated_bytes": 8640000,
+      "message_size": 176,
+      "binary_sha256": "411b74bab1d574c4d8ebb72d49dac4ff98a92fdc0827cba5370f76d076769659"
+    },
+    "candidate": {
+      "allocations": 0,
+      "allocated_bytes": 0,
+      "message_size": 176,
+      "binary_sha256": "674f3a4632d171b216abe4239d87390b1193b386500a08aa7b497a3d06db78c0"
+    }
+  },
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "f040e27278c32069856b5c9ce4c99d639976a2793211eedc2f77a0d31628bda9",
+    "scripts/v08_memory_experiment.py": "46d84e7935bd3399d32761d57012fa20c5c69b638f0f9fe686fefe4b07a57107",
+    "server/tests/native_storage_harness.cpp": "bc0198b417e5ac1116d5468319baaee340cd2cf362f6b8fd9d92e17cb8f201b8",
+    "server/tests/test_native_message_storage.py": "9b2a7ff59a190d2c8e549c4e5fa84a8fb8cd83ce99e6a2f6b521b79288bbde21"
+  },
+  "full_v08_qualified": false
+}

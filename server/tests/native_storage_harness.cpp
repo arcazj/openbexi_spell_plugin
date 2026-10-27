@@ -87,6 +87,39 @@ int main(int argc,char** argv) {
                 require(copy.v08Fields()==shape.v08Fields());
             }
         measure=false;
+    } else if(mode=="clear_bench") {
+        SPELLipcMessage shape("MSG");shape.setSender("X");shape.setReceiver("Y");
+        shape.setType(MSG_TYPE_NOTIFY_ASYNC);shape.setKey(13);shape.setSequence(42);
+        shape.setCompressed(true);
+        for(int key=0;key<9;++key)shape.set("key-"+std::to_string(key),"value");
+        auto complete=[&] {
+            auto queued=shape;
+            queued.clear();
+            require(queued.v08Fields().empty());
+            require(queued.getId().empty() && queued.getSender().empty() && queued.getReceiver().empty());
+            require(queued.getType()==shape.getType() && queued.getKey()==13);
+            require(queued.getSequence()==42 && queued.getCompressed());
+        };
+        for(int n=0;n<10;++n)complete();
+        measure=true;
+        for(int n=0;n<10000;++n)complete();
+        measure=false;
+    } else if(mode=="clear") {
+        for(int n=0;n<100;++n) {
+            auto message=source;auto independent=message;
+            if(n%3==0)message.set("large",std::string(1024*1024,'x'));
+            if(n%3==1)for(int k=0;k<100;++k)message.set(std::to_string(k),"x");
+            message.clear();message.clear();
+            require(message.v08Fields().empty());
+            require(message.getId().empty() && message.getSender().empty() && message.getReceiver().empty());
+            require(message.getSequence()==42 && message.getKey()==13 && message.getCompressed());
+            require(message.getType()==source.getType());
+            compare(independent,source);
+            SPELLipcMessage decoded;decoded.fromData(message.data());
+            // Compression is carried by socket framing, outside data().
+            decoded.setCompressed(message.getCompressed());compare(decoded,message);
+            message.set("new","value");require(message.v08Fields().size()==1);
+        }
     } else if(mode=="fragmented_bench") {
         // Forward a full message, then construct a short acknowledgement while
         // the next full queued copy is live. The producer can split a cached

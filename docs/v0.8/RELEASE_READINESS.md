@@ -7,9 +7,13 @@ above the unchanged 64 MiB limit at 104.37/95.60 MiB. Both retain eight processe
 through 45-second soaks and pass the peak ceiling. Fresh-field reuse, removal of
 a redundant synchronous copy and reuse of partially consumed cached maps are
 verified component corrections, not a resolved whole-process memory blocker.
-Bounded, opt-in cache counters now distinguish real contention, empty-cache,
-capacity and return failures before further cache-policy changes. All 146 focused
-diagnostic checks pass; hosted cache-decision evidence is pending.
+The source-verified `e0f3b2e` cache diagnostic now identifies Context empty-cache
+misses rather than contention or capacity rejection. Incoming completion calls
+`clear()` before destruction, discarding nodes ahead of the recycling hook.
+The correction recycles before the original clear operation, preserving all
+observable clear semantics. All 143 focused checks pass, and a 10,000-completion
+benchmark falls from 90,000 allocations to zero. Rebuilt hosted acceptance is
+still required; no whole-runtime resource blocker is declared resolved.
 See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
 The separate optimized-IDE comparison also recorded uncertain driver effects
 before child-running and did not reach its soak. No release gate is promoted.
