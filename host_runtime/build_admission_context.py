@@ -382,6 +382,28 @@ def trace_native_startup(text):
     )
 
 
+def bound_native_diagnostic_logs(source):
+    """Keep native diagnostic rotation within the existing worker tmpfs budget.
+
+    No severity, format, immediate-flush, ASRUN, or audit behavior is changed.
+    Each rebuilt process retains one 1 MiB file and one backup, rather than
+    six 10 MiB files. Retention is a size target plus one formatted log record.
+    """
+    path = source / "lib/SPELL_UTIL/src/SPELLlog.C"
+    text = path.read_text()
+    if hashlib.sha256(text.encode()).hexdigest() != (
+        "8609457404c26c670524c2c49cefd8c5ab5dc1c127dc55853bb32d0262e257b5"
+    ):
+        raise ValueError("Native diagnostic log preimage differs")
+    old = (
+        "RollingFileAppender(LOG4CPLUS_TEXT(logfilename), 10*1024*1024, 5, true, true)"
+    )
+    new = "RollingFileAppender(LOG4CPLUS_TEXT(logfilename), 1024*1024, 1, true, true)"
+    if text.count(old) != 1:
+        raise ValueError("Native diagnostic log boundary differs")
+    path.write_text(text.replace(old, new))
+
+
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
     message_header = source / "include/SPELL_IPC/SPELLipcMessage.H"
@@ -851,6 +873,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     borrow_native_message_callbacks(source)
     transfer_native_line_notification(source)
     reuse_native_trace_filename(source)
+    bound_native_diagnostic_logs(source)
     return before
 
 

@@ -36,9 +36,11 @@ cleanup() {
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
-umask 077
+# Keep backing storage private without changing the qualification command's
+# umask: its generated read-only code is mounted into a different container UID.
+# A global 077 makes those imports unreadable (including the independent DSS).
 # Full allocation avoids sparse-file surprises and bounds disk use to 2 GiB.
-dd if=/dev/zero of="$file" bs=1M count=2048 conv=fsync status=none
+(umask 077; dd if=/dev/zero of="$file" bs=1M count=2048 conv=fsync status=none)
 loop=$(sudo -n losetup --find --show "$file")
 sudo -n cryptsetup open --type plain --cipher aes-xts-plain64 --key-size 256 --key-file /dev/urandom "$loop" "$OPENBEXI_MEMORY_SWAP_NAME"
 opened=1
