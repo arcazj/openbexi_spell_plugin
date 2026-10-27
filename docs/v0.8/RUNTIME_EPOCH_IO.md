@@ -1,3 +1,9 @@
+<!-- checkpoint-6dd8218:start -->
+## Fresh hosted result
+
+At6dd8218, all1,605 foundation tests pass without skips, including the real10,000-request Unix admission/epoch-rotation component. All14 core and9 lifecycle repetitions pass; mandatory handoff/IDE growth48.89/48.95MiB passes unchanged. The IDE sanitizer hour fails with a sampled OOM kill; full release remains unqualified. See [receipt](evidence/qualification-6dd8218-20261027.json). The local EPERM failure remains retained; the original pre-CI record follows.
+<!-- checkpoint-6dd8218:end -->
+
 # Bounded runtime epoch reads
 
 The byte-ranked native diagnostic at

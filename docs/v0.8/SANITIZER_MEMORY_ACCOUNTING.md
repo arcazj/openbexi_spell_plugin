@@ -1,3 +1,9 @@
+<!-- checkpoint-6dd8218:start -->
+## Current executable6dd8218
+
+Original45s mandatory handoff/IDE growth48.89/48.95MiB passes below64MiB. The installed-IDE sanitizer hour fails; the handoff hour is still running. IDE retains472samples/991.929476709s and a2147495936-byte peak with one sampled OOM kill. Sampled live Context/Executor allocations remain much smaller than their allocator heaps; that is not proof of leak absence. All sources/overlays/audits verify. See [receipt](evidence/qualification-6dd8218-20261027.json). The separately source-bound predecessor accounting below remains historical evidence.
+<!-- checkpoint-6dd8218:end -->
+
 # Measured sustained sanitizer retention
 
 Executable reference: `892914f10f12bd9a3043a69e07f363a143445ec3`, paired IDE

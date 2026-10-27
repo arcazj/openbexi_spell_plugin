@@ -1,0 +1,994 @@
+{
+  "schema": "openbexi.v08.source-bound-qualification-checkpoint/1",
+  "recorded_at": "2026-10-27T22:27:13.008744+00:00",
+  "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+  "tested_pr_merge": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+  "identical_tree": "e8a9e51741d48c340b1ecf7845e437da6fdb0b7a",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "package": "0.8.0.dev72",
+  "core": {
+    "run": 40590720953,
+    "jobs_passed": 14,
+    "jobs_total": 14,
+    "foundation_tests": 1605,
+    "foundation_failures_errors_skips": 0,
+    "fault_tests_overlapping": 95,
+    "artifacts_verified": 16,
+    "source_checks_overlapping": 1756,
+    "raw_audit_files_verified": 230,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98"
+  },
+  "mandatory_bounded_memory": {
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "scenarios": {
+      "handoff": {
+        "artifact": 12773728872,
+        "digest": "sha256:ad3853650a251fb5cbc980a6e4860ccecb19d92d1553c562ed2adca4a21bf385",
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": true,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.550778102,
+        "peak_bytes": 1329967104,
+        "window_growth_bytes": 51261440,
+        "first_window_median_bytes": 1271848960,
+        "last_window_median_bytes": 1323110400
+      },
+      "ide": {
+        "artifact": 12774307898,
+        "digest": "sha256:ad712ed45eb42f47aad2a8cce7e3a279920f29ab39af6ce7b7ca36e5dfc1a82e",
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": true,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [],
+        "samples": 47,
+        "soak_samples": 21,
+        "duration_seconds": 45.61687088,
+        "peak_bytes": 1055313920,
+        "window_growth_bytes": 51329024.0,
+        "first_window_median_bytes": 995639296,
+        "last_window_median_bytes": 1046968320.0
+      }
+    },
+    "growth_limit_bytes": 67108864,
+    "original_sanitizers_no_swap_whole_cgroup_limits_deadlines_concurrency_preserved": true,
+    "all_samples_retained": true,
+    "not_a_full_release_gate": true,
+    "comparison_with_predecessor": "Handoff48.89MiB is higher than preceding30.30MiB; no whole-family performance improvement is inferred from the isolated reader correction"
+  },
+  "repeated_lifecycle": {
+    "run": 40590720995,
+    "passed_jobs": 9,
+    "startup_families": 72,
+    "listener_attempts": 3,
+    "terminal_matrices": 3,
+    "cases_each": 16,
+    "source_checks_overlapping": 1059,
+    "raw_audit_files_verified": 324,
+    "historical_causes_not_established": true,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98"
+  },
+  "durable_audit": {
+    "run": 40590721020,
+    "actual_native_enospc_passed": true,
+    "artifact": 12773918005,
+    "entire8MiB_fault_image_and_prefix_independently_verified": true,
+    "component_enospc_restart_passed": true,
+    "required_records_deleted": false,
+    "uncertain_inventory_component": "All27 real IDE OOM files/33149716bytes hashed with one49byte incomplete tail explicitly rejected; no original bytes changed",
+    "current_writer_uncertain_restart_component": "Append rejected exit74; entire17022828byte uncertain generation preserved on explicit new generation",
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "native_fault_image_bytes": 8388608,
+    "component_tests": 17
+  },
+  "native_epoch_transport_ci": {
+    "passed": true,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "testcases": [
+      {
+        "classname": "tests.test_native_runtime_epoch",
+        "name": "test_full_admissions_remove_the_measured_eight_kib_file_allocations",
+        "time": "2.587"
+      }
+    ],
+    "local_EPERM_failure_retained": true
+  },
+  "ancillary_workflows": [
+    {
+      "run": 40590720967,
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "conclusion": "success",
+      "artifacts": [
+        {
+          "id": 12773253092,
+          "digest": "sha256:1392c0f08644f46983e3fcb71f310e3c0c3d0c67783c4bbb7438a65b65d33a3a",
+          "scope": "development installed Python package only",
+          "sbom_components": 2,
+          "registry_exclusions": [
+            {
+              "name": "openbexi-spell-server",
+              "reason": "Dependency not found on PyPI and could not be audited: openbexi-spell-server (0.8.0.dev72)"
+            }
+          ],
+          "wheel_bytes_present_in_artifact": false,
+          "full_security_qualified": false
+        }
+      ]
+    },
+    {
+      "run": 40590721008,
+      "name": "v0.8 Kubernetes prelaunch static security gate",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "conclusion": "success",
+      "artifacts": [
+        {
+          "id": 12774595213,
+          "digest": "sha256:9bf0d1b477d383282496c2321da55902cc4f5d4fea0fe56ca0748f05962aae60",
+          "scope": "v08-kubernetes-prelaunch-4cead70f8c532bd8a0c064b309b22dfa9a1ed475"
+        }
+      ]
+    },
+    {
+      "run": 40590721055,
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "conclusion": "success",
+      "artifacts": [
+        {
+          "id": 12774665219,
+          "digest": "sha256:98db989e746e5ce1d6602102775649c12d956de778a0a735db9db295b2aa5e96",
+          "scope": "v08-compose-prelaunch-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "before_executed_checks": [
+            "certificate_scope",
+            "observer_write_denied",
+            "runtime_disabled",
+            "isolated_state",
+            "durable_cas_idempotency",
+            "wrong_revision_denied"
+          ],
+          "native_runtime_qualified": false,
+          "after_executed_checks": [
+            "context_a_restart_incarnation_rotated",
+            "context_b_incarnation_unchanged",
+            "context_a_durable_state",
+            "cross_context_isolation",
+            "runtime_remains_disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40590720957,
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "conclusion": "success",
+      "artifacts": [
+        {
+          "id": 12774725268,
+          "digest": "sha256:766129ea51a39deff3bb4afc450abbb129807e21befbe53092b77203982068f4",
+          "scope": "v08-kind-prelaunch-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "before_executed_checks": [
+            "certificate_scope",
+            "observer_write_denied",
+            "runtime_disabled",
+            "isolated_state",
+            "durable_cas_idempotency",
+            "wrong_revision_denied"
+          ],
+          "native_runtime_qualified": false,
+          "after_executed_checks": [
+            "context_a_restart_incarnation_rotated",
+            "context_b_incarnation_unchanged",
+            "context_a_durable_state",
+            "cross_context_isolation",
+            "runtime_remains_disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40590720998,
+      "name": "v0.8 portable preparation and driver compatibility subset",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "conclusion": "success",
+      "artifacts": [
+        {
+          "id": 12773079031,
+          "digest": "sha256:400a981b552db4cf3853cb9b4f1f2db07606c7b3d6c5421ceed70c10f59cb6e9",
+          "scope": "v08-compatibility-subset-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "tests": 241,
+          "source_hashes_verified": 191,
+          "full_compatibility_qualified": false,
+          "native_executor_tested": false
+        }
+      ]
+    }
+  ],
+  "remaining_allocation_attribution": {
+    "source": "e5565ef2757e2b61d60efd041ed475f97c15cba4",
+    "run": 40593967552,
+    "state": "Running original ASan/no-swap300s workload with owned numeric last-source-line context; no inferred private CPython symbols",
+    "earlier_stripped_ELF_setup_failure_retained": [
+      {
+        "artifact": 12773858596,
+        "artifact_name": "v08-allocation-bytes-4cbc336a8fbb11556e5317273bb1ba92d272c968",
+        "artifact_digest": "sha256:65e1326482ea8da7f1d09b2e22cce2382080c6950462bb833d780637317b3ae9",
+        "executable": "4cbc336a8fbb11556e5317273bb1ba92d272c968",
+        "tested_checkout": "4cbc336a8fbb11556e5317273bb1ba92d272c968",
+        "tree": "5df882315c4fc37990c8de65822df0dc172e25de",
+        "profile": "asan-noswap",
+        "scenario": "handoff",
+        "requested_seconds": 300,
+        "passed": false,
+        "diagnostic_only": true,
+        "native_error": "RuntimeError: Native before-spawn Context build failed",
+        "comparison_failures": [
+          "ValueError: memory_comparison_incomplete"
+        ],
+        "elapsed_including_preparation_seconds": 145.131356269,
+        "source_hashes_verified": 142,
+        "evidence_hashes_verified": 7,
+        "audit_files_verified": 0,
+        "exact_overlay_reproduced": true,
+        "all_samples_retained": true,
+        "resource_acceptance": null,
+        "resource_observations_available": false,
+        "resource_trace_file_present": false
+      }
+    ]
+  },
+  "sanitizer_hour_outcomes": [
+    {
+      "artifact": 12774098894,
+      "artifact_name": "v08-audit-sanitized-hour-ide-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "artifact_digest": "sha256:889a624cf298ef7db50001971c4dcec85faffcf4d1de34a8216c990ee1b26648",
+      "executable": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "tree": "e8a9e51741d48c340b1ecf7845e437da6fdb0b7a",
+      "profile": "asan-noswap",
+      "scenario": "ide",
+      "requested_seconds": 3600,
+      "passed": false,
+      "diagnostic_only": true,
+      "native_error": "RuntimeError: endurance_original_process_exited",
+      "comparison_failures": [
+        "ValueError: memory_comparison_incomplete"
+      ],
+      "elapsed_including_preparation_seconds": 1290.1011089649999,
+      "source_hashes_verified": 142,
+      "evidence_hashes_verified": 90,
+      "audit_files_verified": 27,
+      "exact_overlay_reproduced": true,
+      "all_samples_retained": true,
+      "resource_acceptance": null,
+      "resource_observations_available": true,
+      "resource_trace_file_present": true,
+      "samples": 472,
+      "observed_span_seconds": 991.929476709,
+      "peak_bytes": 2147495936,
+      "last_memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 177,
+        "oom": 2,
+        "oom_group_kill": 0,
+        "oom_kill": 1
+      },
+      "last_memory_stat": {
+        "active_anon": 1467686912,
+        "active_file": 4096,
+        "anon": 1450967040,
+        "anon_thp": 385875968,
+        "file": 3239936,
+        "file_dirty": 0,
+        "file_mapped": 0,
+        "file_thp": 0,
+        "file_writeback": 0,
+        "inactive_anon": 1024000,
+        "inactive_file": 8192,
+        "kernel": 16732160,
+        "kernel_stack": 1359872,
+        "numa_hint_faults": 0,
+        "numa_pages_migrated": 0,
+        "numa_pte_updates": 0,
+        "pagetables": 12939264,
+        "percpu": 2808,
+        "pgactivate": 24,
+        "pgdeactivate": 0,
+        "pgdemote_direct": 0,
+        "pgdemote_khugepaged": 0,
+        "pgdemote_kswapd": 0,
+        "pgdemote_proactive": 0,
+        "pgfault": 641547,
+        "pglazyfree": 0,
+        "pglazyfreed": 0,
+        "pgmajfault": 0,
+        "pgpromote_success": 0,
+        "pgrefill": 20,
+        "pgscan": 158,
+        "pgscan_direct": 141,
+        "pgscan_khugepaged": 17,
+        "pgscan_kswapd": 0,
+        "pgscan_proactive": 0,
+        "pgsteal": 132,
+        "pgsteal_direct": 115,
+        "pgsteal_khugepaged": 17,
+        "pgsteal_kswapd": 0,
+        "pgsteal_proactive": 0,
+        "pswpin": 0,
+        "pswpout": 0,
+        "sec_pagetables": 0,
+        "shmem": 3231744,
+        "shmem_thp": 0,
+        "slab": 2429648,
+        "slab_reclaimable": 229576,
+        "slab_unreclaimable": 2200072,
+        "sock": 0,
+        "swapcached": 0,
+        "swpin_zero": 0,
+        "swpout_zero": 0,
+        "thp_collapse_alloc": 204,
+        "thp_fault_alloc": 282,
+        "thp_swpout": 0,
+        "thp_swpout_fallback": 0,
+        "unevictable": 0,
+        "vmalloc": 12288,
+        "workingset_activate_anon": 0,
+        "workingset_activate_file": 0,
+        "workingset_nodereclaim": 0,
+        "workingset_refault_anon": 0,
+        "workingset_refault_file": 4,
+        "workingset_restore_anon": 0,
+        "workingset_restore_file": 0,
+        "zswap": 0,
+        "zswapped": 0,
+        "zswpin": 0,
+        "zswpout": 0,
+        "zswpwb": 0
+      },
+      "last_native_allocator": [
+        {
+          "allocated_bytes": 1491602,
+          "free_bytes": 21686768,
+          "heap_bytes": 106831872,
+          "monotonic_ns": 1499932073130,
+          "pid": 83,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10312947,
+          "free_bytes": 52281856,
+          "heap_bytes": 337133568,
+          "monotonic_ns": 1499258038477,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9416985,
+          "free_bytes": 177868624,
+          "heap_bytes": 491466752,
+          "monotonic_ns": 1492355177110,
+          "pid": 101,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4632448,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 1501140460938,
+          "pid": 38,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9167373,
+          "free_bytes": 171108148,
+          "heap_bytes": 491073536,
+          "monotonic_ns": 1498355541291,
+          "pid": 148,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_audit_files": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 31780864,
+            "files": 2,
+            "logical_bytes": 31770583
+          },
+          "native_console": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          },
+          "other": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          }
+        },
+        "complete": true,
+        "entries": 2,
+        "errors": 0,
+        "symlinks": 0
+      },
+      "last_pids": [
+        {
+          "namespace_pid": 1,
+          "program": "docker-init",
+          "pid": 25801,
+          "start_ticks": 50957,
+          "anonymous_bytes": 49152
+        },
+        {
+          "namespace_pid": 7,
+          "program": "python3.13",
+          "pid": 25829,
+          "start_ticks": 50964,
+          "anonymous_bytes": 31584256
+        },
+        {
+          "namespace_pid": 20,
+          "program": "SPELL-Listener",
+          "pid": 25917,
+          "start_ticks": 51008,
+          "anonymous_bytes": 83537920
+        },
+        {
+          "namespace_pid": 38,
+          "program": "spell-host-ipc",
+          "pid": 25975,
+          "start_ticks": 51026,
+          "anonymous_bytes": 74379264
+        },
+        {
+          "namespace_pid": 83,
+          "program": "spell-host-ipc",
+          "pid": 26126,
+          "start_ticks": 51116,
+          "anonymous_bytes": 174346240
+        },
+        {
+          "namespace_pid": 101,
+          "program": "SPELL-Executor",
+          "pid": 26193,
+          "start_ticks": 51145,
+          "anonymous_bytes": 551649280
+        },
+        {
+          "namespace_pid": 148,
+          "program": "SPELL-Executor",
+          "pid": 26514,
+          "start_ticks": 51336,
+          "anonymous_bytes": 535420928
+        }
+      ]
+    }
+  ],
+  "handoff_hour_pending": true,
+  "core_and_audit_artifacts": [
+    {
+      "id": 12773024304,
+      "name": "v08-audit-storage-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:e2151f9b889e4707169a4a61cf9bb80e399a8a03de671a8629de0ddd96a832ba",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 4,
+          "audit_file_hashes_verified": 0,
+          "component": {
+            "full_disk_errno": 28,
+            "explicit_failure_exit": 74,
+            "acknowledged_records": 2466,
+            "acknowledged_bytes": 10100736,
+            "restart_complete": true,
+            "retained_audit_bytes": 10100744,
+            "retained_audit_sha256": "2b185d526d6cd8ec52b60441b95858dc197018b6bf9e45dec0890598954d2972"
+          },
+          "retained_component_bytes_verified": true
+        }
+      ],
+      "junit": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "17",
+          "time": "5.352",
+          "timestamp": "2026-10-27T21:55:34.941078+00:00",
+          "hostname": "runnervmtai0g"
+        }
+      ]
+    },
+    {
+      "id": 12773338849,
+      "name": "v08-native-boundary-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:b3bac6813deeafe789d95d773c09df0434d27629b330058f98b5e1f35d7f4377",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 0,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773464320,
+      "name": "v08-native-launch-child-gate-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:fcf5a5376c0c9e51cfbc2f409eaccacacd31ac5671c1372742b4e9445badb092",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 74,
+          "audit_file_hashes_verified": 24,
+          "audit_bytes": 130159
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773493462,
+      "name": "v08-native-launch-thread-barrier-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:d92cfd07a6e5f318350ce79bef42c03fac2c1ae6052eedd381384e3b6d3b55db",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 74,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773668533,
+      "name": "v08-fault-reproduction-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:181b798e5db039eb7b2d0356acab2a809074bd0f68ced68f5815cb214bfc4f96",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 218,
+          "audit_file_hashes_verified": 0,
+          "junit": {
+            "tests": 95,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773698341,
+      "name": "v08-native-launch-dss-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:0745f4a5233fa6f47e9bf7fd7110f0d21e60db9c42174fab0e92ea807e92ba9c",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773728872,
+      "name": "v08-native-launch-native-handoff-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:ad3853650a251fb5cbc980a6e4860ccecb19d92d1553c562ed2adca4a21bf385",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 23,
+          "audit_bytes": 2476839,
+          "resource": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": true,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [],
+            "samples": 48,
+            "soak_samples": 22,
+            "duration_seconds": 45.550778102,
+            "peak_bytes": 1329967104,
+            "window_growth_bytes": 51261440,
+            "first_window_median_bytes": 1271848960,
+            "last_window_median_bytes": 1323110400
+          }
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773802990,
+      "name": "v08-server-foundation-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:15e6369d64fd31121720c164c473ad9393619dd7e1393a12b676bbc8822ad5d8",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 255,
+          "audit_file_hashes_verified": 0,
+          "junit": {
+            "tests": 1605,
+            "errors": 0,
+            "failures": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773859477,
+      "name": "v08-native-launch-native-startup-stress-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:1594878f143d12ad4b7e3a4779dd824c62ec287433c1cb5662ac64c547e79f37",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 69,
+          "audit_bytes": 179308
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773918005,
+      "name": "v08-native-audit-full-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:91631bfe1dc51576fcd7ff40ae93dd458a7bd6fc7186afd7f6ae6f7541eec28d",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 74,
+          "audit_file_hashes_verified": 24,
+          "audit_bytes": 121335,
+          "native_full_disk": {
+            "passed": true,
+            "write_failure_observed": true,
+            "actual_native_executor": true,
+            "original_executor_exited": true,
+            "explicit_native_audit_errno": 28,
+            "observed_native_failure_stages": [
+              "write"
+            ],
+            "worker_exit_code": 1,
+            "false_completion": false,
+            "holds_retained": 2,
+            "spent_workers": 1,
+            "original_owner_epoch_retained": true,
+            "full_v08_qualified": false,
+            "audit_retention_verified": true
+          },
+          "volumes": [
+            {
+              "image_sha256": "6cc08537300aaa3c8da0cde340ab8db95f66606fd58fb5b34ee8487218a4f801",
+              "image_bytes": 8388608,
+              "image_extracted_bytes_verified": true,
+              "prefix_preserved": true,
+              "fault": {
+                "errno": 28,
+                "disposable_bytes": 3452928,
+                "audit_records_deleted": false,
+                "backing_image_bytes": 8388608,
+                "filesystem_usable_bytes": 3653632
+              },
+              "retained_records": [
+                {
+                  "name": "2026-10-27_220033_Executor_audit_full#1.ASRUN",
+                  "bytes": 4096,
+                  "sha256": "24a8043a2e88186ee480985a00af45ed992d9d49208eb59b0c764904a2cde92c",
+                  "complete_tail": false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773958017,
+      "name": "v08-native-launch-audit-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:3dd1ad4bf0c6c2c6f36e1c98397d7de98cdae276c087b5dde8080b92260cf5be",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 74,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774157739,
+      "name": "v08-native-launch-native-terminal-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:59e0ec82b27d83d9d4babf64fb2c23128ce92ff63ba5b8eac7c3a5cfa2c7d80b",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 39,
+          "audit_bytes": 145677
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774307898,
+      "name": "v08-native-launch-native-ide-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:ad712ed45eb42f47aad2a8cce7e3a279920f29ab39af6ce7b7ca36e5dfc1a82e",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 27,
+          "audit_bytes": 2435454,
+          "resource": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": true,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [],
+            "samples": 47,
+            "soak_samples": 21,
+            "duration_seconds": 45.61687088,
+            "peak_bytes": 1055313920,
+            "window_growth_bytes": 51329024.0,
+            "first_window_median_bytes": 995639296,
+            "last_window_median_bytes": 1046968320.0
+          }
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774646567,
+      "name": "v08-native-launch-native-prompts-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:627d9a968bf96871b1cf3c774556a9a0a7deaf5abd8602f5f08f3c359593886a",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 24,
+          "audit_bytes": 142219
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774650831,
+      "name": "v08-native-launch-pause-probe-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:f8bdce72692c803ea82b30afaa40c348bf9e00554a2ba7d8aebff64b2d4b3204",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 74,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12775110016,
+      "name": "v08-native-launch-listener-survival-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:c4a72122bd1dbb4464f98f934c9f702514fb908f5139f33c1d11fb29b42b4383",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 75,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    }
+  ],
+  "repeated_lifecycle_artifacts": [
+    {
+      "id": 12773313376,
+      "name": "v08-lifecycle-native-listener-survival-2-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:d92d5deba2a17e79f5dba9126b02e07e1e025bbb47966dc0d5b121909708ce4b",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 75,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773527868,
+      "name": "v08-lifecycle-native-startup-stress-1-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:5a952d4ab144bb8de7e1f3a61edcfa0a6bba314faf3d901ab292381d70ab4739",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 69,
+          "audit_bytes": 175450
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773557619,
+      "name": "v08-lifecycle-native-startup-stress-3-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:88b9701c9d156175e3c2aaaacfc521b0c75a917651046ec84ef9aa1d8df97e09",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 69,
+          "audit_bytes": 148685
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773902445,
+      "name": "v08-lifecycle-native-listener-survival-3-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:f016beaa761c4abb05224d70444c7232f72f129cd729ad634c8e0ca80de6c080",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 75,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12773963500,
+      "name": "v08-lifecycle-native-terminal-2-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:caa3db4eef87d1575204cb59bd0a8549a8838eaa94af8cd8fa9e36c64783dee2",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 39,
+          "audit_bytes": 154650
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774337768,
+      "name": "v08-lifecycle-native-startup-stress-2-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:5ae97ab560fd34942af83e795f9a2022c8b5093b7dcb3ac6aa15b5b08a78c19a",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 69,
+          "audit_bytes": 418713
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774806150,
+      "name": "v08-lifecycle-native-terminal-1-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:f3b9feb86481d40a9ea9c409aacc027748ff622514d2968ba97bb740d544a7a5",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 39,
+          "audit_bytes": 160978
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12774810322,
+      "name": "v08-lifecycle-native-listener-survival-1-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:04cb5a7158bbe1df2f1961c61b7e3bae1a200be8526c964b4fd89fca6e2c6f46",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 75,
+          "audit_file_hashes_verified": 0
+        }
+      ],
+      "junit": []
+    },
+    {
+      "id": 12775085414,
+      "name": "v08-lifecycle-native-terminal-3-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "digest": "sha256:3200573026cc059ff656b638119a405d5fe70b60cc9424cfe234a7babf78758c",
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "reports": [
+        {
+          "passed": true,
+          "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+          "source_hashes_verified": 139,
+          "audit_file_hashes_verified": 39,
+          "audit_bytes": 148961
+        }
+      ],
+      "junit": []
+    }
+  ],
+  "previous_checkpoint": "qualification-892914f-20261027.json",
+  "historical_failures_preserved": true,
+  "all_eleven_release_groups_open": true,
+  "full_v08_qualified": false,
+  "published": false,
+  "production_migration_authorized": false
+}

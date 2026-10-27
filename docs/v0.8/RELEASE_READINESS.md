@@ -1,3 +1,49 @@
+<!-- checkpoint-6dd8218:start -->
+# Verified bounded checkpoint at 6dd8218, full release unqualified
+
+Executable `6dd82189a4cdc4f021af3a357ccf747a0b459f98` (`0.8.0.dev72`), paired IDE
+`c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`; tested PR merge `4cead70f8c532bd8a0c064b309b22dfa9a1ed475` has
+identical tree `e8a9e51741d48c340b1ecf7845e437da6fdb0b7a`.
+
+All 14 core jobs pass, with 1,605 foundation tests and zero failures, errors or
+skips. The real 10,000-admission Unix/JSON/peer-pin/epoch-rotation component
+passes on CI; the prior local EPERM attempt remains failed and retained.
+Both mandatory original-ASan/UBSan/no-swap 45-second memory checks pass:
+
+| Scenario | Growth bytes | Peak bytes | All samples | Soak seconds |
+|---|---:|---:|---:|---:|
+| Handoff | 51,261,440 | 1,329,967,104 | 48 | 45.550778102 |
+| Installed IDE | 51,329,024 | 1,055,313,920 | 47 | 45.616870880 |
+
+Growth remains limited to 67,108,864 bytes, peak to 1,879,048,192, within a
+2 GiB cgroup without swap. Original workload, concurrency, sanitizers, deadlines
+and whole-cgroup measurement remain intact. Handoff growth is higher than the
+preceding 30.30 MiB result; no whole-family improvement is inferred from the
+isolated epoch-reader allocation correction.
+
+All nine lifecycle repetitions pass: 72 startup families, three Listener
+attempts and three 16-case terminal matrices. Actual native ENOSPC, 17 audit
+components and independent extraction of the entire 8 MiB fault image pass.
+All 16 core/audit archives verify 1,756 overlapping source bindings and 230 raw
+audit files; repetitions verify 1,059 overlapping source bindings and 324 files.
+The five ancillary workflows pass only within their 241-test portable,
+prelaunch Compose/kind, static manifest and development Python inventory scopes.
+Test counts overlap.
+
+The installed-IDE sanitizer hour fails; the handoff hour is still running. The IDE archive retains all
+472 observations spanning 991.929476709 seconds, peak 2,147,495,936 bytes and one
+sampled OOM kill; an original process exits. All 142 exact-overlay sources and
+27 raw audit files verify. These are failed sustained observations, never a
+one-hour pass or a substitute for mandatory acceptance. Later successful
+startups do not explain the historical registration/worker-exit failures.
+
+See [source-bound receipt](evidence/qualification-6dd8218-20261027.json). All eleven full-release groups remain
+false. Full original native/driver/763, public launch/debugger/browser/WSS/Git,
+deployed Compose/Kubernetes/fault/restore/upgrade/rollback, complete security
+disposition and stable joint artifacts/final installation remain unfinished.
+There is no stable v0.8 merge, tag or release. Historical records follow.
+<!-- checkpoint-6dd8218:end -->
+
 # Full v0.8 publication qualification
 
 Candidate `1612600` completes core run `40523170281`: **13/14 core jobs**,

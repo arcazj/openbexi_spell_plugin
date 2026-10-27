@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Measured epoch-file retention correction dev72 requires fresh hosted qualification. Verified predecessor892914f passes bounded checks but loses original processes in sanitizer hours; all eleven full-release groups remain open",
+  "phase": "6dd8218 / IDEc5edbdae: all14 core jobs pass,1605 foundation checks,9 lifecycle repetitions; original-ASan/UBSan/no-swap45s handoff/IDE growth48.89/48.95MiB against64MiB. The installed-IDE sanitizer hour fails; the handoff hour is still running. All eleven full-release groups remain open.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -101,7 +101,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "892914f / PR merge0165d4ba, identical tree2c8816f5: all14 core jobs pass;1586 foundation,95 overlapping fault,241 portable tests; mandatory45-second handoff/installed-IDE growth30.30/52.55MiB versus64MiB. All9 repeated lifecycle jobs pass. Both sanitizer hours lose an original process before one hour. All five ancillary workflows pass within their limited scopes. evidence/qualification-892914f-20261027.json",
+  "test_commands_and_outcomes": "6dd8218 / IDEc5edbdae: all14 core jobs pass,1605 foundation checks,9 lifecycle repetitions; original-ASan/UBSan/no-swap45s handoff/IDE growth48.89/48.95MiB against64MiB. The installed-IDE sanitizer hour fails; the handoff hour is still running. Actual native ENOSPC and17 components pass;1756/230 core source/audit bindings and1059/324 repetition bindings verify. Portable241 and four other ancillary workflows remain scoped. evidence/qualification-6dd8218-20261027.json",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md; full historical root diagnostic failed on older capture paths/source identities and remains unqualified; dev19 initial local 100-way child-admission race returned eight unclassified responses; strict diagnostic assertion added, ten targeted reruns and confirmation passed, cause not claimed.",
   "gates": {
@@ -126,7 +126,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Retrieve actual byte-ranked allocation and corrected native DECLARE-denial measurements, identify remaining paths, implement only demonstrated corrections, then repeat affected mandatory native/installed-IDE and endurance checks. Complete unfinished native, public IDE/browser, deployment, compatibility, security and packaging gates.",
+  "next_step": "Retrieve actual allocation-context and remaining comparison/hour outcomes; correct only measured runtime paths while retaining the mandatory workload and all sanitizer/resource/deadline settings. Resolve demonstrated lifecycle failures; implement and qualify remaining full-release functionality.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -153,7 +153,7 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "All eleven full-release groups remain false. Bounded mandatory memory passes at892914f; sustained sanitizer growth remains unresolved. Earlier optimized hours at3a970c45 pass diagnostically and preserve all audit records; they do not replace sanitizer acceptance. evidence/qualification-892914f-20261027.json",
+  "release_assessment": "6dd8218 / IDEc5edbdae: all14 core jobs pass,1605 foundation checks,9 lifecycle repetitions; original-ASan/UBSan/no-swap45s handoff/IDE growth48.89/48.95MiB against64MiB. The installed-IDE sanitizer hour fails; the handoff hour is still running. Full original native/driver/763, public IDE/browser/Git, Compose/Kubernetes, recovery/security and joint packaging remain unfinished. No stable publication.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
@@ -161,7 +161,7 @@
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
   "package_version": "0.8.0.dev72",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "892914f10f12bd9a3043a69e07f363a143445ec3",
+  "last_verified_component_commit": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -193,7 +193,7 @@
     "native_reconnections_executed": 1
   },
   "native_ide_controls_receipt": "evidence/controller-liveness/qualification-summary.json",
-  "last_verified_component_scope": "14 core jobs,1586 foundation,9 lifecycle repetitions,actual native ENOSPC and both mandatory45-second original-ASan/no-swap memory checks. Full v0.8 remains unqualified.",
+  "last_verified_component_scope": "14 bounded core jobs,1605 foundation,9 repetitions,real10k Unix admissions+rotation,actual native ENOSPC and both mandatory45s memory checks. Full release unqualified.",
   "native_reconnect_profile": {
     "documentation": "NATIVE_RECONNECT.md",
     "schema_version": 23,
@@ -276,7 +276,7 @@
     "historical_causes_established": false,
     "full_driver_fault_gate_qualified": false
   },
-  "native_startup_current_blockers": "All9 predecessor892914f repetitions pass, but its later diagnostic IDE comparison fails before sampling when nested-child Context admission takes2007ms and returns503 context_unavailable/TimeoutError. This distinct new failure remains failed. Historical5382ms member RPC over4000ms and separate90s worker exit failure remain unexplained. Controlled member delay, event reply loss, native DECLARE denial and post-durable-prompt reply loss terminate the affected family. Initial private-OPEN diagnostic failed to inject and remains failed. These probes do not reproduce or explain the old hang. Fresh dev72 qualification pending.",
+  "native_startup_current_blockers": "All9 current6dd repetitions pass. Historical5382ms registration/4000ms deadline and separate90s worker-exit failures remain unexplained. Later892 diagnostic adds pre-sampling nested-child admission timeout2007ms/503. Four controlled faults, including post-durable DECLARE reply loss, exit the affected family with9 healthy families finishing; none reproduces/explains the historical hang. Initial OPEN fault failed to inject and remains failed.",
   "controller_network_recovery": {
     "documentation": "AUTOMATIC_CONTROLLER_LIVENESS.md",
     "qualification_receipt": "evidence/controller-liveness/qualification-summary.json",
@@ -302,17 +302,22 @@
   },
   "native_recovery_memory": {
     "qualified": false,
-    "receipt": "evidence/qualification-892914f-20261027.json",
-    "bounded_candidate": "892914f10f12bd9a3043a69e07f363a143445ec3",
+    "receipt": "evidence/qualification-6dd8218-20261027.json",
+    "bounded_candidate": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
     "bounded_peak_limits_passed": true,
     "bounded_growth_limits_passed": true,
-    "handoff_growth_bytes": 31776768,
-    "ide_growth_bytes": 55103488,
+    "handoff_growth_bytes": 51261440,
+    "ide_growth_bytes": 51329024,
     "limit_bytes": 67108864,
     "sanitizer_workload_deadlines_limits_unchanged": true,
-    "sanitized_handoff_endurance_passed": false,
-    "sanitized_ide_endurance": "failed before one hour; last sample zero OOM counters, later Docker OOMKilled true",
-    "full_v08_qualified": false
+    "sanitized_ide_endurance": "Failed before one hour:472samples/991.929476709s,one sampled OOM kill,peak2147495936bytes",
+    "full_v08_qualified": false,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "foundation_tests": 1605,
+    "memory_samples_handoff": 48,
+    "memory_samples_ide": 47,
+    "sanitized_handoff_endurance": "Pending",
+    "sanitized_handoff_endurance_passed": null
   },
   "memory_attribution_followup": {
     "receipt": "evidence/qualification-892914f-20261027.json",
@@ -329,21 +334,26 @@
     "full_v08_qualified": false
   },
   "qualification_resume": {
-    "receipt": "evidence/qualification-892914f-20261027.json",
-    "last_fully_collected_candidate": "892914f10f12bd9a3043a69e07f363a143445ec3",
-    "last_core_run": 40581699657,
+    "receipt": "evidence/qualification-6dd8218-20261027.json",
+    "last_core_run": 40590720953,
     "core_jobs_passed": 14,
     "core_jobs_total": 14,
-    "foundation_tests": 1586,
+    "foundation_tests": 1605,
     "fault_tests_overlapping": 95,
-    "handoff_growth_bytes": 31776768,
-    "ide_growth_bytes": 55103488,
+    "handoff_growth_bytes": 51261440,
+    "ide_growth_bytes": 51329024,
     "mandatory_growth_limit_bytes": 67108864,
-    "memory_samples_per_job": 48,
     "repeated_lifecycle_jobs_passed": 9,
     "actual_native_full_disk_passed": true,
     "cache_correction_hosted": "Actual native ENOSPC and both3a970c45 optimized hours pass; sanitizer hours still fail",
-    "full_v08_qualified": false
+    "full_v08_qualified": false,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "memory_samples_handoff": 48,
+    "memory_samples_ide": 47,
+    "sanitized_ide_endurance": "Failed before one hour:472samples/991.929476709s,one sampled OOM kill,peak2147495936bytes",
+    "sanitized_handoff_endurance": "Pending",
+    "sanitized_handoff_endurance_passed": null,
+    "last_bounded_core_and_repetitions_candidate": "6dd82189a4cdc4f021af3a357ccf747a0b459f98"
   },
   "one_idle_message_worker": {
     "receipt": "evidence/one-idle-worker-20261027.json",
@@ -359,17 +369,21 @@
     "warmup_callbacks_excluded": 0
   },
   "measured_memory_acceptance_20261027": {
-    "executable": "892914f10f12bd9a3043a69e07f363a143445ec3",
-    "handoff_growth_bytes": 31776768,
-    "ide_growth_bytes": 55103488,
+    "executable": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "handoff_growth_bytes": 51261440,
+    "ide_growth_bytes": 51329024,
     "limit_bytes": 67108864,
     "mandatory_jobs_passed": true,
-    "foundation_tests": 1586,
+    "foundation_tests": 1605,
     "core": "14/14 bounded jobs passed",
-    "sanitized_handoff_endurance_passed": false,
-    "sanitized_ide_endurance": "failed before one hour",
-    "receipt": "evidence/qualification-892914f-20261027.json",
-    "full_v08_qualified": false
+    "sanitized_ide_endurance": "Failed before one hour:472samples/991.929476709s,one sampled OOM kill,peak2147495936bytes",
+    "receipt": "evidence/qualification-6dd8218-20261027.json",
+    "full_v08_qualified": false,
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "memory_samples_handoff": 48,
+    "memory_samples_ide": 47,
+    "sanitized_handoff_endurance": "Pending",
+    "sanitized_handoff_endurance_passed": null
   },
   "durable_audit_native_20261027": {
     "source": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
@@ -1055,9 +1069,75 @@
     "all_release_groups_open": true
   },
   "unqualified_candidate": {
-    "source_parent": "892914f10f12bd9a3043a69e07f363a143445ec3",
+    "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
     "version": "0.8.0.dev72",
-    "receipt": "evidence/runtime-epoch-io-20261027.json",
-    "qualification": "Fresh mandatory native, installed-IDE, Unix transport, audit and sustained checks pending; predecessor passes are not promoted"
+    "receipt": "evidence/qualification-6dd8218-20261027.json",
+    "bounded_component_qualified": true,
+    "full_v08_qualified": false
+  },
+  "historical_current_records_before_6dd8218_reconciliation": {
+    "phase": "Measured epoch-file retention correction dev72 requires fresh hosted qualification. Verified predecessor892914f passes bounded checks but loses original processes in sanitizer hours; all eleven full-release groups remain open",
+    "test_commands_and_outcomes": "892914f / PR merge0165d4ba, identical tree2c8816f5: all14 core jobs pass;1586 foundation,95 overlapping fault,241 portable tests; mandatory45-second handoff/installed-IDE growth30.30/52.55MiB versus64MiB. All9 repeated lifecycle jobs pass. Both sanitizer hours lose an original process before one hour. All five ancillary workflows pass within their limited scopes. evidence/qualification-892914f-20261027.json",
+    "next_step": "Retrieve actual byte-ranked allocation and corrected native DECLARE-denial measurements, identify remaining paths, implement only demonstrated corrections, then repeat affected mandatory native/installed-IDE and endurance checks. Complete unfinished native, public IDE/browser, deployment, compatibility, security and packaging gates.",
+    "release_assessment": "All eleven full-release groups remain false. Bounded mandatory memory passes at892914f; sustained sanitizer growth remains unresolved. Earlier optimized hours at3a970c45 pass diagnostically and preserve all audit records; they do not replace sanitizer acceptance. evidence/qualification-892914f-20261027.json",
+    "last_verified_component_commit": "892914f10f12bd9a3043a69e07f363a143445ec3",
+    "last_verified_component_scope": "14 core jobs,1586 foundation,9 lifecycle repetitions,actual native ENOSPC and both mandatory45-second original-ASan/no-swap memory checks. Full v0.8 remains unqualified.",
+    "native_startup_current_blockers": "All9 predecessor892914f repetitions pass, but its later diagnostic IDE comparison fails before sampling when nested-child Context admission takes2007ms and returns503 context_unavailable/TimeoutError. This distinct new failure remains failed. Historical5382ms member RPC over4000ms and separate90s worker exit failure remain unexplained. Controlled member delay, event reply loss, native DECLARE denial and post-durable-prompt reply loss terminate the affected family. Initial private-OPEN diagnostic failed to inject and remains failed. These probes do not reproduce or explain the old hang. Fresh dev72 qualification pending.",
+    "native_recovery_memory": {
+      "qualified": false,
+      "receipt": "evidence/qualification-892914f-20261027.json",
+      "bounded_candidate": "892914f10f12bd9a3043a69e07f363a143445ec3",
+      "bounded_peak_limits_passed": true,
+      "bounded_growth_limits_passed": true,
+      "handoff_growth_bytes": 31776768,
+      "ide_growth_bytes": 55103488,
+      "limit_bytes": 67108864,
+      "sanitizer_workload_deadlines_limits_unchanged": true,
+      "sanitized_handoff_endurance_passed": false,
+      "sanitized_ide_endurance": "failed before one hour; last sample zero OOM counters, later Docker OOMKilled true",
+      "full_v08_qualified": false
+    },
+    "qualification_resume": {
+      "receipt": "evidence/qualification-892914f-20261027.json",
+      "last_fully_collected_candidate": "892914f10f12bd9a3043a69e07f363a143445ec3",
+      "last_core_run": 40581699657,
+      "core_jobs_passed": 14,
+      "core_jobs_total": 14,
+      "foundation_tests": 1586,
+      "fault_tests_overlapping": 95,
+      "handoff_growth_bytes": 31776768,
+      "ide_growth_bytes": 55103488,
+      "mandatory_growth_limit_bytes": 67108864,
+      "memory_samples_per_job": 48,
+      "repeated_lifecycle_jobs_passed": 9,
+      "actual_native_full_disk_passed": true,
+      "cache_correction_hosted": "Actual native ENOSPC and both3a970c45 optimized hours pass; sanitizer hours still fail",
+      "full_v08_qualified": false
+    },
+    "measured_memory_acceptance_20261027": {
+      "executable": "892914f10f12bd9a3043a69e07f363a143445ec3",
+      "handoff_growth_bytes": 31776768,
+      "ide_growth_bytes": 55103488,
+      "limit_bytes": 67108864,
+      "mandatory_jobs_passed": true,
+      "foundation_tests": 1586,
+      "core": "14/14 bounded jobs passed",
+      "sanitized_handoff_endurance_passed": false,
+      "sanitized_ide_endurance": "failed before one hour",
+      "receipt": "evidence/qualification-892914f-20261027.json",
+      "full_v08_qualified": false
+    },
+    "unqualified_candidate": {
+      "source_parent": "892914f10f12bd9a3043a69e07f363a143445ec3",
+      "version": "0.8.0.dev72",
+      "receipt": "evidence/runtime-epoch-io-20261027.json",
+      "qualification": "Fresh mandatory native, installed-IDE, Unix transport, audit and sustained checks pending; predecessor passes are not promoted"
+    }
+  },
+  "qualification_checkpoint_6dd8218": {
+    "receipt": "evidence/qualification-6dd8218-20261027.json",
+    "full_v08_qualified": false,
+    "published": false,
+    "all_release_groups_open": true
   }
 }
