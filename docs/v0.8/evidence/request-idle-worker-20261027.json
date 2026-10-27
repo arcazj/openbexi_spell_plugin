@@ -1,0 +1,760 @@
+{
+  "schema": "openbexi.request-idle-worker-candidate/1",
+  "baseline_executable": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "5f36f98cd07a0a1527f1dae44371a721d57d119e6eb383bf324ddcca4de34db7",
+    "host_runtime/native/message_workers.H": "77d938e316ef7ba4921242ffdbb170151a9aa29ccc34fdcb92ecc86f61425524",
+    "scripts/v08_memory_experiment.py": "14f405004b76795c1d3cb04f1c888fb8e5f83d459e4d2ba9c5cc5f1c9bce666f",
+    "server/tests/native_message_workers.cpp": "dbe9b2427b844abb6664a4a91cbe55dc2cad44a1898d6dff544bb2986b3103c1",
+    "server/tests/test_native_request_worker.py": "24f321df2c264b199076732f5d65c9b2c44664dbcabc36586316a86db600f111",
+    "server/tests/native_message_workers_adapters.H": "91deca979fcdb800f30c4e662b6b92b19e8a751cd81204aa9e93d992fe779c99",
+    "source_port/native_patches.py": "d026a9ec96dbf96d49362394c030b84ae598e4224ee99f376534c4893fd4b927",
+    "source_port/native/SPELLpython313.H": "20d50b35fe9a0016324c756a7c3cdb865cfe8ef5da1693d70b9b2bc0767eb0b5",
+    "source_port/native/helper_lifecycle.cpp": "df8cd1df1be404dc0e06bb7aeeb30173b28678ae5aec2b7b887f7c7b73729113"
+  },
+  "request_component_retention": {
+    "dedicated": {
+      "calls": 10000,
+      "os_threads_created": 10000,
+      "heap_growth_bytes": 85852160,
+      "live_bytes": 78270
+    },
+    "shared_idle": {
+      "calls": 10000,
+      "os_threads_created": 1,
+      "heap_growth_bytes": 393216,
+      "live_bytes": 78294
+    }
+  },
+  "callbacks_measured": 10000,
+  "callbacks_excluded": 0,
+  "measured_native_heap_retention": {
+    "12757194250": {
+      "source": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
+      "sample_scope": "first/last observed in original five-minute soak; precise event times retained, not claimed atomic",
+      "resource_file_sha256": "fcbf7985231dbc55790ac184d0842d599efb87191cba6ea84b9f715b7dadc501",
+      "first_monotonic_ns": 325190562642,
+      "last_monotonic_ns": 625767747384,
+      "cgroup_components": {
+        "anon": {
+          "first": 1191559168,
+          "last": 1731649536
+        },
+        "file": {
+          "first": 1687552,
+          "last": 13549568
+        },
+        "shmem": {
+          "first": 659456,
+          "last": 3231744
+        },
+        "kernel": {
+          "first": 20762624,
+          "last": 22126592
+        },
+        "kernel_stack": {
+          "first": 1867776,
+          "last": 1867776
+        },
+        "pagetables": {
+          "first": 14823424,
+          "last": 15896576
+        }
+      },
+      "native_processes": [
+        {
+          "pid": 103,
+          "program": "SPELL-Executor",
+          "first": {
+            "allocated_bytes": 9390193,
+            "free_bytes": 30120688,
+            "heap_bytes": 181751808,
+            "monotonic_ns": 323667482983,
+            "pid": 103,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 9393367,
+            "free_bytes": 56302096,
+            "heap_bytes": 347099136,
+            "monotonic_ns": 623680977411,
+            "pid": 103,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 37,
+          "program": "SPELL-Context",
+          "first": {
+            "allocated_bytes": 10279223,
+            "free_bytes": 40712992,
+            "heap_bytes": 207372288,
+            "monotonic_ns": 323668528529,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 10276205,
+            "free_bytes": 132442975,
+            "heap_bytes": 356843520,
+            "monotonic_ns": 624603012755,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 83,
+          "program": "spell-host-ipc",
+          "first": {
+            "allocated_bytes": 1489647,
+            "free_bytes": 5603528,
+            "heap_bytes": 10887168,
+            "monotonic_ns": 323668205876,
+            "pid": 83,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 1490069,
+            "free_bytes": 10754368,
+            "heap_bytes": 42082304,
+            "monotonic_ns": 625504368502,
+            "pid": 83,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 170,
+          "program": "SPELL-Executor",
+          "first": {
+            "allocated_bytes": 9147494,
+            "free_bytes": 28377912,
+            "heap_bytes": 172249088,
+            "monotonic_ns": 318513615868,
+            "pid": 170,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 9147494,
+            "free_bytes": 45637576,
+            "heap_bytes": 284446720,
+            "monotonic_ns": 617681400284,
+            "pid": 170,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 38,
+          "program": "spell-host-ipc",
+          "first": {
+            "allocated_bytes": 1481863,
+            "free_bytes": 4697984,
+            "heap_bytes": 7020544,
+            "monotonic_ns": 314515077305,
+            "pid": 38,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 1481863,
+            "free_bytes": 4697984,
+            "heap_bytes": 7020544,
+            "monotonic_ns": 625682438298,
+            "pid": 38,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        }
+      ]
+    },
+    "12756774432": {
+      "source": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
+      "sample_scope": "first/last observed in original five-minute soak; precise event times retained, not claimed atomic",
+      "resource_file_sha256": "c916eadd01d7c0051b793801093df5f44949842b2efff73f32f2ea2f04d114a4",
+      "first_monotonic_ns": 394576321372,
+      "last_monotonic_ns": 695164899537,
+      "cgroup_components": {
+        "anon": {
+          "first": 1201483776,
+          "last": 1735114752
+        },
+        "file": {
+          "first": 1712128,
+          "last": 13537280
+        },
+        "shmem": {
+          "first": 659456,
+          "last": 3244032
+        },
+        "kernel": {
+          "first": 20783104,
+          "last": 22122496
+        },
+        "kernel_stack": {
+          "first": 1851392,
+          "last": 1851392
+        },
+        "pagetables": {
+          "first": 14868480,
+          "last": 15912960
+        }
+      },
+      "native_processes": [
+        {
+          "pid": 103,
+          "program": "SPELL-Executor",
+          "first": {
+            "allocated_bytes": 9417226,
+            "free_bytes": 30210840,
+            "heap_bytes": 181686272,
+            "monotonic_ns": 393039126825,
+            "pid": 103,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 9416295,
+            "free_bytes": 56110224,
+            "heap_bytes": 346181632,
+            "monotonic_ns": 693053331637,
+            "pid": 103,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 37,
+          "program": "SPELL-Context",
+          "first": {
+            "allocated_bytes": 10298261,
+            "free_bytes": 41237680,
+            "heap_bytes": 208158720,
+            "monotonic_ns": 393039152936,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 10304477,
+            "free_bytes": 132979279,
+            "heap_bytes": 357695488,
+            "monotonic_ns": 693854573395,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 83,
+          "program": "spell-host-ipc",
+          "first": {
+            "allocated_bytes": 1490490,
+            "free_bytes": 5617160,
+            "heap_bytes": 10887168,
+            "monotonic_ns": 393039450574,
+            "pid": 83,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 1491902,
+            "free_bytes": 10667072,
+            "heap_bytes": 42016768,
+            "monotonic_ns": 694873072591,
+            "pid": 83,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 169,
+          "program": "SPELL-Executor",
+          "first": {
+            "allocated_bytes": 9171364,
+            "free_bytes": 28344680,
+            "heap_bytes": 171921408,
+            "monotonic_ns": 387016503366,
+            "pid": 169,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 9171364,
+            "free_bytes": 45621416,
+            "heap_bytes": 283987968,
+            "monotonic_ns": 687051249111,
+            "pid": 169,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        },
+        {
+          "pid": 38,
+          "program": "spell-host-ipc",
+          "first": {
+            "allocated_bytes": 1481863,
+            "free_bytes": 4632448,
+            "heap_bytes": 6955008,
+            "monotonic_ns": 385018038344,
+            "pid": 38,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          "last": {
+            "allocated_bytes": 1481863,
+            "free_bytes": 4632448,
+            "heap_bytes": 6955008,
+            "monotonic_ns": 685052704081,
+            "pid": 38,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        }
+      ]
+    }
+  },
+  "component_scope": "Real incoming request lifecycle implementation; synchronization/transport adapters, not a native acceptance result",
+  "correction": "REQUEST and MESSAGE share the same single lazy idle OS thread. Busy/nested work uses the original dedicated fallback without queueing, a cap, changed cancellation or relaxed deadlines. Request objects are not cached. The ticket joins before disposal and the idle slot retains no payload/listener/ticket.",
+  "ownership_and_native_source_review": {
+    "new_request_allocation_sites": [
+      "lib/SPELL_IPC/src/SPELLipcClientInterface.C",
+      "lib/SPELL_IPC/src/SPELLipcServerInterface.C",
+      "lib/SPELL_IPC/src/SPELLipcServerInterfaceSingle.C"
+    ],
+    "all_allocation_sites_in_rebuilt_runtime_units": true,
+    "legacy_thread_join_and_cancel_paths_inspected": true,
+    "current_process_tls_restored_by_scope_guard": true,
+    "python_value_recursion_tls_popped_by_scope_guard": true,
+    "cpython_gil_guards_unchanged": true,
+    "independent_security_review": false
+  },
+  "local_checks": [
+    {
+      "suite": "affected component and strict memory-overlay suite",
+      "tests": 127,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "c12cc6979ddee08afdab89f499ea2253859229fb7a9df0bb51cf381ecbe098e5"
+    },
+    {
+      "suite": "final focused request suite, overlaps preceding suite",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "4697c4a44fc4ffb921632f03f36decf137901348bfd1057f26617c923304b55a"
+    },
+    {
+      "suite": "deployment version and fail-closed release guard",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "40a5b2763714e62702f5ec45af916cdf9665539256cd75a72ff15dde58547155"
+    }
+  ],
+  "python": "3.12.14",
+  "hosted_native_result": "pending at resulting commit; all affected checks including original sanitizer/no-swap hour must be rerun",
+  "cache_only_checkpoint": {
+    "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+    "core_run": 40571287735,
+    "core_passed": 13,
+    "core_total": 14,
+    "foundation": {
+      "tests": 1572,
+      "errors": 0,
+      "skipped": 0,
+      "artifact": 12765549293,
+      "digest": "sha256:8dab799938db7dbb7b9d6c19cc719613741d2a876324707956bfb58f9ec9b748",
+      "failure_count": 1,
+      "failure_details": [
+        {
+          "class": "tests.test_deployment_readiness",
+          "name": "test_prelaunch_image_markers_match_the_installed_package_version",
+          "failure": "server/tests/test_deployment_readiness.py:88: in test_prelaunch_image_markers_match_the_installed_package_version\n    assert runpy.run_path(str(deployment / \"render_kubernetes.py\"))[\"AUTHORITY_IMAGE\"] == expected\nE   AssertionError: assert 'openbexi-spe...v68-prelaunch' == 'openbexi-spe...v69-prelaunch'\nE     \nE     - openbexi-spell-server:0.8.0.dev69-prelaunch\nE     ?                                 ^\nE     + openbexi-spell-server:0.8.0.dev68-prelaunch\nE     ?                                 ^"
+        }
+      ]
+    },
+    "native_and_audit_verified": [
+      {
+        "id": 12763814642,
+        "name": "v08-fault-reproduction-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:65061d51244a469eed6ba5f050cd829afb344179b0b19fbcbb8aa712f451f5b3",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 215,
+            "audit_file_hashes_verified": 0,
+            "junit": {
+              "tests": 95,
+              "failures": 0,
+              "errors": 0,
+              "skipped": 0
+            }
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12764339127,
+        "name": "v08-audit-storage-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:8c4b94920bcd051a713691d03c5c4160f5e7207173a3a8aea6704922a42ca369",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 4,
+            "audit_file_hashes_verified": 0,
+            "component": {
+              "full_disk_errno": 28,
+              "explicit_failure_exit": 74,
+              "acknowledged_records": 2466,
+              "acknowledged_bytes": 10100736,
+              "restart_complete": true,
+              "retained_audit_bytes": 10100744,
+              "retained_audit_sha256": "2b185d526d6cd8ec52b60441b95858dc197018b6bf9e45dec0890598954d2972"
+            },
+            "retained_component_bytes_verified": true
+          }
+        ],
+        "junit": [
+          {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "17",
+            "time": "8.414",
+            "timestamp": "2026-10-27T19:43:29.852465+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        ]
+      },
+      {
+        "id": 12765073979,
+        "name": "v08-native-audit-full-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:bda565067bc3f5e6dbc2c1d51a84af422740a65fb8f8ab68f0836c5930e5222e",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 74,
+            "audit_file_hashes_verified": 24,
+            "audit_bytes": 98140,
+            "native_full_disk": {
+              "passed": true,
+              "write_failure_observed": true,
+              "actual_native_executor": true,
+              "original_executor_exited": true,
+              "explicit_native_audit_errno": 28,
+              "observed_native_failure_stages": [
+                "write"
+              ],
+              "worker_exit_code": 1,
+              "false_completion": false,
+              "holds_retained": 2,
+              "spent_workers": 1,
+              "original_owner_epoch_retained": true,
+              "full_v08_qualified": false,
+              "audit_retention_verified": true
+            },
+            "volumes": [
+              {
+                "image_sha256": "7b182e7fedbf4aa7f46ba83ef8754aed3571cf9f8ef684f5dce985a4d83fc927",
+                "image_bytes": 8388608,
+                "image_extracted_bytes_verified": true,
+                "prefix_preserved": true,
+                "fault": {
+                  "errno": 28,
+                  "disposable_bytes": 3457024,
+                  "audit_records_deleted": false,
+                  "backing_image_bytes": 8388608,
+                  "filesystem_usable_bytes": 3653632
+                },
+                "retained_records": [
+                  {
+                    "name": "2026-10-27_194505_Executor_audit_full#1.ASRUN",
+                    "bytes": 4096,
+                    "sha256": "cce9d1972be72c3936daadca922c7df98bd219ddf36429065aec4bdef5194653",
+                    "complete_tail": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765403580,
+        "name": "v08-native-launch-native-terminal-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:7d5fc67f5762e70c4f9a422cb40cea3533d3acdafe7f68f998287e4b61cdcb01",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 39,
+            "audit_bytes": 127886
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765549293,
+        "name": "v08-server-foundation-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:8dab799938db7dbb7b9d6c19cc719613741d2a876324707956bfb58f9ec9b748",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": false,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 250,
+            "audit_file_hashes_verified": 0,
+            "junit": {
+              "tests": 1572,
+              "errors": 0,
+              "failures": 1,
+              "skipped": 0
+            }
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765572164,
+        "name": "v08-native-launch-dss-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:93f92ca6e6a5f61337e8818db8fef4deb2abc8ffe1ee90ac3270e97f6b23575d",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765631555,
+        "name": "v08-native-boundary-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:275565b1c78914d7c88e46479b2a37191774b5b444b29e16914873d9b7ddcbb1",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 0,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765707829,
+        "name": "v08-native-launch-pause-probe-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:7651a93aebb02e41eab3e468d336ccc74b1745d2e1a8d00a6ea3f29e2309fb31",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 74,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12765738037,
+        "name": "v08-native-launch-native-prompts-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:ef8f6100732609e4533b13fb7786ac809eff2b3a6c158415b38ab768cb0288ea",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 24,
+            "audit_bytes": 131665
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766086604,
+        "name": "v08-native-launch-listener-survival-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:a5b04496e25df6c5bb04e1adf9867af60c5bbfbdeed2454a8e82ee1fb0648cc8",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 75,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766101393,
+        "name": "v08-native-launch-native-handoff-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:2e7f17b9af54c3cb280f0ad2d924a62d7a0ca3016748a7095926ee2241b3c4c9",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 23,
+            "audit_bytes": 2505117,
+            "resource": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": true,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [],
+              "samples": 48,
+              "soak_samples": 22,
+              "duration_seconds": 45.532592481,
+              "peak_bytes": 1306595328,
+              "window_growth_bytes": 62218240,
+              "first_window_median_bytes": 1224298496,
+              "last_window_median_bytes": 1286516736
+            }
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766505453,
+        "name": "v08-native-launch-native-startup-stress-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:b8d58355e917742981bee6d389614f748112cb63c4b2df0ff80c322f3b07280b",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 69,
+            "audit_bytes": 186229
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766565180,
+        "name": "v08-native-launch-child-gate-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:277ba85a1589afc5ca608796573cc1be85fd96b0eff876324ed2931f0196c832",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 74,
+            "audit_file_hashes_verified": 24,
+            "audit_bytes": 95876
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766640520,
+        "name": "v08-native-launch-audit-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:128d1ea809535b143d10616313a42daf2ff738a3125951890ca2ce02378d77ea",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 74,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12766745995,
+        "name": "v08-native-launch-thread-barrier-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:3ec75ffdd0102bc55f89eed7df0fb78b274808b51ae3d0899ad9e281ccbb14af",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 74,
+            "audit_file_hashes_verified": 0
+          }
+        ],
+        "junit": []
+      },
+      {
+        "id": 12767485037,
+        "name": "v08-native-launch-native-ide-b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+        "digest": "sha256:3196f81560b346ee709420b22f56c781514ce2779c62ec4707a6003e316a0fb8",
+        "source": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+        "reports": [
+          {
+            "passed": true,
+            "tested_checkout": "b496b9595d20c2cbee60ae7cc10ae1c5c3627e3c",
+            "source_hashes_verified": 139,
+            "audit_file_hashes_verified": 27,
+            "audit_bytes": 2562146,
+            "resource": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": true,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [],
+              "samples": 47,
+              "soak_samples": 22,
+              "duration_seconds": 45.401187551,
+              "peak_bytes": 1312636928,
+              "window_growth_bytes": 59375616,
+              "first_window_median_bytes": 1229807616,
+              "last_window_median_bytes": 1289183232
+            }
+          }
+        ],
+        "junit": []
+      }
+    ],
+    "original_sanitizer_hours": "both in progress in run40571287801; preserve actual outcomes",
+    "lifecycle_repetition_run": 40571288005,
+    "lifecycle_repetition_jobs_passed": 9,
+    "repetition_raw_verification": "pending retrieval; CI outcomes read directly"
+  },
+  "completed_optional_comparisons": {
+    "receipt_archive": "evidence-longer-comparisons/verified-outcomes.json",
+    "artifacts": 31,
+    "source_overlay_evidence_and_audit_hashes_verified": true,
+    "diagnostic_passes": 8,
+    "diagnostic_failures": 23,
+    "cannot_replace_mandatory_acceptance": true
+  },
+  "full_v08_qualified": false,
+  "eligible_for_publication": false,
+  "publication_performed": false,
+  "production_migration_performed": false
+}

@@ -63,11 +63,17 @@ static void waitFor(std::atomic<int>& value,int target) {
 }
 int main(int argc,char** argv) {
     assert(argc==2);std::string mode=argv[1];Listener l;
-    if(mode=="retention") {
+    if(mode=="retention" || mode=="request_retention") {
         tids.clear();l.calls=0;
         retentionMeasurement=true;
         const size_t initial=__sanitizer_get_heap_size();
-        for(int i=0;i<10000;++i){auto m=message(l);m->start();m->join();}
+        if(mode=="request_retention") {
+            SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+            for(int i=0;i<10000;++i) {
+                SPELLipcIncomingRequest r("id","interface",SPELLipcMessage("payload"),mutex,&channel,l);
+                SPELLipcIncomingBase& base=r;base.start();base.join();assert(base.isFinished());
+            }
+        } else for(int i=0;i<10000;++i){auto m=message(l);m->start();m->join();}
         const size_t after=__sanitizer_get_heap_size();
         std::sort(retentionTids.begin(),retentionTids.end());
         const auto distinct=std::unique(retentionTids.begin(),retentionTids.end())-retentionTids.begin();
@@ -97,6 +103,63 @@ int main(int argc,char** argv) {
         std::this_thread::sleep_for(std::chrono::milliseconds(40));assert(!joined);
         l.blocked=false;owner.join();assert(joined && l.calls==1);
         std::cout<<"{\"join_waits_for_callback_after_cancel\":true}\n";
+    } else if(mode=="request_nested") {
+        struct Nested:Listener {
+            std::atomic<bool> entered{false};
+            SPELLipcMessage processRequest(const SPELLipcMessage& msg) override {
+                processMessage(msg);
+                if(!entered.exchange(true)) {
+                    SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+                    SPELLipcIncomingRequest nested("nested","interface",SPELLipcMessage("payload"),mutex,&channel,*this);
+                    SPELLipcIncomingBase& base=nested;base.start();base.join();assert(base.isFinished());
+                }
+                return SPELLipcMessage();
+            }
+        } nested;
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+        SPELLipcIncomingRequest outer("outer","interface",SPELLipcMessage("payload"),mutex,&channel,nested);
+        SPELLipcIncomingBase& base=outer;base.start();base.join();
+        assert(base.isFinished() && nested.calls==2 && tids.size()==2);
+        std::cout<<"{\"nested_completed\":true,\"distinct_callback_threads\":2}\n";
+    } else if(mode=="request_collector") {
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;SPELLipcTrash trash("requests");
+        for(int i=0;i<2500;++i) {
+            auto* r=new SPELLipcIncomingRequest("id","interface",SPELLipcMessage("payload"),mutex,&channel,l);
+            assert(trash.place(r));while(trash.haveData())trash.clearData();
+        }
+        assert(l.calls==2500);std::cout<<"{\"joined_collected_requests\":2500}\n";
+    } else if(mode=="request_unwind") {
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;l.fail=true;
+        SPELLipcIncomingRequest r("id","interface",SPELLipcMessage("payload"),mutex,&channel,l);
+        bool caught=false;try{r.run();}catch(const std::runtime_error&){caught=true;}
+        assert(caught && r.isStarted() && r.isFinished() && !r.wait(20));
+        std::cout<<"{\"request_completion_on_unwind\":true}\n";
+    } else if(mode=="request_concurrent" || mode=="request_cancel" || mode=="request_rebind") {
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+        if(mode=="request_rebind") {
+            Listener second;
+            for(int i=0;i<1000;++i) {
+                SPELLipcIncomingRequest r("id","interface",SPELLipcMessage("payload"),mutex,&channel,i%2?l:second);
+                SPELLipcIncomingBase& base=r;base.start();base.join();assert(base.isFinished());
+            }
+            assert(l.calls==500 && second.calls==500);
+            std::cout<<"{\"listeners_rebound\":true}\n";
+        } else {
+            l.blocked=true;std::vector<MessageOwner> jobs;
+            const int count=mode=="request_cancel"?1:24;
+            for(int i=0;i<count;++i) {
+                jobs.emplace_back(new SPELLipcIncomingRequest("id","interface",SPELLipcMessage("payload"),mutex,&channel,l),dispose);
+                jobs.back()->start();
+            }
+            waitFor(l.active,count); // A busy reusable slot must not queue these.
+            if(mode=="request_cancel")jobs.front()->cancel();
+            std::atomic<bool> joined{false};
+            std::thread owner([&]{for(auto& r:jobs)r->join();joined=true;});
+            std::this_thread::sleep_for(std::chrono::milliseconds(40));assert(!joined);
+            l.blocked=false;owner.join();assert(joined && l.calls==count);
+            for(const auto& r:jobs)assert(r->isFinished());
+            std::cout<<"{\"callbacks\":"<<count<<",\"joined_before_disposal\":true}\n";
+        }
     } else if(mode=="requests") {
         SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
         for(int i=0;i<20;++i) {

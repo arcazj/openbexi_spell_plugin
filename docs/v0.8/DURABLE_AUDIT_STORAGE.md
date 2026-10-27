@@ -1,12 +1,12 @@
 # Durable ASRUN storage and bounded cache
 
-The exact executable `3c1951ef0365ed4c1dc4dc56f39ffce0bca2e5a0` passes both unchanged mandatory memory jobs (56.62/59.95 MiB growth, 64 MiB limit), all 14 core jobs and actual native ENOSPC. The paired IDE is `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. The cache correction described below requires fresh native and endurance results at its resulting commit. See [source-bound receipt](evidence/audit-cache-native-checkpoint-20261027.json) and the retained earlier attempts in TEST_REPORT.md. Full v0.8 is unqualified.
+The exact executable `3c1951ef0365ed4c1dc4dc56f39ffce0bca2e5a0` passes both unchanged mandatory memory jobs (56.62/59.95 MiB growth, 64 MiB limit), all 14 core jobs and actual native ENOSPC. The paired IDE is `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. The cache correction at `910c8418336f7d26d61e43d2e4035974a0abf5ef` passes fresh mandatory handoff/IDE growth (59.34/56.62 MiB), actual native disk-full and 17 component disk checks. Its foundation fails the recorded deployment-marker version mismatch; sanitizer hours remain in progress. The shared REQUEST-worker follow-up requires fresh native and endurance acceptance. See [source-bound receipt](evidence/audit-cache-native-checkpoint-20261027.json) and the retained earlier attempts in TEST_REPORT.md. Full v0.8 is unqualified.
 
 `audit_file.H` writes synchronously without an asynchronous queue. Each acknowledged record completes `fdatasync`; directory changes complete `fsync`. Restore uses a fixed 4 KiB userspace buffer. Disk-backed private directories, exclusive writer locks, regular-file permissions and no-follow opens are required. tmpfs/ramfs are rejected. The host provides a private retained volume through `OPENBEXI_V08_AUDIT_ROOT`; every rebuilt qualification worker uses its own disk directory. The writer never deletes required records.
 
 Reset and restore keep the previous inode under an exclusive archive-generation name, synchronize it, then create the replacement. At most 1,024 archive names per active path are searched; exhaustion fails explicitly. An incomplete append tail is preserved and rejected. Write, sync, close, lock, policy, cache-advice and restore errors emit a fixed `V08_AUDIT_FAILURE` stage/errno and terminate the participant with exit 74. NativeSession reports a fixed error; uncertain effects are not automatically replayed. Acknowledgement is not transactional rollback of an uncertain failed record.
 
-## Measured cache correction awaiting hosted acceptance
+## Measured cache correction and pending endurance
 
 The earlier dbdfd53 optimized one-hour handoff/IDE comparisons fail growth at 123.78/124.19 MiB. The retained 122,190,068/119,952,764 audit bytes explain the dominant matching file-cache increase, while anonymous memory rises only 3,022,848/4,038,656 bytes. Those diagnostic profiles do not replace sanitizer acceptance.
 

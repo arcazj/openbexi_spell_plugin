@@ -192,8 +192,8 @@ def reuse_native_collector_nodes(source):
     unit.write_text(text)
 
 
-def reuse_native_message_workers(source):
-    """Reuse idle message threads; leave requests and busy fallback unchanged."""
+def reuse_native_message_workers(source, *, requests=False):
+    """Reuse one idle callback thread; busy work keeps dedicated concurrency."""
     header = source / "include/SPELL_IPC/SPELLipcIncoming.H"
     implementation = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     h = header.read_text()
@@ -257,6 +257,19 @@ void SPELLipcIncomingMessage::join()
 }
 """
     )
+    if requests:
+        request = "class SPELLipcIncomingRequest: public SPELLipcIncomingBase\n{\npublic: //--------------------------------------------------------------------"
+        if h.count(request) != 1:
+            raise ValueError("Native request worker class boundary differs")
+        h = h.replace(
+            request,
+            request + "\n    void start() override;\n    void join() override;"
+            "\nprivate:\n    V08MessageTicket m_v08Ticket;\npublic:",
+        )
+        methods = text[text.index("void SPELLipcIncomingMessage::start()") :]
+        text += "\n" + methods.replace(
+            "SPELLipcIncomingMessage", "SPELLipcIncomingRequest"
+        )
     pool_header = Path(__file__).resolve().parent / "message_workers.H"
     if not pool_header.exists():
         pool_header = Path(__file__).resolve().parent / "native/message_workers.H"
@@ -979,7 +992,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     incoming.write_text(transfer_native_incoming(incoming.read_text()))
     reuse_native_message_instances(source)
-    reuse_native_message_workers(source)
+    reuse_native_message_workers(source, requests=True)
     reuse_native_collector_nodes(source)
     for relative in (
         "src/context/src/SPELLcontextMain.C",
