@@ -1,5 +1,16 @@
 # Full v0.8 publication qualification
 
+The metadata-reuse follow-up is documented in [NATIVE_METADATA_REUSE.md](NATIVE_METADATA_REUSE.md).
+Its preceding candidate `3823fe0` passes 1,485 foundation tests, but both mandatory
+recovery profiles still fail memory growth (114.56 MiB handoff, 112.05 MiB IDE).
+Both preserve eight original processes and pass peak memory. The verified
+source-bound archives are retained in [the receipt](evidence/native-metadata/prior-candidate.json).
+The follow-up reuses bounded message metadata storage and removes temporary
+ID copies in the synchronous routing filter. Fresh whole-runtime evidence is
+required; all eleven full-release gate groups remain unqualified.
+
+Historical checkpoints follow.
+
 Candidate `0a14360` resumes hosted qualification in core run `40456278980`.
 All five ancillary workflows and the allocation diagnostic pass. Its explicit
 incoming-message completion correction is validated by 143 focused checks and

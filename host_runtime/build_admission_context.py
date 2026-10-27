@@ -37,6 +37,10 @@ def enable_native_message_moves(text):
         "\n    void v08FromData(std::string_view data);"
         "\n    void v08ReadData(std::string_view data);"
         "\n    void v08DataInto(std::string& result) const;",
+    ).replace(
+        "\n    void v08DataInto(std::string& result) const;",
+        "\n    void v08DataInto(std::string& result) const;"
+        "\n    bool v08HasId(const std::string& id) const { return m_id == id; }",
     )
 
 
@@ -70,6 +74,28 @@ def replace_native_message_codec(text):
         "470c0b989e292ec61c239cbb78f343754d79c001d51c689b5f3a65adafbddc15"
     ):
         raise ValueError("Native IPC message preimage differs")
+    constructors = (
+        "SPELLipcMessage::SPELLipcMessage()",
+        "SPELLipcMessage::SPELLipcMessage( std::string id )",
+        "SPELLipcMessage::SPELLipcMessage( const SPELLipcMessage& msg )",
+        "SPELLipcMessage::SPELLipcMessage( SPELLipcMessage* msg )",
+        "SPELLipcMessage::SPELLipcMessage( std::string id, Properties properties )",
+    )
+    for constructor in constructors:
+        anchor = constructor + "\n{\n"
+        if text.count(anchor) != 1:
+            raise ValueError("Native metadata constructor boundary differs")
+        text = text.replace(
+            anchor,
+            anchor + "    v08_take_metadata(m_id,m_senderId,m_receiverId);\n",
+        )
+    destructor = "SPELLipcMessage::~SPELLipcMessage()\n{\n"
+    if text.count(destructor) != 1:
+        raise ValueError("Native metadata destructor boundary differs")
+    text = text.replace(
+        destructor,
+        destructor + "    v08_recycle_metadata(m_id,m_senderId,m_receiverId);\n",
+    )
     for signature in (
         "std::string SPELLipcMessage::data() const",
         "void SPELLipcMessage::fromData( std::string data )",
@@ -118,6 +144,8 @@ def replace_native_message_codec(text):
     return (
         '#include <utility>\n#include "SPELL_IPC/SPELLipcMessage.H"\n'
         "namespace {\n"
+        "void v08_take_metadata(std::string&, std::string&, std::string&);\n"
+        "void v08_recycle_metadata(std::string&, std::string&, std::string&) noexcept;\n"
         "void v08_set_property(SPELLipcMessage::Properties&, std::string, std::string);\n"
         "void v08_copy_properties(SPELLipcMessage::Properties&, const SPELLipcMessage::Properties&);\n"
         "void v08_recycle_properties(SPELLipcMessage::Properties&) noexcept;\n}\n"
@@ -197,6 +225,30 @@ def borrow_native_message_callbacks(source):
                 anchor, "processMessageFromExecutor( const SPELLipcMessage& msg )"
             )
         )
+
+
+def compare_native_message_identifiers(source):
+    """Compare owned IDs in-place in the unchanged synchronous routing filter."""
+    path = source / "lib/SPELL_CTX/src/SPELLexecutorIPC.C"
+    text = path.read_text()
+    start = text.index("void SPELLexecutorIPC::processMessage(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "035662c7ce2259e88644e7c5b53c21537bf539111c573dc753b2eaa767a7d169"
+    ):
+        raise ValueError("Native notification routing preimage differs")
+    changed = original
+    for name in (
+        "MessageId::MSG_ID_PROMPT_START",
+        "MessageId::MSG_ID_PROMPT_END",
+        "ExecutorMessages::MSG_NOTIF_EXEC_CLOSE",
+    ):
+        anchor = "msg.getId() != " + name
+        if changed.count(anchor) != 1:
+            raise ValueError("Native notification routing boundary differs")
+        changed = changed.replace(anchor, "!msg.v08HasId(" + name + ")")
+    path.write_text(text[:start] + changed + text[end:])
 
 
 def borrow_native_executor_notification(source):
@@ -932,6 +984,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
 
         patch_terminal_tree(source)
     borrow_native_message_callbacks(source)
+    compare_native_message_identifiers(source)
     borrow_native_executor_notification(source)
     transfer_native_line_notification(source)
     reuse_native_trace_filename(source)

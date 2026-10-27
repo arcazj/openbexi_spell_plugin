@@ -17,6 +17,9 @@ extern "C" void __sanitizer_malloc_hook(const volatile void*, size_t size) {
 extern "C" size_t storage_size();
 extern "C" size_t storage_capacity();
 extern "C" size_t storage_fields();
+extern "C" size_t metadata_size();
+extern "C" size_t metadata_capacity();
+extern "C" bool metadata_empty();
 extern "C" void storage_trace_start();
 extern "C" void storage_trace_dump();
 #endif
@@ -34,6 +37,7 @@ static void compare(const SPELLipcMessage& a,const SPELLipcMessage& b) {
     require(a.data()==b.data() && a.getCompressed()==b.getCompressed());
 }
 #include "native_notification_harness.inc"
+#include "native_routing_harness.inc"
 int main(int argc,char** argv) {
     require(argc==2);const std::string mode=argv[1];
     auto source=fixture();
@@ -51,6 +55,46 @@ int main(int argc,char** argv) {
 #endif
     } else if(mode=="notification" || mode=="notification_bench") {
         notification_test(mode=="notification_bench");
+    } else if(mode=="routing" || mode=="routing_bench") {
+        routing_test(mode=="routing_bench");
+    } else if(mode=="metadata_bench") {
+        SPELLipcMessage shape("MSG_NOTIF_EXEC_OP_LONG");
+        shape.setSender("handoff_procedure_root#0");
+        shape.setReceiver("handoff_controller_observer#0");
+        for(int n=0;n<10;++n) {auto copy=shape;copy.clear();}
+        measure=true;
+        for(int n=0;n<10000;++n) {auto copy=shape;copy.clear();}
+        measure=false;
+    } else if(mode=="metadata") {
+        std::vector<std::unique_ptr<SPELLipcMessage>> live;
+        for(int n=0;n<100;++n) {
+            auto value=std::make_unique<SPELLipcMessage>("LONG_MESSAGE_IDENTIFIER"+std::to_string(n));
+            value->setSender(std::string("sender\0",7)+std::string(200,'a'+n%26));
+            value->setReceiver(std::string(300,'A'+n%26));
+            auto copy=*value;compare(copy,*value);
+            SPELLipcMessage pointer(value.get());pointer.setCompressed(value->getCompressed());
+            // Pointer construction deliberately adds the upstream empty User property.
+            auto withUser=*value;withUser.set("User","");compare(pointer,withUser);
+            auto moved=std::move(copy);compare(moved,*value);
+            moved.clear();require(moved.getId().empty());compare(*value,*value);
+            SPELLipcMessage::Properties fields;
+            fields["payload"]="test";
+            SPELLipcMessage explicitFields(value->getId(),fields);
+            require(explicitFields.getId()==value->getId());
+            live.push_back(std::move(value));
+        }
+        live.clear();
+        for(int n=0;n<100;++n) {
+            SPELLipcMessage empty;require(empty.getId()=="<void>");
+            require(empty.getSender()==MessageId::GENERIC_ID && empty.getReceiver()==MessageId::GENERIC_ID);
+            require(empty.v08Fields().empty());
+            auto huge=source;huge.setId(std::string(1024*1024,'x'));
+            huge.setSender(std::string(1024*1024,'y'));huge.clear();
+        }
+#if V08_STORAGE
+        require(metadata_size()<=32 && metadata_capacity()<=32*64*1024);
+        require(metadata_empty());
+#endif
     } else if(mode=="bench") {
         {auto a=source;auto b=a;SPELLipcMessage c;c=b;}
         measure=true;

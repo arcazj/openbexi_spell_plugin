@@ -13,7 +13,7 @@ PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap", "asan-o2-noswap")
 PREIMAGES = {
     "scripts/v08_endurance.py": "c3608d88cd3e6217a9eba9b33f60ba6e23466f85ca54ad299b6d2edfcfaa2527",
     "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
-    "host_runtime/build_admission_context.py": "8161834719c40f6cfd69d588a15000d81219a2b854f038cda2c3a2562394bd6f",
+    "host_runtime/build_admission_context.py": "5d06ff51db048d1239e2d4e6c9af06575f1fe0c8a0ce99abb5f1d8c06032f1f8",
     "host_runtime/python/native.py": "4d8a1664622dddd5192451f230b3fbc4361d632ae23692aa1a989b62d92b3ff7",
     "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
     "scripts/v08_native_consumption.py": "4ab366a3b03541ede860acb1e63b7d4952312b2af9150b61ca874ebef406a039",

@@ -26,6 +26,7 @@ def storage_binaries(tmp_path_factory):
         ipc = archive.read("include/SPELL_IPC/SPELLipc.H").decode()
         utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
         executor = archive.read("lib/SPELL_CTX/src/SPELLexecutor.C").decode()
+        routing = archive.read("lib/SPELL_CTX/src/SPELLexecutorIPC.C").decode()
     (folder / "SPELL_IPC").mkdir()
     (folder / "SPELL_UTIL").mkdir()
     (folder / "SPELL_IPC/SPELLipc.H").write_text(ipc)
@@ -59,6 +60,15 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
     (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
     binaries = {}
     for name in ("before", "after"):
+        router = folder / "lib/SPELL_CTX/src/SPELLexecutorIPC.C"
+        router.parent.mkdir(parents=True, exist_ok=True)
+        router.write_text(routing)
+        if name == "after":
+            builder.compare_native_message_identifiers(folder)
+        method = router.read_text()
+        start = method.index("void SPELLexecutorIPC::processMessage(")
+        end = method.index("\n}", start) + 2
+        (folder / "routing_method.inc").write_text(method[start:end])
         native = folder / "lib/SPELL_CTX/src/SPELLexecutor.C"
         native.parent.mkdir(parents=True, exist_ok=True)
         native.write_text(executor)
@@ -87,6 +97,15 @@ extern "C" size_t storage_capacity(){
 }
 extern "C" size_t storage_fields(){
     size_t n=0;for(const auto& m:v08_property_storage.maps)n+=m.size();return n;
+}
+extern "C" size_t metadata_size(){return v08_property_storage.metadataUsed;}
+extern "C" size_t metadata_capacity(){
+    size_t n=0;for(const auto& slot:v08_property_storage.metadata)
+    for(const auto& value:slot)n+=value.capacity();return n;
+}
+extern "C" bool metadata_empty(){
+    for(const auto& slot:v08_property_storage.metadata)
+    for(const auto& value:slot)if(!value.empty())return false;return true;
 }
 extern "C" void storage_trace_start(){v08_storage_profile_begin();}
 extern "C" void storage_trace_dump(){v08_storage_profile_dump(123456789);}
@@ -135,7 +154,18 @@ def run(binary, mode):
 
 
 @pytest.mark.parametrize(
-    "mode", ["copy", "shapes", "fresh", "threads", "bounds", "notification", "clear"]
+    "mode",
+    [
+        "copy",
+        "shapes",
+        "fresh",
+        "threads",
+        "bounds",
+        "notification",
+        "clear",
+        "metadata",
+        "routing",
+    ],
 )
 def test_native_storage_preserves_independence_and_bounds(storage_binaries, mode):
     assert run(storage_binaries["before"], mode) == run(storage_binaries["after"], mode)
@@ -192,6 +222,22 @@ def test_completed_incoming_messages_recycle_before_clear(storage_binaries):
     assert before["allocations"] == 90_000
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0
+
+
+def test_message_metadata_reuses_owned_strings_without_changing_layout(storage_binaries):
+    before = run(storage_binaries["before"], "metadata_bench")
+    after = run(storage_binaries["after"], "metadata_bench")
+    assert before["message_size"] == after["message_size"]
+    assert before["allocations"] == 30_000
+    assert after["allocations"] == after["allocated_bytes"] == 0
+
+
+def test_notification_filter_compares_without_temporary_id_copies(storage_binaries):
+    before = run(storage_binaries["before"], "routing_bench")
+    after = run(storage_binaries["after"], "routing_bench")
+    assert before["message_size"] == after["message_size"]
+    assert before["allocations"] == 30_000
+    assert after["allocations"] == after["allocated_bytes"] == 0
 
 
 def test_storage_diagnostics_are_opt_in_bounded_and_account_for_decisions(storage_binaries):

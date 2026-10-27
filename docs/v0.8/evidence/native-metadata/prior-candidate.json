@@ -1,0 +1,313 @@
+{
+  "candidate_commit": "3823fe046f5a820872131520f3d9e0f5e1e069ab",
+  "tested_merge": "9920fd1c8b4f1223b80c7e82a40c08a1a31cd836",
+  "source_tree": "f4ebbbe285053a791ce4cb530bca71ff5776eca9",
+  "workflow_run": 40519300398,
+  "full_v08_qualified": false,
+  "foundation_tests": {
+    "tests": 1485,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "profiles": {
+    "handoff": {
+      "artifact_id": 12741866049,
+      "archive_sha256": "2aa5f1832ca9a4b7c364701f5c686c78ba53fa81d6ad27d040725ba589f4b8b7",
+      "verified_source_entries": 132,
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.482515769,
+        "peak_bytes": 1475723264,
+        "window_growth_bytes": 120127488,
+        "first_window_median_bytes": 1307103232,
+        "last_window_median_bytes": 1427230720
+      },
+      "soak": {
+        "start_ns": 303716372021,
+        "end_ns": 349198887790,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1457,
+          "background": 1682,
+          "child": 1537
+        },
+        "counters_after": {
+          "root": 3536,
+          "background": 3918,
+          "child": 3659
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "unavailable_samples": [],
+      "temporary_files_first": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 1101824,
+            "files": 2,
+            "logical_bytes": 1097319
+          },
+          "native_console": {
+            "allocated_bytes": 28672,
+            "files": 1,
+            "logical_bytes": 25029
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 487424,
+            "files": 4,
+            "logical_bytes": 480850
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96483
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      },
+      "temporary_files_last": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 2576384,
+            "files": 2,
+            "logical_bytes": 2571414
+          },
+          "native_console": {
+            "allocated_bytes": 36864,
+            "files": 1,
+            "logical_bytes": 33219
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 950272,
+            "files": 4,
+            "logical_bytes": 943816
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96483
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      }
+    },
+    "ide": {
+      "artifact_id": 12741642091,
+      "archive_sha256": "be01a901778be2ae00e189c8197ee6d86c9d50435035dd2d43aee24bd6b805cc",
+      "verified_source_entries": 132,
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.598296806,
+        "peak_bytes": 1483616256,
+        "window_growth_bytes": 117497856,
+        "first_window_median_bytes": 1301626880,
+        "last_window_median_bytes": 1419124736
+      },
+      "soak": {
+        "start_ns": 579747915125,
+        "end_ns": 625346211931,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1375,
+          "background": 1662,
+          "child": 1494
+        },
+        "counters_after": {
+          "root": 3441,
+          "background": 3901,
+          "child": 3607
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "unavailable_samples": [
+        {
+          "container_exited": true
+        }
+      ],
+      "temporary_files_first": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 1060864,
+            "files": 2,
+            "logical_bytes": 1054932
+          },
+          "native_console": {
+            "allocated_bytes": 28672,
+            "files": 1,
+            "logical_bytes": 25323
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 483328,
+            "files": 4,
+            "logical_bytes": 473955
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96483
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      },
+      "temporary_files_last": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 2535424,
+            "files": 2,
+            "logical_bytes": 2530798
+          },
+          "native_console": {
+            "allocated_bytes": 36864,
+            "files": 1,
+            "logical_bytes": 33513
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 946176,
+            "files": 4,
+            "logical_bytes": 936921
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96483
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      }
+    },
+    "diagnostic": {
+      "artifact_id": 12740274229,
+      "archive_sha256": "e5f141329e3eb54d644364d8c9dec4b877fd5bafb73574697e905c564128972d",
+      "verified_source_entries": 132,
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.416344563,
+        "peak_bytes": 1537536000,
+        "window_growth_bytes": 111140864,
+        "first_window_median_bytes": 1353240576,
+        "last_window_median_bytes": 1464381440
+      },
+      "soak": {
+        "start_ns": 430471772997,
+        "end_ns": 475888117560,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1511,
+          "background": 1711,
+          "child": 1576
+        },
+        "counters_after": {
+          "root": 3611,
+          "background": 3945,
+          "child": 3711
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "unavailable_samples": [],
+      "temporary_files_first": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 1126400,
+            "files": 2,
+            "logical_bytes": 1124583
+          },
+          "native_console": {
+            "allocated_bytes": 69632,
+            "files": 1,
+            "logical_bytes": 66435
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 495616,
+            "files": 4,
+            "logical_bytes": 489485
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96482
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      },
+      "temporary_files_last": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 2613248,
+            "files": 2,
+            "logical_bytes": 2609430
+          },
+          "native_console": {
+            "allocated_bytes": 110592,
+            "files": 1,
+            "logical_bytes": 108182
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 962560,
+            "files": 4,
+            "logical_bytes": 956075
+          },
+          "other": {
+            "allocated_bytes": 172032,
+            "files": 31,
+            "logical_bytes": 96482
+          }
+        },
+        "complete": true,
+        "entries": 61,
+        "errors": 0,
+        "symlinks": 2
+      }
+    }
+  }
+}

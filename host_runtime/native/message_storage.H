@@ -19,10 +19,47 @@ struct V08PropertyStorage {
     std::mutex mutex;
     std::array<SPELLipcMessage::Properties,v08_storage_slots> maps;
     size_t used=0, nextVictim=0;
+    std::mutex metadataMutex;
+    std::array<std::array<std::string,3>,v08_storage_slots> metadata;
+    size_t metadataUsed=0;
     V08PropertyStorage() { v08_storage_live.store(true); }
     ~V08PropertyStorage() { v08_storage_live.store(false); }
 };
 static V08PropertyStorage v08_property_storage;
+
+// Short-lived messages also own ID/sender/receiver strings. Recycle those
+// separately from properties; no references or readable values leave a message.
+// Constructors use only empty owned strings; copy/move APIs and layout stay intact.
+void v08_take_metadata(std::string& id,std::string& sender,std::string& receiver)
+{
+    if (!v08_storage_live.load()) return;
+    std::unique_lock<std::mutex> lock(v08_property_storage.metadataMutex,std::try_to_lock);
+    auto& storage=v08_property_storage;
+    if (!lock.owns_lock() || !storage.metadataUsed) return;
+    auto& slot=storage.metadata[--storage.metadataUsed];
+    id.swap(slot[0]);sender.swap(slot[1]);receiver.swap(slot[2]);
+}
+
+void v08_recycle_metadata(std::string& id,std::string& sender,std::string& receiver) noexcept
+{
+    if (!v08_storage_live.load()) return;
+    const auto inlineCapacity=std::string().capacity();
+    size_t capacity=0;
+    bool heap=false;
+    for (auto* value:{&id,&sender,&receiver}) {
+        if (value->capacity()>v08_storage_capacity-capacity) return;
+        capacity+=value->capacity();heap=heap || value->capacity()>inlineCapacity;
+    }
+    if (!heap) return;
+    try {
+        std::unique_lock<std::mutex> lock(v08_property_storage.metadataMutex,std::try_to_lock);
+        auto& storage=v08_property_storage;
+        if (!lock.owns_lock() || storage.metadataUsed==v08_storage_slots) return;
+        id.clear();sender.clear();receiver.clear();
+        auto& slot=storage.metadata[storage.metadataUsed++];
+        id.swap(slot[0]);sender.swap(slot[1]);receiver.swap(slot[2]);
+    } catch (...) { } // Uncached storage uses ordinary string destruction.
+}
 
 // Enabled only from main by the existing opt-in allocation profiler, before
 // worker threads start. Fixed counters retain no message keys or values.
