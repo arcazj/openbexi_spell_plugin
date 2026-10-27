@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #pragma once
 #include <string>
+#include <atomic>
+inline std::atomic<size_t> v08TestConstructed{0};
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -21,8 +23,12 @@ public:
 };
 class SPELLthread {
     std::thread thread;
+protected:
+    std::string m_threadId;
+    void v08ResetThreadId(const std::string& id){m_threadId=id;}
+    bool v08ReleaseThreadId(){bool b=m_threadId.capacity()<=1024;m_threadId.clear();return b;}
 public:
-    SPELLthread(std::string){}
+    SPELLthread(std::string id):m_threadId(std::move(id)){++v08TestConstructed;}
     virtual ~SPELLthread()=default;
     virtual void run()=0;
     void start(){thread=std::thread([this]{doRun();});}

@@ -136,6 +136,89 @@ void SPELLipcIncomingMessage::join()
     implementation.write_text(text)
 
 
+def reuse_native_message_instances(source):
+    """Retain only joined, cleared processors; requests retain normal deletion."""
+    preimages = {
+        "include/SPELL_IPC/SPELLipcIncoming.H": "e89b256009967212604e969d2752e48a60dbcd8e098ef395c144534a3d1724bf",
+        "lib/SPELL_IPC/src/SPELLipcIncoming.C": "27d835697f9c183217add3c04f83b847101097cc9d0f138e43ae0da5f96c6ff9",
+        "lib/SPELL_IPC/src/SPELLipcTrash.C": "27e55da6c49e11b6c8ab23ec23fc6c9a71e9fe1a4214b7e48f5107c920f56c6f",
+        "lib/SPELL_IPC/src/SPELLipcServerInterfaceSingle.C": "8d2901e7c7c3f27419de28e580cf54211f4d41bebf21644f31ad951833b863e6",
+        "lib/SPELL_IPC/src/SPELLipcServerInterface.C": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
+        "lib/SPELL_IPC/src/SPELLipcClientInterface.C": "88208892d12916b03d0b2832fdfbf16e06a6a9dbb22dbef390945ccebea212e1",
+    }
+    preimages["include/SPELL_SYN/SPELLthread.H"] = (
+        "1fe9008bae21ff7ae89af275d21900d27c7c34e7ddae416c321468077ae81866"
+    )
+    texts = {}
+    for relative, expected in preimages.items():
+        path = source / relative
+        if sha(path) != expected:
+            raise ValueError("Native message instance preimage differs: " + relative)
+        texts[relative] = path.read_text()
+    header = "include/SPELL_IPC/SPELLipcIncoming.H"
+    unit = "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+    replacements = (
+        (
+            "virtual void join() { SPELLthread::join(); }",
+            "virtual void join() { SPELLthread::join(); }\n"
+            "    virtual void v08Dispose() { delete this; }\n"
+            "protected:\n"
+            "    void v08Reset(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);\n"
+            "    bool v08Release();\npublic:",
+        ),
+        (
+            "SPELLipcInterfaceListener& m_listener;",
+            "SPELLipcInterfaceListener* m_listener;",
+        ),
+        (
+            "void join() override;",
+            "void join() override;\n    void v08Dispose() override;\n"
+            "    static SPELLipcIncomingMessage* v08Create(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);",
+        ),
+    )
+    for old, new in replacements:
+        if texts[header].count(old) != 1:
+            raise ValueError("Native message instance header boundary differs")
+        texts[header] = texts[header].replace(old, new)
+    for old, new in (
+        ("m_listener(listener)", "m_listener(&listener)"),
+        ("return m_listener;", "return *m_listener;"),
+    ):
+        if texts[unit].count(old) != 1:
+            raise ValueError("Native message instance listener boundary differs")
+        texts[unit] = texts[unit].replace(old, new)
+    texts[unit] += '\n#include "/candidate/message_instances.H"\n'
+    trash = "lib/SPELL_IPC/src/SPELLipcTrash.C"
+    old = "processor->join(); delete processor;"
+    if texts[trash].count(old) != 1:
+        raise ValueError("Native message instance collector boundary differs")
+    texts[trash] = texts[trash].replace(
+        old, "processor->join(); processor->v08Dispose();"
+    )
+    for relative in list(preimages)[3:6]:
+        pattern = r"std::make_unique<SPELLipcIncomingMessage>\(([^;]+)\);"
+        texts[relative], count = re.subn(
+            pattern,
+            r"std::unique_ptr<SPELLipcIncomingMessage>(SPELLipcIncomingMessage::v08Create(\1));",
+            texts[relative],
+        )
+        if count != 1:
+            raise ValueError("Native message instance factory boundary differs")
+    thread = "include/SPELL_SYN/SPELLthread.H"
+    anchor = "    // Thread identifier\n"
+    if texts[thread].count(anchor) != 1:
+        raise ValueError("Native message thread identity boundary differs")
+    texts[thread] = texts[thread].replace(
+        anchor,
+        "protected:\n"
+        "    void v08ResetThreadId(const std::string& id) { m_threadId=id; }\n"
+        "    bool v08ReleaseThreadId() { bool bounded=m_threadId.capacity()<=1024; m_threadId.clear(); return bounded; }\n"
+        "private:\n" + anchor,
+    )
+    for relative, text in texts.items():
+        (source / relative).write_text(text)
+
+
 def replace_native_message_codec(text):
     """Remove intermediate IPC allocations without changing the class ABI."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -592,6 +675,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     incoming.write_text(transfer_native_incoming(incoming.read_text()))
     reuse_native_message_workers(source)
+    reuse_native_message_instances(source)
     for relative in (
         "src/context/src/SPELLcontextMain.C",
         "src/executor/src/SPELLexecutorMain.C",

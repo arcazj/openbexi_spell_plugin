@@ -8,7 +8,7 @@ that path using up to eight lazy, reusable workers per native process.
 
 There is no pending work queue or new concurrency ceiling. If all workers are busy,
 or a reusable thread cannot start, the existing dedicated-thread path is used.
-Requests retain their original dedicated threads. Every message still owns its
+Requests retain their original dedicated threads. Each active message exclusively owns its
 processor, payload, completion guard and listener reference. The existing trash
 collector admits work and owns its processor until join returns. A pooled join
 waits until the complete callback has returned, including after cancellation;
@@ -47,3 +47,27 @@ hashes and CRCs for these four comparisons were verified locally. Their run is
 Fresh mandatory hosted recovery, startup, prompt and terminal qualification is
 required for this candidate. Sanitizers, memory limits, workload, deadlines and
 acceptance thresholds are unchanged. Full v0.8 remains unqualified.
+
+## Completed processor reuse
+
+The worker-only candidate 70205ab passed 12/14 core jobs in run
+[40529312300](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40529312300).
+Both mandatory resource windows failed: handoff grew 103.33 MiB and installed
+IDE grew 96.14 MiB (64 MiB limit). Thread reuse alone is not a memory fix.
+
+The follow-up retains at most 32 fully joined message processors per process.
+The collector transfers ownership to this cache only after join. Cached objects
+clear their payload, listener, key and identity strings; identities above 1 KiB
+capacity cause ordinary destruction. Creation removes one exclusive owner,
+rebinds the listener/identity and resets completion flags, events and ticket.
+Cache contention or exhaustion falls back to normal construction/destruction;
+requests retain normal construction, dedicated threads and deletion.
+
+The cache avoids repeated construction of each processor's native mutexes and
+events. Local tests count constructor calls as well as actual OS thread IDs,
+exercise 64 concurrent callbacks and the 32-object bound, alternate listeners,
+and reject oversized identities. Exact guards cover all seven affected source
+files, including the existing ordered prompt-answer composition. The thread
+class gains protected identity reset helpers without changing its data layout.
+Whole-runtime ASan/UBSan and resource receipts are still required. No sanitizer,
+workload, admission limit, deadline or acceptance threshold is relaxed.

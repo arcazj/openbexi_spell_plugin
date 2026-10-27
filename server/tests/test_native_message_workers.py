@@ -17,6 +17,15 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 HEADER = "include/SPELL_IPC/SPELLipcIncoming.H"
 SOURCE = "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+EXTRA = ["include/SPELL_SYN/SPELLthread.H"] + [
+    "lib/SPELL_IPC/src/" + name + ".C"
+    for name in (
+        "SPELLipcTrash",
+        "SPELLipcServerInterfaceSingle",
+        "SPELLipcServerInterface",
+        "SPELLipcClientInterface",
+    )
+]
 
 
 def load(path, name):
@@ -28,14 +37,19 @@ def load(path, name):
 
 BUILDER = load(ROOT / "host_runtime/build_admission_context.py", "workers_builder")
 PORT = load(ROOT / "source_port/native_patches.py", "workers_port")
+PROMPT = load(ROOT / "source_port/prompt_control_patches.py", "workers_prompt")
 
 
 def source(folder):
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
-        for name in (HEADER, SOURCE):
+        for name in (HEADER, SOURCE, *EXTRA):
             path = folder / name
             path.parent.mkdir(parents=True, exist_ok=True)
-            text = PORT.apply(name, archive.read(name)).decode()
+            original = archive.read(name)
+            ported = PORT.apply(name, original)
+            if name in PROMPT.PREIMAGES:
+                ported = PROMPT.apply(name, original, ported)
+            text = ported.decode()
             if name == SOURCE:
                 text = BUILDER.transfer_native_incoming(text)
             path.write_text(text)
@@ -51,6 +65,7 @@ def binaries(tmp_path_factory):
         source(folder)
         if name == "after":
             BUILDER.reuse_native_message_workers(folder)
+            BUILDER.reuse_native_message_instances(folder)
         include = folder / "include"
         for dependency in (
             "SPELL_IPC/SPELLipcChannel.H",
@@ -72,6 +87,27 @@ def binaries(tmp_path_factory):
                 "/candidate/message_workers.H", str(ROOT / "host_runtime/native/message_workers.H")
             )
         )
+        if name == "after":
+            text = header.read_text()
+            anchor = "class SPELLipcIncomingBase: public SPELLthread\n{"
+            assert text.count(anchor) == 1
+            header.write_text(text.replace(anchor, anchor + "\n    friend size_t v08TestIdle();"))
+        implementation = folder / SOURCE
+        implementation.write_text(
+            implementation.read_text().replace(
+                "/candidate/message_instances.H",
+                str(ROOT / "host_runtime/native/message_instances.H"),
+            )
+        )
+        if name == "after":
+            implementation.write_text(
+                implementation.read_text() + "\n"
+                "size_t v08TestIdle() { std::lock_guard<std::mutex> lock(v08_message_instances.mutex); "
+                "for(size_t i=0;i<v08_message_instances.used;++i) { "
+                "if(!v08_message_instances.idle[i]->getMessage().isVoid() || "
+                "v08_message_instances.idle[i]->getKey()!=0) std::abort(); } "
+                "return v08_message_instances.used; }\n"
+            )
         binary = folder / "probe"
         compiled = subprocess.run(
             [
@@ -122,10 +158,14 @@ def test_reuses_os_threads_across_completed_native_messages(binaries, tmp_path):
     assert before["calls"] == after["calls"] == 10000
     assert before["os_threads_created"] == 10000
     assert after["os_threads_created"] == 1
+    assert before["processors_constructed"] == 10000
+    assert after["processors_constructed"] == 1
     (tmp_path / "measurement.json").write_text(json.dumps(dict(before=before, after=after)))
 
 
-@pytest.mark.parametrize("mode", ["overflow", "concurrent", "cancel", "requests", "exceptions"])
+@pytest.mark.parametrize(
+    "mode", ["overflow", "concurrent", "cancel", "requests", "exceptions", "rebind"]
+)
 def test_preserves_completion_concurrency_and_request_path(binaries, mode):
     assert run(binaries["before"], mode) == run(binaries["after"], mode)
 
@@ -146,3 +186,20 @@ def test_rejects_source_drift_without_partial_writes(tmp_path, change):
     with pytest.raises(ValueError, match="preimage differs"):
         BUILDER.reuse_native_message_workers(tmp_path)
     assert all((tmp_path / name).read_bytes() == value for name, value in before.items())
+
+
+@pytest.mark.parametrize("path", [HEADER, SOURCE, *EXTRA])
+def test_instance_patch_rejects_each_changed_input_without_partial_writes(tmp_path, path):
+    source(tmp_path)
+    BUILDER.reuse_native_message_workers(tmp_path)
+    changed = tmp_path / path
+    changed.write_text(changed.read_text() + "\n")
+    before = {name: (tmp_path / name).read_bytes() for name in (HEADER, SOURCE, *EXTRA)}
+    with pytest.raises(ValueError, match="preimage differs"):
+        BUILDER.reuse_native_message_instances(tmp_path)
+    assert all((tmp_path / name).read_bytes() == value for name, value in before.items())
+
+
+@pytest.mark.parametrize("mode", ["bounded_cache", "oversized_identity"])
+def test_cache_is_bounded_and_releases_payloads(binaries, mode):
+    assert run(binaries["after"], mode)["passed"]
