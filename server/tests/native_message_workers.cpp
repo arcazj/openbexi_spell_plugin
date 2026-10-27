@@ -6,23 +6,32 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <array>
+#include <algorithm>
 #include <chrono>
 #include <stdexcept>
 #include <set>
 #include <sys/syscall.h>
 #include <unistd.h>
+extern "C" size_t __sanitizer_get_heap_size();
+extern "C" size_t __sanitizer_get_current_allocated_bytes();
 #if V08_WORKERS
 extern size_t v08TestIdle();
 #endif
 static std::set<long> tids;
 static std::mutex tidsMutex;
+static bool retentionMeasurement=false;
+static std::array<long,10000> retentionTids{};
+static size_t retentionCount=0;
 struct Listener:SPELLipcInterfaceListener {
     std::atomic<int> calls{0},active{0};
     std::atomic<bool> blocked{false};
     bool fail=false;
     void processMessage(const SPELLipcMessage& msg) override {
         assert(msg.getId()=="payload");
-        {std::lock_guard<std::mutex> lock(tidsMutex);tids.insert(syscall(SYS_gettid));}
+        {std::lock_guard<std::mutex> lock(tidsMutex);
+         if(retentionMeasurement){assert(retentionCount<retentionTids.size());retentionTids[retentionCount++]=syscall(SYS_gettid);}
+         else tids.insert(syscall(SYS_gettid));}
         ++active;
         while(blocked)std::this_thread::yield();
         --active;++calls;
@@ -54,7 +63,18 @@ static void waitFor(std::atomic<int>& value,int target) {
 }
 int main(int argc,char** argv) {
     assert(argc==2);std::string mode=argv[1];Listener l;
-    if(mode=="sequential") {
+    if(mode=="retention") {
+        tids.clear();l.calls=0;
+        retentionMeasurement=true;
+        const size_t initial=__sanitizer_get_heap_size();
+        for(int i=0;i<10000;++i){auto m=message(l);m->start();m->join();}
+        const size_t after=__sanitizer_get_heap_size();
+        std::sort(retentionTids.begin(),retentionTids.end());
+        const auto distinct=std::unique(retentionTids.begin(),retentionTids.end())-retentionTids.begin();
+        std::cout<<"{\"calls\":"<<l.calls<<",\"os_threads_created\":"<<distinct
+                 <<",\"heap_growth_bytes\":"<<(after-initial)<<",\"live_bytes\":"
+                 <<__sanitizer_get_current_allocated_bytes()<<"}\n";
+    } else if(mode=="sequential") {
         for(int i=0;i<10000;++i) {auto m=message(l);m->start();m->join();assert(m->isFinished());}
         assert(l.calls==10000);
         std::cout<<"{\"calls\":"<<l.calls<<",\"os_threads_created\":"<<tids.size()<<",\"processors_constructed\":"<<v08TestConstructed<<"}\n";
