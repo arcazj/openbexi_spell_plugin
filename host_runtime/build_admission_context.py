@@ -223,6 +223,44 @@ def transfer_native_line_notification(source):
     )
 
 
+def reuse_native_trace_filename(source):
+    """Filter excluded frames without copying names; preserve exact path tests."""
+    path = source / "lib/SPELL_EXC/src/SPELLexecutorImpl.C"
+    text = path.read_text()
+    start = text.index("int SPELLexecutorImpl::dispatch(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "4e1946c2c751b938311fb88f89c1202417bd415be60a4cc523ce08d0675ff7b8"
+    ):
+        raise ValueError("Native trace filename preimage differs")
+    changed = original
+    for old, new in (
+        (
+            "    std::string file = SPELLpython313::filename(frame);",
+            "    V08FrameFilename filename(frame);\n"
+            "    const auto fileView = filename.view();",
+        ),
+        ("file.find(m_procPath)", "fileView.find(m_procPath)"),
+        ("file.find(m_libPath)", "fileView.find(m_libPath)"),
+        (
+            "    // Filter importing state",
+            "    const std::string file(fileView);\n\n    // Filter importing state",
+        ),
+        (
+            "    std::string path = SPELLpython313::filename(frame);",
+            "    const std::string& path = file;",
+        ),
+    ):
+        if changed.count(old) != 1:
+            raise ValueError("Native trace filename boundary differs")
+        changed = changed.replace(old, new)
+    # Validate the complete method before writing. Never relax source guards.
+    path.write_text(
+        '#include "/candidate/frame_filename.H"\n' + text[:start] + changed + text[end:]
+    )
+
+
 def replace_native_spawn(text):
     """Execute through libc spawn without running the Context's fork callbacks.
 
@@ -812,6 +850,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         patch_terminal_tree(source)
     borrow_native_message_callbacks(source)
     transfer_native_line_notification(source)
+    reuse_native_trace_filename(source)
     return before
 
 

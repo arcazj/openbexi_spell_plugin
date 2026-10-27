@@ -1,0 +1,93 @@
+{
+  "schema": "openbexi.native-trace-filename-component/1",
+  "base_commit": "084e58593d242857bd8e56d5b4ec364ed9d3240d",
+  "base_tree": "6f0653649b832c508f256982b68d272ff52bc115",
+  "source_archive_sha256": "dbfb3cd8d4a95c755d1539b7414ba5d8172927f3e254e32fc800a0b757fede8c",
+  "python": "3.13.5",
+  "tests": 406,
+  "suites": [
+    {
+      "name": "trace",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "65c78134b53d4ddb7a6902accb763bd99506c1b450ea4f05fe79799d56c16fa1"
+    },
+    {
+      "name": "profiles",
+      "tests": 174,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "029c2fb6dc072abb38150992d5ac868162ed02506e5f012e4c1f42d4b3df1d8a"
+    },
+    {
+      "name": "prompt-terminal",
+      "tests": 121,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "356002c0f07692730d3f6636619835b4eff69d4b0014ed8c330268c05af691e5"
+    },
+    {
+      "name": "message-codec",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "dd36522fd81b5e8df06edf00d3fe96e7414cf6346b2efa3a55c621db08ab15b2"
+    },
+    {
+      "name": "recovery-guards",
+      "tests": 69,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "031cdb227d6d558cab9c850ccb4b108f66a26402262ac12b7913e4032831384d"
+    }
+  ],
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "d1c1c6485622f647d4ced816e81cd1f984e274a6479b0af6f3e1b5e83f8bcea6",
+    "host_runtime/native/frame_filename.H": "159682ca7c506a38cd0453c56f36e3567d422f2735e8279221df1c452e3b33c3",
+    "scripts/qualify_v08_server.py": "479965acbe00486873de73fa8b69e9e601e59a3c95e8904c54528a2d8ee261d9",
+    "scripts/v08_memory_experiment.py": "4b29d78e86bda4c51e9c1d8a550641414b864c267fa9fb44e1463483b6fc3e5e",
+    "server/tests/native_frame_filename.cpp": "5c207f966711a77527ead952641c0fce19111e6845f93ee761134081fb09eb36",
+    "server/tests/test_native_trace_filename.py": "2f8f4d26c79d9aee515b9839367ab2964aa395ad17d3a55341a7c8bc7a0bc7f8"
+  },
+  "unchanged_controls_sha256": {
+    "docs/v0.8/RELEASE_GATES.json": "4d985fd6bbfc6208e7d7b17255c1dee4d39571eb5e639866c21720a12844f85d",
+    "docs/v0.8/IDE_PAIR.json": "71dabb29cb4ae5e5f299b8e10cabd9ddf43a3c5a66671ffc9d023cdc33e070ef",
+    "scripts/v08_resource_probe.py": "c2f4ec84b35466058528b651bed72e8ef425aa40e25f044a0beca100c737358f",
+    "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
+    "scripts/v08_native_consumption.py": "4ab366a3b03541ede860acb1e63b7d4952312b2af9150b61ca874ebef406a039",
+    "host_runtime/native/execution_gate.H": "409e45ba4c2f80c2cc10d2d699b64320543006cfcdd6c0d14f68747b9d4b62f4",
+    "host_runtime/native/gui_gate.H": "2147c18a4997889d7fa3d319380e1ae0b309248cbebea2aa2c42163df5eb8764",
+    "scripts/v08_memory_swap_runner.py": "5ac1b08e982b9416cf329847bd49393d08f252e7c73c759a0d6281bbde438110",
+    "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757"
+  },
+  "measurement": {
+    "lookups": 30000,
+    "filter_cases": 28,
+    "before_allocation_calls": 30000,
+    "after_allocation_calls": 0,
+    "before_allocated_bytes": 880000,
+    "after_allocated_bytes": 0,
+    "component_only": true
+  },
+  "diagnostic_artifact": 12700284964,
+  "diagnostic_artifact_sha256": "32b9d1b3b345a0062524d6c8334a66389b20831551a31fa236cea7d7682d3899",
+  "baseline_recovery": {
+    "run": 40428613683,
+    "handoff_artifact": 12700673423,
+    "ide_artifact": 12701073011,
+    "verified_source_hashes_per_run": 131,
+    "handoff_window_growth_bytes": 134094848,
+    "ide_window_growth_bytes": 127954944
+  },
+  "full_native_build_tested_locally": false,
+  "mandatory_recovery_qualified": false,
+  "full_v08_qualified": false,
+  "published": false,
+  "initial_incomplete_batch_counted": false
+}

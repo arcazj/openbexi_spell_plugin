@@ -107,6 +107,7 @@ def main():
             root / "host_runtime/python/control_journal.py",
             root / "host_runtime/python/prompt_replies.py",
             root / "host_runtime/build_admission_context.py",
+            root / "server/tests/native_frame_filename.cpp",
             root / "host_runtime/native_prompt_patch.py",
             root / "host_runtime/native_terminal_patch.py",
             root / "host_runtime/python/terminal_probe.py",
