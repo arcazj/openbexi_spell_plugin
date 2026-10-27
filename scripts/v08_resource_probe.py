@@ -6,8 +6,82 @@ import os
 from pathlib import Path
 import re
 import statistics
+import stat
 import threading
 import time
+
+
+def temporary_file_usage(root, maximum_entries=4096):
+    """Bounded metadata-only inventory; never emit names or read file contents.
+
+    File/shmem kernel accounting overlaps. These allocated blocks attribute
+    temporary-file growth independently, without subtracting it from acceptance.
+    Directory descriptors and O_NOFOLLOW exclude symlink targets and replacements.
+    """
+    totals = {
+        name: dict(files=0, logical_bytes=0, allocated_bytes=0)
+        for name in ("native_console", "native_diagnostic", "asrun", "other")
+    }
+    result = dict(categories=totals, entries=0, complete=True, errors=0, symlinks=0)
+    seen = set()
+
+    def walk(fd, depth):
+        with os.scandir(fd) as entries:
+            for entry in entries:
+                if result["entries"] >= maximum_entries:
+                    result["complete"] = False
+                    return
+                result["entries"] += 1
+                try:
+                    info = entry.stat(follow_symlinks=False)
+                    if stat.S_ISLNK(info.st_mode):
+                        result["symlinks"] += 1
+                    elif stat.S_ISDIR(info.st_mode):
+                        if depth >= 8:
+                            result["complete"] = False
+                            continue
+                        child = os.open(
+                            entry.name,
+                            os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                            dir_fd=fd,
+                        )
+                        try:
+                            walk(child, depth + 1)
+                        finally:
+                            os.close(child)
+                    elif stat.S_ISREG(info.st_mode):
+                        identity = (info.st_dev, info.st_ino)
+                        if identity in seen:
+                            continue
+                        seen.add(identity)
+                        name = entry.name.lower()
+                        category = (
+                            "native_console"
+                            if name == "native.log"
+                            else "asrun"
+                            if name.endswith((".asrun", ".asr"))
+                            else "native_diagnostic"
+                            if name.endswith((".log", ".log.1"))
+                            else "other"
+                        )
+                        bucket = totals[category]
+                        bucket["files"] += 1
+                        bucket["logical_bytes"] += info.st_size
+                        bucket["allocated_bytes"] += info.st_blocks * 512
+                except OSError:
+                    result["errors"] += 1
+                    result["complete"] = False
+
+    try:
+        fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            walk(fd, 0)
+        finally:
+            os.close(fd)
+    except OSError:
+        result["errors"] += 1
+        result["complete"] = False
+    return result
 
 
 def assess_recovery_resources(output):
@@ -420,6 +494,7 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
     result["native_allocator"] = []
     result["native_allocation_profiles"] = []
     result["native_message_storage"] = []
+    result["temporary_files"] = temporary_file_usage(root / "root/tmp")
     original_pids = {row.get("namespace_pid") for row in result["processes"]}
     for log in sorted((root / "root/tmp").glob("spell-host-*/native.log"))[:2]:
         try:

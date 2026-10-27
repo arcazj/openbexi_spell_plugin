@@ -174,6 +174,43 @@ def test_exited_member_and_missing_smaps_are_explicit(tmp_path):
     assert result["processes"][1] == dict(pid=456, exited_during_sample=True)
 
 
+def test_temporary_file_inventory_attributes_blocks_without_names_or_contents(tmp_path):
+    root = tmp_path / "tmp"
+    root.mkdir()
+    for name, count in [
+        ("native.log", 9000),
+        ("secret.asrun", 17000),
+        ("context.log.1", 5000),
+        ("private-checkpoint", 1000),
+    ]:
+        (root / name).write_bytes(b"SECRET" * count)
+    (root / "hardlink.asrun").hardlink_to(root / "secret.asrun")
+    (tmp_path / "outside").mkdir()
+    (tmp_path / "outside/secret.asrun").write_bytes(b"not counted")
+    (root / "link").symlink_to(tmp_path / "outside", target_is_directory=True)
+    result = probe.temporary_file_usage(root)
+    assert result["complete"] and result["symlinks"] == 1
+    assert result["categories"]["asrun"]["files"] == 1
+    assert result["categories"]["asrun"]["logical_bytes"] == 102000
+    assert result["categories"]["native_console"]["allocated_bytes"] == (
+        (root / "native.log").stat().st_blocks * 512
+    )
+    assert all(row["files"] == 1 for row in result["categories"].values())
+    assert "secret" not in json.dumps(result).lower()
+    assert "checkpoint" not in json.dumps(result)
+
+
+def test_temporary_file_inventory_is_bounded_and_reports_incomplete(tmp_path):
+    for i in range(5):
+        (tmp_path / str(i)).touch()
+    result = probe.temporary_file_usage(tmp_path, maximum_entries=3)
+    assert result["entries"] == 3 and not result["complete"]
+    assert not probe.temporary_file_usage(tmp_path / "missing")["complete"]
+    link = tmp_path / "root-link"
+    link.symlink_to(tmp_path, target_is_directory=True)
+    assert not probe.temporary_file_usage(link)["complete"]
+
+
 def test_container_executable_need_not_exist_in_host_mount_namespace(tmp_path):
     proc, groups = fixture(tmp_path)
     link = proc / "123/exe"

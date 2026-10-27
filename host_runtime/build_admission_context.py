@@ -294,6 +294,34 @@ def reuse_native_trace_filename(source):
     )
 
 
+def avoid_native_thread_label_copies(source):
+    """Avoid copying literal labels used only by disabled debug statements.
+
+    Keep class layout and the original dynamic-string constructor. The literal
+    overload releases/restores the GIL exactly as before; no borrowed label is
+    retained across the release or nested calls.
+    """
+    path = source / "include/SPELL_UTIL/SPELLpythonMonitors.H"
+    text = path.read_text()
+    start = text.index("class SPELLsafeThreadOperations\n")
+    end = text.index("\n};", start) + 3
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "18cd6ff14e501caba8a0013cbcf8dc41a7bee2a165b9fb3c1cf9c02a7766494d"
+    ):
+        raise ValueError("Native thread monitor preimage differs")
+    anchor = "public:\n"
+    changed = original.replace(
+        anchor,
+        anchor + "\t\tSPELLsafeThreadOperations( const char* )\n"
+        "\t\t{\n"
+        "\t\t\tm_state = SPELLpythonHelper::instance().beginSafeAllowThreads();\n"
+        "\t\t};\n",
+        1,
+    )
+    path.write_text(text[:start] + changed + text[end:])
+
+
 def replace_native_spawn(text):
     """Execute through libc spawn without running the Context's fork callbacks.
 
@@ -907,6 +935,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     borrow_native_executor_notification(source)
     transfer_native_line_notification(source)
     reuse_native_trace_filename(source)
+    avoid_native_thread_label_copies(source)
     bound_native_diagnostic_logs(source)
     return before
 
