@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 1612600 passes 24 fresh startup-stress families and 16 terminal cases. Handoff and IDE preserve eight processes and pass peak; IDE growth passes at 47.51 MiB, handoff fails at 84.19 MiB against 64 MiB. Earlier GUI-admission deadline root cause remains unproved; broader native acceptance remains unfinished."
+      "reason": "Candidate 2972f5f: 12/14 core jobs pass; the two recovery memory jobs fail. Twenty-four fresh startup families and sixteen terminal cases pass. Handoff and IDE retain eight original processes and advancing counters, and pass peak limits, but fail 64 MiB growth at 90.58/81.78 MiB. Earlier member-registration deadline and worker-exit causes remain unproved; full native acceptance remains unfinished."
     },
     "compatibility": {
       "qualified": false,
@@ -30,7 +30,7 @@
     "ide_browser": {
       "qualified": false,
       "receipt": null,
-      "reason": "Pinned IDE c5edbda recovery passes on candidate 1612600: eight original processes, 45.62 seconds, 1378.38 MiB peak and 47.51 MiB growth. This scoped pass does not complete prompt GUI, public launch, full debugger or browser/WSS/Git qualification."
+      "reason": "Pinned IDE c5edbda recovery at 2972f5f retains eight original processes over 45.65 seconds but fails memory growth at 81.78 MiB. Prompt GUI, public launch, full debugger and browser/WSS/Git qualification remain unfinished."
     },
     "compose": {
       "qualified": false,
@@ -45,7 +45,7 @@
     "recovery": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 1612600 handoff fails 64 MiB growth at 84.19 MiB; installed IDE passes at 47.51 MiB. Both preserve eight processes and every counter interval. Current longer comparisons remain pending; prior optimized endurance fails file/shared-memory growth. Deployed recovery, durable audit storage, restore, upgrade and rollback remain unqualified."
+      "reason": "Candidate 2972f5f handoff/IDE growth fails at 90.58/81.78 MiB. Baseline optimized 60-minute handoff/IDE grows 129.39/134.73 MiB; ASRUN consumes about 125 MiB on 128 MiB tmpfs and audit completeness is unproved. Durable audit storage, deployed recovery, restore, upgrade and rollback remain unqualified."
     },
     "security": {
       "qualified": false,
@@ -55,7 +55,7 @@
     "ci": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 1612600 passes 1490 foundation tests without failures/errors/skips, 13/14 core jobs and all five ancillary workflows. Twenty archive digests/CRCs and all recorded source inventories are verified. Handoff memory growth fails. Longer comparisons and full runtime/browser/deployment acceptance remain unfinished."
+      "reason": "Candidate 2972f5f passes 1512 foundation tests, 95 overlapping fault tests, 241 portable tests, all without failures/errors/skips; 12/14 core jobs pass; the two recovery memory jobs fail; all five ancillary workflows pass. 20 archive digests/CRCs and 16 recorded source inventories are verified. Current longer comparisons and full runtime/browser/deployment acceptance remain unfinished."
     },
     "packaging": {
       "qualified": false,

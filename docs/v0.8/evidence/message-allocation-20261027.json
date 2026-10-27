@@ -1,0 +1,455 @@
+{
+  "schema": "openbexi.v08.component-qualification/1",
+  "recorded_at": "2026-10-27T16:16:29.665872+00:00",
+  "candidate_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+  "candidate_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+  "tested_merge": "23d06c59690283299269efce21e58d6104e14dd8",
+  "tested_merge_tree_equals_candidate": true,
+  "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "core_run": 40537014171,
+  "allocation_diagnostic_run": 40537014049,
+  "comparison_run": 40537014003,
+  "local_regression_tests": 268,
+  "foundation_tests": 1512,
+  "overlapping_fault_tests": 95,
+  "portable_tests": 241,
+  "test_failures_errors_skips": 0,
+  "core_jobs_passed": 12,
+  "core_jobs_total": 14,
+  "core_jobs_pending": [],
+  "core_jobs": [
+    {
+      "id": 122304877942,
+      "name": "fault-reproduction",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878074,
+      "name": "native-launch (child-gate, --native-child-gate)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878157,
+      "name": "foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878243,
+      "name": "native-launch (native-handoff, --native-handoff)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122304878278,
+      "name": "native-launch (native-ide, --native-ide)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122304878321,
+      "name": "native-launch (pause-probe, --native-pause-probe)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878334,
+      "name": "native-launch (thread-barrier, --native-thread-barrier)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878387,
+      "name": "native-launch (native-prompts, --native-prompts)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878411,
+      "name": "native-launch (dss, --native-dss)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878412,
+      "name": "native-boundary",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878438,
+      "name": "native-launch (listener-survival, --native-listener-survival)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878565,
+      "name": "native-launch (audit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304878725,
+      "name": "native-launch (native-startup-stress, --native-startup-stress)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122304879420,
+      "name": "native-launch (native-terminal, --native-terminal)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "ancillary_workflows_passed": 5,
+  "resources": {
+    "handoff": {
+      "artifact_id": 12749726030,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.445352461,
+        "peak_bytes": 1172062208,
+        "window_growth_bytes": 94982144,
+        "first_window_median_bytes": 1052237824,
+        "last_window_median_bytes": 1147219968
+      },
+      "soak": {
+        "start_ns": 286314709714,
+        "end_ns": 331760062175,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1499,
+          "background": 1703,
+          "child": 1567
+        },
+        "counters_after": {
+          "root": 3621,
+          "background": 3951,
+          "child": 3730
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    },
+    "ide": {
+      "artifact_id": 12748874827,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.654141265,
+        "peak_bytes": 1404719104,
+        "window_growth_bytes": 85749760,
+        "first_window_median_bytes": 1255915520,
+        "last_window_median_bytes": 1341665280
+      },
+      "soak": {
+        "start_ns": 419897482421,
+        "end_ns": 465551623686,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1322,
+          "background": 1657,
+          "child": 1460
+        },
+        "counters_after": {
+          "root": 3298,
+          "background": 3887,
+          "child": 3520
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    },
+    "diagnostic": {
+      "artifact_id": 12749581019,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.451226489,
+        "peak_bytes": 1489178624,
+        "window_growth_bytes": 92225536,
+        "first_window_median_bytes": 1318326272,
+        "last_window_median_bytes": 1410551808
+      },
+      "soak": {
+        "start_ns": 267746917932,
+        "end_ns": 313198144421,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1475,
+          "background": 1695,
+          "child": 1554
+        },
+        "counters_after": {
+          "root": 3559,
+          "background": 3926,
+          "child": 3676
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    }
+  },
+  "archive_count": 20,
+  "archive_sha256_and_zip_crc_verified": true,
+  "source_inventory_count": 16,
+  "source_hash_mismatches": [],
+  "source_verification_scope": "Every source_sha256 entry in the recorded result inventories compared against the executable candidate; no claim of a fresh local full native build",
+  "artifacts": [
+    {
+      "id": 12749401236,
+      "name": "v08-native-launch-dss-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "39e5015cf14f82cdb26b61128d2a5b590ce284d3f4b5fc45b9d5354ce926984f",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12748932293,
+      "name": "v08-native-launch-listener-survival-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "6d15240c50179ee4526b40c36d3fcb3f004fa5a52824b8af86303dc38fabf9b0",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12748753996,
+      "name": "v08-native-boundary-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "6994bd09ae4e5e0866e43d4f0c0b9ef79bb9171160c94eb862b0a0177732894a",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12748533053,
+      "name": "v08-fault-reproduction-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "4d0f6e6e2f9ed581ce6d51576a3dfc316581e5321e8cbdcadecbf2c86515d27b",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12748238219,
+      "name": "v08-native-launch-pause-probe-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "6eaee5abf383eccc61c0ed0d075af8783a19afc4ad7c5ea34213182c0df37fe8",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12747748735,
+      "name": "v08-native-launch-audit-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "0d31736712dd8da5687217e1174bd758d7f127a35de88398469b6f2e0ed8727b",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12747693887,
+      "name": "v08-native-launch-child-gate-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "78ae4a50a1de069b4ace4852b7592e1141877c4776b3f6a682bc685836ecc6eb",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12747564016,
+      "name": "v08-native-launch-thread-barrier-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "5ac8c2e18676eed44abb0c0fbb18a079abfb4555390b69ebb01a5a196a4ae5a6",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12749531360,
+      "name": "v08-compatibility-subset-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "0ef901182262ec6c6c29ea54fa9bdb5143cfdd8c14a31af0e14ba1a6ccf8a62e",
+      "run_id": 40537013926
+    },
+    {
+      "id": 12748338384,
+      "name": "v08-kind-prelaunch-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "ae79ccef7b4aec093ccfc190c1b16ffee552ed2de469d59ca0a6daac7f2d12bc",
+      "run_id": 40537014004
+    },
+    {
+      "id": 12749620004,
+      "name": "v08-compose-prelaunch-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "9af56ca832aa29fefb0dee33e6dd54fce933f0cf7a941923a0f76506358be06a",
+      "run_id": 40537014122
+    },
+    {
+      "id": 12748957860,
+      "name": "v08-kubernetes-prelaunch-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "e55bc261a6dd3996710679d5b6bdb6b1a85a3f90f9e449227e101bbdb4740fe0",
+      "run_id": 40537014205
+    },
+    {
+      "id": 12748218288,
+      "name": "v08-python-supply-chain-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "8467d89c5562e0d8f1311501edcdc30ec924dd3400ad4ccaa0ea2da828793dc1",
+      "run_id": 40537014237
+    },
+    {
+      "id": 12749511611,
+      "name": "v08-native-launch-native-prompts-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "584dbefced5cc5bb4d799dde1ea53d0a13e6691536da4d0c5557c1d3ccdb2d91",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12749446935,
+      "name": "v08-server-foundation-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "c36f29ec1b9533f34649fbd4371ee5240189aa12eef9a73ddfb7284b8f847735",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12748874827,
+      "name": "v08-native-launch-native-ide-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "2cb290b53dfcdda80e6d5eab82cfec8575fb14efb1759e35c55e2bad58e07655",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12749726030,
+      "name": "v08-native-launch-native-handoff-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "280847568e78b4e3d6989edd6fe6878487ab92a90328519d126302f7c20a7365",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12749467288,
+      "name": "v08-native-launch-native-terminal-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "a875a4785a6cbafc75d3a359109236986806acfae1e96314cff718cd5f55e66f",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12750056229,
+      "name": "v08-native-launch-native-startup-stress-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "eccca841b9908d598319ebe08f6a8d86dfe1adac3ff0cc5f671da902a31fa48b",
+      "run_id": 40537014171
+    },
+    {
+      "id": 12749581019,
+      "name": "v08-native-allocation-23d06c59690283299269efce21e58d6104e14dd8",
+      "sha256": "d8631c158de3f2aa8f73a4ea9564918fe6c4229be189da992148d03f173706ad",
+      "run_id": 40537014049
+    }
+  ],
+  "limits_unchanged": true,
+  "historical_startup_cause_established": false,
+  "full_v08_qualified": false,
+  "eligible_for_publication": false,
+  "publication_performed": false,
+  "endurance_status": "Current candidate comparisons and 60-minute runs are still running or queued; no outcome inferred. See comparison run.",
+  "baseline_endurance": {
+    "candidate_commit": "16126007d3334c614a95289b0ea8084bbc247d65",
+    "run_id": 40523171304,
+    "handoff_growth_bytes": 135671808,
+    "ide_growth_bytes": 141279232,
+    "asrun_allocated_bytes": 131272704,
+    "tmpfs_limit_bytes": 134217728,
+    "audit_completeness_proven": false
+  },
+  "retained_attempts": [
+    "70205aba7addddf3f16d42fed05de79b5131c4d6",
+    "e0841d41a74345b336bae80a0eb196ec4c3f9cca",
+    "23dbec39f805d77c71ee68491f288a50c4d1d22a"
+  ],
+  "remaining_blockers": [
+    "Whole-runtime sanitizer memory growth exceeds 64 MiB",
+    "Prior delayed member registration and worker-exit failures have no established cause",
+    "Durable bounded ASRUN/audit storage and write completeness",
+    "Fresh all-763/native compatibility",
+    "Deployed partitions, node identity, storage failure/restore, upgrade/rollback and independent security review",
+    "Public GUI/browser/full debugger and stable joint packaging"
+  ],
+  "native_startup_stress": {
+    "passed": true,
+    "fresh_root_child_families": 24,
+    "independently_settled_families": 24,
+    "worker_reuse": false,
+    "uncertain_start_retried": false,
+    "historical_failure_cause_established": false
+  },
+  "native_terminal_cases": [
+    {
+      "case": "forced-loss",
+      "passed": true
+    },
+    {
+      "case": "close-wait",
+      "passed": true
+    },
+    {
+      "case": "close-child",
+      "passed": true
+    },
+    {
+      "case": "abort-paused",
+      "passed": true
+    },
+    {
+      "case": "close-paused",
+      "passed": true
+    },
+    {
+      "case": "abort-running",
+      "passed": true
+    },
+    {
+      "case": "close-running",
+      "passed": true
+    },
+    {
+      "case": "abort-prompt",
+      "passed": true
+    },
+    {
+      "case": "close-prompt",
+      "passed": true
+    },
+    {
+      "case": "cancel-prompt",
+      "passed": true
+    },
+    {
+      "case": "normal",
+      "passed": true
+    },
+    {
+      "case": "error",
+      "passed": true
+    },
+    {
+      "case": "timeout",
+      "passed": true
+    },
+    {
+      "case": "abort-thread",
+      "passed": true
+    },
+    {
+      "case": "abort-child",
+      "passed": true
+    },
+    {
+      "case": "close-thread",
+      "passed": true
+    }
+  ]
+}

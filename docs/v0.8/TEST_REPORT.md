@@ -2449,3 +2449,58 @@ gate groups unqualified, no merge/tag/release or production migration.
 1,234 service tests, 95 overlapping fault tests and 241 portable tests pass with zero failures/errors/skips. All fourteen core jobs and five ancillary workflows pass. The paired IDE passes 282 tests with one Windows-only skip. Nineteen server archives plus one IDE archive, source inventories and wheel contents are verified. All eleven full-release gates remain unqualified.
 
 Candidate `bad5f984e5be852dba70ed959fa73203d16b5639` and IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` match their tested merge trees. Four TLS cases kill the client or disrupt heartbeat delivery before any explicit close; native and installed-IDE cohorts preserve eight original processes and require host-proven resume. The unchanged C++ composition matches dev55 (144 units and twelve admission headers). High cgroup memory pressure and late native-binding replies remain open; earlier failed attempts are retained. No full release gate was promoted. [Source-bound receipt](evidence/controller-liveness/qualification-summary.json); [workflow](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40283981575).
+
+
+## Dev68 bounded message allocation follow-up — 2026-10-27 UTC
+
+Executable candidate **`2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d`** has tree
+`4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42`, identical to tested merge
+`23d06c59690283299269efce21e58d6104e14dd8`. The IDE remains `c5edbda`.
+[Core run 40537014171](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40537014171):
+**12/14 core jobs pass; the two recovery memory jobs fail**. All five ancillary workflows pass. **1,512 foundation,
+95 overlapping fault, 241 portable and 268 local regression tests** pass with
+zero failures/errors/skips; these suites overlap and are not additive. Twenty-four
+fresh root/child startup families and all sixteen terminal cases also pass.
+
+The implementation retains at most 32 joined, cleared message processors and
+32 empty collector nodes per process. Existing dedicated message threads and
+request behavior remain. Read-only notification fields are borrowed only during
+the synchronous callback; model setters retain owned copies. Component tests
+measure 10,000 processor constructions falling to one, 2,500 collector-node
+allocations falling to one, and at least 40,000 long-field copies falling to zero
+after warmup. Concurrent, cancellation, exception, missing-field and ownership
+regressions pass under ASan/UBSan. This does not establish a runtime memory fix.
+
+| Current mandatory profile | Peak MiB | Growth MiB | Growth limit | Result |
+| --- | ---: | ---: | ---: | --- |
+| Original-family handoff | 1117.77 | 90.58 | 64 MiB | Fail |
+| Installed IDE recovery | 1339.64 | 81.78 | 64 MiB | Fail |
+
+Both preserve eight original processes and advancing counters throughout the
+45-second window. Peak budgets pass. The separate diagnostic records
+87.95 MiB growth and also fails resource acceptance;
+its successful workflow means diagnostic evidence was collected. Sanitizers,
+memory budgets, workload, deadlines and acceptance thresholds are unchanged.
+
+Failed candidates remain retained: `70205ab` thread pooling measured
+103.33/96.14 MiB handoff/IDE growth; `e0841d4` combined pooling and processor reuse
+measured 70.58 MiB IDE growth, while handoff failed before measurement after a
+5.38-second member-registration RPC. Its startup stress also timed out waiting
+for a worker exit. `23dbec3` removed pooling and measured 75.47/83.67 MiB growth.
+No historical startup cause is established. Initial local fixture compile errors
+and their corrected 268-pass rerun remain in the evidence archive.
+
+The earlier `1612600` optimized one-hour handoff/IDE runs preserve their families
+but fail growth at 129.39/134.73 MiB. ASRUN output reaches 131,272,704 allocated
+bytes on 134,217,728-byte tmpfs. Per-record completeness and durable audit storage
+remain unproved; no records were intentionally discarded or moved out of memory
+accounting. Current [comparisons/endurance](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40537014003)
+are still running or queued, and are diagnostic profiles rather than full acceptance.
+
+All **20 archives** match GitHub SHA-256 and ZIP CRC, and all
+**16 recorded source inventories** match this executable candidate.
+[The component receipt](evidence/message-allocation-20261027.json) binds source identities, jobs, metrics
+and artifact hashes. Full all-763/native compatibility, deployed recovery/storage,
+production-like cluster identity/security, public GUI/browser/debugger and stable
+joint packaging remain incomplete. All eleven full-release gates remain false.
+No merge, tag, release publication or production migration occurred.

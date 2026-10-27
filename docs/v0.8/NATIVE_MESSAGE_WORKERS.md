@@ -74,3 +74,12 @@ one, preserve the 32-node bound across 64-callback bursts, and require join afte
 cancellation. For 10,000 long-field notifications, the preceding borrowed-message
 method still makes at least 40,000 field-copy allocations; the new method makes
 zero after warmup. These allocation counts are not whole-runtime acceptance.
+
+## Current qualification result
+
+Candidate `2972f5f` passes 268 local regression tests and 1,512 hosted foundation
+tests. Its mandatory handoff and installed-IDE resource checks still fail at
+90.58/81.78 MiB growth against 64 MiB, despite passing peak budgets. The separate
+allocation diagnostic fails at 87.95 MiB growth. Component allocation reductions
+are verified, but no whole-runtime memory fix is claimed.
+See [the source-bound receipt](evidence/message-allocation-20261027.json).

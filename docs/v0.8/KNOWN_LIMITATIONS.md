@@ -120,3 +120,17 @@ HA are outside the qualified scope. Publication is authorized only after the
 full mandatory acceptance criteria pass. The release preflight rejects the
 current candidate; qualification work, not routine owner confirmation, blocks
 publication. Production migration is not authorized.
+
+
+## Current memory and audit-storage qualification
+
+Candidate `2972f5f` fixes demonstrated processor/node construction churn and
+notification-field copying, but mandatory handoff and IDE memory growth still
+fails at 90.58/81.78 MiB against 64 MiB. Peak budgets pass. Bounded component
+reuse is not a whole-runtime memory pass. See [the current receipt](evidence/message-allocation-20261027.json).
+
+The original-family optimized one-hour baseline accumulated about 125 MiB of
+ASRUN output in 128 MiB temporary storage. Continued process activity does not
+prove every audit record was stored. Durable bounded audit storage and explicit
+write-failure behavior remain blockers; dropping audit records is not a fix.
+Earlier delayed member-registration and worker-exit failures remain unexplained.
