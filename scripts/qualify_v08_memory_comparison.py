@@ -195,10 +195,14 @@ def main(argv=None):
                 raise ValueError("comparison_mislabelled_as_release_evidence")
             if (
                 args.profile == "optimized-noswap"
-                and report["native_build"].get("memory_build_profile")
-                != "optimized-experiment"
+                and report["native_build"].get("native_build_profile") != "optimized"
             ):
                 raise ValueError("optimized_build_identity_unproven")
+            if (
+                args.profile == "asan-o2-noswap"
+                and report["native_build"].get("native_build_profile") != "asan-o2"
+            ):
+                raise ValueError("controlled_sanitizer_build_identity_unproven")
             report["passed"] = (
                 report["exit_code"] == 0
                 and report["native_passed"]

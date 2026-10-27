@@ -1,3 +1,12 @@
+#ifdef OPENBEXI_NATIVE_NO_SANITIZERS
+static void v08_resource_trace(unsigned int) noexcept {}
+#else
+#ifndef OPENBEXI_NATIVE_TRACE_LIMIT
+#define OPENBEXI_NATIVE_TRACE_LIMIT 120
+#endif
+#if OPENBEXI_NATIVE_TRACE_LIMIT < 120 || OPENBEXI_NATIVE_TRACE_LIMIT > 2048
+#error Invalid bounded native trace limit
+#endif
 // SPDX-License-Identifier: GPL-3.0-or-later
 #ifndef OPENBEXI_V08_RESOURCE_TRACE_H
 #define OPENBEXI_V08_RESOURCE_TRACE_H
@@ -31,7 +40,7 @@ static void v08_resource_trace(unsigned int role) noexcept
     if (!enabled || role != 1) return;
     static std::atomic<uint64_t> previous{0};
     static std::atomic<unsigned int> count{0};
-    if (count.load(std::memory_order_relaxed) >= 120) return;
+    if (count.load(std::memory_order_relaxed) >= OPENBEXI_NATIVE_TRACE_LIMIT) return;
     timespec now{};
     if (clock_gettime(CLOCK_MONOTONIC, &now) != 0) return;
     const uint64_t tick = static_cast<uint64_t>(now.tv_sec) * UINT64_C(1000000000)
@@ -39,7 +48,7 @@ static void v08_resource_trace(unsigned int role) noexcept
     auto old = previous.load(std::memory_order_relaxed);
     if (tick < old || tick - old < UINT64_C(2000000000)
         || !previous.compare_exchange_strong(old, tick, std::memory_order_relaxed)) return;
-    if (count.fetch_add(1, std::memory_order_relaxed) >= 120) return;
+    if (count.fetch_add(1, std::memory_order_relaxed) >= OPENBEXI_NATIVE_TRACE_LIMIT) return;
     char record[384];
     const int size = std::snprintf(record, sizeof(record),
         "V08_MEMORY {\"pid\":%ld,\"role\":%u,\"monotonic_ns\":%llu,"
@@ -53,4 +62,6 @@ static void v08_resource_trace(unsigned int role) noexcept
     }
     v08_allocation_profile_dump(tick);
 }
+#endif
+
 #endif

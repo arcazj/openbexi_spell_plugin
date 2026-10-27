@@ -213,14 +213,14 @@ def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profil
             compile(modified, relative, "exec")
     builder = (tmp_path / "host_runtime/build_admission_context.py").read_text()
     consume = (tmp_path / "scripts/v08_native_consumption.py").read_text()
-    if profile == "optimized-noswap":
-        assert '"-O2"' in builder and '"-O1"' not in builder
-        assert '"-fsanitize=address,undefined"' not in builder
-        assert 'for name in ("Context", "Executor", "Listener")' in builder
-        assert "readelf" in builder
-        assert "optimized_dta_shim" in builder
-    else:
-        assert builder == before["host_runtime/build_admission_context.py"].decode()
+    assert builder == before["host_runtime/build_admission_context.py"].decode()
+    launch = (tmp_path / "scripts/qualify_v08_native_launch.py").read_text()
+    if profile in {"optimized-noswap", "asan-o2-noswap"}:
+        assert "build_native_profile.py" in launch
+        assert "build.py --profile" in launch
+        stable = (tmp_path / "host_runtime/build_native_profile.py").read_text()
+        assert '"-O2"' in stable and "readelf" in stable
+        assert 'for name in ("Context", "Executor", "Listener")' in stable
     if profile == "asan-swap":
         assert '"--memory-swap",\n            "4096m"' in consume
     else:
@@ -274,6 +274,7 @@ def test_optimized_trace_stubs_link_without_sanitizer(tmp_path):
             "c++",
             "-std=c++17",
             "-O2",
+            "-DOPENBEXI_NATIVE_NO_SANITIZERS=1",
             "-Wall",
             "-Wextra",
             "-Werror",

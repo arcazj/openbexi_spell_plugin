@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - 'deploy/v0.8/**'
+      - 'host_runtime/**'
       - '.github/workflows/v08-kubernetes-static.yml'
   push:
     branches: ['feature/v0.8-server-architecture']
     paths:
       - 'deploy/v0.8/**'
+      - 'host_runtime/**'
       - '.github/workflows/v08-kubernetes-static.yml'
 
 permissions:

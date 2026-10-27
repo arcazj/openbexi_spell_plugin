@@ -8,9 +8,11 @@ import statistics
 
 MIB = 1024**2
 GIB = 1024**3
-PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap")
+PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap", "asan-o2-noswap")
 # Fail closed when the source to be transformed changes. No fuzzy patches.
 PREIMAGES = {
+    "scripts/v08_endurance.py": "c3608d88cd3e6217a9eba9b33f60ba6e23466f85ca54ad299b6d2edfcfaa2527",
+    "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
     "host_runtime/build_admission_context.py": "6a1cebc4d024ca9a39fbd84a79c9714446feade16202ff7a89e0f6c8878dc744",
     "host_runtime/python/native.py": "4d8a1664622dddd5192451f230b3fbc4361d632ae23692aa1a989b62d92b3ff7",
     "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
@@ -18,8 +20,8 @@ PREIMAGES = {
     "scripts/v08_resource_probe.py": "c2f4ec84b35466058528b651bed72e8ef425aa40e25f044a0beca100c737358f",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
     "host_runtime/python/handoff_probe.py": "d2c2ee8d05bd6d4fc0e79d11387058c79508b2f346ae7d6710c5ebae48ff0023",
-    "host_runtime/native/allocation_trace.H": "5a1b1600728d1e5abe7b211cd534a71da62fcd4b789774b1a0657c10ec7b4e5e",
-    "host_runtime/native/resource_trace.H": "7529df0a9ee9923b750e47c583c4c7d5213f60b15bf6eeb502fcc569edf73a95",
+    "host_runtime/native/allocation_trace.H": "7d537b3fc832f590918ecab0233a94ed588553e50df1f23e209bca4f8c02663b",
+    "host_runtime/native/resource_trace.H": "0f55d562c2a40c4b733520c1c9386842955cf5ba9229d8b336c9ad8c980415a8",
 }
 NATIVE_PROGRAMS = {
     "SPELL-Context",
@@ -39,10 +41,11 @@ def validate_profile(profile, soak_seconds):
         raise ValueError("unknown_memory_profile")
     if (
         type(soak_seconds) is not int
-        or not 45 <= soak_seconds <= 300
+        or not 45 <= soak_seconds <= 3600
         or soak_seconds % 5
+        or (soak_seconds > 300 and soak_seconds != 3600)
     ):
-        raise ValueError("soak_requires_45_to_300_seconds_in_five_second_steps")
+        raise ValueError("soak_requires_45_to_300_or_3600_seconds")
 
 
 def replace_exact(text, before, after, count=1):
@@ -51,70 +54,78 @@ def replace_exact(text, before, after, count=1):
     return text.replace(before, after)
 
 
-# This generated launcher preserves the frozen launcher's Python/library policy,
-# but executes the rebuilt Listener, not the frozen instrumented executable.
-OPTIMIZED_LAUNCHER = """from pathlib import Path
-import os
-import sys
-from spell_native.launcher import environment
-if os.environ.get("LD_PRELOAD"):
-    raise SystemExit("Unexpected preload in optimized memory experiment")
-program = Path("/opt/v08-native-home/bin/SPELL-Listener")
-os.execve(program, [str(program), *sys.argv[1:]], environment())
-"""
-
-OPTIMIZED_FINALIZE = """
-    # Isolated experimental image only. The frozen package/baseline stay intact.
-    shim = Path(sysconfig.get_path("purelib")) / "libSPELL_DTA_v3.py"
-    shim_before = shim.read_text()
-    guard = "if 'libasan.so' not in Path('/proc/self/maps').read_text(encoding='utf-8'):\\n    raise ImportError('This diagnostic native build requires spell-native-python or spell-native run.')\\n"
-    location = "_path = launcher.ROOT / 'bin/libspell_executor313.so'"
-    if shim_before.count(guard) != 1 or shim_before.count(location) != 1:
-        raise ValueError("Optimized DTA shim preimage differs")
-    shim_after = shim_before.replace(guard, "").replace(
-        location, "_path = Path('/opt/v08-native-home/bin/libspell_executor313.so')"
+def explicit_builder(launch, profile):
+    """Select the tracked builder; do not rewrite runtime build source code."""
+    selected = "optimized" if profile == "optimized-noswap" else "asan-o2"
+    launch = replace_exact(
+        launch,
+        'ROOT / "host_runtime/build_admission_context.py",\n                        native_build / "build.py",',
+        'ROOT / "host_runtime/build_native_profile.py",\n                        native_build / "build.py",',
     )
-    shim.write_text(shim_after)
-    (home / "launch-listener.py").write_text(OPTIMIZED_LAUNCHER_TEXT)
-    dependencies = {}
-    for artifact in [shared, bridge_binary, *(binaries / ("SPELL-" + n) for n in programs)]:
-        linked = subprocess.check_output(["readelf", "-d", str(artifact)], text=True)
-        names = re.findall(r"Shared library: \\[(.*?)\\]", linked)
-        if any("libasan" in n or "libubsan" in n for n in names):
-            raise ValueError("Optimized artifact still links sanitizer runtime")
-        dependencies[artifact.name] = names
-    report["memory_build_profile"] = "optimized-experiment"
-    report["sanitizer_allocator_metrics_available"] = False
-    report["optimized_listener_sha256"] = programs["Listener"]
-    report["optimized_dependencies"] = dependencies
-    report["optimized_launcher_sha256"] = sha(home / "launch-listener.py")
-    report["optimized_dta_shim"] = {
-        "before": hashlib.sha256(shim_before.encode()).hexdigest(),
-        "after": sha(shim),
-    }
-"""
+    launch = replace_exact(
+        launch,
+        "                    # Ship the exact opt-in composition module",
+        '                    shutil.copy2(ROOT / "host_runtime/build_admission_context.py", native_build / "build_admission_context.py")\n'
+        "                    # Ship the exact opt-in composition module",
+    )
+    launch = replace_exact(
+        launch,
+        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py",
+        "COPY *.H private_bridge.cpp build.py build_admission_context.py native_prompt_patch.py",
+    )
+    launch = replace_exact(
+        launch,
+        '"RUN python /candidate/build.py"',
+        '"RUN python /candidate/build.py --profile ' + selected + '"',
+    )
+    return launch
 
 
-def optimized_builder(text):
-    text = replace_exact(text, '        "-O1",', '        "-O2",')
-    # Three compile/link sites. This is only an experimental copy of the builder.
-    text = replace_exact(text, '"-fsanitize=address,undefined",', "", count=3)
-    text = replace_exact(text, '        "-fno-sanitize-recover=all",\n', "")
+def endurance_cohort(text):
+    # Thread the live proof to the host-only endurance exercise. It is popped
+    # from the private sink and never included in any receipt.
+    anchor = '    await_event,\n):\n    """Actual disconnect'
     text = replace_exact(
         text,
-        'for name in ("Context", "Executor")',
-        'for name in ("Context", "Executor", "Listener")',
+        anchor,
+        '    await_event,\n    proof_sink=None,\n):\n    """Actual disconnect',
     )
     text = replace_exact(
         text,
-        '            "SPELL-Context",\n',
-        '            "SPELL-Listener",\n            "SPELL-Context",\n',
+        "    return dict(\n        passed=True,\n        automatic_disconnect_detection=True,",
+        "    if proof_sink is not None:\n        proof_sink.update(new_proof)\n"
+        "    return dict(\n        passed=True,\n        automatic_disconnect_detection=True,",
     )
-    anchor = (
-        '    (home / "build.json").write_text(json.dumps(report, indent=2) + "\\n")'
+    text = replace_exact(
+        text,
+        "        reconnection = qualify_reconnect(",
+        "        endurance_proof = {}\n        reconnection = qualify_reconnect(\n            proof_sink=endurance_proof,",
     )
-    text = replace_exact(text, anchor, OPTIMIZED_FINALIZE + "\n" + anchor)
-    return "OPTIMIZED_LAUNCHER_TEXT = " + repr(OPTIMIZED_LAUNCHER) + "\n" + text
+    begin = text.index("        # Continue the same original family for 45 seconds")
+    end = text.index("        with closing(", begin)
+    text = (
+        text[:begin]
+        + """        from v08_endurance import run_soak
+        soak = run_soak(duration=3600, name=name, controller=controller,
+                        proof=endurance_proof, bob_connection=bob, handoff_call=handoff_call,
+                        command=command, control=control, handles=handles, original=original,
+                        output=output, await_event=await_event)
+        endurance_proof.clear()
+        (output / "native-recovery-soak.json").write_text(json.dumps(soak) + "\\n")
+"""
+        + text[end:]
+    )
+    text = replace_exact(
+        text,
+        "            or history != 2",
+        '            or history != 2 + soak["extra_history_entries"]',
+    )
+    text = replace_exact(
+        text,
+        "            epoch=3,\n            accepted_transfers=2,\n            same_owner_reconnections=1,",
+        '            epoch=soak["final_epoch"],\n            accepted_transfers=2 + soak["extra_transfers"],\n            same_owner_reconnections=1 + soak["extra_reconnections"],',
+    )
+    return text
 
 
 def prepare_overlay(root, profile, soak_seconds):
@@ -128,6 +139,7 @@ def prepare_overlay(root, profile, soak_seconds):
             raise ValueError("memory_experiment_source_changed: " + relative)
         originals[relative] = data.decode()
     changed = dict(originals)
+    max_samples = max(300, soak_seconds // 2 + 150)
     probe = changed["scripts/v08_resource_probe.py"]
     start, end = (
         probe.index("def assess_recovery_resources(output):"),
@@ -143,8 +155,12 @@ def prepare_overlay(root, profile, soak_seconds):
         + probe[end:]
     )
     # The observer must cover the longer experiment. Its interval is unchanged.
-    probe = replace_exact(probe, "for _ in range(120):", "for _ in range(300):")
-    probe = replace_exact(probe, "maximum_samples=120,", "maximum_samples=300,")
+    probe = replace_exact(
+        probe, "for _ in range(120):", f"for _ in range({max_samples}):"
+    )
+    probe = replace_exact(
+        probe, "maximum_samples=120,", f"maximum_samples={max_samples},"
+    )
     mapping = """            if row["program"] in {"SPELL-Context", "SPELL-Executor", "SPELL-Executor_v3", "SPELL-Listener", "spell-host-ipc"}:
                 with (path / "maps").open() as stream:
                     maps = stream.read(1048577)
@@ -161,12 +177,15 @@ def prepare_overlay(root, profile, soak_seconds):
     changed["scripts/v08_resource_probe.py"] = probe
     # Only fixture duration changes. RPC, admission, lease and driver deadlines do not.
     cohort = changed["scripts/v08_handoff_cohort.py"]
-    cohort = replace_exact(
-        cohort, "for _ in range(9):", f"for _ in range({soak_seconds // 5}):"
-    )
-    cohort = replace_exact(
-        cohort, "minimum_seconds=45,", f"minimum_seconds={soak_seconds},"
-    )
+    if soak_seconds == 3600:
+        cohort = endurance_cohort(cohort)
+    else:
+        cohort = replace_exact(
+            cohort, "for _ in range(9):", f"for _ in range({soak_seconds // 5}):"
+        )
+        cohort = replace_exact(
+            cohort, "minimum_seconds=45,", f"minimum_seconds={soak_seconds},"
+        )
     changed["scripts/v08_handoff_cohort.py"] = cohort
     changed["host_runtime/python/handoff_probe.py"] = replace_exact(
         changed["host_runtime/python/handoff_probe.py"],
@@ -178,7 +197,7 @@ def prepare_overlay(root, profile, soak_seconds):
     launch = replace_exact(
         launch,
         "        Path(__file__),",
-        '        ROOT / "scripts/v08_memory_experiment.py",\n        Path(__file__),',
+        '        ROOT / "scripts/v08_memory_experiment.py",\n        ROOT / "scripts/v08_endurance.py",\n        ROOT / "host_runtime/build_native_profile.py",\n        Path(__file__),',
     )
     launch = replace_exact(
         launch,
@@ -194,30 +213,10 @@ def prepare_overlay(root, profile, soak_seconds):
             '            "--memory-swap",\n            "4096m",',
         )
         changed["scripts/v08_native_consumption.py"] = consumption
-    if profile == "optimized-noswap":
-        changed["host_runtime/build_admission_context.py"] = optimized_builder(
-            changed["host_runtime/build_admission_context.py"]
+    if profile in {"optimized-noswap", "asan-o2-noswap"}:
+        changed["scripts/qualify_v08_native_launch.py"] = explicit_builder(
+            launch, profile
         )
-        changed[
-            "host_runtime/native/allocation_trace.H"
-        ] = """// Experimental non-sanitized build: no invented allocator samples.
-#include <cstdint>
-#include <cstdlib>
-extern "C" bool v08_allocation_profile_start() noexcept {
-    const char* p = std::getenv("OPENBEXI_V08_ALLOCATION_DIAGNOSTICS");
-    return !p || p[0] != '1';
-}
-extern "C" void v08_allocation_profile_dump(uint64_t) noexcept {}
-"""
-        changed[
-            "host_runtime/native/resource_trace.H"
-        ] = """// No sanitizer allocator is present in this experimental build.
-// Independently collected /proc and cgroup accounting remain mandatory.
-#ifndef OPENBEXI_V08_RESOURCE_TRACE_H
-#define OPENBEXI_V08_RESOURCE_TRACE_H
-static void v08_resource_trace(unsigned int) noexcept {}
-#endif
-"""
         session = changed["host_runtime/python/native.py"]
         session = replace_exact(
             session,
@@ -227,6 +226,13 @@ static void v08_resource_trace(unsigned int) noexcept {}
         if "import sys\n" not in session:
             session = "import sys\n" + session
         changed["host_runtime/python/native.py"] = session
+    if soak_seconds > 45 and profile in {"asan-noswap", "asan-swap"}:
+        header = changed["host_runtime/native/resource_trace.H"]
+        changed["host_runtime/native/resource_trace.H"] = replace_exact(
+            header,
+            "#define OPENBEXI_NATIVE_TRACE_LIMIT 120",
+            f"#define OPENBEXI_NATIVE_TRACE_LIMIT {max_samples}",
+        )
     manifest = {}
     # Validate every transformation before writing anything.
     for relative, text in changed.items():
@@ -277,11 +283,13 @@ def assess_experiment(output, profile, soak_seconds):
         observer = json.loads((output / "native-resource-observer.json").read_text())
         soak = json.loads((output / "native-recovery-soak.json").read_text())
         path = output / "native-resources.jsonl"
-        if path.stat().st_size > 8 * MIB:
+        if path.stat().st_size > 64 * MIB:
             raise ValueError("resource_evidence_too_large")
         rows = [json.loads(line) for line in path.read_text().splitlines()]
         samples = [r for r in rows if r.get("schema") == "openbexi.native-resources/1"]
-        if observer["errors"] or not 20 <= len(samples) <= 300:
+        if observer["errors"] or not 20 <= len(samples) <= max(
+            300, soak_seconds // 2 + 150
+        ):
             raise ValueError("incomplete_resource_observation")
         if any(r not in samples and r != {"container_exited": True} for r in rows):
             raise ValueError("unrecognized_resource_record")
@@ -381,6 +389,54 @@ def assess_experiment(output, profile, soak_seconds):
             original_processes=8,
             memory_max_events=max(r["values"]["memory.events"]["max"] for r in samples),
         )
+        # Separate live allocations, retained allocator heap, anonymous and file
+        # charges, thread counts, and late-window trends; no fabricated counters.
+        first_time, last_time = start + 60 * 10**9, end - 60 * 10**9
+
+        def med(values):
+            return statistics.median(values) if values else None
+
+        thread_first = [
+            sum(p.get("status", {}).get("Threads", 0) for p in row["processes"])
+            for row in window
+            if row["monotonic_ns"] <= first_time
+        ]
+        thread_last = [
+            sum(p.get("status", {}).get("Threads", 0) for p in row["processes"])
+            for row in window
+            if row["monotonic_ns"] >= last_time
+        ]
+        result["thread_observations_available"] = any(thread_first) and any(thread_last)
+        result["thread_first_median"] = med(thread_first) if any(thread_first) else None
+        result["thread_last_median"] = med(thread_last) if any(thread_last) else None
+        result["allocator_observations_available"] = any(
+            row.get("native_allocator") for row in window
+        )
+        result["last_memory_stat"] = window[-1]["values"].get("memory.stat", {})
+        result["last_native_allocator"] = window[-1].get("native_allocator", [])
+        if soak_seconds == 3600:
+            late = [
+                r
+                for r in window
+                if end - 600 * 10**9 <= r["monotonic_ns"] <= end - 540 * 10**9
+            ]
+            ending = [r for r in window if r["monotonic_ns"] >= end - 60 * 10**9]
+            if not late or not ending:
+                raise ValueError("late_window_samples_missing")
+            result["late_ten_minute_growth_bytes"] = med(
+                [combined(r) for r in ending]
+            ) - med([combined(r) for r in late])
+            cycles = json.loads((output / "endurance-cycles.json").read_text())
+            if (
+                cycles.get("passed") is not True
+                or cycles.get("extra_transfers") != 4
+                or cycles.get("extra_reconnections") != 1
+                or cycles.get("rotations") != 8
+            ):
+                raise ValueError("endurance_cycles_unproven")
+            result["endurance_cycles_verified"] = True
+            result["rpc_latency"] = cycles["rpc_latency"]
+            result["latency_slo_qualified"] = False
         for failed, label in (
             (
                 peak > result["resident_peak_budget_bytes"],

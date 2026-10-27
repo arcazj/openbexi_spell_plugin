@@ -2,9 +2,9 @@ name: v0.8 portable preparation and driver compatibility subset
 on:
   push:
     branches: [feature/v0.8-server-architecture]
-    paths: ['src/**', 'driver_plugin/**', 'source_port/**', 'tests/**', 'conformance/limit_features_cases.py', 'scripts/qualify_v08_compatibility.py', '.github/workflows/v08-compatibility.yml']
+    paths: ['host_runtime/**', 'src/**', 'driver_plugin/**', 'source_port/**', 'tests/**', 'conformance/limit_features_cases.py', 'scripts/qualify_v08_compatibility.py', '.github/workflows/v08-compatibility.yml']
   pull_request:
-    paths: ['src/**', 'driver_plugin/**', 'source_port/**', 'tests/**', 'conformance/limit_features_cases.py', 'scripts/qualify_v08_compatibility.py', '.github/workflows/v08-compatibility.yml']
+    paths: ['host_runtime/**', 'src/**', 'driver_plugin/**', 'source_port/**', 'tests/**', 'conformance/limit_features_cases.py', 'scripts/qualify_v08_compatibility.py', '.github/workflows/v08-compatibility.yml']
 permissions:
   contents: read
 jobs:

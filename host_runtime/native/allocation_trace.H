@@ -1,3 +1,12 @@
+#ifdef OPENBEXI_NATIVE_NO_SANITIZERS
+#include <cstdint>
+#include <cstdlib>
+extern "C" bool v08_allocation_profile_start() noexcept {
+    const char* p = std::getenv("OPENBEXI_V08_ALLOCATION_DIAGNOSTICS");
+    return !p || p[0] != '1';
+}
+extern "C" void v08_allocation_profile_dump(uint64_t) noexcept {}
+#else
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Included once in the private IPC translation unit. Diagnostic sampling only.
 #include <atomic>
@@ -126,3 +135,5 @@ extern "C" void v08_allocation_profile_dump(uint64_t tick) noexcept
     }
     reporting=false;
 }
+
+#endif

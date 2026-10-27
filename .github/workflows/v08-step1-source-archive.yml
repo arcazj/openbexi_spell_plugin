@@ -5,7 +5,7 @@ name: v0.8 Step 1 exact-source checkout archive
 on:
   push:
     branches: ['feature/v0.8-step1-lifecycle']
-    paths: ['.github/workflows/v08-step1-source-archive.yml']
+    paths: ['.github/workflows/v08-step1-source-archive.yml', 'host_runtime/build_native_profile.py', 'scripts/v08_endurance.py']
 
 permissions:
   contents: read
