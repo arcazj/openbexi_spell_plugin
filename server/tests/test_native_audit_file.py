@@ -32,7 +32,7 @@ def audit_binary(tmp_path_factory):
             "-fno-omit-frame-pointer",
             "-no-pie",
             "-DV08_AUDIT_FAULT_WRAPPERS=1",
-            "-Wl,--wrap=write,--wrap=fdatasync",
+            "-Wl,--wrap=write,--wrap=fdatasync,--wrap=posix_fadvise",
             "-I" + str(ROOT / "host_runtime/native"),
             str(ROOT / "server/tests/native_audit_file.cpp"),
             "-o",
@@ -71,6 +71,47 @@ def test_concurrent_completeness_ordering_and_process_restart(audit_binary, tmp_
     result = run(audit_binary, "append", path)
     assert result.returncode == 0, result.stderr
     assert path.read_bytes() == before + b"RESTART\n"
+
+
+def test_synced_audit_cache_is_bounded_without_losing_records(audit_binary, tmp_path):
+    path = tmp_path / "execution.ASRUN"
+    result = run(audit_binary, "cache-probe", path)
+    assert result.returncode == 0, result.stderr
+    marker, cached, pages = result.stdout.split()
+    assert marker == b"CACHE" and int(pages) >= 1024
+    assert int(cached) * os.sysconf("SC_PAGE_SIZE") <= 65536
+    with path.open("rb") as stream:
+        for _ in range(1024):
+            assert stream.readline() == b"z" * 65535 + b"\n"
+        assert stream.read(1) == b""
+
+
+def test_refused_cache_policy_fails_without_ack_or_record_deletion(audit_binary, tmp_path):
+    path = tmp_path / "execution.ASRUN"
+    result = run(audit_binary, "cache-refusal", path)
+    assert result.returncode == 74 and b"stage=cache_advice errno=95" in result.stderr
+    assert not result.stdout
+    assert path.read_bytes() == b"z" * 65535 + b"\n"
+
+
+def test_large_restore_keeps_bytes_and_bounds_output_cache(audit_binary, tmp_path):
+    path, snapshot = tmp_path / "execution.ASRUN", tmp_path / "snapshot.ASRUN"
+    with snapshot.open("wb") as stream:
+        for _ in range(1024):
+            stream.write(b"q" * 65535 + b"\n")
+        stream.flush()
+        os.fdatasync(stream.fileno())
+    snapshot.chmod(0o600)
+    result = run(audit_binary, "cache-restore", path, snapshot)
+    assert result.returncode == 0, result.stderr
+    marker, cached, pages = result.stdout.split()
+    assert marker == b"CACHE" and int(pages) >= 1024
+    assert int(cached) * os.sysconf("SC_PAGE_SIZE") <= 65536
+    with path.open("rb") as restored, snapshot.open("rb") as original:
+        for _ in range(1024):
+            expected = b"q" * 65535 + b"\n"
+            assert restored.readline() == expected and original.readline() == expected
+        assert restored.read(1) == original.read(1) == b""
 
 
 def test_reset_and_restore_preserve_original_generations(audit_binary, tmp_path):

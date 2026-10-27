@@ -20,6 +20,8 @@
 // uncertain write or sync result. Error messages contain fixed labels only.
 class V08AuditFile {
     int directory=-1, file=-1;
+    off_t released=0;
+    long page_size=0;
     std::string name;
     std::recursive_mutex mutex;
     [[noreturn]] static void failed(const char* stage, int code=errno) noexcept {
@@ -42,6 +44,26 @@ class V08AuditFile {
             if(size<=0)failed("write",size<0?errno:EIO);
             bytes.remove_prefix(static_cast<size_t>(size));
         }
+    }
+    void release_synced_pages(bool final=false) {
+        // Audit records remain on the same durable volume. Bound the writer's
+        // clean page cache as well as its userspace buffer: the measured hour
+        // previously retained roughly one page-cache byte per audit byte.
+        // Never advise dirty/uncertain data or alter cgroup accounting. Partial
+        // pages stay cached; a reader may fault committed pages back from disk.
+        struct stat contents{};
+        if(::fstat(file,&contents)!=0)failed("cache_stat");
+        const off_t complete=contents.st_size-(contents.st_size%page_size);
+        if(complete<=released || (!final && complete-released<65536))return;
+        const int result=::posix_fadvise(file,released,complete-released,POSIX_FADV_DONTNEED);
+        // A platform refusing the bounded-cache policy cannot silently claim
+        // success. fadvise returns an error code, rather than setting errno.
+        if(result!=0)failed("cache_advice",result);
+        released=complete;
+    }
+    void sync_record(const char* stage) {
+        if(::fdatasync(file)!=0)failed(stage);
+        release_synced_pages();
     }
     void verify(int fd) {
         struct stat info{};
@@ -108,6 +130,9 @@ public:
             (append?0:O_CREAT|O_EXCL),0600);
         if(file<0)failed("file_open");
         verify(file);
+        page_size=::sysconf(_SC_PAGESIZE);
+        if(page_size<=0)failed("page_size",EINVAL);
+        released=0;
         struct stat contents{};
         if(::fstat(file,&contents)!=0)failed("file_stat");
         if(append && contents.st_size>0) {
@@ -121,19 +146,19 @@ public:
         std::lock_guard<std::recursive_mutex> lock(mutex);
         if(file<0)failed("closed_writer",EBADF);
         raw_write(bytes);
-        if(::fdatasync(file)!=0)failed("record_sync");
+        sync_record("record_sync");
     }
     void write_line(std::string_view bytes) {
         std::lock_guard<std::recursive_mutex> lock(mutex);
         if(file<0)failed("closed_writer",EBADF);
         raw_write(bytes);raw_write("\n");
-        if(::fdatasync(file)!=0)failed("record_sync");
+        sync_record("record_sync");
     }
     void write_parts(std::string_view prefix,std::string_view payload) {
         std::lock_guard<std::recursive_mutex> lock(mutex);
         if(file<0)failed("closed_writer",EBADF);
         raw_write(prefix);raw_write(payload);raw_write("\n");
-        if(::fdatasync(file)!=0)failed("record_sync");
+        sync_record("record_sync");
     }
     void copy_from(const std::string& source) {
         std::lock_guard<std::recursive_mutex> lock(mutex);
@@ -148,7 +173,7 @@ public:
            (info.st_dev==output.st_dev && info.st_ino==output.st_ino))
             failed("restore_identity",EINVAL);
         char buffer[4096];
-        off_t copied=0;
+        off_t copied=0, input_released=0;
         while(copied<info.st_size) {
             const auto remaining=info.st_size-copied;
             const auto requested=remaining<static_cast<off_t>(sizeof(buffer))?
@@ -159,6 +184,17 @@ public:
             if(count==0)failed("restore_changed",EIO);
             raw_write(std::string_view(buffer,static_cast<size_t>(count)));
             copied+=count;
+            // Restore has a fixed 4 KiB copy buffer. Sync output before asking
+            // to release its completed pages; stop retaining consumed input
+            // pages too. Input advice cannot discard dirty data or file bytes.
+            const off_t consumed=copied-(copied%page_size);
+            if(consumed-input_released>=65536) {
+                sync_record("restore_sync");
+                const int result=::posix_fadvise(input,input_released,
+                    consumed-input_released,POSIX_FADV_DONTNEED);
+                if(result!=0)failed("restore_cache_advice",result);
+                input_released=consumed;
+            }
         }
         struct stat after{};
         if(::fstat(input,&after)!=0)failed("restore_recheck");
@@ -166,7 +202,7 @@ public:
            after.st_mtim.tv_nsec!=info.st_mtim.tv_nsec || after.st_ctim.tv_sec!=info.st_ctim.tv_sec ||
            after.st_ctim.tv_nsec!=info.st_ctim.tv_nsec)failed("restore_changed",EIO);
         if(::close(input)!=0)failed("restore_close");
-        if(::fdatasync(file)!=0)failed("restore_sync");
+        sync_record("restore_sync");
         if(::fstat(file,&output)!=0)failed("restore_stat");
         if(output.st_size) {
             char last=0;
@@ -177,6 +213,8 @@ public:
     void close() {
         std::lock_guard<std::recursive_mutex> lock(mutex);
         if(file>=0) {
+            if(::fdatasync(file)!=0)failed("close_sync");
+            release_synced_pages(true);
             if(::close(file)!=0)failed("file_close");
             file=-1;
         }
