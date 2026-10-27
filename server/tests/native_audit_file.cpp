@@ -14,6 +14,15 @@ extern "C" ssize_t __wrap_write(int fd,const void* data,size_t size) {
         if(fault_calls++==0)return __real_write(fd,data,size/2);
         errno=ENOSPC;return -1;
     }
+    if(fd>2 && fault==4 && fault_calls++==0) {
+        const auto written=__real_write(fd,data,size/2);
+        if(written<0)return written;
+        const char marker[]="PARTIAL\n";
+        if(__real_write(STDOUT_FILENO,marker,sizeof(marker)-1)!=sizeof(marker)-1)_exit(75);
+        char permission;
+        if(::read(STDIN_FILENO,&permission,1)!=1)_exit(75);
+        return written;
+    }
     return __real_write(fd,data,size);
 }
 extern "C" int __wrap_fdatasync(int fd) {
@@ -39,9 +48,9 @@ int main(int argc,char** argv) {
     }
     output.open(path);
 #ifdef V08_AUDIT_FAULT_WRAPPERS
-    if(mode=="interrupted" || mode=="partial-failure" || mode=="sync-failure") {
+    if(mode=="interrupted" || mode=="partial-failure" || mode=="sync-failure" || mode=="partial-crash") {
         output.write_line("BASE");
-        fault=mode=="interrupted"?1:mode=="partial-failure"?2:3;
+        fault=mode=="interrupted"?1:mode=="partial-failure"?2:mode=="sync-failure"?3:4;
         output.write_line("UNCERTAIN-RECORD");
         std::puts("ACK");return 0;
     }
@@ -56,6 +65,11 @@ int main(int argc,char** argv) {
     }
     if(mode=="hold") {
         std::puts("READY");std::fflush(stdout);
+        char c;return ::read(STDIN_FILENO,&c,1)==1?0:4;
+    }
+    if(mode=="acknowledged-crash") {
+        for(unsigned int i=0;i<128;++i)output.write_line("COMMITTED:"+std::to_string(i));
+        std::puts("ACK 128");std::fflush(stdout);
         char c;return ::read(STDIN_FILENO,&c,1)==1?0:4;
     }
     if(mode=="quota" || mode=="full-disk") {

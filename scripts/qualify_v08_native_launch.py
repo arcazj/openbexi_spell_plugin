@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 from urllib.request import urlopen
 import uuid
 
@@ -44,6 +45,14 @@ def retain_failure(report, error, *, phase="qualification"):
     report.setdefault("error", detail)
     failures = report.setdefault("failures", [])
     item = dict(phase=phase, error=detail)
+    frames = traceback.extract_tb(error.__traceback__)
+    if frames:
+        item["frames"] = [
+            dict(module=Path(f.filename).name, function=f.name, line=f.lineno)
+            for f in frames[-16:]
+        ]
+    if isinstance(error, NativeIdentityError):
+        item["native_identity"] = error.identity
     if item not in failures:
         failures.append(item)
 
@@ -226,6 +235,18 @@ def await_event(names, event, seconds=90, *, minimum=1):
     raise TimeoutError("Native cohort did not reach " + event)
 
 
+class NativeIdentityError(RuntimeError):
+    def __init__(self, name, executors, rows):
+        super().__init__("Expected distinct real native Listener/Context/Executor")
+        self.identity = dict(
+            container=name,
+            monotonic_ns=time.monotonic_ns(),
+            expected_executors=executors,
+            observed=rows[:64],
+            observed_count=len(rows),
+        )
+
+
 def host_processes(name, *, executors=1):
     lines = command("docker", "top", name, "-eo", "pid,comm").splitlines()[1:]
     rows = []
@@ -237,7 +258,7 @@ def host_processes(name, *, executors=1):
         len(rows) != 2 + executors
         or sum("Executor" in p["executable"] for p in rows) != executors
     ):
-        raise RuntimeError("Expected distinct real native Listener/Context/Executor")
+        raise NativeIdentityError(name, executors, rows)
     return rows
 
 
@@ -642,6 +663,7 @@ def main():
         ROOT / "host_runtime/python/epoch_relay.py",
         ROOT / "scripts/v08_handoff_cohort.py",
         ROOT / "scripts/v08_resource_probe.py",
+        ROOT / ".github/workflows/v08-lifecycle-reliability.yml",
         ROOT / "scripts/v08_audit_storage.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
@@ -713,16 +735,16 @@ def main():
                 shutil.copy2(
                     ROOT / "host_runtime/python/v08_worker.py", code / "agent.py"
                 )
+                shutil.copy2(
+                    ROOT / "host_runtime/python/startup_diagnostics.py",
+                    code / "startup_diagnostics.py",
+                )
                 if profile.native_thread_barrier or profile.native_child_gate:
                     shutil.copy2(
                         ROOT / "host_runtime/python/native.py",
                         code / "native_candidate.py",
                     )
                 if profile.native_child_gate:
-                    shutil.copy2(
-                        ROOT / "host_runtime/python/startup_diagnostics.py",
-                        code / "startup_diagnostics.py",
-                    )
                     shutil.copy2(
                         ROOT / "host_runtime/python/children.py", code / "children.py"
                     )
@@ -2411,10 +2433,8 @@ def main():
                         (output / (name + ".stdout.jsonl")).write_text(
                             command("docker", "logs", name) + "\n"
                         )
-                        if (
-                            profile.native_child_gate
-                            and info["State"]["Running"]
-                            and (name in worker_names or name.endswith("-probe"))
+                        if info["State"]["Running"] and (
+                            name in worker_names or name.endswith("-probe")
                         ):
                             diagnostics = command(
                                 "docker",

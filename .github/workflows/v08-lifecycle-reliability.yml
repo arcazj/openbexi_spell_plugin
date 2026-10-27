@@ -1,0 +1,47 @@
+name: v0.8 repeated native lifecycle evidence
+on:
+  pull_request:
+    paths:
+      - 'scripts/qualify_v08_native_launch.py'
+      - 'scripts/v08_listener_survival.py'
+      - 'host_runtime/build_admission_context.py'
+      - 'host_runtime/python/startup_diagnostics.py'
+      - '.github/workflows/v08-lifecycle-reliability.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  repeated-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [native-listener-survival, native-startup-stress, native-terminal]
+        repetition: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned IDE for real observer requests
+        if: matrix.profile == 'native-listener-survival'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc
+          path: .qualification/companion-ide
+      - name: Install exact companion client
+        if: matrix.profile == 'native-listener-survival'
+        run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Execute fresh native lifecycle attempt with unchanged deadlines
+        run: python scripts/qualify_v08_native_launch.py --${{ matrix.profile }}
+      - name: Preserve every attempt and failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-lifecycle-${{ matrix.profile }}-${{ matrix.repetition }}-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

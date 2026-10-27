@@ -2,6 +2,7 @@
 
 import importlib.util
 import os
+import signal
 from pathlib import Path
 import subprocess
 import sys
@@ -84,6 +85,40 @@ def test_reset_and_restore_preserve_original_generations(audit_binary, tmp_path)
     assert path.read_bytes() == b"SNAPSHOT\n"
     assert (tmp_path / "execution.ASRUN.archive.1").read_bytes() == b"NEW\n"
     assert (tmp_path / "execution.ASRUN.archive.0").read_bytes() == original
+
+
+@pytest.mark.parametrize("partial", [False, True])
+def test_sigkill_preserves_acknowledgements_and_uncertain_tail(audit_binary, tmp_path, partial):
+    path = tmp_path / "execution.ASRUN"
+    process = subprocess.Popen(
+        [str(audit_binary), "partial-crash" if partial else "acknowledged-crash", str(path)],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=environment(),
+    )
+    try:
+        assert process.stdout.readline() == (b"PARTIAL\n" if partial else b"ACK 128\n")
+        process.kill()
+        _, diagnostic = process.communicate(timeout=10)
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.communicate(timeout=10)
+    assert process.returncode == -signal.SIGKILL and not diagnostic
+    original = (
+        b"BASE\nUNCERTAI" if partial else b"".join(f"COMMITTED:{i}\n".encode() for i in range(128))
+    )
+    assert path.read_bytes() == original
+    result = run(audit_binary, "append", path)
+    if partial:
+        assert result.returncode == 74 and b"stage=incomplete_tail" in result.stderr
+        assert path.read_bytes() == original
+        assert run(audit_binary, "new", path).returncode == 0
+        assert (tmp_path / "execution.ASRUN.archive.0").read_bytes() == original
+    else:
+        assert result.returncode == 0
+        assert path.read_bytes() == original + b"RESTART\n"
 
 
 def test_incomplete_tail_is_preserved_and_rejected_on_append(audit_binary, tmp_path):

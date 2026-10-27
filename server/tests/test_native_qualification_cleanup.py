@@ -17,6 +17,42 @@ candidate = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(candidate)
 
 
+def test_identity_failure_retains_actual_missing_process_and_call_site(monkeypatch):
+    calls = []
+
+    def top(*args):
+        calls.append(args)
+        return "PID COMMAND\n10 python\n11 SPELL-Listener\n12 SPELL-Context\n"
+
+    monkeypatch.setattr(candidate, "command", top)
+    report = {"passed": True}
+    try:
+        candidate.host_processes("worker-3")
+    except candidate.NativeIdentityError as error:
+        candidate.retain_failure(report, error)
+    else:
+        pytest.fail("Missing original Executor was accepted")
+    assert not report["passed"]
+    failure = report["failures"][0]
+    assert failure["native_identity"]["observed"] == [
+        {"host_pid": 11, "executable": "SPELL-Listener"},
+        {"host_pid": 12, "executable": "SPELL-Context"},
+    ]
+    assert failure["native_identity"]["expected_executors"] == 1
+    assert failure["native_identity"]["container"] == "worker-3"
+    assert failure["frames"][-1]["function"] == "host_processes"
+    assert calls == [("docker", "top", "worker-3", "-eo", "pid,comm")]
+
+
+def test_complete_native_identity_preserves_exact_original_processes(monkeypatch):
+    monkeypatch.setattr(
+        candidate,
+        "command",
+        lambda *args: "PID COMMAND\n11 SPELL-Listener\n12 SPELL-Context\n13 SPELL-Executor\n",
+    )
+    assert [row["host_pid"] for row in candidate.host_processes("worker")] == [11, 12, 13]
+
+
 def test_cleanup_cannot_hide_native_failure(monkeypatch, tmp_path):
     directory = tmp_path / "authority"
     directory.mkdir()

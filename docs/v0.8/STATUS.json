@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Measured single-worker correction passes mandatory memory at 7d716d9; durable ASRUN native integration candidate; listener-survival fails; full release blocked",
+  "phase": "Durable native ASRUN passes fresh 14-job core and mandatory memory at dbdfd53; lifecycle repeated diagnosis and full release qualification remain open",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -126,7 +126,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Retrieve fresh durable native audit and mandatory memory outcomes; investigate listener-survival identity failure and preserved admission/exit failures; complete every full-release gate before stable publication",
+  "next_step": "Run repeated Listener/startup/terminal attempts with exact PID and call-site diagnostics; qualify live native disk-full and durable endurance; complete all full-release gates before publication",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -161,7 +161,7 @@
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
   "package_version": "0.8.0.dev67",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
-  "last_verified_component_commit": "93dad418c1992c2863374cad53dfcbb3ba93858f",
+  "last_verified_component_commit": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
   "native_owner_commands_profile": "NATIVE_OWNER_COMMANDS.md; schema 15 owner grants remain immutable. IDE_NATIVE_CONTROLS.md describes the paired public command route for existing private executions. Public provisioning remains disabled.",
   "native_command_security": "Every command crosses live role, owner/epoch/generation and original capability checks; stolen-proof and post-revocation replay regressions deny actual TLS requests. No automatic retry, rebinding or epoch repair.",
@@ -683,5 +683,19 @@
     "follow_up_audit_acceptance": "pending",
     "receipt": "evidence/memory-audit-activation-20261027.json",
     "full_v08_qualified": false
+  },
+  "durable_audit_native_20261027": {
+    "source": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
+    "core_run": 40556778211,
+    "core": "14/14 passed",
+    "foundation_tests": 1554,
+    "handoff_growth_bytes": 60911616,
+    "ide_growth_bytes": 60895232,
+    "limit_bytes": 67108864,
+    "fresh_startup_families": 24,
+    "terminal_cases": 16,
+    "audit_full_disk_component": "actual ext4 ENOSPC, 2467 numbered acknowledged records, exit 74 and restart pass",
+    "full_v08_qualified": false,
+    "receipt": "evidence/durable-audit-native-20261027.json"
   }
 }
