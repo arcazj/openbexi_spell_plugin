@@ -193,7 +193,7 @@ def reuse_native_collector_nodes(source):
 
 
 def reuse_native_message_workers(source, *, requests=False):
-    """Reuse one idle callback thread; busy work keeps dedicated concurrency."""
+    """Reuse idle callback threads; busy work keeps dedicated concurrency."""
     header = source / "include/SPELL_IPC/SPELLipcIncoming.H"
     implementation = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     h = header.read_text()

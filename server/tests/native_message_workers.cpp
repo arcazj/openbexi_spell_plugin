@@ -80,6 +80,24 @@ int main(int argc,char** argv) {
         std::cout<<"{\"calls\":"<<l.calls<<",\"os_threads_created\":"<<distinct
                  <<",\"heap_growth_bytes\":"<<(after-initial)<<",\"live_bytes\":"
                  <<__sanitizer_get_current_allocated_bytes()<<"}\n";
+    } else if(mode=="retention_bursts") {
+        // Five simultaneous callbacks reproduce the measured native Context
+        // peak. Include all 10,000 calls from a fresh component process.
+        retentionMeasurement=true;
+        const size_t initial=__sanitizer_get_heap_size();
+        for(int wave=0;wave<2000;++wave) {
+            l.blocked=true;std::vector<MessageOwner> jobs;jobs.reserve(5);
+            for(int i=0;i<5;++i){jobs.push_back(message(l));jobs.back()->start();}
+            waitFor(l.active,5);l.blocked=false;
+            for(auto& m:jobs){m->join();assert(m->isFinished());}
+        }
+        const size_t after=__sanitizer_get_heap_size();
+        std::sort(retentionTids.begin(),retentionTids.end());
+        const auto distinct=std::unique(retentionTids.begin(),retentionTids.end())-retentionTids.begin();
+        assert(l.calls==10000 && retentionCount==10000);
+        std::cout<<"{\"calls\":"<<l.calls<<",\"simultaneous\":5,\"os_threads_created\":"<<distinct
+                 <<",\"heap_growth_bytes\":"<<(after-initial)<<",\"live_bytes\":"
+                 <<__sanitizer_get_current_allocated_bytes()<<"}\n";
     } else if(mode=="sequential") {
         for(int i=0;i<10000;++i) {auto m=message(l);m->start();m->join();assert(m->isFinished());}
         assert(l.calls==10000);
@@ -121,6 +139,24 @@ int main(int argc,char** argv) {
         SPELLipcIncomingBase& base=outer;base.start();base.join();
         assert(base.isFinished() && nested.calls==2 && tids.size()==2);
         std::cout<<"{\"nested_completed\":true,\"distinct_callback_threads\":2}\n";
+    } else if(mode=="request_nested_deep") {
+        struct Nested:Listener {
+            std::atomic<int> entered{0};
+            SPELLipcMessage processRequest(const SPELLipcMessage& msg) override {
+                processMessage(msg);
+                if(++entered<13) {
+                    SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+                    SPELLipcIncomingRequest next("nested","interface",SPELLipcMessage("payload"),mutex,&channel,*this);
+                    SPELLipcIncomingBase& base=next;base.start();base.join();assert(base.isFinished());
+                }
+                return SPELLipcMessage();
+            }
+        } nested;
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+        SPELLipcIncomingRequest outer("outer","interface",SPELLipcMessage("payload"),mutex,&channel,nested);
+        SPELLipcIncomingBase& base=outer;base.start();base.join();
+        assert(base.isFinished() && nested.calls==13 && tids.size()==13);
+        std::cout<<"{\"nested_completed\":true,\"distinct_callback_threads\":13}\n";
     } else if(mode=="request_collector") {
         SPELLmutex mutex;SPELLipcChannel* channel=nullptr;SPELLipcTrash trash("requests");
         for(int i=0;i<2500;++i) {

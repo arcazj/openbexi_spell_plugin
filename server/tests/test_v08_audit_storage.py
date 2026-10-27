@@ -1,6 +1,7 @@
 """Audit collection must retain invalid data and refuse live-writer ownership changes."""
 
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -57,7 +58,33 @@ def test_gap_reversal_and_uncertain_tail_fail_without_deleting_records(tmp_path,
     with pytest.raises(RuntimeError):
         candidate.expose_after_stop(lambda *a: None, tmp_path, {})
     assert path.read_bytes() == contents
-    assert not (tmp_path / "native-audit-files.json").exists()
+    result = json.loads((tmp_path / "native-audit-files.json").read_text())
+    assert result["validation_passed"] is False
+    assert result["files"][0]["sha256"] == hashlib.sha256(contents).hexdigest()
+    assert result["files"][0]["bytes"] == len(contents)
+
+
+def test_uncertain_file_does_not_hide_other_raw_records_and_generations(tmp_path):
+    folder = tmp_path / "native-audit/worker"
+    folder.mkdir(parents=True)
+    contents = {
+        "a-uncertain.ASRUN": b"2026-10-27 00:00:00\t0\tPARTIAL",
+        "b-oversized.ASRUN": b"x" * (2 * 1024 * 1024 + 27) + b"\n",
+        "c-complete.ASRUN.archive.0": b"2026-10-27 00:00:00\t0\tCOMPLETE\n",
+    }
+    for name, value in contents.items():
+        (folder / name).write_bytes(value)
+    report = {}
+    with pytest.raises(RuntimeError, match="all raw files retained"):
+        candidate.expose_after_stop(lambda *a: None, tmp_path, report)
+    result = report["native_audit_storage"]
+    assert result["validation_failures"] == ["incomplete_tail", "record_exceeds_verifier_bound"]
+    assert len(result["files"]) == 3
+    for row in result["files"]:
+        original = contents[Path(row["path"]).name]
+        assert row["sha256"] == hashlib.sha256(original).hexdigest()
+        assert row["bytes"] == len(original)
+        assert (tmp_path / row["path"]).read_bytes() == original
 
 
 @pytest.mark.parametrize("label", ["../outside", "x/y", "x\n", ""])

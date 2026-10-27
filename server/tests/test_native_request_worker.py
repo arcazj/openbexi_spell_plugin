@@ -48,6 +48,7 @@ def test_all_request_callbacks_retain_less_heap_without_excluding_warmup(binarie
     "mode",
     [
         "request_nested",
+        "request_nested_deep",
         "request_concurrent",
         "request_cancel",
         "request_rebind",

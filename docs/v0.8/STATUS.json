@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Measured request-thread retention correction and deployment marker repair; fresh mandatory/native/hour qualification pending; all eleven full-release groups remain open",
+  "phase": "Measured five-slot lazy callback reuse and uncertain-audit inventory candidate; fresh mandatory native, installed-IDE and sanitizer-hour qualification pending; all eleven full-release gates open",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -101,7 +101,7 @@
     "Static bounded Compose workers and one Kubernetes Job per execution",
     "Per-Context single-writer SQLite and private mTLS service RPC"
   ],
-  "test_commands_and_outcomes": "evidence/message-allocation-20261027.json; 2972f5f: 12/14 core jobs pass; the two recovery memory jobs fail; five ancillary workflows; 1512 foundation/95 overlapping fault/241 portable tests; 268 local regression tests. No full gate promoted.",
+  "test_commands_and_outcomes": "3a970c45 / PRmerge872026de same tree4ed64ec1: all14 bounded core jobs pass,1583 foundation,95 overlapping fault, mandatory growth58.48/58.02MiB vs64MiB; all9 lifecycle repetitions pass. Sanitizer handoff hour fails early with OOM; IDE hour pending. evidence/memory-endurance-20261027.json",
   "architecture_and_protocol_implications": "ARCHITECTURE_DECISIONS.md ADR-01 through ADR-12 and PROTOCOL_REGISTER.md",
   "unresolved_risks": "RISKS.md; ARCHITECTURE_REVIEW.md; full historical root diagnostic failed on older capture paths/source identities and remains unqualified; dev19 initial local 100-way child-admission race returned eight unclassified responses; strict diagnostic assertion added, ten targeted reruns and confirmation passed, cause not claimed.",
   "gates": {
@@ -126,7 +126,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Collect exact-source fresh native/installed-IDE, foundation, repeated lifecycle and original-sanitizer hour outcomes for shared idle REQUEST/MESSAGE worker; preserve 910c8418 foundation failure and all historical failures.",
+  "next_step": "Collect fresh five-slot candidate mandatory native/installed-IDE and sanitizer-hour outcomes; measure remaining dedicated fallback under actual native concurrency. Preserve all earlier OOM, lifecycle and audit validation failures.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -153,7 +153,7 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "All eleven mandatory full-release groups remain false; see evidence/audit-cache-native-checkpoint-20261027.json and check_v08_release.py",
+  "release_assessment": "All11 full-release gates remain false. Bounded checks pass at3a970c45; original sanitizer handoff endurance fails. See evidence/memory-endurance-20261027.json",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
@@ -276,7 +276,7 @@
     "historical_causes_established": false,
     "full_driver_fault_gate_qualified": false
   },
-  "native_startup_current_blockers": "The e0841d4 handoff attempt failed before memory measurement: member registration RPC took 5382 ms against a 4000 ms native admission deadline; its startup-stress attempt timed out waiting 90 seconds for a worker to exit. Causes remain unestablished; later successful runs do not establish fixes. Current core outcomes: 12/14 core jobs pass; the two recovery memory jobs fail",
+  "native_startup_current_blockers": "All9 current repeated lifecycle jobs pass (72 startup families,3 Listener attempts,3*16 terminal cases). Historical e0841d4 member RPC5382ms over4000ms and90s worker-exit failure remain unexplained. 7d716d9 Listener identity failure used the frozen original native image, excluding attribution to that candidate callback pool but establishing no actual cause.",
   "controller_network_recovery": {
     "documentation": "AUTOMATIC_CONTROLLER_LIVENESS.md",
     "qualification_receipt": "evidence/controller-liveness/qualification-summary.json",
@@ -302,329 +302,17 @@
   },
   "native_recovery_memory": {
     "qualified": false,
-    "receipt": "evidence/qualification-resume-20261027.json",
-    "peak_limits_passed": true,
-    "growth_limits_passed": false,
+    "receipt": "evidence/memory-endurance-20261027.json",
+    "bounded_candidate": "3a970c45718d9af7c7de553ea3d6508a9ec3d423",
+    "bounded_peak_limits_passed": true,
+    "bounded_growth_limits_passed": true,
+    "handoff_growth_bytes": 61321216,
+    "ide_growth_bytes": 60837888,
+    "limit_bytes": 67108864,
     "sanitizer_workload_deadlines_limits_unchanged": true,
-    "previous_qualification": {
-      "candidate_commit": "4f4a5ec0d1a78726a07c5009096cfd54210247de",
-      "passed": false,
-      "receipt": "evidence/native-codec/dev65-hosted/qualification-summary.json",
-      "profiles": [
-        {
-          "profile": "handoff",
-          "artifact_id": 12681547732,
-          "passed": false,
-          "error": "RuntimeError: Native recovery resource acceptance failed",
-          "resource_acceptance": {
-            "schema": "openbexi.native-recovery-resources/1",
-            "passed": false,
-            "resident_limit_bytes": 2147483648,
-            "swap_limit_bytes": 0,
-            "peak_budget_bytes": 1879048192,
-            "maximum_window_growth_bytes": 67108864,
-            "full_v08_qualified": false,
-            "failures": [
-              "native_recovery_peak_budget_exceeded",
-              "native_recovery_memory_still_growing"
-            ],
-            "samples": 48,
-            "soak_samples": 22,
-            "duration_seconds": 45.449757365,
-            "peak_bytes": 2112180224,
-            "window_growth_bytes": 334139392,
-            "first_window_median_bytes": 1707249664,
-            "last_window_median_bytes": 2041389056
-          },
-          "soak": {
-            "start_ns": 333651306064,
-            "end_ns": 379101063429,
-            "minimum_seconds": 45,
-            "counters_before": {
-              "root": 1474,
-              "background": 1707,
-              "child": 1553
-            },
-            "counters_after": {
-              "root": 3560,
-              "background": 3941,
-              "child": 3684
-            },
-            "original_processes": 8,
-            "all_intervals_advanced": true
-          },
-          "memory_events": {
-            "high": 0,
-            "low": 0,
-            "max": 0,
-            "oom": 0,
-            "oom_group_kill": 0,
-            "oom_kill": 0
-          },
-          "allocation_stack_sampling_enabled": false,
-          "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
-        },
-        {
-          "profile": "ide",
-          "artifact_id": 12681587944,
-          "passed": false,
-          "error": "RuntimeError: Native recovery resource acceptance failed",
-          "resource_acceptance": {
-            "schema": "openbexi.native-recovery-resources/1",
-            "passed": false,
-            "resident_limit_bytes": 2147483648,
-            "swap_limit_bytes": 0,
-            "peak_budget_bytes": 1879048192,
-            "maximum_window_growth_bytes": 67108864,
-            "full_v08_qualified": false,
-            "failures": [
-              "native_recovery_peak_budget_exceeded",
-              "native_recovery_memory_still_growing"
-            ],
-            "samples": 47,
-            "soak_samples": 21,
-            "duration_seconds": 45.617780691,
-            "peak_bytes": 2088316928,
-            "window_growth_bytes": 364591104.0,
-            "first_window_median_bytes": 1660276736,
-            "last_window_median_bytes": 2024867840.0
-          },
-          "soak": {
-            "start_ns": 381923428822,
-            "end_ns": 427541209513,
-            "minimum_seconds": 45,
-            "counters_before": {
-              "root": 1316,
-              "background": 1662,
-              "child": 1457
-            },
-            "counters_after": {
-              "root": 3283,
-              "background": 3896,
-              "child": 3513
-            },
-            "original_processes": 8,
-            "all_intervals_advanced": true
-          },
-          "memory_events": {
-            "high": 0,
-            "low": 0,
-            "max": 0,
-            "oom": 0,
-            "oom_group_kill": 0,
-            "oom_kill": 0
-          },
-          "allocation_stack_sampling_enabled": false,
-          "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
-        }
-      ]
-    },
-    "candidate_commit": "c344dbbfc24f36effd00431e1b8847562171ae8e",
-    "resources": {
-      "handoff": {
-        "artifact_id": 12753418715,
-        "acceptance": {
-          "schema": "openbexi.native-recovery-resources/1",
-          "passed": false,
-          "resident_limit_bytes": 2147483648,
-          "swap_limit_bytes": 0,
-          "peak_budget_bytes": 1879048192,
-          "maximum_window_growth_bytes": 67108864,
-          "full_v08_qualified": false,
-          "failures": [
-            "native_recovery_memory_still_growing"
-          ],
-          "samples": 48,
-          "soak_samples": 22,
-          "duration_seconds": 45.464473199,
-          "peak_bytes": 1435729920,
-          "window_growth_bytes": 90480640,
-          "first_window_median_bytes": 1270722560,
-          "last_window_median_bytes": 1361203200
-        },
-        "soak": {
-          "start_ns": 300849343465,
-          "end_ns": 346313816664,
-          "minimum_seconds": 45,
-          "counters_before": {
-            "root": 1478,
-            "background": 1710,
-            "child": 1560
-          },
-          "counters_after": {
-            "root": 3566,
-            "background": 3948,
-            "child": 3692
-          },
-          "original_processes": 8,
-          "all_intervals_advanced": true
-        }
-      },
-      "ide": {
-        "artifact_id": 12754715286,
-        "acceptance": {
-          "schema": "openbexi.native-recovery-resources/1",
-          "passed": false,
-          "resident_limit_bytes": 2147483648,
-          "swap_limit_bytes": 0,
-          "peak_budget_bytes": 1879048192,
-          "maximum_window_growth_bytes": 67108864,
-          "full_v08_qualified": false,
-          "failures": [
-            "native_recovery_memory_still_growing"
-          ],
-          "samples": 47,
-          "soak_samples": 22,
-          "duration_seconds": 45.640227075,
-          "peak_bytes": 1417084928,
-          "window_growth_bytes": 89276416,
-          "first_window_median_bytes": 1261199360,
-          "last_window_median_bytes": 1350475776
-        },
-        "soak": {
-          "start_ns": 394318713266,
-          "end_ns": 439958940341,
-          "minimum_seconds": 45,
-          "counters_before": {
-            "root": 1318,
-            "background": 1654,
-            "child": 1454
-          },
-          "counters_after": {
-            "root": 3301,
-            "background": 3887,
-            "child": 3520
-          },
-          "original_processes": 8,
-          "all_intervals_advanced": true
-        }
-      }
-    },
-    "preserved_attempts": [
-      {
-        "candidate_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
-        "receipt": "evidence/message-allocation-20261027.json",
-        "resources": {
-          "handoff": {
-            "artifact_id": 12749726030,
-            "acceptance": {
-              "schema": "openbexi.native-recovery-resources/1",
-              "passed": false,
-              "resident_limit_bytes": 2147483648,
-              "swap_limit_bytes": 0,
-              "peak_budget_bytes": 1879048192,
-              "maximum_window_growth_bytes": 67108864,
-              "full_v08_qualified": false,
-              "failures": [
-                "native_recovery_memory_still_growing"
-              ],
-              "samples": 48,
-              "soak_samples": 22,
-              "duration_seconds": 45.445352461,
-              "peak_bytes": 1172062208,
-              "window_growth_bytes": 94982144,
-              "first_window_median_bytes": 1052237824,
-              "last_window_median_bytes": 1147219968
-            },
-            "soak": {
-              "start_ns": 286314709714,
-              "end_ns": 331760062175,
-              "minimum_seconds": 45,
-              "counters_before": {
-                "root": 1499,
-                "background": 1703,
-                "child": 1567
-              },
-              "counters_after": {
-                "root": 3621,
-                "background": 3951,
-                "child": 3730
-              },
-              "original_processes": 8,
-              "all_intervals_advanced": true
-            }
-          },
-          "ide": {
-            "artifact_id": 12748874827,
-            "acceptance": {
-              "schema": "openbexi.native-recovery-resources/1",
-              "passed": false,
-              "resident_limit_bytes": 2147483648,
-              "swap_limit_bytes": 0,
-              "peak_budget_bytes": 1879048192,
-              "maximum_window_growth_bytes": 67108864,
-              "full_v08_qualified": false,
-              "failures": [
-                "native_recovery_memory_still_growing"
-              ],
-              "samples": 47,
-              "soak_samples": 22,
-              "duration_seconds": 45.654141265,
-              "peak_bytes": 1404719104,
-              "window_growth_bytes": 85749760,
-              "first_window_median_bytes": 1255915520,
-              "last_window_median_bytes": 1341665280
-            },
-            "soak": {
-              "start_ns": 419897482421,
-              "end_ns": 465551623686,
-              "minimum_seconds": 45,
-              "counters_before": {
-                "root": 1322,
-                "background": 1657,
-                "child": 1460
-              },
-              "counters_after": {
-                "root": 3298,
-                "background": 3887,
-                "child": 3520
-              },
-              "original_processes": 8,
-              "all_intervals_advanced": true
-            }
-          },
-          "diagnostic": {
-            "artifact_id": 12749581019,
-            "acceptance": {
-              "schema": "openbexi.native-recovery-resources/1",
-              "passed": false,
-              "resident_limit_bytes": 2147483648,
-              "swap_limit_bytes": 0,
-              "peak_budget_bytes": 1879048192,
-              "maximum_window_growth_bytes": 67108864,
-              "full_v08_qualified": false,
-              "failures": [
-                "native_recovery_memory_still_growing"
-              ],
-              "samples": 47,
-              "soak_samples": 22,
-              "duration_seconds": 45.451226489,
-              "peak_bytes": 1489178624,
-              "window_growth_bytes": 92225536,
-              "first_window_median_bytes": 1318326272,
-              "last_window_median_bytes": 1410551808
-            },
-            "soak": {
-              "start_ns": 267746917932,
-              "end_ns": 313198144421,
-              "minimum_seconds": 45,
-              "counters_before": {
-                "root": 1475,
-                "background": 1695,
-                "child": 1554
-              },
-              "counters_after": {
-                "root": 3559,
-                "background": 3926,
-                "child": 3676
-              },
-              "original_processes": 8,
-              "all_intervals_advanced": true
-            }
-          }
-        }
-      }
-    ]
+    "sanitized_handoff_endurance_passed": false,
+    "sanitized_ide_endurance": "pending",
+    "full_v08_qualified": false
   },
   "memory_attribution_followup": {
     "receipt": "evidence/memory-attribution-20261027.json",
@@ -633,7 +321,7 @@
     "verified_source_hash_comparisons": 1088,
     "five_minute_sanitizer_handoff_growth_mib": 551.5625,
     "five_minute_sanitizer_ide_growth_mib": 553.38671875,
-    "endurance": "Still running at last API verification; retrieve final artifacts",
+    "endurance": "All38 retrieved longer comparisons exact-overlay/source/evidence verified. Both910c8418 sanitizer hours and3a970c45 handoff exit early with cgroup OOM;3a IDE pending. Earlier58e6f6c optimized IDE early exit cause remains unknown.",
     "correction": "Synchronous Context notification ID comparisons avoid a measured owned string copy; mandatory rebuilt acceptance pending",
     "diagnostics": "Bounded sampled allocation/free lifetime tracking; unmatched samples are conservative upper bounds, dropped frees explicit",
     "local_component_tests": 125,
@@ -666,20 +354,21 @@
     "callback_queue": false,
     "concurrency_limited": false,
     "requests_reused": false,
-    "mandatory_native_acceptance": "pending",
+    "mandatory_native_acceptance": "Historical MESSAGE-only candidate passed bounded checks; current REQUEST/MESSAGE3a970c45 bounded checks also pass, but handoff sanitizer hour fails OOM.",
     "full_v08_qualified": false,
     "warmup_callbacks_excluded": 0
   },
   "measured_memory_acceptance_20261027": {
-    "executable": "7d716d970f3919a5b40fac16c035d75205d202a8",
-    "handoff_growth_bytes": 63899648,
-    "ide_growth_bytes": 66064384,
+    "executable": "3a970c45718d9af7c7de553ea3d6508a9ec3d423",
+    "handoff_growth_bytes": 61321216,
+    "ide_growth_bytes": 60837888,
     "limit_bytes": 67108864,
     "mandatory_jobs_passed": true,
-    "foundation_tests": 1554,
-    "core": "13/14; listener-survival fails",
-    "follow_up_audit_acceptance": "pending",
-    "receipt": "evidence/memory-audit-activation-20261027.json",
+    "foundation_tests": 1583,
+    "core": "14/14 bounded jobs passed",
+    "sanitized_handoff_endurance_passed": false,
+    "sanitized_ide_endurance": "pending",
+    "receipt": "evidence/memory-endurance-20261027.json",
     "full_v08_qualified": false
   },
   "durable_audit_native_20261027": {
@@ -804,7 +493,7 @@
     "cause_measured": "dbdfd53 optimized hour: file cache increased 120426496/123002880 bytes, anonymous memory 4038656/3022848 bytes; 119952764/122190068 audit bytes retained",
     "policy": "fdatasync then advise completed pages from same file/cgroup; fixed 64 KiB advice window; no record deletion or accounting subtraction",
     "local_component": "Identical 64 MiB, 1024-record files: 16384 cached pages before, zero after; 157 affected checks pass",
-    "hosted": "910c8418 passes both mandatory memory profiles, actual native ENOSPC and 17 component disk tests. Core is 13/14 because deployment markers disagree with version. Both sanitizer hours still running; request-worker follow-up requires fresh acceptance.",
+    "hosted": "910c8418 bounded memory and real native ENOSPC pass; foundation remains failed on deployment markers. Both sanitizer hours fail OOM.3a970c45 aligns markers and passes14 core jobs, but sanitizer handoff hour still fails; last file charge3.5MiB, anonymous1.196GiB after one OOM kill. All original audit bytes preserved.",
     "full_v08_qualified": false
   },
   "compatibility_matrix": {
@@ -836,7 +525,7 @@
         "live_bytes": 78294
       }
     },
-    "native_result": "pending",
+    "native_result": "3a970c45 bounded checks pass but handoff hour fails OOM. Exact actual diagnostic observes peak5 and at least2345 MESSAGE/39 REQUEST busy fallbacks. Current five-slot candidate requires fresh mandatory native, installed-IDE and sanitizer-hour acceptance.",
     "new_request_storage_cache": false,
     "full_v08_qualified": false
   },
@@ -854,5 +543,412 @@
     "actual_native_disk_full": "PASS; entire image and raw audit bytes verified",
     "original_sanitizer_hours": "still running; not treated as acceptance",
     "full_v08_qualified": false
+  },
+  "historical_current_records_before_3a970c4": {
+    "phase": "Measured request-thread retention correction and deployment marker repair; fresh mandatory/native/hour qualification pending; all eleven full-release groups remain open",
+    "test_commands_and_outcomes": "evidence/message-allocation-20261027.json; 2972f5f: 12/14 core jobs pass; the two recovery memory jobs fail; five ancillary workflows; 1512 foundation/95 overlapping fault/241 portable tests; 268 local regression tests. No full gate promoted.",
+    "native_startup_current_blockers": "The e0841d4 handoff attempt failed before memory measurement: member registration RPC took 5382 ms against a 4000 ms native admission deadline; its startup-stress attempt timed out waiting 90 seconds for a worker to exit. Causes remain unestablished; later successful runs do not establish fixes. Current core outcomes: 12/14 core jobs pass; the two recovery memory jobs fail",
+    "native_recovery_memory": {
+      "qualified": false,
+      "receipt": "evidence/qualification-resume-20261027.json",
+      "peak_limits_passed": true,
+      "growth_limits_passed": false,
+      "sanitizer_workload_deadlines_limits_unchanged": true,
+      "previous_qualification": {
+        "candidate_commit": "4f4a5ec0d1a78726a07c5009096cfd54210247de",
+        "passed": false,
+        "receipt": "evidence/native-codec/dev65-hosted/qualification-summary.json",
+        "profiles": [
+          {
+            "profile": "handoff",
+            "artifact_id": 12681547732,
+            "passed": false,
+            "error": "RuntimeError: Native recovery resource acceptance failed",
+            "resource_acceptance": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": false,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [
+                "native_recovery_peak_budget_exceeded",
+                "native_recovery_memory_still_growing"
+              ],
+              "samples": 48,
+              "soak_samples": 22,
+              "duration_seconds": 45.449757365,
+              "peak_bytes": 2112180224,
+              "window_growth_bytes": 334139392,
+              "first_window_median_bytes": 1707249664,
+              "last_window_median_bytes": 2041389056
+            },
+            "soak": {
+              "start_ns": 333651306064,
+              "end_ns": 379101063429,
+              "minimum_seconds": 45,
+              "counters_before": {
+                "root": 1474,
+                "background": 1707,
+                "child": 1553
+              },
+              "counters_after": {
+                "root": 3560,
+                "background": 3941,
+                "child": 3684
+              },
+              "original_processes": 8,
+              "all_intervals_advanced": true
+            },
+            "memory_events": {
+              "high": 0,
+              "low": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_group_kill": 0,
+              "oom_kill": 0
+            },
+            "allocation_stack_sampling_enabled": false,
+            "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
+          },
+          {
+            "profile": "ide",
+            "artifact_id": 12681587944,
+            "passed": false,
+            "error": "RuntimeError: Native recovery resource acceptance failed",
+            "resource_acceptance": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": false,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [
+                "native_recovery_peak_budget_exceeded",
+                "native_recovery_memory_still_growing"
+              ],
+              "samples": 47,
+              "soak_samples": 21,
+              "duration_seconds": 45.617780691,
+              "peak_bytes": 2088316928,
+              "window_growth_bytes": 364591104.0,
+              "first_window_median_bytes": 1660276736,
+              "last_window_median_bytes": 2024867840.0
+            },
+            "soak": {
+              "start_ns": 381923428822,
+              "end_ns": 427541209513,
+              "minimum_seconds": 45,
+              "counters_before": {
+                "root": 1316,
+                "background": 1662,
+                "child": 1457
+              },
+              "counters_after": {
+                "root": 3283,
+                "background": 3896,
+                "child": 3513
+              },
+              "original_processes": 8,
+              "all_intervals_advanced": true
+            },
+            "memory_events": {
+              "high": 0,
+              "low": 0,
+              "max": 0,
+              "oom": 0,
+              "oom_group_kill": 0,
+              "oom_kill": 0
+            },
+            "allocation_stack_sampling_enabled": false,
+            "bridge_sha256": "b8f69e57a5a95ef3274b471c1db0b3dec70a11d9e245b9f545e036e0ad6e5477"
+          }
+        ]
+      },
+      "candidate_commit": "c344dbbfc24f36effd00431e1b8847562171ae8e",
+      "resources": {
+        "handoff": {
+          "artifact_id": 12753418715,
+          "acceptance": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": false,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [
+              "native_recovery_memory_still_growing"
+            ],
+            "samples": 48,
+            "soak_samples": 22,
+            "duration_seconds": 45.464473199,
+            "peak_bytes": 1435729920,
+            "window_growth_bytes": 90480640,
+            "first_window_median_bytes": 1270722560,
+            "last_window_median_bytes": 1361203200
+          },
+          "soak": {
+            "start_ns": 300849343465,
+            "end_ns": 346313816664,
+            "minimum_seconds": 45,
+            "counters_before": {
+              "root": 1478,
+              "background": 1710,
+              "child": 1560
+            },
+            "counters_after": {
+              "root": 3566,
+              "background": 3948,
+              "child": 3692
+            },
+            "original_processes": 8,
+            "all_intervals_advanced": true
+          }
+        },
+        "ide": {
+          "artifact_id": 12754715286,
+          "acceptance": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": false,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [
+              "native_recovery_memory_still_growing"
+            ],
+            "samples": 47,
+            "soak_samples": 22,
+            "duration_seconds": 45.640227075,
+            "peak_bytes": 1417084928,
+            "window_growth_bytes": 89276416,
+            "first_window_median_bytes": 1261199360,
+            "last_window_median_bytes": 1350475776
+          },
+          "soak": {
+            "start_ns": 394318713266,
+            "end_ns": 439958940341,
+            "minimum_seconds": 45,
+            "counters_before": {
+              "root": 1318,
+              "background": 1654,
+              "child": 1454
+            },
+            "counters_after": {
+              "root": 3301,
+              "background": 3887,
+              "child": 3520
+            },
+            "original_processes": 8,
+            "all_intervals_advanced": true
+          }
+        }
+      },
+      "preserved_attempts": [
+        {
+          "candidate_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+          "receipt": "evidence/message-allocation-20261027.json",
+          "resources": {
+            "handoff": {
+              "artifact_id": 12749726030,
+              "acceptance": {
+                "schema": "openbexi.native-recovery-resources/1",
+                "passed": false,
+                "resident_limit_bytes": 2147483648,
+                "swap_limit_bytes": 0,
+                "peak_budget_bytes": 1879048192,
+                "maximum_window_growth_bytes": 67108864,
+                "full_v08_qualified": false,
+                "failures": [
+                  "native_recovery_memory_still_growing"
+                ],
+                "samples": 48,
+                "soak_samples": 22,
+                "duration_seconds": 45.445352461,
+                "peak_bytes": 1172062208,
+                "window_growth_bytes": 94982144,
+                "first_window_median_bytes": 1052237824,
+                "last_window_median_bytes": 1147219968
+              },
+              "soak": {
+                "start_ns": 286314709714,
+                "end_ns": 331760062175,
+                "minimum_seconds": 45,
+                "counters_before": {
+                  "root": 1499,
+                  "background": 1703,
+                  "child": 1567
+                },
+                "counters_after": {
+                  "root": 3621,
+                  "background": 3951,
+                  "child": 3730
+                },
+                "original_processes": 8,
+                "all_intervals_advanced": true
+              }
+            },
+            "ide": {
+              "artifact_id": 12748874827,
+              "acceptance": {
+                "schema": "openbexi.native-recovery-resources/1",
+                "passed": false,
+                "resident_limit_bytes": 2147483648,
+                "swap_limit_bytes": 0,
+                "peak_budget_bytes": 1879048192,
+                "maximum_window_growth_bytes": 67108864,
+                "full_v08_qualified": false,
+                "failures": [
+                  "native_recovery_memory_still_growing"
+                ],
+                "samples": 47,
+                "soak_samples": 22,
+                "duration_seconds": 45.654141265,
+                "peak_bytes": 1404719104,
+                "window_growth_bytes": 85749760,
+                "first_window_median_bytes": 1255915520,
+                "last_window_median_bytes": 1341665280
+              },
+              "soak": {
+                "start_ns": 419897482421,
+                "end_ns": 465551623686,
+                "minimum_seconds": 45,
+                "counters_before": {
+                  "root": 1322,
+                  "background": 1657,
+                  "child": 1460
+                },
+                "counters_after": {
+                  "root": 3298,
+                  "background": 3887,
+                  "child": 3520
+                },
+                "original_processes": 8,
+                "all_intervals_advanced": true
+              }
+            },
+            "diagnostic": {
+              "artifact_id": 12749581019,
+              "acceptance": {
+                "schema": "openbexi.native-recovery-resources/1",
+                "passed": false,
+                "resident_limit_bytes": 2147483648,
+                "swap_limit_bytes": 0,
+                "peak_budget_bytes": 1879048192,
+                "maximum_window_growth_bytes": 67108864,
+                "full_v08_qualified": false,
+                "failures": [
+                  "native_recovery_memory_still_growing"
+                ],
+                "samples": 47,
+                "soak_samples": 22,
+                "duration_seconds": 45.451226489,
+                "peak_bytes": 1489178624,
+                "window_growth_bytes": 92225536,
+                "first_window_median_bytes": 1318326272,
+                "last_window_median_bytes": 1410551808
+              },
+              "soak": {
+                "start_ns": 267746917932,
+                "end_ns": 313198144421,
+                "minimum_seconds": 45,
+                "counters_before": {
+                  "root": 1475,
+                  "background": 1695,
+                  "child": 1554
+                },
+                "counters_after": {
+                  "root": 3559,
+                  "background": 3926,
+                  "child": 3676
+                },
+                "original_processes": 8,
+                "all_intervals_advanced": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "memory_attribution_followup": {
+      "receipt": "evidence/memory-attribution-20261027.json",
+      "checkpoint_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "verified_comparison_archives": 8,
+      "verified_source_hash_comparisons": 1088,
+      "five_minute_sanitizer_handoff_growth_mib": 551.5625,
+      "five_minute_sanitizer_ide_growth_mib": 553.38671875,
+      "endurance": "All38 retrieved longer comparisons exact-overlay/source/evidence verified. Both910c8418 sanitizer hours and3a970c45 handoff exit early with cgroup OOM;3a IDE pending. Earlier58e6f6c optimized IDE early exit cause remains unknown.",
+      "correction": "Synchronous Context notification ID comparisons avoid a measured owned string copy; mandatory rebuilt acceptance pending",
+      "diagnostics": "Bounded sampled allocation/free lifetime tracking; unmatched samples are conservative upper bounds, dropped frees explicit",
+      "local_component_tests": 125,
+      "mandatory_memory_qualified": false,
+      "full_v08_qualified": false
+    },
+    "one_idle_message_worker": {
+      "receipt": "evidence/one-idle-worker-20261027.json",
+      "prior_eight_worker_failure_preserved": true,
+      "component_tests": 11,
+      "dedicated_heap_growth_bytes": 85983232,
+      "reused_heap_growth_bytes": 524288,
+      "callback_queue": false,
+      "concurrency_limited": false,
+      "requests_reused": false,
+      "mandatory_native_acceptance": "Historical MESSAGE-only candidate passed bounded checks; current REQUEST/MESSAGE3a970c45 bounded checks also pass, but handoff sanitizer hour fails OOM.",
+      "full_v08_qualified": false,
+      "warmup_callbacks_excluded": 0
+    },
+    "measured_memory_acceptance_20261027": {
+      "executable": "7d716d970f3919a5b40fac16c035d75205d202a8",
+      "handoff_growth_bytes": 63899648,
+      "ide_growth_bytes": 66064384,
+      "limit_bytes": 67108864,
+      "mandatory_jobs_passed": true,
+      "foundation_tests": 1554,
+      "core": "13/14; listener-survival fails",
+      "follow_up_audit_acceptance": "pending",
+      "receipt": "evidence/memory-audit-activation-20261027.json",
+      "full_v08_qualified": false
+    },
+    "native_audit_cache_correction": {
+      "receipt": "evidence/audit-cache-native-checkpoint-20261027.json",
+      "cause_measured": "dbdfd53 optimized hour: file cache increased 120426496/123002880 bytes, anonymous memory 4038656/3022848 bytes; 119952764/122190068 audit bytes retained",
+      "policy": "fdatasync then advise completed pages from same file/cgroup; fixed 64 KiB advice window; no record deletion or accounting subtraction",
+      "local_component": "Identical 64 MiB, 1024-record files: 16384 cached pages before, zero after; 157 affected checks pass",
+      "hosted": "910c8418 bounded memory and real native ENOSPC pass; foundation remains failed on deployment markers. Both sanitizer hours fail OOM.3a970c45 aligns markers and passes14 core jobs, but sanitizer handoff hour still fails; last file charge3.5MiB, anonymous1.196GiB after one OOM kill. All original audit bytes preserved.",
+      "full_v08_qualified": false
+    },
+    "request_idle_worker": {
+      "receipt": "evidence/request-idle-worker-20261027.json",
+      "source_parent": "910c8418336f7d26d61e43d2e4035974a0abf5ef",
+      "local_request_retention": {
+        "dedicated": {
+          "calls": 10000,
+          "os_threads_created": 10000,
+          "heap_growth_bytes": 85852160,
+          "live_bytes": 78270
+        },
+        "shared_idle": {
+          "calls": 10000,
+          "os_threads_created": 1,
+          "heap_growth_bytes": 393216,
+          "live_bytes": 78294
+        }
+      },
+      "native_result": "3a970c45 all14 bounded core jobs pass; sanitizer handoff hour fails OOM. Actual callback reuse/fallback/active-peak instrumentation is running on separate branch0b2fd535; no further capacity optimization without those observations.",
+      "new_request_storage_cache": false,
+      "full_v08_qualified": false
+    }
+  },
+  "qualification_checkpoint_3a970c4": {
+    "receipt": "evidence/memory-endurance-20261027.json",
+    "full_v08_qualified": false,
+    "published": false,
+    "all_release_groups_open": 11,
+    "uncertain_audit_collection": "New collector retains and hashes all27 raw files/33149716bytes from real IDE OOM, then explicitly rejects one49byte incomplete tail. Component only; fresh hosted qualification pending.",
+    "new_candidate": "Five lazy idle slots based on actual Context peak5; 10,000 five-way component callbacks reduce OS threads from8001 to5. Fresh native and endurance acceptance pending."
   }
 }

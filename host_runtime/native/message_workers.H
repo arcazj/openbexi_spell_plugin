@@ -14,15 +14,18 @@ struct V08MessageTicket {
 };
 
 // Reuse idle OS threads, without queueing or limiting callback concurrency.
-// If the reusable slot are busy (or thread creation fails), the caller uses the
+// If the reusable slots are busy (or thread creation fails), the caller uses the
 // original dedicated-thread path. MESSAGE and explicitly enabled REQUEST
-// callbacks share the slot. A nested callback/request always has the original
+// callbacks share the slots. Native measurement at 3a970c45 observed five
+// simultaneous callbacks in Context, with thousands of dedicated fallbacks
+// from one slot. Create slots lazily, so sequential work still uses one thread.
+// A nested callback/request always has the original
 // dedicated fallback, so a callback can synchronously wait without queueing
 // work behind itself. Callback cancellation never interrupts or reuses a live
 // ticket; the owner must join before destroying/recycling its object.
 class V08MessageWorkers {
 public:
-    static constexpr size_t capacity = 1;
+    static constexpr size_t capacity = 5;
     V08MessageWorkers() = default;
     V08MessageWorkers(const V08MessageWorkers&) = delete;
     V08MessageWorkers& operator=(const V08MessageWorkers&) = delete;

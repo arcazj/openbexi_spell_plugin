@@ -35,6 +35,7 @@ def expose_after_stop(command, output, report):
         raise RuntimeError("Native audit storage retained with possibly live writer")
     command("sudo", "-n", "chown", "-hR", f"{os.getuid()}:{os.getgid()}", "--", root)
     records = []
+    failures = []
     for path in sorted(root.rglob("*")):
         info = path.lstat()
         if stat.S_ISDIR(info.st_mode):
@@ -45,14 +46,24 @@ def expose_after_stop(command, output, report):
         count = 0
         previous = None
         complete = True
+        ordering_valid = True
+        oversized = False
+        continuation = False
         with path.open("rb") as stream:
             for line in iter(lambda: stream.readline(1024 * 1024 + 1), b""):
-                if len(line) > 1024 * 1024:
-                    raise RuntimeError(
-                        "Native audit record exceeds verifier bound; file retained"
-                    )
+                # Hash every byte, including uncertain tails and oversized
+                # records. A bad file must not hide other retained generations.
                 digest.update(line)
-                complete = complete and line.endswith(b"\n")
+                complete = line.endswith(b"\n")
+                if continuation:
+                    continuation = not complete
+                    continue
+                if len(line) > 1024 * 1024:
+                    oversized = True
+                    continuation = not complete
+                    continue
+                if not complete:
+                    continue
                 fields = line.rstrip(b"\n").split(b"\t", 2)
                 if (
                     len(fields) != 3
@@ -62,11 +73,17 @@ def expose_after_stop(command, output, report):
                     continue  # Original procedure headers remain byte-for-byte.
                 sequence = int(fields[1])
                 if previous is not None and sequence not in {previous, previous + 1}:
-                    raise RuntimeError("Native audit sequence gap or reversal")
+                    ordering_valid = False
                 previous = sequence
                 count += 1
+        file_failures = []
         if not complete:
-            raise RuntimeError("Incomplete native audit record retained")
+            file_failures.append("incomplete_tail")
+        if not ordering_valid:
+            file_failures.append("sequence_gap_or_reversal")
+        if oversized:
+            file_failures.append("record_exceeds_verifier_bound")
+        failures.extend(file_failures)
         records.append(
             dict(
                 path=path.relative_to(output).as_posix(),
@@ -75,10 +92,12 @@ def expose_after_stop(command, output, report):
                 records=count,
                 last_sequence=previous,
                 complete_lines=complete,
+                ordering_valid=ordering_valid,
+                validation_failures=file_failures,
             )
         )
     if report.get("passed") and not any(r["records"] for r in records):
-        raise RuntimeError("Native audit records missing; storage retained")
+        failures.append("required_records_missing")
     result = dict(
         schema="openbexi.native-audit-files/1",
         files=records,
@@ -86,6 +105,10 @@ def expose_after_stop(command, output, report):
         buffer_policy="Synchronous native writes; no asynchronous queue",
         required_records_deleted=False,
         full_v08_qualified=False,
+        validation_passed=not failures,
+        validation_failures=sorted(set(failures)),
     )
     (output / "native-audit-files.json").write_text(json.dumps(result, indent=2) + "\n")
     report["native_audit_storage"] = result
+    if failures:
+        raise RuntimeError("Native audit validation failed; all raw files retained")

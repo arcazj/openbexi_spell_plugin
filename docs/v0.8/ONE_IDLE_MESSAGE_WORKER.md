@@ -1,4 +1,12 @@
-# One reusable message worker: measured candidate
+# Native callback worker measurements
+
+The current candidate uses up to five lazily created idle callback workers per native process. [The actual-native diagnostic](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40579917700), on an exact disposable overlay of `3a970c45`, observed a Context peak of five active callbacks. At its latest observation, at least 2,345 MESSAGE and 39 REQUEST callbacks had fallen back from one reusable slot to original dedicated threads. These are observed cumulative counters, not a complete process-exit count. All samples, 139 native source hashes, four diagnostic inputs and 23 raw audit files verify. The measurement is diagnostic only.
+
+The correction expands idle reuse to that measured concurrency. Threads start only when needed; sequential work still creates one thread. There is no callback queue or concurrency ceiling. Busy slots or thread-creation failure immediately use the original dedicated path, including nested synchronous waits. Cancellation and join-before-dispose semantics remain unchanged. A compiled ASan/UBSan replay of 10,000 callbacks in five-way blocked waves compares the previous one-slot and current five-slot headers. Twenty-four blocked callbacks and thirteen nested requests also complete. Fresh whole-native, installed-IDE and sanitizer-hour qualification is mandatory before accepting this candidate. The earlier eight-worker failure remains retained and is not reclassified.
+
+The last verified bounded executable `3a970c45` passes all 14 core jobs and mandatory memory, but its sanitizer handoff hour fails early with OOM. Both cache-only `910c8418` sanitizer hours fail early. Disk audit storage is active and retains all required records. See `evidence/memory-endurance-20261027.json`; all eleven full-release gates remain false.
+
+## Historical one-slot component at 58e6f6c
 
 The `58e6f6c` handoff still fails growth at 78.74 MiB. In its mandatory 45-second window, live Context allocations stay 9.80/9.81 MiB while its retained free allocator memory rises 189.18/220.93 MiB and anonymous memory rises 26.71 MiB. Executor anonymous memory rises 21.56/15.32 MiB; bridge and Listener growth also remain in whole-cgroup acceptance. These observations do not assert absence of leaks.
 
