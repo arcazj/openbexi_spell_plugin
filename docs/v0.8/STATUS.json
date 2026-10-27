@@ -302,7 +302,7 @@
   },
   "native_recovery_memory": {
     "qualified": false,
-    "receipt": "evidence/message-allocation-20261027.json",
+    "receipt": "evidence/qualification-resume-20261027.json",
     "peak_limits_passed": true,
     "growth_limits_passed": false,
     "sanitizer_workload_deadlines_limits_unchanged": true,
@@ -419,10 +419,10 @@
         }
       ]
     },
-    "candidate_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+    "candidate_commit": "c344dbbfc24f36effd00431e1b8847562171ae8e",
     "resources": {
       "handoff": {
-        "artifact_id": 12749726030,
+        "artifact_id": 12753418715,
         "acceptance": {
           "schema": "openbexi.native-recovery-resources/1",
           "passed": false,
@@ -436,32 +436,32 @@
           ],
           "samples": 48,
           "soak_samples": 22,
-          "duration_seconds": 45.445352461,
-          "peak_bytes": 1172062208,
-          "window_growth_bytes": 94982144,
-          "first_window_median_bytes": 1052237824,
-          "last_window_median_bytes": 1147219968
+          "duration_seconds": 45.464473199,
+          "peak_bytes": 1435729920,
+          "window_growth_bytes": 90480640,
+          "first_window_median_bytes": 1270722560,
+          "last_window_median_bytes": 1361203200
         },
         "soak": {
-          "start_ns": 286314709714,
-          "end_ns": 331760062175,
+          "start_ns": 300849343465,
+          "end_ns": 346313816664,
           "minimum_seconds": 45,
           "counters_before": {
-            "root": 1499,
-            "background": 1703,
-            "child": 1567
+            "root": 1478,
+            "background": 1710,
+            "child": 1560
           },
           "counters_after": {
-            "root": 3621,
-            "background": 3951,
-            "child": 3730
+            "root": 3566,
+            "background": 3948,
+            "child": 3692
           },
           "original_processes": 8,
           "all_intervals_advanced": true
         }
       },
       "ide": {
-        "artifact_id": 12748874827,
+        "artifact_id": 12754715286,
         "acceptance": {
           "schema": "openbexi.native-recovery-resources/1",
           "passed": false,
@@ -475,70 +475,156 @@
           ],
           "samples": 47,
           "soak_samples": 22,
-          "duration_seconds": 45.654141265,
-          "peak_bytes": 1404719104,
-          "window_growth_bytes": 85749760,
-          "first_window_median_bytes": 1255915520,
-          "last_window_median_bytes": 1341665280
+          "duration_seconds": 45.640227075,
+          "peak_bytes": 1417084928,
+          "window_growth_bytes": 89276416,
+          "first_window_median_bytes": 1261199360,
+          "last_window_median_bytes": 1350475776
         },
         "soak": {
-          "start_ns": 419897482421,
-          "end_ns": 465551623686,
+          "start_ns": 394318713266,
+          "end_ns": 439958940341,
           "minimum_seconds": 45,
           "counters_before": {
-            "root": 1322,
-            "background": 1657,
-            "child": 1460
+            "root": 1318,
+            "background": 1654,
+            "child": 1454
           },
           "counters_after": {
-            "root": 3298,
+            "root": 3301,
             "background": 3887,
             "child": 3520
           },
           "original_processes": 8,
           "all_intervals_advanced": true
         }
-      },
-      "diagnostic": {
-        "artifact_id": 12749581019,
-        "acceptance": {
-          "schema": "openbexi.native-recovery-resources/1",
-          "passed": false,
-          "resident_limit_bytes": 2147483648,
-          "swap_limit_bytes": 0,
-          "peak_budget_bytes": 1879048192,
-          "maximum_window_growth_bytes": 67108864,
-          "full_v08_qualified": false,
-          "failures": [
-            "native_recovery_memory_still_growing"
-          ],
-          "samples": 47,
-          "soak_samples": 22,
-          "duration_seconds": 45.451226489,
-          "peak_bytes": 1489178624,
-          "window_growth_bytes": 92225536,
-          "first_window_median_bytes": 1318326272,
-          "last_window_median_bytes": 1410551808
-        },
-        "soak": {
-          "start_ns": 267746917932,
-          "end_ns": 313198144421,
-          "minimum_seconds": 45,
-          "counters_before": {
-            "root": 1475,
-            "background": 1695,
-            "child": 1554
+      }
+    },
+    "preserved_attempts": [
+      {
+        "candidate_commit": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+        "receipt": "evidence/message-allocation-20261027.json",
+        "resources": {
+          "handoff": {
+            "artifact_id": 12749726030,
+            "acceptance": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": false,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [
+                "native_recovery_memory_still_growing"
+              ],
+              "samples": 48,
+              "soak_samples": 22,
+              "duration_seconds": 45.445352461,
+              "peak_bytes": 1172062208,
+              "window_growth_bytes": 94982144,
+              "first_window_median_bytes": 1052237824,
+              "last_window_median_bytes": 1147219968
+            },
+            "soak": {
+              "start_ns": 286314709714,
+              "end_ns": 331760062175,
+              "minimum_seconds": 45,
+              "counters_before": {
+                "root": 1499,
+                "background": 1703,
+                "child": 1567
+              },
+              "counters_after": {
+                "root": 3621,
+                "background": 3951,
+                "child": 3730
+              },
+              "original_processes": 8,
+              "all_intervals_advanced": true
+            }
           },
-          "counters_after": {
-            "root": 3559,
-            "background": 3926,
-            "child": 3676
+          "ide": {
+            "artifact_id": 12748874827,
+            "acceptance": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": false,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [
+                "native_recovery_memory_still_growing"
+              ],
+              "samples": 47,
+              "soak_samples": 22,
+              "duration_seconds": 45.654141265,
+              "peak_bytes": 1404719104,
+              "window_growth_bytes": 85749760,
+              "first_window_median_bytes": 1255915520,
+              "last_window_median_bytes": 1341665280
+            },
+            "soak": {
+              "start_ns": 419897482421,
+              "end_ns": 465551623686,
+              "minimum_seconds": 45,
+              "counters_before": {
+                "root": 1322,
+                "background": 1657,
+                "child": 1460
+              },
+              "counters_after": {
+                "root": 3298,
+                "background": 3887,
+                "child": 3520
+              },
+              "original_processes": 8,
+              "all_intervals_advanced": true
+            }
           },
-          "original_processes": 8,
-          "all_intervals_advanced": true
+          "diagnostic": {
+            "artifact_id": 12749581019,
+            "acceptance": {
+              "schema": "openbexi.native-recovery-resources/1",
+              "passed": false,
+              "resident_limit_bytes": 2147483648,
+              "swap_limit_bytes": 0,
+              "peak_budget_bytes": 1879048192,
+              "maximum_window_growth_bytes": 67108864,
+              "full_v08_qualified": false,
+              "failures": [
+                "native_recovery_memory_still_growing"
+              ],
+              "samples": 47,
+              "soak_samples": 22,
+              "duration_seconds": 45.451226489,
+              "peak_bytes": 1489178624,
+              "window_growth_bytes": 92225536,
+              "first_window_median_bytes": 1318326272,
+              "last_window_median_bytes": 1410551808
+            },
+            "soak": {
+              "start_ns": 267746917932,
+              "end_ns": 313198144421,
+              "minimum_seconds": 45,
+              "counters_before": {
+                "root": 1475,
+                "background": 1695,
+                "child": 1554
+              },
+              "counters_after": {
+                "root": 3559,
+                "background": 3926,
+                "child": 3676
+              },
+              "original_processes": 8,
+              "all_intervals_advanced": true
+            }
+          }
         }
       }
-    }
+    ]
   },
   "memory_attribution_followup": {
     "receipt": "evidence/memory-attribution-20261027.json",
@@ -552,6 +638,25 @@
     "diagnostics": "Bounded sampled allocation/free lifetime tracking; unmatched samples are conservative upper bounds, dropped frees explicit",
     "local_component_tests": 125,
     "mandatory_memory_qualified": false,
+    "full_v08_qualified": false
+  },
+  "qualification_resume": {
+    "receipt": "evidence/qualification-resume-20261027.json",
+    "last_fully_collected_candidate": "c344dbbfc24f36effd00431e1b8847562171ae8e",
+    "last_core_run": 40547065353,
+    "foundation_tests": 1516,
+    "fault_tests_overlapping": 95,
+    "core_jobs_passed": 12,
+    "core_jobs_total": 14,
+    "handoff_growth_bytes": 90480640,
+    "ide_growth_bytes": 89276416,
+    "mandatory_growth_limit_bytes": 67108864,
+    "checkpoint_one_hour_handoff_growth_bytes": 134074368,
+    "checkpoint_one_hour_ide_growth_bytes": 133507072,
+    "checkpoint_one_hour_results": "Both fail resource growth; previous pending status superseded",
+    "diagnostic_source": "65add6caa053c2591a3e3c579c3801c78ef854af",
+    "next_correction": "Owned timestamp/ASRUN prefix reuse and one-allocation request IDs; hosted mandatory acceptance pending",
+    "durable_audit": "Component implementation and real-disk qualification workflow prepared; native activation pending memory acceptance",
     "full_v08_qualified": false
   }
 }

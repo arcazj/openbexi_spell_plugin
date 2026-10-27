@@ -2,6 +2,7 @@
 // Compiles the real frozen message class and the candidate codec separately.
 #include "SPELL_IPC/SPELLipcMessage.H"
 #include <atomic>
+#include <limits>
 #include <iostream>
 #include <stdexcept>
 #include <utility>
@@ -100,6 +101,23 @@ int main(int argc,char** argv) {
         SPELLipcOutput out;out.m_socket.wire.reserve(4096);
         measuring=true;
         for(int i=0;i<10000;++i) {out.m_socket.wire.clear();out.m_socket.calls=0;out.send(m);}
+        measuring=false;
+    } else if(mode=="request_ids") {
+        for(const auto& sender:std::vector<std::string>{"", "root#0",std::string(48,'s'),std::string("n\0ul",4),u8"é中🙂"})
+        for(const auto& receiver:std::vector<std::string>{"CTX",std::string(48,'r'),""})
+        for(int key:{-2147483647-1,-1,0,97,2147483647})
+        for(long sequence:{std::numeric_limits<long>::min(),-2147483648L,-2L,-1L,0L,2147483647L,std::numeric_limits<long>::max()}) {
+            m.setSender(sender);m.setReceiver(receiver);m.setKey(key);m.setSequence(sequence);
+            const long stored=m.getSequence();
+            const auto expected=std::to_string(key)+"-"+receiver+"-"+sender+
+                (stored==-1?"":":"+std::to_string(stored));
+            require(m.requestId()==expected);record(m.requestId());
+        }
+    } else if(mode=="alloc_request_ids") {
+        m.setSender(std::string(48,'s'));m.setReceiver(std::string(48,'r'));
+        m.setSequence(12345);m.setKey(97);
+        measuring=true;
+        for(int i=0;i<10000;++i){auto value=m.requestId();require(value.size()>96);}
         measuring=false;
     } else if(mode=="wire") {
         for(int i=0;i<256;++i) {

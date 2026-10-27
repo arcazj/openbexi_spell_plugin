@@ -192,6 +192,33 @@ def reuse_native_collector_nodes(source):
     unit.write_text(text)
 
 
+def optimize_native_request_id(text):
+    """Keep the owned request ID, but avoid copied peers and growing temporaries."""
+    start = text.index("std::string SPELLipcMessage::requestId() const")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "9a455a7731d65542173c7b01f437340ab26477e56590cb9d9fdebfdaee65a99a"
+    ):
+        raise ValueError("Native request ID preimage differs")
+    changed = """std::string SPELLipcMessage::requestId() const
+{
+    char key[32], sequence[32];
+    const auto keyEnd=std::to_chars(key,key+sizeof(key),m_key).ptr;
+    const auto sequenceEnd=std::to_chars(sequence,sequence+sizeof(sequence),m_sequence).ptr;
+    const auto keySize=static_cast<size_t>(keyEnd-key);
+    const auto sequenceSize=static_cast<size_t>(sequenceEnd-sequence);
+    std::string result;
+    result.reserve(keySize+m_receiverId.size()+m_senderId.size()+2+
+                   (m_sequence!=-1?sequenceSize+1:0));
+    result.append(key,keySize);result+='-';result+=m_receiverId;
+    result+='-';result+=m_senderId;
+    if(m_sequence!=-1){result+=':';result.append(sequence,sequenceSize);}
+    return result;
+}"""
+    return "#include <charconv>\n" + text[:start] + changed + text[end:]
+
+
 def replace_native_message_codec(text):
     """Remove intermediate IPC allocations without changing the class ABI."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -273,7 +300,7 @@ def replace_native_message_codec(text):
         "void v08_set_property(SPELLipcMessage::Properties&, std::string, std::string);\n"
         "void v08_copy_properties(SPELLipcMessage::Properties&, const SPELLipcMessage::Properties&);\n"
         "void v08_recycle_properties(SPELLipcMessage::Properties&) noexcept;\n}\n"
-        + text
+        + optimize_native_request_id(text)
         + '\n#include "/candidate/message_codec.H"\n'
         + '#include "/candidate/allocation_trace.H"\n'
     )
@@ -707,6 +734,171 @@ def bound_native_diagnostic_logs(source):
     if text.count(old) != 1:
         raise ValueError("Native diagnostic log boundary differs")
     path.write_text(text.replace(old, new))
+
+
+def reuse_native_timestamp_and_asrun(source):
+    """Format measured timestamp/ASRUN hot paths into exclusively owned buffers."""
+    unit = source / "lib/SPELL_UTIL/src/SPELLutils.C"
+    text = unit.read_text()
+    start = text.index("std::string SPELLutils::timestamp()")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "d1484d0e8f62d37cf1663e0aaa8b221ef562fa35b3919070e821a7f5dad53d3c"
+    ):
+        raise ValueError("Native timestamp preimage differs")
+    changed = """void SPELLutils::timestamp(std::string& output)
+{
+    const SPELLdateDesc date = getSystemDate();
+    v08_format_timestamp(output, date, s_timeFormat);
+}
+
+std::string SPELLutils::timestamp()
+{
+    std::string output;
+    timestamp(output);
+    return output;
+}"""
+    text = text[:start] + changed + text[end:]
+    unit.write_text('#include "/candidate/timestamp_format.H"\n' + text)
+    # The formatter needs the original format constants before its template.
+    unit.write_text(
+        unit.read_text().replace(
+            '#include "/candidate/timestamp_format.H"\n',
+            '#include "SPELL_UTIL/SPELLutils.H"\n#include "/candidate/timestamp_format.H"\n',
+        )
+    )
+    header = source / "include/SPELL_UTIL/SPELLutils.H"
+    text = header.read_text()
+    anchor = "std::string timestamp();"
+    if text.count(anchor) != 1:
+        raise ValueError("Native timestamp declaration differs")
+    header.write_text(
+        text.replace(anchor, anchor + "\n    void timestamp(std::string& output);")
+    )
+    cif = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    text = cif.read_text()
+    anchor = "    msg.set(MessageField::FIELD_TIME, SPELLutils::timestamp() );"
+    if text.count(anchor) != 1:
+        raise ValueError("Native CIF timestamp boundary differs")
+    cif.write_text(
+        text.replace(
+            anchor,
+            '    msg.set(MessageField::FIELD_TIME, "");\n'
+            "    SPELLutils::timestamp(msg.getRef(MessageField::FIELD_TIME));",
+        )
+    )
+    header = source / "include/SPELL_CIF/SPELLasRun.H"
+    text = header.read_text()
+    anchor = "std::ofstream    m_file;"
+    if text.count(anchor) != 1:
+        raise ValueError("Native ASRUN buffer boundary differs")
+    header.write_text(
+        "#include <mutex>\n"
+        + text.replace(
+            anchor,
+            anchor
+            + "\n        std::recursive_mutex m_v08RecordMutex;\n        std::string m_v08Record;",
+        )
+    )
+    unit = source / "lib/SPELL_CIF/src/SPELLasRun.C"
+    text = unit.read_text()
+    anchor = '    std::string line = SPELLutils::timestamp() + "\\t" + ISTR(m_sequence) + "\\t" + info;'
+    if text.count(anchor) != 1:
+        raise ValueError("Native ASRUN formatting boundary differs")
+    text = text.replace(
+        anchor,
+        """    std::string& line = m_v08Record;
+    SPELLutils::timestamp(line);
+    line += "\\t"; line += ISTR(m_sequence); line += "\\t";""",
+    )
+    output = "    m_file << line << std::endl;"
+    if text.count(output) != 1:
+        raise ValueError("Native ASRUN split write boundary differs")
+    text = text.replace(output, "    m_file << line << info << std::endl;")
+    anchor = "    if (increaseSequence) m_sequence++;"
+    if text.count(anchor) != 1:
+        raise ValueError("Native ASRUN buffer release boundary differs")
+    text = text.replace(
+        anchor,
+        anchor
+        + "\n    if (line.capacity()>1024) std::string().swap(line); else line.clear();",
+    )
+    text, count = re.subn(
+        r"(void SPELLasRun::\w+\([^{}]*\)\n\{\n)",
+        r"\1    std::lock_guard<std::recursive_mutex> recordLock(m_v08RecordMutex);\n",
+        text,
+    )
+    if count != 18:
+        raise ValueError("Native ASRUN buffer ownership boundary differs")
+    unit.write_text(text)
+
+
+def durable_native_asrun(source):
+    """Synchronous durable ASRUN, serialized groups and retained generations."""
+    preimages = {
+        "include/SPELL_CIF/SPELLasRun.H": "625ed916d912dc7c87d5b5ef3fbd5ff249eb88cfd7ca649179c185b8eb28d254",
+        "lib/SPELL_CIF/src/SPELLasRun.C": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+    }
+    texts = {}
+    for relative, expected in preimages.items():
+        path = source / relative
+        if sha(path) != expected:
+            raise ValueError("Native durable ASRUN preimage differs: " + relative)
+        texts[relative] = path.read_text()
+    header, unit = preimages
+    texts[header] = '#include "/candidate/audit_file.H"\n' + texts[header].replace(
+        "std::ofstream    m_file;",
+        "V08AuditFile m_file;\n        std::recursive_mutex m_auditMutex;",
+    )
+    text = texts[unit]
+    replacements = (
+        (
+            "m_file.open( m_fileName.c_str(), std::ios::out);",
+            "m_file.open(m_fileName);",
+        ),
+        (
+            'm_file << "# SERVICE: " << procId << std::endl;',
+            'm_file.write_line("# SERVICE: " + procId);',
+        ),
+        (
+            "m_file << proc.getHeader() << std::endl;",
+            "m_file.write_line(proc.getHeader());",
+        ),
+        (
+            "SPELLutils::copyFile( asrunFile, m_fileName );\n    m_file.open( m_fileName.c_str(), std::ios::out | std::ios::app );",
+            "m_file.open(m_fileName);\n    m_file.copy_from(asrunFile);",
+        ),
+        (
+            '    LOG_INFO("[ASRUN] asRun file: " + fileName);',
+            "    fileName = V08AuditFile::location(fileName);\n"
+            '    LOG_INFO("[ASRUN] asRun file: " + fileName);',
+        ),
+        (
+            "m_file << line << std::endl;\n    m_file.flush();",
+            "m_file.write_line(line);",
+        ),
+        (
+            "m_file.open( m_fileName.c_str(), std::ios::trunc | std::ios::out );",
+            "m_file.open(m_fileName);",
+        ),
+    )
+    for old, new in replacements:
+        if text.count(old) != 1:
+            raise ValueError("Native durable ASRUN boundary differs")
+        text = text.replace(old, new)
+    # A prompt's detail records share its original sequence rules. Lock the
+    # entire public call, including those multi-record groups, before toAsRun.
+    text, count = re.subn(
+        r"(void SPELLasRun::\w+\([^{}]*\)\n\{\n)",
+        r"\1    std::lock_guard<std::recursive_mutex> auditLock(m_auditMutex);\n",
+        text,
+    )
+    if count != 18:
+        raise ValueError("Native durable ASRUN serialization boundary differs")
+    texts[unit] = text
+    for relative, text in texts.items():
+        (source / relative).write_text(text)
 
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
@@ -1186,6 +1378,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     reuse_native_trace_filename(source)
     avoid_native_thread_label_copies(source)
     bound_native_diagnostic_logs(source)
+    reuse_native_timestamp_and_asrun(source)
     return before
 
 

@@ -180,7 +180,9 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("case", ["wire", "duplicates", "partial_metadata", "moves", "output"])
+@pytest.mark.parametrize(
+    "case", ["wire", "duplicates", "partial_metadata", "moves", "output", "request_ids"]
+)
 def test_native_codec_preserves_original_wire_and_decoding(codec_binaries, case):
     assert run(codec_binaries["before"], case) == run(codec_binaries["after"], case)
 
@@ -208,6 +210,14 @@ def test_native_message_patch_rejects_changed_or_repeated_source():
     for text in (original + "\n", builder.replace_native_message_codec(original)):
         with pytest.raises(ValueError, match="preimage"):
             builder.replace_native_message_codec(text)
+
+
+def test_native_request_id_retains_one_owned_result_with_fewer_allocations(codec_binaries):
+    before = run(codec_binaries["before"], "alloc_request_ids")
+    after = run(codec_binaries["after"], "alloc_request_ids")
+    assert before["allocations"] >= 40000
+    assert after["allocations"] == 10000
+    assert after["allocated_bytes"] < before["allocated_bytes"] / 2
 
 
 def test_native_move_transfers_payload_without_allocating(codec_binaries):
