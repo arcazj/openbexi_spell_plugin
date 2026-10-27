@@ -123,6 +123,8 @@ def main():
             root / "server/tests/native_message_harness.cpp",
             root / "server/tests/native_storage_harness.cpp",
             root / "server/tests/native_thread_labels.cpp",
+            root / "server/tests/native_message_workers.cpp",
+            root / "server/tests/native_message_workers_adapters.H",
             root / "server/tests/native_notification_harness.inc",
             root / "server/tests/native_routing_harness.inc",
             root / "server/tests/native_stream_harness.cpp",

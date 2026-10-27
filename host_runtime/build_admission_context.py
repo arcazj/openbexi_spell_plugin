@@ -68,6 +68,74 @@ def transfer_native_incoming(text):
     return "#include <utility>\n" + text
 
 
+def reuse_native_message_workers(source):
+    """Reuse idle message threads; leave requests and busy fallback unchanged."""
+    header = source / "include/SPELL_IPC/SPELLipcIncoming.H"
+    implementation = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+    h = header.read_text()
+    text = implementation.read_text()
+    if (
+        sha(header)
+        != "d99915ffa2cc7b583851abfd493703305813d5de5852b5b1b6d2992657d29b9e"
+    ):
+        raise ValueError("Native message worker header preimage differs")
+    # Composition is explicit: the source-port completion guard and the owned
+    # parameter move must both be present before adding reusable execution.
+    expected = "427b9ade304ff750d9391b83a3cd5a466f9d6e1e19502bdcb1126bfdf6e4af7e"
+    if hashlib.sha256(text.encode()).hexdigest() != expected:
+        raise ValueError("Native message worker implementation preimage differs")
+    base = "class SPELLipcIncomingBase: public SPELLthread\n{\npublic: //--------------------------------------------------------------------"
+    message = "class SPELLipcIncomingMessage: public SPELLipcIncomingBase\n{\npublic: //--------------------------------------------------------------------"
+    if h.count(base) != 1 or h.count(message) != 1:
+        raise ValueError("Native message worker class boundary differs")
+    h = '#include "/candidate/message_workers.H"\n' + h.replace(
+        base,
+        base + "\n    virtual void start() { SPELLthread::start(); }"
+        "\n    virtual void join() { SPELLthread::join(); }",
+    ).replace(
+        message,
+        message + "\n    void start() override;\n    void join() override;"
+        "\nprivate:\n    V08MessageTicket m_v08Ticket;\npublic:",
+    )
+    text = (
+        "#include <atomic>\n"
+        + text
+        + """
+
+namespace {
+std::atomic<bool> v08_message_workers_live{false};
+struct V08NativeMessageWorkers : V08MessageWorkers {
+    V08NativeMessageWorkers() { v08_message_workers_live.store(true); }
+    ~V08NativeMessageWorkers() {
+        shutdown();
+        v08_message_workers_live.store(false);
+    }
+};
+V08NativeMessageWorkers v08_message_workers;
+}
+
+void SPELLipcIncomingMessage::start()
+{
+    if (v08_message_workers_live.load() &&
+        v08_message_workers.tryStart(this, [](void* value) {
+            static_cast<SPELLipcIncomingMessage*>(value)->doRun();
+        }, m_v08Ticket)) return;
+    SPELLthread::start();
+}
+
+void SPELLipcIncomingMessage::join()
+{
+    if (!m_v08Ticket.pooled) { SPELLthread::join(); return; }
+    // The global pool drains before setting live=false during process teardown.
+    if (v08_message_workers_live.load()) v08_message_workers.join(m_v08Ticket);
+    setRunning(false);
+}
+"""
+    )
+    header.write_text(h)
+    implementation.write_text(text)
+
+
 def replace_native_message_codec(text):
     """Remove intermediate IPC allocations without changing the class ABI."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -523,6 +591,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     message_header.write_text(enable_native_message_moves(message_header.read_text()))
     incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     incoming.write_text(transfer_native_incoming(incoming.read_text()))
+    reuse_native_message_workers(source)
     for relative in (
         "src/context/src/SPELLcontextMain.C",
         "src/executor/src/SPELLexecutorMain.C",
