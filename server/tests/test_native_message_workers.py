@@ -1,7 +1,7 @@
 """Compile real incoming classes and completion guards with instrumented threads.
 
 Transport and synchronization adapters are minimal test doubles; the production
-pool, patched incoming header, constructors, run, finish, cancel, start and join
+cache, patched incoming header, constructors, run, finish, cancel, start and join
 methods are compiled unchanged. Hosted tests own whole-runtime acceptance.
 """
 
@@ -64,7 +64,6 @@ def binaries(tmp_path_factory):
         folder = root / name
         source(folder)
         if name == "after":
-            BUILDER.reuse_native_message_workers(folder)
             BUILDER.reuse_native_message_instances(folder)
         include = folder / "include"
         for dependency in (
@@ -82,11 +81,6 @@ def binaries(tmp_path_factory):
             path.write_text('#include "adapters.H"\n')
         (include / "adapters.H").write_text(adapters)
         header = folder / HEADER
-        header.write_text(
-            header.read_text().replace(
-                "/candidate/message_workers.H", str(ROOT / "host_runtime/native/message_workers.H")
-            )
-        )
         if name == "after":
             text = header.read_text()
             anchor = "class SPELLipcIncomingBase: public SPELLthread\n{"
@@ -152,12 +146,12 @@ def run(binary, mode):
     return json.loads(p.stdout)
 
 
-def test_reuses_os_threads_across_completed_native_messages(binaries, tmp_path):
+def test_reuses_processors_with_original_dedicated_threads(binaries, tmp_path):
     before = run(binaries["before"], "sequential")
     after = run(binaries["after"], "sequential")
     assert before["calls"] == after["calls"] == 10000
     assert before["os_threads_created"] == 10000
-    assert after["os_threads_created"] == 1
+    assert after["os_threads_created"] == 10000
     assert before["processors_constructed"] == 10000
     assert after["processors_constructed"] == 1
     (tmp_path / "measurement.json").write_text(json.dumps(dict(before=before, after=after)))
@@ -170,28 +164,9 @@ def test_preserves_completion_concurrency_and_request_path(binaries, mode):
     assert run(binaries["before"], mode) == run(binaries["after"], mode)
 
 
-def test_pool_shutdown_drains_and_rejects_late_work(binaries):
-    assert run(binaries["after"], "shutdown")["shutdown_drained"]
-
-
-@pytest.mark.parametrize("change", ["header", "implementation", "reapply"])
-def test_rejects_source_drift_without_partial_writes(tmp_path, change):
-    source(tmp_path)
-    if change == "reapply":
-        BUILDER.reuse_native_message_workers(tmp_path)
-    else:
-        path = tmp_path / (HEADER if change == "header" else SOURCE)
-        path.write_text(path.read_text() + "\n")
-    before = {name: (tmp_path / name).read_bytes() for name in (HEADER, SOURCE)}
-    with pytest.raises(ValueError, match="preimage differs"):
-        BUILDER.reuse_native_message_workers(tmp_path)
-    assert all((tmp_path / name).read_bytes() == value for name, value in before.items())
-
-
 @pytest.mark.parametrize("path", [HEADER, SOURCE, *EXTRA])
 def test_instance_patch_rejects_each_changed_input_without_partial_writes(tmp_path, path):
     source(tmp_path)
-    BUILDER.reuse_native_message_workers(tmp_path)
     changed = tmp_path / path
     changed.write_text(changed.read_text() + "\n")
     before = {name: (tmp_path / name).read_bytes() for name in (HEADER, SOURCE, *EXTRA)}
@@ -203,3 +178,12 @@ def test_instance_patch_rejects_each_changed_input_without_partial_writes(tmp_pa
 @pytest.mark.parametrize("mode", ["bounded_cache", "oversized_identity"])
 def test_cache_is_bounded_and_releases_payloads(binaries, mode):
     assert run(binaries["after"], mode)["passed"]
+
+
+def test_instance_patch_rejects_reapplication(tmp_path):
+    source(tmp_path)
+    BUILDER.reuse_native_message_instances(tmp_path)
+    before = {name: (tmp_path / name).read_bytes() for name in (HEADER, SOURCE, *EXTRA)}
+    with pytest.raises(ValueError, match="preimage differs"):
+        BUILDER.reuse_native_message_instances(tmp_path)
+    assert all((tmp_path / name).read_bytes() == value for name, value in before.items())

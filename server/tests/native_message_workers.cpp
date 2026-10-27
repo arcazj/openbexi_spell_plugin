@@ -114,15 +114,5 @@ int main(int argc,char** argv) {
         m->start();m->join();m.reset();assert(v08TestIdle()==0);
 #endif
         std::cout<<"{\"passed\":true}\n";
-    } else if(mode=="shutdown") {
-#if V08_WORKERS
-        V08MessageWorkers pool;std::atomic<int> calls{0};
-        std::array<V08MessageTicket,8> tickets;
-        auto callback=[](void* p){std::this_thread::sleep_for(std::chrono::milliseconds(10));++*static_cast<std::atomic<int>*>(p);};
-        for(auto& t:tickets)assert(pool.tryStart(&calls,callback,t));
-        pool.shutdown();for(auto& t:tickets){pool.join(t);assert(t.done);}
-        V08MessageTicket late;assert(!pool.tryStart(&calls,callback,late));assert(calls==8);
-#endif
-        std::cout<<"{\"shutdown_drained\":true}\n";
     } else return 2;
 }

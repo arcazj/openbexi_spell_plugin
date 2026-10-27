@@ -68,79 +68,11 @@ def transfer_native_incoming(text):
     return "#include <utility>\n" + text
 
 
-def reuse_native_message_workers(source):
-    """Reuse idle message threads; leave requests and busy fallback unchanged."""
-    header = source / "include/SPELL_IPC/SPELLipcIncoming.H"
-    implementation = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
-    h = header.read_text()
-    text = implementation.read_text()
-    if (
-        sha(header)
-        != "d99915ffa2cc7b583851abfd493703305813d5de5852b5b1b6d2992657d29b9e"
-    ):
-        raise ValueError("Native message worker header preimage differs")
-    # Composition is explicit: the source-port completion guard and the owned
-    # parameter move must both be present before adding reusable execution.
-    expected = "427b9ade304ff750d9391b83a3cd5a466f9d6e1e19502bdcb1126bfdf6e4af7e"
-    if hashlib.sha256(text.encode()).hexdigest() != expected:
-        raise ValueError("Native message worker implementation preimage differs")
-    base = "class SPELLipcIncomingBase: public SPELLthread\n{\npublic: //--------------------------------------------------------------------"
-    message = "class SPELLipcIncomingMessage: public SPELLipcIncomingBase\n{\npublic: //--------------------------------------------------------------------"
-    if h.count(base) != 1 or h.count(message) != 1:
-        raise ValueError("Native message worker class boundary differs")
-    h = '#include "/candidate/message_workers.H"\n' + h.replace(
-        base,
-        base + "\n    virtual void start() { SPELLthread::start(); }"
-        "\n    virtual void join() { SPELLthread::join(); }",
-    ).replace(
-        message,
-        message + "\n    void start() override;\n    void join() override;"
-        "\nprivate:\n    V08MessageTicket m_v08Ticket;\npublic:",
-    )
-    text = (
-        "#include <atomic>\n"
-        + text
-        + """
-
-namespace {
-std::atomic<bool> v08_message_workers_live{false};
-struct V08NativeMessageWorkers : V08MessageWorkers {
-    V08NativeMessageWorkers() { v08_message_workers_live.store(true); }
-    ~V08NativeMessageWorkers() {
-        shutdown();
-        v08_message_workers_live.store(false);
-    }
-};
-V08NativeMessageWorkers v08_message_workers;
-}
-
-void SPELLipcIncomingMessage::start()
-{
-    if (v08_message_workers_live.load() &&
-        v08_message_workers.tryStart(this, [](void* value) {
-            static_cast<SPELLipcIncomingMessage*>(value)->doRun();
-        }, m_v08Ticket)) return;
-    SPELLthread::start();
-}
-
-void SPELLipcIncomingMessage::join()
-{
-    if (!m_v08Ticket.pooled) { SPELLthread::join(); return; }
-    // The global pool drains before setting live=false during process teardown.
-    if (v08_message_workers_live.load()) v08_message_workers.join(m_v08Ticket);
-    setRunning(false);
-}
-"""
-    )
-    header.write_text(h)
-    implementation.write_text(text)
-
-
 def reuse_native_message_instances(source):
     """Retain only joined, cleared processors; requests retain normal deletion."""
     preimages = {
-        "include/SPELL_IPC/SPELLipcIncoming.H": "e89b256009967212604e969d2752e48a60dbcd8e098ef395c144534a3d1724bf",
-        "lib/SPELL_IPC/src/SPELLipcIncoming.C": "27d835697f9c183217add3c04f83b847101097cc9d0f138e43ae0da5f96c6ff9",
+        "include/SPELL_IPC/SPELLipcIncoming.H": "d99915ffa2cc7b583851abfd493703305813d5de5852b5b1b6d2992657d29b9e",
+        "lib/SPELL_IPC/src/SPELLipcIncoming.C": "427b9ade304ff750d9391b83a3cd5a466f9d6e1e19502bdcb1126bfdf6e4af7e",
         "lib/SPELL_IPC/src/SPELLipcTrash.C": "27e55da6c49e11b6c8ab23ec23fc6c9a71e9fe1a4214b7e48f5107c920f56c6f",
         "lib/SPELL_IPC/src/SPELLipcServerInterfaceSingle.C": "8d2901e7c7c3f27419de28e580cf54211f4d41bebf21644f31ad951833b863e6",
         "lib/SPELL_IPC/src/SPELLipcServerInterface.C": "fca077ad1e23e064cda0c8d5c652e6c764378a6c2ca444e30f798a7872d8fdad",
@@ -157,10 +89,12 @@ def reuse_native_message_instances(source):
         texts[relative] = path.read_text()
     header = "include/SPELL_IPC/SPELLipcIncoming.H"
     unit = "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+    base = "class SPELLipcIncomingBase: public SPELLthread\n{\npublic: //--------------------------------------------------------------------"
+    message = "class SPELLipcIncomingMessage: public SPELLipcIncomingBase\n{\npublic: //--------------------------------------------------------------------"
     replacements = (
         (
-            "virtual void join() { SPELLthread::join(); }",
-            "virtual void join() { SPELLthread::join(); }\n"
+            base,
+            base + "\n"
             "    virtual void v08Dispose() { delete this; }\n"
             "protected:\n"
             "    void v08Reset(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);\n"
@@ -171,8 +105,8 @@ def reuse_native_message_instances(source):
             "SPELLipcInterfaceListener* m_listener;",
         ),
         (
-            "void join() override;",
-            "void join() override;\n    void v08Dispose() override;\n"
+            message,
+            message + "\n    void v08Dispose() override;\n"
             "    static SPELLipcIncomingMessage* v08Create(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);",
         ),
     )
@@ -674,7 +608,6 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     message_header.write_text(enable_native_message_moves(message_header.read_text()))
     incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     incoming.write_text(transfer_native_incoming(incoming.read_text()))
-    reuse_native_message_workers(source)
     reuse_native_message_instances(source)
     for relative in (
         "src/context/src/SPELLcontextMain.C",
