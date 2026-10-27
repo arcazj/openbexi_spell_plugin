@@ -2,6 +2,18 @@
 #pragma once
 #include <string>
 #include <atomic>
+#include <list>
+#include <memory>
+inline std::atomic<size_t> v08TestNodeAllocations{0};
+template<class T> struct V08TestAllocator {
+    using value_type=T;
+    V08TestAllocator()=default;
+    template<class U> V08TestAllocator(const V08TestAllocator<U>&) {}
+    T* allocate(size_t n){v08TestNodeAllocations+=n;return std::allocator<T>{}.allocate(n);}
+    void deallocate(T* p,size_t n){std::allocator<T>{}.deallocate(p,n);}
+    template<class U> bool operator==(const V08TestAllocator<U>&)const{return true;}
+    template<class U> bool operator!=(const V08TestAllocator<U>&)const{return false;}
+};
 inline std::atomic<size_t> v08TestConstructed{0};
 #include <thread>
 #include <mutex>
@@ -19,7 +31,7 @@ public:
     SPELLevent(bool=false){}
     void clear(){std::lock_guard<std::mutex> lock(mutex);cleared=true;}
     void set(){std::lock_guard<std::mutex> lock(mutex);cleared=false;changed.notify_all();}
-    bool wait(long ms){std::unique_lock<std::mutex> lock(mutex);return !changed.wait_for(lock,std::chrono::milliseconds(ms),[&]{return !cleared;});}
+    bool wait(long ms=5000){std::unique_lock<std::mutex> lock(mutex);return !changed.wait_for(lock,std::chrono::milliseconds(ms),[&]{return !cleared;});}
 };
 class SPELLthread {
     std::thread thread;

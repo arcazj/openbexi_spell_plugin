@@ -59,11 +59,11 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
     end = utils.index("\n}", start) + 2
     (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
     binaries = {}
-    for name in ("before", "after"):
+    for name in ("before", "borrowed", "after"):
         router = folder / "lib/SPELL_CTX/src/SPELLexecutorIPC.C"
         router.parent.mkdir(parents=True, exist_ok=True)
         router.write_text(routing)
-        if name == "after":
+        if name != "before":
             builder.compare_native_message_identifiers(folder)
         method = router.read_text()
         start = method.index("void SPELLexecutorIPC::processMessage(")
@@ -72,8 +72,10 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
         native = folder / "lib/SPELL_CTX/src/SPELLexecutor.C"
         native.parent.mkdir(parents=True, exist_ok=True)
         native.write_text(executor)
-        if name == "after":
+        if name != "before":
             builder.borrow_native_executor_notification(folder)
+        if name == "after":
+            builder.borrow_native_notification_fields(folder)
         notification = native.read_text()
         start = notification.index("void SPELLexecutor::executorNotification(")
         end = notification.index("\n}", start) + 2
@@ -88,7 +90,7 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
         (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(candidate)
         for file in ("message_codec.H", "allocation_trace.H"):
             text = text.replace("/candidate/" + file, str(ROOT / "host_runtime/native" / file))
-        if name == "after":
+        if name != "before":
             text += """
 extern "C" size_t storage_size(){return v08_property_storage.used;}
 extern "C" size_t storage_capacity(){
@@ -286,3 +288,10 @@ def test_storage_diagnostics_are_opt_in_bounded_and_account_for_decisions(storag
                 "recycled_maps",
             )
         )
+
+
+def test_notification_fields_avoid_owned_copies_for_long_read_only_values(storage_binaries):
+    prior = run(storage_binaries["borrowed"], "notification_bench")
+    after = run(storage_binaries["after"], "notification_bench")
+    assert prior["allocations"] >= 40000
+    assert after["allocations"] == after["allocated_bytes"] == 0

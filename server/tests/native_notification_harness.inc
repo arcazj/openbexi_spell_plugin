@@ -72,6 +72,9 @@ static void notification_test(bool bench) {
     msg.set("DataType","LINE");msg.set("Csp","1");msg.set("CodeName","code");
     msg.set("StageId","stage");msg.set("StageTitle","title");
     msg.set("ExtraA","a");msg.set("ExtraB","b");msg.set("ExtraC","c");
+    if(bench) {
+        for(const auto& field:{"Csp","CodeName","StageId","StageTitle"}) msg.set(field,std::string(200,'x'));
+    }
     SPELLexecutor executor;
     executor.executorNotification(msg);
     if(bench) {
@@ -103,4 +106,13 @@ static void notification_test(bool bench) {
     msg.setType(MSG_TYPE_REQUEST);executor.executorNotification(msg);require(notification_errors==1);
     msg.setType(MSG_TYPE_NOTIFY);msg.set("DataType","UNKNOWN");executor.executorNotification(msg);
     require(executor.statuses==3 && context.summaries==2);
+    // Missing fields keep the old empty-string behavior; borrowed values cannot
+    // outlive this call or alias subsequent mutations of the source message.
+    SPELLipcMessage missing("MSG_NOTIFY");missing.setType(MSG_TYPE_NOTIFY);
+    missing.set("DataType","LINE");executor.executorNotification(missing);
+    require(executor.m_model.stack.empty() && executor.m_model.code.empty());
+    msg.set("DataType","LINE");msg.set("Csp",std::string(200,'q'));
+    executor.executorNotification(msg);msg.set("Csp","changed");
+    require(executor.m_model.stack==std::string(200,'q'));
+
 }

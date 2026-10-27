@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "SPELL_IPC/SPELLipcIncoming.H"
+#include "SPELL_IPC/SPELLipcTrash.H"
 #include <atomic>
 #include <cassert>
 #include <iostream>
@@ -97,6 +98,27 @@ int main(int argc,char** argv) {
         }
         assert(l.calls==500 && second.calls==500);
         std::cout<<"{\"listener_rebound_and_flags_reset\":true}\n";
+    } else if(mode=="collector") {
+        SPELLipcTrash trash("test");
+        for(int i=0;i<2500;++i){auto m=message(l);assert(trash.place(m.get()));m.release();
+            while(trash.haveData())trash.clearData();}
+        assert(l.calls==2500);
+        std::cout<<"{\"calls\":2500,\"node_allocations\":"<<v08TestNodeAllocations<<"}\n";
+    } else if(mode=="collector_bound") {
+        SPELLipcTrash trash("test");
+        for(int round=0;round<2;++round){l.blocked=true;
+            for(int i=0;i<64;++i){auto m=message(l);assert(trash.place(m.get()));m.release();}
+            waitFor(l.active,64);l.blocked=false;while(trash.haveData())trash.clearData();}
+        assert(l.calls==128);
+        std::cout<<"{\"node_allocations\":"<<v08TestNodeAllocations<<"}\n";
+    } else if(mode=="collector_cancel") {
+        SPELLipcTrash trash("test");l.blocked=true;
+        for(int i=0;i<24;++i){auto m=message(l);assert(trash.place(m.get()));m.release();}
+        waitFor(l.active,24);trash.cancelAndCleanRequests(0);
+        std::atomic<bool> cleared{false};std::thread owner([&]{trash.clearData();cleared=true;});
+        std::this_thread::sleep_for(std::chrono::milliseconds(40));assert(!cleared);
+        l.blocked=false;owner.join();while(trash.haveData())trash.clearData();
+        assert(l.calls==24);std::cout<<"{\"joined_before_reuse\":true}\n";
     } else if(mode=="bounded_cache") {
 #if V08_WORKERS
         std::vector<MessageOwner> jobs;l.blocked=true;

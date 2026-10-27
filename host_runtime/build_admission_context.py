@@ -153,6 +153,45 @@ def reuse_native_message_instances(source):
         (source / relative).write_text(text)
 
 
+def reuse_native_collector_nodes(source):
+    """Recycle at most 32 empty list nodes under the existing collector lock."""
+    header = source / "include/SPELL_IPC/SPELLipcTrash.H"
+    unit = source / "lib/SPELL_IPC/src/SPELLipcTrash.C"
+    if (
+        sha(header)
+        != "d9920e7c51a6e872a521850b8c7a096aba9af528b6313bcdfd8df7623e692b1c"
+        or sha(unit)
+        != "43fae52b719520951c08e1c24da562b704a469640686b55e12f7dd19c88217cf"
+    ):
+        raise ValueError("Native collector storage preimage differs")
+    h, text = header.read_text(), unit.read_text()
+    member = "SPELLipcTrashList    m_messages;"
+    place = "    m_messages.push_back(message);"
+    erase = "            it=m_messages.erase(it);"
+    if h.count(member) != 1 or text.count(place) != 1 or text.count(erase) != 1:
+        raise ValueError("Native collector storage boundary differs")
+    h = h.replace(member, member + "\n        SPELLipcTrashList m_v08SpareNodes;")
+    text = text.replace(
+        place,
+        """    if (m_v08SpareNodes.empty()) m_messages.push_back(message);
+    else {
+        auto node=m_v08SpareNodes.begin();
+        *node=message;
+        m_messages.splice(m_messages.end(),m_v08SpareNodes,node);
+    }""",
+    )
+    text = text.replace(
+        erase,
+        """            auto completed=it++;
+            *completed=nullptr;
+            if (m_v08SpareNodes.size()<32)
+                m_v08SpareNodes.splice(m_v08SpareNodes.end(),m_messages,completed);
+            else m_messages.erase(completed);""",
+    )
+    header.write_text(h)
+    unit.write_text(text)
+
+
 def replace_native_message_codec(text):
     """Remove intermediate IPC allocations without changing the class ABI."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -351,6 +390,52 @@ def borrow_native_executor_notification(source):
     if original.count(anchor) != 1:
         raise ValueError("Native executor notification boundary differs")
     changed = original.replace(anchor, "\tconst SPELLipcMessage& msg = nmsg;")
+    path.write_text(text[:start] + changed + text[end:])
+
+
+def borrow_native_notification_fields(source):
+    """Borrow read-only fields only for the synchronous notification callback."""
+    path = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
+    text = path.read_text()
+    start = text.index("void SPELLexecutor::executorNotification(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if (
+        hashlib.sha256(original.encode()).hexdigest()
+        != "0bc7e4be7b8539d581311f36bb4c92d9dece9e9fc2552263a569f11e8a01951d"
+    ):
+        raise ValueError("Native notification field preimage differs")
+    anchor = "\tconst SPELLipcMessage& msg = nmsg;"
+    changed = original.replace(
+        anchor,
+        anchor
+        + """
+    const auto field=[&msg](const std::string& key)->const std::string& {
+        const auto& fields=msg.v08Fields();
+        const auto found=fields.find(key);
+        if (found!=fields.end()) return found->second;
+        static const std::string empty;
+        return empty;
+    };""",
+    )
+    for name in (
+        "FIELD_DATA_TYPE",
+        "FIELD_EXEC_STATUS",
+        "FIELD_STAGE_ID",
+        "FIELD_STAGE_TL",
+        "FIELD_CSP",
+        "FIELD_CODE_NAME",
+    ):
+        old = "msg.get( MessageField::" + name + " )"
+        if changed.count(old) != (2 if name in ("FIELD_CSP", "FIELD_CODE_NAME") else 1):
+            raise ValueError("Native notification field boundary differs")
+        changed = changed.replace(old, "field(MessageField::" + name + ")")
+    for name in ("dataType", "statusStr", "id", "tl"):
+        old = "std::string " + name + " = field("
+        if changed.count(old) != 1:
+            raise ValueError("Native notification local boundary differs")
+        changed = changed.replace(old, "const std::string& " + name + " = field(")
+    # Error and reason remain owned mutable copies because the handler trims them.
     path.write_text(text[:start] + changed + text[end:])
 
 
@@ -609,6 +694,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     incoming = source / "lib/SPELL_IPC/src/SPELLipcIncoming.C"
     incoming.write_text(transfer_native_incoming(incoming.read_text()))
     reuse_native_message_instances(source)
+    reuse_native_collector_nodes(source)
     for relative in (
         "src/context/src/SPELLcontextMain.C",
         "src/executor/src/SPELLexecutorMain.C",
@@ -1072,6 +1158,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     borrow_native_message_callbacks(source)
     compare_native_message_identifiers(source)
     borrow_native_executor_notification(source)
+    borrow_native_notification_fields(source)
     transfer_native_line_notification(source)
     reuse_native_trace_filename(source)
     avoid_native_thread_label_copies(source)

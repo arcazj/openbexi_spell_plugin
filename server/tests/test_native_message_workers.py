@@ -17,6 +17,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 HEADER = "include/SPELL_IPC/SPELLipcIncoming.H"
 SOURCE = "lib/SPELL_IPC/src/SPELLipcIncoming.C"
+TRASH_HEADER = "include/SPELL_IPC/SPELLipcTrash.H"
+TRASH_SOURCE = "lib/SPELL_IPC/src/SPELLipcTrash.C"
 EXTRA = ["include/SPELL_SYN/SPELLthread.H"] + [
     "lib/SPELL_IPC/src/" + name + ".C"
     for name in (
@@ -42,7 +44,7 @@ PROMPT = load(ROOT / "source_port/prompt_control_patches.py", "workers_prompt")
 
 def source(folder):
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
-        for name in (HEADER, SOURCE, *EXTRA):
+        for name in (HEADER, SOURCE, TRASH_HEADER, *EXTRA):
             path = folder / name
             path.parent.mkdir(parents=True, exist_ok=True)
             original = archive.read(name)
@@ -65,6 +67,7 @@ def binaries(tmp_path_factory):
         source(folder)
         if name == "after":
             BUILDER.reuse_native_message_instances(folder)
+            BUILDER.reuse_native_collector_nodes(folder)
         include = folder / "include"
         for dependency in (
             "SPELL_IPC/SPELLipcChannel.H",
@@ -73,6 +76,9 @@ def binaries(tmp_path_factory):
             "SPELL_SYN/SPELLevent.H",
             "SPELL_SYN/SPELLthreadWork.H",
             "SPELL_IPC/SPELLipcOutput.H",
+            "SPELL_IPC/SPELLipcInput.H",
+            "SPELL_IPC/SPELLipcError.H",
+            "SPELL_IPC/SPELLipcMessage.H",
             "SPELL_UTIL/SPELLlog.H",
             "SPELL_SYN/SPELLmonitor.H",
         ):
@@ -80,6 +86,7 @@ def binaries(tmp_path_factory):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text('#include "adapters.H"\n')
         (include / "adapters.H").write_text(adapters)
+        (include / "SPELL_IPC/SPELLipcInput.H").write_text('#include "SPELL_IPC/SPELLipcTrash.H"\n')
         header = folder / HEADER
         if name == "after":
             text = header.read_text()
@@ -102,6 +109,13 @@ def binaries(tmp_path_factory):
                 "v08_message_instances.idle[i]->getKey()!=0) std::abort(); } "
                 "return v08_message_instances.used; }\n"
             )
+        trash_header = folder / TRASH_HEADER
+        trash_header.write_text(
+            trash_header.read_text().replace(
+                "std::list<SPELLipcIncomingBase*>",
+                "std::list<SPELLipcIncomingBase*, V08TestAllocator<SPELLipcIncomingBase*>>",
+            )
+        )
         binary = folder / "probe"
         compiled = subprocess.run(
             [
@@ -117,6 +131,7 @@ def binaries(tmp_path_factory):
                 "-DV08_WORKERS=" + str(int(name == "after")),
                 "-I" + str(include),
                 str(folder / SOURCE),
+                str(folder / TRASH_SOURCE),
                 str(ROOT / "server/tests/native_message_workers.cpp"),
                 "-o",
                 str(binary),
@@ -187,3 +202,29 @@ def test_instance_patch_rejects_reapplication(tmp_path):
     with pytest.raises(ValueError, match="preimage differs"):
         BUILDER.reuse_native_message_instances(tmp_path)
     assert all((tmp_path / name).read_bytes() == value for name, value in before.items())
+
+
+@pytest.mark.parametrize("path", [TRASH_HEADER, TRASH_SOURCE])
+def test_collector_node_patch_rejects_changed_source(tmp_path, path):
+    source(tmp_path)
+    BUILDER.reuse_native_message_instances(tmp_path)
+    changed = tmp_path / path
+    changed.write_text(changed.read_text() + "\n")
+    before = {name: (tmp_path / name).read_bytes() for name in (TRASH_HEADER, TRASH_SOURCE)}
+    with pytest.raises(ValueError, match="preimage differs"):
+        BUILDER.reuse_native_collector_nodes(tmp_path)
+    assert all((tmp_path / name).read_bytes() == value for name, value in before.items())
+
+
+def test_collector_nodes_are_reused_after_join_and_remain_bounded(binaries):
+    before = run(binaries["before"], "collector")
+    after = run(binaries["after"], "collector")
+    assert before["calls"] == after["calls"] == 2500
+    assert before["node_allocations"] == 2500
+    assert after["node_allocations"] == 1
+    assert run(binaries["before"], "collector_bound")["node_allocations"] == 128
+    assert run(binaries["after"], "collector_bound")["node_allocations"] == 96
+
+
+def test_collector_cancellation_still_joins_callbacks_before_recycling(binaries):
+    assert run(binaries["before"], "collector_cancel") == run(binaries["after"], "collector_cancel")
