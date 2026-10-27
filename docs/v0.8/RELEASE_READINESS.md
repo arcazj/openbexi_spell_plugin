@@ -1,25 +1,33 @@
 # Full v0.8 publication qualification
 
-The latest recovery baseline is `0bc731f` / run `40453830603`. Foundation
-passes 1,476 tests with no failures/errors/skips. Twelve of fourteen core jobs
-and all five ancillary workflows pass. Handoff and installed-IDE growth remains
-above the unchanged 64 MiB limit at 104.37/95.60 MiB. Both retain eight processes
-through 45-second soaks and pass the peak ceiling. Fresh-field reuse, removal of
-a redundant synchronous copy and reuse of partially consumed cached maps are
-verified component corrections, not a resolved whole-process memory blocker.
-The source-verified `e0f3b2e` cache diagnostic now identifies Context empty-cache
-misses rather than contention or capacity rejection. Incoming completion calls
-`clear()` before destruction, discarding nodes ahead of the recycling hook.
-The correction recycles before the original clear operation, preserving all
-observable clear semantics. All 143 focused checks pass, and a 10,000-completion
-benchmark falls from 90,000 allocations to zero. Rebuilt hosted acceptance is
-still required; no whole-runtime resource blocker is declared resolved.
-See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
-The separate optimized-IDE comparison also recorded uncertain driver effects
-before child-running and did not reach its soak. No release gate is promoted.
-The earlier encrypted-swap setup correction is now exercised successfully,
-including host restoration, but both five-minute comparison runs fail memory
-growth and use no swap pages. They cannot satisfy mandatory no-swap acceptance.
+Candidate `0a14360` resumes hosted qualification in core run `40456278980`.
+All five ancillary workflows and the allocation diagnostic pass. Its explicit
+incoming-message completion correction is validated by 143 focused checks and
+a compiled 10,000-completion benchmark (90,000 allocations before, zero after).
+The actual Context diagnostic confirms a substantial reduction in copy
+allocations, but this does not resolve whole-runtime resource acceptance.
+
+The source-verified mandatory handoff preserves all eight original processes
+and progress through 45.46 seconds, passes the 1,792 MiB peak ceiling at
+1,418.34 MiB, and fails the unchanged 64 MiB growth limit at 109.29 MiB. Its
+archive digest and all 132 source inputs match the candidate. Installed IDE
+also preserves eight processes through 45.60 seconds, passes peak at 1,398.77
+MiB and fails growth at 91.23 MiB; its archive and 132 source inputs are verified.
+Remaining core jobs are still in flight. The independent diagnostic also fails growth
+at 99.04 MiB. See [current implementation and receipts](FRESH_MESSAGE_STORAGE.md).
+
+Earlier optimized one-hour comparisons complete with eight original processes
+but fail growth at 129.34/132.96 MiB (handoff/IDE). Approximately 123 MiB of each
+window is file/shared-memory growth, an unresolved separate endurance blocker.
+Their overlaid source inventories are verified; they do not qualify the current
+candidate. The earlier encrypted-swap and same-optimization ASan comparisons
+also fail resource acceptance. An optimized-IDE comparison recorded uncertain
+driver effects before child-running and did not reach its soak.
+
+All eleven full-release gates remain unqualified. Current memory stability,
+57 missing historical capture hashes, fresh all-763/native compatibility,
+full IDE/browser/debugger coverage, deployed workload/fault/restore checks,
+independent security review and stable joint packaging remain unfinished.
 
 Historical qualification records follow.
 

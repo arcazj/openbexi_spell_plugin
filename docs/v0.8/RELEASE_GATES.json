@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 0bc731f passes native startup, prompt, terminal and family component jobs. Both 45-second original-family soaks retain eight processes and meet peak limits but fail 64 MiB growth at 104.37/95.60 MiB (handoff/installed IDE). Historical startup and scope faults and broader native coverage remain unresolved."
+      "reason": "Candidate 0a14360 mandatory handoff and installed IDE preserve eight processes through full 45-second soaks and pass peak memory, but fail the unchanged 64 MiB growth limit at 109.29/91.23 MiB. Other core checks remain in flight. Historical startup/scope faults and broader native coverage remain unresolved."
     },
     "compatibility": {
       "qualified": false,
@@ -30,7 +30,7 @@
     "ide_browser": {
       "qualified": false,
       "receipt": null,
-      "reason": "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Candidate 0bc731f installed-IDE recovery preserves eight original processes and passes peak memory but fails growth at 95.60 MiB. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
+      "reason": "Pinned IDE c5edbda previously passed 282 tests with one Windows-only skip. Candidate 0a14360 installed-IDE recovery preserves eight original processes through 45.60 seconds and passes peak at 1398.77 MiB, but fails growth at 91.23 MiB. Prompt GUI, public launch, full debugger and browser/WSS/Git remain unfinished."
     },
     "compose": {
       "qualified": false,
@@ -45,7 +45,7 @@
     "recovery": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 0bc731f handoff/reconnect preserves all eight original processes and every counter interval. Both profiles meet peak limits but fail 64 MiB growth at 104.37/95.60 MiB. Stable memory, deployed recovery, replenishment, restore, upgrade and rollback remain unqualified."
+      "reason": "Candidate 0a14360 handoff and installed IDE preserve eight original processes and every counter interval, but fail 64 MiB growth at 109.29/91.23 MiB. Prior optimized one-hour comparisons fail with approximately 123 MiB file/shared-memory growth. Stable memory, deployed recovery, replenishment, restore, upgrade and rollback remain unqualified."
     },
     "security": {
       "qualified": false,
@@ -55,7 +55,7 @@
     "ci": {
       "qualified": false,
       "receipt": null,
-      "reason": "Candidate 0bc731f passes 1,476 foundation tests, 12/14 core jobs and all five ancillary workflows. Both recovery growth checks fail. A bounded opt-in cache diagnostic is prepared to explain runtime misses. Full runtime/browser/deployment acceptance remains unfinished."
+      "reason": "Candidate 0a14360 passes 143 focused checks, all five ancillary workflows and the allocation diagnostic. Both mandatory recovery jobs still fail resource growth; remaining core jobs are running or queued. Full runtime/browser/deployment acceptance remains unfinished."
     },
     "packaging": {
       "qualified": false,

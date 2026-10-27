@@ -1,0 +1,915 @@
+{
+  "source_commit": "0a14360bf9494956557095033b8433360d60fbbb",
+  "source_tree": "3820c620315eeb69fa36c25924cef3c958e757e3",
+  "tested_merge": "6ea6e07ccb80238c6ff1a5b8ee6e1b67e8261d79",
+  "workflow_run_id": 40456279044,
+  "artifact_id": 12713185968,
+  "archive_sha256": "90aa7ee8875ea260532e7a1563460378ea51b67433117ed9cbe222ffa2dc1837",
+  "verified_source_entries": 132,
+  "resource_samples_sha256": "5a15bdc66406391e6bcb1c30685238282fc38a2e60454c5a970508e6bbb5e533",
+  "native_context_sha256": "4aac4f8d597fd6af293dea2aada6b75e11fa76e470b45f6c5873c26d9288e6fb",
+  "resource_acceptance": {
+    "schema": "openbexi.native-recovery-resources/1",
+    "passed": false,
+    "resident_limit_bytes": 2147483648,
+    "swap_limit_bytes": 0,
+    "peak_budget_bytes": 1879048192,
+    "maximum_window_growth_bytes": 67108864,
+    "full_v08_qualified": false,
+    "failures": [
+      "native_recovery_memory_still_growing"
+    ],
+    "samples": 47,
+    "soak_samples": 21,
+    "duration_seconds": 45.598967593,
+    "peak_bytes": 1503404032,
+    "window_growth_bytes": 103856128.0,
+    "first_window_median_bytes": 1332760576,
+    "last_window_median_bytes": 1436616704.0
+  },
+  "recovery_soak": {
+    "start_ns": 323745418167,
+    "end_ns": 369344385760,
+    "minimum_seconds": 45,
+    "counters_before": {
+      "root": 1357,
+      "background": 1658,
+      "child": 1467
+    },
+    "counters_after": {
+      "root": 3352,
+      "background": 3896,
+      "child": 3544
+    },
+    "original_processes": 8,
+    "all_intervals_advanced": true
+  },
+  "cumulative_last_snapshot": [
+    {
+      "copy_allocations": 54073,
+      "copy_calls": 84061,
+      "copy_map_lock_miss": 1378,
+      "copy_shape_miss": 35301,
+      "copy_whole_map": 47363,
+      "monotonic_ns": 363436371186,
+      "node_empty": 45984,
+      "node_lock_miss": 9752,
+      "node_requests": 409499,
+      "node_reused": 353763,
+      "node_unavailable": 0,
+      "pid": 37,
+      "recycle_calls": 214318,
+      "recycle_capacity": 0,
+      "recycle_empty": 129412,
+      "recycle_full": 0,
+      "recycle_lock_miss": 1370,
+      "recycle_unavailable": 0,
+      "recycle_wide": 0,
+      "recycled_maps": 83536
+    },
+    {
+      "copy_allocations": 62,
+      "copy_calls": 26884,
+      "copy_map_lock_miss": 1,
+      "copy_shape_miss": 26873,
+      "copy_whole_map": 10,
+      "monotonic_ns": 369417720040,
+      "node_empty": 77,
+      "node_lock_miss": 0,
+      "node_requests": 241898,
+      "node_reused": 241821,
+      "node_unavailable": 0,
+      "pid": 103,
+      "recycle_calls": 26987,
+      "recycle_capacity": 0,
+      "recycle_empty": 101,
+      "recycle_full": 0,
+      "recycle_lock_miss": 0,
+      "recycle_unavailable": 0,
+      "recycle_wide": 0,
+      "recycled_maps": 26886
+    },
+    {
+      "copy_allocations": 42,
+      "copy_calls": 17286,
+      "copy_map_lock_miss": 0,
+      "copy_shape_miss": 17284,
+      "copy_whole_map": 2,
+      "monotonic_ns": 367326469777,
+      "node_empty": 56,
+      "node_lock_miss": 0,
+      "node_requests": 155536,
+      "node_reused": 155480,
+      "node_unavailable": 0,
+      "pid": 209,
+      "recycle_calls": 17315,
+      "recycle_capacity": 0,
+      "recycle_empty": 28,
+      "recycle_full": 0,
+      "recycle_lock_miss": 0,
+      "recycle_unavailable": 0,
+      "recycle_wide": 0,
+      "recycled_maps": 17287
+    }
+  ],
+  "soak_snapshot_deltas": [
+    {
+      "pid": 37,
+      "program": "SPELL-Context",
+      "first_tick": 333352308941,
+      "last_tick": 363436371186,
+      "delta": {
+        "copy_allocations": 22901,
+        "copy_calls": 35514,
+        "copy_map_lock_miss": 580,
+        "copy_shape_miss": 14864,
+        "copy_whole_map": 20062,
+        "node_empty": 19419,
+        "node_lock_miss": 4146,
+        "node_requests": 172539,
+        "node_reused": 148974,
+        "node_unavailable": 0,
+        "recycle_calls": 90482,
+        "recycle_capacity": 0,
+        "recycle_empty": 54633,
+        "recycle_full": 0,
+        "recycle_lock_miss": 584,
+        "recycle_unavailable": 0,
+        "recycle_wide": 0,
+        "recycled_maps": 35265
+      }
+    },
+    {
+      "pid": 103,
+      "program": "SPELL-Executor",
+      "first_tick": 335330729846,
+      "last_tick": 359331778616,
+      "delta": {
+        "copy_allocations": 0,
+        "copy_calls": 8408,
+        "copy_map_lock_miss": 0,
+        "copy_shape_miss": 8408,
+        "copy_whole_map": 0,
+        "node_empty": 0,
+        "node_lock_miss": 0,
+        "node_requests": 75674,
+        "node_reused": 75674,
+        "node_unavailable": 0,
+        "recycle_calls": 8408,
+        "recycle_capacity": 0,
+        "recycle_empty": 0,
+        "recycle_full": 0,
+        "recycle_lock_miss": 0,
+        "recycle_unavailable": 0,
+        "recycle_wide": 0,
+        "recycled_maps": 8408
+      }
+    },
+    {
+      "pid": 209,
+      "program": "SPELL-Executor",
+      "first_tick": 331324746474,
+      "last_tick": 355325995138,
+      "delta": {
+        "copy_allocations": 0,
+        "copy_calls": 5480,
+        "copy_map_lock_miss": 0,
+        "copy_shape_miss": 5480,
+        "copy_whole_map": 0,
+        "node_empty": 0,
+        "node_lock_miss": 0,
+        "node_requests": 49322,
+        "node_reused": 49322,
+        "node_unavailable": 0,
+        "recycle_calls": 5480,
+        "recycle_capacity": 0,
+        "recycle_empty": 0,
+        "recycle_full": 0,
+        "recycle_lock_miss": 0,
+        "recycle_unavailable": 0,
+        "recycle_wide": 0,
+        "recycled_maps": 5480
+      }
+    }
+  ],
+  "anonymous_process_growth": [
+    {
+      "pid": 1,
+      "program": "docker-init",
+      "anonymous_pss_window_growth_bytes": 0.0
+    },
+    {
+      "pid": 7,
+      "program": "python3.13",
+      "anonymous_pss_window_growth_bytes": 245760.0
+    },
+    {
+      "pid": 20,
+      "program": "SPELL-Listener",
+      "anonymous_pss_window_growth_bytes": 268288.0
+    },
+    {
+      "pid": 37,
+      "program": "SPELL-Context",
+      "anonymous_pss_window_growth_bytes": 41490432.0
+    },
+    {
+      "pid": 103,
+      "program": "SPELL-Executor",
+      "anonymous_pss_window_growth_bytes": 29419520.0
+    },
+    {
+      "pid": 209,
+      "program": "SPELL-Executor",
+      "anonymous_pss_window_growth_bytes": 19277824.0
+    }
+  ],
+  "last_allocation_sites": [
+    {
+      "pid": 37,
+      "bytes": 21536,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1381961,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_"
+        }
+      ],
+      "rank": 0,
+      "samples": 585
+    },
+    {
+      "pid": 37,
+      "bytes": 11072,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 998232,
+          "symbol": "?"
+        }
+      ],
+      "rank": 1,
+      "samples": 346
+    },
+    {
+      "pid": 37,
+      "bytes": 10432,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1382141,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_mutateEmmPKcm"
+        }
+      ],
+      "rank": 2,
+      "samples": 228
+    },
+    {
+      "pid": 37,
+      "bytes": 3043,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Context",
+          "offset": 8523659,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_St20forward_iterator_t",
+          "resolved": "void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)"
+        },
+        {
+          "module": "SPELL-Context",
+          "offset": 10167465,
+          "symbol": "?",
+          "resolved": "SPELLexecutorIPC::processMessage(SPELLipcMessage const&)"
+        },
+        {
+          "module": "SPELL-Context",
+          "offset": 11604338,
+          "symbol": "?",
+          "resolved": "SPELLipcIncomingMessage::run()"
+        },
+        {
+          "module": "SPELL-Context",
+          "offset": 13117099,
+          "symbol": "?",
+          "resolved": "SPELLthread::doRun()"
+        },
+        {
+          "module": "SPELL-Context",
+          "offset": 13117323,
+          "symbol": "?",
+          "resolved": "do_run(void*)"
+        },
+        {
+          "module": "libasan.so.8",
+          "offset": 373205,
+          "symbol": "?"
+        }
+      ],
+      "rank": 3,
+      "samples": 179
+    },
+    {
+      "pid": 37,
+      "bytes": 26904,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1000976,
+          "symbol": "__interceptor_calloc"
+        }
+      ],
+      "rank": 4,
+      "samples": 177
+    },
+    {
+      "pid": 37,
+      "bytes": 77952,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1000976,
+          "symbol": "__interceptor_calloc"
+        },
+        {
+          "module": "ld-linux-x86-64.so.2",
+          "offset": 73570,
+          "symbol": "?"
+        }
+      ],
+      "rank": 5,
+      "samples": 168
+    },
+    {
+      "pid": 103,
+      "bytes": 17460,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1382141,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_mutateEmmPKcm"
+        }
+      ],
+      "rank": 0,
+      "samples": 422
+    },
+    {
+      "pid": 103,
+      "bytes": 6946,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1381961,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_"
+        }
+      ],
+      "rank": 1,
+      "samples": 221
+    },
+    {
+      "pid": 103,
+      "bytes": 3270,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 201235,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPKcEEvT_S8_St20forward_iterator_"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 202401,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13085428,
+          "symbol": "_ZN17SPELLexecutorImpl8dispatchEP7_objectP6_frameiS1_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12912304,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2916218,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 1712172,
+          "symbol": "_PyEval_EvalFrameDefault"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2286579,
+          "symbol": "PyEval_EvalCode"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 14212938,
+          "symbol": "_ZN17SPELLframeManager7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13041114,
+          "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13047091,
+          "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13710053,
+          "symbol": "_ZN16SPELLinterpreter7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13720772,
+          "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 196697,
+          "symbol": "?"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 171175,
+          "symbol": "?"
+        }
+      ],
+      "rank": 2,
+      "samples": 109
+    },
+    {
+      "pid": 103,
+      "bytes": 2033,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 201235,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPKcEEvT_S8_St20forward_iterator_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13077523,
+          "symbol": "_ZN17SPELLexecutorImpl8dispatchEP7_objectP6_frameiS1_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12912304,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2916218,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 1712172,
+          "symbol": "_PyEval_EvalFrameDefault"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2286579,
+          "symbol": "PyEval_EvalCode"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 14212938,
+          "symbol": "_ZN17SPELLframeManager7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13041114,
+          "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13047091,
+          "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13710053,
+          "symbol": "_ZN16SPELLinterpreter7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13720772,
+          "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 196697,
+          "symbol": "?"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 171175,
+          "symbol": "?"
+        }
+      ],
+      "rank": 3,
+      "samples": 107
+    },
+    {
+      "pid": 103,
+      "bytes": 62,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1002583,
+          "symbol": "___interceptor_malloc"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 237289,
+          "symbol": "?"
+        }
+      ],
+      "rank": 4,
+      "samples": 31
+    },
+    {
+      "pid": 103,
+      "bytes": 600,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1002583,
+          "symbol": "___interceptor_malloc"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 237219,
+          "symbol": "?"
+        }
+      ],
+      "rank": 5,
+      "samples": 30
+    },
+    {
+      "pid": 209,
+      "bytes": 20262,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1382141,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_mutateEmmPKcm"
+        }
+      ],
+      "rank": 0,
+      "samples": 401
+    },
+    {
+      "pid": 209,
+      "bytes": 4759,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1381961,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_"
+        }
+      ],
+      "rank": 1,
+      "samples": 152
+    },
+    {
+      "pid": 209,
+      "bytes": 4092,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "libstdc++.so.6",
+          "offset": 1383780,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7reserveEm"
+        }
+      ],
+      "rank": 2,
+      "samples": 124
+    },
+    {
+      "pid": 209,
+      "bytes": 2240,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 202977,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_St20forward_iterator_t"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13509253,
+          "symbol": "_ZN14SPELLcallstack12getFullStackB5cxx11Ev"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 17632180,
+          "symbol": "_ZN8SPELLcif17getAvailableStackB5cxx11Ev"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 15813184,
+          "symbol": "_ZN14SPELLserverCif15completeMessageER15SPELLipcMessage"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 15883683,
+          "symbol": "_ZN14SPELLserverCif14prepareMessageER15SPELLipcMessageNSt7__cxx1112basic_stringIcSt11char_traitsIcES"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 16159882,
+          "symbol": "_ZN14SPELLserverCif18specificNotifyLineEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 17641954,
+          "symbol": "_ZN8SPELLcif10notifyLineEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13496485,
+          "symbol": "_ZN14SPELLcallstack17callbackEventLineEP6_frameRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12890115,
+          "symbol": "_ZN17SPELLexecutorImpl15notifyLineEventEP6_frameRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcE"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13087967,
+          "symbol": "_ZN17SPELLexecutorImpl8dispatchEP7_objectP6_frameiS1_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12912304,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2916218,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 1712172,
+          "symbol": "_PyEval_EvalFrameDefault"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2286579,
+          "symbol": "PyEval_EvalCode"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 14212938,
+          "symbol": "_ZN17SPELLframeManager7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13041114,
+          "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13047091,
+          "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13710053,
+          "symbol": "_ZN16SPELLinterpreter7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13720772,
+          "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+        }
+      ],
+      "rank": 3,
+      "samples": 70
+    },
+    {
+      "pid": 209,
+      "bytes": 1700,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 201235,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPKcEEvT_S8_St20forward_iterator_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13077523,
+          "symbol": "_ZN17SPELLexecutorImpl8dispatchEP7_objectP6_frameiS1_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12912304,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2916218,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 1712172,
+          "symbol": "_PyEval_EvalFrameDefault"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2286579,
+          "symbol": "PyEval_EvalCode"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 14212938,
+          "symbol": "_ZN17SPELLframeManager7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13041114,
+          "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13047091,
+          "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13710053,
+          "symbol": "_ZN16SPELLinterpreter7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13720772,
+          "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 196697,
+          "symbol": "?"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 171175,
+          "symbol": "?"
+        }
+      ],
+      "rank": 4,
+      "samples": 68
+    },
+    {
+      "pid": 209,
+      "bytes": 2010,
+      "frames": [
+        {
+          "module": "libasan.so.8",
+          "offset": 1005432,
+          "symbol": "_Znwm"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 201235,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPKcEEvT_S8_St20forward_iterator_"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 202401,
+          "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13085428,
+          "symbol": "_ZN17SPELLexecutorImpl8dispatchEP7_objectP6_frameiS1_"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 12912304,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2916218,
+          "symbol": "?"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 1712172,
+          "symbol": "_PyEval_EvalFrameDefault"
+        },
+        {
+          "module": "libpython3.13.so.1.0",
+          "offset": 2286579,
+          "symbol": "PyEval_EvalCode"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 14212938,
+          "symbol": "_ZN17SPELLframeManager7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13041114,
+          "symbol": "_ZN17SPELLexecutorImpl15executeInternalEb"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13047091,
+          "symbol": "_ZN17SPELLexecutorImpl7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13710053,
+          "symbol": "_ZN16SPELLinterpreter7executeEv"
+        },
+        {
+          "module": "libspell_executor313.so",
+          "offset": 13720772,
+          "symbol": "_ZN16SPELLinterpreter8mainLoopEv"
+        },
+        {
+          "module": "SPELL-Executor",
+          "offset": 196697,
+          "symbol": "?"
+        },
+        {
+          "module": "libc.so.6",
+          "offset": 171175,
+          "symbol": "?"
+        }
+      ],
+      "rank": 5,
+      "samples": 67
+    }
+  ],
+  "full_v08_qualified": false,
+  "diagnostic_only": true
+}

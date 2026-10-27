@@ -1,5 +1,42 @@
 # Bounded storage for newly constructed native messages
 
+## Hosted completion-path result
+
+Executable candidate `0a14360bf9494956557095033b8433360d60fbbb` is tested as
+merge `6ea6e07ccb80238c6ff1a5b8ee6e1b67e8261d79`; both use tree
+`3820c620315eeb69fa36c25924cef3c958e757e3`. All five ancillary workflows pass.
+The opt-in diagnostic completes and verifies all 132 source entries, its archive
+digest and resource-sample digest. Context copy allocations fall substantially:
+the last cumulative snapshot records 54,073 allocations across 84,061 copies,
+versus 463,130 across 90,847 copies before the clear correction. These are
+separate runs, not identical-duration benchmark totals. The two active Executor
+profiles record zero copy allocations within their measured soak snapshots.
+
+Whole-runtime memory remains unqualified. The diagnostic preserves eight
+processes through 45.60 seconds but records 99.04 MiB growth. Mandatory handoff
+also preserves all eight processes and progress through 45.46 seconds, with
+1,418.34 MiB peak and 109.29 MiB growth; its 64 MiB growth limit still fails.
+Installed IDE likewise preserves eight processes through 45.60 seconds and
+passes peak at 1,398.77 MiB, but fails growth at 91.23 MiB. The remaining core
+checks are still running or queued.
+[Diagnostic evidence](evidence/fresh-message-storage/message-clear-hosted-diagnostic.json)
+and [mandatory recovery evidence](evidence/fresh-message-storage/message-clear-hosted.json)
+retain the failures and exact source inventories. The remaining allocation
+samples include Context string copies in `SPELLexecutorIPC::processMessage`,
+Executor dispatch string construction, and library frames without enough caller
+information for a further safe source attribution. No additional root cause is
+claimed from those samples.
+
+The older optimized one-hour comparisons also finish with eight original
+processes and verified endurance cycles. Both fail growth: 129.34 MiB handoff and
+132.96 MiB IDE. Their first/last ten-second cgroup windows attribute 123.24/123.77
+MiB to file/shared-memory accounting and only 4.95/6.25 MiB to anonymous memory.
+File and shared-memory values overlap and must not be added. The responsible
+file or files remain unidentified. All 135 overlaid source entries per archive
+are verified in [the endurance receipt](evidence/fresh-message-storage/endurance-baseline-results.json).
+These are baseline diagnostic comparisons, not mandatory acceptance or evidence
+for the current candidate's endurance. All eleven release gates remain false.
+
 ## Recycle the explicit incoming-message completion path
 
 The rebuilt `e0f3b2e` diagnostic identifies an actual empty-cache problem in

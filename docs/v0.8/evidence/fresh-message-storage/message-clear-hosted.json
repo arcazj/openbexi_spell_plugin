@@ -1,0 +1,217 @@
+{
+  "candidate_commit": "0a14360bf9494956557095033b8433360d60fbbb",
+  "tested_merge": "6ea6e07ccb80238c6ff1a5b8ee6e1b67e8261d79",
+  "source_tree": "3820c620315eeb69fa36c25924cef3c958e757e3",
+  "workflow_run": 40456278980,
+  "recovery": {
+    "handoff": {
+      "artifact_id": 12712867004,
+      "archive_sha256": "5a15340c17b61b8064fe23136ec98e4bc30fbdda58d5c54cba7d2f8b8fde673b",
+      "verified_source_entries": 132,
+      "result_sha256": "edd5a3088fd240d6c23987182a35c55ca3e5fc8c4dd871b1a4adad8be04547b8",
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.461923923,
+        "peak_bytes": 1487237120,
+        "window_growth_bytes": 114597888,
+        "first_window_median_bytes": 1308250112,
+        "last_window_median_bytes": 1422848000
+      },
+      "soak": {
+        "start_ns": 322168413816,
+        "end_ns": 367630337739,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1445,
+          "background": 1684,
+          "child": 1535
+        },
+        "counters_after": {
+          "root": 3538,
+          "background": 3925,
+          "child": 3666
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    },
+    "ide": {
+      "artifact_id": 12712762343,
+      "archive_sha256": "ab126ece0ad801a22d6abc7502f926b6998f882a013c8707b224539011b51326",
+      "verified_source_entries": 132,
+      "result_sha256": "cea25fcce0597a3008709737a8ebdbbbb3b66adfbf1799ed97d6f4c7075f5ab5",
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.59722371,
+        "peak_bytes": 1466716160,
+        "window_growth_bytes": 95666176,
+        "first_window_median_bytes": 1302753280,
+        "last_window_median_bytes": 1398419456
+      },
+      "soak": {
+        "start_ns": 371446879002,
+        "end_ns": 417044102712,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1339,
+          "background": 1666,
+          "child": 1473
+        },
+        "counters_after": {
+          "root": 3330,
+          "background": 3900,
+          "child": 3546
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      }
+    }
+  },
+  "full_v08_qualified": false,
+  "ci_checkpoint": {
+    "observed_at": "2026-10-27T05:48:12.743Z",
+    "jobs": [
+      {
+        "id": 122030232810,
+        "name": "native-boundary",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233011,
+        "name": "native-launch (native-prompts, --native-prompts)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233021,
+        "name": "native-launch (native-handoff, --native-handoff)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 122030233060,
+        "name": "foundation",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 122030233077,
+        "name": "native-launch (native-ide, --native-ide)",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 122030233088,
+        "name": "native-launch (audit)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233097,
+        "name": "native-launch (native-startup-stress, --native-startup-stress)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 122030233134,
+        "name": "native-launch (dss, --native-dss)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233172,
+        "name": "fault-reproduction",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 122030233178,
+        "name": "native-launch (thread-barrier, --native-thread-barrier)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233217,
+        "name": "native-launch (pause-probe, --native-pause-probe)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 122030233227,
+        "name": "native-launch (child-gate, --native-child-gate)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 122030233230,
+        "name": "native-launch (native-terminal, --native-terminal)",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 122030233310,
+        "name": "native-launch (listener-survival, --native-listener-survival)",
+        "status": "queued",
+        "conclusion": null
+      }
+    ],
+    "ancillary_runs": [
+      {
+        "id": 40456278988,
+        "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 40456278997,
+        "name": "v0.8 Kubernetes prelaunch static security gate",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 40456278999,
+        "name": "v0.8 prelaunch multi-service Compose integration",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 40456279034,
+        "name": "v0.8 kind five-process prelaunch runtime smoke",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 40456279011,
+        "name": "v0.8 portable preparation and driver compatibility subset",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "allocation_diagnostic_run": 40456279044,
+    "memory_comparison_run": 40456279022,
+    "full_v08_qualified": false
+  }
+}
