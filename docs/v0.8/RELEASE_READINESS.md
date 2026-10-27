@@ -229,3 +229,58 @@ checks are a named subset; they do not substitute for all-763 coverage.
 
 No stable release, merge or production migration is justified by the current
 component checkpoint.
+
+## October 26, 2026 — verified memory comparison and release disposition
+
+This section supersedes the *diagnostic comparison status* above, not the
+mandatory release-gate results. The isolated 300-second comparisons were
+executed on the exact PR candidate and are not release qualification.
+
+- GitHub run [40418928585](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40418928585):
+  optimized/no-swap controller handoff and installed IDE both passed.
+  Observed peak resident memory was approximately 150.34 MiB; measured
+  growth was 15.48 and 15.19 MiB respectively. Eight original processes
+  remained alive. Both ASan/no-swap cases failed: peaks 2000.78/2030.09 MiB
+  and growth 605.51/627.83 MiB (handoff/IDE).
+- GitHub run [40420500650](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40420500650):
+  both optimized/no-swap cases passed again; both ASan/no-swap cases failed.
+  The ASan/swap cases did not execute because the disposable runners already
+  had swap enabled and the host guard refused to modify or use it.
+- GitHub run [40420500775](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40420500775):
+  foundation and other preflight jobs passed; the two mandatory native
+  handoff/IDE recovery jobs failed. They are **not** cleared by the
+  experimental optimized comparison.
+
+### Required sequence before any release promotion
+
+1. Preserve the pinned native source and IDE revision. Promote the optimized
+   experimental build to a *separately named reproducible release candidate*
+   only after verifying Listener, Context, both Executors, shared library,
+   bridge, launcher and Python shim hashes/dependencies. Keep the existing
+   ASan/UBSan build available and unchanged for safety qualification.
+2. Add an explicitly opt-in 3600-second optimized/no-swap endurance workflow.
+   Repeat A-to-B handoff, C observing, disconnect/reconnect, pause/resume,
+   ABORT/CLOSE, and procedure execution throughout the run. Record original
+   process identity, per-process RSS/PSS, cgroup memory, allocation trends,
+   FD/thread counts, control latency, failures and cleanup. Require
+   independently verified source/binary and IDE provenance. Do not reuse
+   300-second comparison receipts to claim a 3600-second result.
+3. Isolate sanitizer overhead with a same-optimization-level pair:
+   optimized + ASan/UBSan versus optimized without sanitizers, identical
+   workloads, no swap, identical binary provenance except instrumentation.
+   Capture live allocation and allocator-retained memory separately.
+   Preserve sanitizer error detection and all existing mandatory limits.
+4. Run optional encrypted-swap experiments only on a dedicated disposable
+   runner with an explicitly proven safe swap baseline. Report setup failure
+   as setup failure, retain evidence, and never treat swap as satisfying the
+   mandatory no-swap recovery oracle.
+5. Repeat the unchanged 45-second mandatory native-handoff and installed-IDE
+   sanitizer acceptance checks. Both must meet 1792 MiB peak and 64 MiB
+   growth with all eight original processes and no swap/OOM events.
+6. After both mandatory gates pass, execute fresh all-763 historical
+   compatibility, driver/native recovery, browser/debugger/public-launch,
+   Docker Compose and Kubernetes recovery, independent security review,
+   and joint IDE/plugin package and publication checks.
+
+**Release decision: HOLD.** This is a verified comparison finding and
+an execution plan, not evidence of full v0.8 qualification or publication.
