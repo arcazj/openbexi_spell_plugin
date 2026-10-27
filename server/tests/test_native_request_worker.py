@@ -54,6 +54,10 @@ def test_all_request_callbacks_retain_less_heap_without_excluding_warmup(binarie
         "request_rebind",
         "request_collector",
         "request_unwind",
+        "message_thread_exit",
+        "request_thread_exit",
+        "message_pthread_cancel",
+        "request_pthread_cancel",
     ],
 )
 def test_request_concurrency_nesting_cancellation_and_listener_lifetime(binaries, mode):

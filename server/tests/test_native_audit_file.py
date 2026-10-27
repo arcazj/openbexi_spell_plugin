@@ -1,6 +1,8 @@
 """Real files, process restart, concurrent writes and kernel I/O refusal."""
 
+import hashlib
 import importlib.util
+import json
 import os
 import signal
 from pathlib import Path
@@ -92,6 +94,23 @@ def test_refused_cache_policy_fails_without_ack_or_record_deletion(audit_binary,
     assert result.returncode == 74 and b"stage=cache_advice errno=95" in result.stderr
     assert not result.stdout
     assert path.read_bytes() == b"z" * 65535 + b"\n"
+
+
+def test_successful_advisory_noop_is_revisited_with_all_audit_bytes_retained(
+    audit_binary, tmp_path
+):
+    path = tmp_path / "execution.ASRUN"
+    result = run(audit_binary, "cache-revisit", path)
+    assert result.returncode == 0, result.stderr
+    revisited, cached = result.stdout.splitlines()
+    assert revisited == b"REVISITED 1"
+    marker, resident, pages = cached.split()
+    assert marker == b"CACHE" and int(pages) == 16384
+    assert int(resident) * os.sysconf("SC_PAGE_SIZE") <= 65536
+    with path.open("rb") as stream:
+        for _ in range(1024):
+            assert stream.readline() == b"z" * 65535 + b"\n"
+        assert stream.read(1) == b""
 
 
 def test_large_restore_keeps_bytes_and_bounds_output_cache(audit_binary, tmp_path):
@@ -262,6 +281,9 @@ def asrun_source(tmp_path_factory):
     spec.loader.exec_module(builder)
     builder.reuse_native_timestamp_and_asrun(source)
     builder.durable_native_asrun(source)
+    baseline = source / "lib/SPELL_CIF/src/SPELLasRun.C"
+    (folder / "asrun-before-line-reuse.C").write_bytes(baseline.read_bytes())
+    builder.reuse_native_line_record(source)
     return source, builder
 
 
@@ -343,3 +365,89 @@ def test_durable_overlay_rejects_duplicate_without_changing_files(asrun_source):
         builder.durable_native_asrun(source)
     assert (source / "include/SPELL_CIF/SPELLasRun.H").read_bytes() == header
     assert (source / "lib/SPELL_CIF/src/SPELLasRun.C").read_bytes() == unit
+
+
+def test_actual_line_methods_preserve_all_records_and_remove_payload_allocations(
+    asrun_source, tmp_path
+):
+    source, _ = asrun_source
+    before = (source.parent / "asrun-before-line-reuse.C").read_text()
+    after = (source / "lib/SPELL_CIF/src/SPELLasRun.C").read_text()
+    results = {}
+    for mode, text in (("before", before), ("after", after)):
+        bodies = []
+        for name in ("toAsRun", "writeLine"):
+            start = text.index("void SPELLasRun::" + name + "(")
+            body = text[start : text.index("\n}", start) + 2]
+            bodies.append(body)
+            if mode == "before" and name == "writeLine":
+                assert hashlib.sha256(body.encode()).hexdigest() == (
+                    "a20bb8483f77cd2b9b752ae9c52530954486b06a51ae7710b11bdd3bc662507b"
+                )
+        folder = tmp_path / mode
+        folder.mkdir(mode=0o700)
+        (folder / "asrun-line.inc").write_text("\n".join(bodies))
+        binary = folder / "line"
+        subprocess.run(
+            [
+                "c++",
+                "-std=c++17",
+                "-O1",
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
+                "-pthread",
+                "-fsanitize=address,undefined",
+                "-fno-sanitize-recover=all",
+                "-fno-omit-frame-pointer",
+                "-no-pie",
+                "-I" + str(ROOT / "host_runtime/native"),
+                "-I" + str(folder),
+                str(ROOT / "server/tests/native_asrun_line.cpp"),
+                "-o",
+                str(binary),
+            ],
+            check=True,
+            capture_output=True,
+            timeout=30,
+        )
+        output = folder / "all-records.ASRUN"
+        completed = subprocess.run(
+            [str(binary), str(output)], capture_output=True, timeout=60, env=environment()
+        )
+        assert completed.returncode == 0, completed.stderr
+        results[mode] = json.loads(completed.stdout)
+        (folder / "measurement.json").write_text(json.dumps(results[mode], indent=2) + "\n")
+        assert results[mode]["acknowledged_records"] == 10004
+        assert results[mode]["all_sequences_advanced"] is True
+    original = (tmp_path / "before/all-records.ASRUN").read_bytes()
+    assert (tmp_path / "after/all-records.ASRUN").read_bytes() == original
+    lines = original.splitlines()
+    assert len(lines) == 10005
+    assert [int(line.split(b"\t")[1]) for line in lines] == list(range(10005))
+    assert all(
+        line.endswith(b"\tLINE\t\thandoff.py:44:original-progress") for line in lines[1:10001]
+    )
+    assert lines[10001].endswith(b"\tLINE\t\t")
+    assert lines[10002].endswith(b"\tLINE\t\tUTF8-\xc3\xa9-\xe2\x98\x83")
+    assert lines[10003].endswith(b"\tLINE\t\t" + b"x" * 8193)
+    assert lines[10004].endswith(b"\tLINE\t\tAFTER_OVERSIZED")
+    assert results["before"]["measured_allocations"] >= 10000
+    assert results["after"]["measured_allocations"] <= 2
+    assert results["after"]["retained_prefix_capacity"] <= 1024
+
+
+@pytest.mark.parametrize("drift", [False, True])
+def test_line_overlay_rejects_drift_or_reapplication_without_writes(asrun_source, tmp_path, drift):
+    source, builder = asrun_source
+    path = tmp_path / "lib/SPELL_CIF/src/SPELLasRun.C"
+    path.parent.mkdir(parents=True)
+    path.write_bytes((source / "lib/SPELL_CIF/src/SPELLasRun.C").read_bytes())
+    if drift:
+        original = (source.parent / "asrun-before-line-reuse.C").read_text()
+        path.write_text(original.replace('STR("LINE")', 'STR("CHANGED")'))
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="LINE audit preimage differs"):
+        builder.reuse_native_line_record(tmp_path)
+    assert path.read_bytes() == before

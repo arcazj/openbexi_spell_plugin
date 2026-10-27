@@ -20,7 +20,7 @@
 // uncertain write or sync result. Error messages contain fixed labels only.
 class V08AuditFile {
     int directory=-1, file=-1;
-    off_t released=0;
+    off_t advised=0;
     long page_size=0;
     std::string name;
     std::recursive_mutex mutex;
@@ -54,12 +54,15 @@ class V08AuditFile {
         struct stat contents{};
         if(::fstat(file,&contents)!=0)failed("cache_stat");
         const off_t complete=contents.st_size-(contents.st_size%page_size);
-        if(complete<=released || (!final && complete-released<65536))return;
-        const int result=::posix_fadvise(file,released,complete-released,POSIX_FADV_DONTNEED);
+        if(complete<=0 || (!final && complete-advised<65536))return;
+        // Successful advice is not an eviction receipt. Earlier completed
+        // pages can remain resident or be refaulted. Revisit the synced prefix
+        // instead of treating a monotonic advisory cursor as proof of release.
+        const int result=::posix_fadvise(file,0,complete,POSIX_FADV_DONTNEED);
         // A platform refusing the bounded-cache policy cannot silently claim
         // success. fadvise returns an error code, rather than setting errno.
         if(result!=0)failed("cache_advice",result);
-        released=complete;
+        advised=complete;
     }
     void sync_record(const char* stage) {
         if(::fdatasync(file)!=0)failed(stage);
@@ -132,7 +135,7 @@ public:
         verify(file);
         page_size=::sysconf(_SC_PAGESIZE);
         if(page_size<=0)failed("page_size",EINVAL);
-        released=0;
+        advised=0;
         struct stat contents{};
         if(::fstat(file,&contents)!=0)failed("file_stat");
         if(append && contents.st_size>0) {
@@ -190,8 +193,7 @@ public:
             const off_t consumed=copied-(copied%page_size);
             if(consumed-input_released>=65536) {
                 sync_record("restore_sync");
-                const int result=::posix_fadvise(input,input_released,
-                    consumed-input_released,POSIX_FADV_DONTNEED);
+                const int result=::posix_fadvise(input,0,consumed,POSIX_FADV_DONTNEED);
                 if(result!=0)failed("restore_cache_advice",result);
                 input_released=consumed;
             }

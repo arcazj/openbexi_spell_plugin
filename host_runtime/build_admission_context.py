@@ -985,6 +985,33 @@ def durable_native_asrun(source):
         (source / relative).write_text(text)
 
 
+def reuse_native_line_record(source):
+    """Write measured LINE payloads from owned parts, preserving every byte."""
+    path = source / "lib/SPELL_CIF/src/SPELLasRun.C"
+    text = path.read_text()
+    start = text.index("void SPELLasRun::writeLine(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "a20bb8483f77cd2b9b752ae9c52530954486b06a51ae7710b11bdd3bc662507b"
+    ):
+        raise ValueError("Native LINE audit preimage differs")
+    # The original toAsRun call builds LINE+stack into a temporary on every
+    # traced line. Use the same locked timestamp/sequence buffer and synchronous
+    # two-part durable writer. No user bytes or acknowledgements are omitted.
+    changed = """void SPELLasRun::writeLine( const std::string& stack )
+{
+    std::lock_guard<std::recursive_mutex> recordLock(m_v08RecordMutex);
+    std::string& line = m_v08Record;
+    SPELLutils::timestamp(line);
+    line += "\\t"; line += ISTR(m_sequence); line += "\\tLINE\\t\\t";
+    m_file.write_parts(line, stack);
+    m_sequence++;
+    if (line.capacity()>1024) std::string().swap(line); else line.clear();
+}"""
+    path.write_text(text[:start] + changed + text[end:])
+
+
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
     message_header = source / "include/SPELL_IPC/SPELLipcMessage.H"
@@ -1465,6 +1492,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     bound_native_diagnostic_logs(source)
     reuse_native_timestamp_and_asrun(source)
     durable_native_asrun(source)
+    reuse_native_line_record(source)
     return before
 
 

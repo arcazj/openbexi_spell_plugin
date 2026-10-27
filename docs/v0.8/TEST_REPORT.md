@@ -1,3 +1,30 @@
+# Current dev73 candidate: fresh whole-runtime qualification pending
+
+Measured corrections preserve original audit bytes, sanitizer options, limits,
+deadlines, concurrency and workload. All163 final local components pass. LINE
+audit calls reuse the existing locked prefix and synchronous two-part writer:
+all10,004 acknowledged records match, while10,000 measured calls allocate
+10,000 times before and once after. Callback lifetime guards settle tickets
+after physical thread exit/cancellation cleanup and retire exited slots; native
+MESSAGE/REQUEST controls and all subsequent dedicated fallbacks pass. The
+historical90-second failure is not attributed to this newly reproduced defect.
+
+The audit writer revisits previously advised completed prefixes after sync.
+Real prior cache-bound failures and their raw records remain retained. A
+deliberate successful advisory no-op reproduces256KiB retained by the old
+cursor; final current tests revisit that prefix and keep every byte. Advice
+remains advisory; no memory pass is inferred from a hint or component alone.
+
+Both preceding6dd sanitizer hours fail. Handoff retains1,105 observations over
+2,335.159192092seconds, peak2,147,495,936bytes. Its last sample has zero OOM/kill
+counters; later Docker records OOMKilled=true. IDE retains472 observations over
+991.929476709seconds with one sampled OOM kill. Both142-source overlays and all
+23/27 raw audit files verify. Optimized results never replace sanitizer gates.
+
+See [measured corrections](MEASURED_AUDIT_AND_CALLBACK_CORRECTIONS.md) and
+[source-bound local receipt](evidence/measured-audit-callback-corrections-20261027.json).
+All eleven full-release groups remain false. No stable v0.8 publication.
+
 <!-- checkpoint-6dd8218:start -->
 # Verified bounded checkpoint at 6dd8218, full release unqualified
 
@@ -30,7 +57,7 @@ The five ancillary workflows pass only within their 241-test portable,
 prelaunch Compose/kind, static manifest and development Python inventory scopes.
 Test counts overlap.
 
-The installed-IDE sanitizer hour fails; the handoff hour is still running. The IDE archive retains all
+Both6dd sanitizer-hour attempts fail before one hour. The IDE archive retains all
 472 observations spanning 991.929476709 seconds, peak 2,147,495,936 bytes and one
 sampled OOM kill; an original process exits. All 142 exact-overlay sources and
 27 raw audit files verify. These are failed sustained observations, never a

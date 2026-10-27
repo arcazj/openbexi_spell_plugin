@@ -483,9 +483,252 @@
           "anonymous_bytes": 535420928
         }
       ]
+    },
+    {
+      "artifact": 12777330473,
+      "artifact_name": "v08-audit-sanitized-hour-handoff-4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "artifact_digest": "sha256:dd236798ff6ab1256bd9c21831092c194170fec38458e6eb7c6e31d551a15f71",
+      "executable": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "tested_checkout": "4cead70f8c532bd8a0c064b309b22dfa9a1ed475",
+      "tree": "e8a9e51741d48c340b1ecf7845e437da6fdb0b7a",
+      "profile": "asan-noswap",
+      "scenario": "handoff",
+      "requested_seconds": 3600,
+      "passed": false,
+      "diagnostic_only": true,
+      "native_error": "RuntimeError: endurance_original_process_exited",
+      "comparison_failures": [
+        "ValueError: memory_comparison_incomplete"
+      ],
+      "elapsed_including_preparation_seconds": 2575.2653242650003,
+      "source_hashes_verified": 142,
+      "evidence_hashes_verified": 71,
+      "audit_files_verified": 23,
+      "exact_overlay_reproduced": true,
+      "all_samples_retained": true,
+      "resource_acceptance": null,
+      "resource_observations_available": true,
+      "resource_trace_file_present": true,
+      "samples": 1105,
+      "observed_span_seconds": 2335.159192092,
+      "peak_bytes": 2147495936,
+      "last_memory_events": {
+        "high": 0,
+        "low": 0,
+        "max": 91,
+        "oom": 0,
+        "oom_group_kill": 0,
+        "oom_kill": 0,
+        "sock_throttled": 0
+      },
+      "last_memory_stat": {
+        "active_anon": 17481728,
+        "active_file": 0,
+        "anon": 2121662464,
+        "anon_thp": 0,
+        "file": 2981888,
+        "file_dirty": 0,
+        "file_mapped": 0,
+        "file_thp": 0,
+        "file_writeback": 0,
+        "inactive_anon": 2107154432,
+        "inactive_file": 8192,
+        "kernel": 22728704,
+        "kernel_stack": 1966080,
+        "numa_hint_faults": 0,
+        "numa_pages_migrated": 0,
+        "numa_pte_updates": 0,
+        "pagetables": 17436672,
+        "percpu": 2808,
+        "pgactivate": 82,
+        "pgdeactivate": 0,
+        "pgdemote_direct": 0,
+        "pgdemote_khugepaged": 0,
+        "pgdemote_kswapd": 0,
+        "pgdemote_proactive": 0,
+        "pgfault": 841102,
+        "pglazyfree": 0,
+        "pglazyfreed": 0,
+        "pgmajfault": 0,
+        "pgpromote_success": 0,
+        "pgrefill": 16,
+        "pgscan": 194,
+        "pgscan_direct": 194,
+        "pgscan_khugepaged": 0,
+        "pgscan_kswapd": 0,
+        "pgscan_proactive": 0,
+        "pgsteal": 107,
+        "pgsteal_direct": 107,
+        "pgsteal_khugepaged": 0,
+        "pgsteal_kswapd": 0,
+        "pgsteal_proactive": 0,
+        "pswpin": 0,
+        "pswpout": 0,
+        "sec_pagetables": 0,
+        "shmem": 2973696,
+        "shmem_thp": 0,
+        "slab": 3283008,
+        "slab_reclaimable": 235456,
+        "slab_unreclaimable": 3047552,
+        "sock": 4096,
+        "swapcached": 0,
+        "swpin_zero": 0,
+        "swpout_zero": 0,
+        "thp_collapse_alloc": 0,
+        "thp_fault_alloc": 0,
+        "thp_swpout": 0,
+        "thp_swpout_fallback": 0,
+        "unevictable": 0,
+        "vmalloc": 12288,
+        "workingset_activate_anon": 0,
+        "workingset_activate_file": 0,
+        "workingset_nodereclaim": 0,
+        "workingset_refault_anon": 0,
+        "workingset_refault_file": 2,
+        "workingset_restore_anon": 0,
+        "workingset_restore_file": 0,
+        "zswap": 0,
+        "zswapped": 0,
+        "zswpin": 0,
+        "zswpout": 0,
+        "zswpwb": 0
+      },
+      "last_native_allocator": [
+        {
+          "allocated_bytes": 1490937,
+          "free_bytes": 41521192,
+          "heap_bytes": 232988672,
+          "monotonic_ns": 2649927050652,
+          "pid": 81,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10291156,
+          "free_bytes": 174297143,
+          "heap_bytes": 517611520,
+          "monotonic_ns": 2648280557003,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9122823,
+          "free_bytes": 131179959,
+          "heap_bytes": 500576256,
+          "monotonic_ns": 2639462904760,
+          "pid": 146,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9398033,
+          "free_bytes": 101629407,
+          "heap_bytes": 491597824,
+          "monotonic_ns": 2643462480462,
+          "pid": 99,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4704848,
+          "heap_bytes": 7020544,
+          "monotonic_ns": 2643467279517,
+          "pid": 42,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_audit_files": {
+        "categories": {
+          "asrun": {
+            "allocated_bytes": 64892928,
+            "files": 2,
+            "logical_bytes": 64880171
+          },
+          "native_console": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          },
+          "native_diagnostic": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          },
+          "other": {
+            "allocated_bytes": 0,
+            "files": 0,
+            "logical_bytes": 0
+          }
+        },
+        "complete": true,
+        "entries": 2,
+        "errors": 0,
+        "symlinks": 0
+      },
+      "last_pids": [
+        {
+          "namespace_pid": 1,
+          "program": "docker-init",
+          "pid": 17066,
+          "start_ticks": 31490,
+          "anonymous_bytes": 49152
+        },
+        {
+          "namespace_pid": 7,
+          "program": "python3.13",
+          "pid": 17095,
+          "start_ticks": 31496,
+          "anonymous_bytes": 30752768
+        },
+        {
+          "namespace_pid": 20,
+          "program": "SPELL-Listener",
+          "pid": 17176,
+          "start_ticks": 31531,
+          "anonymous_bytes": 45010944
+        },
+        {
+          "namespace_pid": 37,
+          "program": "SPELL-Context",
+          "pid": 17210,
+          "start_ticks": 31543,
+          "anonymous_bytes": 656171008
+        },
+        {
+          "namespace_pid": 42,
+          "program": "spell-host-ipc",
+          "pid": 17215,
+          "start_ticks": 31546,
+          "anonymous_bytes": 46964736
+        },
+        {
+          "namespace_pid": 81,
+          "program": "spell-host-ipc",
+          "pid": 17340,
+          "start_ticks": 31616,
+          "anonymous_bytes": 305967104
+        },
+        {
+          "namespace_pid": 99,
+          "program": "SPELL-Executor",
+          "pid": 17398,
+          "start_ticks": 31643,
+          "anonymous_bytes": 513871872
+        },
+        {
+          "namespace_pid": 146,
+          "program": "SPELL-Executor",
+          "pid": 17718,
+          "start_ticks": 31816,
+          "anonymous_bytes": 522887168
+        }
+      ]
     }
   ],
-  "handoff_hour_pending": true,
+  "handoff_hour_pending": false,
   "core_and_audit_artifacts": [
     {
       "id": 12773024304,
@@ -990,5 +1233,24 @@
   "all_eleven_release_groups_open": true,
   "full_v08_qualified": false,
   "published": false,
-  "production_migration_authorized": false
+  "production_migration_authorized": false,
+  "handoff_later_docker_observation": {
+    "path_within_artifact": "run-b9dccffeaf49430a81500dfceab81ff1/evidence/spell-v08-launch-422312dc00f0-handoff-probe.state.json",
+    "sha256": "ac306ca1a4a03eef34802acb92766fd304b07e6e2885b20039995d439c613e2f",
+    "state": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": true,
+      "Dead": false,
+      "Pid": 17066,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-27T21:59:26.310868478Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "last_sample_oom_and_kill_counts_remain_zero": true,
+    "kernel_victim_pid_not_proven": true
+  }
 }

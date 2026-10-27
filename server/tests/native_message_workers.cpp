@@ -11,6 +11,7 @@
 #include <chrono>
 #include <stdexcept>
 #include <set>
+#include <pthread.h>
 #include <sys/syscall.h>
 #include <unistd.h>
 extern "C" size_t __sanitizer_get_heap_size();
@@ -98,6 +99,40 @@ int main(int argc,char** argv) {
         std::cout<<"{\"calls\":"<<l.calls<<",\"simultaneous\":5,\"os_threads_created\":"<<distinct
                  <<",\"heap_growth_bytes\":"<<(after-initial)<<",\"live_bytes\":"
                  <<__sanitizer_get_current_allocated_bytes()<<"}\n";
+    } else if(mode=="message_thread_exit" || mode=="request_thread_exit" ||
+              mode=="message_pthread_cancel" || mode=="request_pthread_cancel") {
+        struct ExitingListener:Listener {
+            std::atomic<int> entered{0},cleaned{0};
+            pthread_t original{};
+            bool cancellation=false;
+            void processMessage(const SPELLipcMessage&) override {
+                struct Cleanup {
+                    std::atomic<int>& count;
+                    ~Cleanup(){++count;}
+                } cleanup{cleaned};
+                original=pthread_self();++entered;
+                if(cancellation)for(;;)::usleep(1000);
+                pthread_exit(nullptr);
+            }
+            SPELLipcMessage processRequest(const SPELLipcMessage& message) override {
+                processMessage(message);return SPELLipcMessage();
+            }
+        } exiting;
+        exiting.cancellation=mode.find("pthread_cancel")!=std::string::npos;
+        const bool requests=mode.rfind("request_",0)==0;
+        SPELLmutex mutex;SPELLipcChannel* channel=nullptr;
+        // Exceed all five reusable slots. Exited slots must not be reused;
+        // subsequent callbacks still have the original dedicated fallback.
+        for(int n=0;n<12;++n) {
+            MessageOwner job=requests?
+                MessageOwner(new SPELLipcIncomingRequest("id","interface",SPELLipcMessage("payload"),mutex,&channel,exiting),dispose):
+                message(exiting);
+            job->start();waitFor(exiting.entered,n+1);
+            if(exiting.cancellation)assert(pthread_cancel(exiting.original)==0);
+            job->join();
+            assert(job->isFinished() && exiting.cleaned==n+1);
+        }
+        std::cout<<"{\"callbacks\":12,\"unwound_cleanups\":12,\"native_finished\":true}\n";
     } else if(mode=="sequential") {
         for(int i=0;i<10000;++i) {auto m=message(l);m->start();m->join();assert(m->isFinished());}
         assert(l.calls==10000);

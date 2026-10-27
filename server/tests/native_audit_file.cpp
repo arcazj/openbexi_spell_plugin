@@ -8,6 +8,7 @@
 #ifdef V08_AUDIT_FAULT_WRAPPERS
 static int fault=0, fault_calls=0;
 static bool record_synced=false;
+static bool ignored_range_revisited=false;
 extern "C" ssize_t __real_write(int,const void*,size_t);
 extern "C" int __real_fdatasync(int);
 extern "C" int __real_posix_fadvise(int,off_t,off_t,int);
@@ -40,6 +41,13 @@ extern "C" int __wrap_posix_fadvise(int fd,off_t offset,off_t length,int advice)
     if(fault==6 && (!record_synced || advice!=POSIX_FADV_DONTNEED ||
         offset % ::sysconf(_SC_PAGESIZE)!=0 || length<=0 ||
         length % ::sysconf(_SC_PAGESIZE)!=0))_exit(76);
+    // A legal successful advisory no-op must not permanently exclude the
+    // first four completed batches from subsequent advice. No bytes are lost.
+    if(fault==7) {
+        if(!record_synced || advice!=POSIX_FADV_DONTNEED)_exit(76);
+        if(fault_calls++<4)return 0;
+        if(offset==0 && length>=4*65536)ignored_range_revisited=true;
+    }
     return __real_posix_fadvise(fd,offset,length,advice);
 }
 #endif
@@ -77,10 +85,11 @@ int main(int argc,char** argv) {
     }
     output.open(path);
 #ifdef V08_AUDIT_FAULT_WRAPPERS
-    if(mode=="cache-probe" || mode=="cache-refusal") {
-        fault=mode=="cache-probe"?6:5;
+    if(mode=="cache-probe" || mode=="cache-refusal" || mode=="cache-revisit") {
+        fault=mode=="cache-probe"?6:mode=="cache-revisit"?7:5;
         const std::string record(65535,'z');
         for(unsigned int i=0;i<1024;++i)output.write_line(record);
+        if(mode=="cache-revisit")std::printf("REVISITED %u\n",ignored_range_revisited);
         return report_cache(path);
     }
 #endif

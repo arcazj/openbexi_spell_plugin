@@ -1,0 +1,677 @@
+{
+  "schema": "openbexi.v08.measured-corrections/1",
+  "recorded_at": "2026-10-27T22:51:38.784387+00:00",
+  "candidate_parent": "e4e707d98c6f00659a2f968a0682449465fe7f0a",
+  "verified_predecessor": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+  "candidate_version": "0.8.0.dev73",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "local_components": {
+    "source_parent": "e4e707d98c6f00659a2f968a0682449465fe7f0a",
+    "verified_executable_predecessor": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "scope": "compiled source components only; original native handoff/installed IDE/ENOSPC/lifecycle acceptance requires fresh CI",
+    "source_files": {
+      "scripts/qualify_v08_server.py": {
+        "bytes": 14428,
+        "sha256": "5aaf16383a4e1c3d60b565cf48805aa2f2f7509f97752c1119e8634b10b431e3"
+      },
+      "scripts/v08_memory_experiment.py": {
+        "bytes": 21032,
+        "sha256": "b7a5fa28f296abe69af3801a599b57973360125d79974d876490f737add309a2"
+      },
+      "host_runtime/build_admission_context.py": {
+        "bytes": 76594,
+        "sha256": "89b1fa58bddad23e2f6559bfc10592b26d3174d3a32f51f126ac57ac211b0b7b"
+      },
+      "server/tests/native_audit_file.cpp": {
+        "bytes": 5581,
+        "sha256": "f52255bcfc0ab41fe19dc134f3169f4be7bdc2f833a856b14906b222adc0e2dd"
+      },
+      "server/tests/test_native_audit_file.py": {
+        "bytes": 17793,
+        "sha256": "cfce011285fc4b47aaa21d29404c5391101750fd0cb234fe11adc7134ab4a44c"
+      },
+      "server/tests/native_message_workers.cpp": {
+        "bytes": 15777,
+        "sha256": "5c71b93d61506d6b1209be2796ec71ae01a0be2b01c81355223505709562af0f"
+      },
+      "server/tests/test_native_request_worker.py": {
+        "bytes": 2441,
+        "sha256": "94f1233268a8b6656a2e9406deb0ce78df70864affceb5be58e28924de8b7d36"
+      },
+      "server/tests/native_asrun_line.cpp": {
+        "bytes": 2941,
+        "sha256": "90197ce50864ecb3fadcb6b6200122514b2d12f608f3260475baf9559db09948"
+      },
+      "host_runtime/native/audit_file.H": {
+        "bytes": 10488,
+        "sha256": "50d3df57aedda3447acca72889f46f37c9efa83aad06b73775708eeacce93ce4"
+      },
+      "host_runtime/native/message_workers.H": {
+        "bytes": 4651,
+        "sha256": "7b7f2fc50215b957991b19748dfb3490ed798662ab7d1190281e92040734375e"
+      }
+    },
+    "test_outcome": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "163",
+      "time": "51.585",
+      "timestamp": "2026-10-27T17:46:55.673673-05:00",
+      "hostname": "3d68ffbc35bb"
+    },
+    "record_format_identical": true,
+    "all_records_retained": true,
+    "before": {
+      "acknowledged_records": 10004,
+      "all_sequences_advanced": true,
+      "measured_allocations": 10000,
+      "measured_bytes": 380000,
+      "live_before": 73870,
+      "live_after": 73870,
+      "heap_before": 860160,
+      "heap_after": 1646592,
+      "retained_prefix_capacity": 15,
+      "audit_sha256": "5d7a06a01e24b8237add23e22406573387d184868827d410de00b03c9352c577",
+      "audit_bytes": 497202
+    },
+    "after": {
+      "acknowledged_records": 10004,
+      "all_sequences_advanced": true,
+      "measured_allocations": 1,
+      "measured_bytes": 31,
+      "live_before": 73870,
+      "live_after": 73901,
+      "heap_before": 860160,
+      "heap_after": 860160,
+      "retained_prefix_capacity": 30,
+      "audit_sha256": "5d7a06a01e24b8237add23e22406573387d184868827d410de00b03c9352c577",
+      "audit_bytes": 497202
+    },
+    "callback_exit": {
+      "exit": 0,
+      "stdout": "cleanup=1 joined=1\n",
+      "stderr": "",
+      "seconds": 0.00500862899934873,
+      "header_sha256": "7b7f2fc50215b957991b19748dfb3490ed798662ab7d1190281e92040734375e",
+      "historical_hang_cause_proven": false
+    },
+    "full_v08_qualified": false,
+    "published": false
+  },
+  "source_hashes": {
+    "scripts/qualify_v08_server.py": "5aaf16383a4e1c3d60b565cf48805aa2f2f7509f97752c1119e8634b10b431e3",
+    "scripts/v08_memory_experiment.py": "b7a5fa28f296abe69af3801a599b57973360125d79974d876490f737add309a2",
+    "host_runtime/build_admission_context.py": "89b1fa58bddad23e2f6559bfc10592b26d3174d3a32f51f126ac57ac211b0b7b",
+    "server/tests/native_audit_file.cpp": "f52255bcfc0ab41fe19dc134f3169f4be7bdc2f833a856b14906b222adc0e2dd",
+    "server/tests/test_native_audit_file.py": "cfce011285fc4b47aaa21d29404c5391101750fd0cb234fe11adc7134ab4a44c",
+    "server/tests/native_message_workers.cpp": "5c71b93d61506d6b1209be2796ec71ae01a0be2b01c81355223505709562af0f",
+    "server/tests/test_native_request_worker.py": "94f1233268a8b6656a2e9406deb0ce78df70864affceb5be58e28924de8b7d36",
+    "server/tests/native_asrun_line.cpp": "90197ce50864ecb3fadcb6b6200122514b2d12f608f3260475baf9559db09948",
+    "host_runtime/native/audit_file.H": "50d3df57aedda3447acca72889f46f37c9efa83aad06b73775708eeacce93ce4",
+    "host_runtime/native/message_workers.H": "7b7f2fc50215b957991b19748dfb3490ed798662ab7d1190281e92040734375e",
+    "server/pyproject.toml": "8e32f7fd5cccc95bbaec155d58d0be3800d509f06a43040131e6bc61efe9ed96",
+    "server/src/openbexi_spell_server/__init__.py": "57a7860c1de30a5c9c6e60f906f1c566011dfa01ee4a9f099f54bf76b3e5d8e7",
+    "deploy/v0.8/compose.yaml": "00ce1cf4ad0ccc73bac366b443e852d41de11efd82abd8e55e1461e71ca58507",
+    "deploy/v0.8/Dockerfile.server": "9e8f998a898735c353256a49bdb0f51287899d55605d72d274b2738fe6fdc96a",
+    "deploy/v0.8/render_kubernetes.py": "24b94f6f3f5c7639c6c5deec88467a96c9a638df9138ee4766d8f678bc4b3e7a"
+  },
+  "callback_before_exit_reproduction": [
+    {
+      "mode": "dedicated",
+      "exit": 0,
+      "stdout": "cleanup=1 joined=1\n",
+      "stderr": "",
+      "timed_out": false,
+      "seconds": 0.004999816999770701
+    },
+    {
+      "mode": "pooled",
+      "timed_out": true,
+      "stdout": "",
+      "stderr": "",
+      "seconds": 3.0046396759971685
+    },
+    {
+      "source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+      "header_sha256": "27cc65d2966eceb22ffa30ca35584ab3004a0c621501f3fe826cb03924e008fe",
+      "binary_sha256": "3119735812bedf7d85213aac3d3200d8c1d47b2f67489e1e742cf477b6d76096",
+      "original_historical_hang_cause_proven": false
+    }
+  ],
+  "cache_original_component_failure": {
+    "schema": "openbexi.local-cache-policy-observation/1",
+    "failed_component_retained": true,
+    "original_failed_observation_cached_pages": 3840,
+    "pages": 16384,
+    "later_before_whole_prefix_advice_cached_pages": 16384,
+    "immediately_after_whole_prefix_advice_cached_pages": 0,
+    "all67108864bytes_match_expected": true,
+    "audit_sha256": "46d690b3cf4bfd0d8d170bb5c4a9ff9fce37edfad0dd8e51a5534fb8674b54b7",
+    "inode": 675369,
+    "storage_device": 27,
+    "scope": "local overlay filesystem component, not hosted native acceptance",
+    "cause_established": false
+  },
+  "cache_all_comparisons": [
+    {
+      "attempt": 0,
+      "policy": "original",
+      "exit": 0,
+      "stdout": "CACHE 5889 16384\n",
+      "stderr": "",
+      "seconds": 0.7435420370020438,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 0,
+      "policy": "revisit-prefix",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.6141146299996763,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 1,
+      "policy": "original",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.6143431540003803,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 1,
+      "policy": "revisit-prefix",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.5284196350003185,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 2,
+      "policy": "original",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.5801691389970074,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 2,
+      "policy": "revisit-prefix",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.5304556219998631,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 3,
+      "policy": "original",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.6471726589988975,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    },
+    {
+      "attempt": 3,
+      "policy": "revisit-prefix",
+      "exit": 0,
+      "stdout": "CACHE 1 16384\n",
+      "stderr": "",
+      "seconds": 0.6200439499989443,
+      "bytes": 67108864,
+      "sha256": "6cca39a14d3a0b1596a95481116f167f9b8855c583c888151e65b4e2e5166abd"
+    }
+  ],
+  "cache_deterministic_before_noop": {
+    "header_source": "6dd82189a4cdc4f021af3a357ccf747a0b459f98",
+    "exit": 0,
+    "stdout": "REVISITED 0\nCACHE 64 16384\n",
+    "stderr": "",
+    "bytes": 67108864,
+    "sha256": "46d690b3cf4bfd0d8d170bb5c4a9ff9fce37edfad0dd8e51a5534fb8674b54b7",
+    "required_records_deleted": false,
+    "actual_kernel_cause_of_prior_failures_established": false,
+    "injection": "First4successfuladvicecallsdo_not_evict; all_subsequent_calls_real"
+  },
+  "large_python_allocation_context": {
+    "artifact": 12775544179,
+    "artifact_name": "v08-allocation-bytes-e5565ef2757e2b61d60efd041ed475f97c15cba4",
+    "artifact_digest": "sha256:810d25dfb83ca141ddd135cb4d61ce9c55eb577487de7f2651d99b5b978939e1",
+    "executable": "e5565ef2757e2b61d60efd041ed475f97c15cba4",
+    "tested_checkout": "e5565ef2757e2b61d60efd041ed475f97c15cba4",
+    "tree": "8707376226a0661e91be2d406b27e64a8a71553d",
+    "profile": "asan-noswap",
+    "scenario": "handoff",
+    "requested_seconds": 300,
+    "passed": false,
+    "diagnostic_only": true,
+    "native_error": "RuntimeError: Native recovery resource acceptance failed",
+    "comparison_failures": [],
+    "elapsed_including_preparation_seconds": 640.839278855,
+    "source_hashes_verified": 142,
+    "evidence_hashes_verified": 69,
+    "audit_files_verified": 23,
+    "exact_overlay_reproduced": true,
+    "all_samples_retained": true,
+    "resource_acceptance": {
+      "schema": "openbexi.native-memory-comparison-resources/1",
+      "profile": "asan-noswap",
+      "diagnostic_only": true,
+      "full_v08_qualified": false,
+      "eligible_for_publication": false,
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "resident_peak_budget_bytes": 1879048192,
+      "combined_peak_budget_bytes": 1879048192,
+      "maximum_combined_window_growth_bytes": 67108864,
+      "minimum_soak_seconds": 300,
+      "swap_exercised": false,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "samples": 169,
+      "soak_samples": 143,
+      "duration_seconds": 303.646997442,
+      "resident_peak_bytes": 1475354624,
+      "sampled_combined_peak_bytes": 1474220032,
+      "combined_window_growth_bytes": 459665408.0,
+      "sampled_swap_peak_bytes": 0,
+      "native_instrumentation_verified": true,
+      "original_processes": 8,
+      "memory_max_events": 0,
+      "thread_observations_available": true,
+      "thread_first_median": 119.0,
+      "thread_last_median": 119.0,
+      "allocator_observations_available": true,
+      "last_memory_stat": {
+        "active_anon": 1451491328,
+        "active_file": 28672,
+        "anon": 1447735296,
+        "anon_thp": 0,
+        "file": 3883008,
+        "file_dirty": 12288,
+        "file_mapped": 0,
+        "file_thp": 0,
+        "file_writeback": 0,
+        "inactive_anon": 0,
+        "inactive_file": 98304,
+        "kernel": 22048768,
+        "kernel_stack": 1949696,
+        "numa_hint_faults": 0,
+        "numa_pages_migrated": 0,
+        "numa_pte_updates": 0,
+        "pagetables": 15966208,
+        "percpu": 2808,
+        "pgactivate": 0,
+        "pgdeactivate": 0,
+        "pgdemote_direct": 0,
+        "pgdemote_khugepaged": 0,
+        "pgdemote_kswapd": 0,
+        "pgdemote_proactive": 0,
+        "pgfault": 508632,
+        "pglazyfree": 0,
+        "pglazyfreed": 0,
+        "pgmajfault": 0,
+        "pgpromote_success": 0,
+        "pgrefill": 0,
+        "pgscan": 0,
+        "pgscan_direct": 0,
+        "pgscan_khugepaged": 0,
+        "pgscan_kswapd": 0,
+        "pgscan_proactive": 0,
+        "pgsteal": 0,
+        "pgsteal_direct": 0,
+        "pgsteal_khugepaged": 0,
+        "pgsteal_kswapd": 0,
+        "pgsteal_proactive": 0,
+        "pswpin": 0,
+        "pswpout": 0,
+        "sec_pagetables": 0,
+        "shmem": 3784704,
+        "shmem_thp": 0,
+        "slab": 4085824,
+        "slab_reclaimable": 1234864,
+        "slab_unreclaimable": 2850960,
+        "sock": 0,
+        "swapcached": 0,
+        "swpin_zero": 0,
+        "swpout_zero": 0,
+        "thp_collapse_alloc": 0,
+        "thp_fault_alloc": 0,
+        "thp_swpout": 0,
+        "thp_swpout_fallback": 0,
+        "unevictable": 0,
+        "vmalloc": 12288,
+        "workingset_activate_anon": 0,
+        "workingset_activate_file": 0,
+        "workingset_nodereclaim": 0,
+        "workingset_refault_anon": 0,
+        "workingset_refault_file": 0,
+        "workingset_restore_anon": 0,
+        "workingset_restore_file": 0,
+        "zswap": 0,
+        "zswapped": 0,
+        "zswpin": 0,
+        "zswpout": 0,
+        "zswpwb": 0
+      },
+      "last_native_allocator": [
+        {
+          "allocated_bytes": 10288955,
+          "free_bytes": 46592592,
+          "heap_bytes": 279265280,
+          "monotonic_ns": 756826754578,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1489712,
+          "free_bytes": 10754328,
+          "heap_bytes": 42344448,
+          "monotonic_ns": 755742067508,
+          "pid": 83,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4697984,
+          "heap_bytes": 7020544,
+          "monotonic_ns": 746054136802,
+          "pid": 38,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9147929,
+          "free_bytes": 45767496,
+          "heap_bytes": 284184576,
+          "monotonic_ns": 750053934513,
+          "pid": 146,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9392157,
+          "free_bytes": 55865600,
+          "heap_bytes": 345460736,
+          "monotonic_ns": 754053574984,
+          "pid": 101,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ]
+    },
+    "resource_observations_available": true,
+    "resource_trace_file_present": true,
+    "samples": 169,
+    "observed_span_seconds": 356.2229418,
+    "peak_bytes": 1475354624,
+    "last_memory_events": {
+      "high": 0,
+      "low": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_group_kill": 0,
+      "oom_kill": 0,
+      "sock_throttled": 0
+    },
+    "last_memory_stat": {
+      "active_anon": 1297448960,
+      "active_file": 20480,
+      "anon": 1293828096,
+      "anon_thp": 0,
+      "file": 3915776,
+      "file_dirty": 12288,
+      "file_mapped": 0,
+      "file_thp": 0,
+      "file_writeback": 0,
+      "inactive_anon": 0,
+      "inactive_file": 114688,
+      "kernel": 17080320,
+      "kernel_stack": 1277952,
+      "numa_hint_faults": 0,
+      "numa_pages_migrated": 0,
+      "numa_pte_updates": 0,
+      "pagetables": 12304384,
+      "percpu": 2616,
+      "pgactivate": 0,
+      "pgdeactivate": 0,
+      "pgdemote_direct": 0,
+      "pgdemote_khugepaged": 0,
+      "pgdemote_kswapd": 0,
+      "pgdemote_proactive": 0,
+      "pgfault": 509939,
+      "pglazyfree": 0,
+      "pglazyfreed": 0,
+      "pgmajfault": 0,
+      "pgpromote_success": 0,
+      "pgrefill": 0,
+      "pgscan": 0,
+      "pgscan_direct": 0,
+      "pgscan_khugepaged": 0,
+      "pgscan_kswapd": 0,
+      "pgscan_proactive": 0,
+      "pgsteal": 0,
+      "pgsteal_direct": 0,
+      "pgsteal_khugepaged": 0,
+      "pgsteal_kswapd": 0,
+      "pgsteal_proactive": 0,
+      "pswpin": 0,
+      "pswpout": 0,
+      "sec_pagetables": 0,
+      "shmem": 3801088,
+      "shmem_thp": 0,
+      "slab": 3466096,
+      "slab_reclaimable": 1423520,
+      "slab_unreclaimable": 2042576,
+      "sock": 0,
+      "swapcached": 0,
+      "swpin_zero": 0,
+      "swpout_zero": 0,
+      "thp_collapse_alloc": 0,
+      "thp_fault_alloc": 0,
+      "thp_swpout": 0,
+      "thp_swpout_fallback": 0,
+      "unevictable": 0,
+      "vmalloc": 12288,
+      "workingset_activate_anon": 0,
+      "workingset_activate_file": 0,
+      "workingset_nodereclaim": 0,
+      "workingset_refault_anon": 0,
+      "workingset_refault_file": 0,
+      "workingset_restore_anon": 0,
+      "workingset_restore_file": 0,
+      "zswap": 0,
+      "zswapped": 0,
+      "zswpin": 0,
+      "zswpout": 0,
+      "zswpwb": 0
+    },
+    "last_native_allocator": [
+      {
+        "allocated_bytes": 10282368,
+        "free_bytes": 46840032,
+        "heap_bytes": 279855104,
+        "monotonic_ns": 762175441412,
+        "pid": 37,
+        "role": 1,
+        "unmapped_bytes": 0
+      },
+      {
+        "allocated_bytes": 1489512,
+        "free_bytes": 10707984,
+        "heap_bytes": 42475520,
+        "monotonic_ns": 757761055572,
+        "pid": 83,
+        "role": 1,
+        "unmapped_bytes": 0
+      },
+      {
+        "allocated_bytes": 1481863,
+        "free_bytes": 4697984,
+        "heap_bytes": 7020544,
+        "monotonic_ns": 758054754148,
+        "pid": 38,
+        "role": 1,
+        "unmapped_bytes": 0
+      },
+      {
+        "allocated_bytes": 9146422,
+        "free_bytes": 46186000,
+        "heap_bytes": 287133696,
+        "monotonic_ns": 758066185151,
+        "pid": 146,
+        "role": 1,
+        "unmapped_bytes": 0
+      },
+      {
+        "allocated_bytes": 9390439,
+        "free_bytes": 56262424,
+        "heap_bytes": 347754496,
+        "monotonic_ns": 757985610570,
+        "pid": 101,
+        "role": 1,
+        "unmapped_bytes": 0
+      }
+    ],
+    "last_audit_files": {
+      "categories": {
+        "asrun": {
+          "allocated_bytes": 10240000,
+          "files": 2,
+          "logical_bytes": 10226548
+        },
+        "native_console": {
+          "allocated_bytes": 0,
+          "files": 0,
+          "logical_bytes": 0
+        },
+        "native_diagnostic": {
+          "allocated_bytes": 0,
+          "files": 0,
+          "logical_bytes": 0
+        },
+        "other": {
+          "allocated_bytes": 0,
+          "files": 0,
+          "logical_bytes": 0
+        }
+      },
+      "complete": true,
+      "entries": 2,
+      "errors": 0,
+      "symlinks": 0
+    },
+    "last_pids": [
+      {
+        "namespace_pid": 1,
+        "program": "docker-init",
+        "pid": 17650,
+        "start_ticks": 40737,
+        "anonymous_bytes": 53248
+      },
+      {
+        "namespace_pid": 7,
+        "program": "python3.13",
+        "pid": 17678,
+        "start_ticks": 40744,
+        "anonymous_bytes": 32280576
+      },
+      {
+        "namespace_pid": 20,
+        "program": "SPELL-Listener",
+        "pid": 17757,
+        "start_ticks": 40790,
+        "anonymous_bytes": 20008960
+      },
+      {
+        "namespace_pid": 37,
+        "program": "SPELL-Context",
+        "pid": 17791,
+        "start_ticks": 40804,
+        "anonymous_bytes": 430419968
+      },
+      {
+        "namespace_pid": 101,
+        "program": "SPELL-Executor",
+        "pid": 18013,
+        "start_ticks": 40930,
+        "anonymous_bytes": 442380288
+      },
+      {
+        "namespace_pid": 146,
+        "program": "SPELL-Executor",
+        "pid": 18342,
+        "start_ticks": 41141,
+        "anonymous_bytes": 368689152
+      }
+    ],
+    "all_resource_rows_rankings_and_free_bounds_recomputed": true,
+    "resource_observations": 169,
+    "profile_observations": 501,
+    "site_observations": 3006,
+    "tagged_site_observations": 272,
+    "published_profile_summary_exactly_recomputed": true,
+    "components_passed": 14,
+    "fixture_generator_sha256": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
+    "fixture_sha256": {
+      "handoff.py": "352495a1feb6e78e6aeb5d67009cf6dd8000fe2f41613b9ee642f866380f106f",
+      "handoff_child.py": "79276c2b66c85281992a6b0a23acfb8fc98e28003c4fc9bfffa939ba49d85448"
+    },
+    "last_observed_tagged_contexts": [
+      {
+        "pid": 146,
+        "program": "SPELL-Executor",
+        "fixture": "handoff_child.py",
+        "line": 5,
+        "source_line": "        with open('/workspace/'+name+'.next','w') as f:f.write(str(count))",
+        "numeric_full_file_tag": 6358005851319562304,
+        "sampled_calls": 58,
+        "sampled_bytes": 237568,
+        "freed_samples": 58,
+        "freed_bytes": 237568
+      },
+      {
+        "pid": 101,
+        "program": "SPELL-Executor",
+        "fixture": "handoff.py",
+        "line": 44,
+        "source_line": "    with open('/workspace/handoff-root.next','w') as f:f.write(str(count))",
+        "numeric_full_file_tag": 12493642097353940199,
+        "sampled_calls": 47,
+        "sampled_bytes": 192512,
+        "freed_samples": 47,
+        "freed_bytes": 192512
+      }
+    ],
+    "limits": "Tags are the last observed native-thread source-line context; untraced threads remain zero. Sampling is bounded, not an exact lifetime total. No proof of leak absence or attribution of every growing byte.",
+    "workload_sanitizers_deadlines_limits_unchanged": true
+  },
+  "fresh_native_installed_ide_audit_and_lifecycle_qualification": "pending",
+  "previous_failures_preserved": true,
+  "historical_registration_and_worker_exit_causes_proven": false,
+  "kernel_cause_of_observed_cache_residency_failures_proven": false,
+  "mandatory_workload_sanitizers_limits_deadlines_concurrency_unchanged": true,
+  "required_audit_records_deleted": false,
+  "all_eleven_full_release_groups_open": true,
+  "full_v08_qualified": false,
+  "published": false,
+  "production_migration_authorized": false
+}

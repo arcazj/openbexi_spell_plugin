@@ -3,6 +3,7 @@
 #define OPENBEXI_V08_MESSAGE_WORKERS_H
 #include <array>
 #include <condition_variable>
+#include <memory>
 #include <mutex>
 #include <thread>
 
@@ -19,9 +20,9 @@ struct V08MessageTicket {
 // callbacks share the slots. Native measurement at 3a970c45 observed five
 // simultaneous callbacks in Context, with thousands of dedicated fallbacks
 // from one slot. Create slots lazily, so sequential work still uses one thread.
-// A nested callback/request always has the original
-// dedicated fallback, so a callback can synchronously wait without queueing
-// work behind itself. Callback cancellation never interrupts or reuses a live
+// A nested callback/request uses an idle slot or the original dedicated
+// fallback, so a callback can synchronously wait without queueing work behind
+// itself. Callback cancellation never interrupts or reuses a live
 // ticket; the owner must join before destroying/recycling its object.
 class V08MessageWorkers {
 public:
@@ -35,7 +36,7 @@ public:
         std::unique_lock<std::mutex> lock(mutex);
         if (stopping || ticket.pooled) return false;
         for (auto& slot : slots) {
-            if (slot.object) continue;
+            if (slot.object || slot.retired) continue;
             if (!slot.thread.joinable()) {
                 try { slot.thread = std::thread([this, &slot] { work(slot); }); }
                 catch (...) { return false; }
@@ -73,6 +74,7 @@ private:
         void* object = nullptr;
         void (*invoke)(void*) = nullptr;
         V08MessageTicket* ticket = nullptr;
+        bool retired = false;
     };
     std::mutex mutex;
     std::condition_variable changed;
@@ -80,6 +82,21 @@ private:
     bool stopping = false;
 
     void work(Slot& slot) {
+        // Declare before the lock so forced unwinding first releases any owned
+        // lock, then settles the ticket after all callback frames have unwound.
+        // An exited OS thread cannot be selected as a reusable idle worker.
+        // Its bounded handle remains owned here and is joined at shutdown;
+        // further callbacks retain the original dedicated-thread fallback.
+        auto retire = [this, &slot](Slot*) {
+            std::lock_guard<std::mutex> lock(mutex);
+            slot.retired = true;
+            if (slot.ticket) slot.ticket->done = true;
+            slot.ticket = nullptr;
+            slot.object = nullptr;
+            slot.invoke = nullptr;
+            changed.notify_all();
+        };
+        std::unique_ptr<Slot, decltype(retire)> lifetime(&slot, retire);
         std::unique_lock<std::mutex> lock(mutex);
         for (;;) {
             changed.wait(lock, [&] { return stopping || slot.object; });
