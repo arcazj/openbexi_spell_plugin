@@ -123,3 +123,71 @@ int main() {
         assert len(captured) == 1
         assert captured[0]["calls"] == int(counts[-1]["calls"])
         assert captured[0]["sites"], "The host collector must retain actual compiled stack samples"
+
+
+def test_compiled_lifetime_samples_distinguish_live_from_freed(tmp_path):
+    source, binary = tmp_path / "lifetime.cpp", tmp_path / "lifetime"
+    source.write_text("""
+#include "allocation_trace.H"
+static char* held[40000];
+int main() {
+    if(!v08_allocation_profile_start())return 2;
+    for(int i=0;i<40000;++i) {
+        held[i]=new char[256];held[i][0]='x';
+        asm volatile("" : : "r"(held[i]) : "memory");
+    }
+    v08_allocation_profile_dump(UINT64_C(10000000000));
+    for(auto* pointer:held)delete[] pointer;
+    v08_allocation_profile_dump(UINT64_C(20000000000));
+}
+""")
+    subprocess.run(
+        [
+            "c++",
+            "-std=c++17",
+            "-O1",
+            "-g",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-fsanitize=address,undefined",
+            "-fno-sanitize-recover=all",
+            "-fno-omit-frame-pointer",
+            "-no-pie",
+            "-I" + str(ROOT / "host_runtime/native"),
+            str(source),
+            "-o",
+            str(binary),
+        ],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    result = subprocess.run(
+        [str(binary)],
+        capture_output=True,
+        check=True,
+        timeout=30,
+        env=dict(
+            os.environ,
+            OPENBEXI_V08_ALLOCATION_DIAGNOSTICS="1",
+            ASAN_OPTIONS="detect_leaks=0:abort_on_error=1",
+            UBSAN_OPTIONS="halt_on_error=1",
+        ),
+    )
+    spec = importlib.util.spec_from_file_location(
+        "lifetime_collector", ROOT / "scripts/v08_resource_probe.py"
+    )
+    collector = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(collector)
+    lines = result.stderr.split(b"V08_ALLOC pid=")
+    first = collector.allocation_profiles(b"V08_ALLOC pid=" + lines[1])[0]
+    last = collector.allocation_profiles(b"V08_ALLOC pid=" + lines[2])[0]
+    assert first["free_misses"] == last["free_misses"] == 0
+    assert first["pointer_full"] == last["pointer_full"] == 0
+    assert 50 < first["samples"] < 500
+    assert first["calls"] == last["calls"] == 40000
+    assert first["frees"] == 0 and last["frees"] == 40000
+    assert sum(s["unmatched_bytes_upper_bound"] for s in first["sites"]) > 10000
+    assert all(s["freed_samples"] == s["samples"] for s in last["sites"])
+    assert all(s["unmatched_bytes_upper_bound"] == 0 for s in last["sites"])

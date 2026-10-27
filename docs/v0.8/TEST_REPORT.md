@@ -2504,3 +2504,18 @@ and artifact hashes. Full all-763/native compatibility, deployed recovery/storag
 production-like cluster identity/security, public GUI/browser/debugger and stable
 joint packaging remain incomplete. All eleven full-release gates remain false.
 No merge, tag, release publication or production migration occurred.
+
+
+# Measured Context callback follow-up — 2026-10-27
+
+Remote PR #4 was verified open at documentation commit `db94cf61ef80a4a2d0212363993ed4e183b17896`; executable checkpoint `2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d` and paired IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` remain the last fully collected mandatory attempt. Its 90.58/81.78 MiB failures are preserved.
+
+Eight newly downloaded five-minute comparison archives have matching GitHub SHA-256 digests and ZIP CRCs; 1,088 executed source hash comparisons and every recorded evidence digest verify. The tested merge has the same tree as the executable checkpoint. Sanitizer/O1 handoff and IDE grow 551.56/553.39 MiB; optimized comparisons grow 14.61/14.98 MiB. All are diagnostic profiles. Sanitizer/O2 and swap comparisons also fail growth; swap remains unused. Observed first/last thread medians remain 110. Last allocator records show about 9–10 MiB live in each active rebuilt native participant while retained heaps are much larger. These observations distinguish accounting classes but do not establish absence of leaks. File/shmem counters overlap. The one-hour jobs were still running at collection and require their actual final artifacts.
+
+The sampled Context stack at executable offset `0x99ba5a` resolves in its recorded function inventory to `SPELLexecutor::processMessageFromExecutor`. Its owned message-ID copy is replaced by six synchronous in-place comparisons. No reference escapes, cache is added, callback is queued, request is changed or concurrency is limited. An exact method preimage rejects drift and duplicate application. A compiled original-versus-candidate harness covers every branch, error forwarding and concurrent independent callbacks; 10,000 notification calls allocate 10,000 ID strings before and zero afterward.
+
+The opt-in allocation diagnostic now observes sampled frees using fixed storage and eight bounded pointer probes. Dropped allocation/free observations are explicit. A missed free invalidates earlier pointer generations to prevent attributing a reused address to an old allocation. Unmatched samples are conservative upper bounds, not proof of live objects. The single-thread compiled lifetime regression distinguishes held allocations from their subsequent frees. Numeric-only host parsing remains compatible with old receipts. No mandatory assessor, sanitizer configuration, resource limit, workload, deadline or sample selection changes.
+
+Local component validation: 125 tests pass, zero failures/errors/skips. Local Python is 3.12.14 and cannot qualify the required CPython 3.13 native family. The first new component attempts requested LeakSanitizer, which fails in this container when it cannot inspect `/proc` task directories; those original failures are retained. The new component tests use the existing suite's ASan/UBSan policy (`detect_leaks=0`), with address/undefined-behavior instrumentation and fail-fast behavior intact. This is not a leak-acceptance result. Hosted native handoff and installed-IDE acceptance must run on the resulting commit.
+
+Receipt: `evidence/memory-attribution-20261027.json`. All eleven full-release gates remain open. Durable ASRUN storage, unresolved startup failures, all-763 native compatibility, public UI/debugger/browser/Git, deployed failures/security and stable joint packaging remain mandatory blockers.

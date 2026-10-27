@@ -263,9 +263,11 @@ def allocation_profiles(raw):
     totals = re.compile(
         rb"V08_ALLOC pid=(\d{1,10}) tick=(\d{1,20}) calls=(\d{1,20}) "
         rb"bytes=(\d{1,20}) samples=(\d{1,20}) skipped=(\d{1,20})"
+        rb"(?: frees=(\d{1,20}) free_misses=(\d{1,20}) pointer_full=(\d{1,20}))?"
     )
     site = re.compile(
         rb"V08_ALLOC_SITE pid=(\d{1,10}) rank=([0-5]) samples=(\d{1,20}) bytes=(\d{1,20})"
+        rb"(?: freed_samples=(\d{1,20}) freed_bytes=(\d{1,20}))?"
     )
     frame = re.compile(
         rb"([A-Za-z0-9_.?+\-]{1,60})\+([0-9a-f]{1,16}):([A-Za-z0-9_.$?]{1,100})"
@@ -275,14 +277,24 @@ def allocation_profiles(raw):
             continue
         matched = totals.fullmatch(line)
         if matched:
-            values = [int(value) for value in matched.groups()]
+            values = [int(value) for value in matched.groups() if value is not None]
             if not 0 < values[0] < 2**31 or any(value >= 2**64 for value in values):
                 continue
             if values[0] not in latest and len(latest) >= 32:
                 continue
             latest[values[0]] = dict(
                 zip(
-                    ("pid", "monotonic_ns", "calls", "bytes", "samples", "skipped"),
+                    (
+                        "pid",
+                        "monotonic_ns",
+                        "calls",
+                        "bytes",
+                        "samples",
+                        "skipped",
+                        "frees",
+                        "free_misses",
+                        "pointer_full",
+                    ),
                     values,
                 )
             )
@@ -292,7 +304,7 @@ def allocation_profiles(raw):
         matched = site.fullmatch(parts[0])
         if not matched or not 1 < len(parts) <= 21:
             continue
-        owner, rank, samples, size = map(int, matched.groups())
+        owner, rank, samples, size = map(int, matched.groups()[:4])
         if owner not in latest or max(samples, size) >= 2**64:
             continue
         frames = [frame.fullmatch(part) for part in parts[1:]]
@@ -311,6 +323,17 @@ def allocation_profiles(raw):
                 for item in frames
             ],
         )
+        if matched[5] is not None:
+            freed_samples, freed_bytes = int(matched[5]), int(matched[6])
+            if freed_samples > samples or freed_bytes > size:
+                del latest[owner]["sites"][rank]
+                continue
+            latest[owner]["sites"][rank].update(
+                freed_samples=freed_samples,
+                freed_bytes=freed_bytes,
+                unmatched_samples_upper_bound=samples - freed_samples,
+                unmatched_bytes_upper_bound=size - freed_bytes,
+            )
     result = []
     for record in latest.values():
         sites = record.pop("sites")

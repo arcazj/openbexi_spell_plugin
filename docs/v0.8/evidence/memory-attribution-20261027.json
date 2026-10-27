@@ -1,0 +1,557 @@
+{
+  "schema": "openbexi.memory-attribution/1",
+  "recorded_at": "2026-10-27T17:03:11.002036+00:00",
+  "checkpoint": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "run_id": 40537014003,
+  "comparisons": [
+    {
+      "artifact": {
+        "id": 12749184924,
+        "name": "v08-memory-asan-noswap-handoff-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "4e7d4011d79fc3e88f0c3550d77e60b31ad21edeb07553245c72274bd40d0e64",
+        "bytes": 338834
+      },
+      "profile": "asan-noswap",
+      "scenario": "handoff",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 45,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 578355200,
+      "peak_bytes": 1643429888,
+      "duration_seconds": 303.286158459,
+      "first_threads": 110,
+      "last_threads": 110.0,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 9397999,
+          "free_bytes": 83259876,
+          "heap_bytes": 377962496,
+          "monotonic_ns": 652920127365,
+          "pid": 102,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10286136,
+          "free_bytes": 316500035,
+          "heap_bytes": 528887808,
+          "monotonic_ns": 653785946434,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1490225,
+          "free_bytes": 11530752,
+          "heap_bytes": 48635904,
+          "monotonic_ns": 654665235677,
+          "pid": 82,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9151808,
+          "free_bytes": 49205720,
+          "heap_bytes": 310792192,
+          "monotonic_ns": 646922881861,
+          "pid": 207,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1480823,
+          "free_bytes": 4637048,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 654921519832,
+          "pid": 38,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 14176256,
+      "last_shmem_bytes": 14151680
+    },
+    {
+      "artifact": {
+        "id": 12749302754,
+        "name": "v08-memory-asan-noswap-ide-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "dd0c3e433b55619d21d3016220236cbe4a921531d4250963116c713360d3fd36",
+        "bytes": 357668
+      },
+      "profile": "asan-noswap",
+      "scenario": "ide",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 61,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 580268032,
+      "peak_bytes": 1640357888,
+      "duration_seconds": 303.219880753,
+      "first_threads": 110,
+      "last_threads": 110.0,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 9420662,
+          "free_bytes": 81982106,
+          "heap_bytes": 377962496,
+          "monotonic_ns": 666312907903,
+          "pid": 102,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10297873,
+          "free_bytes": 315850196,
+          "heap_bytes": 528691200,
+          "monotonic_ns": 667033890953,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1491640,
+          "free_bytes": 11633512,
+          "heap_bytes": 48701440,
+          "monotonic_ns": 668314612229,
+          "pid": 82,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9176186,
+          "free_bytes": 49120152,
+          "heap_bytes": 310988800,
+          "monotonic_ns": 660311019623,
+          "pid": 207,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4635880,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 658312526916,
+          "pid": 43,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 14176256,
+      "last_shmem_bytes": 14155776
+    },
+    {
+      "artifact": {
+        "id": 12750414980,
+        "name": "v08-memory-asan-swap-ide-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "d3772f8ee3fc5e911ea36c6e00e65d4e3eae506312bb6bd51ce39afdbca46890",
+        "bytes": 358450
+      },
+      "profile": "asan-swap",
+      "scenario": "ide",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 61,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 604471296,
+      "peak_bytes": 1952694272,
+      "duration_seconds": 302.82538067,
+      "first_threads": 110,
+      "last_threads": 110,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 9423237,
+          "free_bytes": 82507210,
+          "heap_bytes": 380125184,
+          "monotonic_ns": 657399787606,
+          "pid": 100,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10304790,
+          "free_bytes": 318404637,
+          "heap_bytes": 524627968,
+          "monotonic_ns": 658134660080,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1491193,
+          "free_bytes": 11623784,
+          "heap_bytes": 48635904,
+          "monotonic_ns": 659457644213,
+          "pid": 80,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9175647,
+          "free_bytes": 49280672,
+          "heap_bytes": 311119872,
+          "monotonic_ns": 649398743150,
+          "pid": 204,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4642744,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 659399076872,
+          "pid": 42,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 15216640,
+      "last_shmem_bytes": 14327808
+    },
+    {
+      "artifact": {
+        "id": 12750701188,
+        "name": "v08-memory-optimized-noswap-handoff-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "31fabc813eec948bcdd6b8e0d8ec2b67e72e924df5a2707b2f8739bbbf32e2fc",
+        "bytes": 296019
+      },
+      "profile": "optimized-noswap",
+      "scenario": "handoff",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 45,
+      "source_mismatches": [],
+      "passed": true,
+      "diagnostic_only": true,
+      "growth_bytes": 15323136,
+      "peak_bytes": 156880896,
+      "duration_seconds": 303.211527206,
+      "first_threads": 110,
+      "last_threads": 110,
+      "failures": [],
+      "last_allocator": [],
+      "last_file_bytes": 14483456,
+      "last_shmem_bytes": 14458880
+    },
+    {
+      "artifact": {
+        "id": 12750762609,
+        "name": "v08-memory-asan-swap-handoff-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "16825896044d80aa80a7c586f53307b1e1abbacaf28ad2625b64a517f59eaa9b",
+        "bytes": 340297
+      },
+      "profile": "asan-swap",
+      "scenario": "handoff",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 45,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 592734208.0,
+      "peak_bytes": 1932132352,
+      "duration_seconds": 303.188124474,
+      "first_threads": 110,
+      "last_threads": 110.0,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 9398004,
+          "free_bytes": 82913332,
+          "heap_bytes": 376848384,
+          "monotonic_ns": 652166262816,
+          "pid": 101,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10280381,
+          "free_bytes": 298595870,
+          "heap_bytes": 524169216,
+          "monotonic_ns": 652903565912,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1490937,
+          "free_bytes": 11362800,
+          "heap_bytes": 47259648,
+          "monotonic_ns": 652167190681,
+          "pid": 81,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9151857,
+          "free_bytes": 49156232,
+          "heap_bytes": 309809152,
+          "monotonic_ns": 646163375498,
+          "pid": 206,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1480823,
+          "free_bytes": 4640480,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 644169339116,
+          "pid": 38,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 24625152,
+      "last_shmem_bytes": 14020608
+    },
+    {
+      "artifact": {
+        "id": 12751111596,
+        "name": "v08-memory-optimized-noswap-ide-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "b901e04d1e7752bb370078d686a7e4c89de7fb3d7f0d8961687ca6b7095572ef",
+        "bytes": 311680
+      },
+      "profile": "optimized-noswap",
+      "scenario": "ide",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 61,
+      "source_mismatches": [],
+      "passed": true,
+      "diagnostic_only": true,
+      "growth_bytes": 15704064,
+      "peak_bytes": 156909568,
+      "duration_seconds": 302.649591025,
+      "first_threads": 110,
+      "last_threads": 110.0,
+      "failures": [],
+      "last_allocator": [],
+      "last_file_bytes": 14790656,
+      "last_shmem_bytes": 14778368
+    },
+    {
+      "artifact": {
+        "id": 12751298794,
+        "name": "v08-memory-asan-o2-noswap-ide-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "d36734e426473f34edc3430040a5ebaf4f0c36909b9b76108fc6a3c79d40830f",
+        "bytes": 399236
+      },
+      "profile": "asan-o2-noswap",
+      "scenario": "ide",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 61,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 560715776.0,
+      "peak_bytes": 1922203648,
+      "duration_seconds": 303.786763373,
+      "first_threads": 110.0,
+      "last_threads": 110.0,
+      "failures": [
+        "resident_peak_budget_exceeded",
+        "combined_peak_budget_exceeded",
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 9174800,
+          "free_bytes": 48624056,
+          "heap_bytes": 306991104,
+          "monotonic_ns": 731079636565,
+          "pid": 208,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1491347,
+          "free_bytes": 11365800,
+          "heap_bytes": 46866432,
+          "monotonic_ns": 738912485586,
+          "pid": 83,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10313732,
+          "free_bytes": 307277123,
+          "heap_bytes": 525611008,
+          "monotonic_ns": 737728560855,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9421454,
+          "free_bytes": 81348450,
+          "heap_bytes": 372457472,
+          "monotonic_ns": 737079534410,
+          "pid": 103,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1049703,
+          "free_bytes": 7397200,
+          "heap_bytes": 9842688,
+          "monotonic_ns": 729078281191,
+          "pid": 20,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1481863,
+          "free_bytes": 4632448,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 729079337448,
+          "pid": 42,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 13688832,
+      "last_shmem_bytes": 13688832
+    },
+    {
+      "artifact": {
+        "id": 12752411847,
+        "name": "v08-memory-asan-o2-noswap-handoff-23d06c59690283299269efce21e58d6104e14dd8",
+        "sha256": "e65f03c2826a4b89ff60084d12fa1d521a7c5de3b2d95fe72a55f6df920d0507",
+        "bytes": 380408
+      },
+      "profile": "asan-o2-noswap",
+      "scenario": "handoff",
+      "tested_commit": "23d06c59690283299269efce21e58d6104e14dd8",
+      "tested_tree": "4a9cd8a1bd9852780fb8cc52a5d2e020bdc05b42",
+      "executable_equivalent_to": "2972f5fbd5c7c6c54478dfe4ad70c687fdc72c0d",
+      "source_inputs": 136,
+      "evidence_hashes": 45,
+      "source_mismatches": [],
+      "passed": false,
+      "diagnostic_only": true,
+      "growth_bytes": 563011584.0,
+      "peak_bytes": 1932337152,
+      "duration_seconds": 303.687527186,
+      "first_threads": 111.0,
+      "last_threads": 111.0,
+      "failures": [
+        "resident_peak_budget_exceeded",
+        "combined_memory_still_growing"
+      ],
+      "last_allocator": [
+        {
+          "allocated_bytes": 1480823,
+          "free_bytes": 4633616,
+          "heap_bytes": 6955008,
+          "monotonic_ns": 683691733510,
+          "pid": 42,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 10285123,
+          "free_bytes": 306482980,
+          "heap_bytes": 524759040,
+          "monotonic_ns": 692368607723,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1490924,
+          "free_bytes": 11333976,
+          "heap_bytes": 46735360,
+          "monotonic_ns": 692006566646,
+          "pid": 83,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9152355,
+          "free_bytes": 48509408,
+          "heap_bytes": 307580928,
+          "monotonic_ns": 687691138470,
+          "pid": 209,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9400280,
+          "free_bytes": 82038508,
+          "heap_bytes": 372129792,
+          "monotonic_ns": 691693567482,
+          "pid": 103,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1049799,
+          "free_bytes": 7397072,
+          "heap_bytes": 9842688,
+          "monotonic_ns": 683692912066,
+          "pid": 20,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ],
+      "last_file_bytes": 13733888,
+      "last_shmem_bytes": 13705216
+    }
+  ],
+  "endurance": {
+    "handoff": "in_progress",
+    "ide": "in_progress",
+    "verified_at": "2026-10-27T17:03:11.002054+00:00"
+  },
+  "interpretation": "Stable observed thread counts and small live allocations compared with retained sanitizer heap do not prove absence of a leak. File and shmem overlap. Optimized/swap comparisons are diagnostic only. Mandatory handoff/IDE failures remain open.",
+  "new_correction": {
+    "path": "SPELLexecutor::processMessageFromExecutor",
+    "measured_stack": "SPELL-Context+0x99ba5a",
+    "baseline_method_sha256": "4f537ecf006b07601fcbbf64a2061823f5aeb05a1405d2e7dc16c33cbf85863e",
+    "copy_removed": true,
+    "hosted_acceptance": "pending"
+  },
+  "local_tests": {
+    "callback-allocation-validated.xml": {
+      "sha256": "6cb9209690bf667af5495cbd6b6330b08ff29236320dd8b10d99fd2341cd610a",
+      "tests": 125,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "full_v08_qualified": false
+}

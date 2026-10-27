@@ -375,6 +375,28 @@ def compare_native_message_identifiers(source):
     path.write_text(text[:start] + changed + text[end:])
 
 
+def compare_native_callback_identifier(source):
+    """Avoid the measured per-notification ID copy without borrowing across calls."""
+    path = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
+    text = path.read_text()
+    start = text.index("void SPELLexecutor::processMessageFromExecutor(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "4f537ecf006b07601fcbbf64a2061823f5aeb05a1405d2e7dc16c33cbf85863e"
+    ):
+        raise ValueError("Native callback identifier preimage differs")
+    changed = original.replace("\tstd::string id = msg.getId();\n", "")
+    changed, count = re.subn(
+        r"\bid == ((?:ExecutorMessages|MessageId)::[A-Z_]+)",
+        r"msg.v08HasId(\1)",
+        changed,
+    )
+    if count != 6 or "msg.getId()" in changed:
+        raise ValueError("Native callback identifier boundary differs")
+    path.write_text(text[:start] + changed + text[end:])
+
+
 def borrow_native_executor_notification(source):
     """Read the incoming thread's owned message during a synchronous callback."""
     path = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
@@ -1157,6 +1179,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
         patch_terminal_tree(source)
     borrow_native_message_callbacks(source)
     compare_native_message_identifiers(source)
+    compare_native_callback_identifier(source)
     borrow_native_executor_notification(source)
     borrow_native_notification_fields(source)
     transfer_native_line_notification(source)

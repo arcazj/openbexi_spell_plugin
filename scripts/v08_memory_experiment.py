@@ -13,14 +13,14 @@ PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap", "asan-o2-noswap")
 PREIMAGES = {
     "scripts/v08_endurance.py": "c3608d88cd3e6217a9eba9b33f60ba6e23466f85ca54ad299b6d2edfcfaa2527",
     "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
-    "host_runtime/build_admission_context.py": "ef9f39afa862b6b826b6bc5827ac5850b7f850bc05b4430b2ef45f0e87dc68fd",
+    "host_runtime/build_admission_context.py": "19cfddf92a7dbcfbb4a81b6c508f9c0b2943efe8136a1028d1fac4a49a1bc3ee",
     "host_runtime/python/native.py": "4d8a1664622dddd5192451f230b3fbc4361d632ae23692aa1a989b62d92b3ff7",
     "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
     "scripts/v08_native_consumption.py": "4ab366a3b03541ede860acb1e63b7d4952312b2af9150b61ca874ebef406a039",
-    "scripts/v08_resource_probe.py": "a5d4fda1063af6b0e2f3b6ae24a65fb5d79ebc2e7f233fbf2c9300596a127063",
+    "scripts/v08_resource_probe.py": "d4b05cb341f467e44e7b3858a2abf39a8e9267dc23107a67e86560cb98ce7729",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
     "host_runtime/python/handoff_probe.py": "d2c2ee8d05bd6d4fc0e79d11387058c79508b2f346ae7d6710c5ebae48ff0023",
-    "host_runtime/native/allocation_trace.H": "f89d661ee8ae19d41bb81af87063967eae81ab84dd667888bf17907355ed17b8",
+    "host_runtime/native/allocation_trace.H": "76462c04abf27cbfd9a0f3f09ce17ee044931cd3cd0057be235c5821dcf2af21",
     "host_runtime/native/resource_trace.H": "0f55d562c2a40c4b733520c1c9386842955cf5ba9229d8b336c9ad8c980415a8",
 }
 NATIVE_PROGRAMS = {

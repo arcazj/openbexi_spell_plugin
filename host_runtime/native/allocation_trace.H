@@ -20,7 +20,17 @@ extern "C" void v08_allocation_profile_dump(uint64_t) noexcept {}
 
 namespace v08_alloc {
 constexpr size_t frames=20, capacity=1024, top=6;
-struct Site { void* stack[frames]{}; uint64_t bytes=0, count=0; };
+struct Site {
+    void* stack[frames]{};
+    uint64_t bytes=0, count=0, freed_bytes=0, freed_count=0;
+};
+// Sampled pointers are retained only as private numeric identities until free.
+// Fixed storage, no allocation in either hook. Missed frees are explicit: the
+// unmatched totals are upper bounds, never proof of a live allocation leak.
+constexpr size_t pointer_capacity=8192;
+struct Pointer { const volatile void* address=nullptr; size_t site=0, size=0; uint64_t generation=0; };
+static Pointer pointers[pointer_capacity];
+static std::atomic<uint64_t> free_calls{0}, free_lock_misses{0}, pointer_full{0};
 static Site sites[capacity];
 static std::atomic<bool> enabled{false};
 static std::atomic<uint64_t> calls{0}, bytes{0}, skipped{0};
@@ -58,14 +68,49 @@ static void v08_capture_allocation(const volatile void* pointer, size_t size)
         auto& site=sites[(hash+offset)%capacity];
         if (!site.count || std::memcmp(site.stack,stack,sizeof(stack))==0) {
             if (!site.count) std::memcpy(site.stack,stack,sizeof(stack));
-            site.bytes+=size; ++site.count; stored=true; break;
+            site.bytes+=size; ++site.count; stored=true;
+            const size_t first=mix(reinterpret_cast<uintptr_t>(pointer))%pointer_capacity;
+            bool tracked=false;
+            for(size_t n=0;n<8;++n) {
+                auto& slot=pointers[(first+n)%pointer_capacity];
+                if(!slot.address) {
+                    slot={pointer, (hash+offset)%capacity, size,
+                          free_lock_misses.load(std::memory_order_relaxed)};
+                    tracked=true; break;
+                }
+            }
+            if(!tracked)pointer_full.fetch_add(1,std::memory_order_relaxed);
+            break;
         }
     }
     if (!stored) skipped.fetch_add(1,std::memory_order_relaxed);
     busy.clear(std::memory_order_release);
 }
 
-static void v08_observe_free(const volatile void*) {}
+static void v08_observe_free(const volatile void* pointer) {
+    using namespace v08_alloc;
+    if(!enabled.load(std::memory_order_relaxed) || reporting || !pointer)return;
+    free_calls.fetch_add(1,std::memory_order_relaxed);
+    if(busy.test_and_set(std::memory_order_acquire)) {
+        free_lock_misses.fetch_add(1,std::memory_order_relaxed);return;
+    }
+    const size_t first=mix(reinterpret_cast<uintptr_t>(pointer))%pointer_capacity;
+    // Eight probes bound work per free, including collisions and empty holes.
+    for(size_t n=0;n<8;++n) {
+        auto& slot=pointers[(first+n)%pointer_capacity];
+        if(slot.address==pointer) {
+            // A dropped free can precede pointer reuse. Invalidate all older
+            // generations conservatively instead of attributing a later free
+            // to a different allocation at the same address.
+            if(slot.generation==free_lock_misses.load(std::memory_order_relaxed)) {
+                auto& site=sites[slot.site];
+                ++site.freed_count;site.freed_bytes+=slot.size;
+            }
+            slot={};break;
+        }
+    }
+    busy.clear(std::memory_order_release);
+}
 
 extern "C" bool v08_allocation_profile_start() noexcept
 {
@@ -110,20 +155,25 @@ extern "C" void v08_allocation_profile_dump(uint64_t tick) noexcept
 #endif
     char line[4096];
     int count=std::snprintf(line,sizeof(line),
-        "V08_ALLOC pid=%ld tick=%llu calls=%llu bytes=%llu samples=%llu skipped=%llu\n",
+        "V08_ALLOC pid=%ld tick=%llu calls=%llu bytes=%llu samples=%llu skipped=%llu frees=%llu free_misses=%llu pointer_full=%llu\n",
         static_cast<long>(getpid()),static_cast<unsigned long long>(tick),
         static_cast<unsigned long long>(calls.load(std::memory_order_relaxed)),
         static_cast<unsigned long long>(bytes.load(std::memory_order_relaxed)),
         static_cast<unsigned long long>(sampled),
-        static_cast<unsigned long long>(skipped.load(std::memory_order_relaxed)));
+        static_cast<unsigned long long>(skipped.load(std::memory_order_relaxed)),
+        static_cast<unsigned long long>(free_calls.load(std::memory_order_relaxed)),
+        static_cast<unsigned long long>(free_lock_misses.load(std::memory_order_relaxed)),
+        static_cast<unsigned long long>(pointer_full.load(std::memory_order_relaxed)));
     if (count>0 && static_cast<size_t>(count)<sizeof(line)) {
         const auto ignored=write(STDERR_FILENO,line,count);(void)ignored;
     }
     for (size_t rank=0;rank<top;++rank) {
         const auto& site=selected[rank]; if (!site.count) continue;
-        count=std::snprintf(line,sizeof(line),"V08_ALLOC_SITE pid=%ld rank=%zu samples=%llu bytes=%llu",
+        count=std::snprintf(line,sizeof(line),"V08_ALLOC_SITE pid=%ld rank=%zu samples=%llu bytes=%llu freed_samples=%llu freed_bytes=%llu",
             static_cast<long>(getpid()),rank,static_cast<unsigned long long>(site.count),
-            static_cast<unsigned long long>(site.bytes));
+            static_cast<unsigned long long>(site.bytes),
+            static_cast<unsigned long long>(site.freed_count),
+            static_cast<unsigned long long>(site.freed_bytes));
         for (auto frame:site.stack) {
             if (!frame || count<0 || static_cast<size_t>(count)>=sizeof(line)-300) break;
             Dl_info info{};dladdr(frame,&info);
