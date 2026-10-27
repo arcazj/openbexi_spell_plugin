@@ -284,3 +284,16 @@ executed on the exact PR candidate and are not release qualification.
 
 **Release decision: HOLD.** This is a verified comparison finding and
 an execution plan, not evidence of full v0.8 qualification or publication.
+
+## Latest hosted release gate check — run 40428613683
+
+At commit `084e58593d242857bd8e56d5b4ec364ed9d3240d`, 12/14 core jobs passed, including foundation,
+startup stress, terminal, prompt, pause, listener, DSS, fault and boundary checks.
+**Mandatory native handoff and installed IDE recovery failed**; both remain
+blocking. The separate memory comparison run 40428613772 passed the optimized
+five-minute handoff and IDE scenarios but did not replace mandatory sanitizer
+acceptance. Its 60-minute endurance and controlled sanitizer comparison jobs
+were still in progress at this check. Encrypted-swap experiments failed.
+
+**Qualification: FAILED / INCOMPLETE. Release: HOLD.** No merge, tag,
+publication or production deployment is authorized by this receipt.
