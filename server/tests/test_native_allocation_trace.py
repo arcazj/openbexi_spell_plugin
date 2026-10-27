@@ -191,3 +191,75 @@ int main() {
     assert sum(s["unmatched_bytes_upper_bound"] for s in first["sites"]) > 10000
     assert all(s["freed_samples"] == s["samples"] for s in last["sites"])
     assert all(s["unmatched_bytes_upper_bound"] == 0 for s in last["sites"])
+
+
+def test_dwarf_sampling_keeps_caller_across_library_without_frame_pointers(tmp_path):
+    library, source = tmp_path / "libnoframe.so", tmp_path / "noframe.cpp"
+    source.write_text("""
+#include <cstdlib>
+extern "C" __attribute__((noinline)) void* no_frame_inner(size_t size) {
+    void* value=std::malloc(size);asm volatile("" : : "r"(value) : "memory");return value;
+}
+extern "C" __attribute__((noinline)) void* no_frame_outer(size_t size) {
+    return no_frame_inner(size);
+}
+""")
+    subprocess.run(
+        [
+            "c++",
+            "-shared",
+            "-fPIC",
+            "-O2",
+            "-fomit-frame-pointer",
+            "-fno-optimize-sibling-calls",
+            str(source),
+            "-o",
+            str(library),
+        ],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    main, binary = tmp_path / "main.cpp", tmp_path / "caller"
+    main.write_text("""
+#include "allocation_trace.H"
+extern "C" void* no_frame_outer(size_t);
+int main(){
+    if(!v08_allocation_profile_start())return 2;
+    for(int i=0;i<20000;++i)std::free(no_frame_outer(256));
+    v08_allocation_profile_dump(UINT64_C(10000000000));
+}
+""")
+    subprocess.run(
+        [
+            "c++",
+            "-std=c++17",
+            "-O1",
+            "-g",
+            "-fsanitize=address,undefined",
+            "-fno-sanitize-recover=all",
+            "-fno-omit-frame-pointer",
+            "-no-pie",
+            "-I" + str(ROOT / "host_runtime/native"),
+            str(main),
+            str(library),
+            "-o",
+            str(binary),
+        ],
+        check=True,
+        capture_output=True,
+        timeout=30,
+    )
+    result = subprocess.run(
+        [str(binary)],
+        capture_output=True,
+        check=True,
+        timeout=30,
+        env=dict(
+            os.environ,
+            OPENBEXI_V08_ALLOCATION_DIAGNOSTICS="1",
+            ASAN_OPTIONS="detect_leaks=0:abort_on_error=1",
+            UBSAN_OPTIONS="halt_on_error=1",
+        ),
+    )
+    assert b":no_frame_outer" in result.stderr

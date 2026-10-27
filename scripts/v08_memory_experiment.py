@@ -20,7 +20,7 @@ PREIMAGES = {
     "scripts/v08_resource_probe.py": "d4b05cb341f467e44e7b3858a2abf39a8e9267dc23107a67e86560cb98ce7729",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
     "host_runtime/python/handoff_probe.py": "d2c2ee8d05bd6d4fc0e79d11387058c79508b2f346ae7d6710c5ebae48ff0023",
-    "host_runtime/native/allocation_trace.H": "76462c04abf27cbfd9a0f3f09ce17ee044931cd3cd0057be235c5821dcf2af21",
+    "host_runtime/native/allocation_trace.H": "17c1545fba80b514c61c1b3fee69c6477904547edb974971afedd84a6584ec40",
     "host_runtime/native/resource_trace.H": "0f55d562c2a40c4b733520c1c9386842955cf5ba9229d8b336c9ad8c980415a8",
 }
 NATIVE_PROGRAMS = {

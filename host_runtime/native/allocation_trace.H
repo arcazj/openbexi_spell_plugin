@@ -17,6 +17,7 @@ extern "C" void v08_allocation_profile_dump(uint64_t) noexcept {}
 #include <dlfcn.h>
 #include <sanitizer/asan_interface.h>
 #include <unistd.h>
+#include <unwind.h>
 
 namespace v08_alloc {
 constexpr size_t frames=20, capacity=1024, top=6;
@@ -41,6 +42,14 @@ static uint64_t mix(uint64_t value) {
     value=(value^(value>>27))*UINT64_C(0x94d049bb133111eb);
     return value^(value>>31);
 }
+struct Walk { void** stack; size_t used=0; };
+static _Unwind_Reason_Code frame(_Unwind_Context* context,void* argument) {
+    auto& walk=*static_cast<Walk*>(argument);
+    if(walk.used==frames)return _URC_END_OF_STACK;
+    const auto address=_Unwind_GetIP(context);
+    if(address)walk.stack[walk.used++]=reinterpret_cast<void*>(address);
+    return _URC_NO_REASON;
+}
 }
 
 // Register from main, after sanitizer initialization and before native threads.
@@ -59,8 +68,14 @@ static void v08_capture_allocation(const volatile void* pointer, size_t size)
     if (busy.test_and_set(std::memory_order_acquire)) {
         skipped.fetch_add(1,std::memory_order_relaxed); return;
     }
-    void* stack[frames]{}; int thread=0;
-    __asan_get_alloc_stack(const_cast<void*>(pointer),stack,frames,&thread);
+    void* stack[frames]{};
+    // The sanitizer's fast allocation stack stops at distribution libraries
+    // built without frame pointers. DWARF unwind this *sampled* call to retain
+    // the actual SPELL caller. Suppress unwind-internal reentrant allocations;
+    // no sanitizer option or mandatory execution profile is changed.
+    reporting=true;
+    Walk walk{stack};_Unwind_Backtrace(frame,&walk);
+    reporting=false;
     uint64_t hash=0;
     for (auto frame:stack) hash=mix(hash^reinterpret_cast<uintptr_t>(frame));
     bool stored=false;
