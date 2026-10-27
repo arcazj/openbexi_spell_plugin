@@ -1,5 +1,18 @@
 # Full v0.8 publication qualification
 
+The latest decoder follow-up reuses owned fields when incoming LINE/ACK layouts
+alternate; its measured 200,000 allocations fall to zero in 10,000 cycles.
+See [implementation and qualification limits](NATIVE_INPUT_FIELD_REUSE.md).
+The preceding `bea8f4f` candidate passes 1,489 foundation tests, 11/14 core jobs
+and all five ancillary workflows. Handoff/IDE growth improves to 84.18/89.21 MiB
+but still exceeds 64 MiB. Terminal qualification also fails before child-running
+on late native GUI admission; its root cause is unproved. All 15 core/diagnostic
+artifact digests and recorded source inventories are verified in the
+[receipt](evidence/native-input/prior-candidate.json). Fresh hosted evidence for
+the decoder follow-up is required. All eleven full-release gate groups remain false.
+
+Historical checkpoints follow.
+
 The metadata-reuse follow-up is documented in [NATIVE_METADATA_REUSE.md](NATIVE_METADATA_REUSE.md).
 Its preceding candidate `3823fe0` passes 1,485 foundation tests, but both mandatory
 recovery profiles still fail memory growth (114.56 MiB handoff, 112.05 MiB IDE).

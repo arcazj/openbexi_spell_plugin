@@ -268,3 +268,10 @@ def test_reused_input_removes_repeated_decode_allocations(codec_binaries):
     after = run(codec_binaries["after"], "alloc_input")
     assert after["allocated_bytes"] < before["allocated_bytes"] * 0.05
     assert after["allocations"] < before["allocations"] * 0.05
+
+
+def test_alternating_input_layouts_reuse_owned_nodes(codec_binaries):
+    before = run(codec_binaries["before"], "alloc_mixed_input")
+    after = run(codec_binaries["after"], "alloc_mixed_input")
+    assert before["allocations"] >= 200_000
+    assert after["allocated_bytes"] == after["allocations"] == 0

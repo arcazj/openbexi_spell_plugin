@@ -8,6 +8,7 @@
 #include <string_view>
 #include <vector>
 #include "SPELL_IPC/SPELLipcError.H"
+#include "message_storage.H"
 
 namespace {
 size_t v08_field_size(const std::string& key, const std::string& value)
@@ -146,6 +147,23 @@ void SPELLipcMessage::v08FromData(std::string_view data)
         int ipcKey=m_key;
         SPELLipcMessageType type=m_type;
         auto& key=scratch.key;
+        // LINE and ACK packets alternate on the same input thread. Preserve
+        // owned nodes for fields absent from this packet in the existing
+        // bounded cache; erase-by-destruction would recreate them next time.
+        Properties obsolete;
+        for (auto it=m_properties.begin();it!=m_properties.end();) {
+            const auto found=std::lower_bound(fields.begin(),fields.end(),std::string_view(it->first),
+                [](const auto& field,std::string_view name) {return field.name<name;});
+            const auto& name=it->first;
+            const bool metadata=name==MessageField::FIELD_ID || name==MessageField::FIELD_TYPE
+                || name==MessageField::FIELD_SENDER_ID || name==MessageField::FIELD_RECEIVER_ID
+                || name==MessageField::FIELD_SEQUENCE || name==MessageField::FIELD_IPC_KEY;
+            if (metadata || found==fields.end() || found->name!=name) {
+                auto previous=it++;
+                obsolete.insert(m_properties.extract(previous));
+            } else ++it;
+        }
+        v08_recycle_properties(obsolete);
         for (size_t i=0;i<fields.size();++i) {
             const auto& field=fields[i];
             if (i+1<fields.size() && fields[i+1].name==field.name) continue;
@@ -159,18 +177,18 @@ void SPELLipcMessage::v08FromData(std::string_view data)
             else if (name == MessageField::FIELD_IPC_KEY) ipcKey=STRI(std::string(value));
             else {
                 key.assign(name);
-                m_properties[key].assign(value);
+                auto found=m_properties.find(key);
+                if (found!=m_properties.end()) found->second.assign(value);
+                else {
+                    auto node=v08_take_property(key);
+                    if (node.empty()) m_properties.emplace(key,std::string(value));
+                    else {
+                        node.key().assign(key);
+                        node.mapped().assign(value);
+                        m_properties.insert(std::move(node));
+                    }
+                }
             }
-        }
-        for (auto it=m_properties.begin();it!=m_properties.end();) {
-            const auto found=std::lower_bound(fields.begin(),fields.end(),std::string_view(it->first),
-                [](const auto& field,std::string_view name) {return field.name<name;});
-            const auto& name=it->first;
-            const bool metadata=name==MessageField::FIELD_ID || name==MessageField::FIELD_TYPE
-                || name==MessageField::FIELD_SENDER_ID || name==MessageField::FIELD_RECEIVER_ID
-                || name==MessageField::FIELD_SEQUENCE || name==MessageField::FIELD_IPC_KEY;
-            if (metadata || found==fields.end() || found->name!=name) it=m_properties.erase(it);
-            else ++it;
         }
         m_id.swap(id); m_senderId.swap(sender); m_receiverId.swap(receiver);
         m_sequence=sequence; m_key=ipcKey; m_type=type;
@@ -180,5 +198,3 @@ void SPELLipcMessage::v08FromData(std::string_view data)
         throw;
     }
 }
-
-#include "message_storage.H"

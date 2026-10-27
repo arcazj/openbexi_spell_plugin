@@ -1,0 +1,520 @@
+{
+  "schema": "openbexi.v08-qualification-checkpoint/1",
+  "candidate": "bea8f4f810afe2a5b26c28caa9a84a7beec89cee",
+  "tree": "d1a373012100d93709bdee64ed17daee5f893fc3",
+  "ci_merge": "a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+  "ci_merge_tree_matches": true,
+  "core_run_id": 40520985313,
+  "core_jobs": [
+    {
+      "id": 122247686599,
+      "name": "native-boundary",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687003,
+      "name": "native-launch (audit)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687057,
+      "name": "foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687376,
+      "name": "fault-reproduction",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687379,
+      "name": "native-launch (native-startup-stress, --native-startup-stress)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687418,
+      "name": "native-launch (native-handoff, --native-handoff)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122247687424,
+      "name": "native-launch (listener-survival, --native-listener-survival)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687451,
+      "name": "native-launch (native-prompts, --native-prompts)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687456,
+      "name": "native-launch (native-terminal, --native-terminal)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122247687489,
+      "name": "native-launch (thread-barrier, --native-thread-barrier)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687498,
+      "name": "native-launch (pause-probe, --native-pause-probe)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687572,
+      "name": "native-launch (native-ide, --native-ide)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 122247687598,
+      "name": "native-launch (child-gate, --native-child-gate)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 122247687699,
+      "name": "native-launch (dss, --native-dss)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "ancillary_workflows": [
+    {
+      "id": 40520985399,
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40520985268,
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40520985304,
+      "name": "v0.8 Kubernetes prelaunch static security gate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40520985377,
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40520985574,
+      "name": "v0.8 portable preparation and driver compatibility subset",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": 12742362590,
+      "name": "v08-server-foundation-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "96d64e59ed3d696e0a2a2d9b59564662e7d0899808c42df3d99674730b2b6dfe",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-20261027T142615Z-826e3b74/result.json",
+          "source_inputs": 233,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12742157356,
+      "name": "v08-native-launch-child-gate-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "6c8f960e425dd9d2049e8a166b1e9c7d92ac4c88ef988b33a7cc2331ea0597e9",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-28b30e16d2654b68a21a2920f53d36df/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741928414,
+      "name": "v08-native-launch-native-startup-stress-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "c38dda040401a571ed391ce715c1e7e5928d01ef2e75df6b505a890e3fa66abf",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-33e775a292b84f54ae0e51b3ba5765b4/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741766692,
+      "name": "v08-native-boundary-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "5cc9a1269756dfbbb120e29f6641f05fcc0ee22b4ffab7724ab11123fc413928",
+      "zip_crc_verified": true,
+      "source_verification": []
+    },
+    {
+      "artifact_id": 12741697145,
+      "name": "v08-native-launch-thread-barrier-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "c929c3b7eb6fee87d1a1fd80f3050abc982868ac8a333dcebe24b4241908debd",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-a09c0c157c3b47a1a3cd533cef1e0058/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741658203,
+      "name": "v08-native-launch-listener-survival-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "12e993d371d2c07c2f1930ecdb4299d16865dd985154d7b3d12471007b00c19b",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-e95dd10c8f1e45a39c5d4790df4992bc/result.json",
+          "source_inputs": 68,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741368652,
+      "name": "v08-native-launch-pause-probe-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "5afffd2e507e906944e2c65cf3ab8534997de970d201a748e973003683ad2513",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-1d338d3a1e26409091c3774c6bd7ef69/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741344210,
+      "name": "v08-native-launch-native-prompts-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "7f86aba4c0e916f59f1ef64f1777f04b54018fa6702ace0ecce93e98d693a40b",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-e574d245d2e040ff978b294257d3e640/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741118970,
+      "name": "v08-fault-reproduction-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "de1651100ccff917da63c2f82afab18e62c31bf9fe09cb3baff588f786ded21e",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-7b8b609f32fb43a6897dfb7c361f9b61/result.json",
+          "source_inputs": 204,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12740987513,
+      "name": "v08-native-launch-audit-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "3f928c5ccc30008d136976f5c948d51bfe5fe9af3742c50e6c00a4026f38e057",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-4b2d181342b244ea9ec3b9cd09edf978/result.json",
+          "source_inputs": 67,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12740919101,
+      "name": "v08-native-launch-dss-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "f80188fab9ad322c9e942b58ce3a6406d4df777d5c4e6484f8a0422652f6942d",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-6cb0eeea06be4b5c93a57dbda7344f29/result.json",
+          "source_inputs": 132,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741523518,
+      "name": "v08-native-launch-native-handoff-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "f492ebc5819e11a8a9f14e83c017b820e2ecdd3a4125f8cfd9a0417762f89b34",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-762978a141ce4621a1e4a54bd36eef5f/result.json",
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "artifact_id": 12740823511,
+      "name": "v08-native-launch-native-ide-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "5a80c0514a4a321993d32d97a80e03f9cfcb34842583d007746c4d6e8467bb2a",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-cdfe86e3829d4880af8087472efe8a2e/result.json",
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741957606,
+      "name": "v08-native-allocation-a8b8786a68c87e1f996c0e2e670b47fba268fcf4",
+      "sha256": "56b7172f913564a1224b086c5383ed1acb97086fe731c3564738287c9a870e83",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "file": "run-bc173fb511c24a47972d4444f01936b0/result.json",
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "artifact_id": 12741488298,
+      "name": "native-terminal",
+      "sha256": "3ed5f9649e306986448206b06ba25f1e7fbf13a0cf095e7b6fdded14f209e8be",
+      "zip_crc_verified": true,
+      "source_verification": [
+        {
+          "source_inputs": 132,
+          "passed": false
+        }
+      ]
+    }
+  ],
+  "foundation": {
+    "tests": 1489,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_inputs": 233
+  },
+  "profiles": {
+    "handoff": {
+      "artifact_id": 12741523518,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "recovery_soak": {
+        "start_ns": 751926260440,
+        "end_ns": 797515356076,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1361,
+          "background": 1661,
+          "child": 1469
+        },
+        "counters_after": {
+          "root": 3352,
+          "background": 3897,
+          "child": 3544
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.589095636,
+        "peak_bytes": 1449439232,
+        "window_growth_bytes": 88264704,
+        "first_window_median_bytes": 1295519744,
+        "last_window_median_bytes": 1383784448
+      }
+    },
+    "ide": {
+      "artifact_id": 12740823511,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "recovery_soak": {
+        "start_ns": 370418091751,
+        "end_ns": 416006750455,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1350,
+          "background": 1667,
+          "child": 1478
+        },
+        "counters_after": {
+          "root": 3349,
+          "background": 3905,
+          "child": 3558
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.588658704,
+        "peak_bytes": 1453772800,
+        "window_growth_bytes": 93544448,
+        "first_window_median_bytes": 1295732736,
+        "last_window_median_bytes": 1389277184
+      }
+    },
+    "diagnostic": {
+      "artifact_id": 12741957606,
+      "passed": false,
+      "error": "RuntimeError: Native recovery resource acceptance failed",
+      "recovery_soak": {
+        "start_ns": 323423757648,
+        "end_ns": 368873091472,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1490,
+          "background": 1705,
+          "child": 1562
+        },
+        "counters_after": {
+          "root": 3576,
+          "background": 3936,
+          "child": 3687
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "resource_acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.449333824,
+        "peak_bytes": 1507057664,
+        "window_growth_bytes": 103002112,
+        "first_window_median_bytes": 1332789248,
+        "last_window_median_bytes": 1435791360
+      }
+    }
+  },
+  "full_v08_qualified": false,
+  "terminal_failure": {
+    "artifact_id": 12741488298,
+    "phase": "before native-child-running",
+    "symptom": "REQ_EXEC_INFO rejected after native admission deadline",
+    "changed_deadlines": false,
+    "root_cause_proven": false,
+    "timings": [
+      {
+        "worker": 7,
+        "event": "native-admission-timing",
+        "kind": "openbexi.native-member/1",
+        "member": "e7e700a6ff550cd0",
+        "accepted_ns": 401084648922,
+        "elapsed_ms": 3858,
+        "phases": {
+          "authenticate_ms": 516,
+          "frame_ms": 19,
+          "epoch_ms": 0,
+          "dispatch_ms": 3310
+        },
+        "thread_cpu_ms": 36,
+        "member_phases": {
+          "pin_process_ms": 102,
+          "process_identity_ms": 7,
+          "registration_rpc_ms": 3188,
+          "liveness_ms": 0
+        },
+        "outcome": "reply_lost"
+      },
+      {
+        "worker": 8,
+        "event": "native-admission-timing",
+        "kind": "openbexi.native-member/1",
+        "member": "5888aba73f221eb1",
+        "accepted_ns": 400602037850,
+        "elapsed_ms": 3155,
+        "phases": {
+          "authenticate_ms": 0,
+          "frame_ms": 0,
+          "epoch_ms": 0,
+          "dispatch_ms": 3151,
+          "reply_ms": 2
+        },
+        "thread_cpu_ms": 33,
+        "member_phases": {
+          "pin_process_ms": 0,
+          "process_identity_ms": 0,
+          "registration_rpc_ms": 3049,
+          "liveness_ms": 2
+        },
+        "outcome": "allowed"
+      },
+      {
+        "worker": 8,
+        "event": "native-admission-timing",
+        "kind": "unknown",
+        "member": null,
+        "accepted_ns": 404051063657,
+        "elapsed_ms": 725,
+        "phases": {
+          "authenticate_ms": 503,
+          "frame_ms": 92,
+          "epoch_ms": 0,
+          "dispatch_ms": 87
+        },
+        "thread_cpu_ms": 5,
+        "member_phases": {},
+        "outcome": "reply_lost"
+      }
+    ]
+  }
+}

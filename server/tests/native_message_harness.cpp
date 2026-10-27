@@ -75,6 +75,18 @@ int main(int argc,char** argv) {
         for(int i=0;i<5000;++i)many+=m.dataItem(std::to_string(i),"value");
         readInput(parsed,many);require(parsed.v08Fields().size()==5000);
         readInput(parsed,packet);require(parsed.data()==packet);
+    } else if(mode=="alloc_mixed_input") {
+        SPELLipcMessage line("MSG_NOTIFICATION"),ack("MSG_ACKNOWLEDGE");
+        for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User","Csp","ExecutorStatus"})
+            line.set(key,std::string(64,'x'));
+        ack.set("Ack",std::string(64,'a'));
+        const auto linePacket=line.data(),ackPacket=ack.data();
+        SPELLipcMessage parsed;
+        for(int i=0;i<64;++i){readInput(parsed,linePacket);readInput(parsed,ackPacket);}
+        measuring=true;
+        for(int i=0;i<10000;++i){readInput(parsed,linePacket);readInput(parsed,ackPacket);}
+        measuring=false;
+        require(parsed.data()==ackPacket&&parsed.v08Fields().size()==1);
     } else if(mode=="alloc_input") {
         for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User"})m.set(key,"handoff_root:14");
         auto packet=m.data();SPELLipcMessage parsed;readInput(parsed,packet);

@@ -242,12 +242,28 @@ int main(int argc,char** argv) {
         std::vector<std::thread> workers;
         for(int t=0;t<8;++t) workers.emplace_back([&,t] {
             auto local=source;
+            SPELLipcMessage decoded;
+            const auto emptyPacket=SPELLipcMessage("EMPTY").data();
             for(int n=0;n<1000;++n) {
                 // Exercise producer construction concurrently with copying.
                 auto fresh=fixture();compare(fresh,source);
                 local.set("User",std::to_string(t));auto a=local;auto b=a;
                 a.set("User","changed");require(b.get("User")==std::to_string(t));
                 compare(local,b);
+                const auto packet=b.data();
+#if V08_STORAGE
+                decoded.v08ReadData(packet);
+#else
+                decoded.fromData(packet);
+#endif
+                require(decoded.data()==packet);
+                auto independent=decoded;
+#if V08_STORAGE
+                decoded.v08ReadData(emptyPacket);
+#else
+                decoded.fromData(emptyPacket);
+#endif
+                require(decoded.v08Fields().empty()&&independent.data()==packet);
             }
         });
         for(auto& worker:workers)worker.join();
