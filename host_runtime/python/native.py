@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import queue
+import re
 import select
 import signal
 import subprocess
@@ -513,7 +514,13 @@ class NativeSession:
             self.log.close()
             self.log = None
             if 'V08_AUDIT_FAILURE ' in diagnostic:
-                errors.append('Durable native audit write failed; records retained')
+                failures = re.findall(r'V08_AUDIT_FAILURE stage=([a-z_]{1,40}) errno=([0-9]{1,4})', diagnostic)
+                if failures:
+                    for stage, code in sorted(set(failures))[:8]:
+                        errors.append('Durable native audit write failed stage=' + stage +
+                                      ' errno=' + code + '; records retained')
+                else:
+                    errors.append('Durable native audit write failed; records retained')
             if 'AddressSanitizer:' in diagnostic or 'runtime error:' in diagnostic:
                 errors.append(diagnostic)
         self.directory.cleanup()

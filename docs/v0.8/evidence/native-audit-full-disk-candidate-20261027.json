@@ -1,0 +1,25 @@
+{
+  "schema": "openbexi.native-audit-full-disk-candidate/1",
+  "parent": "ce6dfd1c6bf3ad480e808774b0b3eac3226b242b",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "source_sha256": {
+    "scripts/v08_native_audit_fault.py": "fe495e0150883dc73f02d1dde05d70f08bbbeca8d6bfefaf064825bf60363658",
+    "scripts/v08_native_consumption.py": "8b6d00c72d291d88f6e56fc66157dc2f43ae72a896a6dd3d01164344302f2f32",
+    "scripts/qualify_v08_native_launch.py": "e23dab9a17de7fef26ac79e665fcf646cd853442f47f5147bc018118195600aa",
+    "host_runtime/python/native.py": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
+    ".github/workflows/v08-audit-storage.yml": "545c1c39358a1c7d7f772468bf8e7424ed7b1e5e9777c8df731ff83230368156",
+    "server/tests/test_native_audit_fault.py": "b4f9973877f0de8784b5d231c572c9d9c6d2befa62141bd783ac617b946d1914"
+  },
+  "local_component_tests": {
+    "passed": 182,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "scope": "Actual descriptor byte copying/mutation and symlink refusal, audit C++ and bridge lifecycle components; not live native full-disk acceptance"
+  },
+  "hosted_native_disk_full": "pending",
+  "mandatory_memory_revalidation": "pending",
+  "required_audit_records_deleted": false,
+  "full_v08_qualified": false,
+  "release_published": false
+}

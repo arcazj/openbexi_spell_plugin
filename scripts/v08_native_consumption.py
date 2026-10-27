@@ -242,6 +242,7 @@ def qualify_consumption_fence(
     allocation_diagnostics=False,
     driver_network=None,
     desktop_stack=None,
+    audit_full_disk=False,
 ):
     diagnostic_env = allocation_diagnostic_args(
         live_handoff=live_handoff, enabled=allocation_diagnostics
@@ -267,6 +268,12 @@ def qualify_consumption_fence(
         if owner_commands
         else "worker-probe"
     )
+    if audit_full_disk:
+        if not owner_resume or terminal_evidence is None:
+            raise ValueError(
+                "Native disk fault requires its retained owner-resume probe"
+            )
+        label, context_id = "audit-full", "Q"
     if terminal_case is not None:
         if terminal_evidence is None:
             raise ValueError(
@@ -624,7 +631,15 @@ def qualify_consumption_fence(
     # Even failed attempts retain their ASRUN files with their own evidence.
     if terminal_evidence is None:
         raise ValueError("Native audit records require retained evidence storage")
-    args += provision(command, terminal_evidence, name)
+    if audit_full_disk:
+        from v08_native_audit_fault import provision as provision_fault
+
+        mount_args, fault_volume = provision_fault(
+            command, terminal_evidence, name, report
+        )
+        args += mount_args
+    else:
+        args += provision(command, terminal_evidence, name)
     for source, destination in (
         (snapshot, "/source"),
         (code, "/v08"),
@@ -762,6 +777,27 @@ def qualify_consumption_fence(
         )
         return
     if owner_resume:
+        if audit_full_disk:
+            from v08_native_audit_fault import qualify
+
+            qualify(
+                volume=fault_volume,
+                command=command,
+                execution=execution,
+                connection=connection,
+                controller=controller,
+                control=control,
+                state=state,
+                name=name,
+                worker_image=worker_image,
+                await_event=await_event,
+                host_processes=host_processes,
+                events=events,
+                report=report,
+            )
+            if primary_controller("execution.list", {}) != original_primary:
+                raise RuntimeError("Audit failure changed primary Context executions")
+            return
         qualify_owner_resume(
             name=name,
             execution=execution,

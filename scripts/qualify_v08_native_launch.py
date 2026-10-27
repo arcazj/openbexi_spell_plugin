@@ -584,6 +584,7 @@ def main():
     parser.add_argument("--native-allocation-diagnostics", action="store_true")
     parser.add_argument("--native-startup-stress", action="store_true")
     parser.add_argument("--native-listener-survival", action="store_true")
+    parser.add_argument("--native-audit-full-disk", action="store_true")
     profile = parser.parse_args()
     if profile.native_allocation_diagnostics and not (
         profile.native_handoff or profile.native_ide
@@ -602,6 +603,7 @@ def main():
                 profile.native_ide,
                 profile.native_startup_stress,
                 profile.native_listener_survival,
+                profile.native_audit_full_disk,
             )
         )
         > 1
@@ -616,7 +618,11 @@ def main():
     profile.native_prompts = (
         profile.native_prompts or profile.native_terminal or profile.native_handoff
     )
-    profile.native_child_gate = profile.native_child_gate or profile.native_prompts
+    profile.native_child_gate = (
+        profile.native_child_gate
+        or profile.native_prompts
+        or profile.native_audit_full_disk
+    )
     # Prompt qualification must exercise real driver effects against the
     # independently launched DSS, not only Context audit-event RPCs.
     profile.native_dss = profile.native_dss or profile.native_prompts
@@ -665,6 +671,7 @@ def main():
         ROOT / "scripts/v08_resource_probe.py",
         ROOT / ".github/workflows/v08-lifecycle-reliability.yml",
         ROOT / "scripts/v08_audit_storage.py",
+        ROOT / "scripts/v08_native_audit_fault.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/native/private_bridge.cpp",
@@ -2229,6 +2236,34 @@ def main():
                         host_processes=host_processes,
                         events=events,
                     )
+                if profile.native_audit_full_disk:
+                    from v08_native_consumption import qualify_consumption_fence
+
+                    qualify_consumption_fence(
+                        audit_full_disk=True,
+                        owner_resume=True,
+                        temporary=temporary,
+                        terminal_evidence=output,
+                        prefix=prefix,
+                        context_image=context_image,
+                        config=config,
+                        sources=sources,
+                        worker_image=worker_image,
+                        code=code,
+                        snapshot=snapshot,
+                        ca=ca,
+                        peers=peers,
+                        primary_controller=controller,
+                        control=control,
+                        primary_state=state,
+                        names=names,
+                        networks=networks,
+                        report=report,
+                        command=command,
+                        await_event=await_event,
+                        host_processes=host_processes,
+                        events=events,
+                    )
                 if profile.native_terminal:
                     from v08_native_consumption import qualify_consumption_fence
 
@@ -2466,6 +2501,15 @@ def main():
                     except Exception:
                         pass
                 cleanup_resources(names, networks, report)
+                if profile.native_audit_full_disk:
+                    try:
+                        from v08_native_audit_fault import finalize
+
+                        finalize(command, output, report)
+                    except Exception as error:
+                        retain_failure(
+                            report, error, phase="native_audit_fault_retention"
+                        )
                 try:
                     from v08_audit_storage import expose_after_stop
 
