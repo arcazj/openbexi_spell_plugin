@@ -1,0 +1,112 @@
+{
+  "base_commit": "a0a1686baf5b5ab65698eb030005de3bcbd42a49",
+  "tested_merge": "86a618509d3071bc5d6760d0f5a1caa56d1ad274",
+  "full_v08_qualified": false,
+  "core_workflow_run": 40449908895,
+  "recovery": {
+    "handoff": {
+      "artifact_id": 12710665540,
+      "archive_sha256": "7f3b494aab0424aff088803f31f8b22657f49a6e568b2d4b631c741346c37adc",
+      "verified_source_entries": 132,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 48,
+        "soak_samples": 22,
+        "duration_seconds": 45.47088087,
+        "peak_bytes": 1571692544,
+        "window_growth_bytes": 135634944,
+        "first_window_median_bytes": 1389993984,
+        "last_window_median_bytes": 1525628928
+      },
+      "soak": {
+        "start_ns": 301274333864,
+        "end_ns": 346745214734,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1464,
+          "background": 1694,
+          "child": 1547
+        },
+        "counters_after": {
+          "root": 3552,
+          "background": 3933,
+          "child": 3675
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "component_window_growth_bytes": {
+        "anon": 132276224,
+        "file": 1576960,
+        "shmem": 1576960
+      },
+      "evidence_sha256": {
+        "result.json": "e4dca66631d116a81c328c6a599ffe67e8a85e08feceb67503b8fc19ea20e47a",
+        "native-resource-acceptance.json": "db772e3919d735e8e1e4c322469079cdbf604bee17684ba1dfbd347ca953b4be",
+        "native-recovery-soak.json": "ab343f93ae0a7093b83234495f9773aac8e9b46ced4c2b983502ca499354b64d",
+        "native-resources.jsonl": "d0c09a68fd8895021cf506a9f09d3449648a1da34bbde142c288ba89359ed4c0"
+      }
+    },
+    "ide": {
+      "artifact_id": 12709529738,
+      "archive_sha256": "c38159f174a8c6539304d2ed4d7a956c8221695a8cde29453deac81dfca4f7f9",
+      "verified_source_entries": 132,
+      "acceptance": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": false,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [
+          "native_recovery_memory_still_growing"
+        ],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.385277023,
+        "peak_bytes": 1567293440,
+        "window_growth_bytes": 125640704,
+        "first_window_median_bytes": 1389428736,
+        "last_window_median_bytes": 1515069440
+      },
+      "soak": {
+        "start_ns": 469473222053,
+        "end_ns": 514858499076,
+        "minimum_seconds": 45,
+        "counters_before": {
+          "root": 1489,
+          "background": 1712,
+          "child": 1582
+        },
+        "counters_after": {
+          "root": 3603,
+          "background": 3951,
+          "child": 3726
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "component_window_growth_bytes": {
+        "anon": 122163200,
+        "file": 1585152,
+        "shmem": 1585152
+      },
+      "evidence_sha256": {
+        "result.json": "b58a92fa983aad06f0182dba2beb38f8d4811e43b4a42639eebe4c4003318f63",
+        "native-resource-acceptance.json": "fe939c8951296616f35ac11775d82a2b53b8b693a021658322b62338a803902e",
+        "native-recovery-soak.json": "3ac435eab42a5e52057602f72980bd04fb8efab9948a742ee8aecaf8cdb4f730",
+        "native-resources.jsonl": "b4242aec9311b0d704566ce69f95cc2f37eeff60e4525fc2e55f42275bfc2028"
+      }
+    }
+  }
+}

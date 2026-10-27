@@ -70,6 +70,44 @@ int main(int argc,char** argv) {
                 require(copy.v08Fields()==shape.v08Fields());
             }
         measure=false;
+    } else if(mode=="fresh_bench") {
+        // Real notification construction uses set() for each field. Include
+        // changing keys and order; cached fields must never escape into a new
+        // message before explicitly being set by its producer.
+        auto construct=[](int n) {
+            SPELLipcMessage item("MSG");
+            require(item.v08Fields().empty());
+            for(int k=0;k<8;++k) {
+                const auto key=std::to_string((k+n)%8)+"-"+std::to_string(n%3);
+                item.set(key,"value");
+                require(item.v08Fields().size()==static_cast<size_t>(k+1));
+            }
+            return item;
+        };
+        for(int n=0;n<30;++n) {auto item=construct(n);}
+        measure=true;
+        for(int n=0;n<10000;++n) {auto item=construct(n);}
+        measure=false;
+    } else if(mode=="fresh") {
+        for(int n=0;n<1000;++n) {
+            SPELLipcMessage item("MSG");
+            require(item.v08Fields().empty());
+            for(int k=0;k<n%20;++k) {
+                const auto key="key-"+std::to_string((k+n)%20);
+                item.set(key,std::to_string(n));
+                require(item.v08Fields().size()==static_cast<size_t>(k+1));
+            }
+            item.set("Binary",std::string("a\0b",3));
+            item.set(std::string("K\0x",3),u8"é中🙂");
+            item.set("Empty","");
+            auto copy=item;
+            item.set("Binary",std::string("x\0y",3));
+            require(copy.get("Binary")==std::string("a\0b",3));
+            require(copy.get(std::string("K\0x",3))==u8"é中🙂");
+            require(copy.get("Empty").empty());
+            auto bytes=item.data();SPELLipcMessage decoded;decoded.fromData(bytes);
+            compare(item,decoded);
+        }
     } else if(mode=="copy") {
         for(int n=0;n<256;++n) {
             source.set("Binary",std::string(100,static_cast<char>(n)));
@@ -93,6 +131,8 @@ int main(int argc,char** argv) {
         for(int t=0;t<8;++t) workers.emplace_back([&,t] {
             auto local=source;
             for(int n=0;n<1000;++n) {
+                // Exercise producer construction concurrently with copying.
+                auto fresh=fixture();compare(fresh,source);
                 local.set("User",std::to_string(t));auto a=local;auto b=a;
                 a.set("User","changed");require(b.get("User")==std::to_string(t));
                 compare(local,b);

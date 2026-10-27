@@ -20,6 +20,52 @@ struct V08PropertyStorage {
 };
 static V08PropertyStorage v08_property_storage;
 
+// Fresh notifications are assembled with set(), not the copy constructor.
+// Transfer one cleared, exclusively owned node from the same bounded cache.
+// Never hold the cache lock while changing strings or publishing into a message.
+void v08_set_property(SPELLipcMessage::Properties& target,
+                      std::string key, std::string value)
+{
+    auto found=target.find(key);
+    if (found!=target.end()) {
+        found->second.assign(value);
+        return;
+    }
+    SPELLipcMessage::Properties::node_type node;
+    if (v08_storage_live.load()) {
+        std::unique_lock<std::mutex> lock(v08_property_storage.mutex,std::try_to_lock);
+        if (lock.owns_lock()) {
+            auto& storage=v08_property_storage;
+            size_t selected=storage.used;
+            for (size_t index=storage.used;index>0;--index) {
+                auto& candidate=storage.maps[index-1];
+                auto field=candidate.find(key);
+                if (field==candidate.end()) continue;
+                node=candidate.extract(field);
+                selected=index-1;
+                break;
+            }
+            if (node.empty() && storage.used) {
+                selected=storage.used-1;
+                auto& candidate=storage.maps[selected];
+                node=candidate.extract(candidate.begin());
+            }
+            if (!node.empty() && storage.maps[selected].empty()) {
+                --storage.used;
+                if (selected!=storage.used)
+                    storage.maps[selected].swap(storage.maps[storage.used]);
+            }
+        }
+    }
+    if (node.empty()) {
+        target.emplace(std::move(key),std::move(value));
+    } else {
+        node.key().assign(key);
+        node.mapped().assign(value);
+        target.insert(std::move(node));
+    }
+}
+
 static bool v08_same_keys(const SPELLipcMessage::Properties& a,
                           const SPELLipcMessage::Properties& b)
 {

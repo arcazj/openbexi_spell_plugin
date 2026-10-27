@@ -1,0 +1,73 @@
+{
+  "base_commit": "a0a1686baf5b5ab65698eb030005de3bcbd42a49",
+  "full_v08_qualified": false,
+  "junit": {
+    "guards.xml": {
+      "sha256": "6f0381a138b00ce4bdf59a71c7401e4e4805616c3e35fff174bd0be3e1a9d7c2",
+      "tests": 189,
+      "failures": 20,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native-regressions.xml": {
+      "sha256": "24f4c2af65e87bc0d950a1d0d8ef5906b4e73532f78ecbb0acc767f4090a942c",
+      "tests": 38,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    "guards-corrected.xml": {
+      "sha256": "691f357e82ca938fc9bc6fcf90ed05a57b513a76649f8bb9e94233b9e9d49975",
+      "tests": 176,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "storage.xml": {
+      "sha256": "3fba26b3492796967719ad904369543f35f26aa454906144a43f0d27fc795c12",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "native-python313.xml": {
+      "sha256": "ed77851111146c511b94af6dc071001e80bec8ef2e00ac617541131f4cf8c9ae",
+      "tests": 47,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "trace-python313.xml": {
+      "sha256": "703b488242b34c4abe640f7afa62d74167f5666d002e3b3c8dfc96c84e434f5b",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "fresh_benchmark": {
+    "iterations": 10000,
+    "fields": 8,
+    "before_allocations": 80000,
+    "after_allocations": 0,
+    "before_allocated_bytes": 7680000,
+    "after_allocated_bytes": 0,
+    "message_size": 176
+  },
+  "initial_attempts": {
+    "guards.xml": "11 source fingerprint failures corrected; 9 Unix-socket cases unavailable due EPERM; no skips added",
+    "native-regressions.xml": "CPython 3.12 lacked libpython3.13; retry uses installed CPython 3.13.16",
+    "native-python313.xml": "46 passed; trace binary needed LD_LIBRARY_PATH for the installed libpython3.13; retry with correct runtime path"
+  },
+  "unchanged_controls": {
+    "docs/v0.8/RELEASE_GATES.json": "4d985fd6bbfc6208e7d7b17255c1dee4d39571eb5e639866c21720a12844f85d",
+    "docs/v0.8/IDE_PAIR.json": "71dabb29cb4ae5e5f299b8e10cabd9ddf43a3c5a66671ffc9d023cdc33e070ef",
+    "scripts/v08_resource_probe.py": "c2f4ec84b35466058528b651bed72e8ef425aa40e25f044a0beca100c737358f",
+    "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
+    "scripts/qualify_v08_native_launch.py": "fc33b8358cf3ed019d84056c0b8e139688b6bc206cc3cc1784c14ac67fa43d29",
+    "host_runtime/native/admission_channel.H": "07c6d18825af8baf5e741131e9f1dea7b14a9e53e110d7ad78265f991422311c",
+    "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757"
+  },
+  "distinct_passing_tests": 223,
+  "validation_interpretation": "Union of successful cases in guards-corrected.xml, native-python313.xml and trace-python313.xml; earlier failures retained, nine Unix-socket tests still unavailable locally. Not a full native or release verdict."
+}

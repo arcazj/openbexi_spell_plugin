@@ -1,5 +1,17 @@
 # Full v0.8 publication qualification
 
+The latest completed core baseline is `a0a1686` / run `40449908895`: 12/14
+jobs pass, but handoff and installed-IDE recovery still fail memory growth
+(129.35 and 119.82 MiB against the unchanged 64 MiB limit). Both retain eight
+processes and pass the peak ceiling. Verified samples locate most remaining
+growth in anonymous memory. Fresh-message field construction now reuses the
+existing bounded node cache; rebuilt hosted acceptance is still required.
+See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
+The separate optimized-IDE comparison also recorded uncertain driver effects
+before child-running and did not reach its soak. No release gate is promoted.
+
+Historical qualification records follow.
+
 Dev67 `93dad41` completed hosted run `40397729336`. All 1,290 service tests,
 95 overlapping fault tests and 241 portable tests pass with no failures/errors/skips.
 Twelve of fourteen core jobs and all five ancillary workflows pass. All 24 fresh

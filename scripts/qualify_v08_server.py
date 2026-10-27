@@ -121,6 +121,7 @@ def main():
             root / "scripts/v08_controller_heartbeat.py",
             root / "scripts/v08_terminal_cohort.py",
             root / "server/tests/native_message_harness.cpp",
+            root / "server/tests/native_storage_harness.cpp",
             root / "server/tests/native_stream_harness.cpp",
             root / "server/tests/native_output_harness.inc",
             root / "host_runtime/native/private_bridge.cpp",

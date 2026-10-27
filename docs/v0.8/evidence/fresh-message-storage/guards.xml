@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="189" time="12.674" timestamp="2026-10-27T00:44:21.885606-04:00" hostname="8cc6a12640ed"><testcase classname="tests.test_native_resource_probe" name="test_bounded_recovery_acceptance_requires_no_swap_and_stable_memory" time="0.004" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.max-1073741824]" time="0.001" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.swap.max-1073741824]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.swap.current-4096]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.peak-1887436800]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.current-unknown]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.events-value5]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_pressure_swap_and_unverifiable_counters[memory.events-value6]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_growth_even_without_limit_or_oom_events" time="0.001" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_incomplete_or_replaced_evidence[gap]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_incomplete_or_replaced_evidence[identity]" time="0.001" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_incomplete_or_replaced_evidence[counter_missing]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_incomplete_or_replaced_evidence[end_missing]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_rejects_incomplete_or_replaced_evidence[bad_record]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recovery_verifier_does_not_mutate_sampled_values" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_snapshot_separates_rss_swap_file_and_pressure_without_reading_private_data" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_exited_member_and_missing_smaps_are_explicit" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_container_executable_need_not_exist_in_host_mount_namespace" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_cgroup_path_cannot_escape_bound_root[0::/../escape]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_cgroup_path_cannot_escape_bound_root[0::/worker\n1:cpu:/other]" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_recycled_pid_invalidates_observation" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_process_roster_is_bounded" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_allocator_records_reject_non_numeric_or_extra_fields" time="0.000" /><testcase classname="tests.test_native_resource_probe" name="test_compiled_allocator_observation_preserves_live_and_freed_distinction" time="9.008" /><testcase classname="tests.test_native_resource_probe" name="test_allocation_profile_collector_keeps_only_latest_bounded_symbol_metadata" time="0.002" /><testcase classname="tests.test_native_resource_probe" name="test_allocation_profile_rejects_arbitrary_log_payload[procedure secret]" time="0.000" /><testcase classname="tests.test_native_resource_probe" name="test_allocation_profile_rejects_arbitrary_log_payload[/private/path]" time="0.000" /><testcase classname="tests.test_native_resource_probe" name="test_allocation_profile_rejects_arbitrary_log_payload[bad\x00symbol]" time="0.000" /><testcase classname="tests.test_native_resource_probe" name="test_allocation_profile_rejects_arbitrary_log_payload[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.000" /><testcase classname="tests.test_native_resource_probe" name="test_snapshot_retains_allocation_sites_only_for_observed_original_process" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[45-asan-noswap]" time="0.002" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[45-optimized-noswap]" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[45-asan-swap]" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[45-asan-o2-noswap]" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[60-asan-noswap]" time="0.004" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[60-optimized-noswap]" time="0.004" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[60-asan-swap]" time="0.004" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[60-asan-o2-noswap]" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[300-asan-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[300-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[300-asan-swap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_success_is_never_a_release_receipt[300-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[oom-asan-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[oom-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[oom-asan-swap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[oom-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[pressure-asan-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[pressure-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[pressure-asan-swap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[pressure-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[identity-asan-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[identity-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[identity-asan-swap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[identity-asan-o2-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[roster-asan-noswap]" time="0.006" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[roster-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[roster-asan-swap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[roster-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[map_missing-asan-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[map_missing-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[map_missing-asan-swap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[map_missing-asan-o2-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[wrong_instrumentation-asan-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[wrong_instrumentation-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[wrong_instrumentation-asan-swap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[wrong_instrumentation-asan-o2-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[gap-asan-noswap]" time="0.006" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[gap-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[gap-asan-swap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[gap-asan-o2-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_counter-asan-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_counter-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_counter-asan-swap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_counter-asan-o2-noswap]" time="0.012" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_limit-asan-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_limit-optimized-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_limit-asan-swap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[bad_limit-asan-o2-noswap]" time="0.011" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_failure-asan-noswap]" time="0.018" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_failure-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_failure-asan-swap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_failure-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[missing_role-asan-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[missing_role-optimized-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[missing_role-asan-swap]" time="0.010" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[missing_role-asan-o2-noswap]" time="0.010" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_above_limit-asan-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_above_limit-optimized-noswap]" time="0.009" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_above_limit-asan-swap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[swap_above_limit-asan-o2-noswap]" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[last_samples_missing-asan-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[last_samples_missing-optimized-noswap]" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[last_samples_missing-asan-swap]" time="0.006" /><testcase classname="tests.test_v08_memory_experiment" name="test_profile_rejects_corrupt_or_unsafe_evidence[last_samples_missing-asan-o2-noswap]" time="0.006" /><testcase classname="tests.test_v08_memory_experiment" name="test_swapping_out_memory_cannot_hide_combined_growth" time="0.008" /><testcase classname="tests.test_v08_memory_experiment" name="test_swap_capacity_without_use_is_not_evidence_of_benefit" time="0.007" /><testcase classname="tests.test_v08_memory_experiment" name="test_baseline_still_rejects_swap_and_keeps_original_thresholds" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[45-asan-noswap]" time="0.003"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an0')
+profile = 'asan-noswap', seconds = 45
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an0')
+profile = 'asan-noswap', soak_seconds = 45
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[45-optimized-noswap]" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an1')
+profile = 'optimized-noswap', seconds = 45
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an1')
+profile = 'optimized-noswap', soak_seconds = 45
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[45-asan-swap]" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an2')
+profile = 'asan-swap', seconds = 45
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an2')
+profile = 'asan-swap', soak_seconds = 45
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[45-asan-o2-noswap]" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an3')
+profile = 'asan-o2-noswap', seconds = 45
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an3')
+profile = 'asan-o2-noswap', soak_seconds = 45
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[300-asan-noswap]" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an4')
+profile = 'asan-noswap', seconds = 300
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an4')
+profile = 'asan-noswap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[300-optimized-noswap]" time="0.003"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an5')
+profile = 'optimized-noswap', seconds = 300
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an5')
+profile = 'optimized-noswap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[300-asan-swap]" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an6')
+profile = 'asan-swap', seconds = 300
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an6')
+profile = 'asan-swap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_exact_overlay_compiles_and_only_changes_the_experiment[300-asan-o2-noswap]" time="0.003"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an7')
+profile = 'asan-o2-noswap', seconds = 300
+
+    @pytest.mark.parametrize("profile", experiment.PROFILES)
+    @pytest.mark.parametrize("seconds", [45, 300])
+    def test_exact_overlay_compiles_and_only_changes_the_experiment(tmp_path, profile, seconds):
+        source_copy(tmp_path)
+        before = {p: (ROOT / p).read_bytes() for p in experiment.PREIMAGES}
+&gt;       receipt = experiment.prepare_overlay(tmp_path, profile, seconds)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_memory_experiment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_exact_overlay_compiles_an7')
+profile = 'asan-o2-noswap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_source_drift_is_rejected_before_any_overlay_writes" time="0.003" /><testcase classname="tests.test_v08_memory_experiment" name="test_repeated_overlay_application_is_rejected" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_repeated_overlay_applicat0')
+
+    def test_repeated_overlay_application_is_rejected(tmp_path):
+        source_copy(tmp_path)
+&gt;       experiment.prepare_overlay(tmp_path, "asan-swap", 300)
+
+server/tests/test_v08_memory_experiment.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_repeated_overlay_applicat0')
+profile = 'asan-swap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_invalid_profile_and_duration_are_rejected[unknown-300]" time="0.000" /><testcase classname="tests.test_v08_memory_experiment" name="test_invalid_profile_and_duration_are_rejected[asan-noswap-40]" time="0.001" /><testcase classname="tests.test_v08_memory_experiment" name="test_invalid_profile_and_duration_are_rejected[asan-noswap-305]" time="0.000" /><testcase classname="tests.test_v08_memory_experiment" name="test_invalid_profile_and_duration_are_rejected[asan-noswap-46]" time="0.000" /><testcase classname="tests.test_v08_memory_experiment" name="test_invalid_profile_and_duration_are_rejected[asan-noswap-True]" time="0.000" /><testcase classname="tests.test_v08_memory_experiment" name="test_optimized_trace_stubs_link_without_sanitizer" time="0.002"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_optimized_trace_stubs_lin0')
+
+    def test_optimized_trace_stubs_link_without_sanitizer(tmp_path):
+        source_copy(tmp_path)
+&gt;       experiment.prepare_overlay(tmp_path, "optimized-noswap", 300)
+
+server/tests/test_v08_memory_experiment.py:266: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_optimized_trace_stubs_lin0')
+profile = 'optimized-noswap', soak_seconds = 300
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_memory_experiment" name="test_comparison_assessor_does_not_modify_raw_evidence" time="0.015" /><testcase classname="tests.test_v08_memory_experiment" name="test_swap_setup_is_inert_outside_a_dedicated_hosted_runner" time="0.077" /><testcase classname="tests.test_v08_memory_experiment" name="test_cli_help_does_not_create_containers" time="0.071" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_zero_swap_host_needs_no_isolation" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_existing_host_swap_default_refusal_still_writes_receipt" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_explicit_unused_file_isolation_restores_original_priority[-2]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_explicit_unused_file_isolation_restores_original_priority[0]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_explicit_unused_file_isolation_restores_original_priority[7]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_explicit_unused_file_isolation_restores_original_priority[32767]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failed_comparison_restores_but_cannot_pass[1]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failed_comparison_restores_but_cannot_pass[2]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failed_comparison_restores_but_cannot_pass[130]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[disable_failed]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[untrusted]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[restore_failed]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[backing_changed]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[device_left_active]" time="0.002" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_failures_preserve_evidence_and_never_claim_pass[interrupt]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_busy_swap_is_not_disabled" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_multiple_devices_are_not_disabled" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_mutation_before_disable_is_refused" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[wrong header\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na file 2 3 -2\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na file 2 -1 -2\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na file 2 0 40000\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na\\040b file 2 0 -2\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na file 2 0 -2 extra\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_malformed_inventory_is_rejected[Filename Type Size Used Priority\na file 2 0 -2\na file 2 0 -2\n]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_valid_inventory_is_read_only" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[nonfile]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[busy]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[large]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[priority]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[lowram]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_validation_rejects_unsafe_preparation[backing]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[path]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[symlink]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[owner]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[links]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[writable]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_real_file_identity_checks[directory]" time="0.000" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_cli_refuses_non_hosted_or_invalid_identity[GITHUB_ACTIONS-false]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_cli_refuses_non_hosted_or_invalid_identity[RUNNER_ENVIRONMENT-self-hosted]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_cli_refuses_non_hosted_or_invalid_identity[RUNNER_OS-Windows]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_cli_refuses_non_hosted_or_invalid_identity[GITHUB_RUN_ID-bad]" time="0.001" /><testcase classname="tests.test_v08_memory_swap_runner" name="test_cli_refuses_non_hosted_or_invalid_identity[GITHUB_RUN_ATTEMPT-bad]" time="0.001" /><testcase classname="tests.test_v08_native_profiles" name="test_controlled_pair_changes_sanitizers_not_optimization" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_unknown_profile_fails_closed" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_refuses_mutable_or_malformed_images[latest]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_refuses_mutable_or_malformed_images[python:3.13]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_refuses_mutable_or_malformed_images[sha256:fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_refuses_mutable_or_malformed_images[x@sha256:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_refuses_mutable_or_malformed_images[x;sh]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_accepts_digest_pins[sha256:0000000000000000000000000000000000000000000000000000000000000000]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_offline_toolchain_accepts_digest_pins[ghcr.io/arcazj/toolchain@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_latency_percentiles_are_reported_not_certified" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_full_hour_protocol_with_injected_clock_and_host" time="0.006" /><testcase classname="tests.test_v08_native_profiles" name="test_endurance_refuses_shortened_duration" time="0.000" /><testcase classname="tests.test_v08_native_profiles" name="test_hour_overlay_preserves_mandatory_source_and_rotation_cap" time="0.003"><failure message="ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_hour_overlay_preserves_ma0')
+
+    def test_hour_overlay_preserves_mandatory_source_and_rotation_cap(tmp_path):
+        import shutil
+        import v08_memory_experiment as experiment
+    
+        for relative in experiment.PREIMAGES:
+            target = tmp_path / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / relative, target)
+        before = (ROOT / "scripts/v08_handoff_cohort.py").read_bytes()
+&gt;       changes = experiment.prepare_overlay(tmp_path, "optimized-noswap", 3600)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+server/tests/test_v08_native_profiles.py:234: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-root/pytest-2/test_hour_overlay_preserves_ma0')
+profile = 'optimized-noswap', soak_seconds = 3600
+
+    def prepare_overlay(root, profile, soak_seconds):
+        """Apply exact, recorded transformations to a disposable detached worktree."""
+        validate_profile(profile, soak_seconds)
+        root = Path(root)
+        originals = {}
+        for relative, expected in PREIMAGES.items():
+            data = (root / relative).read_bytes()
+            if digest(data) != expected:
+&gt;               raise ValueError("memory_experiment_source_changed: " + relative)
+E               ValueError: memory_experiment_source_changed: host_runtime/build_admission_context.py
+
+scripts/v08_memory_experiment.py:139: ValueError</failure></testcase><testcase classname="tests.test_v08_native_profiles" name="test_hour_assessor_requires_cycles_and_records_late_growth" time="0.762" /><testcase classname="tests.test_v08_allocation_profile_mode" name="test_allocation_profile_rejected_outside_live_recovery" time="0.123" /><testcase classname="tests.test_v08_allocation_profile_mode" name="test_allocation_profile_is_opt_in_and_scope_limited" time="0.008" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_interrupt]" time="0.730" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_deadline]" time="0.313" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wait_late_ready]" time="0.374" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[oversize]" time="0.006" /><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[allow]" time="0.004"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'allow', '/tmp/pytest-of-root/pytest...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan4')
+case = 'allow'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'allow', '/tmp/pytest-of-root/pytest...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[signal_reply]" time="0.006"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'signal_reply', '/tmp/pytest-of-root...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan5')
+case = 'signal_reply'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'signal_reply', '/tmp/pytest-of-root...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[partial_io]" time="0.006"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'partial_io', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan6')
+case = 'partial_io'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'partial_io', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[deny]" time="0.017"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'deny', '/tmp/pytest-of-root/pytest-...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan7')
+case = 'deny'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'deny', '/tmp/pytest-of-root/pytest-...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[lost_reply]" time="0.004"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'lost_reply', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan8')
+case = 'lost_reply'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'lost_reply', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[wrong_peer]" time="0.003"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'wrong_peer', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan9')
+case = 'wrong_peer'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'wrong_peer', '/tmp/pytest-of-root/p...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[expired_reply]" time="0.004"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'expired_reply', '/tmp/pytest-of-roo...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan10')
+case = 'expired_reply'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'expired_reply', '/tmp/pytest-of-roo...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[signal_deadline]" time="0.004"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'signal_deadline', '/tmp/pytest-of-r...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan11')
+case = 'signal_deadline'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'signal_deadline', '/tmp/pytest-of-r...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase><testcase classname="tests.test_native_admission_channel" name="test_production_admission_channel[late_read]" time="0.007"><failure message="AssertionError: b&quot;harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.&#10;  &quot;&#10;assert -6 == 0&#10; +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'late_read', '/tmp/pytest-of-root/py...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n&quot;).returncode">admission_binary = PosixPath('/tmp/pytest-of-root/pytest-2/admission-channel0/harness')
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_production_admission_chan12')
+case = 'late_read'
+
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "wait_interrupt",
+            "wait_deadline",
+            "wait_late_ready",
+            "oversize",
+            "allow",
+            "signal_reply",
+            "partial_io",
+            "deny",
+            "lost_reply",
+            "wrong_peer",
+            "expired_reply",
+            "signal_deadline",
+            "late_read",
+        ],
+    )
+    def test_production_admission_channel(admission_binary, tmp_path, case):
+        result = subprocess.run(
+            [str(admission_binary), case, str(tmp_path / "agent.sock")],
+            capture_output=True,
+            timeout=10,
+        )
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: b"harness: /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.
+E         "
+E       assert -6 == 0
+E        +  where -6 = CompletedProcess(args=['/tmp/pytest-of-root/pytest-2/admission-channel0/harness', 'late_read', '/tmp/pytest-of-root/py...spell_plugin/server/tests/native_admission_harness.cpp:99: int main(int, char**): Assertion `listener &gt;= 0' failed.\n").returncode
+
+server/tests/test_native_admission_channel.py:63: AssertionError</failure></testcase></testsuite></testsuites>

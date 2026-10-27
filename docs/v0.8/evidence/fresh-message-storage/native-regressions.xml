@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="38" time="46.336" timestamp="2026-10-27T00:44:14.557202-04:00" hostname="8cc6a12640ed"><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[wire]" time="28.035" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[duplicates]" time="0.019" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[partial_metadata]" time="0.015" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[moves]" time="0.016" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[output]" time="0.019" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_rejects_unrepresentable_and_truncated_fields[malformed]" time="0.024" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_rejects_unrepresentable_and_truncated_fields[oversize_key]" time="0.007" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_parse-0.55]" time="0.589" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_data-0.35]" time="0.147" /><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_output-0.25]" time="0.181" /><testcase classname="tests.test_native_message_codec" name="test_native_message_patch_rejects_changed_or_repeated_source" time="0.004" /><testcase classname="tests.test_native_message_codec" name="test_native_move_transfers_payload_without_allocating" time="0.013" /><testcase classname="tests.test_native_message_codec" name="test_native_move_patches_reject_drift_and_reapplication" time="0.015" /><testcase classname="tests.test_native_message_codec" name="test_cached_bridge_frames_match_frozen_bytes_and_clear_stale_fields" time="0.210" /><testcase classname="tests.test_native_message_codec" name="test_cached_bridge_removes_measured_repeated_frame_allocations" time="1.456" /><testcase classname="tests.test_native_message_codec" name="test_native_output_transfer_rejects_changed_or_repeated_source" time="0.003" /><testcase classname="tests.test_native_message_codec" name="test_reused_input_matches_fresh_messages_and_clears_metadata" time="0.070" /><testcase classname="tests.test_native_message_codec" name="test_reused_input_retains_no_malformed_packet_or_oversized_field_state" time="0.045" /><testcase classname="tests.test_native_message_codec" name="test_reused_input_removes_repeated_decode_allocations" time="0.581" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_preserves_frames_and_error_behavior[wire]" time="12.325" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_preserves_frames_and_error_behavior[large-and-failure]" time="0.088" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_removes_long_identity_allocation_churn[decode-allocations]" time="0.402" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_removes_long_identity_allocation_churn[output-allocations]" time="0.145" /><testcase classname="tests.test_native_stream_reuse" name="test_native_borrowed_input_is_owned_after_decode" time="0.038" /><testcase classname="tests.test_native_stream_reuse" name="test_stream_patch_rejects_header_drift_and_reapplication" time="0.003" /><testcase classname="tests.test_native_stream_reuse" name="test_borrowed_callbacks_leave_requests_and_queue_ownership_unchanged" time="0.006" /><testcase classname="tests.test_native_stream_reuse" name="test_only_owned_line_notifications_use_the_no_copy_sender" time="0.010" /><testcase classname="tests.test_native_trace_filename" name="test_compiled_filter_semantics_lifetime_and_allocation_reduction" time="1.438"><error message="failed on setup with &quot;AssertionError: /usr/bin/ld: cannot find -lpython3.13: No such file or directory&#10;  collect2: error: ld returned 1 exit status&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined'...tderr='/usr/bin/ld: cannot find -lpython3.13: No such file or directory\ncollect2: error: ld returned 1 exit status\n').returncode&quot;">trace_source = PosixPath('/tmp/pytest-of-root/pytest-1/trace-filename-source0/source')
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7f519a63cd10&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-1'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def filename_binary(trace_source, tmp_path_factory):
+        folder = tmp_path_factory.mktemp("trace-filename-compiled")
+        candidate = folder / "source"
+        shutil.copytree(trace_source, candidate)
+        load_builder().reuse_native_trace_filename(candidate)
+        for name, source in (("before", trace_source), ("after", candidate)):
+            body = method((source / RELATIVE).read_text())
+            prefix = body[body.index("{") + 1 : body.index("    // Filter importing state")]
+            (folder / ("filename_filter_" + name + ".inc")).write_text(prefix)
+        binary = folder / "filename"
+        built = subprocess.run(
+            [
+                "c++",
+                "-std=c++17",
+                "-O1",
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
+                "-fsanitize=address,undefined",
+                "-fno-sanitize-recover=all",
+                "-fno-omit-frame-pointer",
+                "-no-pie",
+                "-I" + sysconfig.get_path("include"),
+                "-I" + str(ROOT / "host_runtime/native"),
+                "-I" + str(folder),
+                str(ROOT / "server/tests/native_frame_filename.cpp"),
+                "-L" + sysconfig.get_config_var("LIBDIR"),
+                "-lpython3.13",
+                "-o",
+                str(binary),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+&gt;       assert built.returncode == 0, built.stderr
+E       AssertionError: /usr/bin/ld: cannot find -lpython3.13: No such file or directory
+E         collect2: error: ld returned 1 exit status
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-g', '-Wall', '-Wextra', '-Werror', '-fsanitize=address,undefined'...tderr='/usr/bin/ld: cannot find -lpython3.13: No such file or directory\ncollect2: error: ld returned 1 exit status\n').returncode
+
+server/tests/test_native_trace_filename.py:98: AssertionError</error></testcase><testcase classname="tests.test_native_trace_filename" name="test_trace_overlay_is_present_in_each_native_composition[False-False]" time="0.052" /><testcase classname="tests.test_native_trace_filename" name="test_trace_overlay_is_present_in_each_native_composition[True-False]" time="0.061" /><testcase classname="tests.test_native_trace_filename" name="test_trace_overlay_is_present_in_each_native_composition[True-True]" time="0.054" /><testcase classname="tests.test_native_trace_filename" name="test_trace_patch_rejects_drift_and_reapplication_without_writes[False]" time="0.052" /><testcase classname="tests.test_native_trace_filename" name="test_trace_patch_rejects_drift_and_reapplication_without_writes[True]" time="0.044" /><testcase classname="tests.test_native_diagnostic_log_retention" name="test_only_size_and_backup_count_change" time="0.004" /><testcase classname="tests.test_native_diagnostic_log_retention" name="test_original_asrun_and_warmstart_sources_are_not_touched" time="0.008" /><testcase classname="tests.test_native_diagnostic_log_retention" name="test_drift_and_duplicate_application_are_rejected_without_mutation[comment]" time="0.005" /><testcase classname="tests.test_native_diagnostic_log_retention" name="test_drift_and_duplicate_application_are_rejected_without_mutation[duplicate]" time="0.004" /><testcase classname="tests.test_native_diagnostic_log_retention" name="test_drift_and_duplicate_application_are_rejected_without_mutation[reapply]" time="0.006" /></testsuite></testsuites>
