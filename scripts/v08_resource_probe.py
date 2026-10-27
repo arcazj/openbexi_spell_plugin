@@ -60,6 +60,7 @@ def temporary_file_usage(root, maximum_entries=4096):
                             if name == "native.log"
                             else "asrun"
                             if name.endswith((".asrun", ".asr"))
+                            or ".asrun.archive." in name
                             else "native_diagnostic"
                             if name.endswith((".log", ".log.1"))
                             else "other"
@@ -518,6 +519,9 @@ def snapshot(pid, *, proc=Path("/proc"), groups=Path("/sys/fs/cgroup")):
     result["native_allocation_profiles"] = []
     result["native_message_storage"] = []
     result["temporary_files"] = temporary_file_usage(root / "root/tmp")
+    # The original whole-cgroup oracle includes charged page-cache usage.
+    # Disk bytes are reported alongside it; nothing is subtracted or hidden.
+    result["audit_files"] = temporary_file_usage(root / "root/audit")
     original_pids = {row.get("namespace_pid") for row in result["processes"]}
     for log in sorted((root / "root/tmp").glob("spell-host-*/native.log"))[:2]:
         try:

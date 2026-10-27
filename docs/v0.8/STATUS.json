@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev68 qualification resumed at 2972f5f: bounded native message/collector reuse implemented; mandatory memory growth still fails; full release blocked",
+  "phase": "Measured single-worker correction passes mandatory memory at 7d716d9; durable ASRUN native integration candidate; listener-survival fails; full release blocked",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -126,7 +126,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Resolve whole-runtime sanitizer allocation growth and durable bounded ASRUN storage without dropping records or weakening resource limits; preserve and diagnose intermittent registration/exit failures; complete all-763/native, deployed fault/security, browser and joint packaging acceptance.",
+  "next_step": "Retrieve fresh durable native audit and mandatory memory outcomes; investigate listener-survival identity failure and preserved admission/exit failures; complete every full-release gate before stable publication",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -671,5 +671,17 @@
     "mandatory_native_acceptance": "pending",
     "full_v08_qualified": false,
     "warmup_callbacks_excluded": 0
+  },
+  "measured_memory_acceptance_20261027": {
+    "executable": "7d716d970f3919a5b40fac16c035d75205d202a8",
+    "handoff_growth_bytes": 63899648,
+    "ide_growth_bytes": 66064384,
+    "limit_bytes": 67108864,
+    "mandatory_jobs_passed": true,
+    "foundation_tests": 1554,
+    "core": "13/14; listener-survival fails",
+    "follow_up_audit_acceptance": "pending",
+    "receipt": "evidence/memory-audit-activation-20261027.json",
+    "full_v08_qualified": false
   }
 }

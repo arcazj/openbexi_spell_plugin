@@ -129,6 +129,12 @@ public:
         raw_write(bytes);raw_write("\n");
         if(::fdatasync(file)!=0)failed("record_sync");
     }
+    void write_parts(std::string_view prefix,std::string_view payload) {
+        std::lock_guard<std::recursive_mutex> lock(mutex);
+        if(file<0)failed("closed_writer",EBADF);
+        raw_write(prefix);raw_write(payload);raw_write("\n");
+        if(::fdatasync(file)!=0)failed("record_sync");
+    }
     void copy_from(const std::string& source) {
         std::lock_guard<std::recursive_mutex> lock(mutex);
         const int input=::open(source.c_str(),O_RDONLY|O_CLOEXEC|O_NOFOLLOW);
@@ -142,13 +148,23 @@ public:
            (info.st_dev==output.st_dev && info.st_ino==output.st_ino))
             failed("restore_identity",EINVAL);
         char buffer[4096];
-        for(;;) {
-            const auto count=::read(input,buffer,sizeof(buffer));
+        off_t copied=0;
+        while(copied<info.st_size) {
+            const auto remaining=info.st_size-copied;
+            const auto requested=remaining<static_cast<off_t>(sizeof(buffer))?
+                static_cast<size_t>(remaining):sizeof(buffer);
+            const auto count=::read(input,buffer,requested);
             if(count<0 && errno==EINTR)continue;
             if(count<0)failed("restore_read");
-            if(count==0)break;
+            if(count==0)failed("restore_changed",EIO);
             raw_write(std::string_view(buffer,static_cast<size_t>(count)));
+            copied+=count;
         }
+        struct stat after{};
+        if(::fstat(input,&after)!=0)failed("restore_recheck");
+        if(after.st_size!=info.st_size || after.st_mtim.tv_sec!=info.st_mtim.tv_sec ||
+           after.st_mtim.tv_nsec!=info.st_mtim.tv_nsec || after.st_ctim.tv_sec!=info.st_ctim.tv_sec ||
+           after.st_ctim.tv_nsec!=info.st_ctim.tv_nsec)failed("restore_changed",EIO);
         if(::close(input)!=0)failed("restore_close");
         if(::fdatasync(file)!=0)failed("restore_sync");
         if(::fstat(file,&output)!=0)failed("restore_stat");

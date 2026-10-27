@@ -512,6 +512,8 @@ class NativeSession:
             diagnostic = self.log.read()
             self.log.close()
             self.log = None
+            if 'V08_AUDIT_FAILURE ' in diagnostic:
+                errors.append('Durable native audit write failed; records retained')
             if 'AddressSanitizer:' in diagnostic or 'runtime error:' in diagnostic:
                 errors.append(diagnostic)
         self.directory.cleanup()

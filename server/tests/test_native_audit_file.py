@@ -101,7 +101,9 @@ def test_kernel_file_limit_refuses_writes_without_false_ack(audit_binary, tmp_pa
     assert result.returncode == 74 and b"stage=write" in result.stderr
     accepted = len(result.stdout.splitlines())
     assert accepted == 16
-    assert path.read_bytes() == (b"x" * 4095 + b"\n") * accepted
+    assert path.read_bytes() == b"".join(
+        f"{i:016d}".encode() + b"x" * (4095 - 16) + b"\n" for i in range(accepted)
+    )
 
 
 @pytest.mark.parametrize(
@@ -182,6 +184,7 @@ def asrun_source(tmp_path_factory):
     )
     builder = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(builder)
+    builder.reuse_native_timestamp_and_asrun(source)
     builder.durable_native_asrun(source)
     return source, builder
 
@@ -200,9 +203,9 @@ def test_exact_asrun_sequence_format_and_concurrent_reset_history(asrun_source, 
 #include <vector>
 #define STR(x) std::string(x)
 #define ISTR(x) std::to_string(x)
-struct SPELLutils {static std::string timestamp(){return "STAMP";}};
+struct SPELLutils {static void timestamp(std::string& output){output="STAMP";}};
 class SPELLasRun {
-    V08AuditFile m_file;std::recursive_mutex m_auditMutex;
+    V08AuditFile m_file;std::recursive_mutex m_v08RecordMutex;std::string m_v08Record;
     std::string m_fileName;unsigned long m_sequence=0;
 public:
     explicit SPELLasRun(const std::string& path):m_fileName(path){m_file.open(path);toAsRun("INIT",true);}

@@ -61,8 +61,10 @@ int main(int argc,char** argv) {
     if(mode=="quota" || mode=="full-disk") {
         // Every acknowledged record was synced. A failing record is preserved
         // as an uncertain tail; there is no retry or record deletion.
-        const std::string record(4095,'x');
+        std::string record(4095,'x');
         for(unsigned int i=0;i<100000;++i) {
+            char sequence[17];std::snprintf(sequence,sizeof(sequence),"%016u",i);
+            record.replace(0,16,sequence);
             output.write_line(record);
             std::printf("ACK %u\n",i);std::fflush(stdout);
         }

@@ -910,8 +910,8 @@ std::string SPELLutils::timestamp()
 def durable_native_asrun(source):
     """Synchronous durable ASRUN, serialized groups and retained generations."""
     preimages = {
-        "include/SPELL_CIF/SPELLasRun.H": "625ed916d912dc7c87d5b5ef3fbd5ff249eb88cfd7ca649179c185b8eb28d254",
-        "lib/SPELL_CIF/src/SPELLasRun.C": "1d357518f18aaff074ee8d1948e9460e85e1453b8c415387b658eebaa6dea317",
+        "include/SPELL_CIF/SPELLasRun.H": "7cbd762a81c41653fc23b8d4dad9aba11c255203786c23d7b11f11f914eea730",
+        "lib/SPELL_CIF/src/SPELLasRun.C": "91e414343a26f76b432e819e338e2d71a8b1c0a74f5e010521f33636a83f5745",
     }
     texts = {}
     for relative, expected in preimages.items():
@@ -922,7 +922,7 @@ def durable_native_asrun(source):
     header, unit = preimages
     texts[header] = '#include "/candidate/audit_file.H"\n' + texts[header].replace(
         "std::ofstream    m_file;",
-        "V08AuditFile m_file;\n        std::recursive_mutex m_auditMutex;",
+        "V08AuditFile m_file;",
     )
     text = texts[unit]
     replacements = (
@@ -948,8 +948,8 @@ def durable_native_asrun(source):
             '    LOG_INFO("[ASRUN] asRun file: " + fileName);',
         ),
         (
-            "m_file << line << std::endl;\n    m_file.flush();",
-            "m_file.write_line(line);",
+            "m_file << line << info << std::endl;\n    m_file.flush();",
+            "m_file.write_parts(line, info);",
         ),
         (
             "m_file.open( m_fileName.c_str(), std::ios::trunc | std::ios::out );",
@@ -960,14 +960,12 @@ def durable_native_asrun(source):
         if text.count(old) != 1:
             raise ValueError("Native durable ASRUN boundary differs")
         text = text.replace(old, new)
-    # A prompt's detail records share its original sequence rules. Lock the
-    # entire public call, including those multi-record groups, before toAsRun.
-    text, count = re.subn(
-        r"(void SPELLasRun::\w+\([^{}]*\)\n\{\n)",
-        r"\1    std::lock_guard<std::recursive_mutex> auditLock(m_auditMutex);\n",
-        text,
-    )
-    if count != 18:
+    if (
+        text.count(
+            "std::lock_guard<std::recursive_mutex> recordLock(m_v08RecordMutex);"
+        )
+        != 18
+    ):
         raise ValueError("Native durable ASRUN serialization boundary differs")
     texts[unit] = text
     for relative, text in texts.items():
@@ -1453,6 +1451,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     avoid_native_thread_label_copies(source)
     bound_native_diagnostic_logs(source)
     reuse_native_timestamp_and_asrun(source)
+    durable_native_asrun(source)
     return before
 
 

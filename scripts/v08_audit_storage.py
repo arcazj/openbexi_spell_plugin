@@ -77,6 +77,8 @@ def expose_after_stop(command, output, report):
                 complete_lines=complete,
             )
         )
+    if report.get("passed") and not any(r["records"] for r in records):
+        raise RuntimeError("Native audit records missing; storage retained")
     result = dict(
         schema="openbexi.native-audit-files/1",
         files=records,

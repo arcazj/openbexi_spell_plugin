@@ -619,6 +619,12 @@ def qualify_consumption_fence(
             "OPENBEXI_V08_RESOURCE_DIAGNOSTICS=1",
         ]
     args += diagnostic_env
+    from v08_audit_storage import provision
+
+    # Even failed attempts retain their ASRUN files with their own evidence.
+    if terminal_evidence is None:
+        raise ValueError("Native audit records require retained evidence storage")
+    args += provision(command, terminal_evidence, name)
     for source, destination in (
         (snapshot, "/source"),
         (code, "/v08"),

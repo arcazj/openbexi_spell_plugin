@@ -1,0 +1,130 @@
+{
+  "schema": "openbexi.memory-and-audit-activation/1",
+  "candidate": "7d716d970f3919a5b40fac16c035d75205d202a8",
+  "tree": "2ef49fdca322e73d434b916f0986d1b67e983fd7",
+  "tested_merge": "df8db23dfde5ed70c06105d44e6d4fcfe37c3e07",
+  "tested_merge_tree_matches": true,
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "core_run": 40554351561,
+  "core_outcome": "13/14 passed; listener-survival fails before native identity proof",
+  "verified_results": [
+    {
+      "artifact_id": 12756128470,
+      "passed": true,
+      "tested_merge": "df8db23dfde5ed70c06105d44e6d4fcfe37c3e07",
+      "source_sha256_verified": 136,
+      "source_commit": "7d716d970f3919a5b40fac16c035d75205d202a8",
+      "allocation_diagnostics_only": false,
+      "errors": {
+        "context_startup_error": {
+          "type": "Fault",
+          "code": "context_unavailable",
+          "cause_type": "SSLEOFError",
+          "cause": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "native_driver_failure_categories": [],
+        "native_driver_failure_chains": []
+      },
+      "runtime_enabled": false,
+      "resource": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": true,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [],
+        "samples": 47,
+        "soak_samples": 21,
+        "duration_seconds": 45.57336986,
+        "peak_bytes": 1068724224,
+        "window_growth_bytes": 63899648.0,
+        "first_window_median_bytes": 994123776,
+        "last_window_median_bytes": 1058023424.0
+      }
+    },
+    {
+      "artifact_id": 12758025011,
+      "passed": true,
+      "tested_merge": "df8db23dfde5ed70c06105d44e6d4fcfe37c3e07",
+      "source_sha256_verified": 136,
+      "source_commit": "7d716d970f3919a5b40fac16c035d75205d202a8",
+      "allocation_diagnostics_only": false,
+      "errors": {
+        "context_startup_error": {
+          "type": "Fault",
+          "code": "context_unavailable",
+          "cause_type": "SSLEOFError",
+          "cause": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "native_driver_failure_categories": [],
+        "native_driver_failure_chains": []
+      },
+      "runtime_enabled": false,
+      "resource": {
+        "schema": "openbexi.native-recovery-resources/1",
+        "passed": true,
+        "resident_limit_bytes": 2147483648,
+        "swap_limit_bytes": 0,
+        "peak_budget_bytes": 1879048192,
+        "maximum_window_growth_bytes": 67108864,
+        "full_v08_qualified": false,
+        "failures": [],
+        "samples": 47,
+        "soak_samples": 22,
+        "duration_seconds": 45.582200992,
+        "peak_bytes": 1072562176,
+        "window_growth_bytes": 66064384,
+        "first_window_median_bytes": 997629952,
+        "last_window_median_bytes": 1063694336
+      }
+    },
+    {
+      "artifact_id": 12755563320,
+      "passed": false,
+      "tested_merge": "df8db23dfde5ed70c06105d44e6d4fcfe37c3e07",
+      "source_sha256_verified": 72,
+      "source_commit": "7d716d970f3919a5b40fac16c035d75205d202a8",
+      "allocation_diagnostics_only": false,
+      "errors": {
+        "context_startup_error": {
+          "type": "Fault",
+          "code": "context_unavailable",
+          "cause_type": "SSLEOFError",
+          "cause": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "error": "RuntimeError: Expected distinct real native Listener/Context/Executor",
+        "failures": [
+          {
+            "phase": "qualification",
+            "error": "RuntimeError: Expected distinct real native Listener/Context/Executor"
+          }
+        ]
+      },
+      "runtime_enabled": false
+    },
+    {
+      "artifact_id": 12755624134,
+      "passed": true,
+      "tested_merge": "df8db23dfde5ed70c06105d44e6d4fcfe37c3e07",
+      "source_sha256_verified": 248,
+      "source_commit": "7d716d970f3919a5b40fac16c035d75205d202a8",
+      "allocation_diagnostics_only": null,
+      "errors": {},
+      "runtime_enabled": false
+    }
+  ],
+  "previous_failures_preserved": true,
+  "audit_activation": "This commit enables durable ASRUN; fresh integration acceptance pending",
+  "full_v08_qualified": false,
+  "release_published": false,
+  "audit_activation_local_validation": {
+    "tests": 157,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "scope": "Components and integration composition; local CPython 3.12.14, ASan/UBSan, not installed CPython 3.13 native acceptance",
+    "lint": "passed"
+  }
+}

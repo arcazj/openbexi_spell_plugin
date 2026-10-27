@@ -77,6 +77,10 @@ def main():
         (output / "build.log").write_bytes(built.stdout + built.stderr)
         if built.returncode:
             raise RuntimeError("Native audit harness did not compile")
+        report["harness_sha256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
+        report["compiler"] = subprocess.check_output(
+            ["c++", "--version"], text=True
+        ).splitlines()[0]
         # This file is expendable fault-fixture capacity, never an audit record.
         with reserve.open("wb") as stream:
             for _ in range(256):
@@ -105,9 +109,9 @@ def main():
         acknowledged = len(acknowledgements) * 4096
         digest = hashlib.sha256()
         with path.open("rb") as stream:
-            for _ in acknowledgements:
+            for i, _ in enumerate(acknowledgements):
                 record = stream.read(4096)
-                if record != b"x" * 4095 + b"\n":
+                if record != f"{i:016d}".encode() + b"x" * (4095 - 16) + b"\n":
                     raise RuntimeError(
                         "Acknowledged audit bytes are missing or unordered"
                     )

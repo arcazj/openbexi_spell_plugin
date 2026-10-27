@@ -642,6 +642,7 @@ def main():
         ROOT / "host_runtime/python/epoch_relay.py",
         ROOT / "scripts/v08_handoff_cohort.py",
         ROOT / "scripts/v08_resource_probe.py",
+        ROOT / "scripts/v08_audit_storage.py",
         ROOT / "scripts/v08_terminal_cohort.py",
         *sorted((ROOT / "host_runtime/native").glob("*.H")),
         ROOT / "host_runtime/native/private_bridge.cpp",
@@ -1484,6 +1485,10 @@ def main():
                         args.extend(
                             ["--mount", f"type=bind,src={src},dst={dst},readonly"]
                         )
+                    if profile.native_child_gate:
+                        from v08_audit_storage import provision
+
+                        args.extend(provision(command, output, name))
                     args.extend(
                         [
                             "--entrypoint",
@@ -2133,6 +2138,7 @@ def main():
 
                     qualify_consumption_fence(
                         temporary=temporary,
+                        terminal_evidence=output,
                         prefix=prefix,
                         context_image=context_image,
                         config=config,
@@ -2156,6 +2162,7 @@ def main():
                     qualify_consumption_fence(
                         owner_commands=True,
                         temporary=temporary,
+                        terminal_evidence=output,
                         prefix=prefix,
                         context_image=context_image,
                         config=config,
@@ -2179,6 +2186,7 @@ def main():
                     qualify_consumption_fence(
                         owner_resume=True,
                         temporary=temporary,
+                        terminal_evidence=output,
                         prefix=prefix,
                         context_image=context_image,
                         config=config,
@@ -2438,6 +2446,12 @@ def main():
                     except Exception:
                         pass
                 cleanup_resources(names, networks, report)
+                try:
+                    from v08_audit_storage import expose_after_stop
+
+                    expose_after_stop(command, output, report)
+                except Exception as error:
+                    retain_failure(report, error, phase="audit_retention")
     except Exception as error:
         if "error" not in report:
             retain_failure(report, error)
