@@ -701,6 +701,15 @@
   "native_audit_full_disk_candidate": {
     "scope": "Actual rebuilt native Executor, private 8 MiB ext4, original grants, prefix byte preservation and physical exit; not full deployment acceptance",
     "hosted_result": "pending",
-    "full_v08_qualified": false
+    "full_v08_qualified": false,
+    "first_attempt": {
+      "source": "cc4432418a3a962320841de83978d13f3c90f96a",
+      "artifact": 12760693266,
+      "passed": false,
+      "error": "Native cohort did not reach native-owner-paused before fault injection",
+      "demonstrated_fixture_issue": "Reused already-open owner-resume marker from prior successful probe; fresh probe now receives independent control directory",
+      "storage_fault_injected": false,
+      "retry": "pending"
+    }
   }
 }

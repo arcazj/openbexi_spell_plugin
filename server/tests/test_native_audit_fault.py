@@ -5,6 +5,8 @@ import importlib.util
 import io
 import os
 from pathlib import Path
+import subprocess
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -15,6 +17,26 @@ spec = importlib.util.spec_from_file_location(
 )
 candidate = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(candidate)
+
+
+def test_prior_resume_marker_cannot_advance_fresh_native_fault_fixture(tmp_path):
+    old = tmp_path / "ordinary-control"
+    old.mkdir()
+    (old / "owner-resume").write_bytes(b"already opened by prior qualification\n")
+    fresh = candidate.independent_control(tmp_path)
+    program = (
+        "import pathlib,sys\n"
+        "control=pathlib.Path(sys.argv[1])\n"
+        "print('FINISHED' if (control/'owner-resume').exists() else 'HELD',flush=True)\n"
+    )
+    assert subprocess.check_output([sys.executable, "-I", "-c", program, str(old)]) == b"FINISHED\n"
+    assert subprocess.check_output([sys.executable, "-I", "-c", program, str(fresh)]) == b"HELD\n"
+    assert (fresh / "start").is_file()
+    (fresh / "owner-resume").write_bytes(b"this fixture's fresh release\n")
+    assert (
+        subprocess.check_output([sys.executable, "-I", "-c", program, str(fresh)]) == b"FINISHED\n"
+    )
+    assert (old / "owner-resume").read_bytes() == b"already opened by prior qualification\n"
 
 
 def test_snapshot_retains_exact_regular_bytes_and_uncertain_tail(tmp_path):

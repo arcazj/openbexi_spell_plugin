@@ -16,6 +16,15 @@ import time
 MIB = 1024**2
 
 
+def independent_control(temporary):
+    # Earlier owner-resume qualification intentionally leaves its opened marker
+    # as evidence. A fresh execution must never inherit that fixture state.
+    control = temporary / "audit-full-control"
+    control.mkdir(mode=0o755)
+    (control / "start").write_text("Start this separately admitted fixture once\n")
+    return control
+
+
 def provision(command, output, name, report):
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", name):
         raise ValueError("Invalid fault volume identity")
