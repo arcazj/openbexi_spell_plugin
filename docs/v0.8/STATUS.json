@@ -159,7 +159,7 @@
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev67",
+  "package_version": "0.8.0.dev68",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "dbdfd539bea2cd61611bef6c43be00cbdefda321",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -710,6 +710,21 @@
       "demonstrated_fixture_issue": "Reused already-open owner-resume marker from prior successful probe; fresh probe now receives independent control directory",
       "storage_fault_injected": false,
       "retry": "pending"
+    },
+    "second_attempt": {
+      "source": "929db8464694de20a8e95f82dd5d3765d88f255a",
+      "artifact": 12762830814,
+      "passed": false,
+      "error": "Private fault filesystem guard rejected usable capacity before filler creation",
+      "prefix_bytes": 813,
+      "prefix_preserved": true,
+      "storage_fault_injected": false,
+      "image_bytes": 8388608,
+      "image_blocks": 2048,
+      "metadata_overhead_clusters": 1156,
+      "block_size": 4096,
+      "correction": "Verify exact physical backing and distinct mounted device; preserve 8 MiB image, mandatory memory limits and deadlines",
+      "recheck": "pending"
     }
   }
 }

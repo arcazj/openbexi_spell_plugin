@@ -985,6 +985,14 @@ def main():
                         "SECOND = 2\n"
                         "with open('/workspace/owner-resumed','w') as marker:marker.write('resumed')\n"
                     )
+                    if profile.native_audit_full_disk:
+                        from v08_native_audit_fault import continuation_fixture
+
+                        (sources / "audit_full.py").write_text(
+                            continuation_fixture(
+                                (sources / "owner_resume.py").read_text()
+                            )
+                        )
                     (sources / "owner_probe.py").write_text(
                         "FIRST = 1\nSECOND = 2\nTHIRD = 3\n"
                     )
@@ -1079,6 +1087,10 @@ def main():
                     catalog["owner-resume"] = dict(
                         catalog["procedure-0"], entrypoint="owner_resume.py"
                     )
+                    if profile.native_audit_full_disk:
+                        catalog["audit-full"] = dict(
+                            catalog["procedure-0"], entrypoint="audit_full.py"
+                        )
                     catalog["owner-probe"] = dict(
                         catalog["procedure-0"], entrypoint="owner_probe.py"
                     )

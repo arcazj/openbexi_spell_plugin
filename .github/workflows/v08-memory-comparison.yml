@@ -24,7 +24,10 @@ permissions:
   contents: read
 
 concurrency:
-  group: v08-memory-comparison-${{ github.ref }}-${{ github.sha }}
+  # Serialize optional hour-long matrices on a branch. Never cancel a running
+  # experiment; superseded pending workflows have no native samples to discard.
+  # Mandatory per-commit acceptance keeps its separate SHA-specific group.
+  group: v08-memory-comparison-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

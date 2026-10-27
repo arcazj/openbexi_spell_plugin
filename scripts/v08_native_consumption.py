@@ -273,7 +273,7 @@ def qualify_consumption_fence(
             raise ValueError(
                 "Native disk fault requires its retained owner-resume probe"
             )
-        label, context_id = "audit-full", "Q"
+        label, context_id, source_id = "audit-full", "Q", "audit-full"
         from v08_native_audit_fault import independent_control
 
         control = independent_control(temporary)

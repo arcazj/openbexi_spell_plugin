@@ -25,6 +25,15 @@ def independent_control(temporary):
     return control
 
 
+def continuation_fixture(original):
+    # A short completion could fit in the audit file's already allocated final
+    # block even when all free blocks are occupied. Alternating original LINE
+    # notifications force a new allocation after the fresh owner resumes.
+    return (
+        original + "for audit_step in range(1024):\n    AUDIT_PROBE_STEP = audit_step\n"
+    )
+
+
 def provision(command, output, name, report):
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", name):
         raise ValueError("Invalid fault volume identity")
@@ -130,7 +139,7 @@ def snapshot_records(source, destination, uid, gid):
 
 
 def privileged(command, action, *arguments):
-    return json.loads(
+    response = json.loads(
         command(
             "sudo",
             "-n",
@@ -141,18 +150,52 @@ def privileged(command, action, *arguments):
             *arguments,
         )
     )
+    if type(response) is not dict or response.get("passed") is not True:
+        kind = (
+            response.get("error_type", "invalid_response")
+            if type(response) is dict
+            else "invalid_response"
+        )
+        code = response.get("errno", 0) if type(response) is dict else 0
+        raise RuntimeError(
+            f"Native audit host operation {action} failed ({kind}, errno={code})"
+        )
+    return response["value"]
+
+
+def fault_capacity(path):
+    mount = path.parent
+    image = (mount.parent / "disk.img").stat(follow_symlinks=False)
+    capacity = os.statvfs(mount)
+    usable = capacity.f_blocks * capacity.f_frsize
+    # ext4 journal/metadata overhead is excluded from f_blocks: the captured
+    # 8 MiB image has only 892 usable 4 KiB blocks. Verify the backing size and
+    # separate mounted device rather than treating usable bytes as image size.
+    if (
+        not stat.S_ISREG(image.st_mode)
+        or image.st_size != 8 * MIB
+        or mount.stat(follow_symlinks=False).st_dev
+        == mount.parent.stat(follow_symlinks=False).st_dev
+        or not 0 < usable <= image.st_size
+    ):
+        raise RuntimeError("Fault requires its own 8 MiB mounted disk image")
+    return dict(backing_image_bytes=image.st_size, filesystem_usable_bytes=usable)
 
 
 def fill_disk(path):
-    capacity = os.statvfs(path.parent)
-    if not 4 * MIB <= capacity.f_blocks * capacity.f_frsize <= 16 * MIB:
-        raise RuntimeError("Fault requires its own small disk filesystem")
+    capacity = fault_capacity(path)
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
     written = 0
     try:
         try:
             for _ in range(8192):
-                written += os.write(fd, bytes(4096))
+                count = os.write(fd, bytes(4096))
+                if count <= 0:
+                    raise OSError(errno.EIO, "Fault filler write made no progress")
+                written += count
+                # Force actual block allocation, rather than accumulating a
+                # delayed-allocation cache that could falsely appear full.
+                os.fdatasync(fd)
             raise RuntimeError("Fault filesystem did not reach ENOSPC")
         except OSError as error:
             if error.errno != errno.ENOSPC:
@@ -165,7 +208,10 @@ def fill_disk(path):
     finally:
         os.close(fd)
     return dict(
-        errno=errno.ENOSPC, disposable_bytes=written, audit_records_deleted=False
+        errno=errno.ENOSPC,
+        disposable_bytes=written,
+        audit_records_deleted=False,
+        **capacity,
     )
 
 
@@ -353,12 +399,22 @@ def finalize(command, output, report):
 
 
 if __name__ == "__main__":
-    if sys.argv[1] == "fill" and len(sys.argv) == 3:
-        result = fill_disk(Path(sys.argv[2]))
-    elif sys.argv[1] == "snapshot" and len(sys.argv) == 6:
-        result = snapshot_records(
-            Path(sys.argv[2]), Path(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5])
+    try:
+        if sys.argv[1] == "fill" and len(sys.argv) == 3:
+            result = fill_disk(Path(sys.argv[2]))
+        elif sys.argv[1] == "snapshot" and len(sys.argv) == 6:
+            result = snapshot_records(
+                Path(sys.argv[2]), Path(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5])
+            )
+        else:
+            raise ValueError("Unsupported host fault operation")
+        response = dict(passed=True, value=result)
+    except (OSError, RuntimeError, ValueError, IndexError) as error:
+        # Caller rejects this fixed response. Never disclose arbitrary stderr,
+        # paths or source-controlled record contents in an exception.
+        response = dict(
+            passed=False,
+            error_type=type(error).__name__,
+            errno=getattr(error, "errno", 0) or 0,
         )
-    else:
-        raise SystemExit("Unsupported host fault operation")
-    print(json.dumps(result))
+    print(json.dumps(response))
