@@ -1,15 +1,20 @@
 # Full v0.8 publication qualification
 
-The latest recovery baseline is `2e84858` / run `40451780844`. Foundation
-passes 1,472 tests with no failures/errors/skips. Fresh-message field reuse
-reduces measured growth to 82.93 MiB (handoff) and 101.77 MiB (installed IDE),
-but both still fail the unchanged 64 MiB limit. Both retain eight processes and
-pass the peak ceiling. The follow-up removes a redundant synchronous Context
-notification copy identified in the source-bound allocation profile; rebuilt
-hosted acceptance is still required.
+The latest recovery baseline is `0eb29d8` / run `40452778531`. Foundation
+passes 1,475 tests with no failures/errors/skips. Handoff and installed-IDE
+growth remains above the unchanged 64 MiB limit at 105.31/115.75 MiB.
+Both retain eight processes through 45-second soaks and pass the peak ceiling.
+The redundant synchronous Context notification copy is removed; the rebuilt
+profile now identifies forwarding and queued-message copies. A mixed-traffic
+reproducer exposes unused nodes in partially consumed cached maps. The next
+correction lets copies reuse those nodes under the existing fixed bounds;
+rebuilt hosted acceptance is still required.
 See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
 The separate optimized-IDE comparison also recorded uncertain driver effects
 before child-running and did not reach its soak. No release gate is promoted.
+The earlier encrypted-swap setup correction is now exercised successfully,
+including host restoration, but both five-minute comparison runs fail memory
+growth and use no swap pages. They cannot satisfy mandatory no-swap acceptance.
 
 Historical qualification records follow.
 

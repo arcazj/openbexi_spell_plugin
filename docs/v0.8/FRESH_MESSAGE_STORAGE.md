@@ -1,5 +1,42 @@
 # Bounded storage for newly constructed native messages
 
+## Follow-up: copies reuse partially consumed cached maps
+
+Candidate `0eb29d8` passes all 1,475 hosted foundation tests, but both mandatory
+recovery runs still fail memory growth: 105.31 MiB for handoff and 115.75 MiB for
+installed IDE. Peaks are 1,451.96 and 1,460.34 MiB; both retain eight original
+processes through the full 45-second soak. All 132 source entries in each archive
+match the candidate. [The failed results](evidence/fresh-message-storage/notification-hosted.json)
+remain separate from component allocation improvements.
+
+The rebuilt diagnostic confirms that the synchronous notification copy is gone.
+The frequent remaining copy sites are client forwarding and incoming-message
+queue ownership. [The exact-build call paths](evidence/fresh-message-storage/fragmented-call-sites.json)
+identify those sites without borrowing across their ownership boundaries.
+
+A compiled mixed-traffic reproducer exposes a cache fragmentation problem:
+fresh acknowledgements consume nodes from cached maps, and later full-message
+copies allocate missing nodes despite reusable nodes remaining in other maps.
+Copies now use the same exclusive node extraction as fresh producers when a
+whole matching map is unavailable. The existing 32-map/64-field/64-KiB limits,
+try-lock fallback, class layout, and message ownership are unchanged.
+
+Across 10,000 mixed forwarding/acknowledgement/queued-copy cycles, the frozen
+implementation allocates 220,000 times, `0eb29d8` allocates 40,000 times, and
+this correction allocates zero times after warm-up. Each message remains 176
+bytes on this toolchain. [Benchmark records](evidence/fresh-message-storage/fragmented-benchmark.json)
+are component evidence; a new hosted rebuild must establish resource acceptance.
+All 40 distinct storage, codec and stream checks pass under ASan/UBSan.
+The initial missing-header setup errors and corrected run are retained in
+[the validation receipt](evidence/fresh-message-storage/fragmented-validation.json).
+
+The earlier `a0a1686` encrypted-swap setup correction is now exercised remotely.
+Both five-minute comparisons execute, verify all 135 overlaid source entries,
+and restore the original unused host swap. Both still fail combined memory
+growth (601.01/629.78 MiB for handoff/IDE), with no swap pages actually used.
+[The retained records](evidence/fresh-message-storage/swap-baseline-results.json)
+clear the setup-only blocker, not the mandatory no-swap or release gates.
+
 ## Follow-up: synchronous Context notification copy
 
 The first candidate `2e84858` completes hosted foundation with 1,472 tests,

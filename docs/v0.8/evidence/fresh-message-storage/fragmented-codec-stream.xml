@@ -1,0 +1,2369 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="16" failures="0" skipped="0" tests="28" time="19.292" timestamp="2026-10-27T01:08:52.361975-04:00" hostname="8cc6a12640ed"><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[wire]" time="4.272"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[duplicates]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[partial_metadata]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[moves]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_preserves_original_wire_and_decoding[output]" time="0.001"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_rejects_unrepresentable_and_truncated_fields[malformed]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_rejects_unrepresentable_and_truncated_fields[oversize_key]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_parse-0.55]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_data-0.35]" time="0.002"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_codec_reduces_measured_allocation_churn[alloc_output-0.25]" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_message_patch_rejects_changed_or_repeated_source" time="0.014" /><testcase classname="tests.test_native_message_codec" name="test_native_move_transfers_payload_without_allocating" time="0.001"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_move_patches_reject_drift_and_reapplication" time="0.009" /><testcase classname="tests.test_native_message_codec" name="test_cached_bridge_frames_match_frozen_bytes_and_clear_stale_fields" time="0.001"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_cached_bridge_removes_measured_repeated_frame_allocations" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_native_output_transfer_rejects_changed_or_repeated_source" time="0.003" /><testcase classname="tests.test_native_message_codec" name="test_reused_input_matches_fresh_messages_and_clears_metadata" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_reused_input_retains_no_malformed_packet_or_oversized_field_state" time="0.002"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_message_codec" name="test_reused_input_removes_repeated_decode_allocations" time="0.000"><error message="failed on setup with &quot;AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:&#10;  /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory&#10;      1 | #include &lt;nlohmann/json.hpp&gt;&#10;        |          ^~~~~~~~~~~~~~~~~~~&#10;  compilation terminated.&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=&lt;pluggy._tracing.TagTracerSub object at 0x7fe3cb5b5a30&gt;, _basetemp=PosixPath('/tmp/pytest-of-root/pytest-9'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="session")
+    def codec_binaries(tmp_path_factory):
+        folder = tmp_path_factory.mktemp("native-message-codec")
+        with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+            original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
+            output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
+            for name in ("SPELLipcMessage.H", "SPELLipc.H"):
+                text = archive.read("include/SPELL_IPC/" + name).decode()
+                if name == "SPELLipcMessage.H":
+                    text = text.replace(
+                        "bool hasField( std::string field ) const;",
+                        "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                    )
+                path = folder / "SPELL_IPC" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(text)
+            message_header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+            fields = set()
+            for path in archive.namelist():
+                if path.startswith("include/SPELL_IPC/") and path.endswith(".H"):
+                    fields.update(
+                        re.findall(r'FIELD_\w+\s*\(\s*"([^"]+)"\s*\)', archive.read(path).decode())
+                    )
+            fields.update({"DefaultProvided", "TimeoutMicroseconds"})
+            utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        (folder / "SPELL_UTIL").mkdir()
+        common = """#pragma once
+    #include &lt;string&gt;
+    #include &lt;vector&gt;
+    #include &lt;map&gt;
+    #include &lt;cassert&gt;
+    #include &lt;cstdint&gt;
+    #include &lt;cstdlib&gt;
+    #include &lt;stdexcept&gt;
+    using BYTE=unsigned char;
+    struct SPELLipcError:std::runtime_error {
+        SPELLipcError(const std::string&amp; s,int=0):std::runtime_error(s){}
+        std::string getError() const {return what();}
+    };
+    """
+        (folder / "SPELL_UTIL/SPELLbase.H").write_text(common)
+        (folder / "SPELL_UTIL/SPELLlog.H").write_text("#pragma once\n")
+        (folder / "SPELL_IPC/SPELLipcError.H").write_text('#include "SPELL_UTIL/SPELLbase.H"\n')
+        (folder / "SPELL_UTIL/SPELLutils.H").write_text("""#pragma once
+    #include "SPELL_UTIL/SPELLbase.H"
+    struct SPELLutils {
+    static std::map&lt;std::string,std::vector&lt;BYTE&gt;&gt; tokenizeData(const std::string&amp;);
+    static std::string itostr(long value){return std::to_string(value);}
+    static long strtoi(const std::string&amp; value){return value.empty()?-1:std::atoi(value.c_str());}
+    };
+    #define ISTR(x) SPELLutils::itostr(x)
+    #define STRI(x) SPELLutils::strtoi(x)
+    """)
+        start = utils.index("std::map&lt;std::string, std::vector&lt;BYTE&gt; &gt; SPELLutils::tokenizeData(")
+        end = utils.index("\n}", start) + 2
+        (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
+        binaries = {}
+        for name, text in (
+            ("before", original),
+            ("after", builder.replace_native_message_codec(original)),
+        ):
+            output_text = output if name == "before" else builder.transfer_native_output(output)
+            methods = []
+            signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
+            if name == "after":
+                signatures.append("void SPELLipcOutput::v08WriteData(")
+            for signature in signatures:
+                begin = output_text.index(signature)
+                end_method = output_text.index("\n}", begin) + 2
+                methods.append(output_text[begin:end_method])
+            (folder / "output_methods.inc").write_text("\n".join(methods))
+            header = (
+                message_header
+                if name == "before"
+                else builder.enable_native_message_moves(message_header)
+            )
+            (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
+                header.replace(
+                    "bool hasField( std::string field ) const;",
+                    "bool hasField( std::string field ) const;\nconst Properties&amp; v08Fields() const { return m_properties; }",
+                )
+            )
+            # Frozen encoder is an independent wire oracle for the cached encoder.
+            bridge = (ROOT / "host_runtime/native_bridge.cpp").read_text()
+            start = bridge.index("Json encode(const SPELLipcMessage&amp; message) {")
+            end = bridge.index("\n}", start) + 2
+            wrappers = """
+    Json encodeEvent(const char* event, const SPELLipcMessage&amp; message) {
+        return {{"event",event},{"message",encode(message)}};
+    }
+    Json encodeReply(unsigned sequence, const SPELLipcMessage&amp; reply) {
+        return {{"seq",sequence},{"ok",reply.getType()!=MSG_TYPE_ERROR},{"message",encode(reply)}};
+    }
+    """
+            (folder / "bridge_encode.inc").write_text(
+                "#include &lt;nlohmann/json.hpp&gt;\n#include &lt;algorithm&gt;\nusing Json=nlohmann::json;\n"
+                + "static const char* fieldNames[]={"
+                + ",".join(json.dumps(field) for field in sorted(fields))
+                + "};\n"
+                + bridge[start:end]
+                + wrappers
+                + '\n#include "'
+                + str(ROOT / "host_runtime/native/bridge_frame.H")
+                + '"\n'
+            )
+            text = text.replace(
+                "/candidate/message_codec.H", str(ROOT / "host_runtime/native/message_codec.H")
+            ).replace(
+                "/candidate/allocation_trace.H", str(ROOT / "host_runtime/native/allocation_trace.H")
+            )
+            path = folder / (name + ".cpp")
+            path.write_text(text)
+            binary = folder / name
+            process = subprocess.run(
+                [
+                    "c++",
+                    "-std=c++17",
+                    "-O1",
+                    "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                    "-g",
+                    "-fsanitize=address,undefined",
+                    "-fno-sanitize-recover=all",
+                    "-fno-omit-frame-pointer",
+                    "-no-pie",
+                    "-I" + str(folder),
+                    str(path),
+                    str(folder / "utils.cpp"),
+                    str(ROOT / "server/tests/native_message_harness.cpp"),
+                    "-lz",
+                    "-o",
+                    str(binary),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+&gt;           assert process.returncode == 0, process.stderr
+E           AssertionError: In file included from /workspace/scratch/b371ed4f0674/openbexi_spell_plugin/server/tests/native_message_harness.cpp:8:
+E             /tmp/pytest-of-root/pytest-9/native-message-codec0/bridge_encode.inc:1:10: fatal error: nlohmann/json.hpp: No such file or directory
+E                 1 | #include &lt;nlohmann/json.hpp&gt;
+E                   |          ^~~~~~~~~~~~~~~~~~~
+E             compilation terminated.
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['c++', '-std=c++17', '-O1', '-DV08_CODEC_REUSE=0', '-g', '-fsanitize=address,undefined', '-fno-...e or directory\n    1 | #include &lt;nlohmann/json.hpp&gt;\n      |          ^~~~~~~~~~~~~~~~~~~\ncompilation terminated.\n').returncode
+
+server/tests/test_native_message_codec.py:162: AssertionError</error></testcase><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_preserves_frames_and_error_behavior[wire]" time="14.085" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_preserves_frames_and_error_behavior[large-and-failure]" time="0.104" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_removes_long_identity_allocation_churn[decode-allocations]" time="0.368" /><testcase classname="tests.test_native_stream_reuse" name="test_native_stream_removes_long_identity_allocation_churn[output-allocations]" time="0.149" /><testcase classname="tests.test_native_stream_reuse" name="test_native_borrowed_input_is_owned_after_decode" time="0.039" /><testcase classname="tests.test_native_stream_reuse" name="test_stream_patch_rejects_header_drift_and_reapplication" time="0.003" /><testcase classname="tests.test_native_stream_reuse" name="test_borrowed_callbacks_leave_requests_and_queue_ownership_unchanged" time="0.008" /><testcase classname="tests.test_native_stream_reuse" name="test_only_owned_line_notifications_use_the_no_copy_sender" time="0.006" /><testcase classname="tests.test_native_stream_reuse" name="test_notification_borrow_rejects_changed_body_and_reapplication" time="0.004" /></testsuite></testsuites>

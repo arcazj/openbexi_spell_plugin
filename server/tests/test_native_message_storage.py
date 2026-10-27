@@ -170,3 +170,12 @@ def test_synchronous_notification_avoids_the_redundant_copy(storage_binaries):
     assert before["allocations"] >= 80_000
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0
+
+
+def test_copies_reuse_nodes_left_by_interleaved_producers(storage_binaries):
+    before = run(storage_binaries["before"], "fragmented_bench")
+    after = run(storage_binaries["after"], "fragmented_bench")
+    assert before["allocations"] >= 200_000
+    assert before["message_size"] == after["message_size"]
+    assert after["allocations"] == 0
+    assert after["allocated_bytes"] == 0

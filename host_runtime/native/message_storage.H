@@ -20,17 +20,11 @@ struct V08PropertyStorage {
 };
 static V08PropertyStorage v08_property_storage;
 
-// Fresh notifications are assembled with set(), not the copy constructor.
-// Transfer one cleared, exclusively owned node from the same bounded cache.
+// Producers can split a cached map while assembling a fresh message. Both
+// producers and copies may take its remaining, exclusively owned nodes.
 // Never hold the cache lock while changing strings or publishing into a message.
-void v08_set_property(SPELLipcMessage::Properties& target,
-                      std::string key, std::string value)
+static SPELLipcMessage::Properties::node_type v08_take_property(const std::string& key)
 {
-    auto found=target.find(key);
-    if (found!=target.end()) {
-        found->second.assign(value);
-        return;
-    }
     SPELLipcMessage::Properties::node_type node;
     if (v08_storage_live.load()) {
         std::unique_lock<std::mutex> lock(v08_property_storage.mutex,std::try_to_lock);
@@ -57,6 +51,18 @@ void v08_set_property(SPELLipcMessage::Properties& target,
             }
         }
     }
+    return node;
+}
+
+void v08_set_property(SPELLipcMessage::Properties& target,
+                      std::string key, std::string value)
+{
+    auto found=target.find(key);
+    if (found!=target.end()) {
+        found->second.assign(value);
+        return;
+    }
+    auto node=v08_take_property(key);
     if (node.empty()) {
         target.emplace(std::move(key),std::move(value));
     } else {
@@ -119,9 +125,15 @@ void v08_copy_properties(SPELLipcMessage::Properties& target,
     for (const auto& field:source) {
         while (current!=target.end() && current->first<field.first)
             current=target.erase(current);
-        if (current==target.end() || field.first<current->first)
-            target.emplace_hint(current,field.first,field.second);
-        else {
+        if (current==target.end() || field.first<current->first) {
+            auto node=v08_take_property(field.first);
+            if (node.empty()) target.emplace_hint(current,field.first,field.second);
+            else {
+                node.key().assign(field.first);
+                node.mapped().assign(field.second);
+                target.insert(std::move(node));
+            }
+        } else {
             current->second.assign(field.second);
             ++current;
         }

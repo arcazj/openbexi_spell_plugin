@@ -73,6 +73,24 @@ int main(int argc,char** argv) {
                 require(copy.v08Fields()==shape.v08Fields());
             }
         measure=false;
+    } else if(mode=="fragmented_bench") {
+        // Forward a full message, then construct a short acknowledgement while
+        // the next full queued copy is live. The producer can split a cached
+        // map; its remaining nodes still belong exclusively to the cache.
+        SPELLipcMessage shape("MSG");
+        for(int key=0;key<9;++key) shape.set("key-"+std::to_string(key),"value");
+        auto cycle=[&] {
+            {auto forwarded=shape;require(forwarded.v08Fields()==shape.v08Fields());}
+            SPELLipcMessage ack("ACK");
+            for(int key=0;key<4;++key) ack.set("key-"+std::to_string(key),"ok");
+            {auto queued=shape;require(queued.v08Fields()==shape.v08Fields());}
+            require(ack.v08Fields().size()==4);
+            for(int key=0;key<4;++key)require(ack.get("key-"+std::to_string(key))=="ok");
+        };
+        for(int n=0;n<100;++n)cycle();
+        measure=true;
+        for(int n=0;n<10000;++n)cycle();
+        measure=false;
     } else if(mode=="fresh_bench") {
         // Real notification construction uses set() for each field. Include
         // changing keys and order; cached fields must never escape into a new

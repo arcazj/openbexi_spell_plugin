@@ -1,0 +1,51 @@
+{
+  "validation": "ASan/UBSan native storage, codec and stream behavior",
+  "distinct_tests_passed": 40,
+  "attempts": {
+    "fragmented-storage.xml": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fragmented-codec-stream.xml": {
+      "tests": 28,
+      "failures": 0,
+      "errors": 16,
+      "skipped": 0
+    },
+    "fragmented-codec-corrected.xml": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "initial_setup_errors": "16 codec fixture setup errors because nlohmann include path was absent; corrected CPLUS_INCLUDE_PATH and all 19 codec tests pass. Nine stream tests passed in the initial attempt. No test was skipped or weakened.",
+  "source_sha256": {
+    "host_runtime/native/message_storage.H": "739957babcf1cca739492ae54e04cf6996f8be13039afbcf40ae73221d16aa6b",
+    "server/tests/native_storage_harness.cpp": "12faf1f81b5876513f574917107e24e089f856958323e4a6a44794f4a9a79ed4",
+    "server/tests/test_native_message_storage.py": "b431b13c7c3844985466fc7349f6b9cb903d7be5718796244e394fd171161f56"
+  },
+  "benchmark": {
+    "frozen": {
+      "allocations": 220000,
+      "allocated_bytes": 21120000,
+      "message_size": 176,
+      "binary_sha256": "d3100f73a9ab826e1591874af981c5ffdd86837232862e58c59a362f579071f7"
+    },
+    "previous_candidate": {
+      "allocations": 40000,
+      "allocated_bytes": 3840000,
+      "message_size": 176,
+      "binary_sha256": "6160c300ccabee0fa07b8e0be7bbee8283554cb7a2daf0aadad9e21feea48dac"
+    },
+    "candidate": {
+      "allocations": 0,
+      "allocated_bytes": 0,
+      "message_size": 176,
+      "binary_sha256": "b0a729da62361c30bf54c782c0bf49c6730b7bba22560a8f1acf7623cd35d98d"
+    }
+  },
+  "full_v08_qualified": false
+}
