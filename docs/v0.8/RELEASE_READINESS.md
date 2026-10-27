@@ -1,11 +1,12 @@
 # Full v0.8 publication qualification
 
-The latest completed core baseline is `a0a1686` / run `40449908895`: 12/14
-jobs pass, but handoff and installed-IDE recovery still fail memory growth
-(129.35 and 119.82 MiB against the unchanged 64 MiB limit). Both retain eight
-processes and pass the peak ceiling. Verified samples locate most remaining
-growth in anonymous memory. Fresh-message field construction now reuses the
-existing bounded node cache; rebuilt hosted acceptance is still required.
+The latest recovery baseline is `2e84858` / run `40451780844`. Foundation
+passes 1,472 tests with no failures/errors/skips. Fresh-message field reuse
+reduces measured growth to 82.93 MiB (handoff) and 101.77 MiB (installed IDE),
+but both still fail the unchanged 64 MiB limit. Both retain eight processes and
+pass the peak ceiling. The follow-up removes a redundant synchronous Context
+notification copy identified in the source-bound allocation profile; rebuilt
+hosted acceptance is still required.
 See [implementation and failed baseline evidence](FRESH_MESSAGE_STORAGE.md).
 The separate optimized-IDE comparison also recorded uncertain driver effects
 before child-running and did not reach its soak. No release gate is promoted.

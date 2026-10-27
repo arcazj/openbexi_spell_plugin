@@ -190,3 +190,22 @@ def test_only_owned_line_notifications_use_the_no_copy_sender(tmp_path):
     assert "void SPELLserverCif::sendGUIMessage( SPELLipcMessage&& msg )" in source
     with pytest.raises(ValueError, match="boundary"):
         builder.transfer_native_line_notification(tmp_path)
+
+
+def test_notification_borrow_rejects_changed_body_and_reapplication(tmp_path):
+    name = "lib/SPELL_CTX/src/SPELLexecutor.C"
+    path = tmp_path / name
+    path.parent.mkdir(parents=True)
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        original = archive.read(name).decode()
+    for text in (
+        original.replace("SPELLipcMessage msg(nmsg);", "SPELLipcMessage msg(nmsg); // drift"),
+        original,
+    ):
+        path.write_text(text)
+        if text == original:
+            builder.borrow_native_executor_notification(tmp_path)
+        before = path.read_bytes()
+        with pytest.raises(ValueError, match="preimage"):
+            builder.borrow_native_executor_notification(tmp_path)
+        assert path.read_bytes() == before

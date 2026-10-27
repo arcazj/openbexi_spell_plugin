@@ -187,6 +187,24 @@ def borrow_native_message_callbacks(source):
         )
 
 
+def borrow_native_executor_notification(source):
+    """Read the incoming thread's owned message during a synchronous callback."""
+    path = source / "lib/SPELL_CTX/src/SPELLexecutor.C"
+    text = path.read_text()
+    start = text.index("void SPELLexecutor::executorNotification(")
+    end = text.index("\n}", start) + 2
+    original = text[start:end]
+    if hashlib.sha256(original.encode()).hexdigest() != (
+        "6e45c8b9bb0dd6ea9a558579ff4006710ce35c5b5cdf935aa6715bbd004f0ac4"
+    ):
+        raise ValueError("Native executor notification preimage differs")
+    anchor = "\tSPELLipcMessage msg(nmsg);"
+    if original.count(anchor) != 1:
+        raise ValueError("Native executor notification boundary differs")
+    changed = original.replace(anchor, "\tconst SPELLipcMessage& msg = nmsg;")
+    path.write_text(text[:start] + changed + text[end:])
+
+
 def transfer_native_line_notification(source):
     """Keep the const-reference API and give owned line messages a no-copy path."""
     path = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
@@ -874,6 +892,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
 
         patch_terminal_tree(source)
     borrow_native_message_callbacks(source)
+    borrow_native_executor_notification(source)
     transfer_native_line_notification(source)
     reuse_native_trace_filename(source)
     bound_native_diagnostic_logs(source)

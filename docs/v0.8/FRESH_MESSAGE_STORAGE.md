@@ -1,5 +1,36 @@
 # Bounded storage for newly constructed native messages
 
+## Follow-up: synchronous Context notification copy
+
+The first candidate `2e84858` completes hosted foundation with 1,472 tests,
+zero failures/errors/skips. Its two source-verified recovery runs retain eight
+processes and complete the unchanged 45-second soak. Peak/growth are
+1,452.07/82.93 MiB (handoff) and 1,446.32/101.77 MiB (installed IDE). These are
+improvements over the baseline measurements below, but both still fail the
+64 MiB growth limit. [Exact results](evidence/fresh-message-storage/first-candidate-hosted.json)
+retain both failures rather than promoting the component benchmark.
+
+Resolving the baseline Context profile offsets against the exact build's
+recorded symbol ranges identifies a redundant copy inside
+`SPELLexecutor::executorNotification`. Its unchanged body only reads the
+incoming message and synchronously updates the execution model. The follow-up
+borrows that const message for this one callback; the incoming task continues
+to own it. No queue, thread, callback signature, message mutator or asynchronous
+lifetime is changed. The complete original callback body is SHA-256 guarded.
+[Resolved allocation paths](evidence/fresh-message-storage/context-call-sites.json)
+retain the source and binary identities used for this attribution.
+
+The exact frozen and candidate callback bodies are compiled against the real
+message class with model/context collaborators replaced by fixtures. Tests
+exercise repeated and changed stages, status/error paths, CALL/RETURN,
+asynchronous notification types, unknown types, unchanged caller messages,
+and the steady-state allocation benchmark. All 145 focused follow-up checks
+pass without failures/errors/skips. The 10,000-callback benchmark falls from
+90,000 allocations / 7,990,000 bytes to zero after warm-up. Whole-runtime acceptance still
+requires the follow-up hosted rebuild.
+
+## Initial baseline
+
 The source-bound baseline is `a0a1686baf5b5ab65698eb030005de3bcbd42a49`.
 Core run `40449908895` passes 12 of 14 jobs. Both recovery jobs still fail
 the unchanged 64 MiB growth criterion despite retaining all eight processes

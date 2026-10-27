@@ -31,10 +31,13 @@ static SPELLipcMessage fixture() {
 static void compare(const SPELLipcMessage& a,const SPELLipcMessage& b) {
     require(a.data()==b.data() && a.getCompressed()==b.getCompressed());
 }
+#include "native_notification_harness.inc"
 int main(int argc,char** argv) {
     require(argc==2);const std::string mode=argv[1];
     auto source=fixture();
-    if(mode=="bench") {
+    if(mode=="notification" || mode=="notification_bench") {
+        notification_test(mode=="notification_bench");
+    } else if(mode=="bench") {
         {auto a=source;auto b=a;SPELLipcMessage c;c=b;}
         measure=true;
         for(int n=0;n<10000;++n) {auto a=source;auto b=a;SPELLipcMessage c;c=b;}

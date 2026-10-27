@@ -1,0 +1,140 @@
+{
+  "source_commit": "a0a1686baf5b5ab65698eb030005de3bcbd42a49",
+  "artifact_id": 12710630504,
+  "artifact_sha256": "46b2738dd49135f20de387dda65f68cdb0c8d21ec3edea60f789acf39d624fde",
+  "native_context_sha256": "3b31b7c380cf07559bfe8d980bf971d98cee86656c16f787877dc365899b920a",
+  "resource_samples_sha256": "d40eb5e532f31f963a8175a8cbbbff50f280fd4a36d02d37a546e3093201c3d1",
+  "method": "Resolve recorded module-relative offsets against exact build nm address/size ranges; c++filt only demangles",
+  "sites": [
+    {
+      "samples": 960,
+      "bytes": 92160,
+      "context_frames": [
+        {
+          "offset": 11756722,
+          "function": "std::_Rb_tree_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::_M_emplace_hint_unique<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::_Rb_tree_const_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)"
+        },
+        {
+          "offset": 11698987,
+          "function": "(anonymous namespace)::v08_copy_properties(std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&)"
+        },
+        {
+          "offset": 11701416,
+          "function": "SPELLipcMessage::SPELLipcMessage(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 10072546,
+          "function": "SPELLexecutor::executorNotification(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 10037918,
+          "function": "SPELLexecutor::processMessageFromExecutor(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 10160314,
+          "function": "SPELLexecutorIPC::processMessage(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 11595928,
+          "function": "SPELLipcIncomingMessage::run()"
+        },
+        {
+          "offset": 13096741,
+          "function": "SPELLthread::doRun()"
+        },
+        {
+          "offset": 13096965,
+          "function": "do_run(void*)"
+        }
+      ]
+    },
+    {
+      "samples": 773,
+      "bytes": 25994,
+      "context_frames": []
+    },
+    {
+      "samples": 753,
+      "bytes": 72288,
+      "context_frames": [
+        {
+          "offset": 11756722,
+          "function": "std::_Rb_tree_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > std::_Rb_tree<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::_Select1st<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >::_M_emplace_hint_unique<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::_Rb_tree_const_iterator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)"
+        },
+        {
+          "offset": 11698987,
+          "function": "(anonymous namespace)::v08_copy_properties(std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > const&)"
+        },
+        {
+          "offset": 11701416,
+          "function": "SPELLipcMessage::SPELLipcMessage(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 12048195,
+          "function": "SPELLipcServerInterfaceSingle::incomingMessage(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 12361569,
+          "function": "SPELLipcInput::dispatch()"
+        },
+        {
+          "offset": 12377965,
+          "function": "SPELLipcInput::addBytesToPacketFit(int)"
+        },
+        {
+          "offset": 12378420,
+          "function": "SPELLipcInput::processReadBytes(int)"
+        },
+        {
+          "offset": 12388076,
+          "function": "SPELLipcInput::run()"
+        },
+        {
+          "offset": 13096741,
+          "function": "SPELLthread::doRun()"
+        },
+        {
+          "offset": 13096965,
+          "function": "do_run(void*)"
+        }
+      ]
+    },
+    {
+      "samples": 375,
+      "bytes": 12000,
+      "context_frames": []
+    },
+    {
+      "samples": 243,
+      "bytes": 10589,
+      "context_frames": []
+    },
+    {
+      "samples": 211,
+      "bytes": 3587,
+      "context_frames": [
+        {
+          "offset": 8515467,
+          "function": "void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag)"
+        },
+        {
+          "offset": 10159055,
+          "function": "SPELLexecutorIPC::processMessage(SPELLipcMessage const&)"
+        },
+        {
+          "offset": 11595928,
+          "function": "SPELLipcIncomingMessage::run()"
+        },
+        {
+          "offset": 13096741,
+          "function": "SPELLthread::doRun()"
+        },
+        {
+          "offset": 13096965,
+          "function": "do_run(void*)"
+        }
+      ]
+    }
+  ],
+  "full_v08_qualified": false
+}

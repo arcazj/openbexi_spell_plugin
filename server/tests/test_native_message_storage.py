@@ -25,6 +25,7 @@ def storage_binaries(tmp_path_factory):
         header = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
         ipc = archive.read("include/SPELL_IPC/SPELLipc.H").decode()
         utils = archive.read("lib/SPELL_UTIL/src/SPELLutils.C").decode()
+        executor = archive.read("lib/SPELL_CTX/src/SPELLexecutor.C").decode()
     (folder / "SPELL_IPC").mkdir()
     (folder / "SPELL_UTIL").mkdir()
     (folder / "SPELL_IPC/SPELLipc.H").write_text(ipc)
@@ -58,6 +59,15 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
     (folder / "utils.cpp").write_text('#include "SPELL_UTIL/SPELLutils.H"\n' + utils[start:end])
     binaries = {}
     for name in ("before", "after"):
+        native = folder / "lib/SPELL_CTX/src/SPELLexecutor.C"
+        native.parent.mkdir(parents=True, exist_ok=True)
+        native.write_text(executor)
+        if name == "after":
+            builder.borrow_native_executor_notification(folder)
+        notification = native.read_text()
+        start = notification.index("void SPELLexecutor::executorNotification(")
+        end = notification.index("\n}", start) + 2
+        (folder / "notification_method.inc").write_text(notification[start:end])
         text = original if name == "before" else builder.replace_native_message_codec(original)
         candidate = header if name == "before" else builder.enable_native_message_moves(header)
         candidate = candidate.replace(
@@ -95,6 +105,7 @@ extern "C" size_t storage_fields(){
                 "-no-pie",
                 "-DV08_STORAGE=" + str(int(name == "after")),
                 "-I" + str(folder),
+                "-I" + str(ROOT / "server/tests"),
                 str(source),
                 str(folder / "utils.cpp"),
                 str(ROOT / "server/tests/native_storage_harness.cpp"),
@@ -121,7 +132,7 @@ def run(binary, mode):
     return json.loads(result.stdout)
 
 
-@pytest.mark.parametrize("mode", ["copy", "shapes", "fresh", "threads", "bounds"])
+@pytest.mark.parametrize("mode", ["copy", "shapes", "fresh", "threads", "bounds", "notification"])
 def test_native_storage_preserves_independence_and_bounds(storage_binaries, mode):
     assert run(storage_binaries["before"], mode) == run(storage_binaries["after"], mode)
 
@@ -148,6 +159,14 @@ def test_fresh_native_notifications_reuse_exclusive_nodes(storage_binaries):
     before = run(storage_binaries["before"], "fresh_bench")
     after = run(storage_binaries["after"], "fresh_bench")
     assert before["message_size"] == after["message_size"]
+    assert before["allocations"] >= 80_000
+    assert after["allocations"] == 0
+    assert after["allocated_bytes"] == 0
+
+
+def test_synchronous_notification_avoids_the_redundant_copy(storage_binaries):
+    before = run(storage_binaries["before"], "notification_bench")
+    after = run(storage_binaries["after"], "notification_bench")
     assert before["allocations"] >= 80_000
     assert after["allocations"] == 0
     assert after["allocated_bytes"] == 0
