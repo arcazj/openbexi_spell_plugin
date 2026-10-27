@@ -1,18 +1,27 @@
 # Durable ASRUN storage and bounded cache
 
-Executable `3a970c45718d9af7c7de553ea3d6508a9ec3d423` passes all 14 bounded core jobs, 1,583 foundation tests, nine lifecycle repetitions, mandatory handoff/installed-IDE growth of 58.48/58.02 MiB against 64 MiB, actual rebuilt-native ENOSPC and 17 audit component tests. Paired IDE remains `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. Its sanitizer handoff hour fails early with a cgroup OOM kill; IDE hour is pending. Both cache-only 910c8418 sanitizer hours also fail early. Earlier passing bounded checks do not qualify endurance. See [current source-bound receipt](evidence/memory-endurance-20261027.json), [cache receipt](evidence/audit-cache-native-checkpoint-20261027.json) and retained failures in TEST_REPORT.md. Full v0.8 is unqualified.
+Executable `892914f10f12bd9a3043a69e07f363a143445ec3` passes all 14 bounded core jobs, 1,586 foundation tests, nine lifecycle repetitions, mandatory handoff/installed-IDE growth of 30.30/52.55 MiB against 64 MiB, actual rebuilt-native ENOSPC and 17 audit component tests. Paired IDE remains `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. Both current sanitizer-hour attempts fail early, as do both earlier `3a970c45` sanitizer hours. All raw audit files remain preserved. See [current source-bound receipt](evidence/qualification-892914f-20261027.json), [previous checkpoint](evidence/memory-endurance-20261027.json), [cache receipt](evidence/audit-cache-native-checkpoint-20261027.json) and retained failures in TEST_REPORT.md. Full v0.8 is unqualified.
 
 `audit_file.H` writes synchronously without an asynchronous queue. Each acknowledged record completes `fdatasync`; directory changes complete `fsync`. Restore uses a fixed 4 KiB userspace buffer. Disk-backed private directories, exclusive writer locks, regular-file permissions and no-follow opens are required. tmpfs/ramfs are rejected. The host provides a private retained volume through `OPENBEXI_V08_AUDIT_ROOT`; every rebuilt qualification worker uses its own disk directory. The writer never deletes required records.
 
 Reset and restore keep the previous inode under an exclusive archive-generation name, synchronize it, then create the replacement. At most 1,024 archive names per active path are searched; exhaustion fails explicitly. An incomplete append tail is preserved and rejected. Write, sync, close, lock, policy, cache-advice and restore errors emit a fixed `V08_AUDIT_FAILURE` stage/errno and terminate the participant with exit 74. NativeSession reports a fixed error; uncertain effects are not automatically replayed. Acknowledgement is not transactional rollback of an uncertain failed record.
 
-## Measured cache correction and pending endurance
+## Measured cache correction and scoped endurance
 
 The earlier dbdfd53 optimized one-hour handoff/IDE comparisons fail growth at 123.78/124.19 MiB. The retained 122,190,068/119,952,764 audit bytes explain the dominant matching file-cache increase, while anonymous memory rises only 3,022,848/4,038,656 bytes. Those diagnostic profiles do not replace sanitizer acceptance.
 
 The changed writer asks `posix_fadvise(POSIX_FADV_DONTNEED)` to release completed pages only after successful `fdatasync`, in 64 KiB batches. Partial pages remain cached. Closing synchronizes and advises remaining complete pages. Restore similarly synchronizes output and advises consumed input pages. File bytes, archive generations and incomplete tails remain on the same volume. Nothing changes cgroup membership/accounting, the mandatory workload, deadlines, sanitizer options or acceptance limits. The resource observer still includes charged file-cache pages and subtracts nothing. No global cache drop is used.
 
 This is an advisory filesystem operation: a kernel or reader can retain/refault pages. Acceptance therefore requires measured resource results. An explicit advice error fails closed; a silent no-op cannot manufacture a memory pass. The [Linux manual](https://man7.org/linux/man-pages/man2/posix_fadvise.2.html) documents completed-page advice and synchronization requirements. The paired ASan/UBSan component produced identical complete 64 MiB files with 16,384 cached pages before and zero after the change, observed before readback. Large restore, bytes/order, concurrency, restart, process kill, partial writes and refused cache policy have separate regressions.
+
+The previously pending `3a970c45` optimized hour comparisons now both pass, with
+handoff/IDE growth of 6,742,016 / 7,147,520 bytes over 3,600.18 / 3,600.42 seconds
+of repeated same-family recovery workload. Every retained audit file verifies:
+123,440,121 / 109,461,184 ASRUN bytes. Artifacts 12771188770 / 12773055694 bind all
+142 overlay source inputs each. This confirms the cache correction in that
+optimized diagnostic; it does not replace mandatory sanitizer acceptance.
+Original-sanitizer sustained growth remains unresolved, with read-only runtime
+accounting distinguishing large freed-allocation quarantine from live bytes.
 
 ## Verified native failure and retained records
 

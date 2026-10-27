@@ -1,3 +1,59 @@
+# Current unqualified candidate, 0.8.0.dev72
+
+Measured native epoch-file buffer retention is corrected with a fresh bounded
+read on every admission; [measurement and contract](RUNTIME_EPOCH_IO.md).
+Local ASan/UBSan file components pass, including exact old/new parsing,
+concurrency, cancellation and all 10,000 reads. Full Unix transport is denied
+locally by `EPERM`; its real endpoint test remains required on CI. Fresh native,
+installed-IDE, audit, startup and sustained-memory qualification is pending.
+The verified predecessor results below are not promoted to this candidate.
+
+# Verified predecessor exact-source checkpoint, 2026-10-27
+
+Executable `892914f10f12bd9a3043a69e07f363a143445ec3` (`0.8.0.dev71`),
+tested PR merge `0165d4ba44ec01dd014c2ccb0c1b4c558398c006`, identical tree
+`2c8816f535d1ce86f69ffe78dbbd574b69f1f94f`, paired IDE
+`c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`.
+
+- All 14 core jobs pass: 1,586 foundation tests, zero failures/errors/skips;
+  the separate 95 fault tests overlap. The portable subset has 241 tests.
+- Mandatory original-ASan/UBSan, no-swap, 45-second handoff / installed-IDE
+  growth passes at 31,776,768 / 55,103,488 bytes against 67,108,864. Peaks are
+  1,290,653,696 / 1,347,506,176 bytes. All 48 samples and 139 sources each verify.
+- Actual rebuilt-native ENOSPC, all 17 audit components and independent
+  extraction of the entire 8 MiB fault image pass. Sixteen core/audit artifacts
+  verify 1,752 overlapping source bindings and 230 raw audit files.
+- All nine repeated lifecycle jobs pass (72 startup families, three Listener
+  attempts and three 16-case terminal matrices); 1,059 overlapping source
+  bindings and 324 raw audit files verify. These passes do not explain old failures.
+- All five ancillary workflows pass within their stated portable, prelaunch,
+  static-manifest and development Python inventory scopes.
+
+Both current original-sanitizer hour attempts fail early. Handoff observes
+887.64 seconds, peak 2,147,495,936 bytes and one sampled OOM kill. IDE observes
+736.11 seconds, peak 2,147,487,744 bytes; its last sample has zero OOM kills,
+but later Docker state records `OOMKilled=true`. Neither observation is erased
+or converted to a one-hour pass. Both earlier `3a970c45` sanitizer hours also fail.
+Its two optimized diagnostic hours pass at 6.43 / 6.82 MiB growth while retaining
+123,440,121 / 109,461,184 audit bytes. They do not replace mandatory acceptance.
+
+Read-only sanitizer accounting at diagnostic commit `6055274d` reproduces
+five-minute growth failure while showing substantial quarantine retention and
+roughly 10 / 9 MiB live Context / Executor allocations. Byte-ranked allocation
+paths are being measured before further optimization. Controlled durable-member
+delay and completion reply loss terminate the affected family. The initial
+prompt-denial diagnostic fails to inject because native sends DECLARE, not the
+private OPEN schema; corrected diagnostic `d83e50c2` injects successfully and
+terminates the affected worker while nine other families finish. It does not
+reproduce the old hang. Reply loss after durable prompt registration is now
+being measured at `d09bc75b`. The historical delayed-registration and separate
+worker-exit causes remain open.
+
+Evidence: [source-bound checkpoint](evidence/qualification-892914f-20261027.json)
+and [sanitizer accounting](SANITIZER_MEMORY_ACCOUNTING.md). Every prior failure
+and historical checkpoint below remains retained. All eleven full-release gates
+remain false; nothing has been merged, tagged or published as stable v0.8.
+
 # Historical Phase A/B test report
 
 Date: 2026-10-22. Plugin baseline `109a47af47951e2fa54b60cb408a543b117f7f15`;

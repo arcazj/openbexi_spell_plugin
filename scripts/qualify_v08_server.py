@@ -110,6 +110,8 @@ def main():
             root / "server/tests/native_frame_filename.cpp",
             root / "server/tests/native_callback_identifier.cpp",
             root / "server/tests/native_audit_file.cpp",
+            root / "server/tests/native_runtime_epoch.cpp",
+            root / "server/tests/native_runtime_epoch_baseline.H",
             root / "host_runtime/native_prompt_patch.py",
             root / "host_runtime/native_terminal_patch.py",
             root / "host_runtime/python/terminal_probe.py",

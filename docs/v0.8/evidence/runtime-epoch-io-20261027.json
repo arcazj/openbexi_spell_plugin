@@ -1,0 +1,48 @@
+{
+  "schema": "openbexi.runtime-epoch-io-component/1",
+  "source_parent": "892914f10f12bd9a3043a69e07f363a143445ec3",
+  "candidate_version": "0.8.0.dev72",
+  "component_only": true,
+  "measurements": {
+    "before": {
+      "reads": 10000,
+      "file_buffer_allocations": 10000,
+      "heap_growth_bytes": 110428160,
+      "live_before": 73994,
+      "live_after": 73994
+    },
+    "after": {
+      "reads": 10000,
+      "file_buffer_allocations": 0,
+      "heap_growth_bytes": 786432,
+      "live_before": 73994,
+      "live_after": 73994
+    }
+  },
+  "inputs": {
+    "component_only": true,
+    "baseline": "892914f10f12bd9a3043a69e07f363a143445ec3",
+    "source_sha256": {
+      "host_runtime/native/admission_ipc.H": "ec80c474c5c332163274f01d60a396d9166384b978927e323567b0bedb58b4d5",
+      "host_runtime/native/admission_channel.H": "07c6d18825af8baf5e741131e9f1dea7b14a9e53e110d7ad78265f991422311c",
+      "server/tests/native_runtime_epoch.cpp": "958634eac8e75a9c0895f77b6233af9b613d97c843c2de721ee0a6e028397b42",
+      "server/tests/test_native_runtime_epoch.py": "884d951d19126a6e18fc1b560324da6e266f75c92e5796deda6679b95202394e"
+    },
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "local_result": "18 passed, one full Unix transport test excluded after retained EPERM failure",
+  "socket_creation_errno": 1,
+  "full_transport_on_ci_required": true,
+  "full_v08_qualified": false,
+  "mandatory_acceptance": "pending for the new candidate",
+  "native_path_evidence": {
+    "artifact": 12772857813,
+    "digest": "sha256:d7f6a75e3c0c83ca536d9febfe079dc73e36e368e027a998d7c6c7b1516d5812",
+    "source": "325feb57fff5cb48665f177c6ed6c3dd78b5658c",
+    "reference": "892914f10f12bd9a3043a69e07f363a143445ec3",
+    "native_hashes_verified": 139,
+    "raw_audit_files_verified": 23,
+    "context_file_buffer_samples": 6,
+    "sampled_bytes": 49152
+  }
+}
