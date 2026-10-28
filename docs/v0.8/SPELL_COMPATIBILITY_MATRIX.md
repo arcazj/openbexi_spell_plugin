@@ -1,3 +1,5 @@
+Current executable `3b18313899ebe07d84b8e98b86c8f9b5020c3263`; paired IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. [Fresh immutable input reconciliation](evidence/compatibility-inputs-3b183138-20261028.json) checks all 555 top-level bindings and 47 unchanged historical reports. All 763 current native requirements remain NOT_FRESHLY_QUALIFIED; 57 historical capture hashes remain unresolved. Bounded dev76 lifecycle/driver/memory tests do not replace these requirements. The following snapshots are historical.
+
 Dev76 adds a measured native request-identity ownership change and requires fresh qualification. The exact input reconciliation below remains bound to the last hosted dev75 executable; all 763 current requirements and 57 unresolved historical capture hashes remain open.
 
 # SPELL compatibility matrix — v0.8 qualification record

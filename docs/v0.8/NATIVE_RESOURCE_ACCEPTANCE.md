@@ -1,31 +1,81 @@
-# Dev76 candidate; fresh hosted acceptance pending
+# Dev76 executed qualification checkpoint — release remains blocked
 
-This commit renders measured incoming request IDs into the joined processor's
-existing owned identity storage. It preserves the explicit client identity,
-original public return API, class layout/vtable, 32-entry cache and five-worker
-reuse pool. Concurrency, sanitizers, workloads, deadlines, resource accounting,
-acceptance bounds and required audit records are unchanged.
+SPELL `3b18313899ebe07d84b8e98b86c8f9b5020c3263` (0.8.0.dev76), tested merge
+`65c7a6f8285e102ccda375a747c1a780b4ac1b93`, identical tree
+`914a214fe00aa31a5e7774a1fff604d1a5395d09`; paired IDE
+`c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` (1.2.1.dev5).
 
-All 226 distinct affected local component checks pass, including original audit,
-LINE/filename, callback cancellation/exit and byte-format regressions. The real
-message renderer measures 10,000 temporary allocations / 1,070,000 bytes through
-the original public return path and zero through owned storage after warm-up.
-The original and new rendered bytes match. The processor regression checks 64
-live distinct identities, 10,000 joined reuse cycles and oversized destruction.
-These measurements do not establish a whole-family pass or explain earlier exits.
+All 14 bounded core jobs report success after an unchanged foundation rerun of
+1,621 tests, with 95 overlapping fault checks, 241 portable tests and all nine
+lifecycle repetition jobs passing. The first foundation attempt failed two
+10-request driver-burst cases, then hit its original 600-second suite deadline
+after 1,085 observed passes. It emitted no final failure traceback or JUnit.
+The rerun passed in 566.463 seconds; an observation-only full run passed 1,621
+in 574.954 seconds and three exact focused repetitions passed both cases.
+These later passes do not explain the first failure. Its cause and capture gap
+remain open. No fixture, assertion, concurrency or deadline was relaxed.
 
-Fresh core/native/installed-IDE/lifecycle/audit and original sanitizer-hour
-acceptance must run at this exact executable. The following dev75 checkpoint is
-the last hosted evidence, not acceptance for this code change. All eleven full
-release groups remain open; stable merge/tag/release remain blocked.
+Original mandatory ASan/UBSan/no-swap 45-second memory acceptance passes:
+handoff 41,750,528 bytes (39.82 MiB), installed IDE 42,827,776 bytes (40.84 MiB),
+against the unchanged 67,108,864-byte growth limit. These bounded passes do not
+establish sustained stability. Both original sanitizer hours FAIL in run
+40653592773. Handoff artifact 12801712425 retains 497 ordered samples over
+1,024.340570910 seconds; IDE artifact 12801917364 retains 505 over
+1,045.865087283 seconds. Original Context host PIDs 18117/ns37 and 25734/ns37
+respectively have exited pidfds at failure. Handoff samples an OOM-kill counter
+rise to one; the IDE trace ends with zero sampled OOM kills, followed by later
+Docker OOMKilled=true. Kernel queries failed with RuntimeError in both runs.
+The Context/OOM association is an inference, without a direct kernel victim
+record. Neither this observation nor the callback/request-ID fixes explains
+historical unobserved worker exits.
 
-Endurance failures now also retain original pidfd exit states and the previous
-successful liveness interval. A bounded, optional kernel-log query records only
-matching original victim PIDs in that interval; unavailability is explicit.
-The original liveness condition and positive workload are unchanged. Observation
-errors preserve the original failure; older unknown victims remain unknown.
+Both peaks reach 2,147,500,032 bytes. The last complete samples contain about
+2,024 MiB anonymous memory, 2.6–3.0 MiB file/shared memory and 1.9 MiB kernel
+stacks. Live allocated bytes are small compared with retained allocator heaps;
+prior exact overlays demonstrate sanitizer quarantine and growing primary/
+shadow mappings, with other anonymous mappings still unattributed. Observed
+huge-page usage varies between runners; it is not proof of waste or a source
+cause. Exact dev76 accounting/mapping/symbol diagnostic 14272042, run
+40659879477, is running under unchanged original hour workloads. Its green
+collection status, if any, cannot establish acceptance.
 
-[Local source-bound receipt](evidence/owned-request-identity-20261028.json).
+Actual native Executor ENOSPC passes in artifact 12800204672: write errno28,
+explicit exit1, no false completion, both holds and original owner epoch
+retained, and raw ext4 volume/prefix bytes independently verified. The 21
+bounded audit components also pass. Hour-run audit files remain complete and
+ordered: 23 files/32,305,678 bytes for handoff; 27/33,573,543 for IDE. All tails
+and unsuccessful attempts are preserved. These component passes do not prove
+whole-deployment restore or execution-authority recovery. The dev75 attempt
+that failed before injection on a registration broken pipe remains unexplained;
+nine separate instrumented actual ENOSPC passes do not establish its cause.
+
+The complete source archive matches all 2,383 Git blob IDs, modes and members
+of tree914a. Source/tool checksums verify; tool archives are only digest-checked.
+31 regular archives verify 3,172 overlapping recorded source bindings and 577
+raw audit files, including the failed first foundation report. The unchanged
+foundation rerun adds 258 bindings. Each completed diagnostic overlay is
+reproduced exactly before interpreting its result. Installed IDE module and
+native client bytes match the pinned companion source. These are scoped source
+verifications, not complete shipped-image or release qualification.
+
+The dev73 joint inventory branch and corrected refreshed public offscreen/xcb
+probes remain diagnostics. Baseline IDE startup fails on missing glib. Refreshed
+images retain vulnerabilities and missing Qt notices; full native, OS, Python,
+IDE and plugin SBOM/license/advisory disposition and independent implemented-
+system review remain open. No refreshed packaging is promoted to dev76.
+
+All eleven full-release groups remain open, including all 763 current native
+requirements/full driver semantics, public native launch, full debugger,
+authenticated browser/WSS recovery and Git collaboration, complete deployed
+workloads, restore/execution-authority recovery, upgrade/rollback, final stable
+joint packaging and clean-install acceptance. The production-like qualification
+cluster with enforced network policy and independent implemented-system security
+reviewer are distinct missing external resources. No stable merge, annotated
+tag, GitHub release or production migration has occurred. Publication is
+already authorized once every mandatory final-source criterion passes.
+
+[Current source-bound receipt](evidence/qualification-3b183138-20261028.json).
+The following sections preserve earlier candidate checkpoints as history.
 
 ---
 

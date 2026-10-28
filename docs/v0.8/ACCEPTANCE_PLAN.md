@@ -62,7 +62,6 @@ in for missing implementation deliverables.
 Wire foundation CI early. Its success cannot stand in for native, browser,
 Compose, Kubernetes, security-scan or candidate-publication gates.
 
-
 ## Qualified prelaunch subset
 
 EXECUTION_AUTHORITY.md defines the bounded internal subset implemented in
@@ -77,3 +76,11 @@ WORKER_PREFLIGHT.md defines the dev3 configured-source and single-host worker
 preflight subset. Real mTLS and source bytes are tested; this does not qualify
 Pod identity, runtime-image/read-only-mount attestation, native descendants or
 driver effects. No native/deployment gate changes to PASS.
+
+## Historical dev75 authorization and evidence checkpoint
+
+Publication is already owner-authorized once every mandatory final-source criterion passes; production migration is not authorized. Dev75 bounded core and 45-second memory passes do not satisfy the failed sanitizer hours, preinjection native fault attempt or any complete release group. See evidence/qualification-53b7e8a-20261028.json; all prior criteria and unresolved historical failures remain binding.
+
+## Dev76 executed checkpoint
+
+Executable `3b18313899ebe07d84b8e98b86c8f9b5020c3263` and IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` have fresh bounded evidence, but both original sanitizer hours fail and the initial foundation failure remains unexplained. See [the current receipt](evidence/qualification-3b183138-20261028.json). All eleven complete release groups remain open. Production-like enforced-network-policy cluster and an independent implemented-system security reviewer remain external dependencies. No deadline, fixture, sanitizer option, audit retention or acceptance limit may be changed to obtain a pass. Existing publication authorization is conditional on every mandatory final-source criterion passing; production migration remains unauthorized.
