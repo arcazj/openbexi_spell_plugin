@@ -45,6 +45,8 @@ class Fault(Exception):
     def __init__(self, status: int, code: str):
         super().__init__(code)
         self.status, self.code = status, code
+        # Local evidence only; handlers still serialize only status/code.
+        self.rpc_provenance: dict[str, object] | None = None
 
 
 def identifier(value, *, maximum=128):

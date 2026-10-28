@@ -726,6 +726,7 @@ class NativeAdmissionServer:
                         dispatch_ms=dispatch_ms,
                         status=error.status if isinstance(error, Fault) else None,
                         code=error.code if isinstance(error, Fault) else None,
+                        rpc_provenance=error.rpc_provenance if isinstance(error, Fault) else None,
                         cause_type=type(error.__cause__).__name__
                         if error.__cause__ is not None
                         else None,

@@ -138,6 +138,27 @@ def test_send_ack_is_not_execution_or_queue_settlement(journal, family, pki):
     assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
 
 
+def test_actual_context_report_conflict_retains_origin_without_changing_authority(
+    provider, journal, family, pki
+):
+    body = operation()
+    assert admit(family, pki, body)[0] == 200
+    request = {**provider.request, **body, "outcome": "IPC_SEND_ACKNOWLEDGED"}
+    options = dict(path="/v1/worker/control-report", schema="openbexi.worker/2")
+    reply = provider.route.call(request, **options)
+    assert reply["recorded"] and reply["state"] == "DISPATCH_UNCERTAIN"
+    before = dict(rows(family)[0])
+    with pytest.raises(Fault) as info:
+        provider.route.call({**request, "outcome": "UNCERTAIN"}, **options)
+    error = info.value
+    assert (error.status, error.code) == (409, "context_request_denied")
+    assert error.rpc_provenance["http_status"] == 409
+    assert error.rpc_provenance["upstream_code"] == "native_control_report_conflict"
+    assert dict(rows(family)[0]) == before
+    assert family["store"].db.execute("SELECT COUNT(*) FROM reservations").fetchone()[0] == 1
+    assert family["store"].db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
+
+
 @pytest.mark.parametrize("outcome", ["COMPLETED", "QUIESCED", True, {}, None])
 def test_worker_cannot_assert_a_completed_control_queue(journal, family, pki, outcome):
     body = operation()

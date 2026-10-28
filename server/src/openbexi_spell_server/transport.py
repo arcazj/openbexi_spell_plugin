@@ -5,11 +5,13 @@ import http.client
 import socket
 import ssl
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
 from urllib.parse import urlsplit
 
 from .contracts import MAX_BODY, Fault, canonical, decode, fingerprint
+from .rpc_provenance import failure_record, upstream_fault_code
 
 
 def tls_context(ca, certificate, key, *, server=False):
@@ -85,6 +87,8 @@ class Route:
         timeout = 5 if path == "/v1/worker/driver" else 2
         connection = http.client.HTTPSConnection(self.host, self.port, context=self.tls, timeout=2)
         watchdog = None
+        started_ns, cpu_started_ns = time.monotonic_ns(), time.thread_time_ns()
+        phase, status, upstream_code = "connect", None, None
         try:
             connection.connect()
             wire = connection.sock
@@ -98,20 +102,29 @@ class Route:
 
             watchdog = threading.Timer(5, expire)
             watchdog.daemon = True
+            phase = "watchdog_start"
             watchdog.start()
+            phase = "peer_identity"
             certificate = connection.sock.getpeercert(binary_form=True)
             if not certificate:
                 raise Fault(503, "context_identity_unavailable")
             peer = hashlib.sha256(certificate).hexdigest()
             if peer != self.peer_fingerprint:
                 raise Fault(503, "context_identity_unavailable")
+            phase = "request_send"
             connection.request(
                 "POST", path, canonical(request), {"Content-Type": "application/json"}
             )
+            phase = "response_headers"
             response = connection.getresponse()
+            status = response.status
+            phase = "response_body"
             raw = response.read(MAX_BODY + 1)
+            phase = "response_decode"
             body = decode(raw)
+            phase = "response_validation"
             if response.status != 200:
+                upstream_code = upstream_fault_code(body)
                 # Do not forward arbitrary upstream body text or configuration details.
                 if response.status in (400, 403, 404, 409, 413, 503):
                     raise Fault(response.status, "context_request_denied")
@@ -121,8 +134,17 @@ class Route:
             if body["schema"] != schema:
                 raise Fault(503, "context_protocol_error")
             return body["result"]
+        except Fault as error:
+            error.rpc_provenance = failure_record(
+                path, phase, status, upstream_code, started_ns, cpu_started_ns
+            )
+            raise
         except (OSError, http.client.HTTPException) as error:
-            raise Fault(503, "context_unavailable") from error
+            failure = Fault(503, "context_unavailable")
+            failure.rpc_provenance = failure_record(
+                path, phase, status, upstream_code, started_ns, cpu_started_ns
+            )
+            raise failure from error
         finally:
             if watchdog:
                 watchdog.cancel()

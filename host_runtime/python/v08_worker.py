@@ -1210,22 +1210,25 @@ def main():
         for _ in range(3):
             if current is None:
                 break
-            causes.append(
-                dict(
-                    type=type(current).__name__,
-                    message=current.code
-                    if isinstance(current, Fault)
-                    else str(current)[:512],
-                    stack=[
-                        dict(
-                            file=Path(frame.filename).name,
-                            line=frame.lineno,
-                            function=frame.name,
-                        )
-                        for frame in traceback.extract_tb(current.__traceback__)
-                    ][-8:],
-                )
+            cause = dict(
+                type=type(current).__name__,
+                message=current.code
+                if isinstance(current, Fault)
+                else str(current)[:512],
+                stack=[
+                    dict(
+                        file=Path(frame.filename).name,
+                        line=frame.lineno,
+                        function=frame.name,
+                    )
+                    for frame in traceback.extract_tb(current.__traceback__)
+                ][-8:],
             )
+            if isinstance(current, Fault):
+                cause["status"] = current.status
+                if current.rpc_provenance is not None:
+                    cause["rpc_provenance"] = current.rpc_provenance
+            causes.append(cause)
             current = current.__context__ or current.__cause__
         emit(
             "native-worker-failed",

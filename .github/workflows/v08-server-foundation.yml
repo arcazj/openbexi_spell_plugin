@@ -115,7 +115,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc
+          ref: be3ba9885b12182e383f389aad5b88f69cdf53ca
           path: .qualification/companion-ide
       - name: Install Qt and native JSON test headers
         run: sudo apt-get update && sudo apt-get install -y libegl1 nlohmann-json3-dev
@@ -203,7 +203,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc
+          ref: be3ba9885b12182e383f389aad5b88f69cdf53ca
           path: .qualification/companion-ide
       - name: Install pinned IDE client without optional UI dependencies
         if: matrix.profile == 'listener-survival' || matrix.profile == 'native-ide'

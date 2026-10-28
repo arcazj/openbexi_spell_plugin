@@ -36,9 +36,11 @@ class V08BridgeFrame {
     void message(const SPELLipcMessage& source) {
         auto& target=frame["message"];
         if (!target.is_object()) target=Json::object();
-        text(target["id"],source.getId()); target["type"]=source.getType();
-        text(target["sender"],source.getSender());
-        text(target["receiver"],source.getReceiver());
+        // Legacy getters return owned copies. Copy once from the live source
+        // into this encoder; never retain references after message() returns.
+        text(target["id"],source.v08Id()); target["type"]=source.getType();
+        text(target["sender"],source.v08Sender());
+        text(target["receiver"],source.v08Receiver());
         auto& fields=target["fields"];
         if (!fields.is_object()) fields=Json::object();
         auto& active=fields.get_ref<Json::object_t&>();

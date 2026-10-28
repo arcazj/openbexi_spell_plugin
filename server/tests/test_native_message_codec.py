@@ -34,6 +34,10 @@ def codec_binaries(tmp_path_factory):
         ).hexdigest()
         == "8c4280f9e626059c26f8903f449e6ba63ba9619e0922d78131cd11de8a886e2a"
     )
+    assert (
+        hashlib.sha256((ROOT / "server/tests/native_bridge_frame_dev77.H").read_bytes()).hexdigest()
+        == "d5f4a57d19e01d3884fd014ecd12ac50b1328641777b74da1dbfbf19d72d2660"
+    )
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
         original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
         output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
@@ -90,12 +94,13 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
     binaries = {}
     for name, text in (
         ("before", original),
+        ("dev77", builder.replace_native_message_codec(original)),
         ("after", builder.replace_native_message_codec(original)),
     ):
         output_text = output if name == "before" else builder.transfer_native_output(output)
         methods = []
         signatures = ["void SPELLipcOutput::send(", "void SPELLipcOutput::writeData("]
-        if name == "after":
+        if name != "before":
             signatures.append("void SPELLipcOutput::v08WriteData(")
         for signature in signatures:
             begin = output_text.index(signature)
@@ -107,6 +112,8 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
             if name == "before"
             else builder.enable_native_message_moves(message_header)
         )
+        if name == "after":
+            header = builder.borrow_native_bridge_headers(header)
         (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
             header.replace(
                 "bool hasField( std::string field ) const;",
@@ -138,6 +145,8 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 / (
                     "server/tests/native_bridge_frame_before_dev76.H"
                     if name == "before"
+                    else "server/tests/native_bridge_frame_dev77.H"
+                    if name == "dev77"
                     else "host_runtime/native/bridge_frame.H"
                 )
             )
@@ -156,7 +165,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 "c++",
                 "-std=c++17",
                 "-O1",
-                "-DV08_CODEC_REUSE=" + ("1" if name == "after" else "0"),
+                "-DV08_CODEC_REUSE=" + ("0" if name == "before" else "1"),
                 "-g",
                 "-fsanitize=address,undefined",
                 "-fno-sanitize-recover=all",
@@ -339,3 +348,41 @@ def test_retired_bridge_nodes_preserve_large_and_excess_fields(codec_binaries):
     before = run(codec_binaries["before"], "bridge_retired_boundaries")
     after = run(codec_binaries["after"], "bridge_retired_boundaries")
     assert before["digest"] == after["digest"]
+
+
+@pytest.mark.parametrize(
+    "mode,allocations,byte_count",
+    [
+        ("alloc_native_id_frames", 10000, 170000),
+        ("alloc_long_header_frames", 60000, 1980000),
+    ],
+)
+def test_native_bridge_copies_long_headers_once_into_owned_encoder_storage(
+    codec_binaries, tmp_path, mode, allocations, byte_count
+):
+    before = run(codec_binaries["dev77"], mode)
+    after = run(codec_binaries["after"], mode)
+    assert before["digest"] == after["digest"]
+    assert before["allocations"] == allocations
+    assert before["allocated_bytes"] == byte_count
+    assert after["allocations"] == after["allocated_bytes"] == 0
+    (tmp_path / (mode + ".json")).write_text(
+        json.dumps({"dev77": before, "candidate": after}, indent=2) + "\n"
+    )
+
+
+def test_bridge_header_borrow_does_not_alias_mutated_or_destroyed_message(codec_binaries):
+    assert run(codec_binaries["dev77"], "bridge_header_ownership") == run(
+        codec_binaries["after"], "bridge_header_ownership"
+    )
+
+
+def test_bridge_header_adapter_rejects_drift_and_reapplication():
+    with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
+        original = archive.read("include/SPELL_IPC/SPELLipcMessage.H").decode()
+    for text in (
+        original.replace("return m_senderId;", "return m_receiverId;"),
+        builder.borrow_native_bridge_headers(original),
+    ):
+        with pytest.raises(ValueError, match="boundary differs"):
+            builder.borrow_native_bridge_headers(text)

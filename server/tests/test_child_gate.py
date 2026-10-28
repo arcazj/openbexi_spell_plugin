@@ -413,3 +413,57 @@ def test_native_callback_failure_reports_stage_without_replaying(failure_phase):
     assert timing["elapsed_ms"] >= timing["phases"]["dispatch_ms"] >= 0
     assert writes == ([b"ALLOW\n", b"DENY\n"] if failure_phase == "reply" else [b"DENY\n"])
     assert "private" not in str(reports)
+
+
+def test_native_admission_preserves_rpc_origin_and_denies_once():
+    import threading
+
+    server = module.NativeAdmissionServer.__new__(module.NativeAdmissionServer)
+    server.stop = threading.Event()
+    server.runtime = None
+    reports, calls, writes = [], [], []
+    server.report = lambda event, **details: reports.append((event, details))
+    server.authenticate = lambda stream: ("context", None)
+    error = Fault(503, "context_request_denied")
+    error.rpc_provenance = {
+        "schema": "openbexi.rpc-failure/1",
+        "path": "/v1/worker/member-bind",
+        "phase": "response_validation",
+        "http_status": 503,
+        "upstream_code": "execution_busy",
+        "started_ns": 100,
+        "finished_ns": 200,
+        "thread_cpu_ns": 10,
+    }
+
+    def dispatch(role, instance, body):
+        calls.append(body)
+        raise error
+
+    server.dispatch = dispatch
+
+    class Stream:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            server.stop.set()
+
+        def settimeout(self, value):
+            pass
+
+        def recv(self, size):
+            return b'{"schema":"openbexi.native-member/1"}\n'
+
+        def sendall(self, value):
+            writes.append(value)
+
+    server.socket = SimpleNamespace(accept=lambda: (Stream(), None))
+    server.serve()
+    assert len(calls) == 1 and writes == [b"DENY\n"]
+    assert len(reports) == 2
+    event, details = reports[0]
+    assert event == "native-before-spawn-denied" and details["phase"] == "dispatch"
+    assert (details["status"], details["code"]) == (503, "context_request_denied")
+    assert details["rpc_provenance"] == error.rpc_provenance
+    assert reports[1][1]["outcome"] == "denied"

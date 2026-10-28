@@ -45,6 +45,29 @@ def enable_native_message_moves(text):
     )
 
 
+def borrow_native_bridge_headers(text):
+    """Copy headers directly into encoder-owned strings, retaining legacy getters.
+
+    Views are usable only on an lvalue message; the encoder copies synchronously
+    and never keeps a reference to a message or its mutable metadata.
+    """
+    for original, accessor, member in (
+        ("getId", "v08Id", "m_id"),
+        ("getSender", "v08Sender", "m_senderId"),
+        ("getReceiver", "v08Receiver", "m_receiverId"),
+    ):
+        old = f"std::string {original}() const {{\n\t\t\treturn {member};\n\t\t}}"
+        if text.count(old) != 1 or accessor + "()" in text:
+            raise ValueError("Native bridge header boundary differs: " + original)
+        text = text.replace(
+            old,
+            old
+            + f"\n        const std::string& {accessor}() const & noexcept {{ return {member}; }}"
+            + f"\n        const std::string& {accessor}() const && = delete;",
+        )
+    return text
+
+
 def transfer_native_incoming(text):
     """Move constructor-owned parameters; preserve the independent input copy."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -1304,10 +1327,12 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     if message_text.count(marker) != 1:
         raise ValueError("Ambiguous native GUI field representation")
     message.write_text(
-        message_text.replace(
-            marker,
-            marker
-            + "\n        const Properties& v08Fields() const { return m_properties; }",
+        borrow_native_bridge_headers(
+            message_text.replace(
+                marker,
+                marker
+                + "\n        const Properties& v08Fields() const { return m_properties; }",
+            )
         )
     )
     client = source / "lib/SPELL_CTX/src/SPELLclientIPC.C"

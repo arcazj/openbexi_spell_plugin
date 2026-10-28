@@ -220,6 +220,46 @@ int main(int argc,char** argv) {
         measuring=false;
         require(encoder.event("message",line)==encodeEvent("message",line).dump(-1,' ',false,Json::error_handler_t::replace));
         require(encoder.reply(9,reply)==encodeReply(9,reply).dump(-1,' ',false,Json::error_handler_t::replace));
+    } else if(mode=="alloc_native_id_frames"||mode=="alloc_long_header_frames") {
+        SPELLipcMessage line("MSG_NOTIFICATION"),reply("MSG_ACK");
+        line.set("Csp","handoff_parent:14");reply.set("Ack","ok");
+        if(mode=="alloc_long_header_frames") {
+            line.setId(std::string(32,'i'));reply.setId(std::string(32,'j'));
+            line.setSender(std::string(48,'s'));reply.setSender(std::string(48,'t'));
+            line.setReceiver(std::string(16,'r'));reply.setReceiver(std::string(16,'q'));
+        }
+        V08BridgeFrame encoder;
+        for(int i=0;i<64;++i){encoder.event("message",line);encoder.reply(i,reply);}
+        measuring=true;
+        for(int i=0;i<10000;++i) {
+            record(encoder.event("message",line));record(encoder.reply(i,reply));
+        }
+        measuring=false;
+        require(encoder.event("message",line)==encodeEvent("message",line).dump(-1,' ',false,Json::error_handler_t::replace));
+        require(encoder.reply(9,reply)==encodeReply(9,reply).dump(-1,' ',false,Json::error_handler_t::replace));
+    } else if(mode=="bridge_header_ownership") {
+        V08BridgeFrame encoder;
+        for(size_t length:{size_t(0),size_t(15),size_t(16),size_t(17),size_t(4096),size_t(2*1024*1024)}) {
+            std::string expected;
+            const std::string* rendered=nullptr;
+            {
+                SPELLipcMessage source(std::string(length,'i'));
+                source.setSender(std::string(length,'s'));source.setReceiver(std::string(length,'r'));
+                const auto ownedId=source.getId(),ownedSender=source.getSender(),ownedReceiver=source.getReceiver();
+                expected=encodeEvent("message",source).dump(-1,' ',false,Json::error_handler_t::replace);
+                rendered=&encoder.event("message",source);require(*rendered==expected);record(*rendered);
+                source.setId("mutated");source.setSender("mutated");source.setReceiver("mutated");
+                require(ownedId==std::string(length,'i')&&ownedSender==std::string(length,'s')&&ownedReceiver==std::string(length,'r'));
+                require(*rendered==expected);
+                require(encoder.reply(7,source)==encodeReply(7,source).dump(-1,' ',false,Json::error_handler_t::replace));
+                rendered=&encoder.event("message",source);
+                expected=encodeEvent("message",source).dump(-1,' ',false,Json::error_handler_t::replace);
+            }
+            require(*rendered==expected);record(*rendered);encoder.releaseLargeBuffers();
+        }
+        m.setId(std::string("id\0\xff",4));m.setSender(u8"é中🙂-long-sender");m.setReceiver(std::string("receiver\0\xff",10));
+        const auto expected=encodeEvent("message",m).dump(-1,' ',false,Json::error_handler_t::replace);
+        require(encoder.event("message",m)==expected);record(expected);
     } else if(mode=="bridge_retired_boundaries") {
         V08BridgeFrame encoder;
         for(auto key:fieldNames) m.set(key,std::string(64,'x'));

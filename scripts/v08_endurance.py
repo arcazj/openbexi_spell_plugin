@@ -69,9 +69,16 @@ def process_failure_observation(handles, original, *, command=None, earliest_ns=
         "oom_cause_inferred": False,
     }
     if command is not None:
+        # Ubuntu 24.04's util-linux 2.39 rejects --time-format raw. The default
+        # format is already seconds since boot; disable only terminal colors.
+        # Retain the query's numeric outcome without unrelated kernel contents.
+        query = ("sudo", "-n", "dmesg", "--color=never")
+        result["kernel_query"] = list(query)
+        result["kernel_query_start_ns"] = time.monotonic_ns()
         try:
-            raw = command("sudo", "-n", "dmesg", "--time-format", "raw", timeout=10)
+            raw = command(*query, timeout=10)
             result["kernel_query_end_ns"] = time.monotonic_ns()
+            result["kernel_query_returncode"] = 0
             events = kernel_oom_observations(
                 raw, set(handles), earliest_ns, result["kernel_query_end_ns"]
             )
@@ -79,10 +86,14 @@ def process_failure_observation(handles, original, *, command=None, earliest_ns=
             result["kernel_victim_pid_observed"] = bool(events)
             result["kernel_output_sha256"] = hashlib.sha256(raw.encode()).hexdigest()
             result["kernel_clock"] = (
-                "dmesg raw boot timestamp; numeric interval retained"
+                "dmesg default boot timestamp; numeric interval retained"
             )
         except Exception as error:
             result["kernel_observation_error"] = type(error).__name__
+            result["kernel_query_end_ns"] = time.monotonic_ns()
+            returncode = getattr(error, "returncode", None)
+            if type(returncode) is int:
+                result["kernel_query_returncode"] = returncode
     return result
 
 
