@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <fcntl.h>
+#include <utility>
 
 // Read the current inode for every admission, including after atomic epoch
 // rotation. The former ifstream allocated an 8 KiB file buffer for each
@@ -35,9 +36,13 @@ static std::string v08_read_runtime_epoch(const char* path)
     return std::string(bytes, 36);
 }
 
-static void v08_native_request(const nlohmann::json& body)
+// A temporary request already owns every JSON node exclusively. Consume that
+// ownership for the synchronous exchange instead of copying the whole tree
+// before adding the freshly read epoch. Never cache authority or share nodes
+// between calls; captured still unwinds normally on denial or cancellation.
+static inline void v08_native_request(nlohmann::json&& body)
 {
-    nlohmann::json captured = body;
+    nlohmann::json captured = std::move(body);
     const char* epochPath = std::getenv("OPENBEXI_V08_RUNTIME_EPOCH");
     if (epochPath) {
         captured["runtime_epoch"] = v08_read_runtime_epoch(epochPath);
@@ -47,5 +52,12 @@ static void v08_native_request(const nlohmann::json& body)
     if (!path || !agent || std::strlen(path) >= sizeof(sockaddr_un::sun_path))
         throw std::runtime_error("Native admission provider unavailable");
     v08_admission_exchange(path, agent, captured.dump() + "\n");
+}
+
+// Preserve the original const-reference interface and caller-owned lvalues.
+// Const rvalues also take this path: only a mutable JSON rvalue can be consumed.
+static inline void v08_native_request(const nlohmann::json& body)
+{
+    v08_native_request(nlohmann::json(body));
 }
 #endif

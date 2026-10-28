@@ -1192,6 +1192,88 @@ def reuse_native_line_stack(source):
         (source / relative).write_text(text)
 
 
+def own_native_status_snapshots(source):
+    """Keep periodic status and acknowledged status fields independently owned."""
+    relative = "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    path = source / relative
+    text = path.read_text()
+    expected = {
+        "void SPELLserverCif::completeMessage(": "67e9008d1644143c676f494d6eb61d138c495a50998d107884076882e5c9e5cf",
+        "void SPELLserverCif::prepareMessage(": "081c9965ec54682f690db81d95a3a0af8aa5f2ba4231188499f61b317a5c137a",
+        "void SPELLserverCif::specificNotifyStatus(": "f278fedb08bcafd8ed3f9a6dfad9bb1fd7ebb8ff5fc7f198c11f644d77de14ed",
+        "SPELLipcMessage SPELLserverCif::getPingMessage()": "6afed35b3a71d1eaea02ee44335798fa0c8f30ac47273a2e1eed16a9d4f3a05a",
+    }
+    methods = {}
+    for signature, digest in expected.items():
+        if text.count("\n" + signature) != 1:
+            raise ValueError("Native status ownership boundary differs")
+        start = text.index("\n" + signature) + 1
+        method = text[start : text.index("\n}", start) + 2]
+        if hashlib.sha256(method.encode()).hexdigest() != digest:
+            raise ValueError("Native status ownership preimage differs: " + signature)
+        methods[signature] = method
+    header = source / "include/SPELL_CIFS/SPELLserverCif.H"
+    declaration = header.read_text()
+    replacements = {
+        "SPELLipcMessage m_stMessage;": "SPELLipcMessage m_stMessage;\n        std::mutex m_statusMessageMutex;\n        SPELLipcMessage v08StatusSnapshot();\n        void v08PublishStatusSnapshot(const SPELLipcMessage& message);",
+        "unsigned long m_sequence;": "std::atomic<unsigned long> m_sequence;",
+        "unsigned long m_sequenceStack;": "std::atomic<unsigned long> m_sequenceStack;",
+    }
+    if "v08StatusSnapshot" in declaration:
+        raise ValueError("Native status ownership already applied")
+    for before, after in replacements.items():
+        if declaration.count(before) != 1:
+            raise ValueError("Native status ownership declaration differs")
+        declaration = declaration.replace(before, after)
+    original = methods["void SPELLserverCif::completeMessage("]
+    changed = original.replace(
+        "\tmsg.set(MessageField::FIELD_MSG_SEQUENCE, ISTR(m_sequence));\n\tm_sequence++;",
+        "    const auto sequence=m_sequence.fetch_add(1,std::memory_order_relaxed);\n    msg.set(MessageField::FIELD_MSG_SEQUENCE, ISTR(sequence));",
+    ).replace(
+        "\tstd::string& stack = msg.getRef(MessageField::FIELD_CSP);",
+        '    msg.set(MessageField::FIELD_CSP, "");\n\tstd::string& stack = msg.getRef(MessageField::FIELD_CSP);',
+    )
+    text = text.replace(original, changed)
+    original = methods["void SPELLserverCif::prepareMessage("]
+    changed = original.replace(
+        "\tmsg.set( MessageField::FIELD_MSG_SEQUENCE, ISTR( m_sequenceStack ));\n\tm_sequenceStack++;",
+        "    const auto sequence=m_sequenceStack.fetch_add(1,std::memory_order_relaxed);\n    msg.set(MessageField::FIELD_MSG_SEQUENCE, ISTR(sequence));",
+    )
+    text = text.replace(original, changed)
+    original = methods["void SPELLserverCif::specificNotifyStatus("]
+    changed = original.replace(
+        "SPELLipcMessage msg = m_stMessage;",
+        "SPELLipcMessage msg = v08StatusSnapshot();",
+    )
+    text = text.replace(original, changed)
+    original = methods["SPELLipcMessage SPELLserverCif::getPingMessage()"]
+    changed = original.replace(
+        "\t\tSPELLstatusInfo st(controller.getStatus());",
+        "        SPELLipcMessage status=v08StatusSnapshot();\n\t\tSPELLstatusInfo st(controller.getStatus());",
+    ).replace("m_stMessage", "status")
+    changed = changed.replace(
+        "\t\treturn status;",
+        "        v08PublishStatusSnapshot(status);\n\t\treturn status;",
+    )
+    text = text.replace(original, changed)
+    text += """
+// Snapshot publication holds no controller/stack callback, socket operation or
+// acknowledgement wait under this mutex. All transmitted messages own fields.
+SPELLipcMessage SPELLserverCif::v08StatusSnapshot()
+{
+    std::lock_guard<std::mutex> lock(m_statusMessageMutex);
+    return m_stMessage;
+}
+void SPELLserverCif::v08PublishStatusSnapshot(const SPELLipcMessage& message)
+{
+    std::lock_guard<std::mutex> lock(m_statusMessageMutex);
+    m_stMessage=message;
+}
+"""
+    path.write_text(text)
+    header.write_text(declaration)
+
+
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
     message_header = source / "include/SPELL_IPC/SPELLipcMessage.H"
@@ -1676,6 +1758,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     durable_native_asrun(source)
     reuse_native_line_record(source)
     reuse_native_line_stack(source)
+    own_native_status_snapshots(source)
     return before
 
 
