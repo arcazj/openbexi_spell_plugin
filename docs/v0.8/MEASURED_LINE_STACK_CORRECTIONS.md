@@ -1,3 +1,34 @@
+# Dev76 candidate; fresh hosted acceptance pending
+
+This commit renders measured incoming request IDs into the joined processor's
+existing owned identity storage. It preserves the explicit client identity,
+original public return API, class layout/vtable, 32-entry cache and five-worker
+reuse pool. Concurrency, sanitizers, workloads, deadlines, resource accounting,
+acceptance bounds and required audit records are unchanged.
+
+All 226 distinct affected local component checks pass, including original audit,
+LINE/filename, callback cancellation/exit and byte-format regressions. The real
+message renderer measures 10,000 temporary allocations / 1,070,000 bytes through
+the original public return path and zero through owned storage after warm-up.
+The original and new rendered bytes match. The processor regression checks 64
+live distinct identities, 10,000 joined reuse cycles and oversized destruction.
+These measurements do not establish a whole-family pass or explain earlier exits.
+
+Fresh core/native/installed-IDE/lifecycle/audit and original sanitizer-hour
+acceptance must run at this exact executable. The following dev75 checkpoint is
+the last hosted evidence, not acceptance for this code change. All eleven full
+release groups remain open; stable merge/tag/release remain blocked.
+
+Endurance failures now also retain original pidfd exit states and the previous
+successful liveness interval. A bounded, optional kernel-log query records only
+matching original victim PIDs in that interval; unavailability is explicit.
+The original liveness condition and positive workload are unchanged. Observation
+errors preserve the original failure; older unknown victims remain unknown.
+
+[Local source-bound receipt](evidence/owned-request-identity-20261028.json).
+
+---
+
 # Dev75 measured ownership changes; full release unqualified
 
 Parent executable: `8184bde25c58cb8b25a71fd794c38d3e3e1828d6` (dev73).

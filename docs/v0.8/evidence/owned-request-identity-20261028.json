@@ -1,0 +1,130 @@
+{
+  "schema": "openbexi.v08.measured-owned-request-identity/1",
+  "recorded_at": "2026-10-28T07:43:58.152555+00:00",
+  "parent_executable": "53b7e8ac38b4152d1ffbee6c0dfd549ac9b8fd75",
+  "candidate_version": "0.8.0.dev76",
+  "candidate_commit": "See containing Git commit; not self-referentially embedded",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "allocation_site_evidence": {
+    "dev75_source_verified_artifact": 12796708956,
+    "reference_statistics_artifact": 12799016569,
+    "function_chain": [
+      "SPELLipcMessage::requestId",
+      "SPELLipcServerInterfaceSingle::incomingMessage",
+      "SPELLipcInput::dispatch"
+    ],
+    "complete_oom_cause_established": false,
+    "dev75_context_binary_sha256": "e4d3d908480d3e7d614191131384a38eede514c6d8d84a7fe82e36a459b43c03",
+    "mapping_diagnostic_context_binary_sha256": "b324996043fd476af63ca00443c35554edbee351c1724b61bda6b9406fe84429"
+  },
+  "change": "Two server incoming factories render request identity into an exclusively owned joined processor buffer; existing explicit client msgId and original public owned-return API remain unchanged. Base helper has private member access; no class layout/vtable change, cache capacity/concurrency change or added idle buffer. Allocation failure retains one local unique_ptr owner.",
+  "measurement": {
+    "public_owned_return": {
+      "digest": 1469598103934665603,
+      "allocated_bytes": 1070000,
+      "allocations": 10000
+    },
+    "processor_owned_render": {
+      "digest": 13071321235056805384,
+      "allocated_bytes": 0,
+      "allocations": 0
+    },
+    "frozen_original": {
+      "digest": 13071321235056805384,
+      "allocated_bytes": 4580000,
+      "allocations": 50000
+    }
+  },
+  "measurement_scope": "Compiled actual frozen message class and native codec. Existing public return10000allocations/1070000bytes; caller-owned render0/0 after capacity warmup. Frozen renderer and owned-render bytes match. All original request ID Unicode/NUL/empty/signed boundary combinations remain equal. Warm-up is only this component measurement; no samples excluded from mandatory native acceptance.",
+  "ownership_regression": "64 simultaneous live processor IDs remain distinct, then10000 joined reuse cycles, then oversized identity takes normal destruction. Existing callbacks, nested requests, cancellation, pthread exit/cancellation, listener lifetime, overflow and fixed32-entry cache/5-worker pool regressions pass. Worker transport/synchronization adapters bound component scope; hosted whole native acceptance required. Expanded confirmation includes8 simultaneous producer threads with128 derived-identity lifecycles each, preserving each ID before and after its callback.",
+  "local_checks": [
+    {
+      "xml": "request-identity-corrected.xml",
+      "sha256": "93de5e1bea45e2379c2fe5ca6c8c039b8e658bdbe2b9bb17e8e2fbd87f0a872e",
+      "tests": 73,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "xml": "request-identity-cross-components.xml",
+      "sha256": "b492b9e45f6e8e648374ec991d89e4f451201dd52a36cb336374183708d41ba3",
+      "tests": 136,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "xml": "request-identity-parallel.xml",
+      "sha256": "fae806ee27bc26f7daa767fae0cf53d1d6e2ee22ae3401586706acfbc8e69c27",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "xml": "dev76-failure-observation-final.xml",
+      "sha256": "e10bc1ca3f952f81557a66e588ed81fd79cb44fab30625890978b03ff9b96731",
+      "tests": 103,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0
+    }
+  ],
+  "distinct_local_tests": 226,
+  "ruff_check_passed": true,
+  "emitted_message_unit_identical_after_ruff_normalization": true,
+  "emitted_message_unit_sha256": "cd68feda512a94c3a57af2e85092d5611899a65ea81b533e72c21568bb7d5fe4",
+  "source_sha256": {
+    "deploy/v0.8/Dockerfile.server": "91b4d006bd7f2820fa524b1e125729a846f81ce48fb0a175e27043b9055fd222",
+    "deploy/v0.8/compose.yaml": "5e8e35e19fba2fe560ee3ddefea305641c36a00dea725b5fd4e160914651d517",
+    "deploy/v0.8/render_kubernetes.py": "3ebd3b67c3350dbbde06a2982a9ab2b9ea7ad7f241d6d98e5f9ee51869bc1911",
+    "host_runtime/build_admission_context.py": "0e16d06f61e84037aa279c4e152ae31d7a4a789800b5cbbdf9222fab0275e50b",
+    "host_runtime/native/message_instances.H": "a5dc932838f60cc55150077653592a569eb841ff330107cf5acf2fcd5999a67c",
+    "scripts/v08_endurance.py": "a0e5b53430c0b5f73eadfbd616dfa7ce0eaf074efe40bda72db1371e0526a09f",
+    "scripts/v08_memory_experiment.py": "5a915171deaf36d3a2b015180e9afdd206c48c939b9036b08f77c34dd622e8ef",
+    "server/pyproject.toml": "7c449b07d4ad7bea70890673019d93ce65ebf78cc0b05d1f8d4781b54792ad9a",
+    "server/src/openbexi_spell_server/__init__.py": "4f6e521cd941873dd539ea07e4ba86fca4defc852581c56d528f4d34ae753ec8",
+    "server/tests/native_message_harness.cpp": "2fb9fd08208c00ee4504acc00af6ecceced43ca9b7d88780657afbfd25b0b381",
+    "server/tests/native_message_workers.cpp": "389b83b185dbc0812b492e478ea7b2ba041ef77734b2d1a4aa43a5e515e66a17",
+    "server/tests/native_message_workers_adapters.H": "b8f60f0627187e465e528fae7851fed82128c8fe6e3945f300215bab25e5cd28",
+    "server/tests/test_native_message_codec.py": "4f6f8263cb32fd3ad832b234917262c72769bb21120c8648ef8c950606ee40d2",
+    "server/tests/test_native_message_workers.py": "2b7004f96a211544464065efc8223e81c2669eb36d46c80832a903cd8fe0eab1",
+    "server/tests/test_v08_native_profiles.py": "dcf621e1dc7eabab17181696d9648b09fc2ab3677b908e70d1e7dce92680d108"
+  },
+  "original_workload_sanitizers_concurrency_deadlines_accounting_limits_audit_unchanged": true,
+  "sanitizer_retention_purged": false,
+  "required_audit_records_deleted": false,
+  "no_automatic_cause_attribution_to_callback_exit_or_request_ids": true,
+  "failed_attempts_preserved": [
+    {
+      "xml": "request-identity-first.xml",
+      "outcome": "33passed12errors; compile caught attempted access to private base field; fixed with protected base reset helper",
+      "source_level": "uncommitted intermediate attempt, not independently source-verified"
+    },
+    {
+      "xml": "request-identity-final.xml",
+      "log": "request-identity-final.log",
+      "outcome": "45passed27errors1failed; stale generated local Python bytecode retained previous8208 SHA guard while source contained2e84; cache removed and fresh-source checks passed",
+      "source_level": "uncommitted local attempt; not a native runtime acceptance result"
+    }
+  ],
+  "fresh_hosted_core_native_ide_audit_hours_status": "pending",
+  "full_v08_qualified": false,
+  "publication_performed": false,
+  "production_migration_authorized": false,
+  "counts_overlap": true,
+  "endurance_failure_observation": {
+    "script": "scripts/v08_endurance.py",
+    "positive_liveness_condition_unchanged": true,
+    "original_samples_workload_duration_and_limits_unchanged": true,
+    "previous_successful_interval_and_original_pidfd_states_retained": true,
+    "kernel_oom_query_only_after_failure": true,
+    "kernel_events_require_original_pid_and_current_numeric_interval": true,
+    "unrelated_kernel_messages_not_retained": true,
+    "kernel_format_primary_source": "https://github.com/torvalds/linux/blob/v6.11/mm/oom_kill.c",
+    "unavailable_kernel_query_explicit": true,
+    "observation_errors_cannot_replace_original_failure": true,
+    "does_not_explain_historical_unobserved_victims": true
+  }
+}

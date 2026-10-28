@@ -40,6 +40,7 @@ def enable_native_message_moves(text):
     ).replace(
         "\n    void v08DataInto(std::string& result) const;",
         "\n    void v08DataInto(std::string& result) const;"
+        "\n    void v08RequestIdInto(std::string& result) const;"
         "\n    bool v08HasId(const std::string& id) const { return m_id == id; }",
     )
 
@@ -98,6 +99,7 @@ def reuse_native_message_instances(source):
             "    virtual void v08Dispose() { delete this; }\n"
             "protected:\n"
             "    void v08Reset(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);\n"
+            "    void v08ResetDerived(const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);\n"
             "    bool v08Release();\npublic:",
         ),
         (
@@ -107,7 +109,8 @@ def reuse_native_message_instances(source):
         (
             message,
             message + "\n    void v08Dispose() override;\n"
-            "    static SPELLipcIncomingMessage* v08Create(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);",
+            "    static SPELLipcIncomingMessage* v08Create(const std::string&, const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);\n"
+            "    static SPELLipcIncomingMessage* v08Create(const std::string&, const SPELLipcMessage&, SPELLipcInterfaceListener&);",
         ),
     )
     for old, new in replacements:
@@ -130,6 +133,15 @@ def reuse_native_message_instances(source):
         old, "processor->join(); processor->v08Dispose();"
     )
     for relative in list(preimages)[3:6]:
+        # Only the two server factories derive their processor identity from
+        # requestId(). The client retains its existing explicit msgId semantics.
+        if not relative.endswith("SPELLipcClientInterface.C"):
+            old = "std::make_unique<SPELLipcIncomingMessage>( msg.requestId(),"
+            if texts[relative].count(old) != 1:
+                raise ValueError("Native owned request identity boundary differs")
+            texts[relative] = texts[relative].replace(
+                old, "std::make_unique<SPELLipcIncomingMessage>("
+            )
         pattern = r"std::make_unique<SPELLipcIncomingMessage>\(([^;]+)\);"
         texts[relative], count = re.subn(
             pattern,
@@ -200,7 +212,7 @@ def reuse_native_message_workers(source, *, requests=False):
     text = implementation.read_text()
     if (
         sha(header)
-        != "fa57d02391789ec2037b725ccc2f66ec37770047deea95de516a6f5ab7cb54f5"
+        != "2e84c0b8428f6f2c07fb5048cd7c21f50821d90ea106f2661a6aa50426c7a746"
     ):
         raise ValueError("Native message worker header preimage differs")
     # Composition is explicit: the source-port completion guard and the owned
@@ -289,18 +301,24 @@ def optimize_native_request_id(text):
         raise ValueError("Native request ID preimage differs")
     changed = """std::string SPELLipcMessage::requestId() const
 {
+    std::string result;
+    v08RequestIdInto(result);
+    return result;
+}
+
+void SPELLipcMessage::v08RequestIdInto(std::string& result) const
+{
     char key[32], sequence[32];
     const auto keyEnd=std::to_chars(key,key+sizeof(key),m_key).ptr;
     const auto sequenceEnd=std::to_chars(sequence,sequence+sizeof(sequence),m_sequence).ptr;
     const auto keySize=static_cast<size_t>(keyEnd-key);
     const auto sequenceSize=static_cast<size_t>(sequenceEnd-sequence);
-    std::string result;
+    result.clear();
     result.reserve(keySize+m_receiverId.size()+m_senderId.size()+2+
                    (m_sequence!=-1?sequenceSize+1:0));
     result.append(key,keySize);result+='-';result+=m_receiverId;
     result+='-';result+=m_senderId;
     if(m_sequence!=-1){result+=':';result.append(sequence,sequenceSize);}
-    return result;
 }"""
     return "#include <charconv>\n" + text[:start] + changed + text[end:]
 

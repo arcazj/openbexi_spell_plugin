@@ -1,3 +1,5 @@
+Dev76 adds a measured native request-identity ownership change and requires fresh qualification. The exact input reconciliation below remains bound to the last hosted dev75 executable; all 763 current requirements and 57 unresolved historical capture hashes remain open.
+
 # SPELL compatibility matrix — v0.8 qualification record
 
 All 763 original requirement IDs and their four historical evidence dimensions are preserved. This matrix does not promote those historical results to the current v0.8 native candidate. Every row still requires fresh applicable native acceptance at the exact SPELL and IDE identities.

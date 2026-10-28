@@ -2,7 +2,9 @@
 
 import json
 import importlib
+import os
 from pathlib import Path
+import subprocess
 import sys
 from types import SimpleNamespace
 
@@ -17,6 +19,87 @@ cli = importlib.import_module("build_v08_native_profile")
 endurance = importlib.import_module("v08_endurance")
 cohort = importlib.import_module("v08_handoff_cohort")
 Fault = importlib.import_module("openbexi_spell_server.contracts").Fault
+
+
+def test_failure_observation_identifies_a_real_original_pidfd_without_claiming_oom():
+    children = []
+    handles = {}
+    try:
+        for _ in range(8):
+            child = subprocess.Popen([sys.executable, "-c", "import signal;signal.pause()"])
+            children.append(child)
+            handles[child.pid] = os.pidfd_open(child.pid)
+        original = {
+            "Id": "test-container",
+            "State": {"Pid": children[0].pid},
+            "Config": {"Env": ["TEST_SECRET=must_not_be_recorded"]},
+        }
+        before = endurance.process_failure_observation(handles, original)
+        assert before["observed_processes"] == before["expected_processes"] == 8
+        assert not any(row["pidfd_exited"] for row in before["processes"])
+        children[3].terminate()
+        children[3].wait(timeout=5)
+        after = endurance.process_failure_observation(handles, original)
+        assert [row["host_pid"] for row in after["processes"] if row["pidfd_exited"]] == [
+            children[3].pid
+        ]
+        assert after["observation_start_ns"] <= after["observation_end_ns"]
+        assert not after["kernel_victim_pid_observed"] and not after["oom_cause_inferred"]
+        assert "TEST_SECRET" not in json.dumps(after)
+    finally:
+        for fd in handles.values():
+            os.close(fd)
+        for child in children:
+            if child.poll() is None:
+                child.terminate()
+            child.wait(timeout=5)
+
+
+def test_failure_observation_error_preserves_the_original_endurance_failure(tmp_path, monkeypatch):
+    calls = []
+
+    def counters(*_):
+        calls.append(True)
+        if len(calls) == 1:
+            return {"root": 1, "child": 1, "thread": 1}
+        raise RuntimeError("original_failure_must_survive")
+
+    def observation(*_, **__):
+        raise OSError("injected evidence failure")
+
+    monkeypatch.setattr(cohort, "counters", counters)
+    monkeypatch.setattr(endurance, "process_failure_observation", observation)
+    monkeypatch.setattr(endurance.time, "sleep", lambda _: None)
+    with pytest.raises(RuntimeError, match="original_failure_must_survive"):
+        endurance.run_soak(
+            duration=3600,
+            name="container",
+            controller=None,
+            proof={"connection_id": "test"},
+            bob_connection="bob",
+            handoff_call=None,
+            command=None,
+            control=None,
+            handles={},
+            original={},
+            output=tmp_path,
+            await_event=None,
+        )
+    summary = json.loads((tmp_path / "endurance-cycles.json").read_text())
+    assert summary["failure"] == "RuntimeError" and summary["passed"] is False
+    assert summary["process_failure_observation_error"] == "OSError"
+
+
+def test_kernel_observation_rejects_unrelated_old_and_malformed_kill_records():
+    line = "[   10.125000] Memory cgroup out of memory: Killed process 1234 (SPELL-Context) total-vm:999kB, anon-rss:100kB, file-rss:20kB, shmem-rss:2kB, UID:10003 pgtables:8kB oom_score_adj:0"
+    rows = endurance.kernel_oom_observations(line, {1234}, 10 * 10**9, 11 * 10**9)
+    assert len(rows) == 1 and rows[0]["host_pid"] == 1234
+    assert rows[0]["anonymous_rss_bytes"] == 102400
+    assert rows[0]["kernel_boot_ns"] == 10125000000
+    assert not endurance.kernel_oom_observations(line, {5678}, 0, 11 * 10**9)
+    assert not endurance.kernel_oom_observations(line, {1234}, 11 * 10**9, 12 * 10**9)
+    assert not endurance.kernel_oom_observations(line, {1234}, 0, 10 * 10**9)
+    assert not endurance.kernel_oom_observations(line + " SECRET=untrusted", {1234}, 0, 11 * 10**9)
 
 
 def test_controlled_pair_changes_sanitizers_not_optimization():

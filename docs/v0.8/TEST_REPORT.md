@@ -1,3 +1,132 @@
+# Dev76 candidate; fresh hosted acceptance pending
+
+This commit renders measured incoming request IDs into the joined processor's
+existing owned identity storage. It preserves the explicit client identity,
+original public return API, class layout/vtable, 32-entry cache and five-worker
+reuse pool. Concurrency, sanitizers, workloads, deadlines, resource accounting,
+acceptance bounds and required audit records are unchanged.
+
+All 226 distinct affected local component checks pass, including original audit,
+LINE/filename, callback cancellation/exit and byte-format regressions. The real
+message renderer measures 10,000 temporary allocations / 1,070,000 bytes through
+the original public return path and zero through owned storage after warm-up.
+The original and new rendered bytes match. The processor regression checks 64
+live distinct identities, 10,000 joined reuse cycles and oversized destruction.
+These measurements do not establish a whole-family pass or explain earlier exits.
+
+Fresh core/native/installed-IDE/lifecycle/audit and original sanitizer-hour
+acceptance must run at this exact executable. The following dev75 checkpoint is
+the last hosted evidence, not acceptance for this code change. All eleven full
+release groups remain open; stable merge/tag/release remain blocked.
+
+Endurance failures now also retain original pidfd exit states and the previous
+successful liveness interval. A bounded, optional kernel-log query records only
+matching original victim PIDs in that interval; unavailability is explicit.
+The original liveness condition and positive workload are unchanged. Observation
+errors preserve the original failure; older unknown victims remain unknown.
+
+[Local source-bound receipt](evidence/owned-request-identity-20261028.json).
+
+---
+
+# Dev75 hosted checkpoint; full release remains unqualified
+
+SPELL executable: `53b7e8ac38b4152d1ffbee6c0dfd549ac9b8fd75` (0.8.0.dev75).
+Tested PR merge: `ac40bab3194342eb137e3416b9b18764a903bd7c`; identical tree:
+`27a197b39ecafd22b6abbc8320b11ece962ffecb`.
+Paired IDE: `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` (1.2.1.dev5).
+
+All 14 core jobs, 1,616 foundation tests, 95 overlapping fault checks, 241 portable
+tests and all nine lifecycle repetition jobs pass. Counts overlap. The original
+45-second ASan/UBSan/no-swap memory checks pass against the unchanged 64 MiB bound:
+
+| Workload | Growth | Peak | Ordered samples |
+| --- | ---: | ---: | ---: |
+| Native handoff | 44,318,720 bytes (42.27 MiB) | 1,305,194,496 bytes | 48 |
+| Installed IDE recovery | 44,642,304 bytes (42.57 MiB) | 1,312,448,512 bytes | 48 |
+
+Independent verification covers 31 regular archives, 3,172 overlapping source
+bindings and 573 raw audit files. Three installed IDE module hashes and the
+native IDE client hash match the pinned IDE. These remain bounded subsets.
+
+Both original sanitizer hours fail in run 40644298431:
+
+* Handoff artifact 12797338412 contains 491 ordered samples over 1,019.809039681 s.
+  Context host PID 17355 / namespace PID 37 disappears between 1,017.735047316 s
+  and 1,019.809039681 s as the sampled OOM-kill count rises to one.
+* IDE artifact 12798096551 contains 499 ordered samples over 1,035.563428262 s.
+  All eight original processes, including Context host PID 26628 / namespace
+  PID 38, remain in its final sample, which records zero OOM kills. Later Docker
+  state marks OOMKilled=true. Its victim and exit interval are not sampled.
+
+Both containers remain running in their later state; both peak at 2,147,491,840
+bytes. No kernel victim PID record is available. Last complete cohorts contain
+about 2,024 MiB anonymous memory, 2.6–2.8 MiB file/shared memory and 1.875 MiB kernel
+stacks. Native live allocations are roughly 9–10 MiB per Context/Executor while
+allocator heaps retain hundreds of MiB. Exact diagnostic overlays observe ASan
+quarantine retention. The complete resident allocation cause is not established.
+
+Older dev73 hours record zero anonymous huge-page memory; the newer original
+hours reach 1,012 / 992 MiB. This is an observed environment difference, not a
+counterfactual estimate of wasted memory or proof of a source-level cause.
+Diagnostic 8e0fe0ff / run 40647340475 collects numeric mappings, unchanged original
+resource samples and postmeasurement symbols. Its handoff outcome also fails;
+its IDE outcome is pending. Diagnostic collection success cannot qualify runtime.
+
+All 23 / 27 retained audit files verify: 32,695,787 / 31,182,594 bytes. Syntax,
+newline and ordering checks pass. This does not establish execution completeness,
+whole-deployment restore or execution-authority recovery. No required records,
+failed attempts, original samples or uncertain historical tails were removed.
+
+The current native ENOSPC attempt, artifact 12796368711, fails before injection.
+Worker 6 child registration returns context_unavailable / BrokenPipeError after
+3,014 ms of registration RPC; total admission is 3,152 ms and thread CPU is 37 ms,
+below the unchanged 4,000 ms admission deadline. Its cause remains unknown.
+
+Independent diagnostics b51cedb and 4ec2e11 run three and six original cohorts.
+All nine actual native ENOSPC attempts pass. Their 225 member-bind calls correlate
+with server connection phases; neither set records a capacity rejection or client
+I/O failure. Those passes do not explain the earlier broken pipe, historical
+5,382 ms registration, 2,007 ms admission or separate 90-second worker exits.
+Both diagnostic sources, all 675 source bindings and 216 raw audit files verify.
+
+All 12 dev74 comparison/hour overlays verify and fail before execution on the
+full native interface compilation error. Dev75 preserves the original callstack
+interface layout/vtable and provides the original-getter fallback. That failed
+build, unsuccessful local attempts and all earlier failures remain historical
+failures. The hosted foundation passes; the earlier restricted local full
+foundation attempt remains failed and unqualified.
+
+Joint inventory 57b4d64 / run 40644955587 inspects dev73 and the paired IDE, and
+is not promoted packaging. Refreshed offscreen/xcb public-main probes pass with
+the actual project title; baseline startup still fails on missing glib. The
+refreshed base in this run is digest 1151df52..., distinct from the earlier
+8a7c3cd3... diagnostic. Native / baseline IDE / refreshed IDE / refreshed server
+have 932 / 342 / 237 / 161 matches respectively. Unique advisory IDs are
+227 / 146 / 116 / 69; baseline IDE has 145 CVE IDs plus one GHSA. Installed
+notice bytes verify, but PySide6_Essentials and shiboken6 report no installed
+notice members. Unknown licenses, complete vulnerability dispositions and
+independent implemented-system security review remain open.
+
+Fresh compatibility input reconciliation checks all 555 bindings against dev75:
+546 match, nine drift, and all 47 historical reports are unchanged. All 763
+current native requirements remain unqualified; 57 historical capture hashes
+remain unresolved. Portable tests do not replace this acceptance.
+
+All eleven full-release groups remain open. Public native launch, full original
+driver semantics, debugger/browser/WSS/Git integration, full deployed workloads,
+restore/execution-authority recovery and upgrade/rollback still require work.
+The production-like cluster with enforced network policy and an independent
+implemented-system security reviewer remain separate external resources.
+Publication is already authorized once every final-source criterion passes;
+production migration is not authorized. No stable merge, tag or release exists.
+
+[Source-bound receipt](evidence/qualification-53b7e8a-20261028.json).
+
+The following sections preserve earlier checkpoints and failures as history.
+
+---
+
 <!-- dev75-build-correction:start -->
 # Current dev75: full-interface build correction requires fresh qualification
 

@@ -112,6 +112,10 @@ int main(int argc,char** argv) {
             const auto expected=std::to_string(key)+"-"+receiver+"-"+sender+
                 (stored==-1?"":":"+std::to_string(stored));
             require(m.requestId()==expected);record(m.requestId());
+#if V08_CODEC_REUSE
+            std::string owned(1000,'z');m.v08RequestIdInto(owned);
+            require(owned==expected);
+#endif
         }
     } else if(mode=="alloc_request_ids") {
         m.setSender(std::string(48,'s'));m.setReceiver(std::string(48,'r'));
@@ -119,6 +123,25 @@ int main(int argc,char** argv) {
         measuring=true;
         for(int i=0;i<10000;++i){auto value=m.requestId();require(value.size()>96);}
         measuring=false;
+    } else if(mode=="alloc_owned_request_ids") {
+        m.setSender(std::string(48,'s'));m.setReceiver(std::string(48,'r'));
+        m.setSequence(12345);m.setKey(97);
+        std::string value;
+#if V08_CODEC_REUSE
+        m.v08RequestIdInto(value);
+#else
+        value=m.requestId();
+#endif
+        measuring=true;
+        for(int i=0;i<10000;++i){
+#if V08_CODEC_REUSE
+            m.v08RequestIdInto(value);
+#else
+            value=m.requestId();
+#endif
+            require(value.size()>96);
+        }
+        measuring=false;record(value);
     } else if(mode=="wire") {
         for(int i=0;i<256;++i) {
             m.setSequence(i%2 ? -2147483647L : 2147483648L+i);

@@ -284,6 +284,45 @@ int main(int argc,char** argv) {
         for(auto& m:jobs){m->start();m->join();}jobs.clear();assert(v08TestIdle()==32);
 #endif
         std::cout<<"{\"passed\":true}\n";
+    } else if(mode=="derived_identity") {
+#if V08_WORKERS
+        std::vector<MessageOwner> jobs;
+        std::vector<std::string> expected;
+        SPELLipcMessage payload("payload");
+        for(int i=0;i<64;++i) {
+            payload.setSequence(i);expected.push_back(payload.requestId());
+            jobs.emplace_back(SPELLipcIncomingMessage::v08Create("interface",payload,l),dispose);
+        }
+        // All live processors own distinct IDs before any callback starts.
+        for(size_t i=0;i<jobs.size();++i)assert(jobs[i]->getProcessingId()==expected[i]);
+        for(auto& m:jobs){m->start();m->join();}jobs.clear();
+        assert(v08TestIdle()==32);
+        for(int i=0;i<10000;++i) {
+            payload.setSequence(i);
+            MessageOwner m(SPELLipcIncomingMessage::v08Create("interface",payload,l),dispose);
+            assert(m->getProcessingId()==payload.requestId());m->start();m->join();
+        }
+        std::vector<std::thread> producers;
+        for(int producer=0;producer<8;++producer) producers.emplace_back([&,producer] {
+            SPELLipcMessage concurrent("payload");
+            for(int index=0;index<128;++index) {
+                concurrent.setSequence(producer*1000+index);
+                const auto identity=concurrent.requestId();
+                MessageOwner m(SPELLipcIncomingMessage::v08Create("interface",concurrent,l),dispose);
+                assert(m->getProcessingId()==identity);m->start();m->join();
+                assert(m->getProcessingId()==identity);
+            }
+        });
+        for(auto& producer:producers)producer.join();
+        // Oversized derived identities retain ordinary destruction, not a cache.
+        payload.setSender(std::string(4096,'x'));
+        const auto idle=v08TestIdle();
+        MessageOwner m(SPELLipcIncomingMessage::v08Create("interface",payload,l),dispose);
+        assert(m->getProcessingId()==payload.requestId());m->start();m->join();m.reset();
+        assert(v08TestIdle()==idle-1);
+        assert(l.calls==11089);
+#endif
+        std::cout<<"{\"passed\":true}\n";
     } else if(mode=="oversized_identity") {
 #if V08_WORKERS
         MessageOwner m(SPELLipcIncomingMessage::v08Create(std::string(4096,'x'),"interface",SPELLipcMessage("payload"),l),dispose);

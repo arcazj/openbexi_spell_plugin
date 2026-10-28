@@ -50,15 +50,21 @@ public:
 };
 class SPELLipcMessage {
     std::string id;int key=0,sequence=0;
+    std::string sender="sender",receiver="receiver";
 public:
     SPELLipcMessage(std::string value=""):id(std::move(value)){}
     int getKey()const{return key;}
     int getSequence()const{return sequence;}
     std::string getSequenceStr()const{return std::to_string(sequence);}
     std::string getId()const{return id;}
-    std::string getSender()const{return "sender";}
-    std::string getReceiver()const{return "receiver";}
-    void setSender(const std::string&){} void setReceiver(const std::string&){}
+    std::string getSender()const{return sender;}
+    std::string getReceiver()const{return receiver;}
+    void setSender(const std::string& v){sender=v;} void setReceiver(const std::string& v){receiver=v;}
+    void v08RequestIdInto(std::string& value)const {
+        value.clear();value+=std::to_string(key);value+='-';value+=receiver;
+        value+='-';value+=sender;if(sequence!=-1){value+=':';value+=std::to_string(sequence);}
+    }
+    std::string requestId()const{std::string value;v08RequestIdInto(value);return value;}
     void setSequence(int value){sequence=value;}
     void clear(){id.clear();} bool isVoid()const{return id.empty();}
 };

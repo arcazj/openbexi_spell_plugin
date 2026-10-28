@@ -172,6 +172,10 @@ def test_reuses_processors_with_original_dedicated_threads(binaries, tmp_path):
     (tmp_path / "measurement.json").write_text(json.dumps(dict(before=before, after=after)))
 
 
+def test_derived_request_id_remains_owned_through_reuse_concurrency_and_oversize(binaries):
+    assert run(binaries["after"], "derived_identity") == {"passed": True}
+
+
 @pytest.mark.parametrize(
     "mode", ["overflow", "concurrent", "cancel", "requests", "exceptions", "rebind"]
 )

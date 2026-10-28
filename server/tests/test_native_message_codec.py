@@ -220,6 +220,28 @@ def test_native_request_id_retains_one_owned_result_with_fewer_allocations(codec
     assert after["allocated_bytes"] < before["allocated_bytes"] / 2
 
 
+def test_request_id_into_owned_processor_storage_avoids_the_measured_temporary(
+    codec_binaries, tmp_path
+):
+    # The public owned-return path remains available and independently owned.
+    returned = run(codec_binaries["after"], "alloc_request_ids")
+    owned = run(codec_binaries["after"], "alloc_owned_request_ids")
+    assert returned["allocations"] == 10000
+    assert owned["allocations"] == owned["allocated_bytes"] == 0
+    original = run(codec_binaries["before"], "alloc_owned_request_ids")
+    assert original["digest"] == owned["digest"]
+    (tmp_path / "request-id-measurement.json").write_text(
+        json.dumps(
+            {
+                "public_owned_return": returned,
+                "processor_owned_render": owned,
+                "frozen_original": original,
+            },
+            indent=2,
+        )
+    )
+
+
 def test_native_move_transfers_payload_without_allocating(codec_binaries):
     before = run(codec_binaries["before"], "alloc_move")
     after = run(codec_binaries["after"], "alloc_move")

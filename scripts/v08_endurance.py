@@ -1,11 +1,89 @@
 """Bounded original-family endurance exercises, separate from release receipts."""
 
 import json
+import hashlib
 from pathlib import Path
+import re
 import select
 import time
 
 from openbexi_spell_server.contracts import Fault
+
+
+def kernel_oom_observations(raw, original_pids, earliest_ns, latest_ns):
+    """Only original PIDs in this liveness interval; no unrelated kernel logs."""
+    if len(raw) > 8 * 1024 * 1024:
+        raise ValueError("kernel_observation_read_bound_exceeded")
+    pattern = re.compile(
+        r"^\[\s*(\d+)\.(\d{1,9})\]\s+"
+        r"(?:Out of memory|Memory cgroup out of memory): Killed process "
+        r"(\d+) \(([A-Za-z0-9_.-]{1,32})\) total-vm:(\d+)kB, "
+        r"anon-rss:(\d+)kB, file-rss:(\d+)kB, shmem-rss:(\d+)kB, "
+        r"UID:(\d+) pgtables:(\d+)kB oom_score_adj:(-?\d+)$"
+    )
+    events = []
+    for line in raw.splitlines():
+        match = pattern.fullmatch(line)
+        if not match:
+            continue
+        stamp = int(match[1]) * 10**9 + int(match[2].ljust(9, "0"))
+        pid = int(match[3])
+        if pid not in original_pids or not earliest_ns <= stamp <= latest_ns:
+            continue
+        events.append(
+            {
+                "kernel_boot_ns": stamp,
+                "host_pid": pid,
+                "program": match[4],
+                "total_vm_bytes": int(match[5]) * 1024,
+                "anonymous_rss_bytes": int(match[6]) * 1024,
+                "file_rss_bytes": int(match[7]) * 1024,
+                "shared_memory_rss_bytes": int(match[8]) * 1024,
+                "uid": int(match[9]),
+                "pagetable_bytes": int(match[10]) * 1024,
+                "oom_score_adj": int(match[11]),
+                "matched_kernel_line": line,
+            }
+        )
+    return events
+
+
+def process_failure_observation(handles, original, *, command=None, earliest_ns=0):
+    """Observe the already-held original pidfds; never infer identity from PID reuse."""
+    began = time.monotonic_ns()
+    processes = [
+        {"host_pid": pid, "pidfd_exited": bool(select.select([fd], [], [], 0)[0])}
+        for pid, fd in sorted(handles.items())
+    ]
+    result = {
+        "schema": "openbexi.native-endurance-process-failure/1",
+        "observation_start_ns": began,
+        "observation_end_ns": time.monotonic_ns(),
+        "container_id": original["Id"],
+        "original_container_host_pid": original["State"]["Pid"],
+        "expected_processes": 8,
+        "observed_processes": len(handles),
+        "processes": processes,
+        "observations_atomic": False,
+        "kernel_victim_pid_observed": False,
+        "oom_cause_inferred": False,
+    }
+    if command is not None:
+        try:
+            raw = command("sudo", "-n", "dmesg", "--time-format", "raw", timeout=10)
+            result["kernel_query_end_ns"] = time.monotonic_ns()
+            events = kernel_oom_observations(
+                raw, set(handles), earliest_ns, result["kernel_query_end_ns"]
+            )
+            result["kernel_events"] = events
+            result["kernel_victim_pid_observed"] = bool(events)
+            result["kernel_output_sha256"] = hashlib.sha256(raw.encode()).hexdigest()
+            result["kernel_clock"] = (
+                "dmesg raw boot timestamp; numeric interval retained"
+            )
+        except Exception as error:
+            result["kernel_observation_error"] = type(error).__name__
+    return result
 
 
 def latency_summary(values):
@@ -61,6 +139,9 @@ def run_soak(
     extra_transfers = extra_reconnections = 0
     latencies = []
     transitions = []
+    previous_liveness = None
+    liveness_check_started = None
+    observation_error = None
     output = Path(output)
     first = previous = counters(command, name, output)
 
@@ -93,10 +174,16 @@ def run_soak(
             raise RuntimeError("endurance_stale_controller_accepted")
 
     def liveness():
+        nonlocal previous_liveness, liveness_check_started
+        liveness_check_started = time.monotonic_ns()
         if len(handles) != 8 or any(
             select.select([fd], [], [], 0)[0] for fd in handles.values()
         ):
             raise RuntimeError("endurance_original_process_exited")
+        previous_liveness = {
+            "start_ns": liveness_check_started,
+            "end_ns": time.monotonic_ns(),
+        }
 
     def complete_and_resume(
         pending, request, subject, stale, old_subject, expected_epoch
@@ -259,6 +346,24 @@ def run_soak(
             raise RuntimeError("endurance_cycles_incomplete")
     except BaseException as error:
         failure = type(error).__name__
+        try:
+            observation = process_failure_observation(
+                handles,
+                original,
+                command=command,
+                earliest_ns=previous_liveness["start_ns"]
+                if previous_liveness
+                else started,
+            )
+            observation["previous_successful_liveness"] = previous_liveness
+            observation["latest_liveness_check_started_ns"] = liveness_check_started
+            observation["failure_type"] = failure
+            (output / "endurance-process-failure.json").write_text(
+                json.dumps(observation, indent=2) + "\n"
+            )
+        except Exception as evidence_error:
+            # Evidence failure cannot conceal or replace the original failure.
+            observation_error = type(evidence_error).__name__
         raise
     finally:
         # No capabilities, connection IDs or runtime tokens in the public receipt.
@@ -266,6 +371,7 @@ def run_soak(
             schema="openbexi.native-endurance-cycles/1",
             passed=failure is None,
             failure=failure,
+            process_failure_observation_error=observation_error,
             full_v08_qualified=False,
             extra_transfers=extra_transfers,
             extra_reconnections=extra_reconnections,

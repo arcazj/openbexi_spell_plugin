@@ -17,6 +17,19 @@ struct V08MessageInstances {
     }
 };
 V08MessageInstances v08_message_instances;
+
+std::unique_ptr<SPELLipcIncomingMessage> v08_take_message_instance()
+{
+    std::unique_ptr<SPELLipcIncomingMessage> instance;
+    if(v08_message_instances_live.load()) {
+        std::unique_lock<std::mutex> lock(v08_message_instances.mutex,std::try_to_lock);
+        if(lock.owns_lock() && v08_message_instances.used) {
+            auto& slot=v08_message_instances.idle[--v08_message_instances.used];
+            instance.reset(slot);slot=nullptr;
+        }
+    }
+    return instance;
+}
 }
 
 void SPELLipcIncomingBase::v08Reset(const std::string& id, const std::string& ifcName,
@@ -44,21 +57,36 @@ bool SPELLipcIncomingBase::v08Release()
     return bounded;
 }
 
+void SPELLipcIncomingBase::v08ResetDerived(const std::string& ifcName,
+                                          const SPELLipcMessage& message,
+                                          SPELLipcInterfaceListener& listener)
+{
+    message.v08RequestIdInto(m_processingId);
+    v08Reset(m_processingId,ifcName,message,listener);
+}
+
 SPELLipcIncomingMessage* SPELLipcIncomingMessage::v08Create(
     const std::string& id,const std::string& ifcName,const SPELLipcMessage& message,
     SPELLipcInterfaceListener& listener)
 {
-    std::unique_ptr<SPELLipcIncomingMessage> instance;
-    if(v08_message_instances_live.load()) {
-        std::unique_lock<std::mutex> lock(v08_message_instances.mutex,std::try_to_lock);
-        if(lock.owns_lock() && v08_message_instances.used) {
-            auto& slot=v08_message_instances.idle[--v08_message_instances.used];
-            instance.reset(slot);slot=nullptr;
-        }
-    }
+    auto instance=v08_take_message_instance();
     if(!instance)return new SPELLipcIncomingMessage(id,ifcName,message,listener);
     // Exception during reset leaves one local owner, which destroys the object.
     instance->v08Reset(id,ifcName,message,listener);
+    return instance.release();
+}
+
+SPELLipcIncomingMessage* SPELLipcIncomingMessage::v08Create(
+    const std::string& ifcName,const SPELLipcMessage& message,
+    SPELLipcInterfaceListener& listener)
+{
+    auto instance=v08_take_message_instance();
+    if(!instance)return new SPELLipcIncomingMessage(message.requestId(),ifcName,message,listener);
+    // The previous callback has joined and released every message/listener.
+    // Render directly into this exclusive processor's existing identity. The
+    // reset below copies its thread identity and preserves the processing ID;
+    // no borrowed string leaves the factory. Allocation failure has one owner.
+    instance->v08ResetDerived(ifcName,message,listener);
     return instance.release();
 }
 

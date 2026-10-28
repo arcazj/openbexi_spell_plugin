@@ -1,0 +1,274 @@
+{
+  "schema": "openbexi.v08.primary-advisory-review/1",
+  "recorded_at": "2026-10-28T07:15:07.932882+00:00",
+  "subject_spell": "8184bde25c58cb8b25a71fd794c38d3e3e1828d6",
+  "subject_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "collector": "57b4d64fa8105d21c251e37175af2f3a6b6f6142",
+  "run": 40644955587,
+  "inventory_rows": [
+    {
+      "artifact": 12797441098,
+      "scope": "native",
+      "profile": "baseline",
+      "software_inventory_sha256": "4d88c127808f4a7ad104039a13a0fc6b759e62a843dd5a32fe3f33d23ef93c33",
+      "python_reported_version": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
+      "openssl_package_version": "3.5.7-1~deb13u2",
+      "libxml2_package_version": null,
+      "findings_for_selected_ids": [
+        {
+          "id": "CVE-2026-19445",
+          "package": "python",
+          "version": "3.13.15",
+          "artifact_id": "596ea9213bbe4dcf",
+          "severity": "Critical",
+          "fix": {
+            "versions": [
+              "3.10.22",
+              "3.11.17",
+              "3.12.15",
+              "3.13.16",
+              "3.14.8",
+              "3.15.0rc3"
+            ],
+            "state": "fixed",
+            "available": [
+              {
+                "version": "3.10.22",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.11.17",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.12.15",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.13.16",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.14.8",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.15.0rc3",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              }
+            ]
+          },
+          "data_source": "https://nvd.nist.gov/vuln/detail/CVE-2026-19445",
+          "disposition": "UNREVIEWED_BLOCKER"
+        }
+      ]
+    },
+    {
+      "artifact": 12797038448,
+      "scope": "server",
+      "profile": "refresh",
+      "software_inventory_sha256": "34cbc53059f0570868e7e2631262d6fde386737d205ddcc0b61da3e287c872d3",
+      "python_reported_version": "3.13.18 (main, Oct 28 2026, 02:02:09) [GCC 14.2.0]",
+      "openssl_package_version": "3.5.7-1~deb13u3",
+      "libxml2_package_version": null,
+      "findings_for_selected_ids": []
+    },
+    {
+      "artifact": 12796978542,
+      "scope": "ide",
+      "profile": "baseline",
+      "software_inventory_sha256": "4144ab43b25389c5117b729062c52ffee9804a5a5e0b389a193709e3d502e1a9",
+      "python_reported_version": "3.13.14 (main, Jun 24 2026, 02:06:49) [GCC 14.2.0]",
+      "openssl_package_version": "3.5.6-1~deb13u2",
+      "libxml2_package_version": null,
+      "findings_for_selected_ids": [
+        {
+          "id": "CVE-2026-63073",
+          "package": "libssl3t64",
+          "version": "3.5.6-1~deb13u2",
+          "artifact_id": "b53f18d1bacb9feb",
+          "severity": "Critical",
+          "fix": {
+            "versions": [
+              "3.5.7-1~deb13u2"
+            ],
+            "state": "fixed",
+            "available": [
+              {
+                "version": "3.5.7-1~deb13u2",
+                "date": "2026-08-25",
+                "kind": "advisory"
+              }
+            ]
+          },
+          "data_source": "https://security-tracker.debian.org/tracker/CVE-2026-63073",
+          "disposition": "UNREVIEWED_BLOCKER"
+        },
+        {
+          "id": "CVE-2026-63073",
+          "package": "openssl",
+          "version": "3.5.6-1~deb13u2",
+          "artifact_id": "f6113e6cdbf866f3",
+          "severity": "Critical",
+          "fix": {
+            "versions": [
+              "3.5.7-1~deb13u2"
+            ],
+            "state": "fixed",
+            "available": [
+              {
+                "version": "3.5.7-1~deb13u2",
+                "date": "2026-08-25",
+                "kind": "advisory"
+              }
+            ]
+          },
+          "data_source": "https://security-tracker.debian.org/tracker/CVE-2026-63073",
+          "disposition": "UNREVIEWED_BLOCKER"
+        },
+        {
+          "id": "CVE-2026-63073",
+          "package": "openssl-provider-legacy",
+          "version": "3.5.6-1~deb13u2",
+          "artifact_id": "3278b1eea0a38ab7",
+          "severity": "Critical",
+          "fix": {
+            "versions": [
+              "3.5.7-1~deb13u2"
+            ],
+            "state": "fixed",
+            "available": [
+              {
+                "version": "3.5.7-1~deb13u2",
+                "date": "2026-08-25",
+                "kind": "advisory"
+              }
+            ]
+          },
+          "data_source": "https://security-tracker.debian.org/tracker/CVE-2026-63073",
+          "disposition": "UNREVIEWED_BLOCKER"
+        },
+        {
+          "id": "CVE-2026-19445",
+          "package": "python",
+          "version": "3.13.14",
+          "artifact_id": "f39290d66f9af849",
+          "severity": "Critical",
+          "fix": {
+            "versions": [
+              "3.10.22",
+              "3.11.17",
+              "3.12.15",
+              "3.13.16",
+              "3.14.8",
+              "3.15.0rc3"
+            ],
+            "state": "fixed",
+            "available": [
+              {
+                "version": "3.10.22",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.11.17",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.12.15",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.13.16",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.14.8",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              },
+              {
+                "version": "3.15.0rc3",
+                "date": "2026-10-08",
+                "kind": "first-observed"
+              }
+            ]
+          },
+          "data_source": "https://nvd.nist.gov/vuln/detail/CVE-2026-19445",
+          "disposition": "UNREVIEWED_BLOCKER"
+        }
+      ]
+    },
+    {
+      "artifact": 12796339505,
+      "scope": "ide",
+      "profile": "refresh",
+      "software_inventory_sha256": "ec7fc5dcde43433cb8370b6d4aa0bfa19c05d7e295c5ff6855fe4b25139dd28c",
+      "python_reported_version": "3.13.18 (main, Oct 28 2026, 02:02:09) [GCC 14.2.0]",
+      "openssl_package_version": "3.5.7-1~deb13u3",
+      "libxml2_package_version": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+      "findings_for_selected_ids": [
+        {
+          "id": "CVE-2026-6653",
+          "package": "libxml2",
+          "version": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+          "artifact_id": "74e0d2fced48138b",
+          "severity": "Critical",
+          "fix": {
+            "versions": [],
+            "state": "wont-fix"
+          },
+          "data_source": "https://security-tracker.debian.org/tracker/CVE-2026-6653",
+          "disposition": "UNREVIEWED_BLOCKER"
+        }
+      ]
+    }
+  ],
+  "advisories": [
+    {
+      "id": "CVE-2026-19445",
+      "primary_url": "https://www.python.org/downloads/release/python-31316/",
+      "observation": "CPython lists the server SSLContext/sni_callback use-after-free among3.13.16 security fixes. Native inventory reports3.13.15 and baseline IDE3.13.14, both older. Refreshed diagnostic reports3.13.18. Exact final native toolchain rebuild and exposure review are still required.",
+      "accepted_risk": false,
+      "final_candidate_disposition_complete": false
+    },
+    {
+      "id": "CVE-2026-63073",
+      "primary_url": "https://security-tracker.debian.org/tracker/CVE-2026-63073",
+      "observation": "Debian records trixie fixed at3.5.7-1~deb13u2. Native inventory reports that version; refreshed server/IDE report3.5.7-1~deb13u3. Baseline IDE reports older3.5.6-1~deb13u2. This is a per-inventory version comparison, not whole-image or all-CVE clearance.",
+      "accepted_risk": false,
+      "final_candidate_disposition_complete": false
+    },
+    {
+      "id": "CVE-2026-6653",
+      "primary_url": "https://security-tracker.debian.org/tracker/CVE-2026-6653",
+      "observation": "The refreshed IDE ships libxml2 package2.12.7+dfsg+really2.9.14-2.1+deb13u3. Debian labels that exact trixie version vulnerable with no-dsa/minor note. Grype labels the match Critical. Both assessments remain recorded; severity disagreement does not dispose of exploitability or distribution risk.",
+      "accepted_risk": false,
+      "final_candidate_disposition_complete": false
+    },
+    {
+      "id": "Qt_for_Python_notices",
+      "primary_url": "https://doc.qt.io/qtforpython-6/licenses.html",
+      "observation": "Qt documents additional third-party components with separate licenses. Installed PySide6_Essentials/shiboken6 metadata alone does not establish completeness of source, terms, notices or final-distribution compliance. The installed-notice collector reports missing notice members for both distributions; independent review remains required.",
+      "accepted_risk": false,
+      "final_candidate_disposition_complete": false
+    }
+  ],
+  "launcher_byte_binding_file": "supply-chain-review/launcher-byte-binding.json",
+  "launcher_source_license_file": "supply-chain-review/launcher-source-license.txt",
+  "pip_vendor_inventory_gap": "Top-level Python distribution SBOM is not a complete inventory of pip vendored components. Official pip26.2.2 vendor.txt identifies distlib0.4.2 and other vendored dependencies; actual launcher bytes match official distlib0.4.2 tagged binaries. License attribution/notice compatibility still require review.",
+  "all_matches_dispositioned": false,
+  "independent_review_performed": false,
+  "final_candidate_rebuilt": false,
+  "security_qualified": false,
+  "full_v08_qualified": false
+}
