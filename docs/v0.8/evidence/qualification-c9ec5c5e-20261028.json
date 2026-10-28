@@ -1,0 +1,757 @@
+{
+  "schema": "openbexi.v08.qualification-reconciliation/4",
+  "recorded_at": "2026-10-28T10:45:48.733402+00:00",
+  "executable": "c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034",
+  "version": "0.8.0.dev77",
+  "tested_pr_merge": "de3187504b8225e842a69ee3b9947068ace55347",
+  "identical_tree": "990a63c38bb71778e4dfaffd417e4000e7b3dc74",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "paired_ide_version": "1.2.1.dev5",
+  "implementation_receipt": "evidence/owned-bridge-fields-20261028.json",
+  "core": {
+    "run": 40663274387,
+    "bounded_jobs_passed": 14,
+    "foundation_artifact": 12805336077,
+    "foundation_junit": {
+      "tests": 1623,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "fault_checks_overlapping": 95
+  },
+  "lifecycle": {
+    "run": 40663274414,
+    "jobs_passed": 9,
+    "fresh_startup_families": 72,
+    "listener_repetitions": 3,
+    "terminal_repetitions": 3,
+    "terminal_cases_each": 16
+  },
+  "portable": {
+    "run": 40663274434,
+    "tests": 241,
+    "full_763_native_qualified": false
+  },
+  "counts_overlap": true,
+  "mandatory_bounded_memory": {
+    "handoff": {
+      "artifact": 12805550213,
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": true,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [],
+      "samples": 48,
+      "soak_samples": 22,
+      "duration_seconds": 45.541056692,
+      "peak_bytes": 1312235520,
+      "window_growth_bytes": 45858816,
+      "first_window_median_bytes": 1256845312,
+      "last_window_median_bytes": 1302704128
+    },
+    "ide": {
+      "artifact": 12804419306,
+      "schema": "openbexi.native-recovery-resources/1",
+      "passed": true,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "peak_budget_bytes": 1879048192,
+      "maximum_window_growth_bytes": 67108864,
+      "full_v08_qualified": false,
+      "failures": [],
+      "samples": 48,
+      "soak_samples": 22,
+      "duration_seconds": 45.553758377,
+      "peak_bytes": 1319358464,
+      "window_growth_bytes": 41689088,
+      "first_window_median_bytes": 1272029184,
+      "last_window_median_bytes": 1313718272
+    }
+  },
+  "original_sanitizer_hours": {
+    "run": 40663274512,
+    "all_passed": false,
+    "process_exit_analysis": [
+      {
+        "artifact": 12808681280,
+        "source": "c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034",
+        "tested_merge": "de3187504b8225e842a69ee3b9947068ace55347",
+        "tree": "990a63c38bb71778e4dfaffd417e4000e7b3dc74",
+        "scenario": "handoff",
+        "native_error": "RuntimeError: endurance_original_process_exited",
+        "original_samples": 1528,
+        "resource_trace_sha256": "7c34a64ce0792d516241cd9e3b759da4ec33b97b89ab94ce8eb221d6c5dc8737",
+        "observed_span_seconds": 3265.006890096,
+        "exited_original_processes": [
+          {
+            "host_pid": 17851,
+            "start_ticks": 33946,
+            "namespace_pid": 37,
+            "program": "SPELL-Context",
+            "pidfd_exited": true
+          }
+        ],
+        "previous_successful_liveness_elapsed": {
+          "start_ns": 3261.944083195,
+          "end_ns": 3261.944106438
+        },
+        "failed_liveness_check_elapsed_seconds": 3267.001183991,
+        "pidfd_observation_elapsed_seconds": 3267.001231049,
+        "first_sampled_oom_kill": null,
+        "last_sample_memory_events": {
+          "high": 0,
+          "low": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_group_kill": 0,
+          "oom_kill": 0,
+          "sock_throttled": 0
+        },
+        "peak_bytes": 2147471360,
+        "last_complete_memory_stat": {
+          "active_anon": 2122919936,
+          "active_file": 28672,
+          "anon": 2119847936,
+          "anon_thp": 0,
+          "file": 3231744,
+          "file_dirty": 12288,
+          "file_mapped": 0,
+          "file_thp": 0,
+          "file_writeback": 0,
+          "inactive_anon": 0,
+          "inactive_file": 126976,
+          "kernel": 23572480,
+          "kernel_stack": 1982464,
+          "numa_hint_faults": 0,
+          "numa_pages_migrated": 0,
+          "numa_pte_updates": 0,
+          "pagetables": 17444864,
+          "percpu": 2808,
+          "pgactivate": 0,
+          "pgdeactivate": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_proactive": 0,
+          "pgfault": 857764,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "pgmajfault": 0,
+          "pgpromote_success": 0,
+          "pgrefill": 0,
+          "pgscan": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_proactive": 0,
+          "pgsteal": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_proactive": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "sec_pagetables": 0,
+          "shmem": 3104768,
+          "shmem_thp": 0,
+          "slab": 4100648,
+          "slab_reclaimable": 1235240,
+          "slab_unreclaimable": 2865408,
+          "sock": 0,
+          "swapcached": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_collapse_alloc": 0,
+          "thp_fault_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0,
+          "unevictable": 0,
+          "vmalloc": 12288,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_nodereclaim": 0,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "zswap": 0,
+          "zswapped": 0,
+          "zswpin": 0,
+          "zswpout": 0,
+          "zswpwb": 0
+        },
+        "last_allocator": [
+          {
+            "allocated_bytes": 1492155,
+            "free_bytes": 48014016,
+            "heap_bytes": 230629376,
+            "monotonic_ns": 3602444987451,
+            "pid": 84,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 10294358,
+            "free_bytes": 198904486,
+            "heap_bytes": 564146176,
+            "monotonic_ns": 3603882030016,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 1481975,
+            "free_bytes": 4696096,
+            "heap_bytes": 7020544,
+            "monotonic_ns": 3595839413347,
+            "pid": 38,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 9392545,
+            "free_bytes": 87012311,
+            "heap_bytes": 477573120,
+            "monotonic_ns": 3601837693609,
+            "pid": 102,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 9122661,
+            "free_bytes": 145950622,
+            "heap_bytes": 474296320,
+            "monotonic_ns": 3601836947449,
+            "pid": 148,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        ],
+        "later_docker_state": {
+          "state": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": true,
+            "Dead": false,
+            "Pid": 17692,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-28T09:28:06.52633833Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+          },
+          "image": "sha256:3c9a47f1e9525698a7d5a82cbcbe5b3fd5078f4feeb06b07739dcb2d0ebd5737",
+          "memory_limit": 2147483648,
+          "readonly_root": true
+        },
+        "kernel_query_error": "RuntimeError",
+        "direct_kernel_victim_pid_observed": false,
+        "oom_association_inference_only": true,
+        "complete_allocation_cause_established": false,
+        "audit_files": 23,
+        "audit_bytes": 101388487,
+        "audit_validation_passed": true,
+        "audit_incomplete_records": [],
+        "all_original_samples_retained": true,
+        "no_mandatory_acceptance_limit_changed": true,
+        "full_v08_qualified": false
+      },
+      {
+        "artifact": 12808675802,
+        "source": "c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034",
+        "tested_merge": "de3187504b8225e842a69ee3b9947068ace55347",
+        "tree": "990a63c38bb71778e4dfaffd417e4000e7b3dc74",
+        "scenario": "ide",
+        "native_error": "RuntimeError: endurance_original_process_exited",
+        "original_samples": 1560,
+        "resource_trace_sha256": "704f182567899a95eb65c16b91f532d0b339745bdae6163ce6cecc9dca51da14",
+        "observed_span_seconds": 3272.245384271,
+        "exited_original_processes": [
+          {
+            "host_pid": 23753,
+            "start_ticks": 30978,
+            "namespace_pid": 37,
+            "program": "SPELL-Context",
+            "pidfd_exited": true
+          }
+        ],
+        "previous_successful_liveness_elapsed": {
+          "start_ns": 3267.707094302,
+          "end_ns": 3267.707111709
+        },
+        "failed_liveness_check_elapsed_seconds": 3272.74293371,
+        "pidfd_observation_elapsed_seconds": 3272.74297288,
+        "first_sampled_oom_kill": {
+          "sample": 1559,
+          "elapsed_seconds": 3272.245384271,
+          "events": {
+            "high": 0,
+            "low": 0,
+            "max": 401,
+            "oom": 2,
+            "oom_group_kill": 0,
+            "oom_kill": 1,
+            "sock_throttled": 0
+          }
+        },
+        "last_sample_memory_events": {
+          "high": 0,
+          "low": 0,
+          "max": 401,
+          "oom": 2,
+          "oom_group_kill": 0,
+          "oom_kill": 1,
+          "sock_throttled": 0
+        },
+        "peak_bytes": 2147500032,
+        "last_complete_memory_stat": {
+          "active_anon": 2107813888,
+          "active_file": 0,
+          "anon": 2121117696,
+          "anon_thp": 0,
+          "file": 3211264,
+          "file_dirty": 4096,
+          "file_mapped": 0,
+          "file_thp": 0,
+          "file_writeback": 0,
+          "inactive_anon": 16498688,
+          "inactive_file": 16384,
+          "kernel": 22740992,
+          "kernel_stack": 1966080,
+          "numa_hint_faults": 0,
+          "numa_pages_migrated": 0,
+          "numa_pte_updates": 0,
+          "pagetables": 17440768,
+          "percpu": 2808,
+          "pgactivate": 15,
+          "pgdeactivate": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_proactive": 0,
+          "pgfault": 838009,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "pgmajfault": 0,
+          "pgpromote_success": 0,
+          "pgrefill": 10,
+          "pgscan": 84,
+          "pgscan_direct": 84,
+          "pgscan_khugepaged": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_proactive": 0,
+          "pgsteal": 68,
+          "pgsteal_direct": 68,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_proactive": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "sec_pagetables": 0,
+          "shmem": 3194880,
+          "shmem_thp": 0,
+          "slab": 3286520,
+          "slab_reclaimable": 238176,
+          "slab_unreclaimable": 3048344,
+          "sock": 0,
+          "swapcached": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_collapse_alloc": 0,
+          "thp_fault_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0,
+          "unevictable": 0,
+          "vmalloc": 12288,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_nodereclaim": 0,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 2,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "zswap": 0,
+          "zswapped": 0,
+          "zswpin": 0,
+          "zswpout": 0,
+          "zswpwb": 0
+        },
+        "last_allocator": [
+          {
+            "allocated_bytes": 1495959,
+            "free_bytes": 48886912,
+            "heap_bytes": 233185280,
+            "monotonic_ns": 3580467776979,
+            "pid": 79,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 10314743,
+            "free_bytes": 197630223,
+            "heap_bytes": 563294208,
+            "monotonic_ns": 3579648382806,
+            "pid": 37,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 9416563,
+            "free_bytes": 86184003,
+            "heap_bytes": 478097408,
+            "monotonic_ns": 3571550050433,
+            "pid": 97,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 9147000,
+            "free_bytes": 148818036,
+            "heap_bytes": 474361856,
+            "monotonic_ns": 3571549954697,
+            "pid": 143,
+            "role": 1,
+            "unmapped_bytes": 0
+          },
+          {
+            "allocated_bytes": 1481975,
+            "free_bytes": 4647520,
+            "heap_bytes": 6955008,
+            "monotonic_ns": 3581559344790,
+            "pid": 43,
+            "role": 1,
+            "unmapped_bytes": 0
+          }
+        ],
+        "later_docker_state": {
+          "state": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": true,
+            "Dead": false,
+            "Pid": 23623,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-28T09:27:26.753605307Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+          },
+          "image": "sha256:e0329dbe90aac5db526c601bea94591d549cd4a9ad42eb06cd78ab99450d21a4",
+          "memory_limit": 2147483648,
+          "readonly_root": true
+        },
+        "kernel_query_error": "RuntimeError",
+        "direct_kernel_victim_pid_observed": false,
+        "oom_association_inference_only": true,
+        "complete_allocation_cause_established": false,
+        "audit_files": 27,
+        "audit_bytes": 105896851,
+        "audit_validation_passed": true,
+        "audit_incomplete_records": [],
+        "all_original_samples_retained": true,
+        "no_mandatory_acceptance_limit_changed": true,
+        "full_v08_qualified": false
+      }
+    ],
+    "verification": {
+      "path": "ci/verified-dev77-original-hours.json",
+      "sha256": "2c201802ccb751e334197be47ff35bbf2a74bc63c17595e38f846d79c14adf9f"
+    },
+    "kernel_victim_record_available": false,
+    "oom_victim_association_is_inference": true,
+    "complete_resident_allocation_cause_established": false
+  },
+  "actual_native_enospc": {
+    "run": 40663274512,
+    "first_attempt": {
+      "artifact": 12804773176,
+      "passed": false,
+      "injection_reached": false,
+      "error": "RuntimeError: Native worker failed before native-running",
+      "worker_index": 1,
+      "worker_failure": "context_request_denied from /v1/worker/control-report",
+      "actual_http_status_and_fault_code_retained": false,
+      "cause_established": false,
+      "coincident_context_startup_SSLEOF_is_not_causal_evidence": true
+    },
+    "unchanged_rerun": {
+      "artifact": 12809730299,
+      "passed": true,
+      "result": {
+        "passed": true,
+        "write_failure_observed": true,
+        "actual_native_executor": true,
+        "original_executor_exited": true,
+        "explicit_native_audit_errno": 28,
+        "observed_native_failure_stages": [
+          "write"
+        ],
+        "worker_exit_code": 1,
+        "false_completion": false,
+        "holds_retained": 2,
+        "spent_workers": 1,
+        "original_owner_epoch_retained": true,
+        "full_v08_qualified": false,
+        "audit_retention_verified": true
+      },
+      "source_and_raw_ext4_prefix_verification": {
+        "path": "dev77-fault-rerun-ci/verified-all.json",
+        "sha256": "ebcca88b8613634cabcb614adb50d46ead3cc4b67b0b448a6c2a385a2876cd5c"
+      },
+      "explains_first_attempt": false,
+      "workload_flags_limits_deadlines_changed": false
+    },
+    "whole_deployment_restore_or_execution_authority_recovery_qualified": false
+  },
+  "audit_components": {
+    "artifact": 12805435027,
+    "tests": 21,
+    "passed": true,
+    "full_deployment_qualified": false
+  },
+  "regular_evidence": {
+    "archives_digest_and_zip_checked": 31,
+    "reports": 27,
+    "source_bindings_verified_overlapping": 3172,
+    "audit_files_verified_overlapping": 563,
+    "verification": {
+      "path": "dev77-ci/verified-all.json",
+      "sha256": "1bae339c09c81824c99e31efa75a2f092fe35eaaeba3659a541c04aaaf176abf"
+    },
+    "failed_first_native_fault_preserved": true,
+    "ancillary_archives_without_recorded_sources_are_digest_checked_only": true
+  },
+  "exact_source_archive": {
+    "schema": "openbexi.v08.verified-git-source-archive/1",
+    "executable": "c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034",
+    "tree": "990a63c38bb71778e4dfaffd417e4000e7b3dc74",
+    "archive": "qualification-source-dev77.tar.gz",
+    "sha256": "8d273acce1958c4c2ae863d4510983490cf7ab4681a769e83b1d3339275f46a6",
+    "bytes": 39636311,
+    "all_source_blob_ids_verified": 2387,
+    "complete_member_set_verified": true,
+    "all_git_executable_and_symlink_modes_verified": true,
+    "source_archive_only_not_release_package": true,
+    "full_v08_qualified": false
+  },
+  "ide_input_verification": [
+    {
+      "artifact": 12805336077,
+      "report": "ci/12805336077/run-20261028T091926Z-683154cb/result.json",
+      "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+      "ide_input_hashes_verified": 3,
+      "installed_client_profiles_verified": 0,
+      "public_launch_qualified": false,
+      "full_ide_qualified": false
+    },
+    {
+      "artifact": 12804419306,
+      "report": "ci/12804419306/run-99d1c996bbc04dc1ab746627378f7024/result.json",
+      "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+      "ide_input_hashes_verified": 0,
+      "installed_client_profiles_verified": 6,
+      "public_launch_qualified": false,
+      "full_ide_qualified": false
+    },
+    {
+      "artifact": 12808675802,
+      "report": "ci/12808675802/run-4c3f928cce9848f3887652fe294231fe/evidence/result.json",
+      "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+      "ide_input_hashes_verified": 0,
+      "installed_client_profiles_verified": 6,
+      "public_launch_qualified": false,
+      "full_ide_qualified": false
+    },
+    {
+      "artifact": 12808367604,
+      "report": "ci/12808367604/v08-memory-comparison/run-f135b4a5eb4843578809693017b0efdb/evidence/result.json",
+      "ide_commit": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+      "ide_input_hashes_verified": 0,
+      "installed_client_profiles_verified": 6,
+      "public_launch_qualified": false,
+      "full_ide_qualified": false
+    }
+  ],
+  "python_and_sanitizer_accounting": {
+    "analysis": "cc28549d0033df68076211523752a2f5c38e1495",
+    "tree": "f87fb0db3407d4ae75a0ab3dd02545461ddb5e01",
+    "run": 40670896442,
+    "reference_executable": "c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034",
+    "diagnostic_only": true,
+    "promoted": false,
+    "both_collection_jobs_passed": true,
+    "both_underlying_300_second_memory_checks_failed": true,
+    "source_and_combined_overlays_verified": {
+      "path": "ci/verified-dev77-python-accounting.json",
+      "sha256": "49fb61a43032eac44ee39a1656de2933beb76ace73a1c67d0063839cede92bfa"
+    },
+    "timed_memory_ledgers": {
+      "path": "ci/dev77-python-memory-analysis.json",
+      "sha256": "8bfd2c406b9d38e96eeaae29dbf45c79d49bbf9638631131348e2056810c47a0"
+    },
+    "each_original_executor_pymalloc_arenas_first_and_last": 14,
+    "each_observed_executor_live_small_block_growth_less_than_bytes": 524288,
+    "context_python_allocator_observed": false,
+    "remaining_anonymous_mappings_and_complete_cause_unattributed": true,
+    "no_gc_trim_or_sanitizer_purge": true
+  },
+  "actual_context_rpc_observer": {
+    "analysis": "302f2253242cbf5777a229def4c355b9985f4c59",
+    "tree": "d9f661c1e43096752a9e4be6cac7d03b6fbbe3a3",
+    "run": 40669920318,
+    "diagnostic_only": true,
+    "promoted": false,
+    "native_enospc_passes": 3,
+    "positive_context_container_coverages": 15,
+    "source_and_raw_audits": {
+      "path": "rpc-actual-ci/verified-all.json",
+      "sha256": "4531a00702489f137e1b2b6985edc398fb70b11ff8fb136caf1d538883ab2248"
+    },
+    "coverage_and_expected_auxiliary_denials": {
+      "path": "ci/verified-dev77-rpc-observer-coverage.json",
+      "sha256": "3a0d8d25f6ac96292ee7c071523ce7501ceb2d77bd980ec90b1837dccaf1f475"
+    },
+    "historical_unexpected_report_denial_reproduced": false,
+    "historical_failure_explained": false,
+    "earlier_host_observer_placement_ineffective": {
+      "analyses": [
+        "81e3f4a8900db0de4f5786ac665ec6749b9fd6e2",
+        "414bb887f7227e699ea4ffbe24d76c0a1fa5ff25"
+      ],
+      "second_attempt_target_replies": 0,
+      "native_passes_do_not_establish_observation_coverage": true,
+      "second_attempt_source_verification": {
+        "path": "rpc-ineffective-coverage-ci/verified-all.json",
+        "sha256": "28031ded4a7fd652cd0fe678ff98c07532113a73ebdd1995fa16c7963e05ce47"
+      }
+    }
+  },
+  "completed_dev76_followups": {
+    "reference_executable": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+    "accounting_analysis": "1427204201b6427c3906a5ce2e95e4907573200c",
+    "accounting_run": 40659879477,
+    "both_underlying_original_hours_failed": true,
+    "statistics_overlay_verification": {
+      "path": "ci/verified-dev76-sanitizer-accounting.json",
+      "sha256": "b3950cb56efcd472d50c31d84368c0485cca485b2820d62fe78e6e11155633e0"
+    },
+    "process_exit_analysis": {
+      "path": "ci/dev76-statistics-process-exit-analysis.json",
+      "sha256": "ac9c84bae86497a643790c0d8742cf4e379ebfd4b876d9101f4c78e9ca91fcee"
+    },
+    "foundation_observer_expanded": {
+      "path": "ci/verified-dev76-foundation-diagnostic-expanded.json",
+      "sha256": "335be087f27788ec6aa33b6c0beebc627623722f66c3b2b28ef67c666096aafc"
+    },
+    "both_full_observer_runs_1621_passed_and_do_not_explain_initial_failure": true,
+    "all_10_completed_comparison_outcomes_verified": [
+      {
+        "path": "ci/verified-dev76-comparison-initial.json",
+        "sha256": "c94d31541a076d59333343ac40341e8055a137dd4452224b236bf20cb8dcb8fa"
+      },
+      {
+        "path": "ci/verified-dev76-comparison-o2.json",
+        "sha256": "ab89ffcbb303f5d35c18fb910b6e4501702568f05b66748ba79a02e9fc064ed3"
+      },
+      {
+        "path": "ci/verified-dev76-comparison-hours.json",
+        "sha256": "09fac31771fb5419a7aca56b7b3e0d04874518a74e6a444482c362b43339a2cf"
+      }
+    ]
+  },
+  "evidence_only_c451_followup": {
+    "executable": "c4514bea5726752d199078f72fe9f20f9b7d1234",
+    "runtime_identical_to": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+    "core_14_lifecycle_9_portable_241_and_native_enospc_passed": true,
+    "regular_source_verification": {
+      "path": "c451-ci/verified-all.json",
+      "sha256": "c351ce6cfd88b5531863353ce7eae3c537d7b63f2c5becd3b09b89992d9e684d"
+    },
+    "both_original_hours_failed": {
+      "path": "ci/verified-c451-original-hours.json",
+      "sha256": "74ef8187a84bc520f70acac91d6c92132c45a136e159b1f7c63f96a550fdff8c"
+    },
+    "process_exit_analysis": {
+      "path": "ci/c451-process-exit-analysis.json",
+      "sha256": "31f3bf80d2a9d871f652f3e3e3ae7cb906a8eeb0ae3429740b9b92807882312e"
+    },
+    "all_10_comparison_outcomes_verified": {
+      "path": "ci/verified-c451-comparisons.json",
+      "sha256": "e76f796123f4fb60811a6844be35ee8804491c504f45da2b760caa1e6e5851a3"
+    },
+    "both_optimized_300_and_3600_diagnostics_passed_all_six_sanitizer_comparisons_failed": true,
+    "not_new_dev77_acceptance": true
+  },
+  "dev77_optional_comparisons": {
+    "run": 40663274396,
+    "verified_completed": {
+      "path": "ci/verified-dev77-comparison-initial.json",
+      "sha256": "cf5733c2e1b2fa4f82028bfc717b869008aadee4ee235cc563dff8e9fd44afbc"
+    },
+    "verified_sanitizer_300_both_failed_optimized_300_both_passed": true,
+    "remaining": "Sanitizer O2 and optimized hour jobs still running or queued at this snapshot; eventual outcomes require collection and independent overlay verification",
+    "never_substitute_for_original_mandatory_acceptance": true,
+    "verified_swap_completed": {
+      "path": "ci/verified-dev77-comparison-swap.json",
+      "sha256": "5db81dcd1358ff1b519f0c9fce2cac5c01cad1ef31717e5768f1dd462026c3ee"
+    },
+    "verified_completed_scenario_count": 6,
+    "sanitizer_300_second_failures_verified": 4,
+    "optimized_300_second_passes_verified": 2
+  },
+  "compatibility_input_receipt": "evidence/compatibility-inputs-c9ec5c5e-20261028.json",
+  "joint_packaging_and_security": {
+    "receipt": "evidence/joint-primary-advisory-review-20261028.json",
+    "collector": "57b4d64fa8105d21c251e37175af2f3a6b6f6142",
+    "run": 40644955587,
+    "subject_spell": "8184bde25c58cb8b25a71fd794c38d3e3e1828d6",
+    "subject_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+    "corrected_refreshed_offscreen_xcb_probes_passed": true,
+    "baseline_ide_missing_glib_fails": true,
+    "refreshed_packaging_promoted": false,
+    "vulnerabilities_unknown_licenses_and_missing_Qt_notices_unresolved": true,
+    "independent_review_complete": false
+  },
+  "verification_levels": {
+    "digest_checked": "Raw archive SHA-256 and ZIP CRC only unless a named verifier binds recorded source/evidence hashes",
+    "source_verified": "Fresh immutable Git objects and reproduced diagnostic overlays; scope limited to recorded inputs",
+    "complete_source_archive": "All 2387 Git blob IDs, complete members and modes match c9/tree990a",
+    "shipped_system": "Complete final shipped joint image/source/SBOM/license/advisory reconstruction and acceptance remain unqualified"
+  },
+  "mandatory_release_groups_passed": 0,
+  "mandatory_release_groups_total": 11,
+  "external_resources_missing": [
+    {
+      "resource": "Production-like qualification cluster with enforced network policy",
+      "blocks": "Deployed node loss, partitions, admission/isolation, network/storage and upgrade/rollback acceptance"
+    },
+    {
+      "resource": "Independent implemented-system security reviewer",
+      "blocks": "Mandatory independent review of exact final implementation and shipped joint artifacts"
+    }
+  ],
+  "missing_implementation_and_acceptance_separate_from_external_resources": [
+    "Sustained original sanitizer family memory/liveness and unresolved historical registration, admission and worker exits",
+    "All 763 original native compatibility requirements and full driver semantics; 57 historical capture hashes unresolved",
+    "Public native provisioning/launch and complete native debugger",
+    "Authenticated browser/WSS recovery, Git collaboration and complete installed IDE integration",
+    "Full Compose/Kubernetes workloads, whole-deployment restore/execution-authority recovery, upgrade and rollback",
+    "Complete native/OS/Python/IDE/plugin SBOM/license/advisory disposition, stable joint artifacts and final clean-install E2E"
+  ],
+  "historical_failures_preserved": true,
+  "sanitizer_retention_purged": false,
+  "acceptance_limits_changed": false,
+  "fixtures_changed_to_obtain_a_pass": false,
+  "required_audit_records_deleted": false,
+  "full_v08_qualified": false,
+  "stable_merge_performed": false,
+  "stable_tag_created": false,
+  "release_published": false,
+  "production_migration_authorized": false
+}

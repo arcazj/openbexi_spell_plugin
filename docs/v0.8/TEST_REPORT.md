@@ -1,3 +1,91 @@
+# Dev77 executed qualification — release blocked
+
+SPELL `c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034` (0.8.0.dev77), tested PR merge
+`de3187504b8225e842a69ee3b9947068ace55347`, identical tree
+`990a63c38bb71778e4dfaffd417e4000e7b3dc74`; paired IDE
+`c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc` (1.2.1.dev5).
+
+All 14 bounded core jobs pass, including 1,623 foundation tests and 95 overlapping
+fault checks. The 241 portable checks and all nine lifecycle repetition jobs pass.
+The measured bridge-node correction has 147 distinct local regression passes:
+10,000 alternating frozen-message event/reply cycles fall from 220,000 allocations
+and 13,340,000 bytes to zero after component warm-up, with identical output bytes.
+The original workload excludes no samples or audit records and retains its
+sanitizers, concurrency, deadlines, accounting and acceptance limits.
+
+Original mandatory ASan/UBSan/no-swap 45-second acceptance passes: handoff
+45,858,816 bytes (43.73 MiB), installed IDE 41,689,088 bytes (39.76 MiB), against
+the unchanged 64 MiB growth limit. These bounded passes do not establish
+sustained stability. Both original sanitizer hours FAIL in run40663274512.
+Handoff artifact12808681280 retains1,528 ordered samples over3,265.006890096s;
+IDE artifact12808675802 retains1,560 over3,272.245384271s. Original Context
+hostPID17851/ns37 and23753/ns37 respectively have exited pidfds. Handoff has
+no sampled OOM kill; IDE samples OOMkill=1. Later Docker state records
+OOMKilled=true in both. Both kernel queries failed with RuntimeError. No direct
+kernel victim record is available; Context/OOM association remains an inference.
+The complete allocation/exit cause and historical worker-exit causes remain open.
+
+The first actual native full-disk attempt, artifact12804773176, FAILS BEFORE
+INJECTION: worker1 receives context_request_denied from control-report. Its
+original HTTP status/code was not retained. The coincident Context startup
+SSLEOF is not a demonstrated cause. The unchanged rerun, artifact12809730299,
+passes actual native errno28, explicit failure exit1, no false completion and
+retained holds, original epoch and audit prefixes. The21 audit components pass.
+Three diagnostic runs with the observer inside actual Context containers pass,
+with positive coverage in all15 containers and only expected auxiliary denials;
+the unexpected control-report denial was not reproduced. Two earlier host-only
+observers were ineffective (zero target replies), and are preserved as failed
+observation methods. Later passes do not explain the first failure.
+
+Both failed original hours retain complete ordered audits:23 files/101,388,487
+bytes and27/105,896,851 bytes. Source overlays and all raw records verify.
+Audit component and ENOSPC passes do not establish whole-deployment restore,
+execution-authority recovery or long-term deployment capacity.
+
+Read-only Python/ASan diagnosticcc28549d, run40670896442, reproduces the exact
+combined overlay and143 source bindings per scenario. Both collection jobs pass;
+both underlying300-second memory checks FAIL continued growth. The two original
+Executors each stay at14 pymalloc arenas, with less than0.5MiB additional live
+small-block storage each. Global ASan quarantine and primary/shadow resident
+regions grow; other anonymous mappings and Context Python accounting remain
+unattributed. Counters have separate explicit times and cannot be added as a
+coeval resident-memory ledger. No GC, allocator trim, sanitizer purge or limits
+change was used. These diagnostics cannot substitute for mandatory acceptance.
+
+All completed dev76 and evidence-only c451 comparison outcomes have independently
+reproduced overlays: optimized300/3600-second scenarios pass; all six sanitizer
+comparisons fail in each matrix. Both dev76 accounting hours fail, and both c451
+original hours fail. The c451 handoff family has all eight original pidfds exited
+after counter observation loses its bound live container; IDE has Context exited.
+Later full foundation observer passes do not explain dev76's first burst failures
+and600-second timeout. The dev77 optional matrix is still running at this snapshot;
+completed sanitizer300 scenarios fail and optimized300 scenarios pass. Remaining
+outcomes require collection and independent verification before use.
+
+The complete qualification source archive matches all2,387 Git blobs, modes and
+members of tree990a.31 regular archives verify3,172 overlapping recorded source
+bindings and563 raw audit files; the unchanged ENOSPC rerun adds75/24. Ancillary
+archives without recorded source bindings are digest-checked only. Installed IDE
+client/panel/app bindings match pinnedc5; public launch and full IDE acceptance
+remain unqualified. All763 current native requirements remain unqualified:
+555 immutable input bindings yield546match/9drift,47historical reports unchanged,
+and57 historical capture hashes remain unresolved.
+
+All eleven full-release groups remain open. Missing implementation/acceptance
+includes sustained native memory/liveness, full native/driver semantics, public
+launch/debugger, browser/WSS/Git collaboration, complete Compose/Kubernetes fault,
+restore/execution-authority recovery, upgrade/rollback, security disposition and
+final stable joint clean-install E2E. The enforced-network-policy production-like
+qualification cluster and independent implemented-system security reviewer remain
+distinct external resources. Refreshed packaging boot probes inspect older8184/
+IDEc5 and retain findings and missing Qt notices; no refresh is promoted.
+No stable merge, annotated v0.8 tag, GitHub release or production migration occurred.
+
+[Current source-bound receipt](evidence/qualification-c9ec5c5e-20261028.json).
+The following candidate checkpoints are preserved as history.
+
+---
+
 # Dev77 measured bridge ownership correction — fresh acceptance pending
 
 This candidate reuses exclusively owned JSON field and event/reply header nodes
