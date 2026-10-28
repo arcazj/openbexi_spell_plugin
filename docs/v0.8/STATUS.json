@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev76 bounded core14/14 after unchanged foundation rerun,1621 foundation,241 portable and lifecycle9/9 pass. First foundation attempt fails two driver-burst cases and600s deadline; cause unresolved. Original45-second memory passes39.82/40.84MiB and actual native ENOSPC passes. Both original sanitizer hours fail; all11 full-release groups remain open.",
+  "phase": "Dev77 reuses measured alternating bridge field/header nodes with bounded exclusive ownership.147distinct local component tests pass;10000event/replycycles fall from220000allocations/13340000bytes to0aftercomponentwarmup with identical bytes. Fresh hosted acceptance pending. Dev76 original sanitizer hours and initial foundation failure remain failed/unexplained; all11full-release groups remain open.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -126,7 +126,7 @@
   },
   "implementation_started": true,
   "release_published": false,
-  "next_step": "Collect and independently verify remaining dev76 comparisons and exactdev76 accounting/mapping/symbol diagnostics; identify responsible allocation paths and implement only measured fixes with deterministic regressions. Preserve the initial foundation failure and prior registration/admission/worker-exit capture gaps. Finish all mandatory implementation, compatibility, deployment, security and final-install criteria before publication.",
+  "next_step": "Run fresh exactdev77 core/native/installedIDE/lifecycle/actualENOSPC/audit and unchanged original sanitizer hours. Collect and verify exactdev76 accounting diagnostics and completed comparisons, preserving original failedfoundation and historicalregistration/admission/worker-exit gaps. Continue all mandatory implementation, compatibility, deployment and security work; no stable publication with open gates.",
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
   "architecture_resolution": "G1_REVIEW_RESOLUTION.md F1-F10",
@@ -153,13 +153,13 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "Unqualified. Both original Context pidfds exit after about17minutes. Handoff sampledOOMkill rises to1; IDE last sampledOOMkill remains0 and later DockerOOMKilled=true. No direct kernel victim record is available; Context/OOM association is inference. Anonymous resident memory dominates; full allocation cause and historical failures remain unresolved. Current dev76 accounting diagnostic is running.",
+  "release_assessment": "Unqualified dev77 candidate. Component allocation reduction does not establish whole-family improvement or explain every process exit. Full core/native/installedIDE/audit/lifecycle and original sanitizer hours require fresh exact-source acceptance. All prior failures, measurements and capture gaps are preserved.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev76",
+  "package_version": "0.8.0.dev77",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -1077,11 +1077,12 @@
     "all_release_groups_open": true
   },
   "unqualified_candidate": {
-    "source": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
-    "tree": "914a214fe00aa31a5e7774a1fff604d1a5395d09",
-    "version": "0.8.0.dev76",
-    "receipt": "evidence/qualification-3b183138-20261028.json",
-    "fresh_hosted_qualification": "Bounded subsets pass after unchanged foundation rerun; initial foundation failure and both original sanitizer hours remain failed/unexplained",
+    "version": "0.8.0.dev77",
+    "identity": "containing Git commit",
+    "parent_evidence_commit": "c4514bea5726752d199078f72fe9f20f9b7d1234",
+    "last_hosted_executable": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+    "receipt": "evidence/owned-bridge-fields-20261028.json",
+    "fresh_hosted_qualification": "pending",
     "full_v08_qualified": false
   },
   "historical_current_records_before_6dd8218_reconciliation": {
@@ -1515,5 +1516,27 @@
       "mandatory_ide_growth_bytes": 44642304,
       "full_v08_qualified": false
     }
+  },
+  "historical_current_records_before_dev77": {
+    "phase": "Dev76 bounded core14/14 after unchanged foundation rerun,1621 foundation,241 portable and lifecycle9/9 pass. First foundation attempt fails two driver-burst cases and600s deadline; cause unresolved. Original45-second memory passes39.82/40.84MiB and actual native ENOSPC passes. Both original sanitizer hours fail; all11 full-release groups remain open.",
+    "release_assessment": "Unqualified. Both original Context pidfds exit after about17minutes. Handoff sampledOOMkill rises to1; IDE last sampledOOMkill remains0 and later DockerOOMKilled=true. No direct kernel victim record is available; Context/OOM association is inference. Anonymous resident memory dominates; full allocation cause and historical failures remain unresolved. Current dev76 accounting diagnostic is running.",
+    "next_step": "Collect and independently verify remaining dev76 comparisons and exactdev76 accounting/mapping/symbol diagnostics; identify responsible allocation paths and implement only measured fixes with deterministic regressions. Preserve the initial foundation failure and prior registration/admission/worker-exit capture gaps. Finish all mandatory implementation, compatibility, deployment, security and final-install criteria before publication.",
+    "unqualified_candidate": {
+      "source": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+      "tree": "914a214fe00aa31a5e7774a1fff604d1a5395d09",
+      "version": "0.8.0.dev76",
+      "receipt": "evidence/qualification-3b183138-20261028.json",
+      "fresh_hosted_qualification": "Bounded subsets pass after unchanged foundation rerun; initial foundation failure and both original sanitizer hours remain failed/unexplained",
+      "full_v08_qualified": false
+    },
+    "package_version": "0.8.0.dev76"
+  },
+  "owned_bridge_fields_correction": {
+    "receipt": "evidence/owned-bridge-fields-20261028.json",
+    "local_tests": 147,
+    "old_component_allocations": 220000,
+    "new_component_allocations_after_warmup": 0,
+    "same_output_lock_and_process_accounting": true,
+    "whole_family_improvement_established": false
   }
 }

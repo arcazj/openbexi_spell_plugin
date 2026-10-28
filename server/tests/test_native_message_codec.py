@@ -6,6 +6,7 @@ Hosted whole-native recovery remains a separate mandatory acceptance.
 """
 
 import importlib.util
+import hashlib
 import json
 import os
 import re
@@ -26,6 +27,13 @@ spec.loader.exec_module(builder)
 @pytest.fixture(scope="session")
 def codec_binaries(tmp_path_factory):
     folder = tmp_path_factory.mktemp("native-message-codec")
+    # Immutable pre-correction encoder: exact dev76 source, independent of the candidate.
+    assert (
+        hashlib.sha256(
+            (ROOT / "server/tests/native_bridge_frame_before_dev76.H").read_bytes()
+        ).hexdigest()
+        == "8c4280f9e626059c26f8903f449e6ba63ba9619e0922d78131cd11de8a886e2a"
+    )
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
         original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
         output = archive.read("lib/SPELL_IPC/src/SPELLipcOutput.C").decode()
@@ -125,7 +133,14 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
             + bridge[start:end]
             + wrappers
             + '\n#include "'
-            + str(ROOT / "host_runtime/native/bridge_frame.H")
+            + str(
+                ROOT
+                / (
+                    "server/tests/native_bridge_frame_before_dev76.H"
+                    if name == "before"
+                    else "host_runtime/native/bridge_frame.H"
+                )
+            )
             + '"\n'
         )
         text = text.replace(
@@ -307,3 +322,20 @@ def test_alternating_input_layouts_reuse_owned_nodes(codec_binaries):
     after = run(codec_binaries["after"], "alloc_mixed_input")
     assert before["allocations"] >= 200_000
     assert after["allocated_bytes"] == after["allocations"] == 0
+
+
+def test_mixed_bridge_schemas_reuse_owned_nodes_without_stale_fields(codec_binaries, tmp_path):
+    before = run(codec_binaries["before"], "alloc_mixed_frames")
+    after = run(codec_binaries["after"], "alloc_mixed_frames")
+    assert before["digest"] == after["digest"]
+    assert before["allocations"] >= 100000
+    assert after["allocated_bytes"] == after["allocations"] == 0
+    (tmp_path / "mixed-bridge-measurement.json").write_text(
+        json.dumps({"before": before, "after": after}, indent=2) + "\n"
+    )
+
+
+def test_retired_bridge_nodes_preserve_large_and_excess_fields(codec_binaries):
+    before = run(codec_binaries["before"], "bridge_retired_boundaries")
+    after = run(codec_binaries["after"], "bridge_retired_boundaries")
+    assert before["digest"] == after["digest"]

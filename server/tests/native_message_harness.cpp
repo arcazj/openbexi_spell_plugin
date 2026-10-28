@@ -205,6 +205,35 @@ int main(int argc,char** argv) {
         require(encoder.event("message",m)==encodeEvent("message",m).dump(-1,' ',false,Json::error_handler_t::replace));
         encoder.releaseLargeBuffers();
         m.clear();require(encoder.event("message",m)==encodeEvent("message",m).dump(-1,' ',false,Json::error_handler_t::replace));
+    } else if(mode=="alloc_mixed_frames") {
+        SPELLipcMessage line("MSG_NOTIFY"),reply("MSG_ACK");
+        for(auto key:{"ProcId","CodeName","DataType","StageId","StageTitle","MsgSequence","User","Csp","ExecutorStatus"})
+            line.set(key,std::string(64,'x'));
+        reply.set("Ack",std::string(64,'a'));
+        V08BridgeFrame encoder;
+        for(int i=0;i<64;++i){encoder.event("message",line);encoder.reply(7,reply);}
+        measuring=true;
+        for(int i=0;i<10000;++i) {
+            record(encoder.event("message",line));
+            record(encoder.reply(i,reply));
+        }
+        measuring=false;
+        require(encoder.event("message",line)==encodeEvent("message",line).dump(-1,' ',false,Json::error_handler_t::replace));
+        require(encoder.reply(9,reply)==encodeReply(9,reply).dump(-1,' ',false,Json::error_handler_t::replace));
+    } else if(mode=="bridge_retired_boundaries") {
+        V08BridgeFrame encoder;
+        for(auto key:fieldNames) m.set(key,std::string(64,'x'));
+        m.set("not-in-whitelist","private-stale-value");
+        auto emit=[&](const SPELLipcMessage& value) {
+            const auto want=encodeEvent("message",value).dump(-1,' ',false,Json::error_handler_t::replace);
+            const auto& got=encoder.event("message",value);require(got==want);record(got);
+        };
+        emit(m);SPELLipcMessage empty;emit(empty);emit(m);emit(empty);
+        for(const auto length:{size_t(4095),size_t(4096),size_t(4097),size_t(2*1024*1024)}) {
+            m.clear();m.set("VarValue",std::string(length,'z'));emit(m);emit(empty);
+            encoder.releaseLargeBuffers();emit(empty);
+            m.clear();m.set("VarValue",std::string("a\0b\xff",4));m.set("Csp",u8"é中🙂");emit(m);
+        }
     } else if(mode=="duplicates") {
         auto wire=m.data()+m.dataItem("Csp","last")+m.dataItem(MessageField::FIELD_ID,"last-id");
         m.fromData(wire);require(m.getId()=="last-id"&&m.get("Csp")=="last");

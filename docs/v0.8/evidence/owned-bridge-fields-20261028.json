@@ -1,0 +1,107 @@
+{
+  "schema": "openbexi.v08.owned-bridge-field-nodes/1",
+  "recorded_at": "2026-10-28T09:17:23.104944+00:00",
+  "parent_evidence_commit": "c4514bea5726752d199078f72fe9f20f9b7d1234",
+  "last_hosted_executable": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+  "candidate_identity": "containing Git commit",
+  "version": "0.8.0.dev77",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "measured_path": {
+    "source_statistics_artifact": 12800615016,
+    "reference_executable": "53b7e8ac38b4152d1ffbee6c0dfd549ac9b8fd75",
+    "reference_analysis": "8e0fe0ff840ac98df0b5551204dafa67312700a1",
+    "exact_bridge_binary_sha256": "43afaf6da1dbcff7839341bd3f1a46629ddeb1cfa2239144d5abff2be672611f",
+    "allocation_functions": [
+      "V08BridgeFrame::message",
+      "V08BridgeFrame::text",
+      "V08BridgeFrame::reply",
+      "emitFrame",
+      "Peer::processMessage",
+      "OrderedClient::incomingMessage"
+    ],
+    "binding_receipt": "ci/dev75-bridge-allocation-bindings.json",
+    "binding_receipt_sha256": "19f91d19a812beb38841e55b74863c83820ff70dd34bd72053efb8f8b0ad0f6d",
+    "frame_source_identical_between_dev75_and_dev76": true,
+    "whole_resident_growth_or_earlier_exit_cause_established": false
+  },
+  "change": "Move absent whitelisted field nodes and event/seq/ok header nodes into encoder-owned inactive maps. Reinsert only keys present in the current source message; overwrite values before rendering. Existing outputMutex owns all encoder use. No shared message mutation, acknowledgement change, schema/key-order/UTF-8 policy change or detached callback ownership change.",
+  "bounds": {
+    "inactive_field_nodes_maximum": 64,
+    "inactive_field_value_capacity_maximum_bytes": 4096,
+    "inactive_field_key_capacity_maximum_bytes": 128,
+    "inactive_header_keys": [
+      "event",
+      "seq",
+      "ok"
+    ],
+    "excess_and_large_nodes": "normal destruction; all current fields still serialize regardless of idle-cache bounds",
+    "existing_output_buffer_large_release_threshold_bytes": 1048576,
+    "large_release_clears_all_inactive_nodes": true,
+    "same_process_accounting": true
+  },
+  "component_measurement": {
+    "cycles": 10000,
+    "each_cycle": "one nine-field event then one one-field reply, after64warmupcycles only in this isolated component benchmark",
+    "frozen_before_encoder_commit": "3b18313899ebe07d84b8e98b86c8f9b5020c3263",
+    "frozen_before_encoder_sha256": "8c4280f9e626059c26f8903f449e6ba63ba9619e0922d78131cd11de8a886e2a",
+    "before": {
+      "digest": 3443493926643918723,
+      "allocated_bytes": 13340000,
+      "allocations": 220000
+    },
+    "after": {
+      "digest": 3443493926643918723,
+      "allocated_bytes": 0,
+      "allocations": 0
+    },
+    "mandatory_workload_samples_excluded": 0,
+    "does_not_establish_whole_family_memory_pass": true
+  },
+  "local_regressions": [
+    {
+      "path": "bridge-mixed-node-final.xml",
+      "sha256": "2faaffff904c25dbb04b76b3c8fd0b725ff6b75bba55578cdfb51df46e84fca3",
+      "tests": 25,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "path": "bridge-node-cross-components.xml",
+      "sha256": "e8102e11d52c9af184260caf9d4e06f4a0627069b1a01b0b3c111b75a043e695",
+      "tests": 122,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  ],
+  "distinct_local_tests": 147,
+  "regression_scope": [
+    "Exact frozen encoder byte equality for alternating events/replies and absent fields",
+    "All whitelisted fields, excess inactive-cache keys, invalid UTF-8 replacement, Unicode and embedded NUL",
+    "4095/4096/4097-byte and2MiB values, stale-field exclusion and large-buffer release",
+    "Original message/codec/request identity ownership, callback cancellation/exit, audit and memory-overlay regressions"
+  ],
+  "ruff_passed": true,
+  "source_sha256": {
+    ".github/workflows/v08-audit-storage.yml": "63b4807fdc64b3dc02a0b601ebcca7ac14c3f4fb4f749ebc02eabf17dedcd797",
+    "deploy/v0.8/Dockerfile.server": "e2058d2d9b2b9fe7df9c1a4ca3d2a55f8cbdc044a0e749de8e223b8e28204e21",
+    "deploy/v0.8/compose.yaml": "d3f8f994464d1de090fe51cac4d635e970736feaab6ac816ad17880eaa09b218",
+    "deploy/v0.8/render_kubernetes.py": "13988c5b4464d0b3dde03ef38024b9771fe9542e5aae7405bb5d62c0f4d2960f",
+    "host_runtime/native/bridge_frame.H": "d5f4a57d19e01d3884fd014ecd12ac50b1328641777b74da1dbfbf19d72d2660",
+    "server/pyproject.toml": "0c678b211a8126c2cafff4b603e1a12d14e543fb494232a67a46501d6ef58182",
+    "server/src/openbexi_spell_server/__init__.py": "d62d671536453646c91a6305dd75e2e09d053e14f29303815a8be6d19f9bd65a",
+    "server/tests/native_message_harness.cpp": "94308e994b36e6b45065f1c1cc8a946be3f2f9ac9d20656cdc82928510fc8440",
+    "server/tests/test_native_message_codec.py": "9bad8f9751cc8e6b13610e4effdc07e065e2a11c7ac462077954d4e20b8c51ef",
+    "server/tests/native_bridge_frame_before_dev76.H": "8c4280f9e626059c26f8903f449e6ba63ba9619e0922d78131cd11de8a886e2a"
+  },
+  "native_audit_ci_trigger_includes_bridge_encoder": true,
+  "fresh_hosted_core_native_ide_audit_and_original_hours": "pending at containing exact commit",
+  "original_workloads_sanitizers_concurrency_deadlines_accounting_and_acceptance_limits_unchanged": true,
+  "required_audit_records_deleted": false,
+  "sanitizer_retention_purged": false,
+  "historical_failures_preserved": true,
+  "full_v08_qualified": false,
+  "release_published": false,
+  "production_migration_authorized": false
+}

@@ -1,3 +1,30 @@
+# Dev77 measured bridge ownership correction — fresh acceptance pending
+
+This candidate reuses exclusively owned JSON field and event/reply header nodes
+which the exact prior bridge trace shows being repeatedly recreated. Absent
+fields remain detached from the rendered object; only current whitelisted fields
+are reinserted and overwritten. The inactive field cache retains at most 64 nodes,
+each with value capacity at most 4 KiB and key capacity at most 128 bytes. Large
+and excess nodes follow normal destruction. The existing output mutex, JSON
+serializer, ordering/escaping, acknowledgements and large-buffer release remain.
+
+147 distinct local component tests pass. In the real frozen-message component,
+10,000 alternating event/reply cycles measure 220,000 allocations/13,340,000 bytes
+with the exact dev76 encoder and zero after warm-up with this correction. Output
+digests match. Tests cover every whitelisted field, absent/stale and excess fields,
+Unicode/NUL/invalid UTF-8, 4 KiB boundaries, 2 MiB payloads, callback exit/cancellation,
+audit and diagnostic overlays. Warm-up applies only to this component benchmark;
+no mandatory native samples, fixtures, limits or audit records are excluded.
+
+These measurements do not establish a whole-family improvement or the cause of
+all earlier exits. Fresh exact-source core/native/installed-IDE/lifecycle/audit and
+original sanitizer-hour acceptance is required. All eleven full-release groups
+remain open. The following dev76 checkpoint is historical hosted evidence.
+
+[Current local source-bound receipt](evidence/owned-bridge-fields-20261028.json).
+
+---
+
 # Dev76 executed qualification checkpoint — release remains blocked
 
 SPELL `3b18313899ebe07d84b8e98b86c8f9b5020c3263` (0.8.0.dev76), tested merge
