@@ -16,7 +16,24 @@ static void freed(const volatile void*){}
 extern "C" int __sanitizer_install_malloc_and_free_hooks(void(*)(const volatile void*,size_t),void(*)(const volatile void*));
 #define ISTR(n) std::to_string(n)
 using SPELLmonitor=std::lock_guard<std::recursive_mutex>;
-struct SPELLcallstack {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+#include "SPELL_EXC/SPELLcallstackIF.H"
+struct StackAdapter:SPELLcallstackIF {
+    void reset() override {}
+    unsigned getCurrentLine() override {return 0;}
+    const std::string getCodeName() override {return {};}
+    void stepOver(const SPELLstepOverMode&) override {}
+    void setStage(const std::string&,const std::string&) override {}
+    const std::string getStage() override {return {};}
+    const void skipCurrentLine() override {}
+    const bool isSteppingOver() override {return false;}
+    void setRecoveryMode() override {}
+    void moveToLevel(unsigned) override {}
+    void enableNotifications(bool) override {}
+};
+#pragma GCC diagnostic pop
+struct SPELLcallstack:StackAdapter {
     std::recursive_mutex m_lock;
     std::string m_stack,m_fullStackString;
     const std::string getStack();const std::string getFullStack();
@@ -25,7 +42,7 @@ struct SPELLcallstack {
 struct SPELLexecutor {
     SPELLcallstack stack;
     static SPELLexecutor& instance(){static SPELLexecutor value;return value;}
-    SPELLcallstack& getCallstack(){return stack;}
+    SPELLcallstackIF& getCallstack(){return stack;}
 };
 struct Audit {
     FILE* file;
@@ -71,7 +88,16 @@ int main(int argc,char**argv){
     nestedStorage();std::vector<std::thread> threads;
     for(int i=0;i<8;++i)threads.emplace_back(nestedStorage);
     for(auto& thread:threads)thread.join();
-    auto& stack=SPELLexecutor::instance().getCallstack();
+    auto& stack=SPELLexecutor::instance().stack;
+#if V08_STACK_REUSE
+    struct OtherStack:StackAdapter {
+        const std::string getStack() override {return "alternate-stack";}
+        const std::string getFullStack() override {return "alternate-full-stack";}
+    } other;
+    std::string copied;
+    v08CopyCallstackSnapshot(other,copied,false);assert(copied=="alternate-stack");
+    v08CopyCallstackSnapshot(other,copied,true);assert(copied=="alternate-full-stack");
+#endif
     const std::string a="long-procedure-identifier-root#1:00001",b="long-procedure-identifier-root#1:00002";
     Audit audit(argv[1]);SPELLserverCif cif;cif.m_asRun=&audit;SPELLipcMessage message;
     stack.m_stack=a;stack.m_fullStackString.clear();cif.notifyLine();cif.notifyLine();assert(cif.notifications==1);

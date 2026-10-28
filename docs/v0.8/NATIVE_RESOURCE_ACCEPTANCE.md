@@ -1,3 +1,24 @@
+<!-- dev75-build-correction:start -->
+# Current dev75: full-interface build correction requires fresh qualification
+
+Dev74 executable `72b546b1b948f1b01850b8c0ab37c298c6f6ac4a`, tested merge
+`d3f7c6bff0bda0b963382e1885470b9ac32cef01`, fails full native compilation:
+CIF accesses `SPELLcallstackIF`; the new concrete helpers were absent there.
+Allocation artifact12797015866 and sanitizer-hour artifacts12796402169 /
+12795809505 retain the build logs. Neither hour executes a memory workload.
+Earlier component passes did not cover this interface boundary.
+
+Dev75 uses a free adapter declared alongside the unchanged real interface.
+Known concrete callstacks copy under their existing lock; other implementations
+use their original virtual getters. Original class layouts and vtables remain
+unchanged. The regression now compiles actual methods through the actual
+frozen/candidate interface and tests an alternate implementation.109 affected
+interface/filename/memory-overlay components pass locally, with unchanged
+sanitizers and oracle. Fresh whole-native mandatory and sustained results are
+required at the exact new source. All earlier failures and all eleven open
+full-release groups remain. No stable merge, tag or release.
+<!-- dev75-build-correction:end -->
+
 <!-- dev74-resume:start -->
 # Current qualification: dev73 evidence reconciled, dev74 changes pending
 

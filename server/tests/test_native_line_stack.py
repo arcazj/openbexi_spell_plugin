@@ -19,6 +19,7 @@ METHODS = {
         "const std::string SPELLcallstack::getFullStack()",
         "void SPELLcallstack::v08StackInto(",
         "void SPELLcallstack::v08FullStackInto(",
+        "void v08CopyCallstackSnapshot(",
     ],
     "lib/SPELL_CIF/src/SPELLcif.C": [
         "std::string SPELLcif::getAvailableStack()",
@@ -69,11 +70,27 @@ def test_exact_methods_preserve_bytes_reentrancy_and_reduce_allocations(
             text = (tree / relative).read_text()
             for signature in signatures:
                 if signature not in text:
-                    assert name == "before" and "::v08" in signature
+                    assert name == "before" and (
+                        "::v08" in signature or signature.startswith("void v08")
+                    )
                     continue
                 start = text.index(signature)
                 methods.append(text[start : text.index("\n}", start) + 2])
         (tmp_path / "line_methods.inc").write_text("\n".join(methods))
+        # Compile through the actual frozen/candidate interface. Transport and
+        # unused dispatch-listener methods remain explicit component adapters.
+        for directory in ["SPELL_EXC", "SPELL_UTIL"]:
+            (tmp_path / directory).mkdir(exist_ok=True)
+        shutil.copyfile(
+            tree / "include/SPELL_EXC/SPELLcallstackIF.H", tmp_path / "SPELL_EXC/SPELLcallstackIF.H"
+        )
+        (tmp_path / "SPELL_EXC/SPELLdispatchListener.H").write_text(
+            "#pragma once\nstruct SPELLdispatchListener {};\n"
+        )
+        (tmp_path / "SPELL_EXC/SPELLstepOverMode.H").write_text(
+            "#pragma once\nstruct SPELLstepOverMode {};\n"
+        )
+        (tmp_path / "SPELL_UTIL/SPELLbase.H").write_text("#pragma once\n#include <string>\n")
         binary = tmp_path / name
         built = subprocess.run(
             [
@@ -91,6 +108,7 @@ def test_exact_methods_preserve_bytes_reentrancy_and_reduce_allocations(
                 "-no-pie",
                 "-I" + str(tmp_path),
                 "-I" + str(ROOT / "host_runtime/native"),
+                "-DV08_STACK_REUSE=" + str(int(name == "after")),
                 str(ROOT / "server/tests/native_line_stack.cpp"),
                 "-o",
                 str(binary),

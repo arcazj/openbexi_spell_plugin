@@ -1,21 +1,21 @@
 {
   "schema": "openbexi.v08.measured-line-stack-corrections/1",
-  "candidate_parent": "8184bde25c58cb8b25a71fd794c38d3e3e1828d6",
-  "candidate_version": "0.8.0.dev74",
+  "candidate_parent": "72b546b1b948f1b01850b8c0ab37c298c6f6ac4a",
+  "candidate_version": "0.8.0.dev75",
   "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
   "source_sha256": {
-    "host_runtime/build_admission_context.py": "df9f2856fe92771836a858d8b63ad4a2206f0433f50bc81d10bd5644c266ae2f",
+    "host_runtime/build_admission_context.py": "65f380f96f6e6e36057f84979f48bde5c88a546f06739e38dfd41c6db95c59cb",
     "host_runtime/native/frame_filename.H": "127308009c405bf135ab910d90a49ffe3fbe5755f9f13d209e06acb9b0656700",
     "host_runtime/native/line_stack.H": "e28577c2706f0cb08ad303dd13941628822a3fb761f943c3f44bd36e66c1f5d3",
     "server/tests/native_frame_filename.cpp": "01221ac440ce1010e635d9e6794d17133b2e5a65bd22242fc53d41fce7f8dcd9",
-    "server/tests/native_line_stack.cpp": "a3b8e39598cf9b3ceeb195bfb21aae235e4629cdbaf084a1542728c85730d63e",
-    "server/tests/test_native_line_stack.py": "f9dafb60e073d725fdee224c031aae610c235ca517782f1a5ba0fa93af0e8c89",
-    "scripts/v08_memory_experiment.py": "fea851b1570c8a1ab3eaf79042bd4e0aeda95eb2923d600c2d3eacc61e1e4452",
-    "server/pyproject.toml": "65cb97f19bbe87ca1343d72294c4ee1c5459d096e5865d12563e12e1c653e30b",
-    "server/src/openbexi_spell_server/__init__.py": "54048b6e923f7ef6d91790f674f47b6d75ff67c6e8e9179a29500f05f416f388",
-    "deploy/v0.8/compose.yaml": "d0766b10e083df1f678a85431b644cbfdb84c1ad92f521a4a40e4e7b9ced07e6",
-    "deploy/v0.8/Dockerfile.server": "715bacb4c16ac74316691eaf5ad173a39d3457f4fc61d889ef4907857e60ba8e",
-    "deploy/v0.8/render_kubernetes.py": "edc8b27f4fd271ce875bb230036641d32b95f65e1b1d30141a3eaa4fc25ba370"
+    "server/tests/native_line_stack.cpp": "f8077304874c98b5c5e90540be4b51becd4c01dfe31b792bc48473ad4dc1636c",
+    "server/tests/test_native_line_stack.py": "c6a6a8272ccf0846f50f02857deee495706f23fcc2df3d86162033b2a8ac499a",
+    "scripts/v08_memory_experiment.py": "41a8b35994f47c041af37530b4db1b1b80f976257cef28ff3c6ff3b22d544887",
+    "server/pyproject.toml": "2cb4a01591809899a9e25288896326dc9d560a24b148d5c98775af37fdfaeec8",
+    "server/src/openbexi_spell_server/__init__.py": "a75af7ecdc88b6cdcd9b36876fc0084a6e0bdadc0750171cbe3da55a0aa41856",
+    "deploy/v0.8/compose.yaml": "41d9b6d3ef51e442e126f01e78bce2b44eb79a3109d6de0c4fe87b9cd3243cc7",
+    "deploy/v0.8/Dockerfile.server": "c8e28a2b5fe65c222959d73580662f0d174145635b6715311d3fdd2c5b540e4a",
+    "deploy/v0.8/render_kubernetes.py": "3d76de2e54190212832c6e06988201736cabfce030af55ad60b0d13c12ba27bf"
   },
   "measured_paths": "Actual dev73 allocation profiles identify SPELLexecutorImpl::dispatch, getFullStack, getAvailableStack, SPELLcif::notifyLine and SPELLserverCif::completeMessage. Counts are samples, not a complete attribution of sustained growth.",
   "native_profile_artifact": 12777243975,
@@ -65,5 +65,9 @@
   "required_records_deleted": false,
   "hosted_qualification": "pending",
   "full_v08_qualified": false,
-  "published": false
+  "published": false,
+  "interface_correction_components": 109,
+  "dev74_native_compile_failure_preserved": true,
+  "interface_layout_and_vtable_unchanged": true,
+  "alternate_interface_implementation_fallback_tested": true
 }

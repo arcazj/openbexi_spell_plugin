@@ -1065,6 +1065,22 @@ def reuse_native_line_stack(source):
                 raise ValueError("Native line-stack declaration differs")
             text = text.replace(anchor, anchor + "\n        " + declaration)
         texts[relative] = text
+    interface = "include/SPELL_EXC/SPELLcallstackIF.H"
+    original_interface = (source / interface).read_text()
+    if hashlib.sha256(original_interface.encode()).hexdigest() != (
+        "7603b3307e4ef63ad6d414d69c256420ae23b14483d2d32dd9f6642e7d6f6b1a"
+    ):
+        raise ValueError("Native line-stack interface preimage differs")
+    anchor = "};\n\n/*@}*/"
+    if original_interface.count(anchor) != 1:
+        raise ValueError("Native line-stack interface boundary differs")
+    # A free adapter preserves the original interface layout and vtable. Known
+    # rebuilt callstacks copy under their existing lock; other implementations
+    # retain their original virtual-getter semantics and ordinary ownership.
+    texts[interface] = original_interface.replace(
+        anchor,
+        "};\n\nvoid v08CopyCallstackSnapshot(SPELLcallstackIF& source, std::string& output, bool full);\n\n/*@}*/",
+    )
     relative = "lib/SPELL_EXC/src/SPELLcallstack.C"
     for getter, name, member in (
         ("getStack", "v08StackInto", "m_stack"),
@@ -1082,6 +1098,12 @@ def reuse_native_line_stack(source):
             + member
             + ");\n}",
         )
+    texts[relative] += (
+        "\nvoid v08CopyCallstackSnapshot(SPELLcallstackIF& source, std::string& output, bool full)\n{\n"
+        "    if(auto* concrete=dynamic_cast<SPELLcallstack*>(&source)) {\n"
+        "        if(full) concrete->v08FullStackInto(output); else concrete->v08StackInto(output);\n"
+        "    } else output=full?source.getFullStack():source.getStack();\n}\n"
+    )
     relative = "lib/SPELL_CIF/src/SPELLcif.C"
     original = originals["std::string SPELLcif::getAvailableStack()"]
     texts[relative] = texts[relative].replace(
@@ -1090,8 +1112,8 @@ def reuse_native_line_stack(source):
         + "\n\n"
         + "void SPELLcif::v08AvailableStackInto(std::string& output)\n{\n"
         + "    auto& stack=SPELLexecutor::instance().getCallstack();\n"
-        + "    stack.v08FullStackInto(output);\n"
-        + "    if(output.empty()) stack.v08StackInto(output);\n}",
+        + "    v08CopyCallstackSnapshot(stack, output, true);\n"
+        + "    if(output.empty()) v08CopyCallstackSnapshot(stack, output, false);\n}",
     )
     original = originals["void  SPELLcif::notifyLine()"]
     changed = original.replace(

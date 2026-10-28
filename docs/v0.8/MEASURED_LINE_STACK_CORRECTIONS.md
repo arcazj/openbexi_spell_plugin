@@ -1,4 +1,4 @@
-# Dev74 measured ownership changes; full release unqualified
+# Dev75 measured ownership changes; full release unqualified
 
 Parent executable: `8184bde25c58cb8b25a71fd794c38d3e3e1828d6` (dev73).
 Paired IDE: `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`.
@@ -23,7 +23,9 @@ storage. LINE notifications use eight exclusive scope-owned scratch slots with
 ordinary local fallback. Existing duplicate suppression, recursive locking,
 sequence/notification order, timestamp formatting and durable writer remain.
 CSP metadata is assembled in the message's existing owned field. Original
-public getters remain unchanged; the new helpers are nonvirtual.
+public getters remain unchanged. A free adapter preserves the original
+callstack interface layout and vtable and falls back to the original getters
+for other implementations.
 
 Compiled actual old/new native methods execute10,000 LINE and10,000 CSP calls.
 Each path falls from30,000 allocations/1,580,000 bytes to zero after warm-up.
@@ -48,3 +50,8 @@ See [source-bound local receipt](evidence/measured-line-stack-corrections-202610
 and [verified dev73 checkpoint](evidence/qualification-8184bde-20261027.json).
 Both dev73 sanitizer hours remain failed, and all eleven release groups remain
 open. No stable merge, tag, release or production migration has occurred.
+
+Dev74 full native compilation failed through the interface boundary. Its logs
+and unexecuted hour attempts remain retained. Dev75 adds actual interface
+compilation and alternate-implementation fallback coverage;109 affected local
+checks pass. No native runtime pass is inferred from these components.
