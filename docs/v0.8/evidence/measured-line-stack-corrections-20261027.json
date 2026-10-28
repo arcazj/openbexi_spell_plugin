@@ -1,0 +1,69 @@
+{
+  "schema": "openbexi.v08.measured-line-stack-corrections/1",
+  "candidate_parent": "8184bde25c58cb8b25a71fd794c38d3e3e1828d6",
+  "candidate_version": "0.8.0.dev74",
+  "paired_ide": "c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc",
+  "source_sha256": {
+    "host_runtime/build_admission_context.py": "df9f2856fe92771836a858d8b63ad4a2206f0433f50bc81d10bd5644c266ae2f",
+    "host_runtime/native/frame_filename.H": "127308009c405bf135ab910d90a49ffe3fbe5755f9f13d209e06acb9b0656700",
+    "host_runtime/native/line_stack.H": "e28577c2706f0cb08ad303dd13941628822a3fb761f943c3f44bd36e66c1f5d3",
+    "server/tests/native_frame_filename.cpp": "01221ac440ce1010e635d9e6794d17133b2e5a65bd22242fc53d41fce7f8dcd9",
+    "server/tests/native_line_stack.cpp": "a3b8e39598cf9b3ceeb195bfb21aae235e4629cdbaf084a1542728c85730d63e",
+    "server/tests/test_native_line_stack.py": "f9dafb60e073d725fdee224c031aae610c235ca517782f1a5ba0fa93af0e8c89",
+    "scripts/v08_memory_experiment.py": "fea851b1570c8a1ab3eaf79042bd4e0aeda95eb2923d600c2d3eacc61e1e4452",
+    "server/pyproject.toml": "65cb97f19bbe87ca1343d72294c4ee1c5459d096e5865d12563e12e1c653e30b",
+    "server/src/openbexi_spell_server/__init__.py": "54048b6e923f7ef6d91790f674f47b6d75ff67c6e8e9179a29500f05f416f388",
+    "deploy/v0.8/compose.yaml": "d0766b10e083df1f678a85431b644cbfdb84c1ad92f521a4a40e4e7b9ced07e6",
+    "deploy/v0.8/Dockerfile.server": "715bacb4c16ac74316691eaf5ad173a39d3457f4fc61d889ef4907857e60ba8e",
+    "deploy/v0.8/render_kubernetes.py": "edc8b27f4fd271ce875bb230036641d32b95f65e1b1d30141a3eaa4fc25ba370"
+  },
+  "measured_paths": "Actual dev73 allocation profiles identify SPELLexecutorImpl::dispatch, getFullStack, getAvailableStack, SPELLcif::notifyLine and SPELLserverCif::completeMessage. Counts are samples, not a complete attribution of sustained growth.",
+  "native_profile_artifact": 12777243975,
+  "profile_sources_independently_verified": 139,
+  "filename_measurement": {
+    "passed": true,
+    "lookups": 30000,
+    "accepted_before_allocations": 30000,
+    "accepted_after_allocations": 0,
+    "filter_cases": 28,
+    "before_bytes": 880000,
+    "after_bytes": 0,
+    "before_allocations": 30000,
+    "after_allocations": 0
+  },
+  "line_and_csp_measurement": {
+    "before": {
+      "notification_allocations": 30000,
+      "notification_bytes": 1580000,
+      "metadata_allocations": 30000,
+      "metadata_bytes": 1580000,
+      "metadata_digest": 6875926794336072293
+    },
+    "after": {
+      "notification_allocations": 0,
+      "notification_bytes": 0,
+      "metadata_allocations": 0,
+      "metadata_bytes": 0,
+      "metadata_digest": 6875926794336072293
+    },
+    "audit_sha256": "659f4c27f375b1100c5584cce7b7830990c0ac172b728dc1dab41645a9c56a8e",
+    "audit_bytes": 410174
+  },
+  "scope": "Compiled actual before/after methods with ASan/UBSan. Snapshot synchronization/transport/audit sink are component adapters; whole runtime remains required. All10004 raw component LINE records retained in both identical files.",
+  "ownership": "Eight exclusive thread-local buffers, ordinary local fallback for deeper nesting; independently owned locked callstack snapshots. No borrowed message/frame ownership crosses a callback. Ordinary cache retention remains measured.",
+  "local_affected_tests": 153,
+  "local_affected_test_timing_seconds": 45.97,
+  "later_nested_filename_regression_tests": 6,
+  "retained_component_measurement_tests": 3,
+  "counts_overlap": true,
+  "earlier_unsuccessful_attempts": [
+    "New filename harness initially failed Werror unused-reference, then missing-vector include in deeper-nesting extension; compile failures retained",
+    "New line-stack harness initially used a binary path equal to a source directory; failure retained",
+    "First whole foundation attempt stopped at format check; retained. No runtime qualification inferred."
+  ],
+  "sanitizers_deadlines_concurrency_workload_accounting_limits_unchanged": true,
+  "required_records_deleted": false,
+  "hosted_qualification": "pending",
+  "full_v08_qualified": false,
+  "published": false
+}

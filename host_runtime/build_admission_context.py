@@ -635,7 +635,7 @@ def reuse_native_trace_filename(source):
         ("file.find(m_libPath)", "fileView.find(m_libPath)"),
         (
             "    // Filter importing state",
-            "    const std::string file(fileView);\n\n    // Filter importing state",
+            "    const std::string& file = filename.owned();\n\n    // Filter importing state",
         ),
         (
             "    std::string path = SPELLpython313::filename(frame);",
@@ -1010,6 +1010,123 @@ def reuse_native_line_record(source):
     if (line.capacity()>1024) std::string().swap(line); else line.clear();
 }"""
     path.write_text(text[:start] + changed + text[end:])
+
+
+def reuse_native_line_stack(source):
+    """Copy locked snapshots into scope-owned buffers; preserve all LINE bytes."""
+    specifications = {
+        "lib/SPELL_EXC/src/SPELLcallstack.C": {
+            "const std::string SPELLcallstack::getStack()": "23c2b28f49069d02e44a9b542ea51f657c542b5bb4ac0f62a171aed11e8af8db",
+            "const std::string SPELLcallstack::getFullStack()": "7cd21e61cc2fd6112d5d2b70a9d0598b331909392d1f443b54edbe94bc03daa3",
+        },
+        "lib/SPELL_CIF/src/SPELLcif.C": {
+            "std::string SPELLcif::getAvailableStack()": "bf952191b79b909ec4490aad4cc2cb29541e991e37f016746c183de69b28fd4e",
+            "void  SPELLcif::notifyLine()": "600a3c116cc2dd2adfa61717e78c751bf856910489afb3955bcb0b3e3ca3d47e",
+        },
+        "lib/SPELL_CIFS/src/SPELLserverCif.C": {
+            "void SPELLserverCif::completeMessage(": "7c361dbc4f9ce60e0d0fdf144dbf48f2b397a2793b7afcf53db3cc6c4483387c",
+        },
+    }
+    originals, texts = {}, {}
+    for relative, methods in specifications.items():
+        text = (source / relative).read_text()
+        for signature, expected in methods.items():
+            if text.count(signature) != 1:
+                raise ValueError("Native line-stack boundary differs")
+            begin = text.index(signature)
+            original = text[begin : text.index("\n}", begin) + 2]
+            if hashlib.sha256(original.encode()).hexdigest() != expected:
+                raise ValueError("Native line-stack preimage differs: " + signature)
+            originals[signature] = original
+        texts[relative] = text
+    # Validate every method/header before the first write, including reapplication.
+    declarations = {
+        "include/SPELL_EXC/SPELLcallstack.H": (
+            (
+                "const std::string getStack();",
+                "void v08StackInto(std::string& output);",
+            ),
+            (
+                "const std::string getFullStack();",
+                "void v08FullStackInto(std::string& output);",
+            ),
+        ),
+        "include/SPELL_CIF/SPELLcif.H": (
+            (
+                "std::string getAvailableStack();",
+                "void v08AvailableStackInto(std::string& output);",
+            ),
+        ),
+    }
+    for relative, members in declarations.items():
+        text = (source / relative).read_text()
+        for anchor, declaration in members:
+            if text.count(anchor) != 1 or declaration in text:
+                raise ValueError("Native line-stack declaration differs")
+            text = text.replace(anchor, anchor + "\n        " + declaration)
+        texts[relative] = text
+    relative = "lib/SPELL_EXC/src/SPELLcallstack.C"
+    for getter, name, member in (
+        ("getStack", "v08StackInto", "m_stack"),
+        ("getFullStack", "v08FullStackInto", "m_fullStackString"),
+    ):
+        original = originals["const std::string SPELLcallstack::" + getter + "()"]
+        texts[relative] = texts[relative].replace(
+            original,
+            original
+            + "\n\n"
+            + "void SPELLcallstack::"
+            + name
+            + "(std::string& output)\n{\n"
+            + "    SPELLmonitor mon(m_lock);\n    output.assign("
+            + member
+            + ");\n}",
+        )
+    relative = "lib/SPELL_CIF/src/SPELLcif.C"
+    original = originals["std::string SPELLcif::getAvailableStack()"]
+    texts[relative] = texts[relative].replace(
+        original,
+        original
+        + "\n\n"
+        + "void SPELLcif::v08AvailableStackInto(std::string& output)\n{\n"
+        + "    auto& stack=SPELLexecutor::instance().getCallstack();\n"
+        + "    stack.v08FullStackInto(output);\n"
+        + "    if(output.empty()) stack.v08StackInto(output);\n}",
+    )
+    original = originals["void  SPELLcif::notifyLine()"]
+    changed = original.replace(
+        'std::string stack = "";',
+        "V08LineStack scratch;\n    std::string& stack = scratch.value();",
+    )
+    changed = changed.replace(
+        "stack = getAvailableStack();", "v08AvailableStackInto(stack);"
+    )
+    changed = changed.replace(
+        'm_asRun->writeLine( stack + "/" + ISTR(getNumExecutions()) );',
+        "V08LineStack::appendExecution(stack, getNumExecutions());\n    m_asRun->writeLine(stack);",
+    )
+    if changed == original or "getAvailableStack()" in changed:
+        raise ValueError("Native line-stack notification replacement differs")
+    texts[relative] = '#include "/candidate/line_stack.H"\n' + texts[relative].replace(
+        original, changed
+    )
+    relative = "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    original = originals["void SPELLserverCif::completeMessage("]
+    changed = original.replace(
+        "std::string stack = getAvailableStack();",
+        "std::string& stack = msg.getRef(MessageField::FIELD_CSP);\n    v08AvailableStackInto(stack);",
+    )
+    changed = changed.replace(
+        'msg.set(MessageField::FIELD_CSP, stack + "/" + ISTR(getNumExecutions()) );',
+        "V08LineStack::appendExecution(stack, getNumExecutions());",
+    )
+    if changed == original or "getAvailableStack()" in changed:
+        raise ValueError("Native line-stack metadata replacement differs")
+    texts[relative] = '#include "/candidate/line_stack.H"\n' + texts[relative].replace(
+        original, changed
+    )
+    for relative, text in texts.items():
+        (source / relative).write_text(text)
 
 
 def patch_native_tree(source, *, prompts=False, terminal=False):
@@ -1493,6 +1610,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     reuse_native_timestamp_and_asrun(source)
     durable_native_asrun(source)
     reuse_native_line_record(source)
+    reuse_native_line_stack(source)
     return before
 
 

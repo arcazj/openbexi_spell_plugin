@@ -1,3 +1,54 @@
+<!-- dev74-resume:start -->
+# Current qualification: dev73 evidence reconciled, dev74 changes pending
+
+Executable `8184bde25c58cb8b25a71fd794c38d3e3e1828d6` (`0.8.0.dev73`),
+paired IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`; tested merge
+`fb2a6d7065ee52229407f78aaa64fb2a644c57f4` has identical tree
+`e7c1503f3e03b325798367871f4cb6529b7fbf85`.
+
+All14 core jobs/1,613 foundation checks, nine lifecycle repetitions, actual
+native ENOSPC and21 audit components pass. Original ASan/UBSan/no-swap45-second
+handoff/installed-IDE growth is52,568,064/47,792,128 bytes (50.13/45.58MiB),
+against the unchanged67,108,864-byte limit. Both retain48 observations.
+Fresh independent verification covers31 archives/3,146 overlapping source
+bindings/577 raw audit files, plus installed companion IDE inputs.
+
+Both original sanitizer hours fail. Handoff retains1,029 ordered observations
+over2,153.634870127 seconds; IDE retains1,048 over2,205.745637089 seconds.
+Original Context namespace PID37 disappears during the first sampled cgroup
+OOM-kill intervals (2,147.373–2,149.472 /2,201.553–2,203.661 seconds since first
+observation). Later Docker OOM state also remains retained. The kernel victim
+PID is not directly recorded. Before loss, anonymous memory is about2,022MiB,
+file/shmem about3MiB, with much smaller sampled live native allocations than
+allocator heaps. This does not prove absence of application leaks or identify
+every allocation path. All23/27 raw audit files and65,429,630/70,789,644 bytes
+verify complete and ordered. Whole-deployment restore remains unqualified.
+
+All22 retrieved current/predecessor comparison/hour overlays reproduce exactly.
+Optimized300-second and one-hour scenarios pass diagnostically; sanitizer
+comparisons fail. Current ASan handoff artifact12780701369 separately fails
+before native startup, with a Context-report denial and close-time connection
+refusal chain. It is not classified as an OOM. Historical5,382ms registration,
+90-second worker-exit and2,007ms admission failures remain separately unresolved.
+
+Dev74 adds measured scope-owned filename and LINE/CSP snapshot reuse. It must
+pass fresh original mandatory and sustained acceptance at its exact source;
+component allocation reductions are not whole-runtime qualification. Sanitizer
+settings, deadlines, concurrency, audit records, cgroup measurement and limits
+remain unchanged. Earlier failures remain below and in retained archives.
+
+The corrected independent packaging diagnostic `cf4c759`, run40642156662,
+observes the exact installed project window and event loop in offscreen/xcb.
+Baseline missing-GLib startup still fails. Refreshed IDE/server scans retain
+237/161 vulnerability matches; all findings and license review remain open.
+The refresh is not a promoted candidate. A production-like qualification
+cluster enforcing network policy and an independent implemented-system security
+reviewer are external gaps. Missing implementation/evidence are separate.
+
+See [exact dev73 receipt](evidence/qualification-8184bde-20261027.json).
+All eleven full-release groups remain false. No stable merge, tag or release.
+<!-- dev74-resume:end -->
+
 # Current dev73 candidate: fresh whole-runtime qualification pending
 
 Measured corrections preserve original audit bytes, sanitizer options, limits,
