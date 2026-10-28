@@ -1274,6 +1274,89 @@ void SPELLserverCif::v08PublishStatusSnapshot(const SPELLipcMessage& message)
     header.write_text(declaration)
 
 
+def own_native_acknowledgements(source):
+    """Use one wire sequence domain and retain ACKs only for live wait owners."""
+    path = source / "lib/SPELL_CIFS/src/SPELLserverCif.C"
+    text = path.read_text()
+    expected = {
+        "void SPELLserverCif::completeMessage(": "4e6cf5985d30f2f23c8a810d7d5d199e80be73851502ff1a0266fe9976e5d6da",
+        "void SPELLserverCif::prepareMessage(": "d43612159d478f1406842a2b106ce875e464e8b9f50ccf76dbef7c27adc302db",
+        "void SPELLserverCif::sendAcknowledged(": "0e333c4aacd38757203a5773382a04f1bc7da454884c453e9e30265f2d25db3a",
+        "bool SPELLserverCif::waitAcknowledge(": "7b6ba97adac68f1453e410e94e46fcd8af41c1c13983fea5b7beabf5107018ab",
+        "void SPELLserverCif::specificSetup(": "a2414779a0e3fd6345059bbbf62e444fe4f9b149b995ed5baf15013ffc4c66e9",
+    }
+    methods = {}
+    for signature, digest in expected.items():
+        if text.count("\n" + signature) != 1:
+            raise ValueError("Native ACK ownership boundary differs")
+        start = text.index("\n" + signature) + 1
+        method = text[start : text.index("\n}", start) + 2]
+        if hashlib.sha256(method.encode()).hexdigest() != digest:
+            raise ValueError("Native ACK ownership preimage differs: " + signature)
+        methods[signature] = method
+    first = text.index("    if (m_ready && msgId == ExecutorMessages::ACKNOWLEDGE)")
+    last = text.index("\n    // Reset the IPC", first)
+    received = text[first:last]
+    if (
+        hashlib.sha256(received.encode()).hexdigest()
+        != "3a8fef7fa8901c6db974cdeea5cd7ac7a06e8957b7e89cf91f5adf29bfab690f"
+    ):
+        raise ValueError("Native ACK receipt preimage differs")
+    header = source / "include/SPELL_CIFS/SPELLserverCif.H"
+    declaration = header.read_text()
+    member = "std::vector<std::string> m_ackSequences;"
+    if declaration.count(member) != 1 or "m_ackOwners" in declaration:
+        raise ValueError("Native ACK owner declaration differs")
+    declaration = (
+        '#include "/candidate/acknowledgement_ownership.H"\n'
+        + declaration.replace(member, "V08AcknowledgementOwners m_ackOwners;")
+    )
+    for signature, original in methods.items():
+        changed = original
+        if signature.startswith("void SPELLserverCif::completeMessage"):
+            changed = changed.replace(
+                "m_sequence.fetch_add(1,std::memory_order_relaxed)",
+                "v08ReserveNotificationSequence(m_sequence)",
+            )
+        elif signature.startswith("void SPELLserverCif::prepareMessage"):
+            changed = changed.replace(
+                "    const auto sequence=m_sequenceStack.fetch_add(1,std::memory_order_relaxed);\n    msg.set(MessageField::FIELD_MSG_SEQUENCE, ISTR(sequence));",
+                "    // Preserve stack-count bookkeeping; the echoed ACK key uses the\n    // unique notification sequence already assigned by completeMessage.\n    m_sequenceStack.fetch_add(1,std::memory_order_relaxed);",
+            )
+        elif signature.startswith("void SPELLserverCif::sendAcknowledged"):
+            changed = changed.replace(
+                "{\n    while (!isClosing())",
+                "{\n    V08AcknowledgementOwners::Ticket ticket(m_ackOwners,message.get(MessageField::FIELD_MSG_SEQUENCE));\n    while (!isClosing())",
+            ).replace(
+                "        sendGUIMessage(message);",
+                "        ticket.arm(generation);\n        sendGUIMessage(message);",
+            )
+        elif signature.startswith("bool SPELLserverCif::waitAcknowledge"):
+            changed = changed.replace(
+                "        {\n            SPELLmonitor lock(m_ackLock);\n            const auto ack=std::find(m_ackSequences.begin(),m_ackSequences.end(),sequence);\n            if (ack!=m_ackSequences.end()) { m_ackSequences.erase(ack);return true; }\n        }",
+                "        if (m_ackOwners.consume(sequence,generation)) return true;",
+            )
+        elif signature.startswith("void SPELLserverCif::specificSetup"):
+            changed = changed.replace(
+                "    m_sequence = 0;",
+                "    // Notification sequence is initialized once by the CIF constructor.",
+            )
+        if changed == original:
+            raise ValueError("Native ACK ownership substitution differs")
+        text = text.replace(original, changed)
+    text = text.replace(
+        received,
+        """    if (m_ready && msgId == ExecutorMessages::ACKNOWLEDGE)
+    {
+        m_ackOwners.receive(msg.get(MessageField::FIELD_MSG_SEQUENCE));
+        return;
+    }
+""",
+    )
+    path.write_text(text)
+    header.write_text(declaration)
+
+
 def patch_native_tree(source, *, prompts=False, terminal=False):
     """Apply only to the independently reproduced frozen composition."""
     message_header = source / "include/SPELL_IPC/SPELLipcMessage.H"
@@ -1759,6 +1842,7 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     reuse_native_line_record(source)
     reuse_native_line_stack(source)
     own_native_status_snapshots(source)
+    own_native_acknowledgements(source)
     return before
 
 

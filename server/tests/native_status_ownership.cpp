@@ -12,6 +12,7 @@
 #include "SPELL_IPC/SPELLipc_Executor.H"
 #include "SPELL_IPC/SPELLipc_Context.H"
 #include "line_stack.H"
+#include "acknowledgement_ownership.H"
 enum SPELLexecutorStatus {STATUS_UNINIT,STATUS_LOADED,STATUS_PAUSED,STATUS_FINISHED,STATUS_ERROR,STATUS_ABORTED};
 struct SPELLstatusInfo {
     SPELLexecutorStatus status;std::string condition,actionLabel;bool actionEnabled=false;
@@ -48,6 +49,8 @@ static void emit(const SPELLipcMessage& message){for(unsigned char c:message.dat
 int main(int argc,char**argv){
     assert(argc==2);const std::string mode=argv[1];SPELLserverCif cif;
     if(mode=="sequence" || mode=="stack-sequence"){
+        // An earlier non-stack notification consumes the SAME wire domain.
+        if(mode=="stack-sequence"){SPELLipcMessage earlier;cif.completeMessage(earlier);}
         SPELLipcMessage a,b;reserve_barrier=true;
         auto prepare=[&](SPELLipcMessage& msg){if(mode=="sequence")cif.completeMessage(msg);else cif.prepareMessage(msg,"LINE",MSG_TYPE_NOTIFY_ASYNC);};
         std::thread left([&]{prepare(a);});std::thread right([&]{prepare(b);});left.join();right.join();reserve_barrier=false;
@@ -58,6 +61,17 @@ int main(int argc,char**argv){
         std::atomic<unsigned> ready{0};
         std::thread ping([&]{ready.fetch_add(1);while(ready.load()<2)std::this_thread::yield();for(unsigned i=0;i<20000;++i){auto message=cif.getPingMessage();assert(!message.isVoid());}});
         std::thread status([&]{ready.fetch_add(1);while(ready.load()<2)std::this_thread::yield();for(unsigned i=0;i<20000;++i)cif.specificNotifyStatus(SPELLstatusInfo(STATUS_LOADED));});ping.join();status.join();std::printf("{\"notifications\":%zu}\n",cif.outputs.size());return 0;
+    }
+    if(mode=="template-proof"){
+        // Warm existing fields, then pause through the explicit stack adapter
+        // before ping's return-copy acquires the metadata-cache mutex. Without
+        // this boundary, that unrelated cache can incidentally order one pair.
+        cif.getPingMessage();std::atomic<unsigned> phase{0};
+        static thread_local bool pingThread=false;
+        cif.on_stack=[&]{if(pingThread){phase.store(1,std::memory_order_relaxed);while(phase.load(std::memory_order_relaxed)!=2)std::this_thread::yield();}else{phase.store(2,std::memory_order_relaxed);}};
+        std::thread ping([&]{pingThread=true;cif.getPingMessage();});
+        std::thread status([&]{while(phase.load(std::memory_order_relaxed)!=1)std::this_thread::yield();cif.specificNotifyStatus(SPELLstatusInfo(STATUS_LOADED));});
+        ping.join();status.join();std::printf("{\"notifications\":%zu}\n",cif.outputs.size());return 0;
     }
     if(mode=="stack"){
         SPELLipcMessage message;cif.completeMessage(message);
