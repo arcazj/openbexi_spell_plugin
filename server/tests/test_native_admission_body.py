@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 BASELINE = "c920349c2c54ce3fe968de4b1d47046203e30516"
@@ -15,13 +16,14 @@ BASELINE_SHA256 = "ec80c474c5c332163274f01d60a396d9166384b978927e323567b0bedb58b
 
 
 @pytest.fixture(scope="session")
-def admission_body_binaries(tmp_path_factory):
+def admission_body_binaries(tmp_path_factory, request):
     include = Path("/usr/include")
     if not (include / "nlohmann/json.hpp").is_file():
         import nlohmann_json
 
         include = Path(nlohmann_json.get_include())
     folder = tmp_path_factory.mktemp("native-admission-body")
+    builds = NativeBuildBatch(folder, request)
     baseline = (ROOT / "server/tests/native_admission_body_before_dev79.H").read_bytes()
     assert hashlib.sha256(baseline).hexdigest() == BASELINE_SHA256
     binaries = {}
@@ -55,10 +57,10 @@ def admission_body_binaries(tmp_path_factory):
             "-o",
             str(binary),
         ]
-        compiled = subprocess.run(command, capture_output=True, timeout=90)
-        (folder / (name + "-compile.log")).write_bytes(compiled.stdout + compiled.stderr)
-        assert compiled.returncode == 0, compiled.stderr.decode()
+        builds.add(command, timeout=90)
         binaries[name] = binary
+    for name, compiled in zip(binaries, builds.run()):
+        (folder / (name + "-compile.log")).write_bytes(compiled.stdout + compiled.stderr)
     names = [
         "host_runtime/native/admission_ipc.H",
         "host_runtime/native/admission_channel.H",

@@ -156,9 +156,24 @@ class NativeBuildBatch:
         )
 
     def run(self):
+        return self.run_all([self])
+
+    @staticmethod
+    def run_all(batches):
+        """Build frozen batches with one shared two-compiler limit."""
+        batches = list(batches)
+        record_lock = threading.Lock()
+        for batch in batches:
+            batch.record_lock = record_lock
+        jobs = [(batch, job) for batch in batches for job in batch.jobs]
+
+        def execute(item):
+            batch, job = item
+            return batch.execute(job)
+
         with ThreadPoolExecutor(max_workers=2) as pool:
             # Results remain in original profile order, including failures.
-            results = list(pool.map(self.execute, self.jobs))
+            results = list(pool.map(execute, jobs))
         for result in results:
             assert result.returncode == 0, result.stderr
         return results

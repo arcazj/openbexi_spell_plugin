@@ -3,6 +3,7 @@
 from native_build_batch import NativeBuildBatch
 import json
 import subprocess
+import threading
 import pytest
 
 
@@ -112,3 +113,38 @@ def test_external_header_comment_drift_requires_a_separate_build(tmp_path, reque
     second.run_cached(cache)
     assert len(cache) == 2 and not list(second.records.glob("*.reuse.json"))
     assert subprocess.run([str(changed)], timeout=5).returncode == 0
+
+
+def test_frozen_batches_share_one_bounded_compiler_pool_and_order(tmp_path, request, monkeypatch):
+    batches, binaries = zip(
+        *(prepared(tmp_path, request, str(value), macro=value) for value in range(4))
+    )
+    # Later fixture preparation cannot change earlier snapshotted inputs.
+    for batch in batches:
+        (batch.folder / "main.cpp").write_text("int main(){return 99;}\n")
+    execute = NativeBuildBatch.execute
+    lock = threading.Lock()
+    pair = threading.Barrier(2)
+    active = 0
+    maximum = 0
+
+    def observed(self, job):
+        nonlocal active, maximum
+        with lock:
+            active += 1
+            maximum = max(maximum, active)
+        try:
+            # Force overlapping build invocations instead of a timing guess.
+            pair.wait(timeout=5)
+            return execute(self, job)
+        finally:
+            with lock:
+                active -= 1
+
+    monkeypatch.setattr(NativeBuildBatch, "execute", observed)
+    results = NativeBuildBatch.run_all(batches)
+    assert maximum == 2 and active == 0
+    assert [result.args for result in results] == [batch.jobs[0]["command"] for batch in batches]
+    assert [subprocess.run([str(binary)], timeout=5).returncode for binary in binaries] == list(
+        range(4)
+    )

@@ -8,6 +8,7 @@ import subprocess
 import zipfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location(
@@ -18,8 +19,9 @@ spec.loader.exec_module(builder)
 
 
 @pytest.fixture(scope="session")
-def stream_binaries(tmp_path_factory):
+def stream_binaries(tmp_path_factory, request):
     folder = tmp_path_factory.mktemp("native-stream-reuse")
+    builds = NativeBuildBatch(folder, request)
     (folder / "SPELL_UTIL").mkdir()
     (folder / "SPELL_IPC").mkdir()
     (folder / "SPELL_UTIL/SPELLbase.H").write_text("""#pragma once
@@ -99,9 +101,9 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
             "-o",
             str(binary),
         ]
-        built = subprocess.run(command, capture_output=True, text=True, timeout=60)
-        assert built.returncode == 0, built.stderr
+        builds.add(command, text=True, timeout=60)
         result[name] = binary
+    builds.run()
     return result
 
 

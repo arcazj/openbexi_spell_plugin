@@ -14,6 +14,7 @@ import time
 import zipfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 SIGNATURES = (
@@ -271,9 +272,11 @@ def status_sources(tmp_path_factory):
 
 
 @pytest.fixture(scope="module")
-def status_binaries(status_sources, component_recording, message_object_cache):
+def status_binaries(status_sources, component_recording, message_object_cache, request):
     folder, tree, before, contract, _ = status_sources
     binaries = {}
+    batches = []
+    outputs = []
     for profile in ("before", "candidate", "contract"):
         out = folder / (profile + "-build")
         for name in ("SPELL_IPC", "SPELL_UTIL"):
@@ -347,6 +350,8 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
             .replace("/candidate/", str(ROOT / "host_runtime/native") + "/")
         )
         (out / "message.cpp").write_text(message)
+        builds = NativeBuildBatch(out, request)
+        batches.append(builds)
         sanitizers = ("asan", "tsan") if profile != "contract" else ("asan",)
         for sanitizer in sanitizers:
             binary = out / sanitizer
@@ -359,6 +364,12 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 int(profile == "candidate"),
                 message_object_cache,
                 deadline,
+            )
+            owned_object = out / (sanitizer + "-message.o")
+            shutil.copy2(message_object, owned_object)
+            assert (
+                hashlib.sha256(owned_object.read_bytes()).digest()
+                == hashlib.sha256(message_object.read_bytes()).digest()
             )
             command = [
                 "c++",
@@ -373,21 +384,20 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 "-I" + str(out),
                 "-I" + str(ROOT / "host_runtime/native"),
                 "-DV08_STATUS_CANDIDATE=" + str(int(profile == "candidate")),
-                str(message_object),
+                str(owned_object),
                 str(ROOT / "server/tests/native_status_ownership.cpp"),
                 "-lz",
                 "-o",
                 str(binary),
             ]
-            built = component_run(
-                command,
-                label=f"status-{profile}-{sanitizer}-build",
-                binary=binary,
-                timeout=max(0, deadline - time.monotonic()),
-            )
-            (out / (sanitizer + "-build.stderr")).write_bytes(built.stderr)
-            assert built.returncode == 0, built.stderr.decode()
+            builds.add(command, timeout=60)
+            # Waiting for another frozen build cannot extend this original
+            # per-profile budget, including common-object preparation.
+            builds.jobs[-1]["deadline"] = deadline
+            outputs.append(out / (sanitizer + "-build.stderr"))
             binaries[profile, sanitizer] = binary
+    for path, built in zip(outputs, NativeBuildBatch.run_all(batches)):
+        path.write_bytes(built.stderr)
     return binaries
 
 
@@ -488,7 +498,7 @@ def test_ownership_patch_refuses_drift_before_any_write(status_sources, tmp_path
 
 
 @pytest.fixture(scope="module")
-def ack_binaries(status_sources, status_binaries, message_object_cache):
+def ack_binaries(status_sources, status_binaries, message_object_cache, request):
     folder, tree, before_status, _, builder = status_sources
     before = folder / "before-ack"
     shutil.copytree(before_status, before)
@@ -498,6 +508,8 @@ def ack_binaries(status_sources, status_binaries, message_object_cache):
         "dcfa7b849d6a3ed5c805e8b5df31981c3c99febec5e652c9c6ff4d5305365d36"
     )
     binaries = {}
+    batches = []
+    outputs = []
     for profile, selected in (("before", before), ("candidate", tree)):
         out = folder / (profile + "-ack-build")
         out.mkdir()
@@ -567,6 +579,8 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 indent=2,
             )
         )
+        builds = NativeBuildBatch(out, request)
+        batches.append(builds)
         for sanitizer in ("asan", "tsan") if profile == "candidate" else ("asan",):
             binary = out / sanitizer
             deadline = time.monotonic() + 60
@@ -578,6 +592,12 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 int(profile == "candidate"),
                 message_object_cache,
                 deadline,
+            )
+            owned_object = out / (sanitizer + "-message.o")
+            shutil.copy2(message_object, owned_object)
+            assert (
+                hashlib.sha256(owned_object.read_bytes()).digest()
+                == hashlib.sha256(message_object.read_bytes()).digest()
             )
             command = [
                 "c++",
@@ -592,21 +612,18 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 "-I" + str(out),
                 "-I" + str(ROOT / "host_runtime/native"),
                 "-DV08_ACK_CANDIDATE=" + str(int(profile == "candidate")),
-                str(message_object),
+                str(owned_object),
                 str(ROOT / "server/tests/native_ack_ownership.cpp"),
                 "-lz",
                 "-o",
                 str(binary),
             ]
-            result = component_run(
-                command,
-                label=f"ack-{profile}-{sanitizer}-build",
-                binary=binary,
-                timeout=max(0, deadline - time.monotonic()),
-            )
-            (out / (sanitizer + "-build.stderr")).write_bytes(result.stderr)
-            assert result.returncode == 0, result.stderr.decode()
+            builds.add(command, timeout=60)
+            builds.jobs[-1]["deadline"] = deadline
+            outputs.append(out / (sanitizer + "-build.stderr"))
             binaries[profile, sanitizer] = binary
+    for path, result in zip(outputs, NativeBuildBatch.run_all(batches)):
+        path.write_bytes(result.stderr)
     return binaries
 
 
