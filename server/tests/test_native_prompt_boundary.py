@@ -338,10 +338,13 @@ def test_opt_in_prompt_module_is_shipped_and_source_bound_in_native_build():
     assert builder.count('ROOT / "host_runtime/native_prompt_patch.py"') == 2
     assert 'native_build / "native_prompt_patch.py"' in builder
     assert (
-        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py native_terminal_patch.py epoch_connection.py /candidate/"
+        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py native_terminal_patch.py native_startup_ack_patch.py epoch_connection.py /candidate/"
         in builder
     )
     assert workflow.count("'host_runtime/native_prompt_patch.py'") == 2
+    assert builder.count('ROOT / "host_runtime/native_startup_ack_patch.py"') == 2
+    assert 'native_build / "native_startup_ack_patch.py"' in builder
+    assert workflow.count("'host_runtime/native_startup_ack_patch.py'") == 2
     # Existing hosted cohorts must not silently activate unqualified prompts.
     assert '" --native-prompts" if profile.native_prompts else ""' in builder
     assert 'parser.add_argument("--native-prompts", action="store_true")' in builder
