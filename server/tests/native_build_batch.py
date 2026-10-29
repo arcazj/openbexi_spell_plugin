@@ -8,7 +8,9 @@ unchanged. Every invocation retains its original timeout inside timed pytest.
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
+import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
 import threading
@@ -108,7 +110,9 @@ class NativeBuildBatch:
                     job["command"],
                     stdout=stdout,
                     stderr=stderr,
-                    timeout=job["timeout"],
+                    timeout=min(
+                        job["timeout"], max(0, job.get("deadline", float("inf")) - time.monotonic())
+                    ),
                 )
         except (OSError, subprocess.TimeoutExpired) as exc:
             error = exc
@@ -157,4 +161,131 @@ class NativeBuildBatch:
             results = list(pool.map(self.execute, self.jobs))
         for result in results:
             assert result.returncode == 0, result.stderr
+        return results
+
+    def run_cached(self, cache):
+        """Reuse only session-local, byte-verified identical native executables.
+
+        Every scenario still starts a fresh process. Preprocessing and any
+        required compilation remain inside the original timed pytest run.
+        """
+        pending = []
+        descriptions = {}
+        for job in self.jobs:
+            job["deadline"] = time.monotonic() + job["timeout"]
+            compiler = Path(shutil.which(job["command"][0])).resolve()
+            prefix = str(job["directory"])
+            command = job["command"]
+            output_index = command.index("-o") + 1
+            normalized_command = [
+                "<OUTPUT>" if i == output_index else argument.replace(prefix, "<INPUT>")
+                for i, argument in enumerate(command)
+            ]
+            sources = [
+                argument for argument in command if Path(argument).suffix in {".cpp", ".cc", ".C"}
+            ]
+            flags = [
+                argument
+                for i, argument in enumerate(command[1:], 1)
+                if argument not in sources and i not in {output_index - 1, output_index}
+            ]
+            # A byte-identical input tree alone is insufficient: include search,
+            # macros and expanded __FILE__ can change executable tokens.
+            preprocessed = []
+            dependencies = {}
+            for source_index, source in enumerate(sources):
+                prefix = self.records / f"{job['index']}.preprocess-{source_index}"
+                depfile = prefix.with_suffix(prefix.suffix + ".d")
+                command = [str(compiler), *flags, "-E", "-P", "-MD", "-MF", str(depfile), source]
+                with (
+                    prefix.with_suffix(prefix.suffix + ".stdout").open("wb") as stdout,
+                    prefix.with_suffix(prefix.suffix + ".stderr").open("wb") as stderr,
+                ):
+                    result = subprocess.run(
+                        command,
+                        stdout=stdout,
+                        stderr=stderr,
+                        timeout=max(0, job["deadline"] - time.monotonic()),
+                    )
+                raw_stdout = prefix.with_suffix(prefix.suffix + ".stdout").read_bytes()
+                raw_stderr = prefix.with_suffix(prefix.suffix + ".stderr").read_bytes()
+                prefix.with_suffix(prefix.suffix + ".json").write_text(
+                    json.dumps(
+                        dict(
+                            command=command,
+                            returncode=result.returncode,
+                            stdout_sha256=hashlib.sha256(raw_stdout).hexdigest(),
+                            stderr_sha256=hashlib.sha256(raw_stderr).hexdigest(),
+                            original_deadline_seconds=job["timeout"],
+                        ),
+                        indent=2,
+                    )
+                    + "\n"
+                )
+                assert result.returncode == 0, raw_stderr
+                preprocessed.append(hashlib.sha256(raw_stdout).hexdigest())
+                for name in shlex.split(depfile.read_text().replace("\\\n", "").split(":", 1)[1]):
+                    normalized_dependency = name.replace(str(job["directory"]), "<INPUT>")
+                    dependencies[normalized_dependency] = digest(Path(name))
+            description = dict(
+                compiler=str(compiler),
+                compiler_sha256=digest(compiler),
+                command=normalized_command,
+                frozen_input_sha256=job["inputs"],
+                preprocessed_sha256=preprocessed,
+                dependency_sha256=dependencies,
+                compiler_environment={
+                    name: os.environ.get(name)
+                    for name in (
+                        "CPATH",
+                        "CPLUS_INCLUDE_PATH",
+                        "LIBRARY_PATH",
+                        "GCC_EXEC_PREFIX",
+                        "COMPILER_PATH",
+                    )
+                },
+            )
+            key = hashlib.sha256(json.dumps(description, sort_keys=True).encode()).hexdigest()
+            descriptions[job["index"]] = key, description
+            prior = cache.get(key)
+            if prior is None:
+                pending.append(job)
+                continue
+            if digest(prior["binary"]) != prior["binary_sha256"]:
+                raise ValueError("Cached native executable byte drift")
+            actual = {
+                path.relative_to(job["directory"]).as_posix(): digest(path)
+                for path in job["directory"].rglob("*")
+                if path.is_file()
+            }
+            if actual != job["inputs"]:
+                raise ValueError("Frozen compiler input drift before reuse")
+            shutil.copy2(prior["binary"], job["binary"])
+            if digest(job["binary"]) != prior["binary_sha256"]:
+                raise ValueError("Reused native executable byte drift")
+            record = dict(
+                state="reused",
+                source=description,
+                original_command=job["original_command"],
+                timeout_seconds=job["timeout"],
+                original_compilation=prior["record"],
+                binary_sha256=prior["binary_sha256"],
+                fresh_scenario_processes_required=True,
+            )
+            (self.records / f"{job['index']}.reuse.json").write_text(
+                json.dumps(record, indent=2) + "\n"
+            )
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(self.execute, pending))
+        for job, result in zip(pending, results):
+            assert result.returncode == 0, result.stderr
+            key, description = descriptions[job["index"]]
+            if key not in cache and len(cache) >= 16:
+                raise ValueError("Native executable cache capacity exceeded")
+            cache[key] = dict(
+                source=description,
+                binary=job["binary"],
+                binary_sha256=digest(job["binary"]),
+                record=str(self.records / f"{job['index']}.json"),
+            )
         return results

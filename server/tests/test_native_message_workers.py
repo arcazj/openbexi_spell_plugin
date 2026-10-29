@@ -13,6 +13,7 @@ import subprocess
 import zipfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 HEADER = "include/SPELL_IPC/SPELLipcIncoming.H"
@@ -58,8 +59,12 @@ def source(folder):
 
 
 @pytest.fixture(scope="session")
-def binaries(tmp_path_factory):
+def binaries(tmp_path_factory, request):
     root = tmp_path_factory.mktemp("native-message-workers")
+    builds = NativeBuildBatch(root, request)
+    cache = getattr(request.config, "_native_worker_binary_cache", None)
+    if cache is None:
+        cache = request.config._native_worker_binary_cache = {}
     adapters = (ROOT / "server/tests/native_message_workers_adapters.H").read_text()
     result = {}
     for name in ("before", "after"):
@@ -117,7 +122,7 @@ def binaries(tmp_path_factory):
             )
         )
         binary = folder / "probe"
-        compiled = subprocess.run(
+        builds.add(
             [
                 "c++",
                 "-std=c++17",
@@ -136,12 +141,11 @@ def binaries(tmp_path_factory):
                 "-o",
                 str(binary),
             ],
-            capture_output=True,
             text=True,
             timeout=60,
         )
-        assert compiled.returncode == 0, compiled.stderr
         result[name] = binary
+    builds.run_cached(cache)
     return result
 
 

@@ -19,7 +19,7 @@ spec.loader.exec_module(fixture)
 
 
 @pytest.fixture(scope="module")
-def binaries(tmp_path_factory):
+def binaries(tmp_path_factory, request):
     original = fixture.BUILDER.reuse_native_message_instances
 
     def patched(source):
@@ -28,7 +28,7 @@ def binaries(tmp_path_factory):
 
     fixture.BUILDER.reuse_native_message_instances = patched
     try:
-        return fixture.binaries.__wrapped__(tmp_path_factory)
+        return fixture.binaries.__wrapped__(tmp_path_factory, request)
     finally:
         fixture.BUILDER.reuse_native_message_instances = original
 

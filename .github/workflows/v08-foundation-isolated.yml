@@ -1,0 +1,82 @@
+name: v0.8 isolated exact-source foundation
+
+on:
+  push:
+    branches: ['qualification/foundation-compiler-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v08-foundation-isolated-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  foundation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned companion IDE
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+          path: .qualification/companion-ide
+      - name: Record immutable qualification inputs
+        run: |
+          python - <<'PYCODE'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          head = git("rev-parse", "HEAD")
+          assert head == os.environ["GITHUB_SHA"]
+          ide = git("-C", ".qualification/companion-ide", "rev-parse", "HEAD")
+          assert ide == "b1472b4d5a515b9082db139fb8e16b63677a052e"
+          output = pathlib.Path(".qualification/v08-server")
+          output.mkdir(parents=True, exist_ok=True)
+          runner = pathlib.Path("scripts/qualify_v08_server.py")
+          receipt = dict(schema="openbexi.isolated-foundation/1", source_commit=head,
+                         source_tree=git("rev-parse", "HEAD^{tree}"), ide_commit=ide,
+                         workflow_run_id=os.environ["GITHUB_RUN_ID"],
+                         runner_sha256=hashlib.sha256(runner.read_bytes()).hexdigest(),
+                         original_test_deadline_seconds=600,
+                         isolated_foundation_is_not_full_v08_qualification=True)
+          (output / "isolated-invocation.json").write_text(json.dumps(receipt, indent=2)+"\n")
+          PYCODE
+      - name: Install Qt and native JSON test headers
+        run: sudo apt-get update && sudo apt-get install -y libegl1 nlohmann-json3-dev
+      - name: Install test tools and pinned IDE client
+        run: |
+          python -m pip install -r server/requirements-test.lock
+          python -m pip install --no-deps ./.qualification/companion-ide
+          python -m pip install PySide6-Essentials==6.10.3
+
+      - name: Qualify services, source inventories and worker preflight
+        run: python scripts/qualify_v08_server.py
+      - name: Build and smoke the isolated development package
+        run: |
+          python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-server/wheels
+          python -m pip install --no-deps .qualification/v08-server/wheels/*.whl
+          python -I -c 'import importlib.metadata as m, openbexi_spell_server as s; assert s.__version__ == m.version("openbexi-spell-server")'
+          python -I -m openbexi_spell_server --help
+          python -I -m openbexi_spell_server.worker --help
+      - name: Retain qualification evidence including failed attempts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-foundation-isolated-${{ github.sha }}
+          path: |
+            .qualification/v08-server/run-*/
+            .qualification/v08-server/isolated-invocation.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

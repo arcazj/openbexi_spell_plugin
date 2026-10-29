@@ -14,7 +14,7 @@ spec.loader.exec_module(fixture)
 
 
 @pytest.fixture(scope="module")
-def binaries(tmp_path_factory):
+def binaries(tmp_path_factory, request):
     original = fixture.BUILDER.reuse_native_message_instances
 
     def patched(source):
@@ -23,7 +23,7 @@ def binaries(tmp_path_factory):
 
     fixture.BUILDER.reuse_native_message_instances = patched
     try:
-        return fixture.binaries.__wrapped__(tmp_path_factory)
+        return fixture.binaries.__wrapped__(tmp_path_factory, request)
     finally:
         fixture.BUILDER.reuse_native_message_instances = original
 
@@ -57,9 +57,9 @@ def test_concurrency_cancellation_requests_and_recycled_objects(binaries, mode):
         assert fixture.run(binaries["before"], mode) == fixture.run(binaries["after"], mode)
 
 
-def test_current_cache_without_thread_reuse_has_more_retention(binaries, tmp_path_factory):
+def test_current_cache_without_thread_reuse_has_more_retention(binaries, tmp_path_factory, request):
     # Rebuild the existing fixture without the new scheduling helper.
-    current = fixture.binaries.__wrapped__(tmp_path_factory)
+    current = fixture.binaries.__wrapped__(tmp_path_factory, request)
     dedicated = fixture.run(current["after"], "retention")
     reused = fixture.run(binaries["after"], "retention")
     assert dedicated["calls"] == reused["calls"] == 10000

@@ -12,7 +12,9 @@ fixture = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(fixture)
 
 
-def test_measured_parallel_peak_reuses_threads_without_limiting_callbacks(tmp_path_factory):
+def test_measured_parallel_peak_reuses_threads_without_limiting_callbacks(
+    tmp_path_factory, request
+):
     original_instances = fixture.BUILDER.reuse_native_message_instances
     original_workers = fixture.BUILDER.reuse_native_message_workers
     outcomes = {}
@@ -29,7 +31,7 @@ def test_measured_parallel_peak_reuses_threads_without_limiting_callbacks(tmp_pa
                     header.write_text(text.replace("capacity = 5;", "capacity = 1;"))
 
             fixture.BUILDER.reuse_native_message_instances = patched
-            binaries = fixture.binaries.__wrapped__(tmp_path_factory)
+            binaries = fixture.binaries.__wrapped__(tmp_path_factory, request)
             outcomes[label] = fixture.run(binaries["after"], "retention_bursts")
             # This must exceed both slot capacities, including nested waits.
             assert fixture.run(binaries["after"], "overflow") == {"parallel_callbacks": 24}
