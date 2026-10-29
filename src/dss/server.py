@@ -11,6 +11,7 @@ import json
 import logging
 import math
 import os
+import selectors
 import signal
 import socket
 import socketserver
@@ -262,7 +263,88 @@ class BoundedThreads(socketserver.ThreadingMixIn):
 
     def __init__(self, *args: Any, max_connections: int = 16, **kwargs: Any):
         self.slots = threading.BoundedSemaphore(max_connections)
+        self._shutdown_wakeup: tuple[int, int] | None = None
+        self._shutdown_wakeup_lock = threading.Lock()
         super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def _open_shutdown_wakeup(selector: Any) -> tuple[int, int] | None:
+        """An optional owned pipe; unsupported selectors retain normal polling."""
+        pipe = None
+        registered = False
+        try:
+            pipe = os.pipe()
+            for descriptor in pipe:
+                os.set_blocking(descriptor, False)
+                os.set_inheritable(descriptor, False)
+            selector.register(pipe[0], selectors.EVENT_READ)
+            registered = True
+            selector.select(0)
+            return pipe
+        except (OSError, ValueError):
+            try:
+                if registered:
+                    selector.unregister(pipe[0])
+            finally:
+                if pipe is not None:
+                    try:
+                        os.close(pipe[0])
+                    finally:
+                        os.close(pipe[1])
+            return None
+
+    def serve_forever(self, poll_interval: float = 0.5) -> None:
+        """Keep BaseServer polling/actions, but wake an idle POSIX shutdown.
+
+        The loop and shutdown flags follow CPython 3.13 BaseServer. This pipe
+        never represents a request, consumes a connection slot or changes
+        service_actions cadence. Handler draining remains ThreadingMixIn's
+        server_close responsibility. Windows keeps the standard socket loop.
+        """
+        if os.name != "posix":
+            super().serve_forever(poll_interval)
+            return
+        self._BaseServer__is_shut_down.clear()
+        pipe = None
+        try:
+            with socketserver._ServerSelector() as selector:
+                selector.register(self, selectors.EVENT_READ)
+                pipe = self._open_shutdown_wakeup(selector)
+                with self._shutdown_wakeup_lock:
+                    self._shutdown_wakeup = pipe
+                while not self._BaseServer__shutdown_request:
+                    ready = selector.select(poll_interval)
+                    if self._BaseServer__shutdown_request:
+                        break
+                    if any(key.fileobj is self for key, _ in ready):
+                        self._handle_request_noblock()
+                    self.service_actions()
+        finally:
+            with self._shutdown_wakeup_lock:
+                self._shutdown_wakeup = None
+                try:
+                    if pipe is not None:
+                        try:
+                            os.close(pipe[0])
+                        finally:
+                            os.close(pipe[1])
+                finally:
+                    self._BaseServer__shutdown_request = False
+                    self._BaseServer__is_shut_down.set()
+
+    def shutdown(self) -> None:
+        # Serialize publication, write and close so a delayed shutdown cannot
+        # write to an unrelated descriptor after the owned pipe was closed.
+        with self._shutdown_wakeup_lock:
+            self._BaseServer__shutdown_request = True
+            if self._shutdown_wakeup is not None:
+                try:
+                    os.write(self._shutdown_wakeup[1], b"\0")
+                except OSError:
+                    # A full pipe already wakes the selector; other errors
+                    # retain the original bounded polling shutdown behavior.
+                    pass
+        self._BaseServer__is_shut_down.wait()
 
     def process_request(self, request: socket.socket, client_address: Any) -> None:
         if not self.slots.acquire(blocking=False):
