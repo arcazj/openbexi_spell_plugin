@@ -416,3 +416,23 @@ Exact executable16982c4dd698a937ce2ae4e37f4736055de9a2ce integrates dev81 plus n
 GitHub writes recovered. Corrected observer47921d18/tree4d07383d is running in40828138175; results require complete collection. Fresh candidate CI, original45-second checks, sanitizer hours, ENOSPC and paired installed recovery remain pending. All eleven release groups remain false. Prior failure bodies and histories remain preserved. Current Qt6.10.3 attribution binds70/70 top libraries to exact upstream SDK bytes;12/230 Qt ELF files remain unbound and license/source/advisory review remains open. The qualification cluster and independent security reviewer remain unavailable.
 
 Details: `evidence/qualification-dev82-integration-20261029.json`.
+
+
+## Dev82 completed qualification and targeted follow-through (2026-10-29)
+
+Exact SPELL8350123/tree7a17 (tested merge dd4c59a5, identical tree) with IDEb147/dev7 completed all44 jobs:35 successes and9 failures. Original45-second handoff/IDE growth is39,929,856/39,424,000 bytes (limit67,108,864). Original hours fail at1,053,573,120/1,050,255,360-byte growth and2,035,548,160/2,033,745,920-byte peaks (peak budget1,879,048,192). Original foundation times out at600s; all six optional sanitizer300s fail. Optional optimized hours pass7,639,040/7,350,272 bytes and do not replace mandatory acceptance.
+
+The separate test-build correction136dbbc4 passes1,751 tests in558.09s under unchanged600s, zero failures/errors/skips, complete7,006-row journal, lint/format/types and package build/install/smoke. It is not the PR head or a full-release pass. Original timeouts and local capability failures remain preserved.
+
+A separate exact-library control executes the unchanged two20ms buffered writers:181,981,184-byte cgroup growth over300.079s, live allocation delta−319 bytes, normal completion/cleanup. Sanitizer class/quarantine/RSS measurements overlap and are not added or subtracted from acceptance. This is demonstrated fixture retention, not a universal family lower bound. Late original-hour growth remains concentrated in Context and bridge; exact-ELF attribution and measured redundant-copy investigation continue without changing fixtures, limits, sanitizer checks or audit retention.
+
+Unpromoted IDEdev9 has two identical hosted derivative builds and309 source passes with one unchanged Windows exclusion (all310 identities/order, eight Docker cases). The source suite imports repository source while using the actual installed PySide dependency. Separate installed desktop-byte/offscreen/xcb probes pass. These observations do not qualify native sustained recovery. Joint wheel timestamp drift was preserved; immutable-epoch builds and exact artifact installation are being requalified. GLIBCXX3.4.30 portability and full source/license/advisory/security review remain open.
+
+Current security inventory remains243 packages/376 matches/187 advisory IDs. Actual pip candidate101 component/53 installed regressions and public startup pass; Qt229/230 SDK/prebuilt ELF relationships are not complete reproducible source builds or legal/advisory closure. All763 compatibility requirements remain unqualified, with555 bindings (546match/nine drift),47 historical reports and46 missing historical hashes. A prepared admitted TIME profile is only42 distinct requirements/168 dimensional checks.
+
+All eleven complete release groups remain false. GitHub writes have recovered. Production-like enforced-NetworkPolicy cluster, independent implemented-system reviewer and Windows execution remain unavailable; unfinished implementation and failed tests remain separate. No stable tag/release or production migration. See [the completed-source receipt](evidence/qualification-dev82-completed-20261029.json). Historical bodies and raw unsuccessful attempts remain retained.
+
+
+## Integrated dev83 candidate (2026-10-29)
+
+Runtime8de53b3e/tree535fb71f (localbbd42db) combines measured native owned string transfer and GUI admission JSON move construction with the passing original-budget compiler corrections. Version0.8.0.dev83; IDEpair remains b147/dev7. Local103-case selection has97passes and six preserved AF_UNIX EPERM failures before product execution, zero skips/errors; original lint/format/types pass.31 original/affected hosted executions are pending at the final evidence/head identity. This candidate does not inherit dev82 passes or qualify any full release group. Original workloads, authority, sanitizers, deadlines, accounting, limits and audit retention remain unchanged. See [the prepared candidate receipt](evidence/qualification-dev83-prepared-20261029.json).

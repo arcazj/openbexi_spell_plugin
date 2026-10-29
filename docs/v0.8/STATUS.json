@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Dev82 integrates exact dev81 executable corrections, stale audit-generation lock rejection and bounded per-connection bridge input reuse. Audit52 and bridge58 native component selections pass; fresh final-identity hosted bounded/sustained qualification is pending. All eleven release groups remain unqualified.",
+  "phase": "Dev83 candidate integrates measured owned native input transfer and GUI JSON-copy elimination, plus original-budget compiler fixes. Local103 cases:97pass/6AF_UNIX EPERM failures, no skips.31 original/affected hosted executions pending at exact final head; completeddev82 failures remain preserved. All11release groups unqualified.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -154,13 +154,13 @@
   "native_thread_barrier_qualification_receipt": "evidence/native-thread-barrier/qualification-summary.json; verified component and negative-control ZIP digests/CRCs and all 19 source hashes; observed background Python component only, no effective transfer or full-v0.8 qualification",
   "release_gate_manifest": "RELEASE_GATES.json; check_v08_release.py validates full gate records and rejects the current incomplete development build",
   "native_child_profile": "Optional checked-source before-spawn provider: 9bbae55 qualified ten roots, ten automatic blocking children and one visible automatic blocking grandchild; 41 PIDs, 11 consumed admissions, 37 EVs, 21 retained holds. Manual/nonblocking/failure and full-family semantics remain unqualified.",
-  "release_assessment": "Unqualified development candidate. GitHub writes recovered; the corrected Context observer is hosted. Original failed hours/foundation and historical causes remain open. No stable release or production migration.",
+  "release_assessment": "Unqualified dev83 candidate awaiting exact-source original bounded/sustained qualification. Prior dev82 hours fail; isolated136foundation passes. No stable publication or migration.",
   "native_child_qualification_receipt": "evidence/native-child-start/qualification-summary.json (original component) and nested-summary.json (nested component)",
   "native_listener_survival_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_nested_child_receipt": "evidence/native-child-start/nested-summary.json; digest/CRC and 23 public source hashes verified",
   "native_ide_observer_receipt": "evidence/dss-lifecycle/qualification-summary.json",
   "native_driver_concurrency": "a9c9bb1 PR/native DSS passed: ten independent command streams; shared three-reader admission for initialization/state/telemetry; 50 completed original driver calls and 50 matching ACKED stages in both ledgers. Full driver faults/load/recovery remain unqualified. Dev52 native terminal cohort failed before child start: ten commands uncertain, twenty ACKED stages, no child admissions. Root cause is unestablished; dev53 retains bounded phase timings without changing deadlines or replay policy. DSS lifecycle follow-up at f1ea033: all fifteen stage/fault pairs retain holds across same-DB restart, scenario reset never silently rebinds, and nine independent grants complete alongside one uncertain execution. See DSS_LIFECYCLE.md.",
-  "package_version": "0.8.0.dev82",
+  "package_version": "0.8.0.dev83",
   "native_control_profile": "Default-off original-owner RUN/STEP/PAUSE and terminal ABORT/CLOSE profiles with fresh command grants, preserved original provenance and no replay. Existing executions can be controlled through an explicitly enabled Listener route and the exact paired installed IDE.",
   "last_verified_component_commit": "699c6a5e88940d5e06d62a63e3724139616b8866",
   "next_native_contract": "Extend the bounded unanswered zero-timeout prompt and sealed-family transfer profile only with original-grant fencing, settled effects, native timing semantics and original process identity proof. Timed/uncertain prompts, later children and abrupt controller faults remain unqualified.",
@@ -2282,5 +2282,202 @@
       "final_archive_digest_not_embedded_in_its_own_payload": true,
       "saved_checkpoint_is_not_a_release_package": true
     }
+  },
+  "phase_history_before_dev82_completed_20261029": {
+    "phase": "Dev82 integrates exact dev81 executable corrections, stale audit-generation lock rejection and bounded per-connection bridge input reuse. Audit52 and bridge58 native component selections pass; fresh final-identity hosted bounded/sustained qualification is pending. All eleven release groups remain unqualified.",
+    "release_assessment": "Unqualified development candidate. GitHub writes recovered; the corrected Context observer is hosted. Original failed hours/foundation and historical causes remain open. No stable release or production migration."
+  },
+  "qualification_dev82_completed_20261029": {
+    "schema": "openbexi.dev82.completed-followthrough/1",
+    "recorded_at": "2026-10-29T07:51:19.710766+00:00",
+    "runtime_commit": "8350123cec0e7b0af4c5727d64398c5478422503",
+    "runtime_tree": "7a17b717dd9e9c966664897bbf06c79aa490285b",
+    "version": "0.8.0.dev82",
+    "tested_merge": "dd4c59a50599624a5b1e4ac1113aeffa55eb6b58",
+    "tested_merge_tree_identical": true,
+    "paired_ide": "b1472b4d5a515b9082db139fb8e16b63677a052e",
+    "jobs": {
+      "total": 44,
+      "success": 35,
+      "failure": 9,
+      "pending": 0,
+      "raw_artifacts_verified": 44
+    },
+    "original_45s": {
+      "handoff_growth_bytes": 39929856,
+      "ide_growth_bytes": 39424000,
+      "maximum_growth_bytes": 67108864,
+      "both_pass": true
+    },
+    "original_hours": [
+      {
+        "scenario": "handoff",
+        "growth_bytes": 1053573120,
+        "seconds": 3603.051605338,
+        "peak_bytes": 2035548160,
+        "passed": false
+      },
+      {
+        "scenario": "ide",
+        "growth_bytes": 1050255360,
+        "seconds": 3604.375343423,
+        "peak_bytes": 2033745920,
+        "passed": false
+      }
+    ],
+    "unchanged_limits": {
+      "maximum_growth_bytes": 67108864,
+      "peak_budget_bytes": 1879048192
+    },
+    "original_foundation": {
+      "passed": false,
+      "completed_passes": 1167,
+      "collected": 1744,
+      "deadline_seconds": 600,
+      "outer_exit": 124
+    },
+    "isolated_foundation": {
+      "commit": "136dbbc49e606d8471e371c268cc579deac38dd4",
+      "tree": "bc392fe06f5d8cded0ce3052483e85a441a217f5",
+      "run": 40835454844,
+      "passed": 1751,
+      "seconds": 558.09,
+      "deadline_seconds": 600,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "journal_records": 7006,
+      "lint_format_types_and_package_smoke_passed": true,
+      "is_not_PR_head_acceptance": true
+    },
+    "optional": {
+      "all_six_sanitizer_300s_failed": true,
+      "optimized_hour_growth_bytes": [
+        7639040,
+        7350272
+      ],
+      "optimized_hours_both_passed": true,
+      "replace_mandatory_acceptance": false
+    },
+    "fixture_baseline": {
+      "commit": "c979dc0a4be4400f3587692958abc1adb84aab2e",
+      "run": 40833329707,
+      "seconds": 300.0789,
+      "cgroup_growth_bytes": 181981184,
+      "anonymous_rss_growth_bytes": 185966592,
+      "live_allocation_delta_bytes": -319,
+      "allocator_class_5120_resident_growth_bytes": 151928832,
+      "global_quarantine_growth_bytes": 130214354,
+      "idle_anonymous_growth_bytes": 0,
+      "normal_completion_and_cleanup": true,
+      "separate_embedding_image": true,
+      "original_executor_executed": false,
+      "observations_overlap_and_must_not_be_added": true,
+      "no_baseline_subtraction": true,
+      "not_a_universal_family_lower_bound": true,
+      "acceptance": false
+    },
+    "interpretation": "Fixture-driven sanitizer retention is demonstrated. No conforming correction for that correctly freed buffer path has been identified. Late original-hour Context and bridge growth remains an implementation/investigation target; no impossibility theorem or permission blocker is inferred.",
+    "current_investigations": {
+      "context_pc_commit": "fd7ee32c71fac018a058c85c144d80f527618702",
+      "context_pc_run": 40836816850,
+      "status": "running; all outcomes must be collected",
+      "bridge_temporary_transfer": "measured get_ref-only no-op; separately measured const-reference native transfer candidate under local validation",
+      "native_time_subset": "prepared42-requirement additive admitted-runtime profile; not executed and not all763"
+    },
+    "ide_derivative": {
+      "unpromoted": true,
+      "version": "1.2.1.dev9",
+      "successful_hosted_commit": "53b13962a585dbfa253b4790dfa4d509f3a6ab7d",
+      "successful_run": 40834540436,
+      "source_passed": 309,
+      "source_unchanged_windows_exclusion": 1,
+      "source_identities": 310,
+      "source_journal_records": 1242,
+      "source_outer_seconds": 328.007,
+      "source_suite_imports_repository_source": true,
+      "actual_installed_derivative": true,
+      "original_docker_cases_passed": 8,
+      "derivative_wheel_sha256": "383835c501254b4fab32c8a3569f6321a82a858d79d7296dbe004fa494f38b9d",
+      "derivative_library_sha256": "868a9b79f312bdf8699102df4211cf3d72fd3f838dadecd7579871827421cd8e",
+      "two_hosted_builds_identical": true,
+      "actual_clean_desktop_image_byte_checks_and_public_offscreen_xcb": true,
+      "native_server_deployment_or_sustained_recovery_qualified": false,
+      "normal_official_dependency_lock_promoted": false,
+      "manylinux_portability_qualified": false,
+      "remaining_GLlBCXX_requirement": "GLIBCXX_3.4.30",
+      "joint_wheel_packaging_commit": "916b150644a90891f24b179e68c2ce878f3c0cfb",
+      "joint_packaging_run": 40836979103,
+      "joint_packaging_status": "running; immutable epochs and exact retained-wheel installation being requalified"
+    },
+    "security": {
+      "current_inventory_packages": 243,
+      "vulnerability_matches": 376,
+      "advisory_ids": 187,
+      "matches_are_not_unique_CVEs": true,
+      "pip_candidate_actual_image_executed": true,
+      "pip_component_passes": 101,
+      "installed_regressions": 53,
+      "public_offscreen_xcb": true,
+      "qt_top_libraries_direct_sdk_relationships": 70,
+      "qt_elf_sdk_or_prebuilt_relationships": 229,
+      "qt_elf_total": 230,
+      "relationships_are_not_complete_source_builds": true,
+      "full_source_license_advisory_disposition": false,
+      "independent_implemented_system_review": false
+    },
+    "compatibility": {
+      "requirements": 763,
+      "bindings": 555,
+      "match": 546,
+      "drift": 9,
+      "historical_reports": 47,
+      "unrecovered_historical_hashes": 46,
+      "all763_freshly_qualified": false
+    },
+    "external_dependencies": [
+      "Production-like qualification cluster enforcing NetworkPolicy",
+      "Independent implemented-system security reviewer",
+      "Windows execution"
+    ],
+    "local_execution_limits": [
+      "Docker/Kubernetes unavailable",
+      "process_vm_readv positive controls returned ENOSYS",
+      "Separate AF_UNIX/LeakSanitizer procfs prerequisites fail locally; original failures retained"
+    ],
+    "github_authenticated_writes_restored": true,
+    "all_eleven_release_groups_qualified": false,
+    "stable_published": false,
+    "production_migration_authorized": false,
+    "archive_scope": "Recorded-source/overlay/audit/CRC/digest verification and actual scoped executions remain distinct from complete Git-blob archive verification and final shipped-system qualification. Counts overlap and must not be summed."
+  },
+  "current_completed_receipt": "evidence/qualification-dev82-completed-20261029.json",
+  "current_candidate": {
+    "version": "0.8.0.dev83",
+    "runtime_commit": "8de53b3e7712d14a5c1e9df0fb98032a425c4799",
+    "runtime_tree": "535fb71f454d2a5be4fc3911cf65a578b9967a9f",
+    "local_runtime_commit": "bbd42db7345312c1f25a152eb1493c871a8fd03b",
+    "parent_foundation": "136dbbc49e606d8471e371c268cc579deac38dd4",
+    "paired_ide": "b1472b4d5a515b9082db139fb8e16b63677a052e",
+    "planned_original_executions": 31,
+    "local_components": {
+      "total": 103,
+      "passed": 97,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "failed_reason": "AF_UNIX socket EPERM before product execution; failures retained"
+    },
+    "local_lint_format_types_pass": true,
+    "source_blobs_verified": 278,
+    "hosted_qualification": "pending exact final evidence/head commit; no hosted pass inherited",
+    "runtime_changes": [
+      "Native bridge const-reference synchronous copy into independent native ownership",
+      "Move exclusively owned GUI JSON fields/body through unchanged fresh admission path"
+    ],
+    "no_allocator_or_sanitizer_policy_change": true,
+    "no_workload_deadline_limit_audit_change": true,
+    "full_v08_qualified": false,
+    "stable_published": false
   }
 }
