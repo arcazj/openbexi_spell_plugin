@@ -15,6 +15,7 @@ import subprocess
 import zipfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location(
@@ -25,8 +26,9 @@ spec.loader.exec_module(builder)
 
 
 @pytest.fixture(scope="session")
-def codec_binaries(tmp_path_factory):
+def codec_binaries(tmp_path_factory, request):
     folder = tmp_path_factory.mktemp("native-message-codec")
+    builds = NativeBuildBatch(folder, request)
     # Immutable pre-correction encoder: exact dev76 source, independent of the candidate.
     assert (
         hashlib.sha256(
@@ -37,6 +39,20 @@ def codec_binaries(tmp_path_factory):
     assert (
         hashlib.sha256((ROOT / "server/tests/native_bridge_frame_dev77.H").read_bytes()).hexdigest()
         == "d5f4a57d19e01d3884fd014ecd12ac50b1328641777b74da1dbfbf19d72d2660"
+    )
+    frozen_input = (ROOT / "server/tests/native_bridge_input_before_dev80.inc").read_bytes()
+    assert hashlib.sha256(frozen_input).hexdigest() == (
+        "79023bdf1f2d8eff324573c74975479723e5e7ae6346d27ba112f87db638c13b"
+    )
+    private_bridge = (ROOT / "host_runtime/native/private_bridge.cpp").read_text()
+    input_start = private_bridge.index("                // The request owns these fields")
+    input_end = private_bridge.index('                if (request.at("operation")', input_start)
+    (folder / "bridge_input.inc").write_text(
+        "static void bridgeInputBefore(SPELLipcMessage& message,const Json& request) {\n"
+        + frozen_input.decode()
+        + "}\nstatic void bridgeInputAfter(SPELLipcMessage& message,const Json& request) {\n"
+        + private_bridge[input_start:input_end]
+        + "}\n"
     )
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
         original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
@@ -160,7 +176,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
         path = folder / (name + ".cpp")
         path.write_text(text)
         binary = folder / name
-        process = subprocess.run(
+        builds.add(
             [
                 "c++",
                 "-std=c++17",
@@ -179,12 +195,11 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 "-o",
                 str(binary),
             ],
-            capture_output=True,
             text=True,
             timeout=60,
         )
-        assert process.returncode == 0, process.stderr
         binaries[name] = binary
+    builds.run()
     return binaries
 
 
@@ -386,3 +401,22 @@ def test_bridge_header_adapter_rejects_drift_and_reapplication():
     ):
         with pytest.raises(ValueError, match="boundary differs"):
             builder.borrow_native_bridge_headers(text)
+
+
+def test_bridge_input_borrow_preserves_native_wire_errors_and_request_ownership(codec_binaries):
+    result = run(codec_binaries["after"], "bridge_input_ownership")
+    assert result["cases"] == 12
+    assert result["input_unchanged"] is True
+    assert result["owned_after_request_destruction"] is True
+
+
+@pytest.mark.parametrize("case", ["short", "long", "absent"])
+def test_bridge_input_borrow_removes_subtree_copy_allocations(codec_binaries, tmp_path, case):
+    before = run(codec_binaries["after"], "alloc_bridge_input_" + case + "_copy")
+    after = run(codec_binaries["after"], "alloc_bridge_input_" + case + "_borrow")
+    assert before["digest"] == after["digest"]
+    assert before["allocations"] - after["allocations"] >= 10000
+    assert before["allocated_bytes"] - after["allocated_bytes"] >= 480000
+    (tmp_path / (case + "-bridge-input-allocations.json")).write_text(
+        json.dumps({"before": before, "after": after, "iterations": 10000}, indent=2) + "\n"
+    )

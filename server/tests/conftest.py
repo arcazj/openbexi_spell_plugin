@@ -6,6 +6,8 @@ from pathlib import Path
 
 import pytest
 
+pytest_plugins = ("qualification_journal",)
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from openbexi_spell_server.transport import tls_context  # noqa: E402

@@ -2,7 +2,11 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
+import json
+from pathlib import Path
+import re
 import uuid
+import zipfile
 
 import pytest
 
@@ -380,11 +384,81 @@ def test_explicit_empty_native_event_is_recorded_once_without_becoming_idle(audi
     assert call(audit_setup, pki, admitted, "event", **dict(event, message="changed"))[0] == 409
 
 
+@pytest.mark.parametrize("scope_name", ["PROC", "SYS", "CFG"])
+def test_frozen_native_event_scopes_have_execution_bound_durable_receipts(
+    audit_setup, pki, scope_name
+):
+    archive = Path(__file__).resolve().parents[2] / "docs/reference/SPELL2.6.10-src.zip"
+    with zipfile.ZipFile(archive) as frozen:
+        constants = frozen.read("src/spell/spell/lang/constants.py").decode()
+        scopes = {
+            name: int(value)
+            for name, value in re.findall(
+                r"^SCOPE_(PROC|SYS|CFG)\s*=\s*(\d+)\s*$", constants, re.MULTILINE
+            )
+        }
+        scheduler = frozen.read("lib/SPELL_EXC/src/SPELLscheduler.C").decode()
+    assert scopes == {"PROC": 1, "SYS": 2, "CFG": 4}
+    assert 'raiseEvent("Procedure awaiting prompt answer")' in scheduler
+    assert "PyLong_FromLong(LanguageConstants::SCOPE_SYS)" in scheduler
+    admitted = ready_audit(audit_setup, pki)
+    event = dict(
+        event_body(),
+        message="Procedure awaiting prompt answer",
+        severity=1,
+        scope=scopes[scope_name],
+    )
+    for _ in range(2):
+        status, reply = call(audit_setup, pki, admitted, "event", **event)
+        assert status == 200
+        assert reply["result"] == dict(
+            recorded=True, request_id=event["request_id"], execution_id=admitted.execution_id
+        )
+    records = (
+        audit_setup["store"]
+        .db.execute("SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'")
+        .fetchall()
+    )
+    assert len(records) == 1
+    assert json.loads(records[0]["body"]) == dict(
+        event,
+        execution_id=admitted.execution_id,
+        control_epoch=admitted.control_epoch,
+        worker_incarnation=admitted.worker_incarnation,
+    )
+    assert call(audit_setup, pki, admitted, "event", **dict(event, scope=7))[0] == 400
+    changed = dict(event, scope=next(value for value in scopes.values() if value != event["scope"]))
+    assert call(audit_setup, pki, admitted, "event", **changed)[0] == 409
+    assert (
+        audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
+        == 1
+    )
+
+
+@pytest.mark.parametrize("scope", [2, 4])
+def test_native_event_category_cannot_substitute_identity_or_consumption_proof(
+    audit_setup, pki, scope
+):
+    admitted = ready_audit(audit_setup, pki)
+    event = dict(event_body(), scope=scope)
+    assert call(audit_setup, pki, admitted, "event", certificate="observer", **event)[0] == 403
+    assert call(audit_setup, pki, admitted, "event", runtime_capability="0" * 64, **event)[0] == 403
+    substituted = dict(asdict(admitted), worker_incarnation="different-worker")
+    assert call(audit_setup, pki, admitted, "event", grant=substituted, **event)[0] == 403
+    assert (
+        audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
+        == 0
+    )
+
+
 @pytest.mark.parametrize(
     "field,value",
     [
-        ("scope", 2),
-        ("scope", 4),
+        ("scope", 0),
+        ("scope", 3),
+        ("scope", 8),
+        ("scope", 16),
+        ("scope", "2"),
         ("scope", True),
         ("severity", True),
         ("severity", 0),
@@ -392,7 +466,7 @@ def test_explicit_empty_native_event_is_recorded_once_without_becoming_idle(audi
         ("request_id", "bad"),
     ],
 )
-def test_native_event_cannot_write_global_scope_or_malformed_data(audit_setup, pki, field, value):
+def test_native_event_rejects_non_event_scopes_or_malformed_data(audit_setup, pki, field, value):
     admitted = ready_audit(audit_setup, pki)
     assert (
         call(audit_setup, pki, admitted, "event", **dict(event_body(), **{field: value}))[0] == 400
@@ -403,30 +477,33 @@ def test_native_event_cannot_write_global_scope_or_malformed_data(audit_setup, p
     )
 
 
-def test_fenced_native_events_and_their_replays_are_denied(audit_setup, pki):
+@pytest.mark.parametrize("scope", [1, 2, 4])
+def test_fenced_native_events_and_their_replays_are_denied(audit_setup, pki, scope):
     admitted = ready_audit(audit_setup, pki)
-    event = event_body()
+    event = dict(event_body(), scope=scope)
     assert call(audit_setup, pki, admitted, "event", **event)[0] == 200
     audit_setup["controller"]("session.close", {"connection_id": audit_setup["connection"]})
     assert call(audit_setup, pki, admitted, "event", **event)[0] == 403
-    assert call(audit_setup, pki, admitted, "event", **event_body())[0] == 403
+    assert call(audit_setup, pki, admitted, "event", **dict(event_body(), scope=scope))[0] == 403
     assert (
         audit_setup["store"].db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0]
         == 1
     )
 
 
-def test_no_event_acknowledgement_when_audit_capacity_is_full(audit_setup, pki):
+@pytest.mark.parametrize("scope", [1, 2, 4])
+def test_no_event_acknowledgement_when_audit_capacity_is_full(audit_setup, pki, scope):
     admitted = ready_audit(audit_setup, pki)
     store = audit_setup["store"]
     store.max_events = store.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
-    assert call(audit_setup, pki, admitted, "event", **event_body())[0] == 503
+    assert call(audit_setup, pki, admitted, "event", **dict(event_body(), scope=scope))[0] == 503
     assert store.db.execute("SELECT COUNT(*) FROM native_driver_events").fetchone()[0] == 0
 
 
-def test_native_event_binding_must_be_explicit(setup, pki):
+@pytest.mark.parametrize("scope", [1, 2, 4])
+def test_native_event_binding_must_be_explicit(setup, pki, scope):
     admitted = ready_audit(setup, pki)
-    assert call(setup, pki, admitted, "event", **event_body())[0] == 403
+    assert call(setup, pki, admitted, "event", **dict(event_body(), scope=scope))[0] == 403
 
 
 def test_driver_gate_preserves_native_event_schema_version(audit_setup, pki, tmp_path):
@@ -442,7 +519,8 @@ def test_driver_gate_preserves_native_event_schema_version(audit_setup, pki, tmp
         gate.close()
 
 
-def test_native_event_and_post_start_handoff_share_one_linearization_lock(audit_setup, pki):
+@pytest.mark.parametrize("scope", [1, 2, 4])
+def test_native_event_and_post_start_handoff_share_one_linearization_lock(audit_setup, pki, scope):
     import threading
 
     setup = audit_setup
@@ -459,7 +537,7 @@ def test_native_event_and_post_start_handoff_share_one_linearization_lock(audit_
 
     def event():
         barrier.wait(timeout=2)
-        return call(setup, pki, admitted, "event", **event_body())[0]
+        return call(setup, pki, admitted, "event", **dict(event_body(), scope=scope))[0]
 
     def transfer():
         barrier.wait(timeout=2)

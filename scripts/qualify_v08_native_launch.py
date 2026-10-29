@@ -39,6 +39,89 @@ PERMISSIONS = [
 ]
 
 
+def audit_native_lifecycle_receipts(executions, bodies, receipts, native_child_gate):
+    """Keep exact lifecycle counts while retaining legitimate native warnings.
+
+    Event Scope classifies original EV messages; it does not grant authority.
+    Every body, including scheduler SYS warnings, must retain one matching
+    durable receipt for an admitted execution. Extra events cannot replace any
+    of the mandatory start/end events, and no records are discarded here.
+    """
+    failures = []
+    execution_ids = {execution["id"] for execution in executions}
+    identities = []
+    valid = []
+    for body in bodies:
+        if (
+            type(body) is not dict
+            or type(body.get("message")) is not str
+            or type(body.get("request_id")) is not str
+            or body.get("execution_id") not in execution_ids
+            or type(body.get("scope")) is not int
+            or body["scope"] not in {1, 2, 4}
+            or type(body.get("severity")) is not int
+            or body["severity"] not in {1, 2, 4, 8}
+        ):
+            failures.append("native_event_body_invalid")
+            continue
+        identities.append((body["request_id"], body["execution_id"]))
+        valid.append(body)
+    stored = [tuple(receipt) for receipt in receipts]
+    if (
+        len(identities) != len(bodies)
+        or len({request_id for request_id, _ in identities}) != len(identities)
+        or len(set(stored)) != len(stored)
+        or len(stored) != len(identities)
+        or set(stored) != set(identities)
+    ):
+        failures.append("native_event_receipt_identity_mismatch")
+    counts = []
+    for index, execution in enumerate(executions):
+        messages = [
+            body["message"]
+            for body in valid
+            if body["execution_id"] == execution["id"]
+            # Frozen controller start/end use the EV adapter's INFORMATION /
+            # SCOPE_PROC defaults. A system/configuration warning with similar
+            # text cannot replace any of those required lifecycle records.
+            and body["scope"] == 1
+            and body["severity"] == 8
+        ]
+        started = sum(message.startswith("Procedure started:") for message in messages)
+        finished = sum(
+            message.startswith("Procedure finished:") for message in messages
+        )
+        expected = 2 if native_child_gate else 1
+        if native_child_gate and index == 0:
+            expected += 1
+        counts.append(
+            dict(
+                worker_index=index,
+                started=started,
+                finished=finished,
+                expected_started=expected,
+                expected_finished=expected,
+            )
+        )
+        if started != expected or finished != expected:
+            failures.append("native_lifecycle_count_mismatch")
+    lifecycle_events = sum(row["started"] + row["finished"] for row in counts)
+    if (native_child_gate and lifecycle_events != 42) or (
+        not native_child_gate and lifecycle_events < 20
+    ):
+        failures.append("native_lifecycle_receipts_missing")
+    return dict(
+        passed=not failures,
+        failures=sorted(set(failures)),
+        native_lifecycle_counts=counts,
+        native_lifecycle_events_persisted=lifecycle_events,
+        native_non_lifecycle_events_persisted=len(bodies) - lifecycle_events,
+        native_driver_events_persisted=len(stored),
+        all_event_bodies_checked=len(bodies),
+        all_receipt_identities_checked=len(stored),
+    )
+
+
 def retain_failure(report, error, *, phase="qualification"):
     detail = type(error).__name__ + ": " + str(error)
     report["passed"] = False
@@ -1834,61 +1917,30 @@ def main():
                             uri=True,
                         )
                     ) as audit:
-                        event_count = audit.execute(
-                            "SELECT COUNT(*) FROM native_driver_events"
-                        ).fetchone()[0]
+                        receipts = audit.execute(
+                            "SELECT request_id,execution_id FROM native_driver_events"
+                        ).fetchall()
                         bodies = [
                             json.loads(row[0])
                             for row in audit.execute(
                                 "SELECT body FROM events WHERE type='NATIVE_DRIVER_EVENT'"
                             )
                         ]
-                        report["native_lifecycle_counts"] = []
-                        for index, execution in enumerate(executions):
-                            messages = [
-                                body["message"]
-                                for body in bodies
-                                if body["execution_id"] == execution["id"]
-                            ]
-                            started = sum(
-                                message.startswith("Procedure started:")
-                                for message in messages
-                            )
-                            finished = sum(
-                                message.startswith("Procedure finished:")
-                                for message in messages
-                            )
-                            # Every candidate automatic child now enters its
-                            # normal initial pause and admitted RUN, including
-                            # hidden children. Each must emit one real start/end.
-                            expected_started = 2 if profile.native_child_gate else 1
-                            expected_finished = 2 if profile.native_child_gate else 1
-                            if profile.native_child_gate and index == 0:
-                                expected_started += 1
-                                expected_finished += 1
-                            report["native_lifecycle_counts"].append(
-                                dict(
-                                    worker_index=index,
-                                    started=started,
-                                    finished=finished,
-                                    expected_started=expected_started,
-                                    expected_finished=expected_finished,
-                                )
-                            )
-                            if (
-                                started != expected_started
-                                or finished != expected_finished
-                            ):
-                                raise RuntimeError(
-                                    "Native lifecycle events lack unique durable receipts"
-                                )
-                        if (profile.native_child_gate and event_count != 42) or (
-                            not profile.native_child_gate and event_count < 20
+                        assessment = audit_native_lifecycle_receipts(
+                            executions, bodies, receipts, profile.native_child_gate
+                        )
+                        report["native_event_receipt_assessment"] = assessment
+                        for key in (
+                            "native_lifecycle_counts",
+                            "native_lifecycle_events_persisted",
+                            "native_non_lifecycle_events_persisted",
+                            "native_driver_events_persisted",
                         ):
+                            report[key] = assessment[key]
+                        if not assessment["passed"]:
                             raise RuntimeError(
-                                "Native lifecycle events lack durable receipts"
+                                "Native lifecycle events lack unique durable receipts"
                             )
-                    report["native_driver_events_persisted"] = event_count
                     if profile.native_child_gate:
                         with closing(
                             sqlite3.connect(

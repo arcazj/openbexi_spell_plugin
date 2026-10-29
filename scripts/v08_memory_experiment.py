@@ -15,7 +15,7 @@ PREIMAGES = {
     "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
     "host_runtime/build_admission_context.py": "eb54f0a12bac2be619eb79d19746b063203a41c0acfc98b75da08e85ebfce5e4",
     "host_runtime/python/native.py": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
-    "scripts/qualify_v08_native_launch.py": "7d27aaa9fd64eef3d166b4c84900f42cf6f3ed434ae2a733373d67292b115128",
+    "scripts/qualify_v08_native_launch.py": "3a80dd104cca77a5e8aec4d2a9748ece6ccc3067d06424ef7f57b2b2005f86b2",
     "scripts/v08_native_consumption.py": "1d1cac580885d181c7e86bd3d7dc81926f18e193c38b607048194ed6b5482ec8",
     "scripts/v08_resource_probe.py": "9c22753ab4e638ef0658c4286fd32c6a79a83f269253ef6df91162528a23aea8",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",

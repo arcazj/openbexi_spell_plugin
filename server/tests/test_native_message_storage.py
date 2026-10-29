@@ -8,13 +8,15 @@ import subprocess
 import zipfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture(scope="session")
-def storage_binaries(tmp_path_factory):
+def storage_binaries(tmp_path_factory, request):
     folder = tmp_path_factory.mktemp("native-message-storage")
+    builds = NativeBuildBatch(folder, request)
     spec = importlib.util.spec_from_file_location(
         "storage_builder", ROOT / "host_runtime/build_admission_context.py"
     )
@@ -115,7 +117,7 @@ extern "C" void storage_trace_dump(){v08_storage_profile_dump(123456789);}
         source = folder / (name + ".cpp")
         source.write_text(text)
         binary = folder / name
-        process = subprocess.run(
+        builds.add(
             [
                 "c++",
                 "-std=c++17",
@@ -135,12 +137,11 @@ extern "C" void storage_trace_dump(){v08_storage_profile_dump(123456789);}
                 "-o",
                 str(binary),
             ],
-            capture_output=True,
             text=True,
             timeout=60,
         )
-        assert process.returncode == 0, process.stderr
         binaries[name] = binary
+    builds.run()
     return binaries
 
 

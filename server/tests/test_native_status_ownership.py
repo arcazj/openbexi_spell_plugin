@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -37,7 +38,7 @@ def component_recording(request):
     _COMPONENT_TERMINAL = request.config.pluginmanager.get_plugin("terminalreporter")
 
 
-def component_run(command, *, label, binary, timeout, env=None):
+def component_run(command, *, label, binary, timeout, env=None, echo_output=True):
     global _COMPONENT_INDEX
     started = time.monotonic()
     error = None
@@ -80,20 +81,141 @@ def component_run(command, *, label, binary, timeout, env=None):
     if _COMPONENT_TERMINAL:
         # Inputs and outputs are fixed component fixtures; no runtime secrets,
         # credentials, arguments or environment from a deployed process enter.
+        displayed = record
+        if echo_output:
+            displayed = record | {
+                "stdout": stdout.decode("utf-8", "backslashreplace"),
+                "stderr": stderr.decode("utf-8", "backslashreplace"),
+            }
         _COMPONENT_TERMINAL.write_line(
-            "native_component_result "
-            + json.dumps(
-                record
-                | {
-                    "stdout": stdout.decode("utf-8", "backslashreplace"),
-                    "stderr": stderr.decode("utf-8", "backslashreplace"),
-                },
-                sort_keys=True,
-            )
+            "native_component_result " + json.dumps(displayed, sort_keys=True)
         )
     if error:
         raise error
     return result
+
+
+@pytest.fixture(scope="module")
+def message_object_cache(tmp_path_factory, component_recording):
+    # Every object is built during this module's timed pytest invocation.
+    return tmp_path_factory.mktemp("native-message-objects"), {}
+
+
+def common_message_object(out, group, sanitizer, macro, value, cache, deadline):
+    """Reuse only an identical translation unit, flags and dependency bytes."""
+    folder, entries = cache
+    compiler = Path(shutil.which("c++")).resolve()
+    compiler_identity = str(compiler), hashlib.sha256(compiler.read_bytes()).hexdigest()
+    inputs = {
+        path.relative_to(out).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in [out / "message.cpp", *sorted(out.glob("SPELL_*/*.H"))]
+    }
+    canonical = folder / f"{group}-{sanitizer}"
+    binary = canonical / "message.o"
+    flags = [
+        "-std=c++17",
+        "-O1",
+        "-g",
+        "-pthread",
+        "-fno-omit-frame-pointer",
+        "-fno-sanitize-recover=all",
+        "-fsanitize=" + ("address,undefined" if sanitizer == "asan" else "thread"),
+        "-no-pie",
+        "-I" + str(canonical),
+        "-I" + str(ROOT / "host_runtime/native"),
+    ]
+    identity = dict(compiler=compiler_identity, flags=flags, input_sha256=inputs)
+    key = group, sanitizer
+    entry = entries.get(key)
+    if entry is not None:
+        if identity != entry["identity"]:
+            raise ValueError("Message object input or compiler flag drift")
+        for name, digest in entry["dependencies"].items():
+            if hashlib.sha256(Path(name).read_bytes()).hexdigest() != digest:
+                raise ValueError("Message object dependency drift")
+        if hashlib.sha256(binary.read_bytes()).hexdigest() != entry["object_sha256"]:
+            raise ValueError("Message object byte drift")
+    else:
+        canonical.mkdir()
+        for name in inputs:
+            target = canonical / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(out / name, target)
+
+    # -P removes location directives, but preserves expanded __FILE__ values.
+    # Therefore source paths that affect executable tokens also refuse reuse.
+    original_flags = ["-I" + str(out) if part == "-I" + str(canonical) else part for part in flags]
+    observed = component_run(
+        [
+            str(compiler),
+            *original_flags,
+            "-D" + macro + "=" + str(value),
+            "-E",
+            "-P",
+            str(out / "message.cpp"),
+        ],
+        label=f"message-{group}-{sanitizer}-{out.name}-preprocess",
+        binary=binary,
+        timeout=max(0, deadline - time.monotonic()),
+        echo_output=False,
+    )
+    assert observed.returncode == 0, observed.stderr.decode()
+    preprocessed = hashlib.sha256(observed.stdout).hexdigest()
+    if entry is None:
+        common = component_run(
+            [str(compiler), *flags, "-E", "-P", str(canonical / "message.cpp")],
+            label=f"message-{group}-{sanitizer}-common-preprocess",
+            binary=binary,
+            timeout=max(0, deadline - time.monotonic()),
+            echo_output=False,
+        )
+        assert common.returncode == 0, common.stderr.decode()
+        expected = hashlib.sha256(common.stdout).hexdigest()
+    else:
+        expected = entry["preprocessed_sha256"]
+    if preprocessed != expected:
+        raise ValueError("Message object preprocessed translation unit drift")
+
+    if entry is None:
+        dependencies = canonical / "message.d"
+        command = [
+            str(compiler),
+            *flags,
+            "-MD",
+            "-MF",
+            str(dependencies),
+            "-c",
+            str(canonical / "message.cpp"),
+            "-o",
+            str(binary),
+        ]
+        result = component_run(
+            command,
+            label=f"message-{group}-{sanitizer}-compile",
+            binary=binary,
+            timeout=max(0, deadline - time.monotonic()),
+        )
+        assert result.returncode == 0, result.stderr.decode()
+        names = shlex.split(dependencies.read_text().replace("\\\n", "").split(":", 1)[1])
+        entry = {
+            "identity": identity,
+            "compiler_invocation": command,
+            "preprocessed_sha256": expected,
+            "dependencies": {
+                name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in names
+            },
+            "object_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
+            "uses": [],
+        }
+        entries[key] = entry
+    entry["uses"].append(
+        dict(profile=out.name, macro=macro, value=value, preprocessed_sha256=preprocessed)
+    )
+    receipt = json.dumps(entry, indent=2) + "\n"
+    (canonical / "input-identity.json").write_text(receipt)
+    if _COMPONENT_OUTPUT:
+        (_COMPONENT_OUTPUT / f"message-object-{group}-{sanitizer}.json").write_text(receipt)
+    return binary
 
 
 def method(text, signature):
@@ -148,8 +270,8 @@ def status_sources(tmp_path_factory):
     return folder, tree, before, contract, builder
 
 
-@pytest.fixture(scope="session")
-def status_binaries(status_sources, component_recording):
+@pytest.fixture(scope="module")
+def status_binaries(status_sources, component_recording, message_object_cache):
     folder, tree, before, contract, _ = status_sources
     binaries = {}
     for profile in ("before", "candidate", "contract"):
@@ -228,6 +350,16 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
         sanitizers = ("asan", "tsan") if profile != "contract" else ("asan",)
         for sanitizer in sanitizers:
             binary = out / sanitizer
+            deadline = time.monotonic() + 60
+            message_object = common_message_object(
+                out,
+                "status",
+                sanitizer,
+                "V08_STATUS_CANDIDATE",
+                int(profile == "candidate"),
+                message_object_cache,
+                deadline,
+            )
             command = [
                 "c++",
                 "-std=c++17",
@@ -241,7 +373,7 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 "-I" + str(out),
                 "-I" + str(ROOT / "host_runtime/native"),
                 "-DV08_STATUS_CANDIDATE=" + str(int(profile == "candidate")),
-                str(out / "message.cpp"),
+                str(message_object),
                 str(ROOT / "server/tests/native_status_ownership.cpp"),
                 "-lz",
                 "-o",
@@ -251,7 +383,7 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 command,
                 label=f"status-{profile}-{sanitizer}-build",
                 binary=binary,
-                timeout=60,
+                timeout=max(0, deadline - time.monotonic()),
             )
             (out / (sanitizer + "-build.stderr")).write_bytes(built.stderr)
             assert built.returncode == 0, built.stderr.decode()
@@ -356,7 +488,7 @@ def test_ownership_patch_refuses_drift_before_any_write(status_sources, tmp_path
 
 
 @pytest.fixture(scope="module")
-def ack_binaries(status_sources, status_binaries):
+def ack_binaries(status_sources, status_binaries, message_object_cache):
     folder, tree, before_status, _, builder = status_sources
     before = folder / "before-ack"
     shutil.copytree(before_status, before)
@@ -437,6 +569,16 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
         )
         for sanitizer in ("asan", "tsan") if profile == "candidate" else ("asan",):
             binary = out / sanitizer
+            deadline = time.monotonic() + 60
+            message_object = common_message_object(
+                out,
+                "ack",
+                sanitizer,
+                "V08_ACK_CANDIDATE",
+                int(profile == "candidate"),
+                message_object_cache,
+                deadline,
+            )
             command = [
                 "c++",
                 "-std=c++17",
@@ -450,7 +592,7 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 "-I" + str(out),
                 "-I" + str(ROOT / "host_runtime/native"),
                 "-DV08_ACK_CANDIDATE=" + str(int(profile == "candidate")),
-                str(out / "message.cpp"),
+                str(message_object),
                 str(ROOT / "server/tests/native_ack_ownership.cpp"),
                 "-lz",
                 "-o",
@@ -460,7 +602,7 @@ static std::string timestamp(){return "2026-10-28T00:00:00";}
                 command,
                 label=f"ack-{profile}-{sanitizer}-build",
                 binary=binary,
-                timeout=60,
+                timeout=max(0, deadline - time.monotonic()),
             )
             (out / (sanitizer + "-build.stderr")).write_bytes(result.stderr)
             assert result.returncode == 0, result.stderr.decode()
@@ -568,3 +710,57 @@ def test_wait_deadline_polling_and_constructor_only_reset_remain_explicit(status
     )
     assert "std::this_thread::sleep_for(std::chrono::milliseconds(20));" in wait
     assert "generation!=m_reconnectGeneration" in wait
+
+
+def test_message_object_reuse_refuses_input_dependency_flag_and_token_drift(
+    status_binaries, message_object_cache, tmp_path
+):
+    source = status_binaries["before", "asan"].parent
+
+    def reuse(out=source, cache=message_object_cache):
+        return common_message_object(
+            out,
+            "status",
+            "asan",
+            "V08_STATUS_CANDIDATE",
+            0,
+            cache,
+            time.monotonic() + 60,
+        )
+
+    changed = tmp_path / "changed"
+    shutil.copytree(source, changed)
+    header = changed / "SPELL_UTIL/SPELLutils.H"
+    header.write_text(header.read_text() + "\n// changed input identity\n")
+    with pytest.raises(ValueError, match="input or compiler flag drift"):
+        reuse(changed)
+
+    folder, entries = message_object_cache
+    entry = entries["status", "asan"]
+    flags = entry["identity"]["flags"]
+    entry["identity"]["flags"] = flags + ["-O2"]
+    try:
+        with pytest.raises(ValueError, match="input or compiler flag drift"):
+            reuse()
+    finally:
+        entry["identity"]["flags"] = flags
+    dependency = folder / "status-asan/SPELL_UTIL/SPELLutils.H"
+    original = dependency.read_bytes()
+    dependency.write_bytes(original + b"\n// changed dependency identity\n")
+    try:
+        with pytest.raises(ValueError, match="dependency drift"):
+            reuse()
+    finally:
+        dependency.write_bytes(original)
+
+    # Actual preprocessing must reject a test macro that affects this unit.
+    header.write_text(
+        header.read_text()
+        + "\n#ifdef V08_STATUS_CANDIDATE\n"
+        + "inline constexpr int component_token=V08_STATUS_CANDIDATE;\n#endif\n"
+    )
+    fresh = tmp_path / "fresh-cache"
+    fresh.mkdir()
+    with pytest.raises(ValueError, match="preprocessed translation unit drift"):
+        reuse(changed, (fresh, {}))
+    assert not list(fresh.rglob("*.o"))

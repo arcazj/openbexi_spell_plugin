@@ -74,7 +74,7 @@ def driver_event_shape(message, settings):
         message_empty=not message,
         message_within_bound=len(message.encode("utf-8")) <= 8192,
         severity_valid=type(severity) is int and severity in {1, 2, 4, 8},
-        scope_valid=type(scope) is int and scope == 1,
+        scope_valid=type(scope) is int and scope in {1, 2, 4},
         scope_kind=scope_kind,
         known_warning="prompt_wait"
         if message == "Procedure awaiting prompt answer"
@@ -665,8 +665,8 @@ def run(config):
         os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"
         runtime = HandoffRuntime(request, route, "/control/handoff-epoch")
         route = runtime.guarded_route()
-    # Force the real proxy. Only procedure-scoped audit events are journalled
-    # by Context; unqualified methods never fall back to ExampleDriver.
+    # Force the real proxy. All event categories remain execution-bound in
+    # Context; unqualified methods never fall back to ExampleDriver.
     denied = set()
     driver_methods = set()
     relay = None

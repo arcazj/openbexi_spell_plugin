@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 
 import pytest
+from native_build_batch import NativeBuildBatch
 
 ROOT = Path(__file__).resolve().parents[2]
 REFERENCE = "892914f10f12bd9a3043a69e07f363a143445ec3"
@@ -15,13 +16,14 @@ EPOCH = b"11111111-1111-4111-8111-111111111111"
 
 
 @pytest.fixture(scope="session")
-def epoch_binaries(tmp_path_factory):
+def epoch_binaries(tmp_path_factory, request):
     include = Path("/usr/include")
     if not (include / "nlohmann/json.hpp").is_file():
         import nlohmann_json
 
         include = Path(nlohmann_json.get_include())
     folder = tmp_path_factory.mktemp("native-runtime-epoch")
+    builds = NativeBuildBatch(folder, request)
     source = folder / "native_runtime_epoch.cpp"
     source.write_bytes((ROOT / "server/tests/native_runtime_epoch.cpp").read_bytes())
     (folder / "inputs.json").write_text(
@@ -60,7 +62,7 @@ def epoch_binaries(tmp_path_factory):
             (headers / "admission_ipc.H").write_bytes(baseline)
             flags.append("-DV08_FROZEN_EPOCH")
         binary = folder / (name + "-epoch")
-        compiled = subprocess.run(
+        builds.add(
             [
                 "c++",
                 "-std=c++17",
@@ -85,11 +87,10 @@ def epoch_binaries(tmp_path_factory):
                 "-o",
                 str(binary),
             ],
-            capture_output=True,
             timeout=60,
         )
-        assert compiled.returncode == 0, compiled.stderr.decode()
         binaries[name] = binary
+    builds.run()
     return binaries
 
 

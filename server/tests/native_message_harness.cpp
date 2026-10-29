@@ -17,6 +17,7 @@ static uint64_t digest=1469598103934665603ULL;
 static void record(const std::string& value) {
     for(unsigned char byte:value) { digest^=byte; digest*=1099511628211ULL; }
 }
+#include "native_bridge_input_harness.inc"
 static std::string legacy_wire(const SPELLipcMessage& m) {
     std::string wire;
     wire+=m.dataItem(MessageField::FIELD_SENDER_ID,m.getSender());
@@ -42,7 +43,12 @@ int main(int argc,char** argv) {
     SPELLipcMessage m("MSG_NOTIFY");m.setType(MSG_TYPE_NOTIFY_ASYNC);
     m.setSender("root#0");m.setReceiver("GUI");m.setSequence(-1);m.setKey(97);
     m.set("Csp","root:14");m.set("ExecutorStatus","RUNNING");
-    if(mode=="input_reuse") {
+    if(mode=="bridge_input_ownership") {
+        std::cout<<check_bridge_input_ownership().dump()<<std::endl;
+        return 0;
+    } else if(mode.rfind("alloc_bridge_input_",0)==0) {
+        measure_bridge_input(mode);
+    } else if(mode=="input_reuse") {
         SPELLipcMessage parsed;
         for(int i=0;i<256;++i) {
             m.set("Binary",std::string(64,static_cast<char>(i)));

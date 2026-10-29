@@ -313,7 +313,11 @@ class WorkerLaunch:
             or type(body["severity"]) is not int
             or body["severity"] not in {1, 2, 4, 8}
             or type(body["scope"]) is not int
-            or body["scope"] != 1
+            # Frozen RaiseEvent scopes are event categories, never authority.
+            # Every category remains bound below to this original execution,
+            # worker incarnation and controller epoch, including native SYS
+            # warnings emitted by SPELLscheduler while a prompt is pending.
+            or body["scope"] not in {1, 2, 4}
         ):
             raise Fault(400, "native_event_denied")
         authority, store = self.authority, self.authority.store

@@ -86,16 +86,18 @@ def test_event_diagnostics_classify_known_warning_without_retaining_user_content
     exec(compile(ast.Module(body=[function], type_ignores=[]), str(source), "exec"), namespace)
     shape = namespace["driver_event_shape"]
     warning = shape("Procedure awaiting prompt answer", {"Scope": 2, "Severity": 1})
-    assert warning["scope_kind"] == "system" and not warning["scope_valid"]
+    assert warning["scope_kind"] == "system" and warning["scope_valid"]
     assert warning["known_warning"] == "prompt_wait"
     for scope, kind in [
         (1, "procedure"),
         (4, "configuration"),
+        (8, "step"),
+        (16, "prompt"),
         (True, "invalid_type"),
         ("private-scope", "invalid_type"),
         (1000000000000000, "unknown"),
     ]:
         result = shape("private event payload", {"Scope": scope})
         assert result["scope_kind"] == kind and result["known_warning"] == "other"
-        assert result["scope_valid"] == (type(scope) is int and scope == 1)
+        assert result["scope_valid"] == (type(scope) is int and scope in {1, 2, 4})
         assert "private" not in repr(result)
