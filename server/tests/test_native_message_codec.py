@@ -47,12 +47,31 @@ def codec_binaries(tmp_path_factory, request):
     private_bridge = (ROOT / "host_runtime/native/private_bridge.cpp").read_text()
     input_start = private_bridge.index("                // The request owns these fields")
     input_end = private_bridge.index('                if (request.at("operation")', input_start)
+    frozen_transfer = (ROOT / "server/tests/native_bridge_transfer_before_dev82.inc").read_bytes()
+    assert hashlib.sha256(frozen_transfer).hexdigest() == (
+        "da863f80dfa7f38cda37e74bd1672759ed7ca949784e5f0018dc0f87cc2b3c9f"
+    )
     (folder / "bridge_input.inc").write_text(
+        '#include "' + str(ROOT / "host_runtime/native/bridge_input.H") + '"\n'
         "static void bridgeInputBefore(SPELLipcMessage& message,const Json& request) {\n"
         + frozen_input.decode()
         + "}\nstatic void bridgeInputAfter(SPELLipcMessage& message,const Json& request) {\n"
+        + "#if V08_CODEC_REUSE\n"
         + private_bridge[input_start:input_end]
+        + "#else\n"
+        + frozen_input.decode()
+        + "#endif\n"
         + "}\n"
+    )
+    transfer_start = private_bridge.index("                auto message=SPELLipcMessage::v08FromId")
+    (folder / "bridge_transfer.inc").write_text(
+        "static SPELLipcMessage bridgeTransferBefore(const Json& request) {\n"
+        + frozen_transfer.decode()
+        + "    return message;\n}\n"
+        + "static SPELLipcMessage bridgeTransferAfter(const Json& request) {\n"
+        + "#if V08_CODEC_REUSE\n"
+        + private_bridge[transfer_start:input_end]
+        + "    return message;\n#else\n    return bridgeTransferBefore(request);\n#endif\n}\n"
     )
     with zipfile.ZipFile(ROOT / "docs/reference/SPELL2.6.10-src.zip") as archive:
         original = archive.read("lib/SPELL_IPC/src/SPELLipcMessage.C").decode()
@@ -62,7 +81,7 @@ def codec_binaries(tmp_path_factory, request):
             if name == "SPELLipcMessage.H":
                 text = text.replace(
                     "bool hasField( std::string field ) const;",
-                    "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }",
+                    "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }\nconst std::string& v08TestId() const { return m_id; }\nconst std::string& v08TestReceiver() const { return m_receiverId; }",
                 )
             path = folder / "SPELL_IPC" / name
             path.parent.mkdir(exist_ok=True)
@@ -133,7 +152,7 @@ static long strtoi(const std::string& value){return value.empty()?-1:std::atoi(v
         (folder / "SPELL_IPC/SPELLipcMessage.H").write_text(
             header.replace(
                 "bool hasField( std::string field ) const;",
-                "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }",
+                "bool hasField( std::string field ) const;\nconst Properties& v08Fields() const { return m_properties; }\nconst std::string& v08TestId() const { return m_id; }\nconst std::string& v08TestReceiver() const { return m_receiverId; }",
             )
         )
         # Frozen encoder is an independent wire oracle for the cached encoder.
@@ -183,6 +202,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 "-O1",
                 "-DV08_CODEC_REUSE=" + ("0" if name == "before" else "1"),
                 "-g",
+                "-pthread",
                 "-fsanitize=address,undefined",
                 "-fno-sanitize-recover=all",
                 "-fno-omit-frame-pointer",
@@ -419,4 +439,30 @@ def test_bridge_input_borrow_removes_subtree_copy_allocations(codec_binaries, tm
     assert before["allocated_bytes"] - after["allocated_bytes"] >= 480000
     (tmp_path / (case + "-bridge-input-allocations.json")).write_text(
         json.dumps({"before": before, "after": after, "iterations": 10000}, indent=2) + "\n"
+    )
+
+
+@pytest.mark.parametrize("case", ["shapes", "ownership", "sizes", "updates", "threads"])
+def test_bridge_transfer_preserves_exact_errors_and_independent_native_ownership(
+    codec_binaries, case
+):
+    run(codec_binaries["after"], "bridge_transfer_" + case)
+
+
+@pytest.mark.parametrize("case", ["short", "long_values", "long_headers", "long_keys"])
+def test_bridge_transfer_copies_long_json_strings_directly_into_native_storage(
+    codec_binaries, tmp_path, case
+):
+    before = run(codec_binaries["after"], "alloc_bridge_transfer_" + case + "_before")
+    after = run(codec_binaries["after"], "alloc_bridge_transfer_" + case + "_after")
+    assert before["digest"] == after["digest"]
+    assert after["allocations"] == after["allocated_bytes"] == 0
+    if case == "short":
+        assert before["allocations"] == before["allocated_bytes"] == 0
+    else:
+        assert before["allocations"] == 20000
+        assert before["allocated_bytes"] == 3560000
+    (tmp_path / (case + "-bridge-transfer-allocations.json")).write_text(
+        json.dumps({"before_dev82": before, "candidate": after, "iterations": 10000}, indent=2)
+        + "\n"
     )

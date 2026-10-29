@@ -41,7 +41,12 @@ def enable_native_message_moves(text):
         "\n    void v08DataInto(std::string& result) const;",
         "\n    void v08DataInto(std::string& result) const;"
         "\n    void v08RequestIdInto(std::string& result) const;"
-        "\n    bool v08HasId(const std::string& id) const { return m_id == id; }",
+        "\n    bool v08HasId(const std::string& id) const { return m_id == id; }"
+        "\n    // Synchronous copies into native-owned strings; no input reference is retained."
+        "\n    static SPELLipcMessage v08FromId(const std::string& id) {"
+        " SPELLipcMessage message; message.m_id.assign(id); return message; }"
+        "\n    void v08SetReceiver(const std::string& receiver) { m_receiverId.assign(receiver); }"
+        "\n    void v08Set(const std::string& key, const std::string& value);",
     )
 
 

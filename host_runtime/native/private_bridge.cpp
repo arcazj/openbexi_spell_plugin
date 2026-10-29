@@ -16,6 +16,7 @@
 
 using Json=nlohmann::json;
 #include "bridge_frame.H"
+#include "bridge_input.H"
 std::mutex outputMutex;
 void emit(const Json& value) {
     std::lock_guard<std::mutex> guard(outputMutex);
@@ -90,14 +91,14 @@ int main(int argc,char** argv) {
             Json request=Json::parse(line);
             const auto sequence=request.at("seq").get<unsigned>();
             try {
-                SPELLipcMessage message(request.at("id").get<std::string>());
-                message.setSender("GUI");message.setReceiver(request.at("receiver").get<std::string>());
+                auto message=SPELLipcMessage::v08FromId(v08BridgeString(request.at("id")));
+                message.setSender("GUI");message.v08SetReceiver(v08BridgeString(request.at("receiver")));
                 // The request owns these fields throughout this synchronous loop.
-                // set() transfers independently owned strings into the native message.
+                // v08Set() copies into independently owned native strings.
                 const auto fields=request.find("fields");
                 if (fields!=request.end())
                     for (const auto& item:fields->items())
-                        message.set(item.key(),item.value().get<std::string>());
+                        message.v08Set(item.key(),v08BridgeString(item.value()));
                 if (request.at("operation")=="request") {
                     message.setType(MSG_TYPE_REQUEST);
                     auto reply=client.sendRequest(message,7000);

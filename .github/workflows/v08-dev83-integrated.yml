@@ -1,0 +1,1318 @@
+name: v0.8 dev83 exact-source integrated qualification
+
+# These are the original mandatory workloads plus affected prelaunch checks.
+# An all-green run alone does not qualify all v0.8 release gates.
+on:
+  push:
+    branches: ['qualification/v08-dev83-integrated']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v08-dev83-integrated-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  fault-reproduction:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-server-foundation.yml
+          V08_ORIGINAL_JOB: fault-reproduction
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install pinned qualification tools
+        run: python -m pip install -r server/requirements-test.lock
+      - name: Reproduce isolated ledger, receipt and post-binding faults
+        run: python scripts/qualify_v08_faults.py
+      - name: Retain source-bound fault evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-fault-reproduction-${{ github.sha }}
+          path: .qualification/v08-faults/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  foundation:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned companion IDE
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+          path: .qualification/companion-ide
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-server-foundation.yml
+          V08_ORIGINAL_JOB: foundation
+          V08_EXPECT_IDE: "true"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install Qt and native JSON test headers
+        run: sudo apt-get update && sudo apt-get install -y libegl1 nlohmann-json3-dev
+      - name: Install test tools and pinned IDE client
+        run: |
+          python -m pip install -r server/requirements-test.lock
+          python -m pip install --no-deps ./.qualification/companion-ide
+          python -m pip install PySide6-Essentials==6.10.3
+
+      - name: Qualify services, source inventories and worker preflight
+        run: python scripts/qualify_v08_server.py
+      - name: Build and smoke the isolated development package
+        run: |
+          python -m pip wheel --no-deps ./server --wheel-dir .qualification/v08-server/wheels
+          python -m pip install --no-deps .qualification/v08-server/wheels/*.whl
+          python -I -c 'import importlib.metadata as m, openbexi_spell_server as s; assert s.__version__ == m.version("openbexi-spell-server")'
+          python -I -m openbexi_spell_server --help
+          python -I -m openbexi_spell_server.worker --help
+      - name: Retain qualification evidence including failed attempts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-server-foundation-${{ github.sha }}
+          path: .qualification/v08-server/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  native-boundary:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-server-foundation.yml
+          V08_ORIGINAL_JOB: native-boundary
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Verify frozen runtime bytes and exercise real native processes
+        run: python scripts/qualify_v08_native_boundary.py
+      - name: Retain native boundary outcomes including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-boundary-${{ github.sha }}
+          path: .qualification/v08-native-boundary/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  native-launch:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: audit
+            flags: ''
+          - profile: dss
+            flags: '--native-dss'
+          - profile: pause-probe
+            flags: '--native-pause-probe'
+          - profile: thread-barrier
+            flags: '--native-thread-barrier'
+          - profile: child-gate
+            flags: '--native-child-gate'
+          - profile: native-prompts
+            flags: '--native-prompts'
+          - profile: native-handoff
+            flags: '--native-handoff'
+          - profile: native-ide
+            flags: '--native-ide'
+          - profile: native-terminal
+            flags: '--native-terminal'
+          - profile: native-startup-stress
+            flags: '--native-startup-stress'
+          - profile: listener-survival
+            flags: '--native-listener-survival'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned IDE for native observer qualification
+        if: matrix.profile == 'listener-survival' || matrix.profile == 'native-ide'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+          path: .qualification/companion-ide
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-server-foundation.yml
+          V08_ORIGINAL_JOB: native-launch
+          V08_EXPECT_IDE: "${{ matrix.profile == 'listener-survival' || matrix.profile == 'native-ide' }}"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install pinned IDE client without optional UI dependencies
+        if: matrix.profile == 'listener-survival' || matrix.profile == 'native-ide'
+        run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Qualify ten retained native launches through an isolated Context
+        run: python scripts/qualify_v08_native_launch.py ${{ matrix.flags }}
+      - name: Retain native launch evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-launch-${{ matrix.profile }}-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  repeated-lifecycle:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [native-listener-survival, native-startup-stress, native-terminal]
+        repetition: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned IDE for real observer requests
+        if: matrix.profile == 'native-listener-survival'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+          path: .qualification/companion-ide
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-lifecycle-reliability.yml
+          V08_ORIGINAL_JOB: repeated-lifecycle
+          V08_EXPECT_IDE: "${{ matrix.profile == 'native-listener-survival' }}"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install exact companion client
+        if: matrix.profile == 'native-listener-survival'
+        run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Execute fresh native lifecycle attempt with unchanged deadlines
+        run: python scripts/qualify_v08_native_launch.py --${{ matrix.profile }}
+      - name: Preserve every attempt and failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-lifecycle-${{ matrix.profile }}-${{ matrix.repetition }}-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  compatibility-subset:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-compatibility.yml
+          V08_ORIGINAL_JOB: compatibility-subset
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install pinned original RPC test dependencies
+        run: python -m pip install pytest==8.4.2 grpcio==1.84.0 protobuf==7.36.2
+      - name: Qualify portable syntax and actual protobuf TCP subset
+        run: python scripts/qualify_v08_compatibility.py
+      - name: Retain all results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-compatibility-subset-${{ github.sha }}
+          path: .qualification/v08-compatibility/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  sanitized-family-endurance:
+    # Keep this original ASan/UBSan, no-swap hour separate from the unchanged
+    # mandatory 45-second jobs and all optimized/swap diagnostics. A successful
+    # comparison cannot by itself promote any full-release gate.
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [handoff, ide]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Checkout pinned companion IDE
+        if: matrix.scenario == 'ide'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+          path: .qualification/companion-ide
+          persist-credentials: false
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-audit-storage.yml
+          V08_ORIGINAL_JOB: sanitized-family-endurance
+          V08_EXPECT_IDE: "${{ matrix.scenario == 'ide' }}"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install exact IDE client
+        if: matrix.scenario == 'ide'
+        run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Original sanitizer family, whole-cgroup accounting and retained disk audit
+        env:
+          SCENARIO: ${{ matrix.scenario }}
+        run: python scripts/qualify_v08_memory_comparison.py --profile asan-noswap --scenario "$SCENARIO" --soak-seconds 3600
+      - name: Preserve every outcome, sample, raw audit file and exact overlay
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-audit-sanitized-hour-${{ matrix.scenario }}-${{ github.sha }}
+          path: .qualification/v08-memory-comparison/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  actual-native-disk-full:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-audit-storage.yml
+          V08_ORIGINAL_JOB: actual-native-disk-full
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Real native Executor audit failure, immutable holds and retained records
+        run: python scripts/qualify_v08_native_launch.py --native-audit-full-disk
+      - name: Retain source-bound native outcome and complete fault filesystem
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-native-audit-full-${{ github.sha }}
+          path: .qualification/v08-native-launch/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  disk-and-restart:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-audit-storage.yml
+          V08_ORIGINAL_JOB: disk-and-restart
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install pinned test tools
+        run: python -m pip install pytest==8.4.2
+      - name: Native audit concurrency, history, restart and kernel-limit regressions
+        run: python -m pytest server/tests/test_native_audit_file.py -q --junitxml=.qualification/audit-components.xml
+      - name: Real disk ENOSPC, preserved records and restart
+        run: |
+          set -euo pipefail
+          audit_fault_root=$(mktemp -d)
+          trap 'sudo umount "$audit_fault_root/mount" || true' EXIT
+          truncate -s 16M "$audit_fault_root/disk.img"
+          mkfs.ext4 -q -F -m 0 "$audit_fault_root/disk.img"
+          mkdir "$audit_fault_root/mount"
+          sudo mount -o loop,nosuid,nodev,noexec "$audit_fault_root/disk.img" "$audit_fault_root/mount"
+          sudo mkdir "$audit_fault_root/mount/audit"
+          sudo chown "$(id -u):$(id -g)" "$audit_fault_root/mount/audit"
+          chmod 700 "$audit_fault_root/mount/audit"
+          python scripts/qualify_v08_audit_storage.py --filesystem-dir "$audit_fault_root/mount/audit"
+      - name: Retain records and exact-source receipts, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-audit-storage-${{ github.sha }}
+          path: .qualification/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  compose-prelaunch:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    env:
+      V08_GATEWAY_PORT: '19443'
+      COMPOSE_PROJECT_NAME: v08-prelaunch-ci
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-compose.yml
+          V08_ORIGINAL_JOB: compose-prelaunch
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Provision one-time role-isolated certificates outside workspace
+        run: |
+          set -euo pipefail
+          echo "V08_DEPLOY_ROOT=$RUNNER_TEMP/v08-private-${{ github.run_id }}" >> "$GITHUB_ENV"
+          echo "V08_SERVICE_UID=$(id -u)" >> "$GITHUB_ENV"
+          python deploy/v0.8/provision.py --output "$RUNNER_TEMP/v08-private-${{ github.run_id }}"
+      - name: Build, boot and exercise separate TLS gateway, Listener, Contexts and DSS
+        run: |
+          set -euo pipefail
+          compose() { docker compose -f deploy/v0.8/compose.yaml "$@"; }
+          trap 'compose down -v --remove-orphans || true' EXIT
+          compose config --quiet
+          compose up -d --build --wait --wait-timeout 240
+          mkdir -p .qualification/v08-compose
+          python deploy/v0.8/qualify_compose.py \
+            --root "$V08_DEPLOY_ROOT" --phase before \
+            --output .qualification/v08-compose/before.json
+          compose exec -T dss python -I -c \
+            "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).status==200"
+          compose restart context-a
+          python deploy/v0.8/qualify_compose.py \
+            --root "$V08_DEPLOY_ROOT" --phase after \
+            --previous .qualification/v08-compose/before.json \
+            --output .qualification/v08-compose/after.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipts = [json.loads((Path(".qualification/v08-compose") / (name + ".json")).read_text()) for name in ("before","after")]
+          assert all(r["passed"] and not r["full_v08_qualified"] for r in receipts)
+          print({"passed": True, "scope": "prelaunch-compose", "checks": sum(len(r["executed_checks"]) for r in receipts)})
+          PY
+      - name: Keep only redacted prelaunch receipts, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-compose-prelaunch-${{ github.sha }}
+          path: .qualification/v08-compose/*.json
+          if-no-files-found: warn
+          retention-days: 30
+          include-hidden-files: true
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  kubernetes-static:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-kubernetes-static.yml
+          V08_ORIGINAL_JOB: kubernetes-static
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Render Kubernetes resources and validate fail-closed invariants
+        run: |
+          set -euo pipefail
+          python deploy/v0.8/render_kubernetes.py --output .qualification/v08-kubernetes/resources.json
+          python -m json.tool .qualification/v08-kubernetes/resources.json >/dev/null
+          python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+          path = Path("deploy/v0.8/render_kubernetes.py")
+          spec = importlib.util.spec_from_file_location("v08_k8s_static", path)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          path = Path(".qualification/v08-kubernetes/resources.json")
+          listing = json.loads(path.read_text())
+          result = module.validate(listing["items"])
+          assert result["passed"] is True and not result["full_v08_qualified"]
+          assert not any(x["kind"] == "Secret" for x in listing["items"])
+          assert not any("PRIVATE KEY" in json.dumps(x) for x in listing["items"])
+          print(result)
+          PY
+      - name: Retain static structure only (never private keys or runtime claims)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-kubernetes-prelaunch-${{ github.sha }}
+          path: .qualification/v08-kubernetes/resources.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  kind-prelaunch:
+    if: github.ref == 'refs/heads/qualification/v08-dev83-integrated' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      V08_GATEWAY_PORT: '19443'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.13'
+      - name: Record immutable integrated qualification inputs
+        if: always()
+        env:
+          V08_ORIGINAL_WORKFLOW: .github/workflows/v08-kubernetes-kind.yml
+          V08_ORIGINAL_JOB: kind-prelaunch
+          V08_EXPECT_IDE: "false"
+          V08_MATRIX_JSON: ${{ toJSON(matrix) }}
+        run: |
+          python - <<'PY'
+          import datetime, hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v08-dev83-inputs"
+          output.mkdir(parents=True, exist_ok=True)
+          record = dict(
+              schema="openbexi.dev83-integrated-inputs/1",
+              recorded_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              run_id=os.environ["GITHUB_RUN_ID"], run_attempt=os.environ["GITHUB_RUN_ATTEMPT"],
+              job=os.environ["GITHUB_JOB"], ref=os.environ["GITHUB_REF"],
+              event_name=os.environ["GITHUB_EVENT_NAME"], github_sha=os.environ["GITHUB_SHA"],
+              matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
+              original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
+              original_job=os.environ["V08_ORIGINAL_JOB"],
+              expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+              stage="before-original-workload", verification_passed=False,
+              full_v08_qualified=False,
+          )
+          try:
+              assert record["ref"] == "refs/heads/qualification/v08-dev83-integrated"
+              assert record["event_name"] in ("push", "workflow_dispatch")
+              record["source_commit"] = git("rev-parse", "HEAD")
+              record["source_tree"] = git("rev-parse", "HEAD^{tree}")
+              assert record["source_commit"] == record["github_sha"]
+              record["tracked_changes"] = git("status", "--porcelain", "--untracked-files=no")
+              assert not record["tracked_changes"]
+              record["workflow_sources"] = {}
+              for name in (record["original_workflow"], ".github/workflows/v08-dev83-integrated.yml"):
+                  actual = pathlib.Path(name).read_bytes()
+                  immutable = subprocess.check_output(["git", "show", "HEAD:" + name])
+                  assert actual == immutable
+                  record["workflow_sources"][name] = dict(
+                      git_blob=git("rev-parse", "HEAD:" + name),
+                      sha256=hashlib.sha256(actual).hexdigest(),
+                  )
+              ide = pathlib.Path(".qualification/companion-ide")
+              record["ide_checkout_expected"] = os.environ["V08_EXPECT_IDE"] == "true"
+              record["ide_checkout_present"] = ide.is_dir()
+              assert record["ide_checkout_present"] == record["ide_checkout_expected"]
+              if record["ide_checkout_expected"]:
+                  record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
+                  record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
+                  assert record["ide_commit"] == record["expected_ide_commit"]
+                  assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+              record["verification_passed"] = True
+          except Exception as error:
+              record["verification_error"] = type(error).__name__ + ": " + str(error)
+              raise
+          finally:
+              (output / "inputs.json").write_text(json.dumps(record, indent=2) + "\n")
+          PY
+      - name: Install pinned kind CLI and create disposable local Kubernetes
+        run: |
+          set -euo pipefail
+          go install sigs.k8s.io/kind@v0.27.0
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          "$(go env GOPATH)/bin/kind" create cluster --name v08prelaunch --image kindest/node:v1.32.2 --wait 120s
+          kubectl get nodes
+      - name: Build isolated authority and independently packaged DSS images
+        run: |
+          set -euo pipefail
+          authority_image="$(python -c 'import runpy; print(runpy.run_path("deploy/v0.8/render_kubernetes.py")["AUTHORITY_IMAGE"])')"
+          dss_image="$(python -c 'import runpy; print(runpy.run_path("deploy/v0.8/render_kubernetes.py")["DSS_IMAGE"])')"
+          docker build -f deploy/v0.8/Dockerfile.server -t "$authority_image" .
+          docker build -f Dockerfile -t "$dss_image" .
+          kind load docker-image --name v08prelaunch "$authority_image"
+          kind load docker-image --name v08prelaunch "$dss_image"
+      - name: Provision one-time isolated Kubernetes secrets and workloads
+        run: |
+          set -euo pipefail
+          echo "V08_DEPLOY_ROOT=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}" >> "$GITHUB_ENV"
+          python deploy/v0.8/provision.py --output "$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}"
+          mkdir -p .qualification/v08-kind
+          python deploy/v0.8/render_kubernetes.py --output .qualification/v08-kind/resources.json
+          kubectl create namespace openbexi-v08
+          for role in gateway listener context-a context-b; do
+            kubectl -n openbexi-v08 create secret generic "v08-$role-private" \
+              --from-file="ca.pem=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/ca.pem" \
+              --from-file="tls.crt=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/tls.crt" \
+              --from-file="tls.key=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/tls.key" \
+              --from-file="config.json=$RUNNER_TEMP/v08-kind-private-${{ github.run_id }}/$role/config.json"
+          done
+          kubectl apply -f .qualification/v08-kind/resources.json
+          for role in context-a context-b listener gateway dss; do
+            kubectl -n openbexi-v08 rollout status "deployment/$role" --timeout=180s
+          done
+      - name: Execute pinned-TLS multi-user and persistent-volume probes inside kind
+        run: |
+          set -euo pipefail
+          kubectl -n openbexi-v08 port-forward service/gateway 19443:9443 --address=127.0.0.1 >/tmp/v08-kind-port-forward.log 2>&1 &
+          relay=$!
+          trap 'kill "$relay" 2>/dev/null || true' EXIT
+          python deploy/v0.8/qualify_compose.py --root "$V08_DEPLOY_ROOT" \
+            --phase before --output .qualification/v08-kind/before.json
+          kubectl -n openbexi-v08 rollout restart deployment/context-a
+          kubectl -n openbexi-v08 rollout status deployment/context-a --timeout=180s
+          python deploy/v0.8/qualify_compose.py --root "$V08_DEPLOY_ROOT" \
+            --phase after --previous .qualification/v08-kind/before.json \
+            --output .qualification/v08-kind/after.json
+          kubectl -n openbexi-v08 exec deployment/dss -- python -I -c \
+            "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:8085/healthz',timeout=2).status==200"
+      - name: Retain bounded workload status before destroying the cluster
+        if: always()
+        run: |
+          python deploy/v0.8/collect_kubernetes_status.py --output .qualification/v08-kind/workload-status.json
+      - name: Destroy ephemeral cluster
+        if: always()
+        run: |
+          kind delete cluster --name v08prelaunch || true
+      - name: Retain only redacted receipts, not private keys or rendered Secret
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: v08-kind-prelaunch-${{ github.sha }}
+          path: .qualification/v08-kind/*.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain immutable input receipt including failed verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-dev83-inputs-${{ github.job }}-${{ matrix.profile || matrix.scenario || 'single' }}-${{ matrix.repetition || '0' }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/v08-dev83-inputs/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

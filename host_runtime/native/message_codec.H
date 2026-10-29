@@ -29,6 +29,25 @@ void v08_append_field(std::string& out, const std::string& key, const std::strin
 }
 }
 
+void SPELLipcMessage::v08Set(const std::string& key, const std::string& value)
+{
+    // The caller owns both inputs until this synchronous transfer finishes.
+    // Every destination remains an independently owned native std::string.
+    auto found=m_properties.find(key);
+    if (found!=m_properties.end()) {
+        found->second.assign(value);
+        return;
+    }
+    auto node=v08_take_property(key);
+    if (node.empty()) {
+        m_properties.emplace(key,value);
+    } else {
+        node.key().assign(key);
+        node.mapped().assign(value);
+        m_properties.insert(std::move(node));
+    }
+}
+
 std::string SPELLipcMessage::data() const
 {
     std::string result;
