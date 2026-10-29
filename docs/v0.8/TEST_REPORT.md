@@ -1,3 +1,407 @@
+<!-- BEGIN CURRENT DEV81 RECONCILIATION -->
+# Current dev80 outcomes and local dev81 integration — release blocked
+
+Remote hosted SPELL is `4c55321bad3a66118e087f1b8b9d7b9f55028065`
+(`0.8.0.dev80`), tested PR merge `a98091b8a4cb1c6bc1c4c41f427da6cb06477425`,
+with identical tree `b07ce296c6a1146753f19c34f63da0ebca5342bb`.
+The paired IDE remains `b1472b4d5a515b9082db139fb8e16b63677a052e`
+(`1.2.1.dev7`), tree `8fb91191ead6c4fa60089763c08fc8f3959a20c3`, tested merge
+`cb49a0cdcabe7008d3d475c3af74b32c4e3b2d58` with the same IDE tree.
+
+The local, unpublished dev81 candidate is `253d9e726c7c8a7ffe20ea201094bd9755d47089`,
+tree `15498fc275c5e047570b8678f9e5b9a82fe6cbff`. Its selected 14-file regression run
+is bound to `699c6a5e88940d5e06d62a63e3724139616b8866`, tree
+`ebb2e6e198f75c4666af8f169678621f0fa6bff3`: **306 passed, zero failures, errors or
+skips, 145.34 seconds**. The later two-line worker comment change is AST-identical;
+bytecode identity is not claimed. The 306-case run was not rerun at that later
+comment-only commit; the separate 418-case diagnostic at253 is recorded in the
+current receipt with its own result and source binding.
+These selected tests are neither the complete foundation suite nor native/IDE
+workload acceptance. Original lint, formatting (149 files) and typing (23 source
+files) checks pass at local253. The first wrong-resolved-interpreter attempt
+failed on missing tool modules and remains preserved separately.
+[Source-bound reconciliation](evidence/qualification-dev81-local-20261028.json) records the exact
+identities, raw receipts, hashes, unsuccessful attempts and scope boundaries.
+A subsequent documentation-only branch head or synthetic PR merge is not new
+executed evidence; each result remains bound to its recorded test subject.
+A fresh read-only remote reconciliation at 23:40:23 UTC retained both open draft
+PRs and the source/merge identities above, SPELL base `466b7bf5…`, IDE base
+`c5edbdae…`, and diagnostic branch `dc76fcc1…`. The v0.8 tag and release endpoints
+returned 404; both repositories had zero queued or in-progress hosted runs at
+that observation. These facts do not exclude subsequent delayed write effects.
+
+## Hosted outcomes at exact dev80 source
+
+| Hosted run | Scope | Actual outcome |
+| --- | --- | --- |
+| [40770371656](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371656) | v0.8 services, authority and worker preflight | failure: 1 failure, 13 success |
+| [40770371682](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371682) | v0.8 repeated native lifecycle evidence | success: 9 success |
+| [40770371619](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371619) | v0.8 portable preparation and driver compatibility subset | success: 1 success |
+| [40770371659](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371659) | v0.8 development Python supply chain inventory and known-vulnerability scan | success: 1 success |
+| [40770371707](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371707) | v0.8 prelaunch multi-service Compose integration | success: 1 success |
+| [40770371736](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371736) | v0.8 Kubernetes prelaunch static security gate | success: 1 success |
+| [40770371744](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371744) | v0.8 native allocation site investigation (diagnostic only) | success: 1 success |
+| [40770371746](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371746) | v0.8 kind five-process prelaunch runtime smoke | success: 1 success |
+| [40770371786](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371786) | v0.8 durable native audit storage and disk-full failure | failure: 2 failure, 2 success |
+| [40770371788](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40770371788) | v0.8 isolated memory comparisons (not release qualification) | failure: 7 failure, 4 success |
+
+The portable subset has 241 passes, fault reproduction 95 and audit components
+21. Counts overlap other suites and must not be summed as unique requirements.
+Both optimized dev80 hour jobs have completed; their independently verified outcomes are recorded in the source-bound receipt and remain diagnostic-only.
+
+| Scenario | Profile / requested duration | Result | Original soak seconds | Growth bytes | Ordered samples | Audit files / bytes | Artifact |
+| --- | --- | --- | ---: | ---: | ---: | --- | ---: |
+| handoff | allocation-observer diagnostic / 45 s | PASS | 45.485619880 | 37,875,712 | 48 | 23 / 1,909,468 | 12853395374 |
+| handoff | original sanitizer/no-swap / 45 s | PASS | 45.616020781 | 40,593,408 | 47 | 23 / 2,450,192 | 12852198417 |
+| ide | original sanitizer/no-swap / 45 s | PASS | 45.550360855 | 40,472,576 | 48 | 27 / 2,417,120 | 12851769656 |
+| handoff | asan-noswap / 300 s | FAIL | 302.421926704 | 333,787,136 | 171 | 23 / 10,911,020 | 12855837576 |
+| ide | asan-noswap / 300 s | FAIL | 303.657502183 | 327,299,072 | 169 | 27 / 10,394,320 | 12854724702 |
+| handoff | asan-o2-noswap / 300 s | FAIL | 302.872318874 | 256,098,304 | 171 | 23 / 7,457,459 | 12857756371 |
+| ide | asan-o2-noswap / 300 s | FAIL | 303.222662301 | 328,704,000 | 171 | 27 / 10,316,275 | 12858091541 |
+| handoff | asan-swap / 300 s | FAIL | 303.123112668 | 296,574,976 | 170 | 23 / 9,125,957 | 12855594384 |
+| ide | asan-swap / 300 s | FAIL | 302.862476619 | 245,125,120 | 170 | 27 / 7,019,141 | 12857466926 |
+| ide | optimized-noswap / 300 s | PASS | 303.473481577 | 3,379,200 | 173 | 27 / 10,698,664 | 12856497153 |
+| handoff | asan-noswap / 3600 s | FAIL | 3603.335168907 | 1,076,039,680 | 1717 | 23 / 115,443,210 | 12855809168 |
+| ide | asan-noswap / 3600 s | FAIL | 3600.589913021 | 1,079,748,608 | 1737 | 27 / 120,028,422 | 12855154534 |
+| handoff | optimized-noswap / 3600 s | PASS | 3602.321767715 | 5,296,128 | 1764 | 23 / 118,874,232 | 12859190925 |
+| ide | optimized-noswap / 3600 s | PASS | 3603.986820283 | 7,610,368 | 1783 | 27 / 119,714,098 | 12859190975 |
+
+Both original dev80 sanitizer/no-swap hours failed growth and resident/combined
+peak budgets: handoff 1,076,039,680 bytes over 3,603.335168907 seconds, IDE
+1,079,748,608 bytes over 3,600.589913021 seconds. Original audit archives retain
+23 files / 115,443,210 bytes and 27 files / 120,028,422 bytes respectively.
+All six optional sanitizer 300-second comparisons also failed. Optimized,
+swap-enabled and diagnostic results do not replace mandatory acceptance.
+
+The completed dev77 optional matrix is no longer pending: both optimized
+300-second scenarios and both optimized hours passed; all six sanitizer
+300-second scenarios failed. Every completed artifact and exact overlay was
+independently checked. The dev77 original hours remain failed with the recorded
+Context exits, later Docker state and failed kernel queries preserved. No later
+pass or separate defect establishes those historical exit causes.
+
+The exact dev80 native full-disk artifact `12851393538` passed its bounded
+fault scenario: actual native errno 28 during write, explicit worker exit 1,
+no false completion, two retained holds and original owner epoch retained.
+The 963-byte acknowledged audit prefix was preserved; the later 8,192-byte
+record with an incomplete tail remains explicitly retained. The 21 audit
+components also pass. These are durable audit/fault components, not whole
+deployment restore, old-authority fencing, recovered execution authority or
+long-duration capacity qualification. They do not explain the historical first
+control-report denial before ENOSPC injection.
+
+## Foundation, event authority and targeted local implementation
+
+The intervening development fixes are retained at their own source identities.
+Dev79 `17ac0d81afca81fe765177f4137e71641be2ef9b` integrates native STATUS snapshot
+ownership and sequence reservation fixes, including actual-source ThreadSanitizer
+reproduction of the prior counter/template races and owned missing-Csp storage.
+Its snapshot lock is released before stack/send callbacks. The temporary
+admission-body move preserves lvalue behavior and packet bytes; 10,000 rvalue
+requests fell from 320,000 allocations / 28,310,000 bytes to 100,000 /
+14,960,000 bytes in its separate component. Dev79's 119 integrated checks overlap
+later collections and do not qualify the full family.
+
+Dev80 `4c55321bad3a66118e087f1b8b9d7b9f55028065` binds acknowledgements to live
+logical notification owners. The actual-source baseline reproduced an inactive
+periodic STATUS ACK at Sequence=0 satisfying a different unsent CALL at Sequence=0.
+The correction registers a stack-owned ticket before sending, removes it on
+normal/error/cancellation exit, stores no inactive ACK credits and uses one
+constructor-initialized, non-resetting notification sequence domain. The intended
+wire Sequence values change under interleaving; other component wire bytes match,
+so full wire-byte identity is not claimed. A receipt for an earlier retry of the
+same live logical notification remains valid; this is not send-attempt fencing
+or a durable-audit commit receipt. Existing configured waits, polling, reconnect
+readiness and publish-before-ACK behavior remain. The separate component has
+26 passing checks; the later integrated collection also exercises these paths.
+These demonstrated defects do not establish unrelated historical startup,
+control-report denial, driver-burst or Context-exit causes.
+
+Hosted dev80 foundation failed its unchanged 600-second deadline: 1,674 collected,
+1,039 completed PASSED outcomes in verbose stdout, an incomplete tail, and no final
+JUnit. The clean local test-only `f59d17d0f8d25ea8c957ee910b9e50af6fc65422` attempt
+also timed out at 600 seconds: 1,677 collected and 1,143 completed passing calls,
+with retained ordered setup/call/teardown records but no final session/JUnit.
+Zero recorded failed calls does not make an interrupted suite a pass. Measured
+setup/call/teardown totals were 232.595 / 258.298 / 107.106 seconds; inspected
+successful teardown paths do not establish a product ownership defect. Dev81's
+bounded compilation reuse/batching and immediate result journal are locally
+implemented; a complete foundation pass at the final candidate is outstanding.
+
+A separate clean-source tail diagnostic at local253 selected 418 cases from the
+534 f59 cases left unexecuted, excluding 116 exact IDs already exercised by the
+integrated run. It completed 417 passes and one failure, zero errors/skips, in
+78.247 seconds (78.617 seconds wrapper, exit 1, no timeout). The failure is the
+same-UID memory-isolation test's positive-control `process_vm_readv`, before
+`protect_runtime()` or its protected-read check executes. Minimal self/direct-child
+probes returned EPERM (1) in restricted mode and ENOSYS (38) in the original
+authorized/escalated environment. The latter retains UID/EUID 0, dumpable 1 and
+verified direct ancestry/start-time/namespace observations; the Yama query returns
+ENOENT. Positive-control capability is unavailable here; the exact platform
+mechanism remains unknown. No product isolation defect, privacy-protection pass,
+skipped test or pass conversion is inferred. The original failure did not retain
+errno or the complete child identity; later probe records are separate observations,
+not values retroactively assigned to that first failure. The initial
+strict selection-name comparison failed before test execution; four generated
+UUID-name differences and the corrected source-bound selection are retained.
+These separate f59/699/253 sessions are not combined into a complete foundation
+pass, and prior-candidate passes are not inherited.
+
+Dev80 optimized handoff artifact `12856725049` failed before the recovery soak:
+the original scheduler emitted WARNING with original `SCOPE_SYS=2`, which Context
+rejected as invalid. The retained worker event is ordinal 261 and the later
+terminal failure is ordinal 278. This is not a memory-growth outcome and does
+not explain the earlier control-report denial. The local correction accepts
+original PROC/SYS/CFG categories under the same execution, worker and controller
+authority, keeps durable acknowledgement and unique event-receipt validation,
+and still requires all 42 child-enabled lifecycle events. Its 84 focused and
+115 overlay/release checks passed before integration; counts overlap the 306
+integrated checks. Hosted native reruns remain outstanding.
+
+The bridge field-transfer correction borrows the request's field subtree only
+during synchronous transfer into independently owned native message strings.
+Actual frozen-native-message ASan/UBSan component coverage passed all 33 checks,
+including 12 input/error/ownership shapes. Over 10,000 iterations, short fields
+fell from 90,000 allocations / 4,800,000 bytes to zero; long fields from 110,000 /
+10,640,000 to 20,000 / 3,560,000; absent fields from 10,000 / 480,000 to zero.
+Output digests matched. The seven retained-binary rechecks reproduce those
+measurements and overlap the original coverage. This measured component change
+does not establish the cause or removal of whole-hour family growth.
+
+Prior Executor evidence binds selected BufferedWriter allocations to the
+unchanged fixture's progress-file writes and observes those selected samples
+subsequently freed; measured primary-allocator resident retention is distinct
+from live allocations. Context Python and other anonymous growth remain
+incompletely attributed. Native/Python/map/cgroup windows are not simultaneous;
+quarantine, primary mappings and RSS overlap and cannot be summed as separate
+categories. Durable audit bytes remain separate from filesystem cache.
+
+FakeStack run `40771852756` failed both original 300-second checks. The reader
+prerequisite passed in both exact images, but actual Context coverage was zero:
+discovery ran before the first original Context resource row. A two-path observer
+repair has 30 local passes and binds discovery to the first complete original
+PID/namespace-PID/start-tick record; its hosted rerun has not started. Its local
+tree is `4d07383d9ca9fc27fd9acc00fe25d65858b3ad52`; remote diagnostic head remains
+`dc76fcc1ef7150c4ea68636ecd76fd4e97ed705c` at the retained 22:47 UTC read.
+
+The historical bridge string-mutation sample's module return offset 722242 is
+inside `main` at offset 5692. The recorded executable SHA is
+`f538da0c7039ce9a06c4ddd9b7e56f5239a6602193b68dd5dfda8a5aac689db6`.
+A direct search of 964 retained ZIPs found six different bridge binaries and no
+exact match; no exact source line is established. Nested archives and absent
+hosted images are outside that search. No input-line buffer rewrite was made.
+
+## Compatibility, packaging and security
+
+The fresh local-253 input reconciliation preserves all 763 requirements and
+47 unchanged historical reports. Of 555 top-level bindings, 546 match and nine
+drift. All 763 remain `NOT_FRESHLY_QUALIFIED`. Eleven previously unresolved
+referenced byte identities were actually recovered and hash-verified: six exact
+derived-source reconstructions, three immutable Git capture blobs and two exact
+historical CRLF serializations. The historical gap falls from 57 to **46**;
+historical report outcomes and current native statuses do not change. Matching
+top-level inputs or recovered bytes is not fresh original native/driver execution.
+
+The actual dev80 inventory collector `03bd8135b33920600389f03b6d5c3379c1d8e579`
+examined SPELL `4c55321b…` / IDE `b1472b4d…` in image
+`sha256:40edb5a579d392964599f76c5ca7fac35d829b9927f3d62c20cdf81c70100e45`
+(run `40772154297`, artifact `12853840746`): 243 packages, 376 vulnerability
+matches and 187 advisory IDs. Matches are not unique CVEs. This actual-byte
+inventory remains separate from the older `57b4d64` diagnostic and its preserved
+932 / 342 / 237 / 161 match counts.
+
+The exact installed dev7 public-main offscreen and xcb probes entered the actual
+Qt event loop and passed, without the old exact-title oracle. The 53 installed
+regressions (44 original and nine added owned-process checks) and 89 component
+checks passed. These are bounded installed subsets; full native debugger,
+authenticated browser/WSS and Git acceptance remain open. Thirty-two recorded
+dynamic dependency rows remain unreviewed; resolving the targeted startup
+sonames is not a disposition of every delivered plugin/library.
+
+Of 59 entries without recognized SPDX metadata, 52 have delivered Debian
+notices and one has the delivered CPython license; six specific PE launcher
+notice gaps remain proposed-only repairs. All 307 captured notice-byte bindings
+were checked. Seventy actual Qt libraries are bound to the installed wheel/image,
+but the wheel contains no corresponding SBOM/attribution members. Seven direct
+PySide/Shiboken source-bound supplemental notices were verified separately.
+Full Qt third-party coverage, corresponding source/source offer, legal
+compatibility, vulnerability disposition and security acceptance remain open.
+
+The local pip derivative `cbcada564d24a08b2667cc0ac1873bd6d3379b70`, tree
+`89c37d20d88badb1545e700c32908c7568ef78f1`, has 101 component passes; the actual
+derivative image has not executed and is not promoted. The local IDE dev8 / Qt
+6.12.0 candidate `47f5a4c11e40d4f7c1885b8eaf5120abc3ead6b9`, tree
+`510a28258b4ac03b850ae84df6ec235e65cb701b`, remains unpromoted because its original
+graphics shutdown reproduces SIGBUS. Its completed original source suite collected
+297 tests: 287 passed, one failed and nine explicitly skipped (eight unavailable
+Docker-image prerequisites and one Windows-only case), in 381.722 seconds.
+The original graphics child returned -7/SIGBUS. After JUnit and session-finish
+exit status 1, pytest itself returned -6/SIGABRT with
+`malloc_consolidate(): unaligned fastbin chunk detected` (383.162 seconds outer
+elapsed). Both original failures and the unchanged source/test bindings are
+retained. A separate allocation-observer failure is preserved and does not by
+itself establish the exact original SIGBUS cause.
+An isolated callback-lifetime diagnostic subsequently observed 19 SIGBUS and
+one normal exit without its wrapper guard, versus 20 normal exits with positive
+retain → original teardown return → release coverage. All 40 stdout byte hashes
+matched and original Dashboard/Add point/parent-retention behavior was preserved.
+The analogous exact-source dependency patch applies cleanly, but the full
+dependency had not been rebuilt at that diagnostic stage. The subsequent genuine
+target-library rebuild has its own byte identities and packaging limits below.
+The interposer and its guarded
+full-source suite are diagnostic only; they do not replace the original failure
+or qualify a shipped dependency/package.
+Its completed guarded source diagnostic records 297 tests: 288 passed, 0 failed, 0 errors and 9 unchanged skips in 375.697 seconds; outer process return code 0 remains part of that result.
+Eight additional internal source-review diagnostic processes exercised 24
+baseline/guard cycles, exception handling and reference balance. They are
+analogue/interposer checks; they neither qualify the rebuilt dependency nor
+replace the mandatory independent implemented-system security reviewer.
+
+A genuine libpyside target rebuild followed from the exact official PySide6
+6.12.0 source, using the original target CMakeLists, 22 original C++ units plus
+generated MOC/resource units, and the Qt Core SDK library verified byte-identical
+to the candidate wheel library. The first configure attempt failed on the Ninja
+path; the second build failed on the SDK tool's ICU search path. Both unsuccessful
+attempts are retained. The third baseline build and the corrected target build
+completed with identical compiler commands. Other PySide binding modules, Qt
+libraries and Shiboken were reused; this was not a rebuild of every dependency.
+The actual target library changed from SHA-256
+`3a5da08c5a660756836656875e9bb0c3098cbb1c5b02019e664689fa3b9f8734`
+(418,720 bytes, rebuilt original source) to
+`c477cd666a53952c15ea4d1b1d422dfc04a1ed5668087983e3eda502410af9e3`
+(418,928 bytes, wrapper-lifetime correction). Original graphics examples run
+against the rebuilt baseline recorded 17 SIGBUS, one SIGSEGV and two normal
+exits; all 20 corrected-library executions exited normally. The separate matrix
+retains 20 callback-lifetime executions and four public lifecycle/finalizer
+processes for each library. These used actual mapped before/after libraries,
+without `LD_PRELOAD`, and did not change the original fixtures.
+A separate source/binary verification compared all 258 selected official source
+files: 257 unchanged, with only the exact `pyside.cpp` correction. It checked all
+5,183 SDK archive entries and 4,776 regular file payloads, 4,166 CMake and 12 Ninja
+tool payloads, all 24 compiled units and 1,021 compiler-dependency paths, and the
+original target/build commands. This is verification of the recorded target
+rebuild and its support bytes, not the independent implemented-system security
+review required for release.
+
+The local derivative dependency wheel
+`pyside6_essentials-6.12.0-1openbexi1-cp313-abi3-linux_x86_64.whl` is
+84,379,401 bytes, SHA-256
+`2acaf920512416cb49cda068f8ea9a9e0578c8415e1bea11b54f8b519d964b33`.
+It retains 2,468 unchanged original payload members; the original library and
+wheel-tag metadata changed, with an added correction notice, source patch and
+build record, and a regenerated verified RECORD. The first pip invocation returned zero but performed
+a same-version no-op, which is retained as an unsuccessful installation attempt.
+The second installation used the prepared wheel in its isolated environment;
+2,473 payload members and the actual mapped corrected-library SHA were verified,
+with no `LD_PRELOAD` or `PYTHONPATH` dependency override. Support distributions
+were reused, so this is not the complete joint clean-install acceptance.
+The completed unchanged IDE source suite against the actually installed derivative records 297 tests: 288 passed, 0 failures, 0 errors and 9 explicit unchanged skips in 355.714 seconds. Its actual outer process returned 0 after 357.450055134 seconds; the original 1,200-second outer cap and per-case fixtures/deadlines remain unchanged. All original 297 node IDs and their order, all nine original skip reasons, 1,182 ordered journal records, source worktree cleanliness and all 2,473 installed payloads were reverified. The actual pytest PID/start-time and mapped corrected library are bound separately. Its PYTHONPATH contains only the reviewed evidence-journal directory, not a dependency override. This is local source-suite evidence at IDE 47f5a4c11e40d4f7c1885b8eaf5120abc3ead6b9, not complete joint installed-image or release qualification.
+
+The subsequent genuine unmodified and corrected library builds have identical
+exports/version requirements to each other and preserve every original non-weak
+export, but their local build introduces `GLIBCXX_3.4.30` relative to the original
+wheel's `GLIBCXX_3.4.29`. The retained official PyPA policy caps the original
+`manylinux_2_34` tag at 3.4.29. Assertions remain enabled; an unpromoted derivative
+must use a generic `linux_x86_64` tag with its explicit runtime requirement.
+Four original weak exports are omitted by the rebuild; scanning 287 installed
+candidate ELF files found no undefined use of those symbols, which is not a
+complete ABI proof for external consumers. Portable policy-compliant rebuilding
+and complete installed qualification remain outstanding.
+
+The official QtBase 6.12 SDK's CDX has 212 components and its SPDX has 213
+packages and 92 file records; all 92 file SHA-1 values match retained SDK bytes.
+The separate unpromoted Qt6.12 wheel contains 243 Qt-tree shared objects (83
+runtime libraries, 86 Qt plugins and 74 QML plugins), plus 26 binding/support
+objects. Exact wheel/SDK/SPDX/CDX mapping covers 17 runtime libraries and 49 Qt
+plugins, 66 of the 243 Qt-tree objects. The remaining 177 are outside that QtBase
+subset; no QML or binding coverage is inferred. Neither SDK SBOM nor the 33
+name-matched attribution/license candidates appears as an identical standalone
+payload in that wheel; embedded resources were not searched. This bounded map
+does not change the promoted dev80 Qt6.10.3 image's 70-library attribution gap or
+disposition legal compatibility, advisories or source offers.
+Neither inventory success, partial startup probes nor supplemental notices
+qualify stable joint packaging. Current paired IDE remains dev7.
+
+## Durable evidence and release boundaries
+
+The last verified base at this source-record time is version 12 of
+`openbexi-v08-qualification-evidence-20261027.zip`: 486,119,536 bytes, SHA-256
+`aa8d2f3aa8d0112991f0722baeede60e844bd7656d4f4c58bc31ffe77891d2c4`, prefix
+`session-history/20261028T214054Z/`, with 18 saved external volumes. New volumes
+19–22 are also saved and verified: 1,031,728,950 bytes, 3,183 unique payload
+members and 1,250 same-snapshot exact-content aliases. The final base append is
+pending at this source-record time. `CURRENT_EVIDENCE_CHECKPOINT.json` at the
+evidence archive root and its external saved-write receipt are authoritative for
+the later completed checkpoint. A final archive's own digest cannot be embedded
+in the payload it hashes. Version 9 and its three original volumes remain
+historical checkpoints; no later records are silently claimed saved.
+
+The complete local-253 source archive is 38,375,731 bytes, SHA-256
+`6a5d000d43014fcdd51006f96cfad4e68e569be5b191e9b61f1619f484ac37f5`;
+all 2,408 Git payload members, blob identities and executable/symlink modes were
+verified. This is source-archive verification, not a stable package or shipped
+system qualification.
+
+The original IDE dev8 `47f5a4c11e40d4f7c1885b8eaf5120abc3ead6b9` build archive
+(`source.tar`, 14,295,040 bytes, SHA-256
+`195d4cb22e3365a1ce0abdb2bee560fab8870f147590fa20d565ddbd87fca5a5`)
+has all 604 expected members and Git executable/symlink modes, but only 602 raw
+Git-blob byte matches. `install.ps1` and `start.ps1` use their committed
+`eol=crlf` checkout representation: respectively 1,451/1,975 archive bytes versus
+1,422/1,936 Git-blob bytes. Both payloads equal the unchanged worktree, and
+CRLF-to-LF comparison matches the corresponding Git blob; **raw byte equality
+is false**. No test, example or Python runtime byte differs from Git. The
+original archive and the failed raw-equality verifier are retained without
+normalizing or replacing evidence.
+
+A distinct recovery archive,
+`qualification-source-ide-dev8-47f5a4c1-git-blobs.tar.gz`, is 8,332,780 bytes,
+SHA-256 `953594b097130d5831774173d6e110b20d77507dd16971e7911bcc47e5ec96d9`.
+All 604 raw Git blobs, modes and the complete member set were verified. This
+later archive was not used for the completed original build or source suite;
+it does not retroactively replace their recorded input representation or
+qualify a release package.
+
+Old failed builds, ineffective observers, incomplete tails,
+failed queries and later Docker states remain preserved.
+
+All eleven mandatory full-release gate groups remain **unqualified**, the public
+runtime remains disabled, and no stable merge, annotated v0.8 tag or GitHub release
+is claimed. Existing owner authorization permits publication once every mandatory
+criterion passes at the exact final joint identities; production migration remains
+unauthorized.
+
+GitHub source-tree write connector requests stalled and the separate CLI push lacked
+authenticated Git credentials. That access failure prevents publication and hosted
+requalification of the ready local changes. It is separate from the unavailable
+production-like qualification cluster with enforced NetworkPolicy and the
+independent implemented-system security reviewer. None of those external blockers
+excuses the failed memory/foundation results or unfinished native, browser,
+deployment, audit-restore and packaging work.
+
+A separate 25-second PR metadata attempt timed out; the 23:05 UTC independent
+read retained the old body and remote dev80 head. A separate 25-second contents-API
+observer-file attempt also returned no result; the 23:07 UTC branch read retained
+diagnostic `dc76fcc1…`. Delayed effects are not ruled out and require a fresh
+remote read before resuming. These are connector/credential execution failures,
+not permission or automatic-approval rejections. A newer independent read at
+23:25:22 UTC again retains diagnostic `dc76fcc1…`, product `4c55321b…` and the
+unchanged PR body; that observation does not rule out a later effect.
+
+The final 23:40:23 UTC read again retained both draft PR heads and merge
+identities, diagnostic `dc76fcc1…`, and both intended base branches. No queued or
+in-progress hosted runs were present in either repository. Stable v0.8 tag and
+release lookups both returned 404. No delayed effect was observed at that time;
+the failed write attempts remain preserved and future effects are not excluded.
+
+## Preserved historical checkpoints
+
+Everything below this boundary is preserved historical evidence. Earlier wording
+such as “current” or “still running” applies to its own recorded source and time;
+the current-source reconciliation above supersedes those status summaries only.
+
+<!-- END CURRENT DEV81 RECONCILIATION -->
+
 # Dev77 executed qualification — release blocked
 
 SPELL `c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034` (0.8.0.dev77), tested PR merge
@@ -3113,3 +3517,12 @@ Receipt: `evidence/memory-endurance-20261027.json`. All eleven full-release grou
 The separate callback diagnostic completes successfully at `0b2fd53558b23f3cb8a5e3fb0f52b7215facba71` (run 40579917700, artifact 12770300420). Its exact overlay, all 139 native inputs, four diagnostic inputs, all samples and 23 raw audit files verify. The Context observed peak is five active callbacks; its latest cumulative sample records at least 2,345 MESSAGE and 39 REQUEST dedicated fallbacks from one reusable slot. Latest snapshots can precede process exit and can capture an attempt before classification; these are observed lower counts, not complete final totals.
 
 The candidate lazily reuses up to five idle workers, matching that measured peak. The original immediate dedicated fallback remains, with no queue, concurrency ceiling or deadline change. Thirteen nested requests and 24 simultaneously blocked callbacks complete. A controlled ASan/UBSan component replays all 10,000 callbacks in five-way blocked waves from a fresh process, reducing observed OS threads from 8,001 to five. Initial affected tests pass 43 cases; the measured-burst/deep-request suite passes 13 and collector/release guards pass 23, with overlap. Native memory/endurance acceptance for this changed candidate remains pending. Prior eight-worker, one-worker, OOM and audit-tail failures remain retained. Version and deployment markers advance together to `0.8.0.dev71`.
+
+
+## Dev82 integration — 2026-10-29 UTC
+
+Exact executable16982c4dd698a937ce2ae4e37f4736055de9a2ce integrates dev81 plus native audit-generation identity fencing and bounded per-connection bridge-line reuse. The audit correction reproduces two historical-header races, then passes52 component checks. The bridge selection passes58 ASan/UBSan checks;10,000 short line reads fall from40,000 allocations/4,540,000 bytes to zero after component warm-up with unchanged digest. Counts overlap other suites and are not unique aggregate coverage. These do not establish whole-family sustained qualification.
+
+GitHub writes recovered. Corrected observer47921d18/tree4d07383d is running in40828138175; results require complete collection. Fresh candidate CI, original45-second checks, sanitizer hours, ENOSPC and paired installed recovery remain pending. All eleven release groups remain false. Prior failure bodies and histories remain preserved. Current Qt6.10.3 attribution binds70/70 top libraries to exact upstream SDK bytes;12/230 Qt ELF files remain unbound and license/source/advisory review remains open. The qualification cluster and independent security reviewer remain unavailable.
+
+Details: `evidence/qualification-dev82-integration-20261029.json`.

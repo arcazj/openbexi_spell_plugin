@@ -1,3 +1,60 @@
+<!-- BEGIN CURRENT DEV81 RECONCILIATION -->
+# Current compatibility reconciliation — local dev81 remains unqualified
+
+Remote hosted SPELL is `4c55321bad3a66118e087f1b8b9d7b9f55028065`
+(`0.8.0.dev80`), tested PR merge `a98091b8a4cb1c6bc1c4c41f427da6cb06477425`,
+with identical tree `b07ce296c6a1146753f19c34f63da0ebca5342bb`.
+The paired IDE remains `b1472b4d5a515b9082db139fb8e16b63677a052e`
+(`1.2.1.dev7`), tree `8fb91191ead6c4fa60089763c08fc8f3959a20c3`, tested merge
+`cb49a0cdcabe7008d3d475c3af74b32c4e3b2d58` with the same IDE tree.
+
+The local, unpublished dev81 candidate is `253d9e726c7c8a7ffe20ea201094bd9755d47089`,
+tree `15498fc275c5e047570b8678f9e5b9a82fe6cbff`. Its selected 14-file regression run
+is bound to `699c6a5e88940d5e06d62a63e3724139616b8866`, tree
+`ebb2e6e198f75c4666af8f169678621f0fa6bff3`: **306 passed, zero failures, errors or
+skips, 145.34 seconds**. The later two-line worker comment change is AST-identical;
+bytecode identity is not claimed. The 306-case run was not rerun at that later
+comment-only commit; the separate 418-case diagnostic at253 is recorded in the
+current receipt with its own result and source binding.
+These selected tests are neither the complete foundation suite nor native/IDE
+workload acceptance. Original lint, formatting (149 files) and typing (23 source
+files) checks pass at local253. The first wrong-resolved-interpreter attempt
+failed on missing tool modules and remains preserved separately.
+[Source-bound reconciliation](evidence/qualification-dev81-local-20261028.json) records the exact
+identities, raw receipts, hashes, unsuccessful attempts and scope boundaries.
+A subsequent documentation-only branch head or synthetic PR merge is not new
+executed evidence; each result remains bound to its recorded test subject.
+A fresh read-only remote reconciliation at 23:40:23 UTC retained both open draft
+PRs and the source/merge identities above, SPELL base `466b7bf5…`, IDE base
+`c5edbdae…`, and diagnostic branch `dc76fcc1…`. The v0.8 tag and release endpoints
+returned 404; both repositories had zero queued or in-progress hosted runs at
+that observation. These facts do not exclude subsequent delayed write effects.
+
+The fresh local-253 input reconciliation preserves all 763 requirements and
+47 unchanged historical reports. Of 555 top-level bindings, 546 match and nine
+drift. All 763 remain `NOT_FRESHLY_QUALIFIED`. Eleven previously unresolved
+referenced byte identities were actually recovered and hash-verified: six exact
+derived-source reconstructions, three immutable Git capture blobs and two exact
+historical CRLF serializations. The historical gap falls from 57 to **46**;
+historical report outcomes and current native statuses do not change. Matching
+top-level inputs or recovered bytes is not fresh original native/driver execution.
+
+The complete 763-row matrix below is preserved. The fresh reconciliation is bound
+to local SPELL `253d9e726c7c8a7ffe20ea201094bd9755d47089` and IDE
+`b1472b4d5a515b9082db139fb8e16b63677a052e`; remote dev80 also retains the same
+546/9 top-level split. Nine source drifts and the 46 unresolved historical byte
+identities remain explicit. The exact recovery classification, original hashes,
+newly recovered payload bindings and independent review receipts are in the
+[current source-bound reconciliation](evidence/qualification-dev81-local-20261028.json). Portable 241-test and local
+306-test collections do not qualify all original native/driver semantics.
+
+## Preserved historical matrix and input snapshots
+
+Earlier 57-gap counts and earlier “current executable” labels below are their
+historical snapshots. No historical result is silently relabeled or promoted.
+
+<!-- END CURRENT DEV81 RECONCILIATION -->
+
 Current executable `c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034`; paired IDE `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. [Fresh input reconciliation](evidence/compatibility-inputs-c9ec5c5e-20261028.json) verifies555top-level bindings (546match/9drift) and47unchanged historical reports. All763 current native requirements remain NOT_FRESHLY_QUALIFIED;57 historical capture hashes remain unresolved. The following snapshots are historical.
 
 Dev77 changes measured private bridge ownership and requires fresh exact-source acceptance. The reconciliation below is the preserved dev76 input checkpoint; all 763 current native requirements and 57 unresolved historical captures remain open.
@@ -849,3 +906,12 @@ The [machine-readable matrix](evidence/compatibility-matrix-20261027.json) conta
 | CMP-LRM244-TYPE-TIME — TIME | Type / TIME | QUALIFIED: [time.json](../../conformance/evidence/time.json) | Not freshly qualified |
 | CMP-LRM244-TYPE-VAR — Var | Type / DATA | QUALIFIED: [v05_data_complete.json](../../conformance/evidence/v05_data_complete.json) | Not freshly qualified |
 | CMP-LRM244-TYPE-VERIFYRESULT — Verify composite object | Type / OBS | QUALIFIED: [obs.json](../../conformance/evidence/obs.json) | Not freshly qualified |
+
+
+## Dev82 integration — 2026-10-29 UTC
+
+Exact executable16982c4dd698a937ce2ae4e37f4736055de9a2ce integrates dev81 plus native audit-generation identity fencing and bounded per-connection bridge-line reuse. The audit correction reproduces two historical-header races, then passes52 component checks. The bridge selection passes58 ASan/UBSan checks;10,000 short line reads fall from40,000 allocations/4,540,000 bytes to zero after component warm-up with unchanged digest. Counts overlap other suites and are not unique aggregate coverage. These do not establish whole-family sustained qualification.
+
+GitHub writes recovered. Corrected observer47921d18/tree4d07383d is running in40828138175; results require complete collection. Fresh candidate CI, original45-second checks, sanitizer hours, ENOSPC and paired installed recovery remain pending. All eleven release groups remain false. Prior failure bodies and histories remain preserved. Current Qt6.10.3 attribution binds70/70 top libraries to exact upstream SDK bytes;12/230 Qt ELF files remain unbound and license/source/advisory review remains open. The qualification cluster and independent security reviewer remain unavailable.
+
+Details: `evidence/qualification-dev82-integration-20261029.json`.

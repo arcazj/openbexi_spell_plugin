@@ -76,8 +76,11 @@ int main(int argc,char** argv) {
         OrderedClient client("OPENBEXI-HOST-V1","127.0.0.1",std::stoi(argv[1]));
         peer.client=&client;client.initialize(&peer);client.connect();
         emit({{"event","connected"},{"protocol",1}});
+        // Keep one input buffer for this connection; the unchanged 4 MiB check
+        // bounds accepted content. JSON parsing owns its result independently.
+        std::string line;
         while (std::cin.good()) {
-            std::string line;
+            line.clear();
             char ch;
             while (std::cin.get(ch) && ch!='\n') {
                 if (line.size()>=4*1024*1024) throw std::runtime_error("Host message exceeds 4 MiB");

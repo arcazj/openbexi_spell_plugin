@@ -74,6 +74,14 @@ class V08AuditFile {
         if(!S_ISREG(info.st_mode) || info.st_uid!=::geteuid() ||
            (info.st_mode&0077)!=0)failed("file_policy",EPERM);
         if(::flock(fd,LOCK_EX|LOCK_NB)!=0)failed("writer_lock");
+        // openat may precede another writer's completed generation change.
+        // A lock on the now-archived inode grants no authority over the current
+        // pathname. Recheck after acquiring the lock, before any write/link.
+        struct stat current{};
+        if(::fstatat(directory,name.c_str(),&current,AT_SYMLINK_NOFOLLOW)!=0)
+            failed("writer_identity");
+        if(!S_ISREG(current.st_mode) || current.st_dev!=info.st_dev ||
+           current.st_ino!=info.st_ino)failed("writer_identity",ESTALE);
     }
     void archive_existing() {
         const int old=::openat(directory,name.c_str(),O_RDWR|O_CLOEXEC|O_NOFOLLOW);

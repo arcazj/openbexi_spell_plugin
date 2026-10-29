@@ -1,3 +1,157 @@
+<!-- BEGIN CURRENT DEV81 RECONCILIATION -->
+# Current dev80 resource outcomes and local dev81 changes
+
+Remote hosted SPELL is `4c55321bad3a66118e087f1b8b9d7b9f55028065`
+(`0.8.0.dev80`), tested PR merge `a98091b8a4cb1c6bc1c4c41f427da6cb06477425`,
+with identical tree `b07ce296c6a1146753f19c34f63da0ebca5342bb`.
+The paired IDE remains `b1472b4d5a515b9082db139fb8e16b63677a052e`
+(`1.2.1.dev7`), tree `8fb91191ead6c4fa60089763c08fc8f3959a20c3`, tested merge
+`cb49a0cdcabe7008d3d475c3af74b32c4e3b2d58` with the same IDE tree.
+
+The local, unpublished dev81 candidate is `253d9e726c7c8a7ffe20ea201094bd9755d47089`,
+tree `15498fc275c5e047570b8678f9e5b9a82fe6cbff`. Its selected 14-file regression run
+is bound to `699c6a5e88940d5e06d62a63e3724139616b8866`, tree
+`ebb2e6e198f75c4666af8f169678621f0fa6bff3`: **306 passed, zero failures, errors or
+skips, 145.34 seconds**. The later two-line worker comment change is AST-identical;
+bytecode identity is not claimed. The 306-case run was not rerun at that later
+comment-only commit; the separate 418-case diagnostic at253 is recorded in the
+current receipt with its own result and source binding.
+These selected tests are neither the complete foundation suite nor native/IDE
+workload acceptance. Original lint, formatting (149 files) and typing (23 source
+files) checks pass at local253. The first wrong-resolved-interpreter attempt
+failed on missing tool modules and remains preserved separately.
+[Source-bound reconciliation](evidence/qualification-dev81-local-20261028.json) records the exact
+identities, raw receipts, hashes, unsuccessful attempts and scope boundaries.
+A subsequent documentation-only branch head or synthetic PR merge is not new
+executed evidence; each result remains bound to its recorded test subject.
+A fresh read-only remote reconciliation at 23:40:23 UTC retained both open draft
+PRs and the source/merge identities above, SPELL base `466b7bf5…`, IDE base
+`c5edbdae…`, and diagnostic branch `dc76fcc1…`. The v0.8 tag and release endpoints
+returned 404; both repositories had zero queued or in-progress hosted runs at
+that observation. These facts do not exclude subsequent delayed write effects.
+
+| Scenario | Profile / requested duration | Result | Original soak seconds | Growth bytes | Ordered samples | Audit files / bytes | Artifact |
+| --- | --- | --- | ---: | ---: | ---: | --- | ---: |
+| handoff | allocation-observer diagnostic / 45 s | PASS | 45.485619880 | 37,875,712 | 48 | 23 / 1,909,468 | 12853395374 |
+| handoff | original sanitizer/no-swap / 45 s | PASS | 45.616020781 | 40,593,408 | 47 | 23 / 2,450,192 | 12852198417 |
+| ide | original sanitizer/no-swap / 45 s | PASS | 45.550360855 | 40,472,576 | 48 | 27 / 2,417,120 | 12851769656 |
+| handoff | asan-noswap / 300 s | FAIL | 302.421926704 | 333,787,136 | 171 | 23 / 10,911,020 | 12855837576 |
+| ide | asan-noswap / 300 s | FAIL | 303.657502183 | 327,299,072 | 169 | 27 / 10,394,320 | 12854724702 |
+| handoff | asan-o2-noswap / 300 s | FAIL | 302.872318874 | 256,098,304 | 171 | 23 / 7,457,459 | 12857756371 |
+| ide | asan-o2-noswap / 300 s | FAIL | 303.222662301 | 328,704,000 | 171 | 27 / 10,316,275 | 12858091541 |
+| handoff | asan-swap / 300 s | FAIL | 303.123112668 | 296,574,976 | 170 | 23 / 9,125,957 | 12855594384 |
+| ide | asan-swap / 300 s | FAIL | 302.862476619 | 245,125,120 | 170 | 27 / 7,019,141 | 12857466926 |
+| ide | optimized-noswap / 300 s | PASS | 303.473481577 | 3,379,200 | 173 | 27 / 10,698,664 | 12856497153 |
+| handoff | asan-noswap / 3600 s | FAIL | 3603.335168907 | 1,076,039,680 | 1717 | 23 / 115,443,210 | 12855809168 |
+| ide | asan-noswap / 3600 s | FAIL | 3600.589913021 | 1,079,748,608 | 1737 | 27 / 120,028,422 | 12855154534 |
+| handoff | optimized-noswap / 3600 s | PASS | 3602.321767715 | 5,296,128 | 1764 | 23 / 118,874,232 | 12859190925 |
+| ide | optimized-noswap / 3600 s | PASS | 3603.986820283 | 7,610,368 | 1783 | 27 / 119,714,098 | 12859190975 |
+
+Both original dev80 sanitizer/no-swap hours failed growth and resident/combined
+peak budgets: handoff 1,076,039,680 bytes over 3,603.335168907 seconds, IDE
+1,079,748,608 bytes over 3,600.589913021 seconds. Original audit archives retain
+23 files / 115,443,210 bytes and 27 files / 120,028,422 bytes respectively.
+All six optional sanitizer 300-second comparisons also failed. Optimized,
+swap-enabled and diagnostic results do not replace mandatory acceptance.
+
+The completed dev77 optional matrix is no longer pending: both optimized
+300-second scenarios and both optimized hours passed; all six sanitizer
+300-second scenarios failed. Every completed artifact and exact overlay was
+independently checked. The dev77 original hours remain failed with the recorded
+Context exits, later Docker state and failed kernel queries preserved. No later
+pass or separate defect establishes those historical exit causes.
+
+The exact dev80 native full-disk artifact `12851393538` passed its bounded
+fault scenario: actual native errno 28 during write, explicit worker exit 1,
+no false completion, two retained holds and original owner epoch retained.
+The 963-byte acknowledged audit prefix was preserved; the later 8,192-byte
+record with an incomplete tail remains explicitly retained. The 21 audit
+components also pass. These are durable audit/fault components, not whole
+deployment restore, old-authority fencing, recovered execution authority or
+long-duration capacity qualification. They do not explain the historical first
+control-report denial before ENOSPC injection.
+
+Both optimized dev80 hour jobs have completed; their independently verified outcomes are recorded in the source-bound receipt and remain diagnostic-only.
+
+The bridge field-transfer correction borrows the request's field subtree only
+during synchronous transfer into independently owned native message strings.
+Actual frozen-native-message ASan/UBSan component coverage passed all 33 checks,
+including 12 input/error/ownership shapes. Over 10,000 iterations, short fields
+fell from 90,000 allocations / 4,800,000 bytes to zero; long fields from 110,000 /
+10,640,000 to 20,000 / 3,560,000; absent fields from 10,000 / 480,000 to zero.
+Output digests matched. The seven retained-binary rechecks reproduce those
+measurements and overlap the original coverage. This measured component change
+does not establish the cause or removal of whole-hour family growth.
+
+Prior Executor evidence binds selected BufferedWriter allocations to the
+unchanged fixture's progress-file writes and observes those selected samples
+subsequently freed; measured primary-allocator resident retention is distinct
+from live allocations. Context Python and other anonymous growth remain
+incompletely attributed. Native/Python/map/cgroup windows are not simultaneous;
+quarantine, primary mappings and RSS overlap and cannot be summed as separate
+categories. Durable audit bytes remain separate from filesystem cache.
+
+FakeStack run `40771852756` failed both original 300-second checks. The reader
+prerequisite passed in both exact images, but actual Context coverage was zero:
+discovery ran before the first original Context resource row. A two-path observer
+repair has 30 local passes and binds discovery to the first complete original
+PID/namespace-PID/start-tick record; its hosted rerun has not started. Its local
+tree is `4d07383d9ca9fc27fd9acc00fe25d65858b3ad52`; remote diagnostic head remains
+`dc76fcc1ef7150c4ea68636ecd76fd4e97ed705c` at the retained 22:47 UTC read.
+
+The historical bridge string-mutation sample's module return offset 722242 is
+inside `main` at offset 5692. The recorded executable SHA is
+`f538da0c7039ce9a06c4ddd9b7e56f5239a6602193b68dd5dfda8a5aac689db6`.
+A direct search of 964 retained ZIPs found six different bridge binaries and no
+exact match; no exact source line is established. Nested archives and absent
+hosted images are outside that search. No input-line buffer rewrite was made.
+
+The original 45-second and sustained workloads retain ASan/UBSan, no-swap
+mandatory settings, all ordered samples, original audit records, declared
+concurrency and deadlines, the 67,108,864-byte growth limit and existing peak
+budgets. No fixture rewrite, sample exclusion, relocation of measured usage,
+sanitizer purge, forced cleanup or audit deletion establishes a valid pass.
+The optimized handoff pre-soak SYS=2 rejection is a separate functional failure.
+The first historical native ENOSPC control-report denial remains unexplained;
+later native ENOSPC/restart passes do not establish whole-deployment restore,
+old-authority fencing, recovered execution authority or long-duration capacity.
+
+All eleven mandatory full-release gate groups remain **unqualified**, the public
+runtime remains disabled, and no stable merge, annotated v0.8 tag or GitHub release
+is claimed. Existing owner authorization permits publication once every mandatory
+criterion passes at the exact final joint identities; production migration remains
+unauthorized.
+
+GitHub source-tree write connector requests stalled and the separate CLI push lacked
+authenticated Git credentials. That access failure prevents publication and hosted
+requalification of the ready local changes. It is separate from the unavailable
+production-like qualification cluster with enforced NetworkPolicy and the
+independent implemented-system security reviewer. None of those external blockers
+excuses the failed memory/foundation results or unfinished native, browser,
+deployment, audit-restore and packaging work.
+
+A separate 25-second PR metadata attempt timed out; the 23:05 UTC independent
+read retained the old body and remote dev80 head. A separate 25-second contents-API
+observer-file attempt also returned no result; the 23:07 UTC branch read retained
+diagnostic `dc76fcc1…`. Delayed effects are not ruled out and require a fresh
+remote read before resuming. These are connector/credential execution failures,
+not permission or automatic-approval rejections. A newer independent read at
+23:25:22 UTC again retains diagnostic `dc76fcc1…`, product `4c55321b…` and the
+unchanged PR body; that observation does not rule out a later effect.
+
+The final 23:40:23 UTC read again retained both draft PR heads and merge
+identities, diagnostic `dc76fcc1…`, and both intended base branches. No queued or
+in-progress hosted runs were present in either repository. Stable v0.8 tag and
+release lookups both returned 404. No delayed effect was observed at that time;
+the failed write attempts remain preserved and future effects are not excluded.
+
+## Preserved historical resource checkpoints
+
+Earlier current/pending statements below are historical snapshots, not current
+qualification assertions. All original limits and failed attempts remain binding.
+
+<!-- END CURRENT DEV81 RECONCILIATION -->
+
 # Dev77 executed qualification — release blocked
 
 SPELL `c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034` (0.8.0.dev77), tested PR merge
@@ -526,3 +680,12 @@ empty events. Dev58 preserves them as authenticated, idempotent audit records;
 the 8192-byte bound, severity/scope rules, ownership and grant checks remain.
 Dev57's unclassified RaiseEvent denial remains separately open until its cause
 is established; later passes alone are insufficient.
+
+
+## Dev82 integration — 2026-10-29 UTC
+
+Exact executable16982c4dd698a937ce2ae4e37f4736055de9a2ce integrates dev81 plus native audit-generation identity fencing and bounded per-connection bridge-line reuse. The audit correction reproduces two historical-header races, then passes52 component checks. The bridge selection passes58 ASan/UBSan checks;10,000 short line reads fall from40,000 allocations/4,540,000 bytes to zero after component warm-up with unchanged digest. Counts overlap other suites and are not unique aggregate coverage. These do not establish whole-family sustained qualification.
+
+GitHub writes recovered. Corrected observer47921d18/tree4d07383d is running in40828138175; results require complete collection. Fresh candidate CI, original45-second checks, sanitizer hours, ENOSPC and paired installed recovery remain pending. All eleven release groups remain false. Prior failure bodies and histories remain preserved. Current Qt6.10.3 attribution binds70/70 top libraries to exact upstream SDK bytes;12/230 Qt ELF files remain unbound and license/source/advisory review remains open. The qualification cluster and independent security reviewer remain unavailable.
+
+Details: `evidence/qualification-dev82-integration-20261029.json`.

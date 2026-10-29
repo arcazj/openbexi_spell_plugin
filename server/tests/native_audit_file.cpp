@@ -12,6 +12,15 @@ static bool ignored_range_revisited=false;
 extern "C" ssize_t __real_write(int,const void*,size_t);
 extern "C" int __real_fdatasync(int);
 extern "C" int __real_posix_fadvise(int,off_t,off_t,int);
+extern "C" int __real_flock(int,int);
+extern "C" int __wrap_flock(int fd,int operation) {
+    if(fault==8 && fault_calls++==0) {
+        std::puts("OPENED_BEFORE_LOCK");std::fflush(stdout);
+        char permission;
+        if(::read(STDIN_FILENO,&permission,1)!=1)_exit(75);
+    }
+    return __real_flock(fd,operation);
+}
 extern "C" ssize_t __wrap_write(int fd,const void* data,size_t size) {
     if(fd>2)record_synced=false;
     if(fd>2 && fault==1 && fault_calls++==0){errno=EINTR;return -1;}
@@ -69,6 +78,14 @@ int main(int argc,char** argv) {
     if(argc<3)return 2;
     const std::string mode=argv[1],path=argv[2];
     V08AuditFile output;
+#ifdef V08_AUDIT_FAULT_WRAPPERS
+    if(mode=="delayed-append" || mode=="delayed-new") {
+        fault=8;
+        output.open(path,mode=="delayed-append");
+        output.write_line("STALE");
+        std::puts("ACK");return 0;
+    }
+#endif
     if(mode=="append") {
         output.open(path,true);output.write_line("RESTART");return 0;
     }
@@ -109,7 +126,8 @@ int main(int argc,char** argv) {
         for(auto& thread:threads)thread.join();
         return 0;
     }
-    if(mode=="hold") {
+    if(mode=="hold" || mode=="hold-record") {
+        if(mode=="hold-record")output.write_line("CURRENT");
         std::puts("READY");std::fflush(stdout);
         char c;return ::read(STDIN_FILENO,&c,1)==1?0:4;
     }

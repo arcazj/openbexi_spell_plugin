@@ -1,0 +1,146 @@
+{
+  "schema": "openbexi.dev82.integration/1",
+  "recorded_at": "2026-10-29T06:23:50.325119+00:00",
+  "executable_commit": "16982c4dd698a937ce2ae4e37f4736055de9a2ce",
+  "executable_tree": "485b7a88c9b531cf8fa18261da47c2b3d213ff08",
+  "paired_ide": "b1472b4d5a515b9082db139fb8e16b63677a052e",
+  "version": "0.8.0.dev82",
+  "full_v08_qualified": false,
+  "publication_performed": false,
+  "prior_dev81_executable": "253d9e726c7c8a7ffe20ea201094bd9755d47089",
+  "prior_dev81_records": "97425b7d42ab44a32b86fe6716f43d4bcedac825",
+  "github_write_restored": true,
+  "observer": {
+    "commit": "47921d189db89c44f0a9552a91393a88c1d299b1",
+    "tree": "4d07383d9ca9fc27fd9acc00fe25d65858b3ad52",
+    "run": 40828138175,
+    "result": "pending_collection"
+  },
+  "audit": {
+    "schema": "openbexi.audit-generation-identity/1",
+    "recorded_at": "2026-10-29T06:17:58.959053+00:00",
+    "parent_commit": "97425b7d42ab44a32b86fe6716f43d4bcedac825",
+    "parent_runtime": "253d9e726c7c8a7ffe20ea201094bd9755d47089",
+    "commit": "fbf57ae47aaeae502418d9a946baabccd2c6946e",
+    "tree": "e7bebe16a0bc2b1070fb3294fcc50d3e730a8ee7",
+    "source_sha256": {
+      "host_runtime/native/audit_file.H": "71f78d5da59d9fbbfc4d2e66ff243f099caeb308fdc1da41aeea842070348f4e",
+      "server/tests/native_audit_file.cpp": "84bdd5f046e289a8b645791c97e675bdb96bb23e6dc3574e1136c39c349b1e1c",
+      "server/tests/test_native_audit_file.py": "a2d17c27ebb332b325e2664c777dc3f00ca86dc18df52c42835eeb711bad1707"
+    },
+    "before_header_sha256": "50d3df57aedda3447acca72889f46f37c9efa83aad06b73775708eeacce93ce4",
+    "before": {
+      "failed": 2,
+      "execution": "original native header with deterministic flock scheduling wrapper",
+      "observations": {
+        "delayed_append": {
+          "exit": 0,
+          "stdout": "ACK\n",
+          "archive_0": "NEW\nSTALE\n",
+          "active": "CURRENT\n"
+        },
+        "delayed_new": {
+          "exit": 0,
+          "stdout": "ACK\n",
+          "archive_0": "NEW\n",
+          "archive_1": "CURRENT\n",
+          "active": "STALE\n"
+        }
+      }
+    },
+    "after": {
+      "passed": 52,
+      "failed": 0,
+      "duration_seconds": 22.09,
+      "outer_exit": 0,
+      "native_sanitizers": "address,undefined; unchanged original test flags",
+      "stale_attempt_exit": 74,
+      "stale_attempt_failure": "writer_identity",
+      "scope": "native writer and source-composed ASRUN components, audit collector/fault tests, TLS controller recovery components",
+      "journal_records": 210,
+      "journal_completed": true
+    },
+    "validation": {
+      "ruff_check": "passed",
+      "ruff_format_check": "passed",
+      "git_diff_check": "passed"
+    },
+    "limitations": [
+      "No full rebuilt native Executor or installed IDE execution performed.",
+      "Actual ENOSPC, bounded/sustained workloads and whole-deployment restore require fresh hosted acceptance.",
+      "This internal component correction is not independent implemented-system security review.",
+      "Unresolved historical exit/admission/memory findings remain unresolved."
+    ],
+    "all_release_gates_closed": false,
+    "raw_audit_records_deleted": false,
+    "commit_attempts": [
+      {
+        "result": "failed",
+        "error": "Git index.lock write ENOSPC"
+      },
+      {
+        "result": "passed",
+        "commit": "fbf57ae47aaeae502418d9a946baabccd2c6946e"
+      }
+    ],
+    "evidence_storage_note": "Generated source extraction asrun-composition0 archived with all 878 SHA-256 file comparisons verified; raw audit files preserved unchanged. After completed tests, all after-raw files moved to /dev/shm/openbexi-audit-after-raw with full SHA-256 equality verified; original path is symlink. This occurred after all measurements ended, not during acceptance.",
+    "evidence_hashes": {
+      "before.log": "b35c13da7519be0809cc5bdae62df24ed495b9d601586051e104730712a55b9c",
+      "before.xml": "183843e080524a7d3051e5612aa8cdc4d16c48b47a2bc281838c23d34b29f93f",
+      "after.log": "df199f37a673fd346f9c8818a7f86f08f5182f21ee4264a08594e0278a518de9",
+      "after.xml": "824a263e68ba27d047b3f25f797400b34bd8d6129c0437821a21e99e1d34c531",
+      "change.patch": "11633ab77d822c277d54ceac76a2fbb089f27995cd0dbbfb20fde82402955537",
+      "audit-generation-fbf57ae.bundle": "7dbf369de7322cb52e8a1f9b5141d5c2546361a9c5d974414a4aa1616672ae96",
+      "after-journal/tests.results-5-8ce5bed60009453d85fccf25f66ccd44.jsonl": "9d30fd7e25c0a9c0395d46683bc3754ae8850bdedd2ae027048fb1d39c8586ef"
+    }
+  },
+  "bridge_line": {
+    "source": "446d774afe1ee2c4d845eb3e8b74b4c8281e11f9",
+    "tree": "4ea4ed0065fdb3b1aaf199b9a60a49e289ab52c1",
+    "passed": 58,
+    "failed": 0,
+    "seconds": 57.134,
+    "journal_records": 234,
+    "short_line_iterations": 10000,
+    "before_allocations": 40000,
+    "after_allocations": 0,
+    "before_bytes": 4540000,
+    "after_bytes": 0,
+    "output_digest_identical": true,
+    "scope": "component only; no historical callsite proof or whole-family acceptance",
+    "earlier_failed_harness_and_disk_exhaustion_attempts_preserved": true
+  },
+  "checkpoint_recovery": {
+    "library_version": 13,
+    "sha256": "39af41f174139535206a9f825536fc2bea74b9307b56c31ec1514157b96d8c20",
+    "zip_entries_crc_pass": 13438,
+    "prior_entries_preserved": 13324,
+    "current_inventory_entries_verified": 1433,
+    "critical_local_files_verified": 104,
+    "external_volumes_metadata_verified": 24,
+    "historical_hashes_still_missing": 46
+  },
+  "security_attribution": {
+    "qt_version": "6.10.3",
+    "top_libraries_exact_sdk_bytes": 70,
+    "top_libraries_total": 70,
+    "wheel_elf_sdk_bound": 218,
+    "wheel_elf_total": 230,
+    "license_source_advisory_disposition_complete": false,
+    "independent_security_review_complete": false
+  },
+  "external_requirements": [
+    "production-like qualification cluster enforcing NetworkPolicy",
+    "independent implemented-system security reviewer",
+    "Windows execution",
+    "local Docker/Kubernetes capabilities unavailable; use hosted workloads"
+  ],
+  "prior_failures_preserved": [
+    "dev80 original sanitizer hours both failed growth/peak",
+    "dev80 foundation timeout600s",
+    "dev81 unprotected memory-read positive control failed before product protection; separate self/child probes ENOSYS",
+    "dev77 historical exits/admission/control-report causes unresolved",
+    "original IDE graphics SIGBUS and later heap abort; no derivative portability claim"
+  ],
+  "fresh_hosted_acceptance": "pending on resulting remote commit; no earlier result promoted"
+}

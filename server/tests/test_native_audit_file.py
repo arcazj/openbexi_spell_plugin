@@ -34,7 +34,7 @@ def audit_binary(tmp_path_factory):
             "-fno-omit-frame-pointer",
             "-no-pie",
             "-DV08_AUDIT_FAULT_WRAPPERS=1",
-            "-Wl,--wrap=write,--wrap=fdatasync,--wrap=posix_fadvise",
+            "-Wl,--wrap=write,--wrap=fdatasync,--wrap=posix_fadvise,--wrap=flock",
             "-I" + str(ROOT / "host_runtime/native"),
             str(ROOT / "server/tests/native_audit_file.cpp"),
             "-o",
@@ -240,6 +240,48 @@ def test_other_process_cannot_replace_an_active_writer(audit_binary, tmp_path):
     finally:
         holder.communicate(b"x", timeout=10)
     assert holder.returncode == 0
+
+
+@pytest.mark.parametrize("mode", ["delayed-append", "delayed-new"])
+def test_opened_old_inode_cannot_mutate_an_archived_generation(audit_binary, tmp_path, mode):
+    path = tmp_path / "execution.ASRUN"
+    assert run(audit_binary, "new", path).returncode == 0
+    stale = subprocess.Popen(
+        [str(audit_binary), mode, str(path)],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=environment(),
+    )
+    current = None
+    try:
+        # Keep the real old fd open across another writer's complete generation
+        # transition. The wrapper only delays flock; all filesystem calls run.
+        assert stale.stdout.readline() == b"OPENED_BEFORE_LOCK\n"
+        current = subprocess.Popen(
+            [str(audit_binary), "hold-record", str(path)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=environment(),
+        )
+        assert current.stdout.readline() == b"READY\n"
+        output, diagnostic = stale.communicate(b"x", timeout=10)
+        (tmp_path / "stale.stdout").write_bytes(output)
+        (tmp_path / "stale.stderr").write_bytes(diagnostic)
+        (tmp_path / "stale.exit").write_text(str(stale.returncode) + "\n")
+        assert stale.returncode == 74 and b"stage=writer_identity" in diagnostic
+        assert not output
+        assert path.read_bytes() == b"CURRENT\n"
+        assert (tmp_path / "execution.ASRUN.archive.0").read_bytes() == b"NEW\n"
+        assert len(list(tmp_path.glob("*.archive.*"))) == 1
+    finally:
+        if stale.poll() is None:
+            stale.kill()
+            stale.communicate(timeout=10)
+        if current is not None:
+            current.communicate(b"x", timeout=10)
+    assert current.returncode == 0
 
 
 @pytest.mark.parametrize("symlink", [False, True])

@@ -1,3 +1,159 @@
+<!-- BEGIN CURRENT DEV81 RECONCILIATION -->
+# Current ownership measurements and local dev81 correction
+
+Remote hosted SPELL is `4c55321bad3a66118e087f1b8b9d7b9f55028065`
+(`0.8.0.dev80`), tested PR merge `a98091b8a4cb1c6bc1c4c41f427da6cb06477425`,
+with identical tree `b07ce296c6a1146753f19c34f63da0ebca5342bb`.
+The paired IDE remains `b1472b4d5a515b9082db139fb8e16b63677a052e`
+(`1.2.1.dev7`), tree `8fb91191ead6c4fa60089763c08fc8f3959a20c3`, tested merge
+`cb49a0cdcabe7008d3d475c3af74b32c4e3b2d58` with the same IDE tree.
+
+The local, unpublished dev81 candidate is `253d9e726c7c8a7ffe20ea201094bd9755d47089`,
+tree `15498fc275c5e047570b8678f9e5b9a82fe6cbff`. Its selected 14-file regression run
+is bound to `699c6a5e88940d5e06d62a63e3724139616b8866`, tree
+`ebb2e6e198f75c4666af8f169678621f0fa6bff3`: **306 passed, zero failures, errors or
+skips, 145.34 seconds**. The later two-line worker comment change is AST-identical;
+bytecode identity is not claimed. The 306-case run was not rerun at that later
+comment-only commit; the separate 418-case diagnostic at253 is recorded in the
+current receipt with its own result and source binding.
+These selected tests are neither the complete foundation suite nor native/IDE
+workload acceptance. Original lint, formatting (149 files) and typing (23 source
+files) checks pass at local253. The first wrong-resolved-interpreter attempt
+failed on missing tool modules and remains preserved separately.
+[Source-bound reconciliation](evidence/qualification-dev81-local-20261028.json) records the exact
+identities, raw receipts, hashes, unsuccessful attempts and scope boundaries.
+A subsequent documentation-only branch head or synthetic PR merge is not new
+executed evidence; each result remains bound to its recorded test subject.
+A fresh read-only remote reconciliation at 23:40:23 UTC retained both open draft
+PRs and the source/merge identities above, SPELL base `466b7bf5…`, IDE base
+`c5edbdae…`, and diagnostic branch `dc76fcc1…`. The v0.8 tag and release endpoints
+returned 404; both repositories had zero queued or in-progress hosted runs at
+that observation. These facts do not exclude subsequent delayed write effects.
+
+Dev73 locked LINE audit-buffer reuse, callback exit/cancellation settlement and
+deferred cache-prefix handling; dev75 filename/callstack ownership and the
+interface-preserving adapter; dev76 caller-owned incoming request-ID rendering;
+and dev77 exclusively owned bridge field/header reuse remain preserved with their
+regressions. The dev77 frozen 10,000-cycle event/reply measurement remains
+220,000 allocations / 13,340,000 bytes before and zero after component warm-up,
+with identical output bytes. Its 147 distinct local regressions are historical
+component evidence, not proof of sustained whole-family stability.
+
+The bridge field-transfer correction borrows the request's field subtree only
+during synchronous transfer into independently owned native message strings.
+Actual frozen-native-message ASan/UBSan component coverage passed all 33 checks,
+including 12 input/error/ownership shapes. Over 10,000 iterations, short fields
+fell from 90,000 allocations / 4,800,000 bytes to zero; long fields from 110,000 /
+10,640,000 to 20,000 / 3,560,000; absent fields from 10,000 / 480,000 to zero.
+Output digests matched. The seven retained-binary rechecks reproduce those
+measurements and overlap the original coverage. This measured component change
+does not establish the cause or removal of whole-hour family growth.
+
+Prior Executor evidence binds selected BufferedWriter allocations to the
+unchanged fixture's progress-file writes and observes those selected samples
+subsequently freed; measured primary-allocator resident retention is distinct
+from live allocations. Context Python and other anonymous growth remain
+incompletely attributed. Native/Python/map/cgroup windows are not simultaneous;
+quarantine, primary mappings and RSS overlap and cannot be summed as separate
+categories. Durable audit bytes remain separate from filesystem cache.
+
+FakeStack run `40771852756` failed both original 300-second checks. The reader
+prerequisite passed in both exact images, but actual Context coverage was zero:
+discovery ran before the first original Context resource row. A two-path observer
+repair has 30 local passes and binds discovery to the first complete original
+PID/namespace-PID/start-tick record; its hosted rerun has not started. Its local
+tree is `4d07383d9ca9fc27fd9acc00fe25d65858b3ad52`; remote diagnostic head remains
+`dc76fcc1ef7150c4ea68636ecd76fd4e97ed705c` at the retained 22:47 UTC read.
+
+The historical bridge string-mutation sample's module return offset 722242 is
+inside `main` at offset 5692. The recorded executable SHA is
+`f538da0c7039ce9a06c4ddd9b7e56f5239a6602193b68dd5dfda8a5aac689db6`.
+A direct search of 964 retained ZIPs found six different bridge binaries and no
+exact match; no exact source line is established. Nested archives and absent
+hosted images are outside that search. No input-line buffer rewrite was made.
+
+Both original dev80 sanitizer/no-swap hours failed growth and resident/combined
+peak budgets: handoff 1,076,039,680 bytes over 3,603.335168907 seconds, IDE
+1,079,748,608 bytes over 3,600.589913021 seconds. Original audit archives retain
+23 files / 115,443,210 bytes and 27 files / 120,028,422 bytes respectively.
+All six optional sanitizer 300-second comparisons also failed. Optimized,
+swap-enabled and diagnostic results do not replace mandatory acceptance.
+
+The completed dev77 optional matrix is no longer pending: both optimized
+300-second scenarios and both optimized hours passed; all six sanitizer
+300-second scenarios failed. Every completed artifact and exact overlay was
+independently checked. The dev77 original hours remain failed with the recorded
+Context exits, later Docker state and failed kernel queries preserved. No later
+pass or separate defect establishes those historical exit causes.
+
+The intervening development fixes are retained at their own source identities.
+Dev79 `17ac0d81afca81fe765177f4137e71641be2ef9b` integrates native STATUS snapshot
+ownership and sequence reservation fixes, including actual-source ThreadSanitizer
+reproduction of the prior counter/template races and owned missing-Csp storage.
+Its snapshot lock is released before stack/send callbacks. The temporary
+admission-body move preserves lvalue behavior and packet bytes; 10,000 rvalue
+requests fell from 320,000 allocations / 28,310,000 bytes to 100,000 /
+14,960,000 bytes in its separate component. Dev79's 119 integrated checks overlap
+later collections and do not qualify the full family.
+
+Dev80 `4c55321bad3a66118e087f1b8b9d7b9f55028065` binds acknowledgements to live
+logical notification owners. The actual-source baseline reproduced an inactive
+periodic STATUS ACK at Sequence=0 satisfying a different unsent CALL at Sequence=0.
+The correction registers a stack-owned ticket before sending, removes it on
+normal/error/cancellation exit, stores no inactive ACK credits and uses one
+constructor-initialized, non-resetting notification sequence domain. The intended
+wire Sequence values change under interleaving; other component wire bytes match,
+so full wire-byte identity is not claimed. A receipt for an earlier retry of the
+same live logical notification remains valid; this is not send-attempt fencing
+or a durable-audit commit receipt. Existing configured waits, polling, reconnect
+readiness and publish-before-ACK behavior remain. The separate component has
+26 passing checks; the later integrated collection also exercises these paths.
+These demonstrated defects do not establish unrelated historical startup,
+control-report denial, driver-burst or Context-exit causes.
+
+Hosted dev80 foundation failed its unchanged 600-second deadline: 1,674 collected,
+1,039 completed PASSED outcomes in verbose stdout, an incomplete tail, and no final
+JUnit. The clean local test-only `f59d17d0f8d25ea8c957ee910b9e50af6fc65422` attempt
+also timed out at 600 seconds: 1,677 collected and 1,143 completed passing calls,
+with retained ordered setup/call/teardown records but no final session/JUnit.
+Zero recorded failed calls does not make an interrupted suite a pass. Measured
+setup/call/teardown totals were 232.595 / 258.298 / 107.106 seconds; inspected
+successful teardown paths do not establish a product ownership defect. Dev81's
+bounded compilation reuse/batching and immediate result journal are locally
+implemented; a complete foundation pass at the final candidate is outstanding.
+
+A separate clean-source tail diagnostic at local253 selected 418 cases from the
+534 f59 cases left unexecuted, excluding 116 exact IDs already exercised by the
+integrated run. It completed 417 passes and one failure, zero errors/skips, in
+78.247 seconds (78.617 seconds wrapper, exit 1, no timeout). The failure is the
+same-UID memory-isolation test's positive-control `process_vm_readv`, before
+`protect_runtime()` or its protected-read check executes. Minimal self/direct-child
+probes returned EPERM (1) in restricted mode and ENOSYS (38) in the original
+authorized/escalated environment. The latter retains UID/EUID 0, dumpable 1 and
+verified direct ancestry/start-time/namespace observations; the Yama query returns
+ENOENT. Positive-control capability is unavailable here; the exact platform
+mechanism remains unknown. No product isolation defect, privacy-protection pass,
+skipped test or pass conversion is inferred. The original failure did not retain
+errno or the complete child identity; later probe records are separate observations,
+not values retroactively assigned to that first failure. The initial
+strict selection-name comparison failed before test execution; four generated
+UUID-name differences and the corrected source-bound selection are retained.
+These separate f59/699/253 sessions are not combined into a complete foundation
+pass, and prior-candidate passes are not inherited.
+
+Original native/installed-IDE bounded and sustained workloads must execute on
+any promoted correction at its exact final identities. Local field-transfer,
+native event-category and fixture-build/journal changes are integrated into
+dev81; the repaired FakeStack observer remains a separate diagnostic tree.
+All eleven release groups remain unqualified. No stable publication is claimed.
+
+## Preserved historical measurements
+
+The following source-bound measurements, failures and previously pending states
+are retained as historical evidence; current outcomes are stated above.
+
+<!-- END CURRENT DEV81 RECONCILIATION -->
+
 # Dev77 executed qualification — release blocked
 
 SPELL `c9ec5c5ec8338fe1530bc57ebb30fbb6ba410034` (0.8.0.dev77), tested PR merge
@@ -251,3 +407,12 @@ Dev74 full native compilation failed through the interface boundary. Its logs
 and unexecuted hour attempts remain retained. Dev75 adds actual interface
 compilation and alternate-implementation fallback coverage;109 affected local
 checks pass. No native runtime pass is inferred from these components.
+
+
+## Dev82 integration — 2026-10-29 UTC
+
+Exact executable16982c4dd698a937ce2ae4e37f4736055de9a2ce integrates dev81 plus native audit-generation identity fencing and bounded per-connection bridge-line reuse. The audit correction reproduces two historical-header races, then passes52 component checks. The bridge selection passes58 ASan/UBSan checks;10,000 short line reads fall from40,000 allocations/4,540,000 bytes to zero after component warm-up with unchanged digest. Counts overlap other suites and are not unique aggregate coverage. These do not establish whole-family sustained qualification.
+
+GitHub writes recovered. Corrected observer47921d18/tree4d07383d is running in40828138175; results require complete collection. Fresh candidate CI, original45-second checks, sanitizer hours, ENOSPC and paired installed recovery remain pending. All eleven release groups remain false. Prior failure bodies and histories remain preserved. Current Qt6.10.3 attribution binds70/70 top libraries to exact upstream SDK bytes;12/230 Qt ELF files remain unbound and license/source/advisory review remains open. The qualification cluster and independent security reviewer remain unavailable.
+
+Details: `evidence/qualification-dev82-integration-20261029.json`.
