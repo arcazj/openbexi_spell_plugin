@@ -21,6 +21,75 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def refresh_native_legacy_syntax(source, recipe, header):
+    """Replace only the stale embedded helper after frozen reproduction passes.
+
+    The frozen provenance remains untouched. The generated header carries the
+    exact tracked helper bytes and is copied by existing native-header inputs.
+    Every input and replacement is checked before either native unit is written.
+    """
+    old_path = recipe / "legacy_compare_syntax.py"
+    old = old_path.read_bytes()
+    if hashlib.sha256(old).hexdigest() != (
+        "f287f9062a7775a8c4bb929759811f5c9a168eafa4c507aeb5b08f05a37f2ca0"
+    ):
+        raise ValueError("Frozen native legacy helper preimage differs")
+    header_bytes = header.read_bytes()
+    if hashlib.sha256(header_bytes).hexdigest() != (
+        "e8405f614bdc0affd02aa3d9dd4e555d445da0ba89bd70d29b7894e8acae90b7"
+    ):
+        raise ValueError("Tracked native legacy helper header differs")
+    begin, end = b'R"v08_legacy(', b')v08_legacy";'
+    if header_bytes.count(begin) != 1 or header_bytes.count(end) != 1:
+        raise ValueError("Native legacy helper header boundary differs")
+    helper = header_bytes.split(begin, 1)[1].split(end, 1)[0]
+    if hashlib.sha256(helper).hexdigest() != (
+        "7817b95a89d1e960c4183b4bc8c411088f642a084c0bc8777e2790409f2ae228"
+    ):
+        raise ValueError("Tracked native legacy helper payload differs")
+    destination = source / "include/SPELL_UTIL/v08_legacy_syntax.H"
+    if destination.exists():
+        raise ValueError("Native legacy helper already installed")
+    literal = json.dumps(old.decode("utf-8"), ensure_ascii=True)
+    records, prepared = [], []
+    for relative in (
+        "lib/SPELL_EXC/src/SPELLastAnalyzer.C",
+        "lib/SPELL_UTIL/src/SPELLpythonHelper.C",
+    ):
+        path = source / relative
+        text = path.read_text()
+        anchor = "PyRun_String(" + literal + ", Py_file_input"
+        if text.count(anchor) != 1 or "v08LegacySyntax" in text:
+            raise ValueError(
+                "Frozen native legacy helper embedding differs: " + relative
+            )
+        changed = '#include "SPELL_UTIL/v08_legacy_syntax.H"\n' + text.replace(
+            anchor, "PyRun_String(v08LegacySyntax, Py_file_input"
+        )
+        records.append(
+            dict(
+                unit=relative,
+                frozen_composed_sha256=sha(path),
+                refreshed_sha256=hashlib.sha256(changed.encode()).hexdigest(),
+                replacements=1,
+            )
+        )
+        prepared.append((path, changed))
+    destination.write_bytes(header_bytes)
+    for path, changed in prepared:
+        path.write_text(changed)
+    if old_path.read_bytes() != old:
+        raise ValueError("Frozen native legacy provenance changed")
+    return dict(
+        original_helper_sha256=hashlib.sha256(old).hexdigest(),
+        tracked_helper_sha256=hashlib.sha256(helper).hexdigest(),
+        generated_header_sha256=hashlib.sha256(header_bytes).hexdigest(),
+        original_provenance_unchanged=True,
+        units=records,
+        native_runtime_qualified=False,
+    )
+
+
 def enable_native_message_moves(text):
     """Keep message layout/copy semantics; transfer already-owned IPC values."""
     if hashlib.sha256(text.encode()).hexdigest() != (
@@ -1916,6 +1985,9 @@ def main():
     expected.pop("manifest_sha256")
     if composition != expected:
         raise ValueError("Installed native source composition does not reproduce")
+    legacy_syntax = refresh_native_legacy_syntax(
+        source, recipe, Path("/candidate/legacy_syntax.H")
+    )
     before = patch_native_tree(
         source, prompts=args.native_prompts, terminal=args.native_terminal
     )
@@ -2135,6 +2207,7 @@ def main():
             path.name: sha(path) for path in Path("/candidate").glob("*.H")
         },
         units=records,
+        legacy_syntax_refresh=legacy_syntax,
         compiler=subprocess.check_output(["c++", "--version"], text=True).splitlines()[
             0
         ],

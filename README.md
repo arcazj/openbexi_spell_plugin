@@ -1,3 +1,5 @@
+> **UNQUALIFIED — qualification incomplete.** Current publication: SPELL v0.8-rc1. See [release notes](docs/UNQUALIFIED_RELEASE.md) for the delivered scope, installation and known limitations. Earlier release descriptions below are historical.
+
 # openbexi_spell_plugin
 
 SPELL is an optional runtime for [openbexi_ide](https://github.com/arcazj/openbexi_ide),
