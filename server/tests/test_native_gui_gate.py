@@ -20,11 +20,29 @@ BASELINE_SHA256 = "2147c18a4997889d7fa3d319380e1ae0b309248cbebea2aa2c42163df5eb8
 
 @pytest.fixture(scope="session")
 def gui_binaries(tmp_path_factory, request):
-    serialization_only = getattr(request, "param", "transport") == "serialization"
+    profile = getattr(request, "param", "transport")
+    serialization_only = profile in {"serialization", "workspace"}
+    workspace = profile == "workspace"
     folder = tmp_path_factory.mktemp("native-gui-gate")
     builds = NativeBuildBatch(folder, request)
-    baseline = (ROOT / "server/tests/native_gui_gate_before_dev82.H").read_bytes()
-    assert hashlib.sha256(baseline).hexdigest() == BASELINE_SHA256
+    baseline_path = (
+        "server/tests/native_gui_gate_before_dev83.H"
+        if workspace
+        else "server/tests/native_gui_gate_before_dev82.H"
+    )
+    baseline = (ROOT / baseline_path).read_bytes()
+    assert hashlib.sha256(baseline).hexdigest() == (
+        "3497a8b35ff163beef401d531165bca86b0cf77614ade4855558cc1e7273df6d"
+        if workspace
+        else BASELINE_SHA256
+    )
+    if workspace:
+        assert (
+            hashlib.sha256(
+                (ROOT / "server/tests/native_admission_ipc_before_dev83.H").read_bytes()
+            ).hexdigest()
+            == "9eb3d41f7590d3469bdb6fd08261f6a441b9391555f378d0bab06c1be7be839d"
+        )
     include = Path("/usr/include")
     if not (include / "nlohmann/json.hpp").is_file():
         import nlohmann_json
@@ -89,7 +107,14 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
             baseline if name == "before" else (ROOT / "host_runtime/native/gui_gate.H").read_bytes()
         )
         (headers / "admission_ipc.H").write_bytes(
-            (ROOT / "host_runtime/native/admission_ipc.H").read_bytes()
+            (
+                ROOT
+                / (
+                    "server/tests/native_admission_ipc_before_dev83.H"
+                    if workspace and name == "before"
+                    else "host_runtime/native/admission_ipc.H"
+                )
+            ).read_bytes()
         )
         if serialization_only:
             (headers / "admission_channel.H").write_text(
@@ -115,6 +140,7 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
                 "-no-pie",
                 "-DV08_OWNED_BODY",
                 *(["-DV08_GUI_EXCHANGE_COMPONENT"] if serialization_only else []),
+                *(["-DV08_GUI_WORKSPACE"] if workspace and name == "after" else []),
                 "-I" + str(headers),
                 "-I" + str(folder),
                 "-I" + str(ROOT / "host_runtime/native"),
@@ -136,6 +162,8 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
         "host_runtime/native/admission_channel.H",
         "server/tests/native_gui_gate.cpp",
         "server/tests/native_gui_gate_before_dev82.H",
+        "server/tests/native_gui_gate_before_dev83.H",
+        "server/tests/native_admission_ipc_before_dev83.H",
         "server/tests/test_native_gui_gate.py",
         "host_runtime/build_admission_context.py",
         "docs/reference/SPELL2.6.10-src.zip",
@@ -152,7 +180,7 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
         json.dumps(
             {
                 "component_only": True,
-                "baseline": BASELINE,
+                "baseline": "5fe7e80ea14577ef9378889efa573fd632bdfbe8" if workspace else BASELINE,
                 "actual_message_codec_and_gui_function_compiled": True,
                 "physical_unix_transport_requested": not serialization_only,
                 "explicit_exchange_test_sink": serialization_only,
@@ -264,3 +292,34 @@ def test_gui_serialization_component_failure_ownership(gui_binaries, tmp_path):
     before = invoke(gui_binaries["before"], "component-failures", tmp_path)
     after = invoke(gui_binaries["after"], "component-failures", tmp_path)
     assert before == after
+
+
+@pytest.mark.parametrize("gui_binaries", ["workspace"], indirect=True)
+@pytest.mark.parametrize("shape", [0, 1, 2, 3])
+def test_gui_workspace_exact_dev83_allocation_comparison(gui_binaries, tmp_path, shape):
+    results = {n: invoke(p, "component-" + str(shape), tmp_path) for n, p in gui_binaries.items()}
+    before, after = results["before"], results["after"]
+    for key in (
+        "requests",
+        "shape",
+        "wire_fnv1a64",
+        "wire_bytes",
+        "independent_wire_oracle",
+        "caller_message_unchanged",
+        "fresh_epoch_rotation",
+        "physical_unix_transport_executed",
+    ):
+        assert before[key] == after[key]
+    assert before["requests"] == 10000
+    assert after["caller_allocations"] < before["caller_allocations"] // 4
+    assert after["caller_allocated_bytes"] < before["caller_allocated_bytes"] // 4
+    (tmp_path / "measurements.json").write_text(json.dumps(results, indent=2) + "\n")
+
+
+@pytest.mark.parametrize("gui_binaries", ["workspace"], indirect=True)
+@pytest.mark.parametrize("mode", ["boundaries", "concurrency", "reentrant"])
+def test_gui_workspace_lifetime_and_bounds(gui_binaries, tmp_path, mode):
+    result = invoke(gui_binaries["after"], "workspace-" + mode, tmp_path)
+    assert result["physical_unix_transport_executed"] is False
+    assert result["passed"] is True
+    (tmp_path / "workspace.json").write_text(json.dumps(result, indent=2) + "\n")

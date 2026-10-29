@@ -1848,6 +1848,9 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     reuse_native_line_stack(source)
     own_native_status_snapshots(source)
     own_native_acknowledgements(source)
+    from native_startup_ack_patch import patch_startup_ack_tree
+
+    patch_startup_ack_tree(source)
     return before
 
 

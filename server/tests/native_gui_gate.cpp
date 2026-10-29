@@ -14,12 +14,38 @@ static constexpr const char* B = "22222222-2222-4222-8222-222222222222";
 static std::string epochPath;
 static thread_local bool measuring = false;
 static thread_local uint64_t allocations = 0, allocatedBytes = 0;
+#ifdef V08_GUI_WORKSPACE
+static thread_local bool trackingWorkspace = false;
+struct TrackedAllocation { const volatile void* pointer = nullptr; size_t bytes = 0; };
+static thread_local TrackedAllocation trackedWorkspace[4096];
+static thread_local size_t workspaceLive = 0, workspacePeak = 0;
+#endif
 extern "C" int __sanitizer_install_malloc_and_free_hooks(
     void (*)(const volatile void*, size_t), void (*)(const volatile void*));
-static void allocated(const volatile void*, size_t bytes) {
+static void allocated(const volatile void* pointer, size_t bytes) {
     if (measuring) { ++allocations; allocatedBytes += bytes; }
+#ifdef V08_GUI_WORKSPACE
+    if (trackingWorkspace) {
+        bool recorded = false;
+        for (auto& allocation : trackedWorkspace) if (!allocation.pointer) {
+            allocation = {pointer, bytes}; workspaceLive += bytes;
+            workspacePeak = std::max(workspacePeak, workspaceLive); recorded = true; break;
+        }
+        assert(recorded);
+    }
+#else
+    (void)pointer;
+#endif
 }
-static void freed(const volatile void*) {}
+static void freed(const volatile void* pointer) {
+#ifdef V08_GUI_WORKSPACE
+    if (trackingWorkspace) for (auto& allocation : trackedWorkspace) if (allocation.pointer == pointer) {
+        workspaceLive -= allocation.bytes; allocation = {}; break;
+    }
+#else
+    (void)pointer;
+#endif
+}
 static void rotate(const std::string& value) {
     const auto next = epochPath + ".next";
     const int fd = open(next.c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0600);
@@ -197,15 +223,17 @@ static void guiConcurrent(Server& server) {
 #ifdef V08_GUI_EXCHANGE_COMPONENT
 // Explicit test sink: only JSON construction, fresh epoch input, serialization
 // and exception ownership execute here. This is not a Unix transport pass.
-static std::string componentExpected;
-static int componentFailure = 0;
-static uint64_t componentHash = UINT64_C(14695981039346656037), componentBytes = 0, componentPackets = 0;
+static thread_local std::string componentExpected;
+static thread_local int componentFailure = 0;
+static thread_local uint64_t componentHash = UINT64_C(14695981039346656037), componentBytes = 0, componentPackets = 0;
+static thread_local void (*componentHook)(const std::string&) = nullptr;
 static inline void v08_admission_exchange(const char*, const std::string&, const std::string& packet) {
     if (packet.size() > 32768) throw v08_admission_failure("request_too_large");
     assert(packet == componentExpected); ++componentPackets;
     for (unsigned char byte : packet) { componentHash ^= byte; componentHash *= UINT64_C(1099511628211); ++componentBytes; }
     if (componentFailure == 1) throw v08_admission_failure("admission_denied");
     if (componentFailure == 2) throw v08_admission_failure("reply_lost");
+    if (componentHook) componentHook(packet);
 }
 static void componentBenchmark(int shape) {
     constexpr int count = 10000;
@@ -252,10 +280,158 @@ static void componentFailures() {
         << "\"serialization_exception_unwinds\":true,\"caller_message_unchanged\":true,\"physical_unix_transport_executed\":false}\n";
 }
 #endif
+#ifdef V08_GUI_WORKSPACE
+extern "C" size_t __sanitizer_get_current_allocated_bytes();
+static constexpr size_t workspaceStringBound = 64 * (128 + 4096) + 65536 + 1024;
+static void workspaceCheck(const V08GuiAdmissionWorkspace& workspace) {
+    assert(workspace.empty()); assert(workspace.retainedFields() <= 64);
+    assert(workspace.retainedStringCapacity() <= workspaceStringBound);
+}
+static void workspaceBoundaries() {
+    componentExpected.reserve(131072);
+    auto shortMessage = guiMessage(3, 0), longMessage = guiMessage(4, 1), unicode = guiMessage(5, 2);
+    auto huge = guiMessage(6, 0); huge.set("Value", std::string(70000, 'x'));
+    const auto before = __sanitizer_get_current_allocated_bytes();
+    size_t maximumRetainedBytes = 0, maximumCapacity = 0, maximumFields = 0;
+    const auto observe = [&](const V08GuiAdmissionWorkspace& workspace) {
+        workspaceCheck(workspace);
+        maximumRetainedBytes = std::max(maximumRetainedBytes, workspaceLive);
+        maximumCapacity = std::max(maximumCapacity, workspace.retainedStringCapacity());
+        maximumFields = std::max(maximumFields, workspace.retainedFields());
+    };
+    trackingWorkspace = true;
+    {
+        V08GuiAdmissionWorkspace workspace;
+        trackingWorkspace = false;
+        for (unsigned n = 0; n < 1000; ++n) {
+            const auto& message = n % 3 == 0 ? longMessage : n % 3 == 1 ? shortMessage : unicode;
+            componentExpected = guiWire(message, n % 2 == 0, A);
+            trackingWorkspace = true; workspace.admit(message, n % 2 == 0); trackingWorkspace = false;
+            observe(workspace);
+        }
+        // Arbitrary alternating schemas must not grow the retained key set.
+        for (unsigned n = 0; n < 200; ++n) {
+            auto message = shortMessage; message.set("New-" + std::to_string(n), std::string(4000, 'x'));
+            componentExpected = guiWire(message, true, A);
+            trackingWorkspace = true; workspace.admit(message, true); trackingWorkspace = false;
+            observe(workspace);
+        }
+        // The normal provider limit rejects this oversized request. Releasing
+        // its staging storage must not retain the large payload or poison the
+        // next valid request's schema, fields or UTF-8 state.
+        componentExpected = guiWire(huge, true, A);
+        trackingWorkspace = true;
+        try { workspace.admit(huge, true); assert(false); }
+        catch (const v08_admission_failure& error) { assert(std::string(error.reason) == "request_too_large"); }
+        trackingWorkspace = false; observe(workspace);
+        for (int reason : {1, 2}) {
+            componentFailure = reason; componentExpected = guiWire(shortMessage, true, A);
+            trackingWorkspace = true;
+            try { workspace.admit(shortMessage, true); assert(false); }
+            catch (const v08_admission_failure&) {} trackingWorkspace = false; observe(workspace);
+        }
+        componentFailure = 0;
+        auto invalid = shortMessage; invalid.set("Value", std::string("\xff", 1));
+        trackingWorkspace = true;
+        try { workspace.admit(invalid, true); assert(false); }
+        catch (const Json::type_error&) {} trackingWorkspace = false; observe(workspace);
+        // Removing an epoch variable after an earlier valid request omits the
+        // key completely. Restoring it re-reads an atomically rotated inode.
+        assert(unsetenv("OPENBEXI_V08_RUNTIME_EPOCH") == 0);
+        componentExpected = guiWire(shortMessage, true, A);
+        const auto field = std::string(",\"runtime_epoch\":\"") + A + "\"";
+        componentExpected.erase(componentExpected.find(field), field.size());
+        trackingWorkspace = true; workspace.admit(shortMessage, true); trackingWorkspace = false;
+        observe(workspace);
+        assert(setenv("OPENBEXI_V08_RUNTIME_EPOCH", epochPath.c_str(), 1) == 0);
+        rotate("too-short");
+        trackingWorkspace = true;
+        try { workspace.admit(shortMessage, true); assert(false); }
+        catch (const std::runtime_error&) {} trackingWorkspace = false; observe(workspace);
+        rotate(B); componentExpected = guiWire(shortMessage, true, B);
+        trackingWorkspace = true; workspace.admit(shortMessage, true); trackingWorkspace = false;
+        observe(workspace);
+        const auto provider = std::string(std::getenv("OPENBEXI_V08_ADMISSION_SOCKET"));
+        assert(unsetenv("OPENBEXI_V08_ADMISSION_SOCKET") == 0);
+        trackingWorkspace = true;
+        try { workspace.admit(invalid, true); assert(false); }
+        catch (const Json::type_error&) { assert(false); }
+        catch (const std::runtime_error& error) {
+            assert(std::string(error.what()) == "Native admission provider unavailable");
+        }
+        trackingWorkspace = false; observe(workspace);
+        assert(setenv("OPENBEXI_V08_ADMISSION_SOCKET", provider.c_str(), 1) == 0);
+        componentExpected = guiWire(shortMessage, true, B);
+        trackingWorkspace = true; workspace.admit(shortMessage, true); trackingWorkspace = false;
+        observe(workspace);
+        trackingWorkspace = true;
+    }
+    trackingWorkspace = false; assert(workspaceLive == 0);
+    // This measures live ASan allocations, not RSS/quarantine. The original
+    // message class has a separate bounded node cache, so no family claim or
+    // exact process-wide zero-delta assertion is made here.
+    std::cout << "{\"passed\":true,\"physical_unix_transport_executed\":false,\"workspaces\":1,"
+        << "\"maximum_retained_heap_allocation_bytes\":" << maximumRetainedBytes
+        << ",\"maximum_in_call_heap_allocation_bytes\":" << workspacePeak
+        << ",\"workspace_object_bytes\":" << sizeof(V08GuiAdmissionWorkspace)
+        << ",\"tracked_allocation_bytes_after_destruction\":" << workspaceLive
+        << ",\"maximum_retained_string_capacity\":" << maximumCapacity
+        << ",\"maximum_retained_fields\":" << maximumFields
+        << ",\"retained_string_capacity_bound\":" << workspaceStringBound
+        << ",\"post_destroy_process_live_allocation_delta_bytes\":"
+        << (static_cast<int64_t>(__sanitizer_get_current_allocated_bytes()) - static_cast<int64_t>(before)) << "}\n";
+}
+static void workspaceConcurrent() {
+    std::atomic<unsigned> entered{0}; std::atomic<bool> go{false};
+    std::atomic<size_t> maximumCapacity{0}; std::vector<std::thread> clients;
+    for (int thread = 0; thread < 8; ++thread) clients.emplace_back([&, thread] {
+        ++entered; while (!go.load()) std::this_thread::yield();
+        for (int n = 0; n < 1000; ++n) {
+            auto message = guiMessage(thread * 1000 + n, n % 4); const auto original = message.v08Fields();
+            componentExpected = guiWire(message, n % 2 == 0, A);
+            v08_admit_gui(message, n % 2 == 0); assert(original == message.v08Fields());
+            auto& workspace = v08_gui_workspace(); workspaceCheck(workspace);
+            const auto capacity = workspace.retainedStringCapacity(); auto prior = maximumCapacity.load();
+            while (prior < capacity && !maximumCapacity.compare_exchange_weak(prior, capacity)) {}
+        }
+        assert(componentPackets == 1000);
+    });
+    while (entered.load() != 8) std::this_thread::yield();
+    go = true;
+    for (auto& client : clients) client.join();
+    std::cout << "{\"passed\":true,\"physical_unix_transport_executed\":false,\"parallel_requests\":8000,"
+        << "\"workspaces\":8,\"maximum_per_workspace_string_capacity\":" << maximumCapacity.load() << "}\n";
+}
+static void workspaceNested(const std::string& outerPacket) {
+    const auto saved = outerPacket; const auto expected = componentExpected;
+    assert(v08_gui_workspace().busy);
+    componentHook = nullptr;
+    auto message = guiMessage(99, 2); componentExpected = guiWire(message, false, A);
+    v08_admit_gui(message, false);
+    componentFailure = 1;
+    try { v08_admit_gui(message, false); assert(false); }
+    catch (const v08_admission_failure& error) { assert(std::string(error.reason) == "admission_denied"); }
+    componentFailure = 0;
+    assert(outerPacket == saved && v08_gui_workspace().busy);
+    componentExpected = expected;
+}
+static void workspaceReentrant() {
+    auto message = guiMessage(1, 0); const auto original = message.v08Fields();
+    componentExpected = guiWire(message, true, A); componentHook = workspaceNested;
+    v08_admit_gui(message, true); assert(componentPackets == 3 && message.v08Fields() == original);
+    workspaceCheck(v08_gui_workspace());
+    std::cout << "{\"passed\":true,\"physical_unix_transport_executed\":false,\"peak_workspaces\":2,\"outer_packet_unchanged\":true}\n";
+}
+#endif
 int main(int argc, char** argv) {
     assert(argc == 4); epochPath = argv[2];
     assert(__sanitizer_install_malloc_and_free_hooks(allocated, freed) > 0);
     setup(argv[3]); const std::string mode = argv[1];
+#ifdef V08_GUI_WORKSPACE
+    if (mode == "workspace-boundaries") { workspaceBoundaries(); return 0; }
+    if (mode == "workspace-concurrency") { workspaceConcurrent(); return 0; }
+    if (mode == "workspace-reentrant") { workspaceReentrant(); return 0; }
+#endif
 #ifdef V08_GUI_EXCHANGE_COMPONENT
     if (mode == "component-failures") { componentFailures(); return 0; }
     if (mode.rfind("component-", 0) == 0) { componentBenchmark(std::stoi(mode.substr(10))); return 0; }

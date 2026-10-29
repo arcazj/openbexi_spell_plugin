@@ -36,6 +36,30 @@ static std::string v08_read_runtime_epoch(const char* path)
     return std::string(bytes, 36);
 }
 
+// An exclusively owned workspace may retain serialization capacity. Read the
+// epoch once per call and restore its empty node only after that fresh read.
+// The renderer and provider run synchronously; neither retains captured data.
+template<class Render>
+static inline void v08_native_request_in_place(
+    nlohmann::json& captured, Render&& render,
+    nlohmann::json::object_t::node_type* spareEpoch = nullptr)
+{
+    const char* epochPath = std::getenv("OPENBEXI_V08_RUNTIME_EPOCH");
+    if (epochPath) {
+        const auto current = v08_read_runtime_epoch(epochPath);
+        if (spareEpoch && !spareEpoch->empty())
+            captured.get_ref<nlohmann::json::object_t&>().insert(std::move(*spareEpoch));
+        auto& epoch = captured["runtime_epoch"];
+        if (epoch.is_string()) epoch.get_ref<nlohmann::json::string_t&>().assign(current);
+        else epoch = current;
+    }
+    const char* path = std::getenv("OPENBEXI_V08_ADMISSION_SOCKET");
+    const char* agent = std::getenv("OPENBEXI_V08_AGENT_PID");
+    if (!path || !agent || std::strlen(path) >= sizeof(sockaddr_un::sun_path))
+        throw std::runtime_error("Native admission provider unavailable");
+    v08_admission_exchange(path, agent, render(captured));
+}
+
 // A temporary request already owns every JSON node exclusively. Consume that
 // ownership for the synchronous exchange instead of copying the whole tree
 // before adding the freshly read epoch. Never cache authority or share nodes

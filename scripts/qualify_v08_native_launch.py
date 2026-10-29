@@ -747,6 +747,7 @@ def main():
         ROOT / "host_runtime/build_admission_context.py",
         ROOT / "host_runtime/native_prompt_patch.py",
         ROOT / "host_runtime/native_terminal_patch.py",
+        ROOT / "host_runtime/native_startup_ack_patch.py",
         ROOT / "host_runtime/python/terminal_probe.py",
         ROOT / "host_runtime/python/handoff_runtime.py",
         ROOT / "host_runtime/python/handoff_probe.py",
@@ -953,13 +954,17 @@ def main():
                         native_build / "native_terminal_patch.py",
                     )
                     shutil.copy2(
+                        ROOT / "host_runtime/native_startup_ack_patch.py",
+                        native_build / "native_startup_ack_patch.py",
+                    )
+                    shutil.copy2(
                         ROOT / "host_runtime/python/epoch_connection.py",
                         native_build / "epoch_connection.py",
                     )
                     (native_build / "Dockerfile").write_text(
                         "FROM " + base + "\nUSER root\n"
                         "RUN apt-get update && apt-get install -y --no-install-recommends g++ nlohmann-json3-dev libxerces-c-dev liblog4cplus-dev libncurses-dev zlib1g-dev\n"
-                        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py native_terminal_patch.py epoch_connection.py /candidate/\n"
+                        "COPY *.H private_bridge.cpp build.py native_prompt_patch.py native_terminal_patch.py native_startup_ack_patch.py epoch_connection.py /candidate/\n"
                         "RUN python /candidate/build.py"
                         + (" --native-prompts" if profile.native_prompts else "")
                         + (" --native-terminal" if profile.native_terminal else "")
