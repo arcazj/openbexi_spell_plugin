@@ -27,6 +27,11 @@ addopts = "-ra --strict-config"
 target-version = "py313"
 line-length = 100
 
+[tool.ruff.format]
+# This historical Git-blob fixture is verified byte-for-byte by source tests.
+# Keep lint and tests active; formatting must not rewrite its frozen bytes.
+exclude = ["tests/data/native_frozen_legacy_syntax.py"]
+
 [tool.mypy]
 python_version = "3.13"
 check_untyped_defs = true
