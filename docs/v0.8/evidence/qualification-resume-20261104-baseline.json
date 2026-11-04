@@ -1,0 +1,93 @@
+{
+  "recorded_at": "2026-11-04T22:52:40.194615+00:00",
+  "ide": {
+    "tag": "v1.2.1",
+    "commit": "08c314fb6b802b407cbabe01777072884d2b7504",
+    "clean": true,
+    "release": "https://github.com/arcazj/openbexi_ide/releases/tag/v1.2.1"
+  },
+  "spell": {
+    "tag": "v0.8-rc1",
+    "commit": "ce45fa4fd31b77cb97a1ef3621aa3906d2c94dda",
+    "clean": true,
+    "release": "https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.8-rc1"
+  },
+  "pairing_source_hashes_verified": 6,
+  "windows_source_tests": {
+    "recorded_at": "2026-11-04T22:44:50.011768+00:00",
+    "command": [
+      "C:\\projects\\openbexi_ide\\.venv\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "tests",
+      "-q",
+      "-W",
+      "error",
+      "--tb=short",
+      "--junitxml=C:\\projects\\openbexi_ide\\.qualification\\github-v1.2.1-sync-20261104222747\\ide-source.xml"
+    ],
+    "cwd": "C:/projects/openbexi_ide",
+    "exit_code": 0,
+    "totals": {
+      "tests": 305,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 31
+    },
+    "passed": true
+  },
+  "windows_skip_reasons": {
+    "This account cannot create symlinks": 1,
+    "Set OPENBEXI_EXECUTION_TEST_IMAGE to an exact Docker image ID": 8,
+    "Linux PID namespaces": 13,
+    "Linux pidfd/subreaper ownership": 9
+  },
+  "linux_focused": {
+    "passed": 87,
+    "failures": [
+      {
+        "test": "test_joint_qualification_checkouts_match_installed_client_identity",
+        "message": "AssertionError: [('v08-memory-startup-dev83.yml', 'b1472b4d5a515b9082db139fb8e16b63677a052e'), ('v08-memory-startup-dev83.yml', 'b1472... 'b1472b4d5a515b9082db139fb8e16b63677a052e'), ('v08-dev83-hours.yml', 'b1472b4d5a515b9082db139fb8e16b63677a052e'), ...]\nassert False\n +  where False = all(<generator object test_joint_qualification_checkouts_match_installed_client_identity.<locals>.<genexpr> at 0x7f3f2be32340>)"
+      },
+      {
+        "test": "test_actual_desktop_panel_connects_observer_and_disables_mutations",
+        "message": "ModuleNotFoundError: No module named 'PySide6'"
+      },
+      {
+        "test": "test_three_actual_desktop_panels_reserve_request_accept_and_rebind",
+        "message": "ModuleNotFoundError: No module named 'PySide6'"
+      },
+      {
+        "test": "test_old_actual_helper_fails_adjacent_token_and_current_helper_recovers",
+        "message": "AssertionError: assert b'assert (1 !...2) is False\\n' == b'assert (1 <...2) is False\\n'\n  \n  At index 10 diff: b'!' != b'<'\n  Use -v to get more diff"
+      }
+    ],
+    "total": 91
+  },
+  "windows_server_collection": "Unsupported Linux fcntl imports; raw failed collection retained in spell-focused.xml/log",
+  "linux_attempt1": "Outer log retained; collector stopped before copying per-test files. Corrected collector reran the unchanged selection and retained attempt2 raw XML/logs.",
+  "docker": {
+    "ide_compose_config": "passed",
+    "spell_staging_compose_config": "passed",
+    "new_native_image_built": false,
+    "production_migrated": false
+  },
+  "full_qualification_passed": false,
+  "qualification_status": "UNQUALIFIED; separate qualification branches created",
+  "installed_versions": {
+    "openbexi-ide": "1.2.1",
+    "openbexi-spell-dss": "0.8.0rc1",
+    "openbexi-spell-host": "0.8.0rc1",
+    "openbexi-spell-server": "0.8.0rc1",
+    "openbexi-spell-shared": "0.8.0rc1"
+  },
+  "release_asset_sha256": {
+    "openbexi_ide-1.2.1-py3-none-any.whl": "43bbc5cdae4e6bff9cf258faf9c28f778c7e8617df304ca93436ddceeb4df96b",
+    "release-manifest.json": "3867537afd000dd50236f7da35e9cdbb37536e0f435781f51b103cfe2d51eae8",
+    "openbexi_spell_dss-0.8.0rc1-py3-none-any.whl": "2a90c7abe18bfd1912f610daa6391e7f3fcab17991d56a2f1bd87037a05966fa",
+    "openbexi_spell_host-0.8.0rc1-py3-none-any.whl": "300c5ba181a76224a0f9d07a471a9dac307e9f42a3b17a3ec3bdf821d1127d5f",
+    "openbexi_spell_server-0.8.0rc1-py3-none-any.whl": "f5c775fe21d8f5f3daba3fd133e6809931c445f943d4a9ef813733e9e919c208",
+    "openbexi_spell_shared-0.8.0rc1-py3-none-any.whl": "339ae72b1f108bac43a16ab898c0bebfb046bf293070a7fb3b311873a35bac22"
+  }
+}

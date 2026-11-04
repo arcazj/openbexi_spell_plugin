@@ -3,6 +3,8 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import io
+import tokenize
 
 import pytest
 
@@ -59,7 +61,7 @@ def test_generated_header_exactly_contains_current_tracked_helper():
     )
 
 
-def test_old_actual_helper_fails_adjacent_token_and_current_helper_recovers():
+def test_original_positive_case_and_frozen_tokenizer_contract():
     code = b"assert (1 <> 2) is True\nassert (2 <> 2) is False\n"
     before, after = {}, {}
     exec(compile(old_helper(), "frozen-legacy-helper", "exec"), before)
@@ -71,9 +73,25 @@ def test_old_actual_helper_fails_adjacent_token_and_current_helper_recovers():
         ),
         after,
     )
-    assert before["normalize"](code) == code
     with pytest.raises(SyntaxError):
-        compile(before["normalize"](code), "unchanged-original-case", "exec")
+        compile(code, "unnormalized-original-case", "exec")
+    expected = code.replace(b"<>", b"!=")
+    # The frozen helper recognizes a single legacy OP token. CPython tokenizer
+    # versions differ here; a split-token interpreter is not proof that the
+    # published native interpreter failed this original positive case.
+    legacy_operator = any(
+        token.type == tokenize.OP and token.string == "<>"
+        for token in tokenize.tokenize(io.BytesIO(code).readline)
+    )
+    frozen = before["normalize"](code)
+    if legacy_operator:
+        assert frozen == expected
+        exec(compile(frozen, "frozen-original-case", "exec"), {})
+    else:
+        assert frozen == code
+        with pytest.raises(SyntaxError):
+            compile(frozen, "frozen-split-tokenizer-case", "exec")
+    assert after["normalize"](code) == expected
     exec(compile(after["normalize"](code), "unchanged-original-case", "exec"), {})
 
 

@@ -26,7 +26,7 @@ jobs:
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       with:
         repository: arcazj/openbexi_ide
-        ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+        ref: 08c314fb6b802b407cbabe01777072884d2b7504
         path: .qualification/companion-ide
     - name: Record immutable integrated qualification inputs
       if: always()
@@ -51,7 +51,7 @@ jobs:
             matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
             original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
             original_job=os.environ["V08_ORIGINAL_JOB"],
-            expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+            expected_ide_commit="08c314fb6b802b407cbabe01777072884d2b7504",
             stage="before-original-workload", verification_passed=False,
             full_v08_qualified=False,
         )
@@ -80,7 +80,7 @@ jobs:
                 record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
                 record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
                 assert record["ide_commit"] == record["expected_ide_commit"]
-                assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+                assert record["ide_tree"] == "dcc52cf9c986324903cf3d91d44c8c88315665d7"
             record["verification_passed"] = True
         except Exception as error:
             record["verification_error"] = type(error).__name__ + ": " + str(error)
@@ -150,7 +150,7 @@ jobs:
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       with:
         repository: arcazj/openbexi_ide
-        ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+        ref: 08c314fb6b802b407cbabe01777072884d2b7504
         path: .qualification/companion-ide
     - name: Record immutable integrated qualification inputs
       if: always()
@@ -175,7 +175,7 @@ jobs:
             matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
             original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
             original_job=os.environ["V08_ORIGINAL_JOB"],
-            expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+            expected_ide_commit="08c314fb6b802b407cbabe01777072884d2b7504",
             stage="before-original-workload", verification_passed=False,
             full_v08_qualified=False,
         )
@@ -204,7 +204,7 @@ jobs:
                 record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
                 record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
                 assert record["ide_commit"] == record["expected_ide_commit"]
-                assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+                assert record["ide_tree"] == "dcc52cf9c986324903cf3d91d44c8c88315665d7"
             record["verification_passed"] = True
         except Exception as error:
             record["verification_error"] = type(error).__name__ + ": " + str(error)
@@ -260,7 +260,7 @@ jobs:
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       with:
         repository: arcazj/openbexi_ide
-        ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+        ref: 08c314fb6b802b407cbabe01777072884d2b7504
         path: .qualification/companion-ide
     - name: Record immutable integrated qualification inputs
       if: always()
@@ -285,7 +285,7 @@ jobs:
             matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
             original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
             original_job=os.environ["V08_ORIGINAL_JOB"],
-            expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+            expected_ide_commit="08c314fb6b802b407cbabe01777072884d2b7504",
             stage="before-original-workload", verification_passed=False,
             full_v08_qualified=False,
         )
@@ -314,7 +314,7 @@ jobs:
                 record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
                 record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
                 assert record["ide_commit"] == record["expected_ide_commit"]
-                assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+                assert record["ide_tree"] == "dcc52cf9c986324903cf3d91d44c8c88315665d7"
             record["verification_passed"] = True
         except Exception as error:
             record["verification_error"] = type(error).__name__ + ": " + str(error)
@@ -369,7 +369,7 @@ jobs:
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       with:
         repository: arcazj/openbexi_ide
-        ref: b1472b4d5a515b9082db139fb8e16b63677a052e
+        ref: 08c314fb6b802b407cbabe01777072884d2b7504
         path: .qualification/companion-ide
         persist-credentials: false
     - name: Record immutable integrated qualification inputs
@@ -395,7 +395,7 @@ jobs:
             matrix=json.loads(os.environ["V08_MATRIX_JSON"] or "{}"),
             original_workflow=os.environ["V08_ORIGINAL_WORKFLOW"],
             original_job=os.environ["V08_ORIGINAL_JOB"],
-            expected_ide_commit="b1472b4d5a515b9082db139fb8e16b63677a052e",
+            expected_ide_commit="08c314fb6b802b407cbabe01777072884d2b7504",
             stage="before-original-workload", verification_passed=False,
             full_v08_qualified=False,
         )
@@ -424,7 +424,7 @@ jobs:
                 record["ide_commit"] = git("-C", str(ide), "rev-parse", "HEAD")
                 record["ide_tree"] = git("-C", str(ide), "rev-parse", "HEAD^{tree}")
                 assert record["ide_commit"] == record["expected_ide_commit"]
-                assert record["ide_tree"] == "8fb91191ead6c4fa60089763c08fc8f3959a20c3"
+                assert record["ide_tree"] == "dcc52cf9c986324903cf3d91d44c8c88315665d7"
             record["verification_passed"] = True
         except Exception as error:
             record["verification_error"] = type(error).__name__ + ": " + str(error)
