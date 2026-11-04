@@ -13,9 +13,10 @@ PROFILES = ("asan-noswap", "optimized-noswap", "asan-swap", "asan-o2-noswap")
 PREIMAGES = {
     "scripts/v08_endurance.py": "83b39b8ffd271328d704be4250f86a345799a88f55e9fabe451c7c974bf10bd8",
     "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
-    "host_runtime/build_admission_context.py": "4f9606c2aa5d821e4ddca1f3be668755c92930de8252b6fceb60c6d81ff5810e",
+    # rc1 embeds the separately hashed legacy-syntax helper (ce45fa4f).
+    "host_runtime/build_admission_context.py": "e186cc9044ac6d6c84ac6430333a1bfc41f95e1013c93568a3b388da26ea7a8a",
     "host_runtime/python/native.py": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
-    "scripts/qualify_v08_native_launch.py": "814d7e0b18101e24457c9cdf61791b8ea6cc7c32a005b45c05adf5be92c5b8fa",
+    "scripts/qualify_v08_native_launch.py": "4e0da32eb52e114bbf7ed8322f7eb44cd98a4067a06047ffb1ee81fdd58d77b9",
     "scripts/v08_native_consumption.py": "1d1cac580885d181c7e86bd3d7dc81926f18e193c38b607048194ed6b5482ec8",
     "scripts/v08_resource_probe.py": "9c22753ab4e638ef0658c4286fd32c6a79a83f269253ef6df91162528a23aea8",
     "scripts/v08_handoff_cohort.py": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
@@ -244,7 +245,8 @@ def prepare_overlay(root, profile, soak_seconds):
                 "after_sha256": digest(text.encode()),
             }
     for relative in manifest:
-        (root / relative).write_text(changed[relative])
+        # The retained digest describes these exact bytes on every host.
+        (root / relative).write_bytes(changed[relative].encode("utf-8"))
     return manifest
 
 

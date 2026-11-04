@@ -2472,7 +2472,7 @@ def main():
             finally:
                 from v08_controller_heartbeat import HeartbeatController
 
-                HeartbeatController.close_all()
+                report["controller_heartbeat"] = HeartbeatController.close_all()
                 if (
                     profile.native_dss
                     and "state" in locals()
