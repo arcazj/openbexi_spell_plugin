@@ -1,0 +1,4601 @@
+{
+  "schema": "openbexi.context-deadline-investigation/1",
+  "runtime_source": "c5529d02a49c89a8919b965ffb4eb43498eb0cdf",
+  "isolated_test_head": "c4dc90ee22cef1d271ff89a166502966e3cfc4e0",
+  "followup_head": "540c0e0ba957a82b98f3c13a416da28cd52acd65",
+  "original_deadlines_seconds": {
+    "burst2": 2,
+    "burst3": 3,
+    "receipt_barrier": 1.5,
+    "heartbeat_response": 2
+  },
+  "runtime_changed": false,
+  "validated_g1_retained": true,
+  "durability": "DELETE/FULL Context and driver; original WAL/FULL DSS unchanged",
+  "datasets": {
+    "local_matched": {
+      "path": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\matched-local",
+      "passes": 18,
+      "failures": 0,
+      "checks": {
+        "burst2": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 21.4422,
+            "sqlite:driver.sqlite3": 21.8495,
+            "span:LedgerMutex.wait": 259.216,
+            "span:ExecutionMutex.wait": 0.0842,
+            "span:Transport.command": 2027.173,
+            "rpc_phase:receipt": 5.2142,
+            "io:fdatasync:context.sqlite3": 10.6695,
+            "io:fdatasync:context.sqlite3-journal": 15.9783,
+            "io:fdatasync:driver.sqlite3": 7.7185,
+            "io:fdatasync:driver.sqlite3-journal": 16.1866,
+            "io:fdatasync:dss.sqlite": 6.6078,
+            "io:fdatasync:dss.sqlite-wal": 5.8422,
+            "io:fdatasync:native-driver": 6.3013,
+            "io:fdatasync:state": 15.1594,
+            "io:pwrite64:context.sqlite3": 0.0297,
+            "io:pwrite64:context.sqlite3-journal": 0.1422,
+            "io:pwrite64:driver.sqlite3": 0.0398,
+            "io:pwrite64:driver.sqlite3-journal": 0.121,
+            "io:pwrite64:dss.sqlite": 0.0326,
+            "io:pwrite64:dss.sqlite-wal": 4.6175,
+            "lock_wait:ContextStore.lock": 69.3859,
+            "lock_wait:DssEngine.lock": 1.3425,
+            "rpc_phase:authority": 41.7589,
+            "rpc_phase:connect": 1.9769,
+            "rpc_phase:deadline": 2.9771,
+            "rpc_phase:metadata": 17.7791,
+            "rpc_phase:preparation": 48.2699,
+            "rpc_phase:send": 279.8528,
+            "rpc_phase:settle": 270.6885,
+            "span:ContextDriver.dispatch": 2078.8857,
+            "span:DriverGate.send": 279.8353,
+            "span:DriverGate.settle": 270.6739,
+            "span:Transport.get": 17.7656,
+            "span:client.native_call": 2105.7616,
+            "sqlite:dss.sqlite": 10.6899
+          },
+          "observer_pids_per_trial": [
+            [
+              14,
+              46
+            ],
+            [
+              1064,
+              1096
+            ],
+            [
+              2114,
+              2146
+            ]
+          ]
+        },
+        "burst3": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 29.4928,
+            "sqlite:driver.sqlite3": 19.9297,
+            "span:LedgerMutex.wait": 285.2776,
+            "span:ExecutionMutex.wait": 0.0647,
+            "span:Transport.command": 2025.4397,
+            "rpc_phase:receipt": 4.4848,
+            "io:fdatasync:context.sqlite3": 14.1368,
+            "io:fdatasync:context.sqlite3-journal": 21.8302,
+            "io:fdatasync:driver.sqlite3": 3.0336,
+            "io:fdatasync:driver.sqlite3-journal": 6.1138,
+            "io:fdatasync:dss.sqlite": 4.1807,
+            "io:fdatasync:dss.sqlite-wal": 7.3603,
+            "io:fdatasync:native-driver": 8.31,
+            "io:fdatasync:state": 5.0306,
+            "io:pwrite64:context.sqlite3": 0.0357,
+            "io:pwrite64:context.sqlite3-journal": 5.4454,
+            "io:pwrite64:driver.sqlite3": 0.0482,
+            "io:pwrite64:driver.sqlite3-journal": 0.2768,
+            "io:pwrite64:dss.sqlite": 0.0441,
+            "io:pwrite64:dss.sqlite-wal": 4.4269,
+            "lock_wait:ContextStore.lock": 71.6255,
+            "lock_wait:DssEngine.lock": 4.7511,
+            "rpc_phase:authority": 47.247,
+            "rpc_phase:connect": 1.0008,
+            "rpc_phase:deadline": 0.5033,
+            "rpc_phase:metadata": 17.992,
+            "rpc_phase:preparation": 46.7523,
+            "rpc_phase:send": 308.7646,
+            "rpc_phase:settle": 299.2748,
+            "span:ContextDriver.dispatch": 2089.8256,
+            "span:DriverGate.send": 308.7479,
+            "span:DriverGate.settle": 299.257,
+            "span:Transport.get": 17.9747,
+            "span:client.native_call": 2140.6091,
+            "sqlite:dss.sqlite": 8.7503
+          },
+          "observer_pids_per_trial": [
+            [
+              221,
+              253
+            ],
+            [
+              1271,
+              1303
+            ],
+            [
+              2321,
+              2353
+            ]
+          ]
+        },
+        "barrier": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 23.6735,
+            "sqlite:driver.sqlite3": 55.2386,
+            "span:LedgerMutex.wait": 261.4085,
+            "span:ExecutionMutex.wait": 0.035,
+            "span:Transport.command": 2025.3986,
+            "rpc_phase:receipt": 5.6704,
+            "io:fdatasync:context.sqlite3": 4.968,
+            "io:fdatasync:context.sqlite3-journal": 17.1041,
+            "io:fdatasync:driver.sqlite3": 2.5732,
+            "io:fdatasync:driver.sqlite3-journal": 4.5781,
+            "io:fdatasync:dss.sqlite-wal": 5.6641,
+            "io:fdatasync:native-driver": 48.7027,
+            "io:fdatasync:state": 4.6733,
+            "io:pwrite64:context.sqlite3": 0.0329,
+            "io:pwrite64:context.sqlite3-journal": 0.069,
+            "io:pwrite64:driver.sqlite3": 0.0392,
+            "io:pwrite64:driver.sqlite3-journal": 0.1882,
+            "io:pwrite64:dss.sqlite-wal": 0.1962,
+            "lock_wait:ContextStore.lock": 56.6216,
+            "lock_wait:DssEngine.lock": 6.4893,
+            "rpc_phase:authority": 36.1228,
+            "rpc_phase:connect": 0.8446,
+            "rpc_phase:deadline": 0.4485,
+            "rpc_phase:metadata": 16.9457,
+            "rpc_phase:preparation": 56.8434,
+            "rpc_phase:send": 401.6274,
+            "rpc_phase:settle": 250.4908,
+            "span:ContextDriver.dispatch": 2055.7017,
+            "span:DriverGate.send": 328.6324,
+            "span:DriverGate.settle": 250.4712,
+            "span:Transport.get": 16.9306,
+            "span:client.native_call": 2100.1629,
+            "sqlite:dss.sqlite": 5.9552
+          },
+          "observer_pids_per_trial": [
+            [
+              428,
+              460
+            ],
+            [
+              1478,
+              1510
+            ],
+            [
+              2528,
+              2560
+            ]
+          ]
+        }
+      },
+      "trial_outcomes": [
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-wq4d46m9",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.517584799999895,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.021",
+            "timestamp": "2026-11-05T09:44:35.760399+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            14,
+            46
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 223.3976,
+            "commit_union_ms": 202.5875,
+            "durable_sync_union_ms": 196.5377
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-r_wlagbk",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.518141299995477,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.088",
+            "timestamp": "2026-11-05T09:44:43.304647+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            221,
+            253
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 228.1428,
+            "commit_union_ms": 209.8271,
+            "durable_sync_union_ms": 203.2208
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-us20e__5",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7602324999970733,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.201",
+            "timestamp": "2026-11-05T09:44:50.834000+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            428,
+            460
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 261.4085,
+            "commit_union_ms": 243.7168,
+            "durable_sync_union_ms": 237.8846
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-16k6k2ux",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.01617900000565,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.554",
+            "timestamp": "2026-11-05T09:44:54.591025+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-lc585max",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.764307299999928,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.438",
+            "timestamp": "2026-11-05T09:45:00.616955+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-cn2m245r",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2583818000057363,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.745",
+            "timestamp": "2026-11-05T09:45:06.401939+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-z0a1ezz6",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.767887200003315,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.210",
+            "timestamp": "2026-11-05T09:45:09.710705+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            1064,
+            1096
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 259.216,
+            "commit_union_ms": 232.5951,
+            "durable_sync_union_ms": 224.3822
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-gknswodn",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 8.021073799995065,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.490",
+            "timestamp": "2026-11-05T09:45:17.485308+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            1271,
+            1303
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 235.5646,
+            "commit_union_ms": 218.7514,
+            "durable_sync_union_ms": 213.4814
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-ghraqg1y",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.760233299995889,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.242",
+            "timestamp": "2026-11-05T09:45:25.519589+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            1478,
+            1510
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 228.4669,
+            "commit_union_ms": 211.349,
+            "durable_sync_union_ms": 205.7078
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-dwhdnn20",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.0143583999961265,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.653",
+            "timestamp": "2026-11-05T09:45:29.273066+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-e55vnw65",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.014940900000511,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.624",
+            "timestamp": "2026-11-05T09:45:35.307373+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-g0oglafu",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.757358999995631,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.404",
+            "timestamp": "2026-11-05T09:45:41.338262+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-ubtbjsw0",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.77073019999807,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.336",
+            "timestamp": "2026-11-05T09:45:44.133116+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            2114,
+            2146
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 243.1016,
+            "commit_union_ms": 225.4913,
+            "durable_sync_union_ms": 219.7183
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-8tk5r27g",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.77252579999913,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.367",
+            "timestamp": "2026-11-05T09:45:51.908838+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            2321,
+            2353
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 285.2776,
+            "commit_union_ms": 260.8102,
+            "durable_sync_union_ms": 250.8583
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-bvpdi9rp",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7594135999970604,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.265",
+            "timestamp": "2026-11-05T09:45:59.710917+00:00",
+            "hostname": "fcc6a2b64383"
+          },
+          "observer_pids": [
+            2528,
+            2560
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 241.3787,
+            "commit_union_ms": 220.9232,
+            "durable_sync_union_ms": 212.1926
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-8q6sb19e",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.764711300005729,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.423",
+            "timestamp": "2026-11-05T09:46:03.451627+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-tdwd3q_m",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.014957100000174,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.611",
+            "timestamp": "2026-11-05T09:46:09.226896+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-t3ncbz5v",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2579849000030663,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.728",
+            "timestamp": "2026-11-05T09:46:15.263064+00:00",
+            "hostname": "fcc6a2b64383"
+          }
+        }
+      ]
+    },
+    "local_idle_volume": {
+      "path": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\volume-idle",
+      "passes": 18,
+      "failures": 0,
+      "checks": {
+        "burst2": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 19.6889,
+            "sqlite:driver.sqlite3": 32.4423,
+            "span:LedgerMutex.wait": 231.7554,
+            "span:ExecutionMutex.wait": 0.0597,
+            "span:Transport.command": 1870.7061,
+            "rpc_phase:receipt": 4.9503,
+            "io:fdatasync:context.sqlite3": 2.9899,
+            "io:fdatasync:context.sqlite3-journal": 15.2927,
+            "io:fdatasync:driver.sqlite3": 2.7869,
+            "io:fdatasync:driver.sqlite3-journal": 22.4107,
+            "io:fdatasync:dss.sqlite": 5.2122,
+            "io:fdatasync:dss.sqlite-wal": 18.2135,
+            "io:fdatasync:native-driver": 7.0687,
+            "io:fdatasync:state": 4.8414,
+            "io:pwrite64:context.sqlite3": 0.0411,
+            "io:pwrite64:context.sqlite3-journal": 0.0847,
+            "io:pwrite64:driver.sqlite3": 0.0463,
+            "io:pwrite64:driver.sqlite3-journal": 0.1784,
+            "io:pwrite64:dss.sqlite": 0.0355,
+            "io:pwrite64:dss.sqlite-wal": 0.5102,
+            "lock_wait:ContextStore.lock": 66.9662,
+            "lock_wait:DssEngine.lock": 0.8889,
+            "rpc_phase:authority": 64.3564,
+            "rpc_phase:connect": 3.4612,
+            "rpc_phase:deadline": 3.1139,
+            "rpc_phase:metadata": 24.1625,
+            "rpc_phase:preparation": 62.0811,
+            "rpc_phase:send": 255.8823,
+            "rpc_phase:settle": 241.7844,
+            "span:ContextDriver.dispatch": 1907.6176,
+            "span:DriverGate.send": 255.8638,
+            "span:DriverGate.settle": 241.7656,
+            "span:Transport.get": 24.1496,
+            "span:client.native_call": 1954.9925,
+            "sqlite:dss.sqlite": 18.8777
+          },
+          "observer_pids_per_trial": [
+            [
+              3618,
+              3650
+            ],
+            [
+              4668,
+              4700
+            ],
+            [
+              5718,
+              5750
+            ]
+          ]
+        },
+        "burst3": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 21.2856,
+            "sqlite:driver.sqlite3": 33.4011,
+            "span:LedgerMutex.wait": 243.2551,
+            "span:ExecutionMutex.wait": 0.0429,
+            "span:Transport.command": 1881.1764,
+            "rpc_phase:receipt": 1.2612,
+            "io:fdatasync:context.sqlite3": 2.497,
+            "io:fdatasync:context.sqlite3-journal": 4.7114,
+            "io:fdatasync:driver.sqlite3": 6.215,
+            "io:fdatasync:driver.sqlite3-journal": 14.1988,
+            "io:fdatasync:dss.sqlite": 4.9191,
+            "io:fdatasync:dss.sqlite-wal": 5.8709,
+            "io:fdatasync:native-driver": 20.4017,
+            "io:fdatasync:state": 16.274,
+            "io:pwrite64:context.sqlite3": 0.0499,
+            "io:pwrite64:context.sqlite3-journal": 0.126,
+            "io:pwrite64:driver.sqlite3": 0.0385,
+            "io:pwrite64:driver.sqlite3-journal": 0.2176,
+            "io:pwrite64:dss.sqlite": 0.0673,
+            "io:pwrite64:dss.sqlite-wal": 1.3227,
+            "lock_wait:ContextStore.lock": 64.2353,
+            "lock_wait:DssEngine.lock": 2.154,
+            "rpc_phase:authority": 34.5689,
+            "rpc_phase:connect": 3.673,
+            "rpc_phase:deadline": 0.6363,
+            "rpc_phase:metadata": 20.8581,
+            "rpc_phase:preparation": 58.5089,
+            "rpc_phase:send": 266.547,
+            "rpc_phase:settle": 252.4175,
+            "span:ContextDriver.dispatch": 1952.2563,
+            "span:DriverGate.send": 266.5304,
+            "span:DriverGate.settle": 252.4022,
+            "span:Transport.get": 20.8444,
+            "span:client.native_call": 1965.3042,
+            "sqlite:dss.sqlite": 9.7286
+          },
+          "observer_pids_per_trial": [
+            [
+              3825,
+              3857
+            ],
+            [
+              4875,
+              4907
+            ],
+            [
+              5925,
+              5957
+            ]
+          ]
+        },
+        "barrier": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 10.0346,
+            "sqlite:driver.sqlite3": 26.2863,
+            "span:LedgerMutex.wait": 235.6454,
+            "span:ExecutionMutex.wait": 0.0111,
+            "span:Transport.command": 1937.218,
+            "rpc_phase:receipt": 4.1631,
+            "io:fdatasync:context.sqlite3": 2.7175,
+            "io:fdatasync:context.sqlite3-journal": 4.2035,
+            "io:fdatasync:driver.sqlite3": 6.7074,
+            "io:fdatasync:driver.sqlite3-journal": 15.5449,
+            "io:fdatasync:dss.sqlite-wal": 6.1625,
+            "io:fdatasync:native-driver": 4.2359,
+            "io:fdatasync:state": 3.8712,
+            "io:pwrite64:context.sqlite3": 0.0225,
+            "io:pwrite64:context.sqlite3-journal": 0.0725,
+            "io:pwrite64:driver.sqlite3": 0.0172,
+            "io:pwrite64:driver.sqlite3-journal": 0.2142,
+            "io:pwrite64:dss.sqlite-wal": 1.8575,
+            "lock_wait:ContextStore.lock": 81.3364,
+            "lock_wait:DssEngine.lock": 0.5765,
+            "rpc_phase:authority": 41.9998,
+            "rpc_phase:connect": 0.9505,
+            "rpc_phase:deadline": 0.3483,
+            "rpc_phase:metadata": 20.0974,
+            "rpc_phase:preparation": 31.3143,
+            "rpc_phase:send": 286.4212,
+            "rpc_phase:settle": 247.3034,
+            "span:ContextDriver.dispatch": 1957.8683,
+            "span:DriverGate.send": 259.071,
+            "span:DriverGate.settle": 247.2878,
+            "span:Transport.get": 20.0814,
+            "span:client.native_call": 1990.8345,
+            "sqlite:dss.sqlite": 6.3923
+          },
+          "observer_pids_per_trial": [
+            [
+              4032,
+              4064
+            ],
+            [
+              5082,
+              5114
+            ],
+            [
+              6132,
+              6164
+            ]
+          ]
+        }
+      },
+      "trial_outcomes": [
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-profile-burst2/tests.xml",
+            "--basetemp=/q/t/cd-gl2i59wf",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.7691158000016,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.204",
+            "timestamp": "2026-11-05T09:47:22.894440+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            3618,
+            3650
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 219.4632,
+            "commit_union_ms": 195.1862,
+            "durable_sync_union_ms": 189.9918
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-profile-burst3/tests.xml",
+            "--basetemp=/q/t/cd-3k_22m0t",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.51929889999883,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.090",
+            "timestamp": "2026-11-05T09:47:30.667566+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            3825,
+            3857
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 235.08,
+            "commit_union_ms": 212.1424,
+            "durable_sync_union_ms": 207.0945
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-profile-barrier/tests.xml",
+            "--basetemp=/q/t/cd-9my7m5pg",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7594434000056935,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.223",
+            "timestamp": "2026-11-05T09:47:38.207439+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            4032,
+            4064
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 235.6454,
+            "commit_union_ms": 218.6362,
+            "durable_sync_union_ms": 213.3382
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-control-burst2/tests.xml",
+            "--basetemp=/q/t/cd-25locsyx",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.763955200003693,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.417",
+            "timestamp": "2026-11-05T09:47:41.940340+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-control-burst3/tests.xml",
+            "--basetemp=/q/t/cd-vjt_e_pk",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.763866100001906,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.380",
+            "timestamp": "2026-11-05T09:47:47.708818+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/0-control-barrier/tests.xml",
+            "--basetemp=/q/t/cd-79bhu06p",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/0-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2589679999946384,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.796",
+            "timestamp": "2026-11-05T09:47:53.491234+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-profile-burst2/tests.xml",
+            "--basetemp=/q/t/cd-i3xtbi75",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.7689056000017445,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.212",
+            "timestamp": "2026-11-05T09:47:56.786827+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            4668,
+            4700
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 229.547,
+            "commit_union_ms": 205.8879,
+            "durable_sync_union_ms": 198.5478
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-profile-burst3/tests.xml",
+            "--basetemp=/q/t/cd-mff6i71l",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.519552800004021,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.992",
+            "timestamp": "2026-11-05T09:48:04.594289+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            4875,
+            4907
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 243.2551,
+            "commit_union_ms": 226.8933,
+            "durable_sync_union_ms": 222.1437
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-profile-barrier/tests.xml",
+            "--basetemp=/q/t/cd-zqmxend4",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7594897000017227,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.320",
+            "timestamp": "2026-11-05T09:48:12.096488+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            5082,
+            5114
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 235.0288,
+            "commit_union_ms": 218.7737,
+            "durable_sync_union_ms": 213.8698
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-control-burst2/tests.xml",
+            "--basetemp=/q/t/cd-k43hk8y4",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.764425100001972,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.320",
+            "timestamp": "2026-11-05T09:48:15.860262+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-control-burst3/tests.xml",
+            "--basetemp=/q/t/cd-rw50oohk",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.763911000001826,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.305",
+            "timestamp": "2026-11-05T09:48:21.635718+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/1-control-barrier/tests.xml",
+            "--basetemp=/q/t/cd-yuwdo5re",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/1-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.0081518000006326,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.641",
+            "timestamp": "2026-11-05T09:48:27.401936+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-profile-burst2/tests.xml",
+            "--basetemp=/q/t/cd-i9isv7a1",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.517661999998381,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.944",
+            "timestamp": "2026-11-05T09:48:30.454405+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            5718,
+            5750
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 231.7554,
+            "commit_union_ms": 214.9754,
+            "durable_sync_union_ms": 210.0772
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-profile-burst3/tests.xml",
+            "--basetemp=/q/t/cd-3awny93f",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.517686800005322,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.117",
+            "timestamp": "2026-11-05T09:48:37.978015+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            5925,
+            5957
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 217.4999,
+            "commit_union_ms": 200.1855,
+            "durable_sync_union_ms": 195.1542
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-profile-barrier/tests.xml",
+            "--basetemp=/q/t/cd-93rgqf6v",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.759105899996939,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.331",
+            "timestamp": "2026-11-05T09:48:45.527134+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            6132,
+            6164
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 231.8015,
+            "commit_union_ms": 215.0272,
+            "durable_sync_union_ms": 210.1191
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-control-burst2/tests.xml",
+            "--basetemp=/q/t/cd-ohmgrbh6",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.015488600001845,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.606",
+            "timestamp": "2026-11-05T09:48:49.262272+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-control-burst3/tests.xml",
+            "--basetemp=/q/t/cd-0mtlc13b",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.01584179999918,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.510",
+            "timestamp": "2026-11-05T09:48:55.297045+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-idle/2-control-barrier/tests.xml",
+            "--basetemp=/q/t/cd-34snxdbp",
+            "-o",
+            "cache_dir=/q/deadline-results/volume-idle/2-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.008050700002059,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.629",
+            "timestamp": "2026-11-05T09:49:01.322826+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        }
+      ]
+    },
+    "local_build_overlap": {
+      "path": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\volume-repeat",
+      "passes": 7,
+      "failures": 11,
+      "checks": {
+        "burst2": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 73.6677,
+            "sqlite:driver.sqlite3": 57.8186,
+            "span:LedgerMutex.wait": 764.1095,
+            "span:ExecutionMutex.wait": 0.0305,
+            "span:Transport.command": 2864.1217,
+            "rpc_phase:receipt": 3.6693,
+            "io:fdatasync:context.sqlite3": 19.2523,
+            "io:fdatasync:context.sqlite3-journal": 36.3766,
+            "io:fdatasync:driver.sqlite3": 17.9619,
+            "io:fdatasync:driver.sqlite3-journal": 35.0301,
+            "io:fdatasync:dss.sqlite": 4.9091,
+            "io:fdatasync:dss.sqlite-wal": 36.5961,
+            "io:fdatasync:native-driver": 21.36,
+            "io:fdatasync:state": 21.181,
+            "io:fsync:tests.results-2212-dd8b12d395db4df9896920108a4336c1.jsonl": 2.0701,
+            "io:fsync:tests.results-2954-0f1c2358c97b400e8ca7ae110512fd48.jsonl": 2.813,
+            "io:pwrite64:context.sqlite3": 0.0838,
+            "io:pwrite64:context.sqlite3-journal": 0.213,
+            "io:pwrite64:driver.sqlite3": 0.0455,
+            "io:pwrite64:driver.sqlite3-journal": 0.191,
+            "io:pwrite64:dss.sqlite": 0.0269,
+            "io:pwrite64:dss.sqlite-wal": 0.2939,
+            "lock_wait:ContextStore.lock": 146.8178,
+            "lock_wait:DssEngine.lock": 13.6235,
+            "rpc_phase:authority": 133.0018,
+            "rpc_phase:connect": 2.2789,
+            "rpc_phase:deadline": 0.2996,
+            "rpc_phase:metadata": 41.7199,
+            "rpc_phase:preparation": 120.3435,
+            "rpc_phase:send": 788.4069,
+            "rpc_phase:settle": 810.9772,
+            "span:ContextDriver.dispatch": 2917.3449,
+            "span:DriverGate.send": 788.3848,
+            "span:DriverGate.settle": 810.9524,
+            "span:Transport.get": 41.6986,
+            "span:client.native_call": 1977.9149,
+            "sqlite:dss.sqlite": 36.8332
+          },
+          "observer_pids_per_trial": [
+            [
+              1167,
+              1199
+            ],
+            [
+              2212,
+              2244
+            ],
+            [
+              2954,
+              2992
+            ]
+          ]
+        },
+        "burst3": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 314.4988,
+            "sqlite:driver.sqlite3": 69.2604,
+            "span:LedgerMutex.wait": 1484.3114,
+            "span:ExecutionMutex.wait": 0.052,
+            "span:Transport.command": 4228.4168,
+            "rpc_phase:receipt": 3.9611,
+            "io:fdatasync:context.sqlite3": 309.6058,
+            "io:fdatasync:context.sqlite3-journal": 204.8019,
+            "io:fdatasync:driver.sqlite3": 38.8128,
+            "io:fdatasync:driver.sqlite3-journal": 40.1392,
+            "io:fdatasync:dss.sqlite": 4.8167,
+            "io:fdatasync:dss.sqlite-wal": 62.5576,
+            "io:fdatasync:native-driver": 33.8563,
+            "io:fdatasync:state": 39.5159,
+            "io:fsync:tests.results-2318-636cefafa9c74055b83192b51abfaede.jsonl": 38.1034,
+            "io:fsync:tests.results-3066-064bb1e179ce49918345f1cf35d6d286.jsonl": 21.7458,
+            "io:pwrite64:context.sqlite3": 0.0382,
+            "io:pwrite64:context.sqlite3-journal": 0.1957,
+            "io:pwrite64:driver.sqlite3": 0.0653,
+            "io:pwrite64:driver.sqlite3-journal": 0.3161,
+            "io:pwrite64:dss.sqlite": 0.1047,
+            "io:pwrite64:dss.sqlite-wal": 0.2909,
+            "lock_wait:ContextStore.lock": 186.7222,
+            "lock_wait:DssEngine.lock": 3.1122,
+            "rpc_phase:authority": 186.8948,
+            "rpc_phase:connect": 3.1973,
+            "rpc_phase:deadline": 4.3558,
+            "rpc_phase:metadata": 19.9153,
+            "rpc_phase:preparation": 157.2517,
+            "rpc_phase:send": 1542.2212,
+            "rpc_phase:settle": 1412.1755,
+            "span:ContextDriver.dispatch": 4311.3257,
+            "span:DriverGate.send": 1542.2007,
+            "span:DriverGate.settle": 1412.1475,
+            "span:Transport.get": 19.9007,
+            "span:client.native_call": 2340.8353,
+            "sqlite:dss.sqlite": 62.8816
+          },
+          "observer_pids_per_trial": [
+            [
+              1374,
+              1406
+            ],
+            [
+              2318,
+              2350
+            ],
+            [
+              3066,
+              3098
+            ]
+          ]
+        },
+        "barrier": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 99.6427,
+            "sqlite:driver.sqlite3": 103.8073,
+            "span:LedgerMutex.wait": 1628.4223,
+            "span:ExecutionMutex.wait": 0.0904,
+            "span:Transport.command": 3633.8194,
+            "rpc_phase:receipt": 5.2945,
+            "io:fdatasync:context.sqlite3": 45.5002,
+            "io:fdatasync:context.sqlite3-journal": 49.1214,
+            "io:fdatasync:driver.sqlite3": 50.8989,
+            "io:fdatasync:driver.sqlite3-journal": 51.2016,
+            "io:fdatasync:dss.sqlite-wal": 51.7988,
+            "io:fdatasync:native-driver": 48.294,
+            "io:fdatasync:state": 49.9485,
+            "io:fsync:tests.results-2424-d16dd298f0e84f44a1048b2300c8f0d5.jsonl": 35.8692,
+            "io:fsync:tests.results-3172-572460deece14b788d4e820847ecdb71.jsonl": 18.2657,
+            "io:pwrite64:context.sqlite3": 0.0568,
+            "io:pwrite64:context.sqlite3-journal": 0.0862,
+            "io:pwrite64:driver.sqlite3": 0.0411,
+            "io:pwrite64:driver.sqlite3-journal": 0.2881,
+            "io:pwrite64:dss.sqlite-wal": 0.2098,
+            "lock_wait:ContextStore.lock": 193.8898,
+            "lock_wait:DssEngine.lock": 13.9478,
+            "rpc_phase:authority": 182.6945,
+            "rpc_phase:connect": 0.8266,
+            "rpc_phase:deadline": 0.308,
+            "rpc_phase:metadata": 23.1906,
+            "rpc_phase:preparation": 198.6197,
+            "rpc_phase:send": 1842.0251,
+            "rpc_phase:settle": 1276.9119,
+            "span:ContextDriver.dispatch": 3715.5603,
+            "span:DriverGate.send": 1841.9974,
+            "span:DriverGate.settle": 1276.8944,
+            "span:Transport.get": 23.1715,
+            "span:client.native_call": 2034.7759,
+            "sqlite:dss.sqlite": 52.0615
+          },
+          "observer_pids_per_trial": [
+            [
+              1581,
+              1613
+            ],
+            [
+              2424,
+              2456
+            ],
+            [
+              3172,
+              3204
+            ]
+          ]
+        }
+      },
+      "trial_outcomes": [
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-profile-burst2/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 8.271498699999938,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "7.616",
+            "timestamp": "2026-11-05T09:37:30.566974+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            1167,
+            1199
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 233.0576,
+            "commit_union_ms": 213.9052,
+            "durable_sync_union_ms": 207.2081
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-profile-burst3/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 8.771627800000715,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "8.218",
+            "timestamp": "2026-11-05T09:37:38.851727+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            1374,
+            1406
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 301.1659,
+            "commit_union_ms": 281.6581,
+            "durable_sync_union_ms": 265.2385
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-profile-barrier/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.261716499997419,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.601",
+            "timestamp": "2026-11-05T09:37:47.614447+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            1581,
+            1613
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 244.4373,
+            "commit_union_ms": 225.2001,
+            "durable_sync_union_ms": 215.9925
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-control-burst2/tests.xml"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.516427399998065,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.149",
+            "timestamp": "2026-11-05T09:37:51.814921+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-control-burst3/tests.xml"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.767744400000083,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.211",
+            "timestamp": "2026-11-05T09:37:58.334490+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/0-control-barrier/tests.xml"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 9.389556600006472,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "8.927",
+            "timestamp": "2026-11-05T09:38:05.081336+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-profile-burst2/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.766725199995562,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.321",
+            "timestamp": "2026-11-05T09:38:14.544251+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            2212,
+            2244
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 764.1095,
+            "commit_union_ms": 738.0526,
+            "durable_sync_union_ms": 728.9842
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-profile-burst3/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.544427499997255,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.930",
+            "timestamp": "2026-11-05T09:38:20.291609+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            2318,
+            2350
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 1221.7006,
+            "commit_union_ms": 1201.6733,
+            "durable_sync_union_ms": 1193.2201
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-profile-barrier/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.023489699997299,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.518",
+            "timestamp": "2026-11-05T09:38:27.839483+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            2424,
+            2456
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 1628.4223,
+            "commit_union_ms": 1609.9952,
+            "durable_sync_union_ms": 1600.5966
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-control-burst2/tests.xml"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.517033600001014,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.033",
+            "timestamp": "2026-11-05T09:38:34.802958+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-control-burst3/tests.xml"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.515111400003661,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.940",
+            "timestamp": "2026-11-05T09:38:40.384852+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/1-control-barrier/tests.xml"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.5087616000018897,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.987",
+            "timestamp": "2026-11-05T09:38:46.830338+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-profile-burst2/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.520083299998078,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.046",
+            "timestamp": "2026-11-05T09:38:50.410699+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            2954,
+            2992
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 753.9739,
+            "commit_union_ms": 726.8803,
+            "durable_sync_union_ms": 717.9035
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-profile-burst3/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.773233299994899,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.236",
+            "timestamp": "2026-11-05T09:38:55.922592+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            3066,
+            3098
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 1484.3114,
+            "commit_union_ms": 1458.5776,
+            "durable_sync_union_ms": 1448.0069
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-profile-barrier/tests.xml",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.021492100000614,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "5.502",
+            "timestamp": "2026-11-05T09:39:02.692413+00:00",
+            "hostname": "0b12edf6ac59"
+          },
+          "observer_pids": [
+            3172,
+            3204
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 846.8145,
+            "commit_union_ms": 816.1496,
+            "durable_sync_union_ms": 804.5193
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-control-burst2/tests.xml"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.267343299994536,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.791",
+            "timestamp": "2026-11-05T09:39:08.661396+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-control-burst3/tests.xml"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.7739306000003126,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.370",
+            "timestamp": "2026-11-05T09:39:13.933615+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/q/deadline-results/volume-repeat/2-control-barrier/tests.xml"
+          ],
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 7.021783399999549,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "1",
+            "skipped": "0",
+            "tests": "1",
+            "time": "6.593",
+            "timestamp": "2026-11-05T09:39:20.701974+00:00",
+            "hostname": "0b12edf6ac59"
+          }
+        }
+      ]
+    },
+    "reference_matched": {
+      "path": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\ci\\c4dc90ee\\matched",
+      "passes": 18,
+      "failures": 0,
+      "checks": {
+        "burst2": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 5.942629,
+            "sqlite:driver.sqlite3": 7.796665,
+            "span:LedgerMutex.wait": 53.779478,
+            "span:ExecutionMutex.wait": 0.033302,
+            "span:Transport.command": 507.003694,
+            "rpc_phase:receipt": 5.194492,
+            "io:fdatasync:context.sqlite3": 2.64416,
+            "io:fdatasync:context.sqlite3-journal": 4.181841,
+            "io:fdatasync:driver.sqlite3": 0.713102,
+            "io:fdatasync:driver.sqlite3-journal": 5.978929,
+            "io:fdatasync:dss.sqlite": 1.256802,
+            "io:fdatasync:dss.sqlite-wal": 4.143594,
+            "io:fdatasync:native-driver": 1.909633,
+            "io:fdatasync:state": 1.521423,
+            "io:pwrite64:context.sqlite3": 0.947581,
+            "io:pwrite64:context.sqlite3-journal": 0.226325,
+            "io:pwrite64:driver.sqlite3": 1.080984,
+            "io:pwrite64:driver.sqlite3-journal": 0.170391,
+            "io:pwrite64:dss.sqlite": 0.039885,
+            "io:pwrite64:dss.sqlite-wal": 3.038485,
+            "lock_wait:ContextStore.lock": 30.332012,
+            "lock_wait:DssEngine.lock": 4.769986,
+            "rpc_phase:authority": 22.173494,
+            "rpc_phase:connect": 3.317935,
+            "rpc_phase:deadline": 8.072414,
+            "rpc_phase:metadata": 49.430802,
+            "rpc_phase:preparation": 26.013536,
+            "rpc_phase:send": 59.777633,
+            "rpc_phase:settle": 55.27742,
+            "span:ContextDriver.dispatch": 522.979138,
+            "span:DriverGate.send": 59.761532,
+            "span:DriverGate.settle": 55.261571,
+            "span:Transport.get": 49.414782,
+            "span:client.native_call": 536.891001,
+            "sqlite:dss.sqlite": 4.997611
+          },
+          "observer_pids_per_trial": [
+            [
+              14,
+              46
+            ],
+            [
+              1064,
+              1096
+            ],
+            [
+              2114,
+              2146
+            ]
+          ]
+        },
+        "burst3": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 12.396383,
+            "sqlite:driver.sqlite3": 14.049359,
+            "span:LedgerMutex.wait": 62.14637,
+            "span:ExecutionMutex.wait": 0.03183,
+            "span:Transport.command": 486.837343,
+            "rpc_phase:receipt": 8.611257,
+            "io:fdatasync:context.sqlite3": 2.61065,
+            "io:fdatasync:context.sqlite3-journal": 11.684543,
+            "io:fdatasync:driver.sqlite3": 13.341127,
+            "io:fdatasync:driver.sqlite3-journal": 5.341602,
+            "io:fdatasync:dss.sqlite": 1.067902,
+            "io:fdatasync:dss.sqlite-wal": 4.238938,
+            "io:fdatasync:native-driver": 0.952207,
+            "io:fdatasync:state": 2.222631,
+            "io:pwrite64:context.sqlite3": 0.919228,
+            "io:pwrite64:context.sqlite3-journal": 0.165011,
+            "io:pwrite64:driver.sqlite3": 1.363962,
+            "io:pwrite64:driver.sqlite3-journal": 0.177984,
+            "io:pwrite64:dss.sqlite": 0.037831,
+            "io:pwrite64:dss.sqlite-wal": 4.938325,
+            "lock_wait:ContextStore.lock": 25.481588,
+            "lock_wait:DssEngine.lock": 5.938783,
+            "rpc_phase:authority": 15.896474,
+            "rpc_phase:connect": 8.789908,
+            "rpc_phase:deadline": 7.544512,
+            "rpc_phase:metadata": 47.082734,
+            "rpc_phase:preparation": 25.068071,
+            "rpc_phase:send": 67.703236,
+            "rpc_phase:settle": 65.644937,
+            "span:ContextDriver.dispatch": 507.985551,
+            "span:DriverGate.send": 67.684992,
+            "span:DriverGate.settle": 65.627224,
+            "span:Transport.get": 47.067766,
+            "span:client.native_call": 536.827539,
+            "sqlite:dss.sqlite": 8.019695
+          },
+          "observer_pids_per_trial": [
+            [
+              221,
+              253
+            ],
+            [
+              1271,
+              1303
+            ],
+            [
+              2321,
+              2353
+            ]
+          ]
+        },
+        "barrier": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 14.193421,
+            "sqlite:driver.sqlite3": 13.279672,
+            "span:LedgerMutex.wait": 68.316676,
+            "span:ExecutionMutex.wait": 0.030186,
+            "span:Transport.command": 560.681329,
+            "rpc_phase:receipt": 3.694042,
+            "io:fdatasync:context.sqlite3": 13.470543,
+            "io:fdatasync:context.sqlite3-journal": 3.453327,
+            "io:fdatasync:driver.sqlite3": 4.234179,
+            "io:fdatasync:driver.sqlite3-journal": 12.215402,
+            "io:fdatasync:dss.sqlite-wal": 5.093014,
+            "io:fdatasync:native-driver": 4.79256,
+            "io:fdatasync:state": 0.779304,
+            "io:pwrite64:context.sqlite3": 0.032521,
+            "io:pwrite64:context.sqlite3-journal": 0.167475,
+            "io:pwrite64:driver.sqlite3": 0.317627,
+            "io:pwrite64:driver.sqlite3-journal": 0.14864,
+            "io:pwrite64:dss.sqlite-wal": 0.196349,
+            "lock_wait:ContextStore.lock": 22.273459,
+            "lock_wait:DssEngine.lock": 7.71885,
+            "rpc_phase:authority": 11.429416,
+            "rpc_phase:connect": 2.4474,
+            "rpc_phase:deadline": 7.038651,
+            "rpc_phase:metadata": 53.891512,
+            "rpc_phase:preparation": 22.587259,
+            "rpc_phase:send": 96.689688,
+            "rpc_phase:settle": 69.247879,
+            "span:ContextDriver.dispatch": 567.320856,
+            "span:DriverGate.send": 73.77533,
+            "span:DriverGate.settle": 69.231188,
+            "span:Transport.get": 53.871714,
+            "span:client.native_call": 575.789349,
+            "sqlite:dss.sqlite": 5.374142
+          },
+          "observer_pids_per_trial": [
+            [
+              428,
+              460
+            ],
+            [
+              1478,
+              1510
+            ],
+            [
+              2528,
+              2560
+            ]
+          ]
+        }
+      },
+      "trial_outcomes": [
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-ifx8s866",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.019487023999993,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.454",
+            "timestamp": "2026-11-05T09:43:45.937170+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            14,
+            46
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 53.779478,
+            "commit_union_ms": 32.438194,
+            "durable_sync_union_ms": 23.3031
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-qtigzpvy",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.766143695000011,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.189",
+            "timestamp": "2026-11-05T09:43:49.972136+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            221,
+            253
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 49.527664,
+            "commit_union_ms": 26.855597,
+            "durable_sync_union_ms": 20.017514
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-68xpgexx",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.012038404000009,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.440",
+            "timestamp": "2026-11-05T09:43:53.762683+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            428,
+            460
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 68.316676,
+            "commit_union_ms": 51.225295,
+            "durable_sync_union_ms": 41.381831
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-5vynzycd",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7652081589999966,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.176",
+            "timestamp": "2026-11-05T09:43:56.732953+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-9xjnbl_g",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7650006430000076,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.203",
+            "timestamp": "2026-11-05T09:44:00.527616+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/0-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-8wz2n9sy",
+            "-o",
+            "cache_dir=/evidence/deadlines/0-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.5111488479999906,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "1.959",
+            "timestamp": "2026-11-05T09:44:04.313796+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-ufiuokao",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.267139349000004,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.631",
+            "timestamp": "2026-11-05T09:44:06.931392+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            1064,
+            1096
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 50.819511,
+            "commit_union_ms": 29.305705,
+            "durable_sync_union_ms": 20.144768
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-99qygbj5",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.0160920019999935,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.317",
+            "timestamp": "2026-11-05T09:44:11.224846+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            1271,
+            1303
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 51.742078,
+            "commit_union_ms": 29.478168,
+            "durable_sync_union_ms": 20.844314
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-bjf11u4j",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.761433027999999,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.252",
+            "timestamp": "2026-11-05T09:44:15.258418+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            1478,
+            1510
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 54.814745,
+            "commit_union_ms": 40.609483,
+            "durable_sync_union_ms": 32.627066
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-vw81934y",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7665786829999917,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.192",
+            "timestamp": "2026-11-05T09:44:17.973819+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-kvx8a08c",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.5144354589999978,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.999",
+            "timestamp": "2026-11-05T09:44:21.768960+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/1-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-yxddjou5",
+            "-o",
+            "cache_dir=/evidence/deadlines/1-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.761903396000008,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.246",
+            "timestamp": "2026-11-05T09:44:25.313896+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-8v7k91dr",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.0166701680000045,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.523",
+            "timestamp": "2026-11-05T09:44:28.170830+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            2114,
+            2146
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 52.190845,
+            "commit_union_ms": 31.128297,
+            "durable_sync_union_ms": 22.568723
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-ys67c57t",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.018778922999999,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.501",
+            "timestamp": "2026-11-05T09:44:32.215380+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            2321,
+            2353
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 62.14637,
+            "commit_union_ms": 41.005836,
+            "durable_sync_union_ms": 32.382457
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-buumx0ew",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.7614691220000083,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.208",
+            "timestamp": "2026-11-05T09:44:36.263883+00:00",
+            "hostname": "c944f684b23e"
+          },
+          "observer_pids": [
+            2528,
+            2560
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 64.314957,
+            "commit_union_ms": 48.890829,
+            "durable_sync_union_ms": 40.006631
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-x7bh02e2",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7648549280000054,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.224",
+            "timestamp": "2026-11-05T09:44:38.975312+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-lzibdnel",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7693070250000034,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.201",
+            "timestamp": "2026-11-05T09:44:42.772045+00:00",
+            "hostname": "c944f684b23e"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/evidence/deadlines/2-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-gzhdt0ht",
+            "-o",
+            "cache_dir=/evidence/deadlines/2-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 2.7626625170000096,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.346",
+            "timestamp": "2026-11-05T09:44:46.568939+00:00",
+            "hostname": "c944f684b23e"
+          }
+        }
+      ]
+    },
+    "reference_python": {
+      "path": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\ci\\c4dc90ee\\reference",
+      "passes": 18,
+      "failures": 0,
+      "checks": {
+        "burst2": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 50.698671,
+            "sqlite:driver.sqlite3": 34.397632,
+            "span:LedgerMutex.wait": 75.960407,
+            "span:ExecutionMutex.wait": 0.024758,
+            "span:Transport.command": 507.458401,
+            "rpc_phase:receipt": 6.241965,
+            "io:fdatasync:context.sqlite3": 21.442694,
+            "io:fdatasync:context.sqlite3-journal": 20.415967,
+            "io:fdatasync:driver.sqlite3": 33.679743,
+            "io:fdatasync:driver.sqlite3-journal": 18.367273,
+            "io:fdatasync:dss.sqlite": 3.552493,
+            "io:fdatasync:dss.sqlite-wal": 19.775337,
+            "io:fdatasync:native-driver": 18.795466,
+            "io:fdatasync:state": 19.680531,
+            "io:pwrite64:context.sqlite3": 49.9338,
+            "io:pwrite64:context.sqlite3-journal": 0.18626,
+            "io:pwrite64:driver.sqlite3": 1.264641,
+            "io:pwrite64:driver.sqlite3-journal": 0.116806,
+            "io:pwrite64:dss.sqlite": 0.025899,
+            "io:pwrite64:dss.sqlite-wal": 21.341964,
+            "lock_wait:ContextStore.lock": 25.918763,
+            "lock_wait:DssEngine.lock": 10.525161,
+            "rpc_phase:authority": 26.24106,
+            "rpc_phase:connect": 3.869327,
+            "rpc_phase:deadline": 2.448856,
+            "rpc_phase:metadata": 97.29649,
+            "rpc_phase:preparation": 26.067807,
+            "rpc_phase:send": 77.729482,
+            "rpc_phase:settle": 77.819187,
+            "span:ContextDriver.dispatch": 517.37638,
+            "span:DriverGate.send": 77.715221,
+            "span:DriverGate.settle": 77.807159,
+            "span:Transport.get": 97.281898,
+            "span:client.native_call": 546.1907,
+            "sqlite:dss.sqlite": 21.627823
+          },
+          "observer_pids_per_trial": [
+            [
+              2233,
+              2265
+            ],
+            [
+              3285,
+              3317
+            ],
+            [
+              4338,
+              4370
+            ]
+          ]
+        },
+        "burst3": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 37.343999,
+            "sqlite:driver.sqlite3": 93.352554,
+            "span:LedgerMutex.wait": 169.669224,
+            "span:ExecutionMutex.wait": 0.024397,
+            "span:Transport.command": 558.950047,
+            "rpc_phase:receipt": 19.038624,
+            "io:fdatasync:context.sqlite3": 9.924225,
+            "io:fdatasync:context.sqlite3-journal": 19.588251,
+            "io:fdatasync:driver.sqlite3": 5.348364,
+            "io:fdatasync:driver.sqlite3-journal": 91.215626,
+            "io:fdatasync:dss.sqlite": 4.047446,
+            "io:fdatasync:dss.sqlite-wal": 20.493526,
+            "io:fdatasync:native-driver": 17.091539,
+            "io:fdatasync:state": 20.221565,
+            "io:pwrite64:context.sqlite3": 0.194193,
+            "io:pwrite64:context.sqlite3-journal": 0.357037,
+            "io:pwrite64:driver.sqlite3": 1.007393,
+            "io:pwrite64:driver.sqlite3-journal": 0.100171,
+            "io:pwrite64:dss.sqlite": 0.01994,
+            "io:pwrite64:dss.sqlite-wal": 18.060779,
+            "lock_wait:ContextStore.lock": 28.727582,
+            "lock_wait:DssEngine.lock": 11.477941,
+            "rpc_phase:authority": 29.216409,
+            "rpc_phase:connect": 3.320015,
+            "rpc_phase:deadline": 4.001211,
+            "rpc_phase:metadata": 100.25319,
+            "rpc_phase:preparation": 19.886843,
+            "rpc_phase:send": 175.42143,
+            "rpc_phase:settle": 128.490901,
+            "span:ContextDriver.dispatch": 573.642258,
+            "span:DriverGate.send": 175.408591,
+            "span:DriverGate.settle": 128.477921,
+            "span:Transport.get": 100.237026,
+            "span:client.native_call": 594.242781,
+            "sqlite:dss.sqlite": 20.732757
+          },
+          "observer_pids_per_trial": [
+            [
+              2441,
+              2473
+            ],
+            [
+              3492,
+              3525
+            ],
+            [
+              4545,
+              4577
+            ]
+          ]
+        },
+        "barrier": {
+          "maximum_ms": {
+            "sqlite:context.sqlite3": 18.166317,
+            "sqlite:driver.sqlite3": 19.739216,
+            "span:LedgerMutex.wait": 51.82643,
+            "span:ExecutionMutex.wait": 0.009435,
+            "span:Transport.command": 445.174046,
+            "rpc_phase:receipt": 2.232262,
+            "io:fdatasync:context.sqlite3": 5.627745,
+            "io:fdatasync:context.sqlite3-journal": 17.601798,
+            "io:fdatasync:driver.sqlite3": 1.034017,
+            "io:fdatasync:driver.sqlite3-journal": 18.756336,
+            "io:fdatasync:dss.sqlite-wal": 18.487142,
+            "io:fdatasync:native-driver": 2.612859,
+            "io:fdatasync:state": 0.250517,
+            "io:pwrite64:context.sqlite3": 0.0203,
+            "io:pwrite64:context.sqlite3-journal": 0.114322,
+            "io:pwrite64:driver.sqlite3": 0.028233,
+            "io:pwrite64:driver.sqlite3-journal": 0.027751,
+            "io:pwrite64:dss.sqlite-wal": 0.091979,
+            "lock_wait:ContextStore.lock": 15.45839,
+            "lock_wait:DssEngine.lock": 10.709605,
+            "rpc_phase:authority": 5.241313,
+            "rpc_phase:connect": 2.499835,
+            "rpc_phase:deadline": 1.19827,
+            "rpc_phase:metadata": 109.448648,
+            "rpc_phase:preparation": 14.769854,
+            "rpc_phase:send": 106.86887,
+            "rpc_phase:settle": 51.175041,
+            "span:ContextDriver.dispatch": 447.332347,
+            "span:DriverGate.send": 55.705506,
+            "span:DriverGate.settle": 51.160349,
+            "span:Transport.get": 109.434787,
+            "span:client.native_call": 452.39786,
+            "sqlite:dss.sqlite": 18.8907
+          },
+          "observer_pids_per_trial": [
+            [
+              2648,
+              2680
+            ],
+            [
+              3700,
+              3732
+            ],
+            [
+              4752,
+              4785
+            ]
+          ]
+        }
+      },
+      "trial_outcomes": [
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-lqnku_z_",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 5.025464479999997,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.192",
+            "timestamp": "2026-11-05T09:43:17.605579+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            2233,
+            2265
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 67.943273,
+            "commit_union_ms": 59.140959,
+            "durable_sync_union_ms": 52.930004
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-jhfdfm8t",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.510840041999998,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.118",
+            "timestamp": "2026-11-05T09:43:22.311677+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            2441,
+            2473
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 53.261587,
+            "commit_union_ms": 42.604943,
+            "durable_sync_union_ms": 36.347389
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-o2yvb3pi",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2580831429999932,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.795",
+            "timestamp": "2026-11-05T09:43:26.834781+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            2648,
+            2680
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 51.82643,
+            "commit_union_ms": 41.574339,
+            "durable_sync_union_ms": 34.187632
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-vnr2b_si",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.009498832000006,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.615",
+            "timestamp": "2026-11-05T09:43:30.084296+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-0clutqh6",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.261340830000009,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.020",
+            "timestamp": "2026-11-05T09:43:34.105587+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 0,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-73lm62ze",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/0-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.5083755840000066,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.262",
+            "timestamp": "2026-11-05T09:43:38.380383+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-cdwttfmz",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.76216611400001,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.291",
+            "timestamp": "2026-11-05T09:43:41.934393+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            3285,
+            3317
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 61.627814,
+            "commit_union_ms": 45.895806,
+            "durable_sync_union_ms": 38.944554
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-4kivm_bl",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.009404496000002,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.701",
+            "timestamp": "2026-11-05T09:43:46.709551+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            3492,
+            3525
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 169.669224,
+            "commit_union_ms": 162.690112,
+            "durable_sync_union_ms": 156.55258
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-ury43yhk",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2578567040000053,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.870",
+            "timestamp": "2026-11-05T09:43:50.733224+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            3700,
+            3732
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 47.572998,
+            "commit_union_ms": 38.076828,
+            "durable_sync_union_ms": 31.540893
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-p0iyu7_2",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.511117232999993,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "4.093",
+            "timestamp": "2026-11-05T09:43:53.978750+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-6mjxhsb6",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.022745204000017,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.764",
+            "timestamp": "2026-11-05T09:43:58.502555+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 1,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-1euppafh",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/1-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.2587754959999984,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "2.903",
+            "timestamp": "2026-11-05T09:44:02.544031+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-burst2/tests.xml",
+            "--basetemp=/tmp/cd-nby07k1u",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-burst2/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.011052898999992,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.742",
+            "timestamp": "2026-11-05T09:44:05.834516+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            4338,
+            4370
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 75.960407,
+            "commit_union_ms": 61.27305,
+            "durable_sync_union_ms": 53.610535
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-burst3/tests.xml",
+            "--basetemp=/tmp/cd-51vdqz7x",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-burst3/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 4.010592810999981,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.647",
+            "timestamp": "2026-11-05T09:44:09.858495+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            4545,
+            4577
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 51.228826,
+            "commit_union_ms": 41.918836,
+            "durable_sync_union_ms": 34.865071
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "profile",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-barrier/tests.xml",
+            "--basetemp=/tmp/cd-izoog2r0",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-profile-barrier/pytest-cache",
+            "-p",
+            "observer"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.509621506000002,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.267",
+            "timestamp": "2026-11-05T09:44:13.882600+00:00",
+            "hostname": "runnervm48cm3"
+          },
+          "observer_pids": [
+            4752,
+            4785
+          ],
+          "longest_ledger_wait": {
+            "duration_ms": 43.939587,
+            "commit_union_ms": 33.275668,
+            "durable_sync_union_ms": 25.327294
+          }
+        },
+        {
+          "check": "burst2",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[2]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-burst2/tests.xml",
+            "--basetemp=/tmp/cd-mm22631q",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-burst2/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.511304596000002,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.220",
+            "timestamp": "2026-11-05T09:44:17.385277+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "burst3",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_three_ten_request_bursts_keep_original_receipts_and_no_busy_loss[3]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-burst3/tests.xml",
+            "--basetemp=/tmp/cd-7y1yc4hr",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-burst3/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.7592521320000003,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.469",
+            "timestamp": "2026-11-05T09:44:20.907228+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        },
+        {
+          "check": "barrier",
+          "mode": "control",
+          "repeat": 2,
+          "command": [
+            "/opt/hostedtoolcache/Python/3.13.17/x64/bin/python",
+            "-m",
+            "pytest",
+            "server/tests/test_native_driver.py::test_ten_pending_receipts_bound_eleventh_rpc_without_effect[complete]",
+            "-v",
+            "-W",
+            "error",
+            "--tb=long",
+            "--junitxml=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-barrier/tests.xml",
+            "--basetemp=/tmp/cd-9otvuxhi",
+            "-o",
+            "cache_dir=/home/runner/work/openbexi_spell_plugin/openbexi_spell_plugin/.qualification/deadlines/2-control-barrier/pytest-cache"
+          ],
+          "exit_code": 0,
+          "outer_timeout": false,
+          "elapsed_seconds": 3.50850786700002,
+          "junit": {
+            "name": "pytest",
+            "errors": "0",
+            "failures": "0",
+            "skipped": "0",
+            "tests": "1",
+            "time": "3.187",
+            "timestamp": "2026-11-05T09:44:24.683326+00:00",
+            "hostname": "runnervm48cm3"
+          }
+        }
+      ]
+    }
+  },
+  "foundation": {
+    "passed": true,
+    "source_commit": "540c0e0ba957a82b98f3c13a416da28cd52acd65",
+    "run_id": 42006387996,
+    "junit": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1823",
+      "time": "547.880",
+      "timestamp": "2026-11-05T09:57:08.890245+00:00",
+      "hostname": "runnervm48cm3"
+    },
+    "suite_limit_seconds": 600,
+    "checks": [
+      {
+        "name": "lint",
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "format",
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "types",
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      {
+        "name": "tests",
+        "exit_code": 0,
+        "timed_out": false,
+        "timeout_seconds": 600
+      }
+    ],
+    "receipt": "F:\\openbexi-builds\\deadline-artifacts\\540c0e0b\\foundation\\v08-server\\run-20261105T095706Z-830ae142\\result.json",
+    "artifact_sha256": "9b7e795f51cb7dc48f6b22affcdfa867f75acfbbbb5163d9aeaf0ef453ce6f88",
+    "local_foundation_repeated": false,
+    "verification": {
+      "input_count": 290,
+      "raw_match": 289,
+      "git_blob_match_line_endings": [
+        "docs/v0.8/RELEASE_GATES.json"
+      ],
+      "mismatches": [],
+      "session_finish": {
+        "exitstatus": 0,
+        "kind": "session_finish",
+        "monotonic_ns": 607941119323,
+        "pid": 3217,
+        "schema": "openbexi.pytest-result-journal/1",
+        "sequence": 7294,
+        "tests_collected": 1823,
+        "tests_failed": 0,
+        "unix_ns": 1793873176778521435
+      },
+      "journal_contiguous": true,
+      "phases": {
+        "setup": 1823,
+        "call": 1823,
+        "teardown": 1823
+      }
+    }
+  },
+  "memory": {
+    "passed": false,
+    "complete_trace": true,
+    "source_commit": "47ebd1c091e0299213f9ee3978cf4e74d513fddf",
+    "run_id": 42010285687,
+    "comparison": "F:\\openbexi-builds\\deadline-artifacts\\47ebd1c0\\memory\\run-bb03d44dfdb345cc8098a99b0d50cd47\\comparison.json",
+    "observer": {
+      "errors": [],
+      "container_id": "3156b769b7ce796959a92386d511b1b421118f53eb524b4f2574b4a07cf8a210",
+      "maximum_samples": 300,
+      "interval_seconds": 2,
+      "samples": 169,
+      "samples_atomic": false,
+      "changes_resource_limits": false
+    },
+    "soak": {
+      "start_ns": 345851157201,
+      "end_ns": 649342124888,
+      "minimum_seconds": 300,
+      "counters_before": {
+        "root": 1283,
+        "background": 1667,
+        "child": 1413
+      },
+      "counters_after": {
+        "root": 13656,
+        "background": 16571,
+        "child": 14644
+      },
+      "original_processes": 8,
+      "all_intervals_advanced": true
+    },
+    "acceptance": {
+      "schema": "openbexi.native-memory-comparison-resources/1",
+      "profile": "asan-noswap",
+      "diagnostic_only": true,
+      "full_v08_qualified": false,
+      "eligible_for_publication": false,
+      "passed": false,
+      "resident_limit_bytes": 2147483648,
+      "swap_limit_bytes": 0,
+      "resident_peak_budget_bytes": 1879048192,
+      "combined_peak_budget_bytes": 1879048192,
+      "maximum_combined_window_growth_bytes": 67108864,
+      "minimum_soak_seconds": 300,
+      "swap_exercised": false,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "samples": 169,
+      "soak_samples": 143,
+      "duration_seconds": 303.490967687,
+      "resident_peak_bytes": 1315971072,
+      "sampled_combined_peak_bytes": 1314148352,
+      "combined_window_growth_bytes": 319567872.0,
+      "sampled_swap_peak_bytes": 0,
+      "native_instrumentation_verified": true,
+      "original_processes": 8,
+      "memory_max_events": 0,
+      "thread_observations_available": true,
+      "thread_first_median": 120.0,
+      "thread_last_median": 120.0,
+      "allocator_observations_available": true,
+      "last_memory_stat": {
+        "active_anon": 1291669504,
+        "active_file": 28672,
+        "anon": 1286279168,
+        "anon_thp": 0,
+        "file": 5582848,
+        "file_dirty": 12288,
+        "file_mapped": 0,
+        "file_thp": 0,
+        "file_writeback": 0,
+        "inactive_anon": 0,
+        "inactive_file": 147456,
+        "kernel": 21823488,
+        "kernel_stack": 1966080,
+        "numa_hint_faults": 0,
+        "numa_pages_migrated": 0,
+        "numa_pte_updates": 0,
+        "pagetables": 15699968,
+        "percpu": 2808,
+        "pgactivate": 0,
+        "pgdeactivate": 0,
+        "pgdemote_direct": 0,
+        "pgdemote_khugepaged": 0,
+        "pgdemote_kswapd": 0,
+        "pgdemote_proactive": 0,
+        "pgfault": 504532,
+        "pglazyfree": 0,
+        "pglazyfreed": 0,
+        "pgmajfault": 0,
+        "pgpromote_success": 0,
+        "pgrefill": 0,
+        "pgscan": 0,
+        "pgscan_direct": 0,
+        "pgscan_khugepaged": 0,
+        "pgscan_kswapd": 0,
+        "pgscan_proactive": 0,
+        "pgsteal": 0,
+        "pgsteal_direct": 0,
+        "pgsteal_khugepaged": 0,
+        "pgsteal_kswapd": 0,
+        "pgsteal_proactive": 0,
+        "pswpin": 0,
+        "pswpout": 0,
+        "sec_pagetables": 0,
+        "shmem": 5435392,
+        "shmem_thp": 0,
+        "slab": 4120976,
+        "slab_reclaimable": 1247344,
+        "slab_unreclaimable": 2873632,
+        "sock": 4096,
+        "swapcached": 0,
+        "swpin_zero": 0,
+        "swpout_zero": 0,
+        "thp_collapse_alloc": 0,
+        "thp_fault_alloc": 0,
+        "thp_swpout": 0,
+        "thp_swpout_fallback": 0,
+        "unevictable": 0,
+        "vmalloc": 12288,
+        "workingset_activate_anon": 0,
+        "workingset_activate_file": 0,
+        "workingset_nodereclaim": 0,
+        "workingset_refault_anon": 0,
+        "workingset_refault_file": 0,
+        "workingset_restore_anon": 0,
+        "workingset_restore_file": 0,
+        "zswap": 0,
+        "zswapped": 0,
+        "zswpin": 0,
+        "zswpout": 0,
+        "zswpwb": 0
+      },
+      "last_native_allocator": [
+        {
+          "allocated_bytes": 10304932,
+          "free_bytes": 37031720,
+          "heap_bytes": 213860352,
+          "monotonic_ns": 646330498500,
+          "pid": 37,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1493544,
+          "free_bytes": 6431192,
+          "heap_bytes": 18030592,
+          "monotonic_ns": 647300333466,
+          "pid": 83,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 9393910,
+          "free_bytes": 53030072,
+          "heap_bytes": 331436032,
+          "monotonic_ns": 645425443279,
+          "pid": 101,
+          "role": 1,
+          "unmapped_bytes": 0
+        },
+        {
+          "allocated_bytes": 1482202,
+          "free_bytes": 4705456,
+          "heap_bytes": 7020544,
+          "monotonic_ns": 647427780013,
+          "pid": 42,
+          "role": 1,
+          "unmapped_bytes": 0
+        }
+      ]
+    },
+    "controller_heartbeat": [
+      {
+        "renewals": 76,
+        "failures": 0,
+        "active_sessions": 2,
+        "failure_tail": []
+      },
+      {
+        "renewals": 102,
+        "failures": 0,
+        "active_sessions": 3,
+        "failure_tail": []
+      }
+    ],
+    "artifact_sha256": "880a75d95d3d9336f4958bd1d21ffaf819855bf00f91c056903c8709c5788bb9",
+    "attribution": "F:\\openbexi-builds\\v08-qualification-20261104\\context-deadlines-20261105\\memory-300-attribution-symbolized.json",
+    "conforming_runtime_correction_established": false,
+    "unambiguous_full_window_quarantine_attribution": false,
+    "limitations": [
+      "Four Context ASan blocks and one Executor block interleave; excluded from quarantine comparisons.",
+      "Sampling and free-hook misses preclude exhaustive per-site live-byte or quarantine ownership claims.",
+      "Diagnostic instrumentation and different runner throughput prevent treating this as a before/after optimization comparison."
+    ]
+  },
+  "hours_attempted": false,
+  "full_qualification": false,
+  "limits_changed": false,
+  "identical_inputs": {
+    "python": {
+      "equal": true,
+      "entries": null
+    },
+    "sqlite": {
+      "equal": true,
+      "entries": null
+    },
+    "packages": {
+      "equal": true,
+      "entries": 13
+    },
+    "source_sha256": {
+      "equal": true,
+      "entries": 200
+    },
+    "mapped_binary_sha256": {
+      "equal": true,
+      "entries": 33
+    },
+    "subjects": {
+      "local": "matched-local",
+      "reference_run": 42004654161,
+      "reference_artifact_sha256": "22fb8de7cd47f54601973fd78e0083288134af7ecb52e463254649ab927b2b0e"
+    }
+  },
+  "critical_wait": {
+    "duration_ms": 1484.3114,
+    "commit_union_ms": 1458.5776,
+    "durable_sync_union_ms": 1448.0069,
+    "source": "volume-repeat/2-profile-burst3",
+    "interpretation": "97.55 percent of this ledger wait overlaps measured durable sync syscalls; union avoids double counting concurrent intervals",
+    "context_driver_only": {
+      "wait": {
+        "kind": "span",
+        "label": "LedgerMutex.wait",
+        "start_ns": 37774844276300,
+        "duration_ns": 1484311400,
+        "pid": 3066,
+        "tid": 3146,
+        "phase": "call",
+        "operation": "f8ab4c73-cf7d-4895-a33f-88e35a1686ed",
+        "error": null
+      },
+      "context_driver_commit_union_ms": 1458.5776,
+      "context_driver_sync_union_ms": 1447.6218,
+      "restriction": "Only Context and driver database, journal and directory sync paths; excludes DSS syncs"
+    }
+  },
+  "limitations": [
+    "Build-overlap trial is not an idle baseline and does not identify a Windows component as the cause.",
+    "Isolated storage attribution does not retroactively prove every historical native startup failure.",
+    "Transport.command spans include preparation before the protected command deadline.",
+    "Observer overhead is visible in control comparisons; profiling results are diagnostic."
+  ],
+  "prior_reference_failure": {
+    "run_id": 42004497810,
+    "case": "0-control-burst2",
+    "passed": false,
+    "scope": "Uninstrumented original 2-second burst; effect_deadline_expired; full I/O pressure rose from 12,300,534 to 14,353,536 microseconds. This invalidates a blanket Windows-only diagnosis. Runtime cause is not proven without per-call timings for that trial.",
+    "preserved": true
+  },
+  "heartbeats": {
+    "local_cases_passed": 3,
+    "local_renewals": 93,
+    "local_max_seconds": 0.04185059999872465,
+    "reference_checks_passed": 27,
+    "reference_failures": 0,
+    "reference_renewals": 31,
+    "reference_max_seconds": 0.040473,
+    "artifact_sha256": "bc848905f9f895762e1af8d8f7dc7bbb90bfbcab6e0dee88a9d20ac19fd5ac51"
+  },
+  "observer_correction": {
+    "tested_head": "47ebd1c091e0299213f9ee3978cf4e74d513fddf",
+    "reproduction_run": 42008752914,
+    "reproduction_artifact_sha256": "7307797de80f2da0e71ad2c4b0fd906c3c39fb386a599ca6e06d85e3d8f11aa2",
+    "error": "ValueError: ASan diagnostic statistics exceeded bound",
+    "old_block_bound_bytes": 16384,
+    "new_reader_bound_bytes": 262144,
+    "existing_read_bound_changed": false,
+    "acceptance_or_deadline_changed": false,
+    "validation": {
+      "synthetic_cases": 6,
+      "recorded_blocks_replayed": 29,
+      "passed": true
+    },
+    "retry_run": 42010285687
+  },
+  "future_runner_policy": "Use a dedicated reference Linux job for acceptance; build matched images before timed trials. Neither host family is immune to storage stalls, and local full-suite qualification is not claimed.",
+  "memory_attempts": [
+    {
+      "passed": false,
+      "complete_trace": false,
+      "run_id": 42006387996,
+      "comparison": "F:\\openbexi-builds\\deadline-artifacts\\540c0e0b\\memory\\run-c96b925a7214472eb1d738612be99c04\\comparison.json",
+      "native_error": "RuntimeError: Native resource observation incomplete",
+      "observer": {
+        "errors": [
+          "RuntimeError"
+        ],
+        "container_id": "9efec85602fcc120c0f9abe4745d27fbefdfa89f5b3151a3207ccdefb3add57a",
+        "maximum_samples": 300,
+        "interval_seconds": 2,
+        "samples": 7,
+        "samples_atomic": false,
+        "changes_resource_limits": false
+      },
+      "soak": {
+        "start_ns": 331113149956,
+        "end_ns": 634188583964,
+        "minimum_seconds": 300,
+        "counters_before": {
+          "root": 883,
+          "background": 1292,
+          "child": 1001
+        },
+        "counters_after": {
+          "root": 10354,
+          "background": 13350,
+          "child": 11196
+        },
+        "original_processes": 8,
+        "all_intervals_advanced": true
+      },
+      "controller_heartbeat": [
+        {
+          "renewals": 75,
+          "failures": 0,
+          "active_sessions": 2,
+          "failure_tail": []
+        },
+        {
+          "renewals": 102,
+          "failures": 0,
+          "active_sessions": 3,
+          "failure_tail": []
+        }
+      ],
+      "observer_diagnosis_run_id": 42008752914
+    },
+    {
+      "run_id": 42008752914,
+      "soak_seconds": 45,
+      "scope": "observer reproduction, not acceptance",
+      "complete_trace": false,
+      "observer_error": "ValueError: ASan diagnostic statistics exceeded bound",
+      "artifact_sha256": "7307797de80f2da0e71ad2c4b0fd906c3c39fb386a599ca6e06d85e3d8f11aa2"
+    }
+  ],
+  "remaining_requirements": [
+    "Establish and validate an ownership-safe production allocation correction without changing workload, buffer semantics or sanitizers.",
+    "Pass the original 300-second whole-cgroup 64 MiB / zero-swap gate.",
+    "Only after that pass, attempt both original one-hour scenarios."
+  ],
+  "all_requested_work_complete": false
+}

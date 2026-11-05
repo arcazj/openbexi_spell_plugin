@@ -3,14 +3,14 @@
 <!-- END CURRENT QUALIFICATION -->
 
 <!-- ROOT CAUSE FOLLOWTHROUGH 20261105 -->
-> **Latest investigation:** [Measured memory and foundation results](ROOT_CAUSE_20261105.md) supersede the earlier checkpoint summaries below. Compiler metadata overhead is reduced and targeted checks pass; the 300-second memory growth and full local foundation acceptance remain failed. All original limits and failed evidence are retained.
+> **Latest investigation:** [Context/DSS deadlines and complete memory trace](CONTEXT_DSS_DEADLINES_20261105.md): matched concurrent checks and live heartbeats pass; reference foundation passes all 1,823 tests in 547.880 seconds. The complete 303.491-second diagnostic still fails memory growth (304.76 MiB versus 64 MiB), with zero swap. All original limits and failed evidence are retained; no memory correction or release qualification is claimed.
 <!-- END ROOT CAUSE FOLLOWTHROUGH 20261105 -->
 
 # SPELL v0.8 implementation and qualification
 
 **SPELL v0.8-rc1 and IDE v1.2.1 are published and unqualified.** Start with [current status](CURRENT_STATUS.md), [release readiness](RELEASE_READINESS.md), [known limitations](KNOWN_LIMITATIONS.md), [release gates](RELEASE_GATES.json) and [the current receipt](evidence/qualification-reference-runner-20261105.json). All eleven full-release groups remain open.
 
-The November 5 hosted reference run passes 1,818 foundation cases and both original 45-second native scenarios. Both short native scenarios also pass locally after correcting the trusted helper. The local foundation still exceeds its 600-second budget; the 300-second sanitizer/no-swap handoff grows 256,954,368 bytes against 67,108,864 allowed. Both original sustained scenarios and the remaining full acceptance still require completion.
+The latest reference foundation passes 1,823 cases in 547.880 seconds, retaining the original limit and compiler optimization. Matched concurrent checks and real heartbeats pass under measured conditions. The complete 303.491-second Context/bridge diagnostic still fails memory growth at 319,567,872 bytes against 67,108,864 allowed, with zero swap. Earlier local/hosted 45-second passes and failed runs remain preserved; both original hours and full acceptance remain open.
 
 ## Continue qualification
 

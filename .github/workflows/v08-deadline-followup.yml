@@ -92,7 +92,7 @@ jobs:
           python - <<'PY'
           import json, pathlib, subprocess, hashlib
           root=pathlib.Path('.qualification/v08-memory-comparison')
-          for report in root.glob('run-*/result.json'):
+          for report in root.glob('run-*/comparison.json'):
               data=json.loads(report.read_text())
               image=data.get('candidate_worker_image')
               if not image: continue

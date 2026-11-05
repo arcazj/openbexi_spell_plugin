@@ -4,7 +4,7 @@
   "baseline_v07_commit": "109a47af47951e2fa54b60cb408a543b117f7f15",
   "requirements_base_commit": "76144fb704a8e3777209df04058c62d80bbc962f",
   "branch": "feature/v0.8-step1-lifecycle",
-  "phase": "Reference-runner followthrough completed with bounded native passes; full release remains unqualified.",
+  "phase": "Matched deadline/heartbeat checks and complete reference foundation pass; full 300-second memory trace fails growth; full release remains unqualified.",
   "reasoning_level": "High-rigor review of concurrency, original-grant fencing and recovery; invariant review, deterministic before/after regressions and real transport verification; no claim to change a numeric model setting",
   "files_inspected_or_changed": "BASELINE_V07.md, PROCESS_AND_PORT_MAP.md, baseline-audit.json, and this branch diff contain exact source references and inventories",
   "verified_findings": [
@@ -127,10 +127,9 @@
   "implementation_started": true,
   "release_published": false,
   "next_step": [
-    "Profile Context/DSS transaction and I/O latency under unchanged concurrent deadlines; keep the validated -g1 test-build correction",
-    "Complete original full-family 300-second retention attribution for Context and bridge; no memory correction is yet validated",
-    "Attempt both original one-hour scenarios only after credible shorter passing evidence",
-    "Complete remaining native/IDE/deployment/security/packaging acceptance and obtain required cluster/reviewer"
+    "Establish an ownership-safe production allocation correction using the complete source-bound Context/bridge and Executor trace.",
+    "Require the original 300-second 64 MiB growth / zero-swap pass before either original one-hour scenario.",
+    "Preserve -g1, existing deadlines/durability, targeted concurrency/heartbeat regressions, failed evidence and all remaining full-release requirements."
   ],
   "required_approval_source": "Latest explicit owner request: Qualify and release full v0.8; merge/tag/GitHub publication authorized once full mandatory criteria pass; production migration not authorized",
   "owner_authorization": "Qualify and release full v0.8; prior finish/deeply-test authorization includes paired openbexi_ide integration and GitHub commits. No routine publication re-confirmation after successful full qualification.",
@@ -2458,15 +2457,17 @@
     "production_migration_authorized": false,
     "archive_scope": "Recorded-source/overlay/audit/CRC/digest verification and actual scoped executions remain distinct from complete Git-blob archive verification and final shipped-system qualification. Counts overlap and must not be summed."
   },
-  "current_completed_receipt": "evidence/root-cause-20261105/qualification.json",
+  "current_completed_receipt": "evidence/context-deadlines-20261105/qualification.json",
   "current_candidate": {
     "version": "0.8.0rc1",
     "hosted_tested_commit": "efada98963a9d9debdbdca437b0e97246180a86f",
     "local_tested_commit": "c5529d02a49c89a8919b965ffb4eb43498eb0cdf",
     "paired_ide": "08c314fb6b802b407cbabe01777072884d2b7504",
     "full_v08_qualified": false,
-    "scope": "Native product unchanged from c5529d02; test fixture debug metadata optimized with source-backtrace regressions. Full local foundation and memory remain failed.",
-    "local_foundation_tested_commit": "10283db843578c04ff4aa454e43abb041be605a9"
+    "scope": "Runtime unchanged from c5529d02; reference foundation 1823/547.880 seconds passes. Complete diagnostic memory growth 319567872 bytes fails 67108864; no production memory correction or full qualification.",
+    "local_foundation_tested_commit": "10283db843578c04ff4aa454e43abb041be605a9",
+    "hosted_foundation_tested_commit": "540c0e0ba957a82b98f3c13a416da28cd52acd65",
+    "memory_profile_tested_commit": "47ebd1c091e0299213f9ee3978cf4e74d513fddf"
   },
   "historical_current_before_reference_runner_20261105": {
     "phase": "Dev83 candidate integrates measured owned native input transfer and GUI JSON-copy elimination, plus original-budget compiler fixes. Local103 cases:97pass/6AF_UNIX EPERM failures, no skips.31 original/affected hosted executions pending at exact final head; completeddev82 failures remain preserved. All11release groups unqualified.",
@@ -2527,9 +2528,9 @@
   },
   "documentation_current_status": {
     "path": "docs/v0.8/CURRENT_STATUS.md",
-    "updated_at": "2026-11-05T07:17:37.893567+00:00",
-    "qualification_receipt": "docs/v0.8/evidence/root-cause-20261105/qualification.json",
-    "scope": "Measured test-build improvement, failed original reruns and incomplete memory attribution; no gate promotion"
+    "updated_at": "2026-11-05T10:41:35.736036+00:00",
+    "qualification_receipt": "docs/v0.8/evidence/context-deadlines-20261105/qualification.json",
+    "scope": "Measured deadlines, complete reference foundation and full 300-second process/allocation trace; memory correction remains open; no gate promotion"
   },
   "historical_current_before_root_cause_20261105": {
     "current_candidate": {
@@ -2554,5 +2555,40 @@
       "Provide the NetworkPolicy cluster and independent reviewer"
     ]
   },
-  "root_cause_followthrough_20261105": "Two sanitizer-source regressions and 245 affected original cases pass at 10283db8. Compiler control improves 24.1%. Original-path foundation still times out at 600s after 1380 passes; short-volume full run times out after 1450 passes and three failed concurrent-deadline cases. Fresh completed handoff growth 229232640 bytes exceeds 67108864. All failed evidence retained; no original hour attempted or full gate promoted."
+  "root_cause_followthrough_20261105": "Two sanitizer-source regressions and 245 affected original cases pass at 10283db8. Compiler control improves 24.1%. Original-path foundation still times out at 600s after 1380 passes; short-volume full run times out after 1450 passes and three failed concurrent-deadline cases. Fresh completed handoff growth 229232640 bytes exceeds 67108864. All failed evidence retained; no original hour attempted or full gate promoted.",
+  "historical_current_before_context_deadlines_20261105": {
+    "phase": "Reference-runner followthrough completed with bounded native passes; full release remains unqualified.",
+    "next_step": [
+      "Profile Context/DSS transaction and I/O latency under unchanged concurrent deadlines; keep the validated -g1 test-build correction",
+      "Complete original full-family 300-second retention attribution for Context and bridge; no memory correction is yet validated",
+      "Attempt both original one-hour scenarios only after credible shorter passing evidence",
+      "Complete remaining native/IDE/deployment/security/packaging acceptance and obtain required cluster/reviewer"
+    ],
+    "current_completed_receipt": "evidence/root-cause-20261105/qualification.json",
+    "current_candidate": {
+      "version": "0.8.0rc1",
+      "hosted_tested_commit": "efada98963a9d9debdbdca437b0e97246180a86f",
+      "local_tested_commit": "c5529d02a49c89a8919b965ffb4eb43498eb0cdf",
+      "paired_ide": "08c314fb6b802b407cbabe01777072884d2b7504",
+      "full_v08_qualified": false,
+      "scope": "Native product unchanged from c5529d02; test fixture debug metadata optimized with source-backtrace regressions. Full local foundation and memory remain failed.",
+      "local_foundation_tested_commit": "10283db843578c04ff4aa454e43abb041be605a9"
+    },
+    "documentation_current_status": {
+      "path": "docs/v0.8/CURRENT_STATUS.md",
+      "updated_at": "2026-11-05T07:17:37.893567+00:00",
+      "qualification_receipt": "docs/v0.8/evidence/root-cause-20261105/qualification.json",
+      "scope": "Measured test-build improvement, failed original reruns and incomplete memory attribution; no gate promotion"
+    }
+  },
+  "context_deadline_followthrough_20261105": {
+    "report": "CONTEXT_DSS_DEADLINES_20261105.md",
+    "foundation_passed": true,
+    "local_full_suite_qualified": false,
+    "memory_trace_complete": true,
+    "memory_accepted": false,
+    "runtime_correction_established": false,
+    "hours_attempted_in_investigation": false,
+    "full_v08_qualified": false
+  }
 }

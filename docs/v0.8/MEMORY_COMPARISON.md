@@ -3,7 +3,7 @@
 <!-- END CURRENT QUALIFICATION -->
 
 <!-- ROOT CAUSE FOLLOWTHROUGH 20261105 -->
-> **Latest investigation:** [Measured memory and foundation results](ROOT_CAUSE_20261105.md) supersede the earlier checkpoint summaries below. Compiler metadata overhead is reduced and targeted checks pass; the 300-second memory growth and full local foundation acceptance remain failed. All original limits and failed evidence are retained.
+> **Latest investigation:** [Context/DSS deadlines and complete memory trace](CONTEXT_DSS_DEADLINES_20261105.md): matched concurrent checks and live heartbeats pass; reference foundation passes all 1,823 tests in 547.880 seconds. The complete 303.491-second diagnostic still fails memory growth (304.76 MiB versus 64 MiB), with zero swap. All original limits and failed evidence are retained; no memory correction or release qualification is claimed.
 <!-- END ROOT CAUSE FOLLOWTHROUGH 20261105 -->
 
 # Native memory comparison — experimental, not release qualification

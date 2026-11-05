@@ -2,7 +2,7 @@
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 
-See the [latest measured root-cause report](ROOT_CAUSE_20261105.md) for the validated compiler change, freed-buffer attribution and remaining startup/deadline blockers.
+See the [latest deadline and memory report](CONTEXT_DSS_DEADLINES_20261105.md) for the passing reference foundation, matched concurrency checks, complete Context/bridge trace and unresolved memory correction.
 
 # Open risks and qualification stop conditions
 
