@@ -129,7 +129,7 @@ static long strtoi(const std::string& s){return s.empty()?-1:std::atoi(s.c_str()
                 "c++",
                 "-std=c++17",
                 "-O1",
-                "-g",
+                "-g1",
                 "-Wall",
                 "-Wextra",
                 "-Werror",

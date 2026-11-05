@@ -48,7 +48,7 @@ def test_literal_monitor_preserves_nested_unwind_and_avoids_allocations(tmp_path
             "c++",
             "-std=c++17",
             "-O1",
-            "-g",
+            "-g1",
             "-pthread",
             "-Wall",
             "-Wextra",

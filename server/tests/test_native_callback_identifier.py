@@ -63,7 +63,7 @@ def test_exact_compiled_callback_keeps_dispatch_and_avoids_id_copy(callback_sour
                 "c++",
                 "-std=c++17",
                 "-O1",
-                "-g",
+                "-g1",
                 "-pthread",
                 "-Wall",
                 "-Wextra",

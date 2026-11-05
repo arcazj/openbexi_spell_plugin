@@ -67,7 +67,7 @@ def epoch_binaries(tmp_path_factory, request):
                 "c++",
                 "-std=c++17",
                 "-O1",
-                "-g",
+                "-g1",
                 "-Wall",
                 "-Wextra",
                 "-Werror",

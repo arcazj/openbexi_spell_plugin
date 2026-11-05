@@ -122,7 +122,7 @@ extern "C" void storage_trace_dump(){v08_storage_profile_dump(123456789);}
                 "c++",
                 "-std=c++17",
                 "-O1",
-                "-g",
+                "-g1",
                 "-pthread",
                 "-fsanitize=address,undefined",
                 "-fno-sanitize-recover=all",

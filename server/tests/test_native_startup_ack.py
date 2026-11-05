@@ -74,7 +74,7 @@ def startup_ack_binaries(status_sources, component_recording, request):  # noqa:
             "c++",
             "-std=c++17",
             "-O1",
-            "-g",
+            "-g1",
             "-Wall",
             "-Wextra",
             "-Werror",

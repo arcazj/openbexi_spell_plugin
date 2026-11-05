@@ -160,7 +160,7 @@ int main(int argc,char**argv){
             "c++",
             "-std=c++17",
             "-O1",
-            "-g",
+            "-g1",
             "-pthread",
             "-Wall",
             "-Wextra",

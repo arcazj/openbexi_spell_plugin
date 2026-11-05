@@ -201,7 +201,7 @@ Json encodeReply(unsigned sequence, const SPELLipcMessage& reply) {
                 "-std=c++17",
                 "-O1",
                 "-DV08_CODEC_REUSE=" + ("0" if name == "before" else "1"),
-                "-g",
+                "-g1",
                 "-pthread",
                 "-fsanitize=address,undefined",
                 "-fno-sanitize-recover=all",

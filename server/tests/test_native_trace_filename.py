@@ -74,7 +74,7 @@ def filename_binary(trace_source, tmp_path_factory):
             "c++",
             "-std=c++17",
             "-O1",
-            "-g",
+            "-g1",
             "-Wall",
             "-Wextra",
             "-Werror",

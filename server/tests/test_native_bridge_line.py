@@ -42,7 +42,7 @@ def line_binary(tmp_path_factory, request):
             "c++",
             "-std=c++17",
             "-O1",
-            "-g",
+            "-g1",
             "-fsanitize=address,undefined",
             "-fno-sanitize-recover=all",
             "-fno-omit-frame-pointer",
