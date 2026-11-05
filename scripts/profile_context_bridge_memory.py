@@ -106,6 +106,10 @@ def observed_prepare(workspace, profile, seconds):
     observer = r"""def asan_statistics(raw, original_pids):
     # Diagnostic overlay only: retain bounded, complete, explicitly delimited
     # allocator statistics, never an arbitrary tail of the native log.
+    # The existing reader caps the entire log window at 256 KiB. A complete
+    # block can exceed 16 KiB when ordinary native logging occurs between its
+    # markers. Keep that bounded evidence instead of aborting all sampling.
+    raw = raw[-262144:]
     pattern = rb"V08_ASAN_STATS_BEGIN pid=(\d+) tick=(\d+)\n(.*?)V08_ASAN_STATS_END pid=\1 tick=\2"
     latest = {}
     for match in re.finditer(pattern, raw, re.S):
@@ -113,9 +117,7 @@ def observed_prepare(workspace, profile, seconds):
         if pid not in original_pids:
             continue
         body = match[3]
-        if len(body) > 16384:
-            raise ValueError("ASan diagnostic statistics exceeded bound")
-        latest[pid] = dict(pid=pid, tick=tick,
+        latest[pid] = dict(pid=pid, tick=tick, body_bytes=len(body),
             interleaved=b'V08_ASAN_STATS_BEGIN' in body,
             text=body.decode('ascii', errors='replace'))
     return list(latest.values())
