@@ -17,6 +17,8 @@
   "reference_runner": {
     "workflow": ".github/workflows/v08-qualification-resume.yml",
     "label": "ubuntu-24.04",
+    "host_python_pin": "3.13.17",
+    "python_pin_reason": "Run 41957183593 selected 3.13.18 for foundation and 3.13.17 for the native jobs from the floating 3.13 selector. Record those passes separately; subsequent reference jobs pin the same patch. Native image and desktop Python bytes retain their own identities.",
     "last_observed_os": "Ubuntu 24.04.5",
     "last_observed_image": "20261025.353.1",
     "last_observed_python": "3.13.17",
@@ -37,6 +39,12 @@
     "foundation_helper_memory_bytes": 3221225472,
     "foundation_helper_pids_limit": 512,
     "foundation_helper_init": true,
+    "native_observer_requirements": [
+      "Trusted qualification helper must see Docker-host PIDs and host cgroup paths; validate live container identity before opening pidfds",
+      "Noninteractive privileged Python reads are required for the existing host observation oracle; grant this only to the trusted helper, never the workers or Context",
+      "TMPDIR and HOME must use the shared durable volume at the same absolute path seen by the Docker daemon",
+      "Preprovisioned frozen runtime archives must retain the original size, SHA-256 and loaded-image checks"
+    ],
     "storage": "Dedicated durable Docker volume; native audit evidence cannot use tmpfs",
     "decision_rule": "Retain local failures and investigate their causes. A hosted pass does not erase them; an arbitrary workstation performance result does not redefine the reference runner or waive a supported deployment failure."
   },
