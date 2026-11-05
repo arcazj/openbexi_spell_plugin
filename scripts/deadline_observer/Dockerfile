@@ -1,5 +1,5 @@
 FROM python:3.13.15-slim@sha256:7c61056e61ac89e852de05f3dc6fa51a6dd2181797bceed46aa725dd7cb2cd3b
-RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev openssl \
+RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev openssl git \
     && rm -rf /var/lib/apt/lists/*
 COPY server/requirements-test.lock /tmp/requirements-test.lock
 RUN python -m pip install --no-cache-dir -r /tmp/requirements-test.lock
