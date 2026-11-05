@@ -39,14 +39,21 @@ jobs:
           python -m pip install -r server/requirements-test.lock
           python -m pip install --no-deps ./.qualification/companion-ide
           python -m pip install PySide6-Essentials==6.10.3
+      - name: Record reference runner and exact dependency environment
+        run: python scripts/record_qualification_environment.py --profile linux-hosted-foundation --output .qualification/environment/foundation-before.json
       - name: Run unchanged foundation commands and 600-second suite budget
         run: python scripts/qualify_v08_server.py
+      - name: Record terminal runner state
+        if: always()
+        run: python scripts/record_qualification_environment.py --profile linux-hosted-foundation --output .qualification/environment/foundation-after.json
       - name: Retain every outcome and ordered result journal
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: v08-resume-foundation-${{ github.sha }}
-          path: .qualification/v08-server/run-*/
+          path: |
+            .qualification/v08-server/run-*/
+            .qualification/environment/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
@@ -76,14 +83,21 @@ jobs:
       - name: Install the exact IDE client without optional UI dependencies
         if: matrix.profile == 'native-ide'
         run: python -m pip install --no-deps ./.qualification/companion-ide
+      - name: Record reference runner and exact dependency environment
+        run: python scripts/record_qualification_environment.py --profile linux-hosted-${{ matrix.profile }} --output .qualification/environment/native-before.json
       - name: Run original native sanitizer workload with unchanged limits
         run: python scripts/qualify_v08_native_launch.py --${{ matrix.profile }}
+      - name: Record terminal runner state
+        if: always()
+        run: python scripts/record_qualification_environment.py --profile linux-hosted-${{ matrix.profile }} --output .qualification/environment/native-after.json
       - name: Retain receipts, samples, diagnostics and audits on every outcome
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: v08-resume-${{ matrix.profile }}-${{ github.sha }}
-          path: .qualification/v08-native-launch/run-*/
+          path: |
+            .qualification/v08-native-launch/run-*/
+            .qualification/environment/
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30

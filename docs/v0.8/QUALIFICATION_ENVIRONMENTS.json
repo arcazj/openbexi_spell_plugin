@@ -1,0 +1,58 @@
+{
+  "schema": "openbexi.qualification-environments/1",
+  "status": "qualification_targets_not_support_claims",
+  "ide_release_commit": "08c314fb6b802b407cbabe01777072884d2b7504",
+  "python": ">=3.13,<3.14; record exact patch and binary",
+  "qt_python_package": "PySide6-Essentials==6.10.3",
+  "platforms": [
+    {"id": "linux-hosted", "os": "Ubuntu 24.04 x86_64", "role": "reference foundation and native runner", "required": true, "surfaces": ["server", "native", "installed IDE client", "source and component suites"]},
+    {"id": "linux-desktop", "os": "Debian 13 x86_64 container on a Linux Docker engine", "role": "delivered joint desktop target", "required": true, "surfaces": ["Qt desktop", "native runtime", "noVNC", "installed packages"], "existing_image_limitation": "Current qualification desktop contains the v0.7 native baseline; a verified v0.8 native image is still required"},
+    {"id": "windows-desktop", "os": "Windows 11 x64; fresh hosted Windows Server 2025 installation checks", "role": "IDE desktop and remote SPELL client", "required": true, "surfaces": ["Qt desktop", "CLI", "debugger", "remote v0.8 services"], "native_server_scope": "Linux service acceptance is separate; Windows fcntl collection failures do not establish native support"},
+    {"id": "browser", "os": "Pinned Chromium build with three independent authenticated profiles", "role": "browser/WSS control and observation", "required": true, "version_rule": "Record browser version and executable SHA-256 before each run; an unspecified browser version cannot establish portability"},
+    {"id": "jetbrains", "os": "Windows x64", "role": "inherited IntelliJ IDEA and PyCharm integrations", "required": true, "historical_versions": ["IntelliJ IDEA 2026.2.3 build 262.10968.63", "PyCharm 2026.1.2 build 261.24374.152"], "version_rule": "Discover and record installed host and plugin versions; historical results do not qualify v0.8"},
+    {"id": "kubernetes", "os": "Linux x86_64 workers with enforced NetworkPolicy", "role": "production-like deployment acceptance", "required": true, "version_rule": "Pin Kubernetes, CNI, storage driver and images before execution; unavailable until a suitable cluster is identified"}
+  ],
+  "unclaimed_platforms": ["macOS", "Windows ARM64", "Linux ARM64"],
+  "scope_rule": "This matrix makes current targets explicit. It does not waive an inherited mandatory requirement; reconcile any wider claim before publication.",
+  "reference_runner": {
+    "workflow": ".github/workflows/v08-qualification-resume.yml",
+    "label": "ubuntu-24.04",
+    "last_observed_os": "Ubuntu 24.04.5",
+    "last_observed_image": "20261025.353.1",
+    "last_observed_python": "3.13.17",
+    "last_observed_run": 41937866009,
+    "last_observed_native_cpu_count": 4,
+    "last_observed_native_memory_bytes": [16759300096, 16760344576],
+    "hardware_evidence_scope": "Values are recorded by the two successful native jobs in run 41937866009; foundation hardware was not recorded and cannot be inferred from another job.",
+    "hardware_rule": "Capture actual CPU model, online/affinity counts, memory, kernel, disk, cgroup constraints and Docker version before execution. Missing historical hardware is unknown, not an inferred minimum.",
+    "isolation": "One heavy qualification suite per runner. Separate CI jobs use separate runners. Required concurrency inside each workload remains unchanged.",
+    "drift_rule": "Runner-image or hardware changes require a separately recorded baseline; do not silently combine measurements across environments."
+  },
+  "local_runner": {
+    "role": "supported desktop host and separate diagnostic native reproduction environment",
+    "host_os": "Windows 11 Pro build 26200",
+    "cpu": "Intel Core i7-9700; 8 logical CPUs",
+    "docker": "29.9.2; Linux x86_64; cgroup v2; overlay2",
+    "docker_memory_bytes_observed": 8322002944,
+    "foundation_helper_memory_bytes": 3221225472,
+    "foundation_helper_pids_limit": 512,
+    "foundation_helper_init": true,
+    "storage": "Dedicated durable Docker volume; native audit evidence cannot use tmpfs",
+    "decision_rule": "Retain local failures and investigate their causes. A hosted pass does not erase them; an arbitrary workstation performance result does not redefine the reference runner or waive a supported deployment failure."
+  },
+  "unchanged_limits": {
+    "foundation_suite_seconds": 600,
+    "foundation_precheck_seconds_each": 180,
+    "native_short_soak_seconds": 45,
+    "native_sustained_soak_seconds": 3600,
+    "native_growth_bytes": 67108864,
+    "native_resident_peak_bytes": 1879048192,
+    "native_recovery_container_memory_bytes": 2147483648,
+    "native_recovery_container_memory_swap_bytes": 2147483648,
+    "native_recovery_swap_usage_bytes": 0,
+    "rule": "Existing per-cohort limits, sanitizer settings, sampling windows, concurrency, operation deadlines and audit retention remain authoritative. These are qualification budgets, not production sizing advice."
+  },
+  "required_artifacts": ["source archives", "versioned Python wheels and source distributions", "verified v0.8 native images", "joint Linux desktop image", "supported clean-install evidence", "checksums and provenance", "SBOM and notices/corresponding source", "Compose and Kubernetes manifests", "recovery and rollback instructions"],
+  "offline_windows_bundle": "No v1.2.1 bundle is currently delivered. Build and qualify a separately identified bundle if the final support claim includes one; do not relabel the historical v1.1 bundle.",
+  "external_requirements": ["NetworkPolicy-enforced production-like cluster and operator", "independent implemented-system security reviewer and report"]
+}
