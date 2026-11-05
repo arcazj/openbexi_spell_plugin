@@ -1,0 +1,45 @@
+name: Context bridge observer diagnosis
+on:
+  push:
+    branches: [diagnostic/memory-observer-20261105]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13.17'
+      - name: Diagnose observer failure with original short workload
+        run: python scripts/profile_context_bridge_memory.py --profile asan-noswap --scenario handoff --soak-seconds 45
+      - name: Preserve native ELFs
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib, subprocess, hashlib
+          for report in pathlib.Path('.qualification/v08-memory-comparison').glob('run-*/comparison.json'):
+              image=json.loads(report.read_text()).get('candidate_worker_image')
+              if not image: continue
+              output=report.parent/'native-elf'
+              output.mkdir(exist_ok=True)
+              name=subprocess.check_output(['docker','create',image],text=True).strip()
+              try:
+                  subprocess.run(['docker','cp',name+':/opt/v08-native-home',str(output/'home')],check=True)
+              finally:
+                  subprocess.run(['docker','rm',name],check=True)
+              (output/'sha256.json').write_text(json.dumps({str(p.relative_to(output)):hashlib.sha256(p.read_bytes()).hexdigest() for p in output.rglob('*') if p.is_file()},indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: context-bridge-observer-${{ github.sha }}
+          path: .qualification/v08-memory-comparison/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

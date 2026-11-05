@@ -123,6 +123,13 @@ def observed_prepare(workspace, profile, seconds):
 
 """
     text = text.replace(anchor, observer + anchor)
+    anchor = "                    errors.append(type(error).__name__)"
+    assert text.count(anchor) == 1
+    text = text.replace(
+        anchor,
+        anchor
+        + '\n                    if hasattr(error, "observer_stderr"):\n                        (output / "native-resource-observer.stderr").write_text(error.observer_stderr)',
+    )
     after = text.encode()
     path.write_bytes(after)
     entry = manifest.setdefault(
@@ -133,6 +140,21 @@ def observed_prepare(workspace, profile, seconds):
         diagnostic_only=True,
         diagnostic_note="Retain complete bounded ASan retention counters in addition to unchanged original memory fields",
     )
+    relative = "scripts/qualify_v08_native_launch.py"
+    path = workspace / relative
+    before = path.read_bytes()
+    text = before.decode()
+    anchor = "        error.returncode = result.returncode"
+    assert text.count(anchor) == 1
+    text = text.replace(
+        anchor,
+        anchor
+        + '\n        if args[:3] == ("sudo", "-n", "python3"):\n            error.observer_stderr = result.stderr[-65536:].decode("utf-8", errors="replace")',
+    )
+    after = text.encode()
+    path.write_bytes(after)
+    manifest[relative]["after_sha256"] = hashlib.sha256(after).hexdigest()
+    manifest[relative]["observer_failure_stderr_retained"] = True
     return manifest
 
 
