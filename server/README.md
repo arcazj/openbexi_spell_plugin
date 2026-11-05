@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](../docs/v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # SPELL v0.8 internal server foundation
 
 The `openbexi-spell-server` package provides independent internal Listener and
@@ -5,7 +9,7 @@ Context processes, authenticated routing and durable Context blackboards.
 It also provides durable prelaunch reservations and consent-based ownership
 transfer. An optional approved Git catalog and pinned single-host worker
 preflight verify the source binding. Native execution, worker launch, driver effects, browser
-sessions and WSS remain disabled. This is staged implementation, not a v0.8 release.
+sessions and WSS are not enabled by the default public provisioning boundary. Published package `0.8.0rc1` is unqualified. Private opt-in retained-worker routes and native cohorts have separate bounded evidence; see [current qualification](../docs/v0.8/CURRENT_STATUS.md).
 Published v0.7 packages and entry points remain unchanged.
 
 Use Linux and CPython 3.13. TLS 1.3, an operator-provisioned CA and registered
@@ -20,7 +24,7 @@ See [worker/source preflight](../docs/v0.8/WORKER_PREFLIGHT.md),
 [approved G1 resolutions](../docs/v0.8/G1_REVIEW_RESOLUTION.md).
 The private [driver write boundary](../docs/v0.8/DRIVER_WRITE_GATE.md) adds
 actual-send fencing and separate receipt ledgers for trusted Context adapter
-code. It is not exposed by any service or connected to native workers.
+code. Private native/DSS cohorts exercise opt-in integration; this does not enable or qualify the complete public runtime/deployment boundary.
 
 ## Development checks
 

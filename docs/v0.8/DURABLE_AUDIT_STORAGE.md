@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Durable ASRUN storage and bounded cache
 
 Executable `892914f10f12bd9a3043a69e07f363a143445ec3` passes all 14 bounded core jobs, 1,586 foundation tests, nine lifecycle repetitions, mandatory handoff/installed-IDE growth of 30.30/52.55 MiB against 64 MiB, actual rebuilt-native ENOSPC and 17 audit component tests. Paired IDE remains `c5edbdaecfbc08d252b87d2fb3cc18c4b27d19bc`. Both current sanitizer-hour attempts fail early, as do both earlier `3a970c45` sanitizer hours. All raw audit files remain preserved. See [current source-bound receipt](evidence/qualification-892914f-20261027.json), [previous checkpoint](evidence/memory-endurance-20261027.json), [cache receipt](evidence/audit-cache-native-checkpoint-20261027.json) and retained failures in TEST_REPORT.md. Full v0.8 is unqualified.

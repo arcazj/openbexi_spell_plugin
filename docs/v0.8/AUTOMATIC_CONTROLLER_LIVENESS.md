@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Automatic controller-loss fencing
 
 Server development candidate 0.8.0.dev56 and paired IDE 1.2.1.dev5 add authenticated controller leases. This is a component of v0.8 qualification, not a completed release gate.

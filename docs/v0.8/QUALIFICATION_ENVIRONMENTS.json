@@ -5,14 +5,75 @@
   "python": ">=3.13,<3.14; record exact patch and binary",
   "qt_python_package": "PySide6-Essentials==6.10.3",
   "platforms": [
-    {"id": "linux-hosted", "os": "Ubuntu 24.04 x86_64", "role": "reference foundation and native runner", "required": true, "surfaces": ["server", "native", "installed IDE client", "source and component suites"]},
-    {"id": "linux-desktop", "os": "Debian 13 x86_64 container on a Linux Docker engine", "role": "delivered joint desktop target", "required": true, "surfaces": ["Qt desktop", "native runtime", "noVNC", "installed packages"], "existing_image_limitation": "Current qualification desktop contains the v0.7 native baseline; a verified v0.8 native image is still required"},
-    {"id": "windows-desktop", "os": "Windows 11 x64; fresh hosted Windows Server 2025 installation checks", "role": "IDE desktop and remote SPELL client", "required": true, "surfaces": ["Qt desktop", "CLI", "debugger", "remote v0.8 services"], "native_server_scope": "Linux service acceptance is separate; Windows fcntl collection failures do not establish native support"},
-    {"id": "browser", "os": "Pinned Chromium build with three independent authenticated profiles", "role": "browser/WSS control and observation", "required": true, "version_rule": "Record browser version and executable SHA-256 before each run; an unspecified browser version cannot establish portability"},
-    {"id": "jetbrains", "os": "Windows x64", "role": "inherited IntelliJ IDEA and PyCharm integrations", "required": true, "historical_versions": ["IntelliJ IDEA 2026.2.3 build 262.10968.63", "PyCharm 2026.1.2 build 261.24374.152"], "version_rule": "Discover and record installed host and plugin versions; historical results do not qualify v0.8"},
-    {"id": "kubernetes", "os": "Linux x86_64 workers with enforced NetworkPolicy", "role": "production-like deployment acceptance", "required": true, "version_rule": "Pin Kubernetes, CNI, storage driver and images before execution; unavailable until a suitable cluster is identified"}
+    {
+      "id": "linux-hosted",
+      "os": "Ubuntu 24.04 x86_64",
+      "role": "reference foundation and native runner",
+      "required": true,
+      "surfaces": [
+        "server",
+        "native",
+        "installed IDE client",
+        "source and component suites"
+      ]
+    },
+    {
+      "id": "linux-desktop",
+      "os": "Debian 13 x86_64 container on a Linux Docker engine",
+      "role": "delivered joint desktop target",
+      "required": true,
+      "surfaces": [
+        "Qt desktop",
+        "native runtime",
+        "noVNC",
+        "installed packages"
+      ],
+      "existing_image_limitation": "Current qualification desktop contains the v0.7 native baseline; a verified v0.8 native image is still required"
+    },
+    {
+      "id": "windows-desktop",
+      "os": "Windows 11 x64; fresh hosted Windows Server 2025 installation checks",
+      "role": "IDE desktop and remote SPELL client",
+      "required": true,
+      "surfaces": [
+        "Qt desktop",
+        "CLI",
+        "debugger",
+        "remote v0.8 services"
+      ],
+      "native_server_scope": "Linux service acceptance is separate; Windows fcntl collection failures do not establish native support"
+    },
+    {
+      "id": "browser",
+      "os": "Pinned Chromium build with three independent authenticated profiles",
+      "role": "browser/WSS control and observation",
+      "required": true,
+      "version_rule": "Record browser version and executable SHA-256 before each run; an unspecified browser version cannot establish portability"
+    },
+    {
+      "id": "jetbrains",
+      "os": "Windows x64",
+      "role": "inherited IntelliJ IDEA and PyCharm integrations",
+      "required": true,
+      "historical_versions": [
+        "IntelliJ IDEA 2026.2.3 build 262.10968.63",
+        "PyCharm 2026.1.2 build 261.24374.152"
+      ],
+      "version_rule": "Discover and record installed host and plugin versions; historical results do not qualify v0.8"
+    },
+    {
+      "id": "kubernetes",
+      "os": "Linux x86_64 workers with enforced NetworkPolicy",
+      "role": "production-like deployment acceptance",
+      "required": true,
+      "version_rule": "Pin Kubernetes, CNI, storage driver and images before execution; unavailable until a suitable cluster is identified"
+    }
   ],
-  "unclaimed_platforms": ["macOS", "Windows ARM64", "Linux ARM64"],
+  "unclaimed_platforms": [
+    "macOS",
+    "Windows ARM64",
+    "Linux ARM64"
+  ],
   "scope_rule": "This matrix makes current targets explicit. It does not waive an inherited mandatory requirement; reconcile any wider claim before publication.",
   "reference_runner": {
     "workflow": ".github/workflows/v08-qualification-resume.yml",
@@ -20,15 +81,62 @@
     "host_python_pin": "3.13.17",
     "python_pin_reason": "Run 41957183593 selected 3.13.18 for foundation and 3.13.17 for the native jobs from the floating 3.13 selector. Record those passes separately; subsequent reference jobs pin the same patch. Native image and desktop Python bytes retain their own identities.",
     "last_observed_os": "Ubuntu 24.04.5",
-    "last_observed_image": "20261025.353.1",
+    "last_observed_image": "Mixed: 20261101.360.1 foundation; 20261026.354.1 native jobs",
     "last_observed_python": "3.13.17",
-    "last_observed_run": 41937866009,
+    "last_observed_run": 41958849238,
     "last_observed_native_cpu_count": 4,
-    "last_observed_native_memory_bytes": [16759300096, 16760344576],
-    "hardware_evidence_scope": "Values are recorded by the two successful native jobs in run 41937866009; foundation hardware was not recorded and cannot be inferred from another job.",
+    "last_observed_native_memory_bytes": [
+      16759308288,
+      16759308288
+    ],
+    "hardware_evidence_scope": "All three jobs have their own before/after receipts. CPU models and runner image revisions differ; do not attribute timing changes solely to Python patch selection or infer cross-job hardware identity.",
     "hardware_rule": "Capture actual CPU model, online/affinity counts, memory, kernel, disk, cgroup constraints and Docker version before execution. Missing historical hardware is unknown, not an inferred minimum.",
     "isolation": "One heavy qualification suite per runner. Separate CI jobs use separate runners. Required concurrency inside each workload remains unchanged.",
-    "drift_rule": "Runner-image or hardware changes require a separately recorded baseline; do not silently combine measurements across environments."
+    "drift_rule": "Runner-image or hardware changes require a separately recorded baseline; do not silently combine measurements across environments.",
+    "historical_observation_before_run_41958849238": {
+      "last_observed_os": "Ubuntu 24.04.5",
+      "last_observed_image": "20261025.353.1",
+      "last_observed_python": "3.13.17",
+      "last_observed_run": 41937866009,
+      "last_observed_native_cpu_count": 4,
+      "last_observed_native_memory_bytes": [
+        16759300096,
+        16760344576
+      ],
+      "hardware_evidence_scope": "Values are recorded by the two successful native jobs in run 41937866009; foundation hardware was not recorded and cannot be inferred from another job."
+    },
+    "observed_jobs": [
+      {
+        "profile": "native-handoff",
+        "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C",
+        "cpu_count": 4,
+        "memory_bytes": 16759308288,
+        "runner_image": "20261026.354.1",
+        "host_python": "3.13.17",
+        "receipt": "https://github.com/arcazj/openbexi_ide/blob/9624c9009dcf70e0a7960de74763e9f64b0f1439/docs/evidence/ide-1.2.1/reference-runner-20261105/environment/13384184628-native-before.json",
+        "receipt_sha256": "441a2431f49853bf685683bb677b319481d7d20e6dcefd268434e8bf9dbe2f64"
+      },
+      {
+        "profile": "foundation",
+        "cpu_model": "AMD EPYC 9V45 96-Core Processor",
+        "cpu_count": 4,
+        "memory_bytes": 16760344576,
+        "runner_image": "20261101.360.1",
+        "host_python": "3.13.17",
+        "receipt": "https://github.com/arcazj/openbexi_ide/blob/9624c9009dcf70e0a7960de74763e9f64b0f1439/docs/evidence/ide-1.2.1/reference-runner-20261105/environment/13384821793-foundation-before.json",
+        "receipt_sha256": "b039c12068b75f7bb3fe3f9d3d2d9894146305202e7b047a181e110c96645120"
+      },
+      {
+        "profile": "native-ide",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+        "cpu_count": 4,
+        "memory_bytes": 16759308288,
+        "runner_image": "20261026.354.1",
+        "host_python": "3.13.17",
+        "receipt": "https://github.com/arcazj/openbexi_ide/blob/9624c9009dcf70e0a7960de74763e9f64b0f1439/docs/evidence/ide-1.2.1/reference-runner-20261105/environment/13385170528-native-before.json",
+        "receipt_sha256": "0f558301e38dfa6479495cb2bacbee96e8b51a232151d151baec46f0da8a4f25"
+      }
+    ]
   },
   "local_runner": {
     "role": "supported desktop host and separate diagnostic native reproduction environment",
@@ -60,7 +168,20 @@
     "native_recovery_swap_usage_bytes": 0,
     "rule": "Existing per-cohort limits, sanitizer settings, sampling windows, concurrency, operation deadlines and audit retention remain authoritative. These are qualification budgets, not production sizing advice."
   },
-  "required_artifacts": ["source archives", "versioned Python wheels and source distributions", "verified v0.8 native images", "joint Linux desktop image", "supported clean-install evidence", "checksums and provenance", "SBOM and notices/corresponding source", "Compose and Kubernetes manifests", "recovery and rollback instructions"],
+  "required_artifacts": [
+    "source archives",
+    "versioned Python wheels and source distributions",
+    "verified v0.8 native images",
+    "joint Linux desktop image",
+    "supported clean-install evidence",
+    "checksums and provenance",
+    "SBOM and notices/corresponding source",
+    "Compose and Kubernetes manifests",
+    "recovery and rollback instructions"
+  ],
   "offline_windows_bundle": "No v1.2.1 bundle is currently delivered. Build and qualify a separately identified bundle if the final support claim includes one; do not relabel the historical v1.1 bundle.",
-  "external_requirements": ["NetworkPolicy-enforced production-like cluster and operator", "independent implemented-system security reviewer and report"]
+  "external_requirements": [
+    "NetworkPolicy-enforced production-like cluster and operator",
+    "independent implemented-system security reviewer and report"
+  ]
 }

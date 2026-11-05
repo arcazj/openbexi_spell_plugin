@@ -1,11 +1,15 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Current limitations
 
-SPELL `0.8.0.dev53` and the paired IDE `1.2.1.dev4` are development candidates.
+Published SPELL `0.8.0rc1` and IDE `1.2.1` remain unqualified. The current hosted subject is `efada98963a9d9debdbdca437b0e97246180a86f`; local native checks bind `c5529d02a49c89a8919b965ffb4eb43498eb0cdf`. See [current qualification](CURRENT_STATUS.md) for the complete ledger.
 All eleven full-v0.8 release gates remain false. Public services still report
 `runtime_enabled: false`. The private retained-worker components below do not
 enable public provisioning or establish production readiness.
 
-## Current private components
+## Implemented private components and earlier checkpoints
 
 The services enforce pinned mTLS identity, Context scopes, live roles, durable
 SQLite CAS, original controller grants, ownership epochs and approved source
@@ -122,7 +126,7 @@ current candidate; qualification work, not routine owner confirmation, blocks
 publication. Production migration is not authorized.
 
 
-## Current memory and audit-storage qualification
+## Historical memory and audit-storage checkpoint
 
 Candidate `2972f5f` fixes demonstrated processor/node construction churn and
 notification-field copying, but mandatory handoff and IDE memory growth still

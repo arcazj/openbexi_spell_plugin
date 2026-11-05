@@ -1,4 +1,18 @@
-# Current dev73 candidate: fresh whole-runtime qualification pending
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
+# Current release readiness — November 5, 2026
+
+**Not eligible for qualified stable publication.** Published SPELL v0.8-rc1 and IDE v1.2.1 remain unqualified. [Current status](CURRENT_STATUS.md) and [the release-gate ledger](RELEASE_GATES.json) supersede the historical candidate summaries below.
+
+The latest hosted reference passes 1,818 foundation tests in 461.451 seconds and both original 45-second scenarios. Local short native checks pass, but local foundation times out at 600 seconds and the 300-second handoff diagnostic grows 256,954,368 bytes against the 67,108,864-byte limit. Historical failed sanitizer hours remain open. Public IDE/browser, all-763 compatibility, deployments, recovery, security and full packaging acceptance remain incomplete.
+
+The production-like NetworkPolicy cluster and independent implemented-system reviewer remain unavailable. Qualified publication is already authorized after all mandatory criteria pass at final paired identities; routine confirmation is not the blocker. Published tags/assets and original disclosures stay immutable. Production migration remains unauthorized.
+
+## Historical candidate assessments
+
+# Historical dev73 candidate: whole-runtime qualification was pending
 
 Measured corrections preserve original audit bytes, sanitizer options, limits,
 deadlines, concurrency and workload. All163 final local components pass. LINE

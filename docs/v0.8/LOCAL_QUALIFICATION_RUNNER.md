@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Local qualification runner requirements
 
 The native harness is a trusted host observer. It uses Docker-host PIDs for `pidfd_open`, reads container cgroups and reads paused processes through `/proc/<pid>/root` using noninteractive privileged Python. Running it in a helper's private PID/cgroup namespaces is incompatible with that existing oracle.
@@ -13,3 +17,5 @@ External DNS resolution is a distinct setup prerequisite. A local diagnostic may
 Before expensive native execution, verify a live known container's Docker ID, host PID, `/proc` PID namespace, cgroup path, pidfd access and the privileged read path. Reject a mismatched runner early. Never compensate by bypassing pidfds, reading a recycled PID, thawing a paused worker to inspect it, relaxing operation deadlines or disabling isolation checks.
 
 Hosted run 41957183593 passed 1,818 foundation tests and both native 45-second scenarios. Its environment receipts exposed a floating Python selector: foundation used 3.13.18 while the native jobs used 3.13.17. Subsequent reference runs pin host Python 3.13.17. Packaged native and desktop Python versions remain separately recorded build inputs.
+
+The subsequent pinned run [41958849238](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/41958849238) passed 1,818 foundation cases in 461.451 seconds and both native 45-second scenarios with host Python 3.13.17. Its three jobs used different CPU models and two runner image revisions, retained in [the environment contract](QUALIFICATION_ENVIRONMENTS.json). Local handoff and installed-IDE 45-second checks passed on the corrected helper. The isolated local foundation still timed out at 600 seconds, and the 300-second sanitizer/no-swap handoff failed with 256,954,368-byte growth against 67,108,864 allowed. At the checkpoint both temporary helpers were stopped; their volume and failed evidence remain retained.

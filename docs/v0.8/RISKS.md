@@ -1,62 +1,21 @@
-# Open risks and stop conditions
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
 
-1. Per-execution authority is absent from the durable baseline. Missing any
-   debug, prompt, slot or driver effect path can permit stale authority. G3
-   blocks release until the complete mutation matrix passes.
-2. Native worker RPC adaptation and static Compose worker reuse are unproven.
-   Quiescence must include every descendant; uncertain runs keep reservations.
-3. Compose networks do not enforce a complete egress firewall. Actual denial
-   tests and deployment controls are required; do not claim otherwise.
-4. Kubernetes is not qualified here. Node partition, storage fencing, RBAC
-   admission restrictions and remote worker lifetime require a real cluster.
-5. The legacy source version differs from the 2.4.4 manuals. Vendor GCS and
-   GCS→DSS integration are unknown and remain disabled until validated.
-6. Baseline has no hosted CI results. Green local tests are not green GitHub
-   checks; the required CI and independent security review remain release gates.
-7. Arbitrary untrusted Python and multi-tenant isolation are not established
-   by the baseline or `-I`. Preserve approved-procedure/trusted-host scope and
-   review the worker threat model before expanding it.
-8. Existing authority schema cannot be upgraded by adding columns and silently
-   resuming old work. Recovery must preserve uncertain effects, advance epochs
-   and require explicit reconciliation.
+# Open risks and qualification stop conditions
 
-9. The dev25 traced singleton-verification fixture stalled before child creation.
-   Moving mandatory singleton checks to native bootstrap allowed the dev26 family
-   to finish. The exact traced fixture failure is unresolved; generator/module-
-   inspection/debugger behavior needs separate compatibility qualification before
-   any full-v0.8 compatibility claim.
+The current subjects, receipts and eleven open groups are recorded in [current status](CURRENT_STATUS.md) and [release gates](RELEASE_GATES.json). Published v0.8-rc1 and IDE v1.2.1 remain unqualified.
 
-10. Dev28 PR native DSS hit four unchanged two-second effect deadlines while
-    the push cohort and local stress passed. Exact performance cause is open.
-    Dev29 changes only explicit qualification CPU weights and incomplete-
-    operation safety fencing; neither is a full deployed load qualification.
+1. **Sustained memory fails.** The current local 300-second ASan/UBSan/no-swap handoff grows 256,954,368 bytes against 67,108,864 allowed. Historical original hours also fail. Allocation/allocator observations narrow investigation but do not prove a fix.
+2. **Local foundation exceeds its budget.** The isolated original suite reaches 1,150 completed call passes before 600 seconds. Hosted 1,818-case acceptance does not erase this local failure. Storage alone has not explained it.
+3. **Public native workflow remains incomplete.** Private existing-execution controls and retained-worker cohorts do not establish full public launch, debugger/source/results, graphical prompts, three browser identities, 20 observers, WSS recovery or Git-conflict acceptance.
+4. **Complete compatibility is open.** All 763 requirements need fresh current-pair evidence. Historical source/capture drift and missing hashes cannot be replaced by current files or partial TIME/PY/DATA coverage.
+5. **Deployment and recovery remain unqualified.** Compose/kind prelaunch is insufficient for full native workloads, denials, process/node/partition/storage faults, restore and fencing of old authority before replacement authority.
+6. **External resources are missing.** Production-like enforced-NetworkPolicy cluster and independent implemented-system security reviewer remain unavailable. Earlier architecture/internal reviews do not satisfy implemented-system review.
+7. **Delivered dependencies need full disposition.** Final portable native image, Qt/PySide/shiboken/ICU/helper closure, SBOM, licenses/notices/corresponding source, advisories and clean final installation remain open. Archived derivatives are unpromoted.
+8. **Environment identities differ.** Hosted host Python is pinned to 3.13.17, but runner image revisions differ. Local/native/desktop dependency bytes are separate subjects. One successful environment does not establish another supported deployment.
+9. **The local desktop has legacy native bytes.** Healthy port 6088 and published Python wheel integrity do not establish full v0.8 native acceptance; the existing image uses the v0.7 native baseline.
+10. **Authority and uncertainty remain binding.** Stale actors must stay fenced; ambiguous effects retain holds without replay. Recovery/upgrade must preserve evidence and explicitly reconcile authority. Untrusted Python sandboxing and distributed HA are not inferred from current isolation tests.
+11. **Promotion requires final-pair evidence.** Preserve published tags/assets and original unqualified disclosures. Repeat affected acceptance after runtime/dependency/package changes. Stable publication is authorized only after all mandatory gates pass; production migration remains unauthorized.
 
-11. The dev31 evidence-only push at `73ce9dd` failed while opening one native
-    procedure: the unchanged 15-second startup deadline expired with status
-    LOADED and no code position. Its PR cohort passed. The cause is unresolved;
-    do not hide the failure with retries or relabel it as successful native
-    qualification. The checksummed failed-artifact receipt is retained.
-
-12. Dev32 PR native family OOM-killed worker 0 at its inherited 768 MiB cap,
-    before reaching the owner-command probe. The push passed actual STEP and
-    stale second-STEP rejection. Dev33 assigns explicit two/three-Executor
-    qualification memory budgets and checks cgroup peak/OOM accounting. The
-    failed attempt remains evidence; production resource admission and leak/
-    sustained-load qualification remain pending.
-
-13. Dev32–34 fresh owner commands left an unused or pending initial RUN lane
-    available as a later resume. Dev35 permanently retires that member lane
-    under the shared owner-intent transaction; old-code regressions and actual
-    native negative probes are required. Prior functional receipts do not
-    qualify this missing authorization fence.
-
-14. Dev35 push failed before child-running quorum with a combined notification
-    capacity/connection error. The old 2048 lifetime cap independently rejects
-    normal drained traffic. Dev36 bounds work per pump, preserves queue capacity
-    and fails real connection errors separately; native PR/push requalification passed at aa40430. The old combined failure
-    still cannot identify its exact branch. This does not establish sustained-
-    load or all-family semantics.
-
-Any dual controller, observer mutation, accepted stale epoch, duplicate active
-logical procedure, replayed uncertain TC, leaked credential, unapproved semantic
-regression, failed mandatory CI or missing required qualification blocks release.
+The latest checkpoint records no active qualification jobs and stopped temporary helpers. Reconcile live remote/container state before retrying or dispatching another run. Never relax original deadlines, concurrency, sanitizers, no-swap accounting or audit retention to obtain a pass.

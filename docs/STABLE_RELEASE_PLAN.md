@@ -1,3 +1,13 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
+# Current release sequence — November 5, 2026
+
+Continue [IDE v1.2.1 and full SPELL v0.8 qualification](v0.8/CURRENT_STATUS.md). The published v0.8-rc1 prerelease is explicitly unqualified; it does not skip the full v0.8 gates or qualify a v1.0 candidate. Default branches are currently `main`; older `master` instructions below belong to their historical release sequence. Use the recorded qualification branches and repository protections for continuation.
+
+## Earlier release plan
+
 # Delivery through stable v1.0
 
 Execute releases in order, committing and pushing accepted releases to GitHub
@@ -20,8 +30,7 @@ The [v0.6 acceptance record](V06_QUALIFICATION.json) also accepts reproducible
 packages, versioned upgrades and installed OpenBEXI, IntelliJ IDEA and PyCharm
 workflows on the supported platform matrix. The [v0.7 acceptance record](V07_QUALIFICATION.json)
 adds operational security, capacity and recovery qualification against installed
-artifacts. Next is v1.0.0-rc1: freeze the accepted source/artifact set and complete
-the release-candidate gates. Preserve the GENERIC simulator scope, all 763
+artifacts. The next active milestone is full SPELL v0.8 qualification with IDE v1.2.1; v1.0.0-rc1 remains a later target after the current eleven mandatory groups pass. Preserve the GENERIC simulator scope, all 763
 original requirements and retained failures.
 
 Use `distribution/run_language_regressions.py --image <immutable-image-id>` to

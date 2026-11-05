@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Desktop native reconnect sessions
 
 IDE `1ac0b8ae9a8412f1f34135af3dd9d1b749f53f1e` (`1.2.1.dev4`) fixes a recovery lockout: a stale cached proof no longer disables Reconnect control when Context reports CONTROLLER_DISCONNECTED. The live reconnect action opens a fresh authenticated session rather than reusing the old binding. It retains previous sessions for other controlled executions, and explicit Disconnect closes every known session with an independent stable close key. Pending rebind clears only the selected execution proof. Lost open/rebind responses are never automatically retried.

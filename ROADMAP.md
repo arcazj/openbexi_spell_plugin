@@ -1,5 +1,13 @@
 # openbexi_spell_plugin roadmap
 
+## Current priority — IDE v1.2.1 and full SPELL v0.8 qualification
+
+Published IDE v1.2.1 and SPELL v0.8-rc1 remain unqualified. Hosted foundation passes 1,818 cases and both 45-second native scenarios pass locally and hosted. The local 600-second foundation timeout and 256,954,368-byte growth in the 300-second sanitizer/no-swap diagnostic remain implementation/qualification blockers. All eleven full-release groups are open.
+
+Next: measure and correct latency/retention, repeat affected original checks and both sustained scenarios, then complete public IDE/browser, all-763 compatibility, deployment/recovery and dependency/security/packaging acceptance. Supply the production-like NetworkPolicy cluster and independent implemented-system reviewer. [Current subjects, evidence and recovery](docs/v0.8/CURRENT_STATUS.md) define the continuation. Published tags/assets are immutable; production migration remains unauthorized.
+
+## Historical milestone sequence
+
 ## v0.1 — independent plugin and DSS testing baseline
 
 Retain the bounded SDK/TIME/common policy and existing DSS engine/packets/

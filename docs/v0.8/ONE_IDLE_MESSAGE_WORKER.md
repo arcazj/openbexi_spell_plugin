@@ -1,3 +1,7 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
 # Native callback worker measurements
 
 The current candidate uses up to five lazily created idle callback workers per native process. [The actual-native diagnostic](https://github.com/arcazj/openbexi_spell_plugin/actions/runs/40579917700), on an exact disposable overlay of `3a970c45`, observed a Context peak of five active callbacks. At its latest observation, at least 2,345 MESSAGE and 39 REQUEST callbacks had fallen back from one reusable slot to original dedicated threads. These are observed cumulative counters, not a complete process-exit count. All samples, 139 native source hashes, four diagnostic inputs and 23 raw audit files verify. The measurement is diagnostic only.

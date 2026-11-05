@@ -1,12 +1,18 @@
-> **UNQUALIFIED — qualification incomplete.** Current publication: SPELL v0.8-rc1. See [release notes](docs/UNQUALIFIED_RELEASE.md) for the delivered scope, installation and known limitations. Earlier release descriptions below are historical.
-
 # openbexi_spell_plugin
+
+## Current qualification
+
+**SPELL v0.8-rc1 is published and unqualified.** Full SPELL v0.8 acceptance remains incomplete. The latest hosted run passes 1,818 foundation tests and both original 45-second native scenarios; the local foundation still exceeds 600 seconds and the 300-second memory diagnostic grows by 245.1 MiB against a 64 MiB limit. All eleven full-release groups remain open.
+
+Start with [current status and next work](docs/v0.8/CURRENT_STATUS.md), [published artifact scope](docs/UNQUALIFIED_RELEASE.md) and [the qualification roadmap](ROADMAP.md). The existing local desktop at port 6088 uses the v0.7 native baseline. Earlier image and installation commands below apply to their named versions.
+
+## Existing features and earlier release profiles
 
 SPELL is an optional runtime for [openbexi_ide](https://github.com/arcazj/openbexi_ide),
 PyCharm and IntelliJ IDEA. Procedures use explicit imports from the original
 SPELL library. The neutral IDE stays independent of SPELL.
 
-**Current release: SPELL v0.7**, paired with OpenBEXI IDE 1.2.0 and the
+**Previous accepted release: SPELL v0.7**, paired with OpenBEXI IDE 1.2.0 and the
 `openbexi-ide-spell-v07` Docker desktop. The operational release adds durable
 driver admission limits and qualifies controller fencing, uncertain effects,
 overload and offline backup/restore. See [installation and recovery](docs/V07_INSTALLATION.md),

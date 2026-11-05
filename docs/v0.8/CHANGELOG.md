@@ -1,3 +1,16 @@
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
+
+# November 5, 2026 qualification followthrough
+
+- Preserve published unqualified IDE v1.2.1 and SPELL v0.8-rc1 artifacts. No new IDE runtime version or qualified stable v0.8 release was introduced.
+- Add the environment matrix and sanitized environment receipts; pin hosted host Python to 3.13.17 after detecting patch-version drift. Record differing runner image revisions.
+- Correct the local trusted helper's host PID/cgroup visibility and shared temporary path. Both unchanged original 45-second scenarios pass locally and hosted; hosted foundation passes 1,818 cases in 461.451 seconds.
+- Preserve the isolated local foundation 600-second timeout and the failed 300-second sanitizer/no-swap handoff: 256,954,368-byte growth versus 67,108,864 allowed. Retain original hour failures and all raw evidence.
+- Verify the freshly downloaded published IDE wheel and all 61 installed payload files; verify selected committed receipt bytes and recovery inventories. Helpers are stopped and no qualification jobs were active at the checkpoint; the legacy-native desktop remains healthy.
+- Reconcile all eleven full-release groups as open. [Current status](CURRENT_STATUS.md) records remaining implementation, acceptance and external resource requirements. Earlier development changelog entries below retain their original subjects.
+
 # v0.8 development changelog
 
 ## 0.8.0.dev56 — automatic controller-loss fencing

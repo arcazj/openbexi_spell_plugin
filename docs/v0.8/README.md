@@ -1,43 +1,28 @@
-# v0.8 architecture review
+<!-- CURRENT QUALIFICATION -->
+> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
+<!-- END CURRENT QUALIFICATION -->
 
-Status: **baseline audited; independent review completed; owner authorized
-staged implementation under the binding G1 resolutions**. No v0.8 release
-or full runtime qualification is established. The normative requirements are in the
-[master prompt](openbexi_spell_v0.8_master_prompt.md).
+# SPELL v0.8 implementation and qualification
 
-The proposed implementation adds a separate authenticated Listener and isolated
-Context authorities, keeps execution management inside each Context, and gives
-every execution its own controller epoch and explicit request/accept workflow.
-One user can control many executions. The native SPELL engine and driver
-semantics remain the qualified v0.7 starting point.
+**SPELL v0.8-rc1 and IDE v1.2.1 are published and unqualified.** Start with [current status](CURRENT_STATUS.md), [release readiness](RELEASE_READINESS.md), [known limitations](KNOWN_LIMITATIONS.md), [release gates](RELEASE_GATES.json) and [the current receipt](evidence/qualification-reference-runner-20261105.json). All eleven full-release groups remain open.
 
-Review these documents in order:
+The November 5 hosted reference run passes 1,818 foundation cases and both original 45-second native scenarios. Both short native scenarios also pass locally after correcting the trusted helper. The local foundation still exceeds its 600-second budget; the 300-second sanitizer/no-swap handoff grows 256,954,368 bytes against 67,108,864 allowed. Both original sustained scenarios and the remaining full acceptance still require completion.
 
-1. [Verified baseline](BASELINE_V07.md), [legacy reference](LEGACY_REFERENCE.md),
-   [process/port map](PROCESS_AND_PORT_MAP.md), and [gaps](GAP_ANALYSIS.md).
-2. [Architecture and migration](ARCHITECTURE.md),
-   [decisions ADR-01 through ADR-12](ARCHITECTURE_DECISIONS.md), and
-   [protocol register](PROTOCOL_REGISTER.md), with
-   [authority/lifecycle sequences](SEQUENCE_DIAGRAMS.md).
-3. [Ownership protocol](CONTROL_OWNERSHIP_PROTOCOL.md),
-   [concurrency](EXECUTION_CONCURRENCY.md), and [security/recovery](SECURITY_AND_RECOVERY.md).
-4. [Acceptance plan](ACCEPTANCE_PLAN.md), [review findings](ARCHITECTURE_REVIEW.md),
-   [test report](TEST_REPORT.md), and [remaining risks](RISKS.md).
+## Continue qualification
 
-The review outcome and owner authorization are recorded in
-[G1_REVIEW_RESOLUTION.md](G1_REVIEW_RESOLUTION.md). The initial internal server
-contract is [SERVER_CONTRACT.md](SERVER_CONTRACT.md). Release approval is a separate later decision after all runtime,
-Compose, Kubernetes, browser, compatibility and CI gates pass. There is no
-v0.8 tag, release, production replacement, or completed runtime qualification yet.
+1. Read the [environment contract](QUALIFICATION_ENVIRONMENTS.json), [local runner prerequisites](LOCAL_QUALIFICATION_RUNNER.md), [memory requirements](NATIVE_RESOURCE_ACCEPTANCE.md) and [test report](TEST_REPORT.md).
+2. Use the [acceptance plan](ACCEPTANCE_PLAN.md), [compatibility matrix](SPELL_COMPATIBILITY_MATRIX.md), [deployment qualification](DEPLOYMENT_QUALIFICATION.md) and [security/recovery requirements](SECURITY_AND_RECOVERY.md) without narrowing their original scope.
+3. Track the production-like enforced-NetworkPolicy cluster and independent implemented-system reviewer as external prerequisites. Continue implementation work while those resources remain unavailable.
+4. Preserve exact subjects and failed evidence. Later documentation, package versions and desktop health are not additional runtime qualification.
 
-Diagrams are generated from editable DOT files in [diagrams](diagrams/).
-Every target component in the v0.8 diagram is labeled proposed.
+## Architecture and implementation references
 
-## Initial implementation
+- [Verified v0.7 baseline](BASELINE_V07.md), [legacy reference](LEGACY_REFERENCE.md), [process/port map](PROCESS_AND_PORT_MAP.md) and [gap analysis](GAP_ANALYSIS.md).
+- [Architecture](ARCHITECTURE.md), [decisions](ARCHITECTURE_DECISIONS.md), [protocol register](PROTOCOL_REGISTER.md), [ownership protocol](CONTROL_OWNERSHIP_PROTOCOL.md) and [sequence diagrams](SEQUENCE_DIAGRAMS.md).
+- [Architecture review](ARCHITECTURE_REVIEW.md) and [binding G1 resolutions](G1_REVIEW_RESOLUTION.md). That earlier architecture review does not satisfy the mandatory independent review of the implemented system.
+- [Server foundation](../../server/README.md), [authority](EXECUTION_AUTHORITY.md), [worker/source preflight](WORKER_PREFLIGHT.md), [native launch](NATIVE_LAUNCH.md), [IDE controls](IDE_NATIVE_CONTROLS.md) and [Compose/Kubernetes staging](../../deploy/v0.8/README.md).
+- [Source/dependency qualification](SUPPLY_CHAIN_QUALIFICATION.md), [risks](RISKS.md), [changelog](CHANGELOG.md) and editable [diagrams](diagrams/README.md).
 
-The [server foundation](../../server/README.md) provides internal TLS routing
-and durable Context blackboards. The [prelaunch execution authority](EXECUTION_AUTHORITY.md)
-adds reservations, claims, consent transfer, rebind and one-time grant protocol
-tests. The [source/worker preflight](WORKER_PREFLIGHT.md) adds approved Git
-inventories, canonical aliases and pinned single-host worker checks. Native execution, driver effects and browser/WSS remain disabled. See
-TEST_REPORT.md and KNOWN_LIMITATIONS.md for exact evidence and pending gates.
+Published server/host/shared/DSS packages use 0.8.0rc1; the separate root SDK remains 0.1.0. Public v0.8 runtime provisioning remains disabled. Private retained-worker cohorts do not establish the full public IDE/browser workflow. The local desktop still contains the v0.7 native baseline.
+
+Historical design documents and diagrams preserve the stages they describe. Their proposed components, old candidate IDs and bounded results do not override [current qualification](CURRENT_STATUS.md) or establish a qualified stable v0.8 release.
