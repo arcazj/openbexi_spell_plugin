@@ -15,7 +15,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Original 45-second handoff/installed-IDE checks pass locally and hosted. Fresh 300-second handoff fails growth: 256,954,368 bytes versus 67,108,864 allowed. Sustained sanitizer/no-swap hours remain failed historical evidence; current full native semantics and sustained acceptance remain open. See evidence/qualification-reference-runner-20261105.json."
+      "reason": "Completed original-workload 300-second handoff fails with 229232640-byte growth versus 67108864 allowed. Executor stacks identify freed BufferedWriter churn; Context/bridge full-soak attribution and a validated memory correction remain open. Later startup failures and historical hours remain failed evidence. See evidence/root-cause-20261105/qualification.json."
     },
     "compatibility": {
       "qualified": false,
@@ -55,7 +55,7 @@
     "ci": {
       "qualified": false,
       "receipt": null,
-      "reason": "Pinned hosted run 41958849238 passes 1,818 foundation cases with zero skips/errors/failures in 461.451 seconds and both original 45-second jobs. Local foundation still times out at 600 seconds. Full final-pair release CI is incomplete. See evidence/qualification-reference-runner-20261105.json."
+      "reason": "Hosted bounded foundation and original 45-second jobs pass at their recorded subject. Local -g1 compiler improvement passes two new and 245 affected original cases, but full suite times out at 600s; short-volume experiment also fails three concurrent-deadline cases. Full final-pair release CI remains open. See evidence/root-cause-20261105/qualification.json."
     },
     "packaging": {
       "qualified": false,
@@ -277,9 +277,9 @@
     }
   },
   "current_reconciliation": {
-    "receipt": "evidence/qualification-reference-runner-20261105.json",
+    "receipt": "evidence/root-cause-20261105/qualification.json",
     "full_v08_qualified": false,
-    "recorded_at": "2026-11-05T03:24:59.980713+00:00"
+    "recorded_at": "2026-11-05T07:17:37.893567+00:00"
   },
   "historical_gate_reasons_before_dev82": {
     "services": {
@@ -358,7 +358,8 @@
     "local_tested_commit": "c5529d02a49c89a8919b965ffb4eb43498eb0cdf",
     "paired_ide": "08c314fb6b802b407cbabe01777072884d2b7504",
     "full_v08_qualified": false,
-    "scope": "Environment contract, environment collector and its regressions, CI Python pin, trusted local helper configuration, and evidence. No product runtime changes in this continuation."
+    "scope": "Native product unchanged from c5529d02; test fixture debug metadata optimized with source-backtrace regressions. Full local foundation and memory remain failed.",
+    "local_foundation_tested_commit": "10283db843578c04ff4aa454e43abb041be605a9"
   },
   "historical_gate_reasons_before_dev83_prepared_20261029": {
     "services": "Dev82 bounded service/TLS/authority subsets pass; isolated136dbbc4 foundation1751 passes under600s. Full independent process, deployed partition and tenant/controller/observer acceptance remains incomplete. See evidence/qualification-dev82-completed-20261029.json.",
@@ -466,8 +467,42 @@
   },
   "documentation_current_status": {
     "path": "docs/v0.8/CURRENT_STATUS.md",
-    "updated_at": "2026-11-05",
-    "qualification_receipt": "docs/v0.8/evidence/qualification-reference-runner-20261105.json",
-    "scope": "Documentation reconciliation only; no new runtime qualification or gate promotion"
+    "updated_at": "2026-11-05T07:17:37.893567+00:00",
+    "qualification_receipt": "docs/v0.8/evidence/root-cause-20261105/qualification.json",
+    "scope": "Measured test-build improvement, failed original reruns and incomplete memory attribution; no gate promotion"
+  },
+  "historical_current_before_root_cause_20261105": {
+    "current_candidate": {
+      "version": "0.8.0rc1",
+      "hosted_tested_commit": "efada98963a9d9debdbdca437b0e97246180a86f",
+      "local_tested_commit": "c5529d02a49c89a8919b965ffb4eb43498eb0cdf",
+      "paired_ide": "08c314fb6b802b407cbabe01777072884d2b7504",
+      "full_v08_qualified": false,
+      "scope": "Environment contract, environment collector and its regressions, CI Python pin, trusted local helper configuration, and evidence. No product runtime changes in this continuation."
+    },
+    "current_reconciliation": {
+      "receipt": "evidence/qualification-reference-runner-20261105.json",
+      "full_v08_qualified": false,
+      "recorded_at": "2026-11-05T03:24:59.980713+00:00"
+    },
+    "documentation_current_status": {
+      "path": "docs/v0.8/CURRENT_STATUS.md",
+      "updated_at": "2026-11-05",
+      "qualification_receipt": "docs/v0.8/evidence/qualification-reference-runner-20261105.json",
+      "scope": "Documentation reconciliation only; no new runtime qualification or gate promotion"
+    }
+  },
+  "historical_gate_reasons_before_root_cause_20261105": {
+    "services": "Bounded hosted foundation and native cohorts pass. Full independent deployed service/process, tenant isolation, partition and required controller/viewer acceptance remains incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "native_family": "Original 45-second handoff/installed-IDE checks pass locally and hosted. Fresh 300-second handoff fails growth: 256,954,368 bytes versus 67,108,864 allowed. Sustained sanitizer/no-swap hours remain failed historical evidence; current full native semantics and sustained acceptance remain open. See evidence/qualification-reference-runner-20261105.json.",
+    "compatibility": "All 763 requirements need current native/driver acceptance. Historical 555 bindings, 546 matches/nine drift and 46 missing historical hashes remain unreconciled; partial TIME/PY/DATA coverage is insufficient. See evidence/qualification-reference-runner-20261105.json.",
+    "driver_faults": "Bounded driver and native subsets pass. Complete deployed DSS fault, uncertain effect, crash/partition/reconnect/cancel and unrelated-worker survival acceptance remains incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "ide_browser": "Published IDE v1.2.1 pairing passes bounded installed native checks. Public connection/launch, full debugger/workspace/source/results, three browser identities, 20 observers, WSS recovery and Git conflict acceptance remain incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "compose": "Existing prelaunch and legacy-native desktop evidence is retained. Full v0.8 native image with ten executions/20 viewers, authorization/egress, component faults, storage restore and authority fencing remains incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "kubernetes": "Production-like NetworkPolicy-enforced cluster is unavailable; local docker-desktop API refused connection. Required real Jobs, RBAC/admission, node/DNS/DSS faults, storage recovery, restore, upgrade/rollback remain open. See evidence/qualification-reference-runner-20261105.json.",
+    "recovery": "Component audit/ENOSPC evidence remains limited. Whole-deployment restore, fencing of old authority, durable audit capacity and sustained acceptance remain incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "security": "Exact delivered dependency/SBOM/source/license/advisory disposition and full auth/replay/integrity/load acceptance remain incomplete. Mandatory independent implemented-system reviewer is unavailable. See evidence/qualification-reference-runner-20261105.json.",
+    "ci": "Pinned hosted run 41958849238 passes 1,818 foundation cases with zero skips/errors/failures in 461.451 seconds and both original 45-second jobs. Local foundation still times out at 600 seconds. Full final-pair release CI is incomplete. See evidence/qualification-reference-runner-20261105.json.",
+    "packaging": "Immutable unqualified IDEv1.2.1 and SPELLv0.8-rc1 source/wheels remain distinct from candidate runtime and helper images. Qualified full native image, portable complete dependency closure, offline bundles and clean final installed/downloaded acceptance remain incomplete. See evidence/qualification-reference-runner-20261105.json."
   }
 }

@@ -2,6 +2,10 @@
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 
+<!-- ROOT CAUSE FOLLOWTHROUGH 20261105 -->
+> **Latest investigation:** [Measured memory and foundation results](ROOT_CAUSE_20261105.md) supersede the earlier checkpoint summaries below. Compiler metadata overhead is reduced and targeted checks pass; the 300-second memory growth and full local foundation acceptance remain failed. All original limits and failed evidence are retained.
+<!-- END ROOT CAUSE FOLLOWTHROUGH 20261105 -->
+
 <!-- checkpoint-6dd8218:start -->
 ## Current executable6dd8218
 
