@@ -14,6 +14,8 @@ import platform
 import sqlite3
 import subprocess
 import sys
+import shutil
+import tempfile
 import time
 import xml.etree.ElementTree as ET
 
@@ -74,6 +76,16 @@ def main():
     packages = {
         d.metadata["Name"]: d.version for d in importlib.metadata.distributions()
     }
+    mapped = {
+        line.split()[-1]
+        for line in Path("/proc/self/maps").read_text().splitlines()
+        if len(line.split()) >= 6 and line.split()[-1].startswith("/")
+    }
+    binaries = {
+        path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
+        for path in sorted(mapped)
+        if Path(path).is_file()
+    }
     (output / "inputs.json").write_text(
         json.dumps(
             dict(
@@ -83,6 +95,7 @@ def main():
                 sqlite=sqlite3.sqlite_version,
                 platform=platform.platform(),
                 packages=packages,
+                mapped_binary_sha256=binaries,
                 tempdir=os.environ.get("TMPDIR", "/tmp"),
                 original_deadlines_seconds=[2, 3, 1.5],
                 timing_categories_overlap=True,
@@ -111,6 +124,7 @@ def main():
             for check in args.checks:
                 target = output / f"{repeat}-{mode}-{check}"
                 target.mkdir()
+                fixtures = Path(tempfile.mkdtemp(prefix="cd-"))
                 env = dict(
                     os.environ,
                     PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
@@ -128,6 +142,9 @@ def main():
                     "error",
                     "--tb=long",
                     "--junitxml=" + str(target / "tests.xml"),
+                    "--basetemp=" + str(fixtures),
+                    "-o",
+                    "cache_dir=" + str(target / "pytest-cache"),
                 ]
                 if mode == "profile":
                     env.update(
@@ -167,6 +184,7 @@ def main():
                 if (target / "tests.xml").exists():
                     result["junit"] = ET.parse(target / "tests.xml").getroot()[0].attrib
                 results.append(result)
+                shutil.copytree(fixtures, target / "fixtures")
                 (output / "results.json").write_text(json.dumps(results, indent=2))
                 print(json.dumps(result), flush=True)
     return int(any(result["exit_code"] for result in results))
