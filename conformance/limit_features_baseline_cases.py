@@ -5,7 +5,7 @@ HEADER = '''##########
 # PYTHON VERSION: 3
 ##########
 import json
-from pathlib import Path
+from pathlib import Path as FilePath
 from spell.lang import functions as api
 from spell.lang.constants import *
 from spell.lang.modifiers import *
@@ -20,7 +20,7 @@ def call(name,*args,**options):
     except Exception as error:
         row.update(error_type=type(error).__name__,error=str(error))
     finally:
-        Path('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
+        FilePath('observed.json').write_text(json.dumps(observed,indent=2),encoding='utf-8')
 '''
 CASES = {}
 
@@ -28,7 +28,7 @@ CASES = {}
 def add(name, body):
     CASES[name] = dict(dimension='positive', source=HEADER+body+'''
 assert all('error_type' not in row for row in observed['calls']),observed
-Path('result.json').write_text(json.dumps({'completed':True}))
+FilePath('result.json').write_text(json.dumps({'completed':True}))
 ''')
 
 
