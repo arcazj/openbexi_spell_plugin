@@ -1,6 +1,4 @@
-<!-- CURRENT QUALIFICATION -->
-> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
-<!-- END CURRENT QUALIFICATION -->
+> **Qualification status:** full v0.8 remains unqualified. [Current results and next work](CURRENT_STATUS.md) supersede historical summaries below; original evidence and acceptance limits remain binding.
 
 <!-- ROOT CAUSE FOLLOWTHROUGH 20261105 -->
 > **Latest investigation:** [Context/DSS deadlines and complete memory trace](CONTEXT_DSS_DEADLINES_20261105.md): matched concurrent checks and live heartbeats pass; reference foundation passes all 1,823 tests in 547.880 seconds. The complete 303.491-second diagnostic still fails memory growth (304.76 MiB versus 64 MiB), with zero swap. All original limits and failed evidence are retained; no memory correction or release qualification is claimed.

@@ -1,6 +1,4 @@
-<!-- CURRENT QUALIFICATION -->
-> **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
-<!-- END CURRENT QUALIFICATION -->
+> **Qualification status:** full v0.8 remains unqualified. [Current results and next work](v0.8/CURRENT_STATUS.md) supersede historical summaries below; original evidence and acceptance limits remain binding.
 
 # Native durable shared Development
 
@@ -11,7 +9,7 @@ host image unchanged. It does not alter the earlier local-host acceptance files,
 wheel, ZIP, image or release tag.
 
 The full service/operator guide lives in the sibling IDE repository:
-[native shared service](../../openbexi_ide/docs/NATIVE_SHARED_SERVICE.md).
+[native shared service](https://github.com/arcazj/openbexi_ide/blob/main/docs/NATIVE_SHARED_SERVICE.md).
 The matching source/artifact evidence is recorded in
 [SHARED_QUALIFICATION.json](SHARED_QUALIFICATION.json).
 

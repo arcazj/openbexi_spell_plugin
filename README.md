@@ -1,134 +1,31 @@
-# openbexi_spell_plugin
+# OpenBEXI SPELL plugin
 
-## Current qualification
+Optional native SPELL integration for OpenBEXI IDE, IntelliJ IDEA and PyCharm, with a DSS bridge and shared execution services. The root Python package is the separate bounded simulator SDK.
 
-**SPELL v0.8-rc1 is published and unqualified.** Full SPELL v0.8 acceptance remains incomplete. The latest hosted run passes 1,818 foundation tests and both original 45-second native scenarios; the local foundation still exceeds 600 seconds and the 300-second memory diagnostic grows by 245.1 MiB against a 64 MiB limit. All eleven full-release groups remain open.
+## Current status
 
-Start with [current status and next work](docs/v0.8/CURRENT_STATUS.md), [published artifact scope](docs/UNQUALIFIED_RELEASE.md) and [the qualification roadmap](ROADMAP.md). The existing local desktop at port 6088 uses the v0.7 native baseline. Earlier image and installation commands below apply to their named versions.
+**IDE v1.2.1 and SPELL v0.8-rc1 remain unqualified.** All eleven full-release groups are open. The reference Linux foundation passed **1,823 tests in 547.880 seconds**, with zero failures, errors or skips and the original 600-second limit. Matched concurrent requests and heartbeats pass under measured conditions; preserved storage-stall failures prevent an unconditional reliability claim.
 
-## Existing features and earlier release profiles
+The complete **303.491-second** Context/bridge diagnostic captured all eight processes and zero swap, but growth was **304.76 MiB** against **64 MiB** allowed. No conforming memory correction is established. Both original one-hour scenarios remain pending; cleanup and branch consolidation do not qualify a release.
 
-SPELL is an optional runtime for [openbexi_ide](https://github.com/arcazj/openbexi_ide),
-PyCharm and IntelliJ IDEA. Procedures use explicit imports from the original
-SPELL library. The neutral IDE stays independent of SPELL.
+[Current status and next work](docs/v0.8/CURRENT_STATUS.md) · [roadmap](ROADMAP.md) · [deadline and memory evidence](docs/v0.8/CONTEXT_DSS_DEADLINES_20261105.md) · [cleanup and recovery](docs/REPOSITORY_MAINTENANCE.md)
 
-**Previous accepted release: SPELL v0.7**, paired with OpenBEXI IDE 1.2.0 and the
-`openbexi-ide-spell-v07` Docker desktop. The operational release adds durable
-driver admission limits and qualifies controller fencing, uncertain effects,
-overload and offline backup/restore. See [installation and recovery](docs/V07_INSTALLATION.md),
-[release notes](docs/V07_RELEASE_NOTES.md) and the [acceptance record](docs/V07_QUALIFICATION.json).
-Host, shared provider, DSS bridge and JetBrains packages use 0.7.0. The native
-SPELL source wheel stays at its byte-identical accepted 0.6.0 baseline; the
-independent bounded simulator SDK stays at 0.1.0.
+## Use and develop
 
-The v0.3 host release is accepted for local Development workflows; see
-[the exact host qualification](docs/HOST_QUALIFICATION.json). It supplies a host wheel, an
-IntelliJ Platform plugin ZIP and a private native Docker runtime. The native
-foundation builds the supplied SPELL 2.6.10 code for CPython 3.13.15, preserving
-source provenance and applicable GPL/LGPL notices. See the exact
-[execution status](docs/EXECUTION_TO_V06.md).
+[Installation and recovery](docs/V07_INSTALLATION.md) · [native host](docs/HOST_RUNTIME.md) · [JetBrains setup](docs/JETBRAINS_HOST.md) · [v0.8 implementation](docs/v0.8/README.md)
 
-The [v0.4 original DSS driver and shared provider](docs/DRIVER_RUNTIME.md) connect
-that runtime to durable Development and approved immutable Execution, with
-read-only Monitoring, fenced binary effects, optional Kafka telemetry,
-whole-container pause and recovery without replay. See
-[the v0.4 evidence](docs/DRIVER_QUALIFICATION.json) for the qualified GENERIC
-simulator scope.
+The existing local desktop at `http://127.0.0.1:6088` uses the v0.7 native baseline. Follow the setup guide for the matching release; desktop health does not establish v0.8 qualification. [Development dependencies and retained tooling](docs/DEPENDENCIES.md) describe fresh-checkout verification.
 
-The [v0.5 language qualification](docs/V05_CONFORMANCE_QUALIFICATION.json)
-passes **all 763 requirements with none open**. All 61 native suites pass
-(2,157 raw checks) on freshly installed, reproducibly built packages. See the
-[release notes](docs/V05_RELEASE_NOTES.md) and
-[v0.5 release](https://github.com/arcazj/openbexi_spell_plugin/releases/tag/v0.5).
-The v0.6 distribution set uses version 0.6.0 for the native, DSS, host and shared
-packages and JetBrains ZIP. See [installation and supported platforms](docs/V06_INSTALLATION.md)
-and the [acceptance manifest](docs/V06_QUALIFICATION.json) for the exact qualified
-artifact set. The v0.7 operational qualification builds on that frozen
-distribution; see the [release plan](docs/STABLE_RELEASE_PLAN.md).
+## Architecture reference
 
-## Native desktop and CLI
+[Supplied ZIP, provenance and scope](docs/v0.8/reference/README.md). Both images below are unchanged extracts of the user-supplied architecture release package. They describe design intent; [current status](docs/v0.8/CURRENT_STATUS.md) defines implemented and qualified scope.
 
-Install `openbexi_spell_host-0.7.0-py3-none-any.whl` in the CPython 3.13 environment
-selected by your IDE. The runtime image is `openbexi-spell-dss:0.7.0` and needs
-Docker Desktop's Linux engine. No host-folder sharing or published IPC port is
-required. The host wheel supplies the OpenBEXI extension and shared DAP bridge;
-the original SPELL library runs inside the image.
+**Historical comparison (non-normative)**
 
-```python
-from spell.lang.functions import Display
-from pathlib import Path
-answer = 6 * 7
-Display('Answer: ' + str(answer))
-Path('answer.txt').write_text(str(answer))
-```
+![Historical SPELL and OpenBEXI v0.8 architecture comparison](docs/v0.8/diagrams/release-package/previous_comparison.png)
 
-In OpenBEXI, choose **Run ? Reload Runtime Plugins**, select **SPELL**, and use
-Run or Debug. Native line breakpoints, stack inspection, current-frame variable
-edits, Step, pause, prompts and Stop are supported. The ordinary Python backend
-continues to use its own runtime/debugger.
+**Proposed v0.8 server architecture**
 
-```powershell
-openbexi run procedure.py --project C:/path/to/project --language spell
-```
+![Proposed OpenBEXI SPELL v0.8 server architecture](docs/v0.8/diagrams/release-package/v08_server.png)
 
-For JetBrains, install `openbexi-spell-0.7.0.zip` through **Plugins ? Install
-Plugin from Disk**, restart, configure **SPELL Runtime**, and use **Tools ? SPELL**.
-See [JetBrains installation and compatibility](docs/JETBRAINS_HOST.md).
-
-Each run uses a bounded project snapshot. Changed/new files are saved under
-`.openbexi/runs/RUN_ID/artifacts` with a hash manifest; source files in the editor
-are not overwritten. The host supports local Development. Step Out, arbitrary
-expression evaluation and conditional breakpoints remain outside this host
-workflow. Durable shared operation uses the separately installed shared provider.
-See [host runtime and qualification](docs/HOST_RUNTIME.md).
-
-## DSS testing baseline
-
-The repository's root Python package remains the separate bounded v0.1 DSS/SDK
-baseline. Installing it does not install the native host wheel or JetBrains ZIP.
-Its `spell` alias must stay in a different environment from the native source
-runtime. The native Docker image already provides that separation.
-
-```powershell
-python -m venv .venv
-.venv/Scripts/python.exe -m pip install .
-.venv/Scripts/openbexi-dss.exe --port 8085 --database var/dss.sqlite
-```
-
-The deterministic Dynamic Satellite Simulator exposes health at
-`http://127.0.0.1:8085/healthz`, state at `/api/v1/state`, and telemetry at
-`/api/v1/telemetry`. It uses the existing binary TC/TM packets and transactional
-command journal. Its manual clock supports PAUSE/STEP; automatic RESUME is
-explicitly unavailable in this profile. Kafka transport is a separate optional
-profile. [DSS container evidence](docs/DSS_CONTAINER_RUNTIME.md) covers the
-internal container workflow; published container access is a later gate.
-
-`examples/dss_demo.py` and `examples/desktop_dss_demo.py` belong to the bounded
-DSS adapter. Full original driver integration belongs to v0.4, followed by all
-763 conformance requirements in v0.5 and distribution/compatibility in v0.6.
-Preserve exactly Development, read-only Monitoring and approved Execution.
-
-## Source and development
-
-The seven original manuals and exact source archive remain in `docs/reference`.
-See the [source review](docs/SOURCE_REVIEW.md), [roadmap](ROADMAP.md),
-[master prompt](openbexi_spell_plugin_master_prompt.md), and
-[migration](docs/MIGRATION.md). Historical milestone reports retain their original
-source/artifact identities and do not automatically qualify later releases.
-
-Build and test commands for native hosts are in [HOST_RUNTIME.md](docs/HOST_RUNTIME.md).
-The retained DSS baseline has its own tests:
-
-```powershell
-python -m pip install '.[test]'
-python -m pytest tests -q
-```
-
-## v0.8 development branch
-
-The draft v0.8 work includes [approved G1 review resolutions](docs/v0.8/G1_REVIEW_RESOLUTION.md)
-and an [internal Listener/Context foundation](server/README.md). This new
-`0.8.0.dev3` server adds [durable prelaunch execution authority](docs/v0.8/EXECUTION_AUTHORITY.md)
-with [approved source and worker preflight](docs/v0.8/WORKER_PREFLIGHT.md). It does not execute procedures or replace the published v0.7
-runtime. See the [test report](docs/v0.8/TEST_REPORT.md) for local foundation
-evidence and the remaining native, browser, deployment and release gates.
+[Documentation index](docs/README.md) links to setup, detailed evidence and historical records.
