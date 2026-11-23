@@ -150,6 +150,21 @@ def test_100_duplicate_owner_requests_queue_one_intent(queue, family, pki):
     assert enqueue(family, pki, "CMD_PAUSE", key=key)[0] == 409
 
 
+def test_busy_execution_holds_authenticated_poll_before_a_single_delivery(queue, family, pki):
+    assert enqueue(family, pki)[0] == 200
+    runtime = family["grant"]
+    with family["app"].authority._execution_lock(runtime.execution_id):
+        code, reply = worker(family, pki)
+        assert code == 200 and reply["result"] == dict(
+            action="hold", execution_id=runtime.execution_id
+        )
+        assert worker(family, pki, runtime_capability="0" * 64)[0] == 403
+        assert rows(family)[0]["state"] == "QUEUED"
+    code, reply = worker(family, pki)
+    assert code == 200 and reply["result"]["action"] == "command"
+    assert worker(family, pki)[1]["result"]["action"] == "none"
+
+
 def test_concurrent_polls_do_not_redeliver_a_token(queue, family, pki):
     assert enqueue(family, pki)[0] == 200
     with ThreadPoolExecutor(max_workers=8) as pool:

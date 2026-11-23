@@ -193,8 +193,16 @@ class WorkerLaunch:
             return assigned.record_result(grant, body["instance_id"], body["native_status"])
         if path.endswith("prompt-open"):
             return prompts.register(grant, body)
-        if path.endswith("prompt-poll"):
-            return prompts.poll(grant)
+        if path.endswith(("prompt-poll", "command-poll")):
+            queue = prompts if path.endswith("prompt-poll") else commands
+            try:
+                return queue.poll(grant)
+            except Fault as error:
+                # The execution mutex rejected this poll before the queue transaction.
+                # No delivery occurred. A later poll must authenticate the runtime again.
+                if error.status == 503 and error.code == "execution_busy":
+                    return dict(action="hold", execution_id=grant.execution_id)
+                raise
         if path.endswith("prompt-close"):
             return prompts.close_prompt(grant, body)
         if path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
@@ -216,8 +224,6 @@ class WorkerLaunch:
             return children.consume(grant, body["child_grant"])
         if path.endswith("member-bind"):
             return controls.bind_member(grant, body)
-        if path.endswith("command-poll"):
-            return commands.poll(grant)
         if path.endswith(
             ("command-forward", "command-consume", "command-report", "command-disposition")
         ):

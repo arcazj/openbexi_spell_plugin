@@ -94,3 +94,21 @@ def test_prelaunch_image_markers_match_the_installed_package_version():
         f'org.opencontainers.image.version="{version}"'
         in (deployment / "Dockerfile.server").read_text()
     )
+
+
+def test_single_use_native_job_mounts_its_private_audit_subdirectory():
+    renderer = runpy.run_path(str(ROOT / "deploy/v0.8/render_native_job.py"))
+    ref = "registry.example/worker@sha256:" + "a" * 64
+    record = renderer["worker_job"]("qualification", "slot-01", ref, ref, "b" * 64)
+    pod = record["spec"]["template"]["spec"]
+    init, worker = pod["initContainers"][0], pod["containers"][0]
+    assert pod["securityContext"]["runAsUser"] == 10003
+    assert pod["automountServiceAccountToken"] is False
+    assert pod["restartPolicy"] == "Never" and record["spec"]["backoffLimit"] == 0
+    pvc = next(v for v in pod["volumes"] if v["name"] == "persistent")
+    assert pvc["persistentVolumeClaim"]["claimName"] == "audit-slot-01"
+    assert next(m for m in init["volumeMounts"] if m["name"] == "persistent")["mountPath"] == "/durable"
+    audit = next(m for m in worker["volumeMounts"] if m["mountPath"] == "/audit")
+    assert audit == {"name": "persistent", "mountPath": "/audit", "subPath": "records", "readOnly": False}
+    with pytest.raises(ValueError, match="manifest digest"):
+        renderer["worker_job"]("qualification", "slot-01", "registry.example/worker:tag", ref, "b" * 64)
